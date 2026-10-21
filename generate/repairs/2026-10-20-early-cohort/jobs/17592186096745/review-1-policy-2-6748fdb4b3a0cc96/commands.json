@@ -1,0 +1,65 @@
+{
+  "cwd": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186096745/review-1-policy-2-6748fdb4b3a0cc96",
+  "commands": [
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python audit.py",
+      "result": "17 replays; 21 fresh; 12 controlled; 55 math cases; no failures"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python focused_controls.py",
+      "result": "20 controls; 0 math failures"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/generate/runs/current/check-engine grader-all-input.json grader-all-results.json",
+      "result": "75 accepted; 300 rejected; no unresolved"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py --input independent-samples.json --source ../source/source.json --inventory ../source/inventory.json --difficulty hard --output delivery-independent --math-root /media/jake/SSD/EDB/math",
+      "report": "delivery-independent/delivery.json"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py --input runner-batch.json --source ../source/source.json --inventory ../source/inventory.json --difficulty hard --output delivery-batch --math-root /media/jake/SSD/EDB/math",
+      "report": "delivery-batch/delivery.json"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py --input counterfactual-records.json --source ../source/source.json --inventory ../source/inventory.json --difficulty hard --output delivery-counterfactuals --math-root /media/jake/SSD/EDB/math",
+      "report": "delivery-counterfactuals/delivery.json"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py --input focused-controls.json --source ../source/source.json --inventory ../source/inventory.json --difficulty hard --output delivery-controls --math-root /media/jake/SSD/EDB/math",
+      "report": "delivery-controls/delivery.json"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/render_preview.py --input render-input.json --output render --limit 13 --math-root /media/jake/SSD/EDB/math",
+      "report": "render/rendering.json"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/render_preview.py --input render-extra-input.json --output render-extra --limit 4 --math-root /media/jake/SSD/EDB/math",
+      "report": "render-extra/rendering.json"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python decision_review.py",
+      "reports": [
+        "coverage-results.json",
+        "decision-probe-results.json",
+        "learner-selection-results.json",
+        "inventory-audit.json"
+      ]
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python finalize_review.py",
+      "reports": [
+        "review-result.json",
+        "pedagogical-variation.json",
+        "evidence-contract.json"
+      ]
+    },
+    {
+      "author_regression_commands_and_results": "repair-regression-verification.json"
+    }
+  ],
+  "notes": [
+    "Initial renderer default limited to six; final main render explicitly used --limit 13. Supplemental render covers four other pair records.",
+    "Scripts and evidence created only under this review directory; no publication or database writes."
+  ]
+}

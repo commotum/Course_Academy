@@ -1,0 +1,3538 @@
+[
+  {
+    "question": {
+      ":question/id": "5aa409d1-ac81-5a0d-8384-7d6011cc149e",
+      ":question/problem": "Consider the following system of linear equations:\n\n$$\n\\left\\{\\begin{aligned}x - z &=2 \\\\ 7 x - 7 z &=14 \\\\ 2 y - 4 z &=8\\end{aligned}\\right.\n$$\n\nUse the standard Gauss-Jordan method to reduce the augmented matrix $M$ of the system to reduced row echelon form, and then solve the linear system.",
+      ":question/worked-solution": "The augmented matrix for this system is\n\n$$\nM=\\left[\\begin{array}{ccc|c}1 & 0 & -1 & 2 \\\\ 7 & 0 & -7 & 14 \\\\ 0 & 2 & -4 & 8\\end{array}\\right]\n$$\n\nFirst reduce the matrix to row echelon form, making each pivot equal to $1$.\n\n$$\nR_{2}:=R_{2}+\\left(-7\\right)R_{1}\\qquad M\\sim \\left[\\begin{array}{ccc|c}1 & 0 & -1 & 2 \\\\ 0 & 0 & 0 & 0 \\\\ 0 & 2 & -4 & 8\\end{array}\\right]\n$$\n\n\n\n$$\nR_{2}\\leftrightarrow R_{3}\\qquad M\\sim \\left[\\begin{array}{ccc|c}1 & 0 & -1 & 2 \\\\ 0 & 2 & -4 & 8 \\\\ 0 & 0 & 0 & 0\\end{array}\\right]\n$$\n\n\n\n$$\nR_{2}:=\\left(\\frac{1}{2}\\right)R_{2}\\qquad M\\sim \\left[\\begin{array}{ccc|c}1 & 0 & -1 & 2 \\\\ 0 & 1 & -2 & 4 \\\\ 0 & 0 & 0 & 0\\end{array}\\right]\n$$\n\nIn the row echelon form above, we have only two pivots (in the $1$st and $2$nd columns). To transform the matrix to reduced row echelon form, we need to create zeros above the pivots only. The entry above the second pivot is already zero, so this is already reduced row echelon form.\n\n$$\nM\\sim \\left[\\begin{array}{ccc|c}1 & 0 & -1 & 2 \\\\ 0 & 1 & -2 & 4 \\\\ 0 & 0 & 0 & 0\\end{array}\\right]\n$$\n\nThe corresponding system is now\n\n$$\n\\left\\{\\begin{aligned}x - z &=2 \\\\ y - 2 z &=4 \\\\ 0 &=0\\end{aligned}\\right.\n$$\n\nThe final equation is $0=0$, so it imposes no restriction. The basic variables are $x$ and $y$, and the free variable is $z$. Find $x$ and $y$ in terms of $z$. Therefore, the general solution is\n\n$$\n\\left\\{\\begin{aligned}x &=z + 2 \\\\ y &=2 z + 4 \\\\ z &=z\\end{aligned}\\right.\n$$\n\nwhere $z$ is an arbitrary real number. In vector form, the solution can be written as\n\n$$\n\\begin{bmatrix}x \\\\ y \\\\ z\\end{bmatrix}=\\begin{bmatrix}z + 2 \\\\ 2 z + 4 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )\n$$\n\n",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "0fd6bf01-eb1d-502c-b0f3-07d4d3ac6c86",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "858539be-d653-5911-ba77-a1d79a70b739",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}z - 4 \\\\ -1 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+            },
+            {
+              ":answer/id": "8ae32e4f-2823-507e-acda-a1736995aa3a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}3 z - 1 \\\\ 0 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+            },
+            {
+              ":answer/id": "a0a81026-3274-5d22-93db-d8d742df844b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}2 z + 3 \\\\ z + 1 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+            },
+            {
+              ":answer/id": "cab6fecd-9893-5ae5-a4fa-f725f44373c3",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}z + 1 \\\\ - z - 1 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+            },
+            {
+              ":answer/id": "5d3e6bcb-b5a0-5eec-90bc-91acb9a0051b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}z + 2 \\\\ 2 z + 4 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "5d3e6bcb-b5a0-5eec-90bc-91acb9a0051b"
+          ]
+        }
+      ]
+    },
+    "knowledge_point": {
+      "id": "b010a518-7aa3-5b53-9a6d-ef0779ff0dfa",
+      "db_id": 17592186096745,
+      "title": "Finding the Reduced Row Echelon Form of a Singular 3x3 System With Two Pivots"
+    },
+    "generation": {
+      "generator_id": "2e9ff447-ce56-57e5-9148-e9e03cc0f3aa",
+      "version": "two-pivot-affine-v2",
+      "source_question": "75dbc97d-95b7-5046-a4b7-609e3df9b396",
+      "source_db_id": 17592186403780,
+      "source_basis": 5370,
+      "dependencies": {
+        "sympy": "1.14.0"
+      },
+      "mathematical_fingerprint": "6e15bb0531f5a5d2dc800704390ba1791de935d9d3b2b1ea90f50ed048a7937c",
+      "seed": 12980722,
+      "template": "q-74628",
+      "profile": "authored-exchangeable-affine-bank",
+      "response_template": "vector",
+      "replay": false,
+      "parameters": {
+        "candidates": [
+          [
+            1,
+            0,
+            -4,
+            -1
+          ],
+          [
+            3,
+            0,
+            -1,
+            0
+          ],
+          [
+            2,
+            1,
+            3,
+            1
+          ],
+          [
+            1,
+            -1,
+            1,
+            -1
+          ],
+          [
+            1,
+            2,
+            2,
+            4
+          ]
+        ],
+        "correct_index": 4,
+        "row_order": [
+          0,
+          1,
+          2
+        ],
+        "row_signs": [
+          1,
+          1,
+          1
+        ]
+      },
+      "domain": {
+        "slopes": [
+          -3,
+          -2,
+          -1,
+          0,
+          1,
+          2,
+          3
+        ],
+        "intercepts": [
+          -4,
+          -3,
+          -2,
+          -1,
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "rejection": "duplicate candidate tuples only; no correctness or sign-based rejection",
+      "math_format": "course-academy-tex-v1"
+    }
+  },
+  {
+    "question": {
+      ":question/id": "2b2dfad8-0329-5424-8b42-66e01e568503",
+      ":question/problem": "Consider the following system of linear equations:\n\n$$\n\\left\\{\\begin{aligned}x + 3 z &=1 \\\\ 7 x + 21 z &=7 \\\\ 2 y &=-2\\end{aligned}\\right.\n$$\n\nUse the standard Gauss-Jordan method to reduce the augmented matrix $M$ of the system to reduced row echelon form, and then solve the linear system.",
+      ":question/worked-solution": "The augmented matrix for this system is\n\n$$\nM=\\left[\\begin{array}{ccc|c}1 & 0 & 3 & 1 \\\\ 7 & 0 & 21 & 7 \\\\ 0 & 2 & 0 & -2\\end{array}\\right]\n$$\n\nFirst reduce the matrix to row echelon form, making each pivot equal to $1$.\n\n$$\nR_{2}:=R_{2}+\\left(-7\\right)R_{1}\\qquad M\\sim \\left[\\begin{array}{ccc|c}1 & 0 & 3 & 1 \\\\ 0 & 0 & 0 & 0 \\\\ 0 & 2 & 0 & -2\\end{array}\\right]\n$$\n\n\n\n$$\nR_{2}\\leftrightarrow R_{3}\\qquad M\\sim \\left[\\begin{array}{ccc|c}1 & 0 & 3 & 1 \\\\ 0 & 2 & 0 & -2 \\\\ 0 & 0 & 0 & 0\\end{array}\\right]\n$$\n\n\n\n$$\nR_{2}:=\\left(\\frac{1}{2}\\right)R_{2}\\qquad M\\sim \\left[\\begin{array}{ccc|c}1 & 0 & 3 & 1 \\\\ 0 & 1 & 0 & -1 \\\\ 0 & 0 & 0 & 0\\end{array}\\right]\n$$\n\nIn the row echelon form above, we have only two pivots (in the $1$st and $2$nd columns). To transform the matrix to reduced row echelon form, we need to create zeros above the pivots only. The entry above the second pivot is already zero, so this is already reduced row echelon form.\n\n$$\nM\\sim \\left[\\begin{array}{ccc|c}1 & 0 & 3 & 1 \\\\ 0 & 1 & 0 & -1 \\\\ 0 & 0 & 0 & 0\\end{array}\\right]\n$$\n\nThe corresponding system is now\n\n$$\n\\left\\{\\begin{aligned}x + 3 z &=1 \\\\ y &=-1 \\\\ 0 &=0\\end{aligned}\\right.\n$$\n\nThe final equation is $0=0$, so it imposes no restriction. The basic variables are $x$ and $y$, and the free variable is $z$. Find $x$ and $y$ in terms of $z$. Therefore, the general solution is\n\n$$\n\\left\\{\\begin{aligned}x &=1 - 3 z \\\\ y &=-1 \\\\ z &=z\\end{aligned}\\right.\n$$\n\nwhere $z$ is an arbitrary real number. In vector form, the solution can be written as\n\n$$\n\\begin{bmatrix}x \\\\ y \\\\ z\\end{bmatrix}=\\begin{bmatrix}1 - 3 z \\\\ -1 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )\n$$\n\n",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "363398fd-fb48-5b9a-bf1b-06652db6b33e",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "c7573d87-faf5-5473-9d64-1971599a7786",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 - 3 z \\\\ -1 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+            },
+            {
+              ":answer/id": "70f31a81-0eb8-5f12-8e12-f3684c32657a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}2 z - 2 \\\\ 3 z - 3 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+            },
+            {
+              ":answer/id": "a7ed49f2-1487-53f3-be71-48f2b1b63486",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-2 \\\\ - 2 z \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+            },
+            {
+              ":answer/id": "b555cfdf-322d-5032-b31a-6261e2906e94",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}3 z + 1 \\\\ z - 3 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+            },
+            {
+              ":answer/id": "1d869d3e-44d8-527c-b878-2f141dfc10c3",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}z \\\\ z + 2 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "c7573d87-faf5-5473-9d64-1971599a7786"
+          ]
+        }
+      ]
+    },
+    "knowledge_point": {
+      "id": "b010a518-7aa3-5b53-9a6d-ef0779ff0dfa",
+      "db_id": 17592186096745,
+      "title": "Finding the Reduced Row Echelon Form of a Singular 3x3 System With Two Pivots"
+    },
+    "generation": {
+      "generator_id": "2e9ff447-ce56-57e5-9148-e9e03cc0f3aa",
+      "version": "two-pivot-affine-v2",
+      "source_question": "75dbc97d-95b7-5046-a4b7-609e3df9b396",
+      "source_db_id": 17592186403780,
+      "source_basis": 5370,
+      "dependencies": {
+        "sympy": "1.14.0"
+      },
+      "mathematical_fingerprint": "0ef84cb20386d64ed2a3e01a2cc47e2c9a50dbf1fface655350c65228738da1a",
+      "seed": 13046259,
+      "template": "q-74628",
+      "profile": "authored-exchangeable-affine-bank",
+      "response_template": "vector",
+      "replay": false,
+      "parameters": {
+        "candidates": [
+          [
+            -3,
+            0,
+            1,
+            -1
+          ],
+          [
+            2,
+            3,
+            -2,
+            -3
+          ],
+          [
+            0,
+            -2,
+            -2,
+            0
+          ],
+          [
+            3,
+            1,
+            1,
+            -3
+          ],
+          [
+            1,
+            1,
+            0,
+            2
+          ]
+        ],
+        "correct_index": 0,
+        "row_order": [
+          0,
+          1,
+          2
+        ],
+        "row_signs": [
+          1,
+          1,
+          1
+        ]
+      },
+      "domain": {
+        "slopes": [
+          -3,
+          -2,
+          -1,
+          0,
+          1,
+          2,
+          3
+        ],
+        "intercepts": [
+          -4,
+          -3,
+          -2,
+          -1,
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "rejection": "duplicate candidate tuples only; no correctness or sign-based rejection",
+      "math_format": "course-academy-tex-v1"
+    }
+  },
+  {
+    "question": {
+      ":question/id": "5ee7d95d-ceeb-532c-85a0-57f7851c984f",
+      ":question/problem": "Consider the following system of linear equations:\n\n$$\n\\left\\{\\begin{aligned}x + z &=-4 \\\\ 7 x + 7 z &=-28 \\\\ 2 y &=-6\\end{aligned}\\right.\n$$\n\nUse the standard Gauss-Jordan method to reduce the augmented matrix $M$ of the system to reduced row echelon form, and then solve the linear system.",
+      ":question/worked-solution": "The augmented matrix for this system is\n\n$$\nM=\\left[\\begin{array}{ccc|c}1 & 0 & 1 & -4 \\\\ 7 & 0 & 7 & -28 \\\\ 0 & 2 & 0 & -6\\end{array}\\right]\n$$\n\nFirst reduce the matrix to row echelon form, making each pivot equal to $1$.\n\n$$\nR_{2}:=R_{2}+\\left(-7\\right)R_{1}\\qquad M\\sim \\left[\\begin{array}{ccc|c}1 & 0 & 1 & -4 \\\\ 0 & 0 & 0 & 0 \\\\ 0 & 2 & 0 & -6\\end{array}\\right]\n$$\n\n\n\n$$\nR_{2}\\leftrightarrow R_{3}\\qquad M\\sim \\left[\\begin{array}{ccc|c}1 & 0 & 1 & -4 \\\\ 0 & 2 & 0 & -6 \\\\ 0 & 0 & 0 & 0\\end{array}\\right]\n$$\n\n\n\n$$\nR_{2}:=\\left(\\frac{1}{2}\\right)R_{2}\\qquad M\\sim \\left[\\begin{array}{ccc|c}1 & 0 & 1 & -4 \\\\ 0 & 1 & 0 & -3 \\\\ 0 & 0 & 0 & 0\\end{array}\\right]\n$$\n\nIn the row echelon form above, we have only two pivots (in the $1$st and $2$nd columns). To transform the matrix to reduced row echelon form, we need to create zeros above the pivots only. The entry above the second pivot is already zero, so this is already reduced row echelon form.\n\n$$\nM\\sim \\left[\\begin{array}{ccc|c}1 & 0 & 1 & -4 \\\\ 0 & 1 & 0 & -3 \\\\ 0 & 0 & 0 & 0\\end{array}\\right]\n$$\n\nThe corresponding system is now\n\n$$\n\\left\\{\\begin{aligned}x + z &=-4 \\\\ y &=-3 \\\\ 0 &=0\\end{aligned}\\right.\n$$\n\nThe final equation is $0=0$, so it imposes no restriction. The basic variables are $x$ and $y$, and the free variable is $z$. Find $x$ and $y$ in terms of $z$. Therefore, the general solution is\n\n$$\n\\left\\{\\begin{aligned}x &=- z - 4 \\\\ y &=-3 \\\\ z &=z\\end{aligned}\\right.\n$$\n\nwhere $z$ is an arbitrary real number. In vector form, the solution can be written as\n\n$$\n\\begin{bmatrix}x \\\\ y \\\\ z\\end{bmatrix}=\\begin{bmatrix}- z - 4 \\\\ -3 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )\n$$\n\n",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "1e46785d-03db-52fb-a4c9-2750af3efaf9",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "7437053b-0fe8-5c38-967e-0505a815d5ba",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}z \\\\ -2 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+            },
+            {
+              ":answer/id": "c2da9e99-6976-5654-9bbf-27a90a9840ec",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}z + 2 \\\\ - z - 1 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+            },
+            {
+              ":answer/id": "52d4f0cf-0413-5453-95a9-ff85c971e248",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}- z - 4 \\\\ -3 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+            },
+            {
+              ":answer/id": "67acd18d-b3f1-54f5-8503-355a114d4932",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 - z \\\\ - 2 z - 3 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+            },
+            {
+              ":answer/id": "524899c7-7b97-50ec-8a6e-cb9f1c3b2478",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 - 3 z \\\\ 2 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "52d4f0cf-0413-5453-95a9-ff85c971e248"
+          ]
+        }
+      ]
+    },
+    "knowledge_point": {
+      "id": "b010a518-7aa3-5b53-9a6d-ef0779ff0dfa",
+      "db_id": 17592186096745,
+      "title": "Finding the Reduced Row Echelon Form of a Singular 3x3 System With Two Pivots"
+    },
+    "generation": {
+      "generator_id": "2e9ff447-ce56-57e5-9148-e9e03cc0f3aa",
+      "version": "two-pivot-affine-v2",
+      "source_question": "75dbc97d-95b7-5046-a4b7-609e3df9b396",
+      "source_db_id": 17592186403780,
+      "source_basis": 5370,
+      "dependencies": {
+        "sympy": "1.14.0"
+      },
+      "mathematical_fingerprint": "a12fa57e7708a6ea7f73e42193de20bb8541b8b4282dd648ade7871956156754",
+      "seed": 13111796,
+      "template": "q-74628",
+      "profile": "authored-exchangeable-affine-bank",
+      "response_template": "vector",
+      "replay": false,
+      "parameters": {
+        "candidates": [
+          [
+            1,
+            0,
+            0,
+            -2
+          ],
+          [
+            1,
+            -1,
+            2,
+            -1
+          ],
+          [
+            -1,
+            0,
+            -4,
+            -3
+          ],
+          [
+            -1,
+            -2,
+            1,
+            -3
+          ],
+          [
+            -3,
+            0,
+            1,
+            2
+          ]
+        ],
+        "correct_index": 2,
+        "row_order": [
+          0,
+          1,
+          2
+        ],
+        "row_signs": [
+          1,
+          1,
+          1
+        ]
+      },
+      "domain": {
+        "slopes": [
+          -3,
+          -2,
+          -1,
+          0,
+          1,
+          2,
+          3
+        ],
+        "intercepts": [
+          -4,
+          -3,
+          -2,
+          -1,
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "rejection": "duplicate candidate tuples only; no correctness or sign-based rejection",
+      "math_format": "course-academy-tex-v1"
+    }
+  },
+  {
+    "question": {
+      ":question/id": "69a90256-4daf-5f52-995c-7695c4664dca",
+      ":question/problem": "Consider the following system of linear equations:\n\n$$\n\\left\\{\\begin{aligned}x + 3 z &=4 \\\\ 7 x + 21 z &=28 \\\\ 2 y - 2 z &=-8\\end{aligned}\\right.\n$$\n\nUse the standard Gauss-Jordan method to reduce the augmented matrix $M$ of the system to reduced row echelon form, and then solve the linear system.",
+      ":question/worked-solution": "The augmented matrix for this system is\n\n$$\nM=\\left[\\begin{array}{ccc|c}1 & 0 & 3 & 4 \\\\ 7 & 0 & 21 & 28 \\\\ 0 & 2 & -2 & -8\\end{array}\\right]\n$$\n\nFirst reduce the matrix to row echelon form, making each pivot equal to $1$.\n\n$$\nR_{2}:=R_{2}+\\left(-7\\right)R_{1}\\qquad M\\sim \\left[\\begin{array}{ccc|c}1 & 0 & 3 & 4 \\\\ 0 & 0 & 0 & 0 \\\\ 0 & 2 & -2 & -8\\end{array}\\right]\n$$\n\n\n\n$$\nR_{2}\\leftrightarrow R_{3}\\qquad M\\sim \\left[\\begin{array}{ccc|c}1 & 0 & 3 & 4 \\\\ 0 & 2 & -2 & -8 \\\\ 0 & 0 & 0 & 0\\end{array}\\right]\n$$\n\n\n\n$$\nR_{2}:=\\left(\\frac{1}{2}\\right)R_{2}\\qquad M\\sim \\left[\\begin{array}{ccc|c}1 & 0 & 3 & 4 \\\\ 0 & 1 & -1 & -4 \\\\ 0 & 0 & 0 & 0\\end{array}\\right]\n$$\n\nIn the row echelon form above, we have only two pivots (in the $1$st and $2$nd columns). To transform the matrix to reduced row echelon form, we need to create zeros above the pivots only. The entry above the second pivot is already zero, so this is already reduced row echelon form.\n\n$$\nM\\sim \\left[\\begin{array}{ccc|c}1 & 0 & 3 & 4 \\\\ 0 & 1 & -1 & -4 \\\\ 0 & 0 & 0 & 0\\end{array}\\right]\n$$\n\nThe corresponding system is now\n\n$$\n\\left\\{\\begin{aligned}x + 3 z &=4 \\\\ y - z &=-4 \\\\ 0 &=0\\end{aligned}\\right.\n$$\n\nThe final equation is $0=0$, so it imposes no restriction. The basic variables are $x$ and $y$, and the free variable is $z$. Find $x$ and $y$ in terms of $z$. Therefore, the general solution is\n\n$$\n\\left\\{\\begin{aligned}x &=4 - 3 z \\\\ y &=z - 4 \\\\ z &=z\\end{aligned}\\right.\n$$\n\nwhere $z$ is an arbitrary real number. In vector form, the solution can be written as\n\n$$\n\\begin{bmatrix}x \\\\ y \\\\ z\\end{bmatrix}=\\begin{bmatrix}4 - 3 z \\\\ z - 4 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )\n$$\n\n",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "c1c10bef-9d2e-514d-b894-744691b13a19",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "865c1d34-a1cf-5cc7-b65e-ed5887737d32",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}2 - 3 z \\\\ - 2 z \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+            },
+            {
+              ":answer/id": "756694f5-cfb5-5962-9c46-b516d0db7634",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}z + 2 \\\\ 3 - 2 z \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+            },
+            {
+              ":answer/id": "6bf0152e-b370-5eaa-b1a4-202439f2d2b6",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}- z - 2 \\\\ 3 z - 1 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+            },
+            {
+              ":answer/id": "a053e759-8a8e-5e07-aa61-8da2e09b1091",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}4 - z \\\\ 3 z - 3 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+            },
+            {
+              ":answer/id": "a67c0074-06b2-5af5-bfee-173226e32464",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}4 - 3 z \\\\ z - 4 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "a67c0074-06b2-5af5-bfee-173226e32464"
+          ]
+        }
+      ]
+    },
+    "knowledge_point": {
+      "id": "b010a518-7aa3-5b53-9a6d-ef0779ff0dfa",
+      "db_id": 17592186096745,
+      "title": "Finding the Reduced Row Echelon Form of a Singular 3x3 System With Two Pivots"
+    },
+    "generation": {
+      "generator_id": "2e9ff447-ce56-57e5-9148-e9e03cc0f3aa",
+      "version": "two-pivot-affine-v2",
+      "source_question": "75dbc97d-95b7-5046-a4b7-609e3df9b396",
+      "source_db_id": 17592186403780,
+      "source_basis": 5370,
+      "dependencies": {
+        "sympy": "1.14.0"
+      },
+      "mathematical_fingerprint": "d14d799d3577f9060f323495fd53bd7f1beb4f1f752b4c6b96755ecefee47a63",
+      "seed": 13177333,
+      "template": "q-74628",
+      "profile": "authored-exchangeable-affine-bank",
+      "response_template": "vector",
+      "replay": false,
+      "parameters": {
+        "candidates": [
+          [
+            -3,
+            -2,
+            2,
+            0
+          ],
+          [
+            1,
+            -2,
+            2,
+            3
+          ],
+          [
+            -1,
+            3,
+            -2,
+            -1
+          ],
+          [
+            -1,
+            3,
+            4,
+            -3
+          ],
+          [
+            -3,
+            1,
+            4,
+            -4
+          ]
+        ],
+        "correct_index": 4,
+        "row_order": [
+          0,
+          1,
+          2
+        ],
+        "row_signs": [
+          1,
+          1,
+          1
+        ]
+      },
+      "domain": {
+        "slopes": [
+          -3,
+          -2,
+          -1,
+          0,
+          1,
+          2,
+          3
+        ],
+        "intercepts": [
+          -4,
+          -3,
+          -2,
+          -1,
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "rejection": "duplicate candidate tuples only; no correctness or sign-based rejection",
+      "math_format": "course-academy-tex-v1"
+    }
+  },
+  {
+    "question": {
+      ":question/id": "6eb69126-ce87-5aab-a6f5-4e1af2beaf3e",
+      ":question/problem": "Consider the following system of linear equations:\n\n$$\n\\left\\{\\begin{aligned}x - z &=3 \\\\ 7 x - 7 z &=21 \\\\ 2 y + 2 z &=-4\\end{aligned}\\right.\n$$\n\nUse the standard Gauss-Jordan method to reduce the augmented matrix $M$ of the system to reduced row echelon form, and then solve the linear system.",
+      ":question/worked-solution": "The augmented matrix for this system is\n\n$$\nM=\\left[\\begin{array}{ccc|c}1 & 0 & -1 & 3 \\\\ 7 & 0 & -7 & 21 \\\\ 0 & 2 & 2 & -4\\end{array}\\right]\n$$\n\nFirst reduce the matrix to row echelon form, making each pivot equal to $1$.\n\n$$\nR_{2}:=R_{2}+\\left(-7\\right)R_{1}\\qquad M\\sim \\left[\\begin{array}{ccc|c}1 & 0 & -1 & 3 \\\\ 0 & 0 & 0 & 0 \\\\ 0 & 2 & 2 & -4\\end{array}\\right]\n$$\n\n\n\n$$\nR_{2}\\leftrightarrow R_{3}\\qquad M\\sim \\left[\\begin{array}{ccc|c}1 & 0 & -1 & 3 \\\\ 0 & 2 & 2 & -4 \\\\ 0 & 0 & 0 & 0\\end{array}\\right]\n$$\n\n\n\n$$\nR_{2}:=\\left(\\frac{1}{2}\\right)R_{2}\\qquad M\\sim \\left[\\begin{array}{ccc|c}1 & 0 & -1 & 3 \\\\ 0 & 1 & 1 & -2 \\\\ 0 & 0 & 0 & 0\\end{array}\\right]\n$$\n\nIn the row echelon form above, we have only two pivots (in the $1$st and $2$nd columns). To transform the matrix to reduced row echelon form, we need to create zeros above the pivots only. The entry above the second pivot is already zero, so this is already reduced row echelon form.\n\n$$\nM\\sim \\left[\\begin{array}{ccc|c}1 & 0 & -1 & 3 \\\\ 0 & 1 & 1 & -2 \\\\ 0 & 0 & 0 & 0\\end{array}\\right]\n$$\n\nThe corresponding system is now\n\n$$\n\\left\\{\\begin{aligned}x - z &=3 \\\\ y + z &=-2 \\\\ 0 &=0\\end{aligned}\\right.\n$$\n\nThe final equation is $0=0$, so it imposes no restriction. The basic variables are $x$ and $y$, and the free variable is $z$. Find $x$ and $y$ in terms of $z$. Therefore, the general solution is\n\n$$\n\\left\\{\\begin{aligned}x &=z + 3 \\\\ y &=- z - 2 \\\\ z &=z\\end{aligned}\\right.\n$$\n\nwhere $z$ is an arbitrary real number. In vector form, the solution can be written as\n\n$$\n\\begin{bmatrix}x \\\\ y \\\\ z\\end{bmatrix}=\\begin{bmatrix}z + 3 \\\\ - z - 2 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )\n$$\n\n",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "38fbfb50-9931-59f8-9696-d1856265cb62",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "f35d49f8-7f47-5a50-8614-e32d2126eafa",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}- 3 z - 2 \\\\ - z - 2 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+            },
+            {
+              ":answer/id": "55745f4d-84b6-5fea-a7a2-e92cb3651f03",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}z + 3 \\\\ - z - 2 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+            },
+            {
+              ":answer/id": "56875eae-e05e-5cb1-ba70-612db8ed37d5",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}2 - 2 z \\\\ z + 2 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+            },
+            {
+              ":answer/id": "6df5bc6a-0c7c-58be-8603-b8e32280fbf7",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}z - 1 \\\\ - 2 z - 2 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+            },
+            {
+              ":answer/id": "2b861967-2671-50f3-85a8-d6647744a064",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}3 z - 1 \\\\ 1 - z \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "55745f4d-84b6-5fea-a7a2-e92cb3651f03"
+          ]
+        }
+      ]
+    },
+    "knowledge_point": {
+      "id": "b010a518-7aa3-5b53-9a6d-ef0779ff0dfa",
+      "db_id": 17592186096745,
+      "title": "Finding the Reduced Row Echelon Form of a Singular 3x3 System With Two Pivots"
+    },
+    "generation": {
+      "generator_id": "2e9ff447-ce56-57e5-9148-e9e03cc0f3aa",
+      "version": "two-pivot-affine-v2",
+      "source_question": "75dbc97d-95b7-5046-a4b7-609e3df9b396",
+      "source_db_id": 17592186403780,
+      "source_basis": 5370,
+      "dependencies": {
+        "sympy": "1.14.0"
+      },
+      "mathematical_fingerprint": "22245ea0268b783ebc0fbb007f8f8fe3f667e5fade82049d292489517986bd9e",
+      "seed": 13242870,
+      "template": "q-74628",
+      "profile": "authored-exchangeable-affine-bank",
+      "response_template": "vector",
+      "replay": false,
+      "parameters": {
+        "candidates": [
+          [
+            -3,
+            -1,
+            -2,
+            -2
+          ],
+          [
+            1,
+            -1,
+            3,
+            -2
+          ],
+          [
+            -2,
+            1,
+            2,
+            2
+          ],
+          [
+            1,
+            -2,
+            -1,
+            -2
+          ],
+          [
+            3,
+            -1,
+            -1,
+            1
+          ]
+        ],
+        "correct_index": 1,
+        "row_order": [
+          0,
+          1,
+          2
+        ],
+        "row_signs": [
+          1,
+          1,
+          1
+        ]
+      },
+      "domain": {
+        "slopes": [
+          -3,
+          -2,
+          -1,
+          0,
+          1,
+          2,
+          3
+        ],
+        "intercepts": [
+          -4,
+          -3,
+          -2,
+          -1,
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "rejection": "duplicate candidate tuples only; no correctness or sign-based rejection",
+      "math_format": "course-academy-tex-v1"
+    }
+  },
+  {
+    "question": {
+      ":question/id": "12540f8e-cf1d-5e55-acf6-62109168e8df",
+      ":question/problem": "Consider the following system of linear equations:\n\n$$\n\\left\\{\\begin{aligned}x + z &=2 \\\\ 7 x + 7 z &=14 \\\\ 2 y &=6\\end{aligned}\\right.\n$$\n\nUse the standard Gauss-Jordan method to reduce the augmented matrix $M$ of the system to reduced row echelon form, and then solve the linear system.",
+      ":question/worked-solution": "The augmented matrix for this system is\n\n$$\nM=\\left[\\begin{array}{ccc|c}1 & 0 & 1 & 2 \\\\ 7 & 0 & 7 & 14 \\\\ 0 & 2 & 0 & 6\\end{array}\\right]\n$$\n\nFirst reduce the matrix to row echelon form, making each pivot equal to $1$.\n\n$$\nR_{2}:=R_{2}+\\left(-7\\right)R_{1}\\qquad M\\sim \\left[\\begin{array}{ccc|c}1 & 0 & 1 & 2 \\\\ 0 & 0 & 0 & 0 \\\\ 0 & 2 & 0 & 6\\end{array}\\right]\n$$\n\n\n\n$$\nR_{2}\\leftrightarrow R_{3}\\qquad M\\sim \\left[\\begin{array}{ccc|c}1 & 0 & 1 & 2 \\\\ 0 & 2 & 0 & 6 \\\\ 0 & 0 & 0 & 0\\end{array}\\right]\n$$\n\n\n\n$$\nR_{2}:=\\left(\\frac{1}{2}\\right)R_{2}\\qquad M\\sim \\left[\\begin{array}{ccc|c}1 & 0 & 1 & 2 \\\\ 0 & 1 & 0 & 3 \\\\ 0 & 0 & 0 & 0\\end{array}\\right]\n$$\n\nIn the row echelon form above, we have only two pivots (in the $1$st and $2$nd columns). To transform the matrix to reduced row echelon form, we need to create zeros above the pivots only. The entry above the second pivot is already zero, so this is already reduced row echelon form.\n\n$$\nM\\sim \\left[\\begin{array}{ccc|c}1 & 0 & 1 & 2 \\\\ 0 & 1 & 0 & 3 \\\\ 0 & 0 & 0 & 0\\end{array}\\right]\n$$\n\nThe corresponding system is now\n\n$$\n\\left\\{\\begin{aligned}x + z &=2 \\\\ y &=3 \\\\ 0 &=0\\end{aligned}\\right.\n$$\n\nThe final equation is $0=0$, so it imposes no restriction. The basic variables are $x$ and $y$, and the free variable is $z$. Find $x$ and $y$ in terms of $z$. Therefore, the general solution is\n\n$$\n\\left\\{\\begin{aligned}x &=2 - z \\\\ y &=3 \\\\ z &=z\\end{aligned}\\right.\n$$\n\nwhere $z$ is an arbitrary real number. In vector form, the solution can be written as\n\n$$\n\\begin{bmatrix}x \\\\ y \\\\ z\\end{bmatrix}=\\begin{bmatrix}2 - z \\\\ 3 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )\n$$\n\n",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "c8a6a0c5-cd51-5b5f-a793-bd9d41cb6305",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "b6a56dd5-d4e4-5c91-8ae1-cdbf0208b186",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}2 - z \\\\ 3 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+            },
+            {
+              ":answer/id": "e98efcbe-798e-5345-8cc3-5c7f8315a706",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}2 z - 3 \\\\ z - 3 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+            },
+            {
+              ":answer/id": "96bd475f-594b-5adc-bffd-dc19c3d7b77a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 - z \\\\ 2 z - 1 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+            },
+            {
+              ":answer/id": "1dac4fb5-6829-5b80-9020-ca27c02388ab",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}3 z - 3 \\\\ 4 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+            },
+            {
+              ":answer/id": "9cd6e699-105e-53cd-8c8c-e8aed5779471",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}- 2 z - 4 \\\\ 3 z + 1 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "b6a56dd5-d4e4-5c91-8ae1-cdbf0208b186"
+          ]
+        }
+      ]
+    },
+    "knowledge_point": {
+      "id": "b010a518-7aa3-5b53-9a6d-ef0779ff0dfa",
+      "db_id": 17592186096745,
+      "title": "Finding the Reduced Row Echelon Form of a Singular 3x3 System With Two Pivots"
+    },
+    "generation": {
+      "generator_id": "2e9ff447-ce56-57e5-9148-e9e03cc0f3aa",
+      "version": "two-pivot-affine-v2",
+      "source_question": "75dbc97d-95b7-5046-a4b7-609e3df9b396",
+      "source_db_id": 17592186403780,
+      "source_basis": 5370,
+      "dependencies": {
+        "sympy": "1.14.0"
+      },
+      "mathematical_fingerprint": "a2b5d9216b7085c873e04fab1faf08bee91191a62c5d3231ca663f9f69edf4bc",
+      "seed": 13308407,
+      "template": "q-74628",
+      "profile": "authored-exchangeable-affine-bank",
+      "response_template": "vector",
+      "replay": false,
+      "parameters": {
+        "candidates": [
+          [
+            -1,
+            0,
+            2,
+            3
+          ],
+          [
+            2,
+            1,
+            -3,
+            -3
+          ],
+          [
+            -1,
+            2,
+            1,
+            -1
+          ],
+          [
+            3,
+            0,
+            -3,
+            4
+          ],
+          [
+            -2,
+            3,
+            -4,
+            1
+          ]
+        ],
+        "correct_index": 0,
+        "row_order": [
+          0,
+          1,
+          2
+        ],
+        "row_signs": [
+          1,
+          1,
+          1
+        ]
+      },
+      "domain": {
+        "slopes": [
+          -3,
+          -2,
+          -1,
+          0,
+          1,
+          2,
+          3
+        ],
+        "intercepts": [
+          -4,
+          -3,
+          -2,
+          -1,
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "rejection": "duplicate candidate tuples only; no correctness or sign-based rejection",
+      "math_format": "course-academy-tex-v1"
+    }
+  },
+  {
+    "question": {
+      ":question/id": "c6fec514-954e-5487-b174-58e6ed73c23c",
+      ":question/problem": "Consider the following system of linear equations:\n\n$$\n\\left\\{\\begin{aligned}x + z &=2 \\\\ 7 x + 7 z &=14 \\\\ 2 y + 4 z &=4\\end{aligned}\\right.\n$$\n\nUse the standard Gauss-Jordan method to reduce the augmented matrix $M$ of the system to reduced row echelon form, and then solve the linear system.",
+      ":question/worked-solution": "The augmented matrix for this system is\n\n$$\nM=\\left[\\begin{array}{ccc|c}1 & 0 & 1 & 2 \\\\ 7 & 0 & 7 & 14 \\\\ 0 & 2 & 4 & 4\\end{array}\\right]\n$$\n\nFirst reduce the matrix to row echelon form, making each pivot equal to $1$.\n\n$$\nR_{2}:=R_{2}+\\left(-7\\right)R_{1}\\qquad M\\sim \\left[\\begin{array}{ccc|c}1 & 0 & 1 & 2 \\\\ 0 & 0 & 0 & 0 \\\\ 0 & 2 & 4 & 4\\end{array}\\right]\n$$\n\n\n\n$$\nR_{2}\\leftrightarrow R_{3}\\qquad M\\sim \\left[\\begin{array}{ccc|c}1 & 0 & 1 & 2 \\\\ 0 & 2 & 4 & 4 \\\\ 0 & 0 & 0 & 0\\end{array}\\right]\n$$\n\n\n\n$$\nR_{2}:=\\left(\\frac{1}{2}\\right)R_{2}\\qquad M\\sim \\left[\\begin{array}{ccc|c}1 & 0 & 1 & 2 \\\\ 0 & 1 & 2 & 2 \\\\ 0 & 0 & 0 & 0\\end{array}\\right]\n$$\n\nIn the row echelon form above, we have only two pivots (in the $1$st and $2$nd columns). To transform the matrix to reduced row echelon form, we need to create zeros above the pivots only. The entry above the second pivot is already zero, so this is already reduced row echelon form.\n\n$$\nM\\sim \\left[\\begin{array}{ccc|c}1 & 0 & 1 & 2 \\\\ 0 & 1 & 2 & 2 \\\\ 0 & 0 & 0 & 0\\end{array}\\right]\n$$\n\nThe corresponding system is now\n\n$$\n\\left\\{\\begin{aligned}x + z &=2 \\\\ y + 2 z &=2 \\\\ 0 &=0\\end{aligned}\\right.\n$$\n\nThe final equation is $0=0$, so it imposes no restriction. The basic variables are $x$ and $y$, and the free variable is $z$. Find $x$ and $y$ in terms of $z$. Therefore, the general solution is\n\n$$\n\\left\\{\\begin{aligned}x &=2 - z \\\\ y &=2 - 2 z \\\\ z &=z\\end{aligned}\\right.\n$$\n\nwhere $z$ is an arbitrary real number. In vector form, the solution can be written as\n\n$$\n\\begin{bmatrix}x \\\\ y \\\\ z\\end{bmatrix}=\\begin{bmatrix}2 - z \\\\ 2 - 2 z \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )\n$$\n\n",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "8f7d4503-e1c3-5ecb-ae04-e6edf5e051fd",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "f990e367-38a2-5b1b-8188-723b46280bdb",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 \\\\ 3 z + 3 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+            },
+            {
+              ":answer/id": "af56645f-bb5f-545d-93c9-6a10e58d3bd4",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}2 z - 2 \\\\ - z - 2 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+            },
+            {
+              ":answer/id": "1a8b53e8-bf56-5adf-8787-37f7fa222a8d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}2 - z \\\\ 2 - 2 z \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+            },
+            {
+              ":answer/id": "5a6b4685-3d25-5c84-a33c-eecf08798f7e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-4 \\\\ - 2 z - 1 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+            },
+            {
+              ":answer/id": "951617c5-05de-586f-9cb4-f3ae3cbcfea1",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 - z \\\\ 3 z - 2 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "1a8b53e8-bf56-5adf-8787-37f7fa222a8d"
+          ]
+        }
+      ]
+    },
+    "knowledge_point": {
+      "id": "b010a518-7aa3-5b53-9a6d-ef0779ff0dfa",
+      "db_id": 17592186096745,
+      "title": "Finding the Reduced Row Echelon Form of a Singular 3x3 System With Two Pivots"
+    },
+    "generation": {
+      "generator_id": "2e9ff447-ce56-57e5-9148-e9e03cc0f3aa",
+      "version": "two-pivot-affine-v2",
+      "source_question": "75dbc97d-95b7-5046-a4b7-609e3df9b396",
+      "source_db_id": 17592186403780,
+      "source_basis": 5370,
+      "dependencies": {
+        "sympy": "1.14.0"
+      },
+      "mathematical_fingerprint": "58b586db2dbc2c11bc8a042a41db6e21254211cba8cee0bf5f6f1ababac48814",
+      "seed": 13373944,
+      "template": "q-74628",
+      "profile": "authored-exchangeable-affine-bank",
+      "response_template": "vector",
+      "replay": false,
+      "parameters": {
+        "candidates": [
+          [
+            0,
+            3,
+            1,
+            3
+          ],
+          [
+            2,
+            -1,
+            -2,
+            -2
+          ],
+          [
+            -1,
+            -2,
+            2,
+            2
+          ],
+          [
+            0,
+            -2,
+            -4,
+            -1
+          ],
+          [
+            -1,
+            3,
+            1,
+            -2
+          ]
+        ],
+        "correct_index": 2,
+        "row_order": [
+          0,
+          1,
+          2
+        ],
+        "row_signs": [
+          1,
+          1,
+          1
+        ]
+      },
+      "domain": {
+        "slopes": [
+          -3,
+          -2,
+          -1,
+          0,
+          1,
+          2,
+          3
+        ],
+        "intercepts": [
+          -4,
+          -3,
+          -2,
+          -1,
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "rejection": "duplicate candidate tuples only; no correctness or sign-based rejection",
+      "math_format": "course-academy-tex-v1"
+    }
+  },
+  {
+    "question": {
+      ":question/id": "3cb3b297-6025-5449-a0af-6cd9534c8254",
+      ":question/problem": "Consider the following system of linear equations:\n\n$$\n\\left\\{\\begin{aligned}x + 3 z &=-3 \\\\ 7 x + 21 z &=-21 \\\\ 2 y - 4 z &=0\\end{aligned}\\right.\n$$\n\nUse the standard Gauss-Jordan method to reduce the augmented matrix $M$ of the system to reduced row echelon form, and then solve the linear system.",
+      ":question/worked-solution": "The augmented matrix for this system is\n\n$$\nM=\\left[\\begin{array}{ccc|c}1 & 0 & 3 & -3 \\\\ 7 & 0 & 21 & -21 \\\\ 0 & 2 & -4 & 0\\end{array}\\right]\n$$\n\nFirst reduce the matrix to row echelon form, making each pivot equal to $1$.\n\n$$\nR_{2}:=R_{2}+\\left(-7\\right)R_{1}\\qquad M\\sim \\left[\\begin{array}{ccc|c}1 & 0 & 3 & -3 \\\\ 0 & 0 & 0 & 0 \\\\ 0 & 2 & -4 & 0\\end{array}\\right]\n$$\n\n\n\n$$\nR_{2}\\leftrightarrow R_{3}\\qquad M\\sim \\left[\\begin{array}{ccc|c}1 & 0 & 3 & -3 \\\\ 0 & 2 & -4 & 0 \\\\ 0 & 0 & 0 & 0\\end{array}\\right]\n$$\n\n\n\n$$\nR_{2}:=\\left(\\frac{1}{2}\\right)R_{2}\\qquad M\\sim \\left[\\begin{array}{ccc|c}1 & 0 & 3 & -3 \\\\ 0 & 1 & -2 & 0 \\\\ 0 & 0 & 0 & 0\\end{array}\\right]\n$$\n\nIn the row echelon form above, we have only two pivots (in the $1$st and $2$nd columns). To transform the matrix to reduced row echelon form, we need to create zeros above the pivots only. The entry above the second pivot is already zero, so this is already reduced row echelon form.\n\n$$\nM\\sim \\left[\\begin{array}{ccc|c}1 & 0 & 3 & -3 \\\\ 0 & 1 & -2 & 0 \\\\ 0 & 0 & 0 & 0\\end{array}\\right]\n$$\n\nThe corresponding system is now\n\n$$\n\\left\\{\\begin{aligned}x + 3 z &=-3 \\\\ y - 2 z &=0 \\\\ 0 &=0\\end{aligned}\\right.\n$$\n\nThe final equation is $0=0$, so it imposes no restriction. The basic variables are $x$ and $y$, and the free variable is $z$. Find $x$ and $y$ in terms of $z$. Therefore, the general solution is\n\n$$\n\\left\\{\\begin{aligned}x &=- 3 z - 3 \\\\ y &=2 z \\\\ z &=z\\end{aligned}\\right.\n$$\n\nwhere $z$ is an arbitrary real number. In vector form, the solution can be written as\n\n$$\n\\begin{bmatrix}x \\\\ y \\\\ z\\end{bmatrix}=\\begin{bmatrix}- 3 z - 3 \\\\ 2 z \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )\n$$\n\n",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "0f645712-8606-5372-9c66-fc72de6cf0f7",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "dfd07c40-539a-5b7a-96cb-2b6e29a1f21b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}z - 2 \\\\ - 2 z - 1 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+            },
+            {
+              ":answer/id": "3e8c3aef-8678-53ef-8554-b574cb50e84a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}3 - 3 z \\\\ 2 z \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+            },
+            {
+              ":answer/id": "baa156a1-23f5-5815-a187-67e1c6aa3ac2",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}- 3 z - 3 \\\\ 2 z \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+            },
+            {
+              ":answer/id": "2eb92374-726a-5c0a-9c2f-14722b093754",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}- 2 z - 1 \\\\ 2 z - 2 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+            },
+            {
+              ":answer/id": "59561db5-e602-54fc-847b-e6318eb23ffe",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}z + 3 \\\\ 4 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "baa156a1-23f5-5815-a187-67e1c6aa3ac2"
+          ]
+        }
+      ]
+    },
+    "knowledge_point": {
+      "id": "b010a518-7aa3-5b53-9a6d-ef0779ff0dfa",
+      "db_id": 17592186096745,
+      "title": "Finding the Reduced Row Echelon Form of a Singular 3x3 System With Two Pivots"
+    },
+    "generation": {
+      "generator_id": "2e9ff447-ce56-57e5-9148-e9e03cc0f3aa",
+      "version": "two-pivot-affine-v2",
+      "source_question": "75dbc97d-95b7-5046-a4b7-609e3df9b396",
+      "source_db_id": 17592186403780,
+      "source_basis": 5370,
+      "dependencies": {
+        "sympy": "1.14.0"
+      },
+      "mathematical_fingerprint": "25a3a498e3f14b5a7bb26289db18cbd6e6c775b0bbfa6c82fb4a59c77a447593",
+      "seed": 13439481,
+      "template": "q-74628",
+      "profile": "authored-exchangeable-affine-bank",
+      "response_template": "vector",
+      "replay": false,
+      "parameters": {
+        "candidates": [
+          [
+            1,
+            -2,
+            -2,
+            -1
+          ],
+          [
+            -3,
+            2,
+            3,
+            0
+          ],
+          [
+            -3,
+            2,
+            -3,
+            0
+          ],
+          [
+            -2,
+            2,
+            -1,
+            -2
+          ],
+          [
+            1,
+            0,
+            3,
+            4
+          ]
+        ],
+        "correct_index": 2,
+        "row_order": [
+          0,
+          1,
+          2
+        ],
+        "row_signs": [
+          1,
+          1,
+          1
+        ]
+      },
+      "domain": {
+        "slopes": [
+          -3,
+          -2,
+          -1,
+          0,
+          1,
+          2,
+          3
+        ],
+        "intercepts": [
+          -4,
+          -3,
+          -2,
+          -1,
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "rejection": "duplicate candidate tuples only; no correctness or sign-based rejection",
+      "math_format": "course-academy-tex-v1"
+    }
+  },
+  {
+    "question": {
+      ":question/id": "8f7a918d-7206-5ed1-8f12-cad75b87da5f",
+      ":question/problem": "Consider the following system of linear equations:\n\n$$\n\\left\\{\\begin{aligned}x - z &=4 \\\\ 7 x - 7 z &=28 \\\\ 2 y + 6 z &=-8\\end{aligned}\\right.\n$$\n\nUse the standard Gauss-Jordan method to reduce the augmented matrix $M$ of the system to reduced row echelon form, and then solve the linear system.",
+      ":question/worked-solution": "The augmented matrix for this system is\n\n$$\nM=\\left[\\begin{array}{ccc|c}1 & 0 & -1 & 4 \\\\ 7 & 0 & -7 & 28 \\\\ 0 & 2 & 6 & -8\\end{array}\\right]\n$$\n\nFirst reduce the matrix to row echelon form, making each pivot equal to $1$.\n\n$$\nR_{2}:=R_{2}+\\left(-7\\right)R_{1}\\qquad M\\sim \\left[\\begin{array}{ccc|c}1 & 0 & -1 & 4 \\\\ 0 & 0 & 0 & 0 \\\\ 0 & 2 & 6 & -8\\end{array}\\right]\n$$\n\n\n\n$$\nR_{2}\\leftrightarrow R_{3}\\qquad M\\sim \\left[\\begin{array}{ccc|c}1 & 0 & -1 & 4 \\\\ 0 & 2 & 6 & -8 \\\\ 0 & 0 & 0 & 0\\end{array}\\right]\n$$\n\n\n\n$$\nR_{2}:=\\left(\\frac{1}{2}\\right)R_{2}\\qquad M\\sim \\left[\\begin{array}{ccc|c}1 & 0 & -1 & 4 \\\\ 0 & 1 & 3 & -4 \\\\ 0 & 0 & 0 & 0\\end{array}\\right]\n$$\n\nIn the row echelon form above, we have only two pivots (in the $1$st and $2$nd columns). To transform the matrix to reduced row echelon form, we need to create zeros above the pivots only. The entry above the second pivot is already zero, so this is already reduced row echelon form.\n\n$$\nM\\sim \\left[\\begin{array}{ccc|c}1 & 0 & -1 & 4 \\\\ 0 & 1 & 3 & -4 \\\\ 0 & 0 & 0 & 0\\end{array}\\right]\n$$\n\nThe corresponding system is now\n\n$$\n\\left\\{\\begin{aligned}x - z &=4 \\\\ y + 3 z &=-4 \\\\ 0 &=0\\end{aligned}\\right.\n$$\n\nThe final equation is $0=0$, so it imposes no restriction. The basic variables are $x$ and $y$, and the free variable is $z$. Find $x$ and $y$ in terms of $z$. Therefore, the general solution is\n\n$$\n\\left\\{\\begin{aligned}x &=z + 4 \\\\ y &=- 3 z - 4 \\\\ z &=z\\end{aligned}\\right.\n$$\n\nwhere $z$ is an arbitrary real number. In vector form, the solution can be written as\n\n$$\n\\begin{bmatrix}x \\\\ y \\\\ z\\end{bmatrix}=\\begin{bmatrix}z + 4 \\\\ - 3 z - 4 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )\n$$\n\n",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "709dbd52-94cc-5479-9515-202ce56b823f",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "2048ae1e-96ee-531b-9057-1e98ffcecfd2",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}2 - 3 z \\\\ 3 z + 4 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+            },
+            {
+              ":answer/id": "a94d8d46-6d15-5d0b-bb4c-c022a548adcc",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}z + 4 \\\\ - 3 z - 4 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+            },
+            {
+              ":answer/id": "9020fd10-1006-5fda-ad02-de577a6a45cf",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}- 2 z - 1 \\\\ -4 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+            },
+            {
+              ":answer/id": "d79a9e51-e199-5553-9130-3d5df7145e11",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}- z - 4 \\\\ - 2 z - 4 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+            },
+            {
+              ":answer/id": "29f9b270-5608-5607-a8a7-c053eab24012",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}- 3 z - 4 \\\\ 2 z - 2 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "a94d8d46-6d15-5d0b-bb4c-c022a548adcc"
+          ]
+        }
+      ]
+    },
+    "knowledge_point": {
+      "id": "b010a518-7aa3-5b53-9a6d-ef0779ff0dfa",
+      "db_id": 17592186096745,
+      "title": "Finding the Reduced Row Echelon Form of a Singular 3x3 System With Two Pivots"
+    },
+    "generation": {
+      "generator_id": "2e9ff447-ce56-57e5-9148-e9e03cc0f3aa",
+      "version": "two-pivot-affine-v2",
+      "source_question": "75dbc97d-95b7-5046-a4b7-609e3df9b396",
+      "source_db_id": 17592186403780,
+      "source_basis": 5370,
+      "dependencies": {
+        "sympy": "1.14.0"
+      },
+      "mathematical_fingerprint": "9b881c00977fff1fedd147e4fa4d8a997351b82ced11de06fa50b309fb0d113e",
+      "seed": 13505018,
+      "template": "q-74628",
+      "profile": "authored-exchangeable-affine-bank",
+      "response_template": "vector",
+      "replay": false,
+      "parameters": {
+        "candidates": [
+          [
+            -3,
+            3,
+            2,
+            4
+          ],
+          [
+            1,
+            -3,
+            4,
+            -4
+          ],
+          [
+            -2,
+            0,
+            -1,
+            -4
+          ],
+          [
+            -1,
+            -2,
+            -4,
+            -4
+          ],
+          [
+            -3,
+            2,
+            -4,
+            -2
+          ]
+        ],
+        "correct_index": 1,
+        "row_order": [
+          0,
+          1,
+          2
+        ],
+        "row_signs": [
+          1,
+          1,
+          1
+        ]
+      },
+      "domain": {
+        "slopes": [
+          -3,
+          -2,
+          -1,
+          0,
+          1,
+          2,
+          3
+        ],
+        "intercepts": [
+          -4,
+          -3,
+          -2,
+          -1,
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "rejection": "duplicate candidate tuples only; no correctness or sign-based rejection",
+      "math_format": "course-academy-tex-v1"
+    }
+  },
+  {
+    "question": {
+      ":question/id": "80bb4bd9-618a-5b79-95c1-9b00944a5fcd",
+      ":question/problem": "Consider the following system of linear equations:\n\n$$\n\\left\\{\\begin{aligned}x - 2 z &=0 \\\\ 7 x - 14 z &=0 \\\\ 2 y + 4 z &=-6\\end{aligned}\\right.\n$$\n\nUse the standard Gauss-Jordan method to reduce the augmented matrix $M$ of the system to reduced row echelon form, and then solve the linear system.",
+      ":question/worked-solution": "The augmented matrix for this system is\n\n$$\nM=\\left[\\begin{array}{ccc|c}1 & 0 & -2 & 0 \\\\ 7 & 0 & -14 & 0 \\\\ 0 & 2 & 4 & -6\\end{array}\\right]\n$$\n\nFirst reduce the matrix to row echelon form, making each pivot equal to $1$.\n\n$$\nR_{2}:=R_{2}+\\left(-7\\right)R_{1}\\qquad M\\sim \\left[\\begin{array}{ccc|c}1 & 0 & -2 & 0 \\\\ 0 & 0 & 0 & 0 \\\\ 0 & 2 & 4 & -6\\end{array}\\right]\n$$\n\n\n\n$$\nR_{2}\\leftrightarrow R_{3}\\qquad M\\sim \\left[\\begin{array}{ccc|c}1 & 0 & -2 & 0 \\\\ 0 & 2 & 4 & -6 \\\\ 0 & 0 & 0 & 0\\end{array}\\right]\n$$\n\n\n\n$$\nR_{2}:=\\left(\\frac{1}{2}\\right)R_{2}\\qquad M\\sim \\left[\\begin{array}{ccc|c}1 & 0 & -2 & 0 \\\\ 0 & 1 & 2 & -3 \\\\ 0 & 0 & 0 & 0\\end{array}\\right]\n$$\n\nIn the row echelon form above, we have only two pivots (in the $1$st and $2$nd columns). To transform the matrix to reduced row echelon form, we need to create zeros above the pivots only. The entry above the second pivot is already zero, so this is already reduced row echelon form.\n\n$$\nM\\sim \\left[\\begin{array}{ccc|c}1 & 0 & -2 & 0 \\\\ 0 & 1 & 2 & -3 \\\\ 0 & 0 & 0 & 0\\end{array}\\right]\n$$\n\nThe corresponding system is now\n\n$$\n\\left\\{\\begin{aligned}x - 2 z &=0 \\\\ y + 2 z &=-3 \\\\ 0 &=0\\end{aligned}\\right.\n$$\n\nThe final equation is $0=0$, so it imposes no restriction. The basic variables are $x$ and $y$, and the free variable is $z$. Find $x$ and $y$ in terms of $z$. Therefore, the general solution is\n\n$$\n\\left\\{\\begin{aligned}x &=2 z \\\\ y &=- 2 z - 3 \\\\ z &=z\\end{aligned}\\right.\n$$\n\nwhere $z$ is an arbitrary real number. In vector form, the solution can be written as\n\n$$\n\\begin{bmatrix}x \\\\ y \\\\ z\\end{bmatrix}=\\begin{bmatrix}2 z \\\\ - 2 z - 3 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )\n$$\n\n",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "b6643079-0270-5fb4-a13f-9fbcd0ede502",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "c9a370eb-eef4-5960-be03-e24c0d522bc5",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}2 z \\\\ - 2 z - 3 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+            },
+            {
+              ":answer/id": "2f2e1060-1d66-56a5-96cd-3c4b5e49562d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}- 3 z - 3 \\\\ 1 - z \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+            },
+            {
+              ":answer/id": "7c3bbf79-0e21-557c-83bf-0bb4fa0c17c4",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 \\\\ -2 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+            },
+            {
+              ":answer/id": "674f1f6f-ab10-5ef7-b7d4-87e52292c4ff",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}3 z + 1 \\\\ 2 z + 2 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+            },
+            {
+              ":answer/id": "dc819950-abe8-5744-9fce-6ecf1edd587a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}- z - 2 \\\\ 2 z + 1 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "c9a370eb-eef4-5960-be03-e24c0d522bc5"
+          ]
+        }
+      ]
+    },
+    "knowledge_point": {
+      "id": "b010a518-7aa3-5b53-9a6d-ef0779ff0dfa",
+      "db_id": 17592186096745,
+      "title": "Finding the Reduced Row Echelon Form of a Singular 3x3 System With Two Pivots"
+    },
+    "generation": {
+      "generator_id": "2e9ff447-ce56-57e5-9148-e9e03cc0f3aa",
+      "version": "two-pivot-affine-v2",
+      "source_question": "75dbc97d-95b7-5046-a4b7-609e3df9b396",
+      "source_db_id": 17592186403780,
+      "source_basis": 5370,
+      "dependencies": {
+        "sympy": "1.14.0"
+      },
+      "mathematical_fingerprint": "78551eeb1eda64cc0af8686a2049c431a75e3b6da6b028837a439f60bbee5657",
+      "seed": 13570555,
+      "template": "q-74628",
+      "profile": "authored-exchangeable-affine-bank",
+      "response_template": "vector",
+      "replay": false,
+      "parameters": {
+        "candidates": [
+          [
+            2,
+            -2,
+            0,
+            -3
+          ],
+          [
+            -3,
+            -1,
+            -3,
+            1
+          ],
+          [
+            0,
+            0,
+            1,
+            -2
+          ],
+          [
+            3,
+            2,
+            1,
+            2
+          ],
+          [
+            -1,
+            2,
+            -2,
+            1
+          ]
+        ],
+        "correct_index": 0,
+        "row_order": [
+          0,
+          1,
+          2
+        ],
+        "row_signs": [
+          1,
+          1,
+          1
+        ]
+      },
+      "domain": {
+        "slopes": [
+          -3,
+          -2,
+          -1,
+          0,
+          1,
+          2,
+          3
+        ],
+        "intercepts": [
+          -4,
+          -3,
+          -2,
+          -1,
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "rejection": "duplicate candidate tuples only; no correctness or sign-based rejection",
+      "math_format": "course-academy-tex-v1"
+    }
+  },
+  {
+    "question": {
+      ":question/id": "eb5cf80f-31bb-5fa6-83ed-c0dfd5dca7d2",
+      ":question/problem": "Consider the following system of linear equations:\n\n$$\n\\left\\{\\begin{aligned}x - 3 y &=-3 \\\\ y &=0 \\\\ - 5 x + 15 y &=15\\end{aligned}\\right.\n$$\n\nUse the standard Gauss-Jordan method to reduce the augmented matrix $M$ of the system to reduced row echelon form.",
+      ":question/worked-solution": "The augmented matrix for this system is\n\n$$\nM=\\left[\\begin{array}{ccc|c}1 & -3 & 0 & -3 \\\\ 0 & 1 & 0 & 0 \\\\ -5 & 15 & 0 & 15\\end{array}\\right]\n$$\n\nFirst reduce the matrix to row echelon form, making each pivot equal to $1$.\n\n$$\nR_{3}:=R_{3}+\\left(5\\right)R_{1}\\qquad M\\sim \\left[\\begin{array}{ccc|c}1 & -3 & 0 & -3 \\\\ 0 & 1 & 0 & 0 \\\\ 0 & 0 & 0 & 0\\end{array}\\right]\n$$\n\nIn the row echelon form above, we have only two pivots (in the $1$st and $2$nd columns). To transform the matrix to reduced row echelon form, we need to create zeros above the pivots only.\n\n$$\nR_{1}:=R_{1}+\\left(3\\right)R_{2}\\qquad M\\sim \\left[\\begin{array}{ccc|c}1 & 0 & 0 & -3 \\\\ 0 & 1 & 0 & 0 \\\\ 0 & 0 & 0 & 0\\end{array}\\right]\n$$\n\n",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "f6dbbdde-5868-535a-a5fa-3d95d7afd01a",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "37d192f4-4b78-5626-a7e3-a7965b477609",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 3 & -3 \\\\ 0 & 1 & -1 & -4 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "bf8f25e6-8a77-537f-9133-62dba3a1cc0e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & -3 & 2 \\\\ 0 & 1 & 1 & -1 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "0e85dfae-a2da-54ef-a8c0-ad2c346aac05",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & -3 & -2 \\\\ 0 & 1 & 2 & 3 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "a7a90d1e-e752-5d38-a49b-46f6ef691dfd",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 0 & -4 \\\\ 0 & 1 & 1 & 2 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "c3ad2cc2-e7b1-5d3c-adad-63e163674592",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 0 & -3 \\\\ 0 & 1 & 0 & 0 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "c3ad2cc2-e7b1-5d3c-adad-63e163674592"
+          ]
+        }
+      ]
+    },
+    "knowledge_point": {
+      "id": "b010a518-7aa3-5b53-9a6d-ef0779ff0dfa",
+      "db_id": 17592186096745,
+      "title": "Finding the Reduced Row Echelon Form of a Singular 3x3 System With Two Pivots"
+    },
+    "generation": {
+      "generator_id": "2e9ff447-ce56-57e5-9148-e9e03cc0f3aa",
+      "version": "two-pivot-affine-v2",
+      "source_question": "8e9b3735-f721-557c-bd19-98de1fb72ed8",
+      "source_db_id": 17592186642343,
+      "source_basis": 5370,
+      "dependencies": {
+        "sympy": "1.14.0"
+      },
+      "mathematical_fingerprint": "c23e113b70c1d86314a3d3a9a8ee7afb338e8df6db362d996b20811bddf00bf3",
+      "seed": 6748291,
+      "template": "q-74625",
+      "profile": "authored-exchangeable-affine-bank",
+      "response_template": "matrix",
+      "replay": false,
+      "parameters": {
+        "candidates": [
+          [
+            -3,
+            1,
+            -3,
+            -4
+          ],
+          [
+            3,
+            -1,
+            2,
+            -1
+          ],
+          [
+            3,
+            -2,
+            -2,
+            3
+          ],
+          [
+            0,
+            -1,
+            -4,
+            2
+          ],
+          [
+            0,
+            0,
+            -3,
+            0
+          ]
+        ],
+        "correct_index": 4,
+        "row_order": [
+          0,
+          1,
+          2
+        ],
+        "row_signs": [
+          1,
+          1,
+          1
+        ]
+      },
+      "domain": {
+        "slopes": [
+          -3,
+          -2,
+          -1,
+          0,
+          1,
+          2,
+          3
+        ],
+        "intercepts": [
+          -4,
+          -3,
+          -2,
+          -1,
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "rejection": "duplicate candidate tuples only; no correctness or sign-based rejection",
+      "math_format": "course-academy-tex-v1"
+    }
+  },
+  {
+    "question": {
+      ":question/id": "4b42e299-d58e-5322-a055-720992af33e0",
+      ":question/problem": "Consider the following system of linear equations:\n\n$$\n\\left\\{\\begin{aligned}x - 3 y - 6 z &=-9 \\\\ y + 3 z &=2 \\\\ - 5 x + 15 y + 30 z &=45\\end{aligned}\\right.\n$$\n\nUse the standard Gauss-Jordan method to reduce the augmented matrix $M$ of the system to reduced row echelon form.",
+      ":question/worked-solution": "The augmented matrix for this system is\n\n$$\nM=\\left[\\begin{array}{ccc|c}1 & -3 & -6 & -9 \\\\ 0 & 1 & 3 & 2 \\\\ -5 & 15 & 30 & 45\\end{array}\\right]\n$$\n\nFirst reduce the matrix to row echelon form, making each pivot equal to $1$.\n\n$$\nR_{3}:=R_{3}+\\left(5\\right)R_{1}\\qquad M\\sim \\left[\\begin{array}{ccc|c}1 & -3 & -6 & -9 \\\\ 0 & 1 & 3 & 2 \\\\ 0 & 0 & 0 & 0\\end{array}\\right]\n$$\n\nIn the row echelon form above, we have only two pivots (in the $1$st and $2$nd columns). To transform the matrix to reduced row echelon form, we need to create zeros above the pivots only.\n\n$$\nR_{1}:=R_{1}+\\left(3\\right)R_{2}\\qquad M\\sim \\left[\\begin{array}{ccc|c}1 & 0 & 3 & -3 \\\\ 0 & 1 & 3 & 2 \\\\ 0 & 0 & 0 & 0\\end{array}\\right]\n$$\n\n",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "ab94f90b-a823-5121-8126-48df18d8e413",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "cacaabb1-e51c-50f1-917f-ed12e570a473",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & -3 & 3 \\\\ 0 & 1 & -2 & -1 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "dc3c2e9e-f279-54a1-b83f-fc09e9669294",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 3 & 0 \\\\ 0 & 1 & 3 & 1 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "0dadaeed-727a-5ac9-a16c-ce5ee95eb34b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 1 & 2 \\\\ 0 & 1 & -1 & 2 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "7f4b6ae5-af71-5f95-9f41-d171beffd27f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 3 & -3 \\\\ 0 & 1 & 3 & 2 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "c3ae8bca-99cf-59af-9f7f-bd56c4290c69",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 0 & 2 \\\\ 0 & 1 & -2 & 2 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "7f4b6ae5-af71-5f95-9f41-d171beffd27f"
+          ]
+        }
+      ]
+    },
+    "knowledge_point": {
+      "id": "b010a518-7aa3-5b53-9a6d-ef0779ff0dfa",
+      "db_id": 17592186096745,
+      "title": "Finding the Reduced Row Echelon Form of a Singular 3x3 System With Two Pivots"
+    },
+    "generation": {
+      "generator_id": "2e9ff447-ce56-57e5-9148-e9e03cc0f3aa",
+      "version": "two-pivot-affine-v2",
+      "source_question": "8e9b3735-f721-557c-bd19-98de1fb72ed8",
+      "source_db_id": 17592186642343,
+      "source_basis": 5370,
+      "dependencies": {
+        "sympy": "1.14.0"
+      },
+      "mathematical_fingerprint": "a32fbc5c199f52c6b0c40eda152d0d3694a1d419adffb1b49cc8851bd04aba52",
+      "seed": 6853020,
+      "template": "q-74625",
+      "profile": "authored-exchangeable-affine-bank",
+      "response_template": "matrix",
+      "replay": false,
+      "parameters": {
+        "candidates": [
+          [
+            3,
+            2,
+            3,
+            -1
+          ],
+          [
+            -3,
+            -3,
+            0,
+            1
+          ],
+          [
+            -1,
+            1,
+            2,
+            2
+          ],
+          [
+            -3,
+            -3,
+            -3,
+            2
+          ],
+          [
+            0,
+            2,
+            2,
+            2
+          ]
+        ],
+        "correct_index": 3,
+        "row_order": [
+          0,
+          1,
+          2
+        ],
+        "row_signs": [
+          1,
+          1,
+          1
+        ]
+      },
+      "domain": {
+        "slopes": [
+          -3,
+          -2,
+          -1,
+          0,
+          1,
+          2,
+          3
+        ],
+        "intercepts": [
+          -4,
+          -3,
+          -2,
+          -1,
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "rejection": "duplicate candidate tuples only; no correctness or sign-based rejection",
+      "math_format": "course-academy-tex-v1"
+    }
+  },
+  {
+    "question": {
+      ":question/id": "d4a92d66-993d-5ea6-8eca-f425d85ec770",
+      ":question/problem": "Consider the following system of linear equations:\n\n$$\n\\left\\{\\begin{aligned}x - 3 y - 6 z &=-13 \\\\ y + 2 z &=4 \\\\ - 5 x + 15 y + 30 z &=65\\end{aligned}\\right.\n$$\n\nUse the standard Gauss-Jordan method to reduce the augmented matrix $M$ of the system to reduced row echelon form.",
+      ":question/worked-solution": "The augmented matrix for this system is\n\n$$\nM=\\left[\\begin{array}{ccc|c}1 & -3 & -6 & -13 \\\\ 0 & 1 & 2 & 4 \\\\ -5 & 15 & 30 & 65\\end{array}\\right]\n$$\n\nFirst reduce the matrix to row echelon form, making each pivot equal to $1$.\n\n$$\nR_{3}:=R_{3}+\\left(5\\right)R_{1}\\qquad M\\sim \\left[\\begin{array}{ccc|c}1 & -3 & -6 & -13 \\\\ 0 & 1 & 2 & 4 \\\\ 0 & 0 & 0 & 0\\end{array}\\right]\n$$\n\nIn the row echelon form above, we have only two pivots (in the $1$st and $2$nd columns). To transform the matrix to reduced row echelon form, we need to create zeros above the pivots only.\n\n$$\nR_{1}:=R_{1}+\\left(3\\right)R_{2}\\qquad M\\sim \\left[\\begin{array}{ccc|c}1 & 0 & 0 & -1 \\\\ 0 & 1 & 2 & 4 \\\\ 0 & 0 & 0 & 0\\end{array}\\right]\n$$\n\n",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "a038f647-452f-5a81-bb8d-d2c5aa7c142b",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "fca6b028-9b44-504f-96f7-6f36afbdebc3",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 3 & -3 \\\\ 0 & 1 & -1 & -2 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "32e25d6b-0992-5183-9be3-463a99f90034",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 0 & -1 \\\\ 0 & 1 & 2 & 4 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "13351f72-b278-5914-a06f-728d699c87c4",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 2 & 4 \\\\ 0 & 1 & 2 & 2 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "fd04703e-79bf-5c86-a8ca-9de71b1edefc",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 0 & -3 \\\\ 0 & 1 & -1 & -2 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "ef370b44-9425-506a-a1cd-e21db8e231fd",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 2 & -1 \\\\ 0 & 1 & -3 & -3 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "32e25d6b-0992-5183-9be3-463a99f90034"
+          ]
+        }
+      ]
+    },
+    "knowledge_point": {
+      "id": "b010a518-7aa3-5b53-9a6d-ef0779ff0dfa",
+      "db_id": 17592186096745,
+      "title": "Finding the Reduced Row Echelon Form of a Singular 3x3 System With Two Pivots"
+    },
+    "generation": {
+      "generator_id": "2e9ff447-ce56-57e5-9148-e9e03cc0f3aa",
+      "version": "two-pivot-affine-v2",
+      "source_question": "8e9b3735-f721-557c-bd19-98de1fb72ed8",
+      "source_db_id": 17592186642343,
+      "source_basis": 5370,
+      "dependencies": {
+        "sympy": "1.14.0"
+      },
+      "mathematical_fingerprint": "ffafc5b0336f161f15bd23c335e745e7b9be36ae8f0a7e2e20b5978c01a869ff",
+      "seed": 6957749,
+      "template": "q-74625",
+      "profile": "authored-exchangeable-affine-bank",
+      "response_template": "matrix",
+      "replay": false,
+      "parameters": {
+        "candidates": [
+          [
+            -3,
+            1,
+            -3,
+            -2
+          ],
+          [
+            0,
+            -2,
+            -1,
+            4
+          ],
+          [
+            -2,
+            -2,
+            4,
+            2
+          ],
+          [
+            0,
+            1,
+            -3,
+            -2
+          ],
+          [
+            -2,
+            3,
+            -1,
+            -3
+          ]
+        ],
+        "correct_index": 1,
+        "row_order": [
+          0,
+          1,
+          2
+        ],
+        "row_signs": [
+          1,
+          1,
+          1
+        ]
+      },
+      "domain": {
+        "slopes": [
+          -3,
+          -2,
+          -1,
+          0,
+          1,
+          2,
+          3
+        ],
+        "intercepts": [
+          -4,
+          -3,
+          -2,
+          -1,
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "rejection": "duplicate candidate tuples only; no correctness or sign-based rejection",
+      "math_format": "course-academy-tex-v1"
+    }
+  },
+  {
+    "question": {
+      ":question/id": "c0b8750c-b67e-5395-b9ea-7a9b254a555d",
+      ":question/problem": "Consider the following system of linear equations:\n\n$$\n\\left\\{\\begin{aligned}x - 3 y + z &=8 \\\\ y &=-3 \\\\ - 5 x + 15 y - 5 z &=-40\\end{aligned}\\right.\n$$\n\nUse the standard Gauss-Jordan method to reduce the augmented matrix $M$ of the system to reduced row echelon form.",
+      ":question/worked-solution": "The augmented matrix for this system is\n\n$$\nM=\\left[\\begin{array}{ccc|c}1 & -3 & 1 & 8 \\\\ 0 & 1 & 0 & -3 \\\\ -5 & 15 & -5 & -40\\end{array}\\right]\n$$\n\nFirst reduce the matrix to row echelon form, making each pivot equal to $1$.\n\n$$\nR_{3}:=R_{3}+\\left(5\\right)R_{1}\\qquad M\\sim \\left[\\begin{array}{ccc|c}1 & -3 & 1 & 8 \\\\ 0 & 1 & 0 & -3 \\\\ 0 & 0 & 0 & 0\\end{array}\\right]\n$$\n\nIn the row echelon form above, we have only two pivots (in the $1$st and $2$nd columns). To transform the matrix to reduced row echelon form, we need to create zeros above the pivots only.\n\n$$\nR_{1}:=R_{1}+\\left(3\\right)R_{2}\\qquad M\\sim \\left[\\begin{array}{ccc|c}1 & 0 & 1 & -1 \\\\ 0 & 1 & 0 & -3 \\\\ 0 & 0 & 0 & 0\\end{array}\\right]\n$$\n\n",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "f6e3e2ce-ad99-59fc-acd0-bd7c8cf8a68a",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "d1212003-f2a8-5626-93b1-2dbb6afbfd60",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & -1 & -3 \\\\ 0 & 1 & 2 & -3 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "d8770639-4e86-5224-976d-e6b926fce13c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & -2 & -1 \\\\ 0 & 1 & 3 & -4 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "50944540-73a0-5f41-8437-602620b1e2a7",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 1 & -1 \\\\ 0 & 1 & 0 & -3 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "2ea500c2-3444-56f2-9ebc-2be467de0ba9",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 1 & -3 \\\\ 0 & 1 & -2 & 0 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "7ad61a13-12bb-5098-8d40-ad5a13d71259",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 2 & 3 \\\\ 0 & 1 & -2 & -4 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "50944540-73a0-5f41-8437-602620b1e2a7"
+          ]
+        }
+      ]
+    },
+    "knowledge_point": {
+      "id": "b010a518-7aa3-5b53-9a6d-ef0779ff0dfa",
+      "db_id": 17592186096745,
+      "title": "Finding the Reduced Row Echelon Form of a Singular 3x3 System With Two Pivots"
+    },
+    "generation": {
+      "generator_id": "2e9ff447-ce56-57e5-9148-e9e03cc0f3aa",
+      "version": "two-pivot-affine-v2",
+      "source_question": "8e9b3735-f721-557c-bd19-98de1fb72ed8",
+      "source_db_id": 17592186642343,
+      "source_basis": 5370,
+      "dependencies": {
+        "sympy": "1.14.0"
+      },
+      "mathematical_fingerprint": "6dc1cb283f2496b77195dd31b9346dfbfab69332d2588509bcfd0317740e902f",
+      "seed": 7062478,
+      "template": "q-74625",
+      "profile": "authored-exchangeable-affine-bank",
+      "response_template": "matrix",
+      "replay": false,
+      "parameters": {
+        "candidates": [
+          [
+            1,
+            -2,
+            -3,
+            -3
+          ],
+          [
+            2,
+            -3,
+            -1,
+            -4
+          ],
+          [
+            -1,
+            0,
+            -1,
+            -3
+          ],
+          [
+            -1,
+            2,
+            -3,
+            0
+          ],
+          [
+            -2,
+            2,
+            3,
+            -4
+          ]
+        ],
+        "correct_index": 2,
+        "row_order": [
+          0,
+          1,
+          2
+        ],
+        "row_signs": [
+          1,
+          1,
+          1
+        ]
+      },
+      "domain": {
+        "slopes": [
+          -3,
+          -2,
+          -1,
+          0,
+          1,
+          2,
+          3
+        ],
+        "intercepts": [
+          -4,
+          -3,
+          -2,
+          -1,
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "rejection": "duplicate candidate tuples only; no correctness or sign-based rejection",
+      "math_format": "course-academy-tex-v1"
+    }
+  },
+  {
+    "question": {
+      ":question/id": "e16707bc-d00d-58e8-bdb7-96f7df9a5739",
+      ":question/problem": "Consider the following system of linear equations:\n\n$$\n\\left\\{\\begin{aligned}x - 3 y - 9 z &=-10 \\\\ y + 3 z &=2 \\\\ - 5 x + 15 y + 45 z &=50\\end{aligned}\\right.\n$$\n\nUse the standard Gauss-Jordan method to reduce the augmented matrix $M$ of the system to reduced row echelon form.",
+      ":question/worked-solution": "The augmented matrix for this system is\n\n$$\nM=\\left[\\begin{array}{ccc|c}1 & -3 & -9 & -10 \\\\ 0 & 1 & 3 & 2 \\\\ -5 & 15 & 45 & 50\\end{array}\\right]\n$$\n\nFirst reduce the matrix to row echelon form, making each pivot equal to $1$.\n\n$$\nR_{3}:=R_{3}+\\left(5\\right)R_{1}\\qquad M\\sim \\left[\\begin{array}{ccc|c}1 & -3 & -9 & -10 \\\\ 0 & 1 & 3 & 2 \\\\ 0 & 0 & 0 & 0\\end{array}\\right]\n$$\n\nIn the row echelon form above, we have only two pivots (in the $1$st and $2$nd columns). To transform the matrix to reduced row echelon form, we need to create zeros above the pivots only.\n\n$$\nR_{1}:=R_{1}+\\left(3\\right)R_{2}\\qquad M\\sim \\left[\\begin{array}{ccc|c}1 & 0 & 0 & -4 \\\\ 0 & 1 & 3 & 2 \\\\ 0 & 0 & 0 & 0\\end{array}\\right]\n$$\n\n",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "43b339ad-5740-5b78-9421-581bbc3e994d",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "1440b678-29cb-5ea0-914a-3227bbcc8252",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & -1 & -1 \\\\ 0 & 1 & -3 & -4 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "beb0ced6-b304-5f42-8083-b518ca0533d2",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 0 & -4 \\\\ 0 & 1 & 3 & 2 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "6dc1f8f6-f28a-54e6-a9e7-0942d49ebaed",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & -3 & 3 \\\\ 0 & 1 & 0 & 2 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "bcabc9e8-9906-50db-bd60-b6e530b08bbb",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 3 & -3 \\\\ 0 & 1 & 3 & 2 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "73502ec6-e72b-5123-bbf4-13eb2989cd51",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 2 & -3 \\\\ 0 & 1 & 1 & -2 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "beb0ced6-b304-5f42-8083-b518ca0533d2"
+          ]
+        }
+      ]
+    },
+    "knowledge_point": {
+      "id": "b010a518-7aa3-5b53-9a6d-ef0779ff0dfa",
+      "db_id": 17592186096745,
+      "title": "Finding the Reduced Row Echelon Form of a Singular 3x3 System With Two Pivots"
+    },
+    "generation": {
+      "generator_id": "2e9ff447-ce56-57e5-9148-e9e03cc0f3aa",
+      "version": "two-pivot-affine-v2",
+      "source_question": "8e9b3735-f721-557c-bd19-98de1fb72ed8",
+      "source_db_id": 17592186642343,
+      "source_basis": 5370,
+      "dependencies": {
+        "sympy": "1.14.0"
+      },
+      "mathematical_fingerprint": "8a453b4bb80e370549df0642aff290b2e12c7073b07eaccfb29edaafd58b9a03",
+      "seed": 7167207,
+      "template": "q-74625",
+      "profile": "authored-exchangeable-affine-bank",
+      "response_template": "matrix",
+      "replay": false,
+      "parameters": {
+        "candidates": [
+          [
+            1,
+            3,
+            -1,
+            -4
+          ],
+          [
+            0,
+            -3,
+            -4,
+            2
+          ],
+          [
+            3,
+            0,
+            3,
+            2
+          ],
+          [
+            -3,
+            -3,
+            -3,
+            2
+          ],
+          [
+            -2,
+            -1,
+            -3,
+            -2
+          ]
+        ],
+        "correct_index": 1,
+        "row_order": [
+          0,
+          1,
+          2
+        ],
+        "row_signs": [
+          1,
+          1,
+          1
+        ]
+      },
+      "domain": {
+        "slopes": [
+          -3,
+          -2,
+          -1,
+          0,
+          1,
+          2,
+          3
+        ],
+        "intercepts": [
+          -4,
+          -3,
+          -2,
+          -1,
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "rejection": "duplicate candidate tuples only; no correctness or sign-based rejection",
+      "math_format": "course-academy-tex-v1"
+    }
+  },
+  {
+    "question": {
+      ":question/id": "9fe86947-5d46-5ed7-bed4-253a910151ad",
+      ":question/problem": "Consider the following system of linear equations:\n\n$$\n\\left\\{\\begin{aligned}x - 3 y - 9 z &=4 \\\\ y + 2 z &=-1 \\\\ - 5 x + 15 y + 45 z &=-20\\end{aligned}\\right.\n$$\n\nUse the standard Gauss-Jordan method to reduce the augmented matrix $M$ of the system to reduced row echelon form.",
+      ":question/worked-solution": "The augmented matrix for this system is\n\n$$\nM=\\left[\\begin{array}{ccc|c}1 & -3 & -9 & 4 \\\\ 0 & 1 & 2 & -1 \\\\ -5 & 15 & 45 & -20\\end{array}\\right]\n$$\n\nFirst reduce the matrix to row echelon form, making each pivot equal to $1$.\n\n$$\nR_{3}:=R_{3}+\\left(5\\right)R_{1}\\qquad M\\sim \\left[\\begin{array}{ccc|c}1 & -3 & -9 & 4 \\\\ 0 & 1 & 2 & -1 \\\\ 0 & 0 & 0 & 0\\end{array}\\right]\n$$\n\nIn the row echelon form above, we have only two pivots (in the $1$st and $2$nd columns). To transform the matrix to reduced row echelon form, we need to create zeros above the pivots only.\n\n$$\nR_{1}:=R_{1}+\\left(3\\right)R_{2}\\qquad M\\sim \\left[\\begin{array}{ccc|c}1 & 0 & -3 & 1 \\\\ 0 & 1 & 2 & -1 \\\\ 0 & 0 & 0 & 0\\end{array}\\right]\n$$\n\n",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "bad5de69-4fae-5894-8267-322b5dadfcfe",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "7b400528-8387-5c54-835f-655e3b82a718",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & -3 & 1 \\\\ 0 & 1 & 2 & -1 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "9a2af525-6226-5fb2-ac34-2d0658711c92",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 2 & 2 \\\\ 0 & 1 & -2 & 1 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "2d55e673-53ce-518a-8bcd-ab6e0932ea32",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 0 & 0 \\\\ 0 & 1 & 0 & -3 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "2bc3a939-6cb0-53ad-bd32-90cf3fdd4d73",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & -3 & 2 \\\\ 0 & 1 & 0 & 3 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "54521af8-5b24-5d26-b485-a7a5c1830ad8",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & -3 & -1 \\\\ 0 & 1 & -2 & 3 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "7b400528-8387-5c54-835f-655e3b82a718"
+          ]
+        }
+      ]
+    },
+    "knowledge_point": {
+      "id": "b010a518-7aa3-5b53-9a6d-ef0779ff0dfa",
+      "db_id": 17592186096745,
+      "title": "Finding the Reduced Row Echelon Form of a Singular 3x3 System With Two Pivots"
+    },
+    "generation": {
+      "generator_id": "2e9ff447-ce56-57e5-9148-e9e03cc0f3aa",
+      "version": "two-pivot-affine-v2",
+      "source_question": "8e9b3735-f721-557c-bd19-98de1fb72ed8",
+      "source_db_id": 17592186642343,
+      "source_basis": 5370,
+      "dependencies": {
+        "sympy": "1.14.0"
+      },
+      "mathematical_fingerprint": "bebedb2b41bb5dc06a7334280ddb0d2820cc9aa7e0c07ea54f80664de2d593a7",
+      "seed": 7271936,
+      "template": "q-74625",
+      "profile": "authored-exchangeable-affine-bank",
+      "response_template": "matrix",
+      "replay": false,
+      "parameters": {
+        "candidates": [
+          [
+            3,
+            -2,
+            1,
+            -1
+          ],
+          [
+            -2,
+            2,
+            2,
+            1
+          ],
+          [
+            0,
+            0,
+            0,
+            -3
+          ],
+          [
+            3,
+            0,
+            2,
+            3
+          ],
+          [
+            3,
+            2,
+            -1,
+            3
+          ]
+        ],
+        "correct_index": 0,
+        "row_order": [
+          0,
+          1,
+          2
+        ],
+        "row_signs": [
+          1,
+          1,
+          1
+        ]
+      },
+      "domain": {
+        "slopes": [
+          -3,
+          -2,
+          -1,
+          0,
+          1,
+          2,
+          3
+        ],
+        "intercepts": [
+          -4,
+          -3,
+          -2,
+          -1,
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "rejection": "duplicate candidate tuples only; no correctness or sign-based rejection",
+      "math_format": "course-academy-tex-v1"
+    }
+  },
+  {
+    "question": {
+      ":question/id": "156c9bd8-8bf8-530f-a1c7-cc28018fb382",
+      ":question/problem": "Consider the following system of linear equations:\n\n$$\n\\left\\{\\begin{aligned}x - 3 y + 6 z &=-5 \\\\ y - z &=2 \\\\ - 5 x + 15 y - 30 z &=25\\end{aligned}\\right.\n$$\n\nUse the standard Gauss-Jordan method to reduce the augmented matrix $M$ of the system to reduced row echelon form.",
+      ":question/worked-solution": "The augmented matrix for this system is\n\n$$\nM=\\left[\\begin{array}{ccc|c}1 & -3 & 6 & -5 \\\\ 0 & 1 & -1 & 2 \\\\ -5 & 15 & -30 & 25\\end{array}\\right]\n$$\n\nFirst reduce the matrix to row echelon form, making each pivot equal to $1$.\n\n$$\nR_{3}:=R_{3}+\\left(5\\right)R_{1}\\qquad M\\sim \\left[\\begin{array}{ccc|c}1 & -3 & 6 & -5 \\\\ 0 & 1 & -1 & 2 \\\\ 0 & 0 & 0 & 0\\end{array}\\right]\n$$\n\nIn the row echelon form above, we have only two pivots (in the $1$st and $2$nd columns). To transform the matrix to reduced row echelon form, we need to create zeros above the pivots only.\n\n$$\nR_{1}:=R_{1}+\\left(3\\right)R_{2}\\qquad M\\sim \\left[\\begin{array}{ccc|c}1 & 0 & 3 & 1 \\\\ 0 & 1 & -1 & 2 \\\\ 0 & 0 & 0 & 0\\end{array}\\right]\n$$\n\n",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "ec835e5c-9cd9-5048-8f59-15d6ad7a6968",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "d466f19e-3f75-58d1-acd0-4635cbb35ab5",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & -3 & 0 \\\\ 0 & 1 & 1 & -3 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "66caae60-6d3a-5a03-9665-3f734cb12c9a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 2 & 2 \\\\ 0 & 1 & 2 & -1 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "112b4818-d41e-5d95-a43a-afc4a0a38de9",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 3 & 1 \\\\ 0 & 1 & -1 & 2 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "d267033a-baf6-5182-9a8f-73577f6f7404",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 2 & 0 \\\\ 0 & 1 & 3 & -3 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "7fe94c14-7482-5cc9-a9e0-80670a063a5a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 2 & -1 \\\\ 0 & 1 & 0 & -1 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "112b4818-d41e-5d95-a43a-afc4a0a38de9"
+          ]
+        }
+      ]
+    },
+    "knowledge_point": {
+      "id": "b010a518-7aa3-5b53-9a6d-ef0779ff0dfa",
+      "db_id": 17592186096745,
+      "title": "Finding the Reduced Row Echelon Form of a Singular 3x3 System With Two Pivots"
+    },
+    "generation": {
+      "generator_id": "2e9ff447-ce56-57e5-9148-e9e03cc0f3aa",
+      "version": "two-pivot-affine-v2",
+      "source_question": "8e9b3735-f721-557c-bd19-98de1fb72ed8",
+      "source_db_id": 17592186642343,
+      "source_basis": 5370,
+      "dependencies": {
+        "sympy": "1.14.0"
+      },
+      "mathematical_fingerprint": "46ea70b9a146ef30d5679ef72681e6409c718dfb22bfe0bd07cd35bbbc9baa36",
+      "seed": 7376665,
+      "template": "q-74625",
+      "profile": "authored-exchangeable-affine-bank",
+      "response_template": "matrix",
+      "replay": false,
+      "parameters": {
+        "candidates": [
+          [
+            3,
+            -1,
+            0,
+            -3
+          ],
+          [
+            -2,
+            -2,
+            2,
+            -1
+          ],
+          [
+            -3,
+            1,
+            1,
+            2
+          ],
+          [
+            -2,
+            -3,
+            0,
+            -3
+          ],
+          [
+            -2,
+            0,
+            -1,
+            -1
+          ]
+        ],
+        "correct_index": 2,
+        "row_order": [
+          0,
+          1,
+          2
+        ],
+        "row_signs": [
+          1,
+          1,
+          1
+        ]
+      },
+      "domain": {
+        "slopes": [
+          -3,
+          -2,
+          -1,
+          0,
+          1,
+          2,
+          3
+        ],
+        "intercepts": [
+          -4,
+          -3,
+          -2,
+          -1,
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "rejection": "duplicate candidate tuples only; no correctness or sign-based rejection",
+      "math_format": "course-academy-tex-v1"
+    }
+  },
+  {
+    "question": {
+      ":question/id": "95be084d-2629-54ff-a98b-9b8d6e4a4814",
+      ":question/problem": "Consider the following system of linear equations:\n\n$$\n\\left\\{\\begin{aligned}x - 3 y - 4 z &=-1 \\\\ y + z &=0 \\\\ - 5 x + 15 y + 20 z &=5\\end{aligned}\\right.\n$$\n\nUse the standard Gauss-Jordan method to reduce the augmented matrix $M$ of the system to reduced row echelon form.",
+      ":question/worked-solution": "The augmented matrix for this system is\n\n$$\nM=\\left[\\begin{array}{ccc|c}1 & -3 & -4 & -1 \\\\ 0 & 1 & 1 & 0 \\\\ -5 & 15 & 20 & 5\\end{array}\\right]\n$$\n\nFirst reduce the matrix to row echelon form, making each pivot equal to $1$.\n\n$$\nR_{3}:=R_{3}+\\left(5\\right)R_{1}\\qquad M\\sim \\left[\\begin{array}{ccc|c}1 & -3 & -4 & -1 \\\\ 0 & 1 & 1 & 0 \\\\ 0 & 0 & 0 & 0\\end{array}\\right]\n$$\n\nIn the row echelon form above, we have only two pivots (in the $1$st and $2$nd columns). To transform the matrix to reduced row echelon form, we need to create zeros above the pivots only.\n\n$$\nR_{1}:=R_{1}+\\left(3\\right)R_{2}\\qquad M\\sim \\left[\\begin{array}{ccc|c}1 & 0 & -1 & -1 \\\\ 0 & 1 & 1 & 0 \\\\ 0 & 0 & 0 & 0\\end{array}\\right]\n$$\n\n",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "9266c6dc-5c88-572a-b281-3d6b5f637d67",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "783f6104-5efd-551d-8e58-c7a19f6dc6c8",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & -1 & 2 \\\\ 0 & 1 & 3 & 2 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "8c07f1c9-b17f-5abc-a9e1-47955cb01e50",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & -1 & -1 \\\\ 0 & 1 & 1 & 0 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "28c4e181-ff99-5b59-b774-b6861a555e5c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 3 & 3 \\\\ 0 & 1 & -3 & 4 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "51364dbd-9a0d-5707-897a-dcedf90a0bbc",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 3 & 1 \\\\ 0 & 1 & 2 & 3 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "001409cc-e9b2-5f93-bea8-67fa047c279e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 1 & -2 \\\\ 0 & 1 & 3 & 4 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "8c07f1c9-b17f-5abc-a9e1-47955cb01e50"
+          ]
+        }
+      ]
+    },
+    "knowledge_point": {
+      "id": "b010a518-7aa3-5b53-9a6d-ef0779ff0dfa",
+      "db_id": 17592186096745,
+      "title": "Finding the Reduced Row Echelon Form of a Singular 3x3 System With Two Pivots"
+    },
+    "generation": {
+      "generator_id": "2e9ff447-ce56-57e5-9148-e9e03cc0f3aa",
+      "version": "two-pivot-affine-v2",
+      "source_question": "8e9b3735-f721-557c-bd19-98de1fb72ed8",
+      "source_db_id": 17592186642343,
+      "source_basis": 5370,
+      "dependencies": {
+        "sympy": "1.14.0"
+      },
+      "mathematical_fingerprint": "89167a7c0e631ec670a8d2c3f218a2c86d58105058167e9e4740b663673cebe4",
+      "seed": 7481394,
+      "template": "q-74625",
+      "profile": "authored-exchangeable-affine-bank",
+      "response_template": "matrix",
+      "replay": false,
+      "parameters": {
+        "candidates": [
+          [
+            1,
+            -3,
+            2,
+            2
+          ],
+          [
+            1,
+            -1,
+            -1,
+            0
+          ],
+          [
+            -3,
+            3,
+            3,
+            4
+          ],
+          [
+            -3,
+            -2,
+            1,
+            3
+          ],
+          [
+            -1,
+            -3,
+            -2,
+            4
+          ]
+        ],
+        "correct_index": 1,
+        "row_order": [
+          0,
+          1,
+          2
+        ],
+        "row_signs": [
+          1,
+          1,
+          1
+        ]
+      },
+      "domain": {
+        "slopes": [
+          -3,
+          -2,
+          -1,
+          0,
+          1,
+          2,
+          3
+        ],
+        "intercepts": [
+          -4,
+          -3,
+          -2,
+          -1,
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "rejection": "duplicate candidate tuples only; no correctness or sign-based rejection",
+      "math_format": "course-academy-tex-v1"
+    }
+  },
+  {
+    "question": {
+      ":question/id": "dd8ece61-67d3-5991-be62-2ce2bd4142e3",
+      ":question/problem": "Consider the following system of linear equations:\n\n$$\n\\left\\{\\begin{aligned}x &=-3 \\\\ - x + 3 y &=3 \\\\ - 2 x &=6\\end{aligned}\\right.\n$$\n\nUse the standard Gauss-Jordan method to reduce the augmented matrix $M$ of the system to reduced row echelon form.",
+      ":question/worked-solution": "The augmented matrix for this system is\n\n$$\nM=\\left[\\begin{array}{ccc|c}1 & 0 & 0 & -3 \\\\ -1 & 3 & 0 & 3 \\\\ -2 & 0 & 0 & 6\\end{array}\\right]\n$$\n\nFirst reduce the matrix to row echelon form, making each pivot equal to $1$.\n\n$$\nR_{2}:=R_{2}+\\left(1\\right)R_{1}\\qquad M\\sim \\left[\\begin{array}{ccc|c}1 & 0 & 0 & -3 \\\\ 0 & 3 & 0 & 0 \\\\ -2 & 0 & 0 & 6\\end{array}\\right]\n$$\n\n\n\n$$\nR_{3}:=R_{3}+\\left(2\\right)R_{1}\\qquad M\\sim \\left[\\begin{array}{ccc|c}1 & 0 & 0 & -3 \\\\ 0 & 3 & 0 & 0 \\\\ 0 & 0 & 0 & 0\\end{array}\\right]\n$$\n\n\n\n$$\nR_{2}:=\\left(\\frac{1}{3}\\right)R_{2}\\qquad M\\sim \\left[\\begin{array}{ccc|c}1 & 0 & 0 & -3 \\\\ 0 & 1 & 0 & 0 \\\\ 0 & 0 & 0 & 0\\end{array}\\right]\n$$\n\nIn the row echelon form above, we have only two pivots (in the $1$st and $2$nd columns). To transform the matrix to reduced row echelon form, we need to create zeros above the pivots only. The entry above the second pivot is already zero, so this is already reduced row echelon form.\n\n$$\nM\\sim \\left[\\begin{array}{ccc|c}1 & 0 & 0 & -3 \\\\ 0 & 1 & 0 & 0 \\\\ 0 & 0 & 0 & 0\\end{array}\\right]\n$$\n\n",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "1a41a300-ea6e-54a3-88f4-02ad0be76139",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "420e1092-3eb0-5253-926e-0c1e938af0c1",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 3 & -3 \\\\ 0 & 1 & -1 & -4 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "e97f9203-aab7-559c-9f2b-bd26d2ad1771",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & -3 & 2 \\\\ 0 & 1 & 1 & -1 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "c162b7cc-e129-5f25-84ed-888fd0d9dd3b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & -3 & -2 \\\\ 0 & 1 & 2 & 3 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "2c90f4bb-3792-5eb5-9358-a8655d22f83f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 0 & -4 \\\\ 0 & 1 & 1 & 2 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "f3543769-156f-5de2-8727-fbdff6ece155",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 0 & -3 \\\\ 0 & 1 & 0 & 0 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "f3543769-156f-5de2-8727-fbdff6ece155"
+          ]
+        }
+      ]
+    },
+    "knowledge_point": {
+      "id": "b010a518-7aa3-5b53-9a6d-ef0779ff0dfa",
+      "db_id": 17592186096745,
+      "title": "Finding the Reduced Row Echelon Form of a Singular 3x3 System With Two Pivots"
+    },
+    "generation": {
+      "generator_id": "2e9ff447-ce56-57e5-9148-e9e03cc0f3aa",
+      "version": "two-pivot-affine-v2",
+      "source_question": "c0791632-977c-5714-8eb6-2845fc127f35",
+      "source_db_id": 17592186642366,
+      "source_basis": 5370,
+      "dependencies": {
+        "sympy": "1.14.0"
+      },
+      "mathematical_fingerprint": "c23e113b70c1d86314a3d3a9a8ee7afb338e8df6db362d996b20811bddf00bf3",
+      "seed": 6748291,
+      "template": "q-131634",
+      "profile": "authored-exchangeable-affine-bank",
+      "response_template": "matrix",
+      "replay": false,
+      "parameters": {
+        "candidates": [
+          [
+            -3,
+            1,
+            -3,
+            -4
+          ],
+          [
+            3,
+            -1,
+            2,
+            -1
+          ],
+          [
+            3,
+            -2,
+            -2,
+            3
+          ],
+          [
+            0,
+            -1,
+            -4,
+            2
+          ],
+          [
+            0,
+            0,
+            -3,
+            0
+          ]
+        ],
+        "correct_index": 4,
+        "row_order": [
+          0,
+          1,
+          2
+        ],
+        "row_signs": [
+          1,
+          1,
+          1
+        ]
+      },
+      "domain": {
+        "slopes": [
+          -3,
+          -2,
+          -1,
+          0,
+          1,
+          2,
+          3
+        ],
+        "intercepts": [
+          -4,
+          -3,
+          -2,
+          -1,
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "rejection": "duplicate candidate tuples only; no correctness or sign-based rejection",
+      "math_format": "course-academy-tex-v1"
+    }
+  },
+  {
+    "question": {
+      ":question/id": "2a314579-be62-52de-a0b0-1aa50e52f1b1",
+      ":question/problem": "Consider the following system of linear equations:\n\n$$\n\\left\\{\\begin{aligned}x + 3 z &=-3 \\\\ - x + 3 y + 6 z &=9 \\\\ - 2 x - 6 z &=6\\end{aligned}\\right.\n$$\n\nUse the standard Gauss-Jordan method to reduce the augmented matrix $M$ of the system to reduced row echelon form.",
+      ":question/worked-solution": "The augmented matrix for this system is\n\n$$\nM=\\left[\\begin{array}{ccc|c}1 & 0 & 3 & -3 \\\\ -1 & 3 & 6 & 9 \\\\ -2 & 0 & -6 & 6\\end{array}\\right]\n$$\n\nFirst reduce the matrix to row echelon form, making each pivot equal to $1$.\n\n$$\nR_{2}:=R_{2}+\\left(1\\right)R_{1}\\qquad M\\sim \\left[\\begin{array}{ccc|c}1 & 0 & 3 & -3 \\\\ 0 & 3 & 9 & 6 \\\\ -2 & 0 & -6 & 6\\end{array}\\right]\n$$\n\n\n\n$$\nR_{3}:=R_{3}+\\left(2\\right)R_{1}\\qquad M\\sim \\left[\\begin{array}{ccc|c}1 & 0 & 3 & -3 \\\\ 0 & 3 & 9 & 6 \\\\ 0 & 0 & 0 & 0\\end{array}\\right]\n$$\n\n\n\n$$\nR_{2}:=\\left(\\frac{1}{3}\\right)R_{2}\\qquad M\\sim \\left[\\begin{array}{ccc|c}1 & 0 & 3 & -3 \\\\ 0 & 1 & 3 & 2 \\\\ 0 & 0 & 0 & 0\\end{array}\\right]\n$$\n\nIn the row echelon form above, we have only two pivots (in the $1$st and $2$nd columns). To transform the matrix to reduced row echelon form, we need to create zeros above the pivots only. The entry above the second pivot is already zero, so this is already reduced row echelon form.\n\n$$\nM\\sim \\left[\\begin{array}{ccc|c}1 & 0 & 3 & -3 \\\\ 0 & 1 & 3 & 2 \\\\ 0 & 0 & 0 & 0\\end{array}\\right]\n$$\n\n",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "5d08874f-3e67-5e36-9d23-a47658f3ad1d",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "f7ebb021-74d2-59d7-a38a-0e94954a8be1",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & -3 & 3 \\\\ 0 & 1 & -2 & -1 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "61aee988-1610-55c0-b1f2-5bebee5594f0",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 3 & 0 \\\\ 0 & 1 & 3 & 1 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "5db02b97-1f67-5fd0-905b-db3f7e874d85",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 1 & 2 \\\\ 0 & 1 & -1 & 2 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "86504981-0b78-5ad1-b1ca-c4875eb818ab",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 3 & -3 \\\\ 0 & 1 & 3 & 2 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "33e3fe15-d581-5a40-a3a7-26d5039f909a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 0 & 2 \\\\ 0 & 1 & -2 & 2 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "86504981-0b78-5ad1-b1ca-c4875eb818ab"
+          ]
+        }
+      ]
+    },
+    "knowledge_point": {
+      "id": "b010a518-7aa3-5b53-9a6d-ef0779ff0dfa",
+      "db_id": 17592186096745,
+      "title": "Finding the Reduced Row Echelon Form of a Singular 3x3 System With Two Pivots"
+    },
+    "generation": {
+      "generator_id": "2e9ff447-ce56-57e5-9148-e9e03cc0f3aa",
+      "version": "two-pivot-affine-v2",
+      "source_question": "c0791632-977c-5714-8eb6-2845fc127f35",
+      "source_db_id": 17592186642366,
+      "source_basis": 5370,
+      "dependencies": {
+        "sympy": "1.14.0"
+      },
+      "mathematical_fingerprint": "a32fbc5c199f52c6b0c40eda152d0d3694a1d419adffb1b49cc8851bd04aba52",
+      "seed": 6853020,
+      "template": "q-131634",
+      "profile": "authored-exchangeable-affine-bank",
+      "response_template": "matrix",
+      "replay": false,
+      "parameters": {
+        "candidates": [
+          [
+            3,
+            2,
+            3,
+            -1
+          ],
+          [
+            -3,
+            -3,
+            0,
+            1
+          ],
+          [
+            -1,
+            1,
+            2,
+            2
+          ],
+          [
+            -3,
+            -3,
+            -3,
+            2
+          ],
+          [
+            0,
+            2,
+            2,
+            2
+          ]
+        ],
+        "correct_index": 3,
+        "row_order": [
+          0,
+          1,
+          2
+        ],
+        "row_signs": [
+          1,
+          1,
+          1
+        ]
+      },
+      "domain": {
+        "slopes": [
+          -3,
+          -2,
+          -1,
+          0,
+          1,
+          2,
+          3
+        ],
+        "intercepts": [
+          -4,
+          -3,
+          -2,
+          -1,
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "rejection": "duplicate candidate tuples only; no correctness or sign-based rejection",
+      "math_format": "course-academy-tex-v1"
+    }
+  },
+  {
+    "question": {
+      ":question/id": "57990dfa-cbb6-5e1e-b7dd-5d74f7b4dc24",
+      ":question/problem": "Consider the following system of linear equations:\n\n$$\n\\left\\{\\begin{aligned}x &=-1 \\\\ - x + 3 y + 6 z &=13 \\\\ - 2 x &=2\\end{aligned}\\right.\n$$\n\nUse the standard Gauss-Jordan method to reduce the augmented matrix $M$ of the system to reduced row echelon form.",
+      ":question/worked-solution": "The augmented matrix for this system is\n\n$$\nM=\\left[\\begin{array}{ccc|c}1 & 0 & 0 & -1 \\\\ -1 & 3 & 6 & 13 \\\\ -2 & 0 & 0 & 2\\end{array}\\right]\n$$\n\nFirst reduce the matrix to row echelon form, making each pivot equal to $1$.\n\n$$\nR_{2}:=R_{2}+\\left(1\\right)R_{1}\\qquad M\\sim \\left[\\begin{array}{ccc|c}1 & 0 & 0 & -1 \\\\ 0 & 3 & 6 & 12 \\\\ -2 & 0 & 0 & 2\\end{array}\\right]\n$$\n\n\n\n$$\nR_{3}:=R_{3}+\\left(2\\right)R_{1}\\qquad M\\sim \\left[\\begin{array}{ccc|c}1 & 0 & 0 & -1 \\\\ 0 & 3 & 6 & 12 \\\\ 0 & 0 & 0 & 0\\end{array}\\right]\n$$\n\n\n\n$$\nR_{2}:=\\left(\\frac{1}{3}\\right)R_{2}\\qquad M\\sim \\left[\\begin{array}{ccc|c}1 & 0 & 0 & -1 \\\\ 0 & 1 & 2 & 4 \\\\ 0 & 0 & 0 & 0\\end{array}\\right]\n$$\n\nIn the row echelon form above, we have only two pivots (in the $1$st and $2$nd columns). To transform the matrix to reduced row echelon form, we need to create zeros above the pivots only. The entry above the second pivot is already zero, so this is already reduced row echelon form.\n\n$$\nM\\sim \\left[\\begin{array}{ccc|c}1 & 0 & 0 & -1 \\\\ 0 & 1 & 2 & 4 \\\\ 0 & 0 & 0 & 0\\end{array}\\right]\n$$\n\n",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "148fa77b-8142-566d-bdf9-4740d5a6efc4",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "de8ff299-2c15-5c8a-8c4a-d8b6bb66c74b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 3 & -3 \\\\ 0 & 1 & -1 & -2 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "f9e71c78-5dd8-53d3-878d-9c76187d7641",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 0 & -1 \\\\ 0 & 1 & 2 & 4 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "66fc1e29-e731-54a9-97b6-7eb9e63b8c4b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 2 & 4 \\\\ 0 & 1 & 2 & 2 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "b92bff8e-882d-57fa-8a4b-3f03005aa223",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 0 & -3 \\\\ 0 & 1 & -1 & -2 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "d2c36a86-5676-510d-8c77-00ca54919417",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 2 & -1 \\\\ 0 & 1 & -3 & -3 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "f9e71c78-5dd8-53d3-878d-9c76187d7641"
+          ]
+        }
+      ]
+    },
+    "knowledge_point": {
+      "id": "b010a518-7aa3-5b53-9a6d-ef0779ff0dfa",
+      "db_id": 17592186096745,
+      "title": "Finding the Reduced Row Echelon Form of a Singular 3x3 System With Two Pivots"
+    },
+    "generation": {
+      "generator_id": "2e9ff447-ce56-57e5-9148-e9e03cc0f3aa",
+      "version": "two-pivot-affine-v2",
+      "source_question": "c0791632-977c-5714-8eb6-2845fc127f35",
+      "source_db_id": 17592186642366,
+      "source_basis": 5370,
+      "dependencies": {
+        "sympy": "1.14.0"
+      },
+      "mathematical_fingerprint": "ffafc5b0336f161f15bd23c335e745e7b9be36ae8f0a7e2e20b5978c01a869ff",
+      "seed": 6957749,
+      "template": "q-131634",
+      "profile": "authored-exchangeable-affine-bank",
+      "response_template": "matrix",
+      "replay": false,
+      "parameters": {
+        "candidates": [
+          [
+            -3,
+            1,
+            -3,
+            -2
+          ],
+          [
+            0,
+            -2,
+            -1,
+            4
+          ],
+          [
+            -2,
+            -2,
+            4,
+            2
+          ],
+          [
+            0,
+            1,
+            -3,
+            -2
+          ],
+          [
+            -2,
+            3,
+            -1,
+            -3
+          ]
+        ],
+        "correct_index": 1,
+        "row_order": [
+          0,
+          1,
+          2
+        ],
+        "row_signs": [
+          1,
+          1,
+          1
+        ]
+      },
+      "domain": {
+        "slopes": [
+          -3,
+          -2,
+          -1,
+          0,
+          1,
+          2,
+          3
+        ],
+        "intercepts": [
+          -4,
+          -3,
+          -2,
+          -1,
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "rejection": "duplicate candidate tuples only; no correctness or sign-based rejection",
+      "math_format": "course-academy-tex-v1"
+    }
+  },
+  {
+    "question": {
+      ":question/id": "4082f8d4-6fa8-5b7e-b95a-8bd37fba91ed",
+      ":question/problem": "Consider the following system of linear equations:\n\n$$\n\\left\\{\\begin{aligned}x + z &=-1 \\\\ - x + 3 y - z &=-8 \\\\ - 2 x - 2 z &=2\\end{aligned}\\right.\n$$\n\nUse the standard Gauss-Jordan method to reduce the augmented matrix $M$ of the system to reduced row echelon form.",
+      ":question/worked-solution": "The augmented matrix for this system is\n\n$$\nM=\\left[\\begin{array}{ccc|c}1 & 0 & 1 & -1 \\\\ -1 & 3 & -1 & -8 \\\\ -2 & 0 & -2 & 2\\end{array}\\right]\n$$\n\nFirst reduce the matrix to row echelon form, making each pivot equal to $1$.\n\n$$\nR_{2}:=R_{2}+\\left(1\\right)R_{1}\\qquad M\\sim \\left[\\begin{array}{ccc|c}1 & 0 & 1 & -1 \\\\ 0 & 3 & 0 & -9 \\\\ -2 & 0 & -2 & 2\\end{array}\\right]\n$$\n\n\n\n$$\nR_{3}:=R_{3}+\\left(2\\right)R_{1}\\qquad M\\sim \\left[\\begin{array}{ccc|c}1 & 0 & 1 & -1 \\\\ 0 & 3 & 0 & -9 \\\\ 0 & 0 & 0 & 0\\end{array}\\right]\n$$\n\n\n\n$$\nR_{2}:=\\left(\\frac{1}{3}\\right)R_{2}\\qquad M\\sim \\left[\\begin{array}{ccc|c}1 & 0 & 1 & -1 \\\\ 0 & 1 & 0 & -3 \\\\ 0 & 0 & 0 & 0\\end{array}\\right]\n$$\n\nIn the row echelon form above, we have only two pivots (in the $1$st and $2$nd columns). To transform the matrix to reduced row echelon form, we need to create zeros above the pivots only. The entry above the second pivot is already zero, so this is already reduced row echelon form.\n\n$$\nM\\sim \\left[\\begin{array}{ccc|c}1 & 0 & 1 & -1 \\\\ 0 & 1 & 0 & -3 \\\\ 0 & 0 & 0 & 0\\end{array}\\right]\n$$\n\n",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "571a49b9-1b87-5b7f-b465-30f637bc4eb0",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "4f18c4ec-752d-5ffa-8c76-7dc6207cf5db",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & -1 & -3 \\\\ 0 & 1 & 2 & -3 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "52d90101-445d-5d65-918e-9541266a8298",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & -2 & -1 \\\\ 0 & 1 & 3 & -4 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "a79d3d2d-3378-5d0f-969c-5d1ef61961fa",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 1 & -1 \\\\ 0 & 1 & 0 & -3 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "101110ff-ffa1-51df-889e-25eb52fa5f71",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 1 & -3 \\\\ 0 & 1 & -2 & 0 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "c6833541-9858-57a9-804d-8d5dfc863444",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 2 & 3 \\\\ 0 & 1 & -2 & -4 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "a79d3d2d-3378-5d0f-969c-5d1ef61961fa"
+          ]
+        }
+      ]
+    },
+    "knowledge_point": {
+      "id": "b010a518-7aa3-5b53-9a6d-ef0779ff0dfa",
+      "db_id": 17592186096745,
+      "title": "Finding the Reduced Row Echelon Form of a Singular 3x3 System With Two Pivots"
+    },
+    "generation": {
+      "generator_id": "2e9ff447-ce56-57e5-9148-e9e03cc0f3aa",
+      "version": "two-pivot-affine-v2",
+      "source_question": "c0791632-977c-5714-8eb6-2845fc127f35",
+      "source_db_id": 17592186642366,
+      "source_basis": 5370,
+      "dependencies": {
+        "sympy": "1.14.0"
+      },
+      "mathematical_fingerprint": "6dc1cb283f2496b77195dd31b9346dfbfab69332d2588509bcfd0317740e902f",
+      "seed": 7062478,
+      "template": "q-131634",
+      "profile": "authored-exchangeable-affine-bank",
+      "response_template": "matrix",
+      "replay": false,
+      "parameters": {
+        "candidates": [
+          [
+            1,
+            -2,
+            -3,
+            -3
+          ],
+          [
+            2,
+            -3,
+            -1,
+            -4
+          ],
+          [
+            -1,
+            0,
+            -1,
+            -3
+          ],
+          [
+            -1,
+            2,
+            -3,
+            0
+          ],
+          [
+            -2,
+            2,
+            3,
+            -4
+          ]
+        ],
+        "correct_index": 2,
+        "row_order": [
+          0,
+          1,
+          2
+        ],
+        "row_signs": [
+          1,
+          1,
+          1
+        ]
+      },
+      "domain": {
+        "slopes": [
+          -3,
+          -2,
+          -1,
+          0,
+          1,
+          2,
+          3
+        ],
+        "intercepts": [
+          -4,
+          -3,
+          -2,
+          -1,
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "rejection": "duplicate candidate tuples only; no correctness or sign-based rejection",
+      "math_format": "course-academy-tex-v1"
+    }
+  },
+  {
+    "question": {
+      ":question/id": "317fffb1-4c6d-5537-871a-419ad66552f2",
+      ":question/problem": "Consider the following system of linear equations:\n\n$$\n\\left\\{\\begin{aligned}x &=-4 \\\\ - x + 3 y + 9 z &=10 \\\\ - 2 x &=8\\end{aligned}\\right.\n$$\n\nUse the standard Gauss-Jordan method to reduce the augmented matrix $M$ of the system to reduced row echelon form.",
+      ":question/worked-solution": "The augmented matrix for this system is\n\n$$\nM=\\left[\\begin{array}{ccc|c}1 & 0 & 0 & -4 \\\\ -1 & 3 & 9 & 10 \\\\ -2 & 0 & 0 & 8\\end{array}\\right]\n$$\n\nFirst reduce the matrix to row echelon form, making each pivot equal to $1$.\n\n$$\nR_{2}:=R_{2}+\\left(1\\right)R_{1}\\qquad M\\sim \\left[\\begin{array}{ccc|c}1 & 0 & 0 & -4 \\\\ 0 & 3 & 9 & 6 \\\\ -2 & 0 & 0 & 8\\end{array}\\right]\n$$\n\n\n\n$$\nR_{3}:=R_{3}+\\left(2\\right)R_{1}\\qquad M\\sim \\left[\\begin{array}{ccc|c}1 & 0 & 0 & -4 \\\\ 0 & 3 & 9 & 6 \\\\ 0 & 0 & 0 & 0\\end{array}\\right]\n$$\n\n\n\n$$\nR_{2}:=\\left(\\frac{1}{3}\\right)R_{2}\\qquad M\\sim \\left[\\begin{array}{ccc|c}1 & 0 & 0 & -4 \\\\ 0 & 1 & 3 & 2 \\\\ 0 & 0 & 0 & 0\\end{array}\\right]\n$$\n\nIn the row echelon form above, we have only two pivots (in the $1$st and $2$nd columns). To transform the matrix to reduced row echelon form, we need to create zeros above the pivots only. The entry above the second pivot is already zero, so this is already reduced row echelon form.\n\n$$\nM\\sim \\left[\\begin{array}{ccc|c}1 & 0 & 0 & -4 \\\\ 0 & 1 & 3 & 2 \\\\ 0 & 0 & 0 & 0\\end{array}\\right]\n$$\n\n",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "fc2fa272-00c2-5191-8ce9-1db94d86a23e",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "4e6751ef-5e0a-51f2-8295-dc3e575ded99",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & -1 & -1 \\\\ 0 & 1 & -3 & -4 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "23de9285-2f96-5259-9e27-787d38d780b6",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 0 & -4 \\\\ 0 & 1 & 3 & 2 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "4e89716d-8bc0-54e6-81d1-15e62af5e9c7",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & -3 & 3 \\\\ 0 & 1 & 0 & 2 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "97e88129-1257-56c9-af8b-f0dbfc3a3b9d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 3 & -3 \\\\ 0 & 1 & 3 & 2 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "b348ab72-efc2-5793-934c-94abb3f75e74",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 2 & -3 \\\\ 0 & 1 & 1 & -2 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "23de9285-2f96-5259-9e27-787d38d780b6"
+          ]
+        }
+      ]
+    },
+    "knowledge_point": {
+      "id": "b010a518-7aa3-5b53-9a6d-ef0779ff0dfa",
+      "db_id": 17592186096745,
+      "title": "Finding the Reduced Row Echelon Form of a Singular 3x3 System With Two Pivots"
+    },
+    "generation": {
+      "generator_id": "2e9ff447-ce56-57e5-9148-e9e03cc0f3aa",
+      "version": "two-pivot-affine-v2",
+      "source_question": "c0791632-977c-5714-8eb6-2845fc127f35",
+      "source_db_id": 17592186642366,
+      "source_basis": 5370,
+      "dependencies": {
+        "sympy": "1.14.0"
+      },
+      "mathematical_fingerprint": "8a453b4bb80e370549df0642aff290b2e12c7073b07eaccfb29edaafd58b9a03",
+      "seed": 7167207,
+      "template": "q-131634",
+      "profile": "authored-exchangeable-affine-bank",
+      "response_template": "matrix",
+      "replay": false,
+      "parameters": {
+        "candidates": [
+          [
+            1,
+            3,
+            -1,
+            -4
+          ],
+          [
+            0,
+            -3,
+            -4,
+            2
+          ],
+          [
+            3,
+            0,
+            3,
+            2
+          ],
+          [
+            -3,
+            -3,
+            -3,
+            2
+          ],
+          [
+            -2,
+            -1,
+            -3,
+            -2
+          ]
+        ],
+        "correct_index": 1,
+        "row_order": [
+          0,
+          1,
+          2
+        ],
+        "row_signs": [
+          1,
+          1,
+          1
+        ]
+      },
+      "domain": {
+        "slopes": [
+          -3,
+          -2,
+          -1,
+          0,
+          1,
+          2,
+          3
+        ],
+        "intercepts": [
+          -4,
+          -3,
+          -2,
+          -1,
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "rejection": "duplicate candidate tuples only; no correctness or sign-based rejection",
+      "math_format": "course-academy-tex-v1"
+    }
+  },
+  {
+    "question": {
+      ":question/id": "c256d0dd-3ce1-5670-a1e3-f5833d53c97c",
+      ":question/problem": "Consider the following system of linear equations:\n\n$$\n\\left\\{\\begin{aligned}x - 3 z &=1 \\\\ - x + 3 y + 9 z &=-4 \\\\ - 2 x + 6 z &=-2\\end{aligned}\\right.\n$$\n\nUse the standard Gauss-Jordan method to reduce the augmented matrix $M$ of the system to reduced row echelon form.",
+      ":question/worked-solution": "The augmented matrix for this system is\n\n$$\nM=\\left[\\begin{array}{ccc|c}1 & 0 & -3 & 1 \\\\ -1 & 3 & 9 & -4 \\\\ -2 & 0 & 6 & -2\\end{array}\\right]\n$$\n\nFirst reduce the matrix to row echelon form, making each pivot equal to $1$.\n\n$$\nR_{2}:=R_{2}+\\left(1\\right)R_{1}\\qquad M\\sim \\left[\\begin{array}{ccc|c}1 & 0 & -3 & 1 \\\\ 0 & 3 & 6 & -3 \\\\ -2 & 0 & 6 & -2\\end{array}\\right]\n$$\n\n\n\n$$\nR_{3}:=R_{3}+\\left(2\\right)R_{1}\\qquad M\\sim \\left[\\begin{array}{ccc|c}1 & 0 & -3 & 1 \\\\ 0 & 3 & 6 & -3 \\\\ 0 & 0 & 0 & 0\\end{array}\\right]\n$$\n\n\n\n$$\nR_{2}:=\\left(\\frac{1}{3}\\right)R_{2}\\qquad M\\sim \\left[\\begin{array}{ccc|c}1 & 0 & -3 & 1 \\\\ 0 & 1 & 2 & -1 \\\\ 0 & 0 & 0 & 0\\end{array}\\right]\n$$\n\nIn the row echelon form above, we have only two pivots (in the $1$st and $2$nd columns). To transform the matrix to reduced row echelon form, we need to create zeros above the pivots only. The entry above the second pivot is already zero, so this is already reduced row echelon form.\n\n$$\nM\\sim \\left[\\begin{array}{ccc|c}1 & 0 & -3 & 1 \\\\ 0 & 1 & 2 & -1 \\\\ 0 & 0 & 0 & 0\\end{array}\\right]\n$$\n\n",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "ef184ebb-1dcb-530f-a969-32ceb5a47000",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "bccd3a1c-2973-541f-8d12-6d8552bfa57a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & -3 & 1 \\\\ 0 & 1 & 2 & -1 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "33259155-be32-5c80-b385-6936e99e0dde",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 2 & 2 \\\\ 0 & 1 & -2 & 1 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "4bed8ea7-7531-51ac-a806-2834ea0a4bae",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 0 & 0 \\\\ 0 & 1 & 0 & -3 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "e7c046db-52a1-5203-b4d8-f05fd095fac4",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & -3 & 2 \\\\ 0 & 1 & 0 & 3 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "505b163a-4a1b-52f9-b6d8-b8f4b2a27c26",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & -3 & -1 \\\\ 0 & 1 & -2 & 3 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "bccd3a1c-2973-541f-8d12-6d8552bfa57a"
+          ]
+        }
+      ]
+    },
+    "knowledge_point": {
+      "id": "b010a518-7aa3-5b53-9a6d-ef0779ff0dfa",
+      "db_id": 17592186096745,
+      "title": "Finding the Reduced Row Echelon Form of a Singular 3x3 System With Two Pivots"
+    },
+    "generation": {
+      "generator_id": "2e9ff447-ce56-57e5-9148-e9e03cc0f3aa",
+      "version": "two-pivot-affine-v2",
+      "source_question": "c0791632-977c-5714-8eb6-2845fc127f35",
+      "source_db_id": 17592186642366,
+      "source_basis": 5370,
+      "dependencies": {
+        "sympy": "1.14.0"
+      },
+      "mathematical_fingerprint": "bebedb2b41bb5dc06a7334280ddb0d2820cc9aa7e0c07ea54f80664de2d593a7",
+      "seed": 7271936,
+      "template": "q-131634",
+      "profile": "authored-exchangeable-affine-bank",
+      "response_template": "matrix",
+      "replay": false,
+      "parameters": {
+        "candidates": [
+          [
+            3,
+            -2,
+            1,
+            -1
+          ],
+          [
+            -2,
+            2,
+            2,
+            1
+          ],
+          [
+            0,
+            0,
+            0,
+            -3
+          ],
+          [
+            3,
+            0,
+            2,
+            3
+          ],
+          [
+            3,
+            2,
+            -1,
+            3
+          ]
+        ],
+        "correct_index": 0,
+        "row_order": [
+          0,
+          1,
+          2
+        ],
+        "row_signs": [
+          1,
+          1,
+          1
+        ]
+      },
+      "domain": {
+        "slopes": [
+          -3,
+          -2,
+          -1,
+          0,
+          1,
+          2,
+          3
+        ],
+        "intercepts": [
+          -4,
+          -3,
+          -2,
+          -1,
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "rejection": "duplicate candidate tuples only; no correctness or sign-based rejection",
+      "math_format": "course-academy-tex-v1"
+    }
+  },
+  {
+    "question": {
+      ":question/id": "0021c2e4-9f01-5bd1-83ac-063bca82ca6b",
+      ":question/problem": "Consider the following system of linear equations:\n\n$$\n\\left\\{\\begin{aligned}x + 3 z &=1 \\\\ - x + 3 y - 6 z &=5 \\\\ - 2 x - 6 z &=-2\\end{aligned}\\right.\n$$\n\nUse the standard Gauss-Jordan method to reduce the augmented matrix $M$ of the system to reduced row echelon form.",
+      ":question/worked-solution": "The augmented matrix for this system is\n\n$$\nM=\\left[\\begin{array}{ccc|c}1 & 0 & 3 & 1 \\\\ -1 & 3 & -6 & 5 \\\\ -2 & 0 & -6 & -2\\end{array}\\right]\n$$\n\nFirst reduce the matrix to row echelon form, making each pivot equal to $1$.\n\n$$\nR_{2}:=R_{2}+\\left(1\\right)R_{1}\\qquad M\\sim \\left[\\begin{array}{ccc|c}1 & 0 & 3 & 1 \\\\ 0 & 3 & -3 & 6 \\\\ -2 & 0 & -6 & -2\\end{array}\\right]\n$$\n\n\n\n$$\nR_{3}:=R_{3}+\\left(2\\right)R_{1}\\qquad M\\sim \\left[\\begin{array}{ccc|c}1 & 0 & 3 & 1 \\\\ 0 & 3 & -3 & 6 \\\\ 0 & 0 & 0 & 0\\end{array}\\right]\n$$\n\n\n\n$$\nR_{2}:=\\left(\\frac{1}{3}\\right)R_{2}\\qquad M\\sim \\left[\\begin{array}{ccc|c}1 & 0 & 3 & 1 \\\\ 0 & 1 & -1 & 2 \\\\ 0 & 0 & 0 & 0\\end{array}\\right]\n$$\n\nIn the row echelon form above, we have only two pivots (in the $1$st and $2$nd columns). To transform the matrix to reduced row echelon form, we need to create zeros above the pivots only. The entry above the second pivot is already zero, so this is already reduced row echelon form.\n\n$$\nM\\sim \\left[\\begin{array}{ccc|c}1 & 0 & 3 & 1 \\\\ 0 & 1 & -1 & 2 \\\\ 0 & 0 & 0 & 0\\end{array}\\right]\n$$\n\n",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "c522944c-7f38-590f-843d-1a1a8f6ff80b",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "c034dc9d-afec-533f-9e37-6734ed6cd066",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & -3 & 0 \\\\ 0 & 1 & 1 & -3 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "59fca54c-889c-5383-8fe7-895d36259e18",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 2 & 2 \\\\ 0 & 1 & 2 & -1 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "2c24c9e8-c319-58cf-9c33-debf54097d58",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 3 & 1 \\\\ 0 & 1 & -1 & 2 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "862c2365-be37-5d23-a774-22ec44fba539",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 2 & 0 \\\\ 0 & 1 & 3 & -3 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "75b174a6-908a-5a18-ae62-5a1f05d50cef",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 2 & -1 \\\\ 0 & 1 & 0 & -1 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "2c24c9e8-c319-58cf-9c33-debf54097d58"
+          ]
+        }
+      ]
+    },
+    "knowledge_point": {
+      "id": "b010a518-7aa3-5b53-9a6d-ef0779ff0dfa",
+      "db_id": 17592186096745,
+      "title": "Finding the Reduced Row Echelon Form of a Singular 3x3 System With Two Pivots"
+    },
+    "generation": {
+      "generator_id": "2e9ff447-ce56-57e5-9148-e9e03cc0f3aa",
+      "version": "two-pivot-affine-v2",
+      "source_question": "c0791632-977c-5714-8eb6-2845fc127f35",
+      "source_db_id": 17592186642366,
+      "source_basis": 5370,
+      "dependencies": {
+        "sympy": "1.14.0"
+      },
+      "mathematical_fingerprint": "46ea70b9a146ef30d5679ef72681e6409c718dfb22bfe0bd07cd35bbbc9baa36",
+      "seed": 7376665,
+      "template": "q-131634",
+      "profile": "authored-exchangeable-affine-bank",
+      "response_template": "matrix",
+      "replay": false,
+      "parameters": {
+        "candidates": [
+          [
+            3,
+            -1,
+            0,
+            -3
+          ],
+          [
+            -2,
+            -2,
+            2,
+            -1
+          ],
+          [
+            -3,
+            1,
+            1,
+            2
+          ],
+          [
+            -2,
+            -3,
+            0,
+            -3
+          ],
+          [
+            -2,
+            0,
+            -1,
+            -1
+          ]
+        ],
+        "correct_index": 2,
+        "row_order": [
+          0,
+          1,
+          2
+        ],
+        "row_signs": [
+          1,
+          1,
+          1
+        ]
+      },
+      "domain": {
+        "slopes": [
+          -3,
+          -2,
+          -1,
+          0,
+          1,
+          2,
+          3
+        ],
+        "intercepts": [
+          -4,
+          -3,
+          -2,
+          -1,
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "rejection": "duplicate candidate tuples only; no correctness or sign-based rejection",
+      "math_format": "course-academy-tex-v1"
+    }
+  },
+  {
+    "question": {
+      ":question/id": "acc57151-7876-54ef-b3ba-921c79d60724",
+      ":question/problem": "Consider the following system of linear equations:\n\n$$\n\\left\\{\\begin{aligned}x - z &=-1 \\\\ - x + 3 y + 4 z &=1 \\\\ - 2 x + 2 z &=2\\end{aligned}\\right.\n$$\n\nUse the standard Gauss-Jordan method to reduce the augmented matrix $M$ of the system to reduced row echelon form.",
+      ":question/worked-solution": "The augmented matrix for this system is\n\n$$\nM=\\left[\\begin{array}{ccc|c}1 & 0 & -1 & -1 \\\\ -1 & 3 & 4 & 1 \\\\ -2 & 0 & 2 & 2\\end{array}\\right]\n$$\n\nFirst reduce the matrix to row echelon form, making each pivot equal to $1$.\n\n$$\nR_{2}:=R_{2}+\\left(1\\right)R_{1}\\qquad M\\sim \\left[\\begin{array}{ccc|c}1 & 0 & -1 & -1 \\\\ 0 & 3 & 3 & 0 \\\\ -2 & 0 & 2 & 2\\end{array}\\right]\n$$\n\n\n\n$$\nR_{3}:=R_{3}+\\left(2\\right)R_{1}\\qquad M\\sim \\left[\\begin{array}{ccc|c}1 & 0 & -1 & -1 \\\\ 0 & 3 & 3 & 0 \\\\ 0 & 0 & 0 & 0\\end{array}\\right]\n$$\n\n\n\n$$\nR_{2}:=\\left(\\frac{1}{3}\\right)R_{2}\\qquad M\\sim \\left[\\begin{array}{ccc|c}1 & 0 & -1 & -1 \\\\ 0 & 1 & 1 & 0 \\\\ 0 & 0 & 0 & 0\\end{array}\\right]\n$$\n\nIn the row echelon form above, we have only two pivots (in the $1$st and $2$nd columns). To transform the matrix to reduced row echelon form, we need to create zeros above the pivots only. The entry above the second pivot is already zero, so this is already reduced row echelon form.\n\n$$\nM\\sim \\left[\\begin{array}{ccc|c}1 & 0 & -1 & -1 \\\\ 0 & 1 & 1 & 0 \\\\ 0 & 0 & 0 & 0\\end{array}\\right]\n$$\n\n",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "37566744-b0c6-594b-aee9-427e666d6da8",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "2e999a53-e4ec-56a5-b8e9-9fbf0941fe43",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & -1 & 2 \\\\ 0 & 1 & 3 & 2 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "8da8bcbf-a4f8-5179-90ad-6e9e9150929c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & -1 & -1 \\\\ 0 & 1 & 1 & 0 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "76e6a7f7-dc55-51f0-8beb-fe5171105173",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 3 & 3 \\\\ 0 & 1 & -3 & 4 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "401b975d-c288-5d6d-a1c3-cc43ced30141",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 3 & 1 \\\\ 0 & 1 & 2 & 3 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "3a638d5a-c889-5f94-8631-b46612046915",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 1 & -2 \\\\ 0 & 1 & 3 & 4 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "8da8bcbf-a4f8-5179-90ad-6e9e9150929c"
+          ]
+        }
+      ]
+    },
+    "knowledge_point": {
+      "id": "b010a518-7aa3-5b53-9a6d-ef0779ff0dfa",
+      "db_id": 17592186096745,
+      "title": "Finding the Reduced Row Echelon Form of a Singular 3x3 System With Two Pivots"
+    },
+    "generation": {
+      "generator_id": "2e9ff447-ce56-57e5-9148-e9e03cc0f3aa",
+      "version": "two-pivot-affine-v2",
+      "source_question": "c0791632-977c-5714-8eb6-2845fc127f35",
+      "source_db_id": 17592186642366,
+      "source_basis": 5370,
+      "dependencies": {
+        "sympy": "1.14.0"
+      },
+      "mathematical_fingerprint": "89167a7c0e631ec670a8d2c3f218a2c86d58105058167e9e4740b663673cebe4",
+      "seed": 7481394,
+      "template": "q-131634",
+      "profile": "authored-exchangeable-affine-bank",
+      "response_template": "matrix",
+      "replay": false,
+      "parameters": {
+        "candidates": [
+          [
+            1,
+            -3,
+            2,
+            2
+          ],
+          [
+            1,
+            -1,
+            -1,
+            0
+          ],
+          [
+            -3,
+            3,
+            3,
+            4
+          ],
+          [
+            -3,
+            -2,
+            1,
+            3
+          ],
+          [
+            -1,
+            -3,
+            -2,
+            4
+          ]
+        ],
+        "correct_index": 1,
+        "row_order": [
+          0,
+          1,
+          2
+        ],
+        "row_signs": [
+          1,
+          1,
+          1
+        ]
+      },
+      "domain": {
+        "slopes": [
+          -3,
+          -2,
+          -1,
+          0,
+          1,
+          2,
+          3
+        ],
+        "intercepts": [
+          -4,
+          -3,
+          -2,
+          -1,
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "rejection": "duplicate candidate tuples only; no correctness or sign-based rejection",
+      "math_format": "course-academy-tex-v1"
+    }
+  }
+]

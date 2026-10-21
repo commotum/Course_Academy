@@ -1,0 +1,114 @@
+{
+  "verdict": "accepted",
+  "summary": "The two missing source profiles are repaired. All eight checks pass; no remaining concrete defect demonstrated. Package unchanged; no publication or database writes.",
+  "source_analysis": {
+    "skill": "Reduce a consistent singular 3x3 system with two pivots to RREF, then select its matrix or general solution vector.",
+    "reasoning_steps": [
+      "Construct the augmented matrix.",
+      "Find and normalize two pivots.",
+      "Clear entries above the pivots.",
+      "When requested, express x and y in terms of free variable z."
+    ],
+    "invariants": [
+      "Consistent rank-two system.",
+      "Source-supported matrix and solution-vector families.",
+      "Five radio choices with exactly one correct answer."
+    ],
+    "permitted_variations": [
+      "Signed coefficients, affine slopes and intercepts.",
+      "Equation order and nonzero row scaling.",
+      "Correct-option position and distractor values."
+    ],
+    "source_refs": [
+      "8e9b3735-f721-557c-bd19-98de1fb72ed8 (q-74625)",
+      "c0791632-977c-5714-8eb6-2845fc127f35 (q-131634)",
+      "Tutorial 3949: normalize pivots and conditionally clear a12.",
+      "Tutorial 3161: RREF is unique.",
+      "Canonical example 283e9a4a-443f-579f-b272-248446d3a49f"
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "source-extract.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay-results.json",
+        "replays.json",
+        "regression-verification.json",
+        "revision-scope.json"
+      ],
+      "details": "All 17 sources replay with complete banks. The retained regression fails on the previous omission and passes current."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "supplemental-results.json",
+        "apparent-cue-results.json",
+        "review_math.py"
+      ],
+      "details": "96 records pass independent exact checks of equations, answers, solution matrices and generated row-operation labels."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "coverage-results.json",
+        "independent-samples.json",
+        "runner-batch.json",
+        "delivery-independent/delivery.json",
+        "delivery-batch/delivery.json"
+      ],
+      "details": "Fresh samples cover all 17 profiles, both families and all five correct slots. All 34 fresh samples and five runner records survive delivery filtering."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "scope-results.json",
+        "source-analysis.json"
+      ],
+      "details": "Tested variations preserve the source reasoning, response contract and comparable hard workload."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-final-input.json",
+        "grader-final-results.json"
+      ],
+      "details": "Native grader accepts 96 independently verified answers and rejects 384 alternatives. Source responses are radio selections."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "visual-inspection.json",
+        "rendered-choice-results.json"
+      ],
+      "details": "Actual UI renders all 18 requested records. Representative screenshots were inspected."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "generator-rejection.json",
+        "package-tree-before.json",
+        "package-tree-after.json"
+      ],
+      "details": "Exact dependency versions, deterministic replay, relocation and rejection checks pass. Complete package tree remains unchanged."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "counterfactual-results.json",
+        "decision-probe-results.json",
+        "apparent-cue-results.json",
+        "learner-selection-results.json"
+      ],
+      "details": "Controlled changes pass math, rendering and native grading. Apparent conditional predictors have reproducible counterexamples. Exact batch assessed separately; selection conclusions retain captured-input and policy limitations."
+    }
+  },
+  "findings": []
+}

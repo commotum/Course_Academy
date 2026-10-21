@@ -1,0 +1,107 @@
+{
+  "verdict": "accepted",
+  "summary": "The two omitted source profiles are restored. All eight checks pass; no remaining defect was demonstrated. Package unchanged; no publication or database writes.",
+  "source_analysis": {
+    "skill": "Reduce a consistent singular 3\u00d73 system to RREF and select its matrix or general solution vector.",
+    "reasoning_steps": [
+      "Construct the augmented matrix.",
+      "Find and normalize two pivots.",
+      "Clear entries above pivots.",
+      "When requested, express x and y using free variable z."
+    ],
+    "invariants": [
+      "Consistent rank-two system.",
+      "Source-supported matrix and vector response families.",
+      "Five radio choices with exactly one correct answer."
+    ],
+    "permitted_variations": [
+      "Signed coefficients, affine slopes and intercepts.",
+      "Equation order and nonzero row scaling.",
+      "Qualifying candidate and correct-option position."
+    ],
+    "source_refs": [
+      "Tutorial 3949: echelon reduction followed by conditional clearing above the second pivot.",
+      "8e9b3735-f721-557c-bd19-98de1fb72ed8 (q-74625)",
+      "c0791632-977c-5714-8eb6-2845fc127f35 (q-131634)"
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "source-extract.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-verification.json",
+        "source-replay-results.json",
+        "regression-verification.json"
+      ],
+      "details": "All 17 source profiles replay with complete ordered banks and matching worked matrices. The regression rejects the old omission fixture and passes the current package."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "shortcut-controls-math.json",
+        "delivery-semantic-results.json"
+      ],
+      "details": "Independent exact checks pass for 59 raw records and 42 post-delivery records."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "coverage-results.json",
+        "runner-batch.json",
+        "delivery-independent/delivery.json",
+        "delivery-batch/delivery.json"
+      ],
+      "details": "Fresh samples cover all 17 profiles, both response families and all five correct slots. The exact batch has five distinct RREFs; all records survive delivery filtering."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "scope-results.json"
+      ],
+      "details": "Tested variations preserve the source-supported method, workload and response requirements."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-all-input.json",
+        "grader-all-results.json"
+      ],
+      "details": "Native grader accepts 59 independently verified correct choices and rejects 236 alternatives."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "visual-inspection.json"
+      ],
+      "details": "Actual UI renders 15 records successfully; 10 representative screenshots were inspected."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "generator-rejection.json",
+        "package-hashes-before.json",
+        "package-hashes-after.json"
+      ],
+      "details": "Dependencies, deterministic replay, relocation and rejection checks pass. Recursive package hashes remain unchanged."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "counterfactual-results.json",
+        "decision-probe-results.json",
+        "selection-pool-results.json"
+      ],
+      "details": "Relevant and irrelevant counterfactuals pass in both families. Conditional shortcut probes found no reproducible defect, including in the exact batch. Selection preserves support under the documented fresh-learner assumptions; live policy and history remain unobserved."
+    }
+  },
+  "findings": []
+}

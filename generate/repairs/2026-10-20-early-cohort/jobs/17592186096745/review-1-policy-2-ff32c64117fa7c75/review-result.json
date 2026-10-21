@@ -1,0 +1,147 @@
+{
+  "verdict": "accepted",
+  "summary": "The two missing source profiles are restored. All eight checks pass on the revision and exact five-record batch; no remaining defect demonstrated. Package unchanged; no publication or database writes.",
+  "source_analysis": {
+    "skill": "Use Gauss-Jordan row operations on a consistent singular 3x3 system with two pivots to obtain its unique 3x4 augmented RREF; in the solve family express x and y as affine functions of the free variable z and select the corresponding vector.",
+    "reasoning_steps": [
+      "Translate three equations in x,y,z into a 3x4 augmented matrix.",
+      "Swap rows if useful; eliminate the first column and find/normalize the second pivot; move the zero row to the bottom.",
+      "Clear the entry above the second pivot.",
+      "For solve prompts read x=a+bz and y=c+dz with z arbitrary real; select one of five radio choices."
+    ],
+    "invariants": [
+      "Three equations / three real variables; augmented matrix has coefficient rank and augmented rank two.",
+      "RREF has two unit pivots, pivot-column zeros, and a bottom zero row.",
+      "Keep the two observed response families and their five-choice single-selection contract.",
+      "No new nonlinear algebra, determinants, or free-entry construction required."
+    ],
+    "permitted_variations": [
+      "Independently vary signed coefficients, constants, and resulting free-column slopes/intercepts while retaining rank two and comparable arithmetic.",
+      "Vary which row is dependent, duplicate versus nontrivial dependence, row order and required swaps/scales.",
+      "Vary whether x or y has zero free-variable coefficient, and positive/negative/zero constants; zero a12 legitimately skips a backward operation.",
+      "Correct option position and distractor error roles can change; they are incidental assignments. Preserve one correct option, not its label or its unique layout signature.",
+      "Change right-hand sides coherently to obtain a different affine solution with the same coefficient matrix; scale/reorder equations to preserve the solution."
+    ],
+    "source_refs": [
+      "6e3014ad-e528-5fe5-be7c-06e6f01c2356",
+      "7c642737-66e9-5a4d-a96b-0b69aaf732dd",
+      "8898e291-a92c-543d-b53f-901f8c5bb06e",
+      "db4ec426-5bc2-57fa-bb98-af98efb63875",
+      "6b30e629-112f-508e-9e77-096b0e33781a",
+      "088ddf76-b8ab-5fdd-9fea-d3099bd8dbb5",
+      "920a4776-0058-5c9a-a43b-cd0f1925df4a",
+      "4d7555ca-db2c-52bc-b443-fc91fca13d67",
+      "04a13144-a35f-5f80-8432-ba421a4a583d",
+      "23bca3c5-322d-5c3f-a423-fb871cdd59a3",
+      "75dbc97d-95b7-5046-a4b7-609e3df9b396",
+      "6ba94d2c-82a9-5b70-84fa-d478e1834095",
+      "751f8e53-b86d-5abb-abe8-9ed7db35005a",
+      "df6c8a6d-153a-5484-848d-1043ee95c582",
+      "f4d9e7f7-49ef-5deb-a765-86f4061f3e86",
+      "8e9b3735-f721-557c-bd19-98de1fb72ed8",
+      "c0791632-977c-5714-8eb6-2845fc127f35",
+      "canonical 283e9a4a-443f-579f-b272-248446d3a49f (e-6233)",
+      "tutorial 3949 (baed23fb-560e-56ad-aea3-46f3728ebfff): First, reduce the matrix to row echelon form ... making all pivot entries equal to 1; if a12 != 0 use R1:=R1+(-a12)R2.",
+      "tutorial 3161: reduced row echelon form ... is unique."
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "source-extract.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "source-verification.json",
+        "source-replay-results.json",
+        "replays.json",
+        "regression-verification.json",
+        "captured-source-comparison.json"
+      ],
+      "details": "All 17 assessed prompts, complete ordered banks (85 choices), keys and worked matrix sequences match original source; supported row-label correction retained. Regression passes current package copy and fails the restored old omission fixture."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "shortcut-controls-math.json",
+        "review_math.py",
+        "audit.py",
+        "delivery-semantic-results.json"
+      ],
+      "details": "59 raw records independently checked with exact SymPy reconstruction, including 17 source replays, 21 fresh samples, five exact batch records, six controlled-pair records and 10 cue controls. Unique valid option, RREF/affine vector and worked reductions pass. All 42 delivered test records preserve semantics and pass math."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "coverage-results.json",
+        "independent-samples.json",
+        "runner-batch.json",
+        "delivery-independent/delivery.json",
+        "delivery-batch/delivery.json",
+        "generator-rejection.json"
+      ],
+      "details": "Fresh sample covers all 17 profiles, both response families, all five correct slots, signed/zero affine parameters and 21 distinct RREFs. Exact batch has five distinct RREFs: four vector and one matrix item. All fresh and batch records survive actual delivery filtering."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "scope-results.json",
+        "source-verification.json"
+      ],
+      "details": "Restored profiles and tested variations preserve source-supported rank-two Gauss-Jordan workload and response forms. Fixed first two pivot columns are justified by tutorial scope; eligible slopes, constants and qualifying options vary."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-all-input.json",
+        "grader-all-results.json"
+      ],
+      "details": "Native grade_field accepts 59 independently verified keys and rejects 236 alternatives, including the old target after relevant changes. All assessed source fields are radio, so free-entry equivalent notation is inapplicable."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "visual-inspection.json",
+        "render-input.json",
+        "render/question-014.png",
+        "render/question-015.png",
+        "render/question-007.png",
+        "render/question-010.png"
+      ],
+      "details": "Actual UI renders 15 records, including all five batch records, all six controlled-pair records and both restored source replays. Automated checks pass; 10 representative screenshots inspected."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "generator-rejection.json",
+        "relocation-samples.json",
+        "package-hashes-before.json",
+        "package-hashes-after.json",
+        "revision-comparison.json"
+      ],
+      "details": "Exact declared Python 3.13.5 and SymPy 1.14.0 match runtime. Deterministic CLI, relocation, invalid-parameter rejection and JSON stdout checks pass. All recursive package hashes unchanged."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "decision-probe-results.json",
+        "shortcut-control-results.json",
+        "rendered-choice-results.json",
+        "learner-selection-results.json",
+        "selection-pool-results.json",
+        "delivery-semantic-results.json"
+      ],
+      "details": "Relevant and irrelevant controlled changes follow through equations, answers, worked solutions, real grading and rendered controls in both families. Conditional position/length/sign/zero probes demonstrate no incidental shortcut, including the exact batch. Actual delivery preserves support; all 27 captured-plus-prospective records have support under fresh positive-hard-weight selection. Live policy/history and future IDs remain unobserved."
+    }
+  },
+  "findings": []
+}

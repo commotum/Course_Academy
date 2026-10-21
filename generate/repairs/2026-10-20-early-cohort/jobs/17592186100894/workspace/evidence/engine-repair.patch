@@ -1,0 +1,166 @@
+--- engine/rust/symbolic.rs (session baseline)
++++ engine/rust/symbolic.rs
+@@ -157,7 +157,7 @@
+     fn interval_at(&self, sample: Option<&Q>) -> Option<(Q, Q)> {
+         if self.0.len() > 16
+             || self.0.iter().any(|(m, c)| {
+-                m.values().copied().sum::<u16>() > 32
++                m.values().map(|e| u32::from(*e)).sum::<u32>() > 4 * MAX_POWER
+                     || c.numer().bits().max(c.denom().bits()) > 256
+             })
+         {
+@@ -170,7 +170,7 @@
+             for (a, e) in m {
+                 let bounds = match a {
+                     Atom::Pi => (Q::from_integer(3.into()), Q::from_integer(4.into())),
+-                    Atom::E => (Q::from_integer(2.into()), Q::from_integer(3.into())),
++                    Atom::E => exp_bounds(&Q::one())?,
+                     Atom::I => return None,
+                     Atom::Variable(name) => {
+                         let n = sample?;
+@@ -220,9 +220,33 @@
+         Some((lo, hi))
+     }
+ }
++// Outward dyadic rounding bounds intermediate exact Taylor fractions while
++// retaining about 64 significant bits across large and small magnitudes.
++fn bounded_endpoints(v: &Q) -> Option<(Q, Q)> {
++    if v.numer().bits().max(v.denom().bits()) > MAX_BITS {
++        return None;
++    }
++    let magnitude_bits = v.abs().ceil().to_integer().bits() as i32;
++    let shift = (64 - magnitude_bits).clamp(-256, 64);
++    let scale = if shift >= 0 {
++        Q::from_integer(BigInt::one() << shift as usize)
++    } else {
++        Q::new(BigInt::one(), BigInt::one() << (-shift) as usize)
++    };
++    let scaled = v * &scale;
++    Some((Q::from_integer(scaled.floor().to_integer()) / &scale,
++          Q::from_integer(scaled.ceil().to_integer()) / &scale))
++}
+ fn root_bounds(v: &Q, n: u8) -> Option<(Q, Q)> {
+     if v.numer().bits().max(v.denom().bits()) > 128 {
+-        return None;
++        if v.numer().bits().max(v.denom().bits()) > MAX_BITS {
++            return None;
++        }
++        let (lower, upper) = bounded_endpoints(v)?;
++        if lower.numer().bits().max(upper.numer().bits()) > 128 {
++            return None;
++        }
++        return Some((root_bounds(&lower, n)?.0, root_bounds(&upper, n)?.1));
+     }
+     if v.is_negative() {
+         if n % 2 == 0 {
+@@ -232,7 +256,11 @@
+         return Some((-h, -l));
+     }
+     let mut l = Q::zero();
+-    let mut h = v.clone().max(Q::one());
++    // Start within a power of two of the root, rather than the radicand.
++    // A fixed bisection budget must also resolve large exponential radicands.
++    let bits = v.numer().bits().saturating_sub(v.denom().bits()) + 1;
++    let exponent = bits.div_ceil(u64::from(n)) + 1;
++    let mut h = Q::from_integer(BigInt::one() << exponent as usize);
+     for _ in 0..24 {
+         let mid = (&l + &h) / Q::from_integer(2.into());
+         if mid.pow(i32::from(n)) <= *v {
+@@ -244,8 +272,19 @@
+     Some((l, h))
+ }
+ fn log_bounds(x: &Q) -> Option<(Q, Q)> {
+-    if !x.is_positive() || x.numer().bits().max(x.denom().bits()) > 128 {
++    if !x.is_positive() || x.numer().bits().max(x.denom().bits()) > MAX_BITS {
+         return None;
++    }
++    if x.numer().bits().max(x.denom().bits()) > 128 {
++        // Composed interval functions (notably ln(c-exp(u))) receive exact
++        // Taylor endpoints with large denominators. Round OUTWARDS before
++        // applying the bounded log series. Monotonicity preserves the proof;
++        // these witnesses can only reject unequal answers, never accept one.
++        let (lower, upper) = bounded_endpoints(x)?;
++        if !lower.is_positive() || upper.numer().bits() > 128 {
++            return None;
++        }
++        return Some((log_bounds(&lower)?.0, log_bounds(&upper)?.1));
+     }
+     // ln(x) = ln(reduced) + exponent*ln(2). Exact power-of-two reduction
+     // keeps the atanh series rapidly convergent for every supported positive
+@@ -309,8 +348,19 @@
+     Some((&sum - &remainder, sum + remainder))
+ }
+ fn exp_bounds(x: &Q) -> Option<(Q, Q)> {
+-    if x.abs() > Q::from_integer(16.into()) || x.numer().bits().max(x.denom().bits()) > 128 {
++    if x.abs() > Q::from_integer(128.into()) || x.numer().bits().max(x.denom().bits()) > 128 {
+         return None;
++    }
++    if x.is_negative() {
++        let (lo, hi) = exp_bounds(&-x)?;
++        return Some((hi.recip(), lo.recip()));
++    }
++    if x > &Q::one() {
++        // exp(x)=exp(x/2)^2. Round each positive interval outwards
++        // so composition remains bounded without an arbitrary small-x cutoff.
++        let (lo, hi) = exp_bounds(&(x / Q::from_integer(2.into())))?;
++        return Some((bounded_endpoints(&(&lo * &lo))?.0,
++                     bounded_endpoints(&(&hi * &hi))?.1));
+     }
+     let mut sum = Q::one();
+     let mut term = Q::one();
+@@ -321,7 +371,8 @@
+     // Taylor remainder <= e^|x| * |x|^81/81!. Use e < 3.
+     let factor = Q::from_integer(BigInt::from(3).pow(x.abs().ceil().to_integer().to_u32()?));
+     let remainder = term.abs() * x.abs() / Q::from_integer(81.into()) * factor;
+-    Some((&sum - &remainder, sum + remainder))
++    Some((bounded_endpoints(&(&sum - &remainder))?.0,
++          bounded_endpoints(&(sum + remainder))?.1))
+ }
+ fn function_interval(name: &str, l: &Q, h: &Q) -> Option<(Q, Q)> {
+     match name {
+@@ -753,7 +804,16 @@
+             return self.div(&n, &d);
+         }
+         if v.den != Poly::integer(1) {
+-            return Err("root of a symbolic quotient is unsupported".into());
++            // For positive d, principal real roots satisfy root(n/d) =
++            // root(n)/root(d), including when d contains exponential atoms.
++            // Odd roots permit either sign. Keep the original nonzero/domain
++            // obligations; do not split even roots over an unknown-sign d.
++            if degree % 2 == 0 && !v.den.positive() {
++                return Err("even root quotient needs a provably positive denominator".into());
++            }
++            let numerator = self.root(&Value { num: v.num.clone(), den: Poly::integer(1) }, degree)?;
++            let denominator = self.root(&Value { num: v.den.clone(), den: Poly::integer(1) }, degree)?;
++            return self.div(&numerator, &denominator);
+         }
+         // Give positive rational multiples the same root atom and domain
+         // guard: root(c*p) = root(c)*root(p) for c > 0. Use the magnitude
+@@ -1715,6 +1775,27 @@
+ #[cfg(test)]
+ mod tests {
+     #[test]
++    fn ivp_symbolic_roots_and_composed_log_intervals() {
++        use super::{compare, Context};
++        for (a, b) in [
++            ("sqrt(2*exp(2*(x-1)^2)-1)", "(2*exp(2*(x-1)^2)-1)^(1/2)"),
++            ("sqrt((x^2+1)/exp(x))", "sqrt(x^2+1)/sqrt(exp(x))"),
++            ("ln(5/4-exp(-(x-1)))", "ln((5-4*exp(1-x))/4)"),
++            ("ln(2-exp(-(x-1)))", "ln((8-4*exp(1-x))/4)"),
++        ] {
++            assert_eq!(compare(a, b, Context::default()), Ok(true), "{a} vs {b}");
++        }
++        for a in ["sqrt(2*exp(2*(x-1)^2)-1)", "sqrt(2*exp(2*(x-4)^2)-1)", "sqrt(2*exp(2*(x+4)^2)-1)", "ln(5/4-exp(-(x-1)))", "ln(2-exp(-(x-1)))"] {
++            assert_eq!(compare(a, "0", Context::default()), Ok(false), "{a}");
++            assert_eq!(compare("0", a, Context::default()), Ok(false), "{a}");
++        }
++        assert_eq!(compare("sqrt((x^2+1)/exp(x))", "-sqrt((x^2+1)/exp(x))", Context::default()), Ok(false));
++        // Equal values with lost domains must still fail closed.
++        assert!(compare("sqrt(x)^2", "x", Context::default()).is_err());
++        assert!(compare("sqrt(1/x)", "1/sqrt(x)", Context::default()).is_err());
++    }
++
++    #[test]
+     fn reciprocal_exponentials_preserve_arguments_and_domains() {
+         for (a, b) in [
+             ("1/e^{0.03t}", "e^{-0.03t}"),

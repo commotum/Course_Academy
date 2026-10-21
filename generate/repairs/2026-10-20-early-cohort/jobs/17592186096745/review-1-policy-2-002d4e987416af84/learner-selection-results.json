@@ -1,0 +1,73 @@
+{
+  "source": "engine/rust/question_selection.rs:112-215",
+  "command": "review_decisions.py",
+  "selection": {
+    "fresh": {
+      "pool_size": 34,
+      "trials": 300,
+      "selected_indices": {
+        "29": 11,
+        "26": 10,
+        "28": 9,
+        "20": 14,
+        "31": 10,
+        "30": 8,
+        "13": 5,
+        "15": 11,
+        "6": 11,
+        "0": 9,
+        "23": 8,
+        "8": 12,
+        "33": 9,
+        "14": 6,
+        "24": 9,
+        "11": 8,
+        "5": 7,
+        "17": 13,
+        "21": 10,
+        "10": 7,
+        "7": 5,
+        "32": 12,
+        "22": 11,
+        "9": 10,
+        "19": 13,
+        "27": 8,
+        "12": 6,
+        "3": 5,
+        "2": 4,
+        "4": 11,
+        "18": 13,
+        "16": 5,
+        "1": 7,
+        "25": 3
+      },
+      "all_indices_reached": true,
+      "family_support": {
+        "matrix": 18,
+        "vector": 16
+      }
+    },
+    "batch": {
+      "pool_size": 5,
+      "trials": 300,
+      "selected_indices": {
+        "4": 65,
+        "3": 63,
+        "2": 69,
+        "1": 51,
+        "0": 52
+      },
+      "all_indices_reached": true,
+      "family_support": {
+        "vector": 4,
+        "matrix": 1
+      }
+    }
+  },
+  "rules": "Deduplicates and sorts entity IDs; filters previously seen items and current task prefix; selects a positively weighted difficulty band then uniform member using SHA256 seed. All tested generated records are hard; positive hard weight preserves full support. Zero hard weight excludes the whole pool. Unconfigured policy picks the lowest eligible entity ID.",
+  "assumptions": [
+    "Fresh hypothetical learner, positive hard weight; indices stand for sorted future entity IDs.",
+    "Captured inventory basis 5370; active policy, learner history, future entity IDs and later inventory changes are not captured."
+  ],
+  "limits": "Code inspection and faithful read-only selection reproduction establish support under stated conditions, not live outcomes. History exclusion cannot expand a finite pool or inspect mathematical answer roles. Publication preparation file absent; actual shared delivery filter used instead."
+}

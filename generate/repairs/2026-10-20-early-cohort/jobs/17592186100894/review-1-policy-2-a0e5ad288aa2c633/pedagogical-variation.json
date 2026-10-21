@@ -1,0 +1,205 @@
+{
+  "learner_operation": "Rearrange and separate an ODE, integrate, then use initial data to determine a constant and branch; return the particular expression or relation in the observed scaffold. The exceptional general-solution source requests the antiderivative inside sine.",
+  "fixed_features": [
+    {
+      "feature": "First-order separability and observed elementary integration methods",
+      "justification": "Tutorial 974 explicitly requires separation, integration, and substitution of initial data; preserve comparable workload."
+    },
+    {
+      "feature": "Five-choice radio and source blank scaffolds",
+      "justification": "Original source fields request whole expressions, denominator or logarithm/sine arguments. These determine the response contract."
+    },
+    {
+      "feature": "Per-profile polynomial powers/functions in unchanged translation families",
+      "justification": "Preserves the observed antiderivative and rearrangement. Translations are modest practice; they do not by themselves demonstrate varying IC decisions."
+    },
+    {
+      "feature": "Positive sine interval for trig log; local nonnegative cosine branch for restored sine solution",
+      "justification": "Needed for real logarithm and for sqrt(1-sin\u00b2(theta))=cos(theta), as established by source equations."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Integrated quadratic coefficient and IC-selected additive constant",
+      "eligible_variation": "Small coefficients and admissible ordinates, with zero/nonzero and pi/no-pi constants; no pedagogical reason for the key to be the simplest repeated-coefficient choice.",
+      "observed": "Coefficients 2/4/6 and all five declared constants observed. However a bank-shape rule still fixes the winning action in a visible subgroup."
+    },
+    {
+      "role": "Radio candidate satisfying both ODE and IC",
+      "eligible_variation": "Vary which structural member satisfies the equations; keep wrong-derivative and wrong-IC distractors without making multiplicity/length predict the key.",
+      "observed": "Correct integrated coefficient is always duplicated. In the pure-pi\u00b2 IC subgroup with a unique repeated coefficient, its shortest member always wins."
+    },
+    {
+      "role": "Radical branch sign and magnitude",
+      "eligible_variation": "Admissible positive and negative initial ordinates can choose either branch.",
+      "observed": "All b=-2,-1,1,2 covered and independently verified, including opposite-branch rejection."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "Complete source profiles",
+      "sample_refs": [
+        "source-replay-records.json",
+        "source-replay.json"
+      ],
+      "result": "25 supported complete banks/keys reproduced; invalid q-104058 explicitly excluded. Missing sine equation and broken denominator scaffold corrected from worked evidence."
+    },
+    {
+      "case": "Changed trig decision slots",
+      "sample_refs": [
+        "samples.json",
+        "delivery-easy/accepted.json",
+        "math-results.json"
+      ],
+      "result": "16 controls cover a=2/4/6, c=-pi\u00b2,-1,0,1,pi\u00b2 and h=-4,1,4. All survive delivery; seven keys contain pi and nine do not."
+    },
+    {
+      "case": "Restored radical and grading-boundary families",
+      "sample_refs": [
+        "samples.json",
+        "grader-report.json",
+        "sine-records.json"
+      ],
+      "result": "Four signed radical cases; shifts -4/+4 for four formerly excluded grading profiles; restored sine checked on two shifts plus actual batch."
+    },
+    {
+      "case": "Exact batch as finite practice pool",
+      "sample_refs": [
+        "batch.json",
+        "delivery-batch/accepted.json",
+        "math-results.json",
+        "selection.json"
+      ],
+      "result": "Five accepted records across four recognizable templates; q-355546 repeats at two shifts. No trig item, so this specific new shortcut does not affect the batch. No tested rule answers every batch member."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Hold trig ODE, abscissa, coefficient and interval fixed; change IC ordinate pi\u00b2 -> pi\u00b2+1. Also change quadratic coefficient with compatible IC in a separate pair.",
+      "expected": "Initial-ordinate pair changes solution by +1; coefficient pair changes by 2(x-1)\u00b2. Prompts, solutions and graded keys must follow.",
+      "observed": "Exact differences verified from displayed answers, ODE/IC residuals zero, unique valid keys. Actual native grader accepts each own key and rejects all distractors. Actual UI displays changed initial data, C and final expressions consistently.",
+      "status": "passed",
+      "justification": "Tutorial 974 identifies initial substitution as necessary to determine the integration constant. Coefficients determine the antiderivative.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "math-results.json",
+        "grader-input.json",
+        "grader-report.json",
+        "render-counterfactual/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Replace Find with Determine and reverse the five option objects while preserving their IDs.",
+      "expected": "Mathematical response and all learner grading outcomes remain unchanged.",
+      "observed": "Same answer expression and correct UUID, same five native outcomes; prompt/control/solution rendered successfully.",
+      "status": "passed",
+      "justification": "Prose verb and option-array order do not enter the source equation or initial condition; actual UI independently hashes option order.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-report.json",
+        "render-counterfactual/rendering.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "Unique logarithm option without pi",
+      "subgroup": "Repaired q-104065 controls",
+      "scope": "within_template",
+      "strategy": "Choose the unique logarithm option lacking a printed pi.",
+      "correct": 0,
+      "total": 16,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Old cue solves 0/16 versus random 1/5; usually it no longer identifies a unique option. Exact old case was reconfirmed failing on prior package and repaired in current output. This pass does not establish absence of other cues.",
+      "sample_refs": [
+        "before-after-shortcut-records.json",
+        "retained-finding-witnesses.json",
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Unique repeated quadratic coefficient plus shortest expression",
+      "subgroup": "Displayed IC ordinate is a pure rational multiple of pi\u00b2 and exactly one bank coefficient repeats",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "When the initial ordinate is a pure rational multiple of pi\u00b2 (including 0) and exactly one quadratic coefficient is repeated in the answer bank, select the shortest option among those with that repeated coefficient. This uses visible expression shape and repetitions, without integration, differentiation, or substituting the initial point.",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "5/5 versus random 1/5. Conditional subgroup is recognizable from prompt/choices without calculus. Bank construction guarantees the correct coefficient repeats and its correct constant has fewer printed terms than the other same-coefficient constants. This is an incidental bank arrangement.",
+      "sample_refs": [
+        "conditional-shortcut-records.json",
+        "conditional-shortcut-results.json",
+        "minimal-failure.json",
+        "minimal-regression-result.json"
+      ]
+    },
+    {
+      "cue": "Same repeated-coefficient/length cue after shared delivery",
+      "subgroup": "Accepted trig records satisfying visible condition",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Apply identical shape rule after normalization and deduplication; choice shuffling does not change multiplicities or length.",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "5/5 versus random 1/5 after filtering. All predicted IDs are native accepted keys. Screenshot confirms visible cue. Exact batch contains no trig item; do not extrapolate this rate to it.",
+      "sample_refs": [
+        "delivery-easy/accepted.json",
+        "conditional-shortcut-results.json",
+        "grader-report.json",
+        "render-counterfactual/rendering.json"
+      ]
+    },
+    {
+      "cue": "First stored option",
+      "subgroup": "All repaired trig controls",
+      "scope": "within_template",
+      "strategy": "Choose first stored answer without reading the mathematics.",
+      "correct": 4,
+      "total": 16,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No fixed stored position solves this family; UI additionally permutes by hashed identities. Baseline is uniform random choice, 1/5.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json",
+        "selection.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "Generator template/difficulty eligibility, boundary rejection and deterministic finite candidate sampling",
+      "Shared publisher prepare_records normalization, validity, content IDs and captured-inventory/batch deduplication",
+      "Requested easy/moderate filtering",
+      "Exact five-record runner batch separately",
+      "Actual UI rendering and choiceOrder hashing",
+      "Captured inventory and conditional faithful within-band learner selection"
+    ],
+    "sample_refs": [
+      "runtime-results.json",
+      "delivery-stages.json",
+      "delivery-batch/delivery.json",
+      "delivery-easy/delivery.json",
+      "delivery-moderate/delivery.json",
+      "conditional-shortcut-results.json",
+      "inventory-audit.json",
+      "selection.json"
+    ],
+    "result": "All 31 independent controls and all five batch records survive shared delivery. Conditional shortcut retains all five witnesses. Captured inventory basis 5372 contains 26 original source records, no generated instances; affected-inventory empty after examination. Publication preparation absent, so actual read-only filter used. Selection support examined using current Rust rules and proxy unpublished entity IDs, conditioned on fresh usable easy-band records."
+  },
+  "limitations": [
+    "Finite targeted audit cannot prove absence of every shortcut.",
+    "Specific learner histories, policy weights and future published entity IDs unavailable; selection conclusions are conditional support claims, not predictions for a live learner.",
+    "No affected stored generated question exists in captured inventory; no claim about later changing inventory.",
+    "Counterfactual prose/order and appended-choice fixtures are explicitly review fixtures.",
+    "Unchanged source/translation evidence reused with provenance; current source replay, regression sample and native checks rerun."
+  ]
+}

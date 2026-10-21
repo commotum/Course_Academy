@@ -1,0 +1,113 @@
+{
+  "verdict": "accepted",
+  "summary": "Both omitted source profiles are restored. All eight checks pass; no current defect demonstrated. Package unchanged; no publication or database writes.",
+  "source_analysis": {
+    "skill": "Reduce a consistent singular 3x3 system with two pivots to RREF and, when requested, select its general solution vector.",
+    "reasoning_steps": [
+      "Construct the augmented matrix.",
+      "Find and normalize two pivots.",
+      "Clear entries above pivots.",
+      "Express basic variables in terms of free variable z when requested."
+    ],
+    "invariants": [
+      "Consistent rank-two linear system.",
+      "Source-supported matrix and solution-vector families.",
+      "Five radio choices with exactly one correct answer."
+    ],
+    "permitted_variations": [
+      "Signed slopes, intercepts and row dependencies.",
+      "Equation ordering and nonzero scaling.",
+      "Correct-choice position and distractor assignments."
+    ],
+    "source_refs": [
+      "Tutorial 3949, baed23fb-560e-56ad-aea3-46f3728ebfff: normalize pivots, then conditionally clear a12.",
+      "Canonical 283e9a4a-443f-579f-b272-248446d3a49f.",
+      "8e9b3735-f721-557c-bd19-98de1fb72ed8 (q-74625).",
+      "c0791632-977c-5714-8eb6-2845fc127f35 (q-131634)."
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "source-extract.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay-details.json",
+        "replays.json",
+        "repair-regression-verification.json"
+      ],
+      "details": "All 17 profiles replay with complete ordered banks and matching worked matrix sequences. Retained regression reproduces the old omission and passes current code."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "focused-controls-math.json",
+        "review_math.py"
+      ],
+      "details": "75 generated records pass independent exact answer, bank and worked-reduction checks."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "coverage-results.json",
+        "runner-batch.json",
+        "delivery-independent/delivery.json",
+        "delivery-batch/delivery.json"
+      ],
+      "details": "All 17 profiles sampled; both response families and all five target slots observed. All five actual batch records survive delivery and have distinct RREFs."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "scope-results.json",
+        "source-analysis.json"
+      ],
+      "details": "Tested variations preserve the source skill, response contract and comparable workload."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-all-input.json",
+        "grader-all-results.json"
+      ],
+      "details": "Native grader accepts 75 independently verified correct choices and rejects 300 alternatives. Free-entry equivalence is inapplicable to these radio fields."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-extra/rendering.json",
+        "visual-inspection.json",
+        "rendered-choice-results.json"
+      ],
+      "details": "Actual UI renders 17 records, including every batch record and controlled pair. Representative screenshots inspected."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "generator-rejection.json",
+        "package-tree-hashes-before.json",
+        "package-tree-hashes-after.json",
+        "commands.json"
+      ],
+      "details": "Exact dependencies, deterministic replay, relocation and invalid-parameter rejection pass. Package tree unchanged."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "decision-probe-results.json",
+        "counterfactual-results.json",
+        "learner-selection-results.json",
+        "inventory-audit.json",
+        "affected-inventory.json"
+      ],
+      "details": "Relevant and irrelevant counterfactuals pass math, rendering and actual grading. Conditional shortcut probes demonstrate no defect. Captured selection rules examined; live-policy and historical-provenance limits documented."
+    }
+  },
+  "findings": []
+}

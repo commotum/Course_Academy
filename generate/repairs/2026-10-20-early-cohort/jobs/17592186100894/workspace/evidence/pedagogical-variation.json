@@ -1,0 +1,190 @@
+{
+  "learner_operation": "Rearrange, separate, integrate, apply IC, choose a branch and return the source expression contract.",
+  "specification": "../instructional-account.md",
+  "fidelity": "25 complete source banks and keys replay; q-104058 excluded as inconsistent; q-126765 missing equation restored from worked solution with local branch.",
+  "correctness": "61 displayed-record ODE/IC/unique-answer checks, plus five exact CLI batch checks; 56 distinct visible mathematical tasks in the regression sample.",
+  "grading": "Native application grader: 85 accepted and 206 rejected current checks, zero unresolved. All 146 retained reviewer checks also pass. Five batch items: 5 accepted, 11 rejected.",
+  "variation": {
+    "before": "before-shortcut.json",
+    "current": {
+      "total": 23,
+      "trig": 23,
+      "old_symbol_cue_successes": 0,
+      "key_with_pi": 14,
+      "key_without_pi": 9,
+      "correct_positions": {
+        "4": 10,
+        "1": 2,
+        "0": 6,
+        "2": 2,
+        "3": 3
+      },
+      "constants": {
+        "pi^2": 11,
+        "-pi^2": 3,
+        "-1": 3,
+        "0": 3,
+        "1": 3
+      }
+    },
+    "delivery": {
+      "easy": {
+        "raw": {
+          "total": 41,
+          "trig": 27,
+          "old_symbol_cue_successes": 0,
+          "key_with_pi": 15,
+          "key_without_pi": 12,
+          "correct_positions": {
+            "4": 10,
+            "1": 2,
+            "0": 6,
+            "2": 6,
+            "3": 3
+          },
+          "constants": {
+            "pi^2": 12,
+            "-pi^2": 3,
+            "-1": 3,
+            "0": 5,
+            "1": 4
+          }
+        },
+        "accepted": {
+          "total": 41,
+          "trig": 27,
+          "old_symbol_cue_successes": 0,
+          "key_with_pi": 15,
+          "key_without_pi": 12,
+          "correct_positions": {
+            "4": 10,
+            "1": 2,
+            "0": 6,
+            "2": 6,
+            "3": 3
+          },
+          "constants": {
+            "pi^2": 12,
+            "-pi^2": 3,
+            "-1": 3,
+            "0": 5,
+            "1": 4
+          }
+        }
+      },
+      "moderate": {
+        "raw": {
+          "total": 21,
+          "trig": 0,
+          "old_symbol_cue_successes": 0,
+          "key_with_pi": 0,
+          "key_without_pi": 0,
+          "correct_positions": {},
+          "constants": {}
+        },
+        "accepted": {
+          "total": 21,
+          "trig": 0,
+          "old_symbol_cue_successes": 0,
+          "key_with_pi": 0,
+          "key_without_pi": 0,
+          "correct_positions": {},
+          "constants": {}
+        }
+      }
+    },
+    "rank_counts": {
+      "coefficient": {
+        "(3, 2)": 9,
+        "(0, 3)": 2,
+        "(0, 2)": 1,
+        "(1, 2)": 5,
+        "(1, 3)": 2,
+        "(2, 2)": 4
+      },
+      "initial_value": {
+        "(3, 2)": 9,
+        "(1, 2)": 3,
+        "(2, 2)": 5,
+        "(0, 3)": 2,
+        "(0, 4)": 2,
+        "(1, 3)": 2
+      },
+      "text_length": {
+        "(0, 1)": 16,
+        "(1, 2)": 1,
+        "(0, 2)": 5,
+        "(1, 1)": 1
+      }
+    },
+    "exact_old_counterexample_now_success": false,
+    "counterfactuals": [
+      {
+        "parameters": {
+          "h": 1,
+          "a": 4,
+          "c": "0"
+        },
+        "key": "y=4 \\left(x - 1\\right)^{2} + \\ln{\\left(\\sin{\\left(x - 1 \\right)} \\right)}"
+      },
+      {
+        "parameters": {
+          "h": 1,
+          "a": 4,
+          "c": "1"
+        },
+        "key": "y=4 \\left(x - 1\\right)^{2} + \\ln{\\left(\\sin{\\left(x - 1 \\right)} \\right)} + 1"
+      },
+      {
+        "parameters": {
+          "h": 1,
+          "a": 4,
+          "c": "pi^2"
+        },
+        "key": "y=4 \\left(x - 1\\right)^{2} + \\ln{\\left(\\sin{\\left(x - 1 \\right)} \\right)} + \\pi^{2}"
+      }
+    ],
+    "irrelevant_seed_preserved_answer": true,
+    "claims": "No tested universal symbol, position, coefficient rank, IC rank or text-length rank cue; finite audit does not prove absence of every shortcut."
+  },
+  "semantic_coverage": {
+    "records": 61,
+    "unique_visible_mathematical_tasks": 56,
+    "by_template": {
+      "q-104065": 22,
+      "q-128199": 4,
+      "q-355559": 3,
+      "q-355577": 3,
+      "q-355582": 3,
+      "q-350957": 3,
+      "q-20071": 1,
+      "q-79372": 1,
+      "q-128192": 1,
+      "q-104059": 1,
+      "q-104064": 1,
+      "q-14267": 1,
+      "q-355546": 1,
+      "q-355547": 1,
+      "q-355564": 1,
+      "q-355576": 1,
+      "q-4016": 1,
+      "q-79371": 1,
+      "q-79373": 1,
+      "q-79425": 1,
+      "q-355560": 1,
+      "q-104056": 1,
+      "q-104057": 1,
+      "q-8306": 1
+    },
+    "slot_coverage": "trig: a=2,4,6; C=-pi\u00b2,-1,0,1,pi\u00b2; h boundaries and all eight old nonzero shifts. Radical: b=-2,-1,1,2. Other unchanged profiles: one small regression per profile; retained native families at h=-4,1,4.",
+    "limits": "Legacy translated profiles preserve their original integration constants and source banks. No claim that those translations cover initial-condition reassignment. Decision variation is specifically repaired in the demonstrated trig family and restored radical-branch family."
+  },
+  "delivery": "41 easy and 21 moderate controls survive shared filters; five batch items also survive. Current trig symbol cue: 0/27 controls after filtering; 0/1 in five-record batch.",
+  "selection": "selection.json reproduces read-only conditional within-band draws; live policy/history absent.",
+  "limitations": [
+    "No finite probe proves absence of every shortcut.",
+    "Unchanged source profiles retain their finite translated source banks; no claim that those translations alone vary constants.",
+    "Captured inventory has only original source questions; no live database was queried."
+  ],
+  "scope": "No publication, database writes or service restarts."
+}

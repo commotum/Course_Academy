@@ -1,0 +1,18 @@
+{
+  "retained_finding": "cc3b2fd1aa8232988d0e",
+  "preflight": "../repair-preflight.json read; claims 17 profiles/85 choices; independently rerun in copies",
+  "commands": [
+    "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python current-regression/checks/source_coverage.py --source ../source/source.json",
+    "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python failing-regression/checks/source_coverage.py --source ../source/source.json"
+  ],
+  "current": {
+    "exit": 0,
+    "stdout": "{\"passed\": true, \"replays\": 17, \"sampled_profiles\": 17, \"choices_matched\": 85, \"selection_draws\": 39}\n"
+  },
+  "failing_example": {
+    "exit": 1,
+    "construction": "Exact current package copy with earlier source-data.json (omits q-74625 and q-131634); runtime generator otherwise unchanged.",
+    "stderr": "Traceback (most recent call last):\n  File \"/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186096745/review-1-policy-2-ff32c64117fa7c75/failing-regression/checks/source_coverage.py\", line 93, in <module>\n    main()\n    ~~~~^^\n  File \"/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186096745/review-1-policy-2-ff32c64117fa7c75/failing-regression/checks/source_coverage.py\", line 37, in main\n    assert not missing and not extra, f'Registry differs: missing={missing}, extra={extra}'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: Registry differs: missing=['q-131634', 'q-74625'], extra=[]\n"
+  },
+  "independent_current": "audit.py externally compares all 17 source IDs and complete banks, including missing-profile cases; 49 independent math checks no errors"
+}

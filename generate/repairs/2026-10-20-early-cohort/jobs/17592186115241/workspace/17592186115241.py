@@ -99,6 +99,7 @@ def compile_math(text,scale,offsets):
   body=m[1]
   converted=replace(re.match(INNER,r'\begin{aligned}'+body+r'\end{aligned}'))
   if '&' not in body:converted=converted.replace('aligned','bmatrix')
+  else:converted=r'\left['+converted+r'\right]'
   token='MATRIXTOKEN'+str(len(saved))+'TOKEN';saved.append(converted);return token
  text=re.sub(r'\\begin\{bmatrix\}(.*?)\\end\{bmatrix\}',bm,text,flags=re.S)
  out=INNER.sub(lambda m:m[0] if 'MATRIXTOKEN' in m[1] else replace(m),text)
@@ -163,7 +164,7 @@ def authored_solution(M,states,ops,sub=False):
  R,piv,free,vec=solution_vector(M);n=M.cols-1
  def names(cols):return ' and '.join('$'+tex(VARS[i],sub)+'$' for i in cols)
  rows=[]
- for i,S in enumerate(states):rows.append(('M & =' if i==0 else ' & ∼')+matrix_tex(S)+((' & '+operation_tex(ops[i])) if i<len(ops) else ''))
+ for i,S in enumerate(states):rows.append(('M & =' if i==0 else ' & ∼')+matrix_tex(S)+((r' \\ & '+operation_tex(ops[i])) if i<len(ops) else ''))
  return ('The augmented matrix for this system is\n\n$$\nM='+matrix_tex(M)+'.\n$$\n\n'
   'Using the standard Gauss-Jordan method, we can reduce this matrix to reduced row echelon form as follows:\n\n$$\n'+r'\begin{aligned}'+r' \\ '.join(rows)+r'\end{aligned}'+'\n$$\n\n'
   'The corresponding system is now\n\n$$\n'+system_tex(R,sub)+'\n$$\n\n'
@@ -328,9 +329,13 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
  if source is None and template in FAMILIES.values():source=rng.choice(sorted(q for q,f in FAMILIES.items() if f==template))
  if profile and profile not in QUESTIONS and profile!='authored_operations':raise ValueError('unknown profile')
  if source and level!='easy':raise ValueError('observed/unrated source profiles assigned easy only')
- selected_case=rng.choice(EASY_CASES) if level=='easy' and not source and parameters is None else None
+ selected_case=None
+ if level=='easy' and not source:
+  if parameters is not None:selected_case=parameters.get('decision_case')
+  elif template and template.startswith('authored_easy_') and template[len('authored_easy_'):] in EASY_CASES:selected_case=template[len('authored_easy_'):]
+  else:selected_case=rng.choice(EASY_CASES)
  expected=FAMILIES[source] if source else ('authored_easy_'+selected_case if selected_case else 'authored_'+level)
- if template and template not in (expected,source):raise ValueError('template/profile mismatch')
+ if template and template not in (expected,source,'authored_'+level):raise ValueError('template/profile mismatch')
  for attempt in range(1000):
   if parameters is None:
    if source:p={'scale':rng.choice([-3,-2,-1,1,2,3]),'offsets':[rng.randint(-5,5) for _ in range(len(BASE[source][0])-1)]}
@@ -364,7 +369,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
   if i==correct:correctid=aid
  rng.shuffle(answers)
  field={':answer-field/id':fid,':answer-field/key':'selection',':answer-field/type':':answer-field.type/radio',':answer-field/choices':answers,':answer-field/correct':[':answer/id',correctid]}
- return {'knowledge_point':{'db_id':KP,'id':RECORD[':knowledge-point/id'],'title':RECORD[':knowledge-point/title']},'question':{':question/id':uid(content),':question/difficulty':':question.difficulty/'+level,':question/problem':prompt,':question/worked-solution':sol,':question/answer-fields':[field]},'generation':{'generator_version':VERSION,'seed':seed,'template':expected,'bank_profile':source or 'authored_operations','parameters':p,'mathematical_fingerprint':mathfp,'content_fingerprint':content,'matrix':serialize(M),'source_basis':RAW['basis'],'source_lineage':RAW['lineage'],'sympy_version':sp.__version__,'plots':'none',**extra}}
+ return {'knowledge_point':{'db_id':KP,'id':RECORD[':knowledge-point/id'],'title':RECORD[':knowledge-point/title']},'question':{':question/id':uid(content),':question/difficulty':':question.difficulty/'+level,':question/problem':prompt,':question/worked-solution':sol,':question/answer-fields':[field]},'generation':{'generator_version':VERSION,'seed':seed,'template':expected,'bank_profile':source or 'authored_operations','parameters':p,'mathematical_fingerprint':mathfp,'content_fingerprint':content,'matrix':serialize(M),'source_basis':CURRENT['basis'],'source_lineage':CURRENT['lineage'],'source_sha256':CURRENT['source_sha256'],'sympy_version':sp.__version__,'plots':'none',**extra}}
 
 def generate_easy(seed=0,**kw):return generate('easy',seed,**kw)
 def generate_moderate(seed=0,**kw):return generate('moderate',seed,**kw)

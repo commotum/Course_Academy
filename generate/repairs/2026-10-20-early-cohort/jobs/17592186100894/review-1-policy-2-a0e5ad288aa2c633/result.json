@@ -1,0 +1,125 @@
+{
+  "verdict": "revise",
+  "summary": "A conditional answer-bank shortcut survives the repair, succeeding on 5/5 qualifying controls after delivery filtering. Source replay, mathematics, grading, rendering and packaging pass. The exact batch contains no affected trigonometric item. Package unchanged; no database writes.",
+  "source_analysis": {
+    "skill": "Rearrange a separable ODE, integrate, and apply initial data to determine the integration constant and solution branch.",
+    "reasoning_steps": [
+      "Rearrange and separate variables.",
+      "Integrate using the observed elementary methods.",
+      "Apply initial data and return the requested expression or relation."
+    ],
+    "invariants": [
+      "Preserve source workload, difficulty and response scaffolds.",
+      "Require a valid local solution and consistent prompt, key and explanation.",
+      "Provide exactly one valid radio answer."
+    ],
+    "permitted_variations": [
+      "Admissible coefficients, initial ordinates and integration constants.",
+      "Positive and negative branches selected by initial data.",
+      "Answer-bank relationships and ordering without incidental predictors."
+    ],
+    "source_refs": [
+      "tutorial 974 / e2c4c33d-a1bd-537e-9daa-1960f765953d",
+      "cdddaa9b-4174-550d-a7b6-1b8e1a3f2b29",
+      "06632100-a7a1-5d47-9549-7f654f194e12"
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "provenance.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay.json",
+        "source-replay-records.json",
+        "retained-finding-witnesses.json"
+      ],
+      "details": "All 25 supported complete banks and keys replay. Restored profiles and documented source corrections are supported by original worked solutions."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "sine-checks.json",
+        "provenance.json",
+        "reused-unchanged-math-results.json"
+      ],
+      "details": "Forty fresh records, including the exact batch, satisfy the displayed equations and applicable initial or local-branch conditions. Unchanged-family evidence was reused with provenance."
+    },
+    "variety": {
+      "status": "failed",
+      "evidence_paths": [
+        "samples.json",
+        "conditional-shortcut-results.json",
+        "pedagogical-variation.json"
+      ],
+      "details": "Coefficient, constant and branch coverage improved, but the shortest repeated-coefficient choice remains the winner throughout a recognizable subgroup."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "scope-review.json",
+        "samples.json",
+        "sine-records.json"
+      ],
+      "details": "Changed families retain the source integration methods, workload, difficulty and response shapes."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-report.json",
+        "grader-execution.json",
+        "prior-strict-failure.txt"
+      ],
+      "details": "The native grader passes 344 strict checks: 108 accepted, 236 rejected and zero unresolved. Retained failures, equivalent notation, wrong values and opposite branches are included."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-counterfactual/rendering.json",
+        "render-visual-review.json",
+        "render-counterfactual/question-009.png"
+      ],
+      "details": "The actual UI rendered 15 records without automated errors. Representative batch, counterfactual, restored-profile and minimal-failure screenshots were inspected."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging.json",
+        "runtime-results.json",
+        "relocation-records.json",
+        "contract-check.json"
+      ],
+      "details": "Relocation, deterministic execution, boundary rejection and exact dependency versions pass. Package files remain unchanged."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "conditional-shortcut-results.json",
+        "minimal-failure.json",
+        "minimal-regression-result.json",
+        "delivery-stages.json",
+        "selection.json",
+        "affected-inventory.json"
+      ],
+      "details": "Relevant and irrelevant counterfactuals pass, but a visible bank-shape cue solves all five qualifying controls and survives delivery and UI shuffling. The exact batch has no trig item. Captured inventory contains no generated records."
+    }
+  },
+  "findings": [
+    {
+      "kind": "decision_shortcut",
+      "description": "For q-104065, when the displayed initial ordinate is a pure rational multiple of pi\u00b2 and exactly one quadratic coefficient repeats across choices, selecting the shortest option with that coefficient reliably selects the key without integration or initial-condition substitution. This succeeds 5/5 qualifying controls before and after delivery, versus a random-choice baseline of 1/5.",
+      "source_refs": [
+        "cdddaa9b-4174-550d-a7b6-1b8e1a3f2b29",
+        "tutorial 974 / e2c4c33d-a1bd-537e-9daa-1960f765953d"
+      ],
+      "reproduction": "From evidence_root, run PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python reproduce-minimal.py; current expected exit is 1. Minimal call: generate(\"easy\",492800,\"q-104065\",{\"h\":1,\"a\":4,\"c\":\"0\"}). In minimal-failure.json, coefficient 4 alone repeats, and its shorter option y=4(x-1)^2+ln(sin(x-1)) is correct.",
+      "requested_change": "Change the family-wide distractor construction so coefficient multiplicity and relative constant complexity do not jointly identify the key in this subgroup. Preserve valid constants, unique mathematical correctness, source replay and grading. Retain the strict minimal regression; do not blacklist its seed."
+    }
+  ]
+}

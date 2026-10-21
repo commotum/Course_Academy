@@ -1,0 +1,101 @@
+import json,hashlib,re,sys
+from pathlib import Path
+sys.dont_write_bytecode=True
+from review_math import prompt,matrices,semantic,correct_index
+ROOT=Path(__file__).resolve().parent
+REPO=Path('/home/jake/Developer/Course_Academy'); PKG=ROOT.parent/'workspace';PREV=ROOT.parent/'review-0-policy-2-5c66a489da337c4d'
+def load(p):return json.loads((ROOT/p).read_text())
+def save(p,v):(ROOT/p).write_text(json.dumps(v,indent=2,default=str)+'\n')
+source=load('source-analysis.json');replays=load('replays.json');src=load('source-extract.json')
+# External original source, not self-reported coverage.
+source_checks=[]
+for q,r in zip(src['questions'],replays):
+ rq=r['question'];sf=q[':question/answer-fields'][0];rf=rq[':question/answer-fields'][0]
+ same_banks=[(a[':answer/type'][':db/ident'],semantic(a[':answer/value'])) for a in sf[':answer-field/choices']]==[(a[':answer/type'],semantic(a[':answer/value'])) for a in rf[':answer-field/choices']]
+ def prose(t):return ' '.join(re.sub(r'\$\$.*?\$\$|\$[^$]*\$', '',t,flags=re.S).split())
+ state_match=matrices(q[':question/worked-solution'])==matrices(rq[':question/worked-solution'])
+ item={'source_id':q[':question/id'],'profile':q[':question/math-academy-id'],'system':prompt(q)==prompt(rq),'ordered_bank_types_and_values':same_banks,'five_choices':len(rf[':answer-field/choices'])==5,'field_type':rf[':answer-field/type']==sf[':answer-field/type'][':db/ident'],'key':correct_index(q)==correct_index(rq),'prompt_prose':prose(q[':question/problem'])==prose(rq[':question/problem']),'solution_prose':prose(q[':question/worked-solution'])==prose(rq[':question/worked-solution']),'solution_matrix_sequence':state_match}
+ assert all(v for k,v in item.items() if isinstance(v,bool)),item
+ source_checks.append(item)
+save('source-replay-details.json',{'checks':source_checks,'canonical':'Canonical e-6233 has no captured answer bank; scope evidence only.','corrections':source['source_corrections'],'normalization':'Augmented separators, equivalent scalable parentheses and source q-74627 operation-label correction. Original bank values/types/order and solution numeric sequence retained.'})
+# Confirm actual rendered complete choice bank and displayed positions.
+html_results=[]
+for folder,input_path in [('render','render-input.json'),('render-extra','render-extra-input.json')]:
+ rs=load(input_path);report=load(folder+'/rendering.json');assert report['passed'] and len(report['cases'])==len(rs)
+ for j,r in enumerate(rs):
+  html=(ROOT/f'{folder}/question-{j+1:03d}.html').read_text();ids=re.findall(r'<input type="radio"[^>]*value="([^"]+)"',html);f=r['question'][':question/answer-fields'][0];key=f[':answer-field/correct'][1]
+  assert len(ids)==5 and set(ids)=={a[':answer/id'] for a in f[':answer-field/choices']}
+  html_results.append({'screenshot':f'{folder}/question-{j+1:03d}.png','question_id':r['question'][':question/id'],'template':r['generation']['template'],'review_case':r.get('review_case'),'order':ids,'correct_position':ids.index(key),'complete_bank':True})
+save('rendered-choice-results.json',html_results)
+inspected=['render/question-%03d.png'%j for j in (1,2,3,4,5,6,7,8,9,11)]+['render-extra/question-003.png']
+save('visual-inspection.json',{'actual_renderer':'Unmodified learning UI via render_preview.py','rendered_count':len(html_results),'inspected_screenshots':inspected,'observations':'All five exact batch records and representative restored-profile before/after and row-permuted systems inspected. Systems, matrix brackets and augmented separators, vector parameters, all five radio controls, swaps/scales and worked reductions display legibly. q-131634 correctly describes an already-zero entry above the second pivot. Green answer feedback is the fixture submitted-key state, not a learner-facing pre-answer cue.','automated_reports':['render/rendering.json','render-extra/rendering.json'],'passed':True})
+probes=load('decision-probe-results.json')['probes']
+for family in ('matrix','vector'):
+ indices=[j for j,r in enumerate(load('runner-batch.json')) if r['generation']['response_template']==family]
+ probes.append({'cue':'first displayed radio option','subgroup':'exact delivered batch '+family,'scope':'within_template','strategy':'Click the first choice in actual UI order.','correct':sum(html_results[j]['correct_position']==0 for j in indices),'total':len(indices),'baseline':.2,'disposition':'not_predictive','conclusion':'Uniform 1/5 choice baseline. Actual displayed order differs from authored order. Finite subgroups (one matrix and four vectors) cannot establish all population rates; no first-displayed strategy solves the exact pool.','sample_refs':['runner-batch.json','rendered-choice-results.json']})
+# Copy earlier independent conditional controls for unchanged profiles; current code differs only in comment, source registry additions.
+reused=ROOT/'reused';reused.mkdir(exist_ok=True)
+for name in ['shortcut-control-results.json','shortcut-controls.json','shortcut-controls-math.json','scope-results.json']:
+ (reused/name).write_bytes((PREV/name).read_bytes())
+old_control=json.loads((reused/'shortcut-control-results.json').read_text())
+probes.append({'cue':old_control['cue'],'subgroup':'unchanged q-74628, independently seeded prior controls','scope':'other_recognizable_subgroup','strategy':'Choose shortest option in authored order.','correct':old_control['correct'],'total':old_control['total'],'baseline':.2,'disposition':'not_predictive','conclusion':'1/5 uniform baseline. Prior 3/3 observation broke to 2/10 in independent controls. Reused because this profile data, construction code and engine are unchanged; reuse does not certify the new profiles, tested separately here.','sample_refs':['reused/shortcut-controls.json','reused/shortcut-control-results.json','revision-comparison.json']})
+prior_data=json.loads((PREV/'relocated/source-data.json').read_text());data=json.loads((PKG/'source-data.json').read_text());a={q[':question/id']:q for q in prior_data['questions']};b={q[':question/id']:q for q in data['questions']}
+codeold=(PREV/'relocated/generator.py').read_text().splitlines();codenew=(PKG/'generator.py').read_text().splitlines()
+assert codeold[7:]==codenew[7:];assert all(b[k]==v for k,v in a.items());assert len(b)==17
+save('revision-comparison.json',{'previous_package_hash':'793f45d3a19b13f984c05a81aade22b5163bfe98b5004163e4bfd18aa6117213','current_package_hash':'efd26d2bc2a7ec47782275b5ff299b0861808ba1274bc17b483ee76d3e32c300','added_source_ids':sorted(set(b)-set(a)),'existing_source_records_identical':True,'generator_change':'Docstring 15->17; executable construction identical, see revision.diff.','math_format_identical':(PKG/'math_format.py').read_bytes()==(PREV/'relocated/math_format.py').read_bytes(),'reuse_basis':'Source and policy match supplied previous_review; engine hash unchanged. Previous non-source findings were not assumed to pass changed registry.','repair_regressions':'Exactly one retained finding; author regression independently reproduced on old and current isolated package copies. See repair-regression-verification.json.'})
+coverage=load('coverage-results.json');cf=load('counterfactual-results.json');assert all(all(v for k,v in c.items() if isinstance(v,bool)) and not any(c['math_errors']) for c in cf)
+variation={'learner_operation':source['learner_operation'],'fixed_features':source['fixed_features']+[{'feature':'Three equations and one-of-five radio response','justification':'All assessed source cases use a singular 3x3 system and five single-choice alternatives. Consistency and rank two are the target skill, not qualifying-label assignments.'}], 'answer_roles':[{'role':'Affine slopes and intercepts / augmented RREF free-column and RHS entries','eligible_variation':'Independent signed/zero values, derived from the presented equations. These source-example values are incidental answer-bearing assignments.','observed':'All four slots vary through both signs and zero; exact checks validate all sampled answers. Each restored profile has 13 fresh samples including separate controls.'},{'role':'Which complete candidate agrees with the equations','eligible_variation':'Any of five distinct candidates may qualify, with equations and key following that choice; no fixed correct label or unique bank shape.','observed':'All five authored slots observed. Same bank controlled pairs change the qualifying tuple for matrix and vector families and each restored profile; native grader follows new answer.'},{'role':'Equation order / signs and dependency row','eligible_variation':'Row permutation and nonzero row scaling preserve the solution; source profiles cover several dependence and elimination arrangements.','observed':'Controlled permutations/signs change prompt and trace while preserving response; ordinary sampling retains 17 source coefficient layouts, each justified as same-workload profile.'}], 'coverage':[{'case':k,'sample_refs':['coverage-results.json',{'fresh_raw':'independent-samples.json','fresh_delivered':'delivery-independent/accepted.json','batch_raw':'runner-batch.json','batch_delivered':'delivery-batch/accepted.json','controls_raw':'focused-controls.json','controls_delivered':'delivery-controls/accepted.json'}[k]],'result':json.dumps(v)} for k,v in coverage.items()], 'counterfactuals':[{'kind':'relevant','change':'Hold template, complete candidate bank, equation order and signs fixed; switch the target from candidate 0 [-3,3,-4,4] to candidate 1 [3,-3,4,-4] for q-74525, q-74532, q-74625 and q-131634.','expected':'Different presented equations, final RREF or affine vector and correct choice; explanation and native grader must follow the changed system and reject the old candidate.','observed':'All four pairs pass independent prompt reconstruction, exact RREF, trace and full bank/key tests; real grader accepts new choice and rejects the other four. All pair records rendered by actual UI with complete banks.','status':'passed','justification':'The source requires reducing/solving the given equations. Eligible answer-bearing assignments can change while this operation remains fixed.','sample_refs':['counterfactual-records.json','counterfactual-results.json','math-results.json','grader-all-input.json','grader-all-results.json','rendered-choice-results.json','render/rendering.json','render-extra/rendering.json']},{'kind':'irrelevant','change':'For all four profiles preserve bank and target; reorder equations [2,0,1] and use signs [-1,1,-1].','expected':'Presented equations and worked trace change; RREF, solution and accepted mathematical choice remain equal.','observed':'All four preserved responses and changed worked states pass independent exact verification, actual grader, and actual UI rendering.','status':'passed','justification':'Reordering and multiplying equations by nonzero scalars preserve the solution, exactly as source elementary row operations imply.','sample_refs':['counterfactual-records.json','counterfactual-results.json','math-results.json','grader-all-results.json','rendered-choice-results.json','render/rendering.json','render-extra/rendering.json']}], 'shortcut_probes':probes, 'delivery':{'stages_examined':['distinct-candidate rejection','batch semantic-RREF rejection/resampling','requested hard difficulty','actual publisher validation/normalization','captured inventory and within-batch deduplication','native learner freshness/weight/selection rule inspected and hard-band draw reproduced','actual UI answer ordering'], 'sample_refs':['generator-rejection.json','packaging-results.json','delivery-independent/delivery.json','delivery-controls/delivery.json','delivery-batch/delivery.json','delivery-counterfactuals/delivery.json','learner-selection-results.json','rendered-choice-results.json'],'result':'All 21 independent samples, 20 restored-profile controls, 12 controlled-pair records, and the exact 5-item batch survive actual publication filtering at inventory basis 5370. Family and cue counts unchanged by filtering. Actual batch has 5 distinct RREFs, four vectors and one matrix; its three q-74626 records have no tested common incidental answer strategy. Selection support retained under positive hard weights; zero-weight and no-policy behavior explicitly assessed.'}, 'limitations':['Finite shortcut probes cannot prove absence of every cue. Unchanged profiles use small fresh regression samples plus prior independent conditional controls; expanded testing focuses on the two added profiles.','Canonical e-6233 lacks captured answer fields; no invented graded canonical replay.','Captured inventory basis 5370 has no generation metadata for five non-source records; their mathematics was checked but historical seeds/provenance cannot be certified. No affected generated inventory item demonstrated.','Publication preparation is absent. Actual read-only delivery helper supplies normalization/deduplication against captured inventory. Later inventory, learner history, active weights and future database IDs are unavailable; no live learner distribution is claimed.']}
+save('pedagogical-variation.json',variation)
+save('scope-results.json',{'basis':'Independent source-analysis, tutorial 3949 and all 17 assessed cases.','checks':'All tested systems are linear, consistent coefficient/augmented rank two, x/y pivot, free z; same matrix/vector response families and five radio choices. Signed bounded arithmetic, swaps, scaling and conditional backward clearing remain source-shaped.','new_profile_effect':'q-74625 already has a unit second pivot; q-131634 has an already-zero backward entry. Both are explicitly supported by source and tutorial conditional algorithm; new samples handle both without extra prerequisites.','math_records_checked':75,'source_ids':[q[':question/id'] for q in src['questions']],'passed':True})
+assert not load('math-results.json')['failures'];assert all(not r['errors'] for r in load('focused-controls-math.json'))
+assert all(r['rejected'] for r in load('generator-rejection.json'))
+grader=load('grader-all-results.json');assert grader['accepted_checks']==75 and grader['rejected_checks']==300
+# Integrity check, including runtime, checks and author evidence files.
+def hs(p):return {str(f.relative_to(p)):hashlib.sha256(f.read_bytes()).hexdigest() for f in p.rglob('*') if f.is_file()}
+full=hs(PKG);assert full==load('package-tree-hashes-before.json');save('package-tree-hashes-after.json',full)
+pp=load('packaging-results.json');assert pp['manifest']['dependencies']=={'python':pp['python'],'packages':pp['packages']};assert pp['deterministic_replay'] and pp['relocation_identical'] and pp['package_unchanged']
+pp['recursive_tree_unchanged']=True;pp['version_contract']='Exact installed strings; third-party packages nested under packages.';save('packaging-results.json',pp)
+save('session-state.json',{'milestone':'All checks completed; final report saved after evidence contract validation.','source_replay':17,'math_records':75,'native_checks':375,'renderer_records':17,'batch_delivered':5,'affected_inventory':0,'package_unchanged':True})
+(ROOT/'session-state.md').write_text('Review complete. All 8 checks pass. Retained missing-profile failure reproduced against old copy, fixed in current registry; 17 source replays and banks verified. 75 independent math records; native grader 75 accepted / 300 rejected. Actual renderer 17 records; screenshots inspected. Exact batch: 5 survive, 5 RREFs, 4 vector + 1 matrix, no demonstrated shortcut. Captured inventory inspected; no affected generated item demonstrated; historical seed replay unavailable. Package hashes unchanged. See review-result.json and pedagogical-variation.json.\n')
+checks={
+'source_replay':(['source-analysis.json','source-replay-details.json','source-replay-results.json','replays.json','repair-regression-verification.json'],'All 17 original profiles replay with complete ordered five-choice banks and matching worked matrix sequences. Retained regression fails old copy and passes current.'),
+'math':(['math-results.json','focused-controls-math.json','review_math.py','audit.py','focused_controls.py'],'75 generated records pass independent exact answer/bank/RREF and worked-trace checks; no math failures.'),
+'variety':(['coverage-results.json','independent-samples.json','focused-controls.json','runner-batch.json','delivery-independent/delivery.json','delivery-batch/delivery.json'],'All 17 profiles sampled; both families, all five target slots, signed/zero affine values. Actual batch retains five distinct RREFs after delivery.'),
+'scope':(['scope-results.json','source-analysis.json'],'Restored and regression cases retain consistent singular 3x3 rank-two Gauss-Jordan work and source radio response contracts.'),
+'grading':(['grader-all-input.json','grader-all-results.json'],'Native grader accepts 75 independently verified keys and rejects 300 alternatives. Radio-only contract; free-entry equivalence inapplicable.'),
+'rendering':(['render/rendering.json','render-extra/rendering.json','visual-inspection.json','rendered-choice-results.json'],'17 records rendered in the actual UI, including every batch record and every controlled pair. Representative screenshots inspected; no demonstrated display failure.'),
+'packaging':(['packaging-results.json','generator-rejection.json','relocation-samples.json','package-tree-hashes-before.json','package-tree-hashes-after.json'],'Exact installed dependencies match manifest; deterministic CLI and relocation pass, invalid parameters reject; package tree unchanged.'),
+'decision_variation':(['pedagogical-variation.json','decision-probe-results.json','counterfactual-results.json','learner-selection-results.json','inventory-audit.json','affected-inventory.json'],'Relevant and irrelevant counterfactuals pass prompt, explanation, actual UI and grader checks. Conditional cue probes and exact-batch delivery show no demonstrated shortcut; live-selection limits documented.')}
+result={'verdict':'accepted','summary':'The two omitted source profiles are restored. All eight checks pass; no concrete current defect demonstrated. Package unchanged; no publication or database writes.','source_analysis':{k:source[k] for k in ('skill','reasoning_steps','invariants','permitted_variations','source_refs','evidence_paths')},'checks':{k:{'status':'passed','evidence_paths':p,'details':d} for k,(p,d) in checks.items()},'findings':[]}
+save('review-result.json',result)
+# Validate the required variation schema without altering runtime dependencies.
+schema=json.loads((REPO/'generate/pipeline/pedagogical-variation.schema.json').read_text())
+def validate(v,s,path='$'):
+ t=s.get('type');types={'object':dict,'array':list,'string':str,'integer':int,'number':(int,float)}
+ if t:assert isinstance(v,types[t]) and not (t in ('integer','number') and isinstance(v,bool)),path
+ if 'enum' in s:assert v in s['enum'],path
+ if isinstance(v,dict):
+  assert all(k in v for k in s.get('required',[])),path
+  if s.get('additionalProperties') is False:assert set(v)<=set(s.get('properties',{})),path
+  for k,x in v.items():
+   if k in s.get('properties',{}):validate(x,s['properties'][k],path+'.'+k)
+ if isinstance(v,list):
+  assert len(v)>=s.get('minItems',0),path
+  for j,x in enumerate(v):validate(x,s['items'],path+f'[{j}]')
+ if isinstance(v,str):assert len(v)>=s.get('minLength',0),path
+ if isinstance(v,(int,float)):
+  if 'minimum' in s:assert v>=s['minimum'],path
+  if 'maximum' in s:assert v<=s['maximum'],path
+validate(variation,schema)
+refs=[]
+def visit(v):
+ if isinstance(v,dict):
+  for k,x in v.items():
+   if k in ('evidence_paths','sample_refs'):refs.extend(x)
+   else:visit(x)
+ elif isinstance(v,list):
+  for x in v:visit(x)
+visit(result);visit(variation)
+for p in refs:assert not Path(p).is_absolute() and (ROOT/p).is_file() and (ROOT/p).stat().st_size>0,p
+save('evidence-contract.json',{'variation_schema_valid':True,'nonempty_relative_evidence_refs_checked':len(refs),'eight_checks':len(checks),'all_passed':True,'package_tree_unchanged':True})
+print(json.dumps({'verdict':result['verdict'],'source_replays':17,'math_records':75,'grader_checks':375,'rendered_records':17,'evidence_refs_checked':len(refs),'batch_displayed_positions':[r['correct_position'] for r in html_results[:5]],'package_unchanged':True}))

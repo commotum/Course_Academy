@@ -1,0 +1,194 @@
+{
+  "learner_operation": "Solve a small consistent dependent linear system using Gauss-Jordan elimination, identify pivot/free variables, and select its full one-parameter vector solution.",
+  "fixed_features": [
+    {
+      "feature": "Small real linear system, one free variable, complete vector solution and five-choice radio response",
+      "justification": "The KP practice, canonical example and tutorial support this contract; observed easy workloads use only a few elementary row operations."
+    },
+    {
+      "feature": "Normal default always has nonzero slopes/constants in both basic coordinates; pivots x/y and free z; two row additions",
+      "justification": "Observed implementation constraint, not an accepted instructional necessity. Source constant-coordinate/zero-constant/rank-one cases and canonical free-y case contradict fixing these roles."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Basic versus free variable",
+      "eligible_variation": "Read from pivot columns; canonical example makes y free with z constant. Same-method assignments must not be inferred fixed from most source examples.",
+      "observed": "Default fixes x/y basic and z free. Optional source profiles add rank-one y-free two-coordinate vectors, but no ordinary calls select them and no canonical three-coordinate y-free profile exists."
+    },
+    {
+      "role": "Constant versus parameter-dependent basic coordinate",
+      "eligible_variation": "Zero/nonzero slopes and constants, including source cancellation yielding x=0 or x=4.",
+      "observed": "Default excludes every zero slope and samples only nonzero constants; valid zero-slope and equal-coordinate explicit cases fail because of bank construction."
+    },
+    {
+      "role": "Correct vector and distractor component arrangement",
+      "eligible_variation": "Correctness must follow the system, independent of modal answer components or position.",
+      "observed": "The fixed four error recipes replicate the correct first component twice and second component three times in most ordinary banks, exposing their intersection as the key."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "Complete source bank replay",
+      "sample_refs": [
+        "source-replay-records.json",
+        "source-replay.json"
+      ],
+      "result": "All 11 declared profiles reproduce original system coefficients and all five mathematical choices at identity parameters. Three current easy source profiles are rejected as unknown; canonical free-y family is unavailable."
+    },
+    {
+      "case": "Normal easy construction before and after rejection",
+      "sample_refs": [
+        "fresh.json",
+        "resampling-stages.json",
+        "rejection-tests.json",
+        "strict-regressions.json"
+      ],
+      "result": "60 seeds 90101..90160 yielded 60 proposals/60 survivors; no resampling in this small sample. Construction fixes all normal decision roles described above. Explicit valid zero-slope and equal-coordinate boundary cases reject."
+    },
+    {
+      "case": "Exact batch versus independent sample after delivery",
+      "sample_refs": [
+        "batch.json",
+        "delivery-batch/accepted.json",
+        "delivery-fresh/accepted.json",
+        "delivery-shortcuts.json"
+      ],
+      "result": "5/5 batch and 60/60 fresh records survive captured-inventory deduplication and easy filtering. Modal shortcut remains 5/5 batch, 59/59 conditional fresh (59/60 including abstention)."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Hold seed 90217, constants [1,4], second free coefficient -3 and mix [1,1] fixed; change first RREF free coefficient 2 to -2.",
+      "expected": "First solution coordinate changes from 1-2z to 1+2z; previous vector must become a rejected choice. Prompt, RREF and explanation must change consistently.",
+      "observed": "Both records display the expected changed equations and solution. Native grader accepts each new key and rejects the old base vector in the changed system. Screenshots 017/018 visually verified.",
+      "status": "passed",
+      "justification": "The tutorial and practice require solving the actual coefficient relationships. This relevant change alters the solution set.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "controlled-validation.json",
+        "grader-results.json",
+        "render-full/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Hold solution coefficients/constants/seed fixed; change invertible row-mixing multiplier from 1 to -1.",
+      "expected": "Printed initial equations and first elimination change, but the full solution vector and grading of that value remain the same.",
+      "observed": "Base and row-mixed records have identical keyed vectors, different prompts and operation explanations. Native grader accepts the preserved value in both. Screenshots 017/019 visually verified.",
+      "status": "passed",
+      "justification": "Equivalent row operations preserve the solution set, the central invariant of source Gauss-Jordan elimination.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "controlled-validation.json",
+        "grader-results.json",
+        "render-full/rendering.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "Repeated component layout",
+      "subgroup": "all 60 ordinary easy outputs, treating one abstention as failure",
+      "scope": "overall",
+      "strategy": "Match printed component strings only: choose the vector combining the unique modal first component and unique modal second component; abstain if modes tie. No system, solution or generation metadata is used to choose.",
+      "correct": 59,
+      "total": 60,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "59 correct, one abstention. Baseline is uniformly choosing one of five choices (20%). This cue bypasses elimination and even substitution. Its success survives answer reordering.",
+      "sample_refs": [
+        "fresh.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Unique modal first and second components",
+      "subgroup": "authored_easy with unique modes (59/60 fresh instances)",
+      "scope": "within_template",
+      "strategy": "Match printed component strings only: choose the vector combining the unique modal first component and unique modal second component; abstain if modes tie. No system, solution or generation metadata is used to choose.",
+      "correct": 59,
+      "total": 59,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Conditional success is 59/59, not a claim that the tie case is solved. Baseline is uniformly choosing one of five choices (20%). This cue bypasses elimination and even substitution. Its success survives answer reordering.",
+      "sample_refs": [
+        "fresh.json",
+        "delivery-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "Repeated component layout",
+      "subgroup": "exact five-question batch after normalization/deduplication",
+      "scope": "within_template",
+      "strategy": "Match printed component strings only: choose the vector combining the unique modal first component and unique modal second component; abstain if modes tie. No system, solution or generation metadata is used to choose.",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Every delivered batch member is solved. This is a batch failure as well as a reproducible broader construction weakness. Baseline is uniformly choosing one of five choices (20%). This cue bypasses elimination and even substitution. Its success survives answer reordering.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "delivery-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "Repeated component layout",
+      "subgroup": "captured generated authored_moderate inventory items",
+      "scope": "within_template",
+      "strategy": "Match printed component strings only: choose the vector combining the unique modal first component and unique modal second component; abstain if modes tie. No system, solution or generation metadata is used to choose.",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "All five exact stored records for this recognizable template are solved. Baseline is uniformly choosing one of five choices (20%). This cue bypasses elimination and even substitution. Its success survives answer reordering.",
+      "sample_refs": [
+        "generated-records.json",
+        "inventory-results.json"
+      ]
+    },
+    {
+      "cue": "Repeated component layout",
+      "subgroup": "captured generated authored_hard inventory items",
+      "scope": "within_template",
+      "strategy": "Match printed component strings only: choose the vector combining the unique modal first component and unique modal second component; abstain if modes tie. No system, solution or generation metadata is used to choose.",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "All five exact stored records for this recognizable template are solved. Baseline is uniformly choosing one of five choices (20%). This cue bypasses elimination and even substitution. Its success survives answer reordering.",
+      "sample_refs": [
+        "generated-records.json",
+        "inventory-results.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "default profile selection",
+      "generator bounds and complete-bank rejection/resampling",
+      "requested easy difficulty filter",
+      "actual publisher normalization and stable identities",
+      "captured inventory and within-batch deduplication",
+      "learner difficulty-first/within-band selection and seen-candidate exclusions"
+    ],
+    "sample_refs": [
+      "resampling-stages.json",
+      "delivery-batch/delivery.json",
+      "delivery-fresh/delivery.json",
+      "delivery-shortcuts.json",
+      "learner-selection.json",
+      "inventory-results.json"
+    ],
+    "result": "No observed rejection or deduplication changes the sampled easy distribution. Exact delivered batch is entirely shortcut-solvable. Any selection of one of its fresh candidates retains the defect; excluding seen candidates only removes members. Read-only selection-rank reproduction is conditional on positive easy weight, not a claim about an actual learner history."
+  },
+  "limitations": [
+    "Captured inventory basis 5373; future inventory and actual learner histories/policy weights are unavailable. The stage rules were inspected; no live learner or database operations were performed.",
+    "No finite sample proves absence of every shortcut. Eleven optional source profiles were source-replayed, but broader shortcut behavior for every affine transformation of every profile is not certified.",
+    "Moderate/hard inventory replays establish this specific shortcut; this easy-job audit does not certify the full authored moderate/hard domains.",
+    "One original question lacks a key and solution. Its independently derived key is documented; no missing instructional evidence was invented."
+  ]
+}

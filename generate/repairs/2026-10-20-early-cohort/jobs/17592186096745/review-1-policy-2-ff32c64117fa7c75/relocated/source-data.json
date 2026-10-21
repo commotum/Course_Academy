@@ -1,0 +1,1196 @@
+{
+  "basis": 5370,
+  "kp_title": "Finding the Reduced Row Echelon Form of a Singular 3x3 System With Two Pivots",
+  "questions": [
+    {
+      ":db/id": 17592186097353,
+      ":question/answer-fields": [
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "0d97356e-5dd6-59ac-8823-e692d240fd47",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 0 & 0 \\\\ 0 & 1 & 0 & 1 \\\\ 0 & 0 & 1 & 0\\end{bmatrix}",
+              ":db/id": 17592186393406
+            },
+            {
+              ":answer/id": "77bf26e0-b876-503a-bb14-4f26022d1fac",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}1 & 0 & -1 & -1 \\\\ 0 & 1 & -1 & -1 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}",
+              ":db/id": 17592186393407
+            },
+            {
+              ":answer/id": "9f5e08ec-2376-55b0-adb3-fd1e94a1e6b3",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 0 & -1 \\\\ 0 & 1 & 0 & -1 \\\\ 0 & 0 & 1 & 0\\end{bmatrix}",
+              ":db/id": 17592186393408
+            },
+            {
+              ":answer/id": "b20860ee-c191-5b18-8b64-646ebc029457",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}1 & 0 & -2 & -1 \\\\ 0 & 1 & -1 & 0 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}",
+              ":db/id": 17592186393405
+            },
+            {
+              ":answer/id": "e9bbb24d-bde4-552f-bf1a-38e5c87f57ae",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}1 & 0 & -2 & -1 \\\\ 0 & 0 & 0 & 0 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}",
+              ":db/id": 17592186393409
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "77bf26e0-b876-503a-bb14-4f26022d1fac",
+            ":answer/type": {
+              ":db/ident": ":answer.type/math"
+            },
+            ":answer/value": "\\begin{bmatrix}1 & 0 & -1 & -1 \\\\ 0 & 1 & -1 & -1 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}",
+            ":db/id": 17592186393407
+          },
+          ":answer-field/id": "ff44693e-4041-5d14-87eb-4237a35b3859",
+          ":answer-field/key": "selection",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/radio"
+          },
+          ":db/id": 17592186393404
+        }
+      ],
+      ":question/difficulty": {
+        ":db/ident": ":question.difficulty/hard"
+      },
+      ":question/id": "6e3014ad-e528-5fe5-be7c-06e6f01c2356",
+      ":question/math-academy-id": "q-74525",
+      ":question/problem": "Consider the following system of linear equations:\n\n$$\n\\left\\{\\begin{aligned}x-2y+z &=1 \\\\ 2x-y-z &=-1 \\\\ -2x+4y-2z &=-2\\end{aligned}\\right.\n$$\n\nUse the standard Gauss-Jordan method to reduce the augmented matrix $M$ of the system to reduced row echelon form.",
+      ":question/worked-solution": "The augmented matrix for this system is\n\n$$\nM=\\begin{bmatrix}1 & -2 & 1 & 1 \\\\ 2 & -1 & -1 & -1 \\\\ -2 & 4 & -2 & -2\\end{bmatrix}.\n$$\n\nTransforming $M$ to reduced row echelon form, we have\n\n$$\n\\begin{aligned}M & \u223c\\begin{bmatrix}1 & -2 & 1 & 1 \\\\ 2 & -1 & -1 & -1 \\\\ -2 & 4 & -2 & -2\\end{bmatrix} & {R}_{2} & :={R}_{2}-2{R}_{1} \\\\  & \u223c\\begin{bmatrix}1 & -2 & 1 & 1 \\\\ 0 & 3 & -3 & -3 \\\\ -2 & 4 & -2 & -2\\end{bmatrix} & {R}_{3} & :={R}_{3}+2{R}_{1} \\\\  & \u223c\\begin{bmatrix}1 & -2 & 1 & 1 \\\\ 0 & 3 & -3 & -3 \\\\ 0 & 0 & 0 & 0\\end{bmatrix} & {R}_{2} & :=\\frac{1}{3}{R}_{2} \\\\  & \u223c\\begin{bmatrix}1 & -2 & 1 & 1 \\\\ 0 & 1 & -1 & -1 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}.\\end{aligned}\n$$\n\nIn the row echelon form above, we have only two pivots (in the $1$st and $2$nd columns). To transform the matrix to reduced row echelon form, we need to create zeros above the pivots only. This gives,\n\n$$\n\\begin{aligned}M & \u223c\\begin{bmatrix}1 & -2 & 1 & 1 \\\\ 0 & 1 & -1 & -1 \\\\ 0 & 0 & 0 & 0\\end{bmatrix} & {R}_{1} & :={R}_{1}+2{R}_{2} \\\\  & \u223c\\begin{bmatrix}1 & 0 & -1 & -1 \\\\ 0 & 1 & -1 & -1 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}.\\end{aligned}\n$$"
+    },
+    {
+      ":db/id": 17592186097354,
+      ":question/answer-fields": [
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "7bd729d1-e6f1-5df4-8e09-72331021886e",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}2 \\\\ 3+z \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )",
+              ":db/id": 17592186340241
+            },
+            {
+              ":answer/id": "8153b49f-f195-5e10-8b47-fb34a7a44226",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}2 \\\\ 3+z \\\\ 1-z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )",
+              ":db/id": 17592186340291
+            },
+            {
+              ":answer/id": "85c1a19f-ae75-546c-b962-2e799bca5c04",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "No solution",
+              ":db/id": 17592186340327
+            },
+            {
+              ":answer/id": "9f68c5a4-96d3-5194-b2a9-6d57a6844c94",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}0 \\\\ z \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )",
+              ":db/id": 17592186340568
+            },
+            {
+              ":answer/id": "a13ad86b-f1a4-579a-84d7-c65042bd7843",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}2 \\\\ 3 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )",
+              ":db/id": 17592186340590
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "7bd729d1-e6f1-5df4-8e09-72331021886e",
+            ":answer/type": {
+              ":db/ident": ":answer.type/math"
+            },
+            ":answer/value": "\\begin{bmatrix}2 \\\\ 3+z \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )",
+            ":db/id": 17592186340241
+          },
+          ":answer-field/id": "c424749c-dead-548c-9fc4-d74eb86c9619",
+          ":answer-field/key": "selection",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/radio"
+          },
+          ":db/id": 17592186341721
+        }
+      ],
+      ":question/difficulty": {
+        ":db/ident": ":question.difficulty/hard"
+      },
+      ":question/id": "7c642737-66e9-5a4d-a96b-0b69aaf732dd",
+      ":question/math-academy-id": "q-74532",
+      ":question/problem": "Consider the following system of linear equations:\n\n$$\n\\left\\{\\begin{aligned}2x-y+z &=1 \\\\ x-y+z &=-1 \\\\ 2y-2z &=6\\end{aligned}\\right.\n$$\n\nUse the standard Gauss-Jordan method to reduce the augmented matrix $M$ of the system to reduced row echelon form, and then solve the linear system.",
+      ":question/worked-solution": "The augmented matrix for this system is\n\n$$\nM=\\begin{bmatrix}2 & -1 & 1 & 1 \\\\ 1 & -1 & 1 & -1 \\\\ 0 & 2 & -2 & 6\\end{bmatrix}.\n$$\n\nTransforming $M$ into reduced row echelon form, we have\n\n$$\n\\begin{aligned}M & \u223c\\begin{bmatrix}2 & -1 & 1 & 1 \\\\ 1 & -1 & 1 & -1 \\\\ 0 & 2 & -2 & 6\\end{bmatrix} & {R}_{1} & \u2194{R}_{2} \\\\  & \u223c\\begin{bmatrix}1 & -1 & 1 & -1 \\\\ 2 & -1 & 1 & 1 \\\\ 0 & 2 & -2 & 6\\end{bmatrix} & {R}_{2} & :={R}_{2}-2{R}_{1} \\\\  & \u223c\\begin{bmatrix}1 & -1 & 1 & -1 \\\\ 0 & 1 & -1 & 3 \\\\ 0 & 2 & -2 & 6\\end{bmatrix} & {R}_{3} & :={R}_{3}-2{R}_{2} \\\\  & \u223c\\begin{bmatrix}1 & -1 & 1 & -1 \\\\ 0 & 1 & -1 & 3 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}.\\end{aligned}\n$$\n\nIn the row echelon form above, we have only two pivots (in the $1$st and $2$nd columns). To transform the matrix to reduced row echelon form, we need to create zeros above the pivots only. This gives,\n\n$$\n\\begin{aligned}M & \u223c\\begin{bmatrix}1 & -1 & 1 & -1 \\\\ 0 & 1 & -1 & 3 \\\\ 0 & 0 & 0 & 0\\end{bmatrix} & {R}_{1} & :={R}_{1}+{R}_{2} \\\\  & \u223c\\begin{bmatrix}1 & 0 & 0 & 2 \\\\ 0 & 1 & -1 & 3 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}.\\end{aligned}\n$$\n\nThe corresponding system is now\n\n$$\n\\left\\{\\begin{aligned}x &=2 \\\\ y-z &=3 \\\\ 0 &=0.\\end{aligned}\\right.\n$$\n\nSince any numbers $x,y,z$ form a solution of the final equation, we can remove this equation from the system. \n\nThe basic variables are the variables whose coefficients are pivots. In this case, the basic variables are $x$ and $y,$ and we have one free variable, $z.$ That means we need to find $x$ and $y$ in terms of $z.$ \n\nTherefore, the general solution is\n\n$$\n\\left\\{\\begin{aligned}x &=2 \\\\ y &=3+z \\\\ z &=z,\\end{aligned}\\right.\n$$\n\nwhere $z$ (the free variable) is an arbitrary number.\n\nIn vector form, the solution can be written as\n\n$$\n\\begin{aligned}\\begin{bmatrix}x \\\\ y \\\\ z\\end{bmatrix}=\\begin{bmatrix}2 \\\\ 3+z \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty ).\\end{aligned}\n$$"
+    },
+    {
+      ":db/id": 17592186266105,
+      ":question/answer-fields": [
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "06fb363f-5cba-5fcc-862f-f3ba778aa08d",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}1 & 0 & -1 & -4 \\\\ 0 & 1 & 1 & 3 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}",
+              ":db/id": 17592186263063
+            },
+            {
+              ":answer/id": "bdcf72fa-9676-56fc-9945-f5cfef5f46f8",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}1 & 0 & -1 & -4 \\\\ 0 & 1 & 0 & 3 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}",
+              ":db/id": 17592186264649
+            },
+            {
+              ":answer/id": "cabb84e0-8be0-5121-8bac-479154c9db88",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}1 & 0 & -1 & 4 \\\\ 0 & 1 & 1 & -1 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}",
+              ":db/id": 17592186264771
+            },
+            {
+              ":answer/id": "e2da7d17-82ba-5c30-90c7-7846c7d2d395",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}1 & 0 & -1 & -4 \\\\ 0 & 1 & 0 & -3 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}",
+              ":db/id": 17592186264969
+            },
+            {
+              ":answer/id": "eed9caf4-73ba-51db-831b-8b469edd3f63",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}1 & 0 & -1 & 14 \\\\ 0 & 1 & 0 & -3 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}",
+              ":db/id": 17592186265092
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "bdcf72fa-9676-56fc-9945-f5cfef5f46f8",
+            ":answer/type": {
+              ":db/ident": ":answer.type/math"
+            },
+            ":answer/value": "\\begin{bmatrix}1 & 0 & -1 & -4 \\\\ 0 & 1 & 0 & 3 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}",
+            ":db/id": 17592186264649
+          },
+          ":answer-field/id": "a848db7a-c78d-5d69-9268-b09a706eee6d",
+          ":answer-field/key": "selection",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/radio"
+          },
+          ":db/id": 17592186265548
+        }
+      ],
+      ":question/difficulty": {
+        ":db/ident": ":question.difficulty/hard"
+      },
+      ":question/id": "8898e291-a92c-543d-b53f-901f8c5bb06e",
+      ":question/math-academy-id": "q-131632",
+      ":question/problem": "Consider the following system of linear equations:\n\n$$\n\\left\\{\\begin{aligned}-2x-5y+2z &=-7 \\\\ x+3y-z &=5 \\\\ x+3y-z &=5\\end{aligned}\\right.\n$$\n\nUse the standard Gauss-Jordan method to reduce the augmented matrix $M$ of the system to reduced row echelon form.",
+      ":question/worked-solution": "The augmented matrix for this system is\n\n$$\nM=\\begin{bmatrix}-2 & -5 & 2 & -7 \\\\ 1 & 3 & -1 & 5 \\\\ 1 & 3 & -1 & 5\\end{bmatrix}.\n$$\n\nTransforming $M$ to reduced row echelon form, we have\n\n$$\n\\begin{aligned}M & \u223c\\begin{bmatrix}-2 & -5 & 2 & -7 \\\\ 1 & 3 & -1 & 5 \\\\ 1 & 3 & -1 & 5\\end{bmatrix} & {R}_{1} & \u2194{R}_{2} \\\\  & \u223c\\begin{bmatrix}1 & 3 & -1 & 5 \\\\ -2 & -5 & 2 & -7 \\\\ 1 & 3 & -1 & 5\\end{bmatrix} & {R}_{2} & :={R}_{2}+2{R}_{1} \\\\  & \u223c\\begin{bmatrix}1 & 3 & -1 & 5 \\\\ 0 & 1 & 0 & 3 \\\\ 1 & 3 & -1 & 5\\end{bmatrix} & {R}_{3} & :={R}_{3}-{R}_{1} \\\\  & \u223c\\begin{bmatrix}1 & 3 & -1 & 5 \\\\ 0 & 1 & 0 & 3 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}.\\end{aligned}\n$$\n\nIn the row echelon form above, we have only two pivots (in the $1$st and $2$nd columns). To transform the matrix to reduced row echelon form, we need to create zeros above the pivots only. This gives,\n\n$$\n\\begin{aligned}M & \u223c\\begin{bmatrix}1 & 3 & -1 & 5 \\\\ 0 & 1 & 0 & 3 \\\\ 0 & 0 & 0 & 0\\end{bmatrix} & {R}_{1} & :={R}_{1}-3{R}_{2} \\\\  & \u223c\\begin{bmatrix}1 & 0 & -1 & -4 \\\\ 0 & 1 & 0 & 3 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}.\\end{aligned}\n$$"
+    },
+    {
+      ":db/id": 17592186266106,
+      ":question/answer-fields": [
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "4edb7bef-ac16-5a9d-a23b-bb221ebbe441",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}4-z \\\\ 3-z \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )",
+              ":db/id": 17592186263685
+            },
+            {
+              ":answer/id": "7ef4eaa8-eb2e-56a8-b38c-3432b48608fa",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}z-4 \\\\ z-3 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )",
+              ":db/id": 17592186264097
+            },
+            {
+              ":answer/id": "9a14f8d9-254e-5f52-8d6e-05b2b194f5ab",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}z+4 \\\\ z+3 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )",
+              ":db/id": 17592186264321
+            },
+            {
+              ":answer/id": "b1d954c2-8801-5d7d-a06f-6ba1fab91edc",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}z \\\\ z \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )",
+              ":db/id": 17592186264530
+            },
+            {
+              ":answer/id": "b550ccb5-238f-5769-a870-818d050e65a7",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "No solution",
+              ":db/id": 17592186264566
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "4edb7bef-ac16-5a9d-a23b-bb221ebbe441",
+            ":answer/type": {
+              ":db/ident": ":answer.type/math"
+            },
+            ":answer/value": "\\begin{bmatrix}4-z \\\\ 3-z \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )",
+            ":db/id": 17592186263685
+          },
+          ":answer-field/id": "a587706c-ba6f-5162-b799-414fcd2b9e6a",
+          ":answer-field/key": "selection",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/radio"
+          },
+          ":db/id": 17592186265536
+        }
+      ],
+      ":question/difficulty": {
+        ":db/ident": ":question.difficulty/hard"
+      },
+      ":question/id": "db4ec426-5bc2-57fa-bb98-af98efb63875",
+      ":question/math-academy-id": "q-131635",
+      ":question/problem": "Consider the following system of linear equations:\n\n$$\n\\left\\{\\begin{aligned}x-3y-2z &=-5 \\\\ -3x+5y+2z &=3 \\\\ 3x-9y-6z &=-15\\end{aligned}\\right.\n$$\n\nUse the standard Gauss-Jordan method to reduce the augmented matrix $M$ of the system to reduced row echelon form, and then solve the linear system.",
+      ":question/worked-solution": "The augmented matrix for this system is\n\n$$\nM=\\begin{bmatrix}1 & -3 & -2 & -5 \\\\ -3 & 5 & 2 & 3 \\\\ 3 & -9 & -6 & -15\\end{bmatrix}.\n$$\n\nTransforming $M$ into reduced row echelon form, we have\n\n$$\n\\begin{aligned}M & \u223c\\begin{bmatrix}1 & -3 & -2 & -5 \\\\ -3 & 5 & 2 & 3 \\\\ 3 & -9 & -6 & -15\\end{bmatrix} & {R}_{2} & :={R}_{2}+3{R}_{1} \\\\  & \u223c\\begin{bmatrix}1 & -3 & -2 & -5 \\\\ 0 & -4 & -4 & -12 \\\\ 3 & -9 & -6 & -15\\end{bmatrix} & {R}_{3} & :={R}_{3}-3{R}_{1} \\\\  & \u223c\\begin{bmatrix}1 & -3 & -2 & -5 \\\\ 0 & -4 & -4 & -12 \\\\ 0 & 0 & 0 & 0\\end{bmatrix} & {R}_{2} & :=-\\frac{1}{4}{R}_{2} \\\\  & \u223c\\begin{bmatrix}1 & -3 & -2 & -5 \\\\ 0 & 1 & 1 & 3 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}\\end{aligned}\n$$\n\nIn the row echelon form above, we have only two pivots (in the $1$st and $2$nd columns). To transform the matrix to reduced row echelon form, we need to create zeros above the pivots only. This gives,\n\n$$\n\\begin{aligned}M & \u223c\\begin{bmatrix}1 & -3 & -2 & -5 \\\\ 0 & 1 & 1 & 3 \\\\ 0 & 0 & 0 & 0\\end{bmatrix} & {R}_{1} & :={R}_{1}+3{R}_{2} \\\\  & \u223c\\begin{bmatrix}1 & 0 & 1 & 4 \\\\ 0 & 1 & 1 & 3 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}.\\end{aligned}\n$$\n\nThe corresponding system is now\n\n$$\n\\left\\{\\begin{aligned}x+z &=4 \\\\ y+z &=3 \\\\ 0 &=0.\\end{aligned}\\right.\n$$\n\nSince any numbers $x,y,z$ form a solution of the final equation, we can remove this equation from the system. \n\nThe basic variables are the variables whose coefficients are pivots. In this case, the basic variables are $x$ and $y,$ and we have one free variable, $z.$ That means we need to find $x$ and $y$ in terms of $z.$ \n\nTherefore, the general solution is\n\n$$\n\\left\\{\\begin{aligned}x &=4-z \\\\ y &=3-z \\\\ z &=z,\\end{aligned}\\right.\n$$\n\nwhere $z$ (the free variable) is an arbitrary number.\n\nIn vector form, the solution can be written as\n\n$$\n\\begin{aligned}\\begin{bmatrix}x \\\\ y \\\\ z\\end{bmatrix}=\\begin{bmatrix}4-z \\\\ 3-z \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty ).\\end{aligned}\n$$"
+    },
+    {
+      ":db/id": 17592186344951,
+      ":question/answer-fields": [
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "25e455aa-5ee1-566d-84b6-00dcf8be56a3",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 0 & 2 \\\\ 0 & 1 & -1 & -1 \\\\ 0 & 0 & 1 & 0\\end{bmatrix}",
+              ":db/id": 17592186342557
+            },
+            {
+              ":answer/id": "401c21a3-e089-5157-b2fd-23315c77bce6",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 0 & 2 \\\\ 0 & 1 & 0 & -1 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}",
+              ":db/id": 17592186342767
+            },
+            {
+              ":answer/id": "8ef5658b-f300-5716-8e0c-97c544c66a55",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 0 & 2 \\\\ 0 & 1 & 1 & 1 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}",
+              ":db/id": 17592186343487
+            },
+            {
+              ":answer/id": "cc47a257-a494-539b-87da-f328094f0c24",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 0 & 2 \\\\ 0 & 1 & -1 & -1 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}",
+              ":db/id": 17592186344034
+            },
+            {
+              ":answer/id": "dda1ea7a-a4cb-59b3-b2ca-7cf3d6ed12d5",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 0 & 2 \\\\ 0 & 1 & 0 & -1 \\\\ 0 & 0 & 1 & 0\\end{bmatrix}",
+              ":db/id": 17592186344184
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "cc47a257-a494-539b-87da-f328094f0c24",
+            ":answer/type": {
+              ":db/ident": ":answer.type/math"
+            },
+            ":answer/value": "\\begin{bmatrix}1 & 0 & 0 & 2 \\\\ 0 & 1 & -1 & -1 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}",
+            ":db/id": 17592186344034
+          },
+          ":answer-field/id": "e1519e44-c2f7-5aca-9e12-6654c92f45a5",
+          ":answer-field/key": "selection",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/radio"
+          },
+          ":db/id": 17592186344887
+        }
+      ],
+      ":question/difficulty": {
+        ":db/ident": ":question.difficulty/hard"
+      },
+      ":question/id": "6b30e629-112f-508e-9e77-096b0e33781a",
+      ":question/math-academy-id": "q-74617",
+      ":question/problem": "Consider the following system of linear equations:\n\n$$\n\\left\\{\\begin{aligned}x-y+z &=3 \\\\ x+2y-2z &=0 \\\\ -2x+2y-2z &=-6\\end{aligned}\\right.\n$$\n\nUse the standard Gauss-Jordan method to reduce the augmented matrix $M$ of the system to reduced row echelon form.",
+      ":question/worked-solution": "The augmented matrix for this system is\n\n$$\nM=\\begin{bmatrix}1 & -1 & 1 & 3 \\\\ 1 & 2 & -2 & 0 \\\\ -2 & 2 & -2 & -6\\end{bmatrix}.\n$$\n\nTransforming $M$ to reduced row echelon form, we have\n\n$$\n\\begin{aligned}M & \u223c\\begin{bmatrix}1 & -1 & 1 & 3 \\\\ 1 & 2 & -2 & 0 \\\\ -2 & 2 & -2 & -6\\end{bmatrix} & {R}_{2} & :={R}_{2}+(-1){R}_{1} \\\\  & \u223c\\begin{bmatrix}1 & -1 & 1 & 3 \\\\ 0 & 3 & -3 & -3 \\\\ -2 & 2 & -2 & -6\\end{bmatrix} & {R}_{3} & :={R}_{3}+2{R}_{1} \\\\  & \u223c\\begin{bmatrix}1 & -1 & 1 & 3 \\\\ 0 & 3 & -3 & -3 \\\\ 0 & 0 & 0 & 0\\end{bmatrix} & {R}_{2} & :=\\frac{1}{3}{R}_{2} \\\\  & \u223c\\begin{bmatrix}1 & -1 & 1 & 3 \\\\ 0 & 1 & -1 & -1 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}.\\end{aligned}\n$$\n\nIn the row echelon form above, we have only two pivots (in the $1$st and $2$nd columns). To transform the matrix to reduced row echelon form, we need to create zeros above the pivots only. This gives,\n\n$$\n\\begin{aligned}M & \u223c\\begin{bmatrix}1 & -1 & 1 & 3 \\\\ 0 & 1 & -1 & -1 \\\\ 0 & 0 & 0 & 0\\end{bmatrix} & {R}_{1} & :={R}_{1}+{R}_{2} \\\\  & \u223c\\begin{bmatrix}1 & 0 & 0 & 2 \\\\ 0 & 1 & -1 & -1 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}.\\end{aligned}\n$$"
+    },
+    {
+      ":db/id": 17592186344952,
+      ":question/answer-fields": [
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "4a016ad6-ef6b-5e4f-b18b-0a1d37a8cfc7",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}3-5z \\\\ z-1 \\\\ z+5\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )",
+              ":db/id": 17592186342848
+            },
+            {
+              ":answer/id": "5800e35b-c288-5a25-ad62-4eb7eb1bb3cd",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}5z-3 \\\\ -z-1 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )",
+              ":db/id": 17592186342973
+            },
+            {
+              ":answer/id": "aed8ece4-960b-56be-9b7f-be3f86e7effd",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}5z-3 \\\\ z+1 \\\\ z-5\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )",
+              ":db/id": 17592186343775
+            },
+            {
+              ":answer/id": "b4d3f391-61ff-531a-85b3-179f575c73c4",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}-3-5z \\\\ -z-1 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )",
+              ":db/id": 17592186343822
+            },
+            {
+              ":answer/id": "f5d9a7e9-803c-5a41-a9cf-f6faca7bec86",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}3-5z \\\\ z-1 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )",
+              ":db/id": 17592186344402
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "b4d3f391-61ff-531a-85b3-179f575c73c4",
+            ":answer/type": {
+              ":db/ident": ":answer.type/math"
+            },
+            ":answer/value": "\\begin{bmatrix}-3-5z \\\\ -z-1 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )",
+            ":db/id": 17592186343822
+          },
+          ":answer-field/id": "b7686e7a-b876-59f6-ad88-96467f995bda",
+          ":answer-field/key": "selection",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/radio"
+          },
+          ":db/id": 17592186344815
+        }
+      ],
+      ":question/difficulty": {
+        ":db/ident": ":question.difficulty/hard"
+      },
+      ":question/id": "088ddf76-b8ab-5fdd-9fea-d3099bd8dbb5",
+      ":question/math-academy-id": "q-74627",
+      ":question/problem": "Consider the following system of linear equations:\n\n$$\n\\left\\{\\begin{aligned}2x-5y+5z &=-1 \\\\ -2x+10y &=-4 \\\\ x-5y &=2\\end{aligned}\\right.\n$$\n\nUse the standard Gauss-Jordan method to reduce the augmented matrix $M$ of the system to reduced row echelon form, and then solve the linear system.",
+      ":question/worked-solution": "The augmented matrix for this system is\n\n$$\nM=\\begin{bmatrix}2 & -5 & 5 & -1 \\\\ -2 & 10 & 0 & -4 \\\\ 1 & -5 & 0 & 2\\end{bmatrix}.\n$$\n\nTransforming $M$ into reduced row echelon form, we have\n\n$$\n\\begin{aligned}M & \u223c\\begin{bmatrix}2 & -5 & 5 & -1 \\\\ -2 & 10 & 0 & -4 \\\\ 1 & -5 & 0 & 2\\end{bmatrix} & {R}_{1} & \u2194{R}_{3} \\\\  & \u223c\\begin{bmatrix}1 & -5 & 0 & 2 \\\\ -2 & 10 & 0 & -4 \\\\ 2 & -5 & 5 & -1\\end{bmatrix} & {R}_{2} & :={R}_{2}+2{R}_{1} \\\\  & \u223c\\begin{bmatrix}1 & -5 & 0 & 2 \\\\ 0 & 0 & 0 & 0 \\\\ 2 & -5 & 5 & -1\\end{bmatrix} & {R}_{3} & :={R}_{3}+(-2){R}_{1} \\\\  & \u223c\\begin{bmatrix}1 & -5 & 0 & 2 \\\\ 0 & 0 & 0 & 0 \\\\ 0 & 5 & 5 & -5\\end{bmatrix} & {R}_{2} & \u2194{R}_{3} \\\\  & \u223c\\begin{bmatrix}1 & -5 & 0 & 2 \\\\ 0 & 5 & 5 & -5 \\\\ 0 & 0 & 0 & 0\\end{bmatrix} & {R}_{3} & :=\\frac{1}{5}{R}_{3} \\\\  & \u223c\\begin{bmatrix}1 & -5 & 0 & 2 \\\\ 0 & 1 & 1 & -1 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}.\\end{aligned}\n$$\n\nIn the row echelon form above, we have only two pivots (in the $1$st and $2$nd columns). To transform the matrix to reduced row echelon form, we need to create zeros above the pivots only. This gives,\n\n$$\n\\begin{aligned}M & \u223c\\begin{bmatrix}1 & -5 & 0 & 2 \\\\ 0 & 1 & 1 & -1 \\\\ 0 & 0 & 0 & 0\\end{bmatrix} & {R}_{1} & :={R}_{1}+5{R}_{2} \\\\  & \u223c\\begin{bmatrix}1 & 0 & 5 & -3 \\\\ 0 & 1 & 1 & -1 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}.\\end{aligned}\n$$\n\nThe corresponding system is now\n\n$$\n\\left\\{\\begin{aligned}x+5z &=-3 \\\\ y+z &=-1 \\\\ 0 &=0.\\end{aligned}\\right.\n$$\n\nSince any numbers $x,y,z$ form a solution of the final equation, we can remove this equation from the system. \n\nThe basic variables are the variables whose coefficients are pivots. In this case, the basic variables are $x$ and $y,$ and we have one free variable, $z.$ That means we need to find $x$ and $y$ in terms of $z.$ \n\nTherefore, the general solution is\n\n$$\n\\left\\{\\begin{aligned}x &=-3-5z \\\\ y &=-z-1 \\\\ z &=z,\\end{aligned}\\right.\n$$\n\nwhere $z$ (the free variable) is an arbitrary number.\n\nIn vector form, the solution can be written as\n\n$$\n\\begin{aligned}\\begin{bmatrix}x \\\\ y \\\\ z\\end{bmatrix}=\\begin{bmatrix}-3-5z \\\\ -z-1 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty ).\\end{aligned}\n$$"
+    },
+    {
+      ":db/id": 17592186344953,
+      ":question/answer-fields": [
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "3986dfe0-78b8-5298-9c0e-64a7188e7711",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}21z+4 \\\\ -6z-1 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )",
+              ":db/id": 17592186342712
+            },
+            {
+              ":answer/id": "5e8c052d-b190-5419-b219-90c5040a3dbb",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}21z+4 \\\\ 6z-1 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )",
+              ":db/id": 17592186343035
+            },
+            {
+              ":answer/id": "7d7528ee-1567-5556-81a5-1c2496450e8b",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}21z-4 \\\\ 6z+1 \\\\ 2-z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )",
+              ":db/id": 17592186343320
+            },
+            {
+              ":answer/id": "9543e1f3-a111-5298-aa95-b9cc07e2fbf8",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}21z+4 \\\\ 6z-1 \\\\ z-2\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )",
+              ":db/id": 17592186343542
+            },
+            {
+              ":answer/id": "ec48f840-399c-5e84-a62f-187f5ed0f785",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}21z-4 \\\\ 6z+1 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )",
+              ":db/id": 17592186344312
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "3986dfe0-78b8-5298-9c0e-64a7188e7711",
+            ":answer/type": {
+              ":db/ident": ":answer.type/math"
+            },
+            ":answer/value": "\\begin{bmatrix}21z+4 \\\\ -6z-1 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )",
+            ":db/id": 17592186342712
+          },
+          ":answer-field/id": "4a6d968f-8481-567c-9e4d-8dab2310ec5a",
+          ":answer-field/key": "selection",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/radio"
+          },
+          ":db/id": 17592186344617
+        }
+      ],
+      ":question/difficulty": {
+        ":db/ident": ":question.difficulty/hard"
+      },
+      ":question/id": "920a4776-0058-5c9a-a43b-cd0f1925df4a",
+      ":question/math-academy-id": "q-74629",
+      ":question/problem": "Consider the following system of linear equations:\n\n$$\n\\left\\{\\begin{aligned}-4x-12y+12z &=-4 \\\\ 5x+16y-9z &=4 \\\\ 2x+6y-6z &=2\\end{aligned}\\right.\n$$\n\nUse the standard Gauss-Jordan method to reduce the augmented matrix $M$ of the system to reduced row echelon form, and then solve the linear system.",
+      ":question/worked-solution": "The augmented matrix for this system is\n\n$$\nM=\\begin{bmatrix}-4 & -12 & 12 & -4 \\\\ 5 & 16 & -9 & 4 \\\\ 2 & 6 & -6 & 2\\end{bmatrix}.\n$$\n\nTransforming $M$ into reduced row echelon form, we have\n\n$$\n\\begin{aligned}M & \u223c\\begin{bmatrix}-4 & -12 & 12 & -4 \\\\ 5 & 16 & -9 & 4 \\\\ 2 & 6 & -6 & 2\\end{bmatrix} & {R}_{1} & :=(-\\frac{1}{4}){R}_{1} \\\\  & \u223c\\begin{bmatrix}1 & 3 & -3 & 1 \\\\ 5 & 16 & -9 & 4 \\\\ 2 & 6 & -6 & 2\\end{bmatrix} & {R}_{2} & :={R}_{2}+(-5){R}_{1} \\\\  & \u223c\\begin{bmatrix}1 & 3 & -3 & 1 \\\\ 0 & 1 & 6 & -1 \\\\ 2 & 6 & -6 & 2\\end{bmatrix} & {R}_{3} & :={R}_{3}+(-2){R}_{1} \\\\  & \u223c\\begin{bmatrix}1 & 3 & -3 & 1 \\\\ 0 & 1 & 6 & -1 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}.\\end{aligned}\n$$\n\nIn the row echelon form above, we have only two pivots (in the $1$st and $2$nd columns). To transform the matrix to reduced row echelon form, we need to create zeros above the pivots only. This gives,\n\n$$\n\\begin{aligned}M & \u223c\\begin{bmatrix}1 & 3 & -3 & 1 \\\\ 0 & 1 & 6 & -1 \\\\ 0 & 0 & 0 & 0\\end{bmatrix} & {R}_{1} & :={R}_{1}+(-3){R}_{2} \\\\  & \u223c\\begin{bmatrix}1 & 0 & -21 & 4 \\\\ 0 & 1 & 6 & -1 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}.\\end{aligned}\n$$\n\nThe corresponding system is now\n\n$$\n\\left\\{\\begin{aligned}x-21z &=4 \\\\ y+6z &=-1 \\\\ 0 &=0.\\end{aligned}\\right.\n$$\n\nSince any numbers $x,y,z$ form a solution of the final equation, we can remove this equation from the system. \n\nThe basic variables are the variables whose coefficients are pivots. In this case, the basic variables are $x$ and $y,$ and we have one free variable, $z.$ That means we need to find $x$ and $y$ in terms of $z.$ \n\nTherefore, the general solution is\n\n$$\n\\left\\{\\begin{aligned}x &=21z+4 \\\\ y &=-6z-1 \\\\ z &=z,\\end{aligned}\\right.\n$$\n\nwhere $z$ (the free variable) is an arbitrary number.\n\nIn vector form, the solution can be written as\n\n$$\n\\begin{aligned}\\begin{bmatrix}x \\\\ y \\\\ z\\end{bmatrix}=\\begin{bmatrix}21z+4 \\\\ -6z-1 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty ).\\end{aligned}\n$$"
+    },
+    {
+      ":db/id": 17592186363094,
+      ":question/answer-fields": [
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "013782d7-516e-5488-8985-07793052cc61",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}4-4z \\\\ 1-2z \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )",
+              ":db/id": 17592186363100
+            },
+            {
+              ":answer/id": "511f9757-47ae-5695-90df-fc2adc7a0a7d",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}4z+4 \\\\ 2z-1 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )",
+              ":db/id": 17592186363099
+            },
+            {
+              ":answer/id": "7ae392eb-5c48-5610-81d0-e4f56609f52f",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "No solution",
+              ":db/id": 17592186363096
+            },
+            {
+              ":answer/id": "c6568d17-58ae-5960-a1e8-c90aa4265277",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}4z-4 \\\\ 1-2z \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )",
+              ":db/id": 17592186363098
+            },
+            {
+              ":answer/id": "fdbaa00a-ad69-594b-ba88-d310269ad9b9",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}4z-4 \\\\ 2z-1 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )",
+              ":db/id": 17592186363097
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "c6568d17-58ae-5960-a1e8-c90aa4265277",
+            ":answer/type": {
+              ":db/ident": ":answer.type/math"
+            },
+            ":answer/value": "\\begin{bmatrix}4z-4 \\\\ 1-2z \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )",
+            ":db/id": 17592186363098
+          },
+          ":answer-field/id": "2bc6787d-1303-5094-b11f-c36134f9da5a",
+          ":answer-field/key": "selection",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/radio"
+          },
+          ":db/id": 17592186363095
+        }
+      ],
+      ":question/difficulty": {
+        ":db/ident": ":question.difficulty/hard"
+      },
+      ":question/id": "4d7555ca-db2c-52bc-b443-fc91fca13d67",
+      ":question/math-academy-id": "q-131631",
+      ":question/problem": "Consider the following system of linear equations:\n\n$$\n\\left\\{\\begin{aligned}-3x-3y+6z &=9 \\\\ -x+4z &=4 \\\\ x+y-2z &=-3\\end{aligned}\\right.\n$$\n\nUse the standard Gauss-Jordan method to reduce the augmented matrix $M$ of the system to reduced row echelon form, and then solve the linear system.",
+      ":question/worked-solution": "The augmented matrix for this system is\n\n$$\nM=\\begin{bmatrix}-3 & -3 & 6 & 9 \\\\ -1 & 0 & 4 & 4 \\\\ 1 & 1 & -2 & -3\\end{bmatrix}.\n$$\n\nTransforming $M$ into reduced row echelon form, we have\n\n$$\n\\begin{aligned}M & \u223c\\begin{bmatrix}-3 & -3 & 6 & 9 \\\\ -1 & 0 & 4 & 4 \\\\ 1 & 1 & -2 & -3\\end{bmatrix} & {R}_{1} & \u2194{R}_{3} \\\\  & \u223c\\begin{bmatrix}1 & 1 & -2 & -3 \\\\ -1 & 0 & 4 & 4 \\\\ -3 & -3 & 6 & 9\\end{bmatrix} & {R}_{2} & :={R}_{2}+{R}_{1} \\\\  & \u223c\\begin{bmatrix}1 & 1 & -2 & -3 \\\\ 0 & 1 & 2 & 1 \\\\ -3 & -3 & 6 & 9\\end{bmatrix} & {R}_{3} & :={R}_{3}+3{R}_{1} \\\\  & \u223c\\begin{bmatrix}1 & 1 & -2 & -3 \\\\ 0 & 1 & 2 & 1 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}\\end{aligned}\n$$\n\nIn the row echelon form above, we have only two pivots (in the $1$st and $2$nd columns). To transform the matrix to reduced row echelon form, we need to create zeros above the pivots only. This gives,\n\n$$\n\\begin{aligned}M & \u223c\\begin{bmatrix}1 & 1 & -2 & -3 \\\\ 0 & 1 & 2 & 1 \\\\ 0 & 0 & 0 & 0\\end{bmatrix} & {R}_{1} & :={R}_{1}-{R}_{2} \\\\  & \u223c\\begin{bmatrix}1 & 0 & -4 & -4 \\\\ 0 & 1 & 2 & 1 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}.\\end{aligned}\n$$\n\nThe corresponding system is now\n\n$$\n\\left\\{\\begin{aligned}x-4z &=-4 \\\\ y+2z &=1 \\\\ 0 &=0.\\end{aligned}\\right.\n$$\n\nSince any numbers $x,y,z$ form a solution of the final equation, we can remove this equation from the system. \n\nThe basic variables are the variables whose coefficients are pivots. In this case, the basic variables are $x$ and $y,$ and we have one free variable, $z.$ That means we need to find $x$ and $y$ in terms of $z.$ \n\nTherefore, the general solution is\n\n$$\n\\left\\{\\begin{aligned}x &=4z-4 \\\\ y &=1-2z \\\\ z &=z,\\end{aligned}\\right.\n$$\n\nwhere $z$ (the free variable) is an arbitrary number.\n\nIn vector form, the solution can be written as\n\n$$\n\\begin{aligned}\\begin{bmatrix}x \\\\ y \\\\ z\\end{bmatrix}=\\begin{bmatrix}4z-4 \\\\ 1-2z \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty ).\\end{aligned}\n$$"
+    },
+    {
+      ":db/id": 17592186363101,
+      ":question/answer-fields": [
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "1d44e08f-d1d8-544a-b789-b01b5d23f52c",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}17 \\\\ 8-3z \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )",
+              ":db/id": 17592186363103
+            },
+            {
+              ":answer/id": "4c79a9f8-e42b-548d-96e3-eb4af795e195",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}-6z-17 \\\\ -3z-8 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )",
+              ":db/id": 17592186363107
+            },
+            {
+              ":answer/id": "84a78bfc-3694-5f34-afdb-2dbe13373407",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}-17 \\\\ -3z-8 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )",
+              ":db/id": 17592186363104
+            },
+            {
+              ":answer/id": "a4baaa15-c109-57fd-bf1c-b575cca70ee8",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "No solution",
+              ":db/id": 17592186363106
+            },
+            {
+              ":answer/id": "f008737c-5006-50a9-9478-a40b8d4d62ca",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}6z-17 \\\\ 3z-8 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )",
+              ":db/id": 17592186363105
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "4c79a9f8-e42b-548d-96e3-eb4af795e195",
+            ":answer/type": {
+              ":db/ident": ":answer.type/math"
+            },
+            ":answer/value": "\\begin{bmatrix}-6z-17 \\\\ -3z-8 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )",
+            ":db/id": 17592186363107
+          },
+          ":answer-field/id": "e3b6bc25-f539-5fd8-9eb1-7c39ebeb2d1d",
+          ":answer-field/key": "selection",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/radio"
+          },
+          ":db/id": 17592186363102
+        }
+      ],
+      ":question/difficulty": {
+        ":db/ident": ":question.difficulty/hard"
+      },
+      ":question/id": "04a13144-a35f-5f80-8432-ba421a4a583d",
+      ":question/math-academy-id": "q-131633",
+      ":question/problem": "Consider the following system of linear equations:\n\n$$\n\\left\\{\\begin{aligned}x-2y &=-1 \\\\ 2x-5y-3z &=6 \\\\ -x+2y &=1\\end{aligned}\\right.\n$$\n\nUse the standard Gauss-Jordan method to reduce the augmented matrix $M$ of the system to reduced row echelon form, and then solve the linear system.",
+      ":question/worked-solution": "The augmented matrix for this system is\n\n$$\nM=\\begin{bmatrix}1 & -2 & 0 & -1 \\\\ 2 & -5 & -3 & 6 \\\\ -1 & 2 & 0 & 1\\end{bmatrix}.\n$$\n\nTransforming $M$ into reduced row echelon form, we have\n\n$$\n\\begin{aligned}M & \u223c\\begin{bmatrix}1 & -2 & 0 & -1 \\\\ 2 & -5 & -3 & 6 \\\\ -1 & 2 & 0 & 1\\end{bmatrix} & {R}_{2} & :={R}_{2}-2{R}_{1} \\\\  & \u223c\\begin{bmatrix}1 & -2 & 0 & -1 \\\\ 0 & -1 & -3 & 8 \\\\ -1 & 2 & 0 & 1\\end{bmatrix} & {R}_{3} & :={R}_{3}+{R}_{1} \\\\  & \u223c\\begin{bmatrix}1 & -2 & 0 & -1 \\\\ 0 & -1 & -3 & 8 \\\\ 0 & 0 & 0 & 0\\end{bmatrix} & {R}_{2} & :=-{R}_{2} \\\\  & \u223c\\begin{bmatrix}1 & -2 & 0 & -1 \\\\ 0 & 1 & 3 & -8 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}\\end{aligned}\n$$\n\nIn the row echelon form above, we have only two pivots (in the $1$st and $2$nd columns). To transform the matrix to reduced row echelon form, we need to create zeros above the pivots only. This gives,\n\n$$\n\\begin{aligned}M & \u223c\\begin{bmatrix}1 & -2 & 0 & -1 \\\\ 0 & 1 & 3 & -8 \\\\ 0 & 0 & 0 & 0\\end{bmatrix} & {R}_{1} & :={R}_{1}+2{R}_{2} \\\\  & \u223c\\begin{bmatrix}1 & 0 & 6 & -17 \\\\ 0 & 1 & 3 & -8 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}.\\end{aligned}\n$$\n\nThe corresponding system is now\n\n$$\n\\left\\{\\begin{aligned}x+6z &=-17 \\\\ y+3z &=-8 \\\\ 0 &=0.\\end{aligned}\\right.\n$$\n\nSince any numbers $x,y,z$ form a solution of the final equation, we can remove this equation from the system. \n\nThe basic variables are the variables whose coefficients are pivots. In this case, the basic variables are $x$ and $y,$ and we have one free variable, $z.$ That means we need to find $x$ and $y$ in terms of $z.$ \n\nTherefore, the general solution is\n\n$$\n\\left\\{\\begin{aligned}x &=-6z-17 \\\\ y &=-3z-8 \\\\ z &=z,\\end{aligned}\\right.\n$$\n\nwhere $z$ (the free variable) is an arbitrary number.\n\nIn vector form, the solution can be written as\n\n$$\n\\begin{aligned}\\begin{bmatrix}x \\\\ y \\\\ z\\end{bmatrix}=\\begin{bmatrix}-6z-17 \\\\ -3z-8 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty ).\\end{aligned}\n$$"
+    },
+    {
+      ":db/id": 17592186403773,
+      ":question/answer-fields": [
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "082f2000-223e-5c35-8880-3c877b9f58a9",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}10z+1 \\\\ 1+4z \\\\ z+1\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )",
+              ":db/id": 17592186403777
+            },
+            {
+              ":answer/id": "8545a78e-5e9f-5188-9a89-b26fb6b7b34d",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}5z-1 \\\\ 1-2z \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )",
+              ":db/id": 17592186403779
+            },
+            {
+              ":answer/id": "913376ed-a5cb-5479-ab16-e42eb401612f",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}5z-1 \\\\ 1-4z \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )",
+              ":db/id": 17592186403776
+            },
+            {
+              ":answer/id": "c23159c4-b1db-556c-a013-ffc4b8987ced",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}10z-1 \\\\ 1-4z \\\\ z+1\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )",
+              ":db/id": 17592186403778
+            },
+            {
+              ":answer/id": "c75e1a37-431f-56e2-b6cd-917ed934bc54",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}10z-1 \\\\ 1-4z \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )",
+              ":db/id": 17592186403775
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "c75e1a37-431f-56e2-b6cd-917ed934bc54",
+            ":answer/type": {
+              ":db/ident": ":answer.type/math"
+            },
+            ":answer/value": "\\begin{bmatrix}10z-1 \\\\ 1-4z \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )",
+            ":db/id": 17592186403775
+          },
+          ":answer-field/id": "7014ab46-6268-5d03-a678-37850fc6da0a",
+          ":answer-field/key": "selection",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/radio"
+          },
+          ":db/id": 17592186403774
+        }
+      ],
+      ":question/difficulty": {
+        ":db/ident": ":question.difficulty/hard"
+      },
+      ":question/id": "23bca3c5-322d-5c3f-a423-fb871cdd59a3",
+      ":question/math-academy-id": "q-74626",
+      ":question/problem": "Consider the following system of linear equations:\n\n$$\n\\left\\{\\begin{aligned}x+2y-2z &=1 \\\\ -3x-6y+6z &=-3 \\\\ 2x+5y &=3\\end{aligned}\\right.\n$$\n\nUse the standard Gauss-Jordan method to reduce the augmented matrix $M$ of the system to reduced row echelon form, and then solve the linear system.",
+      ":question/worked-solution": "The augmented matrix for this system is\n\n$$\nM=\\begin{bmatrix}1 & 2 & -2 & 1 \\\\ -3 & -6 & 6 & -3 \\\\ 2 & 5 & 0 & 3\\end{bmatrix}.\n$$\n\nTransforming $M$ into reduced row echelon form, we have\n\n$$\n\\begin{aligned}M & \u223c\\begin{bmatrix}1 & 2 & -2 & 1 \\\\ -3 & -6 & 6 & -3 \\\\ 2 & 5 & 0 & 3\\end{bmatrix} & {R}_{2} & :={R}_{2}+3{R}_{1} \\\\  & \u223c\\begin{bmatrix}1 & 2 & -2 & 1 \\\\ 0 & 0 & 0 & 0 \\\\ 2 & 5 & 0 & 3\\end{bmatrix} & {R}_{3} & :={R}_{3}+(-2){R}_{1} \\\\  & \u223c\\begin{bmatrix}1 & 2 & -2 & 1 \\\\ 0 & 0 & 0 & 0 \\\\ 0 & 1 & 4 & 1\\end{bmatrix} & {R}_{2} & \u2194{R}_{3} \\\\  & \u223c\\begin{bmatrix}1 & 2 & -2 & 1 \\\\ 0 & 1 & 4 & 1 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}.\\end{aligned}\n$$\n\nIn the row echelon form above, we have only two pivots (in the $1$st and $2$nd columns). To transform the matrix to reduced row echelon form, we need to create zeros above the pivots only. This gives,\n\n$$\n\\begin{aligned}M & \u223c\\begin{bmatrix}1 & 2 & -2 & 1 \\\\ 0 & 1 & 4 & 1 \\\\ 0 & 0 & 0 & 0\\end{bmatrix} & {R}_{1} & :={R}_{1}+(-2){R}_{2} \\\\  & \u223c\\begin{bmatrix}1 & 0 & -10 & -1 \\\\ 0 & 1 & 4 & 1 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}.\\end{aligned}\n$$\n\nThe corresponding system is now\n\n$$\n\\left\\{\\begin{aligned}x-10z &=-1 \\\\ y+4z &=1 \\\\ 0 &=0.\\end{aligned}\\right.\n$$\n\nSince any numbers $x,y,z$ form a solution of the final equation, we can remove this equation from the system. \n\nThe basic variables are the variables whose coefficients are pivots. In this case, the basic variables are $x$ and $y,$ and we have one free variable, $z.$ That means we need to find $x$ and $y$ in terms of $z.$ \n\nTherefore, the general solution is\n\n$$\n\\left\\{\\begin{aligned}x &=10z-1 \\\\ y &=1-4z \\\\ z &=z,\\end{aligned}\\right.\n$$\n\nwhere $z$ (the free variable) is an arbitrary number.\n\nIn vector form, the solution can be written as\n\n$$\n\\begin{aligned}\\begin{bmatrix}x \\\\ y \\\\ z\\end{bmatrix}=\\begin{bmatrix}10z-1 \\\\ 1-4z \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty ).\\end{aligned}\n$$"
+    },
+    {
+      ":db/id": 17592186403780,
+      ":question/answer-fields": [
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "2e6ffd15-8092-5ab7-b409-b0f534768790",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}2z-3 \\\\ 3z-4 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )",
+              ":db/id": 17592186403783
+            },
+            {
+              ":answer/id": "475078d1-c1fe-5714-8a98-996d56413264",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}2z-3 \\\\ 3z-4 \\\\ z+4\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )",
+              ":db/id": 17592186403782
+            },
+            {
+              ":answer/id": "5ef65d53-9191-5c7b-8a89-8ef906f99da4",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}2z+3 \\\\ 3z+4 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )",
+              ":db/id": 17592186403785
+            },
+            {
+              ":answer/id": "8ac9d520-f7c9-530e-8570-80e1a9c80366",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}2z+3 \\\\ 3z-4 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )",
+              ":db/id": 17592186403784
+            },
+            {
+              ":answer/id": "9129b373-d01f-517b-921a-56a705f741ee",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}2z+3 \\\\ 3z+4 \\\\ z-2\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )",
+              ":db/id": 17592186403786
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "5ef65d53-9191-5c7b-8a89-8ef906f99da4",
+            ":answer/type": {
+              ":db/ident": ":answer.type/math"
+            },
+            ":answer/value": "\\begin{bmatrix}2z+3 \\\\ 3z+4 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )",
+            ":db/id": 17592186403785
+          },
+          ":answer-field/id": "181c2fee-3197-54a6-a09d-7ecb85a2a180",
+          ":answer-field/key": "selection",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/radio"
+          },
+          ":db/id": 17592186403781
+        }
+      ],
+      ":question/difficulty": {
+        ":db/ident": ":question.difficulty/hard"
+      },
+      ":question/id": "75dbc97d-95b7-5046-a4b7-609e3df9b396",
+      ":question/math-academy-id": "q-74628",
+      ":question/problem": "Consider the following system of linear equations:\n\n$$\n\\left\\{\\begin{aligned}x-2z &=3 \\\\ 7x-14z &=21 \\\\ 2y-6z &=8\\end{aligned}\\right.\n$$\n\nUse the standard Gauss-Jordan method to reduce the augmented matrix $M$ of the system to reduced row echelon form, and then solve the linear system.",
+      ":question/worked-solution": "The augmented matrix for this system is\n\n$$\nM=\\begin{bmatrix}1 & 0 & -2 & 3 \\\\ 7 & 0 & -14 & 21 \\\\ 0 & 2 & -6 & 8\\end{bmatrix}.\n$$\n\nTransforming $M$ into reduced row echelon form, we have\n\n$$\n\\begin{aligned}M & \u223c\\begin{bmatrix}1 & 0 & -2 & 3 \\\\ 7 & 0 & -14 & 21 \\\\ 0 & 2 & -6 & 8\\end{bmatrix} & {R}_{2} & :={R}_{2}+(-7){R}_{1} \\\\  & \u223c\\begin{bmatrix}1 & 0 & -2 & 3 \\\\ 0 & 0 & 0 & 0 \\\\ 0 & 2 & -6 & 8\\end{bmatrix} & {R}_{2} & \u2194{R}_{3} \\\\  & \u223c\\begin{bmatrix}1 & 0 & -2 & 3 \\\\ 0 & 2 & -6 & 8 \\\\ 0 & 0 & 0 & 0\\end{bmatrix} & {R}_{2} & :=\\frac{1}{2}{R}_{2} \\\\  & \u223c\\begin{bmatrix}1 & 0 & -2 & 3 \\\\ 0 & 1 & -3 & 4 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}.\\end{aligned}\n$$\n\nThe corresponding system is now\n\n$$\n\\left\\{\\begin{aligned}x-2z &=3 \\\\ y-3z &=4 \\\\ 0 &=0.\\end{aligned}\\right.\n$$\n\nSince any numbers $x,y,z$ form a solution of the final equation, we can remove this equation from the system. \n\nThe basic variables are the variables whose coefficients are pivots. In this case, the basic variables are $x$ and $y,$ and we have one free variable, $z.$ That means we need to find $x$ and $y$ in terms of $z.$ \n\nTherefore, the general solution is\n\n$$\n\\left\\{\\begin{aligned}x &=2z+3 \\\\ y &=3z+4 \\\\ z &=z,\\end{aligned}\\right.\n$$\n\nwhere $z$ (the free variable) is an arbitrary number.\n\nIn vector form, the solution can be written as\n\n$$\n\\begin{aligned}\\begin{bmatrix}x \\\\ y \\\\ z\\end{bmatrix}=\\begin{bmatrix}2z+3 \\\\ 3z+4 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty ).\\end{aligned}\n$$"
+    },
+    {
+      ":db/id": 17592186416436,
+      ":question/answer-fields": [
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "37f8b70e-8988-548d-a3be-78d70d320ac5",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 11 & 1 \\\\ 0 & 1 & 2 & 0 \\\\ 0 & 0 & 1 & 0\\end{bmatrix}",
+              ":db/id": 17592186416407
+            },
+            {
+              ":answer/id": "5960393e-9030-557e-ab5d-a3d7e339e745",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 0 & 1 \\\\ 0 & 1 & 0 & 0 \\\\ 0 & 0 & 1 & 0\\end{bmatrix}",
+              ":db/id": 17592186416412
+            },
+            {
+              ":answer/id": "a3856c48-bf2a-5bc5-9868-35836353e134",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 1 & 1 \\\\ 0 & 1 & 2 & 0 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}",
+              ":db/id": 17592186416418
+            },
+            {
+              ":answer/id": "ef5cb930-e60b-5fab-bb06-77c743c66a87",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 1 & 1 \\\\ 0 & 1 & 2 & 1 \\\\ 0 & 0 & 1 & -1\\end{bmatrix}",
+              ":db/id": 17592186416426
+            },
+            {
+              ":answer/id": "fb1ba51a-5f8c-5ab3-961b-4979eb2f83b3",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 11 & 1 \\\\ 0 & 1 & 2 & 0 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}",
+              ":db/id": 17592186416429
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "fb1ba51a-5f8c-5ab3-961b-4979eb2f83b3",
+            ":answer/type": {
+              ":db/ident": ":answer.type/math"
+            },
+            ":answer/value": "\\begin{bmatrix}1 & 0 & 11 & 1 \\\\ 0 & 1 & 2 & 0 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}",
+            ":db/id": 17592186416429
+          },
+          ":answer-field/id": "e35daaf4-8a57-5507-af06-07e8ca410d81",
+          ":answer-field/key": "selection",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/radio"
+          },
+          ":db/id": 17592186416433
+        }
+      ],
+      ":question/difficulty": {
+        ":db/ident": ":question.difficulty/hard"
+      },
+      ":question/id": "6ba94d2c-82a9-5b70-84fa-d478e1834095",
+      ":question/math-academy-id": "q-74618",
+      ":question/problem": "Consider the following system of linear equations:\n\n$$\n\\left\\{\\begin{aligned}x-3y+5z &=1 \\\\ -x+4y-3z &=-1 \\\\ 6y+12z &=0\\end{aligned}\\right.\n$$\n\nUse the standard Gauss-Jordan method to reduce the augmented matrix $M$ of the system to reduced row echelon form.",
+      ":question/worked-solution": "The augmented matrix for this system is\n\n$$\nM=\\begin{bmatrix}1 & -3 & 5 & 1 \\\\ -1 & 4 & -3 & -1 \\\\ 0 & 6 & 12 & 0\\end{bmatrix}.\n$$\n\nTransforming $M$ to reduced row echelon form, we have\n\n$$\n\\begin{aligned}M & \u223c\\begin{bmatrix}1 & -3 & 5 & 1 \\\\ -1 & 4 & -3 & -1 \\\\ 0 & 6 & 12 & 0\\end{bmatrix} & {R}_{2} & :={R}_{2}+{R}_{1} \\\\  & \u223c\\begin{bmatrix}1 & -3 & 5 & 1 \\\\ 0 & 1 & 2 & 0 \\\\ 0 & 6 & 12 & 0\\end{bmatrix} & {R}_{3} & :={R}_{3}+(-6){R}_{2} \\\\  & \u223c\\begin{bmatrix}1 & -3 & 5 & 1 \\\\ 0 & 1 & 2 & 0 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}.\\end{aligned}\n$$\n\nIn the row echelon form above, we have only two pivots (in the $1$st and $2$nd columns). To transform the matrix to reduced row echelon form, we need to create zeros above the pivots only. This gives,\n\n$$\n\\begin{aligned}M & \u223c\\begin{bmatrix}1 & -3 & 5 & 1 \\\\ 0 & 1 & 2 & 0 \\\\ 0 & 0 & 0 & 0\\end{bmatrix} & {R}_{1} & :={R}_{1}+3{R}_{2} \\\\  & \u223c\\begin{bmatrix}1 & 0 & 11 & 1 \\\\ 0 & 1 & 2 & 0 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}.\\end{aligned}\n$$"
+    },
+    {
+      ":db/id": 17592186416437,
+      ":question/answer-fields": [
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "96dbb4c2-3f9e-56bc-bd75-793f5331038b",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 1 & 2 \\\\ 0 & 1 & 1 & -4 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}",
+              ":db/id": 17592186416417
+            },
+            {
+              ":answer/id": "a79f9ab6-7ac4-5781-9305-8bf872102b01",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "No solution",
+              ":db/id": 17592186416420
+            },
+            {
+              ":answer/id": "ac17277b-e3d6-5ce0-80fb-9b8b2c10fe27",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 1 & -14 \\\\ 0 & 1 & 0 & 4 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}",
+              ":db/id": 17592186416421
+            },
+            {
+              ":answer/id": "ac656c16-72de-5990-8b14-ea78597ee501",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 1 & 14 \\\\ 0 & 1 & 0 & -4 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}",
+              ":db/id": 17592186416422
+            },
+            {
+              ":answer/id": "c007e82d-17a9-51fa-8a38-a771c858fc7a",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 1 & -2 \\\\ 0 & 1 & 0 & -4 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}",
+              ":db/id": 17592186416424
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "ac656c16-72de-5990-8b14-ea78597ee501",
+            ":answer/type": {
+              ":db/ident": ":answer.type/math"
+            },
+            ":answer/value": "\\begin{bmatrix}1 & 0 & 1 & 14 \\\\ 0 & 1 & 0 & -4 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}",
+            ":db/id": 17592186416422
+          },
+          ":answer-field/id": "13c3a85a-1ac4-5ef6-9101-86dc8058f179",
+          ":answer-field/key": "selection",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/radio"
+          },
+          ":db/id": 17592186416430
+        }
+      ],
+      ":question/difficulty": {
+        ":db/ident": ":question.difficulty/hard"
+      },
+      ":question/id": "751f8e53-b86d-5abb-abe8-9ed7db35005a",
+      ":question/math-academy-id": "q-131636",
+      ":question/problem": "Consider the following system of linear equations:\n\n$$\n\\left\\{\\begin{aligned}x+2y+z &=6 \\\\ x+y+z &=10 \\\\ -4x-8y-4z &=-24\\end{aligned}\\right.\n$$\n\nUse the standard Gauss-Jordan method to reduce the augmented matrix $M$ of the system to reduced row echelon form.",
+      ":question/worked-solution": "The augmented matrix for this system is\n\n$$\nM=\\begin{bmatrix}1 & 2 & 1 & 6 \\\\ 1 & 1 & 1 & 10 \\\\ -4 & -8 & -4 & -24\\end{bmatrix}.\n$$\n\nTransforming $M$ to reduced row echelon form, we have\n\n$$\n\\begin{aligned}M & \u223c\\begin{bmatrix}1 & 2 & 1 & 6 \\\\ 1 & 1 & 1 & 10 \\\\ -4 & -8 & -4 & -24\\end{bmatrix} & {R}_{2} & :={R}_{2}-{R}_{1} \\\\  & \u223c\\begin{bmatrix}1 & 2 & 1 & 6 \\\\ 0 & -1 & 0 & 4 \\\\ -4 & -8 & -4 & -24\\end{bmatrix} & {R}_{3} & :={R}_{3}+4{R}_{1} \\\\  & \u223c\\begin{bmatrix}1 & 2 & 1 & 6 \\\\ 0 & -1 & 0 & 4 \\\\ 0 & 0 & 0 & 0\\end{bmatrix} & {R}_{2} & :=-{R}_{2} \\\\  & \u223c\\begin{bmatrix}1 & 2 & 1 & 6 \\\\ 0 & 1 & 0 & -4 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}.\\end{aligned}\n$$\n\nIn the row echelon form above, we have only two pivots (in the $1$st and $2$nd columns). To transform the matrix to reduced row echelon form, we need to create zeros above the pivots only. This gives,\n\n$$\n\\begin{aligned}M & \u223c\\begin{bmatrix}1 & 2 & 1 & 6 \\\\ 0 & 1 & 0 & -4 \\\\ 0 & 0 & 0 & 0\\end{bmatrix} & {R}_{1} & :={R}_{1}-2{R}_{2} \\\\  & \u223c\\begin{bmatrix}1 & 0 & 1 & 14 \\\\ 0 & 1 & 0 & -4 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}.\\end{aligned}\n$$"
+    },
+    {
+      ":db/id": 17592186422479,
+      ":question/answer-fields": [
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "0ee5bd89-c4e9-5aea-ba6a-3f045af5c0e6",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 11 & -14 \\\\ 0 & 1 & -3 & -5 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}",
+              ":db/id": 17592186422467
+            },
+            {
+              ":answer/id": "75130a5b-9607-5217-b80c-6757c94daf70",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 11 & -14 \\\\ 0 & 1 & 3 & -5 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}",
+              ":db/id": 17592186422471
+            },
+            {
+              ":answer/id": "8076b85b-1614-5135-bb4c-2ab5d41377da",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}1 & 0 & -7 & -14 \\\\ 0 & 1 & -3 & -5 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}",
+              ":db/id": 17592186422472
+            },
+            {
+              ":answer/id": "d64479b7-f216-5594-be33-53f9d09c2c72",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}1 & 0 & -7 & -14 \\\\ 0 & 1 & -3 & -5 \\\\ 0 & 0 & 1 & -1\\end{bmatrix}",
+              ":db/id": 17592186422473
+            },
+            {
+              ":answer/id": "f1ebe9c7-57ca-5f13-b184-b18fa5a512d5",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 0 & -14 \\\\ 0 & 1 & 0 & -5 \\\\ 0 & 0 & 1 & -1\\end{bmatrix}",
+              ":db/id": 17592186422475
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "8076b85b-1614-5135-bb4c-2ab5d41377da",
+            ":answer/type": {
+              ":db/ident": ":answer.type/math"
+            },
+            ":answer/value": "\\begin{bmatrix}1 & 0 & -7 & -14 \\\\ 0 & 1 & -3 & -5 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}",
+            ":db/id": 17592186422472
+          },
+          ":answer-field/id": "a4a2cf38-1593-52f1-9b63-551383c8a50f",
+          ":answer-field/key": "selection",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/radio"
+          },
+          ":db/id": 17592186422477
+        }
+      ],
+      ":question/difficulty": {
+        ":db/ident": ":question.difficulty/hard"
+      },
+      ":question/id": "df6c8a6d-153a-5484-848d-1043ee95c582",
+      ":question/math-academy-id": "q-74621",
+      ":question/problem": "Consider the following system of linear equations:\n\n$$\n\\left\\{\\begin{aligned}4x-11y+5z &=-1 \\\\ x-3y+2z &=1 \\\\ -3x+9y-6z &=-3\\end{aligned}\\right.\n$$\n\nUse the standard Gauss-Jordan method to reduce the augmented matrix $M$ of the system to reduced row echelon form.",
+      ":question/worked-solution": "The augmented matrix for this system is\n\n$$\nM=\\begin{bmatrix}4 & -11 & 5 & -1 \\\\ 1 & -3 & 2 & 1 \\\\ -3 & 9 & -6 & -3\\end{bmatrix}.\n$$\n\nTransforming $M$ to reduced row echelon form, we have\n\n$$\n\\begin{aligned}M & \u223c\\begin{bmatrix}4 & -11 & 5 & -1 \\\\ 1 & -3 & 2 & 1 \\\\ -3 & 9 & -6 & -3\\end{bmatrix} & {R}_{1} & \u2194{R}_{2} \\\\  & \u223c\\begin{bmatrix}1 & -3 & 2 & 1 \\\\ 4 & -11 & 5 & -1 \\\\ -3 & 9 & -6 & -3\\end{bmatrix} & {R}_{2} & :={R}_{2}+(-4){R}_{1} \\\\  & \u223c\\begin{bmatrix}1 & -3 & 2 & 1 \\\\ 0 & 1 & -3 & -5 \\\\ -3 & 9 & -6 & -3\\end{bmatrix} & {R}_{3} & :={R}_{3}+3{R}_{1} \\\\  & \u223c\\begin{bmatrix}1 & -3 & 2 & 1 \\\\ 0 & 1 & -3 & -5 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}.\\end{aligned}\n$$\n\nIn the row echelon form above, we have only two pivots (in the $1$st and $2$nd columns). To transform the matrix to reduced row echelon form, we need to create zeros above the pivots only. This gives,\n\n$$\n\\begin{aligned}M & \u223c\\begin{bmatrix}1 & -3 & 2 & 1 \\\\ 0 & 1 & -3 & -5 \\\\ 0 & 0 & 0 & 0\\end{bmatrix} & {R}_{1} & :={R}_{1}+3{R}_{2} \\\\  & \u223c\\begin{bmatrix}1 & 0 & -7 & -14 \\\\ 0 & 1 & -3 & -5 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}.\\end{aligned}\n$$"
+    },
+    {
+      ":db/id": 17592186567107,
+      ":question/answer-fields": [
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "18553473-fde9-5635-a056-b0f27fc9366e",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}1 & 0 & -11 & 3 \\\\ 0 & 1 & 4 & -1 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}",
+              ":db/id": 17592186566411
+            },
+            {
+              ":answer/id": "59fdd091-3425-54b2-aefb-ad6ef9eb6945",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}1 & 0 & -11 & 5 \\\\ 0 & 1 & 4 & -2 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}",
+              ":db/id": 17592186566533
+            },
+            {
+              ":answer/id": "c5bcc49b-3304-5434-9cf7-3203f1d7d9a0",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}1 & 0 & -5 & 3 \\\\ 0 & 1 & 4 & -2 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}",
+              ":db/id": 17592186566755
+            },
+            {
+              ":answer/id": "c862ab8f-695d-58e1-83af-785682adeec6",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}1 & 0 & -11 & 5 \\\\ 0 & 1 & 4 & -4 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}",
+              ":db/id": 17592186566758
+            },
+            {
+              ":answer/id": "ef183592-3341-5295-ac04-e087d87746ea",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}1 & 0 & -5 & 5 \\\\ 0 & 1 & 4 & -1 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}",
+              ":db/id": 17592186566845
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "59fdd091-3425-54b2-aefb-ad6ef9eb6945",
+            ":answer/type": {
+              ":db/ident": ":answer.type/math"
+            },
+            ":answer/value": "\\begin{bmatrix}1 & 0 & -11 & 5 \\\\ 0 & 1 & 4 & -2 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}",
+            ":db/id": 17592186566533
+          },
+          ":answer-field/id": "c7fb2a2a-5c00-5b94-88e0-900ed9cc6436",
+          ":answer-field/key": "selection",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/radio"
+          },
+          ":db/id": 17592186566971
+        }
+      ],
+      ":question/difficulty": {
+        ":db/ident": ":question.difficulty/hard"
+      },
+      ":question/id": "f4d9e7f7-49ef-5deb-a765-86f4061f3e86",
+      ":question/math-academy-id": "q-131630",
+      ":question/problem": "Consider the following system of linear equations:\n\n$$\n\\left\\{\\begin{aligned}x+2y-3z &=1 \\\\ 3x+8y-z &=-1 \\\\ 2x+4y-6z &=2\\end{aligned}\\right.\n$$\n\nUse the standard Gauss-Jordan method to reduce the augmented matrix $M$ of the system to reduced row echelon form.",
+      ":question/worked-solution": "The augmented matrix for this system is\n\n$$\nM=\\begin{bmatrix}1 & 2 & -3 & 1 \\\\ 3 & 8 & -1 & -1 \\\\ 2 & 4 & -6 & 2\\end{bmatrix}.\n$$\n\nTransforming $M$ to reduced row echelon form, we have\n\n$$\n\\begin{aligned}M & \u223c\\begin{bmatrix}1 & 2 & -3 & 1 \\\\ 3 & 8 & -1 & -1 \\\\ 2 & 4 & -6 & 2\\end{bmatrix} & {R}_{2} & :={R}_{2}-3{R}_{1} \\\\  & \u223c\\begin{bmatrix}1 & 2 & -3 & 1 \\\\ 0 & 2 & 8 & -4 \\\\ 2 & 4 & -6 & 2\\end{bmatrix} & {R}_{3} & :={R}_{3}-2{R}_{1} \\\\  & \u223c\\begin{bmatrix}1 & 2 & -3 & 1 \\\\ 0 & 2 & 8 & -4 \\\\ 0 & 0 & 0 & 0\\end{bmatrix} & {R}_{2} & :=\\frac{1}{2}{R}_{2} \\\\  & \u223c\\begin{bmatrix}1 & 2 & -3 & 1 \\\\ 0 & 1 & 4 & -2 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}.\\end{aligned}\n$$\n\nIn the row echelon form above, we have only two pivots (in the $1$st and $2$nd columns). To transform the matrix to reduced row echelon form, we need to create zeros above the pivots only. This gives,\n\n$$\n\\begin{aligned}M & \u223c\\begin{bmatrix}1 & 2 & -3 & 1 \\\\ 0 & 1 & 4 & -2 \\\\ 0 & 0 & 0 & 0\\end{bmatrix} & {R}_{1} & :={R}_{1}-2{R}_{2} \\\\  & \u223c\\begin{bmatrix}1 & 0 & -11 & 5 \\\\ 0 & 1 & 4 & -2 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}.\\end{aligned}\n$$"
+    },
+    {
+      ":db/id": 17592186642343,
+      ":question/answer-fields": [
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "1c9f454b-9874-59cf-9683-9c6260dc18a7",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 5 & -8 \\\\ 0 & 1 & 2 & 3 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}",
+              ":db/id": 17592186641874
+            },
+            {
+              ":answer/id": "1d925835-4560-5fe7-b478-69ed24ed729a",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}1 & 0 & -5 & 8 \\\\ 0 & 1 & -2 & 3 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}",
+              ":db/id": 17592186641875
+            },
+            {
+              ":answer/id": "28497492-f8d5-5ed3-9ed1-5d0feb81e0cd",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 0 & 8 \\\\ 0 & 1 & 0 & 3 \\\\ 0 & 0 & 1 & 3\\end{bmatrix}",
+              ":db/id": 17592186641894
+            },
+            {
+              ":answer/id": "38e022a7-abd8-5b4b-a593-079b1f84c938",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 0 & 8 \\\\ 0 & 1 & -2 & 3 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}",
+              ":db/id": 17592186641925
+            },
+            {
+              ":answer/id": "67d6ca7b-bfa0-557f-8611-b0dfd933c728",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}1 & 0 & -5 & 8 \\\\ 0 & 1 & -2 & 3 \\\\ 0 & 0 & 1 & -3\\end{bmatrix}",
+              ":db/id": 17592186641988
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "1d925835-4560-5fe7-b478-69ed24ed729a",
+            ":answer/type": {
+              ":db/ident": ":answer.type/math"
+            },
+            ":answer/value": "\\begin{bmatrix}1 & 0 & -5 & 8 \\\\ 0 & 1 & -2 & 3 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}",
+            ":db/id": 17592186641875
+          },
+          ":answer-field/id": "165d1d3d-b7da-5893-a27a-622c1387bc00",
+          ":answer-field/key": "selection",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/radio"
+          },
+          ":db/id": 17592186642212
+        }
+      ],
+      ":question/difficulty": {
+        ":db/ident": ":question.difficulty/hard"
+      },
+      ":question/id": "8e9b3735-f721-557c-bd19-98de1fb72ed8",
+      ":question/math-academy-id": "q-74625",
+      ":question/problem": "Consider the following system of linear equations:\n\n$$\n\\left\\{\\begin{aligned}x-3y+z &=-1 \\\\ y-2z &=3 \\\\ -5x+15y-5z &=5\\end{aligned}\\right.\n$$\n\nUse the standard Gauss-Jordan method to reduce the augmented matrix $M$ of the system to reduced row echelon form.",
+      ":question/worked-solution": "The augmented matrix for this system is\n\n$$\nM=\\begin{bmatrix}1 & -3 & 1 & -1 \\\\ 0 & 1 & -2 & 3 \\\\ -5 & 15 & -5 & 5\\end{bmatrix}.\n$$\n\nTransforming $M$ to reduced row echelon form, we have\n\n$$\n\\begin{aligned}M & \u223c\\begin{bmatrix}1 & -3 & 1 & -1 \\\\ 0 & 1 & -2 & 3 \\\\ -5 & 15 & -5 & 5\\end{bmatrix} & {R}_{3} & :={R}_{3}+5{R}_{1} \\\\  & \u223c\\begin{bmatrix}1 & -3 & 1 & -1 \\\\ 0 & 1 & -2 & 3 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}.\\end{aligned}\n$$\n\nIn the row echelon form above, we have only two pivots (in the $1$st and $2$nd columns). To transform the matrix to reduced row echelon form, we need to create zeros above the pivots only. This gives,\n\n$$\n\\begin{aligned}M & \u223c\\begin{bmatrix}1 & -3 & 1 & -1 \\\\ 0 & 1 & -2 & 3 \\\\ 0 & 0 & 0 & 0\\end{bmatrix} & {R}_{1} & :={R}_{1}+3{R}_{2} \\\\  & \u223c\\begin{bmatrix}1 & 0 & -5 & 8 \\\\ 0 & 1 & -2 & 3 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}.\\end{aligned}\n$$"
+    },
+    {
+      ":db/id": 17592186642366,
+      ":question/answer-fields": [
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "127a40db-874b-55b7-89c5-b7b99557d9df",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 3 & 3 \\\\ 0 & 1 & -1 & -2 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}",
+              ":db/id": 17592186641852
+            },
+            {
+              ":answer/id": "1e3c5ff3-f790-5427-9482-39e85981ab58",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 3 & 3 \\\\ 0 & 1 & 1 & 2 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}",
+              ":db/id": 17592186641879
+            },
+            {
+              ":answer/id": "8f201362-def3-5636-b65f-05b948c01b02",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 3 & 3 \\\\ 0 & 1 & 1 & 3 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}",
+              ":db/id": 17592186642052
+            },
+            {
+              ":answer/id": "b1163bf1-8610-59d5-8dc1-a1372c7205b5",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 3 & 3 \\\\ 0 & 1 & 3 & 6 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}",
+              ":db/id": 17592186642091
+            },
+            {
+              ":answer/id": "f7d26910-570d-54fe-8717-90bb1b6d3120",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\begin{bmatrix}1 & 0 & 3 & 3 \\\\ 0 & 1 & 3 & 3 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}",
+              ":db/id": 17592186642185
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "1e3c5ff3-f790-5427-9482-39e85981ab58",
+            ":answer/type": {
+              ":db/ident": ":answer.type/math"
+            },
+            ":answer/value": "\\begin{bmatrix}1 & 0 & 3 & 3 \\\\ 0 & 1 & 1 & 2 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}",
+            ":db/id": 17592186641879
+          },
+          ":answer-field/id": "d5debf8d-6709-5ded-9e77-6cbfa5eef2b1",
+          ":answer-field/key": "selection",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/radio"
+          },
+          ":db/id": 17592186642278
+        }
+      ],
+      ":question/difficulty": {
+        ":db/ident": ":question.difficulty/hard"
+      },
+      ":question/id": "c0791632-977c-5714-8eb6-2845fc127f35",
+      ":question/math-academy-id": "q-131634",
+      ":question/problem": "Consider the following system of linear equations:\n\n$$\n\\left\\{\\begin{aligned}x+3z &=3 \\\\ -x+3y &=3 \\\\ -2x-6z &=-6\\end{aligned}\\right.\n$$\n\nUse the standard Gauss-Jordan method to reduce the augmented matrix $M$ of the system to reduced row echelon form.",
+      ":question/worked-solution": "The augmented matrix for this system is\n\n$$\nM=\\begin{bmatrix}1 & 0 & 3 & 3 \\\\ -1 & 3 & 0 & 3 \\\\ -2 & 0 & -6 & -6\\end{bmatrix}.\n$$\n\nTransforming $M$ to reduced row echelon form, we have\n\n$$\n\\begin{aligned}M & \u223c\\begin{bmatrix}1 & 0 & 3 & 3 \\\\ -1 & 3 & 0 & 3 \\\\ -2 & 0 & -6 & -6\\end{bmatrix} & {R}_{2} & :={R}_{2}+{R}_{1} \\\\  & \u223c\\begin{bmatrix}1 & 0 & 3 & 3 \\\\ 0 & 3 & 3 & 6 \\\\ -2 & 0 & -6 & -6\\end{bmatrix} & {R}_{3} & :={R}_{3}+2{R}_{1} \\\\  & \u223c\\begin{bmatrix}1 & 0 & 3 & 3 \\\\ 0 & 3 & 3 & 6 \\\\ 0 & 0 & 0 & 0\\end{bmatrix} & {R}_{2} & :=\\frac{1}{3}{R}_{2} \\\\  & \u223c\\begin{bmatrix}1 & 0 & 3 & 3 \\\\ 0 & 1 & 1 & 2 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}.\\end{aligned}\n$$"
+    }
+  ]
+}

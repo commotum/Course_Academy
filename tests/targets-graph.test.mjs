@@ -33,7 +33,7 @@ function fixture(targets = [1, 3], { splitSaved = null, queueSaved = null } = {}
   });
   const elements = new Map();
   const $ = id => { if (!elements.has(id)) elements.set(id, element()); return elements.get(id); };
-  const nodes = [1, 2, 3, 4, 5, 6].map(id => ({ id, name: `Topic ${id}`, layer: ({ 4: 0, 1: 1, 6: 1, 2: 2, 3: 2, 5: 3 })[id], order: 0 }));
+  const nodes = [1, 2, 3, 4, 5, 6].map(id => ({ id, name: `Topic ${id}`, layer: 29 + ({ 4: 0, 1: 1, 6: 1, 2: 2, 3: 2, 5: 3 })[id], order: 0 }));
   const links = [{ source: 1, target: 3 }, { source: 1, target: 2 }, { source: 4, target: 1 }, { source: 3, target: 5 }, { source: 4, target: 6 }];
   const context = vm.createContext({
     URL, $, document: { createElement: element, createElementNS: element, getElementById: $, querySelector: () => $('.app'), title: '' },
@@ -231,6 +231,31 @@ test('targets overview spans courses and retains only links between saved target
   assert.equal([...active.columns.values()].every(Number.isInteger), true);
 });
 
+test('targets exclude displayed L29 and below from roots, expanded prerequisites, links, and counts', () => {
+  const c = fixture([1, 3]); c.snapshot.learner.queue = [2, 4, 6];
+  for (const [id, layer] of [[4, 27], [1, 28], [6, 28], [2, 29], [3, 30], [5, 31]]) c.nodeById.get(id).layer = layer;
+  const saved = JSON.stringify(c.snapshot.learner);
+  c.changeCourse(null, true, 'targets');
+  assert.deepEqual([...c.state.activeIds], [3, 2]); // L30 is retained; L29 is excluded.
+  assert.equal(c.$('targetWeekReadout').textContent, 'All weeks · 1 target · 1 queued');
+  for (const depth of [0, 1, 2, 'all']) {
+    c.setDepth(depth, true);
+    const active = c.buildActiveSet();
+    assert.deepEqual([...active.nodeIds].sort(), [2, 3]);
+    assert.ok([...active.edgeSet].every(i => active.nodeIds.has(c.LINKS[i].source) && active.nodeIds.has(c.LINKS[i].target)));
+  }
+  c.setSelected(1); assert.deepEqual([...c.state.activeIds], [3, 2]);
+  c.state.mode = 'overview'; assert.deepEqual([...c.buildActiveSet().nodeIds], [3, 2]);
+  c.changeCourse('course-a');
+  assert.deepEqual([...c.buildActiveSet().nodeIds], [1, 2]); // Other graph pages retain the lower layers.
+  assert.equal(JSON.stringify(c.snapshot.learner), saved);
+  c.learnerChanged({ ...c.snapshot.learner, targets: [1] });
+  c.queueChanged({ queue: [4, 6] });
+  c.changeCourse(null, true, 'targets');
+  assert.equal(c.buildActiveSet().nodeIds.size, 0);
+  assert.equal(c.state.selected, null);
+});
+
 function addSchoolCourses(c) {
   c.snapshot.courses.push(
     { id: 'de', code: 'MTH 256', topicIds: [], targetTopicIds: [1, 3] },
@@ -317,8 +342,8 @@ test('split layout vertically separates labeled courses and keeps all nodes and 
   const c = fixture([1, 2, 3, 4, 5, 6]); addSchoolCourses(c); c.changeCourse(null, true, 'targets');
   const combined = c.layoutCurrent();
   c.setTargetSplit(true); const split = c.layoutCurrent(); c.renderGuides();
-  assert.deepEqual(Array.from(split.courseBands, band => band.label), ['MTH 256', 'MTH 255', 'MTH 341', 'Shared', 'Other topics']);
-  assert.deepEqual(Array.from(split.courseBands, band => [...band.nodeIds]), [[1], [2], [4, 5], [3], [6]]);
+  assert.deepEqual(Array.from(split.courseBands, band => band.label), ['MTH 256', 'MTH 255', 'MTH 341']);
+  assert.deepEqual(Array.from(split.courseBands, band => [...band.nodeIds]), [[1, 3], [2], [4, 5, 6]]);
   assert.deepEqual(Array.from(split.activeNodes, node => node.id), Array.from(combined.activeNodes, node => node.id));
   assert.deepEqual(Array.from(split.activeLinks, edge => edge.index), Array.from(combined.activeLinks, edge => edge.index));
   assert.equal(split.pos.size, split.activeNodes.length);
@@ -343,7 +368,87 @@ test('split layout vertically separates labeled courses and keeps all nodes and 
   for (const [id, box] of combined.pos) assert.deepEqual(again.pos.get(id), box);
 });
 
-test('expanded prerequisites inherit their courses without adding hidden topics and respect course filters', () => {
+function configureCourseBands(c, memberships, edges) {
+  c.snapshot.courses = ['256', '255', '341'].map((code, i) => ({ id: code, code: 'MTH ' + code, topicIds: memberships[i] }));
+  c.LINKS.splice(0, c.LINKS.length, ...edges.map(([source, target]) => ({ source, target })));
+  for (const node of c.NODES) {
+    c.inMap.set(node.id, c.LINKS.filter(edge => edge.target === node.id).map(edge => edge.source));
+    c.outMap.set(node.id, c.LINKS.filter(edge => edge.source === node.id).map(edge => edge.target));
+  }
+}
+function coursePlacements(c, ids = c.NODES.map(node => node.id)) {
+  return new Map(Array.from(c.targetCourseBands(new Set(ids)), band =>
+    Array.from(band.nodeIds, id => [id, band.key])).flat());
+}
+
+test('excluded low-layer targets and queue topics do not inflate track workloads', () => {
+  const c = fixture([1, 2, 3, 4, 5, 6]); c.snapshot.learner.queue = [1];
+  configureCourseBands(c, [[1], [2], [3]], []);
+  c.nodeById.get(1).layer = 28;
+  c.changeCourse(null, true, 'targets');
+  const placement = coursePlacements(c, c.buildActiveSet().nodeIds);
+  assert.equal(placement.has(1), false);
+  assert.equal(placement.get(4), '256');
+  assert.equal(placement.get(5), '256');
+  assert.equal(placement.get(6), '255');
+});
+
+test('course distance crosses hidden nodes in either direction and wins over lighter workloads', () => {
+  const c = fixture([1, 2, 3, 4]);
+  configureCourseBands(c, [[1], [2, 3], []], [[5, 1], [5, 4], [2, 4]]);
+  assert.equal(coursePlacements(c, [4]).get(4), '255'); // One hop to 255, two to 256, none to empty 341.
+  configureCourseBands(c, [[1], [2, 3], []], [[5, 1], [5, 4]]);
+  assert.equal(coursePlacements(c, [4]).get(4), '256'); // Reverse through hidden node 5.
+});
+
+test('shared topics choose the lighter of their equally near associated courses', () => {
+  const c = fixture([1, 2, 4, 5]);
+  configureCourseBands(c, [[1, 4, 5], [2, 4], [3]], [[1, 4], [2, 4], [3, 4]]);
+  const placement = coursePlacements(c);
+  assert.equal(placement.get(4), '255'); // 256 has two roots; 255 has one. Empty 341 is not an associated candidate.
+  assert.equal(placement.get(5), '256'); // Explicit single-course membership stays anchored.
+});
+
+test('disconnected and tied roots balance sequentially using unique saved targets and queue topics', () => {
+  const c = fixture([1, 2, 3, 4, 5, 6]);
+  c.snapshot.learner.queue = [1, 1]; // Repeated and overlapping membership adds no extra workload.
+  configureCourseBands(c, [[1], [2], [3]], []);
+  const expected = new Map([[1, '256'], [4, '256'], [2, '255'], [5, '255'], [3, '341'], [6, '341']]);
+  assert.deepEqual(coursePlacements(c), expected);
+  c.snapshot.learner.targets.reverse();
+  assert.deepEqual(coursePlacements(c, [6, 5, 4, 3, 2, 1]), expected);
+  configureCourseBands(c, [[1], [2], [3]], [[1, 4], [2, 4], [3, 4], [1, 5], [2, 5], [3, 5], [1, 6], [2, 6], [3, 6]]);
+  assert.deepEqual(coursePlacements(c), expected); // Equal distance follows the same balancing rule.
+});
+
+test('expanded prerequisites follow placed roots even without original course anchors and do not change workload', () => {
+  const c = fixture([2, 3, 5]);
+  configureCourseBands(c, [[], [], []], [[4, 1], [1, 3], [6, 2]]);
+  c.changeCourse(null, true, 'targets'); c.setTargetSplit(true);
+  const overview = coursePlacements(c, c.buildActiveSet().nodeIds);
+  assert.deepEqual(overview, new Map([[2, '256'], [3, '255'], [5, '341']]));
+  c.setDepth(1, true);
+  const shallow = coursePlacements(c, c.buildActiveSet().nodeIds);
+  assert.equal(shallow.get(1), '255'); assert.equal(shallow.get(6), '256');
+  c.setDepth(2, true);
+  const deep = coursePlacements(c, c.buildActiveSet().nodeIds);
+  assert.equal(deep.get(4), '255');
+  for (const [id, code] of shallow) assert.equal(deep.get(id), code);
+  for (const [id, code] of overview) assert.equal(deep.get(id), code);
+  assert.deepEqual(Array.from(c.layoutCurrent().courseBands, band => band.key), ['256', '255', '341']);
+});
+
+test('week, course, Queue visibility, and focus changes keep placements based on the saved workload', () => {
+  const c = fixture([1, 2, 3, 4, 5, 6]); addSchoolCourses(c); addWeekSchedule(c);
+  c.snapshot.learner.queue = [4]; c.changeCourse(null, true, 'targets');
+  const expected = coursePlacements(c);
+  c.$('targetWeekButtons').children[0].listeners.click({ shiftKey: false });
+  c.setTargetCourseEnabled('341', false); c.setTargetQueueEnabled(false);
+  c.setDepth(2, true); c.setSelected(1);
+  for (const [id, code] of coursePlacements(c, c.buildActiveSet().nodeIds)) assert.equal(code, expected.get(id));
+});
+
+test('expanded prerequisites receive course tracks without adding hidden topics and respect course filters', () => {
   const c = fixture([2, 3]); addSchoolCourses(c);
   c.snapshot.courses.find(course => course.code === 'MTH 256').targetTopicIds = [3];
   c.snapshot.courses.find(course => course.code === 'MTH 255').targetTopicIds = [2];
@@ -352,10 +457,10 @@ test('expanded prerequisites inherit their courses without adding hidden topics 
   c.setTargetQueueEnabled(false);
   assert.deepEqual(Array.from(c.layoutCurrent().activeNodes, node => node.id), [2, 3]);
   c.setDepth(2, true); let layout = c.layoutCurrent();
-  assert.deepEqual([...layout.courseBands.find(band => band.key === 'shared').nodeIds].sort(), [1, 4]);
+  assert.deepEqual([...layout.courseBands.find(band => band.key === '256').nodeIds].sort(), [1, 3, 4]);
   assert.equal(layout.pos.has(6), false);
   c.setSelected(1); layout = c.layoutCurrent();
-  assert.deepEqual(Array.from(layout.courseBands, band => band.label), ['Shared']);
+  assert.deepEqual(Array.from(layout.courseBands, band => band.label), ['MTH 256']);
   c.setTargetCourseEnabled('255', false); layout = c.layoutCurrent();
   assert.deepEqual(Array.from(layout.courseBands, band => band.label), ['MTH 256']);
   assert.deepEqual([...layout.courseBands[0].nodeIds].sort(), [1, 3, 4]);
@@ -442,7 +547,7 @@ test('unassigned targets remain across every course and week filter independentl
   assert.deepEqual([...c.courseTopics], [6]);
   c.$('targetWeeksAll').listeners.click();
   assert.deepEqual([...c.courseTopics], [6]);
-  assert.deepEqual(Array.from(c.layoutCurrent().courseBands, band => band.label), ['Other topics']);
+  assert.deepEqual(Array.from(c.layoutCurrent().courseBands, band => band.label), ['MTH 341']);
   c.setTargetQueueEnabled(true);
   assert.deepEqual([...c.courseTopics], [6]); // Target/queue overlap is drawn once.
   assert.equal(JSON.stringify(c.snapshot.learner), saved);
@@ -635,7 +740,7 @@ test('focused stacks retain global layer order while collapsing layers without v
     assert.equal(columns.get(6), columns.get(4) + 1);
     assert.equal(columns.get(5), columns.get(6));
     assert.equal(new Set(columns.values()).size, 2);
-    assert.equal(c.nodeById.get(5).layer, 3);
+    assert.equal(c.nodeById.get(5).layer, 32);
   }
 });
 

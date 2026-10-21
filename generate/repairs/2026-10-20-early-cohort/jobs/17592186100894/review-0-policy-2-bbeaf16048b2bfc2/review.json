@@ -1,0 +1,153 @@
+{
+  "verdict": "revise",
+  "summary": "Reject: a symbol-only shortcut survives delivery (8/8 trig variants; 1/1 batch trig member), valid source profiles are omitted, and current native grading cannot support excluded families. All five batch keys are mathematically correct. Package unchanged; no database writes.",
+  "source_analysis": {
+    "skill": "Rearrange a first-order ODE to separate x and y; integrate; use an initial condition to determine the integration constant and, where necessary, the solution branch.",
+    "reasoning_steps": [
+      "Algebraically rearrange/factor the displayed equation into f(y)dy=g(x)dx.",
+      "Integrate using elementary power, logarithmic, exponential or trigonometric antiderivatives.",
+      "Substitute the initial x and y to determine the integration constant.",
+      "Return the particular explicit or implicit relation, or the requested expression in its scaffold; choose sign from the initial condition when applicable."
+    ],
+    "invariants": [
+      "First-order separable ODE and elementary integration at the observed workload.",
+      "Initial point lies in the equation domain; an implicit formal antiderivative must actually define a differentiable local IVP solution.",
+      "Exactly one mathematically valid radio answer; key satisfies original ODE and initial condition.",
+      "Prompt, answer bank, scaffold and worked solution use a single consistent instance."
+    ],
+    "permitted_variations": [
+      "Small signed coefficients, powers within the observed integration workload, admissible initial x and y values, and integration constants.",
+      "Positive/negative solution branch where source allows both by initial condition; denominator or logarithm argument must follow the initial condition.",
+      "Radio ordering and which candidate satisfies both the ODE and initial condition; particular source correct position is incidental.",
+      "Zero and nonzero integration constants are both eligible when valid.",
+      "Changes to ODE coefficients should change dependent antiderivatives, banks and solutions; answer order or equivalent formatting should not change mathematical correctness."
+    ],
+    "source_refs": [
+      "891e9004-961b-539a-ab93-0752347fd077: cos(3y)y' + sin(2x)=0; separate, integrate, then apply y(pi/4)=0.",
+      "tutorial 974 / e2c4c33d-a1bd-537e-9daa-1960f765953d: \"1\\. separating the variables, 2\\. integrating the equation, and then 3\\. substituting the condition into the solution to solve for the constant of integration.\"",
+      "06632100-a7a1-5d47-9549-7f654f194e12: \"Since y(0)=1>0, we choose the solution with the positive sign.\"",
+      "04d08db5-75c0-5a9e-a376-151cc06be633: y'=3y\u00b2x\u00b2-4y\u00b2x\u00b3, y(2)=1/8; C=0 is an example assignment."
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "failed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "source-replay.json",
+        "source-replay-records.json",
+        "runtime-results.json"
+      ],
+      "details": "23 implemented source banks and keys replay exactly, with supported presentation/wording corrections. Supplied q-128199 and q-126765 are absent. Invalid q-104058 is correctly excluded."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "samples.json",
+        "batch.json",
+        "audit.py"
+      ],
+      "details": "Independent parsing/differentiation of displayed expressions verifies all 66 records: 57 controls, five exact batch items, four excluded-profile probes. Correct initial values and exactly one valid bank answer in every record."
+    },
+    "variety": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "shortcut-results.json",
+        "runtime-results.json",
+        "counterfactual-records.json"
+      ],
+      "details": "Only x translations vary; IC ordinates and integration constants remain fixed within each recognizable family. Eligible IC changes are rejected. This preserves the demonstrated conditional bank cue."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "scope-review.json",
+        "samples.json",
+        "source-analysis.json"
+      ],
+      "details": "Tested translations preserve elementary integration, original response scaffolds and comparable workload; no demonstrated drift."
+    },
+    "grading": {
+      "status": "failed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-console.txt",
+        "grading-summary.json",
+        "grader-observed-report.json"
+      ],
+      "details": "Strict native contract fails. Observational batch: 44 accepted, 96 rejected, six unresolved. q-355559 cannot grade its valid radical key; wrong 0 remains unresolved for q-355577/q-355582. All five runner batch records grade correctly. Excluding valid families does not resolve these capability gaps."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-visual-review.json",
+        "render/question-005.png",
+        "render/question-007.png",
+        "render/question-011.png"
+      ],
+      "details": "Actual UI rendered 11 records without math/image/JavaScript errors. Inspected shuffled trig choices, controlled IC pair and denominator scaffold; wide derivations use existing horizontal scrolling."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging.json",
+        "runtime-results.json",
+        "relocation-records.json",
+        "package-before.json"
+      ],
+      "details": "Exact installed Python 3.13.5/SymPy 1.14.0 match dependency contract. Relocated CLI produces identical records; determinism/boundary rejection verified. Original package hashes unchanged."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "shortcut-results.json",
+        "delivery-batch/delivery.json",
+        "selection.json",
+        "inventory-audit.json",
+        "affected-inventory.json"
+      ],
+      "details": "Choose the logarithm option without pi solves all eight q-104065 shifts and the actual batch subgroup after filtering and UI shuffling. Relevant IC and irrelevant wording/order counterfactuals pass native checks. Selection cannot remove this conditional cue. Captured basis 5372 has only 26 original sources, so no affected stored generated records are demonstrated; live learner history/weights are unavailable."
+    }
+  },
+  "findings": [
+    {
+      "kind": "decision_shortcut",
+      "description": "Within the recognizable sine/cosine template, the unique logarithm choice without a printed pi is always correct: 8/8 shifts versus random baseline 1/5, including 1/1 exact batch member. C=0 and the answer-bank relationships are fixed; UI shuffling does not defeat this symbol-only strategy.",
+      "source_refs": [
+        "cdddaa9b-4174-550d-a7b6-1b8e1a3f2b29 (q-104065)",
+        "tutorial 974 / e2c4c33d-a1bd-537e-9daa-1960f765953d: substitute the condition to solve the integration constant",
+        "generate/principles.md: meaningful answer-bearing variation"
+      ],
+      "reproduction": "Run PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python variation.py. Minimal instance: template q-104065, seed 847003, parameters {\"h\":1}; select the only logarithm option without \\pi. Complete records and per-stage successes are in shortcut-family-records.json and shortcut-results.json.",
+      "requested_change": "Replace coordinate-only construction with source-grounded variation of admissible IC ordinates and resulting integration constants/bank relationships. For the same trig ODE, y(pi/2+h)=0 yields C=-pi^2 whereas the source ordinate yields C=0; allow both without a fixed symbol/shape predicting correctness. Regenerate the batch and retain the conditional shortcut regression."
+    },
+    {
+      "kind": "source_fidelity",
+      "description": "The package uses an older 24-question snapshot and omits two supplied source profiles. The valid branch-selecting IVP y'=x/y, y(0)=1 (q-128199) cannot be replayed. The sine-scaffold source q-126765 is also unaccounted for; its captured prompt omits the ODE, which is present in its worked solution.",
+      "source_refs": [
+        "06632100-a7a1-5d47-9549-7f654f194e12 (q-128199)",
+        "1bc80b6f-e02e-58f0-97b4-8ea651af23ac (q-126765)"
+      ],
+      "reproduction": "runtime-results.json: generate(difficulty=\"moderate\", template=\"q-128199\", replay=True) raises template/level mismatch or excluded source. Run audit.py; source-replay.json lists both unimplemented sources.",
+      "requested_change": "Reconcile against all supplied source evidence. Implement and replay q-128199 with its blank key and positive-branch reasoning. Explicitly resolve/document the incomplete sine source using its worked ODE and necessary local branch condition; do not silently drop it."
+    },
+    {
+      "kind": "grading",
+      "description": "Valid source families are excluded from normal sampling because of unresolved native grading capabilities. Independently, q-355559 at h=1 yields unresolved even for its exact correct radical; q-355577 and q-355582 at h=1 cannot reject 0. Observational unresolved outcomes are retained as strict failures.",
+      "source_refs": [
+        "af7393d2-efb0-5146-b448-33e99ed4412d (q-355559)",
+        "a6ea94de-6671-5cd2-9382-54cb9545def9 (q-355577)",
+        "b704df68-ffc0-57d3-acee-bb78600fdc0b (q-355582)"
+      ],
+      "reproduction": "Run /home/jake/Developer/Course_Academy/generate/runs/current/check-engine grader-input.json grader-report.json: fails on q-355559 h=1, exact submitted \\sqrt{2{e}^{2{(x - 1)}^{2}}-1}, reason \"root of a symbolic quotient is unsupported\". grading-summary.json retains all six unresolved observations and complete records are in grader-input.json.",
+      "requested_change": "Retain these source families and strict equivalent-answer/wrong-answer regressions. Identify and address native symbolic-root comparison and logarithmic-domain rejection capabilities; do not constrain valid notation or delete families as a workaround. Engine changes are outside this job\u2019s authorized repair scope, so report the required capability explicitly."
+    }
+  ]
+}
