@@ -1,0 +1,263 @@
+{
+  "learner_operation": "Read each equation in order; associate each coefficient with the variable's natural column order, including implicit signed units and missing zeros; place the right-hand constant in the final column only for augmented matrices; distinguish the corresponding matrix from five radio choices.",
+  "fixed_features": [
+    {
+      "feature": "Two organized equations in two naturally ordered variables for easy",
+      "justification": "All four easy sources already isolate constants and order variables; direct matrix reading is the stated easy operation."
+    },
+    {
+      "feature": "One radio answer among five complete matrices",
+      "justification": "Each captured source bank has five math-valued choices; the lesson defines rows, variable columns and augmented constant column."
+    },
+    {
+      "feature": "Retained complete source bank transformations and explicit unsupported levels",
+      "justification": "Replay anchors the four easy and two moderate profiles. Hard, extra moderate and unrated families are unimplemented and not relabeled easy."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Signs, magnitudes and equation-to-row / variable-to-column assignments",
+      "eligible_variation": "Signed integer entries can vary independently; unit coefficients remain eligible; moderate role permutations follow natural variable ordering.",
+      "observed": "Independent exact parsing passes 128 easy and 24 moderate records plus batch and controls. Six entry-by-entry easy perturbations and supported moderate target switches pass."
+    },
+    {
+      "role": "Which eligible 2x3 easy bank member matches the displayed system",
+      "eligible_variation": "Different complete bank members can be targets, with prompt and solution derived consistently.",
+      "observed": "All 3/4/5/4 eligible easy targets are exercised with bank fixed. Delivered control retains all target categories, but actual batch has source-correct target in both q-129137 and both q-71734 instances."
+    },
+    {
+      "role": "Qualifying answer location",
+      "eligible_variation": "Radio ordering is incidental; native grading follows answer identity.",
+      "observed": "Raw batch has four keys at index1, one index0; UI may shuffle. Demonstrated bank-only shortcut ignores option order entirely."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "Supported source replay",
+      "sample_refs": [
+        "source-replay-records.json",
+        "source-replay.json"
+      ],
+      "result": "Four easy and two moderate source systems and complete answer banks match. Unsupported source cases and missing captured keys/solutions are listed explicitly."
+    },
+    {
+      "case": "Raw and delivered easy decision cases",
+      "sample_refs": [
+        "sample.json",
+        "coverage.json",
+        "delivery-sample/accepted.json"
+      ],
+      "result": "128 input records become104 after24 duplicates; each observed eligible profile/target category survives. q-71733 orientation transformations deduplicate substantially."
+    },
+    {
+      "case": "Exact runner batch",
+      "sample_refs": [
+        "batch.json",
+        "delivery-batch/accepted.json",
+        "shortcut-results.json"
+      ],
+      "result": "All5 survive; option-only shape/sign tree answers5/5, including conditional q-1291372/2, q-717342/2 and q-717311/1. This is a deficient finite batch, not a universal claim about the new generator."
+    },
+    {
+      "case": "Captured generated inventory",
+      "sample_refs": [
+        "generated-records.json",
+        "inventory-audit.json",
+        "affected-inventory.json"
+      ],
+      "result": "All5 legacy generated records replay exactly including generation metadata and match stored IDs, fields, keys, prompts, solutions and banks. Fixed-sign bank selectors answer all5; original source questions are excluded."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Hold q-71734 bank, numbers and seed fixed; switch target from original matrix to first-row-negated matrix (controlled.json indices12 and13).",
+      "expected": "Displayed first equation, correct matrix and explanation change together; original answer is rejected in the second instance.",
+      "observed": "Both prompts and solutions independently parsed; native accepts the new matrix and rejects other options. Actual UI renders show 2u+3v=8 versus -2u-3v=8 and follow the corresponding key. Bank-only first-row singleton selector stays fixed and is wrong for the switched target.",
+      "status": "passed",
+      "justification": "Signs are relevant coefficients; the source task asks for the displayed system, so changing them must change the response.",
+      "sample_refs": [
+        "controlled.json",
+        "counterfactuals.json",
+        "native-report.json",
+        "render-all/rendering.json",
+        "render-all/question-006.png",
+        "render-all/question-007.png"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "Hold moderate bank and latent parameters fixed; switch through all3 coefficient-compatible and both augmented-compatible targets.",
+      "expected": "Moved-variable signs / coefficients or RHS constant must update prompt, correct answer, organized equations and solution while preserving the complete bank.",
+      "observed": "Independent parsing, native grading of all offered options, and five actual UI renders confirm each response transition.",
+      "status": "passed",
+      "justification": "The lesson requires organizing the actual displayed equation evidence before reading matrix entries. Target role is incidental; the mathematical rule is essential.",
+      "sample_refs": [
+        "extra-controlled.json",
+        "construction.json",
+        "extra-native-report.json",
+        "render-extra/rendering.json",
+        "render-extra-contact.png"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Use the same explicit q-129137 parameters/profile/target with seeds731 and732, changing only choice order.",
+      "expected": "Prompt, mathematical answer and explanation remain unchanged; grader accepts the same matrix independent of position.",
+      "observed": "Exact prompt, solution and matrix equality asserted; choices differ. Native grades all choices consistently; both actual UI previews contain the same system and solution.",
+      "status": "passed",
+      "justification": "The source response is defined by coefficient/constant roles, not radio position.",
+      "sample_refs": [
+        "controlled.json",
+        "counterfactuals.json",
+        "native-report.json",
+        "irrelevant-render-records.json",
+        "render-irrelevant/rendering.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "Extra zero-row option; otherwise minority sign in first-column coefficient cells",
+      "subgroup": "Exact5-record delivered batch",
+      "scope": "overall",
+      "strategy": "If an extra-zero-row 3x3 option exists, select its two-row prefix. Otherwise restrict to2x3 options, scan first-column cells top then bottom, and select the option with the singleton sign in a1:3 split. Never inspect the equations.",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.2833333333333333,
+      "disposition": "defect",
+      "conclusion": "All5 native submissions accepted. Chance among shape-valid candidates is (2*(1/3)+3*(1/4))/5=17/60. This selector is incidental: same-bank target counterfactuals make it wrong. Failure is specific to this batch; larger control gives24/96.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "shortcut-regression.json",
+        "shortcut-regression-run.json",
+        "shortcut-native-report.json",
+        "reproduce_shortcut.py"
+      ]
+    },
+    {
+      "cue": "Extra zero-row option",
+      "subgroup": "q-129137, recognizable by extra-zero-row and transpose distractors",
+      "scope": "within_template",
+      "strategy": "Delete the final zero row and choose the matching2x3 option.",
+      "correct": 2,
+      "total": 2,
+      "baseline": 0.3333333333333333,
+      "disposition": "defect",
+      "conclusion": "Both delivered q-129137 questions use this same answer role; three2x3 candidates give a1/3 shape-only baseline. Constant-column reasoning is bypassed. Control sample has8/32 success for the same selector, so this is a batch-selection failure.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json",
+        "controlled.json"
+      ]
+    },
+    {
+      "cue": "Singleton coefficient sign in top-left cell",
+      "subgroup": "Both u,v/q-71734 batch questions",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Among four2x3 choices select the unique top-left sign.",
+      "correct": 2,
+      "total": 2,
+      "baseline": 0.25,
+      "disposition": "defect",
+      "conclusion": "Both current batch u,v questions happen to select the source-correct bank role. Four eligible choices give baseline1/4. Opposite target counterfactual with identical bank disproves mathematical necessity of this cue.",
+      "sample_refs": [
+        "batch.json",
+        "shortcut-results.json",
+        "controlled.json",
+        "render-all/question-006.png",
+        "render-all/question-007.png"
+      ]
+    },
+    {
+      "cue": "Same shape/sign tree on independent control",
+      "subgroup": "Applicable q-129137/q-71731/q-71734 cases after delivery",
+      "scope": "overall",
+      "strategy": "Use exactly the failing batch selector without consulting prompts.",
+      "correct": 24,
+      "total": 96,
+      "baseline": 0.2777777777777778,
+      "disposition": "not_predictive",
+      "conclusion": "Observed25% versus shape-valid target baseline(1/3+1/4+1/4)/3=5/18. Eight q-71733 records lack this tree signature. These controls establish that the demonstrated defect is not universal in current code; they do not waive the exact batch failure.",
+      "sample_refs": [
+        "sample.json",
+        "delivery-sample/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed negative moved-variable entry",
+      "subgroup": "Three reproduced legacy coefficient questions",
+      "scope": "within_template",
+      "strategy": "Select the sole2x3 option with negative top-right coefficient.",
+      "correct": 3,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "defect",
+      "conclusion": "All3 stored legacy instances match; three coefficient-shaped choices give baseline1/3. Current code varies signs/target roles, so repair concerns the captured older pool rather than a universal current-generation rule.",
+      "sample_refs": [
+        "generated-records.json",
+        "inventory-audit.json",
+        "affected-inventory.json",
+        "inventory_audit.py"
+      ]
+    },
+    {
+      "cue": "Zero first RHS and negative second RHS",
+      "subgroup": "Two reproduced legacy augmented questions",
+      "scope": "within_template",
+      "strategy": "Select the2x4 matrix with zero first constant and negative second constant.",
+      "correct": 2,
+      "total": 2,
+      "baseline": 0.25,
+      "disposition": "defect",
+      "conclusion": "All2 stored legacy instances match without equation reading; four2x4 candidates give baseline1/4. IDs and full reproducible generation metadata are retained.",
+      "sample_refs": [
+        "generated-records.json",
+        "inventory-audit.json",
+        "affected-inventory.json",
+        "inventory_audit.py"
+      ]
+    },
+    {
+      "cue": "Option position",
+      "subgroup": "Exact raw batch",
+      "scope": "overall",
+      "strategy": "Always choose raw index0.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "At random1/5 baseline in this batch. UI reshuffling further limits this probe; the demonstrated shape/sign selector is invariant to choice order.",
+      "sample_refs": [
+        "batch.json",
+        "shortcut-results.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "generator distinct-bank rejection and resampling (seed499 witness)",
+      "requested difficulty",
+      "actual publisher shared normalization / identity validation",
+      "captured-inventory and within-batch deduplication",
+      "Rust learner-selection rules: fresh candidate exclusion, rated-band weighting, uniform within-band hash draw and unconfigured-policy first-candidate fallback"
+    ],
+    "sample_refs": [
+      "construction.json",
+      "delivery-sample/delivery.json",
+      "delivery-batch/delivery.json",
+      "coverage.json",
+      "selection.json",
+      "shortcut-results.json"
+    ],
+    "result": "Sample128->104; batch5->5. None of the bank-only batch cues is removed. All5 batch items can be selected within the easy band; arbitrary deletion by learner history leaves the same selector correct on every remaining member. Synthetic200-draw reproduction covers all5 positions; exact learner history, weights and future entity IDs are unavailable, so no claim about a particular learner sequence."
+  },
+  "limitations": [
+    "Finite tests cannot rule out every shortcut.",
+    "Captured inventory basis5346; concurrent changes are outside this review. Publication preparation file is absent; actual shared read-only filtering was run instead.",
+    "No live database, learner history or policy-state reads/writes; weighted-selection conclusions are conditional on easy being eligible.",
+    "Unsupported q-1074/q-71730, q-129139, canonical and hard source forms are recorded, not silently relabeled. Requested easy has all four observed source profiles.",
+    "Samples deliberately reuse eight fresh seeds per profile/orientation; aggregate counts are not independent statistical confidence estimates."
+  ]
+}

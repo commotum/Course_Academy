@@ -1,0 +1,136 @@
+{
+  "verdict": "revise",
+  "summary": "An equation-blind shortcut answers all five delivered batch questions. Five legacy inventory records also retain fixed-sign shortcuts. Other checks pass; package files are unchanged.",
+  "source_analysis": {
+    "skill": "Translate naturally ordered linear equations into coefficient or augmented matrices.",
+    "reasoning_steps": [
+      "Identify the natural variable order.",
+      "Read signed coefficients into columns while preserving equation order as rows.",
+      "Append right-hand constants for an augmented matrix.",
+      "Select the matching complete matrix."
+    ],
+    "invariants": [
+      "Easy questions use two already organized integer equations in two variables.",
+      "One correct radio selection among five matrices.",
+      "No solving or row reduction is required."
+    ],
+    "permitted_variations": [
+      "Vary coefficients, signs, constants and implicit units.",
+      "Vary supported variable names and answer positions.",
+      "Vary which eligible bank member matches the displayed equations, recomputing prompts, keys and solutions."
+    ],
+    "source_refs": [
+      "211f2486-98ca-57f9-afcd-978296d23dab",
+      "9dc9c77e-9ffe-58b8-b13b-5afd3da944fe",
+      "c01a0cd8-7bc8-5a6a-9cd8-989ca542ee1c",
+      "1731054d-ea13-5a85-8abe-142bb7f3ad7f",
+      "Tutorial f6081e68-9014-5a0d-a6bf-084abe5fd28e: alphabetical or numerical variable order",
+      "Tutorial 36b1a271-77b9-59ed-9f12-1b6675c26830: coefficient matrix and right-hand-side augmentation"
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "source-replay.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay.json",
+        "source-replay-records.json"
+      ],
+      "details": "All four easy and two implemented moderate profiles replay with complete answer banks. Unsupported families and source gaps are documented."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math.json",
+        "construction.json",
+        "audit.py"
+      ],
+      "details": "Independent exact parsing confirms unique correct matrices, keys and solutions across samples, batch, boundaries and controlled changes."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "coverage.json",
+        "counterfactuals.json",
+        "construction.json"
+      ],
+      "details": "The generator supports all eligible easy target roles and independent entry variation. Control delivery preserves these cases; the exact batch fails separately."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "source-replay.json",
+        "render-records.json"
+      ],
+      "details": "Requested easy instances preserve direct matrix-reading workload and the source response contract."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "native-report.json",
+        "extra-native-report.json",
+        "shortcut-native-report.json"
+      ],
+      "details": "The native grader passes 970 correct/wrong selection checks, plus five delivered shortcut submissions."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render-all/rendering.json",
+        "render-extra/rendering.json",
+        "render-irrelevant/rendering.json",
+        "visual-inspection.json"
+      ],
+      "details": "Seventeen actual-UI previews pass. Screenshots confirm readable notation, controls, solutions and relevant/irrelevant counterfactual behavior."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging.json",
+        "regression.json",
+        "package-integrity.json",
+        "construction.json"
+      ],
+      "details": "Exact dependencies, relocation, determinism, rejection and resampling checks pass. The prior easy CLI failure reproduces; current easy generation succeeds. Package unchanged."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "shortcut-regression-run.json",
+        "shortcut-native-report.json",
+        "affected-inventory.json",
+        "generated-records.json",
+        "selection.json"
+      ],
+      "details": "A bank-only shape/sign rule answers all five surviving batch records. Larger controls demonstrate this is a finite-batch selection failure. Five reproduced legacy inventory records also expose fixed-sign cues."
+    }
+  },
+  "findings": [
+    {
+      "kind": "decision_shortcut",
+      "description": "All five delivered questions can be answered without reading their equations: select the two-row prefix of an extra-zero-row option; otherwise select the first singleton coefficient sign found while scanning the first column top to bottom. Native grading accepts all five selections. The same rule succeeds on only 24/96 applicable control records, distinguishing this batch failure from a universal generator defect.",
+      "source_refs": [
+        "211f2486-98ca-57f9-afcd-978296d23dab",
+        "1731054d-ea13-5a85-8abe-142bb7f3ad7f",
+        "9dc9c77e-9ffe-58b8-b13b-5afd3da944fe"
+      ],
+      "reproduction": "Run `/home/jake/Developer/Course_Academy/.venv/bin/python reproduce_shortcut.py delivery-batch/accepted.json`; it exits 1. Minimal instance: seed 2878966680, easy/q-129137, raw question 4ded1cd8-ad48-5c77-84c3-d74bc3ecbc85. For 9p-7q=1 and 9p-7q=-8, deleting the last zero row of another choice produces the correct answer.",
+      "requested_change": "Revise batch construction or selection so recognizable bank families retain decision-role counterexamples after delivery filtering. Replace this deficient batch and adopt the retained strict regression; preserve the generator's supported role variation."
+    },
+    {
+      "kind": "decision_shortcut",
+      "description": "Five captured legacy generated records retain fixed-sign answer cues: three coefficient questions have a unique negative top-right entry among coefficient-shaped options; two augmented questions have a unique zero-first/negative-second constant pattern. Complete records and generation metadata reproduce exactly. Original source questions are excluded.",
+      "source_refs": [
+        "760765ec-b7b6-54ac-b028-0603c846223a",
+        "c33e89a9-178e-58d6-a7fe-c1f9dae2ffc1"
+      ],
+      "reproduction": "Run `/home/jake/Developer/Course_Academy/.venv/bin/python inventory_audit.py`. Minimal coefficient replay: legacy.generate('moderate', 20261014059770, 'coefficient'), question 46d3999d-feca-57b7-832c-c953e5a39c71. Minimal augmented replay: seed 20261014059771, template 'augmented', question dcfb9046-7853-50cf-9df9-12ba9e3679bb. All affected IDs and complete records are saved in affected-inventory.json and generated-records.json.",
+      "requested_change": "Include these five demonstrated legacy instances in the authorized inventory repair using varied sign and target roles. Preserve instructional source records; this finding does not require narrowing the current generator."
+    }
+  ]
+}

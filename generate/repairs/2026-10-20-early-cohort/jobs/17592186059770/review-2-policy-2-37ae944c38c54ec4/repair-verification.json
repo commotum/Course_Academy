@@ -1,0 +1,50 @@
+{
+  "scope": "Current generator and requested easy batch review; captured historical data is separately queued for downstream repair, never silently certified corrected.",
+  "findings": [
+    {
+      "id": "legacy_packaging_or_sampling",
+      "failing_evidence": "regression.json",
+      "current_evidence": [
+        "regression.json",
+        "packaging.json",
+        "author-replay/outputs/feedback-regression.json"
+      ],
+      "result": "Legacy easy CLI exits2; current easy CLI returns five independently valid records. Author check rerun after redirecting writes."
+    },
+    {
+      "id": "38c61a8aeadb91718959",
+      "failing_evidence": [
+        "retained-failed-batch.json",
+        "prior-shortcut-failure-results.json",
+        "prior-shortcut-failure-run.json"
+      ],
+      "current_evidence": [
+        "delivery-batch/accepted.json",
+        "shortcut-regression.json",
+        "current-shortcut-run.json",
+        "changed-batch-results.json",
+        "delivery-analysis.json",
+        "author-replay/outputs/batch-regression.json"
+      ],
+      "result": "Strict independent regression fails old batch5/5, passes exact current batch2/5. Every new shared-bank group has distinct visible targets; current exact5 and fresh30 all survive actual delivery."
+    },
+    {
+      "id": "d3a64bf2689aec595e8b",
+      "failing_evidence": [
+        "generated-records.json",
+        "affected-inventory.json",
+        "inventory-audit.json"
+      ],
+      "current_evidence": [
+        "author-replay/outputs/inventory-control-records.json",
+        "author-replay/outputs/inventory-replacement-records.json",
+        "author-replay/outputs/inventory-replacement-delivery/accepted.json",
+        "author-replay/outputs/inventory-native-report.json"
+      ],
+      "result": "Five historical stored records exactly reproduced and still flagged. Current code defeats old sign selectors on fixed-bank contrasting targets; ten signed replacement candidates survive delivery and115 native outcomes. The requested replacement plan includes all five IDs. Database unchanged; downstream inventory replacement remains required."
+    }
+  ],
+  "preflight": "../repair-preflight.json was inspected. Each declared script was read and rerun with write destinations redirected under author-replay/outputs. Author assertions are supplementary; independent visible math/native tests, failure replay and delivery checks establish the current result.",
+  "author_replay_provenance": "author-replay/provenance.json",
+  "prior_source_binding": "Runner source hash/policy match; passages reconfirmed. Diff shows existing single-item construction unchanged except version; new work is generate_batch plus CLI routing."
+}
