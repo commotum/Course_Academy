@@ -65,6 +65,25 @@ class CanonicalFields(unittest.TestCase):
         self.assertEqual(snapshot['entities']['1']['learner/assignments'], [7])
         self.assertEqual(snapshot['entities']['1']['learner/targets'], [8])
 
+    def test_study_guide_with_file_uri_lesson_mapping(self):
+        lesson = self.vault / 'Lessons' / 'Partial Derivatives.md'
+        lesson.parent.mkdir()
+        lesson.write_text('lesson-id: 1932\n')
+        guide = self.vault / 'F26' / '256' / '10-20-26_SG-2.md'
+        guide.parent.mkdir(parents=True)
+        guide.write_text('Due: 2026-10-20\n\n## Problem 1\n\n'
+                         '```quiz\nid: q-1\ncontent: Explain.\nfields:\n'
+                         '- key: response\n  type: free\n  correct:\n'
+                         '    type: text\n    value: Explanation.\n```\n\n'
+                         f'**Topics:** [Partial derivatives](<{lesson.as_uri()}>)\n')
+        self.builder.assignment(str(guide.relative_to(self.vault)))
+        self.builder.validate()
+        activity = self.builder.audit['activities'][0]
+        self.assertEqual(activity['title'], 'MTH 256 — SG-2')
+        self.assertEqual(activity['due'], '2026-10-21T06:59:59Z')
+        self.assertEqual(activity['problems'][0]['topics'], [1932])
+        self.assertEqual(len(self.builder.audit['grading_limitations']), 1)
+
 
 class AssignmentTargets(unittest.TestCase):
     def setUp(self):

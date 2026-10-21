@@ -210,7 +210,7 @@ def legacy_choice(text):
     return system(r' \\ '.join(rows)) if rows else text
 
 
-MATH = re.compile(r'\\\[[\s\S]*?\\\]|\\\([\s\S]*?\\\)|\$\$[\s\S]*?\$\$|(?<!\\)\$(?!\$)(?:\\.|[^$\\])*?(?<!\\)\$')
+MATH = re.compile(r'\\\[[\s\S]*?\\\]|\\\([\s\S]*?\\\)|\$\$[\s\S]*?\$\$|(?<!\\)\$(?!\$)(?:\\[\s\S]|[^$\\])*?(?<!\\)\$')
 
 
 def matrix_tex(rows, *, augmented=False):
@@ -333,14 +333,150 @@ def _matrix_layouts(text):
     raise ValueError('Excessive matrix nesting')
 
 
+def _label_row_spacing(text):
+    length = r'\[\s*[+-]?(?:\d+(?:\.\d*)?|\.\d+)\s*(?:pt|pc|in|bp|cm|mm|dd|cc|sp|ex|em)\s*\]'
+    def repair_spacing(value):
+        return re.sub(r'(?<!\\)\\(?=' + length + ')', lambda _: r'\\', value)
+    if re.fullmatch(r'(?:\\ )?\\' + length, text):
+        return repair_spacing(text)
+    # Restrict repairs to the explicit multiline label, leaving arbitrary
+    # malformed aligned environments subject to the normal validation errors.
+    for match in list(re.finditer(r'\\substack\s*\{', text))[::-1]:
+        depth, end = 1, match.end()
+        while end < len(text) and depth:
+            if text[end] == '\\' and end + 1 < len(text):
+                end += 2
+                continue
+            depth += (text[end] == '{') - (text[end] == '}')
+            end += 1
+        if depth == 0:
+            text = text[:match.start()] + repair_spacing(text[match.start():end]) + text[end:]
+    return text
+
+
+def normalize_equality_chains(text):
+    """Repair explicitly connected expression chains without guessing a RHS.
+
+    MathML tables sometimes put the relation at the end of the preceding
+    row. A final continuation can duplicate that relation, and punctuation
+    can occupy its own cell. Complete equations and unfilled proof templates
+    must retain their independent rows.
+    """
+    changes = []
+    for opening in ENV.finditer(text):
+        if opening[1] != 'begin' or opening[2] != 'aligned':
+            continue
+        span = environment(text, opening.start())
+        if not span:
+            continue
+        rows = cells(text[span[0]:span[1]])
+        if not rows or len(rows) < 2:
+            continue
+        expressions, spacing, trailing, leading = [], [], [], []
+        annotation = ''
+        for row in rows:
+            if len(row) > 2:
+                break
+            expression, before, after = row[0].strip(), '', ''
+            gap = re.match(r'^\[\s*[+-]?(?:\d+(?:\.\d*)?|\.\d+)\s*(?:pt|pc|in|bp|cm|mm|dd|cc|sp|ex|em)\s*\]', expression)
+            spacing.append(gap[0] if gap else '')
+            expression = expression[gap.end():].strip() if gap else expression
+            if len(row) == 2:
+                rhs = row[1].strip()
+                if not expression:
+                    relation = re.match(r'^(=|≈|\\approx)\s*(\S[\s\S]*)$', rhs)
+                    if not relation:
+                        break
+                    before, expression = relation[1], relation[2]
+                elif rhs in ('=', '≈', r'\approx'):
+                    after = rhs
+                elif rhs in ('.', ','):
+                    expression += rhs
+                elif row is rows[-1] and re.fullmatch(r'(?:\\,|\s|[{}]|\\color\{[A-Za-z]+\})*(?:✓|\\checkmark|\\times)(?:\s|[{}])*', rhs):
+                    annotation = rhs
+                elif rhs:
+                    break  # A complete equation or an annotation is not a chain.
+            relation = re.search(r'(=|≈|\\approx)\s*$', expression)
+            if relation:
+                if after or before:
+                    break
+                expression, after = expression[:relation.start()].strip(), relation[1]
+            # A bare complete equation is not a single chain expression.
+            condition = re.split(r'⇒|\\Rightarrow\b', expression)
+            if not expression or _equality_position(condition[-1]) is not None:
+                break
+            expressions.append(expression); leading.append(before); trailing.append(after)
+        if len(expressions) != len(rows) or trailing[-1] or leading[0] or not any(trailing):
+            continue
+        relations = []
+        for index in range(1, len(rows)):
+            previous, current = trailing[index - 1], leading[index]
+            if not (previous or current) or previous and current and previous != current:
+                break
+            relations.append(previous or current)
+        if len(relations) != len(rows) - 1:
+            continue
+        body = expressions[0] + ' &' + relations[0] + ' ' + expressions[1]
+        for index in range(2, len(expressions)):
+            body += r' \\' + spacing[index] + ' &' + relations[index - 1] + ' ' + expressions[index]
+        if annotation:
+            body += ' && ' + annotation
+        changes.append((opening.start(), span[2], r'\begin{aligned}' + body + r'\end{aligned}'))
+    for start, end, replacement in sorted(changes, reverse=True):
+        text = text[:start] + replacement + text[end:]
+    return text
+
+
+def scalable_fraction_parentheses(text):
+    """Size parentheses enclosing a signed fraction, including nested groups."""
+    changes = []
+    for opening in re.finditer(r'\(\s*[+-]?\s*\\(?:dfrac|tfrac|frac)\s*(?=\{)', text):
+        # Respect explicitly chosen delimiter sizes. Already scalable pairs
+        # also have a \\right before the closing parenthesis and do not match.
+        if re.search(r'\\(?:left|big|Big|bigg|Bigg)[lr]?\s*$', text[:opening.start()]):
+            continue
+        end = opening.end()
+        for _ in range(2):
+            while end < len(text) and text[end].isspace():
+                end += 1
+            if end >= len(text) or text[end] != '{':
+                break
+            depth = 1
+            end += 1
+            while end < len(text) and depth:
+                if text[end] == '\\':
+                    command = re.match(r'\\(?:[A-Za-z]+|.)', text[end:])
+                    end += len(command[0]) if command else 1
+                    continue
+                depth += (text[end] == '{') - (text[end] == '}')
+                end += 1
+            if depth:
+                break
+        else:
+            while end < len(text) and text[end].isspace():
+                end += 1
+            if end < len(text) and text[end] == ')':
+                changes.extend([(opening.start(), r'\left'), (end, r'\right')])
+    for position, command in sorted(changes, reverse=True):
+        text = text[:position] + command + text[position:]
+    return text
+
+
 def normalize_tex(value):
     text = str(value).strip()
     if MATH.fullmatch(text):
         size = 2 if text.startswith(('$$', r'\[', r'\(')) else 1
         text = text[size:-size].strip()
+    # Archived SVG titles spell optional row spacing with one backslash,
+    # including in substack labels and standalone spacing formulas. A concrete
+    # TeX length distinguishes this from an actual display-math delimiter.
+    text = _label_row_spacing(text)
+    # These extensions are loaded by the application's MathJax configuration.
+    # Its restricted TeX input does not enable the runtime \\require command.
+    text = re.sub(r'\\require\s*\{(?:cancel|enclose)\}\s*', '', text)
     text = text.replace(r'\lbrack', '[').replace(r'\rbrack', ']')
     text = text.replace(r'\lbrace', r'\{').replace(r'\rbrace', r'\}')
-    text = _matrix_layouts(_legacy_commands(text))
+    text = scalable_fraction_parentheses(_matrix_layouts(_legacy_commands(text)))
     # Arrays retain explicit column rules; make their existing fences scalable.
     for match in list(re.finditer(r'(?<!\\left)\[\s*(?=\\begin\{array\})', text))[::-1]:
         span = environment(text, match.end())
@@ -381,7 +517,7 @@ def normalize_tex(value):
             if body.startswith(r'\left\{\begin{aligned}') and body.endswith(r'\end{aligned}\right.'):
                 text = text[:match.start()] + body + text[span[2]:]; changed = True; break
         if not changed: break
-    return text
+    return normalize_equality_chains(text)
 
 
 def normalize_source_tex(value):
@@ -436,8 +572,15 @@ def validate_tex(value):
             raise ValueError('Nested math delimiter in a TeX expression')
         if token == r'\=':
             raise ValueError('Unsupported TeX equality command; use =')
+        if token == r'\require':
+            raise ValueError('Runtime TeX extension loading is unsupported; use a preloaded extension')
         if token == '$': raise ValueError('Math fields must not contain nested dollar delimiters')
     if depth or stack: raise ValueError('Unclosed TeX group or environment')
+    for match in re.finditer(r'\\begin\{aligned\}', text):
+        span = environment(text, match.start())
+        rows = cells(text[span[0]:span[1]]) if span else None
+        if rows and any(len(row) == 2 and row[0] and row[1] in ('=', '≈', r'\approx') for row in rows):
+            raise ValueError('Empty equation RHS; normalize the chain or recover its missing source content')
     for match in re.finditer(r'\\begin\{(bmatrix|pmatrix|vmatrix|Bmatrix|Vmatrix|matrix)\}', text):
         span = environment(text, match.start())
         if not span: continue

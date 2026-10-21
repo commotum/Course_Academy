@@ -5,6 +5,8 @@ mod assignment_interaction;
 mod assignment_reader;
 mod developer_preview;
 mod page_reader;
+mod quiz_labels;
+use quiz_labels::QuizLabels;
 #[cfg(test)]
 #[path = "../engine/edb/answer_fields.rs"]
 mod preview_answer_fields;
@@ -580,6 +582,76 @@ fn completed_task_for(s: &EntitySnapshot, learner: u64, activity: u64) -> Result
 fn course(s: &EntitySnapshot, l: u64) -> Result<u64> {
     Ok(s.reference(l, "learner/course")?)
 }
+
+fn check_lesson_retry(s: &EntitySnapshot, l: u64, activity: u64) -> Result<()> {
+    if retrieval::kind(s, activity)? != "lesson" { return Ok(()); }
+    let h = course_academy_engine::scheduling::lifecycle(s, l)?;
+    if let Some(topic) = s.optional_ref(activity, "activity/scope")? {
+        if h.lesson_blocked(s, topic)? {
+            return Err("Complete the prerequisite repairs before retrying this lesson".into());
+        }
+        if let Some(task) = task_for(s, l, activity)? {
+            if !s.refs(task, "learner-task/remediation-for")?.is_empty() && !h.retry_ready(topic) {
+                return Err("Complete five other successful practice activities before this required lesson retry".into());
+            }
+        }
+    }
+    Ok(())
+}
+
+// Shared by actual starts and the read-only menu check. Supply is counted from
+// the resident immutable snapshot, including seen and reserved questions.
+fn check_activity_start(s: &EntitySnapshot, l: u64, activity: u64,
+    selected_topic: Option<u64>, at: DateTime<Utc>) -> Result<()> {
+    if retrieval::kind(s, activity)? == "lesson" {
+        let topic = s.reference(activity, "activity/scope")?;
+        let shortages = course_academy_engine::inventory::lesson_shortages(
+            s, &s.refs(topic, "topic/knowledge-points")?, &learning::unavailable_questions(s, l)?)?;
+        if !shortages.is_empty() {
+            let details = shortages.into_iter().map(|(kp, count)|format!("{} has {count} (needs {} more)",
+                text(s, kp, "knowledge-point/title"), 5-count)).collect::<Vec<_>>().join("; ");
+            return Err(format!("Lesson needs at least five fresh, gradable questions per skill: {details}").into());
+        }
+    }
+    let candidates = if let Some(topic) = selected_topic {
+        learning::selected_topic_candidates(s, l, course(s, l)?, topic, at)?
+    } else {
+        learning::study_candidates(s, l, course(s, l)?, at)?
+    };
+    if !candidates.iter().any(|p| p.activity == activity) {
+        return Err("Activity is not eligible or its content is unavailable".into());
+    }
+    Ok(())
+}
+
+fn topic_study_availability(s: &EntitySnapshot, l: u64, topic: u64, at: DateTime<Utc>) -> Json {
+    let check = || -> Result<bool> {
+        let activity = topic_lesson(s, topic)?;
+        check_lesson_retry(s, l, activity)?;
+        let existing = task_for(s, l, activity)?;
+        if existing.is_none() && !retrieval::relearn_topics(s, l)?.contains(&topic)
+            && completed_task_for(s, l, activity)?.is_some() { return Ok(false); }
+        if let Some(task) = existing {
+            match status(s, task, "learner-task/status")?.as_str() {
+                "started" => return Ok(true),
+                "paused" => {
+                    let chain = items(s, task)?;
+                    chain.last().ok_or("Task has no presentation")?;
+                    learning::continuation_state(s, activity, &chain, false, false)?;
+                    return Ok(true);
+                }
+                _ => {}
+            }
+        }
+        check_activity_start(s, l, activity, Some(topic), at)?;
+        learning::first_content(s, activity, l)?.ok_or("Lesson has no available content")?;
+        Ok(false)
+    };
+    match check() {
+        Ok(resumable) => json!({"basis":s.basis_t,"topicId":topic,"available":true,"resumable":resumable}),
+        Err(error) => json!({"basis":s.basis_t,"topicId":topic,"available":false,"resumable":false,"reason":error.to_string()}),
+    }
+}
 fn learner_json(s: &EntitySnapshot, l: u64) -> Json {
     json!({"id":text(s,l,"learner/id"),"name":text(s,l,"learner/name"),
         "dailyXpGoal":s.entities.get(&l).and_then(|r|r.get("learner/daily-xp-goal")),
@@ -680,6 +752,7 @@ fn home_with_candidates(
         None => learning::study_candidates(s, l, c, Utc::now())?,
     };
     let mut activities = vec![];
+    let quiz_labels = QuizLabels::capture(s, l)?;
     for candidate in candidates {
         let a = candidate.activity;
         let task = task_for(s, l, a)?;
@@ -706,12 +779,12 @@ fn home_with_candidates(
             } else {
                 Json::Null
             };
-        activities.push(json!({"activityId":a,"title":text(s,a,"activity/title"),"type":status(s,a,"activity/type")?,"taskId":task,"status":state,
+        activities.push(json!({"activityId":a,"title":quiz_labels.title(s,a,task)?,"type":status(s,a,"activity/type")?,"taskId":task,"status":state,
             "priority":candidate.priority,"reason":candidate.reason,"targetCount":candidate.target_count,
             "targetTopics":candidate.target_topics,"progress":progress,
             "xpBase":if retrieval::kind(s,a)? == "assessment" { Some(match task.and_then(|t|s.entities[&t].get("learner-task/xp-base")).and_then(Json::as_i64) {Some(base)=>base,None=>base_xp::duration_base(expected)?}) } else { None },
             "expectedSeconds":if expected>0.0{Some(expected)}else{None}}));
-        if activities.len() == 5 {
+        if activities.len() == course_academy_engine::scheduling::STUDY_QUEUE_LIMIT {
             break;
         }
     }
@@ -742,7 +815,7 @@ fn home_with_candidates(
         }
     }
     Ok(
-        json!({"basis":s.basis_t,"learner":learner_json(s,l),"course":course_json(s,l)?,"activities":activities,"waitingActivities":waiting,"supplyShortages":course_academy_engine::inventory::requests(s,l,Utc::now())?,"assessmentStatus":course_academy_engine::inventory::assessment_status(s,l,Utc::now())?,"queueDescription":"Assessments become available at 120 practice XP and required at 150. Ordinary reviews are optional; required remediation takes precedence.","practiceNotice":"Each skill needs two correct answers in a row, with up to five questions. If fresh questions run out, you can continue to the next skill and return to unfinished practice later."}),
+        json!({"basis":s.basis_t,"learner":learner_json(s,l),"course":course_json(s,l)?,"activities":activities,"waitingActivities":waiting,"supplyShortages":course_academy_engine::inventory::requests(s,l,Utc::now())?,"assessmentStatus":course_academy_engine::inventory::assessment_status(s,l,Utc::now())?,"queueDescription":"Assessments need five previously unassessed topics learned at least 48 hours ago. They become available at 120 practice XP and required at 150. Ordinary reviews are optional; required remediation takes precedence.","practiceNotice":"Each skill has at most five questions. Two correct answers in a row advance to the next step; two incorrect answers or skips in a row fail the lesson. After five questions without either streak, continue to the next step. If fresh questions run out sooner, you can continue and return to unfinished practice later."}),
     )
 }
 
@@ -1287,6 +1360,9 @@ fn task_json_view(s: &EntitySnapshot, l: u64, t: u64, include_history: bool) -> 
     owned(s, l, t)?;
     let a = s.reference(t, "learner-task/activity")?;
     let task_state = status(s, t, "learner-task/status")?;
+    let title = if retrieval::kind(s, a)? == "assessment" {
+        QuizLabels::capture(s, l)?.title(s, a, Some(t))?
+    } else { text(s, a, "activity/title") };
     let chain = items(s, t)?;
     let at = Utc::now();
     let steps = learning::lesson_steps(s, a)?;
@@ -1323,7 +1399,7 @@ fn task_json_view(s: &EntitySnapshot, l: u64, t: u64, include_history: bool) -> 
     } else {
         vec![]
     };
-    let mut view = json!({"basis":s.basis_t,"taskId":t,"activityId":a,"type":retrieval::kind(s,a)?,"learner":learner_json(s,l),"course":course_json(s,l)?,"title":text(s,a,"activity/title"),"status":task_state,"xp":number(s,t,"learner-task/xp-earned"),"xpBase":number(s,t,"learner-task/xp-base"),"elapsedSeconds":if matches!(task_state.as_str(),"unlocked"|"locked"){number(s,t,"learner-task/elapsed-seconds")}else{timing::task_elapsed(s,t,at)?},"step":step,"progress":progress});
+    let mut view = json!({"basis":s.basis_t,"taskId":t,"activityId":a,"type":retrieval::kind(s,a)?,"learner":learner_json(s,l),"course":course_json(s,l)?,"title":title,"status":task_state,"xp":number(s,t,"learner-task/xp-earned"),"xpBase":number(s,t,"learner-task/xp-base"),"elapsedSeconds":if matches!(task_state.as_str(),"unlocked"|"locked"){number(s,t,"learner-task/elapsed-seconds")}else{timing::task_elapsed(s,t,at)?},"step":step,"progress":progress});
     if retrieval::kind(s, a)? == "review" {
         if let Some(topic) = s.optional_ref(a, "activity/scope")? {
             if let Some(id) = s.entity(topic)?.get("topic/id").and_then(|v| v.get("$uuid")) {
@@ -1373,7 +1449,11 @@ fn task_json_view(s: &EntitySnapshot, l: u64, t: u64, include_history: bool) -> 
         return Err(practice.err().unwrap());
     }
     if let Ok(practice) = practice {
-        let awaiting = practice.next.is_none()
+        // The final answer still needs its Continue transition to pause the
+        // attempt. Showing the waiting screen earlier hides that transition,
+        // and Resume on an already started task cannot resume deferred work.
+        let awaiting = task_state == "paused"
+            && practice.next.is_none()
             && practice.shortage.is_none()
             && !practice.deferred.is_empty()
             && !practice.failed;
@@ -1825,23 +1905,7 @@ fn mutate_with_selection(
             }
         }
         if let Some(a) = requested {
-            if retrieval::kind(s, a)? == "lesson" {
-                let h = course_academy_engine::scheduling::lifecycle(s, l)?;
-                if let Some(topic) = s.optional_ref(a, "activity/scope")? {
-                    if h.lesson_blocked(s, topic)? {
-                        return Err(
-                            "Complete the prerequisite repairs before retrying this lesson".into(),
-                        );
-                    }
-                    if let Some(task) = task_for(s, l, a)? {
-                        if !s.refs(task, "learner-task/remediation-for")?.is_empty()
-                            && !h.retry_ready(topic)
-                        {
-                            return Err("Complete five other successful practice activities before this required lesson retry".into());
-                        }
-                    }
-                }
-            }
+            check_lesson_retry(s, l, a)?;
         }
     }
     if action.starts_with("assignment-")
@@ -1929,7 +1993,7 @@ fn mutate_with_selection(
         }
         let pools = retrieval::assessment_pools(s, l, at)?;
         let definition = retrieval::assessment_definition(s, l, at)?
-            .ok_or("No eligible questions are available for this assessment")?;
+            .ok_or("Assessment needs five eligible topics not previously assessed")?;
         let replacement = "regenerated-assessment";
         forms.extend(definition_forms(s, &definition, replacement, None)?);
         // Preserve the previous immutable route and atomically move this unstarted task.
@@ -2054,27 +2118,7 @@ fn mutate_with_selection(
                 _ => {}
             }
         }
-        if retrieval::kind(s,a)? == "lesson" {
-            let topic=s.reference(a,"activity/scope")?;
-            let shortages=course_academy_engine::inventory::lesson_shortages(
-                s,&s.refs(topic,"topic/knowledge-points")?,&learning::unavailable_questions(s,l)?)?;
-            if !shortages.is_empty() {
-                let details=shortages.into_iter().map(|(kp,count)|format!("{} has {count} (needs {} more)",
-                    text(s,kp,"knowledge-point/title"),5-count)).collect::<Vec<_>>().join("; ");
-                return Err(format!("Lesson needs at least five fresh, gradable questions per skill: {details}").into());
-            }
-        }
-        let candidates = if let Some(topic) = selected_topic {
-            learning::selected_topic_candidates(s, l, course(s,l)?, topic, at)?
-        } else {
-            learning::study_candidates(s, l, course(s,l)?, at)?
-        };
-        if !candidates
-            .iter()
-            .any(|p| p.activity == a)
-        {
-            return Err("Activity is not eligible or its content is unavailable".into());
-        }
+        check_activity_start(s, l, a, selected_topic, at)?;
         if let Some(t) = existing {
             let state = status(s, t, "learner-task/status")?;
             if matches!(state.as_str(), "locked" | "unlocked") {
@@ -2537,6 +2581,9 @@ impl Application {
         }
         if action == "profile" {
             return profile_json(s, l);
+        }
+        if action == "topic-study-availability" {
+            return Ok(topic_study_availability(s, l, required(body, "topicId")?, Utc::now()));
         }
         if action == "learner" {
             return Ok(json!({"basis":s.basis_t,"learner":learner_json(s,l)}));
@@ -3216,6 +3263,29 @@ mod study_queue_tests {
     }
 
     #[test]
+    fn topic_menu_availability_uses_start_rules_without_mutating_the_snapshot() {
+        let at = Utc::now();
+        let mut s = usable_small_bank_fixture();
+        let before = s.entities.clone();
+        assert_eq!(topic_study_availability(&s, 1, 6, at)["available"], true);
+        assert_eq!(s.entities, before);
+        // One exhausted or invalid question makes a five-question skill bank unusable.
+        s.entities.get_mut(&72).unwrap().insert("knowledge-point/questions".into(), json!([71,74,75,76]));
+        let view = topic_study_availability(&s, 1, 6, at);
+        assert_eq!(view["available"], false);
+        assert!(view["reason"].as_str().unwrap().contains("has 4 (needs 1 more)"));
+        assert!(mutate(&s, 1, "study-topic", &json!({"topicId":6}), at).is_err());
+        let mut s = usable_small_bank_fixture();
+        s.entities.get_mut(&90).unwrap().remove("answer-field/correct");
+        assert_eq!(topic_study_availability(&s, 1, 6, at)["available"], false);
+        for topic in [2, 7, 999] {
+            assert_eq!(topic_study_availability(&s, 1, topic, at)["available"], false);
+        }
+        let s = fixture();
+        assert_eq!(topic_study_availability(&s, 1, 6, at)["available"], true);
+    }
+
+    #[test]
     fn learner_without_a_course_can_browse_and_select_their_first_course() {
         let mut s = fixture();
         s.entities.get_mut(&1).unwrap().remove("learner/course");
@@ -3397,6 +3467,27 @@ mod study_queue_tests {
             "task-item/status".into(),
             json!("task-item.status/completed"),
         );
+        for (t, entity, attribute, value) in [
+            (1, 81, "learner-task/status", "learner-task.status/started"),
+            (2, 95, "task-item/status", "task-item.status/completed"),
+            (3, 96, "task-item/status", "task-item.status/correct"),
+            (4, 97, "task-item/status", "task-item.status/completed"),
+        ] {
+            s.status_history.push(StatusAssertion {
+                entity,
+                attribute: attribute.into(),
+                value: kw(value),
+                t,
+                at: json!({"$instant":t * 1000}),
+            });
+        }
+        // Deferred work must not hide the last presentation or its Next button
+        // before Continue has actually paused the attempt.
+        let view = task_json(&s, 1, 81).unwrap();
+        assert_eq!(view["awaitingQuestions"], false);
+        assert_eq!(view["canResumePractice"], false);
+        assert_eq!(view["step"]["itemId"], 97);
+        assert_eq!(view["deferredSteps"][0]["stepId"], 61);
         let (forms, _) = mutate(&s, 1, "continue", &json!({"taskId":81,"itemId":97}), at).unwrap();
         assert!(
             forms.contains(
@@ -3409,6 +3500,17 @@ mod study_queue_tests {
             "learner-task/status".into(),
             json!("learner-task.status/paused"),
         );
+        s.status_history.push(StatusAssertion {
+            entity: 81,
+            attribute: "learner-task/status".into(),
+            value: kw("learner-task.status/paused"),
+            t: 5,
+            at: json!({"$instant":5000}),
+        });
+        let view = task_json(&s, 1, 81).unwrap();
+        assert_eq!(view["awaitingQuestions"], true);
+        assert_eq!(view["canResumePractice"], false);
+        assert_eq!(view["elapsedSeconds"], 3.0);
         assert!(
             mutate(&s, 1, "resume", &json!({"taskId":81}), at)
                 .unwrap()
@@ -3420,6 +3522,7 @@ mod study_queue_tests {
             .get_mut(&72)
             .unwrap()
             .insert("knowledge-point/questions".into(), json!([71, 75]));
+        assert_eq!(task_json(&s, 1, 81).unwrap()["canResumePractice"], true);
         s.entities
             .get_mut(&1)
             .unwrap()
@@ -3519,6 +3622,7 @@ mod study_queue_tests {
         );
         let before = s.entities.clone();
         let at = Utc::now();
+        assert_eq!(topic_study_availability(&s, 1, 6, at)["available"], true);
         let (forms, result) = mutate(&s, 1, "study-topic", &json!({"topicId":6}), at).unwrap();
         assert_eq!(result["taskId"], 81);
         assert_eq!(

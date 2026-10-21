@@ -114,7 +114,7 @@ class MatrixCaptureTests(unittest.TestCase):
     def test_vector_hat_is_a_tex_accent(self):
         item = self.extract('<math><mover><mi>x</mi><mo>^</mo></mover></math>')
         self.assertEqual(item['errors'], [])
-        self.assertEqual(item['problem'], r'$\hat{x}$')
+        self.assertEqual(item['problem'], r'$\widehat{x}$')
 
     def test_system_without_empty_closing_delimiter_aligns_equals(self):
         table = '<mtable columnalign="left"><mtr><mtd><mi>x</mi><mo>+</mo><mn>3</mn><mi>y</mi><mo>=</mo><mn>7</mn></mtd></mtr><mtr><mtd><mn>2</mn><mi>x</mi><mo>+</mo><mn>0</mn><mi>y</mi><mo>=</mo><mn>4</mn></mtd></mtr></mtable>'

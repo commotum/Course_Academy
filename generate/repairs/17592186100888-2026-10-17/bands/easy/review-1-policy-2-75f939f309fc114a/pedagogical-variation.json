@@ -1,0 +1,810 @@
+{
+  "learner_operation": "Compute the actual derivative of the supplied function, independently assess the displayed derivative claim, substitute the actual function and derivative into the differential equation, and decide whether equality holds identically on the common domain.",
+  "fixed_features": [
+    {
+      "feature": "Three statement meanings and II/III equivalence",
+      "justification": "Directly encodes derivative check, substitution check, and definition of solution."
+    },
+    {
+      "feature": "First-order ODE and supplied candidate function",
+      "justification": "Matches lesson and KP; learner verifies rather than constructs a general solution."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "StatementI derivative claim",
+      "eligible_variation": "Correct or incorrect coefficient within eachfamily, sameexpression shape/sign",
+      "observed": "Both truths in each10families; independentclaim-only pairs toggleI."
+    },
+    {
+      "role": "StatementsII/III ODE identity and solution membership",
+      "eligible_variation": "Choose matching/mismatching ODE coefficient without changing taskfamily",
+      "observed": "Both truths in eachfamily; independentODE-only pairs toggleII/III together."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "raw power_easy",
+      "sample_refs": [
+        "samples.json"
+      ],
+      "result": "{'000': 8, '011': 8, '100': 8, '111': 8}; all4 admissible decisions retained."
+    },
+    {
+      "case": "raw exp_true",
+      "sample_refs": [
+        "samples.json"
+      ],
+      "result": "{'000': 8, '011': 8, '100': 8, '111': 8}; all4 admissible decisions retained."
+    },
+    {
+      "case": "raw sin_none",
+      "sample_refs": [
+        "samples.json"
+      ],
+      "result": "{'000': 8, '011': 8, '100': 8, '111': 8}; all4 admissible decisions retained."
+    },
+    {
+      "case": "raw cos_i",
+      "sample_refs": [
+        "samples.json"
+      ],
+      "result": "{'000': 8, '011': 8, '100': 8, '111': 8}; all4 admissible decisions retained."
+    },
+    {
+      "case": "raw log_all",
+      "sample_refs": [
+        "samples.json"
+      ],
+      "result": "{'000': 8, '011': 8, '100': 8, '111': 8}; all4 admissible decisions retained."
+    },
+    {
+      "case": "raw inverse_none",
+      "sample_refs": [
+        "samples.json"
+      ],
+      "result": "{'000': 8, '011': 8, '100': 8, '111': 8}; all4 admissible decisions retained."
+    },
+    {
+      "case": "raw exp_none",
+      "sample_refs": [
+        "samples.json"
+      ],
+      "result": "{'000': 8, '011': 8, '100': 8, '111': 8}; all4 admissible decisions retained."
+    },
+    {
+      "case": "raw log_scaled",
+      "sample_refs": [
+        "samples.json"
+      ],
+      "result": "{'000': 8, '011': 8, '100': 8, '111': 8}; all4 admissible decisions retained."
+    },
+    {
+      "case": "raw power_moderate",
+      "sample_refs": [
+        "samples.json"
+      ],
+      "result": "{'000': 8, '011': 8, '100': 8, '111': 8}; all4 admissible decisions retained."
+    },
+    {
+      "case": "raw affine_log",
+      "sample_refs": [
+        "samples.json"
+      ],
+      "result": "{'000': 8, '011': 8, '100': 8, '111': 8}; all4 admissible decisions retained."
+    },
+    {
+      "case": "delivered power_easy",
+      "sample_refs": [
+        "delivery-easy/accepted.json"
+      ],
+      "result": "{'000': 7, '011': 6, '100': 6, '111': 3}; all4 admissible decisions retained."
+    },
+    {
+      "case": "delivered exp_true",
+      "sample_refs": [
+        "delivery-easy/accepted.json"
+      ],
+      "result": "{'000': 7, '011': 6, '100': 6, '111': 3}; all4 admissible decisions retained."
+    },
+    {
+      "case": "delivered sin_none",
+      "sample_refs": [
+        "delivery-easy/accepted.json"
+      ],
+      "result": "{'000': 8, '011': 7, '100': 7, '111': 6}; all4 admissible decisions retained."
+    },
+    {
+      "case": "delivered cos_i",
+      "sample_refs": [
+        "delivery-easy/accepted.json"
+      ],
+      "result": "{'000': 7, '011': 6, '100': 6, '111': 3}; all4 admissible decisions retained."
+    },
+    {
+      "case": "delivered log_all",
+      "sample_refs": [
+        "delivery-easy/accepted.json"
+      ],
+      "result": "{'000': 8, '011': 7, '100': 7, '111': 7}; all4 admissible decisions retained."
+    },
+    {
+      "case": "delivered inverse_none",
+      "sample_refs": [
+        "delivery-easy/accepted.json"
+      ],
+      "result": "{'000': 7, '011': 6, '100': 6, '111': 3}; all4 admissible decisions retained."
+    },
+    {
+      "case": "delivered exp_none",
+      "sample_refs": [
+        "delivery-easy/accepted.json"
+      ],
+      "result": "{'000': 8, '011': 7, '100': 7, '111': 6}; all4 admissible decisions retained."
+    },
+    {
+      "case": "delivered log_scaled",
+      "sample_refs": [
+        "delivery-easy/accepted.json"
+      ],
+      "result": "{'000': 7, '011': 6, '100': 6, '111': 3}; all4 admissible decisions retained."
+    },
+    {
+      "case": "delivered power_moderate",
+      "sample_refs": [
+        "delivery-moderate/accepted.json"
+      ],
+      "result": "{'000': 8, '011': 7, '100': 7, '111': 6}; all4 admissible decisions retained."
+    },
+    {
+      "case": "delivered affine_log",
+      "sample_refs": [
+        "delivery-hard/accepted.json"
+      ],
+      "result": "{'000': 8, '011': 8, '100': 8, '111': 8}; all4 admissible decisions retained."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Independently change claimed derivative or ODE coefficient whileholding functionfixed",
+      "expected": "Derivative-only change111->011; ODE-only change111->100; II/III alwaysagree.",
+      "observed": "20pairs match independentlycomputed truth; exposedprompt/solution checked and nativegradercheckedall8subsets. Four original-user-function cases f=-3x^2 were also independently checked against rendered before/after frames: changing d=-6 to -5 toggles I; changing q=2 to3 toggles II/III.",
+      "status": "passed",
+      "justification": "Differentiation comparison and definition of ODEsolution fromtutorial17592186102031; amplitude is not a truth-bearing feature of homogeneousverification when all dependentexpressionsscale together.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "counterfactual-records.json",
+        "grader-report.json",
+        "render/rendering.json",
+        "root-controlled-records.json",
+        "root-render-provenance.json",
+        "counterfactual-render/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Scale function and claimed derivative bysame nonzeroamplitude in homogeneous powerODE",
+      "expected": "Both responses111; samepower/ODE coefficient relation remains true.",
+      "observed": "1pairs match independentlycomputed truth; exposedprompt/solution checked and nativegradercheckedall8subsets.",
+      "status": "passed",
+      "justification": "Differentiation comparison and definition of ODEsolution fromtutorial17592186102031; amplitude is not a truth-bearing feature of homogeneousverification when all dependentexpressionsscale together.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "counterfactual-records.json",
+        "grader-report.json",
+        "render/rendering.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "recognizable function/template shape and fixed label positions",
+      "subgroup": "raw power_easy",
+      "scope": "within_template",
+      "strategy": "Always choose II and III; also test best constant checkbox subset in this group.",
+      "correct": 8,
+      "total": 32,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Blind uniform choice among4 mathematically admissible subsets is25%; II+III 8/32; bestconstant 8/32. No fixed template determines response.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "recognizable function/template shape and fixed label positions",
+      "subgroup": "raw exp_true",
+      "scope": "within_template",
+      "strategy": "Always choose II and III; also test best constant checkbox subset in this group.",
+      "correct": 8,
+      "total": 32,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Blind uniform choice among4 mathematically admissible subsets is25%; II+III 8/32; bestconstant 8/32. No fixed template determines response.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "recognizable function/template shape and fixed label positions",
+      "subgroup": "raw sin_none",
+      "scope": "within_template",
+      "strategy": "Always choose II and III; also test best constant checkbox subset in this group.",
+      "correct": 8,
+      "total": 32,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Blind uniform choice among4 mathematically admissible subsets is25%; II+III 8/32; bestconstant 8/32. No fixed template determines response.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "recognizable function/template shape and fixed label positions",
+      "subgroup": "raw cos_i",
+      "scope": "within_template",
+      "strategy": "Always choose II and III; also test best constant checkbox subset in this group.",
+      "correct": 8,
+      "total": 32,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Blind uniform choice among4 mathematically admissible subsets is25%; II+III 8/32; bestconstant 8/32. No fixed template determines response.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "recognizable function/template shape and fixed label positions",
+      "subgroup": "raw log_all",
+      "scope": "within_template",
+      "strategy": "Always choose II and III; also test best constant checkbox subset in this group.",
+      "correct": 8,
+      "total": 32,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Blind uniform choice among4 mathematically admissible subsets is25%; II+III 8/32; bestconstant 8/32. No fixed template determines response.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "recognizable function/template shape and fixed label positions",
+      "subgroup": "raw inverse_none",
+      "scope": "within_template",
+      "strategy": "Always choose II and III; also test best constant checkbox subset in this group.",
+      "correct": 8,
+      "total": 32,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Blind uniform choice among4 mathematically admissible subsets is25%; II+III 8/32; bestconstant 8/32. No fixed template determines response.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "recognizable function/template shape and fixed label positions",
+      "subgroup": "raw exp_none",
+      "scope": "within_template",
+      "strategy": "Always choose II and III; also test best constant checkbox subset in this group.",
+      "correct": 8,
+      "total": 32,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Blind uniform choice among4 mathematically admissible subsets is25%; II+III 8/32; bestconstant 8/32. No fixed template determines response.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "recognizable function/template shape and fixed label positions",
+      "subgroup": "raw log_scaled",
+      "scope": "within_template",
+      "strategy": "Always choose II and III; also test best constant checkbox subset in this group.",
+      "correct": 8,
+      "total": 32,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Blind uniform choice among4 mathematically admissible subsets is25%; II+III 8/32; bestconstant 8/32. No fixed template determines response.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "recognizable function/template shape and fixed label positions",
+      "subgroup": "raw power_moderate",
+      "scope": "within_template",
+      "strategy": "Always choose II and III; also test best constant checkbox subset in this group.",
+      "correct": 8,
+      "total": 32,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Blind uniform choice among4 mathematically admissible subsets is25%; II+III 8/32; bestconstant 8/32. No fixed template determines response.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "recognizable function/template shape and fixed label positions",
+      "subgroup": "raw affine_log",
+      "scope": "within_template",
+      "strategy": "Always choose II and III; also test best constant checkbox subset in this group.",
+      "correct": 8,
+      "total": 32,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Blind uniform choice among4 mathematically admissible subsets is25%; II+III 8/32; bestconstant 8/32. No fixed template determines response.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "sign of outer coefficient/derivative expression",
+      "subgroup": "raw power_easy positive",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Use most frequent full selection pattern for this sign subgroup without calculating.",
+      "correct": 8,
+      "total": 32,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among4 admissible truth tuples. Every tested sign subgroup retains multiple tuples; same-sign false coefficients remove old sign-only shortcut. Finite empirical imbalance is reported, not equated with an exploitable deterministic rule.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "sign of outer coefficient/derivative expression",
+      "subgroup": "raw exp_true positive",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Use most frequent full selection pattern for this sign subgroup without calculating.",
+      "correct": 8,
+      "total": 32,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among4 admissible truth tuples. Every tested sign subgroup retains multiple tuples; same-sign false coefficients remove old sign-only shortcut. Finite empirical imbalance is reported, not equated with an exploitable deterministic rule.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "sign of outer coefficient/derivative expression",
+      "subgroup": "raw sin_none positive",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Use most frequent full selection pattern for this sign subgroup without calculating.",
+      "correct": 8,
+      "total": 32,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among4 admissible truth tuples. Every tested sign subgroup retains multiple tuples; same-sign false coefficients remove old sign-only shortcut. Finite empirical imbalance is reported, not equated with an exploitable deterministic rule.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "sign of outer coefficient/derivative expression",
+      "subgroup": "raw cos_i negative",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Use most frequent full selection pattern for this sign subgroup without calculating.",
+      "correct": 8,
+      "total": 32,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among4 admissible truth tuples. Every tested sign subgroup retains multiple tuples; same-sign false coefficients remove old sign-only shortcut. Finite empirical imbalance is reported, not equated with an exploitable deterministic rule.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "sign of outer coefficient/derivative expression",
+      "subgroup": "raw log_all positive",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Use most frequent full selection pattern for this sign subgroup without calculating.",
+      "correct": 8,
+      "total": 32,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among4 admissible truth tuples. Every tested sign subgroup retains multiple tuples; same-sign false coefficients remove old sign-only shortcut. Finite empirical imbalance is reported, not equated with an exploitable deterministic rule.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "sign of outer coefficient/derivative expression",
+      "subgroup": "raw inverse_none negative",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Use most frequent full selection pattern for this sign subgroup without calculating.",
+      "correct": 8,
+      "total": 32,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among4 admissible truth tuples. Every tested sign subgroup retains multiple tuples; same-sign false coefficients remove old sign-only shortcut. Finite empirical imbalance is reported, not equated with an exploitable deterministic rule.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "sign of outer coefficient/derivative expression",
+      "subgroup": "raw exp_none negative",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Use most frequent full selection pattern for this sign subgroup without calculating.",
+      "correct": 8,
+      "total": 32,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among4 admissible truth tuples. Every tested sign subgroup retains multiple tuples; same-sign false coefficients remove old sign-only shortcut. Finite empirical imbalance is reported, not equated with an exploitable deterministic rule.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "sign of outer coefficient/derivative expression",
+      "subgroup": "raw log_scaled positive",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Use most frequent full selection pattern for this sign subgroup without calculating.",
+      "correct": 8,
+      "total": 32,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among4 admissible truth tuples. Every tested sign subgroup retains multiple tuples; same-sign false coefficients remove old sign-only shortcut. Finite empirical imbalance is reported, not equated with an exploitable deterministic rule.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "sign of outer coefficient/derivative expression",
+      "subgroup": "raw power_moderate negative",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Use most frequent full selection pattern for this sign subgroup without calculating.",
+      "correct": 8,
+      "total": 32,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among4 admissible truth tuples. Every tested sign subgroup retains multiple tuples; same-sign false coefficients remove old sign-only shortcut. Finite empirical imbalance is reported, not equated with an exploitable deterministic rule.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "sign of outer coefficient/derivative expression",
+      "subgroup": "raw affine_log positive",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Use most frequent full selection pattern for this sign subgroup without calculating.",
+      "correct": 4,
+      "total": 16,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among4 admissible truth tuples. Every tested sign subgroup retains multiple tuples; same-sign false coefficients remove old sign-only shortcut. Finite empirical imbalance is reported, not equated with an exploitable deterministic rule.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "sign of outer coefficient/derivative expression",
+      "subgroup": "raw affine_log negative",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Use most frequent full selection pattern for this sign subgroup without calculating.",
+      "correct": 4,
+      "total": 16,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among4 admissible truth tuples. Every tested sign subgroup retains multiple tuples; same-sign false coefficients remove old sign-only shortcut. Finite empirical imbalance is reported, not equated with an exploitable deterministic rule.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "recognizable function/template shape and fixed label positions",
+      "subgroup": "delivered power_easy",
+      "scope": "within_template",
+      "strategy": "Always choose II and III; also test best constant checkbox subset in this group.",
+      "correct": 6,
+      "total": 22,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Blind uniform choice among4 mathematically admissible subsets is25%; II+III 6/22; bestconstant 7/22. No fixed template determines response.",
+      "sample_refs": [
+        "delivery-easy/accepted.json"
+      ]
+    },
+    {
+      "cue": "recognizable function/template shape and fixed label positions",
+      "subgroup": "delivered exp_true",
+      "scope": "within_template",
+      "strategy": "Always choose II and III; also test best constant checkbox subset in this group.",
+      "correct": 6,
+      "total": 22,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Blind uniform choice among4 mathematically admissible subsets is25%; II+III 6/22; bestconstant 7/22. No fixed template determines response.",
+      "sample_refs": [
+        "delivery-easy/accepted.json"
+      ]
+    },
+    {
+      "cue": "recognizable function/template shape and fixed label positions",
+      "subgroup": "delivered sin_none",
+      "scope": "within_template",
+      "strategy": "Always choose II and III; also test best constant checkbox subset in this group.",
+      "correct": 7,
+      "total": 28,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Blind uniform choice among4 mathematically admissible subsets is25%; II+III 7/28; bestconstant 8/28. No fixed template determines response.",
+      "sample_refs": [
+        "delivery-easy/accepted.json"
+      ]
+    },
+    {
+      "cue": "recognizable function/template shape and fixed label positions",
+      "subgroup": "delivered cos_i",
+      "scope": "within_template",
+      "strategy": "Always choose II and III; also test best constant checkbox subset in this group.",
+      "correct": 6,
+      "total": 22,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Blind uniform choice among4 mathematically admissible subsets is25%; II+III 6/22; bestconstant 7/22. No fixed template determines response.",
+      "sample_refs": [
+        "delivery-easy/accepted.json"
+      ]
+    },
+    {
+      "cue": "recognizable function/template shape and fixed label positions",
+      "subgroup": "delivered log_all",
+      "scope": "within_template",
+      "strategy": "Always choose II and III; also test best constant checkbox subset in this group.",
+      "correct": 7,
+      "total": 29,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Blind uniform choice among4 mathematically admissible subsets is25%; II+III 7/29; bestconstant 8/29. No fixed template determines response.",
+      "sample_refs": [
+        "delivery-easy/accepted.json"
+      ]
+    },
+    {
+      "cue": "recognizable function/template shape and fixed label positions",
+      "subgroup": "delivered inverse_none",
+      "scope": "within_template",
+      "strategy": "Always choose II and III; also test best constant checkbox subset in this group.",
+      "correct": 6,
+      "total": 22,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Blind uniform choice among4 mathematically admissible subsets is25%; II+III 6/22; bestconstant 7/22. No fixed template determines response.",
+      "sample_refs": [
+        "delivery-easy/accepted.json"
+      ]
+    },
+    {
+      "cue": "recognizable function/template shape and fixed label positions",
+      "subgroup": "delivered exp_none",
+      "scope": "within_template",
+      "strategy": "Always choose II and III; also test best constant checkbox subset in this group.",
+      "correct": 7,
+      "total": 28,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Blind uniform choice among4 mathematically admissible subsets is25%; II+III 7/28; bestconstant 8/28. No fixed template determines response.",
+      "sample_refs": [
+        "delivery-easy/accepted.json"
+      ]
+    },
+    {
+      "cue": "recognizable function/template shape and fixed label positions",
+      "subgroup": "delivered log_scaled",
+      "scope": "within_template",
+      "strategy": "Always choose II and III; also test best constant checkbox subset in this group.",
+      "correct": 6,
+      "total": 22,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Blind uniform choice among4 mathematically admissible subsets is25%; II+III 6/22; bestconstant 7/22. No fixed template determines response.",
+      "sample_refs": [
+        "delivery-easy/accepted.json"
+      ]
+    },
+    {
+      "cue": "recognizable function/template shape and fixed label positions",
+      "subgroup": "delivered power_moderate",
+      "scope": "within_template",
+      "strategy": "Always choose II and III; also test best constant checkbox subset in this group.",
+      "correct": 7,
+      "total": 28,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Blind uniform choice among4 mathematically admissible subsets is25%; II+III 7/28; bestconstant 8/28. No fixed template determines response.",
+      "sample_refs": [
+        "delivery-moderate/accepted.json"
+      ]
+    },
+    {
+      "cue": "recognizable function/template shape and fixed label positions",
+      "subgroup": "delivered affine_log",
+      "scope": "within_template",
+      "strategy": "Always choose II and III; also test best constant checkbox subset in this group.",
+      "correct": 8,
+      "total": 32,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Blind uniform choice among4 mathematically admissible subsets is25%; II+III 8/32; bestconstant 8/32. No fixed template determines response.",
+      "sample_refs": [
+        "delivery-hard/accepted.json"
+      ]
+    },
+    {
+      "cue": "sign of outer coefficient/derivative expression",
+      "subgroup": "delivered power_easy positive",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Use most frequent full selection pattern for this sign subgroup without calculating.",
+      "correct": 7,
+      "total": 22,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among4 admissible truth tuples. Every tested sign subgroup retains multiple tuples; same-sign false coefficients remove old sign-only shortcut. Finite empirical imbalance is reported, not equated with an exploitable deterministic rule.",
+      "sample_refs": [
+        "delivery-easy/accepted.json"
+      ]
+    },
+    {
+      "cue": "sign of outer coefficient/derivative expression",
+      "subgroup": "delivered exp_true positive",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Use most frequent full selection pattern for this sign subgroup without calculating.",
+      "correct": 7,
+      "total": 22,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among4 admissible truth tuples. Every tested sign subgroup retains multiple tuples; same-sign false coefficients remove old sign-only shortcut. Finite empirical imbalance is reported, not equated with an exploitable deterministic rule.",
+      "sample_refs": [
+        "delivery-easy/accepted.json"
+      ]
+    },
+    {
+      "cue": "sign of outer coefficient/derivative expression",
+      "subgroup": "delivered sin_none positive",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Use most frequent full selection pattern for this sign subgroup without calculating.",
+      "correct": 8,
+      "total": 28,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among4 admissible truth tuples. Every tested sign subgroup retains multiple tuples; same-sign false coefficients remove old sign-only shortcut. Finite empirical imbalance is reported, not equated with an exploitable deterministic rule.",
+      "sample_refs": [
+        "delivery-easy/accepted.json"
+      ]
+    },
+    {
+      "cue": "sign of outer coefficient/derivative expression",
+      "subgroup": "delivered cos_i negative",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Use most frequent full selection pattern for this sign subgroup without calculating.",
+      "correct": 7,
+      "total": 22,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among4 admissible truth tuples. Every tested sign subgroup retains multiple tuples; same-sign false coefficients remove old sign-only shortcut. Finite empirical imbalance is reported, not equated with an exploitable deterministic rule.",
+      "sample_refs": [
+        "delivery-easy/accepted.json"
+      ]
+    },
+    {
+      "cue": "sign of outer coefficient/derivative expression",
+      "subgroup": "delivered log_all positive",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Use most frequent full selection pattern for this sign subgroup without calculating.",
+      "correct": 8,
+      "total": 29,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among4 admissible truth tuples. Every tested sign subgroup retains multiple tuples; same-sign false coefficients remove old sign-only shortcut. Finite empirical imbalance is reported, not equated with an exploitable deterministic rule.",
+      "sample_refs": [
+        "delivery-easy/accepted.json"
+      ]
+    },
+    {
+      "cue": "sign of outer coefficient/derivative expression",
+      "subgroup": "delivered inverse_none negative",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Use most frequent full selection pattern for this sign subgroup without calculating.",
+      "correct": 7,
+      "total": 22,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among4 admissible truth tuples. Every tested sign subgroup retains multiple tuples; same-sign false coefficients remove old sign-only shortcut. Finite empirical imbalance is reported, not equated with an exploitable deterministic rule.",
+      "sample_refs": [
+        "delivery-easy/accepted.json"
+      ]
+    },
+    {
+      "cue": "sign of outer coefficient/derivative expression",
+      "subgroup": "delivered exp_none negative",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Use most frequent full selection pattern for this sign subgroup without calculating.",
+      "correct": 8,
+      "total": 28,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among4 admissible truth tuples. Every tested sign subgroup retains multiple tuples; same-sign false coefficients remove old sign-only shortcut. Finite empirical imbalance is reported, not equated with an exploitable deterministic rule.",
+      "sample_refs": [
+        "delivery-easy/accepted.json"
+      ]
+    },
+    {
+      "cue": "sign of outer coefficient/derivative expression",
+      "subgroup": "delivered log_scaled positive",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Use most frequent full selection pattern for this sign subgroup without calculating.",
+      "correct": 7,
+      "total": 22,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among4 admissible truth tuples. Every tested sign subgroup retains multiple tuples; same-sign false coefficients remove old sign-only shortcut. Finite empirical imbalance is reported, not equated with an exploitable deterministic rule.",
+      "sample_refs": [
+        "delivery-easy/accepted.json"
+      ]
+    },
+    {
+      "cue": "sign of outer coefficient/derivative expression",
+      "subgroup": "delivered power_moderate negative",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Use most frequent full selection pattern for this sign subgroup without calculating.",
+      "correct": 8,
+      "total": 28,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among4 admissible truth tuples. Every tested sign subgroup retains multiple tuples; same-sign false coefficients remove old sign-only shortcut. Finite empirical imbalance is reported, not equated with an exploitable deterministic rule.",
+      "sample_refs": [
+        "delivery-moderate/accepted.json"
+      ]
+    },
+    {
+      "cue": "sign of outer coefficient/derivative expression",
+      "subgroup": "delivered affine_log positive",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Use most frequent full selection pattern for this sign subgroup without calculating.",
+      "correct": 4,
+      "total": 16,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among4 admissible truth tuples. Every tested sign subgroup retains multiple tuples; same-sign false coefficients remove old sign-only shortcut. Finite empirical imbalance is reported, not equated with an exploitable deterministic rule.",
+      "sample_refs": [
+        "delivery-hard/accepted.json"
+      ]
+    },
+    {
+      "cue": "sign of outer coefficient/derivative expression",
+      "subgroup": "delivered affine_log negative",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Use most frequent full selection pattern for this sign subgroup without calculating.",
+      "correct": 4,
+      "total": 16,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among4 admissible truth tuples. Every tested sign subgroup retains multiple tuples; same-sign false coefficients remove old sign-only shortcut. Finite empirical imbalance is reported, not equated with an exploitable deterministic rule.",
+      "sample_refs": [
+        "delivery-hard/accepted.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "finite parameter buckets and deterministic batch selection, no symbolic rejection loop",
+      "publisher normalization, validation, capturedinventorydedup atbasis3683 and requestedbandfilter",
+      "each actual5record boundbatch in easy/moderate/hard",
+      "faithful weightedlearnerselection reproduction withfresh and seen-mask pools"
+    ],
+    "sample_refs": [
+      "sampling-boundaries.json",
+      "packaging-delivery.json",
+      "bound-batches.json",
+      "selection.json"
+    ],
+    "result": "All4 admissibledecisions survive pertemplate in independentfilteredsample and perbandin actualboundbatches. UIcontrols can encodeallfalse. No family/sign-basedconstantselection shortcut found."
+  },
+  "limitations": [
+    "Hard is source-grounded authoredaffinelog extension, not an observed hardexample.",
+    "Canonical reciprocalexample independently checked; exactfullbank replay applies9capturedpracticequestions.",
+    "No finiteaudit proves absence of everyshortcut. Livehistory canlaterexhaustdecisioncases; nofutureinventoryguarantee."
+  ]
+}

@@ -1,5 +1,7 @@
 # Original-import extraction audit — October 16, 2026
 
+**October 17 follow-up:** The [bulk source restoration](../2026-10-17-import-source-bulk/README.md) committed 2,859 field repairs at basis 3519, with exact readback verification. Two audit associations were proven false positives and left unchanged. The investigation record below describes the original read-only audit.
+
 Tracing the extraction failure provides a repeatable way to find affected content across the original import. The audit identifies **312 current content fields across 160 lessons** that retain the original first-fragment extraction, with source evidence and unchanged original/current field values. These are strong repair candidates, not completed repairs. Additional structural findings are retained separately for review.
 
 No database content, original source files, application code, generators, or capture-worker settings were changed during this investigation. Entirely missing solutions remain outside scope.

@@ -320,6 +320,34 @@ fn review_keeps_saved_multipart_answer_but_cannot_present_a_new_part() -> Result
     Ok(())
 }
 #[test]
+fn unstarted_assessments_need_five_new_topics_but_started_routes_survive_eligibility_changes() -> Result<()> {
+    let mut f=Fixture::new(false)?;
+    let s=f.snapshot()?;
+    let activity=f.available("assessment")?;
+    let topic=s.topic_for_question(learning::lesson_steps(&s,activity)?[0].content)?;
+    let progress=s.refs(f.learner,"learner/knowledge-profile")?.into_iter()
+        .find(|p|s.reference(*p,"progress/topic").ok()==Some(topic)).unwrap();
+    f.tx(vec![add(json!(progress),"progress/learned",json!(false))],f.now+1)?;
+    let s=f.snapshot()?;
+    let at=DateTime::from_timestamp_millis(f.now+2).unwrap();
+    let eligibility=course_academy_engine::inventory::assessment_status(&s,f.learner,at)?;
+    assert_eq!(eligibility["newEligibleTopics"],4);
+    assert_eq!(eligibility["ready"],false);
+    assert_eq!(eligibility["required"],false);
+    assert!(mutate(&s,f.learner,"start",&json!({"activityId":activity}),at).is_err());
+    f.tx(vec![add(json!(progress),"progress/learned",json!(true))],f.now+3)?;
+    let s=f.act("start",json!({"activityId":activity}),f.now+4)?;
+    let task=task_for(&s,f.learner,activity)?.unwrap();
+    let frozen=s.refs(activity,"activity/steps")?;
+    f.act("pause",json!({"taskId":task}),f.now+5)?;
+    f.tx(vec![add(json!(progress),"progress/learned",json!(false))],f.now+6)?;
+    let s=f.act("resume",json!({"taskId":task}),f.now+7)?;
+    assert_eq!(status(&s,task,"learner-task/status")?,"started");
+    assert_eq!(s.refs(activity,"activity/steps")?,frozen);
+    Ok(())
+}
+
+#[test]
 fn migrated_terminal_lessons_count_xp_and_original_learning_age_without_replaying_credit() -> Result<()> {
     let mut f = Fixture::with_history(false, 3 * 86400000, false, true)?;
     let s = f.snapshot()?;
@@ -617,6 +645,151 @@ fn automatic_generic_reviews_commit_reservations_grade_streak_award_xp_and_updat
     assert!(number(&s, p, "progress/repetitions") > 2.0);
     assert_eq!(number(&s, p, "progress/practice-mass"), 3.0);
     assert_eq!(number(&s, p, "progress/assessment-mass"), 0.0);
+    Ok(())
+}
+#[test]
+fn failed_review_refresh_persists_and_delays_prepared_and_new_reviews_until_due() -> Result<()> {
+    let mut f = Fixture::new(true)?;
+    let (task, mut s) = f.start("review")?;
+    let activity = s.reference(task, "learner-task/activity")?;
+    let topic = s.reference(activity, "activity/scope")?;
+    let progress = s
+        .refs(f.learner, "learner/knowledge-profile")?
+        .into_iter()
+        .find(|p| s.reference(*p, "progress/topic").ok() == Some(topic))
+        .unwrap();
+    let before = s.entity(progress)?.clone();
+    let mut at = f.now + 200;
+    for _ in 0..5 {
+        let item = *items(&s, task)?.last().unwrap();
+        let q = s.reference(item, "task-item/content")?;
+        let field = s.refs(q, "question/answer-fields")?[0];
+        s = f.act(
+            "answer",
+            json!({"taskId":task,"itemId":item,"responses":[{"fieldId":field,"value":"3"}]}),
+            at,
+        )?;
+        at += 100;
+        s = f.act("continue", json!({"taskId":task,"itemId":item}), at)?;
+        at += 100;
+    }
+    assert_eq!(status(&s, task, "learner-task/status")?, "failed");
+    assert!(
+        number(&s, progress, "progress/repetitions")
+            < before["progress/repetitions"].as_f64().unwrap()
+    );
+    assert!(number(&s, progress, "progress/memory") > 0.5);
+    assert_eq!(number(&s, progress, "progress/practice-mass"), 5.0);
+    assert!(
+        course_academy_engine::scheduling::lifecycle(&s, f.learner)?
+            .repairs
+            .is_empty()
+    );
+    let anchor = schema::instant_days(&s.entities[&progress]["progress/memory-at"])?;
+    let due = anchor
+        + number(&s, progress, "progress/interval-days")
+            * (number(&s, progress, "progress/memory").log2() - 0.5_f64.log2());
+    let due_ms = (due * 86_400_000.0).ceil() as i64;
+    assert!(due_ms > at + 60_000);
+
+    // Reopening the database projection preserves the refreshed memory. A
+    // previously prepared fresh task for the same topic must also stay hidden.
+    s = f.snapshot()?;
+    let steps: Vec<_> = (0..5).map(|i| format!("pending-step-{i}")).collect();
+    let mut forms = vec![
+        json!({"db/id":"pending-review","activity/id":{"$uuid":uuid(99011)},"activity/type":kw("activity.type/review"),"activity/scope":topic,"activity/title":"Previously prepared review","activity/steps":steps,"activity/first-step":"pending-step-0"}),
+        json!({"db/id":"pending-review-task","learner-task/id":{"$uuid":uuid(99012)},"learner-task/activity":"pending-review","learner-task/status":kw("learner-task.status/unlocked"),"learner-task/priority":6000.0}),
+        add(
+            json!(f.learner),
+            "learner/activity",
+            json!("pending-review-task"),
+        ),
+    ];
+    let pool = s.refs(
+        s.refs(topic, "topic/knowledge-points")?[0],
+        "knowledge-point/questions",
+    )?;
+    let seen = learning::unavailable_questions(&s, f.learner)?;
+    let pool: Vec<_> = pool
+        .into_iter()
+        .filter(|q| !seen.contains(q))
+        .take(5)
+        .collect();
+    assert_eq!(pool.len(), 5);
+    for (i, question) in pool.iter().enumerate() {
+        let mut step = json!({"db/id":steps[i],"step/id":{"$uuid":uuid(99100+i as u128)},"step/content":question});
+        if i < 4 {
+            step["step/next"] = json!(steps[i + 1]);
+        }
+        forms.push(step);
+    }
+    f.tx(forms, at)?;
+    s = f.snapshot()?;
+    let pending = s
+        .refs(f.learner, "learner/activity")?
+        .into_iter()
+        .find(|t| {
+            s.reference(*t, "learner-task/activity")
+                .ok()
+                .is_some_and(|a| text(&s, a, "activity/title") == "Previously prepared review")
+        })
+        .unwrap();
+    let pending_activity = s.reference(pending, "learner-task/activity")?;
+    let course_id = course(&s, f.learner)?;
+    let candidates = |s: &EntitySnapshot, at: i64| {
+        retrieval::candidates(
+            s,
+            f.learner,
+            course_id,
+            DateTime::from_timestamp_millis(at).unwrap(),
+            true,
+        )
+    };
+    assert!(!candidates(&s, at)?.iter().any(|p| p.topic == topic));
+    assert!(
+        !retrieval::schedule(
+            &s,
+            f.learner,
+            course(&s, f.learner)?,
+            DateTime::from_timestamp_millis(at).unwrap()
+        )?
+        .iter()
+        .any(|d| d.topic == Some(topic))
+    );
+    assert!(
+        !candidates(&s, due_ms - 1000)?
+            .iter()
+            .any(|p| p.topic == topic)
+    );
+    assert!(
+        candidates(&s, due_ms + 1000)?
+            .iter()
+            .any(|p| p.activity == pending_activity)
+    );
+    let mut without_pending = s.clone();
+    without_pending
+        .entities
+        .get_mut(&f.learner)
+        .unwrap()
+        .insert(
+            "learner/activity".into(),
+            json!(
+                s.refs(f.learner, "learner/activity")?
+                    .into_iter()
+                    .filter(|t| *t != pending)
+                    .collect::<Vec<_>>()
+            ),
+        );
+    assert!(
+        retrieval::schedule(
+            &without_pending,
+            f.learner,
+            course_id,
+            DateTime::from_timestamp_millis(due_ms + 1000).unwrap()
+        )?
+        .iter()
+        .any(|d| d.topic == Some(topic))
+    );
     Ok(())
 }
 #[test]
@@ -1186,6 +1359,54 @@ fn required_review_failure_becomes_lesson_and_optional_retake_uses_original_kps(
         .iter()
         .any(|p| p.activity == retake_activity && p.priority < 11000.0)
     );
+    // Six unfinished lessons used to push this ready retake past the home's
+    // five-card cutoff. Exercise the real planner and home in both study modes.
+    let mut crowded = s.clone();
+    let source_lesson = topic_lesson(&s, correct_topic)?;
+    let source_step = s.refs(source_lesson, "activity/steps")?[0];
+    let example = learning::lesson_steps(&s, source_lesson)?[0].example.unwrap();
+    for index in 0..6u64 {
+        let activity = 9_000_000 + index * 4;
+        let step = activity + 1;
+        let task = activity + 2;
+        let item = activity + 3;
+        let mut definition = s.entity(source_lesson)?.clone();
+        definition.insert("activity/id".into(), json!({"$uuid":uuid(activity.into())}));
+        definition.insert("activity/steps".into(), json!([step]));
+        definition.insert("activity/first-step".into(), json!(step));
+        crowded.entities.insert(activity, definition);
+        let mut placement = s.entity(source_step)?.clone();
+        placement.insert("step/id".into(), json!({"$uuid":uuid(step.into())}));
+        crowded.entities.insert(step, placement);
+        crowded.entities.insert(task, json!({"learner-task/id":{"$uuid":uuid(task.into())},
+            "learner-task/activity":activity,"learner-task/status":kw("learner-task.status/paused"),
+            "learner-task/items":[item],"learner-task/elapsed-seconds":0.0}).as_object().unwrap().clone());
+        crowded.entities.insert(item, json!({"task-item/id":{"$uuid":uuid(item.into())},
+            "task-item/content":example,"task-item/status":kw("task-item.status/paused"),"task-item/elapsed-seconds":0.0}).as_object().unwrap().clone());
+        for (entity, attribute, state) in [(task,"learner-task/status","learner-task.status/paused"),
+            (item,"task-item/status","task-item.status/paused")] {
+            crowded.status_history.push(StatusAssertion {entity,attribute:attribute.into(),value:kw(state),
+                t:crowded.basis_t,at:schema::instant_value(DateTime::from_timestamp_millis(at).unwrap())});
+        }
+        crowded.entities.get_mut(&f.learner).unwrap().get_mut("learner/activity").unwrap().as_array_mut().unwrap().push(json!(task));
+    }
+    for self_directed in [false, true] {
+        crowded.entities.get_mut(&f.learner).unwrap().insert("learner/self-directed".into(), json!(self_directed));
+        let before = json!({"entities":crowded.entities,"history":crowded.status_history});
+        let plan = learning::study_candidates(&crowded, f.learner, course(&crowded, f.learner)?,
+            DateTime::from_timestamp_millis(at).unwrap())?;
+        assert_eq!(plan[0].activity, retake_activity);
+        assert!(plan[0].priority < 11000.0, "retake remains optional");
+        assert_eq!(plan.iter().filter(|p| (9_000_000..9_000_024).contains(&p.activity)).count(), 6);
+        let view = home(&crowded, f.learner)?;
+        assert_eq!(view["activities"].as_array().unwrap().len(), 5);
+        assert_eq!(view["activities"][0]["taskId"], retake);
+        assert_eq!(view["activities"][0]["title"], "Retake Quiz 1");
+        let resumed = mutate(&crowded, f.learner, "start", &json!({"activityId":9_000_000}),
+            DateTime::from_timestamp_millis(at).unwrap());
+        assert!(resumed.is_ok(), "optional retake must not block resuming lessons: {:?}", resumed.err());
+        assert_eq!(json!({"entities":crowded.entities,"history":crowded.status_history}), before);
+    }
     Ok(())
 }
 

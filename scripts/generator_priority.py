@@ -6,7 +6,7 @@ boundaries between relevance, purpose, and lesson order.
 from datetime import datetime, timezone
 
 
-PRIORITY_POLICY = "relevance-v2"
+PRIORITY_POLICY = "relevance-v5"
 PRIORITY_FIELDS = (
     "priority_policy", "relevance_tier", "baseline_relevance_tier", "topic_layer",
     "selected_support_count", "engine_priority", "review_due_at",
@@ -47,7 +47,7 @@ def priority_key(record):
     band = record.get("generated_band", record.get("difficulty", ""))
     waiting = timestamp(record.get("waiting_since"))
     if "priority_policy" not in record and "relevance_tier" not in record:
-        return (4, 0, -record.get("score", 0),
+        return (5, 0, -record.get("score", 0),
                 timestamp(record.get("first_studied_at")) if purpose == "assessment-shortage" else float("inf"),
                 0, waiting, topic, 0, kp, band)
 
@@ -62,6 +62,6 @@ def priority_key(record):
         topic_order = (timestamp(record.get("first_studied_at")), 0, engine)
     else:
         topic_order = (0, 0, engine)
-    return (record.get("relevance_tier", 3), PURPOSE_ORDER.get(purpose, 7),
+    return (record.get("relevance_tier", 4), PURPOSE_ORDER.get(purpose, 7),
             *topic_order, waiting, topic, -record.get("shortage", 0), kp,
             band)

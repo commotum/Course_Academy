@@ -41,7 +41,7 @@ KP_PULL = ('[* {:knowledge-point/key-prerequisites [*]}'
            ' {[:knowledge-point/questions :limit nil] ' + QUESTION_PULL + '}]')
 KP_QUERY = '[:find (pull ?kp ' + KP_PULL + ') :in $ ?kp :where [?kp :knowledge-point/id _]]'
 ALLOWED = {
-    'question/id', 'question/problem', 'question/worked-solution', 'question/difficulty',
+    'question/id', 'question/problem', 'question/worked-solution', 'question/difficulty', 'question/retired',
     'question/requires-calculator', 'question/answer-fields', 'answer-field/id',
     'answer-field/key', 'answer-field/type', 'answer-field/choices', 'answer-field/correct',
     'answer/id', 'answer/type', 'answer/value', 'answer/feedback',
@@ -133,9 +133,9 @@ def content_fingerprint(question):
     return digest(value)
 
 
-def localize_record(record, math_root, assets_directory):
+def localize_record(record, math_root, assets_directory, *, library=None):
     """Use the shared byte-addressed image library for every authored image slot."""
-    library = ImageLibrary(Path(math_root), Path(assets_directory))
+    library = library if library is not None else ImageLibrary(Path(math_root), Path(assets_directory))
     result = copy.deepcopy(record)
     q = result['question']
     for key in (':question/problem', ':question/worked-solution'):
@@ -186,6 +186,7 @@ def validate_question(q):
     if not isinstance(fields, list) or not fields:
         raise ValueError('Generated practice requires gradable answer fields')
     keys = set()
+    checkbox_correct_values = []
     for field in fields:
         key = field.get(':answer-field/key')
         if not isinstance(key, str) or not key or key in keys:
@@ -214,6 +215,11 @@ def validate_question(q):
             raise ValueError('Blank canonical answer must be math or text')
         if kind == ':answer-field.type/checkbox' and typed_values != {(':answer.type/text', 'true'), (':answer.type/text', 'false')}:
             raise ValueError('Checkbox bank requires exactly true and false text answers')
+        if kind == ':answer-field.type/checkbox':
+            checkbox_correct_values.append(next(a[':answer/value'] for a in choices
+                                                if str(a[':answer/id']) == answer_id(field[':answer-field/correct'])))
+    if checkbox_correct_values and 'true' not in checkbox_correct_values:
+        raise ValueError('Generated checkbox questions require at least one correct selectable option')
 
 
 def stable_identities(question, kp_uuid):
@@ -232,6 +238,29 @@ def stable_identities(question, kp_uuid):
             if old_id == old_correct:
                 field[':answer-field/correct'] = [':answer/id', a[':answer/id']]
     return q
+
+
+def prepare_records(records, kp_id, kp_uuid, fingerprints, math_root, assets_directory, *, localizer=localize_record):
+    """Shared preparation/filtering for publication and offline delivery audits.
+
+    No database operations. The localizer controls where image bytes are staged.
+    Invalid records fail the batch; only content duplicates are skipped.
+    """
+    seen = set(fingerprints)
+    accepted, duplicate_count = [], 0
+    for rec in records:
+        validate_knowledge_point(rec.get('knowledge_point'), kp_id, kp_uuid)
+        localized = localizer(rec, math_root, assets_directory)
+        localized['question'] = stable_identities(localized['question'], kp_uuid)
+        fingerprint = content_fingerprint(localized['question'])
+        if fingerprint in seen:
+            duplicate_count += 1
+            continue
+        accepted.append(localized)
+        seen.add(fingerprint)
+    from scripts.integration_batch_policy import validate_delivery_batch
+    validate_delivery_batch(accepted, kp_id)
+    return accepted, duplicate_count
 
 
 def verify_assets(records, math_root):
@@ -361,6 +390,10 @@ class Publisher:
         status = self.client.status()
         basis = status['basis'] if basis is None else basis
         kp = self.read_kp(kp_id, directory, basis)
+        return self._source_from_kp(kp_id, directory, status, basis, kp)
+
+    def _source_from_kp(self, kp_id, directory, status, basis, kp):
+        """Finish a source capture using the KP already read at this exact basis."""
         self.save_inventory(kp_id, kp, status, basis, directory)
         topic_pattern = '[* {:topic/knowledge-points [:db/id :knowledge-point/id :knowledge-point/title {:knowledge-point/canonical-example ' + QUESTION_PULL + '}]}]'
         topics = self.client.query('[:find (pull ?t ' + topic_pattern + ') :in $ ?kp :where [?t :topic/knowledge-points ?kp]]', [int(kp_id)], directory, 'topics', basis)
@@ -436,7 +469,7 @@ class Publisher:
             if registered != expected_registered_generator:
                 raise SourceChanged('Registered generator changed; refresh the refill job')
         if source_snapshot is not None:
-            fresh = self.extract_source(kp_id, directory / 'source-check', basis=basis)
+            fresh = self._source_from_kp(kp_id, directory / 'source-check', status, basis, kp)
             if source_snapshot.get('source_sha256') != digest(source_snapshot.get('material')):
                 raise SourceChanged('Saved instructional source evidence failed its integrity check')
             if (any(source_snapshot.get(k) != fresh[k] for k in ('database', 'lineage'))
@@ -452,17 +485,9 @@ class Publisher:
         canonical = kp.get(':knowledge-point/canonical-example')
         if canonical:
             seen.add(content_fingerprint(canonical))
-        accepted, duplicate_count = [], 0
-        for rec in records:
-            validate_knowledge_point(rec.get('knowledge_point'), kp_id, kp[':knowledge-point/id'])
-            localized = localize_record(rec, self.config.math_root, assets_directory or directory)
-            localized['question'] = stable_identities(localized['question'], kp[':knowledge-point/id'])
-            fingerprint = content_fingerprint(localized['question'])
-            if fingerprint in seen:
-                duplicate_count += 1
-                continue
-            accepted.append(localized)
-            seen.add(fingerprint)
+        accepted, duplicate_count = prepare_records(
+            records, kp_id, kp[':knowledge-point/id'], seen,
+            self.config.math_root, assets_directory or directory)
         identities = [uuid.UUID(qid) for rec in accepted for qid in [rec['question'][':question/id']] + [f[':answer-field/id'] for f in rec['question'][':question/answer-fields']] + [a[':answer/id'] for f in rec['question'][':question/answer-fields'] for a in f[':answer-field/choices']]]
         if identities:
             collisions = self.client.query('[:find ?e ?id :in $ [?id ...] :where (or-join [?e ?id] [?e :question/id ?id] [?e :answer-field/id ?id] [?e :answer/id ?id])]', [identities], directory, 'identity-collisions', basis)

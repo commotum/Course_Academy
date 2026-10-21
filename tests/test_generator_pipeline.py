@@ -8,11 +8,11 @@ import sys
 import tempfile
 import textwrap
 import unittest
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 from generator_packages import publish_package, resolve_registered_script
-from generator_pipeline import Pipeline, main
+from generator_pipeline import CodexSession, Pipeline, SessionRetryExhausted, main
 from generator_publish import SourceChanged, digest as source_digest
 from generator_review import CHECKS, REVIEW_POLICY_VERSION
 from generator_review_fixtures import write_decision_evidence
@@ -94,6 +94,18 @@ class FakeSession:
                 raise subprocess.TimeoutExpired(["fake-codex", "exec"], 1)
             write_package(Path(context["workspace"]), image=self.image, difficulty=self.difficulty,
                           declare_helper=self.declare_helper, default_difficulty=self.default_difficulty)
+            workspace = Path(context['workspace'])
+            if self.reject:
+                config = workspace / 'config.json'
+                value = json.loads(config.read_text())
+                value['revision'] = len([r for r, _ in self.calls if r == 'author'])
+                config.write_text(json.dumps(value))
+            history = Path(context['repair_history_file'])
+            if history.exists():
+                (workspace / 'repair_check.py').write_text('from helper import square\nassert square(7) == 49\n')
+                (workspace / 'repair-regressions.json').write_text(json.dumps({'findings': [
+                    {'id': row['id'], 'script': 'repair_check.py'}
+                    for row in json.loads(history.read_text())['findings']]}))
             return {"status": "ready", "manifest": "package.json"}
         analysis = {"skill": "Square a positive integer", "reasoning_steps": ["Multiply n by itself"],
                     "invariants": ["One squaring operation"], "permitted_variations": ["Positive integer n"],
@@ -219,16 +231,235 @@ class GeneratorPipelineTests(unittest.TestCase):
         self.assertFalse((Path(result["runtime"]) / "scratch-only.txt").exists())
         self.assertEqual(self.publisher.prepares, 1)
 
-    def test_both_negative_review_kinds_stop_at_attempt_limit_without_publication(self):
+    def test_negative_reviews_yield_a_resumable_repair_with_all_feedback(self):
         session = FakeSession(reject=True)
         result = self.pipeline(session).run()
-        self.assertEqual(result["stage"], "failed")
+        self.assertEqual(result["stage"], "repair")
         self.assertEqual([r for r, _ in session.calls], ["author", "review", "author", "review"])
         kinds = [json.loads((Path(directory) / "result.json").read_text())["findings"][0]["kind"]
                  for role, directory in session.calls if role == "review"]
         self.assertEqual(kinds, ["restriction", "drift"])
         self.assertEqual((self.publisher.prepares, self.publisher.publishes), (0, 0))
         self.assertFalse((self.math / "generators").exists())
+        history = json.loads((self.job / 'repair-history.json').read_text())
+        self.assertEqual([r['finding']['kind'] for r in history['findings']], ['restriction', 'drift'])
+        self.assertEqual(self.pipeline(session).context(self.job / 'next')['repair_mode'], 'root_cause')
+        # The next worker resumes this exact workspace, clears both defects,
+        # obtains independent acceptance, and publishes only once.
+        result = self.pipeline(FakeSession()).run()
+        self.assertEqual(result['stage'], 'verified')
+        self.assertFalse(result['needs_repair'])
+        preflight = json.loads((self.job / 'repair-preflight.json').read_text())
+        self.assertEqual(set(preflight['finding_ids']), {r['id'] for r in history['findings']})
+        self.assertEqual((self.publisher.prepares, self.publisher.publishes), (1, 1))
+
+    def test_reviewer_repairs_its_own_report_without_reauthoring_or_resampling(self):
+        class ReportSession(FakeSession):
+            def __call__(self, role, context, directory):
+                result = super().__call__(role, context, context['evidence_root'] if role == 'review' else directory)
+                if role == 'review' and not context.get('review_contract_feedback'):
+                    result['checks']['math']['evidence_paths'] = ['not-written.json']
+                return result
+        session = ReportSession()
+        pipeline = self.pipeline(session)
+        with patch.object(pipeline, 'sample', wraps=pipeline.sample) as sample:
+            result = pipeline.run()
+        self.assertEqual(result['stage'], 'verified')
+        self.assertEqual([role for role, _ in session.calls], ['author', 'review', 'review'])
+        self.assertEqual((result['attempt'], sample.call_count), (1, 1))
+        self.assertEqual((self.publisher.prepares, self.publisher.publishes), (1, 1))
+
+    def test_invalid_report_yields_correction_then_resumes_without_reauthoring(self):
+        class BrokenReport(FakeSession):
+            def __call__(self, role, context, directory):
+                result = super().__call__(role, context, context['evidence_root'] if role == 'review' else directory)
+                if role == 'review':
+                    result['checks']['math']['evidence_paths'] = ['not-written.json']
+                return result
+        session = BrokenReport()
+        result = self.pipeline(session).run()
+        self.assertEqual(result['stage'], 'report-repair')
+        self.assertEqual(result['error']['code'], 'review_contract_invalid')
+        self.assertEqual([role for role, _ in session.calls], ['author', 'review', 'review'])
+        self.assertEqual((self.publisher.prepares, self.publisher.publishes), (0, 0))
+        self.assertTrue((self.job / 'workspace/generator.py').exists())
+        cached_samples = (self.job / 'samples.json').read_bytes()
+        repaired = FakeSession()
+        result = self.pipeline(repaired).run()
+        self.assertEqual(result['stage'], 'verified')
+        self.assertEqual([role for role, _ in repaired.calls], ['review'])
+        self.assertEqual((self.job / 'samples.json').read_bytes(), cached_samples)
+        self.assertEqual(result['attempt'], 1)
+
+    def test_review_evidence_reuse_requires_same_source_and_policy(self):
+        pipeline = self.pipeline(FakeSession(reject=True))
+        pipeline.run()
+        context = pipeline.context(self.job / 'author-next')
+        self.assertIsNotNone(context['previous_review'])
+        pipeline.state['source_hash'] = 'changed-source'
+        self.assertIsNone(pipeline.context(self.job / 'author-next')['previous_review'])
+        pipeline.state['source_hash'] = context['previous_review']['binding']['source_hash']
+        with patch('generator_pipeline.REVIEW_POLICY_VERSION', REVIEW_POLICY_VERSION + 1):
+            self.assertIsNone(pipeline.context(self.job / 'author-next')['previous_review'])
+
+    def test_failed_regression_stops_before_another_independent_review(self):
+        class FailingCheck(FakeSession):
+            def __call__(self, role, context, directory):
+                result = super().__call__(role, context, directory)
+                script = Path(context['workspace']) / 'repair_check.py'
+                if role == 'author' and script.exists():
+                    script.write_text('raise AssertionError("retained counterexample persists")\n')
+                return result
+        session = FailingCheck(reject=True)
+        result = self.pipeline(session).run()
+        self.assertEqual(result['stage'], 'repair')
+        self.assertEqual([role for role, _ in session.calls], ['author', 'review', 'author'])
+        self.assertIn('Retained repair regression failed', result['error']['error'])
+        self.assertEqual((self.publisher.prepares, self.publisher.publishes), (0, 0))
+
+    def test_unchanged_rejected_candidate_does_not_spend_another_review(self):
+        class Unchanged(FakeSession):
+            def __call__(self, role, context, directory):
+                result = super().__call__(role, context, directory)
+                if role == 'author':
+                    config = Path(context['workspace']) / 'config.json'
+                    value = json.loads(config.read_text());value.pop('revision', None)
+                    config.write_text(json.dumps(value))
+                return result
+        session = Unchanged(reject=True)
+        result = self.pipeline(session).run()
+        self.assertEqual(result['stage'], 'repair')
+        self.assertTrue(result['repeated_candidate'])
+        self.assertEqual([role for role, _ in session.calls], ['author', 'review', 'author'])
+        self.assertEqual(self.publisher.prepares, 0)
+
+    def test_sample_checkpoint_resumes_without_reauthoring(self):
+        session = FakeSession()
+        pipeline = self.pipeline(session)
+        pipeline.run('generate')
+        pipeline.persist(stage='sample')
+        before = list(session.calls)
+        result = self.pipeline(session).run()
+        self.assertEqual(result['stage'], 'verified')
+        self.assertEqual([role for role, _ in session.calls[len(before):]], ['review'])
+
+    def test_scheduler_locks_survive_the_author_reviewer_handoff(self):
+        fake = FakeSession()
+        class RecordingSession(CodexSession):
+            def __call__(inner, role, context, directory):
+                self.assertEqual(tuple(inner.lock_fds[:2]), descriptors)
+                self.assertEqual(len(inner.lock_fds), 3)
+                return fake(role, context, directory)
+        with (self.root/'lane.lock').open('a') as lane, (self.root/'kp.lock').open('a') as kp:
+            descriptors = (lane.fileno(), kp.fileno())
+            self.environment['COURSE_ACADEMY_GENERATOR_LOCK_FDS'] = json.dumps(descriptors)
+            result = self.pipeline(RecordingSession(root=self.root)).run()
+        self.assertEqual(result['stage'], 'verified')
+        self.assertEqual([role for role, _ in fake.calls], ['author', 'review'])
+
+    def test_engine_update_gets_a_fresh_review_without_reauthoring_or_stale_cache(self):
+        first = FakeSession()
+        state = self.pipeline(first).run('validate')
+        old_review = state['review']
+        engine = self.root / 'engine/rust'
+        engine.mkdir(parents=True)
+        (engine/'grading.rs').write_text('// independent fixture engine revision\n')
+        second = FakeSession()
+        state = self.pipeline(second).run()
+        self.assertEqual(state['stage'], 'verified')
+        self.assertEqual([role for role, _ in second.calls], ['review'])
+        self.assertNotEqual(state['review'], old_review)
+        self.assertEqual(self.publisher.publishes, 1)
+
+    def test_old_attempt_limit_failure_resumes_with_feedback_and_workspace(self):
+        session = FakeSession(reject=True)
+        pipeline = self.pipeline(session)
+        result = pipeline.run()
+        pipeline.persist(stage='failed', error=result['error'])
+        original = (self.job / 'source/source.json').read_bytes()
+        result = self.pipeline(FakeSession()).run()
+        self.assertEqual(result['stage'], 'verified')
+        self.assertEqual((self.job / 'source/source.json').read_bytes(), original)
+        self.assertEqual(result['attempt'], 3)
+        self.assertEqual(self.publisher.publishes, 1)
+
+    def test_changed_package_still_requires_author_repair(self):
+        class ChangedPackage(FakeSession):
+            def __call__(self, role, context, directory):
+                result = super().__call__(role, context, directory)
+                if role == 'review' and len([r for r, _ in self.calls if r == 'review']) == 1:
+                    helper = Path(context['workspace']) / 'helper.py'
+                    helper.write_text(helper.read_text() + '\n# changed during review\n')
+                return result
+        session = ChangedPackage()
+        result = self.pipeline(session).run()
+        self.assertEqual(result['stage'], 'verified')
+        self.assertEqual([role for role, _ in session.calls], ['author', 'review', 'author', 'review'])
+
+    def test_completed_agent_result_is_reused_without_a_new_session(self):
+        directory = self.root / 'cached-agent'
+        directory.mkdir()
+        expected = {'status': 'ready', 'manifest': 'package.json'}
+        (directory / 'result.json').write_text(json.dumps(expected))
+        session = CodexSession(root=Path(__file__).resolve().parents[1])
+        with patch('generator_pipeline.subprocess.Popen') as start:
+            self.assertEqual(session('author', {}, directory), expected)
+        start.assert_not_called()
+
+    def test_session_transport_failures_stop_across_restarts_without_author_attempt_churn(self):
+        repo = Path(__file__).resolve().parents[1]
+        for failure in ('exit', 'timeout'):
+            with self.subTest(failure=failure):
+                self.job = self.root / failure
+                process = Mock(returncode=1, pid=12345)
+                if failure == 'timeout':
+                    process.communicate.side_effect = subprocess.TimeoutExpired(['codex'], 1)
+                expected = subprocess.TimeoutExpired if failure == 'timeout' else subprocess.CalledProcessError
+                with patch('generator_pipeline.subprocess.Popen', return_value=process) as start, \
+                        patch('generator_pipeline.os.killpg') as kill:
+                    for _ in range(2):
+                        with self.assertRaises(expected):
+                            self.pipeline(CodexSession(root=repo)).run()
+                    result = self.pipeline(CodexSession(root=repo)).run()
+                    self.assertEqual(result['stage'], 'failed')
+                    self.assertEqual(result['error']['code'], 'agent_session_retry_exhausted')
+                    self.assertEqual(result['error']['resume_stage'], 'generate')
+                    self.assertEqual(result['attempt'], 1)
+                    self.assertEqual(result['error']['launches'], 3)
+                    self.assertTrue((self.job / 'workspace').exists())
+                    self.assertEqual(self.pipeline(CodexSession(root=repo)).run(), result)
+                    self.assertEqual(start.call_count, 3)
+                    self.assertEqual(kill.call_count, 3 if failure == 'timeout' else 0)
+                self.assertEqual((self.publisher.prepares, self.publisher.publishes), (0, 0))
+
+    def test_session_retry_can_succeed_and_cached_result_survives_exhausted_budget(self):
+        repo = Path(__file__).resolve().parents[1]
+        for role in ('author', 'review'):
+            with self.subTest(role=role):
+                directory = self.root / role
+                context = {'workspace': str(self.root)}
+                expected = {'status': 'ready', 'manifest': 'package.json'}
+                failed = Mock(returncode=1)
+                succeeded = Mock(returncode=0)
+                succeeded.communicate.side_effect = lambda *a, **k: (directory / 'result.json').write_text(json.dumps(expected))
+                with patch('generator_pipeline.subprocess.Popen', side_effect=[failed, succeeded]) as start:
+                    with self.assertRaises(subprocess.CalledProcessError):
+                        CodexSession(root=repo)(role, context, directory)
+                    self.assertEqual(CodexSession(root=repo)(role, context, directory), expected)
+                    self.assertEqual(CodexSession(root=repo, max_launches=1)(role, context, directory), expected)
+                    self.assertEqual(start.call_count, 2)
+                execution = json.loads((directory / 'execution.json').read_text())
+                self.assertEqual(execution, {'launches': 2, 'status': 'completed'})
+
+    def test_interrupted_session_budget_is_not_reset_by_new_process(self):
+        directory = self.root / 'interrupted-review'
+        directory.mkdir()
+        (directory / 'execution.json').write_text(json.dumps({'launches': 3, 'status': 'running'}))
+        session = CodexSession(root=Path(__file__).resolve().parents[1])
+        with patch('generator_pipeline.subprocess.Popen') as start:
+            with self.assertRaises(SessionRetryExhausted):
+                session('review', {'workspace': str(self.root)}, directory)
+        start.assert_not_called()
 
     def test_unknown_commit_response_resumes_exact_request_without_agents_or_reprepare(self):
         session = FakeSession()
@@ -269,7 +500,7 @@ class GeneratorPipelineTests(unittest.TestCase):
                 self.job = self.root / ("wrong-band" if "difficulty" in options else "missing-helper")
                 session = FakeSession(**options)
                 result = self.pipeline(session, attempts=1).run()
-                self.assertEqual(result["stage"], "failed")
+                self.assertEqual(result["stage"], "repair")
                 self.assertEqual([role for role, _ in session.calls], ["author"])
                 self.assertEqual((self.publisher.prepares, self.publisher.publishes), (0, 0))
 
@@ -291,14 +522,14 @@ class GeneratorPipelineTests(unittest.TestCase):
         self.assertEqual(len(samples), 5)
         self.assertEqual({q["question"][":question/difficulty"] for q in samples}, {":question.difficulty/moderate"})
 
-    def test_unclassified_request_requires_declared_default_then_generates_that_band(self):
+    def test_unclassified_request_reuses_single_source_band_without_reauthoring(self):
         request = {**self.request, "difficulty": "unclassified", "count": 5}
         missing = FakeSession()
         result = self.pipeline(missing, request=request, attempts=1).run()
-        self.assertEqual(result["stage"], "failed")
-        self.assertIn("default_difficulty", result["error"]["error"])
-        self.assertEqual([role for role, _ in missing.calls], ["author"])
-        self.assertEqual((self.publisher.prepares, self.publisher.publishes), (0, 0))
+        self.assertEqual(result["stage"], "verified")
+        self.assertEqual(result['effective_difficulty'], 'moderate')
+        self.assertEqual([role for role, _ in missing.calls], ["author", "review"])
+        self.assertEqual((self.publisher.prepares, self.publisher.publishes), (1, 1))
         self.job = self.root / "classified-job"
         result = self.pipeline(FakeSession(default_difficulty="moderate"), request=request).run()
         self.assertEqual(result["stage"], "verified")
@@ -306,6 +537,13 @@ class GeneratorPipelineTests(unittest.TestCase):
         samples = json.loads((self.job / "samples.json").read_text())
         self.assertEqual(len(samples), 5)
         self.assertEqual({q["question"][":question/difficulty"] for q in samples}, {":question.difficulty/moderate"})
+
+    def test_ambiguous_source_bands_still_require_author_classification(self):
+        self.publisher.available_difficulties = ['easy', 'moderate']
+        result = self.pipeline(FakeSession(), request={**self.request, 'difficulty':'unclassified'}, attempts=1).run()
+        self.assertEqual(result['stage'], 'repair')
+        self.assertIn('default_difficulty', result['error']['error'])
+        self.assertEqual(self.publisher.prepares, 0)
 
     def test_inventory_classification_missing_zero_requests_five_samples(self):
         inventory = self.root / "inventory.json"

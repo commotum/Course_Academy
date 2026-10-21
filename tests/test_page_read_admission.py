@@ -15,26 +15,59 @@ from serve_graph_explorer import handler, admit_answer
 
 
 class PageReadAdmission(unittest.TestCase):
+    def test_topic_availability_get_validates_one_topic_id_and_only_reads(self):
+        with tempfile.TemporaryDirectory() as directory:
+            environment = {"LEARNING_REQUEST_DIR": directory, "EDB_ENDPOINT": "/unused"}
+            with patch("serve_graph_explorer.InventoryJobs"), patch("serve_graph_explorer.NativeWorker"):
+                cls = handler(Path("/unused"), "test", "learner", environment, Path("/unused"))
+                for query in ["topicId=20", "", "topicId=0", "topicId=-1", "topicId=nope", "topicId=20&topicId=25", "topicId=9007199254740992"]:
+                    request = cls.__new__(cls)
+                    request.path = "/api/topic-study-availability?" + query
+                    request.trusted = lambda: True
+                    reads, replies = [], []
+                    request.learning_request = reads.append
+                    request.send_bytes = lambda status, body, content_type: replies.append(status)
+                    request.do_GET()
+                    if query == "topicId=20":
+                        self.assertEqual(reads, [{"action": "topic-study-availability", "topicId": 20}])
+                        self.assertEqual(replies, [])
+                    else:
+                        self.assertEqual(reads, [])
+                        self.assertEqual(replies, [400])
+
     def test_both_generation_lanes_wait_for_ranked_inventory_and_refresh_after_work(self):
         with tempfile.TemporaryDirectory() as directory:
             environment = {"LEARNING_REQUEST_DIR": directory, "EDB_ENDPOINT": "/unused"}
             with patch("serve_graph_explorer.InventoryJobs") as jobs, patch("serve_graph_explorer.NativeWorker"):
                 cls = handler(Path('/unused'), 'test', 'learner', environment, Path('/unused'))
-                loops = {fn.__name__: fn for fn in cls.background}
-                for lane in ('build', 'refill'):
+                loops = [(fn, 'build' if fn.__name__ == 'generator_build_loop' else 'refill',
+                          getattr(fn, 'worker_slot', 0)) for fn in cls.background
+                         if fn.__name__ in {'generator_build_loop', 'generator_refill_loop'}]
+                self.assertEqual([(lane, slot) for _, lane, slot in loops],
+                                 [('build', 0), ('build', 1), ('build', 2), ('refill', 0)])
+                for fn, lane, slot in loops:
                     cls.scheduler_stop.clear()
                     with patch.object(cls.scheduler_stop, 'wait', side_effect=lambda _: cls.scheduler_stop.set()):
-                        loops['generator_' + lane + '_loop']()
+                        fn()
                 jobs.return_value.run_one.assert_not_called()
                 cls.inventory_ready.set()
-                for lane in ('build', 'refill'):
+                for fn, lane, slot in loops:
                     cls.scheduler_stop.clear()
                     cls.inventory_refresh.clear()
                     jobs.return_value.run_one.reset_mock()
                     with patch.object(cls.scheduler_stop, 'wait', side_effect=lambda _: cls.scheduler_stop.set()):
-                        loops['generator_' + lane + '_loop']()
-                    jobs.return_value.run_one.assert_called_once_with(lane=lane)
+                        fn()
+                    jobs.return_value.run_one.assert_called_once_with(lane=lane, slot=slot)
                     self.assertTrue(cls.inventory_refresh.is_set())
+
+    def test_configured_builder_count_controls_background_slots(self):
+        with tempfile.TemporaryDirectory() as directory:
+            environment = {'LEARNING_REQUEST_DIR': directory, 'EDB_ENDPOINT': '/unused',
+                           'COURSE_ACADEMY_GENERATOR_BUILD_WORKERS': '2'}
+            with patch('serve_graph_explorer.InventoryJobs'), patch('serve_graph_explorer.NativeWorker'):
+                cls = handler(Path('/unused'), 'test', 'learner', environment, Path('/unused'))
+                slots = [fn.worker_slot for fn in cls.background if fn.__name__ == 'generator_build_loop']
+                self.assertEqual(slots, [0, 1])
 
     def test_both_lanes_honor_developer_mode_and_generation_disable(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -128,7 +161,7 @@ class PageReadAdmission(unittest.TestCase):
                 with (Path(directory) / "api.lock").open("a") as lock:
                     fcntl.flock(lock, fcntl.LOCK_EX)
                     with ThreadPoolExecutor(max_workers=1) as executor:
-                        for action in ["assignments", "activity-history", "study-stats", "mode", "answer"]:
+                        for action in ["assignments", "activity-history", "study-stats", "mode", "answer", "topic-study-availability"]:
                             request = cls.__new__(cls)
                             replies = []
                             request.send_bytes = lambda status, body, content_type: replies.append((status, json.loads(body)))

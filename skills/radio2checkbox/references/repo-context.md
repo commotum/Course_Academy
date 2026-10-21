@@ -1,6 +1,6 @@
 # Repo context and checkpoints
 
-Paths below are relative to the Course_Academy repo root. These are historical entry points checked on **2026-10-12**. Inspect current code/configuration and receipts before reusing them; this reference is not a live database status report.
+Paths below are relative to the Course_Academy repo root and include historical migration checkpoints and later repair runs. Inspect current code/configuration and receipts before reusing them; this reference is not a live database status report.
 
 ## Integration
 
@@ -24,6 +24,7 @@ Use the [EDB sources reference](../../edb/references/sources.md) for authoritati
 | `reference/edb-math/imports/authored-checkboxes/2026-10-12/finder-remaining/` | `resolutions.json`, `resolve.py`, `read_snapshot.py`, `prepare.py`, `commit.py`; missing-key proofs, source evidence, retain-radio decisions; 89 conversions and one retained-radio key repair |
 | `reference/edb-math/imports/authored-checkboxes/2026-10-12/discovery-direct/` | Confirmed 780-question migration, held native preview chain, four batch receipts, grading and final readback |
 | `reference/edb-math/imports/authored-checkboxes/2026-10-12/discovery-next/` | Next keyed/rated tier: 1,695 conversions across 311 KPs in nine independently captured/previewed groups, plus 14 separate solution corrections; retain ordered radio q-48430 (`17592186329885`). Inspect `commit-receipt.json`, `verification.json`, `execution-plan.json` and status to establish confirmed completion. |
+| `reference/edb-math/repairs/2026-10-17-triangular-checkbox-layout/` | Confirmed repair at **3479 → 3480**; see `verification.json` and retained receipts. Repaired 16 existing checkbox layouts and converted four radios; scope includes three canonical examples, seven raster images, four restored tutorial matrices, and two generators. One unseen all-false generated question was withdrawn. `content-plan.json` retains complete source-object mappings, including `17592186262617` and `17592186120421`. `images/responsive/verification.json` records the final narrow-screen rendering checks. |
 
 In the repo-wide discovery directory, start with `report.json`, `readiness-summary.json`, `canonical-membership.json`, and `direct-candidates.json`. `sources/<kp-eid>.json` and stored query/input/result files supply evidence. `scan.py`, `screen.py`, `review_direct.py`, and `filter_direct.py` illustrate selection and screening, but some scripts assume fixed historical bases/counts. Read before adapting; do not run as generic current-state tools.
 
@@ -32,6 +33,8 @@ At discovery basis **1534**, the audit reported 3,552 strong structural candidat
 The last confirmed direct migration was **1688 → 1692**, four batches of 195 questions, 146 KPs, 2,417 checkbox fields and 4,834 owned Boolean answers, source `:agent/gpt-6.1-sol-high`. Its `commit-receipt.json`, `verification.json`, and `status.json` establish completion. `plan.json` was retained in its prepared form for provenance; it does not override receipts. The 4,680 original field/answer entities were retained unchanged. No learner uses existed in that cohort; later cohorts require fresh checks.
 
 Do not rerun committed preparations under new keys or overwrite their files. The direct `prepare.py` intentionally rejects submitted preparations and has fixed cohort assumptions. `held-preview.rs` shows a single captured immutable value and sequential native speculative databases; it is not a general durable writer. `commit.py` shows persisted intent, exact submission and post-commit validation. Use these as reviewed examples, adapting only to new scope and current integration.
+
+Historical presentation warning: the October 12 finder scripts intentionally kept selectable lists/matrices in the stem and created fields keyed only by source labels. Their verification even asserted those label-only keys. Questions `17592186262617` (finder-easy, `q-126479`) and `17592186120421` (finder-remaining, `q-42090`) demonstrate that defect. The October 16 statement-label repair covered only conformability KP `17592186100869`; it was not a repo-wide cleanup. Do not reuse those historical prompt/field transformations or label-key assertions for new work. Use the current complete-object rule and presentation lint; retain the old plans and receipts as evidence of what was actually committed.
 
 In discovery-next, `one_at_a_time.py` and `batch-preview.rs` implement the user's preferred per-group capture → preview → commit → receipt verification workflow. Historical root `plan.json` and chain previews do not override per-batch receipts. Concurrent edits that only corrected ordered labels or literal TeX braces were reviewed and preserved; no existing key was replaced. `transport-recovery.json` records recovery of a confirmed stale-basis rejection with the deployed native API and the decoder update for canonical blob v4 / outcome v7. Unknown outcomes must still retain their complete original requests.
 

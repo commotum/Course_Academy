@@ -251,6 +251,7 @@ button,input,select { font:inherit; }
 #nodeContextMenu [role="menuitem"]{display:block;width:100%;border:0;background:transparent;color:inherit;text-align:left;padding:11px 12px;font:inherit;font-size:12px;letter-spacing:0;cursor:pointer;white-space:nowrap;text-decoration:none;box-sizing:border-box}
 #nodeContextMenu [role="menuitem"]:hover,#nodeContextMenu [role="menuitem"]:focus-visible{background:var(--tone-ff);color:var(--tone-00);outline:none}
 #nodeContextMenu [role="menuitem"]:disabled{opacity:.55;cursor:wait}
+#nodeContextMenu [aria-disabled="true"],#nodeContextMenu [aria-disabled="true"]:hover{opacity:.45;cursor:not-allowed;background:transparent;color:inherit}
 #nodeContextMenu [hidden]{display:none}
 #nodeContextMenu .menu-new-tab-indicator{float:right;margin-left:16px}
 #nodeContextMenu .target-control{display:flex;width:100%;gap:0}
@@ -400,7 +401,7 @@ import { createCoursePicker, topicReferenceURL } from "/ui/navigation.js";
 import { createTargetControls, createQueueControls } from "/ui/targets.js";
 import { isLightTheme, themeColor } from "/ui/profile.js";
 import { copyEntityId, academyEntityId } from "/ui/step-menu.js";
-import { readRequest } from "/ui/requests.js";
+import { readRequest, readTopicStudyAvailability } from "/ui/requests.js";
 import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabel, normalizeTargetWeekSelection,
   selectTargetWeek, filterScheduledTargets, targetWeekSelectionLabel } from "/ui/target-weeks.js";
 
@@ -1681,15 +1682,25 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
     const targetAction=$('nodeTargetAction'),queueAction=$('nodeQueueAction'),topicLink=$('goToTopicLink'),studyLink=$('studyTopicLink');
     const fallback=$('manualNodeCopy'),fallbackText=$('manualNodeText');
     const navigation=[{link:studyLink,label:'Study now'},{link:topicLink,label:'Go to topic'}];
-    let topic=null,canvasIds=null,opener=null,noticeTimer=0,shiftHeld=false;
+    let topic=null,canvasIds=null,opener=null,noticeTimer=0,shiftHeld=false,studyCheck=0;
+    function studyLabel(resumable=false) {
+      navigation[0].label=resumable?'Resume Study':'Study now';
+      const indicator=studyLink.querySelector('.menu-new-tab-indicator');
+      studyLink.replaceChildren();
+      studyLink.textContent=navigation[0].label;
+      studyLink.append(indicator);
+      shiftMode(shiftHeld);
+    }
     function shiftMode(held) {
       shiftHeld=Boolean(held);
       for(const {link,label} of navigation) {
-        link.querySelector('.menu-new-tab-indicator').hidden=!shiftHeld;
-        link.setAttribute('aria-label',label+(shiftHeld?' · Opens in a new tab':''));
+        const newTab=shiftHeld && link.getAttribute('aria-disabled')!=='true';
+        link.querySelector('.menu-new-tab-indicator').hidden=!newTab;
+        link.setAttribute('aria-label',label+(newTab?' · Opens in a new tab':''));
       }
     }
     function close(restoreFocus=false) {
+      studyCheck++;
       menu.hidden=true;shiftMode(false);
       for(const host of targetAction.children)targetControls.remove(host);
       targetAction.replaceChildren();
@@ -1702,11 +1713,19 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
       topic=null;canvasIds=null;opener=null;
     }
     function menuItems() {
-      return [...menu.querySelectorAll('[role="menuitem"]')].filter(item=>!item.disabled&&!item.closest('[hidden]'));
+      return [...menu.querySelectorAll('[role="menuitem"]')].filter(item=>!item.disabled&&item.getAttribute('aria-disabled')!=='true'&&!item.closest('[hidden]'));
     }
     function canvasMode(enabled) {
       for(const element of [targetAction,queueAction,topicLink,studyLink,button,$('copyNodeDbId'),$('copyNodeMaId')])element.hidden=enabled;
       canvasButton.hidden=!enabled;
+    }
+    function studyAvailability(available,reason='') {
+      studyLink.setAttribute('aria-disabled',String(!available));
+      studyLink.tabIndex=available?0:-1;
+      studyLink.title=reason;
+      if(available)studyLink.href='/learn?topicId='+encodeURIComponent(topic.id);
+      else studyLink.removeAttribute('href');
+      shiftMode(shiftHeld);
     }
     function open(node,event,element) {
       event.preventDefault();event.stopPropagation();close();
@@ -1718,7 +1737,17 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
       const target=targetControls.createToggle(node,{menuItem:true});
       if(target)targetAction.append(target);
       topicLink.href=topicReferenceURL(snapshot,node,courseId);
-      studyLink.href='/learn?topicId='+encodeURIComponent(node.id);
+      studyLabel();
+      studyAvailability(false,'Checking lesson question availability…');
+      const check=studyCheck;
+      void readTopicStudyAvailability(node.id).then(data=>{
+        if(check===studyCheck && !menu.hidden){
+          studyLabel(data.resumable);
+          studyAvailability(data.available,data.reason || '');
+        }
+      }).catch(error=>{
+        if(check===studyCheck && !menu.hidden)studyAvailability(false,error.message);
+      });
       menu.setAttribute('aria-label','Actions for '+node.name);
       show(event,element);
     }
@@ -1808,6 +1837,7 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
     });
     for(const {link} of navigation)link.addEventListener('click',event=>{
       if(menu.hidden)return;
+      if(link.getAttribute('aria-disabled')==='true'){event.preventDefault();event.stopPropagation();return;}
       // Programmatic keyboard activation has no modifiers on its click event.
       const newTab=event.shiftKey || (event.detail===0 && shiftHeld);
       if(newTab) {
@@ -1822,6 +1852,9 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
         },0);
       }
       close(newTab);
+    });
+    studyLink.addEventListener('auxclick',event=>{
+      if(studyLink.getAttribute('aria-disabled')==='true'){event.preventDefault();event.stopPropagation();}
     });
     $('manualNodeDone').addEventListener('click',()=>{
       if(typeof fallback.close==='function')fallback.close();else fallback.removeAttribute('open');

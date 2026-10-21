@@ -22,3 +22,12 @@ export async function readCurrentLearner() {
   if (!response.ok || !data.learner) throw new Error(data.error || 'Unable to refresh learner settings.');
   return data.learner;
 }
+
+export async function readTopicStudyAvailability(topicId) {
+  const response = await readRequest('/api/topic-study-availability?topicId=' + encodeURIComponent(topicId));
+  const data = await response.json();
+  if (!response.ok || typeof data.available !== 'boolean' || String(data.topicId) !== String(topicId)) {
+    throw new Error(data.error || 'Unable to check lesson availability. Reopen the menu to try again.');
+  }
+  return data;
+}

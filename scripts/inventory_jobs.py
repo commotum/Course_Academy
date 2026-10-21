@@ -17,6 +17,17 @@ import time
 from generator_priority import PRIORITY_FIELDS, PRIORITY_POLICY, priority_key
 
 
+def build_worker_count(environment: dict) -> int:
+    value = environment.get('COURSE_ACADEMY_GENERATOR_BUILD_WORKERS', '3')
+    try:
+        count = int(value)
+    except (TypeError, ValueError):
+        raise ValueError('COURSE_ACADEMY_GENERATOR_BUILD_WORKERS must be a positive integer') from None
+    if count < 1:
+        raise ValueError('COURSE_ACADEMY_GENERATOR_BUILD_WORKERS must be a positive integer')
+    return count
+
+
 def ranked_reason(common: dict, reason: dict) -> dict:
     """A shared KP's demand may belong to a different topic than its winner."""
     result = {**common, **{field: reason[field] for field in
@@ -28,6 +39,8 @@ def ranked_reason(common: dict, reason: dict) -> dict:
 def ranked_requests(inventory: dict) -> list[dict]:
     """One build per KP; approved packages replenish independently per band."""
     builds, refills = {}, {}
+    gate = inventory.get('selection_gate')
+    selected = set(gate['selected_knowledge_points']) if gate and not gate['open'] else None
     contexts = [kp for topic in inventory['topics'] for kp in topic['knowledge_points']]
     contexts += inventory.get('maintained_knowledge_points', [])
     for kp in [*inventory['knowledge_points'], *contexts]:
@@ -45,6 +58,10 @@ def ranked_requests(inventory: dict) -> list[dict]:
                   'next_activity': kp.get('next_activity'), 'priority_reasons': kp.get('priority_reasons', []),
                   **{field: kp[field] for field in PRIORITY_FIELDS if field in kp}}
         if not packaged:
+            # The selection gate reserves agent work for selected KPs. Existing
+            # packages may still refill automatically after approval checks.
+            if selected is not None and kp['db/id'] not in selected:
+                continue
             # Existing repository scripts must pass the independent review once
             # before the inexpensive refill lane may execute their package.
             request = {**common, 'jobKind': 'build',
@@ -110,6 +127,8 @@ class InventoryJobs:
         if 'knowledge_points' not in inventory:
             return self._accept_legacy(inventory)
         requests = ranked_requests(inventory)
+        gate = inventory.get('selection_gate')
+        selected = set(gate['selected_knowledge_points']) if gate and not gate['open'] else None
         lineage = inventory['cursor']['lineage']
         with (self.directory / 'jobs.lock').open('a') as lock:
             fcntl.flock(lock, fcntl.LOCK_EX)
@@ -122,6 +141,13 @@ class InventoryJobs:
             existing = {path: json.loads(path.read_text()) for path in self.directory.glob('*.json')
                         if path.name != 'cursor.json'}
             existing = {path: job for path, job in existing.items() if 'request' in job}
+            for path, job in list(existing.items()):
+                if job.get('state') == 'rejected' and job.get('outcome', {}).get('outcome') in {'failed', 'repair-pending'}:
+                    # Previous versions incorrectly blacklisted repairable
+                    # content failures. Retain the exact cycle/workspace.
+                    job = {**job, 'state': 'pending', 'retryAt': 0, 'rejectedVariants': []}
+                    existing[path] = job
+                    save(path, job)
             build_records, refill_records = {}, {}
             for path, job in existing.items():
                 request = job['request']
@@ -148,7 +174,9 @@ class InventoryJobs:
                     for _, job in build_records.get(request['knowledgePoint'], []))
                 if successful_review:
                     reopened_refills.add((request['knowledgePoint'], request['difficulty']))
-                else:
+                elif selected is None or request['knowledgePoint'] in selected:
+                    # A refill with missing/stale approval cannot start an
+                    # outside agent review while selected work is incomplete.
                     build_requests.append({**request, 'jobKind': 'build', 'stage': 'review-generator'})
             # Each package/band is allowed its own independent review, but a
             # rejected unchanged band must not prevent other bands from running.
@@ -232,11 +260,16 @@ class InventoryJobs:
                     # Being absent from this full ranked projection is the
                     # evidence that stock is satisfied, or eligibility ended.
                     kp = old['request']['knowledgePoint']
-                    present = kp in present_kps
+                    # Outside builds are excluded, not completed. Refills stay
+                    # eligible, so captured full stock can verify their jobs.
+                    in_scope = (old['request'].get('jobKind', 'build') == 'refill'
+                                or selected is None or kp in selected)
+                    present = kp in present_kps and in_scope
                     state = 'rejected' if old.get('state') == 'rejected' else 'verified' if present else 'withdrawn'
                     if old.get('state') != state:
                         save(path, {**old, 'state': state, 'verifiedBasis': inventory['basis']})
-            save(cursor_path, {'basis': inventory['basis'], 'lineage': lineage, 'ranking': PRIORITY_POLICY})
+            save(cursor_path, {'basis': inventory['basis'], 'lineage': lineage, 'ranking': PRIORITY_POLICY,
+                               **({'selection_gate': inventory['selection_gate']} if 'selection_gate' in inventory else {})})
 
     def _accept_legacy(self, inventory: dict) -> None:
         """Cursor advances only after durable jobs are accepted at this basis."""
@@ -260,6 +293,9 @@ class InventoryJobs:
                 changed = any(old.get('request', {}).get(k) != request.get(k) for k in ('stage', 'missing', 'script'))
                 state = old.get('state', 'pending')
                 cycle = old.get('cycle', 1)
+                if state == 'rejected' and old.get('outcome', {}).get('outcome') in {'failed', 'repair-pending'}:
+                    state = 'pending'
+                    old = {**old, 'retryAt': 0, 'rejectedVariants': []}
                 # The service manager may lack the interactive shell's PATH.
                 # Installing/finding the executable is new operational evidence,
                 # not a reason to retain a content-capability rejection.
@@ -294,7 +330,13 @@ class InventoryJobs:
         directory = path.with_suffix('.pipeline') / str(job.get('cycle', 1))
         state_path = directory / 'job.json'
         if state_path.exists():
-            return json.loads(state_path.read_text()).get('stage') not in {'verified', 'failed', 'unsupported'}
+            state = json.loads(state_path.read_text())
+            if state.get('stage') == 'failed':
+                error = state.get('error')
+                return ((directory / 'publication/request.json').exists()
+                        or isinstance(error, dict) and error.get('code') != 'agent_session_retry_exhausted'
+                        or error == 'Authoring attempts exhausted')
+            return state.get('stage') not in {'verified', 'unsupported'}
         return False
 
     @staticmethod
@@ -316,11 +358,17 @@ class InventoryJobs:
             if current['state'] not in {'verified', 'withdrawn'} and (cycle is None or current.get('cycle', 1) == cycle):
                 save(path, {**current, **updates})
 
-    def run_one(self, lane: str = 'build') -> bool:
+    def run_one(self, lane: str = 'build', slot: int = 0) -> bool:
         """Independent bounded lanes, with one publisher per KP across lanes."""
         if lane not in {'build', 'refill'}:
             raise ValueError('Unknown inventory worker lane: ' + lane)
-        lock_path = self.directory / ('worker.lock' if lane == 'build' else 'worker-refill.lock')
+        limit = build_worker_count(self.environment) if lane == 'build' else 1
+        if type(slot) is not int or not 0 <= slot < limit:
+            raise ValueError(f'Invalid {lane} worker slot: {slot}')
+        # Slot zero keeps the original lock so an inherited pre-upgrade worker
+        # consumes one of the three slots until it finishes after a restart.
+        lock_name = ('worker.lock' if slot == 0 else f'worker-build-{slot}.lock') if lane == 'build' else 'worker-refill.lock'
+        lock_path = self.directory / lock_name
         with lock_path.open('a') as lock:
             try:
                 fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
@@ -343,7 +391,7 @@ class InventoryJobs:
                     else:
                         # Unrefreshed, pre-score jobs wait behind the current
                         # policy while retaining their old relative ordering.
-                        rank = (4, 1, job['state'] != 'running', request.get('urgency', 0),
+                        rank = (5, 1, job['state'] != 'running', request.get('urgency', 0),
                                 request.get('proximity', 0), -request.get('priority', 0),
                                 request['topic'], 0, request['knowledgePoint'], '')
                     return (not self.publication_recovery(path, job), *rank, job['key'])
@@ -376,10 +424,13 @@ class InventoryJobs:
                 command = json.loads(override) + [str(path)]
             try:
                 with path.with_suffix('.log').open('a') as log:
-                    completed = subprocess.run(command, cwd=self.root, stdout=log, stderr=subprocess.STDOUT, timeout=21600, check=False, env=self.environment, pass_fds=(lock.fileno(), kp_lock.fileno()))
+                    descriptors = (lock.fileno(), kp_lock.fileno())
+                    completed = subprocess.run(command, cwd=self.root, stdout=log, stderr=subprocess.STDOUT, timeout=21600, check=False,
+                        env={**self.environment, 'COURSE_ACADEMY_GENERATOR_LOCK_FDS': json.dumps(descriptors)}, pass_fds=descriptors)
                 outcome = json.loads(result_path.read_text()) if result_path.exists() else {}
                 state = ('repair-needed' if lane == 'refill' and outcome.get('needs_repair') else
-                         'rejected' if outcome.get('outcome') in {'unsupported', 'finite-limit', 'failed'} else
+                         'pending' if outcome.get('outcome') in {'repair-pending', 'failed'} else
+                         'rejected' if outcome.get('outcome') in {'unsupported', 'finite-limit'} else
                          'awaiting-verification' if completed.returncode == 0 else 'pending')
                 rejections = job.get('rejectedVariants', [])
                 if state == 'rejected' and lane == 'build':

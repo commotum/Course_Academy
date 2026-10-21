@@ -46,14 +46,20 @@ export function indexCurriculum(snapshot) {
     const names = memberships.get(topic.id) || [];
     const details = [topic.mathAcademyId != null ? `Topic ${topic.mathAcademyId}` : 'Topic'];
     if (names.length) details.push(names.slice(0, 2).join(' · ') + (names.length > 2 ? ` · +${names.length - 2} courses` : ''));
-    return { value: topic, name: normalize(topic.name), values: [topic.name, topic.id, topic.uuid, topic.mathAcademyId].map(normalize), meta: details.join(' · ') };
+    return { value: topic, name: normalize(topic.name), values: [topic.name, topic.id, topic.uuid, topic.mathAcademyId, ...(topic.activityIds || [])].map(normalize), meta: details.join(' · ') };
   }).sort((a, b) => a.value.name.localeCompare(b.value.name));
   const index = { courses, topics };
   indexes.set(snapshot, index);
   return index;
 }
 export function searchCurriculum(index, text) {
-  const query = normalize(text), tokens = query.split(/\s+/).filter(Boolean);
+  const query = normalize(text);
+  const dbId = /^:db\/id\s*=\s*(\d+)$/.exec(query)?.[1];
+  if (dbId) return {
+    courses: index.courses.filter(entry => String(entry.value.id) === dbId),
+    topics: index.topics.filter(entry => String(entry.value.id) === dbId || (entry.value.activityIds || []).some(id => String(id) === dbId)),
+  };
+  const tokens = query.split(/\s+/).filter(Boolean);
   const matches = entry => tokens.every(token => entry.values.some(value => value.includes(token)));
   const courses = query ? index.courses.filter(matches) : [];
   const buckets = [[], [], []];

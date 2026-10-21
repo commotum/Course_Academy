@@ -8,14 +8,15 @@ pub(super) fn home(s: &EntitySnapshot, learner: u64) -> Result<Json> {
         home["preview"] = json!(true);
         return Ok(home);
     };
+    let quiz_labels = QuizLabels::capture(s, learner)?;
     let activities = learning::study_candidates(s, learner, course, Utc::now())?
         .into_iter()
         .take(5)
-        .map(|candidate| {
-            json!({
+        .map(|candidate| -> Result<Json> {
+            Ok(json!({
                 "activityId": candidate.activity,
                 "taskId": null,
-                "title": text(s, candidate.activity, "activity/title"),
+                "title": quiz_labels.title(s, candidate.activity, None)?,
                 "type": status(s,candidate.activity,"activity/type").unwrap_or_default(),
                 "status": "preview",
                 "priority": candidate.priority,
@@ -23,9 +24,9 @@ pub(super) fn home(s: &EntitySnapshot, learner: u64) -> Result<Json> {
                 "targetCount": candidate.target_count,
                 "targetTopics": candidate.target_topics,
                 "expectedSeconds": null,
-            })
+            }))
         })
-        .collect::<Vec<_>>();
+        .collect::<Result<Vec<_>>>()?;
     Ok(json!({
         "preview": true,
         "basis": s.basis_t,
@@ -264,11 +265,14 @@ fn presentations(s: &EntitySnapshot, activity: u64) -> Result<Vec<Json>> {
 
 pub(super) fn preview(s: &EntitySnapshot, learner: u64, body: &Json) -> Result<Json> {
     let activity = activity_id(s, learner, body)?;
+    let title = if retrieval::kind(s, activity)? == "assessment" {
+        QuizLabels::capture(s, learner)?.title(s, activity, body["taskId"].as_u64())?
+    } else { text(s, activity, "activity/title") };
     Ok(json!({
         "preview": true, "basis": s.basis_t, "learner": learner_json(s, learner),
         "course": course_json(s, learner)?, "activityId": activity, "taskId": null,
         "activityUuid": schema::value_id_string(s.entity(activity)?.get("activity/id").ok_or("Missing activity identity")?)?,
-        "title": text(s, activity, "activity/title"), "type": status(s, activity, "activity/type")?,
+        "title": title, "type": status(s, activity, "activity/type")?,
         "status": "preview", "elapsedSeconds": 0, "xp": 0, "xpBase": 0,
         "steps": presentations(s, activity)?,
     }))

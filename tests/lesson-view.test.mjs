@@ -473,12 +473,12 @@ test('Study shows saved lesson progress with the same fraction as the player', a
   assert.equal(f.calls[0].path, '/api/queue');
 });
 
-test('Study identifies the selected queue mode and distinguishes empty from unavailable work', async () => {
+test('Study identifies the selected plan and distinguishes target shortages from an empty plan', async () => {
   const f = fixture();
   const main = f.document.getElementById('main');
   f.server = { learner: { selfDirected: true, queue: [6] }, activities: [activity(1, 1)] };
   await f.h.home();
-  assert.equal(main.querySelector('h1').textContent, 'Your queue');
+  assert.equal(main.querySelector('h1').textContent, 'Your study plan');
   assert.equal(main.querySelector('h1').className, 'sr-only');
   assert.equal(main.querySelector('.page-heading'), null);
   assert.equal(main.querySelector('.subheading'), null);
@@ -486,10 +486,14 @@ test('Study identifies the selected queue mode and distinguishes empty from unav
   f.server.activities = [];
   await f.h.home();
   assert.equal(main.querySelector('.empty-state').querySelector('h2').textContent, 'No ready activities yet');
-  assert.match(main.querySelector('.empty-state').textContent, /queued topics/);
+  assert.match(main.querySelector('.empty-state').textContent, /selected topics/);
   f.server.learner.queue = [];
+  f.server.learner.targets = [30];
   await f.h.home();
-  assert.equal(main.querySelector('.empty-state').querySelector('h2').textContent, 'Your queue is empty');
+  assert.equal(main.querySelector('.empty-state').querySelector('h2').textContent, 'No ready activities yet');
+  f.server.learner.targets = [];
+  await f.h.home();
+  assert.equal(main.querySelector('.empty-state').querySelector('h2').textContent, 'Your study plan is empty');
   f.server.learner.selfDirected = false;
   await f.h.home();
   assert.equal(main.querySelector('h1').textContent, 'Next up');
@@ -498,7 +502,7 @@ test('Study identifies the selected queue mode and distinguishes empty from unav
   f.dev = true;
   f.server.learner.selfDirected = true;
   await f.h.home();
-  assert.equal(main.querySelector('h1').textContent, 'Your queue');
+  assert.equal(main.querySelector('h1').textContent, 'Your study plan');
   assert.equal(f.calls.at(-1).path, '/api/preview-home');
 });
 
@@ -625,13 +629,20 @@ test('question shortages offer continuation and deferred practice is shown witho
   await f.h.render(activity(1,2,{step:{...question(1,'correct'),practiceShortage:{stepId:55,title:'Skill'}}}));
   assert.match(f.h.view.current.textContent,/No fresh questions remain/);
   assert.ok(f.h.view.current.querySelectorAll('button').some(b=>b.textContent==='Continue to next skill →'));
-  await f.h.render(activity(1,3,{status:'paused',awaitingQuestions:true,canResumePractice:false,deferredSteps:[{stepId:55,title:'Skill'}],step:question(1,'correct')}));
-  assert.match(f.h.view.current.textContent,/Practice unfinished/);
+  await f.h.render(activity(1,3,{awaitingQuestions:false,deferredSteps:[{stepId:55,title:'Skill'}],step:question(1,'correct')}));
+  assert.ok(f.h.view.current.querySelectorAll('button').some(b=>b.textContent==='Next step →'));
+  assert.equal(f.h.view.current.querySelector('.completion-xp'),null);
+  await f.h.render(activity(1,3,{status:'paused',awaitingQuestions:true,canResumePractice:false,xp:0,xpBase:7,deferredSteps:[{stepId:55,title:'Skill'}],step:question(1,'correct')}));
+  assert.match(f.h.view.current.textContent,/Practice paused/);
+  assert.match(f.h.view.current.textContent,/ran out of fresh questions/);
   assert.match(f.h.view.current.textContent,/Waiting for new questions/);
+  assert.match(f.h.view.current.textContent,/Lesson XP is pending/);
+  assert.equal(f.h.view.current.querySelector('.completion-xp'),null);
   assert.equal(f.h.view.current.querySelector('.deferred-skills').textContent,'Skill');
   assert.ok(!f.h.view.current.textContent.includes('Activity complete'));
   assert.equal(f.h.clock.running,false);
   await f.h.render(activity(1,3,{status:'paused',awaitingQuestions:true,canResumePractice:true,deferredSteps:[{stepId:55,title:'Skill'}],step:question(1,'correct')}));
+  assert.match(f.h.view.current.textContent,/New questions are available/);
   assert.ok(f.h.view.current.querySelectorAll('button').some(b=>b.textContent==='Resume unfinished practice →'));
 });
 

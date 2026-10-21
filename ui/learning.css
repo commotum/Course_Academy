@@ -41,24 +41,32 @@ main.lesson-main { --lesson-toolbar-height: 52px; max-width: 820px; padding: 24p
 .answer-fields:not(:has(> .answer-field:not([data-type="checkbox"]))) { gap: 4px; }
 .lesson-main .answer-field legend { font-size: 10px; margin-bottom: 12px; }
 .lesson-main .choices { gap: 4px; }
+.choices:has(.choice img) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .lesson-main .choice { border: 1px solid transparent; background: transparent; padding: 8px 10px; gap: 12px; }
 .lesson-main .choice:hover { border-color: var(--line); }
 .lesson-main .choice:has(input:checked) { border-color: var(--tone-99); background: transparent; }
 .lesson-main .choice input { width: 14px; height: 14px; margin: 0; }
 .lesson-main .choice .prose { font-size: 15px; }
+/* Keep complete checkbox matrices beside their controls on narrow screens.
+   SVGs retain their natural size until the available label width is smaller. */
+.answer-field[data-type="checkbox"] .choice .prose mjx-container:has([data-mml-node="mtable"]) { display: inline-block; max-width: 100%; }
+.answer-field[data-type="checkbox"] .choice .prose mjx-container:has([data-mml-node="mtable"]) > svg { max-width: 100%; height: auto; }
+/* Fill the label so short answers do not become tiny scrollboxes. Keep wide
+   formulas readable without enabling vertical scrollbars on inline math. */
+.answer-field[data-type="radio"] .choice .prose { flex: 1; overflow-x: auto; overflow-y: hidden; padding: 6px 0; }
 .lesson-main .choice:has(input:disabled):hover { border-color: transparent; }
 .lesson-main .choice:has(input:checked):hover { border-color: var(--tone-99); }
 .lesson-main .answer-actions { margin-top: 20px; }
 .lesson-main .primary { min-height: 34px; padding: 8px 14px; font-size: 11px; }
 .lesson-main .lesson-controls { justify-content: flex-end; padding: 20px 0 0; }
-.assessment-controls { display: flex; align-items: center; gap: 12px; margin-top: 20px; padding: 16px; border: 1px solid var(--line); }
+.assessment-controls { display: flex; align-items: center; gap: 12px; margin-top: 20px; }
 .assessment-navigation { display: flex; flex: 1; min-width: 30px; gap: 4px; overflow-x: auto; scrollbar-width: none; }
 .lesson-main .assessment-navigation > button { flex: 0 0 30px; min-height: 40px; padding: 6px 0; font-size: 11px; }
 .lesson-main .assessment-navigation > .secondary[data-answered="true"] { background: var(--tone-30); color: var(--ink); }
 .assessment-actions { display: flex; flex: none; justify-content: flex-end; gap: 8px; }
 .lesson-main .assessment-actions > button { min-height: 40px; padding: 9px 10px; font-size: 11px; white-space: nowrap; }
 @media (max-width: 580px) {
-  .assessment-controls { padding: 12px; gap: 8px; }
+  .assessment-controls { gap: 8px; }
   .lesson-main .assessment-actions > button { font-size: 0; padding: 9px 8px; }
   .assessment-actions > button::before { font-size: 11px; }
   .assessment-previous::before { content: '←'; }
@@ -152,7 +160,7 @@ body:has(.answer-math) { --keyboard-background: var(--bg); --keyboard-border: 1p
 }
 
 .lesson-main .lesson-controls:has(.continue-hint) { justify-content: space-between; align-items: center; flex-wrap: wrap; }
-.deferred-skills { display: inline-block; text-align: left; margin: 16px auto; padding-left: 1.5em; }
+.deferred-skills { display: block; width: fit-content; max-width: 100%; box-sizing: border-box; text-align: left; margin: 24px auto; padding-left: 1.5em; }
 .completion .continue-hint { margin: 16px auto; }
 .waiting-lessons { margin-top: 32px; }
 .waiting-lesson { display: flex; align-items: center; justify-content: space-between; gap: 20px; border-top: 1px solid var(--line); padding: 16px 0; font-size: 12px; }

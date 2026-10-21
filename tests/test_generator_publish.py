@@ -7,6 +7,7 @@ import tempfile
 from types import SimpleNamespace
 import sys
 import unittest
+from unittest.mock import patch
 import uuid
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -277,6 +278,16 @@ class PublicationTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'source changed'):
             self.publisher.prepare(KP, [record()], self.script, self.package, self.directory, source_snapshot=source)
 
+    def test_prepare_reuses_fresh_kp_pull_for_source_check(self):
+        source = self.publisher.extract_source(KP, self.root / 'source')
+        with patch.object(self.publisher, 'read_kp', wraps=self.publisher.read_kp) as pull, \
+                patch.object(self.client, 'status', wraps=self.client.status) as status:
+            self.publisher.prepare(KP, [record()], self.script, self.package, self.directory, source_snapshot=source)
+        pull.assert_called_once_with(KP, self.directory / 'before', self.client.basis)
+        status.assert_called_once_with()
+        fresh = json.loads((self.directory / 'source-check/source.json').read_text())
+        self.assertEqual(fresh, source)
+
     def test_refill_cannot_replace_a_changed_registration(self):
         self.client.kp[':knowledge-point/question-generator'] = {
             ':db/id': 77, ':question-generator/script': 'generators/newer/generate.py'}
@@ -431,6 +442,38 @@ class PublicationTests(unittest.TestCase):
         rec['question'][':question/math-academy-id'] = 'q-10'
         with self.assertRaisesRegex(ValueError, 'source identity'):
             self.prepare([rec])
+
+
+class NonemptyCheckboxPublicationTests(unittest.TestCase):
+    def checkbox_question(self, values):
+        q = record()['question']
+        fields = []
+        for index, expected in enumerate(values):
+            fid = uuid.uuid4()
+            choices = [{':answer/id': str(uuid.uuid5(fid, value)),
+                        ':answer/type': ':answer.type/text', ':answer/value': value}
+                       for value in ('false', 'true')]
+            fields.append({':answer-field/id': str(fid), ':answer-field/key': f'Option {index}',
+                           ':answer-field/type': ':answer-field.type/checkbox',
+                           ':answer-field/choices': choices,
+                           ':answer-field/correct': [':answer/id', choices[int(expected)][':answer/id']]})
+        q[':question/answer-fields'] = fields
+        return q
+
+    def test_empty_checkbox_subset_is_rejected_before_publication(self):
+        for size in (1, 3, 5):
+            with self.subTest(size=size):
+                with self.assertRaisesRegex(ValueError, 'at least one correct selectable option'):
+                    validate_question(self.checkbox_question([False] * size))
+
+    def test_nonempty_checkbox_subsets_are_publishable_in_both_pull_shapes(self):
+        for mask in ([True], [False, True, False], [True, True, True]):
+            q = self.checkbox_question(mask)
+            validate_question(q)
+            for f in q[':question/answer-fields']:
+                aid = f[':answer-field/correct'][1]
+                f[':answer-field/correct'] = next(a for a in f[':answer-field/choices'] if a[':answer/id'] == aid)
+            validate_question(q)
 
 
 if __name__ == '__main__':

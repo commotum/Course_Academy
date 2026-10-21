@@ -23,7 +23,7 @@ function fixture({ selfDirected = false, queue = [], targetsView = false, nodes 
     replaceChildren(...nodes) { for (const node of this.children) node.parent = null; this.children = []; this.append(...nodes); }
     setAttribute(key, value) { this.attrs[key] = String(value); }
     getAttribute(key) { return this.attrs[key] ?? null; }
-    removeAttribute(key) { delete this.attrs[key]; }
+    removeAttribute(key) { delete this.attrs[key]; if (key === 'href') delete this.href; }
     get isConnected() { return document.body.contains(this); }
     contains(node) { for (; node; node = node.parent) if (node === this) return true; return false; }
     matches(selector) { return (selector === '.node-hit' || selector === '.menu-new-tab-indicator') ? this.className === selector.slice(1) : selector === '[role="menuitem"]' && this.attrs.role === 'menuitem'; }
@@ -55,6 +55,7 @@ function fixture({ selfDirected = false, queue = [], targetsView = false, nodes 
   const svg = new Element('svg'); svg.id = 'svg'; document.body.append(svg);
   const opener = new Element('g'), hit = new Element('rect'); opener.className = 'node'; hit.className = 'node-hit'; opener.append(hit); svg.append(opener);
   f.opened = []; f.copied = []; f.clipboard = [];
+  f.availabilityReads = []; f.availability = new Map();
   f.state = { layout: { activeNodes: nodes }, activeIds: new Set([20]), view: { x: 0, y: 0, k: 1 } };
   const window = new EventTarget(); window.open = () => { throw new Error('Navigation must use a normal link, not a new-window request'); }; window.innerWidth = 1000; window.innerHeight = 900;
   for (const name of ['queue', 'targets']) window.addEventListener(`course-academy:${name}-changed`, () => f.events.push(name));
@@ -71,6 +72,11 @@ function fixture({ selfDirected = false, queue = [], targetsView = false, nodes 
     $: document.getElementById, isDeveloperMode: () => f.dev, developerModeReady: Promise.resolve(),
     localStorage: { setItem: (key, value) => f.storage.set(key, value) },
     readLearner: async () => structuredClone(f.learner),
+    readTopicStudyAvailability: async id => {
+      f.availabilityReads.push(id);
+      if (f.availabilityHold) return f.availabilityHold(id);
+      return f.availability.get(id) || { topicId: id, available: true };
+    },
     fetch: async (path, options) => {
       const body = JSON.parse(options.body); f.calls.push({ path, body });
       if (f.hold) await f.hold;
@@ -138,7 +144,7 @@ test('already queued topics can be removed without changing targets', async () =
 });
 
 test('Study now links to the right-clicked topic without changing graph or learner selections', async () => {
-  const f = fixture(); f.open();
+  const f = fixture(); f.open(); await settle();
   const link = f.document.getElementById('studyTopicLink');
   assert.equal(link.href, '/learn?topicId=20');
   const event = new Event('keydown', { cancelable: true });
@@ -146,11 +152,62 @@ test('Study now links to the right-clicked topic without changing graph or learn
   f.document.getElementById('nodeContextMenu').dispatchEvent(event);
   assert.equal(f.document.activeElement, link);
   f.h.menu.open({ id: 25, uuid: 'another-topic', name: 'Another topic' }, { type: 'contextmenu', clientX: 50, clientY: 70, preventDefault() {}, stopPropagation() {} }, f.opener);
+  await settle();
   assert.equal(link.href, '/learn?topicId=25');
   assert.equal(f.calls.length, 0);
   assert.deepEqual(f.learner.queue, []);
   assert.deepEqual(f.learner.targets, [30]);
-  f.dev = true; f.open();
+  f.dev = true; f.open(); await settle();
+  assert.equal(link.href, '/learn?topicId=20');
+});
+
+test('Study now stays disabled while checking, for insufficient supply, and when the check fails', async () => {
+  const f = fixture();
+  f.availability.set(20, { available: false, reason: 'Needs five fresh, gradable questions per skill' });
+  f.open(true);
+  const link = f.document.getElementById('studyTopicLink');
+  assert.equal(link.getAttribute('aria-disabled'), 'true');
+  assert.equal(link.href, undefined);
+  assert.equal(dispatch(link, 'click', { shiftKey: true }).defaultPrevented, true);
+  await settle();
+  assert.equal(link.getAttribute('aria-disabled'), 'true');
+  assert.match(link.title, /five fresh/);
+  assert.equal(link.querySelector('.menu-new-tab-indicator').hidden, true);
+  for (const values of [{}, { shiftKey: true }, { ctrlKey: true }, { metaKey: true }]) {
+    assert.equal(dispatch(link, 'click', values).defaultPrevented, true);
+  }
+  assert.equal(dispatch(link, 'auxclick', { button: 1 }).defaultPrevented, true);
+  dispatch(f.document.getElementById('nodeContextMenu'), 'keydown', { key: ' ', target: link });
+  dispatch(f.document.getElementById('nodeContextMenu'), 'keydown', { key: 'ArrowDown' });
+  assert.equal(f.document.activeElement, f.document.getElementById('goToTopicLink'));
+  assert.deepEqual(f.opened, []);
+  assert.equal(f.calls.length, 0);
+  f.availability.set(20, { available: true });
+  f.open(); await settle();
+  assert.equal(link.getAttribute('aria-disabled'), 'false');
+  assert.equal(link.href, '/learn?topicId=20');
+  f.availabilityHold = async () => { throw new Error('offline'); };
+  f.open(); await settle();
+  assert.equal(link.getAttribute('aria-disabled'), 'true');
+  assert.match(link.title, /offline/);
+  assert.equal(link.href, undefined);
+});
+
+test('an earlier availability response cannot enable a different or reopened topic menu', async () => {
+  const f = fixture();
+  const pending = [];
+  f.availabilityHold = id => new Promise(resolve => pending.push({ id, resolve }));
+  f.open();
+  f.h.menu.open({ id: 25, name: 'Other topic' }, { type: 'contextmenu', preventDefault() {}, stopPropagation() {} }, f.opener);
+  const link = f.document.getElementById('studyTopicLink');
+  pending[0].resolve({ available: true }); await settle();
+  assert.equal(link.getAttribute('aria-disabled'), 'true');
+  pending[1].resolve({ available: false, reason: 'Unavailable' }); await settle();
+  assert.equal(link.getAttribute('aria-disabled'), 'true');
+  f.open(); f.open();
+  pending[2].resolve({ available: true }); await settle();
+  assert.equal(link.getAttribute('aria-disabled'), 'true');
+  pending[3].resolve({ available: true }); await settle();
   assert.equal(link.href, '/learn?topicId=20');
 });
 
@@ -310,8 +367,8 @@ function dispatch(target, type, values) {
   return event;
 }
 
-test('Shift pressed after opening the graph menu shows navigation arrows only while held', () => {
-  const f = fixture(); f.open();
+test('Shift pressed after opening the graph menu shows navigation arrows only while held', async () => {
+  const f = fixture(); f.open(); await settle();
   const links = ['studyTopicLink', 'goToTopicLink'].map(id => f.document.getElementById(id));
   const arrows = links.map(link => link.querySelector('.menu-new-tab-indicator'));
   assert.equal(arrows.every(arrow => arrow.hidden), true);
@@ -326,7 +383,7 @@ test('Shift pressed after opening the graph menu shows navigation arrows only wh
 
 test('Shift-click activates either navigation action after its input event, without same-tab navigation or learner writes', async () => {
   for (const [id, href] of [['studyTopicLink', '/learn?topicId=20'], ['goToTopicLink', '/topic?topic=topic-uuid']]) {
-    const f = fixture(); f.open();
+    const f = fixture(); f.open(); await settle();
     dispatch(f.document, 'keydown', { key: 'Shift', shiftKey: true });
     const event = dispatch(f.document.getElementById(id), 'click', { shiftKey: true, detail: 1, button: 0 });
     assert.equal(event.defaultPrevented, true);
@@ -339,8 +396,8 @@ test('Shift-click activates either navigation action after its input event, with
   }
 });
 
-test('releasing Shift restores ordinary link navigation; menu reopening and blur clear its state', () => {
-  const f = fixture(); f.open(true);
+test('releasing Shift restores ordinary link navigation; menu reopening and blur clear its state', async () => {
+  const f = fixture(); f.open(true); await settle();
   const link = f.document.getElementById('studyTopicLink'), arrow = link.querySelector('.menu-new-tab-indicator');
   assert.equal(arrow.hidden, false);
   dispatch(f.document, 'keyup', { key: 'Shift', shiftKey: false });
@@ -353,14 +410,14 @@ test('releasing Shift restores ordinary link navigation; menu reopening and blur
 });
 
 test('keyboard activation retains the held Shift modifier and preserves native Control and Meta clicks', async () => {
-  const f = fixture(); f.open();
+  const f = fixture(); f.open(); await settle();
   const link = f.document.getElementById('studyTopicLink');
   dispatch(f.document, 'keydown', { key: 'Shift', shiftKey: true });
   dispatch(f.document.getElementById('nodeContextMenu'), 'keydown', { key: ' ', shiftKey: true, target: link });
   await new Promise(resolve => setTimeout(resolve, 5));
   assert.deepEqual(f.opened, [['/learn?topicId=20', '_blank', 'noopener noreferrer']]);
   for (const modifier of ['ctrlKey', 'metaKey']) {
-    f.open();
+    f.open(); await settle();
     const event = dispatch(link, 'click', { [modifier]: true, shiftKey: false, detail: 1, button: 0 });
     assert.equal(event.defaultPrevented, false);
   }

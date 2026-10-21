@@ -9,6 +9,8 @@ test('assignment preparation links offer all three topic actions and preserve or
     constructor(tag = 'div') { super(); this.tagName = tag; this.children = []; this.attrs = {}; this.dataset = {}; this.style = {}; }
     append(...children) { for (const child of children) { child.parentElement = this; this.children.push(child); } }
     setAttribute(key, value) { this.attrs[key] = value; }
+    getAttribute(key) { return this.attrs[key] ?? null; }
+    removeAttribute(key) { delete this.attrs[key]; if (key === 'href') delete this.href; }
     contains(node) { for (; node; node = node.parentElement) if (node === this) return true; return false; }
     get isConnected() { return document.body.contains(this); }
     getBoundingClientRect() { return { left: 20, top: 40, bottom: 82, width: 180, height: 110 }; }
@@ -20,7 +22,16 @@ test('assignment preparation links offer all three topic actions and preserve or
   doc.createElement = tag => new Node(tag);
   const win = new Node();
   const originals = new Map();
-  for (const [name, value] of Object.entries({ document: doc, window: win, Element: Node })) {
+  const availability = new Map();
+  const reads = [];
+  const fetch = async path => {
+    reads.push(path);
+    const topicId = new URL(path, 'http://example.test').searchParams.get('topicId');
+    const data = { topicId: Number(topicId), ...(availability.get(topicId) || { available: true }) };
+    return { ok: true, clone() { return this; }, json: async () => data };
+  };
+  const settle = () => new Promise(resolve => setImmediate(resolve));
+  for (const [name, value] of Object.entries({ document: doc, window: win, Element: Node, fetch })) {
     originals.set(name, Object.getOwnPropertyDescriptor(globalThis, name));
     Object.defineProperty(globalThis, name, { value, configurable: true });
   }
@@ -46,6 +57,7 @@ test('assignment preparation links offer all three topic actions and preserve or
     const nested = new Node('span'); first.append(nested); nested.dataset.topicId = '999';
     const menu = doc.body.children.find(node => node.className === 'step-context-menu');
     assert.equal(fire(doc, 'contextmenu', { target: nested, clientX: 795, clientY: 595 }).defaultPrevented, true);
+    await settle();
     assert.equal(menu.hidden, false);
     assert.equal(menu.children[0].textContent, 'Copy topic :db/id');
     assert.equal(first.dataset.stepDbId, '20');
@@ -62,6 +74,7 @@ test('assignment preparation links offer all three topic actions and preserve or
     assert.equal(menu.hidden, true); assert.equal(doc.activeElement, first);
     assert.equal(first.attrs['aria-expanded'], 'false');
     fire(doc, 'keydown', { target: second, key: 'F10', shiftKey: true });
+    await settle();
     assert.deepEqual(menu.children.slice(2).map(node => node.href), ['/learn?topicId=25', '/topic?topic=topic-two', '/?course=all&topic=25']);
     assert.equal(menu.children[2].click(), true); // Navigation reaches the existing assignment pause handler.
     assert.equal(menu.hidden, true);
@@ -73,6 +86,26 @@ test('assignment preparation links offer all three topic actions and preserve or
       assert.equal(fire(doc, 'contextmenu', values).defaultPrevented, false);
       assert.equal(menu.hidden, true);
     }
+    await settle(); // Finish earlier shared reads before changing server availability.
+    availability.set('20', { available: false, reason: 'Not enough fresh questions' });
+    fire(doc, 'contextmenu', { target: first, clientX: 40, clientY: 60 });
+    const study = menu.children[2];
+    assert.equal(study.attrs['aria-disabled'], 'true');
+    await settle();
+    assert.equal(study.attrs['aria-disabled'], 'true');
+    assert.equal(study.href, undefined);
+    assert.match(study.title, /fresh questions/);
+    assert.equal(study.click(), false);
+    assert.equal(fire(study, 'auxclick', { button: 1 }).defaultPrevented, true);
+    assert.equal(menu.hidden, false);
+    fire(doc, 'keydown', { target: menu.children[0], key: 'ArrowDown' });
+    assert.equal(doc.activeElement, menu.children[3]);
+    availability.set('20', { available: true });
+    fire(doc, 'contextmenu', { target: first, clientX: 40, clientY: 60 });
+    await settle();
+    assert.equal(study.attrs['aria-disabled'], 'false');
+    assert.equal(study.href, '/learn?topicId=20');
+    assert.ok(reads.every(path => path.startsWith('/api/topic-study-availability?topicId=')));
   } finally {
     for (const [name, descriptor] of originals) {
       if (descriptor) Object.defineProperty(globalThis, name, descriptor);

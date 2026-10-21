@@ -20,6 +20,7 @@ test('step menus copy the selected container ID and support keyboard, dismissal,
     }
     append(...children) { for (const child of children) { child.parentElement = this; this.children.push(child); } }
     setAttribute(key, value) { this.attrs[key] = value; }
+    getAttribute(key) { return this.attrs[key] ?? null; }
     contains(node) { for (; node; node = node.parentElement) if (node === this) return true; return false; }
     get isConnected() { return document.body.contains(this); }
     closest() { return null; }

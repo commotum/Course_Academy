@@ -44,7 +44,7 @@ fn duration(s: &EntitySnapshot, entity: u64, attr: &str) -> Option<f64> {
         .as_f64()
         .filter(|v| v.is_finite() && *v >= 0.0)
 }
-fn summary(s: &EntitySnapshot, task: u64, dates: &Dates) -> Result<Json> {
+fn summary(s: &EntitySnapshot, task: u64, dates: &Dates, quiz_labels: &QuizLabels) -> Result<Json> {
     let activity = s.reference(task, "learner-task/activity")?;
     let mut counts = BTreeMap::<String, usize>::new();
     let task_items = s.refs(task, "learner-task/items")?;
@@ -64,7 +64,7 @@ fn summary(s: &EntitySnapshot, task: u64, dates: &Dates) -> Result<Json> {
         .optional_ref(activity, "activity/course")?
         .map(|c| text(s, c, "course/title"));
     Ok(json!({
-        "taskId": task, "activityId": activity, "title": text(s, activity, "activity/title"),
+        "taskId": task, "activityId": activity, "title": quiz_labels.title(s, activity, Some(task))?,
         "type": status(s, activity, "activity/type")?, "status": status(s, task, "learner-task/status")?,
         "completedAt": dates.last.get(&task).map(DateTime::to_rfc3339),
         "recordedOnly": !dates.started.contains(&task) && !s.entity(task)?.contains_key("learner-task/finished-at"), "courseTitle": course,
@@ -75,6 +75,7 @@ fn summary(s: &EntitySnapshot, task: u64, dates: &Dates) -> Result<Json> {
     }))
 }
 pub(super) fn list(s: &EntitySnapshot, learner: u64, body: &Json) -> Result<Json> {
+    let quiz_labels = QuizLabels::capture(s, learner)?;
     let tasks = s
         .refs(learner, "learner/activity")?
         .into_iter()
@@ -104,7 +105,7 @@ pub(super) fn list(s: &EntitySnapshot, learner: u64, body: &Json) -> Result<Json
     // answer fields are fetched by detail() on expansion.
     let activities = page
         .iter()
-        .map(|t| summary(s, *t, &dates))
+        .map(|t| summary(s, *t, &dates, &quiz_labels))
         .collect::<Result<Vec<_>>>()?;
     let course = s
         .optional_ref(learner, "learner/course")?
@@ -169,7 +170,8 @@ pub(super) fn detail(s: &EntitySnapshot, learner: u64, task: u64) -> Result<Json
         );
         history.push(entry);
     }
-    Ok(json!({"basis":s.basis_t,"activity":summary(s,task,&dates)?,"items":history}))
+    let quiz_labels = QuizLabels::capture(s, learner)?;
+    Ok(json!({"basis":s.basis_t,"activity":summary(s,task,&dates,&quiz_labels)?,"items":history}))
 }
 
 #[cfg(test)]

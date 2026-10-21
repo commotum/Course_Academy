@@ -543,7 +543,7 @@ async function loadHome(signal, preserve) {
       return;
     }
     const selfDirected = data.learner?.selfDirected === true;
-    page.append(el('h1', 'sr-only', selfDirected ? 'Your queue' : 'Next up'));
+    page.append(el('h1', 'sr-only', selfDirected ? 'Your study plan' : 'Next up'));
     const queue = el('section', 'queue'); queue.setAttribute('aria-label', 'Next five activities');
     const activities = (data.activities || []).slice(0, 5);
     activities.forEach((activity, index) => {
@@ -583,8 +583,8 @@ async function loadHome(signal, preserve) {
     });
     if (!activities.length) {
       const empty = el('div', 'empty-state');
-      const queueEmpty = selfDirected && !(data.learner?.queue || []).length;
-      empty.append(el('h2', '', queueEmpty ? 'Your queue is empty' : 'No ready activities yet'), el('p', '', data.message || (queueEmpty ? 'Add topics to your queue, or turn off self-directed mode for course recommendations.' : selfDirected ? 'Your queued topics have no unfinished lessons with enough available questions.' : 'There are no eligible activities with enough available questions.')));
+      const queueEmpty = selfDirected && !(data.learner?.queue || []).length && !(data.learner?.targets || []).length;
+      empty.append(el('h2', '', queueEmpty ? 'Your study plan is empty' : 'No ready activities yet'), el('p', '', data.message || (queueEmpty ? 'Add topics to your queue or targets, or turn off self-directed mode for course recommendations.' : selfDirected ? 'Your selected topics and their required prerequisites have no unfinished lessons with enough available questions.' : 'There are no eligible activities with enough available questions.')));
       queue.append(empty);
     }
     page.append(queue);
@@ -1000,19 +1000,22 @@ async function renderTask(data) {
   }
   if (terminal(status) || data.awaitingQuestions) {
     const done = el('section', 'lesson-content completion');
-    done.append(el('div', 'completion-mark', status === 'completed' ? '✓' : '↗'), el('h2', '', data.awaitingQuestions ? 'Practice unfinished' : status === 'completed' ? 'Activity complete' : 'More practice needed'));
-    done.append(el('p', '', data.awaitingQuestions ? 'You have reached the end of the lesson. These skills still need practice; your answers are saved.' : status === 'completed' ? 'Your answers and progress have been saved.' : 'Your answers are saved. This attempt did not establish mastery. Return to study to continue.'));
+    done.append(el('div', 'completion-mark', status === 'completed' ? '✓' : '↗'), el('h2', '', data.awaitingQuestions ? 'Practice paused' : status === 'completed' ? 'Activity complete' : 'More practice needed'));
+    done.append(el('p', '', data.awaitingQuestions ? 'This lesson ran out of fresh questions before practice was complete for the skills below. Your answers and working time are saved.' : status === 'completed' ? 'Your answers and progress have been saved.' : 'Your answers are saved. This attempt did not establish mastery. Return to study to continue.'));
     if (data.awaitingQuestions) {
       const pending = el('ul', 'deferred-skills');
       for (const step of data.deferredSteps || []) pending.append(el('li', '', step.title));
       done.append(pending);
+      if (data.canResumePractice) done.append(el('p', 'continue-hint', 'New questions are available. Resume to finish the remaining practice.'));
       done.append(data.canResumePractice
         ? actionButton('Resume unfinished practice →', 'primary', () => mutation('/api/resume', { taskId: data.taskId }))
         : el('p', 'continue-hint', 'Waiting for new questions. You can return to this lesson from Study.'));
     }
     const earned = data.xpEarned ?? data.xp?.earned ?? (typeof data.xp === 'number' ? data.xp : null);
     const base = data.xpBase ?? data.xp?.base;
-    if (earned !== null && earned !== undefined) {
+    if (data.awaitingQuestions) {
+      done.append(el('p', 'continue-hint', 'Lesson XP is pending until the remaining practice is finished.'));
+    } else if (earned !== null && earned !== undefined) {
       const xp = el('div', 'completion-xp', `${earned}${base != null ? '/' + base : ''} `); xp.append(el('small', '', 'XP')); done.append(xp);
     }
     if (data.assessmentScore) done.append(el('p', '', `${data.assessmentScore.correct} of ${data.assessmentScore.total} correct · ${data.assessmentScore.unanswered} unanswered`));

@@ -120,6 +120,62 @@ element => {
     return children.length === 1 ? matrixTable(children[0]) : null;
   }
   const matrixEnvironments = {'[]':'bmatrix', '()':'pmatrix', '{}':'Bmatrix', '||':'vmatrix', '‖‖':'Vmatrix'};
+  // MathJax emits a brace as an ordinary munder/mover, often without an
+  // accent attribute, and wraps it in an mrow before adding its label.
+  const braceGlyph = (n, glyph) => n?.localName === 'mo' && n.textContent.trim() === glyph;
+  function braceBase(n, direction, glyph) {
+    if (!n) return 0;
+    if (['mrow', 'mstyle', 'mpadded', 'semantics'].includes(n.localName)) {
+      const children = [...n.children].filter(child => !['annotation', 'annotation-xml'].includes(child.localName));
+      return children.length === 1 ? braceBase(children[0], direction, glyph) : 0;
+    }
+    if (n.localName !== direction) return 0;
+    if (braceGlyph(n.children[1], glyph)) return 1;
+    return braceBase(n.children[0], direction, glyph) ? 2 : 0;
+  }
+  function braceLabel(n, cs, direction, glyph, command, script, stack) {
+    const base = braceBase(n.children[0], direction, glyph);
+    if (!base) return null;
+    // Grouping the brace before its script would put the label at the right.
+    // Stack instead if a style wrapper or another label needs its own scope.
+    return base === 1 && cs[0].startsWith(command + '{') ? cs[0] + script + '{' + cs[1] + '}' :
+      stack + '{' + cs[1] + '}{' + cs[0] + '}';
+  }
+  function hatAccent(n, cs) {
+    const accent = n.children[1];
+    if (accent?.localName !== 'mo' || accent.textContent.trim() !== '^') return null;
+    const unsupported = ['mathcolor', 'mathbackground', 'mathvariant', 'style', 'minsize', 'maxsize', 'lspace', 'rspace']
+      .filter(attribute => accent.hasAttribute(attribute) && !['', 'inherit', 'none', 'transparent'].includes(accent.getAttribute(attribute)));
+    if (n.getAttribute('accent') === 'false') unsupported.push('accent=false');
+    const stretchy = accent.getAttribute('stretchy');
+    if (stretchy !== null && !['true', 'false'].includes(stretchy)) unsupported.push('stretchy=' + stretchy);
+    const base = n.children[0], variants = [base, ...base.querySelectorAll('[mathvariant]')].filter(node => node.hasAttribute('mathvariant'));
+    const fullBase = new Set();
+    for (let node = base; node; ) {
+      fullBase.add(node);
+      node = ['mrow', 'mstyle', 'mpadded', 'semantics'].includes(node.localName) && node.children.length === 1 ? node.children[0] : null;
+    }
+    const variantCommands = {'bold-italic':'\\mathbfit', 'bold':'\\mathbf', 'normal':'\\mathrm', 'italic':'\\mathit'};
+    let body = cs[0];
+    if (variants.length) {
+      const variant = variants[0].getAttribute('mathvariant');
+      if (variants.length !== 1 || !fullBase.has(variants[0]) || !variantCommands[variant]) unsupported.push('base mathvariant');
+      else {
+        // Greek command macros fix their own font in MathJax. Keep the source
+        // glyph literal when applying its explicit bold/italic variant.
+        const glyph = variants[0].textContent, macro = greek[glyph];
+        body = variantCommands[variant] + '{' + (macro ? body.replace(macro, glyph) : body) + '}';
+      }
+    }
+    if (unsupported.length) {
+      // Styling the semantic hat would also style its base; retain the source
+      // serialization and require review for unsupported operator-only cues.
+      errors.push('Unsupported MathML hat: ' + unsupported.join(', '));
+      return '\\overset{' + cs[1] + '}{' + cs[0] + '}';
+    }
+    // MathJax's hat sets stretchy=false; widehat uses the operator default.
+    return (stretchy === 'false' ? '\\hat{' : '\\widehat{') + body + '}';
+  }
   function fence(n) {
     if (n?.localName === 'mo') return n.textContent;
     if (['msup', 'msub', 'msubsup'].includes(n?.localName) && n.children[0]?.localName === 'mo') return n.children[0].textContent;
@@ -193,6 +249,20 @@ element => {
     // MathJax may attach a script to just the closing fence glyph. Wrapping
     // that glyph in braces obscures the fence boundary in extracted LaTeX.
     const scriptBase = [')',']','}'].includes(cs[0]) ? cs[0] : '{' + cs[0] + '}';
+    if (t === 'munder' && braceGlyph(n.children[1], '⏟') || t === 'mover' && braceGlyph(n.children[1], '⏞')) {
+      const accent = n.children[1];
+      const styling = ['mathcolor', 'mathbackground'].filter(attribute => {
+        const value = accent.getAttribute(attribute);
+        return value && !['transparent', 'inherit', 'none'].includes(value);
+      });
+      if (styling.length) {
+        // Coloring the whole underbrace/overbrace would also recolor its base.
+        // Keep the source cue, and require review instead of silently dropping
+        // operator-only styling that the semantic brace macro cannot express.
+        errors.push('Unsupported styled MathML brace: ' + styling.join(', '));
+        return t === 'munder' ? '{' + cs[0] + '}_{' + cs[1] + '}' : '\\overset{' + cs[1] + '}{' + cs[0] + '}';
+      }
+    }
     switch(t) {
       case 'mfrac':
         // A zero-rule fraction is a stack, not division. Keep the source's rule.
@@ -202,9 +272,11 @@ element => {
       case 'msup': return scriptBase + '^{' + cs[1] + '}';
       case 'msub': return scriptBase + '_{' + cs[1] + '}';
       case 'msubsup': return scriptBase + '_{' + cs[1] + '}^{' + cs[2] + '}';
-      case 'munder': return '{' + cs[0] + '}_{' + cs[1] + '}';
-      case 'mover': return ['^', 'ˆ'].includes(n.children[1]?.textContent) ?
-        '\\hat{' + cs[0] + '}' : '\\overset{' + cs[1] + '}{' + cs[0] + '}';
+      case 'munder': return braceGlyph(n.children[1], '⏟') ? '\\underbrace{' + cs[0] + '}' :
+        braceLabel(n, cs, 'munder', '⏟', '\\underbrace', '_', '\\underset') ?? '{' + cs[0] + '}_{' + cs[1] + '}';
+      case 'mover': return braceGlyph(n.children[1], '⏞') ? '\\overbrace{' + cs[0] + '}' :
+        braceLabel(n, cs, 'mover', '⏞', '\\overbrace', '^', '\\overset') ?? hatAccent(n, cs) ?? (n.children[1]?.textContent === 'ˆ' ?
+          '\\hat{' + cs[0] + '}' : '\\overset{' + cs[1] + '}{' + cs[0] + '}');
       case 'munderover': return '{' + cs[0] + '}_{' + cs[1] + '}^{' + cs[2] + '}';
       case 'msqrt': return '\\sqrt{' + cs.join('') + '}';
       case 'mroot': return '\\sqrt[' + cs[1] + ']{' + cs[0] + '}';

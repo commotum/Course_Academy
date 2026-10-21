@@ -17,6 +17,52 @@ OPS={'∫':'\\int ','∑':'\\sum ','∏':'\\prod ','⋅':'\\cdot ','×':'\\times
 class Renderer:
     def __init__(self,topic):
         self.topic=topic;self.errors=[];self.assets=[];self.fields=[];self.formulas=[]
+    @staticmethod
+    def brace_glyph(n,glyph):
+        return isinstance(n,Tag) and n.name=='mo' and n.get_text().strip()==glyph
+    @classmethod
+    def brace_base(cls,n,direction,glyph):
+        if not isinstance(n,Tag):return 0
+        children=[c for c in n.children if isinstance(c,Tag) and c.name not in ('annotation','annotation-xml')]
+        if n.name in ('mrow','mstyle','mpadded','semantics'):
+            return cls.brace_base(children[0],direction,glyph) if len(children)==1 else 0
+        if n.name!=direction or len(children)!=2:return 0
+        if cls.brace_glyph(children[1],glyph):return 1
+        return 2 if cls.brace_base(children[0],direction,glyph) else 0
+    def brace_label(self,n,cs,direction,glyph,command,script,stack):
+        base=self.brace_base(n.find(recursive=False),direction,glyph)
+        if not base:return None
+        # Preserve the operator's limits; grouping it would move the label right.
+        return cs[0]+script+'{'+cs[1]+'}' if base==1 and cs[0].startswith(command+'{') else stack+'{'+cs[1]+'}{'+cs[0]+'}'
+    def hat_accent(self,n,cs):
+        accent=n.find_all(recursive=False)[1]
+        if accent.name!='mo' or accent.get_text().strip()!='^':return None
+        unsupported=[a for a in ('mathcolor','mathbackground','mathvariant','style','minsize','maxsize','lspace','rspace')
+                     if accent.has_attr(a) and accent.get(a) not in ('','inherit','none','transparent')]
+        if n.get('accent')=='false':unsupported.append('accent=false')
+        stretchy=accent.get('stretchy')
+        if stretchy is not None and stretchy not in ('true','false'):unsupported.append('stretchy='+stretchy)
+        base=n.find(recursive=False);variants=[node for node in [base,*base.find_all(attrs={'mathvariant':True})] if node.has_attr('mathvariant')]
+        full_base=[];node=base
+        while node is not None:
+            full_base.append(node)
+            children=node.find_all(recursive=False)
+            node=children[0] if node.name in ('mrow','mstyle','mpadded','semantics') and len(children)==1 else None
+        variant_commands={'bold-italic':'\\mathbfit','bold':'\\mathbf','normal':'\\mathrm','italic':'\\mathit'}
+        body=cs[0]
+        if variants:
+            variant=variants[0].get('mathvariant')
+            if len(variants)!=1 or not any(variants[0] is node for node in full_base) or variant not in variant_commands:unsupported.append('base mathvariant')
+            else:
+                # MathJax's Greek macros override font commands; a literal
+                # source glyph retains its explicit bold/italic variant.
+                glyph=variants[0].get_text();macro=GREEK.get(glyph)
+                body=variant_commands[variant]+'{'+(body.replace(macro,glyph,1) if macro else body)+'}'
+        if unsupported:
+            self.errors.append('Unsupported MathML hat: '+', '.join(unsupported))
+            return '\\overset{'+cs[1]+'}{'+cs[0]+'}'
+        # MathJax's hat disables stretching; widehat retains the default.
+        return ('\\hat{' if stretchy=='false' else '\\widehat{')+body+'}'
     def m(self,n):
         if isinstance(n,NavigableString):return GREEK.get(str(n),OPS.get(str(n),str(n)))
         if not isinstance(n,Tag):return ''
@@ -27,8 +73,12 @@ class Renderer:
         if t=='msup':return base+'^{'+cs[1]+'}'
         if t=='msub':return base+'_{'+cs[1]+'}'
         if t=='msubsup':return base+'_{'+cs[1]+'}^{'+cs[2]+'}'
-        if t=='munder':return base+'_{'+cs[1]+'}'
-        if t=='mover':return '\\overset{'+cs[1]+'}{'+cs[0]+'}'
+        if t=='munder':
+            if self.brace_glyph(n.find_all(recursive=False)[1],'⏟'):return '\\underbrace{'+cs[0]+'}'
+            return self.brace_label(n,cs,'munder','⏟','\\underbrace','_','\\underset') or base+'_{'+cs[1]+'}'
+        if t=='mover':
+            if self.brace_glyph(n.find_all(recursive=False)[1],'⏞'):return '\\overbrace{'+cs[0]+'}'
+            return self.brace_label(n,cs,'mover','⏞','\\overbrace','^','\\overset') or self.hat_accent(n,cs) or '\\overset{'+cs[1]+'}{'+cs[0]+'}'
         if t=='munderover':return base+'_{'+cs[1]+'}^{'+cs[2]+'}'
         if t=='msqrt':return '\\sqrt{'+''.join(cs)+'}'
         if t=='mroot':return '\\sqrt['+cs[1]+']{'+cs[0]+'}'

@@ -8,6 +8,8 @@ import { inlinePrompt, mountInlineFields, checkboxControl, choiceIndicator, fiel
 const $ = id => document.getElementById(id);
 const detailsCache = new Map();
 const rows = new Map();
+const dateGroups = new Map();
+const weekdayFormat = new Intl.DateTimeFormat('en-US', { weekday: 'long' });
 let currentCourseId = null;
 let curriculumSnapshot = null;
 let nextCursor = null;
@@ -32,6 +34,39 @@ function timestamp(value, recordedOnly = false) {
   const node = el('time', '', (recordedOnly ? 'Recorded ' : '') + new Intl.DateTimeFormat(undefined, { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit' }).format(date));
   node.dateTime = date.toISOString(); node.title = date.toLocaleString();
   return node;
+}
+function activityDateGroup(value, now = new Date()) {
+  const date = value == null || value === '' ? null : new Date(value);
+  if (!date || !Number.isFinite(date.getTime())) return { key: 'unknown', label: 'Date unavailable', date: null };
+  const year = date.getFullYear(), month = String(date.getMonth() + 1).padStart(2, '0'), day = String(date.getDate()).padStart(2, '0');
+  // Compare local calendar days, so Yesterday also works across 23/25-hour days.
+  const civilDay = date => Date.UTC(date.getFullYear(), date.getMonth(), date.getDate());
+  const daysAgo = (civilDay(now) - civilDay(date)) / 86400000;
+  const relative = daysAgo === 0 ? 'Today · ' : daysAgo === 1 ? 'Yesterday · ' : '';
+  const label = relative + weekdayFormat.format(date) + ' ' + month + '/' + day + (year === now.getFullYear() ? '' : '/' + year);
+  return { key: `${year}-${month}-${day}`, label, date };
+}
+function refreshDateHeadings(now = new Date()) {
+  for (const group of dateGroups.values()) group.label.textContent = activityDateGroup(group.date, now).label;
+}
+function appendActivities(activities, now = new Date()) {
+  for (const activity of activities) {
+    if (rows.has(activity.taskId)) continue;
+    const day = activityDateGroup(activity.completedAt, now);
+    let group = dateGroups.get(day.key);
+    if (!group) {
+      const section = el('section', 'activity-day'); section.dataset.date = day.key;
+      const heading = el('h2', 'activity-date-heading'); heading.id = 'activity-day-' + day.key;
+      const label = day.date ? el('time', '', day.label) : el('span', '', day.label);
+      if (day.date) label.dateTime = day.key;
+      heading.append(label); section.append(heading);
+      section.setAttribute('aria-labelledby', heading.id);
+      group = { section, label, date: day.date };
+      dateGroups.set(day.key, group); $('activityList').append(section);
+    }
+    const row = activityRow(activity); rows.set(activity.taskId, row); group.section.append(row);
+  }
+  refreshDateHeadings(now);
 }
 function escapeHTML(text) { return String(text).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]); }
 function assetURL(value) {
@@ -237,7 +272,7 @@ function activityRow(activity) {
   row.dataset.taskId = String(activity.taskId);
   const summary = el('summary', 'activity-summary');
   const header = el('div', 'activity-summary-title');
-  header.append(el('span', 'eyebrow', short(activity.type)), el('h2', '', activity.title || 'Untitled activity'));
+  header.append(el('span', 'eyebrow', short(activity.type)), el('h3', '', activity.title || 'Untitled activity'));
   const meta = el('div', 'activity-summary-meta');
   meta.append(timestamp(activity.completedAt, activity.recordedOnly), el('span', '', `Elapsed: ${duration(activity.elapsedSeconds)}`));
   if (activity.questionCount) meta.append(el('span', '', `${activity.correctCount}/${activity.questionCount} correct`));
@@ -279,17 +314,14 @@ async function load({ more = false } = {}) {
     if (!Array.isArray(data.activities)) throw new Error('Activity history is unavailable.');
     updateHeader(data);
     if (!more) {
-      rows.clear(); $('main').replaceChildren();
+      rows.clear(); dateGroups.clear(); $('main').replaceChildren();
       const heading = el('div', 'page-heading'); const titles = el('div');
       titles.append(el('h1', '', 'Activity'), el('p', 'history-note', 'Your completed lessons, reviews, assessments, and assignments.'));
       heading.append(titles); $('main').append(heading);
       const list = el('section', 'activity-list'); list.id = 'activityList'; list.setAttribute('aria-label', 'Completed activities'); $('main').append(list);
       const moreButton = el('button', 'small-button activity-more', 'Load more'); moreButton.id = 'loadMore'; moreButton.type = 'button'; moreButton.addEventListener('click', () => void load({more:true})); $('main').append(moreButton);
     }
-    for (const activity of data.activities) {
-      if (rows.has(activity.taskId)) continue;
-      const row = activityRow(activity); rows.set(activity.taskId, row); $('activityList').append(row);
-    }
+    appendActivities(data.activities);
     if (!rows.size) $('activityList').append(el('p', 'empty-state', 'No completed activities yet. Your finished work will appear here.'));
     nextCursor = data.nextCursor;
     $('loadMore').hidden = !nextCursor;
@@ -310,4 +342,6 @@ createCoursePicker({
   onSelectTopic: async topic => { location.href = topicReferenceURL(await curriculumSnapshot, topic, currentCourseId); },
 });
 window.addEventListener('course-academy:profile-changed', () => { curriculumSnapshot = null; void load(); });
+window.addEventListener('focus', () => refreshDateHeadings());
+document.addEventListener('visibilitychange', () => { if (!document.hidden) refreshDateHeadings(); });
 void load();

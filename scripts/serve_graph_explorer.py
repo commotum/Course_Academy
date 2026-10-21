@@ -33,7 +33,7 @@ import threading
 import time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import parse_qs, urlsplit
-from inventory_jobs import InventoryJobs
+from inventory_jobs import InventoryJobs, build_worker_count
 
 ROOT = Path(__file__).resolve().parent.parent
 HTML = ROOT / "ui" / "Math-Academy-Graph-Explorer.html"
@@ -255,7 +255,7 @@ def build_learning(edb_root: Path, *, test: bool = False) -> Path:
     for name, directory in (("edb_core", edb_deps), ("serde_json", deps), ("chrono", deps), ("course_academy_engine", deps)):
         libraries[name] = max(directory.glob(f"lib{name}-*.rlib"), key=lambda p: p.stat().st_mtime_ns)
     sources = (source, ROOT / "scripts/page_reader.rs", ROOT / "scripts/activity_history.rs", ROOT / "scripts/assignment_reader.rs", ROOT / "scripts/assignment_interaction.rs",
-               ROOT / "scripts/developer_preview.rs", ROOT / "scripts/study_stats.rs")
+               ROOT / "scripts/developer_preview.rs", ROOT / "scripts/study_stats.rs", ROOT / "scripts/quiz_labels.rs")
     if test:
         sources += (ROOT / "scripts/assignment_interaction_tests.rs", ROOT / "scripts/retrieval_tests.rs",
                     ROOT / "engine/edb/progress.rs", ROOT / "engine/edb/configuration.rs",
@@ -334,6 +334,7 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
     math_root = Path(environment.get("EDB_MATH_ROOT", DEFAULT_MATH_ROOT)).resolve()
 
     inventory_jobs = InventoryJobs(ROOT, ROOT / '.local/learning/inventory' / database / learner, learner, environment)
+    builder_count = build_worker_count(environment)
     scheduler_stop = threading.Event()
     inventory_refresh = threading.Event()
     inventory_ready = threading.Event()
@@ -373,19 +374,22 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
                 print(f'Scheduler refresh deferred: {error}', file=sys.stderr)
             scheduler_stop.wait(30)
 
-    def run_generator_lane(lane):
+    def run_generator_lane(lane, slot=0):
         while not scheduler_stop.is_set():
             try:
                 if (inventory_ready.is_set() and not developer_mode(mode_path)
                         and environment.get('COURSE_ACADEMY_DISABLE_GENERATION') != '1'):
-                    if inventory_jobs.run_one(lane=lane):
+                    if inventory_jobs.run_one(lane=lane, slot=slot):
                         inventory_refresh.set()
             except (OSError, ValueError) as error:
-                print(f'Inventory {lane} worker deferred: {error}', file=sys.stderr)
+                print(f'Inventory {lane} worker {slot + 1} deferred: {error}', file=sys.stderr)
             scheduler_stop.wait(5)
 
-    def generator_build_loop():
-        run_generator_lane('build')
+    def build_loop(slot):
+        def generator_build_loop():
+            run_generator_lane('build', slot)
+        generator_build_loop.worker_slot = slot
+        return generator_build_loop
 
     def generator_refill_loop():
         run_generator_lane('refill')
@@ -468,7 +472,7 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
                 # Publishers can spend minutes validating under api.lock. Answers
                 # use the held native peer's mutex plus EDB's exact basis/status
                 # guards, so they may proceed while content is being prepared.
-                with (nullcontext() if page_read or body.get('action') == 'answer' else (directory / "api.lock").open("a")) as lock:
+                with (nullcontext() if page_read or body.get('action') in {'answer', 'topic-study-availability'} else (directory / "api.lock").open("a")) as lock:
                     if lock is not None:
                         fcntl.flock(lock, fcntl.LOCK_EX)
                     admitted = time.monotonic()
@@ -569,6 +573,16 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
                 self.learning_request({"action": "profile"})
             elif path == "/api/learner":
                 self.learning_request({"action": "learner"})
+            elif path == "/api/topic-study-availability":
+                try:
+                    values = query.get("topicId", [])
+                    if len(values) != 1 or not 0 < int(values[0]) <= 9_007_199_254_740_991:
+                        raise ValueError("One topic entity ID is required")
+                    topic = int(values[0])
+                except ValueError:
+                    self.send_bytes(400, b'{"error":"One topic entity ID is required."}', "application/json")
+                    return
+                self.learning_request({"action": "topic-study-availability", "topicId": topic})
             elif path == "/api/preview-home":
                 self.learning_request({"action": "preview-home"})
             elif path == "/api/preview":
@@ -709,7 +723,8 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
     Handler.scheduler_stop = scheduler_stop
     Handler.inventory_refresh = inventory_refresh
     Handler.inventory_ready = inventory_ready
-    Handler.background = (scheduler_loop, generator_build_loop, generator_refill_loop, inventory_refresh_loop) if learning_worker else ()
+    Handler.background = (scheduler_loop, *(build_loop(slot) for slot in range(builder_count)),
+                          generator_refill_loop, inventory_refresh_loop) if learning_worker else ()
     return Handler
 
 

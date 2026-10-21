@@ -137,7 +137,14 @@ class Builder:
                 result['notes'].append({'kind': kind, 'text': match[2].strip()})
             for link in links:
                 target = link[3] or link[4]
-                path, _ = self.local_link(target, source)
+                split = urlsplit(target)
+                if split.scheme == 'file' and split.netloc in ('', 'localhost'):
+                    path = Path(unquote(split.path)).resolve()
+                    roots = (self.vault, self.vault.parent / 'MA')
+                    if not path.is_file() or not any(path.is_relative_to(root.resolve()) for root in roots):
+                        raise ValueError(f'Missing or external lesson: {target}')
+                else:
+                    path, _ = self.local_link(target, source)
                 if path is None or path.suffix.lower() != '.md':
                     raise ValueError(f'Topic mapping is not a local lesson: {target}')
                 if path not in self.topic_cache:
@@ -350,7 +357,7 @@ class Builder:
     def assignment(self, relative):
         path = self.vault / relative
         raw = path.read_text()
-        filename = re.fullmatch(r'(?:\d{2}-\d{2}-\d{2}|Undated)_((?:R|OHW|WHW)-\d+)\.md', path.name)
+        filename = re.fullmatch(r'(?:\d{2}-\d{2}-\d{2}|Undated)_((?:R|OHW|WHW|SG)-\d+)\.md', path.name)
         if not filename or path.parent.name not in COURSES:
             raise ValueError(f'Unrecognized F26 assignment identity: {path}')
         code = filename[1]

@@ -11,6 +11,12 @@ existing exact rational checker without adding dependencies or license keys.
 - Real roots of degree 2 through 8 and bounded rational powers. Numeric radicals
   factor into prime-root atoms, so `2√10`, `√40`, and equivalent rationalized
   forms compare exactly. Supported variable-root identities retain their domains.
+  Roots of positive constant powers also normalize exactly: for example,
+  `sqrt(e^3)/3` equals `e^(3/2)/3`, and `fourth_root(pi^2)` equals `sqrt(pi)`.
+  Authored odd powers inside roots retain their compound base before expansion,
+  so `-1/sqrt((2x+7)^3)` and `-(2x+7)^(-3/2)` share both their exact value
+  and their domain restriction. Nonzero guards retain known power and product
+  factors; cancellation still cannot remove excluded inputs.
 - Sine/cosine parity and the Pythagorean identity; tangent, cotangent, secant, and
   cosecant as ratios/reciprocals. Standard pi angles reduce to exact radicals.
 - Logarithmic and exponential atoms, logarithm bases, and exponential sums with

@@ -5,7 +5,7 @@ import vm from 'node:vm';
 
 const source = (await readFile(new URL('../ui/requests.js', import.meta.url), 'utf8')).replaceAll('export ', '');
 function client(fetch) {
-  return vm.runInNewContext(`(() => { ${source}; return { readRequest, readCurrentLearner }; })()`, { fetch });
+  return vm.runInNewContext(`(() => { ${source}; return { readRequest, readCurrentLearner, readTopicStudyAvailability }; })()`, { fetch });
 }
 
 test('concurrent reads share one fetch with separately readable response bodies', async () => {
@@ -44,4 +44,21 @@ test('mutations and abortable reads keep independent requests', async () => {
     api.readRequest('/api/target', { method: 'POST', body: '{}' }),
   ]);
   assert.equal(calls, 4);
+});
+
+test('topic availability shares concurrent reads, refreshes after changes, and rejects mismatched responses', async () => {
+  let calls = 0, available = false, responseTopic = 20;
+  const api = client(async path => {
+    calls++;
+    assert.equal(path, '/api/topic-study-availability?topicId=20');
+    return new Response(JSON.stringify({ topicId: responseTopic, available, reason: 'Not enough questions' }));
+  });
+  const views = await Promise.all([api.readTopicStudyAvailability(20), api.readTopicStudyAvailability(20)]);
+  assert.equal(calls, 1);
+  assert.ok(views.every(view => view.available === false));
+  available = true;
+  assert.equal((await api.readTopicStudyAvailability(20)).available, true);
+  assert.equal(calls, 2);
+  responseTopic = 25;
+  await assert.rejects(api.readTopicStudyAvailability(20), /Unable to check lesson availability/);
 });

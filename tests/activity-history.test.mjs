@@ -7,7 +7,7 @@ const source = await readFile(new URL('../ui/activity.js', import.meta.url), 'ut
 const code = source.slice(source.indexOf('const $'), source.indexOf('createCoursePicker({'));
 const fieldUI = (await readFile(new URL('../ui/question-fields.js', import.meta.url), 'utf8')).replace(/^[\s\S]*?(?=\/\/ Shared presentation)/, '').replaceAll('export ', '');
 function fixture() {
-  const calls = []; let fail = false; let malformed = false;
+  const calls = []; let fail = false; let malformed = false; let pages = [];
   class Element extends EventTarget {
     constructor(tag) { super(); this.tagName = tag; this.children = []; this.attrs = {}; this.dataset = {}; this.className = ''; this.text = ''; }
     append(...nodes) { this.children.push(...nodes); }
@@ -19,14 +19,18 @@ function fixture() {
     querySelector() { return null; }
     get isConnected() { return true; }
   }
-  const document = {createElement: tag => new Element(tag), getElementById() {return null;}};
+  const elements = new Map(['main', 'errorBanner', 'errorText', 'retryButton', 'announcement', 'learnerName', 'courseLink'].map(id => [id, new Element('div')]));
+  const document = {createElement: tag => new Element(tag), getElementById(id) {
+    const find = node => node.id === id ? node : node.children.map(find).find(Boolean);
+    return find(elements.get('main')) || elements.get(id) || null;
+  }};
   const context = vm.createContext({ document, window: {}, Intl, Date, Number, Map, String, Promise,
-    readRequest: async path => { calls.push(path); return {ok: !fail, json: async () => fail ? {error:'Try later'} : malformed ? {} : {items:[], activity:{taskId:10}}}; },
+    readRequest: async path => { calls.push(path); return {ok: !fail, json: async () => fail ? {error:'Try later'} : malformed ? {} : path.includes('taskId=') ? {items:[], activity:{taskId:10}} : pages.shift()}; },
     checkboxControl: () => null,
     attachStepMenu: (node, id, ma, options = {}) => { node.dataset.stepDbId = id; node.dataset.mathAcademyId = ma; node.dataset.contentKind = options.kind; },
   });
   vm.runInContext(fieldUI + '\n' + code, context);
-  return {context, calls, setFail(value) {fail=value;}, setMalformed(value) {malformed=value;}, run: code => vm.runInContext(code, context)};
+  return {context, calls, document, setPages(value) {pages=value;}, setFail(value) {fail=value;}, setMalformed(value) {malformed=value;}, run: code => vm.runInContext(code, context)};
 }
 const flush = () => new Promise(resolve => setImmediate(resolve));
 
@@ -72,4 +76,74 @@ test('history cards and group headings identify their displayed entities rather 
   assert.equal(host.children[1].dataset.stepDbId, 303);
   const row = f.run('activityRow({taskId:101,activityId:505,title:"Lesson"})');
   assert.equal(row.dataset.stepDbId, 505);
+});
+
+test('activity date headings include Today, Yesterday, weekday and padded dates, with years when needed', () => {
+  const f = fixture();
+  assert.equal(f.run('activityDateGroup(new Date(2026,9,17,9),new Date(2026,9,17,18)).label'), 'Today · Saturday 10/17');
+  assert.equal(f.run('activityDateGroup(new Date(2026,9,16,23),new Date(2026,9,17,18)).label'), 'Yesterday · Friday 10/16');
+  assert.equal(f.run('activityDateGroup(new Date(2026,9,15),new Date(2026,9,17)).label'), 'Thursday 10/15');
+  assert.equal(f.run('activityDateGroup(new Date(2026,0,2),new Date(2026,9,17)).label'), 'Friday 01/02');
+  assert.equal(f.run('activityDateGroup(new Date(2025,11,31),new Date(2026,0,1)).label'), 'Yesterday · Wednesday 12/31/2025');
+  for (const value of ['null', 'undefined', '""', '"invalid"']) {
+    assert.equal(f.run(`activityDateGroup(${value}).label`), 'Date unavailable');
+  }
+});
+
+test('grouping uses local completion days and handles daylight saving boundaries', () => {
+  const previousTZ = process.env.TZ;
+  process.env.TZ = 'America/Los_Angeles';
+  try {
+    const f = fixture();
+    assert.equal(f.run('activityDateGroup("2026-10-18T06:30:00Z",new Date("2026-10-18T07:30:00Z")).label'), 'Yesterday · Saturday 10/17');
+    assert.equal(f.run('activityDateGroup("2026-10-18T07:01:00Z",new Date("2026-10-18T07:30:00Z")).label'), 'Today · Sunday 10/18');
+    assert.equal(f.run('activityDateGroup(new Date(2026,10,1,0,10),new Date(2026,10,2,0,10)).label'), 'Yesterday · Sunday 11/01');
+    assert.equal(f.run('activityDateGroup(new Date(2026,2,8,0,10),new Date(2026,2,9,0,10)).label'), 'Yesterday · Sunday 03/08');
+  } finally {
+    if (previousTZ === undefined) delete process.env.TZ;
+    else process.env.TZ = previousTZ;
+  }
+});
+
+test('pagination merges same-day entries, preserves expanded rows, and resets groups on reload', async () => {
+  const f = fixture();
+  const activity = (taskId, completedAt) => ({ taskId, completedAt, activityId: taskId + 100, title: `Lesson ${taskId}` });
+  f.setPages([
+    { activities: [activity(10, '2026-10-17T12:00:00Z'), activity(11, '2026-10-16T12:00:00Z')], total: 4, nextCursor: 11 },
+    { activities: [activity(11, '2026-10-16T12:00:00Z'), activity(12, '2026-10-16T10:00:00Z'), activity(13, '2026-10-15T12:00:00Z')], total: 4, nextCursor: null },
+    { activities: [activity(14, '2026-10-17T12:00:00Z')], total: 1, nextCursor: null },
+  ]);
+  await f.run('load()');
+  const list = f.document.getElementById('activityList');
+  assert.equal(list.children.length, 2);
+  const row = list.children[1].children[1]; row.open = true;
+  await f.run('load({more:true})');
+  assert.equal(list.children.length, 3);
+  assert.deepEqual(list.children.map(group => group.children.length - 1), [1, 2, 1]);
+  assert.equal(list.children[1].children[1], row);
+  assert.equal(row.open, true);
+  assert.equal(list.children[0].children[0].tagName, 'h2');
+  assert.equal(row.children[0].children[0].children[1].tagName, 'h3');
+  assert.deepEqual(f.calls, ['/api/activity', '/api/activity?beforeTaskId=11']);
+  assert.equal(f.document.getElementById('loadMore').hidden, true);
+  await f.run('load()');
+  const reloaded = f.document.getElementById('activityList');
+  assert.equal(reloaded.children.length, 1);
+  assert.equal(reloaded.children[0].children[1].dataset.taskId, '14');
+});
+
+test('unknown dates share a group and relative headings refresh without fetching or replacing rows', () => {
+  const f = fixture();
+  f.run("const list=el('section');list.id='activityList';$('main').append(list)");
+  f.run('appendActivities([{taskId:1,completedAt:new Date(2026,9,17,12)},{taskId:2},{taskId:3,completedAt:"invalid"}],new Date(2026,9,17,18))');
+  const list = f.document.getElementById('activityList');
+  assert.equal(list.children.length, 2);
+  assert.equal(list.children[0].children[0].textContent, 'Today · Saturday 10/17');
+  assert.equal(list.children[1].children[0].textContent, 'Date unavailable');
+  assert.equal(list.children[1].children.length, 3);
+  const row = list.children[0].children[1];
+  f.run('refreshDateHeadings(new Date(2026,9,18,1))');
+  assert.equal(list.children[0].children[0].textContent, 'Yesterday · Saturday 10/17');
+  assert.equal(list.children[0].children[1], row);
+  assert.equal(f.calls.length, 0);
 });

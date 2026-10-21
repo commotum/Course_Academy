@@ -83,6 +83,7 @@ const GRAPH_ATTRIBUTES: &[&str] = &[
         "topic/title",
         "topic/math-academy-id",
         "topic/next",
+        "activity/scope",
         "course/id",
         "course/title",
         "course/code",
@@ -356,6 +357,14 @@ fn graph_from_facts(db: &DatabaseValue, learner_id: &str, facts:&Facts) -> Resul
     if topic_ids.iter().any(|eid| *eid > 9_007_199_254_740_991) {
         return Err("Topic entity ID exceeds JavaScript safe integer range".into());
     }
+    let mut activities_by_topic: BTreeMap<u64, Vec<String>> = BTreeMap::new();
+    for activity in facts.keys().copied() {
+        for topic in refs(facts, activity, "activity/scope") {
+            if topic_ids.contains(&topic) {
+                activities_by_topic.entry(topic).or_default().push(activity.to_string());
+            }
+        }
+    }
     let mut nodes = Vec::new();
     let mut links = Vec::new();
     for eid in &topic_ids {
@@ -363,6 +372,7 @@ fn graph_from_facts(db: &DatabaseValue, learner_id: &str, facts:&Facts) -> Resul
             "id": eid,
             "name": text(&facts, *eid, "topic/title").unwrap_or_else(|| format!("Untitled topic {eid}")),
             "uuid": uuid(&facts, *eid, "topic/id"),
+            "activityIds": activities_by_topic.get(eid).cloned().unwrap_or_default(),
         });
         if let Some(Value::Long(id)) = scalar(&facts, *eid, "topic/math-academy-id") {
             node["mathAcademyId"] = json!(id);

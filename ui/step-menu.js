@@ -1,3 +1,5 @@
+import { readTopicStudyAvailability } from './requests.js';
+
 // Only app-registered content can supply an ID; rendered Markdown cannot spoof it.
 const stepIds = new WeakMap();
 let menu = null;
@@ -8,6 +10,7 @@ let noticeTimer;
 let topicActions;
 let currentStep = null;
 let returnFocus = null;
+let openVersion = 0;
 
 export function stepEntityId(value) {
   if (typeof value === 'number' && !Number.isSafeInteger(value)) return null;
@@ -42,6 +45,7 @@ function stepAt(target) {
 }
 
 function close(restoreFocus = false) {
+  openVersion++;
   menu.hidden = true;
   currentStep?.setAttribute('aria-expanded', 'false');
   if (restoreFocus && returnFocus?.isConnected) returnFocus.focus({ preventScroll: true });
@@ -51,6 +55,7 @@ function close(restoreFocus = false) {
 
 function open(step, x, y) {
   close();
+  const version = openVersion;
   const metadata = stepIds.get(step);
   currentStep = step;
   const host = step.closest?.('dialog[open]') || document.body;
@@ -64,7 +69,27 @@ function open(step, x, y) {
   topicActions.forEach((action, index) => {
     const link = metadata.links?.[index];
     action.hidden = !link;
-    if (link) { action.textContent = link.label; action.href = link.href; }
+    if (link) {
+      action.textContent = link.label;
+      const setAvailability = (available, reason = '') => {
+        action.setAttribute('aria-disabled', String(!available));
+        action.tabIndex = available ? 0 : -1;
+        action.title = reason;
+        if (available) action.href = link.href;
+        else action.removeAttribute('href');
+      };
+      setAvailability(!link.studyTopicId, link.studyTopicId ? 'Checking lesson question availability…' : '');
+      if (link.studyTopicId) {
+        void readTopicStudyAvailability(link.studyTopicId).then(data => {
+          if (openVersion === version && !menu.hidden) {
+            action.textContent = data.resumable ? 'Resume Study' : link.label;
+            setAvailability(data.available, data.reason || '');
+          }
+        }).catch(error => {
+          if (openVersion === version && !menu.hidden) setAvailability(false, error.message);
+        });
+      }
+    }
   });
   returnFocus = step.contains(document.activeElement) ? document.activeElement : step;
   academyButton.hidden = !stepIds.get(step).mathAcademyId;
@@ -89,7 +114,14 @@ function initialize() {
   topicActions = Array.from({ length: 3 }, () => {
     const action = document.createElement('a'); action.hidden = true;
     action.setAttribute('role', 'menuitem');
-    action.addEventListener('click', () => close());
+    const blockDisabled = event => {
+      if (action.getAttribute('aria-disabled') === 'true') {
+        event.preventDefault(); event.stopPropagation(); return true;
+      }
+      return false;
+    };
+    action.addEventListener('click', event => { if (!blockDisabled(event)) close(); });
+    action.addEventListener('auxclick', blockDisabled);
     return action;
   });
   menu.append(copyButton, academyButton, ...topicActions);
@@ -122,7 +154,7 @@ function initialize() {
       else if (event.key === 'Tab') close(true);
       else if (['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(event.key)) {
         event.preventDefault();
-        const buttons = [copyButton, academyButton, ...topicActions].filter(button => !button.hidden);
+        const buttons = [copyButton, academyButton, ...topicActions].filter(button => !button.hidden && button.getAttribute('aria-disabled') !== 'true');
         const index = buttons.indexOf(document.activeElement);
         const next = event.key === 'Home' ? 0 : event.key === 'End' ? buttons.length - 1
           : (index + (event.key === 'ArrowDown' ? 1 : -1) + buttons.length) % buttons.length;

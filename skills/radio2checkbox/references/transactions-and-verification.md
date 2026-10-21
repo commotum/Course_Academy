@@ -25,7 +25,7 @@ Resolve topic links through `:topic/knowledge-points` (reverse Pull `:topic/_kno
 
 For each selectable object create:
 
-- A field with `:answer-field/id` UUID, `:answer-field/key` label, and `:answer-field/type :answer-field.type/checkbox`.
+- A field with `:answer-field/id` UUID, `:answer-field/key` containing the complete selectable object's display content, and `:answer-field/type :answer-field.type/checkbox`. Store source labels separately in the migration manifest.
 - Exactly two **owned** answers with separate `:answer/id` UUIDs, `:answer/type :answer.type/text`, and `:answer/value` strings `"false"` / `"true"`.
 - `:answer-field/choices` referencing those two answers and `:answer-field/correct` referencing the one matching the object's truth value.
 - A link from `:question/answer-fields` to that field.
@@ -60,9 +60,28 @@ If the live writer advances before a guarded batch, expect rejection and reconci
 
 ## Meaningful verification
 
+### Presentation check
+
+Use `scripts/lint_presentation.py` from this skill before native preview, against the speculative `db_after`, and against committed readback. It is read-only and accepts JSON of this shape:
+
+```json
+{"cases":[{"question":{"...":"full Pull-style question including fields"},"objects":[
+  {"source_label":"I","field_id":"existing or proposed field UUID","content":"$C$ is upper triangular","source_fragment":"- **I.** $C$ is upper triangular"}
+]}]}
+```
+
+`field_id` may be a field UUID or database entity ID. Include every checkbox field exactly once; `content` is the complete reviewed object that must appear in its field key. `source_fragment` records an exact old prompt option when useful. For a shared-image exception, add `"shared_image":{"image":"graphs.svg","evidence":"capture path/hash","reason":"why this object must stay in the shared image"}` to that object. The lint requires that specific image source to remain in the prompt; the reviewer must establish that it actually contains the labelled objects and that the exception is justified.
+
+```sh
+python skills/radio2checkbox/scripts/lint_presentation.py proposed-presentation.json --output presentation-lint.json
+python -m unittest discover -s skills/radio2checkbox/scripts -p 'test_*.py'
+```
+
+The lint rejects incomplete/bare-label fields, missing or repeated mappings, selectable content or matrix bodies left in the prompt, residual labelled lists, and references to removed Roman choices in the solution. It does not infer mathematical equivalence or prove that a source universe was captured completely. Inspect the actual rendered prompt, all checkboxes, and solution as well. Verify each choice can be understood beside its checkbox without matching a remote list, shared setup remains, and matrices render completely at ordinary and narrow widths. A shared source matrix used by statement choices stays in the prompt; a matrix that is itself selectable belongs in its field.
+
 Before submitting, inspect the native speculative report's `db_after` and check:
 
-- Exact new identities, field types/keys, owned Boolean banks, correct refs, links, prompts, and response mappings.
+- Exact new identities, complete object field keys, owned Boolean banks, correct refs, links, prompts, and response mappings. The old source labels are evidence/mapping tokens, not the expected rendered keys.
 - Expected old-link/response/prompt retractions; only allowed entities/attributes are touched. Old field/answer entities and unrelated mathematical content remain unchanged.
 - All datom provenance and installed validators; current solution, rating, KP/topic and canonical memberships are preserved unless an explicit separate repair is included.
 - Native grading accepts the canonical subset, rejects each single-checkbox flip, handles incomplete responses as required, and preserves the grade of every mapped old option. Distinguish structural/grading checks from independent mathematical verification.

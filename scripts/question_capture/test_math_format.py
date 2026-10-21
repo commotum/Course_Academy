@@ -6,6 +6,101 @@ from math_format import (cells, legacy_system_rows, matrix_tex, matrix_operands,
                           validate_prose, validate_generated_record)
 
 class MathContentTests(unittest.TestCase):
+    def test_mixed_chain_relations_and_final_punctuation(self):
+        cases = [
+            (r'\begin{aligned}x+x &= \\ 2x & .\end{aligned}',
+             r'\begin{aligned}x+x &= 2x.\end{aligned}'),
+            (r'\begin{aligned}x+x &= \\ &=2x\end{aligned}',
+             r'\begin{aligned}x+x &= 2x\end{aligned}'),
+            (r'\begin{aligned}x+x= \\ 2x &\end{aligned}',
+             r'\begin{aligned}x+x &= 2x\end{aligned}'),
+            (r'\begin{aligned}\sqrt{2}+1 &≈ \\ 1.414+1 &= \\ 2.414 &≈ \\ 2.41\end{aligned}',
+             r'\begin{aligned}\sqrt{2}+1 &≈ 1.414+1 \\ &= 2.414 \\ &≈ 2.41\end{aligned}'),
+        ]
+        for source, expected in cases:
+            self.assertEqual(normalize_tex(source), expected)
+            self.assertEqual(normalize_tex(expected), expected)
+            validate_tex(expected)
+
+    def test_ambiguous_chains_and_missing_proof_blanks_are_not_inferred(self):
+        for source in (r'\begin{aligned}a_1 &=\end{aligned}',
+                       r'\begin{aligned}a_1 &= \\ a_2 &=\end{aligned}',
+                       r'\begin{aligned}a &= \\ b \\ c\end{aligned}',
+                       r'\begin{aligned}a &= \\ &≈ b\end{aligned}',
+                       r'\begin{aligned}x &=1 \\ y &=2\end{aligned}'):
+            self.assertEqual(normalize_tex(source), source)
+
+    def test_chain_result_annotations_and_conditional_prefixes_keep_their_roles(self):
+        source = r'\begin{aligned}x=3\Rightarrow x^2-9 &= \\ 3^2-9 &= \\ 0 & \,{\color{green}{\checkmark}}\end{aligned}'
+        expected = r'\begin{aligned}x=3\Rightarrow x^2-9 &= 3^2-9 \\ &= 0 && \,{\color{green}{\checkmark}}\end{aligned}'
+        self.assertEqual(normalize_tex(source), expected)
+        self.assertEqual(normalize_tex(expected), expected)
+        validate_tex(expected)
+
+    def test_preloaded_extensions_do_not_emit_unsupported_require(self):
+        for extension, body in [('cancel', r'\cancel{2}'), ('enclose', r'\enclose{box}{x}')]:
+            self.assertEqual(normalize_tex(r'\require{' + extension + '}' + body), body)
+        self.assertEqual(normalize_tex(r'\require{other}x'), r'\require{other}x')
+        with self.assertRaisesRegex(ValueError, 'Runtime TeX extension'):
+            validate_tex(r'\require{cancel}\cancel{x}')
+        with self.assertRaisesRegex(ValueError, 'Empty equation RHS'):
+            validate_tex(r'\begin{aligned}a_1 &= \\ a_2 &=\end{aligned}')
+
+    def test_empty_rhs_equation_chains_put_expressions_after_equals(self):
+        source = r'\begin{aligned}(x^3)^2 &= \\ x^{3\cdot2} &= \\ x^6\end{aligned}'
+        expected = r'\begin{aligned}(x^3)^2 &= x^{3\cdot2} \\ &= x^6\end{aligned}'
+        self.assertEqual(normalize_tex(source), expected)
+        self.assertEqual(normalize_tex(expected), expected)
+        self.assertEqual(normalize_prose('Use $' + source + '$.'), 'Use $' + expected + '$.')
+        legacy = '\\eqalign{(5^2)^3 &= \\\n5^{2\\cdot3} &= \\\n5^6}'
+        self.assertEqual(normalize_tex(legacy), r'\begin{aligned}(5^2)^3 &= 5^{2\cdot3} \\ &= 5^6\end{aligned}')
+
+    def test_equation_chain_spacing_labels_and_complete_equations_are_preserved(self):
+        source = r'\eqalign{(5^2)^3 &= \\[5pt] \underbrace{5^2\cdot5^2\cdot5^2}_{3\text{ times}} &= \\[5pt] 5^6}'
+        expected = r'\begin{aligned}(5^2)^3 &= \underbrace{5^2\cdot5^2\cdot5^2}_{3\text{ times}} \\[5pt] &= 5^6\end{aligned}'
+        self.assertEqual(normalize_tex(source), expected)
+        validate_tex(expected)
+        for source in (r'\begin{aligned}x &= 1 \\ y &= 2\end{aligned}',
+                       r'\begin{aligned}x &= y \\ &= z\end{aligned}'):
+            self.assertEqual(normalize_tex(source), source)
+        self.assertEqual(normalize_tex(r'\begin{aligned}a &= \\ b & \end{aligned}'),
+                         r'\begin{aligned}a &= b\end{aligned}')
+
+    def test_fraction_parentheses_scale_without_changing_inner_negative_bases(self):
+        source = r'{(-\frac{2}{5})}^{2}={(\frac{(-2)}{5})}^{2}=\frac{(-2)^{2}}{{5}^{2}}'
+        expected = r'{\left(-\frac{2}{5}\right)}^{2}={\left(\frac{(-2)}{5}\right)}^{2}=\frac{(-2)^{2}}{{5}^{2}}'
+        self.assertEqual(normalize_tex(source), expected)
+        self.assertEqual(normalize_tex(expected), expected)
+        self.assertEqual(normalize_prose('Compute $' + source + '$.'), 'Compute $' + expected + '$.')
+        validate_tex(expected)
+
+    def test_fraction_parentheses_support_nested_groups_and_keep_explicit_sizes(self):
+        for command in ('frac', 'dfrac', 'tfrac'):
+            source = '( -\\' + command + r'{\frac{1}{2}}{(-3)^{2}} )^4'
+            expected = '\\left( -\\' + command + r'{\frac{1}{2}}{(-3)^{2}} \right)^4'
+            self.assertEqual(normalize_tex(source), expected)
+        for source in (r'\left(-\dfrac{3}{2}\right)^3', r'\bigl(\frac{1}{2}\bigr)',
+                       r'\big(\frac{1}{2})', r'(-2)^3', r'(4\div11)^3',
+                       r'f(x)', r'\frac{(-2)^2}{5^2}', r'(\frac{1}{2}+x)',
+                       r'(\frac{1}{2}', r'(\frac{1})', r'ordinary (prose)'):
+            self.assertEqual(normalize_tex(source), source)
+
+    def test_archived_svg_row_spacing_is_canonicalized_in_labels_and_spacing_formulas(self):
+        for source in (r'\underset{\substack{\phantom{.} \[4pt] \uparrow \[6pt] I}}{x}',
+                       r'\[6pt]', r'\ \[1ex]'):
+            result = normalize_tex(source)
+            self.assertEqual(normalize_tex(result), result)
+            self.assertIn(r'\\[', result)
+            validate_tex(result)
+        with self.assertRaisesRegex(ValueError, 'Nested math delimiter'):
+            validate_tex(r'x+\[y\]')
+
+    def test_inline_legacy_matrix_with_single_backslash_newline_is_normalized(self):
+        source = 'Use $\\left\\lbrack\\matrix{1 & 2 \\\n3 & 4}\\right\\rbrack$.'
+        normalized = normalize_prose(source)
+        self.assertIn(r'\begin{bmatrix}1 & 2 \\' + '\n3 & 4' + r'\end{bmatrix}', normalized)
+        validate_prose(normalized)
+
     def test_matrix_question_layout_keeps_tex_and_field_order(self):
         operands = matrix_operands(['A=' + matrix_tex([[1, 2], [3, 4]]), 'B=' + matrix_tex([[5, 6], [7, 8]])])
         self.assertIn('class="matrix-operands"', operands)
