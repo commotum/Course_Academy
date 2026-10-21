@@ -209,7 +209,7 @@ export function historicalGrowth(inputs, options, currentScope, now) {
     }
     previous = scope;
   }
-  if (!previous || !observedFrom) invalid ||= 'No reliable opening inventory in retained history.';
+  if (previous === null || observedFrom === null) invalid ||= 'No reliable opening inventory in retained history.';
   if (previous && (previous.nodeIds.size !== currentScope.nodeIds.size || [...previous.nodeIds].some(id => !currentScope.nodeIds.has(id))
     || [...previous.tracks].some(([id, course]) => currentScope.tracks.get(id) !== course))) {
     invalid = 'Retained history does not reproduce the current filtered graph.';
@@ -237,6 +237,30 @@ export function completionEstimate(initialWork, dailyDemand, pace, now, remainin
   const days = initialWork / (pace - dailyDemand), at = now + days * DAY;
   if (!Number.isFinite(at) || Math.abs(at) > 8.64e15) return { status: 'out-of-range', days: null, date: null, baseXpPerDay: pace };
   return { status: 'estimated', days, date: new Date(at).toISOString(), baseXpPerDay: pace };
+}
+
+function scenario(forecast, pace) {
+  const result = completionEstimate(forecast.initialWorkBaseXp, forecast.dailyDemandBaseXp, pace,
+    Date.parse(forecast.capturedAt), forecast.inventory.remainingTopics);
+  if (result.days === null) return { ...result, workload: null };
+  const T = result.days, d = forecast.pace.observedDays, o = forecast.overhead;
+  const lessonAttemptBaseXp = T === 0 ? 0 : o.retryFactor * (forecast.inventory.remainingLessonBaseXp + forecast.growth.total.baseXpPerDay * T);
+  const reviewBaseXp = d ? forecast.pace.reviewBaseXp / d * T : 0;
+  const otherBaseXp = d ? forecast.pace.otherBaseXp / d * T : 0;
+  const quizBaseXp = o.quizRatio * (lessonAttemptBaseXp + reviewBaseXp + otherBaseXp);
+  return { ...result, workload: { lessonAttemptBaseXp, reviewBaseXp, otherBaseXp, quizBaseXp,
+    totalBaseXp: lessonAttemptBaseXp + reviewBaseXp + otherBaseXp + quizBaseXp,
+    estimatedReviews: d ? forecast.pace.reviewAttempts / d * T : 0,
+    estimatedQuizzes: quizBaseXp / o.averageQuizBaseXp } };
+}
+
+// Goal previews reuse the measured workload/rates and update immediately,
+// without replaying history, fetching data, or writing the saved goal.
+export function withForecastGoal(forecast, dailyEarnedXpGoal) {
+  const factor = forecast.pace.earnedToBaseFactor;
+  const goalBaseXpPerDay = positive(dailyEarnedXpGoal) && positive(factor) ? dailyEarnedXpGoal / factor : null;
+  return { ...forecast, pace: { ...forecast.pace, dailyEarnedXpGoal, goalBaseXpPerDay },
+    goalPace: scenario(forecast, goalBaseXpPerDay) };
 }
 
 export function calculateForecast(inputs, options = {}) {
@@ -271,7 +295,7 @@ export function calculateForecast(inputs, options = {}) {
   const observed = days.slice(startIndex), d = observed.length;
   const start = starts[startIndex] ?? end;
   const totals = { baseXp: 0, earnedXp: 0, pairedBaseXp: 0, pairedEarnedXp: 0, lessonBaseXp: 0,
-    successfulLessonBaseXp: 0, quizBaseXp: 0, nonQuizBaseXp: 0, reviewBaseXp: 0, reviewAttempts: 0,
+    successfulLessonBaseXp: 0, quizBaseXp: 0, quizAttempts: 0, nonQuizBaseXp: 0, reviewBaseXp: 0, reviewAttempts: 0,
     otherBaseXp: 0, missingBases: 0, unpricedActivities: 0, undatedAttempts: 0, missingTiming: 0 };
   const attribution = new Map(assignTargetCourses(graph, scope.graph, buildTargetCalendar(graph.targetSchedule), new Set(scope.graph.nodeById.keys()))
     .flatMap(course => [...course.nodeIds].map(topic => [topic, course.key])));
@@ -298,7 +322,7 @@ export function calculateForecast(inputs, options = {}) {
     totals.baseXp += base;
     if (Number.isFinite(earned)) { totals.pairedBaseXp += base; totals.pairedEarnedXp += earned; }
     if (kind === 'lesson') { totals.lessonBaseXp += base; if (state === 'completed') totals.successfulLessonBaseXp += base; }
-    if (kind === 'assessment') { totals.quizBaseXp += base; continue; }
+    if (kind === 'assessment') { totals.quizBaseXp += base; totals.quizAttempts++; continue; }
     totals.nonQuizBaseXp += base;
     const topic = f.get(activity, 'activity/scope'), course = attribution.get(topic);
     if (course) shares[course] += base;
@@ -338,7 +362,7 @@ export function calculateForecast(inputs, options = {}) {
   if (totals.missingTiming) warnings.push('Some recent attempts have incomplete recorded time.');
   if (!positive(conversion)) warnings.push('No positive earned-to-base conversion is available.');
   const { modeledTasks, ...publicGrowth } = growth;
-  return { basis: inputs.basis, capturedAt: inputs.capturedAt, scope: scopeOptions,
+  const forecast = { basis: inputs.basis, capturedAt: inputs.capturedAt, scope: scopeOptions,
     inventory: { selectedTopics: scope.nodeIds.size, roots: scope.roots.size, remainingTopics,
       remainingLessonBaseXp: sum('remainingLessonBaseXp'), unknownCosts: values.flatMap(c => c.unknownCosts) },
     pace: { observedFrom: new Date(start).toISOString(), observedThrough: new Date(end).toISOString(), observedDays: d,
@@ -347,17 +371,19 @@ export function calculateForecast(inputs, options = {}) {
       earnedToBaseFactor: conversion, dailyEarnedXpGoal: goal, goalBaseXpPerDay: goalPace },
     overhead: { retryFactor: retry, retryWindow: positive(totals.successfulLessonBaseXp) ? 'recent' : 'all-dated-history',
       quizRatio, quizRatioSource: positive(totals.nonQuizBaseXp) ? 'observed' : '15/150 approximation',
+      averageQuizBaseXp: totals.quizAttempts ? totals.quizBaseXp / totals.quizAttempts : 15,
       reviewOtherBaseXpPerDay: reviewOtherPerDay, reviewsPerDay: d ? totals.reviewAttempts / d : null },
     growth: publicGrowth, courses: values, initialWorkBaseXp: B, dailyDemandBaseXp: k,
-    currentPace: completionEstimate(B, k, pace, now, remainingTopics),
-    goalPace: completionEstimate(B, k, goalPace, now, remainingTopics), warnings };
+    warnings };
+  return { ...forecast, currentPace: scenario(forecast, pace), goalPace: scenario(forecast, goalPace) };
 }
 
 export function forecastDayStarts(now = new Date()) {
   return Array.from({ length: 8 }, (_, i) => new Date(now.getFullYear(), now.getMonth(), now.getDate() - 7 + i).getTime());
 }
 
-export function savedForecastScope(storage = globalThis.localStorage) {
+export function savedForecastScope(storage) {
+  if (storage === undefined) { try { storage = globalThis.localStorage; } catch { /* Storage is optional. */ } }
   const read = (key, fallback) => { try { return JSON.parse(storage?.getItem(key)) ?? fallback; } catch { return fallback; } };
   const courses = read('course-academy.graph-target-courses', TARGET_COURSE_CODES);
   return { courses: Array.isArray(courses) ? courses.filter(code => TARGET_COURSE_CODES.includes(code)) : TARGET_COURSE_CODES,
@@ -365,8 +391,7 @@ export function savedForecastScope(storage = globalThis.localStorage) {
     weekSelection: read('course-academy.graph-target-weeks', { kind: 'all' }) };
 }
 
-// The same captured inputs can be recalculated with a different goal without
-// writing learner state or refetching history: calculateForecast(inputs,{...scope,dailyXpGoal}).
+// Read the latest immutable inputs and calculate without rendering or writing.
 export async function readForecast(options = {}) {
   const { signal, ...scope } = options;
   const boundaries = forecastDayStarts();

@@ -15,6 +15,19 @@ from serve_graph_explorer import handler, admit_answer
 
 
 class PageReadAdmission(unittest.TestCase):
+    def test_forecast_get_uses_only_the_read_only_page_reader(self):
+        with tempfile.TemporaryDirectory() as directory:
+            environment = {"LEARNING_REQUEST_DIR": directory, "EDB_ENDPOINT": "/unused"}
+            with patch("serve_graph_explorer.InventoryJobs"), patch("serve_graph_explorer.NativeWorker"):
+                cls = handler(Path("/unused"), "test", "learner", environment, Path("/unused"))
+                request = cls.__new__(cls)
+                request.path = "/api/forecast-inputs?dayStarts=" + ",".join(str(i * 86400000) for i in range(8))
+                request.trusted = lambda: True
+                reads = []
+                request.learning_request = reads.append
+                request.do_GET()
+                self.assertEqual(reads, [{"action": "forecast-inputs", "dayStarts": [i * 86400000 for i in range(8)]}])
+
     def test_topic_availability_get_validates_one_topic_id_and_only_reads(self):
         with tempfile.TemporaryDirectory() as directory:
             environment = {"LEARNING_REQUEST_DIR": directory, "EDB_ENDPOINT": "/unused"}
@@ -161,7 +174,7 @@ class PageReadAdmission(unittest.TestCase):
                 with (Path(directory) / "api.lock").open("a") as lock:
                     fcntl.flock(lock, fcntl.LOCK_EX)
                     with ThreadPoolExecutor(max_workers=1) as executor:
-                        for action in ["assignments", "activity-history", "study-stats", "mode", "answer", "topic-study-availability"]:
+                        for action in ["assignments", "activity-history", "study-stats", "forecast-inputs", "mode", "answer", "topic-study-availability"]:
                             request = cls.__new__(cls)
                             replies = []
                             request.send_bytes = lambda status, body, content_type: replies.append((status, json.loads(body)))

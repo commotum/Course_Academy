@@ -1,0 +1,114 @@
+{
+  "verdict": "accepted",
+  "summary": "Both retained defects are fixed. All eight checks pass, including the exact five-question batch. Package files remain unchanged; no assets were published or database content written.",
+  "source_analysis": {
+    "skill": "Translate Newton\u2019s cooling statement into a differential equation approaching ambient temperature from above.",
+    "reasoning_steps": [
+      "Identify the surrounding temperature.",
+      "Form the temperature excess.",
+      "Apply negative proportionality with k>0.",
+      "Select the matching equation."
+    ],
+    "invariants": [
+      "The model is dT/dt=-k(T-T_S).",
+      "One correct equation among five radio choices.",
+      "No integration or parameter fitting."
+    ],
+    "permitted_variations": [
+      "Ambient temperature, supported contexts and units.",
+      "Hotter initial temperatures in moderate cases.",
+      "Choice positions and same-method distractor combinations."
+    ],
+    "source_refs": [
+      "8012ecda-d2f4-52de-99de-7b2ebd635661: canonical bread example",
+      "29a46a1b-3fea-5ef3-98e8-a12878014c94: Fahrenheit cake",
+      "3ba4e3cf-6728-56eb-8731-1748c4ffae5c: turkey",
+      "9d9f1ee5-0c1f-52df-9e3a-c2e55b83891f: soup",
+      "Tutorial f58653bc-cafb-532a-b92d-8183054c181b: Newton\u2019s law of cooling"
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "reuse-provenance.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay.json",
+        "source-replay-records.json"
+      ],
+      "details": "All ten complete source banks, prompts, solutions and keys replay exactly. The canonical example has no captured bank."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math.json",
+        "prepare_checks.py",
+        "all-grader-input.json"
+      ],
+      "details": "Independent prompt-derived symbolic checks confirm unique correct models and matching solutions, including boundaries and controlled changes."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "sampling-coverage.json",
+        "normal-easy-records.json",
+        "conditional-cue-probes.json"
+      ],
+      "details": "All source families are supported. Ordinary easy sampling includes cake; ambient values and supported units vary."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "scope.json",
+        "changed-counterfactual-records.json"
+      ],
+      "details": "Revised banks preserve model recognition, difficulty and response workload."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "all-grader-input.json",
+        "all-grader-report.json"
+      ],
+      "details": "The current native grader passes 740 submissions: 148 accepted and 592 rejected."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "visual-inspection.json",
+        "render/rendering.json",
+        "ui-position-probes.json"
+      ],
+      "details": "Thirteen actual-UI renders pass; eleven representative screenshots were inspected. Counterfactual prompts, controls and solutions agree."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging.json",
+        "package-before.json",
+        "package-after.json",
+        "retained-finding-verification.json",
+        "commands.json"
+      ],
+      "details": "Exact runtime dependencies, determinism, relocation and boundary rejection pass. Retained tests detect historical failures and pass the revision. All 166 package files are unchanged."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "retained-finding-verification.json",
+        "changed-counterfactual-results.json",
+        "delivery-batch/delivery.json",
+        "learner-selection.json",
+        "ui-position-probes.json",
+        "inventory-review.json",
+        "affected-inventory.json",
+        "generated-records.json"
+      ],
+      "details": "The historical shortest-choice shortcut no longer succeeds. Relevant and irrelevant counterfactuals pass. All five exact batch records survive filtering. Seven historical generated inventory records were reproduced and are unaffected. Selection conclusions are conditional on captured inventory and explicit learner-policy assumptions."
+    }
+  },
+  "findings": []
+}

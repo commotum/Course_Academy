@@ -397,7 +397,7 @@ button,input,select { font:inherit; }
 <button id="manualNodeDone" class="pill" type="button">Done</button>
 </dialog>
 <script type="module">
-import { indexTargetGraph, targetSelectors, assignTargetCourses } from "/ui/target-scope.js";
+import { indexTargetGraph, targetSelectors, assignTargetCourses, TARGET_COURSE_CODES } from "/ui/target-scope.js";
 import { createCoursePicker, topicReferenceURL } from "/ui/navigation.js";
 import { createTargetControls, createQueueControls } from "/ui/targets.js";
 import { isLightTheme, themeColor } from "/ui/profile.js";
@@ -2067,7 +2067,7 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
   $('forwardBtn').addEventListener('click', () => jumpHistory(state.historyIndex + 1));
 
   function selectedCourse() {return snapshot?.courses.find(c=>c.id===courseId)||null;}
-  const targetCourseCodes=['255','256','341'];
+  const targetCourseCodes=TARGET_COURSE_CODES;
   const targetCourseFilterKey='course-academy.graph-target-courses';
   const targetQueueFilterKey='course-academy.graph-target-queue';
   let targetQueueEnabled=true;

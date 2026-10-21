@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { ForecastFacts, forecastGraph, knownPreparationTopics, calculateForecast, completionEstimate,
-  forecastDayStarts, savedForecastScope, readForecast } from '../ui/forecast.js';
+  forecastDayStarts, savedForecastScope, readForecast, withForecastGoal } from '../ui/forecast.js';
 import { projectTargetScope } from '../ui/target-scope.js';
 
 process.env.TZ = 'America/Los_Angeles';
@@ -99,6 +99,26 @@ test('historical growth excludes opening inventory and counts the marginal depth
   assert.equal(result.growth.total.categories.target.topics, 1);
   assert.equal(result.growth.total.categories.prerequisite.topics, 1);
   assert.equal(result.growth.total.categories.queue.topics, 0);
+});
+
+test('native numeric transaction instants produce the same historical growth as ISO dates', () => {
+  const inputs = fixture().inputs();
+  const original = calculateForecast(inputs);
+  for (const event of inputs.history) event.at = Date.parse(event.at);
+  assert.deepEqual(calculateForecast(inputs).growth, original.growth);
+});
+
+test('scenario workload balances capacity and goal previews reuse measurements without altering the original', () => {
+  const result = calculateForecast(fixture().inputs());
+  close(result.goalPace.workload.totalBaseXp, result.goalPace.baseXpPerDay * result.goalPace.days);
+  assert.ok(result.goalPace.workload.estimatedReviews > 0);
+  assert.ok(result.goalPace.workload.estimatedQuizzes > 0);
+  const preview = withForecastGoal(result, 300);
+  assert.equal(preview.inventory, result.inventory);
+  assert.equal(preview.growth, result.growth);
+  assert.equal(preview.currentPace, result.currentPace);
+  assert.ok(preview.goalPace.days < result.goalPace.days);
+  assert.equal(result.pace.dailyEarnedXpGoal, 140);
 });
 
 test('queue/target overlap and prerequisite promotion add no work; course transfers do not create arrivals', () => {

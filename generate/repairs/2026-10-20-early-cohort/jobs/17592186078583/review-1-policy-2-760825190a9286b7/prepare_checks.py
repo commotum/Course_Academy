@@ -12,7 +12,7 @@ def expr(v):
 def field(r):return r['question'][':question/answer-fields'][0]
 def key(r):
  x=field(r)[':answer-field/correct'];return x[1] if isinstance(x,list) else x[':answer/id']
-records=read('samples.json')+read('batch.json')+read('counterfactual-records.json')+read('changed-counterfactual-records.json')+read('delivery-batch/accepted.json')+read('delivery-moderate/accepted.json')
+records=read('normal-easy-records.json')+read('initial-endpoint-records.json')+read('samples.json')+read('batch.json')+read('counterfactual-records.json')+read('changed-counterfactual-records.json')+read('delivery-batch/accepted.json')+read('delivery-moderate/accepted.json')
 cases=[]
 for i,r in enumerate(records):
  q=r['question'];S=int(re.findall(r'\$\{(\d+)\}\^',q[':question/problem'])[-1]);target=-k*(T-S);choices=field(r)[':answer-field/choices'];hits=[a for a in choices if sp.expand(expr(a[':answer/value'])-target)==0]
@@ -28,7 +28,6 @@ for dataset in ['samples.json','batch.json','delivery-easy/accepted.json','deliv
  rows=read(dataset);groups={'ALL':rows}
  for r in rows:groups.setdefault(r['generation']['template'],[]).append(r)
  for group,rs in groups.items():
-  if len(rs)<2 and group!='ALL':continue
   for name in ['unique_shortest','unique_longest','first_position','last_position','one_minus','two_minus','no_plus','lexicographically_first']:
    correct=eligible=0
    for r in rs:

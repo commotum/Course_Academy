@@ -21,7 +21,7 @@ for q in bank:
   comparisons={'prompt':r['question'][':question/problem']==q[':question/problem'],'solution':r['question'][':question/worked-solution']==q[':question/worked-solution'],'complete_bank':sorted(a[':answer/value'] for a in f[':answer-field/choices'])==sorted(a[':answer/value'] for a in sf[':answer-field/choices']),'correct_value':next(a[':answer/value'] for a in f[':answer-field/choices'] if a[':answer/id']==f[':answer-field/correct'][1])==sf[':answer-field/correct'][':answer/value']}
   rr.append({'source_id':q[':question/id'],'template':sid,'parameters':params,'comparisons':comparisons})
  except Exception as e:rr.append({'source_id':q[':question/id'],'template':sid,'parameters':params,'error':str(e)})
-save('source-replay-records.json',replay);save('source-replay.json',{'command':'.venv/bin/python audit.py','cases':rr,'canonical':'Not a supported template; canonical bank absent in source; same law solution covered by source cases.'})
+save('source-replay-records.json',replay);save('source-replay.json',{'command':'/home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186078583/review-1-policy-2-760825190a9286b7/audit.py','cases':rr,'canonical':'Not a supported template; canonical bank absent in source; same law solution covered by source cases.'})
 samples=[]
 for level,templates in m.DEFAULT_TEMPLATES.items():
  for template in templates:
@@ -48,7 +48,7 @@ for index,r in enumerate(samples+batch):
  key=f[':answer-field/correct'][1];good=len(hits)==1 and f[':answer-field/choices'][hits[0]][':answer/id']==key
  solution_ok=f'-k(T-{ambient})' in q[':question/worked-solution']
  math.append({'index':index,'id':q[':question/id'],'ambient_from_prompt':ambient,'key_correct':good,'solution_correct':solution_ok,'unique_choices':len({str(sp.expand(e)) for e in equations})==5})
-save('math.json',{'command':'.venv/bin/python audit.py','cases':math,'failed':[x for x in math if not all(x[y] for y in ['key_correct','solution_correct','unique_choices'])]})
+save('math.json',{'command':'/home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186078583/review-1-policy-2-760825190a9286b7/audit.py','cases':math,'failed':[x for x in math if not all(x[y] for y in ['key_correct','solution_correct','unique_choices'])]})
 # Relevant and irrelevant controlled changes, same seed/template.
 cf=[m.generate('easy',92817,template='q-105917',parameters={'S':22}),m.generate('easy',92817,template='q-105917',parameters={'S':29}),m.generate('moderate',92817,template='q-37365',parameters={'S':64,'I':100}),m.generate('moderate',92817,template='q-37365',parameters={'S':65,'I':100}),m.generate('moderate',92817,template='q-37365',parameters={'S':64,'I':101})]
 save('counterfactual-records.json',cf)
