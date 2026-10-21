@@ -4,6 +4,7 @@
 import argparse
 from datetime import datetime
 import fcntl
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -58,6 +59,14 @@ def batches_for(items, max_files, max_bytes):
 
 def entry_records(entries):
     return {os.fsdecode(path): [mode.decode(), oid.decode()] for path, mode, oid, _ in entries}
+
+
+def file_digest(path):
+    digest = hashlib.sha256()
+    with path.open('rb') as source:
+        for block in iter(lambda: source.read(1024 * 1024), b''):
+            digest.update(block)
+    return digest.digest()
 
 
 def recover_stale_index_lock(index_lock, repo, cache, log):
@@ -389,6 +398,9 @@ def main():
 
         if not drain_staged():
             return 1 if any(e[-1] >= MAX_FILE_BYTES for e in entries) else 0
+        if limit_reached():
+            log('Run limit reached; next run resumes from the remaining worktree changes.')
+            return 0
         entries, items, tracked_paths, oversized = inventory()
         vanished = 0
         for batch, byte_count in batches_for(items, args.batch_files, args.batch_bytes):
@@ -402,35 +414,69 @@ def main():
             paths = [path for path, _ in batch]
 
             def surviving(candidates):
-                return [p for p in candidates if p in tracked_paths or os.path.lexists(repo / os.fsdecode(p))]
+                # Ignore rules can change after inventory, including rules for
+                # embedded repositories. Never force-add an ignored path.
+                result = git('check-ignore', '-z', '--stdin', capture=True, check=False,
+                             input=b'\0'.join(candidates) + b'\0')
+                if result.returncode not in (0, 1):
+                    raise RuntimeError('Cannot inspect ignore rules; retry on the next run')
+                ignored = set(result.stdout.split(b'\0'))
+                return [p for p in candidates if p not in ignored
+                        and (p in tracked_paths or os.path.lexists(repo / os.fsdecode(p)))]
 
             current_paths = surviving(paths)
             vanished += len(paths) - len(current_paths)
             log(f'Staging {len(current_paths)} paths, estimated {byte_count / 1024**2:.1f} MiB.')
-            while current_paths:
-                with tempfile.NamedTemporaryFile(prefix='paths-', dir=state_dir) as pathspec:
-                    pathspec.write(b'\0'.join(current_paths) + b'\0')
-                    pathspec.flush()
+            # git add can update the index even when it exits with an error.
+            # Prepare in isolation, then record exact blob ownership BEFORE
+            # atomically publishing the index. Failures leave the real index
+            # untouched; interruption after publication is safely resumable.
+            with tempfile.TemporaryDirectory(prefix='stage-', dir=state_dir) as directory:
+                private_index = Path(directory) / 'index'
+                base = head()
+                shutil.copy2(index_path, private_index)
+                original_digest = file_digest(private_index)
+                private_git = lambda *a, **kw: git(*a, **kw, index=private_index)
+                if staged_entries(private_git):
+                    raise RuntimeError('Another process staged changes during preparation; stopping')
+                while current_paths:
+                    with tempfile.NamedTemporaryFile(prefix='paths-', dir=state_dir) as pathspec:
+                        pathspec.write(b'\0'.join(current_paths) + b'\0')
+                        pathspec.flush()
+                        try:
+                            private_git('--literal-pathspecs', 'add', '-A',
+                                        f'--pathspec-from-file={pathspec.name}', '--pathspec-file-nul')
+                            break
+                        except subprocess.CalledProcessError:
+                            remaining = surviving(current_paths)
+                            if remaining == current_paths:
+                                raise
+                            vanished += len(current_paths) - len(remaining)
+                            log('Paths vanished or became ignored during staging; retrying surviving paths.')
+                            current_paths = remaining
+                if not current_paths:
+                    continue
+                entries = staged_entries(private_git)
+                expected_paths = set(current_paths)
+                if any(entry[0] not in expected_paths for entry in entries):
+                    raise RuntimeError('Unexpected staged paths in private index; stopping')
+                if not entries:
+                    continue
+                index_lock = git_path('index.lock')
+                # O_EXCL respects every other Git writer. Compare the full index
+                # while holding the lock so no concurrent staging gets replaced.
+                with index_lock.open('xb') as output:
                     try:
-                        # No hard timeout on index writes: Git must clean up its lock.
-                        git('--literal-pathspecs', 'add', '-A', f'--pathspec-from-file={pathspec.name}', '--pathspec-file-nul')
-                        break
-                    except subprocess.CalledProcessError:
-                        remaining = surviving(current_paths)
-                        if remaining == current_paths:
-                            raise
-                        vanished += len(current_paths) - len(remaining)
-                        log('Temporary files vanished during staging; retrying surviving paths.')
-                        current_paths = remaining
-            if not current_paths:
-                continue
-            entries = staged_entries(git)
-            expected_paths = set(current_paths)
-            if any(entry[0] not in expected_paths for entry in entries):
-                raise RuntimeError('Another process staged unrelated changes; stopping')
-            # Persist ownership before committing. Failed commits/pushes and partial
-            # recovery leave exact blob IDs that subsequent timer runs can verify.
-            save_owner(entries)
+                        if head() != base or file_digest(index_path) != original_digest:
+                            raise RuntimeError('HEAD or index changed during staging; retry on the next run')
+                        save_owner(entries)
+                        with private_index.open('rb') as source:
+                            shutil.copyfileobj(source, output)
+                        output.flush()
+                        os.fsync(output.fileno())
+                        index_lock.replace(index_path)
+                    finally:
+                        index_lock.unlink(missing_ok=True)
             if not drain_staged():
                 return 1 if any(e[-1] >= MAX_FILE_BYTES for e in entries) else 0
         log(f'Snapshot complete; {vanished} vanished paths; {len(oversized)} oversized files remain local.')

@@ -51,6 +51,60 @@ class AutosaveTests(unittest.TestCase):
     def remote_head(self):
         return subprocess.check_output(['git', '--git-dir', str(self.remote), 'rev-parse', 'master']).decode().strip()
 
+    def git_wrapper(self, body):
+        """Inject races/failures at the actual Git subprocess boundary."""
+        directory = self.root / 'bin'
+        directory.mkdir()
+        real_git = subprocess.check_output(['which', 'git']).decode().strip()
+        wrapper = directory / 'git'
+        wrapper.write_text('#!/usr/bin/env python3\nimport os,sys,subprocess\nfrom pathlib import Path\n'
+                           f'real_git={real_git!r}\nargs=sys.argv[1:]\n' + body +
+                           '\nos.execv(real_git, [real_git,*args])\n')
+        wrapper.chmod(0o755)
+        return dict(self.env, PATH=str(directory) + os.pathsep + self.env['PATH'])
+
+    def test_partial_git_add_failure_does_not_strand_shared_index(self):
+        for name in ('a', 'b'):
+            (self.repo / name).write_text(name)
+        original_index = (self.repo / '.git/index').read_bytes()
+        env = self.git_wrapper(
+            'if "add" in args:\n'
+            ' subprocess.run([real_git,"add","a"], check=True)\n'
+            ' sys.exit(1)\n')
+        self.run_script(env=env, expected=1)
+        self.assertEqual((self.repo / '.git/index').read_bytes(), original_index)
+        self.assertEqual(self.git('diff', '--cached', '--name-only'), '')
+        self.assertEqual(self.remote_head(), self.base)
+        self.run_script()
+        self.assertEqual(self.git('status', '--porcelain'), '')
+        self.assertEqual(self.remote_head(), self.git('rev-parse', 'HEAD'))
+
+    def test_ignore_rule_change_during_add_retries_without_force_adding(self):
+        for name in ('a', 'ignored'):
+            (self.repo / name).write_text(name)
+        env = self.git_wrapper(
+            'if "add" in args and not Path(".gitignore").exists():\n'
+            ' Path(".gitignore").write_text("ignored\\n")\n')
+        result = self.run_script(env=env)
+        self.assertIn('became ignored', result.stdout)
+        self.assertEqual(self.git('ls-tree', '--name-only', 'HEAD', 'ignored'), '')
+        self.assertEqual(self.git('show', 'HEAD:a'), 'a')
+        self.run_script()
+        self.assertEqual(self.git('status', '--porcelain'), '')
+
+    def test_concurrent_staging_is_not_replaced(self):
+        (self.repo / 'a').write_text('autosave')
+        env = self.git_wrapper(
+            'if "add" in args:\n'
+            ' Path("external").write_text("manual staging")\n'
+            ' env=os.environ.copy(); env.pop("GIT_INDEX_FILE",None)\n'
+            ' subprocess.run([real_git,"add","external"],env=env,check=True)\n')
+        self.run_script(env=env, expected=1)
+        self.assertEqual(self.git('diff', '--cached', '--name-only'), 'external')
+        self.assertEqual(self.git('rev-parse', 'HEAD'), self.base)
+        self.assertFalse((self.repo / '.git/index.lock').exists())
+        self.run_script(expected=1)
+
     def test_dry_run_does_not_mutate_index_or_head_or_recover_lock(self):
         (self.repo / 'new').write_text('new')
         self.git('add', 'new')

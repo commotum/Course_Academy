@@ -1,0 +1,10 @@
+[Unit]
+Description=Autosave Course_Academy Git progress in bounded chunks
+
+[Service]
+Type=oneshot
+WorkingDirectory=%h/Developer/Course_Academy
+ExecStart=/usr/bin/python3 %h/Developer/Course_Academy/scripts/git_autosave.py --repo %h/Developer/Course_Academy
+Environment=GIT_TERMINAL_PROMPT=0
+Environment="GIT_SSH_COMMAND=ssh -o BatchMode=yes -o ConnectTimeout=30"
+TimeoutStartSec=infinity
