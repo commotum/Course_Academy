@@ -1,0 +1,296 @@
+{
+  "learner_operation": "Identify radicand x and index n (2 for an unindexed square root), preserve x as base, and select x^(1/n) among competing assignments of base, numerator and denominator.",
+  "fixed_features": [
+    {
+      "feature": "Forward conversion of one positive radical to a unit fraction exponent.",
+      "justification": "Tutorial3293 and e-4959 explicitly identify x and n, then write x^(1/n). No evaluation or reverse conversion is needed."
+    },
+    {
+      "feature": "Exponent numerator1; square root has implicit index2.",
+      "justification": "Essential mathematical content of the target KP, expressly stated in tutorial3293. Choosing denominator2 for a square root expresses the skill; favoring one base from its bank does not."
+    },
+    {
+      "feature": "One radio field with five math choices.",
+      "justification": "All three captured question answer banks have this contract. Exactly one equivalent choice is required."
+    },
+    {
+      "feature": "Conservative finite numeric family, no powers inside the radical or negative radicands.",
+      "justification": "Preserves one substitution at easy difficulty. General powered radicals are a neighboring KP (e-4903). Family size alone is not grounds for failure; bank-dependent target probabilities are tested separately."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Radicand retained as exponent base",
+      "eligible_variation": "Different positive radicands, including either base within a fixed choice bank.",
+      "observed": "All supported radicands appear in capacity runs. Within square bank{2,3}, ordinary count5 sampling heavily favors2:127/136 after delivery."
+    },
+    {
+      "role": "Root index becomes exponent denominator",
+      "eligible_variation": "Change n independently within the supported higher-root bank; square root fixes2 for mathematical reasons.",
+      "observed": "Indices2..10 sampled; controlled indexed bank supports each pairing of bases2,15 with indices3,10."
+    },
+    {
+      "role": "Correct mathematical choice within an otherwise fixed bank",
+      "eligible_variation": "Both square bases and all four indexed base/index assignments can be targets.",
+      "observed": "Controlled swaps update prompt, final solution, correct value and native grading. Merely making both eligible did not prevent probabilistic base leakage in square sampling."
+    },
+    {
+      "role": "Correct displayed position",
+      "eligible_variation": "All five radio positions; independent of target.",
+      "observed": "Position counts differ across all three recognizable templates without a strong first-position predictor."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "Complete observed source banks",
+      "sample_refs": [
+        "source-replay.json"
+      ],
+      "result": "All three question prompts, all15 choices and both captured solutions reproduced modulo insignificant TeX braces/whitespace. Missing q-69158 key/solution and canonical bank gap explicitly recorded."
+    },
+    {
+      "case": "Supported parameter and profile boundaries",
+      "sample_refs": [
+        "sample-runs.json",
+        "boundary-results.json",
+        "coverage-results.json"
+      ],
+      "result": "Two fresh full-capacity126-question runs cover all supported semantic targets. Indices2..10, square integer/decimal forms, foil indices1/3/4/5, both base directions and both inverted-base assignments covered."
+    },
+    {
+      "case": "Delivered small-batch distribution",
+      "sample_refs": [
+        "shortcut-trials.json",
+        "shortcut-results.json"
+      ],
+      "result": "512 prospective count5 batches (seeds461003..461514) all pass actual captured-inventory delivery filtering. The base2 cue succeeds127/136 in its recognizable bank subgroup; zero duplicates in these independent publications."
+    },
+    {
+      "case": "Runner actual batch",
+      "sample_refs": [
+        "runner-batch.json",
+        "batch-delivery/accepted.json",
+        "batch-delivery/delivery.json"
+      ],
+      "result": "All five accepted at requested easy difficulty. This batch contains one decimal square question and four indexed questions; it does not itself contain the affected{2,3} bank subgroup."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Hold indexed bank fixed, change only target radicand or index across(2,3),(2,10),(15,3),(15,10), separately for both indexed prompt templates and two independent base1-foil assignments.",
+      "expected": "Bank values remain identical; key value, prompt, x/n substitutions, final equation and grader outcome follow target.",
+      "observed": "All16 records have distinct correct target expressions across each quartet; exact arithmetic and all five native choice checks per record agree. Actual UI renders all pairs with no math errors; screenshots1..4 reviewed.",
+      "status": "passed",
+      "justification": "Tutorial3293 requires reading both radicand and index. Keeping the complete bank fixed prevents deriving target from choice membership alone.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-pairs.json",
+        "grader-input.json",
+        "grader-results.json",
+        "render-all/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "Hold square bank fixed and exchange target2\u21943 or1.8\u21942.5, with each foil index1/3/4/5 and the inverted-power base held constant.",
+      "expected": "Correct base must change while exponent1/2 is preserved; explanation and native acceptance must follow new radical.",
+      "observed": "All16 records update correctly; every choice is checked by native grader. Screenshots17,18,25,26 visually confirm prompt, key and worked solution updates. This establishes both bases are legitimate, but does not excuse their sampling imbalance.",
+      "status": "passed",
+      "justification": "Square-root index remains2 by the tutorial; retaining the radicand as base is still a necessary learner operation.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-pairs.json",
+        "grader-results.json",
+        "render-all/question-017.png",
+        "render-all/question-018.png",
+        "render-all/question-025.png",
+        "render-all/question-026.png"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Change only choice-order seed51\u219252 for the same sqrt[7](9) item.",
+      "expected": "Preserve problem, solution, correct mathematical value and accepted choice UUID, while displayed position changes.",
+      "observed": "All semantic content and correct UUID preserved. Actual grader accepts the same UUID in both and rejects the other four; screenshots33/34 show changed display order with the same prompt and solution.",
+      "status": "passed",
+      "justification": "Choice display order is incidental to tutorial3293 identity and source radio contract.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-pairs.json",
+        "grader-input.json",
+        "grader-results.json",
+        "render-all/question-033.png",
+        "render-all/question-034.png"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "Answer position",
+      "subgroup": "indexed-equation",
+      "scope": "within_template",
+      "strategy": "Always choose first displayed answer, ignoring prompt.",
+      "correct": 165,
+      "total": 879,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-choice blind baseline20%; observed first-position rate is near baseline. This finite test does not establish absence of other position strategies.",
+      "sample_refs": [
+        "shortcut-accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Base-1 distractor numerator and denominator",
+      "subgroup": "indexed-equation",
+      "scope": "within_template",
+      "strategy": "Read 1^(u/v) and choose u^(1/v), ignoring radical.",
+      "correct": 231,
+      "total": 879,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Four complete-grid unit-fraction targets give a25% baseline after eliminating base1 mathematically. This previously documented cue is no longer a reliable key in the tested indexed templates.",
+      "sample_refs": [
+        "shortcut-accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Answer position",
+      "subgroup": "indexed-what",
+      "scope": "within_template",
+      "strategy": "Always choose first displayed answer, ignoring prompt.",
+      "correct": 157,
+      "total": 832,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-choice blind baseline20%; observed first-position rate is near baseline. This finite test does not establish absence of other position strategies.",
+      "sample_refs": [
+        "shortcut-accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Base-1 distractor numerator and denominator",
+      "subgroup": "indexed-what",
+      "scope": "within_template",
+      "strategy": "Read 1^(u/v) and choose u^(1/v), ignoring radical.",
+      "correct": 211,
+      "total": 832,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Four complete-grid unit-fraction targets give a25% baseline after eliminating base1 mathematically. This previously documented cue is no longer a reliable key in the tested indexed templates.",
+      "sample_refs": [
+        "shortcut-accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Answer position",
+      "subgroup": "square-equation",
+      "scope": "within_template",
+      "strategy": "Always choose first displayed answer, ignoring prompt.",
+      "correct": 156,
+      "total": 849,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-choice blind baseline20%; observed first-position rate is near baseline. This finite test does not establish absence of other position strategies.",
+      "sample_refs": [
+        "shortcut-accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "The answer bank contains both 2^(1/2) and3^(1/2)",
+      "subgroup": "square-equation with base pair{2,3}, stage=raw",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select2^(1/2), without reading the radical.",
+      "correct": 127,
+      "total": 136,
+      "baseline": 0.5,
+      "disposition": "defect",
+      "conclusion": "127/136=93.3824%. Baseline50% gives full credit for recognizing square-root exponent1/2 and leaves two supported base assignments. Blind choice among all five is20%. The observed advantage comes from sampling x=n as its own case, not the intended operation of reading x. Both targets use the same bank in controlled tests.",
+      "sample_refs": [
+        "shortcut-raw.json",
+        "shortcut-results.json",
+        "shortcut-cases.json"
+      ]
+    },
+    {
+      "cue": "The answer bank contains both 2^(1/2) and3^(1/2)",
+      "subgroup": "square-equation with base pair{2,3}, stage=accepted",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select2^(1/2), without reading the radical.",
+      "correct": 127,
+      "total": 136,
+      "baseline": 0.5,
+      "disposition": "defect",
+      "conclusion": "127/136=93.3824%. Baseline50% gives full credit for recognizing square-root exponent1/2 and leaves two supported base assignments. Blind choice among all five is20%. The observed advantage comes from sampling x=n as its own case, not the intended operation of reading x. Both targets use the same bank in controlled tests.",
+      "sample_refs": [
+        "shortcut-accepted.json",
+        "shortcut-results.json",
+        "shortcut-cases.json"
+      ]
+    },
+    {
+      "cue": "The answer bank contains both 2^(1/2) and3^(1/2)",
+      "subgroup": "square-equation with base pair{2,3}, stage=learner_no_history",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select2^(1/2), without reading the radical.",
+      "correct": 299,
+      "total": 329,
+      "baseline": 0.5,
+      "disposition": "defect",
+      "conclusion": "299/329=90.8815%. Baseline50% gives full credit for recognizing square-root exponent1/2 and leaves two supported base assignments. Blind choice among all five is20%. The observed advantage comes from sampling x=n as its own case, not the intended operation of reading x. Both targets use the same bank in controlled tests.",
+      "sample_refs": [
+        "selection-records.json",
+        "shortcut-results.json",
+        "shortcut-cases.json"
+      ]
+    },
+    {
+      "cue": "The answer bank contains both 2^(1/2) and3^(1/2)",
+      "subgroup": "square-equation with base pair{2,3}, stage=learner_progressive_history",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select2^(1/2), without reading the radical.",
+      "correct": 127,
+      "total": 136,
+      "baseline": 0.5,
+      "disposition": "defect",
+      "conclusion": "127/136=93.3824%. Baseline50% gives full credit for recognizing square-root exponent1/2 and leaves two supported base assignments. Blind choice among all five is20%. The observed advantage comes from sampling x=n as its own case, not the intended operation of reading x. Both targets use the same bank in controlled tests.",
+      "sample_refs": [
+        "selection-records.json",
+        "shortcut-results.json",
+        "shortcut-cases.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "generator construction of compatible banks and no-replacement targets; no rejection loop",
+      "zero/negative/over-capacity and unsupported difficulty rejection; square direction fallback at exhaustion",
+      "actual publisher normalization, validation and inventory/within-batch deduplication",
+      "requested easy difficulty filtering",
+      "captured usable inventory plus SHA256 weighted-band selection and progressive history exclusion"
+    ],
+    "sample_refs": [
+      "sample-runs.json",
+      "boundary-results.json",
+      "delivery/delivery.json",
+      "delivery/accepted.json",
+      "batch-delivery/delivery.json",
+      "shortcut-trials.json",
+      "shortcut-results.json",
+      "selection-records.json"
+    ],
+    "result": "Combined independent coverage312\u2192302 after10 within-batch duplicates, preserving all observed profile/decision categories. Actual batch5\u21925. For512 independent prospective publications against basis4319,2560\u21922560; biased bank subgroup stays127/136. Faithful easy-band learner selection including two usable captured inventory questions yields299/329 for the shortcut; progressive no-repeat histories yield127/136. No database writes or publication."
+  },
+  "limitations": [
+    "Captured inventory basis4319 may change later; prospective trial batches are independently filtered against this snapshot, not cumulatively published.",
+    "Selection reproduction assumes positive easy weight; with only easy usable records other positive-band weights cannot affect within-band uniformity. Future DB IDs and actual learner histories are unavailable; candidate ordering is an ordinal surrogate, not a prediction of a live learner seed.",
+    "Unconfigured selection returns the lowest DB ID; future generated DB assignments cannot be predicted. Zero easy weight supplies no rated easy questions. These cases are recorded rather than claimed equivalent to weighted uniform delivery.",
+    "Source q-69158 lacks captured key/solution/difficulty; solution and key are inferred from tutorial3293. Canonical example has no captured response field/bank.",
+    "Finite audit establishes the reported probabilistic defect, not absence of other shortcuts or exhaustive coverage of every permitted numeric expression."
+  ]
+}

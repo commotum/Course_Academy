@@ -1,0 +1,138 @@
+{
+  "verdict": "revise",
+  "summary": "Square-root sampling leaks the likely correct base: an answer-bank-only strategy succeeds127/136(93.4%) versus a50% two-base baseline, surviving delivery. Source replay, tested mathematics, native grading, scope, rendering and packaging pass. Package unchanged; no publication or database writes.",
+  "source_analysis": {
+    "skill": "Convert a positive numeric nth root to the same base raised to the unit fraction 1/n, recognizing implicit index 2.",
+    "reasoning_steps": [
+      "Read radicand and explicit or implicit root index.",
+      "Apply sqrt[n](x)=x^(1/n).",
+      "Discriminate the equivalent expression from swapped-role or inverted-exponent distractors."
+    ],
+    "invariants": [
+      "Forward radical-to-unit-fraction conversion.",
+      "Positive radicand and integer root index at least2; integer radicands are observed, positive decimals are a same-operation extension.",
+      "Single correct selection; five choices for observed question families.",
+      "Worked solution states the identity, identifies x and n, and substitutes them."
+    ],
+    "permitted_variations": [
+      "Positive integer radicand and index may change independently where choices remain distinct.",
+      "Implicit square root and explicit higher-index roots.",
+      "Correct choice position and distractor ordering may change.",
+      "Answer-bearing base and denominator must track changes to x and n; no source example fixes their numeric assignments.",
+      "Distractor profiles may follow the three observed complete banks; corrected malformed TeX is permissible."
+    ],
+    "source_refs": [
+      "e-4959 / 87e686a5-7b8a-529b-a8fa-17445c52e012: sqrt[5](4)=4^(1/5), solution identifies x=4,n=5.",
+      "q-69158 / a6a09e66-f069-5046-85e4-002d5b3571d6: sqrt[7](2), full bank 2^(1/7),1^(2/7),2^(7/1),7^(2/1),7^(1/2).",
+      "q-69219 / 5ecc3edc-ec35-5d73-a402-e0e102dfec06: sqrt(10), full bank 2^(10/1),2^(1/10),10^(2/1),10^(1/2),5; correct 10^(1/2).",
+      "q-69218 / fe9954e2-d8b5-5670-b2ae-c502beed2e2e: sqrt[3](5), full bank 1^(5/3),5^(3/1),3^(5/1),3^(1/5),5^(1/3); correct 5^(1/3).",
+      "lesson 940f1cda-30ac-5ae0-bbd9-17314a49e330, tutorial 3293 / ace9adb3-54cf-5410-b2e4-d0e8ae4fb000: Given a radical sqrt[n](x), we can write an equivalent expression using the fractional exponent x^(1/n); note n=2 for square roots.",
+      "lesson step 17989 / 5a64cf15-703f-5617-8fd4-5055abf5ad57 contains e-4959.",
+      "Adjacent e-4903 requires a power law for powered radicands; that is a separate KP and excluded here."
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "source-replay.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "source-replay.json"
+      ],
+      "details": "All three complete captured banks and observed prompts replay; both available worked solutions match modulo harmless TeX braces/spacing. Missing source fields explicitly identified; canonical4^(1/5) conversion checked without inventing an observed bank."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "audit.py",
+        "math-results.json",
+        "samples.json",
+        "counterfactual-records.json",
+        "shortcut-raw.json"
+      ],
+      "details": "Independent exact rational prime-exponent checks pass351 initial practice/batch/counterfactual records and2560 expanded trial records, plus source replay. Five distinct option values, one correct key, solution conclusion and substitutions verified."
+    },
+    "variety": {
+      "status": "failed",
+      "evidence_paths": [
+        "coverage-results.json",
+        "sample-runs.json",
+        "shortcut-results.json",
+        "shortcut-trials.json"
+      ],
+      "details": "Numeric and profile coverage is broad, including all126 supported semantic targets in capacity runs. However, conditional target sampling overweights2 within square base pair{2,3}; unique questions and balanced aggregate profiles do not remove the answer-producing shortcut."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "coverage-results.json",
+        "counterfactual-records.json"
+      ],
+      "details": "Same one-step forward notation conversion, five-choice radio contract and easy workload. Decimal radicands require copying, not evaluation. Powered-radicand exponent laws and inverse conversion remain outside ordinary sampling."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-results.json"
+      ],
+      "details": "Real database-free learning::grade_field:396 response checks across188 records,179 accepted and217 rejected, zero unresolved. Every choice tested on all controlled pairs and replay/batch representatives;136 explicit shortcut responses confirmed. No free-entry field is served, so free-entry equivalence checks are inapplicable."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render-records.json",
+        "render-all/rendering.json",
+        "render-inspection.json",
+        "render-all/question-017.png",
+        "render-all/question-018.png",
+        "render-all/question-025.png",
+        "render-all/question-026.png",
+        "render-all/question-033.png",
+        "render-all/question-034.png"
+      ],
+      "details": "All42 actual-UI previews pass. Representative screenshots visually inspected for roots, fractional exponents, decimals, radio controls, worked solutions and controlled-pair behavior."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "package-before.json",
+        "relocation-sample.json",
+        "boundary-results.json"
+      ],
+      "details": "Installed Python3.13.5 exactly matches manifest; packages object empty and imports standard-library-only plus declared local module. Declared runtime files relocate and reproduce fresh seed8173. Determinism, count0, capacity126/exhaustion, count127/negative and unsupported difficulty rejection checked; package file hashes unchanged."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "shortcut_audit.py",
+        "shortcut-results.json",
+        "shortcut-cases.json",
+        "shortcut-trials.json",
+        "selection-records.json",
+        "grader-results.json"
+      ],
+      "details": "Both targets remain possible under identical square banks, yet the recognizably conditioned choose2^(1/2) strategy succeeds127/136 after filtering. Exact first-square branch analysis gives34/37\u224891.9%; faithful weighted easy-band selection gives299/329. This bypasses reading the radicand and has no instructional justification."
+    }
+  },
+  "findings": [
+    {
+      "kind": "decision_shortcut",
+      "description": "The square sampler chooses x<n,x=n,x>n cases uniformly after base direction. For n=2, x=n is the singleton2, greatly overweighting target2 against neighboring3. When choices contain both2^(1/2) and3^(1/2), always choosing2^(1/2) succeeds127/136(93.4%) across512 fresh count5 batches. All2560 records survive separate read-only delivery filtering against basis4319; native grading confirms127 shortcut acceptances and9 rejections. The stronger baseline is50% between the two valid bases (blind five-choice baseline20%). This is a probabilistic incidental shortcut, not a mathematical error or a claim of a perfect predictor.",
+      "source_refs": [
+        "tutorial3293 / ace9adb3-54cf-5410-b2e4-d0e8ae4fb000: compare sqrt[n](x) to identify both x and n; square root has n=2.",
+        "q-69219 / 5ecc3edc-ec35-5d73-a402-e0e102dfec06: sqrt(10)=10^(1/2), retaining radicand as base.",
+        "e-4959 / 87e686a5-7b8a-529b-a8fa-17445c52e012: substitution x=4,n=5.",
+        "generate/principles.md \u00a72: inspect recognizable cue groups and delivered distributions; varying eligible answer-bearing roles is required."
+      ],
+      "reproduction": "From evidence_root run /home/jake/Developer/Course_Academy/.venv/bin/python -B shortcut_audit.py; seeds461003..461514, count5. Inspect shortcut-results.json and shortcut-cases.json. Example success seed461004 index1; supported counterexample seed461033 index4. In counterfactual-records.json indices16/17 hold the bank fixed while swapping sqrt(2)\u2194sqrt(3), with corresponding rendered screenshots17/18 and native grade checks. For the first square item P(target2,bank{2,3})=1/6 and P(target3,bank{2,3})=1/68, yielding conditional34/37.",
+      "requested_change": "Change ordinary square target sampling so recognizable fixed banks do not strongly reveal which eligible base is the target. Sampling the bank before assigning either supported target is one approach. Preserve controlled-pair correctness, then remeasure bank-conditioned shortcut rates after delivery filtering and learner selection at normal count5; global x<n/x=n/x>n balance is insufficient."
+    }
+  ]
+}

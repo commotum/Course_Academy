@@ -1,0 +1,11 @@
+Completed implementation and validation milestone (2026-10-20).
+
+Package: package.json; default and sampled support: hard. Runtime generator.py, math_format.py, source_cases.json only, standard library, Python 3.13.5. No database operations, publication, generated mathematical images or edits outside this workspace.
+
+Specification written before implementation: instructional-account.md. All six source questions and full lesson context preserved; four complete banks replayed, all 20 choices/16 distractors matched. Missing source keys/solutions on two unlabeled banks are explicitly inferred/authored. Moderate lacks fields; easy lacks source evidence.
+
+Repairs during author validation: replaced central-answer error assignments after agreement shortcut rates 53%/64%; final sampler chooses eligible truth assignments uniformly in an answer-neutral five-row binary bank. Added source-grounded exponent errors. Fixed power-rule coefficient collisions at p=-2 without excluding that source case. Visual screenshots caught clipped aligned equations despite passing DOM reports; reflowed the first equation and wrapped the third term, then inspected final screenshots.
+
+Reproduction: bash evidence/commands.sh (includes validate.py, shared check_delivery.py, native check-engine, CLI five-record batch, shared render_preview.py, relocation_check.py and finalize_evidence.py). Final results in evidence/final-results.json. 159 semantic instances independently checked, 45 negative-domain numerical derivatives, 26 controlled records. Native grading: 348 accepted and 1392 rejected responses, no unresolved cases. Shared delivery accepted 159/159 and runner batch 5/5, zero duplicates. Coverage and 18 conditional cue groups preserved. All tested incidental strategies fail on some cases; strongest normal-sample rate 28.8% versus 20% uniform baseline. Five actual UI screenshots inspected after final layout fixes. Relocation uses only manifest runtime files and matches workspace output byte-for-byte.
+
+Next unfinished step: independent runner review and publication, outside author scope. No author implementation or required validation remains. Live learner history/policy selection is not simulated; read-only selector limits documented.

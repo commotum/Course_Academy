@@ -1,0 +1,80 @@
+{
+  "working_directory": "/home/jake/Developer/Course_Academy/generate/scratch/17592186152131/repair-2026-10-18/pipeline/review-1-policy-2-07c97ef9027c48d9",
+  "commands": [
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B audit.py",
+      "inputs": [
+        "audit.py",
+        "/home/jake/Developer/Course_Academy/generate/scratch/17592186152131/repair-2026-10-18/pipeline/source/source.json",
+        "/home/jake/Developer/Course_Academy/generate/scratch/17592186152131/repair-2026-10-18/pipeline/workspace/package.json",
+        "/home/jake/Developer/Course_Academy/generate/scratch/17592186152131/repair-2026-10-18/pipeline/samples.json"
+      ],
+      "results": [
+        "source-replay.json",
+        "sample-runs.json",
+        "math-results.json",
+        "counterfactual-records.json",
+        "boundary-results.json",
+        "packaging-results.json"
+      ]
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B /home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py --input samples.json --source /home/jake/Developer/Course_Academy/generate/scratch/17592186152131/repair-2026-10-18/pipeline/source/source.json --inventory /home/jake/Developer/Course_Academy/generate/scratch/17592186152131/repair-2026-10-18/pipeline/source/inventory.json --difficulty easy --output delivery --asset-root .",
+      "results": [
+        "delivery/delivery.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B /home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py --input runner-batch.json --source /home/jake/Developer/Course_Academy/generate/scratch/17592186152131/repair-2026-10-18/pipeline/source/source.json --inventory /home/jake/Developer/Course_Academy/generate/scratch/17592186152131/repair-2026-10-18/pipeline/source/inventory.json --difficulty easy --output batch-delivery --asset-root .",
+      "results": [
+        "batch-delivery/delivery.json",
+        "batch-delivery/accepted.json"
+      ]
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B shortcut_audit.py",
+      "inputs": [
+        "shortcut_audit.py",
+        "/home/jake/Developer/Course_Academy/generate/scratch/17592186152131/repair-2026-10-18/pipeline/source/inventory.json",
+        "/home/jake/Developer/Course_Academy/engine/rust/question_selection.rs"
+      ],
+      "results": [
+        "shortcut-trials.json",
+        "shortcut-results.json",
+        "selection-records.json"
+      ]
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B complete_evidence.py",
+      "results": [
+        "math-results.json",
+        "grader-input.json",
+        "shortcut-cases.json",
+        "coverage-results.json",
+        "packaging-results.json"
+      ]
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/generate/runs/current/check-engine grader-input.json grader-results.json",
+      "results": [
+        "grader-results.json"
+      ]
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B /home/jake/Developer/Course_Academy/generate/pipeline/render_preview.py --input render-records.json --output render-all --asset-root . --limit 42",
+      "results": [
+        "render-all/rendering.json",
+        "render-inspection.json"
+      ]
+    }
+  ],
+  "read_only_inputs": {
+    "/home/jake/Developer/Course_Academy/generate/scratch/17592186152131/repair-2026-10-18/pipeline/source/source.json": "a30460d677eb1045bc62df49fcef4eafe47f8b0d756d648b3411b2ba78dacfe5",
+    "/home/jake/Developer/Course_Academy/generate/scratch/17592186152131/repair-2026-10-18/pipeline/source/inventory.json": "1d024c08c9fc4540ac1dff11d794eef6b2dbfd64c611f2e93a8d37710535c540",
+    "/home/jake/Developer/Course_Academy/generate/scratch/17592186152131/repair-2026-10-18/pipeline/samples.json": "1f88af6ac9b27f894a90cb969717bdcdc244c5bd87e6a031880db2eb4b304a1f",
+    "/home/jake/Developer/Course_Academy/engine/rust/question_selection.rs": "d59dea58989cfe9f3cd49ed3b45199d4e7a12723c4d8eae999e495b9660dd760",
+    "/home/jake/Developer/Course_Academy/scripts/generator_publish.py": "dd34e466021232ff014f2226b795a8e0db0eda1c7c73c0a05be8ad949b211ee7"
+  },
+  "outputs": "All review scripts/samples/images/reports under evidence_root; package hashes unchanged and no publication/database operations."
+}

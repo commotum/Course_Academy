@@ -1,0 +1,162 @@
+{
+  "request": {
+    "kp": 17592186152131,
+    "difficulty": "easy",
+    "count": 5,
+    "existing_entrypoint": "/home/jake/Developer/Course_Academy/generate/scratch/17592186152131/repair-2026-10-18/workspace/generator.py",
+    "job_kind": "build"
+  },
+  "stage": "failed",
+  "attempt": 1,
+  "seed": 1033798965,
+  "created": 1792360733.9737794,
+  "manifest": "package.json",
+  "source_hash": "52f039c2e7c27d26915b98a7be2999b1a5c1641be16dca636544110a477fcd8e",
+  "authorship": "Manually repaired by the primary agent; no review has been run or claimed.",
+  "effective_difficulty": "easy",
+  "batch_hash": "fd4f949974ed5cc4c3095e17abbcba08c0ba093d68f77a4928490f7704d12c16",
+  "runtime": "/home/jake/Developer/Course_Academy/generate/scratch/17592186152131/repair-2026-10-18/pipeline/runtime-1",
+  "assets": {},
+  "package_hash": "bda8b394095519e4d595c32d26e3eee13ec5a1e7c7cff367d09aa6fbe52c6ab4",
+  "inventory_hash": "d5892fff17560be380ee056af987cd2ba45aa78e714bfda87e7eeddbb3529098",
+  "previous_review": {
+    "directory": "/home/jake/Developer/Course_Academy/generate/scratch/17592186152131/repair-2026-10-18/pipeline/review-1-policy-2-07c97ef9027c48d9",
+    "binding": {
+      "policy_version": 2,
+      "package_hash": "bda8b394095519e4d595c32d26e3eee13ec5a1e7c7cff367d09aa6fbe52c6ab4",
+      "batch_hash": "fd4f949974ed5cc4c3095e17abbcba08c0ba093d68f77a4928490f7704d12c16",
+      "source_hash": "52f039c2e7c27d26915b98a7be2999b1a5c1641be16dca636544110a477fcd8e",
+      "inventory_hash": "d5892fff17560be380ee056af987cd2ba45aa78e714bfda87e7eeddbb3529098",
+      "assets": {},
+      "effective_difficulty": "easy"
+    }
+  },
+  "error": {
+    "verdict": "revise",
+    "summary": "A conditional answer-bank shortcut succeeds on 127/136 square-root questions (93.4%), surviving delivery filtering. Mathematics, grading, rendering and packaging checks pass. Package files remained unchanged; nothing was published or written to the database.",
+    "source_analysis": {
+      "skill": "Convert a radical to a unit fraction exponent by identifying its radicand and root index.",
+      "reasoning_steps": [
+        "Identify radicand x and index n, using n=2 for an unindexed square root.",
+        "Apply sqrt[n](x)=x^(1/n).",
+        "Select the expression preserving the radicand as base and placing the index in the denominator."
+      ],
+      "invariants": [
+        "Forward, one-step notation conversion at easy difficulty.",
+        "Exponent numerator 1.",
+        "One radio response with five mathematical choices in the captured questions."
+      ],
+      "permitted_variations": [
+        "Change the radicand and higher-root index independently.",
+        "Change which eligible base/index assignment is targeted within a fixed bank.",
+        "Reorder choices while preserving mathematical correctness.",
+        "Use positive decimal radicands when conversion requires copying rather than evaluation."
+      ],
+      "source_refs": [
+        "e-4959 / 87e686a5-7b8a-529b-a8fa-17445c52e012: identifies x=4,n=5 and concludes 4^(1/5).",
+        "q-69158 / a6a09e66-f069-5046-85e4-002d5b3571d6: indexed-root question with five choices; captured key and solution absent.",
+        "q-69219 / 5ecc3edc-ec35-5d73-a402-e0e102dfec06: sqrt(10)=10^(1/2).",
+        "q-69218 / fe9954e2-d8b5-5670-b2ae-c502beed2e2e: cube root of 5 becomes 5^(1/3).",
+        "Tutorial 3293 / ace9adb3-54cf-5410-b2e4-d0e8ae4fb000: states the conversion identity and implicit square-root index 2."
+      ],
+      "evidence_paths": [
+        "source-analysis.json",
+        "source-replay.json"
+      ]
+    },
+    "checks": {
+      "source_replay": {
+        "status": "passed",
+        "evidence_paths": [
+          "source-replay.json",
+          "source-analysis.json"
+        ],
+        "details": "All three captured question banks, containing 15 choices, replay successfully. Available solutions match after harmless formatting normalization. Missing captured fields are explicitly distinguished from inferred content."
+      },
+      "math": {
+        "status": "passed",
+        "evidence_paths": [
+          "audit.py",
+          "math-results.json",
+          "counterfactual-records.json",
+          "shortcut-raw.json"
+        ],
+        "details": "Independent exact arithmetic verifies 351 initial records and 2,560 expanded trial records, plus source replay: distinct choices, unique correct answer, and consistent solution substitutions and conclusions."
+      },
+      "variety": {
+        "status": "failed",
+        "evidence_paths": [
+          "coverage-results.json",
+          "sample-runs.json",
+          "shortcut-results.json"
+        ],
+        "details": "Capacity runs cover all 126 supported semantic targets, but ordinary sampling strongly overweights target 2 within the recognizable square-root bank containing bases 2 and 3."
+      },
+      "scope": {
+        "status": "passed",
+        "evidence_paths": [
+          "source-analysis.json",
+          "coverage-results.json"
+        ],
+        "details": "Tested variations preserve one-step forward conversion, response format and easy workload. Decimal radicands require no additional arithmetic."
+      },
+      "grading": {
+        "status": "passed",
+        "evidence_paths": [
+          "grader-input.json",
+          "grader-results.json"
+        ],
+        "details": "The native learner grader checked 396 responses across 188 records: 179 accepted, 217 rejected, none unresolved. Tests include every choice in controlled pairs and 136 explicit shortcut submissions."
+      },
+      "rendering": {
+        "status": "passed",
+        "evidence_paths": [
+          "render-all/rendering.json",
+          "render-inspection.json",
+          "render-all/question-017.png",
+          "render-all/question-018.png",
+          "render-all/question-033.png",
+          "render-all/question-034.png"
+        ],
+        "details": "All 42 actual-UI previews pass. Representative screenshots confirm readable radicals, fractional exponents, decimal bases, radio controls, worked solutions and counterfactual updates."
+      },
+      "packaging": {
+        "status": "passed",
+        "evidence_paths": [
+          "packaging-results.json",
+          "package-before.json",
+          "relocation-sample.json",
+          "boundary-results.json",
+          "contract-validation.json"
+        ],
+        "details": "Python 3.13.5 matches the manifest exactly; no third-party runtime dependencies are required. Declared files relocate successfully. Determinism, capacity boundaries and rejection cases pass. Package hashes remain unchanged."
+      },
+      "decision_variation": {
+        "status": "failed",
+        "evidence_paths": [
+          "pedagogical-variation.json",
+          "shortcut_audit.py",
+          "shortcut-results.json",
+          "shortcut-cases.json",
+          "shortcut-trials.json",
+          "selection-records.json",
+          "grader-results.json"
+        ],
+        "details": "Choosing 2^(1/2) whenever the bank contains both 2^(1/2) and 3^(1/2), without reading the radical, succeeds 127/136 times after delivery. The comparison baseline is 50% between the two legitimate bases. Faithful easy-band selection reproduces the advantage at 299/329."
+      }
+    },
+    "findings": [
+      {
+        "kind": "decision_shortcut",
+        "description": "Square-root sampling treats x=n as a separate uniformly sampled case. Since n=2, this disproportionately selects radicand 2. Within banks containing both 2^(1/2) and 3^(1/2), an answer-bank-only strategy selects 2^(1/2) correctly on 127/136 items (93.4%). All 2,560 records from 512 independent five-question batches survive captured-inventory filtering; native grading confirms 127 shortcut acceptances and nine rejections. Controlled pairs establish that both bases are valid targets under identical banks. This is a demonstrated probabilistic shortcut, not a mathematical error or perfect predictor.",
+        "source_refs": [
+          "Tutorial 3293 / ace9adb3-54cf-5410-b2e4-d0e8ae4fb000: the learner must identify both x and n.",
+          "q-69219 / 5ecc3edc-ec35-5d73-a402-e0e102dfec06: the converted expression retains the radicand as its base.",
+          "generate/principles.md \u00a72: examine recognizable cue groups and distributions surviving delivery."
+        ],
+        "reproduction": "Run `/home/jake/Developer/Course_Academy/.venv/bin/python -B shortcut_audit.py` from evidence_root. Seeds 461003\u2013461514 use count=5. Inspect shortcut-results.json and shortcut-cases.json. Example success: seed 461004, index 1; counterexample: seed 461033, index 4. Exact first-square branch probabilities yield a conditional shortcut success rate of 34/37.",
+        "requested_change": "Revise square-root sampling so recognizable fixed banks do not strongly predict the target base. Sampling a bank before assigning either eligible target is one approach. Recheck conditional shortcut rates after delivery filtering and learner selection at count=5; aggregate case balance is insufficient."
+      }
+    ]
+  }
+}
