@@ -239,7 +239,7 @@ def generate_hard(seed=0,**kwargs):return generate('hard',seed,**kwargs)
 
 def markdown(r):
  q=r['question'];f=q[':question/answer-fields'][0]
- return q[':question/problem']+'\n\n'+'\n\n'.join('![]('+a[':answer/value']+')' for a in f[':answer-field/choices'])+'\n\n'+q[':question/worked-solution']
+ return q[':question/problem']+'\n\n'+'\n\n'.join(('![]('+a[':answer/value']+')' if a[':answer/type']==':answer.type/image' else a[':answer/value']) for a in f[':answer-field/choices'])+'\n\n'+q[':question/worked-solution']
 if __name__=='__main__':
  ap=argparse.ArgumentParser();ap.add_argument('--difficulty',choices=['easy','moderate','hard','all'],default='all');ap.add_argument('--seed',type=int,default=0);ap.add_argument('--count',type=int,default=1);ap.add_argument('--format',choices=['markdown','json'],default='markdown');ap.add_argument('--template');ap.add_argument('--profile');args=ap.parse_args()
  levels=list(TEMPLATES) if args.difficulty=='all' else [args.difficulty];records=[generate(l,args.seed+i,template=args.template,profile=args.profile) for l in levels for i in range(args.count)]

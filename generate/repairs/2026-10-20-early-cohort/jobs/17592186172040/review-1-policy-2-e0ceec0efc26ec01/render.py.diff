@@ -1,0 +1,23 @@
+--- before/17592186172040/render.py
+
++++ current/17592186172040/render.py
+
+@@ -1,16 +1,13 @@
+
+-"""Matplotlib renderer. Frozen read-only cached Python 3.10 dependencies.
++"""Matplotlib renderer using the declared current-interpreter dependencies.
+ Unique render inputs and atomic outputs are supplied by the main generator.
+ """
+ import sys,os,json,pathlib,tempfile
+ H=pathlib.Path(__file__).resolve().parent
+ P=json.loads((H/'render-provenance.json').read_text())
+-sys.path[:0]=list(P['dependency_paths'].values())
+-os.environ['MPLCONFIGDIR']='/tmp/kp17592186172040-mpl'
+ import matplotlib
+ matplotlib.use('Agg')
+ import matplotlib.pyplot as plt
+ from matplotlib.collections import LineCollection
+-import numpy as np
+ assert matplotlib.__version__==P['matplotlib']
+ for item in json.loads(pathlib.Path(sys.argv[1]).read_text()):
+  path=pathlib.Path(item['path']);fig,ax=plt.subplots(figsize=(3.8,3.5));bounds=item['bounds'];x0,x1,y0,y1=bounds

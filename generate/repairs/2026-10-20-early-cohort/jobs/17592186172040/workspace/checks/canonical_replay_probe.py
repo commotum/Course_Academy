@@ -2,6 +2,7 @@
 import importlib.util,json,pathlib,re,sys
 import numpy as np
 from PIL import Image
+sys.dont_write_bytecode=True
 W=pathlib.Path(__file__).resolve().parents[1];E=W/'evidence';E.mkdir(exist_ok=True)
 s=importlib.util.spec_from_file_location('g',W/'17592186172040.py');g=importlib.util.module_from_spec(s);s.loader.exec_module(g)
 source=json.loads((W.parent/'source/source.json').read_text())['material']['kp'][':knowledge-point/canonical-example']
