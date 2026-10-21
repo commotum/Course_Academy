@@ -1,0 +1,1115 @@
+{
+  "learner_operation": "Find the first nonzero entry in each nonzero row; require strictly increasing column indices and no nonzero row after a zero row. Apply the requested in/not-in polarity independently to each labeled matrix.",
+  "fixed_features": [
+    {
+      "feature": "Three ordinary labeled matrices",
+      "justification": "All target questions present three independent recognition decisions; augmented matrices and transformation tasks are neighboring skills."
+    },
+    {
+      "feature": "Two row echelon conditions",
+      "justification": "Explicit lesson definition, tutorial 137b0909-9a5e-5edf-8019-24e803307903 conditions I and II."
+    },
+    {
+      "feature": "Nonempty learner checkbox subset",
+      "justification": "Shared learner-delivery policy; all complete supported source banks have nonempty selections. Empty explicit cases are rejected, seeded empty draws resampled. It does not fix selected labels or count."
+    },
+    {
+      "feature": "Source-sized ordinary integer matrices",
+      "justification": "Preserves three independent easy recognition decisions using the two definition conditions without introducing row operations or augmented-matrix rules."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Each label A/B/C qualifies or fails",
+      "eligible_variation": "Any label can satisfy or violate either echelon condition; polarity determines the selected state.",
+      "observed": "Exact revised batch has selected/unselected A=2/3, B=3/2, C=3/2 after delivery. Unchanged wider per-profile controls cover all seven allowed subsets."
+    },
+    {
+      "role": "Number of checked fields",
+      "eligible_variation": "One, two or three selected labels, with no fixed count per shape or polarity.",
+      "observed": "Revised exact batch ABC, BC, B, A, C contains counts 3,2,1. Larger profile controls contain all seven subsets."
+    },
+    {
+      "role": "Which condition fails and its witness",
+      "eligible_variation": "A zero row above a nonzero row, repeated leading column, leftward leading column, or both; comparable small shapes.",
+      "observed": "Relevant edits invalidate increasing pivots; source replay and fresh classifier confirm dependent explanations and keys."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "Complete easy sources and documented source corrections",
+      "sample_refs": [
+        "source-replays.json",
+        "source-replay-results.json"
+      ],
+      "result": "All 13 full checkbox banks replayed; incomplete unrated radio is explicitly unsupported, canonical example has no answer bank."
+    },
+    {
+      "case": "Changed construction rule and exact revised delivery",
+      "sample_refs": [
+        "runner-batch.json",
+        "delivery-batch/accepted.json",
+        "batch-role-results.json",
+        "delivery-analysis.json"
+      ],
+      "result": "All five survive; each label has both selected and unselected states. Four in-polarity cases also vary all three label actions; single not-in observation is bounded by larger controls."
+    },
+    {
+      "case": "Fresh small regression and unchanged profile domain",
+      "sample_refs": [
+        "independent-samples.json",
+        "delivery-independent/accepted.json",
+        "sampling-results.json",
+        "prior-unaffected/sampling-results.json",
+        "prior-unaffected/delivery-independent/accepted.json",
+        "delivery-analysis.json",
+        "author-check/repair-regression-results.json"
+      ],
+      "result": "104 fresh draws, 96 delivery survivors; 13 unchanged profiles retain all seven nonempty subsets in prior independent controls. Six batch seeds were tested across independent and author checks, including historical seed."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Hold all matrices/profile/polarity fixed; change A[2,1] from 0 to 7 or historical C[2,1] from 0 to 1.",
+      "expected": "Moving the second-row pivot into column 1 invalidates only that matrix: ABC->BC for A, ABC->AB for C.",
+      "observed": "Expected selections, visible changed cells, repeated-column explanations, and real grader accept/reject states agree; actual UI shows the updates.",
+      "status": "passed",
+      "justification": "Lesson condition II uses strictly increasing leading columns. Neither label A nor C is essential to the decision.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "c-counterfactual-records.json",
+        "c-counterfactual-results.json",
+        "final-grader-input.json",
+        "final-grader-results.json",
+        "render-counterfactual/rendering.json",
+        "render-inspection.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Keep leading entries and zero rows fixed; change a first-row trailing entry (A[1,4] 4->-9; C[1,4] -1->8).",
+      "expected": "Answer ABC preserved while displayed matrix and solution show the changed entry.",
+      "observed": "Both edits preserve ABC, solution matrices match visible matrices, native grader accepts the same checkbox states, and actual UI renders the C edit.",
+      "status": "passed",
+      "justification": "The lesson definition depends on first nonzero positions and zero rows, not arbitrary entries to the right of a leading entry.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "c-counterfactual-records.json",
+        "c-counterfactual-results.json",
+        "final-grader-input.json",
+        "final-grader-results.json",
+        "render-counterfactual/rendering.json",
+        "render-inspection.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "visible label A",
+      "subgroup": "exact revised batch",
+      "scope": "overall",
+      "strategy": "Always check A; other labels still require classification.",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.5714285714285714,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 4/7 is a label-selected probability for independent fair classifications conditioned on a nonempty subset. 2/5 selected. Both checkbox actions occur.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible label B",
+      "subgroup": "exact revised batch",
+      "scope": "overall",
+      "strategy": "Always check B; other labels still require classification.",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.5714285714285714,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 4/7 is a label-selected probability for independent fair classifications conditioned on a nonempty subset. 3/5 selected. Both checkbox actions occur.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible label C",
+      "subgroup": "exact revised batch",
+      "scope": "overall",
+      "strategy": "Always check C; other labels still require classification.",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.5714285714285714,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 4/7 is a label-selected probability for independent fair classifications conditioned on a nonempty subset. 3/5 selected. Both checkbox actions occur.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible label A",
+      "subgroup": "exact revised batch / in",
+      "scope": "within_template",
+      "strategy": "Always check A; other labels still require classification.",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.5714285714285714,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 4/7 is a label-selected probability for independent fair classifications conditioned on a nonempty subset. 2/4 selected. Both checkbox actions occur.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible label B",
+      "subgroup": "exact revised batch / in",
+      "scope": "within_template",
+      "strategy": "Always check B; other labels still require classification.",
+      "correct": 3,
+      "total": 4,
+      "baseline": 0.5714285714285714,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 4/7 is a label-selected probability for independent fair classifications conditioned on a nonempty subset. 3/4 selected. Both checkbox actions occur.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible label C",
+      "subgroup": "exact revised batch / in",
+      "scope": "within_template",
+      "strategy": "Always check C; other labels still require classification.",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.5714285714285714,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 4/7 is a label-selected probability for independent fair classifications conditioned on a nonempty subset. 2/4 selected. Both checkbox actions occur.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible label A",
+      "subgroup": "exact revised batch / not in",
+      "scope": "within_template",
+      "strategy": "Always check A; other labels still require classification.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.5714285714285714,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 4/7 is a label-selected probability for independent fair classifications conditioned on a nonempty subset. 0/1 selected. This tiny subgroup has no within-group counterexample; one/two observed items do not establish a reusable shape/polarity rule. Broader shape controls below test the same cue.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible label B",
+      "subgroup": "exact revised batch / not in",
+      "scope": "within_template",
+      "strategy": "Always check B; other labels still require classification.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.5714285714285714,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 4/7 is a label-selected probability for independent fair classifications conditioned on a nonempty subset. 0/1 selected. This tiny subgroup has no within-group counterexample; one/two observed items do not establish a reusable shape/polarity rule. Broader shape controls below test the same cue.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible label C",
+      "subgroup": "exact revised batch / not in",
+      "scope": "within_template",
+      "strategy": "Always check C; other labels still require classification.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.5714285714285714,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 4/7 is a label-selected probability for independent fair classifications conditioned on a nonempty subset. 1/1 selected. This tiny subgroup has no within-group counterexample; one/two observed items do not establish a reusable shape/polarity rule. Broader shape controls below test the same cue.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible label A",
+      "subgroup": "fresh control",
+      "scope": "overall",
+      "strategy": "Always check A; other labels still require classification.",
+      "correct": 54,
+      "total": 96,
+      "baseline": 0.5714285714285714,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 4/7 is a label-selected probability for independent fair classifications conditioned on a nonempty subset. 54/96 selected. Both checkbox actions occur.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible label B",
+      "subgroup": "fresh control",
+      "scope": "overall",
+      "strategy": "Always check B; other labels still require classification.",
+      "correct": 66,
+      "total": 96,
+      "baseline": 0.5714285714285714,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 4/7 is a label-selected probability for independent fair classifications conditioned on a nonempty subset. 66/96 selected. Both checkbox actions occur.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible label C",
+      "subgroup": "fresh control",
+      "scope": "overall",
+      "strategy": "Always check C; other labels still require classification.",
+      "correct": 48,
+      "total": 96,
+      "baseline": 0.5714285714285714,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 4/7 is a label-selected probability for independent fair classifications conditioned on a nonempty subset. 48/96 selected. Both checkbox actions occur.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible label A",
+      "subgroup": "fresh control / in",
+      "scope": "within_template",
+      "strategy": "Always check A; other labels still require classification.",
+      "correct": 18,
+      "total": 48,
+      "baseline": 0.5714285714285714,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 4/7 is a label-selected probability for independent fair classifications conditioned on a nonempty subset. 18/48 selected. Both checkbox actions occur.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible label B",
+      "subgroup": "fresh control / in",
+      "scope": "within_template",
+      "strategy": "Always check B; other labels still require classification.",
+      "correct": 36,
+      "total": 48,
+      "baseline": 0.5714285714285714,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 4/7 is a label-selected probability for independent fair classifications conditioned on a nonempty subset. 36/48 selected. Both checkbox actions occur.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible label C",
+      "subgroup": "fresh control / in",
+      "scope": "within_template",
+      "strategy": "Always check C; other labels still require classification.",
+      "correct": 30,
+      "total": 48,
+      "baseline": 0.5714285714285714,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 4/7 is a label-selected probability for independent fair classifications conditioned on a nonempty subset. 30/48 selected. Both checkbox actions occur.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible label A",
+      "subgroup": "fresh control / not in",
+      "scope": "within_template",
+      "strategy": "Always check A; other labels still require classification.",
+      "correct": 36,
+      "total": 48,
+      "baseline": 0.5714285714285714,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 4/7 is a label-selected probability for independent fair classifications conditioned on a nonempty subset. 36/48 selected. Both checkbox actions occur.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible label B",
+      "subgroup": "fresh control / not in",
+      "scope": "within_template",
+      "strategy": "Always check B; other labels still require classification.",
+      "correct": 30,
+      "total": 48,
+      "baseline": 0.5714285714285714,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 4/7 is a label-selected probability for independent fair classifications conditioned on a nonempty subset. 30/48 selected. Both checkbox actions occur.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible label C",
+      "subgroup": "fresh control / not in",
+      "scope": "within_template",
+      "strategy": "Always check C; other labels still require classification.",
+      "correct": 18,
+      "total": 48,
+      "baseline": 0.5714285714285714,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 4/7 is a label-selected probability for independent fair classifications conditioned on a nonempty subset. 18/48 selected. Both checkbox actions occur.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible label A",
+      "subgroup": "shape and polarity [false, [[3, 4], [3, 4], [3, 6]]]",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always check A; other labels still require classification.",
+      "correct": 25,
+      "total": 40,
+      "baseline": 0.5714285714285714,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 4/7 is a label-selected probability for independent fair classifications conditioned on a nonempty subset. 25/40 selected. Both checkbox actions occur.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "prior-unaffected/delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible label B",
+      "subgroup": "shape and polarity [false, [[3, 4], [3, 4], [3, 6]]]",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always check B; other labels still require classification.",
+      "correct": 26,
+      "total": 40,
+      "baseline": 0.5714285714285714,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 4/7 is a label-selected probability for independent fair classifications conditioned on a nonempty subset. 26/40 selected. Both checkbox actions occur.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "prior-unaffected/delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible label C",
+      "subgroup": "shape and polarity [false, [[3, 4], [3, 4], [3, 6]]]",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always check C; other labels still require classification.",
+      "correct": 19,
+      "total": 40,
+      "baseline": 0.5714285714285714,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 4/7 is a label-selected probability for independent fair classifications conditioned on a nonempty subset. 19/40 selected. Both checkbox actions occur.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "prior-unaffected/delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "matrix shapes plus prompt polarity",
+      "subgroup": "[false, [[3, 4], [3, 4], [3, 6]]]",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose fixed subset AB",
+      "correct": 12,
+      "total": 40,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/7 guesses one of seven eligible nonempty subsets. Retrospective best fixed subset has counterexamples; shape does not fix selected count or labels.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "prior-unaffected/delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible label A",
+      "subgroup": "shape and polarity [false, [[5, 4], [4, 4], [3, 4]]]",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always check A; other labels still require classification.",
+      "correct": 25,
+      "total": 40,
+      "baseline": 0.5714285714285714,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 4/7 is a label-selected probability for independent fair classifications conditioned on a nonempty subset. 25/40 selected. Both checkbox actions occur.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "prior-unaffected/delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible label B",
+      "subgroup": "shape and polarity [false, [[5, 4], [4, 4], [3, 4]]]",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always check B; other labels still require classification.",
+      "correct": 26,
+      "total": 40,
+      "baseline": 0.5714285714285714,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 4/7 is a label-selected probability for independent fair classifications conditioned on a nonempty subset. 26/40 selected. Both checkbox actions occur.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "prior-unaffected/delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible label C",
+      "subgroup": "shape and polarity [false, [[5, 4], [4, 4], [3, 4]]]",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always check C; other labels still require classification.",
+      "correct": 19,
+      "total": 40,
+      "baseline": 0.5714285714285714,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 4/7 is a label-selected probability for independent fair classifications conditioned on a nonempty subset. 19/40 selected. Both checkbox actions occur.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "prior-unaffected/delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "matrix shapes plus prompt polarity",
+      "subgroup": "[false, [[5, 4], [4, 4], [3, 4]]]",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose fixed subset AB",
+      "correct": 12,
+      "total": 40,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/7 guesses one of seven eligible nonempty subsets. Retrospective best fixed subset has counterexamples; shape does not fix selected count or labels.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "prior-unaffected/delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible label A",
+      "subgroup": "shape and polarity [true, [[3, 5], [4, 3], [3, 3]]]",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always check A; other labels still require classification.",
+      "correct": 18,
+      "total": 40,
+      "baseline": 0.5714285714285714,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 4/7 is a label-selected probability for independent fair classifications conditioned on a nonempty subset. 18/40 selected. Both checkbox actions occur.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "prior-unaffected/delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible label B",
+      "subgroup": "shape and polarity [true, [[3, 5], [4, 3], [3, 3]]]",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always check B; other labels still require classification.",
+      "correct": 20,
+      "total": 40,
+      "baseline": 0.5714285714285714,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 4/7 is a label-selected probability for independent fair classifications conditioned on a nonempty subset. 20/40 selected. Both checkbox actions occur.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "prior-unaffected/delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible label C",
+      "subgroup": "shape and polarity [true, [[3, 5], [4, 3], [3, 3]]]",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always check C; other labels still require classification.",
+      "correct": 23,
+      "total": 40,
+      "baseline": 0.5714285714285714,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 4/7 is a label-selected probability for independent fair classifications conditioned on a nonempty subset. 23/40 selected. Both checkbox actions occur.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "prior-unaffected/delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "matrix shapes plus prompt polarity",
+      "subgroup": "[true, [[3, 5], [4, 3], [3, 3]]]",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose fixed subset C",
+      "correct": 11,
+      "total": 40,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/7 guesses one of seven eligible nonempty subsets. Retrospective best fixed subset has counterexamples; shape does not fix selected count or labels.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "prior-unaffected/delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible label A",
+      "subgroup": "shape and polarity [true, [[3, 4], [5, 4], [4, 5]]]",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always check A; other labels still require classification.",
+      "correct": 18,
+      "total": 40,
+      "baseline": 0.5714285714285714,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 4/7 is a label-selected probability for independent fair classifications conditioned on a nonempty subset. 18/40 selected. Both checkbox actions occur.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "prior-unaffected/delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible label B",
+      "subgroup": "shape and polarity [true, [[3, 4], [5, 4], [4, 5]]]",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always check B; other labels still require classification.",
+      "correct": 20,
+      "total": 40,
+      "baseline": 0.5714285714285714,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 4/7 is a label-selected probability for independent fair classifications conditioned on a nonempty subset. 20/40 selected. Both checkbox actions occur.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "prior-unaffected/delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible label C",
+      "subgroup": "shape and polarity [true, [[3, 4], [5, 4], [4, 5]]]",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always check C; other labels still require classification.",
+      "correct": 23,
+      "total": 40,
+      "baseline": 0.5714285714285714,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 4/7 is a label-selected probability for independent fair classifications conditioned on a nonempty subset. 23/40 selected. Both checkbox actions occur.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "prior-unaffected/delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "matrix shapes plus prompt polarity",
+      "subgroup": "[true, [[3, 4], [5, 4], [4, 5]]]",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose fixed subset C",
+      "correct": 11,
+      "total": 40,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/7 guesses one of seven eligible nonempty subsets. Retrospective best fixed subset has counterexamples; shape does not fix selected count or labels.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "prior-unaffected/delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible label A",
+      "subgroup": "shape and polarity [true, [[3, 4], [3, 5], [5, 3]]]",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always check A; other labels still require classification.",
+      "correct": 18,
+      "total": 40,
+      "baseline": 0.5714285714285714,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 4/7 is a label-selected probability for independent fair classifications conditioned on a nonempty subset. 18/40 selected. Both checkbox actions occur.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "prior-unaffected/delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible label B",
+      "subgroup": "shape and polarity [true, [[3, 4], [3, 5], [5, 3]]]",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always check B; other labels still require classification.",
+      "correct": 20,
+      "total": 40,
+      "baseline": 0.5714285714285714,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 4/7 is a label-selected probability for independent fair classifications conditioned on a nonempty subset. 20/40 selected. Both checkbox actions occur.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "prior-unaffected/delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible label C",
+      "subgroup": "shape and polarity [true, [[3, 4], [3, 5], [5, 3]]]",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always check C; other labels still require classification.",
+      "correct": 23,
+      "total": 40,
+      "baseline": 0.5714285714285714,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 4/7 is a label-selected probability for independent fair classifications conditioned on a nonempty subset. 23/40 selected. Both checkbox actions occur.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "prior-unaffected/delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "matrix shapes plus prompt polarity",
+      "subgroup": "[true, [[3, 4], [3, 5], [5, 3]]]",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose fixed subset C",
+      "correct": 11,
+      "total": 40,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/7 guesses one of seven eligible nonempty subsets. Retrospective best fixed subset has counterexamples; shape does not fix selected count or labels.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "prior-unaffected/delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible label A",
+      "subgroup": "shape and polarity [false, [[4, 3], [3, 4], [3, 4]]]",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always check A; other labels still require classification.",
+      "correct": 25,
+      "total": 40,
+      "baseline": 0.5714285714285714,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 4/7 is a label-selected probability for independent fair classifications conditioned on a nonempty subset. 25/40 selected. Both checkbox actions occur.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "prior-unaffected/delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible label B",
+      "subgroup": "shape and polarity [false, [[4, 3], [3, 4], [3, 4]]]",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always check B; other labels still require classification.",
+      "correct": 26,
+      "total": 40,
+      "baseline": 0.5714285714285714,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 4/7 is a label-selected probability for independent fair classifications conditioned on a nonempty subset. 26/40 selected. Both checkbox actions occur.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "prior-unaffected/delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible label C",
+      "subgroup": "shape and polarity [false, [[4, 3], [3, 4], [3, 4]]]",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always check C; other labels still require classification.",
+      "correct": 19,
+      "total": 40,
+      "baseline": 0.5714285714285714,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 4/7 is a label-selected probability for independent fair classifications conditioned on a nonempty subset. 19/40 selected. Both checkbox actions occur.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "prior-unaffected/delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "matrix shapes plus prompt polarity",
+      "subgroup": "[false, [[4, 3], [3, 4], [3, 4]]]",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose fixed subset AB",
+      "correct": 12,
+      "total": 40,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/7 guesses one of seven eligible nonempty subsets. Retrospective best fixed subset has counterexamples; shape does not fix selected count or labels.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "prior-unaffected/delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible label A",
+      "subgroup": "shape and polarity [false, [[4, 4], [3, 4], [4, 4]]]",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always check A; other labels still require classification.",
+      "correct": 25,
+      "total": 40,
+      "baseline": 0.5714285714285714,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 4/7 is a label-selected probability for independent fair classifications conditioned on a nonempty subset. 25/40 selected. Both checkbox actions occur.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "prior-unaffected/delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible label B",
+      "subgroup": "shape and polarity [false, [[4, 4], [3, 4], [4, 4]]]",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always check B; other labels still require classification.",
+      "correct": 26,
+      "total": 40,
+      "baseline": 0.5714285714285714,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 4/7 is a label-selected probability for independent fair classifications conditioned on a nonempty subset. 26/40 selected. Both checkbox actions occur.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "prior-unaffected/delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible label C",
+      "subgroup": "shape and polarity [false, [[4, 4], [3, 4], [4, 4]]]",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always check C; other labels still require classification.",
+      "correct": 19,
+      "total": 40,
+      "baseline": 0.5714285714285714,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 4/7 is a label-selected probability for independent fair classifications conditioned on a nonempty subset. 19/40 selected. Both checkbox actions occur.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "prior-unaffected/delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "matrix shapes plus prompt polarity",
+      "subgroup": "[false, [[4, 4], [3, 4], [4, 4]]]",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose fixed subset AB",
+      "correct": 12,
+      "total": 40,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/7 guesses one of seven eligible nonempty subsets. Retrospective best fixed subset has counterexamples; shape does not fix selected count or labels.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "prior-unaffected/delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible label A",
+      "subgroup": "shape and polarity [false, [[4, 5], [3, 3], [4, 4]]]",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always check A; other labels still require classification.",
+      "correct": 25,
+      "total": 40,
+      "baseline": 0.5714285714285714,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 4/7 is a label-selected probability for independent fair classifications conditioned on a nonempty subset. 25/40 selected. Both checkbox actions occur.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "prior-unaffected/delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible label B",
+      "subgroup": "shape and polarity [false, [[4, 5], [3, 3], [4, 4]]]",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always check B; other labels still require classification.",
+      "correct": 26,
+      "total": 40,
+      "baseline": 0.5714285714285714,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 4/7 is a label-selected probability for independent fair classifications conditioned on a nonempty subset. 26/40 selected. Both checkbox actions occur.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "prior-unaffected/delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible label C",
+      "subgroup": "shape and polarity [false, [[4, 5], [3, 3], [4, 4]]]",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always check C; other labels still require classification.",
+      "correct": 19,
+      "total": 40,
+      "baseline": 0.5714285714285714,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 4/7 is a label-selected probability for independent fair classifications conditioned on a nonempty subset. 19/40 selected. Both checkbox actions occur.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "prior-unaffected/delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "matrix shapes plus prompt polarity",
+      "subgroup": "[false, [[4, 5], [3, 3], [4, 4]]]",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose fixed subset AB",
+      "correct": 12,
+      "total": 40,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/7 guesses one of seven eligible nonempty subsets. Retrospective best fixed subset has counterexamples; shape does not fix selected count or labels.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "prior-unaffected/delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible label A",
+      "subgroup": "shape and polarity [true, [[4, 3], [5, 3], [3, 3]]]",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always check A; other labels still require classification.",
+      "correct": 18,
+      "total": 40,
+      "baseline": 0.5714285714285714,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 4/7 is a label-selected probability for independent fair classifications conditioned on a nonempty subset. 18/40 selected. Both checkbox actions occur.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "prior-unaffected/delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible label B",
+      "subgroup": "shape and polarity [true, [[4, 3], [5, 3], [3, 3]]]",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always check B; other labels still require classification.",
+      "correct": 20,
+      "total": 40,
+      "baseline": 0.5714285714285714,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 4/7 is a label-selected probability for independent fair classifications conditioned on a nonempty subset. 20/40 selected. Both checkbox actions occur.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "prior-unaffected/delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible label C",
+      "subgroup": "shape and polarity [true, [[4, 3], [5, 3], [3, 3]]]",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always check C; other labels still require classification.",
+      "correct": 23,
+      "total": 40,
+      "baseline": 0.5714285714285714,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 4/7 is a label-selected probability for independent fair classifications conditioned on a nonempty subset. 23/40 selected. Both checkbox actions occur.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "prior-unaffected/delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "matrix shapes plus prompt polarity",
+      "subgroup": "[true, [[4, 3], [5, 3], [3, 3]]]",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose fixed subset C",
+      "correct": 11,
+      "total": 40,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/7 guesses one of seven eligible nonempty subsets. Retrospective best fixed subset has counterexamples; shape does not fix selected count or labels.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "prior-unaffected/delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible label A",
+      "subgroup": "shape and polarity [false, [[4, 4], [5, 4], [4, 4]]]",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always check A; other labels still require classification.",
+      "correct": 25,
+      "total": 40,
+      "baseline": 0.5714285714285714,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 4/7 is a label-selected probability for independent fair classifications conditioned on a nonempty subset. 25/40 selected. Both checkbox actions occur.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "prior-unaffected/delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible label B",
+      "subgroup": "shape and polarity [false, [[4, 4], [5, 4], [4, 4]]]",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always check B; other labels still require classification.",
+      "correct": 26,
+      "total": 40,
+      "baseline": 0.5714285714285714,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 4/7 is a label-selected probability for independent fair classifications conditioned on a nonempty subset. 26/40 selected. Both checkbox actions occur.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "prior-unaffected/delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible label C",
+      "subgroup": "shape and polarity [false, [[4, 4], [5, 4], [4, 4]]]",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always check C; other labels still require classification.",
+      "correct": 19,
+      "total": 40,
+      "baseline": 0.5714285714285714,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 4/7 is a label-selected probability for independent fair classifications conditioned on a nonempty subset. 19/40 selected. Both checkbox actions occur.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "prior-unaffected/delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "matrix shapes plus prompt polarity",
+      "subgroup": "[false, [[4, 4], [5, 4], [4, 4]]]",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose fixed subset AB",
+      "correct": 12,
+      "total": 40,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/7 guesses one of seven eligible nonempty subsets. Retrospective best fixed subset has counterexamples; shape does not fix selected count or labels.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "prior-unaffected/delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible label A",
+      "subgroup": "shape and polarity [true, [[5, 4], [3, 5], [4, 4]]]",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always check A; other labels still require classification.",
+      "correct": 18,
+      "total": 40,
+      "baseline": 0.5714285714285714,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 4/7 is a label-selected probability for independent fair classifications conditioned on a nonempty subset. 18/40 selected. Both checkbox actions occur.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "prior-unaffected/delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible label B",
+      "subgroup": "shape and polarity [true, [[5, 4], [3, 5], [4, 4]]]",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always check B; other labels still require classification.",
+      "correct": 20,
+      "total": 40,
+      "baseline": 0.5714285714285714,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 4/7 is a label-selected probability for independent fair classifications conditioned on a nonempty subset. 20/40 selected. Both checkbox actions occur.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "prior-unaffected/delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible label C",
+      "subgroup": "shape and polarity [true, [[5, 4], [3, 5], [4, 4]]]",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always check C; other labels still require classification.",
+      "correct": 23,
+      "total": 40,
+      "baseline": 0.5714285714285714,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 4/7 is a label-selected probability for independent fair classifications conditioned on a nonempty subset. 23/40 selected. Both checkbox actions occur.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "prior-unaffected/delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "matrix shapes plus prompt polarity",
+      "subgroup": "[true, [[5, 4], [3, 5], [4, 4]]]",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose fixed subset C",
+      "correct": 11,
+      "total": 40,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/7 guesses one of seven eligible nonempty subsets. Retrospective best fixed subset has counterexamples; shape does not fix selected count or labels.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "prior-unaffected/delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible label A",
+      "subgroup": "shape and polarity [true, [[3, 3], [4, 4], [3, 3]]]",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always check A; other labels still require classification.",
+      "correct": 18,
+      "total": 40,
+      "baseline": 0.5714285714285714,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 4/7 is a label-selected probability for independent fair classifications conditioned on a nonempty subset. 18/40 selected. Both checkbox actions occur.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "prior-unaffected/delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible label B",
+      "subgroup": "shape and polarity [true, [[3, 3], [4, 4], [3, 3]]]",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always check B; other labels still require classification.",
+      "correct": 20,
+      "total": 40,
+      "baseline": 0.5714285714285714,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 4/7 is a label-selected probability for independent fair classifications conditioned on a nonempty subset. 20/40 selected. Both checkbox actions occur.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "prior-unaffected/delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible label C",
+      "subgroup": "shape and polarity [true, [[3, 3], [4, 4], [3, 3]]]",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always check C; other labels still require classification.",
+      "correct": 23,
+      "total": 40,
+      "baseline": 0.5714285714285714,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 4/7 is a label-selected probability for independent fair classifications conditioned on a nonempty subset. 23/40 selected. Both checkbox actions occur.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "prior-unaffected/delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "matrix shapes plus prompt polarity",
+      "subgroup": "[true, [[3, 3], [4, 4], [3, 3]]]",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose fixed subset C",
+      "correct": 11,
+      "total": 40,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/7 guesses one of seven eligible nonempty subsets. Retrospective best fixed subset has counterexamples; shape does not fix selected count or labels.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "prior-unaffected/delivery-independent/accepted.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "raw classification construction",
+      "nonempty selection rejection/resampling",
+      "structural fingerprint deduplication and new finite-pool rejection",
+      "requested easy difficulty",
+      "shared publisher normalization and inventory/batch deduplication",
+      "captured inventory selection: freshness, positive easy weighting, unrated fallback and unconfigured ordering"
+    ],
+    "sample_refs": [
+      "pre-policy-samples.json",
+      "normal-batch.json",
+      "rejection-records.json",
+      "rejection-results.json",
+      "runner-batch.json",
+      "delivery-batch/delivery.json",
+      "delivery-batch/accepted.json",
+      "delivery-independent/delivery.json",
+      "delivery-independent/accepted.json",
+      "delivery-analysis.json",
+      "affected-inventory.json",
+      "generated-records.json"
+    ],
+    "result": "Exact batch survives 5/5 with both label actions; independent sample 104->96 due to 8 duplicates. Current pool rule rejects fixed label actions globally and within template/shape groups with >=3 records; one/two-item groups alone cannot establish general role coverage. Captured all-easy inventory and actual selection branch examined read-only. Five historical fixed-C generated records retained in affected-inventory, not silently treated as repaired by the current incoming batch."
+  },
+  "limitations": [
+    "Finite evidence cannot exclude every shortcut.",
+    "One not-in item and single shape observations in the exact batch are insufficient to certify standalone subgroup variety; larger unchanged controls and fresh draws test those families.",
+    "No configured learner policy, learner history or new database entity IDs were provided. Selection conclusions are conditional on captured basis 5356 and positive easy weight; arbitrary learner-history exclusions can reduce coverage.",
+    "Historical five-member generated subset remains in captured inventory; acceptance addresses the revised generator and exact incoming batch, not a database migration.",
+    "Original radio d19d6145-1fb1-5d51-b074-044e9b77aefd lacks a captured key/solution/rating and remains unsupported; no invented source fidelity claim."
+  ]
+}

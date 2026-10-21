@@ -1,0 +1,124 @@
+{
+  "verdict": "revise",
+  "summary": "Both prior defects are repaired. The revised distractor construction leaks answer information: matrix-blind lexicographic-median selection succeeds on 24/64 delivered CLI records versus a 20% guessing baseline. Package unchanged.",
+  "source_analysis": {
+    "skill": "Select the offered entry replacements that produce row echelon form.",
+    "reasoning_steps": [
+      "Apply each offered replacement set.",
+      "Locate the remaining leading entries and zero rows.",
+      "Check increasing leading columns and bottom-only zero rows.",
+      "Select the unique successful offered operation."
+    ],
+    "invariants": [
+      "Replace entries by zero without row arithmetic.",
+      "Exactly one offered operation succeeds.",
+      "Global minimality is not required."
+    ],
+    "permitted_variations": [
+      "Nonzero magnitudes and signs.",
+      "Zero structure, erased coordinates and surviving leading entries.",
+      "Valid offered operations, distractors and option positions."
+    ],
+    "source_refs": [
+      "2ab2c24d-7d61-5976-acd1-acab7ad4094a",
+      "5da4a360-a207-5df6-9d38-99e7b8b5a765",
+      "97237f8e-b317-5c86-86d1-8fd3cc83e66b",
+      "tutorial 3896 / 137b0909-9a5e-5edf-8019-24e803307903"
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay.json",
+        "profile-replay-records.json",
+        "repair-verification.json"
+      ],
+      "details": "All 15 complete source banks replay. Strict regressions fail on prior code and pass on current code. Canonical answer-bank evidence is absent."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "counterfactual-results.json",
+        "shortcut-trials.json"
+      ],
+      "details": "Independent checks verified keys and worked matrices for 24 fresh samples, all five batch items and controlled cases."
+    },
+    "variety": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "shortcut-construction-law.json",
+        "resampling-results.json"
+      ],
+      "details": "Correct-centered distractor neighborhoods create an incidental coordinate-order cue despite varied matrices and answers."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "scope-results.json",
+        "strict-current-results.txt",
+        "nonminimum-current-records.json"
+      ],
+      "details": "Operation-selection scope and moderate workload are restored; unsupported global minimization is removed."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-results.json"
+      ],
+      "details": "Native grader returned 46 accepted and 125 rejected responses, matching independent expectations."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "visual-inspection.json",
+        "render-full/rendering.json",
+        "render-target/rendering.json"
+      ],
+      "details": "Eleven actual-UI renders passed; representative batch and counterfactual screenshots were visually inspected."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "rejection-results.json",
+        "evidence-validation.json"
+      ],
+      "details": "Exact runtime declaration, relocation, deterministic replay and rejection cases passed. Package file hashes remain unchanged."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "shortcut-construction-law.json",
+        "shortcut-trials.json",
+        "resampling-results.json",
+        "delivery-cli-control/delivery.json",
+        "selection-analysis.json",
+        "inventory-reproduction.json"
+      ],
+      "details": "Median selection wins 31/96 held-out controls and 24/64 after CLI resampling and delivery. The exact batch scores 2/5; no separate universal batch bypass is claimed. Inventory reconstruction produced no certified matching identities."
+    }
+  },
+  "findings": [
+    {
+      "kind": "decision_shortcut",
+      "description": "Fresh banks select distractors from lexicographic neighborhoods centered on the key. Choosing the lexicographic median without inspecting the matrix has a reproducible advantage. When both side pools contain at least four candidates, its exact success probability is 3/8 instead of 1/5. This is statistical leakage, not a universal bypass.",
+      "source_refs": [
+        "2ab2c24d-7d61-5976-acd1-acab7ad4094a",
+        "tutorial 3896 / 137b0909-9a5e-5edf-8019-24e803307903",
+        "generate/principles.md: incidental answer-bearing cues"
+      ],
+      "reproduction": "Run shortcut_reproduction.py using the supplied Python executable, following commands.txt. Minimal actual-batch witness: generate('moderate', 431440325). The third lexicographically sorted choice is the accepted {a13,a22,a33}. shortcut-minimal-records.json retains the complete record; shortcut-construction-law.json records the two 12-candidate pools and exact probability. cue_probe.py and delivery_selection.py reproduce the distributional result.",
+      "requested_change": "Change fresh-bank construction so distractors are not drawn from a bounded lexicographic neighborhood centered on the key. Preserve source profiles and valid offered operations, then retest coordinate-order strategies through actual CLI resampling and delivery. Retain the matrix-blind probe as a regression."
+    }
+  ],
+  "repair_history_file": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186129115/repair-history.json",
+  "instruction": "Fix the root cause, retain every earlier counterexample, and declare executable checks in repair-regressions.json. A failed check is another repair task, not permission to abandon the generator."
+}

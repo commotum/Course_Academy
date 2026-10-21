@@ -1,0 +1,133 @@
+{
+  "verdict": "accepted",
+  "summary": "No concrete failure demonstrated. All eight checks pass; the exact five-question batch survives filtering and contains three distinct pivot subsets. Package unchanged.",
+  "source_analysis": {
+    "skill": "Find original pivot-column indices by reducing a general matrix to row echelon form and identifying each nonzero row’s leading entry.",
+    "reasoning_steps": [
+      "Convert the given matrix to REF by row swaps and/or row replacement.",
+      "Identify the first nonzero entry in each nonzero REF row.",
+      "Map their column indices back to the original matrix and select the complete subset."
+    ],
+    "invariants": [
+      "Row equivalence preserves pivot-column indices.",
+      "Column ordering matters; row ordering can change without changing the answer.",
+      "Select original columns, not transformed column vectors.",
+      "Within moderate difficulty preserve sparse matrices and comparable one-swap workload."
+    ],
+    "permitted_variations": [
+      "Vary nonzero integers and signs while preserving suitable workload.",
+      "Vary eligible pivot-column subsets by constructing sparse row-equivalent REF matrices, including leading zero columns, internal nonpivot columns, and terminal nonpivot columns.",
+      "Change row permutation, matrix label, and checkbox order; derive column vectors and solutions consistently.",
+      "Within justified shapes vary rank where comparable workload permits; do not freeze every answer-bearing role merely because an example has it."
+    ],
+    "source_refs": [
+      "3ac076bd-5add-5c08-bb96-7b11c0a37d54",
+      "c93d2ae4-7e7b-5500-9b27-fd939892ffa9",
+      "bdb5ab47-cea8-5da9-89b4-45a9046d7661",
+      "c82b9c7f-efcb-5316-aa82-25c517aae4cb",
+      "8f932477-898c-5577-9764-4039188b2eb0",
+      "b653b8c3-f330-53fd-9729-fc5cdad2a545",
+      "ccd071ca-5d5f-5313-be82-604c8c6af243",
+      "c118a776-ac53-56cc-b9e8-1173bce1a8ae",
+      "e012b726-5b5c-59b3-9af4-421c826c1005",
+      "1b6c62c9-235a-5e15-9835-d3716c4119bd",
+      "30da60ae-07cf-5bba-adce-b72ca62ce00b",
+      "190c1f09-7ea5-53d8-a079-57d65ed02079",
+      "719356e3-8c2f-52eb-b04e-5bd8a3bf6ec8",
+      "7d0368b2-c48d-55b9-a038-5636deca9c98",
+      "8bbb774c-4bbb-58f8-84cb-fd20b0029b02",
+      "0dd8f23a-a284-5af7-a370-b6877f8aea89",
+      "43ad19ba-2a30-5f0c-9e72-cb3393478e58",
+      "f7487709-ab57-5571-b02d-34f0affb38de",
+      "tutorial feec6418-f447-5ee0-8c62-7d6b690f9228: first nonzero entries in each REF row",
+      "tutorial d45a4eba-96ce-5bef-92b7-b8f0d4cd8b72: convert a general matrix to REF before identifying pivot columns"
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay-results.json",
+        "source-replays.json",
+        "canonical-replay.json"
+      ],
+      "details": "All 17 original prompts, complete choice banks, keyed answers, field order, and solution matrix chains replay; canonical matrix checked separately because source has no answer fields."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "audit.py",
+        "math-results.json",
+        "counterfactual-results.json"
+      ],
+      "details": "152 records independently checked with exact Fraction elimination from prompt text. Keys, original vectors, every displayed row operation, final REF and conclusions agree; zero failures."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "moderate-samples.json",
+        "hard-samples.json",
+        "boundary-results.json",
+        "stage-results.json",
+        "selection-results.json"
+      ],
+      "details": "All ten eligible moderate subsets observed across supported shapes; 30 boundary assignments and all six hard profiles tested. Both hard elimination outcomes occur. Actual delivery retains 60/60 independent and 5/5 exact batch records; selection rules examined against captured basis 5362."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "scope-results.json"
+      ],
+      "details": "Moderate preserves sparse one-swap workload; hard preserves demonstrated one/two-operation reductions and original response types. Restrictions to nontrivial subsets retain the source instructional task; unsupported easy rejected."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-results.json"
+      ],
+      "details": "Native learning::grade_field: 115 accepted and 130 rejected checks, no unresolved cases. Tests include all source banks, exact batch, both values for each controlled-pair checkbox, and hard profiles. No free-entry fields exist."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render-all/rendering.json",
+        "visual-inspection.json",
+        "render-all/question-006.png",
+        "render-all/question-007.png",
+        "render-all/question-008.png",
+        "render-all/question-010.png",
+        "render-all/question-012.png"
+      ],
+      "details": "12 records rendered through actual UI; screenshots inspected for exact batch, relevant/irrelevant pairs, radio bank and wide matrix. Controls, notation and worked solutions display correctly."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "package-before.json",
+        "package-after.json"
+      ],
+      "details": "Exact Python 3.13.5 matches manifest; standard-library-only packages object is empty. Fixed seed repeats identically after relocation. Invalid difficulty/count rejected. No external outputs; package hashes unchanged."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "shortcut-results.json",
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "stage-results.json",
+        "selection-results.json",
+        "inventory-review.json",
+        "affected-inventory.json"
+      ],
+      "details": "Relevant/irrelevant controlled pairs agree across prompts, explanations, renderer and native grading. 43 probes include conditional label/shape/template groups; none demonstrates an incidental full-answer predictor. Exact five-record batch has three subsets. Reading row-leading positions in swap-only cases is the intended source skill. Inventory assessment is limited to captured state and demonstrated weaknesses."
+    }
+  },
+  "findings": []
+}

@@ -1,0 +1,11 @@
+{
+  "purpose": "Resolve whether repeated shape-group constraints make moderate-size batches exhaust the bounded sampler.",
+  "command": "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python -c 'import generator; [print(n, generator.batch(\"easy\", n, 920113, stats := {}) and stats) for n in (32,48,64)]'",
+  "actual_execution": "Inline Python loop, same calls, additionally measured time.monotonic(); output captured in the author tool session.",
+  "results": [
+    {"count": 32, "seconds": 0.197, "attempted": 192, "accepted": 32, "semantic_duplicates": 0, "role_pool_rejections": 5},
+    {"count": 48, "seconds": 1.321, "attempted": 1297, "accepted": 48, "semantic_duplicates": 1, "role_pool_rejections": 26},
+    {"count": 64, "seconds": 0.521, "attempted": 512, "accepted": 64, "semantic_duplicates": 0, "role_pool_rejections": 7}
+  ],
+  "limits": "These calls test bounded construction and size only. They are not additional native grading or rendering claims; detailed post-delivery checks are the four required-size batches and the small 0/1/2/3/12 sample."
+}

@@ -1,0 +1,425 @@
+{
+  "learner_operation": "Find the first nonzero entry in each nonzero row; require strictly increasing column indices and no nonzero row after a zero row. Apply the requested in/not-in polarity independently to each labeled matrix.",
+  "fixed_features": [
+    {
+      "feature": "Three ordinary labeled matrices",
+      "justification": "All target questions present three independent recognition decisions; augmented matrices and transformation tasks are neighboring skills."
+    },
+    {
+      "feature": "Two row echelon conditions",
+      "justification": "Explicit lesson definition, tutorial 137b0909-9a5e-5edf-8019-24e803307903 conditions I and II."
+    },
+    {
+      "feature": "Nonempty subset of three checkbox responses",
+      "justification": "Finite recognition practice uses seven nonempty selection assignments. Requiring an affirmative checkbox action distinguishes an intentional submission from leaving all controls untouched. This is a delivery policy, not a row echelon theorem; coverage here does not claim empty-subset practice. Every label can still require either state."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Which labels qualify under the prompt polarity",
+      "eligible_variation": "Any A/B/C classification assignment compatible with nonempty selection; zero rows and pivot order determine membership.",
+      "observed": "All seven nonempty subsets in every sampled shape profile; exact runner batch has C selected 5/5."
+    },
+    {
+      "role": "Violation type",
+      "eligible_variation": "Valid, nonterminal zero row, equal pivots, leftward pivots, or simultaneous violations independent of label.",
+      "observed": "{'zero': 168, 'valid': 686, 'equal': 130, 'both': 142, 'left': 122}"
+    },
+    {
+      "role": "Prompt polarity",
+      "eligible_variation": "Select REF or its complement; matrices determine the underlying predicate in either case.",
+      "observed": "Both source polarities generated. Polarity is bound to source profiles; explicit controlled matrix edits were tested within a fixed polarity."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "Complete supported source profiles and decision assignments",
+      "sample_refs": [
+        "source-replays.json",
+        "source-replay-results.json",
+        "independent-samples.json",
+        "sampling-results.json"
+      ],
+      "result": "13 complete easy checkbox source profiles replayed, including all banks. Seven nonempty subsets occur in each profile. Incomplete unrated radio is unsupported and documented; canonical example has no answer bank."
+    },
+    {
+      "case": "Actual runner five-record delivery",
+      "sample_refs": [
+        "runner-batch.json",
+        "delivery-batch/accepted.json",
+        "batch-role-results.json"
+      ],
+      "result": "Selections ABC, BC, BC, AC, AC. C is selected in every survivor. No full-question fixed subset answers every item; the demonstrated bypass answers the C classification field."
+    },
+    {
+      "case": "Captured stored generated subset",
+      "sample_refs": [
+        "generated-records.json",
+        "inventory-probe-results.json",
+        "affected-inventory.json"
+      ],
+      "result": "All five non-source stored records reconstructed with normalized stored question IDs. C selected 5/5 in this subset; full captured easy bank has C selected 14/18, so the cue is not universal across source questions."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "On runner seed 924724049, q-129214, change only c21 from 0 to 1.",
+      "expected": "C loses REF because its first two pivots are in column 1; selected subset ABC -> AB.",
+      "observed": "Prompt matrix, C checkbox key, repeated solution matrix, explicit equal-pivot explanation and native learner grader all change consistently; rendering inspected.",
+      "status": "passed",
+      "justification": "Lesson condition II depends on leading-entry column positions, not label C. The pair shows C is eligible to be unselected while preserving all other data and target.",
+      "sample_refs": [
+        "c-counterfactual-records.json",
+        "c-counterfactual-results.json",
+        "c-counterfactual-grader-results.json",
+        "render-c-counterfactual/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "Change A[2,1] from 0 to 7 in a fixed q-129214 instance.",
+      "expected": "Selection ABC -> BC.",
+      "observed": "Exact matrices and explanation update; both checkbox states graded as expected in native harness; actual UI relevant pair inspected.",
+      "status": "passed",
+      "justification": "Nonzero before an existing pivot makes equal first-column pivots.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-results.json",
+        "render/rendering.json",
+        "render-remaining/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Change A[1,4] from 4 to -9 while holding pivots and all other entries fixed.",
+      "expected": "REF classifications and selected subset ABC preserved.",
+      "observed": "Matrices and explanation reflect changed trailing entry; same three checkbox truths; native harness and actual UI agree.",
+      "status": "passed",
+      "justification": "Both lesson conditions are about zero-row placement and leading columns. A trailing nonzero value is immaterial if it does not change the leading entry.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-results.json",
+        "render-remaining/rendering.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "label C",
+      "subgroup": "exact delivered runner batch",
+      "scope": "overall",
+      "strategy": "Always select C; classify A and B separately.",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.5714285714285714,
+      "disposition": "defect",
+      "conclusion": "Correctness counts one C field per item, not whole-question completion. Baseline 4/7 is the role-selected probability under independent fair validity flags conditioned on a nonempty selection. C gives 5/5 correct actions with no matrix inspection in this finite batch. A/B still require classification. Larger controls do not waive this batch weakness.",
+      "sample_refs": [
+        "runner-batch.json",
+        "delivery-batch/accepted.json",
+        "batch-role-results.json",
+        "grader-results.json"
+      ]
+    },
+    {
+      "cue": "label C and visible prompt polarity",
+      "subgroup": "select-echelon in exact delivered runner batch",
+      "scope": "within_template",
+      "strategy": "Always select C.",
+      "correct": 4,
+      "total": 4,
+      "baseline": 0.5714285714285714,
+      "disposition": "defect",
+      "conclusion": "Baseline 4/7 as above. This conditional probe preserves the fixed-C field action within each visible polarity group; the one-item not-in group alone is not evidence of a general family defect.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "batch-role-results.json"
+      ]
+    },
+    {
+      "cue": "label C and visible prompt polarity",
+      "subgroup": "select-not-echelon in exact delivered runner batch",
+      "scope": "within_template",
+      "strategy": "Always select C.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.5714285714285714,
+      "disposition": "defect",
+      "conclusion": "Baseline 4/7 as above. This conditional probe preserves the fixed-C field action within each visible polarity group; the one-item not-in group alone is not evidence of a general family defect.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "batch-role-results.json"
+      ]
+    },
+    {
+      "cue": "label C",
+      "subgroup": "independent post-delivery control",
+      "scope": "overall",
+      "strategy": "Always select C.",
+      "correct": 204,
+      "total": 384,
+      "baseline": 0.5714285714285714,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 4/7 as above. 180 counterexamples show this is not a universal generator shortcut.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "control-role-results.json"
+      ]
+    },
+    {
+      "cue": "label C plus polarity",
+      "subgroup": "select-echelon independent control",
+      "scope": "within_template",
+      "strategy": "Always select C.",
+      "correct": 84,
+      "total": 192,
+      "baseline": 0.5714285714285714,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 4/7 as above; control has selected and unselected C within this recognizable template.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "sampling-results.json"
+      ]
+    },
+    {
+      "cue": "label C plus polarity",
+      "subgroup": "select-not-echelon independent control",
+      "scope": "within_template",
+      "strategy": "Always select C.",
+      "correct": 120,
+      "total": 192,
+      "baseline": 0.5714285714285714,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 4/7 as above; control has selected and unselected C within this recognizable template.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "sampling-results.json"
+      ]
+    },
+    {
+      "cue": "matrix dimensions and prompt identify source shape profile",
+      "subgroup": "q-129213",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the most frequent fixed subset AB for this shape profile.",
+      "correct": 11,
+      "total": 32,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/7 is uniform guessing among seven nonempty subsets. This retrospective best fixed-subset probe has counterexamples; all seven subsets occur. Same seeds were used across profiles, so these groups are not independent statistical trials.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "sampling-results.json"
+      ]
+    },
+    {
+      "cue": "matrix dimensions and prompt identify source shape profile",
+      "subgroup": "q-129214",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the most frequent fixed subset AB for this shape profile.",
+      "correct": 11,
+      "total": 32,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/7 is uniform guessing among seven nonempty subsets. This retrospective best fixed-subset probe has counterexamples; all seven subsets occur. Same seeds were used across profiles, so these groups are not independent statistical trials.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "sampling-results.json"
+      ]
+    },
+    {
+      "cue": "matrix dimensions and prompt identify source shape profile",
+      "subgroup": "q-129217",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the most frequent fixed subset AB for this shape profile.",
+      "correct": 11,
+      "total": 32,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/7 is uniform guessing among seven nonempty subsets. This retrospective best fixed-subset probe has counterexamples; all seven subsets occur. Same seeds were used across profiles, so these groups are not independent statistical trials.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "sampling-results.json"
+      ]
+    },
+    {
+      "cue": "matrix dimensions and prompt identify source shape profile",
+      "subgroup": "q-129220",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the most frequent fixed subset C for this shape profile.",
+      "correct": 11,
+      "total": 32,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/7 is uniform guessing among seven nonempty subsets. This retrospective best fixed-subset probe has counterexamples; all seven subsets occur. Same seeds were used across profiles, so these groups are not independent statistical trials.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "sampling-results.json"
+      ]
+    },
+    {
+      "cue": "matrix dimensions and prompt identify source shape profile",
+      "subgroup": "q-129222",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the most frequent fixed subset C for this shape profile.",
+      "correct": 11,
+      "total": 32,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/7 is uniform guessing among seven nonempty subsets. This retrospective best fixed-subset probe has counterexamples; all seven subsets occur. Same seeds were used across profiles, so these groups are not independent statistical trials.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "sampling-results.json"
+      ]
+    },
+    {
+      "cue": "matrix dimensions and prompt identify source shape profile",
+      "subgroup": "q-129225",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the most frequent fixed subset C for this shape profile.",
+      "correct": 11,
+      "total": 32,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/7 is uniform guessing among seven nonempty subsets. This retrospective best fixed-subset probe has counterexamples; all seven subsets occur. Same seeds were used across profiles, so these groups are not independent statistical trials.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "sampling-results.json"
+      ]
+    },
+    {
+      "cue": "matrix dimensions and prompt identify source shape profile",
+      "subgroup": "q-42024",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the most frequent fixed subset AB for this shape profile.",
+      "correct": 11,
+      "total": 32,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/7 is uniform guessing among seven nonempty subsets. This retrospective best fixed-subset probe has counterexamples; all seven subsets occur. Same seeds were used across profiles, so these groups are not independent statistical trials.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "sampling-results.json"
+      ]
+    },
+    {
+      "cue": "matrix dimensions and prompt identify source shape profile",
+      "subgroup": "q-42366",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the most frequent fixed subset AB for this shape profile.",
+      "correct": 11,
+      "total": 32,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/7 is uniform guessing among seven nonempty subsets. This retrospective best fixed-subset probe has counterexamples; all seven subsets occur. Same seeds were used across profiles, so these groups are not independent statistical trials.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "sampling-results.json"
+      ]
+    },
+    {
+      "cue": "matrix dimensions and prompt identify source shape profile",
+      "subgroup": "q-72489",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the most frequent fixed subset C for this shape profile.",
+      "correct": 11,
+      "total": 32,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/7 is uniform guessing among seven nonempty subsets. This retrospective best fixed-subset probe has counterexamples; all seven subsets occur. Same seeds were used across profiles, so these groups are not independent statistical trials.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "sampling-results.json"
+      ]
+    },
+    {
+      "cue": "matrix dimensions and prompt identify source shape profile",
+      "subgroup": "q-72491",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the most frequent fixed subset C for this shape profile.",
+      "correct": 11,
+      "total": 32,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/7 is uniform guessing among seven nonempty subsets. This retrospective best fixed-subset probe has counterexamples; all seven subsets occur. Same seeds were used across profiles, so these groups are not independent statistical trials.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "sampling-results.json"
+      ]
+    },
+    {
+      "cue": "matrix dimensions and prompt identify source shape profile",
+      "subgroup": "q-72492",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the most frequent fixed subset C for this shape profile.",
+      "correct": 11,
+      "total": 32,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/7 is uniform guessing among seven nonempty subsets. This retrospective best fixed-subset probe has counterexamples; all seven subsets occur. Same seeds were used across profiles, so these groups are not independent statistical trials.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "sampling-results.json"
+      ]
+    },
+    {
+      "cue": "matrix dimensions and prompt identify source shape profile",
+      "subgroup": "q-72498",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the most frequent fixed subset AB for this shape profile.",
+      "correct": 11,
+      "total": 32,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/7 is uniform guessing among seven nonempty subsets. This retrospective best fixed-subset probe has counterexamples; all seven subsets occur. Same seeds were used across profiles, so these groups are not independent statistical trials.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "sampling-results.json"
+      ]
+    },
+    {
+      "cue": "label C",
+      "subgroup": "five reconstructed non-source stored records",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select C within this finite captured generated subset.",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.5714285714285714,
+      "disposition": "defect",
+      "conclusion": "Baseline 4/7 as above. This subset is identified by inventory provenance, not necessarily recognizable in the learner UI. It establishes affected stored-pool membership; it does not show the strategy solves every question in the full captured bank.",
+      "sample_refs": [
+        "generated-records.json",
+        "inventory-probe-results.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "generator nonempty rejection/resampling",
+      "generator semantic deduplication code and normal batch",
+      "requested difficulty",
+      "publisher normalization and inventory/within-batch deduplication",
+      "captured inventory",
+      "learner freshness and weighted-selection code; faithful positive-easy scenario"
+    ],
+    "sample_refs": [
+      "sampling-results.json",
+      "pre-policy-samples.json",
+      "normal-batch.json",
+      "delivery-independent/delivery.json",
+      "delivery-batch/delivery.json",
+      "delivery-analysis.json"
+    ],
+    "result": "416 independent profile records -> 384 survivors (32 content duplicates); every retained profile still covers all seven subsets. Runner batch 5 -> 5 and fixed C persists. Weighted selection within the easy band does not manufacture an omitted-C member of this batch. Actual per-learner history and future inserted entity IDs are unavailable, explicitly bounded in delivery-analysis.json."
+  },
+  "limitations": [
+    "This finite audit does not establish absence of every shortcut.",
+    "Defect is batch/pool role selection, not a universal sampler or math defect; always selecting C does not answer A and B.",
+    "No requirement that a five-item batch contain every subset or balanced frequencies; the demonstrated problem is one visible label supplying a correct action for a whole independent classification decision in every item.",
+    "Incomplete radio source has no captured correct key, solution or rating; it is not part of the supported easy family. Canonical example is explanatory and has no response bank.",
+    "Current inventory is basis 5356. Historical generation seeds are absent; stored records were reproduced with explicit matrices and normalized identity, not asserted historical seeds.",
+    "Actual learner history and configured weights unavailable. Selection analysis uses implementation rules plus a stated positive-easy fresh scenario, not fabricated policy data."
+  ]
+}

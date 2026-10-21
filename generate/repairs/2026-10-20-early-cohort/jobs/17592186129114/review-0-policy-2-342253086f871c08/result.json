@@ -1,0 +1,122 @@
+{
+  "verdict": "revise",
+  "summary": "The delivered five-item batch always selects C, allowing a label-only shortcut for that checkbox. The broader generator varies C; the other seven checks passed.",
+  "source_analysis": {
+    "skill": "Identify matrices in row echelon form, or its complement, using zero-row placement and leading-entry columns.",
+    "reasoning_steps": [
+      "Read the requested polarity.",
+      "Locate zero rows and leading entries.",
+      "Check both echelon conditions independently for each matrix.",
+      "Select the qualifying labels."
+    ],
+    "invariants": [
+      "Zero rows follow all nonzero rows.",
+      "Leading columns strictly increase down nonzero rows.",
+      "Prompts, matrices, explanations and checkbox keys agree."
+    ],
+    "permitted_variations": [
+      "Change values, dimensions, pivot patterns and zero-row positions within comparable workload.",
+      "Vary which labels qualify independently of their labels or shapes.",
+      "Vary selection count and prompt polarity."
+    ],
+    "source_refs": [
+      "6061d8ea-d309-5b82-8a65-c5a4fc1b804c: C unselected",
+      "bb2739fc-bb44-578a-857a-d151f2930d2c: C selected",
+      "tutorial 137b0909-9a5e-5edf-8019-24e803307903: conditions I and II",
+      "generate/principles.md, section 2"
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replays.json",
+        "source-replay-results.json",
+        "source-analysis.json"
+      ],
+      "details": "All 13 complete easy checkbox sources replayed with complete banks and documented corrections. Incomplete radio evidence is explicitly bounded."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "scope-results.json"
+      ],
+      "details": "No classification or solution-matrix errors in 416 independent samples and five runner records; 252 pivot witnesses verified."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "sampling-results.json",
+        "delivery-analysis.json",
+        "control-role-results.json"
+      ],
+      "details": "Every supported profile covers all seven nonempty subsets after delivery filtering. This does not waive the exact-batch failure."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "scope-results.json"
+      ],
+      "details": "Sampled variations preserve the lesson's two conditions and elementary recognition workload."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-results.json",
+        "c-counterfactual-grader-results.json"
+      ],
+      "details": "Native grader passed 180 checks: 90 correct checkbox states accepted and 90 opposite states rejected."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-remaining/rendering.json",
+        "render-c-counterfactual/rendering.json",
+        "render-inspection.json"
+      ],
+      "details": "Twelve actual-UI renderings passed; representative screenshots and controlled changes were visually inspected."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "package-before.json",
+        "evidence-contract-results.json"
+      ],
+      "details": "Dependencies, relocation, determinism and invalid-input rejection passed. Package files remained unchanged."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "batch-role-results.json",
+        "shortcut-probes.json",
+        "delivery-analysis.json",
+        "c-counterfactual-results.json",
+        "affected-inventory.json",
+        "generated-records.json"
+      ],
+      "details": "Delivered subsets are ABC, BC, BC, AC, AC: C is selected 5/5, including 4/4 select-echelon items. This bypasses the C classification, not the whole question. The larger control contains 180 C-unselected survivors. Five reconstructed non-source stored records share the fixed-C pattern."
+    }
+  },
+  "findings": [
+    {
+      "kind": "decision_shortcut",
+      "description": "The exact delivered batch fixes C as selected in every item. Always checking C supplies one intended classification decision without inspecting its matrix. This is a finite-batch selection defect, not a universal generator defect or an incorrect key. The full captured bank contains counterexamples.",
+      "source_refs": [
+        "6061d8ea-d309-5b82-8a65-c5a4fc1b804c",
+        "bb2739fc-bb44-578a-857a-d151f2930d2c",
+        "tutorial 137b0909-9a5e-5edf-8019-24e803307903, conditions I and II",
+        "generate/principles.md, section 2"
+      ],
+      "reproduction": "Run python3 batch_role_probe.py delivery-batch/accepted.json batch-role-results.json. It exits 1 with C selected=5, unselected=0. Minimal dependency case: seed 924724049, profile q-129214, C=[[-2,-2,-2,-1],[0,3,-5,5],[0,0,0,7]]. Changing only c21 from 0 to 1 changes the correct subset from ABC to AB; c_counterfactual.py reproduces the prompt, explanation and native-grader response.",
+      "requested_change": "Revise finite-pool construction so a visible label does not supply a fixed correct checkbox action throughout the delivered batch. Include valid same-method instances where C is unselected, derive dependent content consistently, and retain the failing regression after delivery filtering. Preserve the broader sampler and echelon rule."
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+All commands run from evidence_root. PYTHONDONTWRITEBYTECODE=1 prevents imported package cache writes.
+PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python audit.py
+PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python focused.py
+PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python regressions.py > regression-results.txt 2>&1
+Expected current regression exit: 1 (three source-contract failures).
+For each INPUT/OUTPUT pair independent-samples.json/delivery-independent and batch-records.json/delivery-batch:
+PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py --input INPUT --source ../source/source.json --inventory ../source/inventory.json --difficulty moderate --output OUTPUT --asset-root ../workspace --math-root /media/jake/SSD/EDB/math
+/home/jake/Developer/Course_Academy/generate/runs/current/check-engine grader-input.json grader-results.json
+PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/render_preview.py --input delivery-batch/accepted.json --output render-delivered --limit 5 --asset-root delivery-batch/assets --math-root /media/jake/SSD/EDB/math
+PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/render_preview.py --input cf-render-input.json --output render-cf --limit 3 --asset-root ../workspace --math-root /media/jake/SSD/EDB/math
+python3 variation.py
+PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python finalize.py
+Retained grader-input.json includes 5 normalized batch records added after delivery; rerunning audit.py rebuilds its base input. Final saved grader-input.json is the complete 85-submission native test input.
+variation.py rebuilds base variation evidence. Final pedagogical-variation.json also includes actual UI position measurement from ui-position-results.json.

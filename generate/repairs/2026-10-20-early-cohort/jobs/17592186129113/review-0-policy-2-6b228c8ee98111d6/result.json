@@ -1,0 +1,120 @@
+{
+  "verdict": "accepted",
+  "summary": "No reproducible defect found in the current generator or five-record runner batch. All eight checks passed. Package files remained unchanged; nothing was published or written to the database.",
+  "source_analysis": {
+    "skill": "Classify augmented matrices by checking row echelon form of their coefficient matrices, then select the requested subset.",
+    "reasoning_steps": [
+      "Exclude the constants column.",
+      "Identify leading entries and coefficient-zero rows.",
+      "Check zero-row placement and strictly increasing leading-column positions.",
+      "Apply prompt polarity and select the complete subset."
+    ],
+    "invariants": [
+      "Constants do not affect classification.",
+      "Leading entries need not equal one.",
+      "The task requires recognition, without row reduction or equation solving."
+    ],
+    "permitted_variations": [
+      "Change qualifying labels, subset cardinality and answer positions.",
+      "Vary pivot patterns, zero-row locations and nonzero values within comparable workloads.",
+      "Change constants while preserving the answer."
+    ],
+    "source_refs": [
+      "Tutorial 137b0909-9a5e-5edf-8019-24e803307903: echelon conditions and coefficient-only rule.",
+      "Tutorial 24451a80-db9f-5a0f-a591-41500a69774c: definition of leading entry.",
+      "Canonical example 674e7733-7a8e-5804-a867-82c74c583dcc.",
+      "All 15 interactive source question IDs and complete banks are recorded in source-analysis.json."
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "source-replay-results.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "replays.json",
+        "source-replay-results.json"
+      ],
+      "details": "Reproduced all 15 interactive profiles and complete answer banks. Documented the missing source key/solution and corrected source typo."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "audit.py",
+        "math-results.json",
+        "natural-samples.json",
+        "range-boundary-results.json"
+      ],
+      "details": "Independent exact checks of visible matrices, keys, solution arrays and witnesses found no mismatch."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "independent-samples.json",
+        "target-samples.json",
+        "slot-coverage.json",
+        "coverage-shortcuts.json"
+      ],
+      "details": "Covered 15 profiles, 45 matrix slots, every eligible rule case and 97 explicit nonempty target cases."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "slot-coverage.json",
+        "counterfactual-results.json"
+      ],
+      "details": "Variations preserve coefficient-echelon recognition, response contracts and comparable source workloads."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-results.json",
+        "boundary-grader-input.json",
+        "boundary-grader-results.json"
+      ],
+      "details": "Native grader passed 761 responses: 334 accepted, 427 rejected, none unresolved."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "visual-inspection.json",
+        "render/question-002.png",
+        "render/question-008.png",
+        "render/question-013.png"
+      ],
+      "details": "Actual UI rendered 18 cases successfully; seven screenshots were visually inspected."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "range-boundary-results.json",
+        "package-hashes-before.json",
+        "package-hashes-after.json",
+        "commands.json"
+      ],
+      "details": "Exact runtime dependency declaration, deterministic replay, relocation and rejection boundaries passed. Package hashes remained unchanged."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "counterfactual-results.json",
+        "coverage-shortcuts.json",
+        "delivery-independent/delivery.json",
+        "delivery-natural/delivery.json",
+        "delivery-batch/delivery.json",
+        "selection-results.json",
+        "inventory-audit.json",
+        "affected-inventory.json"
+      ],
+      "details": "Controlled changes propagated through explanations, rendering and native grading. Conditional shortcut probes found no demonstrated bypass. Delivery retained all tested records, including the exact batch. Historical inventory limitations and unavailable live learner history are documented."
+    }
+  },
+  "findings": []
+}

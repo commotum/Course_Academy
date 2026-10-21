@@ -1,0 +1,144 @@
+{
+  "verdict": "revise",
+  "summary": "The five delivered records always select C, bypassing its classification. This is a finite-batch selection defect; the broader generator varies C. Other seven checks passed.",
+  "source_analysis": {
+    "skill": "Identify ordinary matrices in row echelon form, or its complement, by checking leading-entry positions and placement of zero rows.",
+    "reasoning_steps": [
+      "Read the requested polarity.",
+      "Locate zero rows and leading entries.",
+      "Check both row echelon conditions for each matrix.",
+      "Select exactly the qualifying labels; explain a concrete violation for rejected matrices."
+    ],
+    "invariants": [
+      "Zero rows must be below all nonzero rows.",
+      "Leading columns strictly increase down the nonzero rows.",
+      "Leading entries need not equal one; entries above pivots need not vanish.",
+      "Each field key, solution matrix, selection truth and requested polarity must agree.",
+      "Retain source banks and response type when replaying each source."
+    ],
+    "permitted_variations": [
+      "Change nonzero values, signs and entries to the right of pivots while deriving explanations.",
+      "Change zero-row location, pivot-column sequences (increasing, repeated, decreasing), dimensions within comparable workload.",
+      "Reassign qualifying status to any label or shape; neither A/B/C nor source profile determines truth.",
+      "Vary in/not-in polarity and subset size, including source-observed all-three cases; do not fix eligible qualifying labels.",
+      "Reorder presentations and fields without stale labels, keys or solutions."
+    ],
+    "source_refs": [
+      "181e77e0-d595-5539-baef-b4986d4c678b",
+      "d19d6145-1fb1-5d51-b074-044e9b77aefd",
+      "bb2739fc-bb44-578a-857a-d151f2930d2c",
+      "8e494fc8-9bc5-580b-afe6-c6a2f464663f",
+      "596a0fcc-0f4e-5df8-8a39-a657a1117abd",
+      "9ddf8ccb-f483-5bbe-8662-ef5250ea89a5",
+      "937eaf0d-76e6-56ec-a651-23458856322a",
+      "6061d8ea-d309-5b82-8a65-c5a4fc1b804c",
+      "8f982d65-21d3-5ca8-afbe-be436c69b22a",
+      "88771814-b2fc-53f4-914f-2f284d52aece",
+      "7f2b3995-5f42-5189-ac12-2c7b1d510255",
+      "307a31ed-3320-5bc6-9033-1067b69032de",
+      "ba6bcd83-87df-5c0b-b121-63a0ff1205ca",
+      "72e836b6-2968-5b2e-8666-6c15080ad3e0",
+      "b6e4983b-c695-5944-9637-6d7547dae849",
+      "tutorial 24451a80-db9f-5a0f-a591-41500a69774c: first non-zero entry on each row is called the leading entry",
+      "tutorial 137b0909-9a5e-5edf-8019-24e803307903: I. zero rows at bottom; II. leading entry to the right of row above",
+      "generate/principles.md sections 1\u20133"
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "source-replays.json",
+        "source-replay-results.json"
+      ],
+      "details": "All 13 complete easy checkbox sources replayed with full banks and verified corrections. Incomplete unrated radio and bankless canonical example are explicitly bounded."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "scope-results.json",
+        "counterfactual-results.json"
+      ],
+      "details": "Independent classification of 416 sampled records and all five runner records found no key or solution-matrix errors; 252 explicit pivot witnesses verified."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "sampling-results.json",
+        "delivery-analysis.json",
+        "control-role-results.json"
+      ],
+      "details": "All seven nonempty subsets occur within every supported profile, including after delivery deduplication. This sampler-level result does not waive the exact-batch shortcut."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "scope-results.json"
+      ],
+      "details": "Ordinary small integer matrices; both lesson conditions; no new operators, row operations or reduced-echelon requirement."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-results.json",
+        "c-counterfactual-grader-input.json",
+        "c-counterfactual-grader-results.json"
+      ],
+      "details": "Native learner grader passed 180 checks: 90 accepted correct states and 90 rejected opposite states. Checkbox response contract has no free-entry equivalents."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-remaining/rendering.json",
+        "render-c-counterfactual/rendering.json",
+        "render-inspection.json"
+      ],
+      "details": "12 actual-UI renderings passed; representative screenshots inspected, including relevant and irrelevant edits."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "package-before.json",
+        "relocation-records.json",
+        "evidence-contract-results.json"
+      ],
+      "details": "Exact Python 3.13.5 and empty third-party dependency map verified. Relocation, deterministic replay, input rejection and package immutability passed."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "batch-role-results.json",
+        "shortcut-probes.json",
+        "delivery-analysis.json",
+        "c-counterfactual-results.json",
+        "affected-inventory.json",
+        "generated-records.json"
+      ],
+      "details": "Runner subsets ABC, BC, BC, AC, AC leave C selected 5/5 before and after delivery. Always selecting C correctly answers that field without inspecting its matrix, including 4/4 select-echelon items. A/B still require classification. Larger control has 180 C-unselected survivors. Five stored non-source records reproduce the same finite-subset pattern; full captured bank is not universally affected."
+    }
+  },
+  "findings": [
+    {
+      "kind": "decision_shortcut",
+      "description": "The exact five-record practice batch fixes the selected role at label C. A learner can always check C and bypass one of three intended independent classifications. This is a batch/pool selection failure, not a universal generator defect or an incorrect individual answer. Five captured non-source stored records also always select C; affected-inventory.json identifies their reproduced normalized UUIDs.",
+      "source_refs": [
+        "6061d8ea-d309-5b82-8a65-c5a4fc1b804c (C unselected)",
+        "bb2739fc-bb44-578a-857a-d151f2930d2c (C selected)",
+        "tutorial 137b0909-9a5e-5edf-8019-24e803307903, conditions I and II",
+        "generate/principles.md section 2"
+      ],
+      "reproduction": "python3 batch_role_probe.py delivery-batch/accepted.json batch-role-results.json exits 1: C selected=5, unselected=0. Exact dependency example: seed 924724049, profile q-129214, C=[[-2,-2,-2,-1],[0,3,-5,5],[0,0,0,7]]. Changing only c21 from 0 to 1 correctly changes ABC to AB; run c_counterfactual.py and its saved native-grader cases.",
+      "requested_change": "Revise finite-batch/pool construction to prevent a visible label from supplying a fixed correct checkbox action across every delivered item. Replace enough members with valid same-method instances where C is unselected, deriving all dependent content and keys. Retain the strict batch-role regression and rerun it after actual delivery filtering; do not narrow the broader sampler or change the REF rule."
+    }
+  ]
+}

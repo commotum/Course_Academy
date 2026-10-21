@@ -1,0 +1,728 @@
+{
+  "learner_operation": "Find the original column indices that become leading entries after row-echelon reduction; moderate cases require one row swap, then complete checkbox selection.",
+  "fixed_features": [
+    {
+      "feature": "Moderate profile uses exactly one row swap on sparse 3x3, 3x4, or 4x4 matrices.",
+      "justification": "All six moderate source questions have this workload; adding elimination would increase difficulty. Row-leading inspection is a valid mathematical simplification in this family."
+    },
+    {
+      "feature": "At least two pivot columns and at least one nonpivot column; numeric entries are small integers.",
+      "justification": "All supplied source practice uses nontrivial subset selection with at least two pivots and both positive and negative choices; moderate rank one/full column rank would reduce the instructional decision. These restrictions retain the demonstrated skill and workload."
+    },
+    {
+      "feature": "One checkbox per original column, with original column vectors.",
+      "justification": "The moderate source response contract is complete subset selection, not rank entry or transformed-column identification."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Which original columns qualify",
+      "eligible_variation": "Vary leading, internal and terminal nonpivot roles and eligible pivot subsets at each supported shape.",
+      "observed": "60 moderate samples cover all ten eligible subsets across 3/4 columns; explicit boundary assignments reach earliest and latest subsets. The delivered five contain three subsets."
+    },
+    {
+      "role": "Correct choice count and displayed position",
+      "eligible_variation": "Rank 2/3 at four columns; original column number follows matrix ordering. Hard radio correct entry and size vary.",
+      "observed": "Both ranks occur for 3x4 and 4x4; 3x3 rank2 justified as the nontrivial comparable subset task. Hard radio profiles have size2/3 keys and different bank positions."
+    },
+    {
+      "role": "Matrix label and incidental entries",
+      "eligible_variation": "A/B/P and signs/nonleading values may change without assigning a response.",
+      "observed": "Fixed subset probes fail within nontrivial label and shape groups; irrelevant nonleading change preserves membership."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "Source and shape/role boundaries",
+      "sample_refs": [
+        "source-replay-results.json",
+        "boundaries.json",
+        "boundary-results.json"
+      ],
+      "result": "17 source answer banks replayed; canonical reconstructed; earliest/latest eligible subsets accepted at supported shapes."
+    },
+    {
+      "case": "Raw versus delivered moderate",
+      "sample_refs": [
+        "moderate-samples.json",
+        "delivery-independent/accepted.json",
+        "stage-results.json"
+      ],
+      "result": "60/60 accepted, no decision-case loss, ten distinct complete subsets."
+    },
+    {
+      "case": "Exact runner batch separately",
+      "sample_refs": [
+        "runner-batch.json",
+        "delivery-batch/accepted.json",
+        "shortcut-results.json"
+      ],
+      "result": "5/5 accepted; subsets {1,3,4}, {1,2}, {1,3}. Three 4x4 records include {1,2} and {1,3}; no tested full-answer surface cue solves all five."
+    },
+    {
+      "case": "Hard response/reduction profiles",
+      "sample_refs": [
+        "hard-samples.json",
+        "math-results.json"
+      ],
+      "result": "Six samples per each of six profiles, including swaps, eliminations, mixed cases and five-entry radio banks."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Hold [[1,2,5],[0,0,0],[0,4,3]] fixed except change row3 column2 from 4 to 0.",
+      "expected": "Pivot subset changes {1,2} -> {1,3}; answer vectors, conclusion, rendering and native grader must follow.",
+      "observed": "Exact independent reduction, solution matrices and complete native true/false checks match changed selection; rendered records 6/7 exhibit this change.",
+      "status": "passed",
+      "justification": "Both are sparse one-swap moderate instances; changing a leading entry changes the decision while preserving workload.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-input.json",
+        "grader-results.json",
+        "render-all/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Hold the base fixed except row1 column3 from 5 to -5.",
+      "expected": "Keep pivot subset {1,2}, with the changed original vector and solution matrices.",
+      "observed": "Independent matrix checks and native checks preserve selection; rendered records 6/8 show the changed entry and unchanged answers.",
+      "status": "passed",
+      "justification": "Changing a nonleading coefficient in this REF-permutation task does not move row-leading positions.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-results.json",
+        "render-all/rendering.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "column numbers",
+      "subgroup": "independent raw",
+      "scope": "within_template",
+      "strategy": "Always select columns 1 and 2.",
+      "correct": 12,
+      "total": 60,
+      "baseline": 0.1738888888888889,
+      "disposition": "not_predictive",
+      "conclusion": "Exact complete-subset success 12/60. Baseline is a uniform guess among admissible subsets at that visible shape (rank is not given). No tested fixed choice or superficial rule solves this entire subgroup; small-sample associations are bounded observations.",
+      "sample_refs": [
+        "moderate-samples.json"
+      ]
+    },
+    {
+      "cue": "last column position",
+      "subgroup": "independent raw",
+      "scope": "within_template",
+      "strategy": "Select all but the last original column.",
+      "correct": 14,
+      "total": 60,
+      "baseline": 0.1738888888888889,
+      "disposition": "not_predictive",
+      "conclusion": "Exact complete-subset success 14/60. Baseline is a uniform guess among admissible subsets at that visible shape (rank is not given). No tested fixed choice or superficial rule solves this entire subgroup; small-sample associations are bounded observations.",
+      "sample_refs": [
+        "moderate-samples.json"
+      ]
+    },
+    {
+      "cue": "sign and row placement",
+      "subgroup": "independent raw",
+      "scope": "within_template",
+      "strategy": "Select original columns whose top-row entries are positive.",
+      "correct": 5,
+      "total": 60,
+      "baseline": 0.1738888888888889,
+      "disposition": "not_predictive",
+      "conclusion": "Exact complete-subset success 5/60. Baseline is a uniform guess among admissible subsets at that visible shape (rank is not given). No tested fixed choice or superficial rule solves this entire subgroup; small-sample associations are bounded observations.",
+      "sample_refs": [
+        "moderate-samples.json"
+      ]
+    },
+    {
+      "cue": "matrix label A",
+      "subgroup": "independent raw label A",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select columns 1 and 2.",
+      "correct": 3,
+      "total": 14,
+      "baseline": 0.18333333333333332,
+      "disposition": "not_predictive",
+      "conclusion": "Exact complete-subset success 3/14. Baseline is a uniform guess among admissible subsets at that visible shape (rank is not given). No tested fixed choice or superficial rule solves this entire subgroup; small-sample associations are bounded observations.",
+      "sample_refs": [
+        "moderate-samples.json"
+      ]
+    },
+    {
+      "cue": "matrix label B",
+      "subgroup": "independent raw label B",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select columns 1 and 2.",
+      "correct": 4,
+      "total": 26,
+      "baseline": 0.18076923076923077,
+      "disposition": "not_predictive",
+      "conclusion": "Exact complete-subset success 4/26. Baseline is a uniform guess among admissible subsets at that visible shape (rank is not given). No tested fixed choice or superficial rule solves this entire subgroup; small-sample associations are bounded observations.",
+      "sample_refs": [
+        "moderate-samples.json"
+      ]
+    },
+    {
+      "cue": "matrix label P",
+      "subgroup": "independent raw label P",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select columns 1 and 2.",
+      "correct": 5,
+      "total": 20,
+      "baseline": 0.15833333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Exact complete-subset success 5/20. Baseline is a uniform guess among admissible subsets at that visible shape (rank is not given). No tested fixed choice or superficial rule solves this entire subgroup; small-sample associations are bounded observations.",
+      "sample_refs": [
+        "moderate-samples.json"
+      ]
+    },
+    {
+      "cue": "(3, 3) shape",
+      "subgroup": "independent raw (3, 3)",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select all but the last column.",
+      "correct": 10,
+      "total": 19,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Exact complete-subset success 10/19. Baseline is a uniform guess among admissible subsets at that visible shape (rank is not given). No tested fixed choice or superficial rule solves this entire subgroup; small-sample associations are bounded observations.",
+      "sample_refs": [
+        "moderate-samples.json"
+      ]
+    },
+    {
+      "cue": "(3, 4) shape",
+      "subgroup": "independent raw (3, 4)",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select all but the last column.",
+      "correct": 2,
+      "total": 20,
+      "baseline": 0.1,
+      "disposition": "not_predictive",
+      "conclusion": "Exact complete-subset success 2/20. Baseline is a uniform guess among admissible subsets at that visible shape (rank is not given). No tested fixed choice or superficial rule solves this entire subgroup; small-sample associations are bounded observations.",
+      "sample_refs": [
+        "moderate-samples.json"
+      ]
+    },
+    {
+      "cue": "(4, 4) shape",
+      "subgroup": "independent raw (4, 4)",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select all but the last column.",
+      "correct": 2,
+      "total": 21,
+      "baseline": 0.1,
+      "disposition": "not_predictive",
+      "conclusion": "Exact complete-subset success 2/21. Baseline is a uniform guess among admissible subsets at that visible shape (rank is not given). No tested fixed choice or superficial rule solves this entire subgroup; small-sample associations are bounded observations.",
+      "sample_refs": [
+        "moderate-samples.json"
+      ]
+    },
+    {
+      "cue": "row leading entries",
+      "subgroup": "independent raw",
+      "scope": "within_template",
+      "strategy": "Select columns containing the first nonzero entry of any original nonzero row.",
+      "correct": 60,
+      "total": 60,
+      "baseline": 0.1738888888888889,
+      "disposition": "intended_skill",
+      "conclusion": "Exact complete-subset success 60/60. Baseline is a uniform guess among admissible subsets at that visible shape (rank is not given). First nonzero entries of row-permuted REF matrices instantiate the lesson skill; this valid simplification is mathematically informative.",
+      "sample_refs": [
+        "moderate-samples.json"
+      ]
+    },
+    {
+      "cue": "column numbers",
+      "subgroup": "independent delivered",
+      "scope": "within_template",
+      "strategy": "Always select columns 1 and 2.",
+      "correct": 12,
+      "total": 60,
+      "baseline": 0.1738888888888889,
+      "disposition": "not_predictive",
+      "conclusion": "Exact complete-subset success 12/60. Baseline is a uniform guess among admissible subsets at that visible shape (rank is not given). No tested fixed choice or superficial rule solves this entire subgroup; small-sample associations are bounded observations.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "last column position",
+      "subgroup": "independent delivered",
+      "scope": "within_template",
+      "strategy": "Select all but the last original column.",
+      "correct": 14,
+      "total": 60,
+      "baseline": 0.1738888888888889,
+      "disposition": "not_predictive",
+      "conclusion": "Exact complete-subset success 14/60. Baseline is a uniform guess among admissible subsets at that visible shape (rank is not given). No tested fixed choice or superficial rule solves this entire subgroup; small-sample associations are bounded observations.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "sign and row placement",
+      "subgroup": "independent delivered",
+      "scope": "within_template",
+      "strategy": "Select original columns whose top-row entries are positive.",
+      "correct": 5,
+      "total": 60,
+      "baseline": 0.1738888888888889,
+      "disposition": "not_predictive",
+      "conclusion": "Exact complete-subset success 5/60. Baseline is a uniform guess among admissible subsets at that visible shape (rank is not given). No tested fixed choice or superficial rule solves this entire subgroup; small-sample associations are bounded observations.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "matrix label A",
+      "subgroup": "independent delivered label A",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select columns 1 and 2.",
+      "correct": 3,
+      "total": 14,
+      "baseline": 0.18333333333333332,
+      "disposition": "not_predictive",
+      "conclusion": "Exact complete-subset success 3/14. Baseline is a uniform guess among admissible subsets at that visible shape (rank is not given). No tested fixed choice or superficial rule solves this entire subgroup; small-sample associations are bounded observations.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "matrix label B",
+      "subgroup": "independent delivered label B",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select columns 1 and 2.",
+      "correct": 4,
+      "total": 26,
+      "baseline": 0.18076923076923077,
+      "disposition": "not_predictive",
+      "conclusion": "Exact complete-subset success 4/26. Baseline is a uniform guess among admissible subsets at that visible shape (rank is not given). No tested fixed choice or superficial rule solves this entire subgroup; small-sample associations are bounded observations.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "matrix label P",
+      "subgroup": "independent delivered label P",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select columns 1 and 2.",
+      "correct": 5,
+      "total": 20,
+      "baseline": 0.15833333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Exact complete-subset success 5/20. Baseline is a uniform guess among admissible subsets at that visible shape (rank is not given). No tested fixed choice or superficial rule solves this entire subgroup; small-sample associations are bounded observations.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "(3, 3) shape",
+      "subgroup": "independent delivered (3, 3)",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select all but the last column.",
+      "correct": 10,
+      "total": 19,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Exact complete-subset success 10/19. Baseline is a uniform guess among admissible subsets at that visible shape (rank is not given). No tested fixed choice or superficial rule solves this entire subgroup; small-sample associations are bounded observations.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "(3, 4) shape",
+      "subgroup": "independent delivered (3, 4)",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select all but the last column.",
+      "correct": 2,
+      "total": 20,
+      "baseline": 0.1,
+      "disposition": "not_predictive",
+      "conclusion": "Exact complete-subset success 2/20. Baseline is a uniform guess among admissible subsets at that visible shape (rank is not given). No tested fixed choice or superficial rule solves this entire subgroup; small-sample associations are bounded observations.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "(4, 4) shape",
+      "subgroup": "independent delivered (4, 4)",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select all but the last column.",
+      "correct": 2,
+      "total": 21,
+      "baseline": 0.1,
+      "disposition": "not_predictive",
+      "conclusion": "Exact complete-subset success 2/21. Baseline is a uniform guess among admissible subsets at that visible shape (rank is not given). No tested fixed choice or superficial rule solves this entire subgroup; small-sample associations are bounded observations.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "row leading entries",
+      "subgroup": "independent delivered",
+      "scope": "within_template",
+      "strategy": "Select columns containing the first nonzero entry of any original nonzero row.",
+      "correct": 60,
+      "total": 60,
+      "baseline": 0.1738888888888889,
+      "disposition": "intended_skill",
+      "conclusion": "Exact complete-subset success 60/60. Baseline is a uniform guess among admissible subsets at that visible shape (rank is not given). First nonzero entries of row-permuted REF matrices instantiate the lesson skill; this valid simplification is mathematically informative.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "column numbers",
+      "subgroup": "exact batch",
+      "scope": "within_template",
+      "strategy": "Always select columns 1 and 2.",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.1,
+      "disposition": "not_predictive",
+      "conclusion": "Exact complete-subset success 3/5. Baseline is a uniform guess among admissible subsets at that visible shape (rank is not given). No tested fixed choice or superficial rule solves this entire subgroup; small-sample associations are bounded observations.",
+      "sample_refs": [
+        "runner-batch.json"
+      ]
+    },
+    {
+      "cue": "last column position",
+      "subgroup": "exact batch",
+      "scope": "within_template",
+      "strategy": "Select all but the last original column.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.1,
+      "disposition": "not_predictive",
+      "conclusion": "Exact complete-subset success 0/5. Baseline is a uniform guess among admissible subsets at that visible shape (rank is not given). No tested fixed choice or superficial rule solves this entire subgroup; small-sample associations are bounded observations.",
+      "sample_refs": [
+        "runner-batch.json"
+      ]
+    },
+    {
+      "cue": "sign and row placement",
+      "subgroup": "exact batch",
+      "scope": "within_template",
+      "strategy": "Select original columns whose top-row entries are positive.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.1,
+      "disposition": "not_predictive",
+      "conclusion": "Exact complete-subset success 0/5. Baseline is a uniform guess among admissible subsets at that visible shape (rank is not given). No tested fixed choice or superficial rule solves this entire subgroup; small-sample associations are bounded observations.",
+      "sample_refs": [
+        "runner-batch.json"
+      ]
+    },
+    {
+      "cue": "matrix label P",
+      "subgroup": "exact batch label P",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select columns 1 and 2.",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.1,
+      "disposition": "not_predictive",
+      "conclusion": "Exact complete-subset success 2/4. Baseline is a uniform guess among admissible subsets at that visible shape (rank is not given). No tested fixed choice or superficial rule solves this entire subgroup; small-sample associations are bounded observations.",
+      "sample_refs": [
+        "runner-batch.json"
+      ]
+    },
+    {
+      "cue": "(3, 4) shape",
+      "subgroup": "exact batch (3, 4)",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select all but the last column.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.1,
+      "disposition": "not_predictive",
+      "conclusion": "Exact complete-subset success 0/2. Baseline is a uniform guess among admissible subsets at that visible shape (rank is not given). No tested fixed choice or superficial rule solves this entire subgroup; small-sample associations are bounded observations.",
+      "sample_refs": [
+        "runner-batch.json"
+      ]
+    },
+    {
+      "cue": "(4, 4) shape",
+      "subgroup": "exact batch (4, 4)",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select all but the last column.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.10000000000000002,
+      "disposition": "not_predictive",
+      "conclusion": "Exact complete-subset success 0/3. Baseline is a uniform guess among admissible subsets at that visible shape (rank is not given). No tested fixed choice or superficial rule solves this entire subgroup; small-sample associations are bounded observations.",
+      "sample_refs": [
+        "runner-batch.json"
+      ]
+    },
+    {
+      "cue": "row leading entries",
+      "subgroup": "exact batch",
+      "scope": "within_template",
+      "strategy": "Select columns containing the first nonzero entry of any original nonzero row.",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.1,
+      "disposition": "intended_skill",
+      "conclusion": "Exact complete-subset success 5/5. Baseline is a uniform guess among admissible subsets at that visible shape (rank is not given). First nonzero entries of row-permuted REF matrices instantiate the lesson skill; this valid simplification is mathematically informative.",
+      "sample_refs": [
+        "runner-batch.json"
+      ]
+    },
+    {
+      "cue": "column numbers",
+      "subgroup": "exact delivered batch",
+      "scope": "within_template",
+      "strategy": "Always select columns 1 and 2.",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.1,
+      "disposition": "not_predictive",
+      "conclusion": "Exact complete-subset success 3/5. Baseline is a uniform guess among admissible subsets at that visible shape (rank is not given). No tested fixed choice or superficial rule solves this entire subgroup; small-sample associations are bounded observations.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "last column position",
+      "subgroup": "exact delivered batch",
+      "scope": "within_template",
+      "strategy": "Select all but the last original column.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.1,
+      "disposition": "not_predictive",
+      "conclusion": "Exact complete-subset success 0/5. Baseline is a uniform guess among admissible subsets at that visible shape (rank is not given). No tested fixed choice or superficial rule solves this entire subgroup; small-sample associations are bounded observations.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "sign and row placement",
+      "subgroup": "exact delivered batch",
+      "scope": "within_template",
+      "strategy": "Select original columns whose top-row entries are positive.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.1,
+      "disposition": "not_predictive",
+      "conclusion": "Exact complete-subset success 0/5. Baseline is a uniform guess among admissible subsets at that visible shape (rank is not given). No tested fixed choice or superficial rule solves this entire subgroup; small-sample associations are bounded observations.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "matrix label P",
+      "subgroup": "exact delivered batch label P",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select columns 1 and 2.",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.1,
+      "disposition": "not_predictive",
+      "conclusion": "Exact complete-subset success 2/4. Baseline is a uniform guess among admissible subsets at that visible shape (rank is not given). No tested fixed choice or superficial rule solves this entire subgroup; small-sample associations are bounded observations.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "(3, 4) shape",
+      "subgroup": "exact delivered batch (3, 4)",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select all but the last column.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.1,
+      "disposition": "not_predictive",
+      "conclusion": "Exact complete-subset success 0/2. Baseline is a uniform guess among admissible subsets at that visible shape (rank is not given). No tested fixed choice or superficial rule solves this entire subgroup; small-sample associations are bounded observations.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "(4, 4) shape",
+      "subgroup": "exact delivered batch (4, 4)",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select all but the last column.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.10000000000000002,
+      "disposition": "not_predictive",
+      "conclusion": "Exact complete-subset success 0/3. Baseline is a uniform guess among admissible subsets at that visible shape (rank is not given). No tested fixed choice or superficial rule solves this entire subgroup; small-sample associations are bounded observations.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "row leading entries",
+      "subgroup": "exact delivered batch",
+      "scope": "within_template",
+      "strategy": "Select columns containing the first nonzero entry of any original nonzero row.",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.1,
+      "disposition": "intended_skill",
+      "conclusion": "Exact complete-subset success 5/5. Baseline is a uniform guess among admissible subsets at that visible shape (rank is not given). First nonzero entries of row-permuted REF matrices instantiate the lesson skill; this valid simplification is mathematically informative.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "radio_eliminate",
+      "scope": "within_template",
+      "strategy": "Choose the first bank entry (first if tied).",
+      "correct": 1,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/6 exact selections against 1/5 random-choice baseline. Correct bank position and eligible size vary in this subgroup; no complete predictor demonstrated.",
+      "sample_refs": [
+        "hard-samples.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "radio_eliminate",
+      "scope": "within_template",
+      "strategy": "Choose the shortest bank entry (first if tied).",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 exact selections against 1/5 random-choice baseline. Correct bank position and eligible size vary in this subgroup; no complete predictor demonstrated.",
+      "sample_refs": [
+        "hard-samples.json"
+      ]
+    },
+    {
+      "cue": "minority-size",
+      "subgroup": "radio_eliminate",
+      "scope": "within_template",
+      "strategy": "Choose the minority-size bank entry (first if tied).",
+      "correct": 1,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/6 exact selections against 1/5 random-choice baseline. Correct bank position and eligible size vary in this subgroup; no complete predictor demonstrated.",
+      "sample_refs": [
+        "hard-samples.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "radio_mixed",
+      "scope": "within_template",
+      "strategy": "Choose the first bank entry (first if tied).",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 exact selections against 1/5 random-choice baseline. Correct bank position and eligible size vary in this subgroup; no complete predictor demonstrated.",
+      "sample_refs": [
+        "hard-samples.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "radio_mixed",
+      "scope": "within_template",
+      "strategy": "Choose the shortest bank entry (first if tied).",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 exact selections against 1/5 random-choice baseline. Correct bank position and eligible size vary in this subgroup; no complete predictor demonstrated.",
+      "sample_refs": [
+        "hard-samples.json"
+      ]
+    },
+    {
+      "cue": "minority-size",
+      "subgroup": "radio_mixed",
+      "scope": "within_template",
+      "strategy": "Choose the minority-size bank entry (first if tied).",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 exact selections against 1/5 random-choice baseline. Correct bank position and eligible size vary in this subgroup; no complete predictor demonstrated.",
+      "sample_refs": [
+        "hard-samples.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "radio_swap",
+      "scope": "within_template",
+      "strategy": "Choose the first bank entry (first if tied).",
+      "correct": 2,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/6 exact selections against 1/5 random-choice baseline. Correct bank position and eligible size vary in this subgroup; no complete predictor demonstrated.",
+      "sample_refs": [
+        "hard-samples.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "radio_swap",
+      "scope": "within_template",
+      "strategy": "Choose the shortest bank entry (first if tied).",
+      "correct": 1,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/6 exact selections against 1/5 random-choice baseline. Correct bank position and eligible size vary in this subgroup; no complete predictor demonstrated.",
+      "sample_refs": [
+        "hard-samples.json"
+      ]
+    },
+    {
+      "cue": "minority-size",
+      "subgroup": "radio_swap",
+      "scope": "within_template",
+      "strategy": "Choose the minority-size bank entry (first if tied).",
+      "correct": 1,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/6 exact selections against 1/5 random-choice baseline. Correct bank position and eligible size vary in this subgroup; no complete predictor demonstrated.",
+      "sample_refs": [
+        "hard-samples.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "generator numeric rejection/resampling",
+      "nonempty-checkbox wrapper",
+      "requested difficulty",
+      "actual publisher normalization and inventory/batch deduplication",
+      "learner band selection, entity ordering, freshness and no-policy fallback"
+    ],
+    "sample_refs": [
+      "stage-results.json",
+      "delivery-independent/delivery.json",
+      "delivery-batch/delivery.json",
+      "selection-results.json"
+    ],
+    "result": "No rejection/deduplication loss of the sampled decision cases. Uniform-within-band selection preserves possible outcomes; fresh selection from exact new batch reaches all five. Captured inventory and inactive previews only, no publication."
+  },
+  "limitations": [
+    "Finite probes cover tested cue strategies, not every shortcut.",
+    "No active policy or learner history is captured; selection is evaluated structurally and in reproducible preview configurations.",
+    "Canonical source has no fields, so its response contract is inferred from adjacent practice while its matrix/solution is checked directly.",
+    "Hard material was sampled conservatively for fidelity and profiles; requested batch is moderate."
+  ]
+}

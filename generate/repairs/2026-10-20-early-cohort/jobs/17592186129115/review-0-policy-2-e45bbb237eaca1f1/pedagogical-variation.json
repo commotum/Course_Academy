@@ -1,0 +1,465 @@
+{
+  "learner_operation": "For each offered coordinate set, mentally zero exactly those entries, locate each remaining row leading entry, check strictly increasing leading columns and bottom-only zero rows; select the unique successful offered operation.",
+  "fixed_features": [
+    {
+      "feature": "4x4 ordinary integer matrix and five-option single radio field",
+      "justification": "All 15 source practice cases share this moderate workload and response shape."
+    },
+    {
+      "feature": "Unique global minimum required by current package",
+      "justification": "NOT source-justified: source asks whether each offered replacement yields echelon form, without global optimization. See nonminimum-case.json."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Entries removed / surviving leading entries",
+      "eligible_variation": "Change zero structure and qualifying coordinate set, preserving row-echelon criterion.",
+      "observed": "108 catalogue target sets; sampled correct coordinates change and relevant cell counterfactual changes answer."
+    },
+    {
+      "role": "Correct bank operation and distractors",
+      "eligible_variation": "Include already-zero coordinates in invalid distractors; sole valid offered set need not be a global minimum.",
+      "observed": "Generator rejects captured q-73149 bank and nonminimum-case.json; bank restrictions are not justified."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "raw independent",
+      "sample_refs": [
+        "independent-samples.json"
+      ],
+      "result": "{'count': 32, 'correct_sets': 28, 'correct_counts': {3: 26, 2: 6}, 'creates_zero_rows': 24}"
+    },
+    {
+      "case": "delivered independent",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ],
+      "result": "{'count': 32, 'correct_sets': 28, 'correct_counts': {3: 26, 2: 6}, 'creates_zero_rows': 24}"
+    },
+    {
+      "case": "raw batch",
+      "sample_refs": [
+        "batch-records.json"
+      ],
+      "result": "{'count': 5, 'correct_sets': 5, 'correct_counts': {2: 3, 3: 2}, 'creates_zero_rows': 0}"
+    },
+    {
+      "case": "delivered batch",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ],
+      "result": "{'count': 5, 'correct_sets': 5, 'correct_counts': {2: 3, 3: 2}, 'creates_zero_rows': 0}"
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Seed 702312: change a33 from 7 to 0; retain four distractor sets and replace now-redundant keyed set.",
+      "expected": "Correct response shrinks from a21,a31,a33 to a21,a31; transformed matrix stays REF; prompt and solution reflect changed a33.",
+      "observed": "Independent echelon calculation, actual native grade acceptance/rejection, and rendered prompts/solutions checked for before and after.",
+      "status": "passed",
+      "justification": "Changing zero/nonzero structure can remove a necessary erasure, per lesson leading-entry definition. Bank update is necessary because old correct choice contains the changed now-zero cell.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-results.json",
+        "render-cf/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Same before instance: multiply a12=9 by -2.",
+      "expected": "Coordinate response and zero/nonzero structure preserved; visible value and worked matrix update.",
+      "observed": "Response preserved; grader accepts same coordinate set and rejects distractors. Renderer shows changed magnitude with same key.",
+      "status": "passed",
+      "justification": "Nonzero magnitude/sign does not alter row-leading column or zero-row order.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-results.json",
+        "render-cf/rendering.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "lexicographic coordinates",
+      "subgroup": "raw independent / all",
+      "scope": "within_template",
+      "strategy": "Choose the lexicographically first coordinate set",
+      "correct": 0,
+      "total": 32,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/32 in this bounded sample, compared with uniform five-choice guessing at 0.2. No deterministic answer-producing cue established; small subgroup deviations are not treated as proof of a defect. Stored index is not visible UI position.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "stored option index",
+      "subgroup": "raw independent / all",
+      "scope": "within_template",
+      "strategy": "Choose the first stored option (UI subsequently reorders; this is only a serialization probe)",
+      "correct": 5,
+      "total": 32,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "5/32 in this bounded sample, compared with uniform five-choice guessing at 0.2. No deterministic answer-producing cue established; small subgroup deviations are not treated as proof of a defect. Stored index is not visible UI position.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "lexicographic coordinates",
+      "subgroup": "raw independent / two-entry sets",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the lexicographically first coordinate set",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 in this bounded sample, compared with uniform five-choice guessing at 0.2. No deterministic answer-producing cue established; small subgroup deviations are not treated as proof of a defect. Stored index is not visible UI position.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "stored option index",
+      "subgroup": "raw independent / two-entry sets",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the first stored option (UI subsequently reorders; this is only a serialization probe)",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 in this bounded sample, compared with uniform five-choice guessing at 0.2. No deterministic answer-producing cue established; small subgroup deviations are not treated as proof of a defect. Stored index is not visible UI position.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "lexicographic coordinates",
+      "subgroup": "raw independent / three-entry sets",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the lexicographically first coordinate set",
+      "correct": 0,
+      "total": 26,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/26 in this bounded sample, compared with uniform five-choice guessing at 0.2. No deterministic answer-producing cue established; small subgroup deviations are not treated as proof of a defect. Stored index is not visible UI position.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "stored option index",
+      "subgroup": "raw independent / three-entry sets",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the first stored option (UI subsequently reorders; this is only a serialization probe)",
+      "correct": 5,
+      "total": 26,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "5/26 in this bounded sample, compared with uniform five-choice guessing at 0.2. No deterministic answer-producing cue established; small subgroup deviations are not treated as proof of a defect. Stored index is not visible UI position.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "lexicographic coordinates",
+      "subgroup": "delivered independent / all",
+      "scope": "within_template",
+      "strategy": "Choose the lexicographically first coordinate set",
+      "correct": 0,
+      "total": 32,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/32 in this bounded sample, compared with uniform five-choice guessing at 0.2. No deterministic answer-producing cue established; small subgroup deviations are not treated as proof of a defect. Stored index is not visible UI position.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "stored option index",
+      "subgroup": "delivered independent / all",
+      "scope": "within_template",
+      "strategy": "Choose the first stored option (UI subsequently reorders; this is only a serialization probe)",
+      "correct": 5,
+      "total": 32,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "5/32 in this bounded sample, compared with uniform five-choice guessing at 0.2. No deterministic answer-producing cue established; small subgroup deviations are not treated as proof of a defect. Stored index is not visible UI position.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "lexicographic coordinates",
+      "subgroup": "delivered independent / two-entry sets",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the lexicographically first coordinate set",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 in this bounded sample, compared with uniform five-choice guessing at 0.2. No deterministic answer-producing cue established; small subgroup deviations are not treated as proof of a defect. Stored index is not visible UI position.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "stored option index",
+      "subgroup": "delivered independent / two-entry sets",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the first stored option (UI subsequently reorders; this is only a serialization probe)",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 in this bounded sample, compared with uniform five-choice guessing at 0.2. No deterministic answer-producing cue established; small subgroup deviations are not treated as proof of a defect. Stored index is not visible UI position.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "lexicographic coordinates",
+      "subgroup": "delivered independent / three-entry sets",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the lexicographically first coordinate set",
+      "correct": 0,
+      "total": 26,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/26 in this bounded sample, compared with uniform five-choice guessing at 0.2. No deterministic answer-producing cue established; small subgroup deviations are not treated as proof of a defect. Stored index is not visible UI position.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "stored option index",
+      "subgroup": "delivered independent / three-entry sets",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the first stored option (UI subsequently reorders; this is only a serialization probe)",
+      "correct": 5,
+      "total": 26,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "5/26 in this bounded sample, compared with uniform five-choice guessing at 0.2. No deterministic answer-producing cue established; small subgroup deviations are not treated as proof of a defect. Stored index is not visible UI position.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "lexicographic coordinates",
+      "subgroup": "raw batch / all",
+      "scope": "within_template",
+      "strategy": "Choose the lexicographically first coordinate set",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/5 in this bounded sample, compared with uniform five-choice guessing at 0.2. No deterministic answer-producing cue established; small subgroup deviations are not treated as proof of a defect. Stored index is not visible UI position.",
+      "sample_refs": [
+        "batch-records.json"
+      ]
+    },
+    {
+      "cue": "stored option index",
+      "subgroup": "raw batch / all",
+      "scope": "within_template",
+      "strategy": "Choose the first stored option (UI subsequently reorders; this is only a serialization probe)",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/5 in this bounded sample, compared with uniform five-choice guessing at 0.2. No deterministic answer-producing cue established; small subgroup deviations are not treated as proof of a defect. Stored index is not visible UI position.",
+      "sample_refs": [
+        "batch-records.json"
+      ]
+    },
+    {
+      "cue": "lexicographic coordinates",
+      "subgroup": "raw batch / two-entry sets",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the lexicographically first coordinate set",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/3 in this bounded sample, compared with uniform five-choice guessing at 0.2. No deterministic answer-producing cue established; small subgroup deviations are not treated as proof of a defect. Stored index is not visible UI position.",
+      "sample_refs": [
+        "batch-records.json"
+      ]
+    },
+    {
+      "cue": "stored option index",
+      "subgroup": "raw batch / two-entry sets",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the first stored option (UI subsequently reorders; this is only a serialization probe)",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/3 in this bounded sample, compared with uniform five-choice guessing at 0.2. No deterministic answer-producing cue established; small subgroup deviations are not treated as proof of a defect. Stored index is not visible UI position.",
+      "sample_refs": [
+        "batch-records.json"
+      ]
+    },
+    {
+      "cue": "lexicographic coordinates",
+      "subgroup": "raw batch / three-entry sets",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the lexicographically first coordinate set",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/2 in this bounded sample, compared with uniform five-choice guessing at 0.2. No deterministic answer-producing cue established; small subgroup deviations are not treated as proof of a defect. Stored index is not visible UI position.",
+      "sample_refs": [
+        "batch-records.json"
+      ]
+    },
+    {
+      "cue": "stored option index",
+      "subgroup": "raw batch / three-entry sets",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the first stored option (UI subsequently reorders; this is only a serialization probe)",
+      "correct": 2,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/2 in this bounded sample, compared with uniform five-choice guessing at 0.2. No deterministic answer-producing cue established; small subgroup deviations are not treated as proof of a defect. Stored index is not visible UI position.",
+      "sample_refs": [
+        "batch-records.json"
+      ]
+    },
+    {
+      "cue": "lexicographic coordinates",
+      "subgroup": "delivered batch / all",
+      "scope": "within_template",
+      "strategy": "Choose the lexicographically first coordinate set",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/5 in this bounded sample, compared with uniform five-choice guessing at 0.2. No deterministic answer-producing cue established; small subgroup deviations are not treated as proof of a defect. Stored index is not visible UI position.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "stored option index",
+      "subgroup": "delivered batch / all",
+      "scope": "within_template",
+      "strategy": "Choose the first stored option (UI subsequently reorders; this is only a serialization probe)",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/5 in this bounded sample, compared with uniform five-choice guessing at 0.2. No deterministic answer-producing cue established; small subgroup deviations are not treated as proof of a defect. Stored index is not visible UI position.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "lexicographic coordinates",
+      "subgroup": "delivered batch / two-entry sets",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the lexicographically first coordinate set",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/3 in this bounded sample, compared with uniform five-choice guessing at 0.2. No deterministic answer-producing cue established; small subgroup deviations are not treated as proof of a defect. Stored index is not visible UI position.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "stored option index",
+      "subgroup": "delivered batch / two-entry sets",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the first stored option (UI subsequently reorders; this is only a serialization probe)",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/3 in this bounded sample, compared with uniform five-choice guessing at 0.2. No deterministic answer-producing cue established; small subgroup deviations are not treated as proof of a defect. Stored index is not visible UI position.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "lexicographic coordinates",
+      "subgroup": "delivered batch / three-entry sets",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the lexicographically first coordinate set",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/2 in this bounded sample, compared with uniform five-choice guessing at 0.2. No deterministic answer-producing cue established; small subgroup deviations are not treated as proof of a defect. Stored index is not visible UI position.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "stored option index",
+      "subgroup": "delivered batch / three-entry sets",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the first stored option (UI subsequently reorders; this is only a serialization probe)",
+      "correct": 2,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/2 in this bounded sample, compared with uniform five-choice guessing at 0.2. No deterministic answer-producing cue established; small subgroup deviations are not treated as proof of a defect. Stored index is not visible UI position.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "actual displayed first option",
+      "subgroup": "exact delivered batch, actual UI preview",
+      "scope": "within_template",
+      "strategy": "Select first displayed radio option",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with uniform five-option guessing at 0.2; actual renderer reorders choices and first displayed option does not answer the batch. Positions depend on UI seed, so this is the preview context only.",
+      "sample_refs": [
+        "ui-position-results.json",
+        "delivery-batch/accepted.json",
+        "render-delivered/rendering.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "generator catalogue choice and validation",
+      "CLI semantic fingerprint rejection of repeated cases",
+      "requested moderate filter",
+      "shared prepare_records normalization and captured-inventory deduplication",
+      "exact batch survival",
+      "native learner selection rule inspection and captured-pool single-band calculation",
+      "actual UI choice reorder and rendering"
+    ],
+    "sample_refs": [
+      "sampling-summary.json",
+      "cli-records.json",
+      "delivery-independent/delivery.json",
+      "delivery-batch/delivery.json",
+      "selection-analysis.json",
+      "render-delivered/rendering.json"
+    ],
+    "result": "32/32 independent and 5/5 exact batch records survive filtering. Decision measurements retained separately above. No deterministic shortcut shown by tested lexicographic/index probes. Specification nevertheless changes the source operation to global minimization and suppresses legitimate bank cases; live learner history/weights not captured."
+  },
+  "limitations": [
+    "Finite samples cannot establish absence of every shortcut.",
+    "No actual future database entity allocation or learner state is available; learner selection conclusions are conditional.",
+    "Rendered UI reorders choices; stored-position probes do not claim to measure displayed position.",
+    "Captured inventory contains five non-source optimization prompts; exact current-generator identity replay failed, so affected-inventory.json is empty for certified reproductions, not a verified absence of affected stored content."
+  ]
+}

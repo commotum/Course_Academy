@@ -1,0 +1,106 @@
+{
+  "verdict": "accepted",
+  "summary": "No concrete failure demonstrated. All eight checks pass. The exact five-question batch survives filtering and contains three pivot subsets. Package unchanged.",
+  "source_analysis": {
+    "skill": "Reduce a matrix to row echelon form and identify the corresponding original pivot columns.",
+    "reasoning_steps": [
+      "Perform necessary row swaps or eliminations.",
+      "Locate each nonzero REF row\u2019s leading entry.",
+      "Select the original columns at those indices."
+    ],
+    "invariants": [
+      "Row equivalence preserves pivot-column indices.",
+      "Answers identify original columns.",
+      "Moderate practice preserves the demonstrated one-swap workload."
+    ],
+    "permitted_variations": [
+      "Vary eligible pivot subsets, nonpivot positions, signs and coefficients.",
+      "Vary row placement and matrix labels while deriving all dependent content consistently."
+    ],
+    "source_refs": [
+      "c82b9c7f-efcb-5316-aa82-25c517aae4cb",
+      "c118a776-ac53-56cc-b9e8-1173bce1a8ae",
+      "7d0368b2-c48d-55b9-a038-5636deca9c98",
+      "3ac076bd-5add-5c08-bb96-7b11c0a37d54",
+      "Tutorial feec6418-f447-5ee0-8c62-7d6b690f9228: pivots are first nonzero entries in REF rows.",
+      "Tutorial d45a4eba-96ce-5bef-92b7-b8f0d4cd8b72: convert general matrices to REF."
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay-results.json",
+        "source-replays.json",
+        "canonical-replay.json"
+      ],
+      "details": "All 17 source questions reproduce prompts, complete banks, keys, field order and solution matrices. Canonical example checked separately."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "audit.py",
+        "math-results.json"
+      ],
+      "details": "152 records checked independently with exact arithmetic; no key, vector, row-operation or conclusion errors."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "boundary-results.json",
+        "stage-results.json",
+        "selection-results.json"
+      ],
+      "details": "Ten eligible moderate subsets observed, 30 boundary assignments tested, and all six hard profiles exercised. Filtering retains 60/60 independent samples and 5/5 batch records."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "scope-results.json"
+      ],
+      "details": "Generated operations, response types and workload remain within the demonstrated difficulty profiles."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-results.json"
+      ],
+      "details": "Native grader passes 115 acceptance and 130 rejection checks, including complete source banks and controlled pairs."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render-all/rendering.json",
+        "visual-inspection.json"
+      ],
+      "details": "12 actual-UI renders pass. Screenshots inspected for checkbox controls, counterfactuals, radio choices and wide matrices."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "package-before.json",
+        "package-after.json"
+      ],
+      "details": "Exact runtime matches the manifest. Deterministic replay and relocation pass; invalid arguments are rejected. Package hashes unchanged."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "shortcut-results.json",
+        "counterfactual-results.json",
+        "selection-results.json",
+        "inventory-review.json",
+        "affected-inventory.json"
+      ],
+      "details": "Controlled changes agree across prompts, solutions, rendering and native grading. No incidental full-answer predictor demonstrated in 43 probes, including conditional groups. Captured-inventory and selection limits are documented."
+    }
+  },
+  "findings": []
+}

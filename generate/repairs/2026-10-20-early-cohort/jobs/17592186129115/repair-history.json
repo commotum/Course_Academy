@@ -1,0 +1,317 @@
+{
+  "format": 1,
+  "findings": [
+    {
+      "id": "056097e0527bd0a8e269",
+      "finding": {
+        "kind": "restriction",
+        "description": "Source q-73149 is rejected because distractor {a21,a31} includes a21=0. This is a well-defined incorrect operation; the source's {a31,a42} remains uniquely correct.",
+        "source_refs": [
+          "5da4a360-a207-5df6-9d38-99e7b8b5a765"
+        ],
+        "reproduction": "Run PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python regressions.py SourceContract.test_complete_q73149_bank_accepts_already_zero_distractor. Exact source parameters are retained in source-replay.json. Current generation raises 'Options must identify distinct nonzero matrix entries'.",
+        "requested_change": "Permit distinct in-range already-zero coordinates in distractors. Determine correctness by applying each offered operation and checking row echelon form. Restore the complete source bank."
+      },
+      "source_hash": "faf1672860dac2b7a8282e1646607ed6fab3bc8e40d8f069f63d6b7e65208d90",
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186129115/review-0-policy-2-e45bbb237eaca1f1",
+      "attempt": 0
+    },
+    {
+      "id": "0cd20f2062880b12cb13",
+      "finding": {
+        "kind": "drift",
+        "description": "Every generated prompt adds global minimization absent from the source. The generator rejects a sole valid offered operation merely because a smaller unoffered operation exists.",
+        "source_refs": [
+          "2ab2c24d-7d61-5976-acd1-acab7ad4094a",
+          "97237f8e-b317-5c86-86d1-8fd3cc83e66b",
+          "tutorial 3896 / 137b0909-9a5e-5edf-8019-24e803307903"
+        ],
+        "reproduction": "Run PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python regressions.py SourceContract.test_valid_offered_operation_need_not_be_globally_minimum. nonminimum-case.json retains q-42008's matrix and four distractors, changing its valid choice to {a12,a21,a43}. That sole offered operation yields row echelon form, but generation rejects it as nonminimum.",
+        "requested_change": "Restore source operation-selection wording and unique correctness within the offered bank. Remove the family-wide unique-global-minimum admission rule and retain the failing regression tests."
+      },
+      "source_hash": "faf1672860dac2b7a8282e1646607ed6fab3bc8e40d8f069f63d6b7e65208d90",
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186129115/review-0-policy-2-e45bbb237eaca1f1",
+      "attempt": 0
+    },
+    {
+      "id": "f5bbcb9650d7b114e116",
+      "finding": {
+        "kind": "decision_shortcut",
+        "description": "Fresh banks select distractors from lexicographic neighborhoods centered on the key. Choosing the lexicographic median without inspecting the matrix has a reproducible advantage. When both side pools contain at least four candidates, its exact success probability is 3/8 instead of 1/5. This is statistical leakage, not a universal bypass.",
+        "source_refs": [
+          "2ab2c24d-7d61-5976-acd1-acab7ad4094a",
+          "tutorial 3896 / 137b0909-9a5e-5edf-8019-24e803307903",
+          "generate/principles.md: incidental answer-bearing cues"
+        ],
+        "reproduction": "Run shortcut_reproduction.py using the supplied Python executable, following commands.txt. Minimal actual-batch witness: generate('moderate', 431440325). The third lexicographically sorted choice is the accepted {a13,a22,a33}. shortcut-minimal-records.json retains the complete record; shortcut-construction-law.json records the two 12-candidate pools and exact probability. cue_probe.py and delivery_selection.py reproduce the distributional result.",
+        "requested_change": "Change fresh-bank construction so distractors are not drawn from a bounded lexicographic neighborhood centered on the key. Preserve source profiles and valid offered operations, then retest coordinate-order strategies through actual CLI resampling and delivery. Retain the matrix-blind probe as a regression."
+      },
+      "source_hash": "faf1672860dac2b7a8282e1646607ed6fab3bc8e40d8f069f63d6b7e65208d90",
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186129115/review-1-policy-2-e842d7500966db6b",
+      "attempt": 1
+    }
+  ],
+  "events": [
+    {
+      "attempt": 0,
+      "package_hash": "075a70706ccb96beaf515e362f8758bf8909042031d36f9c2f03499bd4684b8d",
+      "reason": {
+        "verdict": "revise",
+        "summary": "Two demonstrated failures: a complete source answer bank is rejected, and the generator adds unsupported global minimization. Sample mathematics, native grading, rendering, and packaging passed. Package unchanged.",
+        "source_analysis": {
+          "skill": "Select the offered entry replacements that produce row echelon form.",
+          "reasoning_steps": [
+            "Apply each offered replacement set.",
+            "Recompute leading entries and zero rows.",
+            "Check strictly increasing leading columns and bottom-only zero rows.",
+            "Select the unique successful offered operation."
+          ],
+          "invariants": [
+            "Replace entries by zero without row arithmetic.",
+            "Require exactly one correct offered operation.",
+            "Global minimality is not required by the source prompts."
+          ],
+          "permitted_variations": [
+            "Nonzero magnitudes and signs.",
+            "Zero structure, surviving leading entries, and erased coordinates.",
+            "Correct option position and legitimate distractor sets."
+          ],
+          "source_refs": [
+            "5da4a360-a207-5df6-9d38-99e7b8b5a765",
+            "2ab2c24d-7d61-5976-acd1-acab7ad4094a",
+            "97237f8e-b317-5c86-86d1-8fd3cc83e66b",
+            "tutorial 3896 / 137b0909-9a5e-5edf-8019-24e803307903"
+          ],
+          "evidence_paths": [
+            "source-analysis.json"
+          ]
+        },
+        "checks": {
+          "source_replay": {
+            "status": "failed",
+            "evidence_paths": [
+              "source-replay.json",
+              "canonical-check.json",
+              "regression-results.txt"
+            ],
+            "details": "All 15 source banks independently have the stored unique valid option. q-73149 is rejected; the other 14 receive changed prompt requirements. The canonical answer bank is absent from the source."
+          },
+          "math": {
+            "status": "passed",
+            "evidence_paths": [
+              "math-results.json",
+              "counterfactual-results.json"
+            ],
+            "details": "Exact enumeration verified keys and transformed matrices for 32 fresh samples and all five batch records."
+          },
+          "variety": {
+            "status": "failed",
+            "evidence_paths": [
+              "sampling-summary.json",
+              "source-replay.json",
+              "nonminimum-case.json"
+            ],
+            "details": "Meaningful coordinate variation exists, but validation excludes a captured source bank and legitimate same-method offered operations."
+          },
+          "scope": {
+            "status": "failed",
+            "evidence_paths": [
+              "source-analysis.json",
+              "nonminimum-case.json",
+              "regression-results.txt"
+            ],
+            "details": "The added fewest-replacements requirement changes operation recognition into global optimization."
+          },
+          "grading": {
+            "status": "passed",
+            "evidence_paths": [
+              "grader-input.json",
+              "grader-results.json"
+            ],
+            "details": "Native grader accepted 17 correct selections and rejected 68 wrong selections, including normalized batch records and counterfactuals."
+          },
+          "rendering": {
+            "status": "passed",
+            "evidence_paths": [
+              "visual-inspection.json",
+              "render-delivered/rendering.json",
+              "render-cf/rendering.json"
+            ],
+            "details": "Actual UI rendering passed for five delivered records and three counterfactual records; representative screenshots were visually inspected."
+          },
+          "packaging": {
+            "status": "passed",
+            "evidence_paths": [
+              "package-before.json",
+              "packaging-results.json"
+            ],
+            "details": "Exact Python version, dependency declaration, deterministic replay, relocation, and invalid CLI inputs checked. Package hashes unchanged."
+          },
+          "decision_variation": {
+            "status": "failed",
+            "evidence_paths": [
+              "pedagogical-variation.json",
+              "counterfactual-results.json",
+              "ui-position-results.json",
+              "delivery-batch/delivery.json",
+              "delivery-independent/delivery.json",
+              "selection-analysis.json",
+              "inventory-reproduction.json"
+            ],
+            "details": "Counterfactual dependencies passed; tested cues did not establish a learner-visible deterministic shortcut. The specification nevertheless imposes unjustified global-minimum constraints. Filtering retained all 32 independent and five batch records. Future learner-selection frequencies remain conditional. Stored optimization prompts were observed, but exact identity replay failed; empty affected-inventory.json does not establish their absence."
+          }
+        },
+        "findings": [
+          {
+            "kind": "restriction",
+            "description": "Source q-73149 is rejected because distractor {a21,a31} includes a21=0. This is a well-defined incorrect operation; the source's {a31,a42} remains uniquely correct.",
+            "source_refs": [
+              "5da4a360-a207-5df6-9d38-99e7b8b5a765"
+            ],
+            "reproduction": "Run PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python regressions.py SourceContract.test_complete_q73149_bank_accepts_already_zero_distractor. Exact source parameters are retained in source-replay.json. Current generation raises 'Options must identify distinct nonzero matrix entries'.",
+            "requested_change": "Permit distinct in-range already-zero coordinates in distractors. Determine correctness by applying each offered operation and checking row echelon form. Restore the complete source bank."
+          },
+          {
+            "kind": "drift",
+            "description": "Every generated prompt adds global minimization absent from the source. The generator rejects a sole valid offered operation merely because a smaller unoffered operation exists.",
+            "source_refs": [
+              "2ab2c24d-7d61-5976-acd1-acab7ad4094a",
+              "97237f8e-b317-5c86-86d1-8fd3cc83e66b",
+              "tutorial 3896 / 137b0909-9a5e-5edf-8019-24e803307903"
+            ],
+            "reproduction": "Run PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python regressions.py SourceContract.test_valid_offered_operation_need_not_be_globally_minimum. nonminimum-case.json retains q-42008's matrix and four distractors, changing its valid choice to {a12,a21,a43}. That sole offered operation yields row echelon form, but generation rejects it as nonminimum.",
+            "requested_change": "Restore source operation-selection wording and unique correctness within the offered bank. Remove the family-wide unique-global-minimum admission rule and retain the failing regression tests."
+          }
+        ]
+      },
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186129115/review-0-policy-2-e45bbb237eaca1f1"
+    },
+    {
+      "attempt": 1,
+      "package_hash": "8ec244fec540bc7514d54fb4683e4f17a8b99958d1d9e5c649d1e9b04d1dde33",
+      "reason": {
+        "verdict": "revise",
+        "summary": "Both prior defects are repaired. The revised distractor construction leaks answer information: matrix-blind lexicographic-median selection succeeds on 24/64 delivered CLI records versus a 20% guessing baseline. Package unchanged.",
+        "source_analysis": {
+          "skill": "Select the offered entry replacements that produce row echelon form.",
+          "reasoning_steps": [
+            "Apply each offered replacement set.",
+            "Locate the remaining leading entries and zero rows.",
+            "Check increasing leading columns and bottom-only zero rows.",
+            "Select the unique successful offered operation."
+          ],
+          "invariants": [
+            "Replace entries by zero without row arithmetic.",
+            "Exactly one offered operation succeeds.",
+            "Global minimality is not required."
+          ],
+          "permitted_variations": [
+            "Nonzero magnitudes and signs.",
+            "Zero structure, erased coordinates and surviving leading entries.",
+            "Valid offered operations, distractors and option positions."
+          ],
+          "source_refs": [
+            "2ab2c24d-7d61-5976-acd1-acab7ad4094a",
+            "5da4a360-a207-5df6-9d38-99e7b8b5a765",
+            "97237f8e-b317-5c86-86d1-8fd3cc83e66b",
+            "tutorial 3896 / 137b0909-9a5e-5edf-8019-24e803307903"
+          ],
+          "evidence_paths": [
+            "source-analysis.json"
+          ]
+        },
+        "checks": {
+          "source_replay": {
+            "status": "passed",
+            "evidence_paths": [
+              "source-replay.json",
+              "profile-replay-records.json",
+              "repair-verification.json"
+            ],
+            "details": "All 15 complete source banks replay. Strict regressions fail on prior code and pass on current code. Canonical answer-bank evidence is absent."
+          },
+          "math": {
+            "status": "passed",
+            "evidence_paths": [
+              "math-results.json",
+              "counterfactual-results.json",
+              "shortcut-trials.json"
+            ],
+            "details": "Independent checks verified keys and worked matrices for 24 fresh samples, all five batch items and controlled cases."
+          },
+          "variety": {
+            "status": "failed",
+            "evidence_paths": [
+              "pedagogical-variation.json",
+              "shortcut-construction-law.json",
+              "resampling-results.json"
+            ],
+            "details": "Correct-centered distractor neighborhoods create an incidental coordinate-order cue despite varied matrices and answers."
+          },
+          "scope": {
+            "status": "passed",
+            "evidence_paths": [
+              "scope-results.json",
+              "strict-current-results.txt",
+              "nonminimum-current-records.json"
+            ],
+            "details": "Operation-selection scope and moderate workload are restored; unsupported global minimization is removed."
+          },
+          "grading": {
+            "status": "passed",
+            "evidence_paths": [
+              "grader-input.json",
+              "grader-results.json"
+            ],
+            "details": "Native grader returned 46 accepted and 125 rejected responses, matching independent expectations."
+          },
+          "rendering": {
+            "status": "passed",
+            "evidence_paths": [
+              "visual-inspection.json",
+              "render-full/rendering.json",
+              "render-target/rendering.json"
+            ],
+            "details": "Eleven actual-UI renders passed; representative batch and counterfactual screenshots were visually inspected."
+          },
+          "packaging": {
+            "status": "passed",
+            "evidence_paths": [
+              "packaging-results.json",
+              "rejection-results.json",
+              "evidence-validation.json"
+            ],
+            "details": "Exact runtime declaration, relocation, deterministic replay and rejection cases passed. Package file hashes remain unchanged."
+          },
+          "decision_variation": {
+            "status": "failed",
+            "evidence_paths": [
+              "pedagogical-variation.json",
+              "shortcut-construction-law.json",
+              "shortcut-trials.json",
+              "resampling-results.json",
+              "delivery-cli-control/delivery.json",
+              "selection-analysis.json",
+              "inventory-reproduction.json"
+            ],
+            "details": "Median selection wins 31/96 held-out controls and 24/64 after CLI resampling and delivery. The exact batch scores 2/5; no separate universal batch bypass is claimed. Inventory reconstruction produced no certified matching identities."
+          }
+        },
+        "findings": [
+          {
+            "kind": "decision_shortcut",
+            "description": "Fresh banks select distractors from lexicographic neighborhoods centered on the key. Choosing the lexicographic median without inspecting the matrix has a reproducible advantage. When both side pools contain at least four candidates, its exact success probability is 3/8 instead of 1/5. This is statistical leakage, not a universal bypass.",
+            "source_refs": [
+              "2ab2c24d-7d61-5976-acd1-acab7ad4094a",
+              "tutorial 3896 / 137b0909-9a5e-5edf-8019-24e803307903",
+              "generate/principles.md: incidental answer-bearing cues"
+            ],
+            "reproduction": "Run shortcut_reproduction.py using the supplied Python executable, following commands.txt. Minimal actual-batch witness: generate('moderate', 431440325). The third lexicographically sorted choice is the accepted {a13,a22,a33}. shortcut-minimal-records.json retains the complete record; shortcut-construction-law.json records the two 12-candidate pools and exact probability. cue_probe.py and delivery_selection.py reproduce the distributional result.",
+            "requested_change": "Change fresh-bank construction so distractors are not drawn from a bounded lexicographic neighborhood centered on the key. Preserve source profiles and valid offered operations, then retest coordinate-order strategies through actual CLI resampling and delivery. Retain the matrix-blind probe as a regression."
+          }
+        ]
+      },
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186129115/review-1-policy-2-e842d7500966db6b"
+    }
+  ]
+}

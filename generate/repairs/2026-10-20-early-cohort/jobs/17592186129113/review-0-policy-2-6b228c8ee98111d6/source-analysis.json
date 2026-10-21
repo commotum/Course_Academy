@@ -1,0 +1,449 @@
+{
+  "skill": "Classify each displayed augmented matrix using only its coefficient columns; select the matrices satisfying (or violating) row echelon form as requested.",
+  "reasoning_steps": [
+    "Locate the final constants column and omit it when checking the coefficient matrix.",
+    "Find the first nonzero coefficient in every nonzero row.",
+    "Check that coefficient-zero rows occur only below nonzero coefficient rows and that leading column indices strictly increase.",
+    "Apply the prompt polarity and select the complete subset, using checkbox booleans or a radio subset label."
+  ],
+  "invariants": [
+    "Classification concerns the coefficient matrix, not echelon form of the full augmented array.",
+    "Zero coefficient rows may have nonzero constants; constants do not change classification.",
+    "Leading entries need not be 1; entries above leading entries need not be zero.",
+    "No row reduction, equation solving, or arithmetic beyond identifying zero and nonzero entries is required.",
+    "Easy questions classify three matrices, with 2\u20135 rows and 2\u20135 coefficient columns observed; the canonical example classifies four."
+  ],
+  "permitted_variations": [
+    "Vary which labels and shapes qualify, independently of source-example label assignments.",
+    "Vary prompt polarity, eligible subset cardinality, and answer order while deriving the correct selection.",
+    "Vary leading-column sequences, zero-row locations, signs and magnitudes of nonzero entries, trailing entries, and constants within the same classification workload.",
+    "Hold shape and all other matrices fixed while changing a zero/nonzero entry that creates/removes a repeated/decreasing pivot or an interposed coefficient-zero row.",
+    "Change constants and nonzero magnitudes without changing the answer."
+  ],
+  "fixed_features": [
+    {
+      "feature": "Use coefficient columns only",
+      "justification": "Tutorial 137b0909-9a5e-5edf-8019-24e803307903 explicitly says the part left of the vertical bar determines augmented row echelon form."
+    },
+    {
+      "feature": "Recognition and finite-subset selection",
+      "justification": "All 15 captured questions ask which matrices satisfy or fail this property; no transformation task belongs here."
+    }
+  ],
+  "source_refs": [
+    "tutorial 24451a80-db9f-5a0f-a591-41500a69774c: first non-zero entry from left to right is the leading entry.",
+    "tutorial 137b0909-9a5e-5edf-8019-24e803307903: conditions I zero rows at bottom, II each leading entry right of preceding leading entry; augmented classification uses coefficient matrix.",
+    "canonical 674e7733-7a8e-5804-a867-82c74c583dcc: 4 arrays, repeated pivot and decreasing pivot invalid, full-rank and terminal zero row valid.",
+    "question 658776f4-d49a-5e5d-a10c-50a3db34ad1c (q-42006)",
+    "question 532660a0-b7ef-5857-a687-9a224039f8a6 (q-42026)",
+    "question b5479435-9835-502a-bd24-1f955706f0c7 (q-129228)",
+    "question 0ce5c5ca-b382-5ac8-8df3-b2e87f07de7f (q-129232)",
+    "question 842b19e0-4a35-57fa-95ff-d59ed695ed85 (q-129233)",
+    "question 324c0e93-0bc4-5958-ba8a-b87ad1b81b6a (q-42028)",
+    "question 4f7d9000-6b1e-59bb-84e6-86f972afc228 (q-72570)",
+    "question c409d434-4c7f-59fa-9d55-4c82bc621cc5 (q-72574)",
+    "question 2d3c090e-cc4f-51d5-a663-f597f7113489 (q-72576)",
+    "question 3d92198e-4ce7-5520-a0eb-698c6d6eae5d (q-129231)",
+    "question bbb2727c-01c4-5345-9e38-1d38c7fb43da (q-72575)",
+    "question a0f43991-a609-584a-a820-e263b283da38 (q-129230)",
+    "question 8c255e7b-6073-553e-b21f-a2db012d4100 (q-129227)",
+    "question cb5f09b3-31c5-57e5-86f3-885997d34e19 (q-72573)",
+    "question f0c60384-ef9e-589b-b228-2de7e1393ace (q-42007)"
+  ],
+  "source_cases": [
+    {
+      "id": "658776f4-d49a-5e5d-a10c-50a3db34ad1c",
+      "ma_id": "q-42006",
+      "field_types": [
+        ":answer-field.type/checkbox",
+        ":answer-field.type/checkbox",
+        ":answer-field.type/checkbox"
+      ],
+      "banks": [
+        [
+          "true",
+          "false"
+        ],
+        [
+          "true",
+          "false"
+        ],
+        [
+          "true",
+          "false"
+        ]
+      ],
+      "correct": [
+        "true",
+        "true",
+        "false"
+      ]
+    },
+    {
+      "id": "532660a0-b7ef-5857-a687-9a224039f8a6",
+      "ma_id": "q-42026",
+      "field_types": [
+        ":answer-field.type/radio"
+      ],
+      "banks": [
+        [
+          "$C$ only",
+          "$B$ only",
+          "$A$ and $B$ only",
+          "$A$ only",
+          "$B$ and $C$ only"
+        ]
+      ],
+      "correct": [
+        null
+      ]
+    },
+    {
+      "id": "b5479435-9835-502a-bd24-1f955706f0c7",
+      "ma_id": "q-129228",
+      "field_types": [
+        ":answer-field.type/checkbox",
+        ":answer-field.type/checkbox",
+        ":answer-field.type/checkbox"
+      ],
+      "banks": [
+        [
+          "false",
+          "true"
+        ],
+        [
+          "false",
+          "true"
+        ],
+        [
+          "true",
+          "false"
+        ]
+      ],
+      "correct": [
+        "true",
+        "true",
+        "true"
+      ]
+    },
+    {
+      "id": "0ce5c5ca-b382-5ac8-8df3-b2e87f07de7f",
+      "ma_id": "q-129232",
+      "field_types": [
+        ":answer-field.type/checkbox",
+        ":answer-field.type/checkbox",
+        ":answer-field.type/checkbox"
+      ],
+      "banks": [
+        [
+          "true",
+          "false"
+        ],
+        [
+          "false",
+          "true"
+        ],
+        [
+          "true",
+          "false"
+        ]
+      ],
+      "correct": [
+        "true",
+        "true",
+        "true"
+      ]
+    },
+    {
+      "id": "842b19e0-4a35-57fa-95ff-d59ed695ed85",
+      "ma_id": "q-129233",
+      "field_types": [
+        ":answer-field.type/checkbox",
+        ":answer-field.type/checkbox",
+        ":answer-field.type/checkbox"
+      ],
+      "banks": [
+        [
+          "false",
+          "true"
+        ],
+        [
+          "false",
+          "true"
+        ],
+        [
+          "true",
+          "false"
+        ]
+      ],
+      "correct": [
+        "false",
+        "false",
+        "true"
+      ]
+    },
+    {
+      "id": "324c0e93-0bc4-5958-ba8a-b87ad1b81b6a",
+      "ma_id": "q-42028",
+      "field_types": [
+        ":answer-field.type/checkbox",
+        ":answer-field.type/checkbox",
+        ":answer-field.type/checkbox"
+      ],
+      "banks": [
+        [
+          "true",
+          "false"
+        ],
+        [
+          "true",
+          "false"
+        ],
+        [
+          "false",
+          "true"
+        ]
+      ],
+      "correct": [
+        "true",
+        "false",
+        "false"
+      ]
+    },
+    {
+      "id": "4f7d9000-6b1e-59bb-84e6-86f972afc228",
+      "ma_id": "q-72570",
+      "field_types": [
+        ":answer-field.type/checkbox",
+        ":answer-field.type/checkbox",
+        ":answer-field.type/checkbox"
+      ],
+      "banks": [
+        [
+          "true",
+          "false"
+        ],
+        [
+          "true",
+          "false"
+        ],
+        [
+          "false",
+          "true"
+        ]
+      ],
+      "correct": [
+        "true",
+        "false",
+        "true"
+      ]
+    },
+    {
+      "id": "c409d434-4c7f-59fa-9d55-4c82bc621cc5",
+      "ma_id": "q-72574",
+      "field_types": [
+        ":answer-field.type/checkbox",
+        ":answer-field.type/checkbox",
+        ":answer-field.type/checkbox"
+      ],
+      "banks": [
+        [
+          "true",
+          "false"
+        ],
+        [
+          "false",
+          "true"
+        ],
+        [
+          "false",
+          "true"
+        ]
+      ],
+      "correct": [
+        "true",
+        "false",
+        "true"
+      ]
+    },
+    {
+      "id": "2d3c090e-cc4f-51d5-a663-f597f7113489",
+      "ma_id": "q-72576",
+      "field_types": [
+        ":answer-field.type/checkbox",
+        ":answer-field.type/checkbox",
+        ":answer-field.type/checkbox"
+      ],
+      "banks": [
+        [
+          "true",
+          "false"
+        ],
+        [
+          "false",
+          "true"
+        ],
+        [
+          "false",
+          "true"
+        ]
+      ],
+      "correct": [
+        "true",
+        "false",
+        "false"
+      ]
+    },
+    {
+      "id": "3d92198e-4ce7-5520-a0eb-698c6d6eae5d",
+      "ma_id": "q-129231",
+      "field_types": [
+        ":answer-field.type/checkbox",
+        ":answer-field.type/checkbox",
+        ":answer-field.type/checkbox"
+      ],
+      "banks": [
+        [
+          "false",
+          "true"
+        ],
+        [
+          "false",
+          "true"
+        ],
+        [
+          "true",
+          "false"
+        ]
+      ],
+      "correct": [
+        "false",
+        "true",
+        "true"
+      ]
+    },
+    {
+      "id": "bbb2727c-01c4-5345-9e38-1d38c7fb43da",
+      "ma_id": "q-72575",
+      "field_types": [
+        ":answer-field.type/checkbox",
+        ":answer-field.type/checkbox",
+        ":answer-field.type/checkbox"
+      ],
+      "banks": [
+        [
+          "true",
+          "false"
+        ],
+        [
+          "true",
+          "false"
+        ],
+        [
+          "false",
+          "true"
+        ]
+      ],
+      "correct": [
+        "false",
+        "false",
+        "true"
+      ]
+    },
+    {
+      "id": "a0f43991-a609-584a-a820-e263b283da38",
+      "ma_id": "q-129230",
+      "field_types": [
+        ":answer-field.type/checkbox",
+        ":answer-field.type/checkbox",
+        ":answer-field.type/checkbox"
+      ],
+      "banks": [
+        [
+          "true",
+          "false"
+        ],
+        [
+          "false",
+          "true"
+        ],
+        [
+          "false",
+          "true"
+        ]
+      ],
+      "correct": [
+        "false",
+        "true",
+        "true"
+      ]
+    },
+    {
+      "id": "8c255e7b-6073-553e-b21f-a2db012d4100",
+      "ma_id": "q-129227",
+      "field_types": [
+        ":answer-field.type/radio"
+      ],
+      "banks": [
+        [
+          "$A$ and $C$ only",
+          "$A$ and $B$ only",
+          "$A,$ $B,$ and $C$",
+          "$B$ and $C$ only",
+          "$A$ only"
+        ]
+      ],
+      "correct": [
+        "$A$ and $C$ only"
+      ]
+    },
+    {
+      "id": "cb5f09b3-31c5-57e5-86f3-885997d34e19",
+      "ma_id": "q-72573",
+      "field_types": [
+        ":answer-field.type/radio"
+      ],
+      "banks": [
+        [
+          "$B$ only",
+          "$C$ only",
+          "$A$ and $C$ only",
+          "$B$ and $C$ only",
+          "$A$ only"
+        ]
+      ],
+      "correct": [
+        "$A$ and $C$ only"
+      ]
+    },
+    {
+      "id": "f0c60384-ef9e-589b-b228-2de7e1393ace",
+      "ma_id": "q-42007",
+      "field_types": [
+        ":answer-field.type/radio"
+      ],
+      "banks": [
+        [
+          "$C$ only",
+          "$A$ and $C$ only",
+          "$A$ and $B$ only",
+          "$A$ only",
+          "$B$ and $C$ only"
+        ]
+      ],
+      "correct": [
+        "$B$ and $C$ only"
+      ]
+    }
+  ],
+  "gaps": [
+    "532660a0-b7ef-5857-a687-9a224039f8a6 has no captured solution, correct answer or difficulty. Independent classification yields A only for its negative-polarity prompt; this is inference, not captured key.",
+    "8c255e7b-6073-553e-b21f-a2db012d4100 has B[1,1]=8 in prompt but 9 in solution; this does not affect classification and should be corrected in replay.",
+    "Some captured bmatrix displays omit augmentation separators; infer last-column role from explicit augmented wording and lesson, normalizing the separator.",
+    "Lesson stair illustration is auxiliary; no question uses image choices."
+  ],
+  "difficulty": "easy, recognition of zero patterns across a small bank; preserve workload without introducing row operations.",
+  "evidence_paths": [
+    "source-analysis.json"
+  ]
+}

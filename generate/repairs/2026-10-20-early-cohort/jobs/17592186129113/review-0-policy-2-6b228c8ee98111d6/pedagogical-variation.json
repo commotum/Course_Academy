@@ -1,0 +1,735 @@
+{
+  "learner_operation": "Classify each displayed augmented matrix using only its coefficient columns; select the matrices satisfying (or violating) row echelon form as requested.",
+  "fixed_features": [
+    {
+      "feature": "Use coefficient columns only",
+      "justification": "Tutorial 137b0909-9a5e-5edf-8019-24e803307903 explicitly says the part left of the vertical bar determines augmented row echelon form."
+    },
+    {
+      "feature": "Recognition and finite-subset selection",
+      "justification": "All 15 captured questions ask which matrices satisfy or fail this property; no transformation task belongs here."
+    },
+    {
+      "feature": "Three matrices per interactive question and same per-profile dimensions/nonzero coefficient row counts",
+      "justification": "Preserves the captured bank and recognition workload; alternate profiles supply observed shapes and row counts. Classification and qualifying labels are allowed to change independently."
+    },
+    {
+      "feature": "Complete five-option radio banks and nonempty checkbox responses",
+      "justification": "Preserves captured response contracts; radio correctness ranges over every listed subset. Checkbox UI policy rejects empty selections, while all seven nonempty subsets remain possible. No supplied checkbox source requires an empty correct set."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "qualifying matrix label",
+      "eligible_variation": "Any A/B/C label can satisfy or violate the coefficient-echelon criteria within each shape.",
+      "observed": "97 nonempty target cases cover every allowed subset in each profile; all 45 slots see every available rule case."
+    },
+    {
+      "role": "reason for invalidity",
+      "eligible_variation": "Repeated pivot, decreasing pivot, coefficient-zero row above a nonzero row whenever shape/nonzero-row count permits.",
+      "observed": "360 independent cases contain 213 equal, 195 left and 89 zero violations; 583 valid matrices."
+    },
+    {
+      "role": "correct selection count and answer location",
+      "eligible_variation": "Checkbox one/two/three selected; radio every preserved bank label and shuffled position.",
+      "observed": "All seven nonempty subsets observed; no tested profile/template/shape had a perfect fixed answer strategy in the 24-case controls."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "All supplied interactive source profiles and complete banks",
+      "sample_refs": [
+        "replays.json",
+        "source-replay-results.json"
+      ],
+      "result": "15/15 reproduced; missing q-42026 key/solution inferred independently and source q-129227 typo corrected. Noninteractive four-matrix canonical example documented separately."
+    },
+    {
+      "case": "Per-profile, per-slot decisions and eligible subsets",
+      "sample_refs": [
+        "independent-samples.json",
+        "target-samples.json",
+        "slot-coverage.json",
+        "boundary-case-records.json"
+      ],
+      "result": "360 samples, 97 explicit nonempty targets, 45 matrix slots with every available validity-case class covered."
+    },
+    {
+      "case": "Exact five-record runner batch",
+      "sample_refs": [
+        "runner-batch.json",
+        "delivery-batch/accepted.json",
+        "coverage-shortcuts.json"
+      ],
+      "result": "5/5 survive; responses A, AC, AC, BC, B. The repeated q-42028 recognizable subgroup gives A, AC, BC, refuting a fixed subset action. No sign-only or constant answer solves all five."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "q-42006: {'matrix': 'A', 'row': 2, 'change_kind': 'swap coefficient columns [1, 2]'}",
+      "expected": "Only the changed matrix changes classification and the chosen subset follows prompt polarity.",
+      "observed": "Selections ['AB', 'B', 'AB']. Rendered prompt/answer controls and worked explanation follow the change. Every choice of all three records tested by the native grader.",
+      "status": "passed",
+      "justification": "Tutorial 137b0909-9a5e-5edf-8019-24e803307903 conditions I/II apply to coefficients only; the swap or zero toggle changes their satisfaction.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-results.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "q-42006: Set every constant to 99, preserving coefficients",
+      "expected": "Selection preserved despite changed constants, including nonzero constants in coefficient-zero rows.",
+      "observed": "Selections ['AB', 'B', 'AB']. Rendered prompt/answer controls and worked explanation follow the change. Every choice of all three records tested by the native grader.",
+      "status": "passed",
+      "justification": "The same tutorial explicitly excludes the final column from the decision.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-results.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "q-129232: {'matrix': 'B', 'row': 3, 'change_kind': 'coefficient-row swap with row 4'}",
+      "expected": "Only the changed matrix changes classification and the chosen subset follows prompt polarity.",
+      "observed": "Selections ['ABC', 'AC', 'ABC']. Rendered prompt/answer controls and worked explanation follow the change. Every choice of all three records tested by the native grader.",
+      "status": "passed",
+      "justification": "Tutorial 137b0909-9a5e-5edf-8019-24e803307903 conditions I/II apply to coefficients only; the swap or zero toggle changes their satisfaction.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-results.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "q-129232: Set every constant to 99, preserving coefficients",
+      "expected": "Selection preserved despite changed constants, including nonzero constants in coefficient-zero rows.",
+      "observed": "Selections ['ABC', 'AC', 'ABC']. Rendered prompt/answer controls and worked explanation follow the change. Every choice of all three records tested by the native grader.",
+      "status": "passed",
+      "justification": "The same tutorial explicitly excludes the final column from the decision.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-results.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "q-129227: {'matrix': 'C', 'row': 1, 'change_kind': 'swap coefficient columns [2, 3]'}",
+      "expected": "Only the changed matrix changes classification and the chosen subset follows prompt polarity.",
+      "observed": "Selections ['AC', 'A', 'AC']. Rendered prompt/answer controls and worked explanation follow the change. Every choice of all three records tested by the native grader.",
+      "status": "passed",
+      "justification": "Tutorial 137b0909-9a5e-5edf-8019-24e803307903 conditions I/II apply to coefficients only; the swap or zero toggle changes their satisfaction.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-results.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "q-129227: Set every constant to 99, preserving coefficients",
+      "expected": "Selection preserved despite changed constants, including nonzero constants in coefficient-zero rows.",
+      "observed": "Selections ['AC', 'A', 'AC']. Rendered prompt/answer controls and worked explanation follow the change. Every choice of all three records tested by the native grader.",
+      "status": "passed",
+      "justification": "The same tutorial explicitly excludes the final column from the decision.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-results.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "q-72573: {'matrix': 'A', 'row': 3, 'change_kind': 'toggle zero/nonzero at column 2'}",
+      "expected": "Only the changed matrix changes classification and the chosen subset follows prompt polarity.",
+      "observed": "Selections ['AC', 'C', 'AC']. Rendered prompt/answer controls and worked explanation follow the change. Every choice of all three records tested by the native grader.",
+      "status": "passed",
+      "justification": "Tutorial 137b0909-9a5e-5edf-8019-24e803307903 conditions I/II apply to coefficients only; the swap or zero toggle changes their satisfaction.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-results.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "q-72573: Set every constant to 99, preserving coefficients",
+      "expected": "Selection preserved despite changed constants, including nonzero constants in coefficient-zero rows.",
+      "observed": "Selections ['AC', 'C', 'AC']. Rendered prompt/answer controls and worked explanation follow the change. Every choice of all three records tested by the native grader.",
+      "status": "passed",
+      "justification": "The same tutorial explicitly excludes the final column from the decision.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-results.json",
+        "render/rendering.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "always select A",
+      "subgroup": "independent: all",
+      "scope": "overall",
+      "strategy": "always select A",
+      "correct": 58,
+      "total": 360,
+      "baseline": 0.1580952380952381,
+      "disposition": "not_predictive",
+      "conclusion": "Random complete-answer baseline averages 1/7 for nonempty checkbox and 1/5 for the five-option radio bank. Position baseline is 1/5. Strategy fails within this group; outcomes and exact records retained.",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "always choose radio position 3",
+      "subgroup": "independent: all",
+      "scope": "overall",
+      "strategy": "always choose radio position 3",
+      "correct": 24,
+      "total": 96,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Random complete-answer baseline averages 1/7 for nonempty checkbox and 1/5 for the five-option radio bank. Position baseline is 1/5. Strategy fails within this group; outcomes and exact records retained.",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "always select AB",
+      "subgroup": "independent: q-42006",
+      "scope": "within_template",
+      "strategy": "always select AB",
+      "correct": 6,
+      "total": 24,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Random complete-answer baseline averages 1/7 for nonempty checkbox and 1/5 for the five-option radio bank. Position baseline is 1/5. Strategy fails within this group; outcomes and exact records retained.",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "always select BC",
+      "subgroup": "independent: q-42026",
+      "scope": "within_template",
+      "strategy": "always select BC",
+      "correct": 6,
+      "total": 24,
+      "baseline": 0.20000000000000004,
+      "disposition": "not_predictive",
+      "conclusion": "Random complete-answer baseline averages 1/7 for nonempty checkbox and 1/5 for the five-option radio bank. Position baseline is 1/5. Strategy fails within this group; outcomes and exact records retained.",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "always choose radio position 5",
+      "subgroup": "independent: q-42026",
+      "scope": "within_template",
+      "strategy": "always choose radio position 5",
+      "correct": 7,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Random complete-answer baseline averages 1/7 for nonempty checkbox and 1/5 for the five-option radio bank. Position baseline is 1/5. Strategy fails within this group; outcomes and exact records retained.",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "always select BC",
+      "subgroup": "independent: q-129228",
+      "scope": "within_template",
+      "strategy": "always select BC",
+      "correct": 5,
+      "total": 24,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Random complete-answer baseline averages 1/7 for nonempty checkbox and 1/5 for the five-option radio bank. Position baseline is 1/5. Strategy fails within this group; outcomes and exact records retained.",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "always select ABC",
+      "subgroup": "independent: q-129232",
+      "scope": "within_template",
+      "strategy": "always select ABC",
+      "correct": 6,
+      "total": 24,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Random complete-answer baseline averages 1/7 for nonempty checkbox and 1/5 for the five-option radio bank. Position baseline is 1/5. Strategy fails within this group; outcomes and exact records retained.",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "always select BC",
+      "subgroup": "independent: q-129233",
+      "scope": "within_template",
+      "strategy": "always select BC",
+      "correct": 5,
+      "total": 24,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Random complete-answer baseline averages 1/7 for nonempty checkbox and 1/5 for the five-option radio bank. Position baseline is 1/5. Strategy fails within this group; outcomes and exact records retained.",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "always select B",
+      "subgroup": "independent: q-42028",
+      "scope": "within_template",
+      "strategy": "always select B",
+      "correct": 6,
+      "total": 24,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Random complete-answer baseline averages 1/7 for nonempty checkbox and 1/5 for the five-option radio bank. Position baseline is 1/5. Strategy fails within this group; outcomes and exact records retained.",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "always select AC",
+      "subgroup": "independent: q-72570",
+      "scope": "within_template",
+      "strategy": "always select AC",
+      "correct": 5,
+      "total": 24,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Random complete-answer baseline averages 1/7 for nonempty checkbox and 1/5 for the five-option radio bank. Position baseline is 1/5. Strategy fails within this group; outcomes and exact records retained.",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "always select BC",
+      "subgroup": "independent: q-72574",
+      "scope": "within_template",
+      "strategy": "always select BC",
+      "correct": 6,
+      "total": 24,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Random complete-answer baseline averages 1/7 for nonempty checkbox and 1/5 for the five-option radio bank. Position baseline is 1/5. Strategy fails within this group; outcomes and exact records retained.",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "always select ABC",
+      "subgroup": "independent: q-72576",
+      "scope": "within_template",
+      "strategy": "always select ABC",
+      "correct": 6,
+      "total": 24,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Random complete-answer baseline averages 1/7 for nonempty checkbox and 1/5 for the five-option radio bank. Position baseline is 1/5. Strategy fails within this group; outcomes and exact records retained.",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "always select A",
+      "subgroup": "independent: q-129231",
+      "scope": "within_template",
+      "strategy": "always select A",
+      "correct": 7,
+      "total": 24,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Random complete-answer baseline averages 1/7 for nonempty checkbox and 1/5 for the five-option radio bank. Position baseline is 1/5. Strategy fails within this group; outcomes and exact records retained.",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "always select B",
+      "subgroup": "independent: q-72575",
+      "scope": "within_template",
+      "strategy": "always select B",
+      "correct": 6,
+      "total": 24,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Random complete-answer baseline averages 1/7 for nonempty checkbox and 1/5 for the five-option radio bank. Position baseline is 1/5. Strategy fails within this group; outcomes and exact records retained.",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "always select A",
+      "subgroup": "independent: q-129230",
+      "scope": "within_template",
+      "strategy": "always select A",
+      "correct": 5,
+      "total": 24,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Random complete-answer baseline averages 1/7 for nonempty checkbox and 1/5 for the five-option radio bank. Position baseline is 1/5. Strategy fails within this group; outcomes and exact records retained.",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "always select AC",
+      "subgroup": "independent: q-129227",
+      "scope": "within_template",
+      "strategy": "always select AC",
+      "correct": 7,
+      "total": 24,
+      "baseline": 0.20000000000000004,
+      "disposition": "not_predictive",
+      "conclusion": "Random complete-answer baseline averages 1/7 for nonempty checkbox and 1/5 for the five-option radio bank. Position baseline is 1/5. Strategy fails within this group; outcomes and exact records retained.",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "always choose radio position 3",
+      "subgroup": "independent: q-129227",
+      "scope": "within_template",
+      "strategy": "always choose radio position 3",
+      "correct": 9,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Random complete-answer baseline averages 1/7 for nonempty checkbox and 1/5 for the five-option radio bank. Position baseline is 1/5. Strategy fails within this group; outcomes and exact records retained.",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "always select C",
+      "subgroup": "independent: q-72573",
+      "scope": "within_template",
+      "strategy": "always select C",
+      "correct": 7,
+      "total": 24,
+      "baseline": 0.20000000000000004,
+      "disposition": "not_predictive",
+      "conclusion": "Random complete-answer baseline averages 1/7 for nonempty checkbox and 1/5 for the five-option radio bank. Position baseline is 1/5. Strategy fails within this group; outcomes and exact records retained.",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "always choose radio position 3",
+      "subgroup": "independent: q-72573",
+      "scope": "within_template",
+      "strategy": "always choose radio position 3",
+      "correct": 8,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Random complete-answer baseline averages 1/7 for nonempty checkbox and 1/5 for the five-option radio bank. Position baseline is 1/5. Strategy fails within this group; outcomes and exact records retained.",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "always select C",
+      "subgroup": "independent: q-42007",
+      "scope": "within_template",
+      "strategy": "always select C",
+      "correct": 8,
+      "total": 24,
+      "baseline": 0.20000000000000004,
+      "disposition": "not_predictive",
+      "conclusion": "Random complete-answer baseline averages 1/7 for nonempty checkbox and 1/5 for the five-option radio bank. Position baseline is 1/5. Strategy fails within this group; outcomes and exact records retained.",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "always choose radio position 5",
+      "subgroup": "independent: q-42007",
+      "scope": "within_template",
+      "strategy": "always choose radio position 5",
+      "correct": 8,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Random complete-answer baseline averages 1/7 for nonempty checkbox and 1/5 for the five-option radio bank. Position baseline is 1/5. Strategy fails within this group; outcomes and exact records retained.",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "always select AC",
+      "subgroup": "independent: checkbox-in",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always select AC",
+      "correct": 29,
+      "total": 168,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Random complete-answer baseline averages 1/7 for nonempty checkbox and 1/5 for the five-option radio bank. Position baseline is 1/5. Strategy fails within this group; outcomes and exact records retained.",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "always select C",
+      "subgroup": "independent: radio-not",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always select C",
+      "correct": 18,
+      "total": 72,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Random complete-answer baseline averages 1/7 for nonempty checkbox and 1/5 for the five-option radio bank. Position baseline is 1/5. Strategy fails within this group; outcomes and exact records retained.",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "always choose radio position 5",
+      "subgroup": "independent: radio-not",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always choose radio position 5",
+      "correct": 17,
+      "total": 72,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Random complete-answer baseline averages 1/7 for nonempty checkbox and 1/5 for the five-option radio bank. Position baseline is 1/5. Strategy fails within this group; outcomes and exact records retained.",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "always select AB",
+      "subgroup": "independent: checkbox-not",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always select AB",
+      "correct": 17,
+      "total": 96,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Random complete-answer baseline averages 1/7 for nonempty checkbox and 1/5 for the five-option radio bank. Position baseline is 1/5. Strategy fails within this group; outcomes and exact records retained.",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "always select AC",
+      "subgroup": "independent: radio-in",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always select AC",
+      "correct": 7,
+      "total": 24,
+      "baseline": 0.20000000000000004,
+      "disposition": "not_predictive",
+      "conclusion": "Random complete-answer baseline averages 1/7 for nonempty checkbox and 1/5 for the five-option radio bank. Position baseline is 1/5. Strategy fails within this group; outcomes and exact records retained.",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "always choose radio position 3",
+      "subgroup": "independent: radio-in",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always choose radio position 3",
+      "correct": 9,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Random complete-answer baseline averages 1/7 for nonempty checkbox and 1/5 for the five-option radio bank. Position baseline is 1/5. Strategy fails within this group; outcomes and exact records retained.",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "select matrices whose top-left number is positive",
+      "subgroup": "independent: all",
+      "scope": "overall",
+      "strategy": "select matrices whose top-left number is positive",
+      "correct": 54,
+      "total": 360,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Random complete-answer baseline averages 1/7 for nonempty checkbox and 1/5 for the five-option radio bank. Position baseline is 1/5. Strategy fails within this group; outcomes and exact records retained.",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "always select AC",
+      "subgroup": "runner_batch: all",
+      "scope": "overall",
+      "strategy": "always select AC",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Random complete-answer baseline averages 1/7 for nonempty checkbox and 1/5 for the five-option radio bank. Position baseline is 1/5. Strategy fails within this group; outcomes and exact records retained.",
+      "sample_refs": [
+        "runner-batch.json",
+        "coverage-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "always select A",
+      "subgroup": "runner_batch: q-42028",
+      "scope": "within_template",
+      "strategy": "always select A",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Random complete-answer baseline averages 1/7 for nonempty checkbox and 1/5 for the five-option radio bank. Position baseline is 1/5. Strategy fails within this group; outcomes and exact records retained.",
+      "sample_refs": [
+        "runner-batch.json",
+        "coverage-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "always select AC",
+      "subgroup": "runner_batch: q-72576",
+      "scope": "within_template",
+      "strategy": "always select AC",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Random complete-answer baseline averages 1/7 for nonempty checkbox and 1/5 for the five-option radio bank. Position baseline is 1/5. Singleton subgroup is uninformative; the corresponding 24-case independent profile control varies its correct subset. No fixed family role is inferred from this one batch member.",
+      "sample_refs": [
+        "runner-batch.json",
+        "coverage-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "always select B",
+      "subgroup": "runner_batch: q-129231",
+      "scope": "within_template",
+      "strategy": "always select B",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Random complete-answer baseline averages 1/7 for nonempty checkbox and 1/5 for the five-option radio bank. Position baseline is 1/5. Singleton subgroup is uninformative; the corresponding 24-case independent profile control varies its correct subset. No fixed family role is inferred from this one batch member.",
+      "sample_refs": [
+        "runner-batch.json",
+        "coverage-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "always select AC",
+      "subgroup": "runner_batch: checkbox-in",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always select AC",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Random complete-answer baseline averages 1/7 for nonempty checkbox and 1/5 for the five-option radio bank. Position baseline is 1/5. Strategy fails within this group; outcomes and exact records retained.",
+      "sample_refs": [
+        "runner-batch.json",
+        "coverage-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "always select B",
+      "subgroup": "runner_batch: checkbox-not",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always select B",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Random complete-answer baseline averages 1/7 for nonempty checkbox and 1/5 for the five-option radio bank. Position baseline is 1/5. Singleton subgroup is uninformative; the corresponding 24-case independent profile control varies its correct subset. No fixed family role is inferred from this one batch member.",
+      "sample_refs": [
+        "runner-batch.json",
+        "coverage-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "select matrices whose top-left number is positive",
+      "subgroup": "runner_batch: all",
+      "scope": "overall",
+      "strategy": "select matrices whose top-left number is positive",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Random complete-answer baseline averages 1/7 for nonempty checkbox and 1/5 for the five-option radio bank. Position baseline is 1/5. Strategy fails within this group; outcomes and exact records retained.",
+      "sample_refs": [
+        "runner-batch.json",
+        "coverage-shortcuts.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "raw generation",
+      "nonempty-checkbox rejection and deterministic resampling",
+      "within-batch pivot-fingerprint deduplication",
+      "requested easy difficulty",
+      "publisher normalization and inventory/content deduplication against basis 5356",
+      "learner selector same-band draw, zero-weight and unconfigured branches; freshness/history effects inspected"
+    ],
+    "sample_refs": [
+      "resampling-trace.json",
+      "natural-samples.json",
+      "delivery-natural/delivery.json",
+      "delivery-independent/delivery.json",
+      "delivery-batch/delivery.json",
+      "selection-results.json",
+      "coverage-shortcuts.json"
+    ],
+    "result": "360/360 profile controls, 75/75 natural batch, 5/5 runner batch survive shared publisher rules; decision distributions unchanged after delivery. Natural batch spans all 15 profiles and all seven nonempty subsets. Read-only selector reproduction reaches all five delivered records (100 seeds) when easy has positive weight; other branches and history limits recorded."
+  },
+  "limitations": [
+    "Finite probes do not prove absence of every shortcut.",
+    "No live learner policy/history or post-capture inventory was supplied; selector rules were inspected and conditional branches reproduced read-only rather than predicting a particular learner task.",
+    "One historical all-false checkbox is present in captured inventory, with no generation metadata. Current generator policy prevents reproduction as learner-eligible output; it is not attributed to this package. affected-inventory.json lists no demonstrated current defect.",
+    "Original q-42026 has no captured key/solution/difficulty; added key and easy classification are independently supported in the same method.",
+    "Original four-matrix canonical example is noninteractive; generator reproduces the 15 captured interactive three-matrix profiles."
+  ]
+}

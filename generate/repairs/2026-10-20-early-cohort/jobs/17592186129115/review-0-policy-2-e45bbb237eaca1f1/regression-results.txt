@@ -1,0 +1,42 @@
+EFE
+======================================================================
+ERROR: test_complete_q73149_bank_accepts_already_zero_distractor (__main__.SourceContract.test_complete_q73149_bank_accepts_already_zero_distractor)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186129115/review-0-policy-2-e45bbb237eaca1f1/regressions.py", line 7, in test_complete_q73149_bank_accepts_already_zero_distractor
+    generator.generate('moderate',9100,parameters=case['parameters'])
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186129115/workspace/math_format.py", line 543, in checked
+    return validate_generated_record(generator(*args, **kwargs))
+                                     ~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186129115/workspace/generator.py", line 117, in generate
+    raise ValueError('Options must identify distinct nonzero matrix entries')
+ValueError: Options must identify distinct nonzero matrix entries
+
+======================================================================
+ERROR: test_valid_offered_operation_need_not_be_globally_minimum (__main__.SourceContract.test_valid_offered_operation_need_not_be_globally_minimum)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186129115/review-0-policy-2-e45bbb237eaca1f1/regressions.py", line 9, in test_valid_offered_operation_need_not_be_globally_minimum
+    case=json.loads((E/'nonminimum-case.json').read_text());generator.generate('moderate',case['seed'],parameters=case['parameters'])
+                                                            ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186129115/workspace/math_format.py", line 543, in checked
+    return validate_generated_record(generator(*args, **kwargs))
+                                     ~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186129115/workspace/generator.py", line 120, in generate
+    raise ValueError('The sole valid option must be the global minimum, without redundant removals')
+ValueError: The sole valid option must be the global minimum, without redundant removals
+
+======================================================================
+FAIL: test_prompt_does_not_add_optimization (__main__.SourceContract.test_prompt_does_not_add_optimization)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186129115/review-0-policy-2-e45bbb237eaca1f1/regressions.py", line 11, in test_prompt_does_not_add_optimization
+    r=generator.generate('moderate',702311);self.assertNotIn('fewest replacements',r['question'][':question/problem'])
+                                            ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'fewest replacements' unexpectedly found in 'Consider the matrix $A$ below. Which set of entries should be replaced by $0$ to obtain row echelon form **using the fewest replacements**? Leave all other entries unchanged.\n\n$$\nA=\\begin{bmatrix}-5 & 1 & 0 & 0 \\\\ 0 & 9 & -9 & -5 \\\\ 0 & -2 & 0 & -1 \\\\ 0 & 4 & 0 & 1\\end{bmatrix}\n$$'
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.005s
+
+FAILED (failures=1, errors=2)

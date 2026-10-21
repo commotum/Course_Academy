@@ -1,0 +1,73 @@
+{
+  "skill": "Identify ordinary matrices in row echelon form, or its complement, by checking leading-entry positions and placement of zero rows.",
+  "learner_operation": "Find the first nonzero entry in each nonzero row; require strictly increasing column indices and no nonzero row after a zero row. Apply the requested in/not-in polarity independently to each labeled matrix.",
+  "reasoning_steps": [
+    "Read the requested polarity.",
+    "Locate zero rows and leading entries.",
+    "Check both row echelon conditions for each matrix.",
+    "Select exactly the qualifying labels; explain a concrete violation for rejected matrices."
+  ],
+  "response_contract": "Thirteen easy questions use three checkbox fields containing labeled matrices with true/false banks. One incomplete radio source has five subset choices, absent key and absent solution; its mathematical result is B only, an independently inferred correction. Canonical example is explanatory rather than answer-field evidence.",
+  "difficulty": "Easy recognition on small integer matrices, mostly 3\u20135 rows, 3\u20136 columns; no row operations, solving systems, or reduced-row-echelon requirements.",
+  "invariants": [
+    "Zero rows must be below all nonzero rows.",
+    "Leading columns strictly increase down the nonzero rows.",
+    "Leading entries need not equal one; entries above pivots need not vanish.",
+    "Each field key, solution matrix, selection truth and requested polarity must agree.",
+    "Retain source banks and response type when replaying each source."
+  ],
+  "fixed_features": [
+    {
+      "feature": "Three ordinary labeled matrices",
+      "justification": "All target questions present three independent recognition decisions; augmented matrices and transformation tasks are neighboring skills."
+    },
+    {
+      "feature": "Two row echelon conditions",
+      "justification": "Explicit lesson definition, tutorial 137b0909-9a5e-5edf-8019-24e803307903 conditions I and II."
+    }
+  ],
+  "permitted_variations": [
+    "Change nonzero values, signs and entries to the right of pivots while deriving explanations.",
+    "Change zero-row location, pivot-column sequences (increasing, repeated, decreasing), dimensions within comparable workload.",
+    "Reassign qualifying status to any label or shape; neither A/B/C nor source profile determines truth.",
+    "Vary in/not-in polarity and subset size, including source-observed all-three cases; do not fix eligible qualifying labels.",
+    "Reorder presentations and fields without stale labels, keys or solutions."
+  ],
+  "source_refs": [
+    "181e77e0-d595-5539-baef-b4986d4c678b",
+    "d19d6145-1fb1-5d51-b074-044e9b77aefd",
+    "bb2739fc-bb44-578a-857a-d151f2930d2c",
+    "8e494fc8-9bc5-580b-afe6-c6a2f464663f",
+    "596a0fcc-0f4e-5df8-8a39-a657a1117abd",
+    "9ddf8ccb-f483-5bbe-8662-ef5250ea89a5",
+    "937eaf0d-76e6-56ec-a651-23458856322a",
+    "6061d8ea-d309-5b82-8a65-c5a4fc1b804c",
+    "8f982d65-21d3-5ca8-afbe-be436c69b22a",
+    "88771814-b2fc-53f4-914f-2f284d52aece",
+    "7f2b3995-5f42-5189-ac12-2c7b1d510255",
+    "307a31ed-3320-5bc6-9033-1067b69032de",
+    "ba6bcd83-87df-5c0b-b121-63a0ff1205ca",
+    "72e836b6-2968-5b2e-8666-6c15080ad3e0",
+    "b6e4983b-c695-5944-9637-6d7547dae849",
+    "tutorial 24451a80-db9f-5a0f-a591-41500a69774c: first non-zero entry on each row is called the leading entry",
+    "tutorial 137b0909-9a5e-5edf-8019-24e803307903: I. zero rows at bottom; II. leading entry to the right of row above",
+    "generate/principles.md sections 1\u20133"
+  ],
+  "gaps": [
+    "d19d6145-1fb1-5d51-b074-044e9b77aefd has no stored correct answer, difficulty or solution. Infer B only from pivots, distinguish this from captured evidence.",
+    "7f2b3995-5f42-5189-ac12-2c7b1d510255 solution changes C bottom pivot from -2 to 2; both satisfy REF, but replay should use prompt value -2.",
+    "9ddf8ccb-f483-5bbe-8662-ef5250ea89a5 C violates both conditions; source cites II only, which suffices.",
+    "596a0fcc-0f4e-5df8-8a39-a657a1117abd (q-129225) solution names a_45 while discussing C. C has leading columns 2,4,5,5, so c_45=5 is the repeated-column witness. Correcting the symbol to c_45 preserves the mathematical decision."
+  ],
+  "image_evidence": "Inspected canonical 906-byte stair diagram: geometric intuition for staircase pivots, no extra task requirement.",
+  "evidence_paths": [
+    "source-analysis.json",
+    "source-replay-results.json",
+    "provenance.json"
+  ],
+  "provenance": {
+    "reused_from": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186129114/review-0-policy-2-342253086f871c08/source-analysis.json",
+    "source_file_sha256": "0e6218492d0566fb226cc439b45f4f84ede52871e58e8344c1d41198e9fe125f",
+    "confirmation": "Confirmed all cited question/tutorial IDs and the exact leading-entry and REF definition passages against current source; original source hash matched by runner."
+  }
+}

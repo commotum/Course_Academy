@@ -1,0 +1,138 @@
+{
+  "verdict": "accepted",
+  "summary": "The revised generator and five-item batch pass all eight checks; the fixed-C batch shortcut is repaired. Five historical stored records remain documented in affected-inventory.json.",
+  "source_analysis": {
+    "skill": "Identify ordinary matrices in row echelon form, or its complement, by checking leading-entry positions and placement of zero rows.",
+    "reasoning_steps": [
+      "Read the requested polarity.",
+      "Locate zero rows and leading entries.",
+      "Check both row echelon conditions for each matrix.",
+      "Select exactly the qualifying labels; explain a concrete violation for rejected matrices."
+    ],
+    "invariants": [
+      "Zero rows must be below all nonzero rows.",
+      "Leading columns strictly increase down the nonzero rows.",
+      "Leading entries need not equal one; entries above pivots need not vanish.",
+      "Each field key, solution matrix, selection truth and requested polarity must agree.",
+      "Retain source banks and response type when replaying each source."
+    ],
+    "permitted_variations": [
+      "Change nonzero values, signs and entries to the right of pivots while deriving explanations.",
+      "Change zero-row location, pivot-column sequences (increasing, repeated, decreasing), dimensions within comparable workload.",
+      "Reassign qualifying status to any label or shape; neither A/B/C nor source profile determines truth.",
+      "Vary in/not-in polarity and subset size, including source-observed all-three cases; do not fix eligible qualifying labels.",
+      "Reorder presentations and fields without stale labels, keys or solutions."
+    ],
+    "source_refs": [
+      "181e77e0-d595-5539-baef-b4986d4c678b",
+      "d19d6145-1fb1-5d51-b074-044e9b77aefd",
+      "bb2739fc-bb44-578a-857a-d151f2930d2c",
+      "8e494fc8-9bc5-580b-afe6-c6a2f464663f",
+      "596a0fcc-0f4e-5df8-8a39-a657a1117abd",
+      "9ddf8ccb-f483-5bbe-8662-ef5250ea89a5",
+      "937eaf0d-76e6-56ec-a651-23458856322a",
+      "6061d8ea-d309-5b82-8a65-c5a4fc1b804c",
+      "8f982d65-21d3-5ca8-afbe-be436c69b22a",
+      "88771814-b2fc-53f4-914f-2f284d52aece",
+      "7f2b3995-5f42-5189-ac12-2c7b1d510255",
+      "307a31ed-3320-5bc6-9033-1067b69032de",
+      "ba6bcd83-87df-5c0b-b121-63a0ff1205ca",
+      "72e836b6-2968-5b2e-8666-6c15080ad3e0",
+      "b6e4983b-c695-5944-9637-6d7547dae849",
+      "tutorial 24451a80-db9f-5a0f-a591-41500a69774c: first non-zero entry on each row is called the leading entry",
+      "tutorial 137b0909-9a5e-5edf-8019-24e803307903: I. zero rows at bottom; II. leading entry to the right of row above",
+      "generate/principles.md sections 1\u20133"
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "source-replay-results.json",
+      "provenance.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "source-replays.json",
+        "source-replay-results.json"
+      ],
+      "details": "All 13 complete easy checkbox sources replay with full banks; two source corrections independently confirmed. Incomplete unrated radio remains explicitly unsupported."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "source-replay-results.json",
+        "counterfactual-results.json",
+        "c-counterfactual-results.json"
+      ],
+      "details": "Independent leading-column classification and solution-matrix checks pass for 104 fresh draws, all five runner records and controlled changes."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "sampling-results.json",
+        "delivery-analysis.json",
+        "prior-unaffected/sampling-results.json",
+        "unchanged-bindings.json",
+        "provenance.json"
+      ],
+      "details": "Unchanged per-profile controls cover all seven nonempty subsets. Fresh draws and revised batches retain role variation through resampling/delivery; exact batch has subset sizes one, two and three."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "scope-results.json",
+        "independent-samples.json"
+      ],
+      "details": "Three source-sized integer matrices; the same two REF conditions and easy recognition workload, without new operators or row operations."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "final-grader-input.json",
+        "final-grader-results.json",
+        "author-check/repair-grader-results.json"
+      ],
+      "details": "Native learner grader passes 186 independent checks (93 accepted, 93 rejected), including relevant/irrelevant edits. Checkbox contract has no free-entry equivalents."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-counterfactual/rendering.json",
+        "render-inspection.json"
+      ],
+      "details": "Twelve actual-UI previews pass. Inspected prompt polarities, matrix notation, checkbox controls and controlled-change explanations."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "package-before.json",
+        "package-after.json",
+        "relocation-records.json",
+        "rejection-results.json",
+        "preflight-verification.json"
+      ],
+      "details": "Exact Python 3.13.5 and empty third-party map confirmed; relocation, deterministic replay, input rejection and unchanged package hashes verified."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "batch-role-results.json",
+        "historical-role-results.json",
+        "preflight-verification.json",
+        "delivery-analysis.json",
+        "shortcut-probes.json",
+        "affected-inventory.json",
+        "generated-records.json"
+      ],
+      "details": "Historical fixed-C witness still fails. Revised delivered subsets ABC, BC, B, A, C vary every label action; tested template/shape controls defeat fixed-label/subset rules. Controlled dependencies pass. Historical inventory subset remains separately identified; live-policy/history limits are explicit."
+    }
+  },
+  "findings": []
+}

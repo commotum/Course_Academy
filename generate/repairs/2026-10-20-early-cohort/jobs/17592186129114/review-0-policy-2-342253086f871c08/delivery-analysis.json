@@ -1,0 +1,1803 @@
+{
+  "command": "python3 delivery_analysis.py",
+  "stages": {
+    "raw_before_nonempty": {
+      "total": 64,
+      "subsets": {
+        "C": 9,
+        "ABC": 14,
+        "B": 7,
+        "BC": 12,
+        "": 7,
+        "A": 4,
+        "AC": 5,
+        "AB": 6
+      },
+      "roles": {
+        "A": 29,
+        "B": 39,
+        "C": 40
+      },
+      "by_template": {
+        "select-echelon": {
+          "total": 38,
+          "subsets": {
+            "C": 6,
+            "ABC": 8,
+            "B": 5,
+            "BC": 5,
+            "": 6,
+            "AB": 5,
+            "A": 1,
+            "AC": 2
+          }
+        },
+        "select-not-echelon": {
+          "total": 26,
+          "subsets": {
+            "": 1,
+            "ABC": 6,
+            "BC": 7,
+            "B": 2,
+            "A": 3,
+            "AC": 3,
+            "C": 3,
+            "AB": 1
+          }
+        }
+      }
+    },
+    "normal_batch_after_rejection": {
+      "total": 64,
+      "subsets": {
+        "C": 10,
+        "ABC": 14,
+        "B": 8,
+        "BC": 12,
+        "A": 7,
+        "AC": 7,
+        "AB": 6
+      },
+      "roles": {
+        "A": 34,
+        "B": 40,
+        "C": 43
+      },
+      "by_template": {
+        "select-echelon": {
+          "total": 35,
+          "subsets": {
+            "C": 7,
+            "ABC": 8,
+            "B": 5,
+            "BC": 5,
+            "AB": 5,
+            "A": 3,
+            "AC": 2
+          }
+        },
+        "select-not-echelon": {
+          "total": 29,
+          "subsets": {
+            "B": 3,
+            "ABC": 6,
+            "BC": 7,
+            "A": 4,
+            "AC": 5,
+            "C": 3,
+            "AB": 1
+          }
+        }
+      }
+    },
+    "profile_samples_before_delivery": {
+      "total": 416,
+      "subsets": {
+        "BC": 58,
+        "C": 94,
+        "AB": 107,
+        "ABC": 27,
+        "AC": 39,
+        "A": 53,
+        "B": 38
+      },
+      "roles": {
+        "A": 226,
+        "B": 230,
+        "C": 218
+      },
+      "by_template": {
+        "select-echelon": {
+          "total": 224,
+          "subsets": {
+            "BC": 28,
+            "C": 28,
+            "AB": 77,
+            "ABC": 21,
+            "AC": 21,
+            "A": 35,
+            "B": 14
+          }
+        },
+        "select-not-echelon": {
+          "total": 192,
+          "subsets": {
+            "ABC": 6,
+            "AB": 30,
+            "C": 66,
+            "A": 18,
+            "B": 24,
+            "BC": 30,
+            "AC": 18
+          }
+        }
+      }
+    },
+    "profile_samples_after_delivery": {
+      "total": 384,
+      "subsets": {
+        "BC": 54,
+        "C": 90,
+        "AB": 96,
+        "ABC": 24,
+        "AC": 36,
+        "A": 48,
+        "B": 36
+      },
+      "roles": {
+        "A": 204,
+        "B": 210,
+        "C": 204
+      },
+      "by_template": {
+        "select-echelon": {
+          "total": 192,
+          "subsets": {
+            "BC": 24,
+            "C": 24,
+            "AB": 66,
+            "ABC": 18,
+            "AC": 18,
+            "A": 30,
+            "B": 12
+          }
+        },
+        "select-not-echelon": {
+          "total": 192,
+          "subsets": {
+            "ABC": 6,
+            "AB": 30,
+            "C": 66,
+            "A": 18,
+            "B": 24,
+            "BC": 30,
+            "AC": 18
+          }
+        }
+      }
+    },
+    "runner_before_delivery": {
+      "total": 5,
+      "subsets": {
+        "ABC": 1,
+        "BC": 2,
+        "AC": 2
+      },
+      "roles": {
+        "A": 3,
+        "B": 3,
+        "C": 5
+      },
+      "by_template": {
+        "select-echelon": {
+          "total": 4,
+          "subsets": {
+            "ABC": 1,
+            "BC": 1,
+            "AC": 2
+          }
+        },
+        "select-not-echelon": {
+          "total": 1,
+          "subsets": {
+            "BC": 1
+          }
+        }
+      }
+    },
+    "runner_after_delivery": {
+      "total": 5,
+      "subsets": {
+        "ABC": 1,
+        "BC": 2,
+        "AC": 2
+      },
+      "roles": {
+        "A": 3,
+        "B": 3,
+        "C": 5
+      },
+      "by_template": {
+        "select-echelon": {
+          "total": 4,
+          "subsets": {
+            "ABC": 1,
+            "BC": 1,
+            "AC": 2
+          }
+        },
+        "select-not-echelon": {
+          "total": 1,
+          "subsets": {
+            "BC": 1
+          }
+        }
+      }
+    }
+  },
+  "selection_rules": {
+    "implementation": "engine/rust/question_selection.rs lines 105\u2013199",
+    "captured_basis": 5356,
+    "candidate_count": 19,
+    "rated_easy": 18,
+    "unrated": 1,
+    "freshness": "Assume no previously seen questions; actual per-learner history absent. seen_before_task removes questions by entity ID only. Removing a candidate can change pool proportions, not that candidate key.",
+    "weighted_selection": "Configured positive easy weight gives uniform choice within the easy band. All rated candidates are easy. Unrated source is unused while easy has positive weight. Unconfigured policy returns lowest entity ID. Positive easy is a conditional scenario, not a claim about an unavailable learner policy.",
+    "published_batch": "No entity IDs assigned to new records read-only; therefore exact post-insertion seeded mapping cannot be computed. All five are easy; positive-easy weighted selection gives equal conditional probability among the five. Selection cannot introduce a C-unselected record into that five-member subset.",
+    "full_captured_pool_subsets": {
+      "BC": 4,
+      "ABC": 4,
+      "A": 1,
+      "B": 1,
+      "AB": 2,
+      "C": 5,
+      "AC": 1
+    },
+    "full_captured_pool_C_selected": 14,
+    "full_captured_pool_total": 18,
+    "unconfigured_first_entity": 17592186129773
+  },
+  "selection_simulation": [
+    {
+      "seed": "independent-selection-8421-0",
+      "entity_id": 17592186619025,
+      "question_id": "c7938343-412b-5fca-92c5-3a72b25b53aa",
+      "selected": "BC"
+    },
+    {
+      "seed": "independent-selection-8421-1",
+      "entity_id": 17592186129773,
+      "question_id": "181e77e0-d595-5539-baef-b4986d4c678b",
+      "selected": "BC"
+    },
+    {
+      "seed": "independent-selection-8421-2",
+      "entity_id": 17592186413824,
+      "question_id": "72e836b6-2968-5b2e-8666-6c15080ad3e0",
+      "selected": "C"
+    },
+    {
+      "seed": "independent-selection-8421-3",
+      "entity_id": 17592186402796,
+      "question_id": "7f2b3995-5f42-5189-ac12-2c7b1d510255",
+      "selected": "C"
+    },
+    {
+      "seed": "independent-selection-8421-4",
+      "entity_id": 17592186400415,
+      "question_id": "8f982d65-21d3-5ca8-afbe-be436c69b22a",
+      "selected": "BC"
+    },
+    {
+      "seed": "independent-selection-8421-5",
+      "entity_id": 17592186400408,
+      "question_id": "6061d8ea-d309-5b82-8a65-c5a4fc1b804c",
+      "selected": "AB"
+    },
+    {
+      "seed": "independent-selection-8421-6",
+      "entity_id": 17592186262985,
+      "question_id": "bb2739fc-bb44-578a-857a-d151f2930d2c",
+      "selected": "ABC"
+    },
+    {
+      "seed": "independent-selection-8421-7",
+      "entity_id": 17592186400422,
+      "question_id": "88771814-b2fc-53f4-914f-2f284d52aece",
+      "selected": "AB"
+    },
+    {
+      "seed": "independent-selection-8421-8",
+      "entity_id": 17592186403578,
+      "question_id": "307a31ed-3320-5bc6-9033-1067b69032de",
+      "selected": "AC"
+    },
+    {
+      "seed": "independent-selection-8421-9",
+      "entity_id": 17592186403578,
+      "question_id": "307a31ed-3320-5bc6-9033-1067b69032de",
+      "selected": "AC"
+    },
+    {
+      "seed": "independent-selection-8421-10",
+      "entity_id": 17592186262990,
+      "question_id": "8e494fc8-9bc5-580b-afe6-c6a2f464663f",
+      "selected": "A"
+    },
+    {
+      "seed": "independent-selection-8421-11",
+      "entity_id": 17592186262990,
+      "question_id": "8e494fc8-9bc5-580b-afe6-c6a2f464663f",
+      "selected": "A"
+    },
+    {
+      "seed": "independent-selection-8421-12",
+      "entity_id": 17592186618992,
+      "question_id": "12be4e7e-490f-5ebf-b05f-bec415d51350",
+      "selected": "C"
+    },
+    {
+      "seed": "independent-selection-8421-13",
+      "entity_id": 17592186618996,
+      "question_id": "25e8be0d-86c0-5867-8f40-ff95371b25a6",
+      "selected": "ABC"
+    },
+    {
+      "seed": "independent-selection-8421-14",
+      "entity_id": 17592186262993,
+      "question_id": "596a0fcc-0f4e-5df8-8a39-a657a1117abd",
+      "selected": "ABC"
+    },
+    {
+      "seed": "independent-selection-8421-15",
+      "entity_id": 17592186618996,
+      "question_id": "25e8be0d-86c0-5867-8f40-ff95371b25a6",
+      "selected": "ABC"
+    },
+    {
+      "seed": "independent-selection-8421-16",
+      "entity_id": 17592186403585,
+      "question_id": "ba6bcd83-87df-5c0b-b121-63a0ff1205ca",
+      "selected": "C"
+    },
+    {
+      "seed": "independent-selection-8421-17",
+      "entity_id": 17592186400408,
+      "question_id": "6061d8ea-d309-5b82-8a65-c5a4fc1b804c",
+      "selected": "AB"
+    },
+    {
+      "seed": "independent-selection-8421-18",
+      "entity_id": 17592186339127,
+      "question_id": "937eaf0d-76e6-56ec-a651-23458856322a",
+      "selected": "B"
+    },
+    {
+      "seed": "independent-selection-8421-19",
+      "entity_id": 17592186619015,
+      "question_id": "95a955ac-07a2-541c-ab8b-4e62bab961a6",
+      "selected": "ABC"
+    },
+    {
+      "seed": "independent-selection-8421-20",
+      "entity_id": 17592186619004,
+      "question_id": "6368efbd-2674-5b6a-b8c1-83aab604a3e6",
+      "selected": "C"
+    },
+    {
+      "seed": "independent-selection-8421-21",
+      "entity_id": 17592186618992,
+      "question_id": "12be4e7e-490f-5ebf-b05f-bec415d51350",
+      "selected": "C"
+    },
+    {
+      "seed": "independent-selection-8421-22",
+      "entity_id": 17592186619004,
+      "question_id": "6368efbd-2674-5b6a-b8c1-83aab604a3e6",
+      "selected": "C"
+    },
+    {
+      "seed": "independent-selection-8421-23",
+      "entity_id": 17592186619015,
+      "question_id": "95a955ac-07a2-541c-ab8b-4e62bab961a6",
+      "selected": "ABC"
+    },
+    {
+      "seed": "independent-selection-8421-24",
+      "entity_id": 17592186262993,
+      "question_id": "596a0fcc-0f4e-5df8-8a39-a657a1117abd",
+      "selected": "ABC"
+    },
+    {
+      "seed": "independent-selection-8421-25",
+      "entity_id": 17592186262993,
+      "question_id": "596a0fcc-0f4e-5df8-8a39-a657a1117abd",
+      "selected": "ABC"
+    },
+    {
+      "seed": "independent-selection-8421-26",
+      "entity_id": 17592186403585,
+      "question_id": "ba6bcd83-87df-5c0b-b121-63a0ff1205ca",
+      "selected": "C"
+    },
+    {
+      "seed": "independent-selection-8421-27",
+      "entity_id": 17592186619025,
+      "question_id": "c7938343-412b-5fca-92c5-3a72b25b53aa",
+      "selected": "BC"
+    },
+    {
+      "seed": "independent-selection-8421-28",
+      "entity_id": 17592186262990,
+      "question_id": "8e494fc8-9bc5-580b-afe6-c6a2f464663f",
+      "selected": "A"
+    },
+    {
+      "seed": "independent-selection-8421-29",
+      "entity_id": 17592186339127,
+      "question_id": "937eaf0d-76e6-56ec-a651-23458856322a",
+      "selected": "B"
+    },
+    {
+      "seed": "independent-selection-8421-30",
+      "entity_id": 17592186262985,
+      "question_id": "bb2739fc-bb44-578a-857a-d151f2930d2c",
+      "selected": "ABC"
+    },
+    {
+      "seed": "independent-selection-8421-31",
+      "entity_id": 17592186619004,
+      "question_id": "6368efbd-2674-5b6a-b8c1-83aab604a3e6",
+      "selected": "C"
+    },
+    {
+      "seed": "independent-selection-8421-32",
+      "entity_id": 17592186619025,
+      "question_id": "c7938343-412b-5fca-92c5-3a72b25b53aa",
+      "selected": "BC"
+    },
+    {
+      "seed": "independent-selection-8421-33",
+      "entity_id": 17592186619025,
+      "question_id": "c7938343-412b-5fca-92c5-3a72b25b53aa",
+      "selected": "BC"
+    },
+    {
+      "seed": "independent-selection-8421-34",
+      "entity_id": 17592186339127,
+      "question_id": "937eaf0d-76e6-56ec-a651-23458856322a",
+      "selected": "B"
+    },
+    {
+      "seed": "independent-selection-8421-35",
+      "entity_id": 17592186618996,
+      "question_id": "25e8be0d-86c0-5867-8f40-ff95371b25a6",
+      "selected": "ABC"
+    },
+    {
+      "seed": "independent-selection-8421-36",
+      "entity_id": 17592186339126,
+      "question_id": "9ddf8ccb-f483-5bbe-8662-ef5250ea89a5",
+      "selected": "BC"
+    },
+    {
+      "seed": "independent-selection-8421-37",
+      "entity_id": 17592186400422,
+      "question_id": "88771814-b2fc-53f4-914f-2f284d52aece",
+      "selected": "AB"
+    },
+    {
+      "seed": "independent-selection-8421-38",
+      "entity_id": 17592186403578,
+      "question_id": "307a31ed-3320-5bc6-9033-1067b69032de",
+      "selected": "AC"
+    },
+    {
+      "seed": "independent-selection-8421-39",
+      "entity_id": 17592186400422,
+      "question_id": "88771814-b2fc-53f4-914f-2f284d52aece",
+      "selected": "AB"
+    },
+    {
+      "seed": "independent-selection-8421-40",
+      "entity_id": 17592186400415,
+      "question_id": "8f982d65-21d3-5ca8-afbe-be436c69b22a",
+      "selected": "BC"
+    },
+    {
+      "seed": "independent-selection-8421-41",
+      "entity_id": 17592186262985,
+      "question_id": "bb2739fc-bb44-578a-857a-d151f2930d2c",
+      "selected": "ABC"
+    },
+    {
+      "seed": "independent-selection-8421-42",
+      "entity_id": 17592186400408,
+      "question_id": "6061d8ea-d309-5b82-8a65-c5a4fc1b804c",
+      "selected": "AB"
+    },
+    {
+      "seed": "independent-selection-8421-43",
+      "entity_id": 17592186262993,
+      "question_id": "596a0fcc-0f4e-5df8-8a39-a657a1117abd",
+      "selected": "ABC"
+    },
+    {
+      "seed": "independent-selection-8421-44",
+      "entity_id": 17592186403585,
+      "question_id": "ba6bcd83-87df-5c0b-b121-63a0ff1205ca",
+      "selected": "C"
+    },
+    {
+      "seed": "independent-selection-8421-45",
+      "entity_id": 17592186403585,
+      "question_id": "ba6bcd83-87df-5c0b-b121-63a0ff1205ca",
+      "selected": "C"
+    },
+    {
+      "seed": "independent-selection-8421-46",
+      "entity_id": 17592186403578,
+      "question_id": "307a31ed-3320-5bc6-9033-1067b69032de",
+      "selected": "AC"
+    },
+    {
+      "seed": "independent-selection-8421-47",
+      "entity_id": 17592186400415,
+      "question_id": "8f982d65-21d3-5ca8-afbe-be436c69b22a",
+      "selected": "BC"
+    },
+    {
+      "seed": "independent-selection-8421-48",
+      "entity_id": 17592186618996,
+      "question_id": "25e8be0d-86c0-5867-8f40-ff95371b25a6",
+      "selected": "ABC"
+    },
+    {
+      "seed": "independent-selection-8421-49",
+      "entity_id": 17592186403578,
+      "question_id": "307a31ed-3320-5bc6-9033-1067b69032de",
+      "selected": "AC"
+    },
+    {
+      "seed": "independent-selection-8421-50",
+      "entity_id": 17592186413824,
+      "question_id": "72e836b6-2968-5b2e-8666-6c15080ad3e0",
+      "selected": "C"
+    },
+    {
+      "seed": "independent-selection-8421-51",
+      "entity_id": 17592186339127,
+      "question_id": "937eaf0d-76e6-56ec-a651-23458856322a",
+      "selected": "B"
+    },
+    {
+      "seed": "independent-selection-8421-52",
+      "entity_id": 17592186619015,
+      "question_id": "95a955ac-07a2-541c-ab8b-4e62bab961a6",
+      "selected": "ABC"
+    },
+    {
+      "seed": "independent-selection-8421-53",
+      "entity_id": 17592186339126,
+      "question_id": "9ddf8ccb-f483-5bbe-8662-ef5250ea89a5",
+      "selected": "BC"
+    },
+    {
+      "seed": "independent-selection-8421-54",
+      "entity_id": 17592186400408,
+      "question_id": "6061d8ea-d309-5b82-8a65-c5a4fc1b804c",
+      "selected": "AB"
+    },
+    {
+      "seed": "independent-selection-8421-55",
+      "entity_id": 17592186619025,
+      "question_id": "c7938343-412b-5fca-92c5-3a72b25b53aa",
+      "selected": "BC"
+    },
+    {
+      "seed": "independent-selection-8421-56",
+      "entity_id": 17592186262990,
+      "question_id": "8e494fc8-9bc5-580b-afe6-c6a2f464663f",
+      "selected": "A"
+    },
+    {
+      "seed": "independent-selection-8421-57",
+      "entity_id": 17592186618996,
+      "question_id": "25e8be0d-86c0-5867-8f40-ff95371b25a6",
+      "selected": "ABC"
+    },
+    {
+      "seed": "independent-selection-8421-58",
+      "entity_id": 17592186619004,
+      "question_id": "6368efbd-2674-5b6a-b8c1-83aab604a3e6",
+      "selected": "C"
+    },
+    {
+      "seed": "independent-selection-8421-59",
+      "entity_id": 17592186400422,
+      "question_id": "88771814-b2fc-53f4-914f-2f284d52aece",
+      "selected": "AB"
+    },
+    {
+      "seed": "independent-selection-8421-60",
+      "entity_id": 17592186262993,
+      "question_id": "596a0fcc-0f4e-5df8-8a39-a657a1117abd",
+      "selected": "ABC"
+    },
+    {
+      "seed": "independent-selection-8421-61",
+      "entity_id": 17592186262993,
+      "question_id": "596a0fcc-0f4e-5df8-8a39-a657a1117abd",
+      "selected": "ABC"
+    },
+    {
+      "seed": "independent-selection-8421-62",
+      "entity_id": 17592186618992,
+      "question_id": "12be4e7e-490f-5ebf-b05f-bec415d51350",
+      "selected": "C"
+    },
+    {
+      "seed": "independent-selection-8421-63",
+      "entity_id": 17592186262985,
+      "question_id": "bb2739fc-bb44-578a-857a-d151f2930d2c",
+      "selected": "ABC"
+    },
+    {
+      "seed": "independent-selection-8421-64",
+      "entity_id": 17592186129773,
+      "question_id": "181e77e0-d595-5539-baef-b4986d4c678b",
+      "selected": "BC"
+    },
+    {
+      "seed": "independent-selection-8421-65",
+      "entity_id": 17592186262990,
+      "question_id": "8e494fc8-9bc5-580b-afe6-c6a2f464663f",
+      "selected": "A"
+    },
+    {
+      "seed": "independent-selection-8421-66",
+      "entity_id": 17592186262985,
+      "question_id": "bb2739fc-bb44-578a-857a-d151f2930d2c",
+      "selected": "ABC"
+    },
+    {
+      "seed": "independent-selection-8421-67",
+      "entity_id": 17592186262990,
+      "question_id": "8e494fc8-9bc5-580b-afe6-c6a2f464663f",
+      "selected": "A"
+    },
+    {
+      "seed": "independent-selection-8421-68",
+      "entity_id": 17592186400415,
+      "question_id": "8f982d65-21d3-5ca8-afbe-be436c69b22a",
+      "selected": "BC"
+    },
+    {
+      "seed": "independent-selection-8421-69",
+      "entity_id": 17592186619025,
+      "question_id": "c7938343-412b-5fca-92c5-3a72b25b53aa",
+      "selected": "BC"
+    },
+    {
+      "seed": "independent-selection-8421-70",
+      "entity_id": 17592186262993,
+      "question_id": "596a0fcc-0f4e-5df8-8a39-a657a1117abd",
+      "selected": "ABC"
+    },
+    {
+      "seed": "independent-selection-8421-71",
+      "entity_id": 17592186403578,
+      "question_id": "307a31ed-3320-5bc6-9033-1067b69032de",
+      "selected": "AC"
+    },
+    {
+      "seed": "independent-selection-8421-72",
+      "entity_id": 17592186413824,
+      "question_id": "72e836b6-2968-5b2e-8666-6c15080ad3e0",
+      "selected": "C"
+    },
+    {
+      "seed": "independent-selection-8421-73",
+      "entity_id": 17592186400415,
+      "question_id": "8f982d65-21d3-5ca8-afbe-be436c69b22a",
+      "selected": "BC"
+    },
+    {
+      "seed": "independent-selection-8421-74",
+      "entity_id": 17592186402796,
+      "question_id": "7f2b3995-5f42-5189-ac12-2c7b1d510255",
+      "selected": "C"
+    },
+    {
+      "seed": "independent-selection-8421-75",
+      "entity_id": 17592186619004,
+      "question_id": "6368efbd-2674-5b6a-b8c1-83aab604a3e6",
+      "selected": "C"
+    },
+    {
+      "seed": "independent-selection-8421-76",
+      "entity_id": 17592186618996,
+      "question_id": "25e8be0d-86c0-5867-8f40-ff95371b25a6",
+      "selected": "ABC"
+    },
+    {
+      "seed": "independent-selection-8421-77",
+      "entity_id": 17592186402796,
+      "question_id": "7f2b3995-5f42-5189-ac12-2c7b1d510255",
+      "selected": "C"
+    },
+    {
+      "seed": "independent-selection-8421-78",
+      "entity_id": 17592186262993,
+      "question_id": "596a0fcc-0f4e-5df8-8a39-a657a1117abd",
+      "selected": "ABC"
+    },
+    {
+      "seed": "independent-selection-8421-79",
+      "entity_id": 17592186262990,
+      "question_id": "8e494fc8-9bc5-580b-afe6-c6a2f464663f",
+      "selected": "A"
+    },
+    {
+      "seed": "independent-selection-8421-80",
+      "entity_id": 17592186619004,
+      "question_id": "6368efbd-2674-5b6a-b8c1-83aab604a3e6",
+      "selected": "C"
+    },
+    {
+      "seed": "independent-selection-8421-81",
+      "entity_id": 17592186619025,
+      "question_id": "c7938343-412b-5fca-92c5-3a72b25b53aa",
+      "selected": "BC"
+    },
+    {
+      "seed": "independent-selection-8421-82",
+      "entity_id": 17592186403578,
+      "question_id": "307a31ed-3320-5bc6-9033-1067b69032de",
+      "selected": "AC"
+    },
+    {
+      "seed": "independent-selection-8421-83",
+      "entity_id": 17592186618992,
+      "question_id": "12be4e7e-490f-5ebf-b05f-bec415d51350",
+      "selected": "C"
+    },
+    {
+      "seed": "independent-selection-8421-84",
+      "entity_id": 17592186618996,
+      "question_id": "25e8be0d-86c0-5867-8f40-ff95371b25a6",
+      "selected": "ABC"
+    },
+    {
+      "seed": "independent-selection-8421-85",
+      "entity_id": 17592186403578,
+      "question_id": "307a31ed-3320-5bc6-9033-1067b69032de",
+      "selected": "AC"
+    },
+    {
+      "seed": "independent-selection-8421-86",
+      "entity_id": 17592186403578,
+      "question_id": "307a31ed-3320-5bc6-9033-1067b69032de",
+      "selected": "AC"
+    },
+    {
+      "seed": "independent-selection-8421-87",
+      "entity_id": 17592186619025,
+      "question_id": "c7938343-412b-5fca-92c5-3a72b25b53aa",
+      "selected": "BC"
+    },
+    {
+      "seed": "independent-selection-8421-88",
+      "entity_id": 17592186262985,
+      "question_id": "bb2739fc-bb44-578a-857a-d151f2930d2c",
+      "selected": "ABC"
+    },
+    {
+      "seed": "independent-selection-8421-89",
+      "entity_id": 17592186619015,
+      "question_id": "95a955ac-07a2-541c-ab8b-4e62bab961a6",
+      "selected": "ABC"
+    },
+    {
+      "seed": "independent-selection-8421-90",
+      "entity_id": 17592186262993,
+      "question_id": "596a0fcc-0f4e-5df8-8a39-a657a1117abd",
+      "selected": "ABC"
+    },
+    {
+      "seed": "independent-selection-8421-91",
+      "entity_id": 17592186339127,
+      "question_id": "937eaf0d-76e6-56ec-a651-23458856322a",
+      "selected": "B"
+    },
+    {
+      "seed": "independent-selection-8421-92",
+      "entity_id": 17592186413824,
+      "question_id": "72e836b6-2968-5b2e-8666-6c15080ad3e0",
+      "selected": "C"
+    },
+    {
+      "seed": "independent-selection-8421-93",
+      "entity_id": 17592186403578,
+      "question_id": "307a31ed-3320-5bc6-9033-1067b69032de",
+      "selected": "AC"
+    },
+    {
+      "seed": "independent-selection-8421-94",
+      "entity_id": 17592186619015,
+      "question_id": "95a955ac-07a2-541c-ab8b-4e62bab961a6",
+      "selected": "ABC"
+    },
+    {
+      "seed": "independent-selection-8421-95",
+      "entity_id": 17592186339127,
+      "question_id": "937eaf0d-76e6-56ec-a651-23458856322a",
+      "selected": "B"
+    },
+    {
+      "seed": "independent-selection-8421-96",
+      "entity_id": 17592186400415,
+      "question_id": "8f982d65-21d3-5ca8-afbe-be436c69b22a",
+      "selected": "BC"
+    },
+    {
+      "seed": "independent-selection-8421-97",
+      "entity_id": 17592186129773,
+      "question_id": "181e77e0-d595-5539-baef-b4986d4c678b",
+      "selected": "BC"
+    },
+    {
+      "seed": "independent-selection-8421-98",
+      "entity_id": 17592186619004,
+      "question_id": "6368efbd-2674-5b6a-b8c1-83aab604a3e6",
+      "selected": "C"
+    },
+    {
+      "seed": "independent-selection-8421-99",
+      "entity_id": 17592186619004,
+      "question_id": "6368efbd-2674-5b6a-b8c1-83aab604a3e6",
+      "selected": "C"
+    },
+    {
+      "seed": "independent-selection-8421-100",
+      "entity_id": 17592186402796,
+      "question_id": "7f2b3995-5f42-5189-ac12-2c7b1d510255",
+      "selected": "C"
+    },
+    {
+      "seed": "independent-selection-8421-101",
+      "entity_id": 17592186402796,
+      "question_id": "7f2b3995-5f42-5189-ac12-2c7b1d510255",
+      "selected": "C"
+    },
+    {
+      "seed": "independent-selection-8421-102",
+      "entity_id": 17592186619004,
+      "question_id": "6368efbd-2674-5b6a-b8c1-83aab604a3e6",
+      "selected": "C"
+    },
+    {
+      "seed": "independent-selection-8421-103",
+      "entity_id": 17592186619025,
+      "question_id": "c7938343-412b-5fca-92c5-3a72b25b53aa",
+      "selected": "BC"
+    },
+    {
+      "seed": "independent-selection-8421-104",
+      "entity_id": 17592186619025,
+      "question_id": "c7938343-412b-5fca-92c5-3a72b25b53aa",
+      "selected": "BC"
+    },
+    {
+      "seed": "independent-selection-8421-105",
+      "entity_id": 17592186339127,
+      "question_id": "937eaf0d-76e6-56ec-a651-23458856322a",
+      "selected": "B"
+    },
+    {
+      "seed": "independent-selection-8421-106",
+      "entity_id": 17592186403578,
+      "question_id": "307a31ed-3320-5bc6-9033-1067b69032de",
+      "selected": "AC"
+    },
+    {
+      "seed": "independent-selection-8421-107",
+      "entity_id": 17592186403585,
+      "question_id": "ba6bcd83-87df-5c0b-b121-63a0ff1205ca",
+      "selected": "C"
+    },
+    {
+      "seed": "independent-selection-8421-108",
+      "entity_id": 17592186403585,
+      "question_id": "ba6bcd83-87df-5c0b-b121-63a0ff1205ca",
+      "selected": "C"
+    },
+    {
+      "seed": "independent-selection-8421-109",
+      "entity_id": 17592186400408,
+      "question_id": "6061d8ea-d309-5b82-8a65-c5a4fc1b804c",
+      "selected": "AB"
+    },
+    {
+      "seed": "independent-selection-8421-110",
+      "entity_id": 17592186402796,
+      "question_id": "7f2b3995-5f42-5189-ac12-2c7b1d510255",
+      "selected": "C"
+    },
+    {
+      "seed": "independent-selection-8421-111",
+      "entity_id": 17592186618992,
+      "question_id": "12be4e7e-490f-5ebf-b05f-bec415d51350",
+      "selected": "C"
+    },
+    {
+      "seed": "independent-selection-8421-112",
+      "entity_id": 17592186413824,
+      "question_id": "72e836b6-2968-5b2e-8666-6c15080ad3e0",
+      "selected": "C"
+    },
+    {
+      "seed": "independent-selection-8421-113",
+      "entity_id": 17592186619025,
+      "question_id": "c7938343-412b-5fca-92c5-3a72b25b53aa",
+      "selected": "BC"
+    },
+    {
+      "seed": "independent-selection-8421-114",
+      "entity_id": 17592186403578,
+      "question_id": "307a31ed-3320-5bc6-9033-1067b69032de",
+      "selected": "AC"
+    },
+    {
+      "seed": "independent-selection-8421-115",
+      "entity_id": 17592186402796,
+      "question_id": "7f2b3995-5f42-5189-ac12-2c7b1d510255",
+      "selected": "C"
+    },
+    {
+      "seed": "independent-selection-8421-116",
+      "entity_id": 17592186400408,
+      "question_id": "6061d8ea-d309-5b82-8a65-c5a4fc1b804c",
+      "selected": "AB"
+    },
+    {
+      "seed": "independent-selection-8421-117",
+      "entity_id": 17592186339127,
+      "question_id": "937eaf0d-76e6-56ec-a651-23458856322a",
+      "selected": "B"
+    },
+    {
+      "seed": "independent-selection-8421-118",
+      "entity_id": 17592186339127,
+      "question_id": "937eaf0d-76e6-56ec-a651-23458856322a",
+      "selected": "B"
+    },
+    {
+      "seed": "independent-selection-8421-119",
+      "entity_id": 17592186400422,
+      "question_id": "88771814-b2fc-53f4-914f-2f284d52aece",
+      "selected": "AB"
+    },
+    {
+      "seed": "independent-selection-8421-120",
+      "entity_id": 17592186403578,
+      "question_id": "307a31ed-3320-5bc6-9033-1067b69032de",
+      "selected": "AC"
+    },
+    {
+      "seed": "independent-selection-8421-121",
+      "entity_id": 17592186618996,
+      "question_id": "25e8be0d-86c0-5867-8f40-ff95371b25a6",
+      "selected": "ABC"
+    },
+    {
+      "seed": "independent-selection-8421-122",
+      "entity_id": 17592186262990,
+      "question_id": "8e494fc8-9bc5-580b-afe6-c6a2f464663f",
+      "selected": "A"
+    },
+    {
+      "seed": "independent-selection-8421-123",
+      "entity_id": 17592186618996,
+      "question_id": "25e8be0d-86c0-5867-8f40-ff95371b25a6",
+      "selected": "ABC"
+    },
+    {
+      "seed": "independent-selection-8421-124",
+      "entity_id": 17592186339127,
+      "question_id": "937eaf0d-76e6-56ec-a651-23458856322a",
+      "selected": "B"
+    },
+    {
+      "seed": "independent-selection-8421-125",
+      "entity_id": 17592186400422,
+      "question_id": "88771814-b2fc-53f4-914f-2f284d52aece",
+      "selected": "AB"
+    },
+    {
+      "seed": "independent-selection-8421-126",
+      "entity_id": 17592186619025,
+      "question_id": "c7938343-412b-5fca-92c5-3a72b25b53aa",
+      "selected": "BC"
+    },
+    {
+      "seed": "independent-selection-8421-127",
+      "entity_id": 17592186403578,
+      "question_id": "307a31ed-3320-5bc6-9033-1067b69032de",
+      "selected": "AC"
+    },
+    {
+      "seed": "independent-selection-8421-128",
+      "entity_id": 17592186339127,
+      "question_id": "937eaf0d-76e6-56ec-a651-23458856322a",
+      "selected": "B"
+    },
+    {
+      "seed": "independent-selection-8421-129",
+      "entity_id": 17592186129773,
+      "question_id": "181e77e0-d595-5539-baef-b4986d4c678b",
+      "selected": "BC"
+    },
+    {
+      "seed": "independent-selection-8421-130",
+      "entity_id": 17592186402796,
+      "question_id": "7f2b3995-5f42-5189-ac12-2c7b1d510255",
+      "selected": "C"
+    },
+    {
+      "seed": "independent-selection-8421-131",
+      "entity_id": 17592186618996,
+      "question_id": "25e8be0d-86c0-5867-8f40-ff95371b25a6",
+      "selected": "ABC"
+    },
+    {
+      "seed": "independent-selection-8421-132",
+      "entity_id": 17592186400422,
+      "question_id": "88771814-b2fc-53f4-914f-2f284d52aece",
+      "selected": "AB"
+    },
+    {
+      "seed": "independent-selection-8421-133",
+      "entity_id": 17592186403585,
+      "question_id": "ba6bcd83-87df-5c0b-b121-63a0ff1205ca",
+      "selected": "C"
+    },
+    {
+      "seed": "independent-selection-8421-134",
+      "entity_id": 17592186619004,
+      "question_id": "6368efbd-2674-5b6a-b8c1-83aab604a3e6",
+      "selected": "C"
+    },
+    {
+      "seed": "independent-selection-8421-135",
+      "entity_id": 17592186400415,
+      "question_id": "8f982d65-21d3-5ca8-afbe-be436c69b22a",
+      "selected": "BC"
+    },
+    {
+      "seed": "independent-selection-8421-136",
+      "entity_id": 17592186619015,
+      "question_id": "95a955ac-07a2-541c-ab8b-4e62bab961a6",
+      "selected": "ABC"
+    },
+    {
+      "seed": "independent-selection-8421-137",
+      "entity_id": 17592186262993,
+      "question_id": "596a0fcc-0f4e-5df8-8a39-a657a1117abd",
+      "selected": "ABC"
+    },
+    {
+      "seed": "independent-selection-8421-138",
+      "entity_id": 17592186403585,
+      "question_id": "ba6bcd83-87df-5c0b-b121-63a0ff1205ca",
+      "selected": "C"
+    },
+    {
+      "seed": "independent-selection-8421-139",
+      "entity_id": 17592186618992,
+      "question_id": "12be4e7e-490f-5ebf-b05f-bec415d51350",
+      "selected": "C"
+    },
+    {
+      "seed": "independent-selection-8421-140",
+      "entity_id": 17592186403578,
+      "question_id": "307a31ed-3320-5bc6-9033-1067b69032de",
+      "selected": "AC"
+    },
+    {
+      "seed": "independent-selection-8421-141",
+      "entity_id": 17592186262993,
+      "question_id": "596a0fcc-0f4e-5df8-8a39-a657a1117abd",
+      "selected": "ABC"
+    },
+    {
+      "seed": "independent-selection-8421-142",
+      "entity_id": 17592186262985,
+      "question_id": "bb2739fc-bb44-578a-857a-d151f2930d2c",
+      "selected": "ABC"
+    },
+    {
+      "seed": "independent-selection-8421-143",
+      "entity_id": 17592186618996,
+      "question_id": "25e8be0d-86c0-5867-8f40-ff95371b25a6",
+      "selected": "ABC"
+    },
+    {
+      "seed": "independent-selection-8421-144",
+      "entity_id": 17592186403578,
+      "question_id": "307a31ed-3320-5bc6-9033-1067b69032de",
+      "selected": "AC"
+    },
+    {
+      "seed": "independent-selection-8421-145",
+      "entity_id": 17592186339126,
+      "question_id": "9ddf8ccb-f483-5bbe-8662-ef5250ea89a5",
+      "selected": "BC"
+    },
+    {
+      "seed": "independent-selection-8421-146",
+      "entity_id": 17592186262993,
+      "question_id": "596a0fcc-0f4e-5df8-8a39-a657a1117abd",
+      "selected": "ABC"
+    },
+    {
+      "seed": "independent-selection-8421-147",
+      "entity_id": 17592186402796,
+      "question_id": "7f2b3995-5f42-5189-ac12-2c7b1d510255",
+      "selected": "C"
+    },
+    {
+      "seed": "independent-selection-8421-148",
+      "entity_id": 17592186402796,
+      "question_id": "7f2b3995-5f42-5189-ac12-2c7b1d510255",
+      "selected": "C"
+    },
+    {
+      "seed": "independent-selection-8421-149",
+      "entity_id": 17592186400415,
+      "question_id": "8f982d65-21d3-5ca8-afbe-be436c69b22a",
+      "selected": "BC"
+    },
+    {
+      "seed": "independent-selection-8421-150",
+      "entity_id": 17592186413824,
+      "question_id": "72e836b6-2968-5b2e-8666-6c15080ad3e0",
+      "selected": "C"
+    },
+    {
+      "seed": "independent-selection-8421-151",
+      "entity_id": 17592186400415,
+      "question_id": "8f982d65-21d3-5ca8-afbe-be436c69b22a",
+      "selected": "BC"
+    },
+    {
+      "seed": "independent-selection-8421-152",
+      "entity_id": 17592186400408,
+      "question_id": "6061d8ea-d309-5b82-8a65-c5a4fc1b804c",
+      "selected": "AB"
+    },
+    {
+      "seed": "independent-selection-8421-153",
+      "entity_id": 17592186619015,
+      "question_id": "95a955ac-07a2-541c-ab8b-4e62bab961a6",
+      "selected": "ABC"
+    },
+    {
+      "seed": "independent-selection-8421-154",
+      "entity_id": 17592186402796,
+      "question_id": "7f2b3995-5f42-5189-ac12-2c7b1d510255",
+      "selected": "C"
+    },
+    {
+      "seed": "independent-selection-8421-155",
+      "entity_id": 17592186402796,
+      "question_id": "7f2b3995-5f42-5189-ac12-2c7b1d510255",
+      "selected": "C"
+    },
+    {
+      "seed": "independent-selection-8421-156",
+      "entity_id": 17592186339127,
+      "question_id": "937eaf0d-76e6-56ec-a651-23458856322a",
+      "selected": "B"
+    },
+    {
+      "seed": "independent-selection-8421-157",
+      "entity_id": 17592186413824,
+      "question_id": "72e836b6-2968-5b2e-8666-6c15080ad3e0",
+      "selected": "C"
+    },
+    {
+      "seed": "independent-selection-8421-158",
+      "entity_id": 17592186413824,
+      "question_id": "72e836b6-2968-5b2e-8666-6c15080ad3e0",
+      "selected": "C"
+    },
+    {
+      "seed": "independent-selection-8421-159",
+      "entity_id": 17592186339126,
+      "question_id": "9ddf8ccb-f483-5bbe-8662-ef5250ea89a5",
+      "selected": "BC"
+    },
+    {
+      "seed": "independent-selection-8421-160",
+      "entity_id": 17592186618992,
+      "question_id": "12be4e7e-490f-5ebf-b05f-bec415d51350",
+      "selected": "C"
+    },
+    {
+      "seed": "independent-selection-8421-161",
+      "entity_id": 17592186400408,
+      "question_id": "6061d8ea-d309-5b82-8a65-c5a4fc1b804c",
+      "selected": "AB"
+    },
+    {
+      "seed": "independent-selection-8421-162",
+      "entity_id": 17592186619025,
+      "question_id": "c7938343-412b-5fca-92c5-3a72b25b53aa",
+      "selected": "BC"
+    },
+    {
+      "seed": "independent-selection-8421-163",
+      "entity_id": 17592186403585,
+      "question_id": "ba6bcd83-87df-5c0b-b121-63a0ff1205ca",
+      "selected": "C"
+    },
+    {
+      "seed": "independent-selection-8421-164",
+      "entity_id": 17592186618996,
+      "question_id": "25e8be0d-86c0-5867-8f40-ff95371b25a6",
+      "selected": "ABC"
+    },
+    {
+      "seed": "independent-selection-8421-165",
+      "entity_id": 17592186400415,
+      "question_id": "8f982d65-21d3-5ca8-afbe-be436c69b22a",
+      "selected": "BC"
+    },
+    {
+      "seed": "independent-selection-8421-166",
+      "entity_id": 17592186400422,
+      "question_id": "88771814-b2fc-53f4-914f-2f284d52aece",
+      "selected": "AB"
+    },
+    {
+      "seed": "independent-selection-8421-167",
+      "entity_id": 17592186262993,
+      "question_id": "596a0fcc-0f4e-5df8-8a39-a657a1117abd",
+      "selected": "ABC"
+    },
+    {
+      "seed": "independent-selection-8421-168",
+      "entity_id": 17592186400408,
+      "question_id": "6061d8ea-d309-5b82-8a65-c5a4fc1b804c",
+      "selected": "AB"
+    },
+    {
+      "seed": "independent-selection-8421-169",
+      "entity_id": 17592186618992,
+      "question_id": "12be4e7e-490f-5ebf-b05f-bec415d51350",
+      "selected": "C"
+    },
+    {
+      "seed": "independent-selection-8421-170",
+      "entity_id": 17592186400422,
+      "question_id": "88771814-b2fc-53f4-914f-2f284d52aece",
+      "selected": "AB"
+    },
+    {
+      "seed": "independent-selection-8421-171",
+      "entity_id": 17592186403585,
+      "question_id": "ba6bcd83-87df-5c0b-b121-63a0ff1205ca",
+      "selected": "C"
+    },
+    {
+      "seed": "independent-selection-8421-172",
+      "entity_id": 17592186262990,
+      "question_id": "8e494fc8-9bc5-580b-afe6-c6a2f464663f",
+      "selected": "A"
+    },
+    {
+      "seed": "independent-selection-8421-173",
+      "entity_id": 17592186618992,
+      "question_id": "12be4e7e-490f-5ebf-b05f-bec415d51350",
+      "selected": "C"
+    },
+    {
+      "seed": "independent-selection-8421-174",
+      "entity_id": 17592186400422,
+      "question_id": "88771814-b2fc-53f4-914f-2f284d52aece",
+      "selected": "AB"
+    },
+    {
+      "seed": "independent-selection-8421-175",
+      "entity_id": 17592186339126,
+      "question_id": "9ddf8ccb-f483-5bbe-8662-ef5250ea89a5",
+      "selected": "BC"
+    },
+    {
+      "seed": "independent-selection-8421-176",
+      "entity_id": 17592186262985,
+      "question_id": "bb2739fc-bb44-578a-857a-d151f2930d2c",
+      "selected": "ABC"
+    },
+    {
+      "seed": "independent-selection-8421-177",
+      "entity_id": 17592186129773,
+      "question_id": "181e77e0-d595-5539-baef-b4986d4c678b",
+      "selected": "BC"
+    },
+    {
+      "seed": "independent-selection-8421-178",
+      "entity_id": 17592186129773,
+      "question_id": "181e77e0-d595-5539-baef-b4986d4c678b",
+      "selected": "BC"
+    },
+    {
+      "seed": "independent-selection-8421-179",
+      "entity_id": 17592186262985,
+      "question_id": "bb2739fc-bb44-578a-857a-d151f2930d2c",
+      "selected": "ABC"
+    },
+    {
+      "seed": "independent-selection-8421-180",
+      "entity_id": 17592186400415,
+      "question_id": "8f982d65-21d3-5ca8-afbe-be436c69b22a",
+      "selected": "BC"
+    },
+    {
+      "seed": "independent-selection-8421-181",
+      "entity_id": 17592186619004,
+      "question_id": "6368efbd-2674-5b6a-b8c1-83aab604a3e6",
+      "selected": "C"
+    },
+    {
+      "seed": "independent-selection-8421-182",
+      "entity_id": 17592186618992,
+      "question_id": "12be4e7e-490f-5ebf-b05f-bec415d51350",
+      "selected": "C"
+    },
+    {
+      "seed": "independent-selection-8421-183",
+      "entity_id": 17592186262990,
+      "question_id": "8e494fc8-9bc5-580b-afe6-c6a2f464663f",
+      "selected": "A"
+    },
+    {
+      "seed": "independent-selection-8421-184",
+      "entity_id": 17592186400415,
+      "question_id": "8f982d65-21d3-5ca8-afbe-be436c69b22a",
+      "selected": "BC"
+    },
+    {
+      "seed": "independent-selection-8421-185",
+      "entity_id": 17592186413824,
+      "question_id": "72e836b6-2968-5b2e-8666-6c15080ad3e0",
+      "selected": "C"
+    },
+    {
+      "seed": "independent-selection-8421-186",
+      "entity_id": 17592186619015,
+      "question_id": "95a955ac-07a2-541c-ab8b-4e62bab961a6",
+      "selected": "ABC"
+    },
+    {
+      "seed": "independent-selection-8421-187",
+      "entity_id": 17592186262985,
+      "question_id": "bb2739fc-bb44-578a-857a-d151f2930d2c",
+      "selected": "ABC"
+    },
+    {
+      "seed": "independent-selection-8421-188",
+      "entity_id": 17592186339127,
+      "question_id": "937eaf0d-76e6-56ec-a651-23458856322a",
+      "selected": "B"
+    },
+    {
+      "seed": "independent-selection-8421-189",
+      "entity_id": 17592186618996,
+      "question_id": "25e8be0d-86c0-5867-8f40-ff95371b25a6",
+      "selected": "ABC"
+    },
+    {
+      "seed": "independent-selection-8421-190",
+      "entity_id": 17592186402796,
+      "question_id": "7f2b3995-5f42-5189-ac12-2c7b1d510255",
+      "selected": "C"
+    },
+    {
+      "seed": "independent-selection-8421-191",
+      "entity_id": 17592186400408,
+      "question_id": "6061d8ea-d309-5b82-8a65-c5a4fc1b804c",
+      "selected": "AB"
+    },
+    {
+      "seed": "independent-selection-8421-192",
+      "entity_id": 17592186129773,
+      "question_id": "181e77e0-d595-5539-baef-b4986d4c678b",
+      "selected": "BC"
+    },
+    {
+      "seed": "independent-selection-8421-193",
+      "entity_id": 17592186618992,
+      "question_id": "12be4e7e-490f-5ebf-b05f-bec415d51350",
+      "selected": "C"
+    },
+    {
+      "seed": "independent-selection-8421-194",
+      "entity_id": 17592186402796,
+      "question_id": "7f2b3995-5f42-5189-ac12-2c7b1d510255",
+      "selected": "C"
+    },
+    {
+      "seed": "independent-selection-8421-195",
+      "entity_id": 17592186619015,
+      "question_id": "95a955ac-07a2-541c-ab8b-4e62bab961a6",
+      "selected": "ABC"
+    },
+    {
+      "seed": "independent-selection-8421-196",
+      "entity_id": 17592186400408,
+      "question_id": "6061d8ea-d309-5b82-8a65-c5a4fc1b804c",
+      "selected": "AB"
+    },
+    {
+      "seed": "independent-selection-8421-197",
+      "entity_id": 17592186618992,
+      "question_id": "12be4e7e-490f-5ebf-b05f-bec415d51350",
+      "selected": "C"
+    },
+    {
+      "seed": "independent-selection-8421-198",
+      "entity_id": 17592186339127,
+      "question_id": "937eaf0d-76e6-56ec-a651-23458856322a",
+      "selected": "B"
+    },
+    {
+      "seed": "independent-selection-8421-199",
+      "entity_id": 17592186619015,
+      "question_id": "95a955ac-07a2-541c-ab8b-4e62bab961a6",
+      "selected": "ABC"
+    },
+    {
+      "seed": "independent-selection-8421-200",
+      "entity_id": 17592186618992,
+      "question_id": "12be4e7e-490f-5ebf-b05f-bec415d51350",
+      "selected": "C"
+    },
+    {
+      "seed": "independent-selection-8421-201",
+      "entity_id": 17592186400422,
+      "question_id": "88771814-b2fc-53f4-914f-2f284d52aece",
+      "selected": "AB"
+    },
+    {
+      "seed": "independent-selection-8421-202",
+      "entity_id": 17592186262993,
+      "question_id": "596a0fcc-0f4e-5df8-8a39-a657a1117abd",
+      "selected": "ABC"
+    },
+    {
+      "seed": "independent-selection-8421-203",
+      "entity_id": 17592186339127,
+      "question_id": "937eaf0d-76e6-56ec-a651-23458856322a",
+      "selected": "B"
+    },
+    {
+      "seed": "independent-selection-8421-204",
+      "entity_id": 17592186262993,
+      "question_id": "596a0fcc-0f4e-5df8-8a39-a657a1117abd",
+      "selected": "ABC"
+    },
+    {
+      "seed": "independent-selection-8421-205",
+      "entity_id": 17592186618992,
+      "question_id": "12be4e7e-490f-5ebf-b05f-bec415d51350",
+      "selected": "C"
+    },
+    {
+      "seed": "independent-selection-8421-206",
+      "entity_id": 17592186619004,
+      "question_id": "6368efbd-2674-5b6a-b8c1-83aab604a3e6",
+      "selected": "C"
+    },
+    {
+      "seed": "independent-selection-8421-207",
+      "entity_id": 17592186400415,
+      "question_id": "8f982d65-21d3-5ca8-afbe-be436c69b22a",
+      "selected": "BC"
+    },
+    {
+      "seed": "independent-selection-8421-208",
+      "entity_id": 17592186262985,
+      "question_id": "bb2739fc-bb44-578a-857a-d151f2930d2c",
+      "selected": "ABC"
+    },
+    {
+      "seed": "independent-selection-8421-209",
+      "entity_id": 17592186618996,
+      "question_id": "25e8be0d-86c0-5867-8f40-ff95371b25a6",
+      "selected": "ABC"
+    },
+    {
+      "seed": "independent-selection-8421-210",
+      "entity_id": 17592186262990,
+      "question_id": "8e494fc8-9bc5-580b-afe6-c6a2f464663f",
+      "selected": "A"
+    },
+    {
+      "seed": "independent-selection-8421-211",
+      "entity_id": 17592186619025,
+      "question_id": "c7938343-412b-5fca-92c5-3a72b25b53aa",
+      "selected": "BC"
+    },
+    {
+      "seed": "independent-selection-8421-212",
+      "entity_id": 17592186400415,
+      "question_id": "8f982d65-21d3-5ca8-afbe-be436c69b22a",
+      "selected": "BC"
+    },
+    {
+      "seed": "independent-selection-8421-213",
+      "entity_id": 17592186619015,
+      "question_id": "95a955ac-07a2-541c-ab8b-4e62bab961a6",
+      "selected": "ABC"
+    },
+    {
+      "seed": "independent-selection-8421-214",
+      "entity_id": 17592186400422,
+      "question_id": "88771814-b2fc-53f4-914f-2f284d52aece",
+      "selected": "AB"
+    },
+    {
+      "seed": "independent-selection-8421-215",
+      "entity_id": 17592186403578,
+      "question_id": "307a31ed-3320-5bc6-9033-1067b69032de",
+      "selected": "AC"
+    },
+    {
+      "seed": "independent-selection-8421-216",
+      "entity_id": 17592186618992,
+      "question_id": "12be4e7e-490f-5ebf-b05f-bec415d51350",
+      "selected": "C"
+    },
+    {
+      "seed": "independent-selection-8421-217",
+      "entity_id": 17592186129773,
+      "question_id": "181e77e0-d595-5539-baef-b4986d4c678b",
+      "selected": "BC"
+    },
+    {
+      "seed": "independent-selection-8421-218",
+      "entity_id": 17592186262993,
+      "question_id": "596a0fcc-0f4e-5df8-8a39-a657a1117abd",
+      "selected": "ABC"
+    },
+    {
+      "seed": "independent-selection-8421-219",
+      "entity_id": 17592186618996,
+      "question_id": "25e8be0d-86c0-5867-8f40-ff95371b25a6",
+      "selected": "ABC"
+    },
+    {
+      "seed": "independent-selection-8421-220",
+      "entity_id": 17592186262993,
+      "question_id": "596a0fcc-0f4e-5df8-8a39-a657a1117abd",
+      "selected": "ABC"
+    },
+    {
+      "seed": "independent-selection-8421-221",
+      "entity_id": 17592186403585,
+      "question_id": "ba6bcd83-87df-5c0b-b121-63a0ff1205ca",
+      "selected": "C"
+    },
+    {
+      "seed": "independent-selection-8421-222",
+      "entity_id": 17592186402796,
+      "question_id": "7f2b3995-5f42-5189-ac12-2c7b1d510255",
+      "selected": "C"
+    },
+    {
+      "seed": "independent-selection-8421-223",
+      "entity_id": 17592186619015,
+      "question_id": "95a955ac-07a2-541c-ab8b-4e62bab961a6",
+      "selected": "ABC"
+    },
+    {
+      "seed": "independent-selection-8421-224",
+      "entity_id": 17592186400422,
+      "question_id": "88771814-b2fc-53f4-914f-2f284d52aece",
+      "selected": "AB"
+    },
+    {
+      "seed": "independent-selection-8421-225",
+      "entity_id": 17592186339126,
+      "question_id": "9ddf8ccb-f483-5bbe-8662-ef5250ea89a5",
+      "selected": "BC"
+    },
+    {
+      "seed": "independent-selection-8421-226",
+      "entity_id": 17592186400422,
+      "question_id": "88771814-b2fc-53f4-914f-2f284d52aece",
+      "selected": "AB"
+    },
+    {
+      "seed": "independent-selection-8421-227",
+      "entity_id": 17592186402796,
+      "question_id": "7f2b3995-5f42-5189-ac12-2c7b1d510255",
+      "selected": "C"
+    },
+    {
+      "seed": "independent-selection-8421-228",
+      "entity_id": 17592186400415,
+      "question_id": "8f982d65-21d3-5ca8-afbe-be436c69b22a",
+      "selected": "BC"
+    },
+    {
+      "seed": "independent-selection-8421-229",
+      "entity_id": 17592186400422,
+      "question_id": "88771814-b2fc-53f4-914f-2f284d52aece",
+      "selected": "AB"
+    },
+    {
+      "seed": "independent-selection-8421-230",
+      "entity_id": 17592186619025,
+      "question_id": "c7938343-412b-5fca-92c5-3a72b25b53aa",
+      "selected": "BC"
+    },
+    {
+      "seed": "independent-selection-8421-231",
+      "entity_id": 17592186400415,
+      "question_id": "8f982d65-21d3-5ca8-afbe-be436c69b22a",
+      "selected": "BC"
+    },
+    {
+      "seed": "independent-selection-8421-232",
+      "entity_id": 17592186262990,
+      "question_id": "8e494fc8-9bc5-580b-afe6-c6a2f464663f",
+      "selected": "A"
+    },
+    {
+      "seed": "independent-selection-8421-233",
+      "entity_id": 17592186403578,
+      "question_id": "307a31ed-3320-5bc6-9033-1067b69032de",
+      "selected": "AC"
+    },
+    {
+      "seed": "independent-selection-8421-234",
+      "entity_id": 17592186618996,
+      "question_id": "25e8be0d-86c0-5867-8f40-ff95371b25a6",
+      "selected": "ABC"
+    },
+    {
+      "seed": "independent-selection-8421-235",
+      "entity_id": 17592186262993,
+      "question_id": "596a0fcc-0f4e-5df8-8a39-a657a1117abd",
+      "selected": "ABC"
+    },
+    {
+      "seed": "independent-selection-8421-236",
+      "entity_id": 17592186619015,
+      "question_id": "95a955ac-07a2-541c-ab8b-4e62bab961a6",
+      "selected": "ABC"
+    },
+    {
+      "seed": "independent-selection-8421-237",
+      "entity_id": 17592186262993,
+      "question_id": "596a0fcc-0f4e-5df8-8a39-a657a1117abd",
+      "selected": "ABC"
+    },
+    {
+      "seed": "independent-selection-8421-238",
+      "entity_id": 17592186400408,
+      "question_id": "6061d8ea-d309-5b82-8a65-c5a4fc1b804c",
+      "selected": "AB"
+    },
+    {
+      "seed": "independent-selection-8421-239",
+      "entity_id": 17592186262993,
+      "question_id": "596a0fcc-0f4e-5df8-8a39-a657a1117abd",
+      "selected": "ABC"
+    },
+    {
+      "seed": "independent-selection-8421-240",
+      "entity_id": 17592186413824,
+      "question_id": "72e836b6-2968-5b2e-8666-6c15080ad3e0",
+      "selected": "C"
+    },
+    {
+      "seed": "independent-selection-8421-241",
+      "entity_id": 17592186262993,
+      "question_id": "596a0fcc-0f4e-5df8-8a39-a657a1117abd",
+      "selected": "ABC"
+    },
+    {
+      "seed": "independent-selection-8421-242",
+      "entity_id": 17592186262990,
+      "question_id": "8e494fc8-9bc5-580b-afe6-c6a2f464663f",
+      "selected": "A"
+    },
+    {
+      "seed": "independent-selection-8421-243",
+      "entity_id": 17592186619025,
+      "question_id": "c7938343-412b-5fca-92c5-3a72b25b53aa",
+      "selected": "BC"
+    },
+    {
+      "seed": "independent-selection-8421-244",
+      "entity_id": 17592186619004,
+      "question_id": "6368efbd-2674-5b6a-b8c1-83aab604a3e6",
+      "selected": "C"
+    },
+    {
+      "seed": "independent-selection-8421-245",
+      "entity_id": 17592186262993,
+      "question_id": "596a0fcc-0f4e-5df8-8a39-a657a1117abd",
+      "selected": "ABC"
+    },
+    {
+      "seed": "independent-selection-8421-246",
+      "entity_id": 17592186403585,
+      "question_id": "ba6bcd83-87df-5c0b-b121-63a0ff1205ca",
+      "selected": "C"
+    },
+    {
+      "seed": "independent-selection-8421-247",
+      "entity_id": 17592186400408,
+      "question_id": "6061d8ea-d309-5b82-8a65-c5a4fc1b804c",
+      "selected": "AB"
+    },
+    {
+      "seed": "independent-selection-8421-248",
+      "entity_id": 17592186129773,
+      "question_id": "181e77e0-d595-5539-baef-b4986d4c678b",
+      "selected": "BC"
+    },
+    {
+      "seed": "independent-selection-8421-249",
+      "entity_id": 17592186403585,
+      "question_id": "ba6bcd83-87df-5c0b-b121-63a0ff1205ca",
+      "selected": "C"
+    },
+    {
+      "seed": "independent-selection-8421-250",
+      "entity_id": 17592186619025,
+      "question_id": "c7938343-412b-5fca-92c5-3a72b25b53aa",
+      "selected": "BC"
+    },
+    {
+      "seed": "independent-selection-8421-251",
+      "entity_id": 17592186618996,
+      "question_id": "25e8be0d-86c0-5867-8f40-ff95371b25a6",
+      "selected": "ABC"
+    },
+    {
+      "seed": "independent-selection-8421-252",
+      "entity_id": 17592186262985,
+      "question_id": "bb2739fc-bb44-578a-857a-d151f2930d2c",
+      "selected": "ABC"
+    },
+    {
+      "seed": "independent-selection-8421-253",
+      "entity_id": 17592186413824,
+      "question_id": "72e836b6-2968-5b2e-8666-6c15080ad3e0",
+      "selected": "C"
+    },
+    {
+      "seed": "independent-selection-8421-254",
+      "entity_id": 17592186262985,
+      "question_id": "bb2739fc-bb44-578a-857a-d151f2930d2c",
+      "selected": "ABC"
+    },
+    {
+      "seed": "independent-selection-8421-255",
+      "entity_id": 17592186262985,
+      "question_id": "bb2739fc-bb44-578a-857a-d151f2930d2c",
+      "selected": "ABC"
+    }
+  ],
+  "limitations": [
+    "No database writes or inferred learner history. Captured basis 5356 may change.",
+    "Full source+stored pool does contain C-unselected questions; the demonstrated fixed-C cue is confined to the exact incoming five-record batch and the reconstructed five non-source stored records.",
+    "No live entity IDs or learner policy were available for new records; exact future seed-to-entity mapping is unavailable, but the within-easy distribution and invariant are independent of those IDs."
+  ]
+}
