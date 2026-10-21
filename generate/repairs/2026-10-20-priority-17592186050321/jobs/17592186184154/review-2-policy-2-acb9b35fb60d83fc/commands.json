@@ -1,0 +1,29 @@
+{
+  "cwd": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-priority-17592186050321/jobs/17592186184154/review-2-policy-2-acb9b35fb60d83fc",
+  "commands": [
+    "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python audit.py",
+    "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python revision_tests.py",
+    "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py --input sample.json --source ../source/source.json --inventory ../source/inventory.json --difficulty moderate --output delivery-sample --asset-root ../workspace --math-root /media/jake/SSD/EDB/math",
+    "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py --input runner-batch.json --source ../source/source.json --inventory ../source/inventory.json --difficulty moderate --output delivery-batch --asset-root ../workspace --math-root /media/jake/SSD/EDB/math",
+    "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py --input controlled.json --source ../source/source.json --inventory ../source/inventory.json --difficulty moderate --output delivery-controlled --asset-root ../workspace --math-root /media/jake/SSD/EDB/math",
+    "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python variation.py",
+    "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python surface_probes.py",
+    "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python decision_tests.py",
+    "/home/jake/Developer/Course_Academy/generate/runs/current/check-engine grader-all-input.json grader-all-report.json",
+    "python3 prepare_render_inputs.py",
+    "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/render_preview.py --input render-records.json --output render --asset-root ../workspace --math-root /media/jake/SSD/EDB/math --limit 45",
+    "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/render_preview.py --input render-revision-records.json --output render-revision --asset-root ../workspace --math-root /media/jake/SSD/EDB/math --limit 22",
+    "python3 finalize_review.py"
+  ],
+  "seeds": {
+    "random_sample": 420106731,
+    "controlled": 713091,
+    "maximum_count": 90620477,
+    "cli_relocation": 8207419
+  },
+  "notes": [
+    "Source analysis written and verified before package inspection. Original prior scripts have provenance.json; prior results were not treated as current certification.",
+    "Review harness initially referenced an equivalent choice UUID from the other counterfactual record, which native validation rejected as not in field; mapping corrected by matching value into the current field, and the complete native batch rerun successfully. Current scripts and cases preserve the corrected mapping.",
+    "First renderer invocation used its default six-record limit; rerun with explicit limits45 and22. Final reports cover all67 required previews."
+  ]
+}

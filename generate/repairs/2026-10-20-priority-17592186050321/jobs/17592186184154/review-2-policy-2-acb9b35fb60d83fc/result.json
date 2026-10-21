@@ -1,0 +1,108 @@
+{
+  "verdict": "accepted",
+  "summary": "All eight checks passed. No reproducible defect found; the previous shortcut is defeated. Package unchanged.",
+  "source_analysis": {
+    "skill": "Simplify a two-term integrand and integrate using the sum, constant factor and power rules.",
+    "reasoning_steps": [
+      "Expand the product or divide the numerator termwise.",
+      "Extract coefficients and integrate each power.",
+      "Combine with one arbitrary constant."
+    ],
+    "invariants": [
+      "Preserve two elementary power integrals and moderate workload.",
+      "Radio banks have one uniquely correct primitive.",
+      "Blanks preceding +C exclude the supplied constant."
+    ],
+    "permitted_variations": [
+      "Vary coefficients, signs, eligible exponents, primitive roles and choice positions.",
+      "Vary quotient component pairings while preserving unique choices and workload."
+    ],
+    "source_refs": [
+      "Tutorial 703 / 1b5ce4c9-ef44-52d9-a506-96aa15055e00: sum and constant factor rules.",
+      "q-49059 / c3b5e67d-32a5-5a89-860d-1eeac5fbca6e: quotient simplification.",
+      "q-49063 / aa2d5333-814d-52c3-9ed1-e83660135b41: radical distribution.",
+      "q-167635, q-167587 and q-167617: recovered blank families."
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "source-replay-review.md"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay-results.json",
+        "source-replay-review.md",
+        "source-replays.json"
+      ],
+      "details": "All five supported moderate cases and complete banks matched, with documented restoration of missing f(x) definitions."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "revision-counterfactual-results.json",
+        "blank-prompt-degree-check.json"
+      ],
+      "details": "558 record checks verified actual integrands, all choices and every worked-solution expression using exact arithmetic."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "coverage-summary.json",
+        "decision-coverage.json",
+        "variation-results.json",
+        "boundary-results.json"
+      ],
+      "details": "Eligible roles, signs, quotient assignments, powers, radical forms and blank degrees retain meaningful coverage after rejection and delivery."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "scope-review.md",
+        "controlled.json"
+      ],
+      "details": "Extensions preserve the source method, response contracts and comparable workload. Unsupported source families are explicitly documented."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-all-input.json",
+        "grader-all-report.json"
+      ],
+      "details": "Native grader passed 822 accepted and 2439 rejected checks, including equivalent blank entries and counterfactual responses; zero unresolved."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-revision/rendering.json",
+        "visual-review.md",
+        "render-counterfactual-review.json"
+      ],
+      "details": "67 actual-UI previews passed. Representative controls, notation, solutions and paired changes were visually inspected."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "boundary-results.json",
+        "package-integrity.json"
+      ],
+      "details": "Exact dependencies, relocation, deterministic replay and count boundaries passed. Entire package unchanged; no publication or database writes."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "decision-probes.json",
+        "selection-shortcut-results.json",
+        "selection-notes.md",
+        "evidence-contract.json"
+      ],
+      "details": "Relevant and irrelevant counterfactuals passed. The previous shortcut succeeds on only 1/17 fresh delivered cases and 6/24 delivered controls. Selection conclusions use captured inventory and explicit policy/history assumptions."
+    }
+  },
+  "findings": []
+}
