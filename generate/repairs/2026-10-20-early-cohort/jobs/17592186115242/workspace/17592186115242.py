@@ -8,13 +8,12 @@ sampling uses assessed-operation distractor banks. All three levels are supporte
 """
 from __future__ import annotations
 import argparse,hashlib,json,pathlib,random,re,uuid,sys
-sys.path.insert(0,str(pathlib.Path(__file__).resolve().parents[2]/'scripts/question_capture'))
 from math_format import normalize_prose, normalize_tex, matrix_tex as format_matrix, checked_math_content
 import sympy as s
 KP_ID=17592186115242
 KP_UUID='22733f71-de4a-5058-a41c-039e66e333c5'
 TITLE='Determining the Value of a Constant for Which a Given Linear System Is Consistent or Inconsistent'
-VERSION='constant-consistency-v2'
+VERSION='constant-consistency-v3'
 DIR=pathlib.Path(__file__).with_suffix('')
 TEMPLATES={'easy':['inconsistent_easy'],'moderate':['inconsistent_bare','inconsistent_shift','inconsistent_scaled','inconsistent_scaled_shift'],'hard':['dependent_swap','dependent_fractional','dependent_negative']}
 
@@ -82,7 +81,7 @@ def validate_parameters(level,template,p):
         if template.endswith('scaled_shift') and (u not in (2,3) or v==0):raise ValueError('Scaled shifted coefficient required')
     else:
         if template=='dependent_swap' and (d!=1 or u!=1 or v!=0 or not 2<=abs(a)<=4 or abs(b)>7):raise ValueError('Swap bounds: d=u=1,v=0,|a|2..4,|b|<=7')
-        if template=='dependent_fractional' and (u!=1 or v==0 or r.q==1 or abs(a)>4 or abs(d)>5 or abs(b)>6):raise ValueError('Fractional row multiplier with shifted k required')
+        if template=='dependent_fractional' and (u!=1 or r.q==1 or abs(a)>4 or abs(d)>5 or abs(b)>6):raise ValueError('Fractional row multiplier with bare or shifted k required')
         if template=='dependent_negative' and (a!=1 or d not in (-2,-3,-4) or u!=-1 or v>=0 or abs(b)>4):raise ValueError('Negative parameter family bounds exceeded')
     if level=='hard' and h!=0:raise ValueError('Dependent requires proportional constants')
     if level!='hard' and h==0:raise ValueError('Inconsistent requires nonzero residual constant')
@@ -97,7 +96,17 @@ def sample(level,template,rng):
         a=rng.choice([-4,-3,-2,2,3,4]);e=rng.choice([-4,-3,-2,2,3,4]);return dict(a=a,b=rng.choice([-7,-6,-5,-4,-3,-2,2,3,4,5,6,7]),c=a*e,d=1,u=1,v=0,e=e)
     if template=='dependent_negative':
         d=rng.choice([-4,-3,-2]);c=rng.choice([-4,-2,2,3,4]);return dict(a=1,b=rng.choice([-4,-3,-2,2,3,4]),c=c,d=d,u=-1,v=rng.choice([-4,-3,-2,-1]),e=d*c)
-    a=rng.choice([-4,-3,-2,2,3,4]);d=rng.choice([-5,-3,-1,1,3,5]);n=rng.choice([-3,-2,1,2,3]);return dict(a=a,b=rng.choice([-6,-4,-2,2,4,6]),c=a*n,d=d,u=1,v=rng.choice([-6,-3,-1,1,3,6]),e=d*n)
+    a=rng.choice([-4,-3,-2,2,3,4]);d=rng.choice([-5,-3,-1,1,3,5]);n=rng.choice([-3,-2,1,2,3]);return dict(a=a,b=rng.choice([-6,-4,-2,2,4,6]),c=a*n,d=d,u=1,v=rng.choice([-6,-3,-1,0,1,3,6]),e=d*n)
+
+def authored_bank(t,rank,spacing):
+    """A complete offset profile; rank is chosen before coefficient sampling.
+
+    All values share the root's denominator, so integral notation itself does
+    not identify the key. Zero roots require no special exclusion or resampling.
+    """
+    step=s.Rational(spacing,t.q)
+    recipes=['t'+('+' if j-rank>=0 else '')+str((j-rank)*step) for j in range(5)]
+    return [t+(j-rank)*step for j in range(5)],recipes
 
 def normalize_system_braces(text):
     return re.sub(r'(?<!\\)\{(?=\\begin\{aligned\})',lambda _: r'\{',text)
@@ -124,6 +133,8 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
     if level not in TEMPLATES:raise ValueError('Unsupported level')
     if field_type not in (None,'radio',':answer-field.type/radio'):raise ValueError('Only observed radio layout supported')
     rng=random.Random(seed);specs=json.loads((DIR/'recipes.json').read_text())
+    # Independent role assignment precedes coefficient sampling and rejection.
+    bank_rank=rng.randrange(5);bank_spacing=rng.choice([1,2])
     observed=profile is not None and profile!='authored'
     if observed:
         if profile not in specs:raise ValueError('Unknown profile')
@@ -141,13 +152,15 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
             p=validate_parameters(level,template,parameters if parameters is not None else sample(level,template,rng))
             vals={k:s.Rational(v) for k,v in p.items()};a,b,c,d,u,v,e=[vals[k] for k in 'a b c d u v e'.split()];r=d/a;t=(r*b-v)/u;h=e-r*c
             env=dict(vals,r=r,t=t,h=h)
-            if observed:recipes=spec['bank']
-            elif level=='easy' or template in ('inconsistent_bare','inconsistent_scaled'):recipes=['t','-t','b/u','-b/u','0']
-            elif level=='moderate':recipes=['t','-t','r*b/u','-v/u','(r*b+v)/u']
-            elif template=='dependent_swap':recipes=['t','-t','1/t','b','0']
-            else:recipes=['t','-t','-v/u','(b-v)/u','0']
-            bank=[s.cancel(s.sympify(q,locals=env)) for q in recipes]
-            if any(z.has(s.zoo,s.nan,s.oo) for z in bank) or len(set(bank))!=5 or bank.count(t)!=1:raise ValueError('Complete bank collision')
+            bank_variant='authored_offsets'
+            if observed:
+                recipes=spec['bank']
+                bank=[s.cancel(s.sympify(q,locals=env)) for q in recipes]
+                bank_variant='observed'
+                if any(z.has(s.zoo,s.nan,s.oo) for z in bank) or len(set(bank))!=5 or bank.count(t)!=1:
+                    bank,recipes=authored_bank(t,bank_rank,bank_spacing)
+                    bank_variant='authored_offsets_collision_fallback'
+            else:bank,recipes=authored_bank(t,bank_rank,bank_spacing)
             break
         except (ValueError,TypeError,ZeroDivisionError):
             if parameters is not None:raise
@@ -166,7 +179,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
     answers=[{':answer/id':str(uuid.uuid5(uuid.UUID(fid),value)),':answer/type':':answer.type/math',':answer/value':value} for value in values]
     correct=answers[bank.index(t)][':answer/id'];rng.shuffle(answers)
     field={':answer-field/id':fid,':answer-field/key':'selection',':answer-field/type':':answer-field.type/radio',':answer-field/choices':answers,':answer-field/correct':[':answer/id',correct]}
-    return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':{':question/id':qid,':question/difficulty':':question.difficulty/'+level,':question/problem':problem,':question/worked-solution':solution,':question/answer-fields':[field]},'generation':{'version':VERSION,'basis':1356,'database':'math','lineage':'01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1','seed':seed,'template':template,'profile':profile or 'authored','parameters':p,'recipes':recipes,'mathematical_fingerprint':fp,'math_fingerprint':fp,'authored_level':level=='easy','plot_rating':'none','sympy_version':s.__version__}}
+    return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':{':question/id':qid,':question/difficulty':':question.difficulty/'+level,':question/problem':problem,':question/worked-solution':solution,':question/answer-fields':[field]},'generation':{'version':VERSION,'basis':1356,'database':'math','lineage':'01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1','seed':seed,'template':template,'profile':profile or 'authored','bank_variant':bank_variant,'parameters':p,'recipes':recipes,'mathematical_fingerprint':fp,'math_fingerprint':fp,'authored_level':level=='easy','plot_rating':'none','sympy_version':s.__version__}}
 
 def generate_easy(seed=0,**kwargs):return generate('easy',seed,**kwargs)
 def generate_moderate(seed=0,**kwargs):return generate('moderate',seed,**kwargs)

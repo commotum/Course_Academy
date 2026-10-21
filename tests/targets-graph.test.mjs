@@ -342,8 +342,8 @@ test('split layout vertically separates labeled courses and keeps all nodes and 
   const c = fixture([1, 2, 3, 4, 5, 6]); addSchoolCourses(c); c.changeCourse(null, true, 'targets');
   const combined = c.layoutCurrent();
   c.setTargetSplit(true); const split = c.layoutCurrent(); c.renderGuides();
-  assert.deepEqual(Array.from(split.courseBands, band => band.label), ['MTH 256', 'MTH 255', 'MTH 341']);
-  assert.deepEqual(Array.from(split.courseBands, band => [...band.nodeIds]), [[1, 3], [2], [4, 5, 6]]);
+  assert.deepEqual(Array.from(split.courseBands, band => band.label), ['MTH 255', 'MTH 256', 'MTH 341']);
+  assert.deepEqual(Array.from(split.courseBands, band => [...band.nodeIds]), [[2], [1, 3], [4, 5, 6]]);
   assert.deepEqual(Array.from(split.activeNodes, node => node.id), Array.from(combined.activeNodes, node => node.id));
   assert.deepEqual(Array.from(split.activeLinks, edge => edge.index), Array.from(combined.activeLinks, edge => edge.index));
   assert.equal(split.pos.size, split.activeNodes.length);
@@ -389,8 +389,8 @@ test('excluded low-layer targets and queue topics do not inflate track workloads
   const placement = coursePlacements(c, c.buildActiveSet().nodeIds);
   assert.equal(placement.has(1), false);
   assert.equal(placement.get(4), '256');
-  assert.equal(placement.get(5), '256');
-  assert.equal(placement.get(6), '255');
+  assert.equal(placement.get(5), '255');
+  assert.equal(placement.get(6), '256');
 });
 
 test('course distance crosses hidden nodes in either direction and wins over lighter workloads', () => {
@@ -413,7 +413,7 @@ test('disconnected and tied roots balance sequentially using unique saved target
   const c = fixture([1, 2, 3, 4, 5, 6]);
   c.snapshot.learner.queue = [1, 1]; // Repeated and overlapping membership adds no extra workload.
   configureCourseBands(c, [[1], [2], [3]], []);
-  const expected = new Map([[1, '256'], [4, '256'], [2, '255'], [5, '255'], [3, '341'], [6, '341']]);
+  const expected = new Map([[2, '255'], [4, '255'], [1, '256'], [5, '256'], [3, '341'], [6, '341']]);
   assert.deepEqual(coursePlacements(c), expected);
   c.snapshot.learner.targets.reverse();
   assert.deepEqual(coursePlacements(c, [6, 5, 4, 3, 2, 1]), expected);
@@ -426,16 +426,16 @@ test('expanded prerequisites follow placed roots even without original course an
   configureCourseBands(c, [[], [], []], [[4, 1], [1, 3], [6, 2]]);
   c.changeCourse(null, true, 'targets'); c.setTargetSplit(true);
   const overview = coursePlacements(c, c.buildActiveSet().nodeIds);
-  assert.deepEqual(overview, new Map([[2, '256'], [3, '255'], [5, '341']]));
+  assert.deepEqual(overview, new Map([[2, '255'], [3, '256'], [5, '341']]));
   c.setDepth(1, true);
   const shallow = coursePlacements(c, c.buildActiveSet().nodeIds);
-  assert.equal(shallow.get(1), '255'); assert.equal(shallow.get(6), '256');
+  assert.equal(shallow.get(1), '256'); assert.equal(shallow.get(6), '255');
   c.setDepth(2, true);
   const deep = coursePlacements(c, c.buildActiveSet().nodeIds);
-  assert.equal(deep.get(4), '255');
+  assert.equal(deep.get(4), '256');
   for (const [id, code] of shallow) assert.equal(deep.get(id), code);
   for (const [id, code] of overview) assert.equal(deep.get(id), code);
-  assert.deepEqual(Array.from(c.layoutCurrent().courseBands, band => band.key), ['256', '255', '341']);
+  assert.deepEqual(Array.from(c.layoutCurrent().courseBands, band => band.key), ['255', '256', '341']);
 });
 
 test('week, course, Queue visibility, and focus changes keep placements based on the saved workload', () => {
@@ -457,13 +457,16 @@ test('expanded prerequisites receive course tracks without adding hidden topics 
   c.setTargetQueueEnabled(false);
   assert.deepEqual(Array.from(c.layoutCurrent().activeNodes, node => node.id), [2, 3]);
   c.setDepth(2, true); let layout = c.layoutCurrent();
-  assert.deepEqual([...layout.courseBands.find(band => band.key === '256').nodeIds].sort(), [1, 3, 4]);
+  assert.deepEqual([...layout.courseBands.find(band => band.key === '256').nodeIds], [3]);
+  assert.deepEqual([...layout.courseBands.find(band => band.key === '255').nodeIds].sort(), [1, 2, 4]);
   assert.equal(layout.pos.has(6), false);
   c.setSelected(1); layout = c.layoutCurrent();
-  assert.deepEqual(Array.from(layout.courseBands, band => band.label), ['MTH 256']);
+  assert.deepEqual(Array.from(layout.courseBands, band => band.label), ['MTH 255']);
   c.setTargetCourseEnabled('255', false); layout = c.layoutCurrent();
-  assert.deepEqual(Array.from(layout.courseBands, band => band.label), ['MTH 256']);
-  assert.deepEqual([...layout.courseBands[0].nodeIds].sort(), [1, 3, 4]);
+  assert.deepEqual(Array.from(layout.courseBands, band => band.label), ['MTH 255', 'MTH 256']);
+  assert.deepEqual([...layout.courseBands[0].nodeIds].sort(), [1, 4]);
+  assert.deepEqual([...layout.courseBands[1].nodeIds], [3]);
+  assert.deepEqual([...c.state.activeIds], [3]);
   assert.equal(c.$('targetSplitToggle').attributes['aria-checked'], 'true');
   assert.equal(c.state.depth, '2');
 });

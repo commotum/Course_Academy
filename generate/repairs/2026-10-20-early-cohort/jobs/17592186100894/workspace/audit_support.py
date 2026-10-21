@@ -2,7 +2,7 @@ import os,sys,json,pathlib,importlib.util,hashlib,subprocess,copy,re,platform
 os.environ['PYTHONDONTWRITEBYTECODE']='1';sys.dont_write_bytecode=True
 import sympy as S
 from sympy.parsing.sympy_parser import parse_expr, standard_transformations, implicit_multiplication_application, convert_xor
-W=pathlib.Path(__file__).resolve().parent; JOB=W.parent; ROOT=W.parents[5]; E=W/'evidence-author-2'
+W=pathlib.Path(__file__).resolve().parent; JOB=W.parent; ROOT=W.parents[5]; E=W/'evidence-author-3'
 def save(n,x): (E/n).write_text(json.dumps(x,indent=2,default=str))# Package baseline retained from first execution
 sys.path.insert(0,str(W))
 spec=importlib.util.spec_from_file_location('reviewed_generator',W/'17592186100894.py');g=importlib.util.module_from_spec(spec);spec.loader.exec_module(g)

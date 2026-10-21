@@ -1,5 +1,5 @@
 import pathlib,json,subprocess,sys,shutil,os,tempfile,importlib.util
-w=pathlib.Path(__file__).resolve().parent;e=w/'evidence-author-2';root=w.parents[5];manifest=json.loads((w/'package.json').read_text());env=dict(os.environ,PYTHONDONTWRITEBYTECODE='1',COURSE_ACADEMY_GENERATOR_OUTPUT_DIR=str(e/'assets'))
+w=pathlib.Path(__file__).resolve().parent;e=w/'evidence-author-3';root=w.parents[5];manifest=json.loads((w/'package.json').read_text());env=dict(os.environ,PYTHONDONTWRITEBYTECODE='1',COURSE_ACADEMY_GENERATOR_OUTPUT_DIR=str(e/'assets'))
 with tempfile.TemporaryDirectory(prefix='ivp-relocated-',dir='/tmp') as tmp:
  dest=pathlib.Path(tmp)
  for f in manifest['files']:

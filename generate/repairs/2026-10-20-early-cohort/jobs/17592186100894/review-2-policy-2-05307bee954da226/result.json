@@ -1,0 +1,125 @@
+{
+  "verdict": "revise",
+  "summary": "The exact delivered sine question rejects valid solution-family entries because the grader cannot absorb additive constants into arbitrary C. Prior shortcut repairs pass targeted testing. Package unchanged; no database writes.",
+  "source_analysis": {
+    "skill": "Separate and integrate a first-order ODE, apply initial data where provided, and return the requested expression or solution relation.",
+    "reasoning_steps": [
+      "Rearrange and separate variables.",
+      "Integrate using the observed elementary methods.",
+      "Determine the integration constant and branch where required.",
+      "Return an expression consistent with the response scaffold."
+    ],
+    "invariants": [
+      "Preserve source integration workload, difficulty and response scaffolds.",
+      "Require valid local solutions and consistent prompts, keys and explanations.",
+      "Provide exactly one mathematically correct radio choice."
+    ],
+    "permitted_variations": [
+      "Admissible coefficients, initial data and integration constants.",
+      "Solution branches determined by initial data.",
+      "Which eligible bank option satisfies the equation and initial condition.",
+      "Equivalent antiderivative fragments differing by constants already absorbed into arbitrary C."
+    ],
+    "source_refs": [
+      "891e9004-961b-539a-ab93-0752347fd077: canonical separation, integration and initial-condition example.",
+      "tutorial 974 / e2c4c33d-a1bd-537e-9daa-1960f765953d: separation, integration and initial-condition substitution.",
+      "1bc80b6f-e02e-58f0-97b4-8ea651af23ac / q-126765: sine-argument blank followed by arbitrary C.",
+      "cdddaa9b-4174-550d-a7b6-1b8e1a3f2b29 / q-104065: trigonometric IVP."
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "provenance.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay.json",
+        "source-replay-records.json"
+      ],
+      "details": "All 25 valid complete banks and keys replay. The impossible source IVP is excluded with proof; supported source corrections are documented."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "sine-scaffold-proof.json"
+      ],
+      "details": "94 current checks pass, including 75 changed trigonometric roles and all five batch keys. The rejected sine entries are independently proved equivalent solution families."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "role-records.json",
+        "shortcut-results.json",
+        "batch-shortcut-results.json"
+      ],
+      "details": "Every option can win within each of 15 fixed banks. All 75 role controls survive delivery. The exact batch was assessed separately."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "scope-review.json",
+        "independent-package-diff.patch"
+      ],
+      "details": "Changed construction retains the source integration methods, response shapes and comparable workload."
+    },
+    "grading": {
+      "status": "failed",
+      "evidence_paths": [
+        "sine-minimal-record.json",
+        "sine-scaffold-proof.json",
+        "delivered-sine-strict-input.json",
+        "sine-reproduction-result.json",
+        "reproduce-sine.py",
+        "preflight-inspection.json"
+      ],
+      "details": "The delivered sine item rejects x^2-6*x and (x-3)^2+1 despite arbitrary C absorbing their constant differences. The strict acceptance regression exits 1."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-visual-review.json",
+        "render/question-001.png",
+        "render/question-007.png"
+      ],
+      "details": "The actual UI rendered 11 records without automated errors; eight screenshots were inspected, including controlled pairs and the arbitrary-C scaffold."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging.json",
+        "runtime-results.json",
+        "contract-check.json"
+      ],
+      "details": "Exact dependency versions, relocation, deterministic replay and boundary rejection pass. Final hashes confirm all 260 package files remain unchanged."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "retained-finding-results.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "delivery-stages.json",
+        "selection.json",
+        "inventory-audit.json",
+        "affected-inventory.json"
+      ],
+      "details": "Prior shortcuts reproduce on earlier packages and fail currently. Bank cues succeed at the 1/5 baseline, including conditional subgroups. Relevant and irrelevant counterfactuals pass. Captured inventory contains no generated records."
+    }
+  },
+  "findings": [
+    {
+      "kind": "grading",
+      "description": "q-126765 grades its sine-argument blank as one exact antiderivative although the scaffold adds arbitrary C. At h=3, x^2-6*x and (x-3)^2+1 describe the same local solution family as stored (x-3)^2, but native grading rejects both before and after delivery. The author preflight incorrectly expects stored-key+1 to be rejected for this family.",
+      "source_refs": [
+        "1bc80b6f-e02e-58f0-97b4-8ea651af23ac / q-126765: y=sin(field-1+C), where C is arbitrary; worked solution arcsin(y)=x\u00b2+C."
+      ],
+      "reproduction": "Run python3 reproduce-sine.py from evidence_root; current exit is 1. Exact batch case: template q-126765, seed 1504545805, parameters {\"h\":3}, delivered question a5b2a220-0459-5dce-b547-6284c446511b. Submit x^2-6*x: expected accepted, observed rejected (Ok(false)). Complete record: sine-minimal-record.json.",
+      "requested_change": "Support response-context equivalence modulo additive constants when the scaffold already includes arbitrary C. Apply this across the family, retain valid learner notation, and correct the preflight expectation. Require acceptance of both demonstrated entries while rejecting derivative-distinct fragments such as 2*(x-3)^2."
+    }
+  ]
+}

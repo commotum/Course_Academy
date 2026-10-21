@@ -1,0 +1,442 @@
+{
+  "learner_operation": "Rearrange/separate the ODE, integrate, and where given use initial data to choose the constant and branch; enter the expression requested by its scaffold or select the relation satisfying both ODE and IC.",
+  "fixed_features": [
+    {
+      "feature": "First-order separable ODE and elementary antiderivatives, source response scaffold and difficulty",
+      "justification": "Tutorial 974 separates, integrates, substitutes initial data. Radio and blank forms are captured in the 26 sources."
+    },
+    {
+      "feature": "Trig positive-sine interval and log(sin(x-h)) plus quadratic antiderivative",
+      "justification": "q-104065 explicitly assumes 0<x<pi and derives ln(sin x)+4x\u00b2+C; translation and small linear coefficients preserve that method."
+    },
+    {
+      "feature": "Other source profiles use simultaneous coordinate translations",
+      "justification": "Preserves exact observed integration methods/workload for finite modest numerical practice. Reused prior analysis does not claim these fixed source constants cover every possible initial-condition decision."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Correct trig bank option, quadratic coefficient and constant",
+      "eligible_variation": "Any candidate satisfying the displayed ODE and IC may win; zero/nonzero constant and pi/no-pi terms need not be tied to correctness.",
+      "observed": "All five candidates win in the same bank and order, independently tested across 15 banks before and after delivery. IC-only evidence leaves at least two candidates."
+    },
+    {
+      "role": "Radical sign from initial ordinate",
+      "eligible_variation": "Both signs with nonzero admissible ordinate, per q-128199 branch-selection solution.",
+      "observed": "Fresh negative/positive cases and retained four signed/magnitude cases pass native checks; no branch is removed."
+    },
+    {
+      "role": "Sine-argument antiderivative modulo arbitrary constant",
+      "eligible_variation": "The same solution family may be written using argument fragments differing by any additive constant.",
+      "observed": "Stored key is correct, but native grader rejects equivalent x\u00b2-6x and (x-3)\u00b2+1 in exact delivered batch. This is the separate grading finding."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "Changed trig finite profiles and every winning role",
+      "sample_refs": [
+        "role-records.json",
+        "math-results.json",
+        "shortcut-results.json",
+        "delivery-easy/accepted.json"
+      ],
+      "result": "75/75 roles mathematically unique and survive delivery. Visible-bank-only choices succeed at 1/5, including pure-pi\u00b2 subgroup."
+    },
+    {
+      "case": "Retained exact failures and small unchanged regression",
+      "sample_refs": [
+        "retained-finding-records.json",
+        "retained-finding-results.json",
+        "regression-records.json",
+        "grader-observation-report.json"
+      ],
+      "result": "Original symbol and conditional cues reproduced on earlier packages and defeated currently; restored source families and repaired native root/log cases pass their old strict checks."
+    },
+    {
+      "case": "Exact runner batch and actual delivery survivors",
+      "sample_refs": [
+        "batch.json",
+        "delivery-batch/accepted.json",
+        "batch-shortcut-results.json",
+        "delivered-grader-report.json"
+      ],
+      "result": "5/5 survive captured-inventory filtering; four blank families and no trig item. Keys correct; valid sine family-equivalent submissions rejected."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Keep complete trig bank, order, ODE, initial abscissa and interval fixed; change only initial ordinate by pi\u00b2/2.",
+      "expected": "Response constant changes by pi\u00b2/2; former key remains a real wrong choice. Prompt, solution and native grading must follow.",
+      "observed": "counterfactual records 0 and 1 have identical ODE/bank/order, constant difference pi\u00b2/2; final solutions match independently; native accepts each new own key and rejects the other candidate. Both rendered.",
+      "status": "passed",
+      "justification": "q-104065 substitutes initial data to solve C; an initial ordinate is an eligible answer-bearing assignment.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "math-results.json",
+        "grader-observation-report.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "Keep complete bank and initial condition fixed; change ODE polynomial coefficient.",
+      "expected": "Winning coefficient/constant must change while retaining initial value.",
+      "observed": "counterfactual records 2 and 3 preserve IC; solutions differ by (x-4)\u00b2-pi\u00b2/4. Both satisfy their ODE/IC uniquely, are accepted by native, and their cross-candidates rejected. Both rendered.",
+      "status": "passed",
+      "justification": "Integration of the linear term determines the quadratic coefficient; source constants do not fix the qualifying bank role.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "math-results.json",
+        "grader-observation-report.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Find -> Determine and reverse answer array, preserving mathematical data and choice UUIDs.",
+      "expected": "Same mathematical answer, explanation and native choice outcomes.",
+      "observed": "counterfactual record 4 preserves record 0 key UUID and solution. Own-key acceptance and every wrong-choice rejection unchanged; actual UI screenshots 6 and 10 show same relation with changed wording/order.",
+      "status": "passed",
+      "justification": "Source task assesses integration and initial data, not option order or the instruction verb.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-observation-report.json",
+        "render/rendering.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "unique log without pi",
+      "subgroup": "all changed trig",
+      "scope": "within_template",
+      "strategy": "unique log without pi; ties choose first visible stored candidate for length/rank tests, abstain if a claimed unique candidate is absent",
+      "correct": 0,
+      "total": 75,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/75; 0 unique/defined applications. Five-choice random baseline is 1/5. Each visible bank admits all five winners; pure-pi\u00b2 subgroup also retains all winners. The old one-repeated-coefficient cue has no qualifying cases; length, singleton and first-choice cues succeed at baseline. Actual UI additionally shuffles choices, which cannot rescue a bank-content shortcut.",
+      "sample_refs": [
+        "role-records.json",
+        "delivery-easy/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "previous shortest repeated coefficient",
+      "subgroup": "all changed trig",
+      "scope": "within_template",
+      "strategy": "previous shortest repeated coefficient; ties choose first visible stored candidate for length/rank tests, abstain if a claimed unique candidate is absent",
+      "correct": 0,
+      "total": 75,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/75; 0 unique/defined applications. Five-choice random baseline is 1/5. Each visible bank admits all five winners; pure-pi\u00b2 subgroup also retains all winners. The old one-repeated-coefficient cue has no qualifying cases; length, singleton and first-choice cues succeed at baseline. Actual UI additionally shuffles choices, which cannot rescue a bank-content shortcut.",
+      "sample_refs": [
+        "role-records.json",
+        "delivery-easy/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "shortest option",
+      "subgroup": "all changed trig",
+      "scope": "within_template",
+      "strategy": "shortest option; ties choose first visible stored candidate for length/rank tests, abstain if a claimed unique candidate is absent",
+      "correct": 15,
+      "total": 75,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "15/75; 75 unique/defined applications. Five-choice random baseline is 1/5. Each visible bank admits all five winners; pure-pi\u00b2 subgroup also retains all winners. The old one-repeated-coefficient cue has no qualifying cases; length, singleton and first-choice cues succeed at baseline. Actual UI additionally shuffles choices, which cannot rescue a bank-content shortcut.",
+      "sample_refs": [
+        "role-records.json",
+        "delivery-easy/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "longest option",
+      "subgroup": "all changed trig",
+      "scope": "within_template",
+      "strategy": "longest option; ties choose first visible stored candidate for length/rank tests, abstain if a claimed unique candidate is absent",
+      "correct": 15,
+      "total": 75,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "15/75; 75 unique/defined applications. Five-choice random baseline is 1/5. Each visible bank admits all five winners; pure-pi\u00b2 subgroup also retains all winners. The old one-repeated-coefficient cue has no qualifying cases; length, singleton and first-choice cues succeed at baseline. Actual UI additionally shuffles choices, which cannot rescue a bank-content shortcut.",
+      "sample_refs": [
+        "role-records.json",
+        "delivery-easy/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "stored first option",
+      "subgroup": "all changed trig",
+      "scope": "within_template",
+      "strategy": "stored first option; ties choose first visible stored candidate for length/rank tests, abstain if a claimed unique candidate is absent",
+      "correct": 15,
+      "total": 75,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "15/75; 75 unique/defined applications. Five-choice random baseline is 1/5. Each visible bank admits all five winners; pure-pi\u00b2 subgroup also retains all winners. The old one-repeated-coefficient cue has no qualifying cases; length, singleton and first-choice cues succeed at baseline. Actual UI additionally shuffles choices, which cannot rescue a bank-content shortcut.",
+      "sample_refs": [
+        "role-records.json",
+        "delivery-easy/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "singleton coefficient",
+      "subgroup": "all changed trig",
+      "scope": "within_template",
+      "strategy": "singleton coefficient; ties choose first visible stored candidate for length/rank tests, abstain if a claimed unique candidate is absent",
+      "correct": 15,
+      "total": 75,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "15/75; 75 unique/defined applications. Five-choice random baseline is 1/5. Each visible bank admits all five winners; pure-pi\u00b2 subgroup also retains all winners. The old one-repeated-coefficient cue has no qualifying cases; length, singleton and first-choice cues succeed at baseline. Actual UI additionally shuffles choices, which cannot rescue a bank-content shortcut.",
+      "sample_refs": [
+        "role-records.json",
+        "delivery-easy/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "unique log without pi",
+      "subgroup": "fixed visible bank 2",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "unique log without pi; ties choose first visible stored candidate for length/rank tests, abstain if a claimed unique candidate is absent",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/5; 0 unique/defined applications. Five-choice random baseline is 1/5. Each visible bank admits all five winners; pure-pi\u00b2 subgroup also retains all winners. The old one-repeated-coefficient cue has no qualifying cases; length, singleton and first-choice cues succeed at baseline. Actual UI additionally shuffles choices, which cannot rescue a bank-content shortcut.",
+      "sample_refs": [
+        "role-records.json",
+        "delivery-easy/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "previous shortest repeated coefficient",
+      "subgroup": "fixed visible bank 2",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "previous shortest repeated coefficient; ties choose first visible stored candidate for length/rank tests, abstain if a claimed unique candidate is absent",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/5; 0 unique/defined applications. Five-choice random baseline is 1/5. Each visible bank admits all five winners; pure-pi\u00b2 subgroup also retains all winners. The old one-repeated-coefficient cue has no qualifying cases; length, singleton and first-choice cues succeed at baseline. Actual UI additionally shuffles choices, which cannot rescue a bank-content shortcut.",
+      "sample_refs": [
+        "role-records.json",
+        "delivery-easy/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "shortest option",
+      "subgroup": "fixed visible bank 2",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "shortest option; ties choose first visible stored candidate for length/rank tests, abstain if a claimed unique candidate is absent",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/5; 5 unique/defined applications. Five-choice random baseline is 1/5. Each visible bank admits all five winners; pure-pi\u00b2 subgroup also retains all winners. The old one-repeated-coefficient cue has no qualifying cases; length, singleton and first-choice cues succeed at baseline. Actual UI additionally shuffles choices, which cannot rescue a bank-content shortcut.",
+      "sample_refs": [
+        "role-records.json",
+        "delivery-easy/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "longest option",
+      "subgroup": "fixed visible bank 2",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "longest option; ties choose first visible stored candidate for length/rank tests, abstain if a claimed unique candidate is absent",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/5; 5 unique/defined applications. Five-choice random baseline is 1/5. Each visible bank admits all five winners; pure-pi\u00b2 subgroup also retains all winners. The old one-repeated-coefficient cue has no qualifying cases; length, singleton and first-choice cues succeed at baseline. Actual UI additionally shuffles choices, which cannot rescue a bank-content shortcut.",
+      "sample_refs": [
+        "role-records.json",
+        "delivery-easy/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "stored first option",
+      "subgroup": "fixed visible bank 2",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "stored first option; ties choose first visible stored candidate for length/rank tests, abstain if a claimed unique candidate is absent",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/5; 5 unique/defined applications. Five-choice random baseline is 1/5. Each visible bank admits all five winners; pure-pi\u00b2 subgroup also retains all winners. The old one-repeated-coefficient cue has no qualifying cases; length, singleton and first-choice cues succeed at baseline. Actual UI additionally shuffles choices, which cannot rescue a bank-content shortcut.",
+      "sample_refs": [
+        "role-records.json",
+        "delivery-easy/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "singleton coefficient",
+      "subgroup": "fixed visible bank 2",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "singleton coefficient; ties choose first visible stored candidate for length/rank tests, abstain if a claimed unique candidate is absent",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/5; 5 unique/defined applications. Five-choice random baseline is 1/5. Each visible bank admits all five winners; pure-pi\u00b2 subgroup also retains all winners. The old one-repeated-coefficient cue has no qualifying cases; length, singleton and first-choice cues succeed at baseline. Actual UI additionally shuffles choices, which cannot rescue a bank-content shortcut.",
+      "sample_refs": [
+        "role-records.json",
+        "delivery-easy/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "unique log without pi",
+      "subgroup": "pure pi\u00b2 initial ordinate",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "unique log without pi; ties choose first visible stored candidate for length/rank tests, abstain if a claimed unique candidate is absent",
+      "correct": 0,
+      "total": 45,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/45; 0 unique/defined applications. Five-choice random baseline is 1/5. Each visible bank admits all five winners; pure-pi\u00b2 subgroup also retains all winners. The old one-repeated-coefficient cue has no qualifying cases; length, singleton and first-choice cues succeed at baseline. Actual UI additionally shuffles choices, which cannot rescue a bank-content shortcut.",
+      "sample_refs": [
+        "role-records.json",
+        "delivery-easy/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "previous shortest repeated coefficient",
+      "subgroup": "pure pi\u00b2 initial ordinate",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "previous shortest repeated coefficient; ties choose first visible stored candidate for length/rank tests, abstain if a claimed unique candidate is absent",
+      "correct": 0,
+      "total": 45,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/45; 0 unique/defined applications. Five-choice random baseline is 1/5. Each visible bank admits all five winners; pure-pi\u00b2 subgroup also retains all winners. The old one-repeated-coefficient cue has no qualifying cases; length, singleton and first-choice cues succeed at baseline. Actual UI additionally shuffles choices, which cannot rescue a bank-content shortcut.",
+      "sample_refs": [
+        "role-records.json",
+        "delivery-easy/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "shortest option",
+      "subgroup": "pure pi\u00b2 initial ordinate",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "shortest option; ties choose first visible stored candidate for length/rank tests, abstain if a claimed unique candidate is absent",
+      "correct": 9,
+      "total": 45,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "9/45; 45 unique/defined applications. Five-choice random baseline is 1/5. Each visible bank admits all five winners; pure-pi\u00b2 subgroup also retains all winners. The old one-repeated-coefficient cue has no qualifying cases; length, singleton and first-choice cues succeed at baseline. Actual UI additionally shuffles choices, which cannot rescue a bank-content shortcut.",
+      "sample_refs": [
+        "role-records.json",
+        "delivery-easy/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "longest option",
+      "subgroup": "pure pi\u00b2 initial ordinate",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "longest option; ties choose first visible stored candidate for length/rank tests, abstain if a claimed unique candidate is absent",
+      "correct": 9,
+      "total": 45,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "9/45; 45 unique/defined applications. Five-choice random baseline is 1/5. Each visible bank admits all five winners; pure-pi\u00b2 subgroup also retains all winners. The old one-repeated-coefficient cue has no qualifying cases; length, singleton and first-choice cues succeed at baseline. Actual UI additionally shuffles choices, which cannot rescue a bank-content shortcut.",
+      "sample_refs": [
+        "role-records.json",
+        "delivery-easy/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "stored first option",
+      "subgroup": "pure pi\u00b2 initial ordinate",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "stored first option; ties choose first visible stored candidate for length/rank tests, abstain if a claimed unique candidate is absent",
+      "correct": 9,
+      "total": 45,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "9/45; 45 unique/defined applications. Five-choice random baseline is 1/5. Each visible bank admits all five winners; pure-pi\u00b2 subgroup also retains all winners. The old one-repeated-coefficient cue has no qualifying cases; length, singleton and first-choice cues succeed at baseline. Actual UI additionally shuffles choices, which cannot rescue a bank-content shortcut.",
+      "sample_refs": [
+        "role-records.json",
+        "delivery-easy/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "singleton coefficient",
+      "subgroup": "pure pi\u00b2 initial ordinate",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "singleton coefficient; ties choose first visible stored candidate for length/rank tests, abstain if a claimed unique candidate is absent",
+      "correct": 9,
+      "total": 45,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "9/45; 45 unique/defined applications. Five-choice random baseline is 1/5. Each visible bank admits all five winners; pure-pi\u00b2 subgroup also retains all winners. The old one-repeated-coefficient cue has no qualifying cases; length, singleton and first-choice cues succeed at baseline. Actual UI additionally shuffles choices, which cannot rescue a bank-content shortcut.",
+      "sample_refs": [
+        "role-records.json",
+        "delivery-easy/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "constant zero",
+      "subgroup": "exact five-record delivered batch",
+      "scope": "overall",
+      "strategy": "Enter 0 into every blank",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Actual native grading rejects 0 in 5/5; comparison copy-the-IC strategy also succeeds 0/4 applicable IVPs (rate 0). No random free-expression guessing rate is asserted. Correct derived keys succeed 5/5.",
+      "sample_refs": [
+        "batch-shortcut-results.json",
+        "delivered-grader-input.json",
+        "delivered-grader-report.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "Generator finite selection and rejection rules; direct role choice has no key-dependent resampling",
+      "Requested difficulty via actual check_delivery.py",
+      "Shared publisher normalization, stable identities and inventory/within-batch deduplication",
+      "Learner freshness, configured weighted bands and uniform within-band selection rules; read-only captured-pool conditional reproduction",
+      "Actual UI answer-order transformation and rendered controls"
+    ],
+    "sample_refs": [
+      "runtime-results.json",
+      "delivery-stages.json",
+      "delivery-easy/delivery.json",
+      "delivery-moderate/delivery.json",
+      "delivery-batch/delivery.json",
+      "selection.json",
+      "render/rendering.json"
+    ],
+    "result": "All 75 changed-role controls survive; easy 84->83 (one duplicate), moderate 5->5, exact batch 5->5. Source and inventory basis 5372. No publication preparation exists. Positive-weight fresh easy selection supports every accepted easy item; zero weights/history may exclude items, without changing their keys."
+  },
+  "limitations": [
+    "Targeted revision review reuses confirmed unchanged prior independent analysis; no second exhaustive audit of unchanged families.",
+    "Live learner histories, exact future entity IDs and policy weights are unavailable; selection conclusion is conditional on explicit captured fresh-pool assumptions.",
+    "Finite probes do not prove absence of every imaginable shortcut. Passing decision variation is separate from the demonstrated sine response-equivalence grading failure."
+  ]
+}

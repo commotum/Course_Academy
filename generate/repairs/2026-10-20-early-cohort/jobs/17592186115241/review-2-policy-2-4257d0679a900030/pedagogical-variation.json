@@ -1,0 +1,395 @@
+{
+  "learner_operation": "Solve a small consistent dependent linear system using Gauss-Jordan elimination, identify pivot/free variables, and select its full one-parameter vector solution. Read actual equation relationships to identify the complete affine solution line, not numerical formatting in answer options.",
+  "fixed_features": [
+    {
+      "feature": "Small consistent real linear systems with exactly one free variable",
+      "justification": "Source tutorial and all supplied easy solving cases practice parametric dependent systems."
+    },
+    {
+      "feature": "Five-choice radio response and a worked Gauss-Jordan derivation",
+      "justification": "All captured practice banks use this contract; no free-entry skill is introduced."
+    },
+    {
+      "feature": "A later pivot coordinate is constant when an earlier column is free",
+      "justification": "RREF pivot definition makes its entries before the pivot zero; canonical free-y/pivot-z instance demonstrates this. This is mathematical structure, not incidental label fixing."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Free variable, pivot assignment and dimension/rank",
+      "eligible_variation": "Free z or canonical free y; two-equation rank two in three variables or proportional three-equation rank one in two variables.",
+      "observed": "All six justified cases occur in 36 fresh records; targeted free-y controls add 12 cases with multiple keys. Five runner records cover five cases."
+    },
+    {
+      "role": "Constant coordinates, zero intercepts and equal basic expressions",
+      "eligible_variation": "Cancellation and equal-coordinate cases remain valid. A zero constant may be shared by all options if other coordinates distinguish solution lines.",
+      "observed": "Earlier restrictions and new zero-constant boundary now accept; rational and all-zero boundaries are correctly printed and solved."
+    },
+    {
+      "role": "Which candidate line satisfies the system, including its visible coefficient shape",
+      "eligible_variation": "Correct candidate and position can vary without a reserved integer, fraction, unit-coefficient or component-frequency signature.",
+      "observed": "Default roles/positions vary, and the earlier fraction cue is repaired. However ordinary q-32244 always has correct slope -1, and its sole unmultiplied-y choice identifies the key in 8/8 applicable samples."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "batch.json",
+      "sample_refs": [
+        "batch.json",
+        "delivery-shortcuts.json"
+      ],
+      "result": "{'count': 5, 'decision_cases': {'rank_one': 1, 'constant_coordinate': 1, 'general': 1, 'zero_intercept': 1, 'free_y': 1}, 'key_positions': {'5': 1, '2': 2, '3': 1, '1': 1}, 'bank_roles': {'0': 1, '2': 2, '1': 1, '4': 1}, 'probes': {'first_position_min': {'correct': 1, 'total': 5}, 'first_position_max': {'correct': 1, 'total': 5}, 'first_intercept_min': {'correct': 1, 'total': 2}, 'first_slope_min': {'correct': 0, 'total': 1}, 'first_slope_max': {'correct': 0, 'total': 2}, 'first_intercept_max': {'correct': 0, 'total': 2}}}"
+    },
+    {
+      "case": "fresh.json",
+      "sample_refs": [
+        "fresh.json",
+        "delivery-shortcuts.json"
+      ],
+      "result": "{'count': 36, 'decision_cases': {'rank_one': 18, 'constant_coordinate': 6, 'general': 3, 'zero_intercept': 3, 'equal_coordinates': 5, 'free_y': 1}, 'key_positions': {'1': 8, '5': 6, '2': 6, '4': 8, '3': 8}, 'bank_roles': {'3': 8, '4': 9, '2': 6, '1': 7, '0': 6}, 'probes': {'first_position_min': {'correct': 8, 'total': 36}, 'first_position_max': {'correct': 6, 'total': 36}, 'first_intercept_max': {'correct': 2, 'total': 21}, 'first_slope_min': {'correct': 4, 'total': 23}, 'first_slope_max': {'correct': 5, 'total': 24}, 'negative_slopes_max': {'correct': 2, 'total': 10}, 'first_intercept_min': {'correct': 5, 'total': 20}, 'negative_slopes_min': {'correct': 3, 'total': 7}}}"
+    },
+    {
+      "case": "source-shortcut-records.json",
+      "sample_refs": [
+        "source-shortcut-records.json",
+        "delivery-shortcuts.json"
+      ],
+      "result": "{'count': 55, 'decision_cases': {'rank_one': 26, 'general': 17, 'constant_coordinate': 8, 'equal_coordinates': 2, 'zero_intercept': 1, 'free_y': 1}, 'key_positions': {'2': 12, '3': 14, '4': 5, '1': 3, '5': 21}, 'bank_roles': {'2': 16, '0': 8, '3': 13, '4': 13, '1': 5}, 'probes': {'first_position_min': {'correct': 3, 'total': 55}, 'first_position_max': {'correct': 21, 'total': 55}, 'negative_slopes_max': {'correct': 4, 'total': 11}, 'first_intercept_min': {'correct': 4, 'total': 27}, 'first_intercept_max': {'correct': 18, 'total': 31}, 'first_slope_min': {'correct': 6, 'total': 31}, 'first_slope_max': {'correct': 6, 'total': 31}, 'negative_slopes_min': {'correct': 6, 'total': 14}}}"
+    },
+    {
+      "case": "cue-control-records.json",
+      "sample_refs": [
+        "cue-control-records.json",
+        "delivery-shortcuts.json"
+      ],
+      "result": "{'count': 24, 'decision_cases': {'equal_coordinates': 12, 'free_y': 12}, 'key_positions': {'4': 7, '2': 6, '3': 4, '5': 3, '1': 4}, 'bank_roles': {'2': 6, '1': 6, '0': 6, '3': 2, '4': 4}, 'probes': {'first_position_min': {'correct': 4, 'total': 24}, 'first_position_max': {'correct': 3, 'total': 24}, 'negative_slopes_max': {'correct': 1, 'total': 7}, 'first_intercept_max': {'correct': 1, 'total': 11}, 'first_slope_min': {'correct': 3, 'total': 13}, 'first_slope_max': {'correct': 1, 'total': 11}, 'first_intercept_min': {'correct': 2, 'total': 12}, 'negative_slopes_min': {'correct': 1, 'total': 2}}}"
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Hold seed and all explicit parameters but first free coefficient fixed; change 2 to -2.",
+      "expected": "System, correct vector and explanation change; old vector becomes incorrect.",
+      "observed": "Exact printed-math checks and screenshot inspection agree; native grader rejects previous vector in changed record.",
+      "status": "passed",
+      "justification": "The free coefficient determines a basic-variable slope, an answer-bearing relationship.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-results.json",
+        "render-records.json",
+        "controlled-validation.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Hold RREF parameters and seed fixed; invertible row mixing changes mix[0] from 1 to -1.",
+      "expected": "Printed equations and row-operation route change; the complete solution line is preserved.",
+      "observed": "Printed prompt changed while keyed vector is equal; native grader accepts the previous visible vector.",
+      "status": "passed",
+      "justification": "Invertible row operations preserve the solution set, as taught by the source Gauss-Jordan method.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-results.json",
+        "render-records.json",
+        "controlled-validation.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "Hold free_coefficients=[2,0], constants=[1,4] and mix=[1,1] fixed; change free_column from 1 to 2.",
+      "expected": "The role of y/z and the solution vector follow the changed coefficient columns.",
+      "observed": "Prompt and full vector differ consistently; exact bank checks and native all-choice grading pass for each.",
+      "status": "passed",
+      "justification": "Canonical source explicitly assigns free y and pivot z; default source variants often assign free z instead.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-input.json",
+        "grader-results.json",
+        "render-records.json",
+        "controlled-validation.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "Hold seed 82175, constants and mixing fixed; change first free coefficient from 1/2 to -1/2.",
+      "expected": "Printed system, solution vector and explanation change; the old vector is rejected.",
+      "observed": "Exact printed-math checks and actual native grader agree; rendered rational pair has different slopes, keys and worked RREF.",
+      "status": "passed",
+      "justification": "The changed coefficient determines the basic-coordinate slope; this is answer-bearing evidence.",
+      "sample_refs": [
+        "rational-counterfactual-records.json",
+        "rational-counterfactual-results.json",
+        "controlled-validation.json",
+        "grader-results.json",
+        "render-all/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Hold seed 82175, rational RREF coefficients/constants fixed; change first invertible row mixing multiplier from 1 to -1.",
+      "expected": "Equations and route change while full solution is preserved.",
+      "observed": "Rendered prompt and row operations change; keyed vector is unchanged and old visible vector is accepted by the actual grader.",
+      "status": "passed",
+      "justification": "Elementary invertible row transformations preserve the solution set, the central source method.",
+      "sample_refs": [
+        "rational-counterfactual-records.json",
+        "rational-counterfactual-results.json",
+        "controlled-validation.json",
+        "grader-results.json",
+        "render-all/rendering.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "First answer position",
+      "subgroup": "overall",
+      "scope": "overall",
+      "strategy": "Always choose the first displayed answer.",
+      "correct": 8,
+      "total": 36,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform selection among five options (20%). Small subgroup totals limit statistical interpretation; the inspected random role plus shuffle construction does not fix this answer position.",
+      "sample_refs": [
+        "fresh.json",
+        "delivery-fresh/accepted.json",
+        "delivery-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "First answer position",
+      "subgroup": "template:authored_easy_constant_coordinate",
+      "scope": "within_template",
+      "strategy": "Always choose the first displayed answer.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform selection among five options (20%). Small subgroup totals limit statistical interpretation; the inspected random role plus shuffle construction does not fix this answer position.",
+      "sample_refs": [
+        "fresh.json",
+        "delivery-fresh/accepted.json",
+        "delivery-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "First answer position",
+      "subgroup": "template:authored_easy_equal_coordinates",
+      "scope": "within_template",
+      "strategy": "Always choose the first displayed answer.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform selection among five options (20%). Small subgroup totals limit statistical interpretation; the inspected random role plus shuffle construction does not fix this answer position.",
+      "sample_refs": [
+        "fresh.json",
+        "delivery-fresh/accepted.json",
+        "delivery-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "First answer position",
+      "subgroup": "template:authored_easy_free_y",
+      "scope": "within_template",
+      "strategy": "Always choose the first displayed answer.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform selection among five options (20%). Small subgroup totals limit statistical interpretation; the inspected random role plus shuffle construction does not fix this answer position.",
+      "sample_refs": [
+        "fresh.json",
+        "delivery-fresh/accepted.json",
+        "delivery-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "First answer position",
+      "subgroup": "template:authored_easy_general",
+      "scope": "within_template",
+      "strategy": "Always choose the first displayed answer.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform selection among five options (20%). Small subgroup totals limit statistical interpretation; the inspected random role plus shuffle construction does not fix this answer position.",
+      "sample_refs": [
+        "fresh.json",
+        "delivery-fresh/accepted.json",
+        "delivery-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "First answer position",
+      "subgroup": "template:authored_easy_rank_one",
+      "scope": "within_template",
+      "strategy": "Always choose the first displayed answer.",
+      "correct": 6,
+      "total": 18,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform selection among five options (20%). Small subgroup totals limit statistical interpretation; the inspected random role plus shuffle construction does not fix this answer position.",
+      "sample_refs": [
+        "fresh.json",
+        "delivery-fresh/accepted.json",
+        "delivery-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "First answer position",
+      "subgroup": "template:authored_easy_zero_intercept",
+      "scope": "within_template",
+      "strategy": "Always choose the first displayed answer.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform selection among five options (20%). Small subgroup totals limit statistical interpretation; the inspected random role plus shuffle construction does not fix this answer position.",
+      "sample_refs": [
+        "fresh.json",
+        "delivery-fresh/accepted.json",
+        "delivery-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "Only first coordinate with unmultiplied y",
+      "subgroup": "batch.json",
+      "scope": "overall",
+      "strategy": "Select sole first-coordinate y/-y without an explicit multiplier, ignoring the system.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is 20% per applicable five-choice bank. This probe abstains when multiple/no unit entries appear. Overall source-support totals mix clean and vulnerable templates; conditional evidence below isolates the defect. The exact batch has zero successful selections.",
+      "sample_refs": [
+        "batch.json",
+        "unit-shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Only first coordinate with unmultiplied y",
+      "subgroup": "delivery-batch/accepted.json",
+      "scope": "overall",
+      "strategy": "Select sole first-coordinate y/-y without an explicit multiplier, ignoring the system.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is 20% per applicable five-choice bank. This probe abstains when multiple/no unit entries appear. Overall source-support totals mix clean and vulnerable templates; conditional evidence below isolates the defect. The exact batch has zero successful selections.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "unit-shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Only first coordinate with unmultiplied y",
+      "subgroup": "source-shortcut-records.json",
+      "scope": "overall",
+      "strategy": "Select sole first-coordinate y/-y without an explicit multiplier, ignoring the system.",
+      "correct": 8,
+      "total": 11,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Baseline is 20% per applicable five-choice bank. This probe abstains when multiple/no unit entries appear. Overall source-support totals mix clean and vulnerable templates; conditional evidence below isolates the defect. The exact batch has zero successful selections.",
+      "sample_refs": [
+        "source-shortcut-records.json",
+        "unit-shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Only first coordinate with unmultiplied y",
+      "subgroup": "delivery-source-shortcut/accepted.json",
+      "scope": "overall",
+      "strategy": "Select sole first-coordinate y/-y without an explicit multiplier, ignoring the system.",
+      "correct": 8,
+      "total": 11,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Baseline is 20% per applicable five-choice bank. This probe abstains when multiple/no unit entries appear. Overall source-support totals mix clean and vulnerable templates; conditional evidence below isolates the defect. The exact batch has zero successful selections.",
+      "sample_refs": [
+        "delivery-source-shortcut/accepted.json",
+        "unit-shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Sole unmultiplied parameter in first coordinate",
+      "subgroup": "Recognizable rank-one two-variable systems with equal printed x/y coefficients (ordinary q-32244 sampling)",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Ignore equations and constants; choose the only vector with y or -y instead of 2y,5y,etc. in its first coordinate.",
+      "correct": 8,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Eight successes in eight applicable banks among twenty, versus 20% random choice on those same banks. The pool reserves minimum nonzero coefficient magnitude for the actual slope whenever other sampled slopes exceed one. This is not checking a vector against the equation, using coefficient ratios, or deriving the intercept; it is an incidental typographic action cue. Same counts before and after actual delivery filtering.",
+      "sample_refs": [
+        "source-shortcut-records.json",
+        "delivery-source-shortcut/accepted.json",
+        "unit-shortcut-results.json",
+        "minimal-unit-shortcut.json"
+      ]
+    },
+    {
+      "cue": "Smallest first intercept",
+      "subgroup": "Equal-coordinate template, targeted independent seeds83210..83221",
+      "scope": "within_template",
+      "strategy": "Choose the unique smallest first intercept.",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is 20%. An apparent 4/4 predictor in the small fresh sample fails on controls (1/10); construction selects role before the system and permits all positions. This concern was expanded only because the initial sample appeared perfect.",
+      "sample_refs": [
+        "cue-control-records.json",
+        "changed-probe-results.json",
+        "delivery-controls/accepted.json"
+      ]
+    },
+    {
+      "cue": "Presence of fractional notation",
+      "subgroup": "Exact retained failing seed71381, ordinary q-32244",
+      "scope": "within_template",
+      "strategy": "Select a fractional vector; all five currently contain fractions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "All five candidate selections contain fractions and exactly one is correct: 1/5, equal to uniform baseline20%. The earlier sole-fraction strategy cannot select a unique candidate. Broader 55-record set also has no bank with only one fractional choice.",
+      "sample_refs": [
+        "strict-new-regression.json",
+        "fraction-repair-verification.json",
+        "source-shortcut-records.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "generator case selection, bank construction and rejection/resampling",
+      "requested easy difficulty validation",
+      "shared actual publisher normalization, identities and inventory/batch deduplication",
+      "actual learner-selection rules and faithful within-easy rank formula, with captured inventory bands and explicit history limits"
+    ],
+    "sample_refs": [
+      "resampling-stages.json",
+      "delivery-batch/delivery.json",
+      "delivery-fresh/delivery.json",
+      "delivery-source-shortcut/delivery.json",
+      "delivery-controls/delivery.json",
+      "delivery-shortcuts.json",
+      "unit-shortcut-results.json",
+      "learner-selection.json"
+    ],
+    "result": "36 default construction attempts yield36 accepted banks without resampling. Delivery keeps 5/5 runner,36/36 fresh,55/55 source/rational and24/24 controls. No decision cases are lost. The unit-coefficient cue persists8/8 conditionally in source-profile candidates; the exact 5-record batch has 0 successful cue selections."
+  },
+  "limitations": [
+    "Requested easy generator and exact runner batch audited; moderate/hard difficulty is not recertified.",
+    "Captured inventory basis5373; future concurrent updates may change duplicates. Live learner history, policy weights and future numeric IDs are not available; their effects are bounded by inspecting all surviving candidates and actual selection rules.",
+    "Ten historical generated moderate/hard records exactly reproduce the earlier component-frequency defect. None is in the new two-coordinate cue family. Original source questions are not labelled generated.",
+    "Explicit same-seed boundary controls are dependency tests, not draws for estimating position probabilities.",
+    "Finite tests do not prove absence of every shortcut; the demonstrated conditional bank cue is sufficient to fail decision variation."
+  ]
+}

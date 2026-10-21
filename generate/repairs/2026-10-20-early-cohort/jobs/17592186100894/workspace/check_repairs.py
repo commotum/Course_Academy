@@ -55,7 +55,7 @@ for r in records+[sine]:
  if f[':answer-field/type'].endswith('/radio'):
   checks=[{'submitted_answer_id':a[':answer/id'],'expected':'accepted' if a[':answer/id']==f[':answer-field/correct'][1] else 'rejected'} for a in f[':answer-field/choices']]
  else:
-  v=correct(r);checks=[{'submitted':v,'expected':'accepted'},{'submitted':str(expr(v)).replace('**','^').replace('log(', 'ln(').replace('E','e'),'expected':'accepted','purpose':'independently parsed plain algebra equivalent'},{'submitted':'0','expected':'rejected'},{'submitted':'('+v+')+1','expected':'rejected'}]
+  v=correct(r);checks=[{'submitted':v,'expected':'accepted'},{'submitted':str(expr(v)).replace('**','^').replace('log(', 'ln(').replace('E','e'),'expected':'accepted','purpose':'independently parsed plain algebra equivalent'},{'submitted':'0','expected':'rejected'},{'submitted':'('+v+')+1','expected':'accepted' if r['generation']['template']=='q-126765' else 'rejected','purpose':'Arbitrary C absorbs constant shifts only in the sine solution-family scaffold'}]
   if r['generation']['template']=='q-128199':checks.append({'submitted':'-('+v+')','expected':'rejected','purpose':'opposite branch has same squared relation but violates IC'})
  cases.append({'label':r['generation']['template']+' '+str(r['generation']['parameters']),'record':r,'checks':checks})
 save('grader-input.json',cases)
