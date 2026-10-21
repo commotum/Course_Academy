@@ -1,34 +1,32 @@
 {
   "verdict": "revise",
-  "summary": "The default easy generator admits a shortest-option shortcut: 40/40 fresh questions and all 5 delivered batch questions are answered correctly without reading the prompt. It also excludes source capacity-discrimination banks. Package files remain unchanged; no publishing or database writes occurred. Full report: result.json.",
+  "summary": "Mixed banks reveal the answer by copying the prompt\u2019s sole positive numeral: 14/14 fresh mixed questions and all 5 delivered batch questions. Earlier defects are repaired. Package files remain unchanged. Full report: result.json.",
   "source_analysis": {
-    "skill": "Translate inhibited-growth prose into dX/dt=k(a-X), distinguishing equilibrium from initial population, and select one equation.",
+    "skill": "Translate inhibited-growth prose into dX/dt=k(a-X), identifying the equilibrium and selecting the correct equation.",
     "reasoning_steps": [
-      "Identify the dependent variable and equilibrium capacity.",
-      "Distinguish capacity from any initial population.",
-      "Express positive growth proportional to the remaining gap.",
-      "Select the matching whole-equation radio choice."
+      "Identify the dependent quantity and equilibrium.",
+      "Distinguish equilibrium from any initial stock.",
+      "Recognize positive growth proportional to the remaining gap.",
+      "Select the equation with the appropriate capacity, sign and population factors."
     ],
     "invariants": [
       "Positive proportionality constant and growth from below equilibrium.",
-      "Five radio alternatives with one correct equation.",
-      "No integration, parameter fitting, or explicit solution required."
+      "One whole-equation radio response from five choices.",
+      "No integration or parameter fitting."
     ],
     "permitted_variations": [
-      "Context, units, variable, capacity, and below-capacity initial population.",
-      "Correct option position and plausible distractor capacities.",
-      "Which candidate capacity matches the equilibrium stated in the prompt."
+      "Context, capacity, variable, units and below-capacity initial stock.",
+      "Correct option position and eligible equilibrium assignments.",
+      "Wrong structural equations may share the correct equilibrium without becoming correct."
     ],
     "source_refs": [
-      "a568fc63-e81c-5210-93f0-bcbd429a9e40: fish capacity 200 gives k(200-P).",
-      "5651275c-fd64-5799-85e0-52ab15ebd288: initial 10, capacity 95, candidate capacities 95/30/60/100/950.",
-      "3974627f-3801-52ea-b93f-3d1a3033e2cc: distinguish capacity 1000 from initial population 320.",
-      "Tutorial 9afedae3-a674-5a44-9d7a-4cdf57e66285: rate depends on distance from equilibrium; dP/dt=r(a-P), r>0, P<a."
+      "54bac72f-651e-55b5-8b4b-fbc4e753ebc5: all five equations contain capacity 150; signs and population factors distinguish them.",
+      "5651275c-fd64-5799-85e0-52ab15ebd288: distinguish initial stock 10 from equilibrium 95 among competing capacities.",
+      "Tutorial 9afedae3-a674-5a44-9d7a-4cdf57e66285: dP/dt=r(a-P), with r>0 and P<a."
     ],
     "evidence_paths": [
       "source-analysis.json",
-      "source-replay-results.json",
-      "source-math-results.json"
+      "source-replay-results.json"
     ]
   },
   "checks": {
@@ -38,53 +36,51 @@
         "source-replay-records.json",
         "source-replay-results.json"
       ],
-      "details": "All 14 captured question banks reproduce their 70 choices, prompts, solutions, keys, difficulties, or captured absences. Canonical answer bank is unavailable; rehabilitation key/solution are missing. Factory units inconsistency is documented."
+      "details": "All 14 captured banks replay, including prompts, solutions, keys and difficulties or their captured absences. Source gaps and the factory unit correction are documented."
     },
     "math": {
       "status": "passed",
       "evidence_paths": [
         "math-results.json",
-        "source-math-results.json",
-        "boundary-records.json"
+        "number-match-counterfactual-results.json"
       ],
-      "details": "Independent exact checks found one correct equation per tested bank across fresh samples, runner batch, controlled pairs, source banks, and capacity boundaries."
+      "details": "Independent exact checks validated 107 current records. Each tested bank has one correct model; the shared-capacity counterfactual also remains mathematically valid."
     },
     "variety": {
       "status": "failed",
       "evidence_paths": [
         "sampling-results.json",
-        "restriction-results.json",
-        "fixed-bank-records.json"
+        "number-match-role-restriction.json",
+        "repair-verification.json"
       ],
-      "details": "Default easy generation uses only the structural bank. Source banks requiring discrimination among candidate capacities are excluded from normal learning."
+      "details": "Earlier capacity-family restrictions are repaired. However, mixed banks prohibit shared-capacity structural distractors, suppressing source-supported sign/factor discrimination."
     },
     "scope": {
       "status": "passed",
       "evidence_paths": [
         "scope-results.json",
-        "samples.json",
+        "fresh-records.json",
         "runner-batch.json"
       ],
-      "details": "Requested easy outputs preserve first-order model selection, unknown positive k, and the source response workload."
+      "details": "Outputs retain easy first-order model selection, unknown positive k, five radio choices and model/substitution explanations."
     },
     "grading": {
       "status": "passed",
       "evidence_paths": [
-        "grader-all-input.json",
-        "grader-all-results.json",
-        "fixed-bank-grader-results.json"
+        "native-grader-input.json",
+        "native-grader-results.json"
       ],
-      "details": "Native grader accepted 27 correct selections and rejected 108 wrong selections. Reviewer counterfactual fixtures added 2 accepted and 8 rejected checks. Free-entry notation is inapplicable to these radio fields."
+      "details": "The native grader accepted 38 correct selections and rejected 152 wrong selections, including controlled counterfactuals. Free-entry notation is inapplicable."
     },
     "rendering": {
       "status": "passed",
       "evidence_paths": [
         "render-batch/rendering.json",
         "render-pairs/rendering.json",
-        "render-fixed-bank/rendering.json",
+        "render-number-match/rendering.json",
         "visual-inspection.json"
       ],
-      "details": "Actual UI rendered the batch and controlled pairs correctly. Inspected screenshots show legible mathematics, radio controls, and complete solutions."
+      "details": "Actual UI rendering passed. Eleven screenshots were inspected for notation, controls, solutions and counterfactual consistency."
     },
     "packaging": {
       "status": "passed",
@@ -92,46 +88,37 @@
         "packaging-results.json",
         "package-hashes-before.json",
         "package-hashes-after.json",
-        "relocation-records.json"
+        "relocation-records.json",
+        "execution.json"
       ],
-      "details": "Exact runtime versions match the manifest. Determinism, relocation, boundary generation/rejection, and runtime dependencies were checked. Package hashes remain unchanged."
+      "details": "Exact dependency versions, deterministic replay, relocation and boundary rejection passed. All package-file hashes remain unchanged."
     },
     "decision_variation": {
       "status": "failed",
       "evidence_paths": [
         "pedagogical-variation.json",
-        "shortcut-commands.json",
-        "shortcut-minimal.json",
-        "shortcut-delivered-batch.json",
+        "number-match-minimal-records.json",
+        "number-match-results.json",
+        "number-match-delivered-batch.json",
+        "shortcut-stage-results.json",
         "selection-results.json",
         "inventory-results.json",
         "affected-inventory.json"
       ],
-      "details": "Shortest-option selection succeeds on all 40 fresh and 5 delivered questions, including every sampled context subgroup. Filtering and selection among surviving easy records preserve the cue. Ten stored generated records were reproduced; all are moderate/hard, so none belongs to this demonstrated easy defect."
+      "details": "Numeral copying perfectly predicts correctness within mixed templates and across the delivered batch. Filtering and learner selection preserve the cue. Captured inventory contains no generated easy instances; all ten stored generated moderate/hard records were reproduced."
     }
   },
   "findings": [
     {
       "kind": "decision_shortcut",
-      "description": "The correct default easy equation is always uniquely shortest. Every distractor adds a minus sign, population factor, or power. Choosing by length bypasses modeling and answers the entire delivered batch.",
+      "description": "Mixed banks assign distinct capacities to every option, so only the correct equation contains the prompt\u2019s sole positive numeral. Copying that numeral bypasses sign and population-factor reasoning. It solves 14/14 fresh mixed questions and all 5 batch survivors. This finding does not reject the source\u2019s legitimate all-capacity equilibrium-selection task.",
       "source_refs": [
-        "a568fc63-e81c-5210-93f0-bcbd429a9e40",
-        "5651275c-fd64-5799-85e0-52ab15ebd288",
+        "54bac72f-651e-55b5-8b4b-fbc4e753ebc5",
+        "19a4e47b-fcd5-50aa-804a-b275eeea23d5",
         "Tutorial 9afedae3-a674-5a44-9d7a-4cdf57e66285"
       ],
-      "reproduction": "From evidence_root run: /home/jake/Developer/Course_Academy/.venv/bin/python -B reproduce_shortcut.py --input boundary-records.json --index 0 --output shortcut-minimal.json. Expected exit 1. Minimal instance: generate_easy(seed=88, parameters={'context':'deer','capacity':20}). check_shortcuts.py reproduces 40/40 fresh and 5/5 delivered successes.",
-      "requested_change": "Revise easy bank construction so equation length cannot identify correctness within recognizable templates. Include plausible same-method alternatives requiring the stated equilibrium. Regenerate the batch and retain the strict shortcut regression."
-    },
-    {
-      "kind": "restriction",
-      "description": "Normal easy sampling excludes source banks whose alternatives differ by capacity. Historical distractor ratios additionally reject valid equilibrium reassignment: tutoring capacity 60 and initial 10 fails despite requiring the same source reasoning.",
-      "source_refs": [
-        "5651275c-fd64-5799-85e0-52ab15ebd288",
-        "3974627f-3801-52ea-b93f-3d1a3033e2cc",
-        "4108ce6a-5d28-540e-b8c0-e4b52161a458"
-      ],
-      "reproduction": "Run /home/jake/Developer/Course_Academy/.venv/bin/python -B fixed_bank_probe.py. generate_easy(seed=624, template='source_17592186308739', parameters={'capacity':60,'initial':10}) raises 'whole observed bank needs bounded integer constants'. fixed-bank-records.json demonstrates the valid unchanged-bank capacity95\u219260 reference pair; actual grading and rendering confirm the changed correct choice.",
-      "requested_change": "Include competing-capacity banks in normal easy sampling. Generate distinct plausible distractor capacities from instructional constraints rather than exact historical ratios, and derive correctness from the stated equilibrium. Preserve exact source replay separately."
+      "reproduction": "From evidence_root run /home/jake/Developer/Course_Academy/.venv/bin/python -B reproduce_number_match.py --output number-match-results.json; expected exit 1. Minimal case: generate_easy(seed=3, parameters={\"context\":\"deer\",\"capacity\":60}). Options are k(60-N), -k(84-N), -k(89+N), k(91-N), k(66-N); only the correct option contains 60. Add --input delivery-batch/accepted.json to reproduce the delivered 5/5 failure.",
+      "requested_change": "Revise mixed-bank construction so wrong structural equations can share the stated equilibrium and learners must inspect sign/factor relationships. Require distinct equations rather than distinct constants. Preserve competing-capacity variation and the original length regressions, retain the new numeral-copy regression, and regenerate the batch."
     }
   ],
   "repair_history_file": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186124674/repair-history.json",

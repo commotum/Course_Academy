@@ -1,0 +1,59 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186229165,
+      "id": "570160ff-c937-57e7-bd78-702f7f018e64",
+      "title": "Solving an Initial Value Problem"
+    },
+    "question": {
+      ":question/id": "41e2569b-6b85-56bb-81fe-811dc330d13b",
+      ":question/problem": "Consider the following initial value problem:\n\n$$\n{y}^{\u2032}+6y=-12{e}^{-6x}+12{e}^{6x},\\,y(0)=1\n$$\n\nGiven that the differential equation \n\n$$\n{y}^{\u2032}+6y=-12{e}^{-6x}+12{e}^{6x}\n$$\n\nhas the complementary solution ${y}_{c}=A{e}^{-6x},$ solve the initial value problem.\n\n$y(x)=$\n{{field-1}}",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "9a0d7210-9883-5b7c-90e0-7508af540db6",
+          ":answer-field/key": "field-1",
+          ":answer-field/type": ":answer-field.type/blank",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "9754212c-6679-539c-8bd0-bba61461546f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-12x{e}^{-6x}+{e}^{6x}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "9754212c-6679-539c-8bd0-bba61461546f"
+          ]
+        }
+      ],
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/worked-solution": "To find the general solution of an inhomogeneous first-order linear equation with constant coefficients on the left-hand side, we must find the sum of the complementary and particular solutions.\n\nTo find the complementary solution ${y}_{c},$ we solve the corresponding homogeneous equation, given by\n\n$$\n{y}_{c}^{\u2032}+6{y}_{c}=0.\n$$\n\nSolving this equation, we find that the complementary solution is\n\n$$\n{y}_{c}=A{e}^{-6x}\n$$\n\nwhere $A$ is an arbitrary constant.\n\nWe now need to find the particular solution ${y}_{p}(x).$\n\nWe examine both exponential forcing terms. The first exponential is a term in the complementary solution, so its trial term is multiplied by $x$; the other exponential is not. We assume a particular solution of the form\n\n$$\n{y}_{p}=\\alpha x{e}^{-6x}+\\beta {e}^{6x},\n$$\n\nwhere $\\alpha $ and $\\beta $ are constants that are to be determined.\n\nWe calculate the first derivative of ${y}_{p}$ using the product rule for differentiation:\n\n$$\n\\begin{aligned}{y}_{p}^{\u2032} & =(\\alpha x{e}^{-6x}+\\beta {e}^{6x})^{\u2032} \\\\  & =\\alpha (x{e}^{-6x})^{\u2032}+6\\beta {e}^{6x} \\\\  & =\\alpha ({e}^{-6x}-6x{e}^{-6x})+6\\beta {e}^{6x} \\\\  & =\\alpha (1-6x){e}^{-6x}+6\\beta {e}^{6x}.\\end{aligned}\n$$\n\nTo find the values of $\\alpha $ and $\\beta,$ we substitute ${y}_{p}$ and ${y}_{p}^{\u2032}$ into the differential equation:\n\n$$\n\\begin{aligned}(\\alpha (1-6x){e}^{-6x}+6\\beta {e}^{6x})+6(\\alpha x{e}^{-6x}+\\beta {e}^{6x}) & =-12{e}^{-6x}+12{e}^{6x} \\\\ (1-6x+6x)\\alpha {e}^{-6x}+(6+6)\\beta {e}^{6x} & =-12{e}^{-6x}+12{e}^{6x} \\\\ \\alpha {e}^{-6x}+12\\beta {e}^{6x} & =-12{e}^{-6x}+12{e}^{6x}\\end{aligned}\n$$\n\nEquating coefficients of the two distinct exponentials gives\n\n$$\n\\alpha =-12,\\qquad 12\\beta =12.\n$$\n\nSo, we have\n\n$$\n\\alpha =-12,\\qquad \\beta =1.\n$$\n\nTherefore, the particular solution ${y}_{p}(x)$ is\n\n$$\n{y}_{p}(x)=-12x{e}^{-6x}+{e}^{6x}.\n$$\n\nNow, since the general solution is given by\n\n$$\ny(x)={y}_{c}(x)+{y}_{p}(x),\n$$\n\nthe general solution in our case is\n\n$$\ny=A{e}^{-6x}-12x{e}^{-6x}+{e}^{6x}.\n$$\n\nWe can find the constant $A$ using the initial conditions.\n\nSubstituting $y(0)=1$ into the general solution gives\n\n$$\n\\begin{aligned}A+0+1 & =1 \\\\ A & =0.\\end{aligned}\n$$\n\nTherefore, the solution to the initial value problem is\n\n$$\ny=-12x{e}^{-6x}+{e}^{6x}.\n$$"
+    },
+    "generation": {
+      "version": "exponential-ivp-1.0-frozen",
+      "seed": 90211,
+      "template": "mixed",
+      "parameters": {
+        "h": -6,
+        "k": -6,
+        "f": -12,
+        "k2": 6,
+        "f2": 12,
+        "v": 1
+      },
+      "bank_profile": null,
+      "origin": "authored",
+      "source_id": null,
+      "source": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "mathematical_fingerprint": "99941629b7d268e4509f9551474c8f3f2b373d06d2521cd489eb539337d6b38f",
+      "content_identity": "7886ef1de0adf408ff5ff595a5d869e93d76b89a1de75a26cc9a28143136df90",
+      "domain": "x real",
+      "source_missing_completion": false,
+      "sympy": "1.14.0"
+    }
+  }
+]

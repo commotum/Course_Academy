@@ -1,0 +1,124 @@
+{
+  "verdict": "revise",
+  "summary": "Mixed banks reveal the answer by copying the prompt\u2019s sole positive numeral: 14/14 fresh mixed questions and all 5 delivered batch questions. Earlier defects are repaired. Package files remain unchanged. Full report: result.json.",
+  "source_analysis": {
+    "skill": "Translate inhibited-growth prose into dX/dt=k(a-X), identifying the equilibrium and selecting the correct equation.",
+    "reasoning_steps": [
+      "Identify the dependent quantity and equilibrium.",
+      "Distinguish equilibrium from any initial stock.",
+      "Recognize positive growth proportional to the remaining gap.",
+      "Select the equation with the appropriate capacity, sign and population factors."
+    ],
+    "invariants": [
+      "Positive proportionality constant and growth from below equilibrium.",
+      "One whole-equation radio response from five choices.",
+      "No integration or parameter fitting."
+    ],
+    "permitted_variations": [
+      "Context, capacity, variable, units and below-capacity initial stock.",
+      "Correct option position and eligible equilibrium assignments.",
+      "Wrong structural equations may share the correct equilibrium without becoming correct."
+    ],
+    "source_refs": [
+      "54bac72f-651e-55b5-8b4b-fbc4e753ebc5: all five equations contain capacity 150; signs and population factors distinguish them.",
+      "5651275c-fd64-5799-85e0-52ab15ebd288: distinguish initial stock 10 from equilibrium 95 among competing capacities.",
+      "Tutorial 9afedae3-a674-5a44-9d7a-4cdf57e66285: dP/dt=r(a-P), with r>0 and P<a."
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "source-replay-results.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay-records.json",
+        "source-replay-results.json"
+      ],
+      "details": "All 14 captured banks replay, including prompts, solutions, keys and difficulties or their captured absences. Source gaps and the factory unit correction are documented."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "number-match-counterfactual-results.json"
+      ],
+      "details": "Independent exact checks validated 107 current records. Each tested bank has one correct model; the shared-capacity counterfactual also remains mathematically valid."
+    },
+    "variety": {
+      "status": "failed",
+      "evidence_paths": [
+        "sampling-results.json",
+        "number-match-role-restriction.json",
+        "repair-verification.json"
+      ],
+      "details": "Earlier capacity-family restrictions are repaired. However, mixed banks prohibit shared-capacity structural distractors, suppressing source-supported sign/factor discrimination."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "scope-results.json",
+        "fresh-records.json",
+        "runner-batch.json"
+      ],
+      "details": "Outputs retain easy first-order model selection, unknown positive k, five radio choices and model/substitution explanations."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "native-grader-input.json",
+        "native-grader-results.json"
+      ],
+      "details": "The native grader accepted 38 correct selections and rejected 152 wrong selections, including controlled counterfactuals. Free-entry notation is inapplicable."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render-batch/rendering.json",
+        "render-pairs/rendering.json",
+        "render-number-match/rendering.json",
+        "visual-inspection.json"
+      ],
+      "details": "Actual UI rendering passed. Eleven screenshots were inspected for notation, controls, solutions and counterfactual consistency."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "package-hashes-before.json",
+        "package-hashes-after.json",
+        "relocation-records.json",
+        "execution.json"
+      ],
+      "details": "Exact dependency versions, deterministic replay, relocation and boundary rejection passed. All package-file hashes remain unchanged."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "number-match-minimal-records.json",
+        "number-match-results.json",
+        "number-match-delivered-batch.json",
+        "shortcut-stage-results.json",
+        "selection-results.json",
+        "inventory-results.json",
+        "affected-inventory.json"
+      ],
+      "details": "Numeral copying perfectly predicts correctness within mixed templates and across the delivered batch. Filtering and learner selection preserve the cue. Captured inventory contains no generated easy instances; all ten stored generated moderate/hard records were reproduced."
+    }
+  },
+  "findings": [
+    {
+      "kind": "decision_shortcut",
+      "description": "Mixed banks assign distinct capacities to every option, so only the correct equation contains the prompt\u2019s sole positive numeral. Copying that numeral bypasses sign and population-factor reasoning. It solves 14/14 fresh mixed questions and all 5 batch survivors. This finding does not reject the source\u2019s legitimate all-capacity equilibrium-selection task.",
+      "source_refs": [
+        "54bac72f-651e-55b5-8b4b-fbc4e753ebc5",
+        "19a4e47b-fcd5-50aa-804a-b275eeea23d5",
+        "Tutorial 9afedae3-a674-5a44-9d7a-4cdf57e66285"
+      ],
+      "reproduction": "From evidence_root run /home/jake/Developer/Course_Academy/.venv/bin/python -B reproduce_number_match.py --output number-match-results.json; expected exit 1. Minimal case: generate_easy(seed=3, parameters={\"context\":\"deer\",\"capacity\":60}). Options are k(60-N), -k(84-N), -k(89+N), k(91-N), k(66-N); only the correct option contains 60. Add --input delivery-batch/accepted.json to reproduce the delivered 5/5 failure.",
+      "requested_change": "Revise mixed-bank construction so wrong structural equations can share the stated equilibrium and learners must inspect sign/factor relationships. Require distinct equations rather than distinct constants. Preserve competing-capacity variation and the original length regressions, retain the new numeral-copy regression, and regenerate the batch."
+    }
+  ]
+}

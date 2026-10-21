@@ -1,5 +1,17 @@
 # Instructional account and targeted repair
 
+Ninth-pass scope: reproduced finding 591f580cadb749294588 first; the strict
+check exits 1 for five stored records and the 64/64 possible-history witness.
+The latest feedback reports that same stored-pool defect, not a new runtime
+construction failure. Canonical f2c7cfd3-da43-5208-bd0e-21692357fabe requires
+eliminating x and interpreting `(k+4)y=-5`; tutorial
+e0c85152-daea-5a87-a3ba-81870558c7a2 defines inconsistency as no solutions.
+Preserve that skill, all source families, the current bank construction, and
+the staged replacement mapping. Verify retained regressions and input bindings;
+do not substitute proposed replacements for captured inventory. No runtime
+design change can alter the five already stored banks. Current pass evidence
+is in evidence/repair-9; the strict failure remains a failure.
+
 Eighth-pass scope: the first executed check reproduced the retained inventory
 failure (five stored banks, 64/64 sign-extremum successes). The source still
 requires elimination and interpreting the residual equation, as canonical

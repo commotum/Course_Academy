@@ -1,5 +1,51 @@
 # Repair state
 
+## Ninth pass (current)
+
+Latest strict inventory regression reproduced first: exit 1, five matched stored
+banks, 64/64 shortcut successes in the retained possible-history witness. All
+four generator regressions pass. Source replay covers 17 complete practice banks
+and canonical system; delivery retains conditional contrasts in 14/14 records.
+Native grader: 7 accepted, 28 rejected, zero unresolved. Relocation and exact
+dependencies pass. Protected runtime/source/inventory/manifest hashes and UI
+hashes match retained evidence. Both unchanged UI screenshots and source
+flowchart inspected. Render records match raw staged replacements; normalized
+proposal mappings are separately verified. All five non-source inventory records
+were tested. No runtime, engine, database, publication, or other-job changes.
+
+Commands/results: evidence/repair-9/commands.json and results.json. All five
+regression declarations remain, including the strict failing inventory check.
+Status remains unsupported: finding 591f580cadb749294588 requires the separate
+inventory-remediation workflow explicitly identified in the review. Existing
+proposal: evidence/repair-3/inventory-repair-proposal.json. Next unfinished step
+is independent application through that authorized workflow and refreshed
+inventory, followed by the same strict check. Generator-only edits cannot alter
+these stored banks; do not waive that failure or repeat unrelated sampling.
+
+## Eighth pass (latest)
+
+Read feedback, full retained history, source lesson/questions, and existing state.
+First executed check was the strict inventory regression: exit 1, five matched
+stored banks and the retained 64/64 possible-history shortcut witness. No new
+generator construction defect was demonstrated. Runtime, manifest, source and
+inventory still match the protected hashes; completed repairs are preserved.
+
+Reproduce this pass with `.venv/bin/python -B evidence/repair-8/verify.py`
+using the repository's Python executable. Exact commands and results are in
+evidence/repair-8/commands.json and results.json. All four generator regressions,
+17 practice-bank replays, delivery of 14 records with conditional contrasts,
+native grading (7 accepted, 28 rejected, zero unresolved), and relocation pass.
+Both unchanged actual-UI replacement screenshots were visually inspected.
+All five finding declarations remain executable, including the failing check.
+All five non-source inventory records were reproduced; none remain untested.
+
+Status remains unsupported. Next unfinished action is the separately authorized
+inventory-remediation workflow for finding 591f580cadb749294588, using
+evidence/repair-3/inventory-repair-proposal.json, followed by refreshed inventory
+and the same strict pool check. No database, publication, engine, runtime,
+source, or other-job changes were made. Do not weaken the regression or replace
+the repaired candidate to conceal a stored-pool failure.
+
 ## Seventh pass (latest)
 
 Read feedback and full retained history first; first executed test was the exact

@@ -1,0 +1,129 @@
+{
+  "working_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186124674/review-1-policy-2-f08a3651ea6369b6",
+  "note": "Native grader rerun after adding the newly demonstrated source-supported counterfactual; all cases batched in the retained input. Shortcut failures and old examples have actual stdout/stderr/exit codes in execution.json.",
+  "completed_commands": [
+    {
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "-B",
+        "independent_review.py"
+      ],
+      "result": "source-replay-results.json; math-results.json; packaging-results.json; inventory-results.json",
+      "expected_exit": 0
+    },
+    {
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "-B",
+        "author_repair_check.py"
+      ],
+      "result": "author-check-rerun/regression-results.json",
+      "expected_exit": 0
+    },
+    {
+      "command": [
+        "/home/jake/Developer/Course_Academy/generate/runs/current/check-engine",
+        "native-grader-input.json",
+        "native-grader-results.json"
+      ],
+      "result": "native-grader-results.json",
+      "expected_exit": 0
+    },
+    {
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "-B",
+        "stage_and_shortcut_checks.py"
+      ],
+      "result": "shortcut-stage-results.json; selection-results.json; execution.json",
+      "expected_exit": 0
+    },
+    {
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "-B",
+        "/home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py",
+        "--input",
+        "fresh-records.json",
+        "--source",
+        "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186124674/source/source.json",
+        "--inventory",
+        "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186124674/source/inventory.json",
+        "--difficulty",
+        "easy",
+        "--output",
+        "delivery-fresh",
+        "--math-root",
+        "/media/jake/SSD/EDB/math"
+      ],
+      "result": "delivery-fresh/delivery.json",
+      "expected_exit": 0
+    },
+    {
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "-B",
+        "/home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py",
+        "--input",
+        "runner-batch.json",
+        "--source",
+        "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186124674/source/source.json",
+        "--inventory",
+        "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186124674/source/inventory.json",
+        "--difficulty",
+        "easy",
+        "--output",
+        "delivery-batch",
+        "--math-root",
+        "/media/jake/SSD/EDB/math"
+      ],
+      "result": "delivery-batch/delivery.json",
+      "expected_exit": 0
+    },
+    {
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "-B",
+        "/home/jake/Developer/Course_Academy/generate/pipeline/render_preview.py",
+        "--input",
+        "runner-batch.json",
+        "--output",
+        "render-batch",
+        "--math-root",
+        "/media/jake/SSD/EDB/math"
+      ],
+      "result": "render-batch/rendering.json",
+      "expected_exit": 0
+    },
+    {
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "-B",
+        "/home/jake/Developer/Course_Academy/generate/pipeline/render_preview.py",
+        "--input",
+        "counterfactual-records.json",
+        "--output",
+        "render-pairs",
+        "--math-root",
+        "/media/jake/SSD/EDB/math"
+      ],
+      "result": "render-pairs/rendering.json",
+      "expected_exit": 0
+    },
+    {
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "-B",
+        "/home/jake/Developer/Course_Academy/generate/pipeline/render_preview.py",
+        "--input",
+        "number-match-counterfactual-records.json",
+        "--output",
+        "render-number-match",
+        "--math-root",
+        "/media/jake/SSD/EDB/math"
+      ],
+      "result": "render-number-match/rendering.json",
+      "expected_exit": 0
+    }
+  ]
+}
