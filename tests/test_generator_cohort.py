@@ -1,0 +1,75 @@
+"""Selection, certificate and mechanical-adoption regressions; no agents or DB."""
+from datetime import datetime
+import json
+from pathlib import Path
+import sys
+import tempfile
+import unittest
+from unittest.mock import patch
+
+sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'scripts'))
+from generator_cohort import CohortPipeline, build_cohort, first_seen, in_cohort, mechanical_package, current_approval, capacity_failure
+from generator_pipeline import Pipeline
+
+
+class CohortTests(unittest.TestCase):
+    def test_repair_retains_the_source_calibrated_default_without_another_author_session(self):
+        with tempfile.TemporaryDirectory() as t:
+            root=Path(t);(root/'workspace').mkdir();path=root/'workspace/package.json'
+            path.write_text(json.dumps({'entrypoint':'generator.py','files':['generator.py']}))
+            pipeline=object.__new__(CohortPipeline);pipeline.directory=root
+            pipeline.state={'request':{'difficulty':'unclassified'},'manifest':'package.json','adopted_default_difficulty':'easy'}
+            with patch.object(Pipeline,'sample',return_value='sampled'):
+                self.assertEqual(pipeline.sample(),'sampled')
+            self.assertEqual(json.loads(path.read_text())['default_difficulty'],'easy')
+
+    def test_unchanged_archived_package_does_not_publish_new_questions(self):
+        with tempfile.TemporaryDirectory() as t:
+            directory=Path(t);(directory/'source').mkdir()
+            sha='a'*64
+            (directory/'source/source.json').write_text(json.dumps({'registered_generator':{':question-generator/script':f'generators/aa/{sha}/generator.py'}}))
+            records=[{'question':'reviewed local sample'}];(directory/'samples.json').write_text(json.dumps(records))
+            pipeline=object.__new__(CohortPipeline);pipeline.directory=directory;pipeline.state={'package_hash':sha}
+            self.assertEqual(pipeline.publication_records(),[])
+            pipeline.state['package_hash']='b'*64
+            self.assertEqual(pipeline.publication_records(),records)
+
+    def test_provider_capacity_stops_the_campaign_without_matching_ordinary_failures(self):
+        self.assertTrue(capacity_failure('{"code":"usage_limit_reached"}'))
+        self.assertTrue(capacity_failure("You've hit your usage limit"))
+        self.assertFalse(capacity_failure('Generator rejected ambiguous answer banks'))
+
+    def test_cutoff_uses_earliest_evidence_and_includes_unknown_age(self):
+        dates=first_seen('DATE 2026-10-17T01:00:00+00:00\ngenerate/scratch/a.py\nDATE 2026-10-15T01:00:00+00:00\ngenerate/scratch/a.py\n')
+        cutoff=datetime.fromisoformat('2026-10-16T21:51:26+00:00').timestamp()
+        self.assertTrue(in_cohort(dates['generate/scratch/a.py'],cutoff))
+        self.assertTrue(in_cohort(None,cutoff))
+        self.assertFalse(in_cohort(cutoff,cutoff))
+
+    def test_subject_priority_does_not_exclude_other_old_generators(self):
+        rows=[[1,'Old algebra',11,'Matrix','a.py'],[2,'Old other',22,'Trig','b.py'],[3,'New DEQ',33,'ODE','c.py'],[4,'Unknown',44,'Other','d.py']]
+        subjects=[[90,'Linear Algebra',11],[91,'Differential Equations',33]]
+        items=build_cohort(rows,subjects,[{'kp_id':2},{'kp_id':1}],{'a.py':1,'b.py':1,'c.py':20},10)
+        self.assertEqual([i['kp'] for i in items],[1,2,4])
+        self.assertEqual(items[-1]['age_evidence'],'unknown_included')
+
+    def test_legacy_adoption_preserves_bytes_resources_and_local_imports(self):
+        with tempfile.TemporaryDirectory() as t:
+            root=Path(t);script=root/'old.py';source=b'import json\nfrom pathlib import Path\nfrom helper import value\nprint(json.loads(Path(__file__).with_suffix("").joinpath("source.json").read_text()))\n'
+            script.write_bytes(source);(root/'helper.py').write_text('value=3\n')
+            resources=root/'old';resources.mkdir();(resources/'source.json').write_text('{"a":1}')
+            # A retained evidence script is data, not a runtime dependency.
+            (resources/'old_test.py').write_text('import nonexistent_test_dependency\n')
+            manifest=mechanical_package(script,root/'workspace',{'available_difficulties':['easy']})
+            self.assertEqual((root/'workspace/old.py').read_bytes(),source)
+            self.assertIn('old/source.json',manifest['files']);self.assertIn('helper.py',manifest['files'])
+            self.assertEqual(manifest['dependencies']['packages'],{})
+            self.assertEqual(manifest['default_difficulty'],'easy')
+
+    def test_package_or_registration_without_a_current_certificate_is_not_a_skip(self):
+        with tempfile.TemporaryDirectory() as t:
+            for script in ['generate/scratch/1.py','generators/aa/'+('a'*64)+'/generator.py']:
+                self.assertIsNone(current_approval({'kp_id':1,'registered_generator':{':question-generator/script':script}},Path(t)))
+
+
+if __name__=='__main__':unittest.main()
