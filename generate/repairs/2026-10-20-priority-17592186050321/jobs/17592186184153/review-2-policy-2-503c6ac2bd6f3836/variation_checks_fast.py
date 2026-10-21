@@ -1,0 +1,68 @@
+"""Independent coverage, cue subgroup and read-only selection audit."""
+import sys;sys.dont_write_bytecode=True
+import json,pathlib,collections,hashlib,math,random
+from audit_math import tex,field,answer,V,S
+from functools import lru_cache
+tex=lru_cache(maxsize=None)(tex)
+@lru_cache(maxsize=None)
+def cached_values(choice_strings):
+ return [tex(a).subs(V['C'],0) for a in choice_strings]
+R=pathlib.Path(__file__).resolve().parent
+def load(n):return json.loads((R/n).read_text())
+def save(n,v):(R/n).write_text(json.dumps(v,indent=2)+'\n')
+def template(r):return r['generation'].get('template')
+def params(r):return r['generation']['parameters']
+def coverage(records):
+ out={}
+ for t in 'PRB':
+  rs=[r for r in records if template(r)==t];ps=[params(r) for r in rs]
+  out[t]={'count':len(rs),'semantic_instances':len({(i['n'],i['s'],i['k']) for i in ps}),**{key:dict(collections.Counter(str(i[key]) for i in ps)) for key in ['n','s','k','constant_first','variable']}}
+  if t!='B':out[t].update({'correct_positions':dict(collections.Counter(str(next(j for j,a in enumerate(field(r)[':answer-field/choices']) if a[':answer/id']==answer(r)[':answer/id'])) for r in rs)), 'factors':dict(collections.Counter(f for i in ps for f in i['factors'])),'omitted_cells':dict(collections.Counter(str((i['omitted_row'],i['omitted_col'])) for i in ps)),'offsets':dict(collections.Counter(str(i['offset']) for i in ps))})
+ return out
+raw=load('samples.json');accepted=load('delivery/accepted.json');batch=load('runner-batch.json');delbatch=load('batch-delivery/accepted.json')
+# Publisher strips generation? Preserve metadata by question content/ID if needed.
+byid={r['question'][':question/id']:r for r in raw+batch}
+def restore(rs):
+ for r in rs:
+  if 'generation' not in r:r['generation']=byid[r['question'][':question/id']]['generation']
+ return rs
+accepted=restore(accepted);delbatch=restore(delbatch)
+sets={'raw':raw,'delivered':accepted,'runner':batch,'runner_delivered':delbatch}
+allcoverage={name:coverage(rs) for name,rs in sets.items()}
+save('coverage.json',allcoverage)
+probes=[]
+# Cues use displayed content only. Groups reflect recognizable template, exponent, sign and term order.
+for stage,records in [('raw',raw),('delivered',accepted),('runner_delivered',delbatch)]:
+ for t in 'PR':
+  rs=[(j,r) for j,r in enumerate(records) if template(r)==t]
+  groups=[('all',rs)]
+  for key in ('n','s','constant_first'):
+   for value in sorted(set(str(params(r)[key]) for _,r in rs)):
+    groups.append((key+'='+value,[(j,r) for j,r in rs if str(params(r)[key])==value]))
+  for label,group in groups:
+   if not group:continue
+   for mode in ('tex_length','visible_length','constant_row_frequency','power_coefficient_rank'):
+    for rank in (range(5) if mode.endswith('length') else range(3)):
+     correct=0;refs=[]
+     for idx,r in group:
+      choices=field(r)[':answer-field/choices'];p=params(r);x=V[p['variable']]
+      vals=cached_values(tuple(a[':answer/value'] for a in choices))
+      if mode=='tex_length':keys=[len(a[':answer/value']) for a in choices]
+      elif mode=='visible_length':keys=[len(str(v)) for v in vals]
+      elif mode=='constant_row_frequency':
+       constants=[S.expand(v).coeff(x,1) for v in vals];cnt=collections.Counter(constants);keys=[-cnt[c] for c in constants]
+      else:
+       power=(-S.Rational(p['n'],2) if t=='R' else p['n'])+1
+       coefficients=[v.expand().coeff(x**power) for v in vals];sortedc=sorted(set(abs(v) for v in coefficients));keys=[sortedc.index(abs(c)) for c in coefficients]
+      ordered=sorted(range(len(choices)),key=lambda j:(keys[j],j))
+      if mode=='power_coefficient_rank':
+       eligible=[j for j,k in enumerate(keys) if k==rank];chosen=eligible[0] if eligible else -1
+      else:chosen=ordered[min(rank,len(ordered)-1)]
+      win=chosen>=0 and choices[chosen][':answer/id']==answer(r)[':answer/id'];correct+=win
+      refs.append({'sample_index':idx,'chosen_index':chosen,'correct':win})
+     probes.append({'stage':stage,'template':t,'subgroup':label,'cue':mode,'rank':rank,'correct':correct,'total':len(group),'rate':correct/len(group),'baseline':0.2,'scope':'within_template' if label=='all' else 'other_recognizable_subgroup','trials':refs})
+save('shortcut-results.json',probes)
+strong=[{k:v for k,v in p.items() if k!='trials'} for p in probes if p['total']>=25 and p['rate']>=0.6]
+save('shortcut-strongest.json',sorted(strong,key=lambda x:-x['rate']))
+
+print(json.dumps({'coverage_counts':{k:{t:v['count'] for t,v in d.items()} for k,d in allcoverage.items()},'strongest':sorted(strong,key=lambda x:-x['rate'])[:8]}))

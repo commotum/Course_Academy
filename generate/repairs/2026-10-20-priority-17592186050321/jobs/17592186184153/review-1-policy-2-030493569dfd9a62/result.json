@@ -1,0 +1,124 @@
+{
+  "verdict": "revise",
+  "summary": "A deterministic shortcut bypasses power-rule integration in polynomial items with exponent 4 or 6. It succeeded on all 146 tested delivered cases. Mathematics, grading, rendering, and packaging otherwise passed; the package remained unchanged.",
+  "source_analysis": {
+    "skill": "Integrate a two-term sum or difference by applying the power rule separately to each term.",
+    "reasoning_steps": [
+      "Identify the terms, signs, and integration variable.",
+      "Rewrite radicals or reciprocals as powers when needed.",
+      "Increment each exponent and divide by the new exponent.",
+      "Combine the results with one arbitrary constant and follow the response contract."
+    ],
+    "invariants": [
+      "Preserve the sum-rule and power-rule workload.",
+      "Exclude logarithmic, substitution, and definite-integral cases.",
+      "Keep prompts, answers, and solutions consistent.",
+      "Omit C inside a blank only when the prompt supplies it."
+    ],
+    "permitted_variations": [
+      "Vary supported exponents, signs, constants, term order, and variable names.",
+      "Vary answer positions and distractor assignments without revealing correctness through presentation."
+    ],
+    "source_refs": [
+      "e-371 / e4a94ca8-82ee-5776-a46d-b735d4ab60fb",
+      "q-71167 / 9e4827b1-c8af-5e0e-a92c-bab0c6f19c7d",
+      "q-71169 / 79aa6724-ce36-5977-907b-506fab54c4d7",
+      "q-133291 / 836e24be-b58e-500b-bb05-e9b2030ce5e6",
+      "Tutorial 701 / 207bbd12-158a-58be-b000-82cace6dcdde: sum rule and combining arbitrary constants",
+      "Tutorial 703 / 1b5ce4c9-ef44-52d9-a506-96aa15055e00: later constant-factor extension"
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "source-replay-results.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay.json",
+        "source-replay-results.json",
+        "source-parameter-records.json"
+      ],
+      "details": "Replayed seven source questions and all 21 captured choices. Missing controls, inferred keys, and the restored derivative premise are explicitly documented."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "math-extra-results.json"
+      ],
+      "details": "876 generated records passed independent exact checks of prompts, unique correct answers, and solution expressions."
+    },
+    "variety": {
+      "status": "failed",
+      "evidence_paths": [
+        "coverage.json",
+        "shortcut-confirmation.json",
+        "delivery-selection-summary.json"
+      ],
+      "details": "Declared sampling slots survive filtering, but exponent-4/6 polynomial items retain a perfect incidental answer-producing cue."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "scope-results.json",
+        "source-analysis.json",
+        "boundaries.json"
+      ],
+      "details": "Normal generation preserves the moderate two-term workload. Unsupported source families and conservative domain limits are recorded."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input-final.json",
+        "grading-final.json"
+      ],
+      "details": "Native grading passed 329 accepted and 465 rejected responses, including equivalent blank entries, plausible wrong entries, and all 146 shortcut-selected answers."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "visual-inspection.json",
+        "render-full/rendering.json",
+        "render-reciprocal/rendering.json",
+        "render-shortcut/rendering.json"
+      ],
+      "details": "32 selected records rendered through the actual UI and were visually inspected, including controlled pairs, blank controls, radicals, and worked solutions."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "package-before.json",
+        "package-after.json",
+        "commands.md"
+      ],
+      "details": "Exact runtime dependencies, deterministic replay, relocation, input rejection, and package hash equality passed."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "shortcut-confirmation.json",
+        "grading-final.json",
+        "selection-final.json"
+      ],
+      "details": "Relevant and irrelevant counterfactuals pass, but the conditional typography shortcut succeeds 111/111 discovery and 35/35 fresh delivered cases."
+    }
+  },
+  "findings": [
+    {
+      "kind": "decision_shortcut",
+      "description": "For P-grid prompts with exponent 4 or 6, retain choices whose linear coefficient matches the printed constant, then choose the power fraction with no numerical numerator factor and a one-digit denominator. This identifies the answer without integrating the power term. The correct coefficient is always 1/5 or 1/7; every allowed distractor factor produces a larger numerator or a two-digit denominator. All 146 tested cases survived delivery filtering and received credit through the native grader.",
+      "source_refs": [
+        "e-371 / e4a94ca8-82ee-5776-a46d-b735d4ab60fb: integrate each term using the power rule",
+        "q-71167 / 9e4827b1-c8af-5e0e-a92c-bab0c6f19c7d",
+        "Tutorial 701 / 207bbd12-158a-58be-b000-82cace6dcdde",
+        "generate/principles.md: meaningful variation and incidental answer-producing shortcuts"
+      ],
+      "reproduction": "Run shortcut_confirmation.py using fresh seed 86184906 and count 240. Example 546eb8a6-49a5-5143-9a07-6f53ec41e0cc asks for integral(-2+t^4)dt: matching the -2t term leaves power coefficients 3/10, 1/10, and 1/5, exposing the correct answer through fraction typography. See shortcut-confirmation.json, render-shortcut/question-001.png, and grading-final.json.",
+      "requested_change": "Revise distractor coefficient assignments so numerator and denominator complexity cannot uniquely identify the correct coefficient within these subgroups after matching the constant. Preserve source replay and rerun conditional shortcut probes on fresh delivered samples."
+    }
+  ]
+}

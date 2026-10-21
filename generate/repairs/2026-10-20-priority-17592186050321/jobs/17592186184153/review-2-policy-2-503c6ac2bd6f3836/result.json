@@ -1,0 +1,125 @@
+{
+  "verdict": "revise",
+  "summary": "Quadratic questions retain an incidental coefficient-rank cue: it earned credit on 30/35 fresh delivered items. Mathematics, grading, rendering, scope, source replay, and packaging passed. Package files remained unchanged.",
+  "source_analysis": {
+    "skill": "Integrate a two-term sum or difference by applying the power rule separately to each term.",
+    "reasoning_steps": [
+      "Identify both terms, signs, and the integration variable.",
+      "Rewrite radicals or reciprocals as powers where needed.",
+      "Increment each exponent and divide by the new exponent.",
+      "Combine the antiderivatives with one arbitrary constant and follow the response contract."
+    ],
+    "invariants": [
+      "Preserve the two-term sum-rule and power-rule workload.",
+      "Exclude logarithmic, substitution, and definite-integral cases.",
+      "Keep prompts, answers, and solutions consistent.",
+      "Omit C inside a blank only when the prompt supplies it."
+    ],
+    "permitted_variations": [
+      "Vary supported exponents, signed constants, signs, term order, and variable names.",
+      "Vary answer positions and competing distractor assignments while deriving correctness from the integrand."
+    ],
+    "source_refs": [
+      "e-371 / e4a94ca8-82ee-5776-a46d-b735d4ab60fb: integral of x\u00b2+1",
+      "q-71167 / 9e4827b1-c8af-5e0e-a92c-bab0c6f19c7d: integral of 5\u2212x\u00b3",
+      "q-71169 / 79aa6724-ce36-5977-907b-506fab54c4d7: reciprocal radical plus constant",
+      "q-133291 / 836e24be-b58e-500b-bb05-e9b2030ce5e6: blank followed by external C",
+      "Tutorial 701 / 207bbd12-158a-58be-b000-82cace6dcdde: sum rule and combining arbitrary constants",
+      "Tutorial 703 / 1b5ce4c9-ef44-52d9-a506-96aa15055e00: subsequent constant-factor extension"
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "source-replay-results.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay.json",
+        "source-replay-results.json",
+        "source-parameter-records.json"
+      ],
+      "details": "Replayed seven source cases and all 21 captured choices. Missing controls, inferred keys, and the restored derivative premise are documented."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "revised-domain-results.json",
+        "confirm_rank.py",
+        "rank-holdout-records.json"
+      ],
+      "details": "Independent exact checks passed for 475 sampled/boundary/controlled records, 420 revised polynomial bank assignments, and 35 fresh quadratic cases."
+    },
+    "variety": {
+      "status": "failed",
+      "evidence_paths": [
+        "coverage.json",
+        "rank-confirmation.json",
+        "delivery-selection-summary.json"
+      ],
+      "details": "Declared variation survives delivery, but quadratic banks systematically favor an incidental coefficient-magnitude strategy."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "scope-results.json",
+        "source-analysis.json",
+        "boundaries.json"
+      ],
+      "details": "Normal moderate generation preserves the two-term workload. Incomplete and unlabelled source families remain explicitly bounded replay cases."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input-final.json",
+        "grading-final.json"
+      ],
+      "details": "Native grading passed 226 accepted and 528 rejected responses, including equivalent blank entries, plausible mistakes, counterfactuals, complete choice banks, and cue-selected responses."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "visual-inspection.json",
+        "render-full/rendering.json",
+        "render-rank/rendering.json"
+      ],
+      "details": "Rendered and visually inspected 33 actual-UI screenshots covering controlled pairs, runner samples, radicals, blank controls, and worked solutions."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "package-before.json",
+        "package-after.json",
+        "commands.md"
+      ],
+      "details": "Exact runtime declaration, deterministic replay, relocation, and CLI rejection passed. Complete package file hashes remained unchanged."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "rank-confirmation.json",
+        "grading-final.json",
+        "delivery-selection-summary.json"
+      ],
+      "details": "Relevant and irrelevant counterfactuals pass, and the former typography cue is repaired. A quadratic coefficient-rank cue succeeds on 30/35 fresh delivered items and 66/84 eligible bank assignments."
+    }
+  },
+  "findings": [
+    {
+      "kind": "decision_shortcut",
+      "description": "For polynomial prompts with a quadratic term, integrate only the constant, then choose the matching option with the largest absolute cubic coefficient. Six of the seven eligible incorrect divisors produce smaller coefficients than the correct 1/3. This strategy succeeds on 66/84 equally likely bank assignments (78.6%), versus 41.7% random choice after matching the constant. Fresh delivered confirmation yielded 30/35 successes (85.7%), versus a 39.5% conditional baseline. The heuristic is imperfect, but its repeatable advantage bypasses integration of the quadratic summand.",
+      "source_refs": [
+        "e-371 / e4a94ca8-82ee-5776-a46d-b735d4ab60fb: termwise power-rule integration",
+        "q-71167 / 9e4827b1-c8af-5e0e-a92c-bab0c6f19c7d",
+        "Tutorial 701 / 207bbd12-158a-58be-b000-82cace6dcdde",
+        "generate/principles.md: incidental answer-producing shortcuts"
+      ],
+      "reproduction": "Run confirm_rank.py with the job Python and -B: seed 94172863 generates 480 mixed items, including 35 quadratic P items. Apply the commands in commands.md for delivery filtering, confirm_rank.py --analyze, and native grading. All 35 survive delivery; 30 cue-selected answers receive credit. Example 3db312c4-57f1-5974-89ee-5815dc9dceaa asks for integral(-x\u00b2+5)dx; matching +5x leaves cubic coefficients \u22121/4 and \u22121/3, exposing the answer through magnitude. See rank-confirmation.json and render-rank/question-001.png.",
+      "requested_change": "Revise polynomial distractor assignments so quadratic correctness is not strongly predicted by maximum coefficient magnitude after constant matching. Preserve source replay and workload, then rerun conditional rank probes on fresh delivered samples with native grading and rendering."
+    }
+  ]
+}

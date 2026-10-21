@@ -1,0 +1,343 @@
+{
+  "learner_operation": "Interpret each term as a power, increment its exponent and divide by the new exponent, preserve its sign, combine the two antiderivatives and one arbitrary constant; select the equivalent expression or supply the expression before a printed + C.",
+  "fixed_features": [
+    {
+      "feature": "Two simple terms, unit magnitude on the nonconstant integrand coefficient, exponent != -1.",
+      "justification": "e-371 and tutorial 701 teach sum-rule decomposition plus prerequisite power rules; tutorial 703 places general constant-factor multiplication later. Two terms preserve the observed workload; exponent -1 would require an unsupported logarithmic case."
+    },
+    {
+      "feature": "One constant term in normal generation; x/y/t for radio, t for derivative blank.",
+      "justification": "Finite practice family models the three complete moderate response examples and exercises constant integration plus one power integral. Missing response/difficulty evidence for other supplied families is recorded explicitly. Variable changes are notation, not counted as mathematical diversity."
+    },
+    {
+      "feature": "Five math radio options or one blank before external +C.",
+      "justification": "Observed in q-71167, q-71169 and q-133291. Correct-choice position and simplicity are not essential constraints."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Signed constant and nonconstant power to integrate",
+      "eligible_variation": "Change magnitude/sign, polynomial exponent or reciprocal half exponent; swap order; consistently rename variable.",
+      "observed": "All declared signs, constants -6..-1/1..6, exponents P/B 2..6 and R 3/5/7, term orders and radio variables survive deduplication."
+    },
+    {
+      "role": "Correct option and incorrect coefficient roles",
+      "eligible_variation": "Shuffle positions and vary offsets, factors, and which wrong cell is omitted without creating a presentation cue.",
+      "observed": "All five correct positions, six factors and four omitted cells observed in each radio template. Despite that coverage, all P exponent-4/6 items share a perfect coefficient-complexity cue."
+    },
+    {
+      "role": "Power-rule coefficient computation",
+      "eligible_variation": "Dependent answer coefficients must track changed exponents, signs and constants, while distractors must require assessing the power-rule result.",
+      "observed": "Dependencies are mathematically correct. The grid factors force the correct coefficient to be the sole unit-numerator/one-digit-denominator candidate within its constant row for P n=4/6."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "Raw and post-delivery P/R/B profiles and all declared sampling slots",
+      "sample_refs": [
+        "samples.json",
+        "delivery/accepted.json",
+        "coverage.json",
+        "boundaries.json"
+      ],
+      "result": "Raw P242/R242/B236; accepted P242/R242/B151. All declared individual slots remain represented; 96 signed endpoint/order boundary records passed exact math."
+    },
+    {
+      "case": "Runner batch and fresh holdout",
+      "sample_refs": [
+        "runner-batch.json",
+        "batch-delivery/accepted.json",
+        "shortcut-holdout-records.json",
+        "holdout-delivery/accepted.json",
+        "shortcut-confirmation.json"
+      ],
+      "result": "Runner5->5 (P1/R2/B2); holdout240->224. Shortcut succeeds111/111 discovery and35/35 fresh, before and after delivery."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "exponent {\"n\": 5}",
+      "expected": "Response changes with the relevant integrand evidence.",
+      "observed": "changed; parsed prompt, unique answer and worked solution agree; complete native choice banks/equivalent blank responses tested; rendered before/after screenshots inspected.",
+      "status": "passed",
+      "justification": "Tutorial701 sum rule and prerequisite power rule determine dependence on exponents/signs/constants; commutativity and consistent variable renaming preserve the antiderivative relation.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grading-final.json",
+        "render-full/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "constant {\"k\": -4}",
+      "expected": "Response changes with the relevant integrand evidence.",
+      "observed": "changed; parsed prompt, unique answer and worked solution agree; complete native choice banks/equivalent blank responses tested; rendered before/after screenshots inspected.",
+      "status": "passed",
+      "justification": "Tutorial701 sum rule and prerequisite power rule determine dependence on exponents/signs/constants; commutativity and consistent variable renaming preserve the antiderivative relation.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grading-final.json",
+        "render-full/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "sign {\"s\": 1}",
+      "expected": "Response changes with the relevant integrand evidence.",
+      "observed": "changed; parsed prompt, unique answer and worked solution agree; complete native choice banks/equivalent blank responses tested; rendered before/after screenshots inspected.",
+      "status": "passed",
+      "justification": "Tutorial701 sum rule and prerequisite power rule determine dependence on exponents/signs/constants; commutativity and consistent variable renaming preserve the antiderivative relation.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grading-final.json",
+        "render-full/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "term_order {\"constant_first\": false}",
+      "expected": "Response preserved, with consistent variable substitution when applicable.",
+      "observed": "preserved; parsed prompt, unique answer and worked solution agree; complete native choice banks/equivalent blank responses tested; rendered before/after screenshots inspected.",
+      "status": "passed",
+      "justification": "Tutorial701 sum rule and prerequisite power rule determine dependence on exponents/signs/constants; commutativity and consistent variable renaming preserve the antiderivative relation.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grading-final.json",
+        "render-full/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "variable {\"variable\": \"y\"}",
+      "expected": "Response preserved, with consistent variable substitution when applicable.",
+      "observed": "preserved under renaming; parsed prompt, unique answer and worked solution agree; complete native choice banks/equivalent blank responses tested; rendered before/after screenshots inspected.",
+      "status": "passed",
+      "justification": "Tutorial701 sum rule and prerequisite power rule determine dependence on exponents/signs/constants; commutativity and consistent variable renaming preserve the antiderivative relation.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grading-final.json",
+        "render-full/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "blank_exponent {\"n\": 6}",
+      "expected": "Response changes with the relevant integrand evidence.",
+      "observed": "changed; parsed prompt, unique answer and worked solution agree; complete native choice banks/equivalent blank responses tested; rendered before/after screenshots inspected.",
+      "status": "passed",
+      "justification": "Tutorial701 sum rule and prerequisite power rule determine dependence on exponents/signs/constants; commutativity and consistent variable renaming preserve the antiderivative relation.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grading-final.json",
+        "render-full/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "blank_term_order {\"constant_first\": false}",
+      "expected": "Response preserved, with consistent variable substitution when applicable.",
+      "observed": "preserved; parsed prompt, unique answer and worked solution agree; complete native choice banks/equivalent blank responses tested; rendered before/after screenshots inspected.",
+      "status": "passed",
+      "justification": "Tutorial701 sum rule and prerequisite power rule determine dependence on exponents/signs/constants; commutativity and consistent variable renaming preserve the antiderivative relation.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grading-final.json",
+        "render-full/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "reciprocal_exponent {\"n\": 7}",
+      "expected": "Response changes with the relevant integrand evidence.",
+      "observed": "changed; parsed prompt, unique answer and worked solution agree; complete native choice banks/equivalent blank responses tested; rendered before/after screenshots inspected.",
+      "status": "passed",
+      "justification": "Tutorial701 sum rule and prerequisite power rule determine dependence on exponents/signs/constants; commutativity and consistent variable renaming preserve the antiderivative relation.",
+      "sample_refs": [
+        "reciprocal-counterfactual-records.json",
+        "reciprocal-counterfactual-results.json",
+        "grading-final.json",
+        "render-reciprocal/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "reciprocal_sign {\"s\": -1}",
+      "expected": "Response changes with the relevant integrand evidence.",
+      "observed": "changed; parsed prompt, unique answer and worked solution agree; complete native choice banks/equivalent blank responses tested; rendered before/after screenshots inspected.",
+      "status": "passed",
+      "justification": "Tutorial701 sum rule and prerequisite power rule determine dependence on exponents/signs/constants; commutativity and consistent variable renaming preserve the antiderivative relation.",
+      "sample_refs": [
+        "reciprocal-counterfactual-records.json",
+        "reciprocal-counterfactual-results.json",
+        "grading-final.json",
+        "render-reciprocal/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "reciprocal_order {\"constant_first\": true}",
+      "expected": "Response preserved, with consistent variable substitution when applicable.",
+      "observed": "preserved; parsed prompt, unique answer and worked solution agree; complete native choice banks/equivalent blank responses tested; rendered before/after screenshots inspected.",
+      "status": "passed",
+      "justification": "Tutorial701 sum rule and prerequisite power rule determine dependence on exponents/signs/constants; commutativity and consistent variable renaming preserve the antiderivative relation.",
+      "sample_refs": [
+        "reciprocal-counterfactual-records.json",
+        "reciprocal-counterfactual-results.json",
+        "grading-final.json",
+        "render-reciprocal/rendering.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "first answer position",
+      "subgroup": "overall delivered",
+      "scope": "overall",
+      "strategy": "Always choose first radio option.",
+      "correct": 94,
+      "total": 484,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-choice random baseline is0.2; observed first-position success is 94/484. No fixed first-position cue demonstrated.",
+      "sample_refs": [
+        "delivery/accepted.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "first answer position",
+      "subgroup": "P delivered",
+      "scope": "within_template",
+      "strategy": "Always choose first radio option.",
+      "correct": 49,
+      "total": 242,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-choice random baseline is0.2; observed first-position success is 49/242. No fixed first-position cue demonstrated.",
+      "sample_refs": [
+        "delivery/accepted.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "first answer position",
+      "subgroup": "R delivered",
+      "scope": "within_template",
+      "strategy": "Always choose first radio option.",
+      "correct": 45,
+      "total": 242,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-choice random baseline is0.2; observed first-position success is 45/242. No fixed first-position cue demonstrated.",
+      "sample_refs": [
+        "delivery/accepted.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "Constant matching plus coefficient typography (unit numerator and one-digit denominator)",
+      "subgroup": "P-grid, printed power exponent4 or6; discovery raw",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "For polynomial prompts with printed exponent 4 or 6: retain options whose linear coefficient matches the printed constant; choose the power fraction with numerator 1 and a one-digit denominator. Do not calculate an antiderivative of the power term.",
+      "correct": 111,
+      "total": 111,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Random choice baseline0.2; even after matching constant, guessing among two/three candidates gives1/2 or1/3. This cue instead yields certainty without the required power-rule computation. Six-factor exact domain proof, fresh samples, UI screenshots and146 accepted native cue-selected submissions corroborate it.",
+      "sample_refs": [
+        "shortcut-confirmation.json",
+        "samples.json",
+        "grading-final.json",
+        "render-shortcut/question-001.png",
+        "render-shortcut/question-002.png"
+      ]
+    },
+    {
+      "cue": "Constant matching plus coefficient typography (unit numerator and one-digit denominator)",
+      "subgroup": "P-grid, printed power exponent4 or6; discovery delivered",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "For polynomial prompts with printed exponent 4 or 6: retain options whose linear coefficient matches the printed constant; choose the power fraction with numerator 1 and a one-digit denominator. Do not calculate an antiderivative of the power term.",
+      "correct": 111,
+      "total": 111,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Random choice baseline0.2; even after matching constant, guessing among two/three candidates gives1/2 or1/3. This cue instead yields certainty without the required power-rule computation. Six-factor exact domain proof, fresh samples, UI screenshots and146 accepted native cue-selected submissions corroborate it.",
+      "sample_refs": [
+        "shortcut-confirmation.json",
+        "samples.json",
+        "grading-final.json",
+        "render-shortcut/question-001.png",
+        "render-shortcut/question-002.png"
+      ]
+    },
+    {
+      "cue": "Constant matching plus coefficient typography (unit numerator and one-digit denominator)",
+      "subgroup": "P-grid, printed power exponent4 or6; fresh holdout raw",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "For polynomial prompts with printed exponent 4 or 6: retain options whose linear coefficient matches the printed constant; choose the power fraction with numerator 1 and a one-digit denominator. Do not calculate an antiderivative of the power term.",
+      "correct": 35,
+      "total": 35,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Random choice baseline0.2; even after matching constant, guessing among two/three candidates gives1/2 or1/3. This cue instead yields certainty without the required power-rule computation. Six-factor exact domain proof, fresh samples, UI screenshots and146 accepted native cue-selected submissions corroborate it.",
+      "sample_refs": [
+        "shortcut-confirmation.json",
+        "shortcut-holdout-records.json",
+        "grading-final.json",
+        "render-shortcut/question-001.png",
+        "render-shortcut/question-002.png"
+      ]
+    },
+    {
+      "cue": "Constant matching plus coefficient typography (unit numerator and one-digit denominator)",
+      "subgroup": "P-grid, printed power exponent4 or6; fresh holdout delivered",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "For polynomial prompts with printed exponent 4 or 6: retain options whose linear coefficient matches the printed constant; choose the power fraction with numerator 1 and a one-digit denominator. Do not calculate an antiderivative of the power term.",
+      "correct": 35,
+      "total": 35,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Random choice baseline0.2; even after matching constant, guessing among two/three candidates gives1/2 or1/3. This cue instead yields certainty without the required power-rule computation. Six-factor exact domain proof, fresh samples, UI screenshots and146 accepted native cue-selected submissions corroborate it.",
+      "sample_refs": [
+        "shortcut-confirmation.json",
+        "shortcut-holdout-records.json",
+        "grading-final.json",
+        "render-shortcut/question-001.png",
+        "render-shortcut/question-002.png"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "generator parameter domain and lack of rejection/resampling",
+      "requested moderate difficulty",
+      "publisher normalization and validation",
+      "captured-inventory and within-batch deduplication",
+      "fresh/usable inventory candidate filtering",
+      "difficulty-first SHA256 learner selection with positive, zero, absent weights and synthetic seen-history scenarios"
+    ],
+    "sample_refs": [
+      "delivery/delivery.json",
+      "batch-delivery/delivery.json",
+      "holdout-delivery/delivery.json",
+      "delivery-selection-summary.json",
+      "selection-final.json",
+      "shortcut-confirmation.json"
+    ],
+    "result": "The shortcut survives actual publication filtering and remains available under positive moderate learner-selection weights. Unconfigured selection chooses the smallest usable inventory ID; zero moderate weight excludes generated records by design. Live policy/history are not captured."
+  },
+  "limitations": [
+    "Finite testing cannot prove absence of all shortcuts; one reproducible defect is sufficient for revise.",
+    "Source missing controls, two keys/solutions, derivative prompt premise and absent image evidence are separately documented in source-analysis.json; no images invented.",
+    "No live policy, learner history or postpublication entity IDs captured. Selection is a faithful read-only reproduction on captured usable inventory plus synthetic appended IDs; precise live draw counts may differ.",
+    "Current inventory basis5277 may change; no publication or database writes were performed."
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "skill": "Compute an indefinite integral of a two-term sum/difference by splitting it and applying the power rule to each term, including constants, radicals, and reciprocals.",
+  "learner_operation": "Interpret each term as a power, increment its exponent and divide by the new exponent, preserve its sign, combine the two antiderivatives and one arbitrary constant; select the equivalent expression or supply the expression before a printed + C.",
+  "reasoning_steps": [
+    "Read both terms and the integration variable.",
+    "Rewrite radicals/reciprocals as rational/negative powers where needed.",
+    "Apply the sum/difference rule and the power rule independently to both terms.",
+    "Simplify and combine with one arbitrary C; match the response contract."
+  ],
+  "response_contract": {
+    "radio": "Five math choices in q-2159, q-29828, q-71169, q-71167; exactly one derivative matches the integrand and includes C.",
+    "blank": "q-133291 has field-1 followed by printed + C; expected expression is t^3/3 - 2t.",
+    "incomplete_capture": "e-371, q-113781, q-71173 lack answer fields; q-2159 and q-29828 lack stored correct keys and solutions. q-133291 omits derivative data from prompt, but solution explicitly provides it."
+  },
+  "difficulty": "Requested moderate: two-term sum-rule work, constant with monomial/radical/reciprocal and the captured radical/reciprocal pair. q-113781 is explicitly hard; do not quietly deliver it at moderate. General coefficients on nonconstant terms and three terms belong to later KPs.",
+  "invariants": [
+    "Two independently integrated simple power terms; no logarithmic exponent -1, substitution, products, trig, definite bounds, or initial conditions.",
+    "Preserve one arbitrary C, or omit it only inside a field with external + C.",
+    "Keep the integration variable and all dependent answers/solutions consistent.",
+    "Moderate workloads must respect the evidence and explicit hard tag."
+  ],
+  "essential_constraints": [
+    "Sum/difference of integrable powers with simple exponent arithmetic.",
+    "One correct choice in a radio bank; equivalent free entry for blank."
+  ],
+  "incidental_assignments": [
+    "The specific variable x/y/t, constant magnitude, integer/rational exponent, sign, term order and answer position are not mathematical invariants.",
+    "Which distractor error is displayed in which answer position may vary; correct-choice role must track recomputed mathematics."
+  ],
+  "permitted_variations": [
+    "Change constant, sign, simple power/exponent, radical index or reciprocal exponent within the same two-term workload, excluding exponent -1.",
+    "Rename variable consistently; reverse term order and vary answer positions.",
+    "Conservatively vary the stated derivative in a q-133291-style prompt and derive matching free response; explicitly repair its missing premise from the supplied worked solution."
+  ],
+  "source_refs": [
+    "e-371 / e4a94ca8-82ee-5776-a46d-b735d4ab60fb: integral x^2+1 and termwise solution",
+    "q-2159 / ebf755a0-1ba0-54d7-8cfa-097d44473af4: sqrt(x)-3, five-choice bank",
+    "q-29828 / bd6f191d-dd25-52a7-91ee-5275c10c8293: sqrt(x^5)+1/sqrt(x^5), five-choice bank",
+    "q-113781 / 8d0c3f56-ed74-5e4d-bb18-eac56541b5e8: fourth-root minus x^5, hard",
+    "q-71169 / 79aa6724-ce36-5977-907b-506fab54c4d7: reciprocal radical +4, correct -2/sqrt(x)+4x+C",
+    "q-71173 / 09d58888-0116-53f3-b47a-9d0d7153229f: 2+1/y^5 -> 2y-1/(4y^4)+C",
+    "q-133291 / 836e24be-b58e-500b-bb05-e9b2030ce5e6: field-1 + C; solution states yprime(t)=t^2-2",
+    "q-71167 / 9e4827b1-c8af-5e0e-a92c-bab0c6f19c7d: 5-x^3 -> 5x-x^4/4+C",
+    "tutorial 701 / 207bbd12-158a-58be-b000-82cace6dcdde: integral of sum equals sum of integrals; c1+c2 renamed C",
+    "tutorial 703 / 1b5ce4c9-ef44-52d9-a506-96aa15055e00: later constant-factor extension",
+    "prerequisites e-364, e-367, e-368: monomial, radical and reciprocal power rules"
+  ],
+  "evidence_gaps": [
+    "No source images captured. Missing derivative premise in q-133291 cannot be visually verified; solution supplies t^2-2.",
+    "Missing keys for two radio cases must be independently derived, not claimed as captured.",
+    "Three cases without fields cannot support an exact observed answer-control replay."
+  ],
+  "evidence_paths": [
+    "source-analysis.json"
+  ]
+}

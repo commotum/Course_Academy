@@ -1,0 +1,533 @@
+{
+  "learner_operation": "Interpret each term as a power, increment its exponent and divide by the new exponent, preserve its sign, combine the two antiderivatives and one arbitrary constant; select the equivalent expression or supply the expression before a printed + C.",
+  "fixed_features": [
+    {
+      "feature": "Exactly two simple integrable power terms, no exponent -1",
+      "justification": "e-371 and tutorial 701 establish splitting and power integration; logarithms or additional terms change skill/workload."
+    },
+    {
+      "feature": "One correct response; radio bank of five or blank with printed C",
+      "justification": "Captured q-71167/q-71169 radios and q-133291 blank establish the response contracts."
+    },
+    {
+      "feature": "Coefficient magnitude one for nonconstant integrands in conservative moderate families",
+      "justification": "General constant-factor integration is introduced in the subsequent tutorial 703 and knowledge point."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Correct expression, including sign/constant/exponent",
+      "eligible_variation": "Change signed constant, nonconstant exponent/sign and term order within the same method.",
+      "observed": "All declared exponents, 12 signed constants, both signs/orders observed pre/post filtering."
+    },
+    {
+      "role": "Correct choice position and competing errors",
+      "eligible_variation": "Shuffle choices and change which wrong coefficient/divisor accompanies each constant; preserve mathematical key.",
+      "observed": "All five positions and four omitted cells observed in each radio profile. Old typography cue removed, but n=2 maximum-magnitude cue is structurally favored."
+    },
+    {
+      "role": "Integration variable and external C",
+      "eligible_variation": "Rename variable consistently; retain omitted C only where externally printed.",
+      "observed": "x/y/t on radio, t on derivative blank; rename/order pairs preserve response."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "raw P",
+      "sample_refs": [
+        "samples.json",
+        "delivery/accepted.json",
+        "coverage.json"
+      ],
+      "result": "{'count': 103, 'semantic_instances': 69, 'n': {'6': 20, '5': 26, '2': 19, '4': 24, '3': 14}, 's': {'-1': 47, '1': 56}, 'k': {'-2': 10, '-4': 7, '-5': 8, '-3': 10, '1': 5, '-6': 10, '4': 8, '3': 12, '5': 8, '-1': 10, '2': 8, '6': 7}, 'constant_first': {'False': 56, 'True': 47}, 'variable': {'x': 41, 'y': 33, 't': 29}, 'correct_positions': {'2': 24, '4': 12, '3': 21, '1': 17, '0': 29}, 'factors': {'7/5': 7, '7/8': 8, '2/3': 14, '6/7': 5, '3/5': 4, '3/8': 9, '5/7': 11, '5/4': 9, '5/6': 5, '5/8': 8, '5/3': 2, '2': 16, '4/9': 3, '3/4': 11, '3/7': 5, '7/6': 6, '7/9': 7, '7/3': 4, '3/2': 8, '5/9': 9, '1/2': 9, '4/3': 6, '1/3': 7, '6/5': 8, '3': 9, '4/5': 3, '7/2': 4, '5/2': 4, '7/4': 4, '4/7': 1}, 'omitted_cells': {'(1, 2)': 26, '(0, 2)': 23, '(0, 1)': 30, '(1, 1)': 24}, 'offsets': {'-1': 18, '-3': 17, '1': 16, '-2': 20, '3': 18, '2': 14}}"
+    },
+    {
+      "case": "raw R",
+      "sample_refs": [
+        "samples.json",
+        "delivery/accepted.json",
+        "coverage.json"
+      ],
+      "result": "{'count': 131, 'semantic_instances': 62, 'n': {'5': 45, '3': 53, '7': 33}, 's': {'-1': 59, '1': 72}, 'k': {'4': 12, '2': 16, '-1': 9, '-2': 10, '-4': 8, '6': 10, '-3': 11, '-6': 11, '5': 9, '-5': 12, '3': 12, '1': 11}, 'constant_first': {'False': 59, 'True': 72}, 'variable': {'y': 48, 'x': 38, 't': 45}, 'correct_positions': {'2': 25, '1': 25, '4': 25, '3': 34, '0': 22}, 'factors': {'2/3': 48, '3': 47, '1/2': 56, '3/2': 32, '1/3': 44, '2': 35}, 'omitted_cells': {'(1, 1)': 39, '(0, 1)': 31, '(0, 2)': 29, '(1, 2)': 32}, 'offsets': {'1': 20, '3': 23, '-1': 21, '-3': 17, '2': 20, '-2': 30}}"
+    },
+    {
+      "case": "raw B",
+      "sample_refs": [
+        "samples.json",
+        "delivery/accepted.json",
+        "coverage.json"
+      ],
+      "result": "{'count': 126, 'semantic_instances': 77, 'n': {'2': 22, '6': 24, '5': 31, '3': 22, '4': 27}, 's': {'1': 72, '-1': 54}, 'k': {'6': 15, '-4': 11, '-3': 10, '3': 10, '-1': 15, '-5': 10, '-2': 6, '2': 7, '5': 11, '1': 7, '4': 13, '-6': 11}, 'constant_first': {'False': 77, 'True': 49}, 'variable': {'t': 126}}"
+    },
+    {
+      "case": "delivered P",
+      "sample_refs": [
+        "samples.json",
+        "delivery/accepted.json",
+        "coverage.json"
+      ],
+      "result": "{'count': 103, 'semantic_instances': 69, 'n': {'6': 20, '5': 26, '2': 19, '4': 24, '3': 14}, 's': {'-1': 47, '1': 56}, 'k': {'-2': 10, '-4': 7, '-5': 8, '-3': 10, '1': 5, '-6': 10, '4': 8, '3': 12, '5': 8, '-1': 10, '2': 8, '6': 7}, 'constant_first': {'False': 56, 'True': 47}, 'variable': {'x': 41, 'y': 33, 't': 29}, 'correct_positions': {'2': 24, '4': 12, '3': 21, '1': 17, '0': 29}, 'factors': {'7/5': 7, '7/8': 8, '2/3': 14, '6/7': 5, '3/5': 4, '3/8': 9, '5/7': 11, '5/4': 9, '5/6': 5, '5/8': 8, '5/3': 2, '2': 16, '4/9': 3, '3/4': 11, '3/7': 5, '7/6': 6, '7/9': 7, '7/3': 4, '3/2': 8, '5/9': 9, '1/2': 9, '4/3': 6, '1/3': 7, '6/5': 8, '3': 9, '4/5': 3, '7/2': 4, '5/2': 4, '7/4': 4, '4/7': 1}, 'omitted_cells': {'(1, 2)': 26, '(0, 2)': 23, '(0, 1)': 30, '(1, 1)': 24}, 'offsets': {'-1': 18, '-3': 17, '1': 16, '-2': 20, '3': 18, '2': 14}}"
+    },
+    {
+      "case": "delivered R",
+      "sample_refs": [
+        "samples.json",
+        "delivery/accepted.json",
+        "coverage.json"
+      ],
+      "result": "{'count': 131, 'semantic_instances': 62, 'n': {'5': 45, '3': 53, '7': 33}, 's': {'-1': 59, '1': 72}, 'k': {'4': 12, '2': 16, '-1': 9, '-2': 10, '-4': 8, '6': 10, '-3': 11, '-6': 11, '5': 9, '-5': 12, '3': 12, '1': 11}, 'constant_first': {'False': 59, 'True': 72}, 'variable': {'y': 48, 'x': 38, 't': 45}, 'correct_positions': {'2': 25, '1': 25, '4': 25, '3': 34, '0': 22}, 'factors': {'2/3': 48, '3': 47, '1/2': 56, '3/2': 32, '1/3': 44, '2': 35}, 'omitted_cells': {'(1, 1)': 39, '(0, 1)': 31, '(0, 2)': 29, '(1, 2)': 32}, 'offsets': {'1': 20, '3': 23, '-1': 21, '-3': 17, '2': 20, '-2': 30}}"
+    },
+    {
+      "case": "delivered B",
+      "sample_refs": [
+        "samples.json",
+        "delivery/accepted.json",
+        "coverage.json"
+      ],
+      "result": "{'count': 94, 'semantic_instances': 77, 'n': {'2': 18, '6': 19, '5': 18, '3': 18, '4': 21}, 's': {'1': 54, '-1': 40}, 'k': {'6': 12, '-4': 10, '-3': 8, '3': 8, '-1': 8, '-5': 8, '-2': 6, '2': 5, '5': 6, '1': 6, '4': 9, '-6': 8}, 'constant_first': {'False': 53, 'True': 41}, 'variable': {'t': 94}}"
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "exponent",
+      "expected": "Change the response after applying the power rule to changed evidence.",
+      "observed": "changed; independent derivative/solution checks, rendered pair and native complete-bank or blank cross-response outcomes agree.",
+      "status": "passed",
+      "justification": "Tutorial 701 sum rule and prerequisite power rule make exponents, signs and constants relevant; term order and consistent notation do not change the integral. The polynomial exponent pair preserves wrong divisors 2 and 8 by updating their derived relative factors.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-input-final.json",
+        "grading-final.json",
+        "render-full/input.json",
+        "render-full/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "constant",
+      "expected": "Change the response after applying the power rule to changed evidence.",
+      "observed": "changed; independent derivative/solution checks, rendered pair and native complete-bank or blank cross-response outcomes agree.",
+      "status": "passed",
+      "justification": "Tutorial 701 sum rule and prerequisite power rule make exponents, signs and constants relevant; term order and consistent notation do not change the integral. The polynomial exponent pair preserves wrong divisors 2 and 8 by updating their derived relative factors.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-input-final.json",
+        "grading-final.json",
+        "render-full/input.json",
+        "render-full/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "sign",
+      "expected": "Change the response after applying the power rule to changed evidence.",
+      "observed": "changed; independent derivative/solution checks, rendered pair and native complete-bank or blank cross-response outcomes agree.",
+      "status": "passed",
+      "justification": "Tutorial 701 sum rule and prerequisite power rule make exponents, signs and constants relevant; term order and consistent notation do not change the integral. The polynomial exponent pair preserves wrong divisors 2 and 8 by updating their derived relative factors.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-input-final.json",
+        "grading-final.json",
+        "render-full/input.json",
+        "render-full/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "term_order",
+      "expected": "Preserve the mathematical response, allowing consistent variable substitution.",
+      "observed": "preserved; independent derivative/solution checks, rendered pair and native complete-bank or blank cross-response outcomes agree.",
+      "status": "passed",
+      "justification": "Tutorial 701 sum rule and prerequisite power rule make exponents, signs and constants relevant; term order and consistent notation do not change the integral. The polynomial exponent pair preserves wrong divisors 2 and 8 by updating their derived relative factors.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-input-final.json",
+        "grading-final.json",
+        "render-full/input.json",
+        "render-full/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "variable",
+      "expected": "Preserve the mathematical response, allowing consistent variable substitution.",
+      "observed": "preserved under renaming; independent derivative/solution checks, rendered pair and native complete-bank or blank cross-response outcomes agree.",
+      "status": "passed",
+      "justification": "Tutorial 701 sum rule and prerequisite power rule make exponents, signs and constants relevant; term order and consistent notation do not change the integral. The polynomial exponent pair preserves wrong divisors 2 and 8 by updating their derived relative factors.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-input-final.json",
+        "grading-final.json",
+        "render-full/input.json",
+        "render-full/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "blank_exponent",
+      "expected": "Change the response after applying the power rule to changed evidence.",
+      "observed": "changed; independent derivative/solution checks, rendered pair and native complete-bank or blank cross-response outcomes agree.",
+      "status": "passed",
+      "justification": "Tutorial 701 sum rule and prerequisite power rule make exponents, signs and constants relevant; term order and consistent notation do not change the integral. The polynomial exponent pair preserves wrong divisors 2 and 8 by updating their derived relative factors.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-input-final.json",
+        "grading-final.json",
+        "render-full/input.json",
+        "render-full/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "blank_term_order",
+      "expected": "Preserve the mathematical response, allowing consistent variable substitution.",
+      "observed": "preserved; independent derivative/solution checks, rendered pair and native complete-bank or blank cross-response outcomes agree.",
+      "status": "passed",
+      "justification": "Tutorial 701 sum rule and prerequisite power rule make exponents, signs and constants relevant; term order and consistent notation do not change the integral. The polynomial exponent pair preserves wrong divisors 2 and 8 by updating their derived relative factors.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-input-final.json",
+        "grading-final.json",
+        "render-full/input.json",
+        "render-full/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "reciprocal_exponent",
+      "expected": "Change the response after applying the power rule to changed evidence.",
+      "observed": "changed; independent derivative/solution checks, rendered pair and native complete-bank or blank cross-response outcomes agree.",
+      "status": "passed",
+      "justification": "Tutorial 701 sum rule and prerequisite power rule make exponents, signs and constants relevant; term order and consistent notation do not change the integral. The polynomial exponent pair preserves wrong divisors 2 and 8 by updating their derived relative factors.",
+      "sample_refs": [
+        "reciprocal-counterfactual-records.json",
+        "reciprocal-counterfactual-results.json",
+        "grader-input-final.json",
+        "grading-final.json",
+        "render-full/input.json",
+        "render-full/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "reciprocal_sign",
+      "expected": "Change the response after applying the power rule to changed evidence.",
+      "observed": "changed; independent derivative/solution checks, rendered pair and native complete-bank or blank cross-response outcomes agree.",
+      "status": "passed",
+      "justification": "Tutorial 701 sum rule and prerequisite power rule make exponents, signs and constants relevant; term order and consistent notation do not change the integral. The polynomial exponent pair preserves wrong divisors 2 and 8 by updating their derived relative factors.",
+      "sample_refs": [
+        "reciprocal-counterfactual-records.json",
+        "reciprocal-counterfactual-results.json",
+        "grader-input-final.json",
+        "grading-final.json",
+        "render-full/input.json",
+        "render-full/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "reciprocal_order",
+      "expected": "Preserve the mathematical response, allowing consistent variable substitution.",
+      "observed": "preserved; independent derivative/solution checks, rendered pair and native complete-bank or blank cross-response outcomes agree.",
+      "status": "passed",
+      "justification": "Tutorial 701 sum rule and prerequisite power rule make exponents, signs and constants relevant; term order and consistent notation do not change the integral. The polynomial exponent pair preserves wrong divisors 2 and 8 by updating their derived relative factors.",
+      "sample_refs": [
+        "reciprocal-counterfactual-records.json",
+        "reciprocal-counterfactual-results.json",
+        "grader-input-final.json",
+        "grading-final.json",
+        "render-full/input.json",
+        "render-full/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Change competing polynomial divisors while fixing the entire integrand.",
+      "expected": "Preserve the correct integral and explanation while changing relative coefficient rank.",
+      "observed": "Paired n=3..6 low/high divisor controls preserve answers; native full-bank checks pass. n=2 high-divisor control confirms valid alternative bank.",
+      "status": "passed",
+      "justification": "Incorrect-option assignments are incidental to sum-rule integration; their role need not stay fixed.",
+      "sample_refs": [
+        "assignment-control-records.json",
+        "assignment-control-results.json",
+        "grader-input-final.json",
+        "grading-final.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "display position",
+      "subgroup": "raw P",
+      "scope": "within_template",
+      "strategy": "first",
+      "correct": 29,
+      "total": 103,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform five-choice guessing. No fixed answer position; former polynomial typography cue leaves multiple candidates across all 420 allowed revised assignments. A finite sample does not exclude every cue.",
+      "sample_refs": [
+        "conditional-shortcut-results.json",
+        "samples.json",
+        "delivery/accepted.json",
+        "revised-domain-results.json"
+      ]
+    },
+    {
+      "cue": "display position",
+      "subgroup": "raw P",
+      "scope": "within_template",
+      "strategy": "last",
+      "correct": 12,
+      "total": 103,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform five-choice guessing. No fixed answer position; former polynomial typography cue leaves multiple candidates across all 420 allowed revised assignments. A finite sample does not exclude every cue.",
+      "sample_refs": [
+        "conditional-shortcut-results.json",
+        "samples.json",
+        "delivery/accepted.json",
+        "revised-domain-results.json"
+      ]
+    },
+    {
+      "cue": "constant match plus unit numerator/single-digit denominator",
+      "subgroup": "raw P",
+      "scope": "within_template",
+      "strategy": "old_unit_numerator_cue",
+      "correct": 0,
+      "total": 103,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform five-choice guessing. No fixed answer position; former polynomial typography cue leaves multiple candidates across all 420 allowed revised assignments. A finite sample does not exclude every cue.",
+      "sample_refs": [
+        "conditional-shortcut-results.json",
+        "samples.json",
+        "delivery/accepted.json",
+        "revised-domain-results.json"
+      ]
+    },
+    {
+      "cue": "display position",
+      "subgroup": "raw R",
+      "scope": "within_template",
+      "strategy": "first",
+      "correct": 22,
+      "total": 131,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform five-choice guessing. No fixed answer position; former polynomial typography cue leaves multiple candidates across all 420 allowed revised assignments. A finite sample does not exclude every cue.",
+      "sample_refs": [
+        "conditional-shortcut-results.json",
+        "samples.json",
+        "delivery/accepted.json",
+        "revised-domain-results.json"
+      ]
+    },
+    {
+      "cue": "display position",
+      "subgroup": "raw R",
+      "scope": "within_template",
+      "strategy": "last",
+      "correct": 25,
+      "total": 131,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform five-choice guessing. No fixed answer position; former polynomial typography cue leaves multiple candidates across all 420 allowed revised assignments. A finite sample does not exclude every cue.",
+      "sample_refs": [
+        "conditional-shortcut-results.json",
+        "samples.json",
+        "delivery/accepted.json",
+        "revised-domain-results.json"
+      ]
+    },
+    {
+      "cue": "constant match plus unit numerator/single-digit denominator",
+      "subgroup": "raw R",
+      "scope": "within_template",
+      "strategy": "old_unit_numerator_cue",
+      "correct": 0,
+      "total": 131,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform five-choice guessing. No fixed answer position; former polynomial typography cue leaves multiple candidates across all 420 allowed revised assignments. A finite sample does not exclude every cue.",
+      "sample_refs": [
+        "conditional-shortcut-results.json",
+        "samples.json",
+        "delivery/accepted.json",
+        "revised-domain-results.json"
+      ]
+    },
+    {
+      "cue": "display position",
+      "subgroup": "delivered P",
+      "scope": "within_template",
+      "strategy": "first",
+      "correct": 29,
+      "total": 103,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform five-choice guessing. No fixed answer position; former polynomial typography cue leaves multiple candidates across all 420 allowed revised assignments. A finite sample does not exclude every cue.",
+      "sample_refs": [
+        "conditional-shortcut-results.json",
+        "samples.json",
+        "delivery/accepted.json",
+        "revised-domain-results.json"
+      ]
+    },
+    {
+      "cue": "display position",
+      "subgroup": "delivered P",
+      "scope": "within_template",
+      "strategy": "last",
+      "correct": 12,
+      "total": 103,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform five-choice guessing. No fixed answer position; former polynomial typography cue leaves multiple candidates across all 420 allowed revised assignments. A finite sample does not exclude every cue.",
+      "sample_refs": [
+        "conditional-shortcut-results.json",
+        "samples.json",
+        "delivery/accepted.json",
+        "revised-domain-results.json"
+      ]
+    },
+    {
+      "cue": "constant match plus unit numerator/single-digit denominator",
+      "subgroup": "delivered P",
+      "scope": "within_template",
+      "strategy": "old_unit_numerator_cue",
+      "correct": 0,
+      "total": 103,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform five-choice guessing. No fixed answer position; former polynomial typography cue leaves multiple candidates across all 420 allowed revised assignments. A finite sample does not exclude every cue.",
+      "sample_refs": [
+        "conditional-shortcut-results.json",
+        "samples.json",
+        "delivery/accepted.json",
+        "revised-domain-results.json"
+      ]
+    },
+    {
+      "cue": "display position",
+      "subgroup": "delivered R",
+      "scope": "within_template",
+      "strategy": "first",
+      "correct": 22,
+      "total": 131,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform five-choice guessing. No fixed answer position; former polynomial typography cue leaves multiple candidates across all 420 allowed revised assignments. A finite sample does not exclude every cue.",
+      "sample_refs": [
+        "conditional-shortcut-results.json",
+        "samples.json",
+        "delivery/accepted.json",
+        "revised-domain-results.json"
+      ]
+    },
+    {
+      "cue": "display position",
+      "subgroup": "delivered R",
+      "scope": "within_template",
+      "strategy": "last",
+      "correct": 25,
+      "total": 131,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform five-choice guessing. No fixed answer position; former polynomial typography cue leaves multiple candidates across all 420 allowed revised assignments. A finite sample does not exclude every cue.",
+      "sample_refs": [
+        "conditional-shortcut-results.json",
+        "samples.json",
+        "delivery/accepted.json",
+        "revised-domain-results.json"
+      ]
+    },
+    {
+      "cue": "constant match plus unit numerator/single-digit denominator",
+      "subgroup": "delivered R",
+      "scope": "within_template",
+      "strategy": "old_unit_numerator_cue",
+      "correct": 0,
+      "total": 131,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform five-choice guessing. No fixed answer position; former polynomial typography cue leaves multiple candidates across all 420 allowed revised assignments. A finite sample does not exclude every cue.",
+      "sample_refs": [
+        "conditional-shortcut-results.json",
+        "samples.json",
+        "delivery/accepted.json",
+        "revised-domain-results.json"
+      ]
+    },
+    {
+      "cue": "quadratic prompt and maximum absolute power coefficient after matching the constant",
+      "subgroup": "rank-holdout-records.json P exponent 2",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "For a printed quadratic term, integrate only the constant; among the matching linear terms choose largest magnitude power coefficient. Never calculate the quadratic antiderivative.",
+      "correct": 30,
+      "total": 35,
+      "baseline": 0.3952380952380952,
+      "disposition": "defect",
+      "conclusion": "Baseline averages uniform choice among the 2 or 3 constant-matched options, after granting correct constant integration. Fresh success 30/35 versus 0.395 baseline; exact assignment-domain success 66/84 versus 5/12 baseline. This partial predictor bypasses integration of the nonconstant summand; counterexamples are retained and the heuristic is not claimed perfect.",
+      "sample_refs": [
+        "rank-holdout-records.json",
+        "rank-confirmation.json",
+        "grader-input-final.json",
+        "grading-final.json",
+        "rank-render-records.json"
+      ]
+    },
+    {
+      "cue": "quadratic prompt and maximum absolute power coefficient after matching the constant",
+      "subgroup": "rank-delivery/accepted.json P exponent 2",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "For a printed quadratic term, integrate only the constant; among the matching linear terms choose largest magnitude power coefficient. Never calculate the quadratic antiderivative.",
+      "correct": 30,
+      "total": 35,
+      "baseline": 0.3952380952380952,
+      "disposition": "defect",
+      "conclusion": "Baseline averages uniform choice among the 2 or 3 constant-matched options, after granting correct constant integration. Fresh success 30/35 versus 0.395 baseline; exact assignment-domain success 66/84 versus 5/12 baseline. This partial predictor bypasses integration of the nonconstant summand; counterexamples are retained and the heuristic is not claimed perfect.",
+      "sample_refs": [
+        "rank-delivery/accepted.json",
+        "rank-confirmation.json",
+        "grader-input-final.json",
+        "grading-final.json",
+        "rank-render-records.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "generator parameter eligibility and no rejection/resampling branch",
+      "requested moderate difficulty",
+      "actual shared normalization and validation",
+      "inventory and batch deduplication",
+      "fresh/usable candidates and weighted/unconfigured learner selection"
+    ],
+    "sample_refs": [
+      "samples.json",
+      "runner-batch.json",
+      "delivery/accepted.json",
+      "batch-delivery/accepted.json",
+      "rank-delivery/accepted.json",
+      "delivery-selection-summary.json",
+      "selection-results.json"
+    ],
+    "result": "360\u2192328 (32 B duplicates), runner 5\u21925, fresh n2 subgroup 35\u219235; all sampled P/R decision cases survive. Weighted selection retains the cue in eligible n2 cases. No live database mutation or publication."
+  },
+  "limitations": [
+    "Captured inventory basis 5277 only; later inventory and actual learner history/policy are unavailable. Selection uses synthetic appended entity IDs and documented eligibility assumptions.",
+    "The fresh runner batch contains R/B only; independent samples supply P coverage.",
+    "The rank heuristic is imperfect: 5/35 fresh cases fail; 18/84 domain assignments fail. This is a demonstrated structural bias, not a claim that answer rank is fixed.",
+    "No finite audit proves absence of every shortcut. Missing original fields/keys and derivative premise are recorded in source-analysis.json."
+  ]
+}
