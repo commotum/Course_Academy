@@ -1,0 +1,115 @@
+{
+  "generator_version": "1.1.0",
+  "supported_difficulty": "moderate",
+  "learner_operation": "Split two summands, rewrite reciprocals as powers where needed, increment each exponent and divide by it, then combine with one C; blanks omit the supplied C.",
+  "specification": "../../instructional-account.md",
+  "fidelity": {
+    "passes": true,
+    "source_math": 7,
+    "captured_choices": 21,
+    "complete_radio_banks": 4,
+    "missing_evidence": "See fidelity.json and instructional-account.md; preserved rather than silently inventing response contracts."
+  },
+  "correctness": {
+    "passes": true,
+    "exhaustive_polynomial_assignments": 840,
+    "independently_parsed_complete_banks": 105,
+    "fresh_P": 73,
+    "boundaries": 16,
+    "R_B_regression": 8,
+    "controlled_pairs": 22,
+    "supplemental_controls": 12
+  },
+  "grading": {
+    "passes": true,
+    "accepted_checks": 226,
+    "rejected_checks": 838,
+    "unresolved": 0
+  },
+  "decision_variation": {
+    "passes": true,
+    "answer_bearing_roles": [
+      "signed constant",
+      "signed power",
+      "power-rule exponent/divisor",
+      "distractor divisor assignments",
+      "correct option position"
+    ],
+    "repair": "P-grid samples two wrong divisors 2..9 excluding n+1; all power coefficients are signed unit fractions with one-digit denominators.",
+    "controlled_changes": "Exponent/sign/constant changes update prompt, solution and key, checked through native grading; order/variable/bank changes preserve the mathematical response as specified.",
+    "review_probe_before": {
+      "affected_attempts": 27,
+      "affected_unique_correct": 0,
+      "passes": true
+    },
+    "review_probe_after": {
+      "affected_attempts": 27,
+      "affected_unique_correct": 0,
+      "passes": true
+    },
+    "exhaustive_typography_cue_unique_correct": 0,
+    "n5_gap": "Eight normal n=5 examples happened to share smallest coefficient magnitude after matching constant. All 12 targeted same-integrand controls survive delivery and native grading, and all three ranks occur in each sign/order subgroup. See rank-controls-results.json; no forced sampling balance.",
+    "counterexamples": "counterfactuals.json; rank-controls.json",
+    "before_after_coverage": "coverage-before.json; coverage-after.json",
+    "selected_coverage": "coverage-selection.json; shortcut-selection.json"
+  },
+  "delivery": {
+    "before": 240,
+    "after": 218,
+    "semantic_before": 168,
+    "semantic_after": 168,
+    "delivery_report": "delivery/delivery.json",
+    "selection": "All accepted records moderate; earlier within-positive-band uniform selection model remains applicable. No database/learner history access; no claim about live order or draws.",
+    "passes": true
+  },
+  "selection": {
+    "rule": "question_selection.rs select() lines 125-197: one positive-weight moderate band, SHA256 uniform(8)",
+    "pool": 230,
+    "normal_delivered": 218,
+    "targeted_controls_delivered": 12,
+    "draws": 1024,
+    "unique_selected": 228,
+    "templates": {
+      "B": 322,
+      "R": 333,
+      "P": 369
+    },
+    "selected_control_records": 12,
+    "semantics_delivered": 168,
+    "semantics_selected": 166,
+    "limits": [
+      "Uses synthetic sorted UUID order instead of unavailable database entity IDs; validates uniform within-band membership, not actual live draws.",
+      "Learner history, zero moderate weight, database identity collisions and concurrent inventory changes are unavailable offline.",
+      "Without a difficulty policy the selector returns the first database ID; live ordering is not inferred.",
+      "Targeted controls are validation inputs admitted by the same generator domain, not forced sampling quotas."
+    ]
+  },
+  "rendering": {
+    "passes": true,
+    "actual_ui_records": 8,
+    "visually_inspected": 8,
+    "reports": [
+      "render/rendering.json",
+      "rank-render/rendering.json",
+      "visual-inspection.json"
+    ]
+  },
+  "runtime": {
+    "determinism": true,
+    "relocation": true,
+    "invalid_banks_rejected": 6,
+    "dependencies": {
+      "python": "3.13.5",
+      "packages": {}
+    },
+    "passes": true
+  },
+  "limits": [
+    "Moderate only. Easy has no labelled source; hard source has no captured response fields.",
+    "Two additional source radios lack difficulty/correct links/solutions; retained in source replay with documented reconstruction, not extrapolated.",
+    "Selection is an offline read-only reproduction on a validation pool. Live learner history, database ordering and concurrent inventory changes are unavailable.",
+    "Tests address declared cues and the full polynomial distractor domain; no claim excludes every possible untested strategy."
+  ],
+  "database_writes": 0,
+  "publication_performed": false
+}

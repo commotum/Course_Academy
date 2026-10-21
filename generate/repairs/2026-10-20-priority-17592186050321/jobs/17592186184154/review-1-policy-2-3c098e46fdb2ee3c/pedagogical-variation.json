@@ -1,0 +1,693 @@
+{
+  "learner_operation": "Read the integrand, simplify a product or quotient when necessary, identify each term's coefficient and exponent, integrate each term (raise the exponent by one and divide by that new exponent), preserve signs and combine. Radio learners must distinguish the resulting primitive from near-miss primitives; a blank preceding +C requests only its nonconstant part.",
+  "fixed_features": [
+    {
+      "feature": "Two nonzero power terms, indefinite integral and one integration constant.",
+      "justification": "Tutorial 703 and e-372 establish linearity plus extraction of constants; source moderate records add one product/quotient rewrite."
+    },
+    {
+      "feature": "Five-choice radio banks for quotient/radical, blank without C for explicit-f family.",
+      "justification": "Source q-49059/q-49063 and q-167635/q-167587/q-167617 respectively establish these response contracts."
+    },
+    {
+      "feature": "x>0 for half powers; x!=0 for rational quotients; avoid integrand exponent -1.",
+      "justification": "Real radical notation and the displayed power-rule method require these domains/exclusions."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Correct primitive within each visible quotient denominator profile.",
+      "eligible_variation": "Vary the polynomial primitive exponent and distractor ranks while preserving two-term quotient integration; denominator x^4 does not require a maximal polynomial answer exponent.",
+      "observed": "FAIL: denominator x^4 fixes the correct answer to largest visible exponent (and smallest absolute polynomial coefficient), across every permitted p,a,b."
+    },
+    {
+      "role": "Radio candidate identity, sign and coefficient assignments.",
+      "eligible_variation": "Each of the five source-shaped candidates can be correct if the displayed integrand supports it; both signs and distractor positions may vary.",
+      "observed": "All ten family/role combinations and all four sign pairs observed; aggregate variation masks the denominator-x^4 defect."
+    },
+    {
+      "role": "Explicit-f blank coefficients and canceled common degree.",
+      "eligible_variation": "a,b and signs change the primitive; degree 2/3 changes presentation but cancels.",
+      "observed": "Both degrees, both signs and boundary coefficients covered; controlled relevant and irrelevant dependencies pass."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "All supported moderate source banks",
+      "sample_refs": [
+        "source-replays.json",
+        "source-replay-results.json"
+      ],
+      "result": "5/5 source cases, complete 5+5+1+1+1 answer banks, with documented context repairs."
+    },
+    {
+      "case": "All radio roles and sign cases at source-grounded boundaries",
+      "sample_refs": [
+        "controlled.json",
+        "sample.json",
+        "sampling.json",
+        "variation-results.json"
+      ],
+      "result": "48 directed cases plus 240 fresh sampled records; p=3,4,5, both radical forms, quotient denominators 2/3/4 and both blank degrees represented."
+    },
+    {
+      "case": "Recognizable quotient denominator x^4",
+      "sample_refs": [
+        "shortcut-exhaustive.json",
+        "shortcut-results.json",
+        "delivery-sample/accepted.json",
+        "runner-batch.json"
+      ],
+      "result": "FAIL: largest-visible-exponent shortcut 288/288 allowed slot assignments, 17/17 delivered independent samples and 2/2 runner items."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Change selected primitive role 0 to roles 1–4, holding complete candidate bank and a,b,p fixed, separately for quotient and radical.",
+      "expected": "The displayed integrand and worked primitive must change; the previous response must be rejected.",
+      "observed": "All eight pairs change integrands, keys and exact solution expressions consistently. Native grader accepts each new response and rejects each old response. All pairs are rendered.",
+      "status": "passed",
+      "justification": "Tutorials 701/703 and the source examples make the integral depend on coefficients/exponents, not option order or a canceled common power.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "grader-all-input.json",
+        "grader-all-report.json",
+        "render-records.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "Hold blank a=2 and degree=2; change b=4 to b=-4.",
+      "expected": "Primitive changes from 2x-4/x to 2x+4/x.",
+      "observed": "Expected answers and solutions change; old entries rejected and new equivalents accepted by native grader; screenshots 029/030 show both.",
+      "status": "passed",
+      "justification": "Tutorials 701/703 and the source examples make the integral depend on coefficients/exponents, not option order or a canceled common power.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "grader-all-report.json",
+        "render-records.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Hold a=2,b=4; change numerator and denominator degree together from 2 to 3.",
+      "expected": "After cancellation the integrand and response remain 2+4/x^2 and 2x-4/x.",
+      "observed": "Prompt and initial solution fraction follow new degree; both keys remain equal and both responses grade accepted. Renderer shows both degree cases.",
+      "status": "passed",
+      "justification": "Tutorials 701/703 and the source examples make the integral depend on coefficients/exponents, not option order or a canceled common power.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "grader-all-report.json",
+        "render-records.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Reverse radical radio display order while holding mathematical instance fixed.",
+      "expected": "The answer value and worked solution remain the same despite movement of its position.",
+      "observed": "Values and explanations are equal and native grader accepts the same value using the correct per-record UUID. Both render successfully.",
+      "status": "passed",
+      "justification": "Tutorials 701/703 and the source examples make the integral depend on coefficients/exponents, not option order or a canceled common power.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "grader-all-report.json",
+        "render-records.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "choice position",
+      "subgroup": "all",
+      "scope": "overall",
+      "strategy": "first",
+      "correct": 29,
+      "total": 159,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "29/159 vs uniform five-choice rate 0.20. This surface strategy is not uniformly correct in this tested subgroup.",
+      "sample_refs": [
+        "delivery-sample/accepted.json"
+      ]
+    },
+    {
+      "cue": "choice position",
+      "subgroup": "all",
+      "scope": "overall",
+      "strategy": "last",
+      "correct": 28,
+      "total": 159,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "28/159 vs uniform five-choice rate 0.20. This surface strategy is not uniformly correct in this tested subgroup.",
+      "sample_refs": [
+        "delivery-sample/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible TeX length",
+      "subgroup": "all",
+      "scope": "overall",
+      "strategy": "shortest",
+      "correct": 36,
+      "total": 159,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "36/159 vs uniform five-choice rate 0.20. This surface strategy is not uniformly correct in this tested subgroup.",
+      "sample_refs": [
+        "delivery-sample/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible TeX length",
+      "subgroup": "all",
+      "scope": "overall",
+      "strategy": "longest",
+      "correct": 30,
+      "total": 159,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "30/159 vs uniform five-choice rate 0.20. This surface strategy is not uniformly correct in this tested subgroup.",
+      "sample_refs": [
+        "delivery-sample/accepted.json"
+      ]
+    },
+    {
+      "cue": "choice position",
+      "subgroup": "quotient",
+      "scope": "within_template",
+      "strategy": "first",
+      "correct": 11,
+      "total": 85,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "11/85 vs uniform five-choice rate 0.20. This surface strategy is not uniformly correct in this tested subgroup.",
+      "sample_refs": [
+        "delivery-sample/accepted.json"
+      ]
+    },
+    {
+      "cue": "choice position",
+      "subgroup": "quotient",
+      "scope": "within_template",
+      "strategy": "last",
+      "correct": 14,
+      "total": 85,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "14/85 vs uniform five-choice rate 0.20. This surface strategy is not uniformly correct in this tested subgroup.",
+      "sample_refs": [
+        "delivery-sample/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible TeX length",
+      "subgroup": "quotient",
+      "scope": "within_template",
+      "strategy": "shortest",
+      "correct": 22,
+      "total": 85,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "22/85 vs uniform five-choice rate 0.20. This surface strategy is not uniformly correct in this tested subgroup.",
+      "sample_refs": [
+        "delivery-sample/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible TeX length",
+      "subgroup": "quotient",
+      "scope": "within_template",
+      "strategy": "longest",
+      "correct": 18,
+      "total": 85,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "18/85 vs uniform five-choice rate 0.20. This surface strategy is not uniformly correct in this tested subgroup.",
+      "sample_refs": [
+        "delivery-sample/accepted.json"
+      ]
+    },
+    {
+      "cue": "choice position",
+      "subgroup": "radical",
+      "scope": "within_template",
+      "strategy": "first",
+      "correct": 18,
+      "total": 74,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "18/74 vs uniform five-choice rate 0.20. This surface strategy is not uniformly correct in this tested subgroup.",
+      "sample_refs": [
+        "delivery-sample/accepted.json"
+      ]
+    },
+    {
+      "cue": "choice position",
+      "subgroup": "radical",
+      "scope": "within_template",
+      "strategy": "last",
+      "correct": 14,
+      "total": 74,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "14/74 vs uniform five-choice rate 0.20. This surface strategy is not uniformly correct in this tested subgroup.",
+      "sample_refs": [
+        "delivery-sample/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible TeX length",
+      "subgroup": "radical",
+      "scope": "within_template",
+      "strategy": "shortest",
+      "correct": 14,
+      "total": 74,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "14/74 vs uniform five-choice rate 0.20. This surface strategy is not uniformly correct in this tested subgroup.",
+      "sample_refs": [
+        "delivery-sample/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible TeX length",
+      "subgroup": "radical",
+      "scope": "within_template",
+      "strategy": "longest",
+      "correct": 12,
+      "total": 74,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "12/74 vs uniform five-choice rate 0.20. This surface strategy is not uniformly correct in this tested subgroup.",
+      "sample_refs": [
+        "delivery-sample/accepted.json"
+      ]
+    },
+    {
+      "cue": "choice position",
+      "subgroup": "quotient-denominator-2",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "first",
+      "correct": 7,
+      "total": 53,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "7/53 vs uniform five-choice rate 0.20. This surface strategy is not uniformly correct in this tested subgroup.",
+      "sample_refs": [
+        "delivery-sample/accepted.json"
+      ]
+    },
+    {
+      "cue": "choice position",
+      "subgroup": "quotient-denominator-2",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "last",
+      "correct": 7,
+      "total": 53,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "7/53 vs uniform five-choice rate 0.20. This surface strategy is not uniformly correct in this tested subgroup.",
+      "sample_refs": [
+        "delivery-sample/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible TeX length",
+      "subgroup": "quotient-denominator-2",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "shortest",
+      "correct": 22,
+      "total": 53,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "22/53 vs uniform five-choice rate 0.20. This surface strategy is not uniformly correct in this tested subgroup.",
+      "sample_refs": [
+        "delivery-sample/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible TeX length",
+      "subgroup": "quotient-denominator-2",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "longest",
+      "correct": 0,
+      "total": 53,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/53 vs uniform five-choice rate 0.20. This surface strategy is not uniformly correct in this tested subgroup.",
+      "sample_refs": [
+        "delivery-sample/accepted.json"
+      ]
+    },
+    {
+      "cue": "choice position",
+      "subgroup": "quotient-denominator-3",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "first",
+      "correct": 2,
+      "total": 15,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/15 vs uniform five-choice rate 0.20. This surface strategy is not uniformly correct in this tested subgroup.",
+      "sample_refs": [
+        "delivery-sample/accepted.json"
+      ]
+    },
+    {
+      "cue": "choice position",
+      "subgroup": "quotient-denominator-3",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "last",
+      "correct": 2,
+      "total": 15,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/15 vs uniform five-choice rate 0.20. This surface strategy is not uniformly correct in this tested subgroup.",
+      "sample_refs": [
+        "delivery-sample/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible TeX length",
+      "subgroup": "quotient-denominator-3",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "shortest",
+      "correct": 0,
+      "total": 15,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/15 vs uniform five-choice rate 0.20. This surface strategy is not uniformly correct in this tested subgroup.",
+      "sample_refs": [
+        "delivery-sample/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible TeX length",
+      "subgroup": "quotient-denominator-3",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "longest",
+      "correct": 6,
+      "total": 15,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "6/15 vs uniform five-choice rate 0.20. This surface strategy is not uniformly correct in this tested subgroup.",
+      "sample_refs": [
+        "delivery-sample/accepted.json"
+      ]
+    },
+    {
+      "cue": "choice position",
+      "subgroup": "quotient-denominator-4",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "first",
+      "correct": 2,
+      "total": 17,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/17 vs uniform five-choice rate 0.20. This surface strategy is not uniformly correct in this tested subgroup.",
+      "sample_refs": [
+        "delivery-sample/accepted.json"
+      ]
+    },
+    {
+      "cue": "choice position",
+      "subgroup": "quotient-denominator-4",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "last",
+      "correct": 5,
+      "total": 17,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "5/17 vs uniform five-choice rate 0.20. This surface strategy is not uniformly correct in this tested subgroup.",
+      "sample_refs": [
+        "delivery-sample/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible TeX length",
+      "subgroup": "quotient-denominator-4",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "shortest",
+      "correct": 0,
+      "total": 17,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/17 vs uniform five-choice rate 0.20. This surface strategy is not uniformly correct in this tested subgroup.",
+      "sample_refs": [
+        "delivery-sample/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible TeX length",
+      "subgroup": "quotient-denominator-4",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "longest",
+      "correct": 12,
+      "total": 17,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "12/17 vs uniform five-choice rate 0.20. This surface strategy is not uniformly correct in this tested subgroup.",
+      "sample_refs": [
+        "delivery-sample/accepted.json"
+      ]
+    },
+    {
+      "cue": "choice position",
+      "subgroup": "radical-product",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "first",
+      "correct": 10,
+      "total": 46,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "10/46 vs uniform five-choice rate 0.20. This surface strategy is not uniformly correct in this tested subgroup.",
+      "sample_refs": [
+        "delivery-sample/accepted.json"
+      ]
+    },
+    {
+      "cue": "choice position",
+      "subgroup": "radical-product",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "last",
+      "correct": 10,
+      "total": 46,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "10/46 vs uniform five-choice rate 0.20. This surface strategy is not uniformly correct in this tested subgroup.",
+      "sample_refs": [
+        "delivery-sample/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible TeX length",
+      "subgroup": "radical-product",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "shortest",
+      "correct": 10,
+      "total": 46,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "10/46 vs uniform five-choice rate 0.20. This surface strategy is not uniformly correct in this tested subgroup.",
+      "sample_refs": [
+        "delivery-sample/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible TeX length",
+      "subgroup": "radical-product",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "longest",
+      "correct": 9,
+      "total": 46,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "9/46 vs uniform five-choice rate 0.20. This surface strategy is not uniformly correct in this tested subgroup.",
+      "sample_refs": [
+        "delivery-sample/accepted.json"
+      ]
+    },
+    {
+      "cue": "choice position",
+      "subgroup": "radical-reciprocal",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "first",
+      "correct": 8,
+      "total": 28,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "8/28 vs uniform five-choice rate 0.20. This surface strategy is not uniformly correct in this tested subgroup.",
+      "sample_refs": [
+        "delivery-sample/accepted.json"
+      ]
+    },
+    {
+      "cue": "choice position",
+      "subgroup": "radical-reciprocal",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "last",
+      "correct": 4,
+      "total": 28,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "4/28 vs uniform five-choice rate 0.20. This surface strategy is not uniformly correct in this tested subgroup.",
+      "sample_refs": [
+        "delivery-sample/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible TeX length",
+      "subgroup": "radical-reciprocal",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "shortest",
+      "correct": 4,
+      "total": 28,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "4/28 vs uniform five-choice rate 0.20. This surface strategy is not uniformly correct in this tested subgroup.",
+      "sample_refs": [
+        "delivery-sample/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible TeX length",
+      "subgroup": "radical-reciprocal",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "longest",
+      "correct": 3,
+      "total": 28,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/28 vs uniform five-choice rate 0.20. This surface strategy is not uniformly correct in this tested subgroup.",
+      "sample_refs": [
+        "delivery-sample/accepted.json"
+      ]
+    },
+    {
+      "cue": "reciprocal exponent in prompt denominator",
+      "subgroup": "quotient-denominator-3",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select primitive whose reciprocal exponent is denominator exponent minus one",
+      "correct": 15,
+      "total": 15,
+      "baseline": 0.2,
+      "disposition": "intended_skill",
+      "conclusion": "15/15 vs uniform 0.20. This derives a necessary antiderivative exponent by the assessed power rule; it is a valid mathematical simplification, not a label or position cue. Source q-49059 similarly allows elimination by one exponent.",
+      "sample_refs": [
+        "delivery-sample/accepted.json"
+      ]
+    },
+    {
+      "cue": "reciprocal exponent in prompt denominator",
+      "subgroup": "quotient-denominator-4",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select primitive whose reciprocal exponent is denominator exponent minus one",
+      "correct": 17,
+      "total": 17,
+      "baseline": 0.2,
+      "disposition": "intended_skill",
+      "conclusion": "17/17 vs uniform 0.20. This derives a necessary antiderivative exponent by the assessed power rule; it is a valid mathematical simplification, not a label or position cue. Source q-49059 similarly allows elimination by one exponent.",
+      "sample_refs": [
+        "delivery-sample/accepted.json"
+      ]
+    },
+    {
+      "cue": "prompt quotient denominator x^4 and answer exponent rank",
+      "subgroup": "exhaustive: quotient denominator x^4",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the option containing the largest visible x exponent; ignore numerator, coefficients, signs and power-rule integration.",
+      "correct": 288,
+      "total": 288,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "288/288 versus 0.20 uniform five-choice baseline. Candidate 4 always has the largest exponent p+2 and is the sole source of denominator x^4 prompts. This cross-term bank correlation is not an integration rule. Deriving reciprocal exponent -3 would instead be intended mathematical reasoning.",
+      "sample_refs": [
+        "shortcut-exhaustive.json",
+        "shortcut-results.json",
+        "grader-all-input.json",
+        "grader-all-report.json"
+      ]
+    },
+    {
+      "cue": "prompt quotient denominator x^4 and answer exponent rank",
+      "subgroup": "delivered: quotient denominator x^4",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the option containing the largest visible x exponent; ignore numerator, coefficients, signs and power-rule integration.",
+      "correct": 17,
+      "total": 17,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "17/17 versus 0.20 uniform five-choice baseline. Candidate 4 always has the largest exponent p+2 and is the sole source of denominator x^4 prompts. This cross-term bank correlation is not an integration rule. Deriving reciprocal exponent -3 would instead be intended mathematical reasoning.",
+      "sample_refs": [
+        "delivery-sample/accepted.json",
+        "shortcut-results.json",
+        "grader-all-input.json",
+        "grader-all-report.json"
+      ]
+    },
+    {
+      "cue": "prompt quotient denominator x^4 and answer exponent rank",
+      "subgroup": "runner-delivered: quotient denominator x^4",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the option containing the largest visible x exponent; ignore numerator, coefficients, signs and power-rule integration.",
+      "correct": 2,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "2/2 versus 0.20 uniform five-choice baseline. Candidate 4 always has the largest exponent p+2 and is the sole source of denominator x^4 prompts. This cross-term bank correlation is not an integration rule. Deriving reciprocal exponent -3 would instead be intended mathematical reasoning.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "shortcut-results.json",
+        "grader-all-input.json",
+        "grader-all-report.json"
+      ]
+    },
+    {
+      "cue": "prompt quotient denominator x^4 and answer exponent rank",
+      "subgroup": "selection: quotient denominator x^4",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the option containing the largest visible x exponent; ignore numerator, coefficients, signs and power-rule integration.",
+      "correct": 818,
+      "total": 818,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "818/818 versus 0.20 uniform five-choice baseline. Candidate 4 always has the largest exponent p+2 and is the sole source of denominator x^4 prompts. This cross-term bank correlation is not an integration rule. Deriving reciprocal exponent -3 would instead be intended mathematical reasoning.",
+      "sample_refs": [
+        "selection-draws.json",
+        "shortcut-results.json",
+        "grader-all-input.json",
+        "grader-all-report.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "raw generator attempts",
+      "semantic prompt duplicate rejection and resampling",
+      "requested moderate difficulty",
+      "publisher normalization and question validation",
+      "captured inventory and within-batch deduplication at basis 5277",
+      "same-band learner selection rules and fresh-history SHA256 reproduction"
+    ],
+    "sample_refs": [
+      "raw-attempts.json",
+      "sampling.json",
+      "delivery-sample/delivery.json",
+      "delivery-sample/accepted.json",
+      "delivery-batch/delivery.json",
+      "selection-results.json",
+      "selection-draws.json",
+      "variation-results.json",
+      "shortcut-results.json"
+    ],
+    "result": "289 raw attempts become 240 unique sampled records; all 240 and all 5 runner records survive delivery. The defect survives raw/resampling/delivery and all 818 corresponding new-record draws in the fresh moderate-band selection reproduction. Native grading confirms cue-predicted choices. No publication or database writes."
+  },
+  "limitations": [
+    "Selection uses explicit synthetic new entity IDs; live allocation, active policy weights, learner history and concurrent inventory changes are unavailable. Conclusions are conditional on a positively weighted moderate band and fresh candidates; the unconfigured first-ID fallback and zero-weight exclusion were also inspected.",
+    "No finite audit establishes absence of other shortcuts. Small perfect length-probe subgroups are exploratory observations, not additional asserted defects.",
+    "Easy/logarithm, unclassified and hard source families are not implemented or certified; source-context omissions are documented."
+  ]
+}

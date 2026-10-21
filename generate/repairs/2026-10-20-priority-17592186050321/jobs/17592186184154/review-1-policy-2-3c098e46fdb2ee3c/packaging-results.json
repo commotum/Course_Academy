@@ -1,0 +1,81 @@
+{
+  "command": [
+    "/home/jake/Developer/Course_Academy/.venv/bin/python",
+    "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-priority-17592186050321/jobs/17592186184154/workspace/generator.py",
+    "--count",
+    "5",
+    "--seed",
+    "9761453",
+    "--difficulty",
+    "moderate",
+    "--format",
+    "json"
+  ],
+  "actual_dependencies": {
+    "python": "3.13.5",
+    "packages": {
+      "sympy": "1.14.0"
+    }
+  },
+  "manifest_dependencies": {
+    "python": "3.13.5",
+    "packages": {
+      "sympy": "1.14.0"
+    }
+  },
+  "same_after_relocation": true,
+  "replay_same": true,
+  "cli_cases": [
+    {
+      "args": [
+        "--count",
+        "0"
+      ],
+      "exit": 0,
+      "stdout": "[]\n",
+      "stderr": ""
+    },
+    {
+      "args": [
+        "--count",
+        "-1"
+      ],
+      "exit": 2,
+      "stdout": "",
+      "stderr": "usage: generator.py [-h] [--difficulty {easy,moderate,hard,unclassified}]\n                    [--count COUNT] [--seed SEED] [--format {json}]\ngenerator.py: error: Count must be between 0 and 1000\n"
+    },
+    {
+      "args": [
+        "--count",
+        "1001"
+      ],
+      "exit": 2,
+      "stdout": "",
+      "stderr": "usage: generator.py [-h] [--difficulty {easy,moderate,hard,unclassified}]\n                    [--count COUNT] [--seed SEED] [--format {json}]\ngenerator.py: error: Count must be between 0 and 1000\n"
+    },
+    {
+      "args": [
+        "--difficulty",
+        "easy"
+      ],
+      "exit": 2,
+      "stdout": "",
+      "stderr": "usage: generator.py [-h] [--difficulty {easy,moderate,hard,unclassified}]\n                    [--count COUNT] [--seed SEED] [--format {json}]\ngenerator.py: error: Only moderate difficulty is supported\n"
+    },
+    {
+      "args": [
+        "--difficulty",
+        "hard"
+      ],
+      "exit": 2,
+      "stdout": "",
+      "stderr": "usage: generator.py [-h] [--difficulty {easy,moderate,hard,unclassified}]\n                    [--count COUNT] [--seed SEED] [--format {json}]\ngenerator.py: error: Only moderate difficulty is supported\n"
+    }
+  ],
+  "runtime_files": [
+    "generator.py",
+    "math_format.py",
+    "requirements.txt"
+  ],
+  "external_output": "no asset or file-output arguments; source inspection finds only JSON stdout; bytecode disabled; working directory is evidence_root."
+}

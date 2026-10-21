@@ -1,0 +1,116 @@
+{
+  "verdict": "revise",
+  "summary": "A conditional shortcut survives delivery: when the quotient denominator is x^4, choosing the answer with the largest visible exponent succeeds on all 288 permitted parameter combinations.",
+  "source_analysis": {
+    "skill": "Simplify a two-term integrand, apply the sum and constant factor rules, and integrate each power.",
+    "reasoning_steps": [
+      "Expand the product or divide the numerator termwise.",
+      "Extract coefficients and integrate each power.",
+      "Combine the primitives with one arbitrary constant."
+    ],
+    "invariants": [
+      "Preserve two elementary power integrals and moderate workload.",
+      "Radio questions require one uniquely correct primitive.",
+      "Blanks preceding +C exclude the supplied constant."
+    ],
+    "permitted_variations": [
+      "Vary coefficients, signs, eligible exponents and correct-choice positions.",
+      "Vary distractor ranks within recognizable quotient profiles."
+    ],
+    "source_refs": [
+      "Tutorial 703 / 1b5ce4c9-ef44-52d9-a506-96aa15055e00: combining sum and constant factor rules.",
+      "q-49059 / c3b5e67d-32a5-5a89-860d-1eeac5fbca6e: quotient simplification.",
+      "q-49063 / aa2d5333-814d-52c3-9ed1-e83660135b41: radical distribution."
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "source-replay-review.md"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay-results.json",
+        "source-replay-review.md"
+      ],
+      "details": "All five supported moderate cases and complete answer banks matched, with documented repairs for missing function definitions."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "audit.py",
+        "math-results.json"
+      ],
+      "details": "320 records passed exact checks of prompts, choices and every worked-solution expression."
+    },
+    "variety": {
+      "status": "failed",
+      "evidence_paths": [
+        "variation-results.json",
+        "shortcut-results.json"
+      ],
+      "details": "Aggregate role, sign and profile coverage masks a fixed correct-answer rank within the x^4-denominator subgroup."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "scope-review.md",
+        "controlled.json"
+      ],
+      "details": "Extensions retain two elementary power integrals and comparable algebraic work."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-all-input.json",
+        "grader-all-report.json"
+      ],
+      "details": "Native grader passed 799 accepted and 960 rejected response checks, including equivalent blank entries and controlled counterfactuals; zero unresolved."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "visual-review.md",
+        "render/question-007.png",
+        "render/question-009.png",
+        "render/question-029.png"
+      ],
+      "details": "34 actual-UI previews passed; representative prompts, controls and solutions were visually inspected."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "boundary-results.json",
+        "package-integrity.json"
+      ],
+      "details": "Exact dependencies, relocation, replay and count boundaries passed. Package unchanged; no publication or database writes."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "shortcut-results.json",
+        "shortcut-exhaustive.json",
+        "grader-all-report.json",
+        "selection-results.json"
+      ],
+      "details": "The shortcut succeeds on 288/288 permitted assignments, 17/17 delivered review cases and 2/2 matching runner items. It persists through the conditional same-band selection reproduction."
+    }
+  },
+  "findings": [
+    {
+      "kind": "decision_shortcut",
+      "description": "Denominator x^4 identifies bank candidate 4, which always contains the largest visible exponent. Learners can select by this rank while ignoring the numerator and integration. This cross-term correlation is not an integration rule.",
+      "source_refs": [
+        "Tutorial 703 / 1b5ce4c9-ef44-52d9-a506-96aa15055e00",
+        "q-49059 / c3b5e67d-32a5-5a89-860d-1eeac5fbca6e",
+        "workspace/generator.py:25, quotient bank and derivative-selected integrand"
+      ],
+      "reproduction": "Run shortcut_challenge.py with the supplied Python, then the native check-engine on grader-all-input.json. All 288 allowed quotient target=4 combinations accept the largest-exponent selection. Runner question 958fc0b4-3e14-556c-9144-516cb46f6406 exhibits the same cue.",
+      "requested_change": "Vary primitive and distractor roles within the x^4-denominator profile so exponent rank cannot identify correctness. Preserve source replay and workload, then rerun conditional shortcut probes after delivery filtering. Choice shuffling alone will not fix this."
+    }
+  ]
+}
