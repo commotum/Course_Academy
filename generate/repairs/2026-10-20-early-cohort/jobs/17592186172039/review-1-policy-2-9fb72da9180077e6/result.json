@@ -1,26 +1,26 @@
 {
   "verdict": "accepted",
-  "summary": "The current generator and exact five-record moderate batch pass all eight checks. The historical import failure is repaired. One existing engine-ineligible empty-selection item was independently reproduced and listed in affected-inventory.json; it is not emitted by the current default generator. Package files are unchanged.",
+  "summary": "The current generator and exact five-item moderate batch pass all eight checks. One historical inventory item remains ineligible for fresh practice; its reproduction is recorded separately. Package files are unchanged.",
   "source_analysis": {
-    "skill": "Infer the sign of a monomial slope function in each open quadrant and select every true universal sign statement.",
+    "skill": "Determine a monomial slope function\u2019s sign in each open quadrant and select every true sign statement.",
     "reasoning_steps": [
-      "Read y'=f(x,y), identify axes as zero sets.",
-      "Determine the sign using coefficient sign and parity of x and y powers (or one test point per open quadrant).",
-      "Compare each offered positive/negative claim to the sign in its quadrant; select true claims and None of the above only if all substantive claims fail."
+      "Identify the coefficient sign and coordinate-power parity.",
+      "Determine the function\u2019s constant sign in each queried quadrant.",
+      "Compare each claim with that sign and select all true claims."
     ],
     "invariants": [
-      "Open quadrants avoid axes; nonzero monomials have constant nonzero sign in each quadrant.",
-      "Slope sign is f sign; no differential equation solving or integration required.",
-      "Prompt, claims, field keys, sign diagram, answer and explanation must agree.",
-      "Complete checkbox bank and solution progression must replay original parameters."
+      "Open quadrants exclude zero coordinates.",
+      "Prompt, claims, answers, diagrams and explanations must agree.",
+      "Checkbox fields retain complete true/false banks."
     ],
     "permitted_variations": [
-      "Nonzero coefficient magnitude and sign. Magnitude is irrelevant to sign; sign reverses all quadrant signs.",
-      "Which three quadrants appear, their order, and positive/negative assertion in each are incidental assignments and can vary independently.",
-      "Truth subset including zero, one, two or three substantive truths; optional None must track empty subset.",
-      "Source-supported exponent parity where difficulty permits, with derived signs and diagrams."
+      "Coefficient sign and magnitude.",
+      "Queried quadrants, their order and claim polarity.",
+      "Truth subset and correctly derived None option.",
+      "Source-supported exponent parity at the appropriate difficulty."
     ],
     "source_refs": [
+      "0444de80-19f1-5251-b159-5dc55756bb19",
       "fd7005de-da4a-5aae-a0ea-f0c01c178438",
       "1142a38e-b72d-5615-beec-20a68972aab2",
       "d92f1990-38b8-544d-a68e-c6daa48b1c4f",
@@ -29,10 +29,8 @@
       "9ebbc31b-8f74-56d3-8d4f-392a8aeeda85",
       "4ffe3a0e-6b8b-5f1d-8f45-5dd040381266",
       "90e895ee-1be8-55c1-ab2d-a3596627f1b5",
-      "0444de80-19f1-5251-b159-5dc55756bb19",
-      "tutorial 790a4898-1668-5214-a911-83977b559c34: We then calculate the slope at each point and record each answer in the table.",
-      "prerequisite 51d10b95-2ba8-5125-8f0d-b21455269c1e: To determine the sign of f(x,y) in each region, we pick four test points, one for each region.",
-      "generate/principles.md sections 1-3"
+      "Tutorial 790a4898-1668-5214-a911-83977b559c34: calculate slopes by substitution.",
+      "Prerequisite 51d10b95-2ba8-5125-8f0d-b21455269c1e: determine regional signs using test points."
     ],
     "evidence_paths": [
       "source-analysis.json",
@@ -45,10 +43,9 @@
       "status": "passed",
       "evidence_paths": [
         "source-replays.json",
-        "boundary-results.json",
-        "source-analysis.json"
+        "boundary-results.json"
       ],
-      "details": "All eight supplied practice sources replay with exact prompts and complete boolean banks. Seven solutions match exactly; the supplemental xy^2 solution differs only by supported inline math delimiters. Canonical -2xy sign case reproduced; its original complete bank is absent in the source object and is not claimed verified."
+      "details": "All eight practice sources replay with exact prompts and complete banks. Seven solutions match exactly; one adds supported math delimiters. Canonical mathematics replayed; its absent original bank is explicitly documented."
     },
     "math": {
       "status": "passed",
@@ -58,17 +55,17 @@
         "delivered-validation.json",
         "inventory-audit.json"
       ],
-      "details": "Independent visible-expression sign/parity checks validate 168 fresh samples, 88 controlled decision cases, all 5 runner records and 29 accepted delivery records. Four counterfactual pairs agree in keys and explanations. All 16 captured inventory records have mathematically correct keys; one fails fresh-practice nonempty eligibility."
+      "details": "Independent visible-expression checks pass for 168 fresh samples, 88 explicit decision cases, four controlled pairs and delivered records. All five runner items are correct."
     },
     "variety": {
       "status": "passed",
       "evidence_paths": [
-        "samples-all.json",
         "decision-records.json",
+        "samples-all.json",
         "shortcut-results.json",
         "delivery-samples/delivery.json"
       ],
-      "details": "Seven templates and eleven template/exponent profiles tested. All eight truth assignments are constructible within each profile. Fresh moderate sampling retains all seven observed masks after 72-to-24 deduplication. Exact five-item batch has three truth masks, two truth counts, both coefficient signs and different qualifying quadrant labels; no numerical-magnitude variety is counted as decision variety."
+      "details": "All eight truth subsets are constructible in each tested template/exponent profile. Moderate deduplication preserves every observed decision mask. The exact batch contains three truth masks, both coefficient signs and varying qualifying quadrant labels."
     },
     "scope": {
       "status": "passed",
@@ -77,7 +74,7 @@
         "source-analysis.json",
         "rejection.json"
       ],
-      "details": "Requested moderate delivery remains nonzero cxy with three distinct open-quadrant sign claims. Hard parity and easy single-factor reduction preserve the source sign method; no shifted regions, sums, integration or additional response format. Invalid coefficient, exponent, quadrant and claim inputs reject."
+      "details": "Moderate delivery retains nonzero cxy and three open-quadrant claims. Parity variants and the single-factor reduction preserve the sign method. Invalid parameters reject."
     },
     "grading": {
       "status": "passed",
@@ -88,18 +85,16 @@
         "affected-inventory.json",
         "generated-records.json"
       ],
-      "details": "Actual native learner grader: 1229 accepted and 1229 rejected, zero unresolved. Both boolean choices tested per field, including normalized delivered records and controlled pairs. No free-entry field exists, so notation-equivalence testing is inapplicable. Historical all-false item is rejected by the fresh-practice eligibility rule, while current default construction gives correctly keyed None."
+      "details": "Native grader: 1,229 correct submissions accepted, 1,229 wrong submissions rejected, zero unresolved. Both boolean choices were tested. The historical all-false item is excluded from fresh practice; current default generation supplies correctly keyed None."
     },
     "rendering": {
       "status": "passed",
       "evidence_paths": [
         "render/rendering.json",
         "render-extra/rendering.json",
-        "render-inspection.json",
-        "render-records.json",
-        "render-extra-records.json"
+        "render-inspection.json"
       ],
-      "details": "Actual unmodified UI rendered 15 cases, including all five runner records, all controlled changes, cx/parity examples, compact solution, all-false None and uniform positive squared factors. Reports pass and screenshots were visually inspected; labels, MathJax, diagrams and solutions agree."
+      "details": "Fifteen actual-UI renders pass, including the complete runner batch, controlled changes, compact solution, parity diagrams and all-false None case. Screenshots were inspected."
     },
     "packaging": {
       "status": "passed",
@@ -110,7 +105,7 @@
         "review-bindings.json",
         "commands.md"
       ],
-      "details": "Manifest-only relocated runtime succeeds and deterministically replays all three difficulties. Exact installed Python/SymPy/Matplotlib versions match nested dependency declarations; generated output is external. Previous ancestor scripts import failure reproduced independently and absent from current local helper imports. All 191 package files unchanged."
+      "details": "Manifest-only relocation and deterministic replay pass across all difficulties. Installed dependency versions match declarations. The historical import failure is reproduced and repaired. All 191 package files remain unchanged."
     },
     "decision_variation": {
       "status": "passed",
@@ -119,10 +114,9 @@
         "shortcut-results.json",
         "selection.json",
         "counterfactuals.json",
-        "native-report.json",
         "delivery-batch/delivery.json"
       ],
-      "details": "Independent role analysis, relevant/irrelevant controlled changes and conditional shortcut probes pass. No tested complete-answer label/position/wording shortcut predicts the exact batch or every member within a sampled template. Uniform-sign squared-factor simplification is intended mathematical reasoning. Read-only captured-inventory delivery and conditional within-moderate learner-selection rules examined; unavailable live histories, future entity ordering and policy weights are explicitly bounded."
+      "details": "Relevant changes update decisions, explanations and grading; positive rescaling preserves them. Tested conditional label, position and wording strategies do not solve every batch member. Delivery and conditional within-band selection were examined; unavailable live history and policy inputs are explicitly bounded."
     }
   },
   "findings": []

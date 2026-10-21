@@ -1,0 +1,1 @@
+Independent source analysis saved before package inspection. Fresh samples, source replay and cold dependency reproduction saved. Original package snapshot: package-before.json. Next: delivery, native grader, actual UI, decision variation and final report. No repair history/preflight files exist.
