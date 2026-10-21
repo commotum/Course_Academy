@@ -1,0 +1,26 @@
+{
+  "finding_id": "591f580cadb749294588",
+  "classification": "required inventory remediation outside authorized workspace scope",
+  "strict_regression": {
+    "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory",
+    "exit_code": 1,
+    "affected_records": 5,
+    "possible_history_shortcut_successes": 64,
+    "possible_history_draws": 64
+  },
+  "root_cause": "The native selector reads already stored historical v2 banks. Changing the current generator cannot change these captured records.",
+  "required_action": "Use the separate inventory-remediation workflow to resolve the five generated records, independently review the staged replacements, then recapture inventory and rerun the strict check.",
+  "authorization_constraint": "Do not publish images, change database content, or edit another job.",
+  "existing_review_request": "Resolve the five records listed in affected-inventory.json through the separate inventory-remediation workflow, then recheck the selectable easy pool.",
+  "proposal": "evidence/repair-3/inventory-repair-proposal.json",
+  "runtime_changes": false,
+  "database_changes": false,
+  "published": false,
+  "source_and_inventory_unchanged": true,
+  "visual_inspection": {
+    "screenshot": "evidence/repair-3/render/question-001.png",
+    "reused_render": true,
+    "observations": "Prompt, choices, augmented matrices, row operation and contradiction are legible; no clipping or overlap observed."
+  },
+  "status": "unsupported"
+}

@@ -1,0 +1,53 @@
+test_current_source_key_and_solution_replay (__main__.RepairAcceptance.test_current_source_key_and_solution_replay) ... FAIL
+test_fractional_source_mass_is_eligible (__main__.RepairAcceptance.test_fractional_source_mass_is_eligible) ... ERROR
+test_no_single_digit_rank_bypass (__main__.RepairAcceptance.test_no_single_digit_rank_bypass) ... FAIL
+test_positive_transient_is_eligible (__main__.RepairAcceptance.test_positive_transient_is_eligible) ... ERROR
+
+======================================================================
+ERROR: test_fractional_source_mass_is_eligible (__main__.RepairAcceptance.test_fractional_source_mass_is_eligible)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186229182/workspace/regression-tests.py", line 18, in test_fractional_source_mass_is_eligible
+    r=g.generate('hard',619,template='q-339400',parameters=dict(V=320,q0='2.2',c='0.05',rin=8,rout=4,T=5))
+  File "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186229182/workspace/17592186229182.py", line 182, in generate
+    d=guard(p,meta,level,evidence=raw)
+  File "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186229182/workspace/17592186229182.py", line 53, in guard
+    if not evidence and (any(d[k].q!=1 for k in ['V','q0','rin','rout']) or (100*d['c']).q!=1):raise ValueError('Authored physical integers and hundredth-step concentration required')
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: Authored physical integers and hundredth-step concentration required
+
+======================================================================
+ERROR: test_positive_transient_is_eligible (__main__.RepairAcceptance.test_positive_transient_is_eligible)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186229182/workspace/regression-tests.py", line 14, in test_positive_transient_is_eligible
+    r=g.generate('easy',619,parameters=dict(V=240,q0=15,c='0.05',rin=16,rout=24))
+  File "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186229182/workspace/17592186229182.py", line 182, in generate
+    d=guard(p,meta,level,evidence=raw)
+  File "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186229182/workspace/17592186229182.py", line 61, in guard
+    if not d['q0']<d['c']*d['V']:raise ValueError('Nonzero negative transient required')
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: Nonzero negative transient required
+
+======================================================================
+FAIL: test_current_source_key_and_solution_replay (__main__.RepairAcceptance.test_current_source_key_and_solution_replay)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186229182/workspace/regression-tests.py", line 22, in test_current_source_key_and_solution_replay
+    self.assertIn(':answer-field/correct',r[':question/answer-fields'][0])
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ':answer-field/correct' not found in {':answer-field/id': '697cd416-1a6a-5574-8479-4fdbad931453', ':answer-field/key': 'selection', ':answer-field/type': ':answer-field.type/radio', ':answer-field/choices': [{':answer/id': '5d861808-bb69-51c2-b492-431342fc2b80', ':answer/type': ':answer.type/math', ':answer/value': '9.81kg'}, {':answer/id': '19348de8-5a96-5717-83f5-3ce4305bfd09', ':answer/type': ':answer.type/math', ':answer/value': '8.21kg'}, {':answer/id': '2e6cfddf-ae83-5bee-9562-c2ef9cb3627a', ':answer/type': ':answer.type/math', ':answer/value': '9.18kg'}, {':answer/id': '9a5ac079-da8e-5405-9669-4331eb28faa4', ':answer/type': ':answer.type/math', ':answer/value': '7.99kg'}, {':answer/id': '8262a92f-aaf7-587d-bff5-30c46bc4a8d0', ':answer/type': ':answer.type/math', ':answer/value': '8.63kg'}]}
+
+======================================================================
+FAIL: test_no_single_digit_rank_bypass (__main__.RepairAcceptance.test_no_single_digit_rank_bypass)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186229182/workspace/regression-tests.py", line 31, in test_no_single_digit_rank_bypass
+    self.assertFalse(rows and all(rows),'All eligible one-digit cases are solved by choosing second-smallest without reading the model')
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false : All eligible one-digit cases are solved by choosing second-smallest without reading the model
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.029s
+
+FAILED (failures=2, errors=2)

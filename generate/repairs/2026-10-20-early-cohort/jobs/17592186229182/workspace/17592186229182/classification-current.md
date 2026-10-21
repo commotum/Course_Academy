@@ -1,3 +1,5 @@
+Repair note (2026-10-21): the historical account below is superseded for the current package by ../instructional-account.md and ../evidence/author-report.json. In particular, rational quantities and all transient signs are now supported, all ten current source profiles replay, and fresh banks vary numeric rank. Historical evidence remains unchanged below.
+
 # Current-source reconciliation at math basis 2598
 
 The current database lineage is `01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1`. `reference/current-kp.edn` retains all nine practice records together with their exact field-owned banks, keys, worked solutions, difficulty and canonical example. The historical basis-1356 snapshot is retained unchanged. `reference/current-source-validation.json` records independent printed-physics and worked-equation checks for every current practice question.

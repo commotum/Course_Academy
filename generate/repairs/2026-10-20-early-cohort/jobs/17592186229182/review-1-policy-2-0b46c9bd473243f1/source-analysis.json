@@ -1,0 +1,67 @@
+{
+  "skill": "Construct and solve a well-mixed dilution model with nonzero solute inflow and unequal inflow/outflow; recover coefficients or evaluate the amount.",
+  "learner_operation": "Use V(t)=V0+(rin-rout)t and Q\u2032=c*rin-rout*Q/V(t), integrate a first-order linear ODE, impose Q(0)=Q0, and extract the requested coefficient combination or time value. For the observed alpha+beta easy case, substitution t=0 directly gives Q0; this is an intended mathematical simplification.",
+  "reasoning_steps": [
+    "Compute volume change and solute inflow/outflow rates.",
+    "Form linear ODE and integrating factor.",
+    "Integrate and apply initial condition.",
+    "Match normalized coefficients or evaluate at a supplied valid time; round only the latter to two decimals."
+  ],
+  "response_contract": {
+    "type": "single radio selection",
+    "choices": 5,
+    "easy": "Observed q-336439 alpha+beta with no captured difficulty/key/solution; Q(0)=6 independently implies answer 6.",
+    "moderate": "alpha-beta in a supplied normalized solution",
+    "hard": "time evaluation to two decimal places"
+  },
+  "difficulty": "Requested easy is conservatively the alpha+beta initial-condition recognition family. Moderate/hard families remain source replay obligations, not permission to mix their workload into easy.",
+  "invariants": [
+    "Well-mixed tank and positive physical volume during the time interval.",
+    "Nonzero feed concentration; unequal positive flows for this KP.",
+    "Given normalized basis equals 1 at t=0, so alpha+beta=Q0.",
+    "Five numeric radio options with exactly one correct answer.",
+    "No overflow-time calculation: next lesson is a separate KP."
+  ],
+  "permitted_variations": [
+    "Initial volume/solute mass, concentration, flow difference and integral exponent compatible with the displayed solution.",
+    "Context and solute names; these do not alter the answer.",
+    "Initial concentration below, equal to, or above feed concentration can change coefficient signs without a new prerequisite.",
+    "Choice order and distractors may vary while remaining unique and plausible.",
+    "Within alpha+beta, both Q0 and option position must be eligible; flow/concentration are irrelevant to the coefficient sum but relevant to solution consistency.",
+    "Moderate coefficient difference and hard time/flow/exponent parameters vary within their own difficulty."
+  ],
+  "fixed_features": [
+    {
+      "feature": "alpha+beta for easy",
+      "justification": "Only captured easy-like family directly tests the initial condition; alpha-beta requires additional solving as observed moderate."
+    },
+    {
+      "feature": "normalized basis has value 1 at zero",
+      "justification": "Defines the source coefficient representation and its easy simplification; fixing this expresses the intended mathematical operation."
+    }
+  ],
+  "source_refs": [
+    "question 5708b503-7d42-5d87-80c5-062229fe4d3c (q-336439): Q=alpha(1-t/25)+beta(1-t/25)^3; asks alpha+beta; bank 6,12,8,15,10.",
+    "question 456aacfd-49e4-5a1e-8363-4f5725f307ee: alpha=12,beta=-8; alpha-beta=20.",
+    "question 35a9dbe2-5b3d-52d0-b235-b8068a9e0f15: exponent 4; alpha=12,beta=-5.",
+    "question 11c8e0ff-5f12-56c5-bbf7-d578f71b8d7f: alpha=6,beta=3 (positive beta).",
+    "question b6915e10-1543-50b0-a358-2c56a1366444: alpha=7.2,beta=-2.2.",
+    "hard questions 310f29d9-e5f9-5829-9c84-72d1324e1777,01365019-dd55-56aa-aa06-e538a69722fd,e6bee6b8-8870-5e26-916b-bf3b0601ff8e,46db6f1f-9edd-53d3-9387-f26ef7512b99,d0340e70-b947-5b25-8e24-a63ff0f87f38: complete banks and integrating-factor solutions.",
+    "canonical 2f5d8d59-2cc7-53bf-92ad-6062df331851: Q\u2032=1.5-2Q/(70+t); I=(70+t)^2; Q(8)=20.48.",
+    "lesson 70852def-fb14-50cc-b88d-6fe2af2343bf Introduction: rate of entry is no longer zero; differential equation is first-order linear; Q\u2032=Qin\u2032-Qout\u2032.",
+    "lesson 926db8f3-a67c-5f3b-9bd8-4eaeaa70c7cf is this KP; next step ff264ca2-0325-5ecb-9be4-8cbee9d9ba83 covers overflow separately."
+  ],
+  "gaps": [
+    "q-336439 has no captured correct link, difficulty, or worked solution; inferred answer is 6 using t=0.",
+    "Canonical example has no captured answer bank.",
+    "No source images; none needed for these text questions."
+  ],
+  "provenance": {
+    "reused_from": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186229182/review-0-policy-2-86d0b4d09d151598/source-analysis.json",
+    "verification": "Re-read original question prompts, banks, canonical solution, and confirmed cited lesson IDs in unchanged source; review policy and source binding matched by runner.",
+    "source_sha256": "eb1cd48d88f9ab67cf098cd93a360dd9c9760b985885ee725b6f91a7bfcd3e8c"
+  },
+  "evidence_paths": [
+    "source-analysis.json"
+  ]
+}

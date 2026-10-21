@@ -1,3 +1,5 @@
+Repair note (2026-10-21): the historical account below is superseded for the current package by ../instructional-account.md and ../evidence/author-report.json. In particular, rational quantities and all transient signs are now supported, all ten current source profiles replay, and fresh banks vary numeric rank. Historical evidence remains unchanged below.
+
 Unequal-rate variable-volume dilution generator. Inventory replenishment verified through database commit at math basis 2599 (prepared at 2598).
 
 Registered generator UUID: `37b98d39-b83f-58ad-afb3-d7dad2da616a`; script: `generate/scratch/17592186229182.py`. Five easy and two moderate questions were committed through `:application/ca-engine`, under the application `api.lock`, with a basis guard. Exact requests, preview, receipt, native grading and exact-basis readback are in `reference/replenishment/basis-2598/`. Verified fresh distinct inventory is easy=5, moderate=5, hard=5. All nine source questions and learner history were preserved.

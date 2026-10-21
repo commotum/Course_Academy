@@ -1,0 +1,122 @@
+{
+  "verdict": "accepted",
+  "summary": "The four prior defects are repaired. All eight checks pass for the current package and exact five-record batch; no new concrete failure was demonstrated. Package unchanged.",
+  "source_analysis": {
+    "skill": "Construct and solve a well-mixed dilution model with nonzero solute inflow and unequal inflow/outflow; recover coefficients or evaluate the amount.",
+    "reasoning_steps": [
+      "Compute volume change and solute inflow/outflow rates.",
+      "Form linear ODE and integrating factor.",
+      "Integrate and apply initial condition.",
+      "Match normalized coefficients or evaluate at a supplied valid time; round only the latter to two decimals."
+    ],
+    "invariants": [
+      "Well-mixed tank and positive physical volume during the time interval.",
+      "Nonzero feed concentration; unequal positive flows for this KP.",
+      "Given normalized basis equals 1 at t=0, so alpha+beta=Q0.",
+      "Five numeric radio options with exactly one correct answer.",
+      "No overflow-time calculation: next lesson is a separate KP."
+    ],
+    "permitted_variations": [
+      "Initial volume/solute mass, concentration, flow difference and integral exponent compatible with the displayed solution.",
+      "Context and solute names; these do not alter the answer.",
+      "Initial concentration below, equal to, or above feed concentration can change coefficient signs without a new prerequisite.",
+      "Choice order and distractors may vary while remaining unique and plausible.",
+      "Within alpha+beta, both Q0 and option position must be eligible; flow/concentration are irrelevant to the coefficient sum but relevant to solution consistency.",
+      "Moderate coefficient difference and hard time/flow/exponent parameters vary within their own difficulty."
+    ],
+    "source_refs": [
+      "question 5708b503-7d42-5d87-80c5-062229fe4d3c (q-336439): Q=alpha(1-t/25)+beta(1-t/25)^3; asks alpha+beta; bank 6,12,8,15,10.",
+      "question 456aacfd-49e4-5a1e-8363-4f5725f307ee: alpha=12,beta=-8; alpha-beta=20.",
+      "question 35a9dbe2-5b3d-52d0-b235-b8068a9e0f15: exponent 4; alpha=12,beta=-5.",
+      "question 11c8e0ff-5f12-56c5-bbf7-d578f71b8d7f: alpha=6,beta=3 (positive beta).",
+      "question b6915e10-1543-50b0-a358-2c56a1366444: alpha=7.2,beta=-2.2.",
+      "hard questions 310f29d9-e5f9-5829-9c84-72d1324e1777,01365019-dd55-56aa-aa06-e538a69722fd,e6bee6b8-8870-5e26-916b-bf3b0601ff8e,46db6f1f-9edd-53d3-9387-f26ef7512b99,d0340e70-b947-5b25-8e24-a63ff0f87f38: complete banks and integrating-factor solutions.",
+      "canonical 2f5d8d59-2cc7-53bf-92ad-6062df331851: Q\u2032=1.5-2Q/(70+t); I=(70+t)^2; Q(8)=20.48.",
+      "lesson 70852def-fb14-50cc-b88d-6fe2af2343bf Introduction: rate of entry is no longer zero; differential equation is first-order linear; Q\u2032=Qin\u2032-Qout\u2032.",
+      "lesson 926db8f3-a67c-5f3b-9bd8-4eaeaa70c7cf is this KP; next step ff264ca2-0325-5ecb-9be4-8cbee9d9ba83 covers overflow separately."
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay-results.json",
+        "source-replays.json",
+        "historical-regression-results.txt",
+        "regression-results.txt"
+      ],
+      "details": "All ten complete source banks and available attributes replay. Four retained tests fail on the preserved old package and pass on the current one."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math.json",
+        "samples.json",
+        "focused-records.json",
+        "batch.json"
+      ],
+      "details": "132 independently parsed prompt/controlled cases match exact ODE/initial-condition calculations; final rounding checked."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "coverage.json",
+        "rejection-coverage.json",
+        "boundaries.json",
+        "regression-results.txt"
+      ],
+      "details": "All transient signs, source decimals, rank/position roles and every supported source profile exercised. Boundary resampling measured."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "scope.json",
+        "source-analysis.json",
+        "samples.json"
+      ],
+      "details": "Source workload and five-choice radio contract preserved separately by difficulty."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-report.json"
+      ],
+      "details": "Actual native grader accepted 132 correct selections and rejected 528 wrong choices. No free-entry field applies."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "visual-inspection.json",
+        "render/rendering.json",
+        "render-controlled/rendering.json"
+      ],
+      "details": "Actual UI screenshots inspected for exact batch, controlled pairs and three transient signs, including worked solutions."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "runtime.json",
+        "package-before.json",
+        "package-final.json",
+        "commands.json"
+      ],
+      "details": "Exact Python/SymPy dependencies, deterministic replay and package relocation pass. All package files retain their initial hashes."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "coverage.json",
+        "selection-analysis.json",
+        "inventory-reproduction.json",
+        "affected-inventory.json"
+      ],
+      "details": "Relevant/irrelevant counterfactuals follow through prompts, solutions, native grading and rendering. Former conditional shortcut no longer predicts the answer; exact batch has no tested universal rank/position bypass. Delivered coverage preserved."
+    }
+  },
+  "findings": []
+}

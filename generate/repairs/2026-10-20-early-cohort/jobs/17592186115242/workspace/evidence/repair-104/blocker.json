@@ -1,0 +1,106 @@
+{
+  "finding_id": "591f580cadb749294588",
+  "status": "unresolved",
+  "strict_regression_exit_code": 1,
+  "exact_first_command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory",
+  "first_result": {
+    "affected_records": 5,
+    "shortcut_successes": 64,
+    "selection_draws": 64
+  },
+  "counterexample": {
+    "knowledge_point": {
+      "db_id": 17592186115242,
+      "id": "22733f71-de4a-5058-a41c-039e66e333c5",
+      "title": "Determining the Value of a Constant for Which a Given Linear System Is Consistent or Inconsistent"
+    },
+    "question": {
+      ":question/id": "f4f00ddd-faa4-5195-9569-dbec2d0e2e6c",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/problem": "Determine the value of $k$ for which the following system of linear equations is inconsistent:\n\n$$\n\\left\\{\\begin{aligned}x+2y &=-5 \\\\ -2x+ky &=0\\end{aligned}\\right.\n$$",
+      ":question/worked-solution": "The augmented matrix for this system is\n\n$$\nM=\\left[\\begin{array}{cc|c}1 & 2 & -5 \\\\ -2 & k & 0\\end{array}\\right].\n$$\n\nUsing the method of Gaussian elimination, we can reduce this matrix to row echelon form, as follows:\n\n$$\n\\begin{aligned}M & =\\left[\\begin{array}{cc|c}1 & 2 & -5 \\\\ -2 & k & 0\\end{array}\\right] & {R}_{2} & :={R}_{2}+2{R}_{1} \\\\  & \u223c\\left[\\begin{array}{cc|c}1 & 2 & -5 \\\\ 0 & k+4 & -10\\end{array}\\right]\\end{aligned}\n$$\n\nThe corresponding system is now \n\n$$\n\\left\\{\\begin{aligned}x+2y &=-5 \\\\ (k+4)y &=-10.\\end{aligned}\\right.\n$$\n\nThe system is inconsistent if it has no solutions. For the system to have no solutions, one of the equations above must be false.\n\nIf $k=-4,$ then the second equation is $0=-10,$ which is false, and the system will have no solution.\n\nTherefore, our system is inconsistent when $k=-4.$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "5bbf5c12-3409-5553-9dd1-d59b687d99b6",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "d7b4341b-24d7-5601-bee0-2b97f2a49be1",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "k=4"
+            },
+            {
+              ":answer/id": "9d8a51e6-cd68-5ca8-bf4b-3b66c24eddc6",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "k=2"
+            },
+            {
+              ":answer/id": "895f3ba6-7e73-5ee1-88ee-96b78cf55a9c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "k=0"
+            },
+            {
+              ":answer/id": "2ce26fa4-9b16-5f35-94ea-df9965919477",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "k=-2"
+            },
+            {
+              ":answer/id": "040900c0-cbe2-5a3b-bf63-00c6502b1713",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "k=-4"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "040900c0-cbe2-5a3b-bf63-00c6502b1713"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "constant-consistency-v2",
+      "basis": 1356,
+      "database": "math",
+      "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+      "seed": 2712914515,
+      "template": "inconsistent_easy",
+      "profile": "authored",
+      "parameters": {
+        "a": 1,
+        "b": 2,
+        "c": -5,
+        "d": -2,
+        "u": 1,
+        "v": 0,
+        "e": 0
+      },
+      "recipes": [
+        "t",
+        "-t",
+        "b/u",
+        "-b/u",
+        "0"
+      ],
+      "mathematical_fingerprint": "af44fe028ff28b530ce08be790f910ee97296263a962ad577eedc15a204b257b",
+      "math_fingerprint": "af44fe028ff28b530ce08be790f910ee97296263a962ad577eedc15a204b257b",
+      "authored_level": true,
+      "plot_rating": "none",
+      "sympy_version": "1.14.0",
+      "math_format": "course-academy-tex-v1",
+      "preparation_basis": 2699,
+      "source_snapshot": "generate/scratch/17592186115242/reference/replenishment/initial/kp.edn"
+    }
+  },
+  "root_cause": "Historical v2 banks contain {t,-t,b,-b,0}, with |t|>|b|. Coefficient signs predict the correct extremal choice. The current generator construction and finite delivery repairs do not change existing stored banks.",
+  "repair_already_prepared": "evidence/repair-3/inventory-repair-proposal.json",
+  "required_action": "Separate inventory remediation of the five captured generated identities followed by inventory recapture and strict regression. Original source questions must be preserved.",
+  "scope_conflict": "The user explicitly prohibits changing database content. No workspace generator change can retire stored candidates.",
+  "current_generator_findings_pass": 4,
+  "runtime_modified": false,
+  "database_modified": false,
+  "publication_performed": false,
+  "no_criteria_waived": true,
+  "source_inventory_unchanged": true,
+  "evidence_path_base": "workspace; affected-inventory.json paths also resolve from the supplied author-104 evidence_root"
+}

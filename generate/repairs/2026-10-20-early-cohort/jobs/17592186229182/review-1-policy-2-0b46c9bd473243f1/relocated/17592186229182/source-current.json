@@ -1,0 +1,710 @@
+{
+  "database": "math",
+  "basis": 5394,
+  "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+  "source_sha256": "f0cb6353b45588c68b027d2420bd333f76c20f9baac73320ebc0c9fa83f77172",
+  "record": {
+    ":db/id": 17592186229182,
+    ":knowledge-point/canonical-example": {
+      ":db/id": 17592186228930,
+      ":question/id": "2f5d8d59-2cc7-53bf-92ad-6062df331851",
+      ":question/math-academy-id": "e-21765",
+      ":question/problem": "A water-treatment holding tank initially holds $700\\,\\textrm{L}$ of liquid containing $12\\,\\textrm{kg}$ of dissolved coagulant.\nA feed solution containing $0.05\\,\\textrm{kg/L}$ of the coagulant is pumped into the tank at a rate of $30\\,\\textrm{L/min},$ while the completely mixed liquid is drained out at a rate of $20\\,\\textrm{L/min}.$\nFind, rounded to two decimal places, the amount of coagulant in the tank $8$ minutes after pumping begins.",
+      ":question/worked-solution": "Let $Q$ be the amount of coagulant in the tank at time $t,$ in minutes. Then, the derivative \n\n$$\n\\dfrac{\\mathrm{d}Q}{\\mathrm{d}t}\n$$\n\ndescribes how this amount changes with respect to time $t.$ This is equal to the rate at which coagulant enters the tank minus the rate at which coagulant leaves the tank.\n\n$$\n\\dfrac{\\mathrm{d}Q}{\\mathrm{d}t} = Q'_{\\textrm{in}} - Q'_{\\textrm{out}}\n$$\n\nNote that the units of $\\dfrac{\\mathrm{d}Q}{\\mathrm{d}t}, Q'_{\\textrm{in}}$ and $Q'_{\\textrm{out}}$ are $\\textrm{kg}/\\textrm{min}.$ Now, let's compute the required rates of change in steps.\n\n**Step 1**: Calculating the rate at which coagulant enters the tank.\n\nNote that a feed solution containing $0.05\\,\\textrm{kg/L}$ of the coagulant enters the tank at a rate of $30\\,\\textrm{L/min}.$ So, the rate at which the *coagulant* enters the tank is \n\n$$\n\\begin{aligned}{Q}_{\\text{in}}^{\u2032} & =(0.05\\,\\frac{\\text{kg}}{\\text{L}})\\cdot (30\\,\\frac{\\text{L}}{\\text{min}}) \\\\  & =(0.05\\,\\frac{\\text{kg}}{\\cancel{\\text{L}}})\\cdot (30\\,\\frac{\\cancel{\\text{L}}}{\\text{min}}) \\\\  & =1.5\\,\\frac{\\text{kg}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 2**: Calculating the rate at which coagulant exits the tank.\n\nTo find the rate at which coagulant leaves the tank, we must first determine the volume of liquid in the tank at time $t.$\n\nThe tank initially contains $700\\,\\textrm{L}$ of liquid; a solution enters at $30\\,\\textrm{L/min}$ and leaves at $20\\,\\textrm{L/min}.$\nAs a result, the volume of liquid in the tank after $t$ minutes is \n\n$$\n700 + 30t - 20t = (700+10t)\\,\\textrm{L}.\n$$\n\nSince $Q$ is the amount of coagulant in the tank, the *concentration* of the mixed solution at time $t$ is\n\n$$\n\\dfrac{Q}{700+10t}\\,\\textrm{kg/L}.\n$$\n\nTherefore, as the completely mixed liquid leaves at a rate of $20\\,\\textrm{L/min},$ *coagulant* leaves at a rate of\n\n$$\n\\begin{aligned}{Q}_{\\text{out}}^{\u2032} & =(20\\,\\frac{\\text{L}}{\\text{min}})\\cdot (\\frac{Q}{700+10t}\\,\\frac{\\text{kg}}{\\text{L}}) \\\\  & =(20\\,\\frac{\\cancel{\\text{L}}}{\\text{min}})\\cdot (\\frac{Q}{700+10t}\\,\\frac{\\text{kg}}{\\cancel{\\text{L}}}) \\\\  & =\\frac{20Q}{700+10t}\\,\\frac{\\text{kg}}{\\text{min}} \\\\  & =\\frac{2Q}{70+t}\\,\\frac{\\text{kg}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 3**: Calculate the overall rate of change.\n\nThe rate of change equals the rate of entry minus the rate of exit. Therefore, \n\n$$\n\\begin{aligned}\\frac{dQ}{dt} & ={Q}_{\\text{in}}^{\u2032}-{Q}_{\\text{out}}^{\u2032} \\\\  & =1.5-\\frac{2Q}{70+t}\\end{aligned}\n$$\n\nwhich gives the equation\n\n$$\n\\begin{aligned}\\frac{dQ}{dt}+\\frac{2}{70+t}Q=1.5.\\end{aligned}\n$$\n\n**Step 4**: Integrate the equation.\n\nThis is a first-order linear equation with variable coefficients. So we find the general solution using an integrating factor:\n\n$$\n\\begin{aligned}I(t) & ={e}^{\\int 2/(70+t)\\,dt} \\\\  & ={e}^{2\\operatorname{ln}\u2061|70+t|} \\\\  & ={e}^{\\operatorname{ln}\u2061(70+t)^{2}} \\\\  & =(70+t)^{2}\\end{aligned}\n$$\n\nMultiplying both sides of the differential equation by $I(t) = (70+t)^2$ yields\n\n$$\n\\begin{aligned}(70+t)^{2}\\cdot (\\frac{dQ}{dt}+\\frac{2}{70+t}Q) & =(70+t)^{2}\\cdot 1.5 \\\\ (70+t)^{2}\\frac{dQ}{dt}+2(70+t)Q & =1.5(70+t)^{2} \\\\ \\frac{d}{dt}(Q(70+t)^{2}) & =1.5(70+t)^{2}.\\end{aligned}\n$$\n\nNow, we integrate with respect to $t{:}$\n\n$$\n\\begin{aligned}\\int \\frac{d}{dt}(Q(70+t)^{2})\\,dt & =\\int 1.5(70+t)^{2}\\,dt \\\\ Q(70+t)^{2} & =1.5\\cdot \\frac{1}{3}(70+t)^{3}+C \\\\ Q(t) & =0.5(70+t)+\\frac{C}{(70+t)^{2}}\\end{aligned}\n$$\n\nNote that $C$ is a constant of integration.\n\nWe're told that the tank initially contains $12\\,\\textrm{kg}$ of coagulant. So, we can apply the initial condition $Q(0) = 12,$ and solve for $C{:}$\n\n$$\n\\begin{aligned}Q(0) & =12 \\\\ 0.5(70+0)+\\frac{C}{(70+0)^{2}} & =12 \\\\ 35+\\frac{C}{{70}^{2}} & =12 \\\\ \\frac{C}{{70}^{2}} & =-23 \\\\ C & =-23(70)^{2}\\end{aligned}\n$$\n\nFinally, we obtain the following expression for $Q(t){:}$\n\n$$\n\\begin{aligned}Q(t) & =0.5(70+t)-\\frac{23(70)^{2}}{(70+t)^{2}} \\\\  & =0.5(70+t)-23{\\left(\\frac{70}{70+t}\\right)}^{2}.\\end{aligned}\n$$\n\nFinally,  the amount of coagulant in the tank $8$ minutes after pumping begins is\n\n$$\n\\begin{aligned}Q(8) & =0.5(70+8)-23{\\left(\\frac{70}{70+8}\\right)}^{2} \\\\  & =39-23{\\left(\\frac{70}{78}\\right)}^{2} \\\\  & \u224820.48\\,\\text{kg},\\end{aligned}\n$$\n\nrounded to two decimal places."
+    },
+    ":knowledge-point/id": "2ab1d837-f782-5439-8e25-3c764f9cb5c5",
+    ":knowledge-point/questions": [
+      {
+        ":db/id": 17592186229692,
+        ":question/answer-fields": [
+          {
+            ":answer-field/choices": [
+              {
+                ":answer/id": "37b72754-baa1-5d83-b734-0964e3861b36",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "6",
+                ":db/id": 17592186228337
+              },
+              {
+                ":answer/id": "39eb6365-d2f3-5e96-a701-c71bfda37768",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "12",
+                ":db/id": 17592186228338
+              },
+              {
+                ":answer/id": "8db66dec-2792-5218-8a9d-85b9dbca389e",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "8",
+                ":db/id": 17592186228334
+              },
+              {
+                ":answer/id": "a9f4e072-1f4c-5373-a3d6-0795c277ede4",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "15",
+                ":db/id": 17592186228335
+              },
+              {
+                ":answer/id": "fd684dc0-61aa-5e73-9b90-b9380e77f537",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "10",
+                ":db/id": 17592186228336
+              }
+            ],
+            ":answer-field/id": "579dbc44-8b7c-5a48-b291-b80099c940f7",
+            ":answer-field/key": "selection",
+            ":answer-field/type": {
+              ":db/ident": ":answer-field.type/radio"
+            },
+            ":db/id": 17592186228333
+          }
+        ],
+        ":question/id": "5708b503-7d42-5d87-80c5-062229fe4d3c",
+        ":question/math-academy-id": "q-336439",
+        ":question/problem": "An aquarium initially holds $300L$ of water containing $6kg$ of dissolved minerals.\nA solution containing $0.03kg/L$ of dissolved minerals is pumped into the aquarium at a rate of $24L/min$, while the completely mixed water is drained out at a rate of $36L/min$. If the amount of minerals $Q(t)$, in kilograms, in the tank $t$ minutes after pumping begins is given by\n$Q(t) = \u03b1(1 - \\frac{t}{25}) + \u03b2(1 - \\frac{t}{25})^{3}$\nwhere $\u03b1$ and $\u03b2$ are constants, what is the value of $\u03b1 + \u03b2$?\n\n> A scientific calculator is required to answer this question.",
+        ":question/requires-calculator": true
+      },
+      {
+        ":db/id": 17592186229698,
+        ":question/answer-fields": [
+          {
+            ":answer-field/choices": [
+              {
+                ":answer/id": "132d6c9e-eb68-5d65-8d72-ee64a266345d",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "9.18\\,\\text{kg}",
+                ":db/id": 17592186501500
+              },
+              {
+                ":answer/id": "14f59116-2d5c-52e2-9b35-7f32ef8ca9aa",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "8.21\\,\\text{kg}",
+                ":db/id": 17592186501506
+              },
+              {
+                ":answer/id": "23c67163-5885-5331-b6df-e6f1abd577ec",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "9.81\\,\\text{kg}",
+                ":db/id": 17592186501529
+              },
+              {
+                ":answer/id": "df01cbb2-ff59-5cab-a987-8313d051432e",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "8.63\\,\\text{kg}",
+                ":db/id": 17592186501913
+              },
+              {
+                ":answer/id": "eb7cb287-8d09-5c98-9bf7-3d208192ac9a",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "7.99\\,\\text{kg}",
+                ":db/id": 17592186501939
+              }
+            ],
+            ":answer-field/correct": {
+              ":answer/id": "23c67163-5885-5331-b6df-e6f1abd577ec",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "9.81\\,\\text{kg}",
+              ":db/id": 17592186501529
+            },
+            ":answer-field/id": "4ad053d7-10e4-578d-b606-6bda94abf500",
+            ":answer-field/key": "selection",
+            ":answer-field/type": {
+              ":db/ident": ":answer-field.type/radio"
+            },
+            ":db/id": 17592186228371
+          }
+        ],
+        ":question/difficulty": {
+          ":db/ident": ":question.difficulty/hard"
+        },
+        ":question/id": "310f29d9-e5f9-5829-9c84-72d1324e1777",
+        ":question/math-academy-id": "q-336738",
+        ":question/problem": "A storage tank initially holds $600\\,\\text{L}$ of liquid containing $5\\,\\text{kg}$ of dissolved stabilizer.\nA feed solution containing $0.04\\,\\text{kg/L}$ of the stabilizer is pumped into the tank at a rate of $15\\,\\text{L/min},$ while the completely mixed liquid is drained out at a rate of $10\\,\\text{L/min}.$\nFind, rounded to two decimal places, the amount of stabilizer in the tank $10$ minutes after pumping begins.",
+        ":question/requires-calculator": true,
+        ":question/worked-solution": "Let $Q$ be the amount of stabilizer in the tank at time $t,$ in minutes. Then, the derivative \n\n$$\n\\frac{dQ}{dt}\n$$\n\ndescribes how this amount changes with respect to time $t.$ This is equal to the rate at which stabilizer enters the tank minus the rate at which stabilizer leaves the tank.\n\n$$\n\\frac{dQ}{dt}={Q}_{\\text{in}}^{\u2032}-{Q}_{\\text{out}}^{\u2032}\n$$\n\nNote that the units of $\\frac{dQ}{dt},{Q}_{\\text{in}}^{\u2032}$ and ${Q}_{\\text{out}}^{\u2032}$ are $\\text{kg}/\\text{min}.$ Now, let's compute the required rates of change in steps.\n\n**Step 1**: Calculating the rate at which stabilizer enters the tank.\n\nNote that a feed solution containing $0.04\\,\\text{kg/L}$ of the stabilizer enters the tank at a rate of $15\\,\\text{L/min}.$ So, the rate at which the *stabilizer* enters the tank is \n\n$$\n\\begin{aligned}{Q}_{\\text{in}}^{\u2032} & =(0.04\\,\\frac{\\text{kg}}{\\text{L}})\\cdot (15\\,\\frac{\\text{L}}{\\text{min}}) \\\\  & =(0.04\\,\\frac{\\text{kg}}{\\cancel{\\text{L}}})\\cdot (15\\,\\frac{\\cancel{\\text{L}}}{\\text{min}}) \\\\  & =0.6\\,\\frac{\\text{kg}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 2**: Calculating the rate at which stabilizer exits the tank.\n\nTo find the rate at which stabilizer leaves the tank, we must first determine the volume of liquid in the tank at time $t.$\n\nThe tank initially contains $600\\,\\text{L}$ of liquid; a solution enters at $15\\,\\text{L/min}$ and leaves at $10\\,\\text{L/min}.$\nAs a result, the volume of liquid in the tank after $t$ minutes is \n\n$$\n600+15t-10t=(600+5t)\\,\\text{L}.\n$$\n\nSince $Q$ is the amount of stabilizer in the tank, the *concentration* of the mixed solution at time $t$ is\n\n$$\n\\frac{Q}{600+5t}\\,\\text{kg/L}.\n$$\n\nTherefore, as the completely mixed liquid leaves at a rate of $10\\,\\text{L/min},$ *stabilizer* leaves at a rate of\n\n$$\n\\begin{aligned}{Q}_{\\text{out}}^{\u2032} & =(10\\,\\frac{\\text{L}}{\\text{min}})\\cdot (\\frac{Q}{600+5t}\\,\\frac{\\text{kg}}{\\text{L}}) \\\\  & =(10\\,\\frac{\\cancel{\\text{L}}}{\\text{min}})\\cdot (\\frac{Q}{600+5t}\\,\\frac{\\text{kg}}{\\cancel{\\text{L}}}) \\\\  & =\\frac{10Q}{600+5t}\\,\\frac{\\text{kg}}{\\text{min}} \\\\  & =\\frac{2Q}{120+t}\\,\\frac{\\text{kg}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 3**: Calculate the overall rate of change.\n\nThe rate of change equals the rate of entry minus the rate of exit. Therefore, \n\n$$\n\\begin{aligned}\\frac{dQ}{dt} & ={Q}_{\\text{in}}^{\u2032}-{Q}_{\\text{out}}^{\u2032} \\\\  & =0.6-\\frac{2Q}{120+t}\\end{aligned}\n$$\n\nwhich gives the equation\n\n$$\n\\begin{aligned}\\frac{dQ}{dt}+\\frac{2}{120+t}Q=0.6.\\end{aligned}\n$$\n\n**Step 4**: Integrate the equation.\n\nThis is a first-order linear equation with variable coefficients. So we find the general solution using an integrating factor:\n\n$$\n\\begin{aligned}I(t) & ={e}^{\\int 2/(120+t)\\,dt} \\\\  & ={e}^{2\\operatorname{ln}\u2061|120+t|} \\\\  & ={e}^{\\operatorname{ln}\u2061(120+t)^{2}} \\\\  & =(120+t)^{2}\\end{aligned}\n$$\n\nMultiplying both sides of the differential equation by $I(t)=(120+t)^{2}$ yields\n\n$$\n\\begin{aligned}(120+t)^{2}\\cdot (\\frac{dQ}{dt}+\\frac{2}{120+t}Q) & =(120+t)^{2}\\cdot 0.6 \\\\ (120+t)^{2}\\frac{dQ}{dt}+2(120+t)Q & =0.6(120+t)^{2} \\\\ \\frac{d}{dt}(Q(120+t)^{2}) & =0.6(120+t)^{2}.\\end{aligned}\n$$\n\nNow, we integrate with respect to $t:$\n\n$$\n\\begin{aligned}\\int \\frac{d}{dt}(Q(120+t)^{2})\\,dt & =\\int 0.6(120+t)^{2}\\,dt \\\\ Q(120+t)^{2} & =0.6\\cdot \\frac{1}{3}(120+t)^{3}+C \\\\ Q(t) & =0.2(120+t)+\\frac{C}{(120+t)^{2}}\\end{aligned}\n$$\n\nNote that $C$ is a constant of integration.\n\nWe're told that the tank initially contains $5\\,\\text{kg}$ of stabilizer. So, we can apply the initial condition $Q(0)=5,$ and solve for $C:$\n\n$$\n\\begin{aligned}Q(0) & =5 \\\\ 0.2(120+0)+\\frac{C}{(120+0)^{2}} & =5 \\\\ 24+\\frac{C}{{120}^{2}} & =5 \\\\ \\frac{C}{{120}^{2}} & =-19 \\\\ C & =-19(120)^{2}\\end{aligned}\n$$\n\nFinally, we obtain the following expression for $Q(t):$\n\n$$\n\\begin{aligned}Q(t) & =0.2(120+t)-\\frac{19(120)^{2}}{(120+t)^{2}} \\\\  & =0.2(120+t)-19{\\left(\\frac{120}{120+t}\\right)}^{2}.\\end{aligned}\n$$\n\nFinally,  the amount of stabilizer in the tank $10$ minutes after pumping begins is\n\n$$\n\\begin{aligned}Q(10) & =0.2(120+10)-19{\\left(\\frac{120}{120+10}\\right)}^{2} \\\\  & =26-19{\\left(\\frac{12}{13}\\right)}^{2} \\\\  & \u22489.81\\,\\text{kg},\\end{aligned}\n$$\n\nrounded to two decimal places."
+      },
+      {
+        ":db/id": 17592186377249,
+        ":question/answer-fields": [
+          {
+            ":answer-field/choices": [
+              {
+                ":answer/id": "3dca446e-f8bb-5a17-9561-bc2230c8306c",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "18.42\\,\\text{kg}",
+                ":db/id": 17592186377254
+              },
+              {
+                ":answer/id": "59e1559d-1a25-5f5b-86a0-b44ad480a144",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "17.94\\,\\text{kg}",
+                ":db/id": 17592186377252
+              },
+              {
+                ":answer/id": "5a3f26d4-7fd0-5dfc-b30a-66eaf31e8b97",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "17.34\\,\\text{kg}",
+                ":db/id": 17592186377251
+              },
+              {
+                ":answer/id": "6884f190-c170-5c58-85a7-6a4669b950fa",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "18.04\\,\\text{kg}",
+                ":db/id": 17592186377253
+              },
+              {
+                ":answer/id": "9010ad44-b315-5215-8406-035745dd6ad7",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "19.01\\,\\text{kg}",
+                ":db/id": 17592186377255
+              }
+            ],
+            ":answer-field/correct": {
+              ":answer/id": "6884f190-c170-5c58-85a7-6a4669b950fa",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "18.04\\,\\text{kg}",
+              ":db/id": 17592186377253
+            },
+            ":answer-field/id": "753683c1-dfc0-5785-8a4b-d335ca58b088",
+            ":answer-field/key": "selection",
+            ":answer-field/type": {
+              ":db/ident": ":answer-field.type/radio"
+            },
+            ":db/id": 17592186377250
+          }
+        ],
+        ":question/difficulty": {
+          ":db/ident": ":question.difficulty/hard"
+        },
+        ":question/id": "01365019-dd55-56aa-aa06-e538a69722fd",
+        ":question/math-academy-id": "q-336743",
+        ":question/problem": "A processing tank initially holds $420\\,\\text{L}$ of liquid containing $10\\,\\text{kg}$ of dissolved preservative.\nA feed solution containing $0.05\\,\\text{kg/L}$ of the preservative is pumped into the tank at a rate of $18\\,\\text{L/min},$ while the completely mixed liquid is drained out at a rate of $12\\,\\text{L/min}.$\nFind, rounded to two decimal places, the amount of preservative in the tank $15$ minutes after pumping begins.",
+        ":question/worked-solution": "Let $Q$ be the amount of preservative in the tank at time $t,$ in minutes. Then, the derivative \n\n$$\n\\frac{dQ}{dt}\n$$\n\ndescribes how this amount changes with respect to time $t.$ This is equal to the rate at which preservative enters the tank minus the rate at which preservative leaves the tank.\n\n$$\n\\frac{dQ}{dt}={Q}_{\\text{in}}^{\u2032}-{Q}_{\\text{out}}^{\u2032}\n$$\n\nNote that the units of $\\frac{dQ}{dt},{Q}_{\\text{in}}^{\u2032}$ and ${Q}_{\\text{out}}^{\u2032}$ are $\\text{kg}/\\text{min}.$ Now, let's compute the required rates of change in steps.\n\n**Step 1**: Calculating the rate at which preservative enters the tank.\n\nNote that a feed solution containing $0.05\\,\\text{kg/L}$ of the preservative enters the tank at a rate of $18\\,\\text{L/min}.$ So, the rate at which the *preservative* enters the tank is \n\n$$\n\\begin{aligned}{Q}_{\\text{in}}^{\u2032} & =(0.05\\,\\frac{\\text{kg}}{\\text{L}})\\cdot (18\\,\\frac{\\text{L}}{\\text{min}}) \\\\  & =(0.05\\,\\frac{\\text{kg}}{\\cancel{\\text{L}}})\\cdot (18\\,\\frac{\\cancel{\\text{L}}}{\\text{min}}) \\\\  & =0.9\\,\\frac{\\text{kg}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 2**: Calculating the rate at which preservative exits the tank.\n\nTo find the rate at which preservative leaves the tank, we must first determine the volume of liquid in the tank at time $t.$\n\nThe tank initially contains $420\\,\\text{L}$ of liquid; a solution enters at $18\\,\\text{L/min}$ and leaves at $12\\,\\text{L/min}.$\nAs a result, the volume of liquid in the tank after $t$ minutes is \n\n$$\n420+18t-12t=(420+6t)\\,\\text{L}.\n$$\n\nSince $Q$ is the amount of preservative in the tank, the *concentration* of the mixed solution at time $t$ is\n\n$$\n\\frac{Q}{420+6t}\\,\\text{kg/L}.\n$$\n\nTherefore, as the completely mixed liquid leaves at a rate of $12\\,\\text{L/min},$ *preservative* leaves at a rate of\n\n$$\n\\begin{aligned}{Q}_{\\text{out}}^{\u2032} & =(12\\,\\frac{\\text{L}}{\\text{min}})\\cdot (\\frac{Q}{420+6t}\\,\\frac{\\text{kg}}{\\text{L}}) \\\\  & =(12\\,\\frac{\\cancel{\\text{L}}}{\\text{min}})\\cdot (\\frac{Q}{420+6t}\\,\\frac{\\text{kg}}{\\cancel{\\text{L}}}) \\\\  & =\\frac{12Q}{420+6t}\\,\\frac{\\text{kg}}{\\text{min}} \\\\  & =\\frac{2Q}{70+t}\\,\\frac{\\text{kg}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 3**: Calculate the overall rate of change.\n\nThe rate of change equals the rate of entry minus the rate of exit. Therefore, \n\n$$\n\\begin{aligned}\\frac{dQ}{dt} & ={Q}_{\\text{in}}^{\u2032}-{Q}_{\\text{out}}^{\u2032} \\\\  & =0.9-\\frac{2Q}{70+t}\\end{aligned}\n$$\n\nwhich gives the equation\n\n$$\n\\begin{aligned}\\frac{dQ}{dt}+\\frac{2}{70+t}Q=0.9.\\end{aligned}\n$$\n\n**Step 4**: Integrate the equation.\n\nThis is a first-order linear equation with variable coefficients. So we find the general solution using an integrating factor:\n\n$$\n\\begin{aligned}I(t) & ={e}^{\\int 2/(70+t)\\,dt} \\\\  & ={e}^{2\\operatorname{ln}\u2061|70+t|} \\\\  & ={e}^{\\operatorname{ln}\u2061(70+t)^{2}} \\\\  & =(70+t)^{2}\\end{aligned}\n$$\n\nMultiplying both sides of the differential equation by $I(t)=(70+t)^{2}$ yields\n\n$$\n\\begin{aligned}(70+t)^{2}\\cdot (\\frac{dQ}{dt}+\\frac{2}{70+t}Q) & =(70+t)^{2}\\cdot 0.9 \\\\ (70+t)^{2}\\frac{dQ}{dt}+2(70+t)Q & =0.9(70+t)^{2} \\\\ \\frac{d}{dt}(Q(70+t)^{2}) & =0.9(70+t)^{2}.\\end{aligned}\n$$\n\nNow, we integrate with respect to $t:$\n\n$$\n\\begin{aligned}\\int \\frac{d}{dt}(Q(70+t)^{2})\\,dt & =\\int 0.9(70+t)^{2}\\,dt \\\\ Q(70+t)^{2} & =0.9\\cdot \\frac{1}{3}(70+t)^{3}+C \\\\ Q(t) & =0.3(70+t)+\\frac{C}{(70+t)^{2}}\\end{aligned}\n$$\n\nNote that $C$ is a constant of integration.\n\nWe're told that the tank initially contains $10\\,\\text{kg}$ of preservative. So, we can apply the initial condition $Q(0)=10,$ and solve for $C:$\n\n$$\n\\begin{aligned}Q(0) & =10 \\\\ 0.3(70+0)+\\frac{C}{(70+0)^{2}} & =10 \\\\ 21+\\frac{C}{{70}^{2}} & =10 \\\\ \\frac{C}{{70}^{2}} & =-11 \\\\ C & =-11(70)^{2}\\end{aligned}\n$$\n\nFinally, we obtain the following expression for $Q(t):$\n\n$$\n\\begin{aligned}Q(t) & =0.3(70+t)-\\frac{11(70)^{2}}{(70+t)^{2}} \\\\  & =0.3(70+t)-11{\\left(\\frac{70}{70+t}\\right)}^{2}.\\end{aligned}\n$$\n\nFinally,  the amount of preservative in the tank $15$ minutes after pumping begins is\n\n$$\n\\begin{aligned}Q(15) & =0.3(70+15)-11{\\left(\\frac{70}{70+15}\\right)}^{2} \\\\  & =25.5-11{\\left(\\frac{70}{85}\\right)}^{2} \\\\  & \u224818.04\\,\\text{kg},\\end{aligned}\n$$\n\nrounded to two decimal places."
+      },
+      {
+        ":db/id": 17592186377293,
+        ":question/answer-fields": [
+          {
+            ":answer-field/choices": [
+              {
+                ":answer/id": "4ac1a8be-c213-5433-be78-80bb938c8e36",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "30",
+                ":db/id": 17592186377297
+              },
+              {
+                ":answer/id": "80c9af41-db22-5fdd-9f0e-114cc03d4dcc",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "20",
+                ":db/id": 17592186377295
+              },
+              {
+                ":answer/id": "b25a95ae-28ad-5afb-9758-ae8c6c582bc9",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "24",
+                ":db/id": 17592186377299
+              },
+              {
+                ":answer/id": "d27a819d-3733-5724-9e0a-425c1701164a",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "15",
+                ":db/id": 17592186377296
+              },
+              {
+                ":answer/id": "dba1b189-1202-5081-99fc-577118ac8811",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "18",
+                ":db/id": 17592186377298
+              }
+            ],
+            ":answer-field/correct": {
+              ":answer/id": "80c9af41-db22-5fdd-9f0e-114cc03d4dcc",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "20",
+              ":db/id": 17592186377295
+            },
+            ":answer-field/id": "01c0a0d5-4bf3-54b2-a43d-067aa74d6301",
+            ":answer-field/key": "selection",
+            ":answer-field/type": {
+              ":db/ident": ":answer-field.type/radio"
+            },
+            ":db/id": 17592186377294
+          }
+        ],
+        ":question/difficulty": {
+          ":db/ident": ":question.difficulty/moderate"
+        },
+        ":question/id": "456aacfd-49e4-5a1e-8363-4f5725f307ee",
+        ":question/math-academy-id": "q-339394",
+        ":question/problem": "A juice-processing tank initially holds $400\\,\\text{L}$ of liquid containing $4\\,\\text{kg}$ of dissolved sugar.\nA solution containing $0.03\\,\\text{kg/L}$ of dissolved sugar is pumped into the tank at a rate of $20\\,\\text{L/min},$ while the completely mixed liquid is drained out at a rate of $30\\,\\text{L/min}.$ If the amount of sugar $Q(t),$ in kilograms, in the tank $t$ minutes after pumping begins is given by\n\n$$\nQ(t)=\\alpha \\,(1-\\frac{t}{40})+\\beta {(1-\\frac{t}{40})}^{3}\n$$\n\nwhere $\\alpha $ and $\\beta $ are constants, what is the value of $\\alpha -\\beta ?$",
+        ":question/worked-solution": "Since $Q$ is the amount of salt in the tank at time $t,$ the derivative \n\n$$\n\\frac{dQ}{dt}\n$$\n\ndescribes how this amount changes with respect to time $t,$ in minutes. This is equal to the rate at which sugar enters the tank minus the rate at which sugar leaves the tank.\n\n$$\n\\frac{dQ}{dt}={Q}_{\\text{in}}^{\u2032}-{Q}_{\\text{out}}^{\u2032}\n$$\n\nNote that the units of $\\frac{dQ}{dt},{Q}_{\\text{in}}^{\u2032}$ and ${Q}_{\\text{out}}^{\u2032}$ are $\\text{kg}/\\text{min}.$ Now, let's compute the required rates of change in steps.\n\n**Step 1**: Calculating the rate at which sugar enter the tank.\n\nFirst, note that a liquid solution containing $0.03\\,\\text{kg/L}$ of sugar enters the tank at a rate of $20\\,\\text{L/min}.$ So, the rate at which the *sugar* enters the tank is \n\n$$\n\\begin{aligned}{Q}_{\\text{in}}^{\u2032} & =(0.03\\,\\frac{\\text{kg}}{\\text{L}})\\cdot (20\\,\\frac{\\text{L}}{\\text{min}}) \\\\  & =(0.03\\,\\frac{\\text{kg}}{\\cancel{\\text{L}}})\\cdot (20\\,\\frac{\\cancel{\\text{L}}}{\\text{min}}) \\\\  & =0.6\\,\\frac{\\text{kg}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 2**: Calculating the rate at which sugar exit the tank.\n\nTo find the rate at which sugar leaves the tank, we must first determine the volume of liquid in the tank at time $t.$\n\nThe tank initially contains $400\\,\\text{L}$ of liquid; a solution enters at $20\\,\\text{L/min}$ and leaves at $30\\,\\text{L/min}.$\nAs a result, the amount of liquid in the tank after $t$ minutes is \n\n$$\n400+20t-30t=(400-10t)\\,\\text{L}.\n$$\n\nSince $Q$ is the amount of sugar in the tank, the *concentration* of the mixed solution at time $t$ is\n\n$$\n\\frac{Q}{400-10t}\\,\\text{kg/L}.\n$$\n\nTherefore, as the completely mixed liquid leaves at a rate of $30\\,\\text{L/min},$ *sugar* leaves at a rate of\n\n$$\n\\begin{aligned}{Q}_{\\text{out}}^{\u2032} & =(30\\,\\frac{\\text{L}}{\\text{min}})\\cdot (\\frac{Q}{400-10t}\\,\\frac{\\text{kg}}{\\text{L}}) \\\\  & =(30\\,\\frac{\\cancel{\\text{L}}}{\\text{min}})\\cdot (\\frac{Q}{400-10t}\\,\\frac{\\text{kg}}{\\cancel{\\text{L}}}) \\\\  & =\\frac{30Q}{400-10t}\\,\\frac{\\text{kg}}{\\text{min}} \\\\  & =\\frac{3Q}{40-t}\\,\\frac{\\text{kg}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 3**: Calculate the overall rate of change.\n\nThe rate of change equals the rate of entry minus the rate of exit. Therefore, \n\n$$\n\\begin{aligned}\\frac{dQ}{dt} & ={Q}_{\\text{in}}^{\u2032}-{Q}_{\\text{out}}^{\u2032} \\\\  & =0.6-\\frac{3Q}{40-t}\\end{aligned}\n$$\n\nwhich gives the equation\n\n$$\n\\begin{aligned}\\frac{dQ}{dt}+\\frac{3}{40-t}Q=0.6.\\end{aligned}\n$$\n\n**Step 4**: Integrate the equation.\n\nThis is a first-order linear equation with variable coefficients. So we find the general solution using an integrating factor:\n\n$$\n\\begin{aligned}I(t) & ={e}^{\\int 3/(40-t)\\,dt} \\\\  & ={e}^{-3\\operatorname{ln}\u2061|40-t|} \\\\  & ={e}^{\\operatorname{ln}\u2061(40-t)^{-3}} \\\\  & =(40-t)^{-3}\\end{aligned}\n$$\n\nMultiplying both sides of the differential equation by $I(t)=(40-t)^{-3}$ yields\n\n$$\n\\begin{aligned}(40-t)^{-3}\\cdot (\\frac{dQ}{dt}+\\frac{3}{40-t}Q) & =(40-t)^{-3}\\cdot 0.6 \\\\ (40-t)^{-3}\\frac{dQ}{dt}+3(40-t)^{-4}Q & =0.6(40-t)^{-3} \\\\ \\frac{d}{dt}(Q(40-t)^{-3}) & =0.6(40-t)^{-3}.\\end{aligned}\n$$\n\nNow, we integrate with respect to $t:$\n\n$$\n\\begin{aligned}\\int \\frac{d}{dt}(Q(40-t)^{-3})\\,dt & =\\int 0.6(40-t)^{-3}\\,dt \\\\ Q(40-t)^{-3} & =0.6\\cdot \\frac{1}{2}(40-t)^{-2}+C \\\\ Q(t) & =0.3(40-t)+C(40-t)^{3}\\end{aligned}\n$$\n\nNote that $C$ is a constant of integration.\n\nWe're told that the tank initially contains $4\\,\\text{kg}$ of sugar. So, we can apply the initial condition $Q(0)=4,$ and solve for $C:$\n\n$$\n\\begin{aligned}Q(0) & =4 \\\\ C(40-0)^{3}+0.3(40-0) & =4 \\\\ C(40)^{3}+12 & =4 \\\\ C & =-\\frac{8}{{40}^{3}}\\end{aligned}\n$$\n\nFinally, we obtain the following expression for $Q(t):$\n\n$$\n\\begin{aligned}Q(t) & =0.3(40-t)-\\frac{8}{{40}^{3}}(40-t)^{3} \\\\  & =0.3\\cdot 40\\,\\left(\\frac{40-t}{40}\\right)-8{\\left(\\frac{40-t}{40}\\right)}^{3} \\\\  & =12\\,(1-\\frac{t}{40})-8{(1-\\frac{t}{40})}^{3}.\\end{aligned}\n$$\n\nFinally, we have $\\alpha =12,\\beta =-8,$ and\n\n$$\n\\alpha -\\beta =12-(-8)=20.\n$$"
+      },
+      {
+        ":db/id": 17592186377300,
+        ":question/answer-fields": [
+          {
+            ":answer-field/choices": [
+              {
+                ":answer/id": "4b12db81-cdb5-5c78-aff0-867122be9ffa",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "14",
+                ":db/id": 17592186377304
+              },
+              {
+                ":answer/id": "87a222e1-6c03-558b-9d4f-e7aa60b98bea",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "29",
+                ":db/id": 17592186377306
+              },
+              {
+                ":answer/id": "b28e0e34-3fc5-53eb-9f95-3e5de6d384b4",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "26",
+                ":db/id": 17592186377303
+              },
+              {
+                ":answer/id": "efe5c524-df1e-58a3-a335-25cf075363db",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "17",
+                ":db/id": 17592186377305
+              },
+              {
+                ":answer/id": "f681e08e-700d-5f11-a546-1b73d4a5d646",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "20",
+                ":db/id": 17592186377302
+              }
+            ],
+            ":answer-field/correct": {
+              ":answer/id": "efe5c524-df1e-58a3-a335-25cf075363db",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "17",
+              ":db/id": 17592186377305
+            },
+            ":answer-field/id": "5c722bf6-15d0-5bfc-a832-c8c844cbaa11",
+            ":answer-field/key": "selection",
+            ":answer-field/type": {
+              ":db/ident": ":answer-field.type/radio"
+            },
+            ":db/id": 17592186377301
+          }
+        ],
+        ":question/difficulty": {
+          ":db/ident": ":question.difficulty/moderate"
+        },
+        ":question/id": "35a9dbe2-5b3d-52d0-b235-b8068a9e0f15",
+        ":question/math-academy-id": "q-339396",
+        ":question/problem": "A fruit syrup tank initially holds $240\\,\\text{L}$ of liquid containing $7\\,\\text{kg}$ of dissolved sweetener.\nA solution containing $0.05\\,\\text{kg/L}$ of dissolved sweetener is pumped into the tank at a rate of $24\\,\\text{L/min},$ while the completely mixed liquid is drained out at a rate of $32\\,\\text{L/min}.$ If the amount of sweetener $Q(t),$ in kilograms, in the tank $t$ minutes after pumping begins is given by\n\n$$\nQ(t)=\\alpha \\,(1-\\frac{t}{30})+\\beta {(1-\\frac{t}{30})}^{4}\n$$\n\nwhere $\\alpha $ and $\\beta $ are constants, what is the value of $\\alpha -\\beta ?$",
+        ":question/worked-solution": "Since $Q$ is the amount of salt in the tank at time $t,$ the derivative \n\n$$\n\\frac{dQ}{dt}\n$$\n\ndescribes how this amount changes with respect to time $t,$ in minutes. This is equal to the rate at which sweetener enters the tank minus the rate at which sweetener leaves the tank.\n\n$$\n\\frac{dQ}{dt}={Q}_{\\text{in}}^{\u2032}-{Q}_{\\text{out}}^{\u2032}\n$$\n\nNote that the units of $\\frac{dQ}{dt},{Q}_{\\text{in}}^{\u2032}$ and ${Q}_{\\text{out}}^{\u2032}$ are $\\text{kg}/\\text{min}.$ Now, let's compute the required rates of change in steps.\n\n**Step 1**: Calculating the rate at which sweetener enter the tank.\n\nFirst, note that a solution containing $0.05\\,\\text{kg/L}$ of sweetener enters the tank at a rate of $24\\,\\text{L/min}.$ So, the rate at which the *sweetener* enters the tank is \n\n$$\n\\begin{aligned}{Q}_{\\text{in}}^{\u2032} & =(0.05\\,\\frac{\\text{kg}}{\\text{L}})\\cdot (24\\,\\frac{\\text{L}}{\\text{min}}) \\\\  & =(0.05\\,\\frac{\\text{kg}}{\\cancel{\\text{L}}})\\cdot (24\\,\\frac{\\cancel{\\text{L}}}{\\text{min}}) \\\\  & =1.2\\,\\frac{\\text{kg}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 2**: Calculating the rate at which sweetener exit the tank.\n\nTo find the rate at which sweetener leaves the tank, we must first determine the volume of liquid in the tank at time $t.$\n\nThe tank initially contains $240\\,\\text{L}$ of liquid; a solution enters at $24\\,\\text{L/min}$ and leaves at $32\\,\\text{L/min}.$\nAs a result, the amount of liquid in the tank after $t$ minutes is \n\n$$\n240+24t-32t=(240-8t)\\,\\text{L}.\n$$\n\nSince $Q$ is the amount of sweetener in the tank, the *concentration* of the mixed solution at time $t$ is\n\n$$\n\\frac{Q}{240-8t}\\,\\text{kg/L}.\n$$\n\nTherefore, as the completely mixed liquid leaves at a rate of $32\\,\\text{L/min},$ *sweetener* leaves at a rate of\n\n$$\n\\begin{aligned}{Q}_{\\text{out}}^{\u2032} & =(32\\,\\frac{\\text{L}}{\\text{min}})\\cdot (\\frac{Q}{240-8t}\\,\\frac{\\text{kg}}{\\text{L}}) \\\\  & =(32\\,\\frac{\\cancel{\\text{L}}}{\\text{min}})\\cdot (\\frac{Q}{240-8t}\\,\\frac{\\text{kg}}{\\cancel{\\text{L}}}) \\\\  & =\\frac{32Q}{240-8t}\\,\\frac{\\text{kg}}{\\text{min}} \\\\  & =\\frac{4Q}{30-t}\\,\\frac{\\text{kg}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 3**: Calculate the overall rate of change.\n\nThe rate of change equals the rate of entry minus the rate of exit. Therefore, \n\n$$\n\\begin{aligned}\\frac{dQ}{dt} & ={Q}_{\\text{in}}^{\u2032}-{Q}_{\\text{out}}^{\u2032} \\\\  & =1.2-\\frac{4Q}{30-t}\\end{aligned}\n$$\n\nwhich gives the equation\n\n$$\n\\begin{aligned}\\frac{dQ}{dt}+\\frac{4}{30-t}Q=1.2.\\end{aligned}\n$$\n\n**Step 4**: Integrate the equation.\n\nThis is a first-order linear equation with variable coefficients. So we find the general solution using an integrating factor:\n\n$$\n\\begin{aligned}I(t) & ={e}^{\\int 4/(30-t)\\,dt} \\\\  & ={e}^{-4\\operatorname{ln}\u2061|30-t|} \\\\  & ={e}^{\\operatorname{ln}\u2061(30-t)^{-4}} \\\\  & =(30-t)^{-4}\\end{aligned}\n$$\n\nMultiplying both sides of the differential equation by $I(t)=(30-t)^{-4}$ yields\n\n$$\n\\begin{aligned}(30-t)^{-4}\\cdot (\\frac{dQ}{dt}+\\frac{4}{30-t}Q) & =(30-t)^{-4}\\cdot 1.2 \\\\ (30-t)^{-4}\\frac{dQ}{dt}+4(30-t)^{-5}Q & =1.2(30-t)^{-4} \\\\ \\frac{d}{dt}(Q(30-t)^{-4}) & =1.2(30-t)^{-4}.\\end{aligned}\n$$\n\nNow, we integrate with respect to $t:$\n\n$$\n\\begin{aligned}\\int \\frac{d}{dt}(Q(30-t)^{-4})\\,dt & =\\int 1.2(30-t)^{-4}\\,dt \\\\ Q(30-t)^{-4} & =1.2\\cdot \\frac{1}{3}(30-t)^{-3}+C \\\\ Q(t) & =0.4(30-t)+C(30-t)^{4}\\end{aligned}\n$$\n\nNote that $C$ is a constant of integration.\n\nWe're told that the tank initially contains $7\\,\\text{kg}$ of sweetener. So, we can apply the initial condition $Q(0)=7,$ and solve for $C:$\n\n$$\n\\begin{aligned}Q(0) & =7 \\\\ C(30-0)^{4}+0.4(30-0) & =7 \\\\ C(30)^{4}+12 & =7 \\\\ C & =-\\frac{5}{{30}^{4}}\\end{aligned}\n$$\n\nFinally, we obtain the following expression for $Q(t):$\n\n$$\n\\begin{aligned}Q(t) & =0.4(30-t)-\\frac{5}{{30}^{4}}(30-t)^{4} \\\\  & =0.4\\cdot 30\\,\\left(\\frac{30-t}{30}\\right)-5{\\left(\\frac{30-t}{30}\\right)}^{4} \\\\  & =12\\,(1-\\frac{t}{30})-5{(1-\\frac{t}{30})}^{4}.\\end{aligned}\n$$\n\nFinally, we have $\\alpha =12,\\beta =-5,$ and\n\n$$\n\\alpha -\\beta =12-(-5)=17.\n$$"
+      },
+      {
+        ":db/id": 17592186377307,
+        ":question/answer-fields": [
+          {
+            ":answer-field/choices": [
+              {
+                ":answer/id": "08fda585-15a3-51ba-b2f7-6c5b1fb1b63f",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "10.88\\,\\text{kg}",
+                ":db/id": 17592186377313
+              },
+              {
+                ":answer/id": "57a068be-87ec-53cf-a457-ecd6c727cbfe",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "11.92\\,\\text{kg}",
+                ":db/id": 17592186377312
+              },
+              {
+                ":answer/id": "5c6e3ac6-f774-5924-a271-5096cb694bf5",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "12.44\\,\\text{kg}",
+                ":db/id": 17592186377310
+              },
+              {
+                ":answer/id": "7203da68-a7dc-5fa7-a821-14e51c37d796",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "13.21\\,\\text{kg}",
+                ":db/id": 17592186377309
+              },
+              {
+                ":answer/id": "a8c3b57f-b0fe-5ca4-bc6e-be09e8b780b6",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "12.97\\,\\text{kg}",
+                ":db/id": 17592186377311
+              }
+            ],
+            ":answer-field/correct": {
+              ":answer/id": "5c6e3ac6-f774-5924-a271-5096cb694bf5",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "12.44\\,\\text{kg}",
+              ":db/id": 17592186377310
+            },
+            ":answer-field/id": "aa11ba31-9d56-5bad-87cb-702df2d10932",
+            ":answer-field/key": "selection",
+            ":answer-field/type": {
+              ":db/ident": ":answer-field.type/radio"
+            },
+            ":db/id": 17592186377308
+          }
+        ],
+        ":question/difficulty": {
+          ":db/ident": ":question.difficulty/hard"
+        },
+        ":question/id": "e6bee6b8-8870-5e26-916b-bf3b0601ff8e",
+        ":question/math-academy-id": "q-339399",
+        ":question/problem": "A coolant reservoir initially holds $400\\,\\text{L}$ of liquid containing $6\\,\\text{kg}$ of dissolved corrosion inhibitor.\nA feed solution containing $0.05\\,\\text{kg/L}$ of the inhibitor is pumped into the reservoir at a rate of $16\\,\\text{L/min},$ while the completely mixed liquid is drained out at a rate of $12\\,\\text{L/min}.$\nFind, rounded to two decimal places, the amount of inhibitor in the reservoir $12$ minutes after pumping begins.",
+        ":question/worked-solution": "Let $Q$ be the amount of inhibitor in the reservoir at time $t,$ in minutes. Then, the derivative \n\n$$\n\\frac{dQ}{dt}\n$$\n\ndescribes how this amount changes with respect to time $t.$ This is equal to the rate at which inhibitor enters the tank minus the rate at which inhibitor leaves the tank.\n\n$$\n\\frac{dQ}{dt}={Q}_{\\text{in}}^{\u2032}-{Q}_{\\text{out}}^{\u2032}\n$$\n\nNote that the units of $\\frac{dQ}{dt},{Q}_{\\text{in}}^{\u2032}$ and ${Q}_{\\text{out}}^{\u2032}$ are $\\text{kg}/\\text{min}.$ Now, let's compute the required rates of change in steps.\n\n**Step 1**: Calculating the rate at which inhibitor enters the reservoir.\n\nNote that a feed solution containing $0.05\\,\\text{kg/L}$ of the inhibitor enters the reservoir at a rate of $16\\,\\text{L/min}.$ So, the rate at which the *inhibitor* enters the reservoir is \n\n$$\n\\begin{aligned}{Q}_{\\text{in}}^{\u2032} & =(0.05\\,\\frac{\\text{kg}}{\\text{L}})\\cdot (16\\,\\frac{\\text{L}}{\\text{min}}) \\\\  & =(0.05\\,\\frac{\\text{kg}}{\\cancel{\\text{L}}})\\cdot (16\\,\\frac{\\cancel{\\text{L}}}{\\text{min}}) \\\\  & =0.8\\,\\frac{\\text{kg}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 2**: Calculating the rate at which inhibitor exits the reservoir.\n\nTo find the rate at which inhibitor leaves the reservoir, we must first determine the volume of liquid in the reservoir at time $t.$\n\nThe reservoir initially contains $400\\,\\text{L}$ of liquid; a solution enters at $16\\,\\text{L/min}$ and leaves at $12\\,\\text{L/min}.$\nAs a result, the volume of liquid in the reservoir after $t$ minutes is \n\n$$\n400+16t-12t=(400+4t)\\,\\text{L}.\n$$\n\nSince $Q$ is the amount of inhibitor in the reservoir, the *concentration* of the mixed solution at time $t$ is\n\n$$\n\\frac{Q}{400+4t}\\,\\text{kg/L}.\n$$\n\nTherefore, as the completely mixed liquid leaves at a rate of $12\\,\\text{L/min},$ *inhibitor* leaves at a rate of\n\n$$\n\\begin{aligned}{Q}_{\\text{out}}^{\u2032} & =(12\\,\\frac{\\text{L}}{\\text{min}})\\cdot (\\frac{Q}{400+4t}\\,\\frac{\\text{kg}}{\\text{L}}) \\\\  & =(12\\,\\frac{\\cancel{\\text{L}}}{\\text{min}})\\cdot (\\frac{Q}{400+4t}\\,\\frac{\\text{kg}}{\\cancel{\\text{L}}}) \\\\  & =\\frac{12Q}{400+4t}\\,\\frac{\\text{kg}}{\\text{min}} \\\\  & =\\frac{3Q}{100+t}\\,\\frac{\\text{kg}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 3**: Calculate the overall rate of change.\n\nThe rate of change equals the rate of entry minus the rate of exit. Therefore, \n\n$$\n\\begin{aligned}\\frac{dQ}{dt} & ={Q}_{\\text{in}}^{\u2032}-{Q}_{\\text{out}}^{\u2032} \\\\  & =0.8-\\frac{3Q}{100+t}\\end{aligned}\n$$\n\nwhich gives the equation\n\n$$\n\\begin{aligned}\\frac{dQ}{dt}+\\frac{3}{100+t}Q=0.8.\\end{aligned}\n$$\n\n**Step 4**: Integrate the equation.\n\nThis is a first-order linear equation with variable coefficients. So we find the general solution using an integrating factor:\n\n$$\n\\begin{aligned}I(t) & ={e}^{\\int 3/(100+t)\\,dt} \\\\  & ={e}^{3\\operatorname{ln}\u2061|100+t|} \\\\  & ={e}^{\\operatorname{ln}\u2061(100+t)^{3}} \\\\  & =(100+t)^{3}\\end{aligned}\n$$\n\nMultiplying both sides of the differential equation by $I(t)=(100+t)^{3}$ yields\n\n$$\n\\begin{aligned}(100+t)^{3}\\cdot (\\frac{dQ}{dt}+\\frac{3}{100+t}Q) & =(100+t)^{3}\\cdot 0.8 \\\\ (100+t)^{3}\\frac{dQ}{dt}+3(100+t)^{2}Q & =0.8(100+t)^{3} \\\\ \\frac{d}{dt}(Q(100+t)^{3}) & =0.8(100+t)^{3}.\\end{aligned}\n$$\n\nNow, we integrate with respect to $t:$\n\n$$\n\\begin{aligned}\\int \\frac{d}{dt}(Q(100+t)^{3})\\,dt & =\\int 0.8(100+t)^{3}\\,dt \\\\ Q(100+t)^{3} & =0.8\\cdot \\frac{1}{4}(100+t)^{4}+C \\\\ Q(t) & =0.2(100+t)+\\frac{C}{(100+t)^{3}}\\end{aligned}\n$$\n\nNote that $C$ is a constant of integration.\n\nWe're told that the reservoir initially contains $6\\,\\text{kg}$ of inhibitor. So, we can apply the initial condition $Q(0)=6,$ and solve for $C:$\n\n$$\n\\begin{aligned}Q(0) & =6 \\\\ 0.2(100+0)+\\frac{C}{(100+0)^{3}} & =6 \\\\ 20+\\frac{C}{{100}^{3}} & =6 \\\\ \\frac{C}{{100}^{3}} & =-14 \\\\ C & =-14(100)^{3}\\end{aligned}\n$$\n\nFinally, we obtain the following expression for $Q(t):$\n\n$$\n\\begin{aligned}Q(t) & =0.2(100+t)-\\frac{14(100)^{3}}{(100+t)^{3}} \\\\  & =0.2(100+t)-14{\\left(\\frac{100}{100+t}\\right)}^{3}.\\end{aligned}\n$$\n\nFinally,  the amount of inhibitor in the reservoir $12$ minutes after pumping begins is\n\n$$\n\\begin{aligned}Q(12) & =0.2(100+12)-14{\\left(\\frac{100}{100+12}\\right)}^{3} \\\\  & =22.4-14{\\left(\\frac{25}{28}\\right)}^{3} \\\\  & \u224812.44\\,\\text{kg},\\end{aligned}\n$$\n\nrounded to two decimal places."
+      },
+      {
+        ":db/id": 17592186377314,
+        ":question/answer-fields": [
+          {
+            ":answer-field/choices": [
+              {
+                ":answer/id": "099acc92-7fac-5696-b31e-f1fb2df34af2",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "11.58\\,\\text{kg}",
+                ":db/id": 17592186377316
+              },
+              {
+                ":answer/id": "26b77d91-31cc-548b-acc6-bdc54133b6cf",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "13.12\\,\\text{kg}",
+                ":db/id": 17592186377320
+              },
+              {
+                ":answer/id": "595a8122-0ca3-5fa3-841a-170aadcc3604",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "12.03\\,\\text{kg}",
+                ":db/id": 17592186377318
+              },
+              {
+                ":answer/id": "b84c947f-ccfb-56fc-b617-b376d1a795a0",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "10.94\\,\\text{kg}",
+                ":db/id": 17592186377317
+              },
+              {
+                ":answer/id": "d84483d6-8474-5c8e-8b9c-2b641cc22149",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "12.67\\,\\text{kg}",
+                ":db/id": 17592186377319
+              }
+            ],
+            ":answer-field/correct": {
+              ":answer/id": "595a8122-0ca3-5fa3-841a-170aadcc3604",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "12.03\\,\\text{kg}",
+              ":db/id": 17592186377318
+            },
+            ":answer-field/id": "70d825b7-f752-5a4c-9bbe-c55b7b40186e",
+            ":answer-field/key": "selection",
+            ":answer-field/type": {
+              ":db/ident": ":answer-field.type/radio"
+            },
+            ":db/id": 17592186377315
+          }
+        ],
+        ":question/difficulty": {
+          ":db/ident": ":question.difficulty/hard"
+        },
+        ":question/id": "46db6f1f-9edd-53d3-9387-f26ef7512b99",
+        ":question/math-academy-id": "q-339400",
+        ":question/problem": "A fermentation vat initially holds $500\\,\\text{L}$ of liquid containing $8\\,\\text{kg}$ of dissolved nutrient.\nA feed solution containing $0.06\\,\\text{kg/L}$ of the nutrient is pumped into the vat at a rate of $10\\,\\text{L/min},$ while the completely mixed liquid is drained out at a rate of $5\\,\\text{L/min}.$\nFind, rounded to two decimal places, the amount of nutrient in the vat $8$ minutes after pumping begins.",
+        ":question/worked-solution": "Let $Q$ be the amount of nutrient in the vat at time $t,$ in minutes. Then, the derivative \n\n$$\n\\frac{dQ}{dt}\n$$\n\ndescribes how this amount changes with respect to time $t.$ This is equal to the rate at which nutrient enters the tank minus the rate at which nutrient leaves the tank.\n\n$$\n\\frac{dQ}{dt}={Q}_{\\text{in}}^{\u2032}-{Q}_{\\text{out}}^{\u2032}\n$$\n\nNote that the units of $\\frac{dQ}{dt},{Q}_{\\text{in}}^{\u2032}$ and ${Q}_{\\text{out}}^{\u2032}$ are $\\text{kg}/\\text{min}.$ Now, let's compute the required rates of change in steps.\n\n**Step 1**: Calculating the rate at which nutrient enters the vat.\n\nNote that a feed solution containing $0.06\\,\\text{kg/L}$ of the nutrient enters the vat at a rate of $10\\,\\text{L/min}.$ So, the rate at which the *nutrient* enters the vat is \n\n$$\n\\begin{aligned}{Q}_{\\text{in}}^{\u2032} & =(0.06\\,\\frac{\\text{kg}}{\\text{L}})\\cdot (10\\,\\frac{\\text{L}}{\\text{min}}) \\\\  & =(0.06\\,\\frac{\\text{kg}}{\\cancel{\\text{L}}})\\cdot (10\\,\\frac{\\cancel{\\text{L}}}{\\text{min}}) \\\\  & =0.6\\,\\frac{\\text{kg}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 2**: Calculating the rate at which nutrient exits the vat.\n\nTo find the rate at which nutrient leaves the vat, we must first determine the volume of liquid in the vat at time $t.$\n\nThe vat initially contains $500\\,\\text{L}$ of liquid; a solution enters at $10\\,\\text{L/min}$ and leaves at $5\\,\\text{L/min}.$\nAs a result, the volume of liquid in the vat after $t$ minutes is \n\n$$\n500+10t-5t=(500+5t)\\,\\text{L}.\n$$\n\nSince $Q$ is the amount of nutrient in the vat, the *concentration* of the mixed solution at time $t$ is\n\n$$\n\\frac{Q}{500+5t}\\,\\text{kg/L}.\n$$\n\nTherefore, as the completely mixed liquid leaves at a rate of $5\\,\\text{L/min},$ *nutrient* leaves at a rate of\n\n$$\n\\begin{aligned}{Q}_{\\text{out}}^{\u2032} & =(5\\,\\frac{\\text{L}}{\\text{min}})\\cdot (\\frac{Q}{500+5t}\\,\\frac{\\text{kg}}{\\text{L}}) \\\\  & =(5\\,\\frac{\\cancel{\\text{L}}}{\\text{min}})\\cdot (\\frac{Q}{500+5t}\\,\\frac{\\text{kg}}{\\cancel{\\text{L}}}) \\\\  & =\\frac{5Q}{500+5t}\\,\\frac{\\text{kg}}{\\text{min}} \\\\  & =\\frac{Q}{100+t}\\,\\frac{\\text{kg}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 3**: Calculate the overall rate of change.\n\nThe rate of change equals the rate of entry minus the rate of exit. Therefore, \n\n$$\n\\begin{aligned}\\frac{dQ}{dt} & ={Q}_{\\text{in}}^{\u2032}-{Q}_{\\text{out}}^{\u2032} \\\\  & =0.6-\\frac{Q}{100+t}\\end{aligned}\n$$\n\nwhich gives the equation\n\n$$\n\\begin{aligned}\\frac{dQ}{dt}+\\frac{1}{100+t}Q=0.6.\\end{aligned}\n$$\n\n**Step 4**: Integrate the equation.\n\nThis is a first-order linear equation with variable coefficients. So we find the general solution using an integrating factor:\n\n$$\n\\begin{aligned}I(t) & ={e}^{\\int 1/(100+t)\\,dt} \\\\  & ={e}^{\\operatorname{ln}\u2061|100+t|} \\\\  & =100+t\\end{aligned}\n$$\n\nMultiplying both sides of the differential equation by $I(t)=100+t$ yields\n\n$$\n\\begin{aligned}(100+t)\\cdot (\\frac{dQ}{dt}+\\frac{1}{100+t}Q) & =(100+t)\\cdot 0.6 \\\\ (100+t)\\frac{dQ}{dt}+Q & =0.6(100+t) \\\\ \\frac{d}{dt}(Q(100+t)) & =0.6(100+t).\\end{aligned}\n$$\n\nNow, we integrate with respect to $t:$\n\n$$\n\\begin{aligned}\\int \\frac{d}{dt}(Q(100+t))\\,dt & =\\int 0.6(100+t)\\,dt \\\\ Q(100+t) & =0.6\\cdot \\frac{1}{2}(100+t)^{2}+C \\\\ Q(t) & =0.3(100+t)+\\frac{C}{100+t}\\end{aligned}\n$$\n\nNote that $C$ is a constant of integration.\n\nWe're told that the vat initially contains $8\\,\\text{kg}$ of nutrient. So, we can apply the initial condition $Q(0)=8,$ and solve for $C:$\n\n$$\n\\begin{aligned}Q(0) & =8 \\\\ 0.3(100+0)+\\frac{C}{100+0} & =8 \\\\ 30+\\frac{C}{100} & =8 \\\\ \\frac{C}{100} & =-22 \\\\ C & =-2200\\end{aligned}\n$$\n\nFinally, we obtain the following expression for $Q(t):$\n\n$$\n\\begin{aligned}Q(t) & =0.3(100+t)-\\frac{2200}{100+t}.\\end{aligned}\n$$\n\nFinally,  the amount of nutrient in the vat $8$ minutes after pumping begins is\n\n$$\n\\begin{aligned}Q(8) & =0.3(100+8)-\\frac{2200}{100+8} \\\\  & =32.4-\\frac{2200}{108} \\\\  & \u224812.03\\,\\text{kg},\\end{aligned}\n$$\n\nrounded to two decimal places."
+      },
+      {
+        ":db/id": 17592186502074,
+        ":question/answer-fields": [
+          {
+            ":answer-field/choices": [
+              {
+                ":answer/id": "0fa46099-da71-5b6e-bf88-ae9c1cd9cdcf",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "1",
+                ":db/id": 17592186501493
+              },
+              {
+                ":answer/id": "3a8aabfa-3b2a-546d-a525-0b6c5247d515",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "7",
+                ":db/id": 17592186501570
+              },
+              {
+                ":answer/id": "3c64925c-c3fb-50bc-a4cf-26896798c5a0",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "11",
+                ":db/id": 17592186501573
+              },
+              {
+                ":answer/id": "79afc2f1-79a1-5645-98b6-d23030be32d0",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "5",
+                ":db/id": 17592186501693
+              },
+              {
+                ":answer/id": "e5345499-fd39-5582-a566-851fc68ed4e8",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "3",
+                ":db/id": 17592186501930
+              }
+            ],
+            ":answer-field/correct": {
+              ":answer/id": "e5345499-fd39-5582-a566-851fc68ed4e8",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "3",
+              ":db/id": 17592186501930
+            },
+            ":answer-field/id": "1f525641-4d00-5cf1-b519-6a6c8d3e8e86",
+            ":answer-field/key": "selection",
+            ":answer-field/type": {
+              ":db/ident": ":answer-field.type/radio"
+            },
+            ":db/id": 17592186501985
+          }
+        ],
+        ":question/difficulty": {
+          ":db/ident": ":question.difficulty/moderate"
+        },
+        ":question/id": "11c8e0ff-5f12-56c5-bbf7-d578f71b8d7f",
+        ":question/math-academy-id": "q-336746",
+        ":question/problem": "A rinse tank initially holds $240\\,\\text{L}$ of water containing $9\\,\\text{kg}$ of dissolved dye.\nA solution containing $0.025\\,\\text{kg/L}$ of dissolved dye is pumped into the tank at a rate of $16\\,\\text{L/min},$ while the completely mixed water is drained out at a rate of $24\\,\\text{L/min}.$ If the amount of dye $Q(t),$ in kilograms, in the tank $t$ minutes after pumping begins is given by\n\n$$\nQ(t)=\\alpha \\,(1-\\frac{t}{30})+\\beta {(1-\\frac{t}{30})}^{3}\n$$\n\nwhere $\\alpha $ and $\\beta $ are constants, what is the value of $\\alpha -\\beta ?$",
+        ":question/worked-solution": "Since $Q$ is the amount of dye in the tank at time $t,$ the derivative \n\n$$\n\\frac{dQ}{dt}\n$$\n\ndescribes how this amount changes with respect to time $t,$ in minutes. This is equal to the rate at which dye enters the tank minus the rate at which dye leaves the tank.\n\n$$\n\\frac{dQ}{dt}={Q}_{\\text{in}}^{\u2032}-{Q}_{\\text{out}}^{\u2032}\n$$\n\nNote that the units of $\\frac{dQ}{dt},{Q}_{\\text{in}}^{\u2032}$ and ${Q}_{\\text{out}}^{\u2032}$ are $\\text{kg}/\\text{min}.$ Now, let's compute the required rates of change in steps.\n\n**Step 1**: Calculating the rate at which dye enters the tank.\n\nFirst, note that a water solution containing $0.025\\,\\text{kg/L}$ of dye enters the tank at a rate of $16\\,\\text{L/min}.$ So, the rate at which the *dye* enters the tank is \n\n$$\n\\begin{aligned}{Q}_{\\text{in}}^{\u2032} & =(0.025\\,\\frac{\\text{kg}}{\\text{L}})\\cdot (16\\,\\frac{\\text{L}}{\\text{min}}) \\\\  & =(0.025\\,\\frac{\\text{kg}}{\\cancel{\\text{L}}})\\cdot (16\\,\\frac{\\cancel{\\text{L}}}{\\text{min}}) \\\\  & =0.4\\,\\frac{\\text{kg}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 2**: Calculating the rate at which dye exits the tank.\n\nTo find the rate at which dye leaves the tank, we must first determine the volume of water in the tank at time $t.$\n\nThe tank initially contains $240\\,\\text{L}$ of water; a solution enters at $16\\,\\text{L/min}$ and leaves at $24\\,\\text{L/min}.$\nAs a result, the amount of water in the tank after $t$ minutes is \n\n$$\n240+16t-24t=(240-8t)\\,\\text{L}.\n$$\n\nSince $Q$ is the amount of dye in the tank, the *concentration* of the mixed solution at time $t$ is\n\n$$\n\\frac{Q}{240-8t}\\,\\text{kg/L}.\n$$\n\nTherefore, as the completely mixed water leaves at a rate of $24\\,\\text{L/min},$ *dye* leaves at a rate of\n\n$$\n\\begin{aligned}{Q}_{\\text{out}}^{\u2032} & =(24\\,\\frac{\\text{L}}{\\text{min}})\\cdot (\\frac{Q}{240-8t}\\,\\frac{\\text{kg}}{\\text{L}}) \\\\  & =(24\\,\\frac{\\cancel{\\text{L}}}{\\text{min}})\\cdot (\\frac{Q}{240-8t}\\,\\frac{\\text{kg}}{\\cancel{\\text{L}}}) \\\\  & =\\frac{24Q}{240-8t}\\,\\frac{\\text{kg}}{\\text{min}} \\\\  & =\\frac{3Q}{30-t}\\,\\frac{\\text{kg}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 3**: Calculate the overall rate of change.\n\nThe rate of change equals the rate of entry minus the rate of exit. Therefore, \n\n$$\n\\begin{aligned}\\frac{dQ}{dt} & ={Q}_{\\text{in}}^{\u2032}-{Q}_{\\text{out}}^{\u2032} \\\\  & =0.4-\\frac{3Q}{30-t}\\end{aligned}\n$$\n\nwhich gives the equation\n\n$$\n\\begin{aligned}\\frac{dQ}{dt}+\\frac{3}{30-t}Q=0.4.\\end{aligned}\n$$\n\n**Step 4**: Integrate the equation.\n\nThis is a first-order linear equation with variable coefficients. So we find the general solution using an integrating factor:\n\n$$\n\\begin{aligned}I(t) & ={e}^{\\int 3/(30-t)\\,dt} \\\\  & ={e}^{-3\\operatorname{ln}\u2061|30-t|} \\\\  & ={e}^{\\operatorname{ln}\u2061(30-t)^{-3}} \\\\  & =(30-t)^{-3}\\end{aligned}\n$$\n\nMultiplying both sides of the differential equation by $I(t)=(30-t)^{-3}$ yields\n\n$$\n\\begin{aligned}(30-t)^{-3}\\cdot (\\frac{dQ}{dt}+\\frac{3}{30-t}Q) & =(30-t)^{-3}\\cdot 0.4 \\\\ (30-t)^{-3}\\frac{dQ}{dt}+3(30-t)^{-4}Q & =0.4(30-t)^{-3} \\\\ \\frac{d}{dt}(Q(30-t)^{-3}) & =0.4(30-t)^{-3}.\\end{aligned}\n$$\n\nNow, we integrate with respect to $t:$\n\n$$\n\\begin{aligned}\\int \\frac{d}{dt}(Q(30-t)^{-3})\\,dt & =\\int 0.4(30-t)^{-3}\\,dt \\\\ Q(30-t)^{-3} & =0.4\\cdot \\frac{1}{2}(30-t)^{-2}+C \\\\ Q(t) & =0.2(30-t)+C(30-t)^{3}\\end{aligned}\n$$\n\nNote that $C$ is a constant of integration.\n\nWe're told that the tank initially contains $9\\,\\text{kg}$ of dye. So, we can apply the initial condition $Q(0)=9,$ and solve for $C:$\n\n$$\n\\begin{aligned}Q(0) & =9 \\\\ C(30-0)^{3}+0.2(30-0) & =9 \\\\ C(30)^{3}+6 & =9 \\\\ C & =\\frac{3}{{30}^{3}}\\end{aligned}\n$$\n\nFinally, we obtain the following expression for $Q(t):$\n\n$$\n\\begin{aligned}Q(t) & =0.2(30-t)+\\frac{3}{{30}^{3}}(30-t)^{3} \\\\  & =0.2\\cdot 30\\,\\left(\\frac{30-t}{30}\\right)+3{\\left(\\frac{30-t}{30}\\right)}^{3} \\\\  & =6\\,(1-\\frac{t}{30})+3{(1-\\frac{t}{30})}^{3}.\\end{aligned}\n$$\n\nFinally, we have $\\alpha =6,\\beta =3,$ and\n\n$$\n\\alpha -\\beta =6-3=3.\n$$"
+      },
+      {
+        ":db/id": 17592186502148,
+        ":question/answer-fields": [
+          {
+            ":answer-field/choices": [
+              {
+                ":answer/id": "19631a4f-fc75-5f16-94d0-c840626309aa",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "4.48\\,\\text{kg}",
+                ":db/id": 17592186501515
+              },
+              {
+                ":answer/id": "409f3cff-59d6-5382-900e-2722da60aa57",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "3.09\\,\\text{kg}",
+                ":db/id": 17592186501584
+              },
+              {
+                ":answer/id": "5688b277-ef03-5eaf-8c63-160fb654c7c9",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "3.62\\,\\text{kg}",
+                ":db/id": 17592186501625
+              },
+              {
+                ":answer/id": "5f94b143-c3c7-545e-847d-30ec918b7ae6",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "4.90\\,\\text{kg}",
+                ":db/id": 17592186501641
+              },
+              {
+                ":answer/id": "a0b4fa8a-26bd-5a01-bcb0-d0ebf5922738",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "4.01\\,\\text{kg}",
+                ":db/id": 17592186501768
+              }
+            ],
+            ":answer-field/correct": {
+              ":answer/id": "a0b4fa8a-26bd-5a01-bcb0-d0ebf5922738",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "4.01\\,\\text{kg}",
+              ":db/id": 17592186501768
+            },
+            ":answer-field/id": "71c957ef-ec71-5945-b112-c39defc2facc",
+            ":answer-field/key": "selection",
+            ":answer-field/type": {
+              ":db/ident": ":answer-field.type/radio"
+            },
+            ":db/id": 17592186502016
+          }
+        ],
+        ":question/difficulty": {
+          ":db/ident": ":question.difficulty/hard"
+        },
+        ":question/id": "d0340e70-b947-5b25-8e24-a63ff0f87f38",
+        ":question/math-academy-id": "q-339403",
+        ":question/problem": "A wastewater treatment basin initially holds $320\\,\\text{L}$ of liquid containing $2.2\\,\\text{kg}$ of dissolved neutralizing agent.\nA feed solution containing $0.05\\,\\text{kg/L}$ of the agent is pumped into the basin at a rate of $8\\,\\text{L/min},$ while the completely mixed liquid is drained out at a rate of $4\\,\\text{L/min}.$\nFind, rounded to two decimal places, the amount of agent in the basin $5$ minutes after pumping begins.",
+        ":question/worked-solution": "Let $Q$ be the amount of agent in the basin at time $t,$ in minutes. Then, the derivative \n\n$$\n\\frac{dQ}{dt}\n$$\n\ndescribes how this amount changes with respect to time $t.$ This is equal to the rate at which agent enters the tank minus the rate at which agent leaves the tank.\n\n$$\n\\frac{dQ}{dt}={Q}_{\\text{in}}^{\u2032}-{Q}_{\\text{out}}^{\u2032}\n$$\n\nNote that the units of $\\frac{dQ}{dt},{Q}_{\\text{in}}^{\u2032}$ and ${Q}_{\\text{out}}^{\u2032}$ are $\\text{kg}/\\text{min}.$ Now, let's compute the required rates of change in steps.\n\n**Step 1**: Calculating the rate at which agent enters the basin.\n\nNote that a feed solution containing $0.05\\,\\text{kg/L}$ of the agent enters the basin at a rate of $8\\,\\text{L/min}.$ So, the rate at which the *agent* enters the basin is \n\n$$\n\\begin{aligned}{Q}_{\\text{in}}^{\u2032} & =(0.05\\,\\frac{\\text{kg}}{\\text{L}})\\cdot (8\\,\\frac{\\text{L}}{\\text{min}}) \\\\  & =(0.05\\,\\frac{\\text{kg}}{\\cancel{\\text{L}}})\\cdot (8\\,\\frac{\\cancel{\\text{L}}}{\\text{min}}) \\\\  & =0.4\\,\\frac{\\text{kg}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 2**: Calculating the rate at which agent exits the basin.\n\nTo find the rate at which agent leaves the basin, we must first determine the volume of liquid in the basin at time $t.$\n\nThe basin initially contains $320\\,\\text{L}$ of liquid; a solution enters at $8\\,\\text{L/min}$ and leaves at $4\\,\\text{L/min}.$\nAs a result, the volume of liquid in the basin after $t$ minutes is \n\n$$\n320+8t-4t=(320+4t)\\,\\text{L}.\n$$\n\nSince $Q$ is the amount of agent in the basin, the *concentration* of the mixed solution at time $t$ is\n\n$$\n\\frac{Q}{320+4t}\\,\\text{kg/L}.\n$$\n\nTherefore, as the completely mixed liquid leaves at a rate of $4\\,\\text{L/min},$ *agent* leaves at a rate of\n\n$$\n\\begin{aligned}{Q}_{\\text{out}}^{\u2032} & =(4\\,\\frac{\\text{L}}{\\text{min}})\\cdot (\\frac{Q}{320+4t}\\,\\frac{\\text{kg}}{\\text{L}}) \\\\  & =(4\\,\\frac{\\cancel{\\text{L}}}{\\text{min}})\\cdot (\\frac{Q}{320+4t}\\,\\frac{\\text{kg}}{\\cancel{\\text{L}}}) \\\\  & =\\frac{4Q}{320+4t}\\,\\frac{\\text{kg}}{\\text{min}} \\\\  & =\\frac{Q}{80+t}\\,\\frac{\\text{kg}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 3**: Calculate the overall rate of change.\n\nThe rate of change equals the rate of entry minus the rate of exit. Therefore, \n\n$$\n\\begin{aligned}\\frac{dQ}{dt} & ={Q}_{\\text{in}}^{\u2032}-{Q}_{\\text{out}}^{\u2032} \\\\  & =0.4-\\frac{Q}{80+t}\\end{aligned}\n$$\n\nwhich gives the equation\n\n$$\n\\begin{aligned}\\frac{dQ}{dt}+\\frac{1}{80+t}Q=0.4.\\end{aligned}\n$$\n\n**Step 4**: Integrate the equation.\n\nThis is a first-order linear equation with variable coefficients. So we find the general solution using an integrating factor:\n\n$$\n\\begin{aligned}I(t) & ={e}^{\\int 1/(80+t)\\,dt} \\\\  & ={e}^{\\operatorname{ln}\u2061|80+t|} \\\\  & =80+t\\end{aligned}\n$$\n\nMultiplying both sides of the differential equation by $I(t)=80+t$ yields\n\n$$\n\\begin{aligned}(80+t)\\cdot (\\frac{dQ}{dt}+\\frac{1}{80+t}Q) & =(80+t)\\cdot 0.4 \\\\ (80+t)\\frac{dQ}{dt}+Q & =0.4(80+t) \\\\ \\frac{d}{dt}(Q(80+t)) & =0.4(80+t).\\end{aligned}\n$$\n\nNow, we integrate with respect to $t:$\n\n$$\n\\begin{aligned}\\int \\frac{d}{dt}(Q(80+t))\\,dt & =\\int 0.4(80+t)\\,dt \\\\ Q(80+t) & =0.4\\cdot \\frac{1}{2}(80+t)^{2}+C \\\\ Q(t) & =0.2(80+t)+\\frac{C}{80+t}\\end{aligned}\n$$\n\nNote that $C$ is a constant of integration.\n\nWe're told that the basin initially contains $2.2\\,\\text{kg}$ of agent. So, we can apply the initial condition $Q(0)=2.2,$ and solve for $C:$\n\n$$\n\\begin{aligned}Q(0) & =2.2 \\\\ 0.2(80+0)+\\frac{C}{80+0} & =2.2 \\\\ 16+\\frac{C}{80} & =2.2 \\\\ \\frac{C}{80} & =-13.8 \\\\ C & =-1104\\end{aligned}\n$$\n\nFinally, we obtain the following expression for $Q(t):$\n\n$$\n\\begin{aligned}Q(t) & =0.2(80+t)-\\frac{1104}{80+t}.\\end{aligned}\n$$\n\nFinally,  the amount of agent in the basin $5$ minutes after pumping begins is\n\n$$\n\\begin{aligned}Q(5) & =0.2(80+5)-\\frac{1104}{80+5} \\\\  & =17-\\frac{1104}{85} \\\\  & \u22484.01\\,\\text{kg},\\end{aligned}\n$$\n\nrounded to two decimal places."
+      },
+      {
+        ":db/id": 17592186541123,
+        ":question/answer-fields": [
+          {
+            ":answer-field/choices": [
+              {
+                ":answer/id": "36064afd-4624-50aa-b9f7-869ddad593ba",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "7.8",
+                ":db/id": 17592186540613
+              },
+              {
+                ":answer/id": "3e30535b-824e-5d84-96a9-2fa046e67302",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "8.6",
+                ":db/id": 17592186540632
+              },
+              {
+                ":answer/id": "576b7268-d013-5459-8484-febaf9a3d59d",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "10.2",
+                ":db/id": 17592186540675
+              },
+              {
+                ":answer/id": "dc5946b6-1628-5af6-a597-d8bfff766bd5",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "9.4",
+                ":db/id": 17592186540905
+              },
+              {
+                ":answer/id": "fcd73e85-3ada-52db-9939-f4f819c081ae",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "8.4",
+                ":db/id": 17592186540938
+              }
+            ],
+            ":answer-field/correct": {
+              ":answer/id": "dc5946b6-1628-5af6-a597-d8bfff766bd5",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "9.4",
+              ":db/id": 17592186540905
+            },
+            ":answer-field/id": "889a0978-0193-5e72-b84c-66f0c08de47a",
+            ":answer-field/key": "selection",
+            ":answer-field/type": {
+              ":db/ident": ":answer-field.type/radio"
+            },
+            ":db/id": 17592186540999
+          }
+        ],
+        ":question/difficulty": {
+          ":db/ident": ":question.difficulty/moderate"
+        },
+        ":question/id": "b6915e10-1543-50b0-a358-2c56a1366444",
+        ":question/math-academy-id": "q-336744",
+        ":question/problem": "A fermentation tank initially holds $180\\,\\text{L}$ of liquid containing $5\\,\\text{kg}$ of dissolved nutrient.\nA solution containing $0.04\\,\\text{kg/L}$ of dissolved nutrient is pumped into the tank at a rate of $20\\,\\text{L/min},$ while the completely mixed liquid is drained out at a rate of $30\\,\\text{L/min}.$ If the amount of nutrient $Q(t),$ in kilograms, in the tank $t$ minutes after pumping begins is given by\n\n$$\nQ(t)=\\alpha \\,(1-\\frac{t}{18})+\\beta {(1-\\frac{t}{18})}^{3}\n$$\n\nwhere $\\alpha $ and $\\beta $ are constants, what is the value of $\\alpha -\\beta ?$",
+        ":question/worked-solution": "Since $Q$ is the amount of salt in the tank at time $t,$ the derivative \n\n$$\n\\frac{dQ}{dt}\n$$\n\ndescribes how this amount changes with respect to time $t,$ in minutes. This is equal to the rate at which minerals enter the tank minus the rate at which minerals leave the tank.\n\n$$\n\\frac{dQ}{dt}={Q}_{\\text{in}}^{\u2032}-{Q}_{\\text{out}}^{\u2032}\n$$\n\nNote that the units of $\\frac{dQ}{dt},{Q}_{\\text{in}}^{\u2032}$ and ${Q}_{\\text{out}}^{\u2032}$ are $\\text{kg}/\\text{min}.$ Now, let's compute the required rates of change in steps.\n\n**Step 1**: Calculating the rate at which minerals enter the tank.\n\nFirst, note that a water solution containing $0.04\\,\\text{kg/L}$ of minerals enters the tank at a rate of $20\\,\\text{L/min}.$ So, the rate at which the *minerals* enter the tank is \n\n$$\n\\begin{aligned}{Q}_{\\text{in}}^{\u2032} & =(0.04\\,\\frac{\\text{kg}}{\\text{L}})\\cdot (20\\,\\frac{\\text{L}}{\\text{min}}) \\\\  & =(0.04\\,\\frac{\\text{kg}}{\\cancel{\\text{L}}})\\cdot (20\\,\\frac{\\cancel{\\text{L}}}{\\text{min}}) \\\\  & =0.8\\,\\frac{\\text{kg}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 2**: Calculating the rate at which minerals exit the tank.\n\nTo find the rate at which minerals leave the tank, we must first determine the volume of liquid in the tank at time $t.$\n\nThe tank initially contains $180\\,\\text{L}$ of liquid; a solution enters at $20\\,\\text{L/min}$ and leaves at $30\\,\\text{L/min}.$\nAs a result, the amount of liquid in the tank after $t$ minutes is \n\n$$\n180+20t-30t=(180-10t)\\,\\text{L}.\n$$\n\nSince $Q$ is the amount of minerals in the tank, the *concentration* of the mixed solution at time $t$ is\n\n$$\n\\frac{Q}{180-10t}\\,\\text{kg/L}.\n$$\n\nTherefore, as the completely mixed liquid leaves at a rate of $30\\,\\text{L/min},$ *minerals* leave at a rate of\n\n$$\n\\begin{aligned}{Q}_{\\text{out}}^{\u2032} & =(30\\,\\frac{\\text{L}}{\\text{min}})\\cdot (\\frac{Q}{180-10t}\\,\\frac{\\text{kg}}{\\text{L}}) \\\\  & =(30\\,\\frac{\\cancel{\\text{L}}}{\\text{min}})\\cdot (\\frac{Q}{180-10t}\\,\\frac{\\text{kg}}{\\cancel{\\text{L}}}) \\\\  & =\\frac{30Q}{180-10t}\\,\\frac{\\text{kg}}{\\text{min}} \\\\  & =\\frac{3Q}{18-t}\\,\\frac{\\text{kg}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 3**: Calculate the overall rate of change.\n\nThe rate of change equals the rate of entry minus the rate of exit. Therefore, \n\n$$\n\\begin{aligned}\\frac{dQ}{dt} & ={Q}_{\\text{in}}^{\u2032}-{Q}_{\\text{out}}^{\u2032} \\\\  & =0.8-\\frac{3Q}{18-t}\\end{aligned}\n$$\n\nwhich gives the equation\n\n$$\n\\begin{aligned}\\frac{dQ}{dt}+\\frac{3}{18-t}Q=0.8.\\end{aligned}\n$$\n\n**Step 4**: Integrate the equation.\n\nThis is a first-order linear equation with variable coefficients. So we find the general solution using an integrating factor:\n\n$$\n\\begin{aligned}I(t) & ={e}^{\\int 3/(18-t)\\,dt} \\\\  & ={e}^{-3\\operatorname{ln}\u2061|18-t|} \\\\  & ={e}^{\\operatorname{ln}\u2061(18-t)^{-3}} \\\\  & =(18-t)^{-3}\\end{aligned}\n$$\n\nMultiplying both sides of the differential equation by $I(t)=(18-t)^{-3}$ yields\n\n$$\n\\begin{aligned}(18-t)^{-3}\\cdot (\\frac{dQ}{dt}+\\frac{3}{18-t}Q) & =(18-t)^{-3}\\cdot 0.8 \\\\ (18-t)^{-3}\\frac{dQ}{dt}+3(18-t)^{-4}Q & =0.8(18-t)^{-3} \\\\ \\frac{d}{dt}(Q(18-t)^{-3}) & =0.8(18-t)^{-3}.\\end{aligned}\n$$\n\nNow, we integrate with respect to $t:$\n\n$$\n\\begin{aligned}\\int \\frac{d}{dt}(Q(18-t)^{-3})\\,dt & =\\int 0.8(18-t)^{-3}\\,dt \\\\ Q(18-t)^{-3} & =0.8\\cdot \\frac{1}{2}(18-t)^{-2}+C \\\\ Q(t) & =0.4(18-t)+C(18-t)^{3}\\end{aligned}\n$$\n\nNote that $C$ is a constant of integration.\n\nWe're told that the tank initially contains $5\\,\\text{kg}$ of minerals. So, we can apply the initial condition $Q(0)=5,$ and solve for $C:$\n\n$$\n\\begin{aligned}Q(0) & =5 \\\\ C(18-0)^{3}+0.4(18-0) & =5 \\\\ C(18)^{3}+7.2 & =5 \\\\ C & =-\\frac{2.2}{{18}^{3}}\\end{aligned}\n$$\n\nFinally, we obtain the following expression for $Q(t):$\n\n$$\n\\begin{aligned}Q(t) & =0.4(18-t)-\\frac{2.2}{{18}^{3}}(18-t)^{3} \\\\  & =0.4\\cdot 18\\,\\left(\\frac{18-t}{18}\\right)-2.2{\\left(\\frac{18-t}{18}\\right)}^{3} \\\\  & =7.2\\,(1-\\frac{t}{18})-2.2{(1-\\frac{t}{18})}^{3}.\\end{aligned}\n$$\n\nFinally, we have $\\alpha =7.2,\\beta =-2.2,$ and\n\n$$\n\\alpha -\\beta =7.2-(-2.2)=9.4.\n$$"
+      }
+    ],
+    ":knowledge-point/title": "Constructing and Solving a Dilution Model"
+  }
+}
