@@ -1,0 +1,86 @@
+{
+  "recorded_at": "2026-10-18T02:20:50.430759+00:00",
+  "passed": true,
+  "distinct_tests_passed": 46,
+  "implementation": {
+    "semantic_braces": "Recognizes munder/mo U+23DF and mover/mo U+23DE without requiring accent attributes; emits underbrace/overbrace with full expression scope.",
+    "labels": "Keeps outer labels attached to brace operators, including transparent wrappers, nested label expressions, and stacked labels.",
+    "unchanged": "Ordinary scripts, operator limits, matrix groups, and non-brace oversets retain existing behavior.",
+    "styled_brace_glyphs": "scripts/question_capture/dom.js preserves prior operator-only mathcolor/mathbackground serialization and reports Unsupported styled MathML brace for explicit review. It does not silently discard the cue or recolor the whole base. Inherited/no-op styling permits semantic brace conversion. This safeguard is limited to the pipeline that previously supported these glyph styles; archived repair glyphs have no attributes.",
+    "database_writes_by_validation": false
+  },
+  "test_runs": [
+    {
+      "working_directory": "/home/jake/Developer/Course_Academy",
+      "command": "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/MA/.venv/bin/python tests/test_mathml_brace_import.py -v",
+      "passed": 8,
+      "failed": 0,
+      "exit_code": 0,
+      "elapsed_seconds": 3.012,
+      "source_revision": "Final implementation, including styled-glyph safeguard",
+      "coverage": [
+        "Authenticated original tutorial 2620 MathML and labels 0/1",
+        "Both maintained JS converters and historical Python Renderer",
+        "Labeled/unlabeled underbraces and overbraces without accent attributes",
+        "Nested braces, wrapper nodes, label scripts and fractions, repeated labels",
+        "Ordinary scripts, operator limits and non-brace oversets",
+        "Operator-only brace color/background remains an explicit gap",
+        "Vendored MathJax brace span exceeds 95% of base width and labels remain centered"
+      ]
+    },
+    {
+      "working_directory": "/home/jake/Developer/Course_Academy/capture",
+      "command": "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/MA/.venv/bin/python -m unittest scripts.tests.test_zero_bar_fractions scripts.tests.test_literal_set_braces -v",
+      "passed": 13,
+      "failed": 0,
+      "exit_code": 0,
+      "elapsed_seconds": 4.8,
+      "source_revision": "Active capture converter final implementation; subsequent styling safeguard changed only the other JS pipeline"
+    },
+    {
+      "working_directory": "/home/jake/Developer/Course_Academy/scripts/question_capture",
+      "command": "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/MA/.venv/bin/python -m unittest test_matrix_capture test_minus_plus_extraction -v",
+      "passed": 25,
+      "failed": 0,
+      "exit_code": 0,
+      "elapsed_seconds": 3.95,
+      "source_revision": "Brace fix before the isolated styled-glyph refusal addition",
+      "tested_dom_js_sha256": "65f5d07a02457c6a48cd9ab10d9d71a0423a2e325130afae569e1651ba775348"
+    }
+  ],
+  "other_checks": [
+    {
+      "command": "node --check scripts/question_capture/dom.js",
+      "exit_code": 0,
+      "revision": "Final"
+    },
+    {
+      "command": "node --check capture/scripts/browser/extract.js",
+      "exit_code": 0,
+      "revision": "Final"
+    },
+    {
+      "command": "git diff --check -- scripts/question_capture/dom.js capture/scripts/browser/extract.js scripts/import_historical_question_content.py tests/test_mathml_brace_import.py tests/fixtures/mathml-braces.json",
+      "exit_code": 0,
+      "revision": "Before the isolated styled-glyph addition"
+    },
+    {
+      "command": "git diff --check -- scripts/question_capture/dom.js tests/test_mathml_brace_import.py",
+      "exit_code": 0,
+      "revision": "After the isolated styled-glyph addition"
+    }
+  ],
+  "validation_environment": {
+    "python": "/home/jake/Developer/MA/.venv/bin/python",
+    "browser": "Playwright Chromium, headless",
+    "network": "All browser requests aborted; saved source and local vendored MathJax only",
+    "execution_permissions": "Sandbox escalation for local browser launch; approved"
+  },
+  "files_sha256": {
+    "scripts/question_capture/dom.js": "5051ed869151cc1ee40036ddc2f2f2be90716515345ae0cc5a01f745108372ba",
+    "capture/scripts/browser/extract.js": "b024bef10d92df874d804573978db7a5fe12d2166e30d9c47ceea277b7c6b477",
+    "scripts/import_historical_question_content.py": "d7f3296dc9e97a7b337438163ec4004c6f8fb2db57f5c45c88fd6a517180791d",
+    "tests/test_mathml_brace_import.py": "09a7c8be6bfe488e74654a11636dba3b435677ad313669d1828a3c5511dbab57",
+    "tests/fixtures/mathml-braces.json": "c03fb9c54cb75a738047cf0835707102884abf1fafe0ccc1f2bcef02849e4b55"
+  }
+}
