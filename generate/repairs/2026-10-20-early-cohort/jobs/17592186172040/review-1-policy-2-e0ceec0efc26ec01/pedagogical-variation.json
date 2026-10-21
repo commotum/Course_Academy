@@ -1,0 +1,438 @@
+{
+  "learner_operation": "Determine the variables on which the RHS depends; inspect constancy or variation of segment slopes along fixed-x and fixed-y lines; select the unique field satisfying (or violating) the specified dependence. Explicit-equation questions must also depict that equation rather than merely an arbitrary two-variable field.",
+  "fixed_features": [
+    {
+      "feature": "One uniquely qualifying image in each radio bank",
+      "justification": "Single radio answer, as in all captured practice fields; uniqueness is essential, position and shape are not."
+    },
+    {
+      "feature": "Moderate explicit RHS depends on both x and y",
+      "justification": "The target tutorial 17592186172978 and all three complete moderate sources assess the contrast with one-variable dependence. The only-both rule is explicitly taught, so it is not an incidental shortcut."
+    },
+    {
+      "feature": "Could in moderate, cannot in hard",
+      "justification": "Matches the observed difficulty split; source q-96477 is unrated and its hard assignment is explicitly authored."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Selected image and choice position",
+      "eligible_variation": "Permute positions and change target image consistently with the equation.",
+      "observed": "Fresh samples vary selected position; sign counterfactual changes the correct plotted field, served formula and solution references."
+    },
+    {
+      "role": "Impossible outlier direction",
+      "eligible_variation": "Either x-only or y-only as witnessed by source q-98229 versus q-98231.",
+      "observed": "Both hard templates sampled; controlled change preserves four alternatives while replacing outlier and changing directional explanation."
+    },
+    {
+      "role": "Appearance and distractors",
+      "eligible_variation": "Coefficients, signs, product exponents, mixed orientation, one-variable shapes; retain the dependence reasoning and comparable styling.",
+      "observed": "18 fresh records cover all six default templates; six boundary records cover scaled empirical source banks and both exponential hard outliers. Canonical exact four-panel replay is restored as a separate explicit-only profile."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "Default moderate explicit product, mixed quadratic and exponential",
+      "sample_refs": [
+        "fresh-moderate.json",
+        "math-results.json",
+        "prompt-math.json",
+        "delivery-moderate/accepted.json"
+      ],
+      "result": "Three fresh seeds per template (426107,913582,657903); all nine retained. Served TeX and serialized plot slopes match independent exact substitutions. Sample construction rules are unchanged from prior review; fresh tests target the new renderer."
+    },
+    {
+      "case": "Hard x-only/y-only outliers and easy affine fields",
+      "sample_refs": [
+        "fresh-hard.json",
+        "fresh-easy.json",
+        "boundary-records.json",
+        "boundary-results.json"
+      ],
+      "result": "Three fresh seeds per template; both outlier directions and scaled empirical banks pass independent slope invariance tests. Six boundary records retained."
+    },
+    {
+      "case": "Supported source banks and canonical restoration",
+      "sample_refs": [
+        "source-replay-results.json",
+        "source-replay-records.json",
+        "current-canonical_replay_probe/canonical-result.json"
+      ],
+      "result": "All seven complete practice source prompts, five-choice banks, keys and worked solutions replay exactly. The eighth has an explicit missing-key/solution/rating gap; only its captured prompt and bank can be replay-certified. Canonical e-8507 retains exact composite and solution with four text panel controls, III independently verified from pixels. Replay singleton is separate from randomized practice."
+    },
+    {
+      "case": "Exact runner batch before/after delivery and UI ordering",
+      "sample_refs": [
+        "batch-records.json",
+        "delivery-batch/accepted.json",
+        "shortcut-results.json",
+        "ui-position-results.json"
+      ],
+      "result": "All five retained: exponential 2, product 2, mixed 1. Raw and delivered array key indices are 3,1,0,0,2; actual UI preview positions are 4,1,1,2,0 because learning.js deterministically reorders choices. Neither fixes a single answer position. Mixed subgroup has just one member and supports no statistical conditional shortcut conclusion; the fresh mixed control uses three positions."
+    },
+    {
+      "case": "Postfilter learner selection",
+      "sample_refs": [
+        "selection-results.json",
+        "delivery-batch/delivery.json",
+        "inventory-review.json"
+      ],
+      "result": "Actual publisher and requested difficulty filter retain all tested cases. No rejection/resampling loop exists. Source selection logic is uniform within eligible positively weighted bands; 128 independent conditional draws cover all three moderate templates and both hard outlier directions. Live entity IDs, history and policy weights unavailable, so future sequences are not certified."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Product a=1 to a=-1 with seed 8723 and other parameters fixed.",
+      "expected": "Prompt becomes -xy; correct plot and solution-image references must change; correct image accepts and each alternative rejects.",
+      "observed": "Prompt, target plot and references change together; all five choices were tested by native grader in each case and both UI instances rendered.",
+      "status": "passed",
+      "justification": "The explicit RHS determines the slopes, not merely a dependence label.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-input.json",
+        "grader-report.json",
+        "render-controls/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "Hard impossible_x to impossible_y, parameters and seed 8723 fixed.",
+      "expected": "Four both-variable alternatives remain; outlier changes its dependence, correct image and explanation switch vertical/horizontal constancy.",
+      "observed": "Four images preserved; key image changes; generic prompt correctly stays the same; solution switches missing y to missing x, guide changes, native outcomes all agree.",
+      "status": "passed",
+      "justification": "Either missing-coordinate assignment is eligible per q-98229 and q-98231.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-report.json",
+        "render-controls/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Change single=linear to single=exp in moderate product, retaining other parameters and seed.",
+      "expected": "This hard-only slot must not affect the moderate question, image key, solution or grader.",
+      "observed": "Question objects and key image are identical; native outcomes identical; separate UI captures passed.",
+      "status": "passed",
+      "justification": "The source moderate operation concerns its displayed product and dependence; unused hard-outlier metadata is irrelevant.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-report.json",
+        "render-controls/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Keep target xy, seed 8723 and all other parameters fixed; change b=1 to b=-1 in two one-variable distractors.",
+      "expected": "Displayed distractors change, but correct field, target prompt and worked solution remain the same; native grader accepts the same field and rejects alternatives.",
+      "observed": "All expected equalities and the bank change verified. Both before and after rendered; after case is in second native grader invocation.",
+      "status": "passed",
+      "justification": "Source operation distinguishes the unique both-dependent field. Signs of nonqualifying one-variable fields are irrelevant to the target role.",
+      "sample_refs": [
+        "irrelevant-display-records.json",
+        "irrelevant-display-result.json",
+        "second-grader-input.json",
+        "second-grader-report.json",
+        "render-controls/rendering.json",
+        "render-rest/rendering.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "Stored answer position",
+      "subgroup": "fresh/impossible_x",
+      "scope": "within_template",
+      "strategy": "Choose first option in the stored array",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-option guessing baseline 0.2. First hits 0/3; post-hoc best constant position hits 2/3. No invariant position rule demonstrated. Actual UI reorder is measured separately.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "fresh-records.json"
+      ]
+    },
+    {
+      "cue": "Stored answer position",
+      "subgroup": "fresh/impossible_y",
+      "scope": "within_template",
+      "strategy": "Choose first option in the stored array",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-option guessing baseline 0.2. First hits 0/3; post-hoc best constant position hits 2/3. No invariant position rule demonstrated. Actual UI reorder is measured separately.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "fresh-records.json"
+      ]
+    },
+    {
+      "cue": "Stored answer position",
+      "subgroup": "fresh/overall",
+      "scope": "overall",
+      "strategy": "Choose first option in the stored array",
+      "correct": 1,
+      "total": 18,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-option guessing baseline 0.2. First hits 1/18; post-hoc best constant position hits 6/18. No invariant position rule demonstrated. Actual UI reorder is measured separately.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "fresh-records.json"
+      ]
+    },
+    {
+      "cue": "Stored answer position",
+      "subgroup": "fresh/possible_exp",
+      "scope": "within_template",
+      "strategy": "Choose first option in the stored array",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-option guessing baseline 0.2. First hits 0/3; post-hoc best constant position hits 1/3. No invariant position rule demonstrated. Actual UI reorder is measured separately.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "fresh-records.json"
+      ]
+    },
+    {
+      "cue": "Stored answer position",
+      "subgroup": "fresh/possible_linear",
+      "scope": "within_template",
+      "strategy": "Choose first option in the stored array",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-option guessing baseline 0.2. First hits 1/3; post-hoc best constant position hits 2/3. No invariant position rule demonstrated. Actual UI reorder is measured separately.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "fresh-records.json"
+      ]
+    },
+    {
+      "cue": "Stored answer position",
+      "subgroup": "fresh/possible_mixed",
+      "scope": "within_template",
+      "strategy": "Choose first option in the stored array",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-option guessing baseline 0.2. First hits 0/3; post-hoc best constant position hits 1/3. No invariant position rule demonstrated. Actual UI reorder is measured separately.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "fresh-records.json"
+      ]
+    },
+    {
+      "cue": "Stored answer position",
+      "subgroup": "fresh/possible_product",
+      "scope": "within_template",
+      "strategy": "Choose first option in the stored array",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-option guessing baseline 0.2. First hits 0/3; post-hoc best constant position hits 1/3. No invariant position rule demonstrated. Actual UI reorder is measured separately.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "fresh-records.json"
+      ]
+    },
+    {
+      "cue": "Stored answer position",
+      "subgroup": "delivered_batch/overall",
+      "scope": "overall",
+      "strategy": "Choose first option in the stored array",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-option guessing baseline 0.2. First hits 2/5; post-hoc best constant position hits 2/5. No invariant position rule demonstrated. Actual UI reorder is measured separately.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "Stored answer position",
+      "subgroup": "delivered_batch/possible_exp",
+      "scope": "within_template",
+      "strategy": "Choose first option in the stored array",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-option guessing baseline 0.2. First hits 1/2; post-hoc best constant position hits 1/2. No invariant position rule demonstrated. Actual UI reorder is measured separately.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "Stored answer position",
+      "subgroup": "delivered_batch/possible_mixed",
+      "scope": "within_template",
+      "strategy": "Choose first option in the stored array",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-option guessing baseline 0.2. First hits 0/1; post-hoc best constant position hits 1/1. Singleton subgroup is uninformative; fresh same-template controls vary positions.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "Stored answer position",
+      "subgroup": "delivered_batch/possible_product",
+      "scope": "within_template",
+      "strategy": "Choose first option in the stored array",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-option guessing baseline 0.2. First hits 1/2; post-hoc best constant position hits 1/2. No invariant position rule demonstrated. Actual UI reorder is measured separately.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "Actual UI displayed answer position",
+      "subgroup": "delivered_batch_UI/overall",
+      "scope": "overall",
+      "strategy": "Choose first visible radio option",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Random five-choice baseline 0.2. Actual captured DOM gives 1/5. No fixed displayed position answers the subgroup. Live task IDs may alter deterministic UI order; explicit sensitivity controls retained.",
+      "sample_refs": [
+        "ui-position-results.json",
+        "render-batch/input.json",
+        "render-batch/rendering.json"
+      ]
+    },
+    {
+      "cue": "Actual UI displayed answer position",
+      "subgroup": "delivered_batch_UI/possible_exp",
+      "scope": "within_template",
+      "strategy": "Choose first visible radio option",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Random five-choice baseline 0.2. Actual captured DOM gives 0/2. No fixed displayed position answers the subgroup. Live task IDs may alter deterministic UI order; explicit sensitivity controls retained.",
+      "sample_refs": [
+        "ui-position-results.json",
+        "render-batch/input.json",
+        "render-batch/rendering.json"
+      ]
+    },
+    {
+      "cue": "Actual UI displayed answer position",
+      "subgroup": "delivered_batch_UI/possible_mixed",
+      "scope": "within_template",
+      "strategy": "Choose first visible radio option",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Random five-choice baseline 0.2. Actual captured DOM gives 0/1. One example cannot establish a reusable subgroup predictor.",
+      "sample_refs": [
+        "ui-position-results.json",
+        "render-batch/input.json",
+        "render-batch/rendering.json"
+      ]
+    },
+    {
+      "cue": "Actual UI displayed answer position",
+      "subgroup": "delivered_batch_UI/possible_product",
+      "scope": "within_template",
+      "strategy": "Choose first visible radio option",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Random five-choice baseline 0.2. Actual captured DOM gives 1/2. No fixed displayed position answers the subgroup. Live task IDs may alter deterministic UI order; explicit sensitivity controls retained.",
+      "sample_refs": [
+        "ui-position-results.json",
+        "render-batch/input.json",
+        "render-batch/rendering.json"
+      ]
+    },
+    {
+      "cue": "Only field varying in both directions",
+      "subgroup": "default moderate",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the sole field with neither horizontal nor vertical constancy",
+      "correct": 9,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "intended_skill",
+      "conclusion": "Five-choice guessing baseline is 0.2. This succeeds 9/9 because tutorial 17592186173194 and all three moderate source solutions expressly teach this dependence operation. It requires inspecting slopes, so it is not an incidental cue.",
+      "sample_refs": [
+        "fresh-moderate.json",
+        "math-results.json",
+        "source-analysis.json"
+      ]
+    },
+    {
+      "cue": "Solution guide style leaking into choices",
+      "subgroup": "fresh and runner authored images",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select a choice carrying a solution guide annotation",
+      "correct": 0,
+      "total": 23,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Random five-choice baseline is 0.2. None of 115 images across 23 banks has a guide; all use identical 225-point grids, bounds and rendering conventions. Thus this cue supplies no answer-producing action. Representative actual UI confirms comparable styling.",
+      "sample_refs": [
+        "layout-shortcut-results.json",
+        "fresh-records.json",
+        "batch-records.json",
+        "render-batch/rendering.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "Generator complete-bank validation and explicit invalid-input rejection; no retry/resampling loop exists",
+      "Requested difficulty filtering",
+      "Shared publisher normalization, image localization, inventory and within-batch deduplication",
+      "Learner eligibility/history exclusion and difficulty-first/within-band selection rules from question_selection.rs",
+      "Actual UI choiceOrder deterministic hash reorder; captured DOM and hypothetical task-ID sensitivity controls"
+    ],
+    "sample_refs": [
+      "sampling-results.json",
+      "delivery-batch/delivery.json",
+      "delivery-batch/accepted.json",
+      "delivery-moderate/delivery.json",
+      "delivery-hard/delivery.json",
+      "selection-results.json",
+      "inventory-review.json",
+      "ui-position-results.json",
+      "delivery-boundary-moderate/delivery.json",
+      "delivery-boundary-hard/delivery.json"
+    ],
+    "result": "Five runner records, 18 fresh defaults and six boundary cases survive shared delivery unchanged in decision cases. No fixed-position or annotation shortcut demonstrated. The captured inventory basis 5386 contains eight original sources and no generated items; original source questions are not relabeled generated. Conditional selection analysis examines eligibility/history and weighted-band rules, without asserting unavailable live learner state. Canonical profile is exact replay only, outside default randomized moderate practice."
+  },
+  "limitations": [
+    "Finite samples and explicitly tested cues do not prove absence of every shortcut.",
+    "Live learner history, policy weights, future entity IDs and task IDs were not supplied; actual rules, captured pools, preview UI ordering and conditional sensitivity controls were examined.",
+    "q-96477 lacks a captured key, solution and difficulty. Its completed key/solution and hard assignment are authored, not independently recoverable source facts.",
+    "Canonical structured response/rating are absent; four text controls and easy assignment are disclosed adapters. Exact canonical replay is a historical singleton, not evidence of randomized practice variety.",
+    "Captured inventory basis 5386 has eight original source questions and no generated instances. Later changing inventory is outside this review."
+  ]
+}

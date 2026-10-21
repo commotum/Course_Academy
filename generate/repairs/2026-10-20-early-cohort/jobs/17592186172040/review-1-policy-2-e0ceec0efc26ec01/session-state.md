@@ -1,1 +1,1 @@
-Source analysis confirmed and saved. Retained failures: cold undeclared rendering dependencies; missing canonical four-panel replay. Reviewing targeted repair, before reruns. Package hashes captured.
+Review complete: accepted. All eight checks passed. Both retained failures independently reproduced on old code and resolved on current. result.json and pedagogical-variation.json saved; evidence-contract.json verifies schema, nonempty references and explicit semantic assertions. Package unchanged (package-integrity.json). No database writes or publication.

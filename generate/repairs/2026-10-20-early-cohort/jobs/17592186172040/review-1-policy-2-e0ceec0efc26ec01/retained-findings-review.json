@@ -1,0 +1,41 @@
+{
+  "preflight": {
+    "passed": true,
+    "finding_ids": [
+      "2c2cb894f9ccd977b988",
+      "ef9fcb18c9498adb4987"
+    ],
+    "checks": [
+      {
+        "script": "checks/cold_dependency_probe.py",
+        "args": [],
+        "sha256": "623e66b5a9514ad322db776377fe5023efdc84fa3cd9429aaab1df8ddf42ce61",
+        "exit_code": 0,
+        "stdout": "PASS: seed 801239 and scaled empirical rendering; old interpreter/cache unavailable; read-only relocated package unchanged\n",
+        "stderr": ""
+      },
+      {
+        "script": "checks/canonical_replay_probe.py",
+        "args": [],
+        "sha256": "dd76e25912479150334c72635f0561eff2e8a02926c1c670b276a917241510df",
+        "exit_code": 0,
+        "stdout": "PASS: exact canonical content, four-panel bank, independently measured qualifying panel III\n",
+        "stderr": ""
+      }
+    ]
+  },
+  "cold": {
+    "old_fails": "strict-cold-old.json",
+    "current_passes": "strict-cold-current.json",
+    "author_check_current": "current-cold_dependency_probe.command.json",
+    "caveat": "An initial run against an old cache-bearing package failed the expected output-location assertion, not the original dependency. Strict cold comparison explicitly removes cache and reproduces original PermissionError."
+  },
+  "canonical": {
+    "old_fails": "old-canonical_replay_probe.command.json",
+    "current_passes": "current-canonical_replay_probe/canonical-result.json"
+  },
+  "resolved": [
+    "2c2cb894f9ccd977b988",
+    "ef9fcb18c9498adb4987"
+  ]
+}

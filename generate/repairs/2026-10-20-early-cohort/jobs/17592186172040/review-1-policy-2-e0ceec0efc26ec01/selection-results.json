@@ -1,0 +1,72 @@
+{
+  "implementation": "engine/rust/question_selection.rs select(): floor(uniform(second 8 bytes of SHA256(domain/seed))*pool.len), uniform within selected band; seen_before_task separately excludes history",
+  "cases": [
+    {
+      "pool": "batch",
+      "accepted_count": 5,
+      "input_cases": {
+        "possible_exp": 2,
+        "possible_mixed": 1,
+        "possible_product": 2
+      },
+      "within_band_draws": {
+        "possible_product": 46,
+        "possible_exp": 58,
+        "possible_mixed": 24
+      },
+      "seed_prefix": "independent-review-",
+      "draws": 128,
+      "ordering": "question UUID order used as a stable entity-order stand-in; live entity IDs and learner history unavailable",
+      "basis": 5386
+    },
+    {
+      "pool": "moderate",
+      "accepted_count": 9,
+      "input_cases": {
+        "possible_product": 3,
+        "possible_mixed": 3,
+        "possible_exp": 3
+      },
+      "within_band_draws": {
+        "possible_exp": 45,
+        "possible_mixed": 42,
+        "possible_product": 41
+      },
+      "seed_prefix": "independent-review-",
+      "draws": 128,
+      "ordering": "question UUID order used as a stable entity-order stand-in; live entity IDs and learner history unavailable",
+      "basis": 5386
+    },
+    {
+      "pool": "hard",
+      "accepted_count": 6,
+      "input_cases": {
+        "impossible_x": 3,
+        "impossible_y": 3
+      },
+      "within_band_draws": {
+        "impossible_x": 63,
+        "impossible_y": 65
+      },
+      "seed_prefix": "independent-review-",
+      "draws": 128,
+      "ordering": "question UUID order used as a stable entity-order stand-in; live entity IDs and learner history unavailable",
+      "basis": 5386
+    },
+    {
+      "pool": "easy",
+      "accepted_count": 3,
+      "input_cases": {
+        "possible_linear": 3
+      },
+      "within_band_draws": {
+        "possible_linear": 128
+      },
+      "seed_prefix": "independent-review-",
+      "draws": 128,
+      "ordering": "question UUID order used as a stable entity-order stand-in; live entity IDs and learner history unavailable",
+      "basis": 5386
+    }
+  ],
+  "limits": "No live learner policy weights, future entity IDs or seen/reserved history supplied. Audited the applicable within-band mapping for captured moderate eligible pool; cannot certify a particular live learner sequence. Unconfigured policy picks first entity, so arbitrary UUID ordering is not claimed to reproduce that fallback."
+}
