@@ -1,0 +1,35 @@
+{
+  "correct_values": [
+    "Q(t)=10-3e^{-t/20}",
+    "Q(t)=10+3e^{-t/20}",
+    "Q(t)=10-3e^{-t/25}",
+    "Q(t)=10-3e^{-t/20}"
+  ],
+  "initial_mass_changes_correct_sign": true,
+  "flow_changes_exponential_time": true,
+  "context_preserves_answer": true,
+  "cross_role_checks": [
+    {
+      "from_case": 0,
+      "to_case": 1,
+      "expression": "Q(t)=10-3e^{-t/20}",
+      "after_is_wrong": true,
+      "native_case": "counterfactual-1",
+      "submission_uuid": "b1c12586-15f0-5cc3-910c-47156c24800a",
+      "native_expected": "rejected"
+    },
+    {
+      "from_case": 1,
+      "to_case": 0,
+      "expression": "Q(t)=10+3e^{-t/20}",
+      "after_is_wrong": true,
+      "native_case": "counterfactual-0",
+      "submission_uuid": "247c55c5-7762-53e2-a9f0-1a0613d6f74f",
+      "native_expected": "rejected"
+    }
+  ],
+  "native_report": "grader-report.json",
+  "render_records": "render-counterfactual-input.json",
+  "render_report": "render-counterfactual/rendering.json",
+  "observations": "All five choices in each pair tested against prompt-derived independent ODE. The initial-mass pair swaps the same 10±3e^{-t/20} visible expressions between correct and incorrect; context changes preserve expression. Correct final functions separately verified from worked solutions in math-results.json."
+}

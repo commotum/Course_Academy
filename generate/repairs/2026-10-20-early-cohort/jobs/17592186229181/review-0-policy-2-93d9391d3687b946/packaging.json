@@ -1,0 +1,98 @@
+{
+  "actual_versions": {
+    "python": "3.13.5",
+    "packages": {
+      "sympy": "1.14.0"
+    }
+  },
+  "declared_dependencies": {
+    "python": "3.13.5",
+    "packages": {
+      "sympy": "1.14.0"
+    }
+  },
+  "versions_match": true,
+  "deterministic": true,
+  "relocated_with_runtime_files": true,
+  "runtime_files": [
+    "17592186229181.py",
+    "17592186229181/masks.json"
+  ],
+  "rejections": [
+    {
+      "case": "zero flow",
+      "parameters": {
+        "V": 500,
+        "r": 0,
+        "c": "0.02",
+        "q0": 7,
+        "context": "coolant"
+      },
+      "rejected": true,
+      "error": "outside equal-flow arithmetic bounds"
+    },
+    {
+      "case": "zero volume",
+      "parameters": {
+        "V": 0,
+        "r": 25,
+        "c": "0.02",
+        "q0": 7,
+        "context": "coolant"
+      },
+      "rejected": true,
+      "error": "outside equal-flow arithmetic bounds"
+    },
+    {
+      "case": "invalid context",
+      "parameters": {
+        "V": 500,
+        "r": 25,
+        "c": "0.02",
+        "q0": 7,
+        "context": "alien"
+      },
+      "rejected": true,
+      "error": "unknown context"
+    },
+    {
+      "case": "equilibrium",
+      "parameters": {
+        "V": 500,
+        "r": 25,
+        "c": "0.02",
+        "q0": 10,
+        "context": "coolant"
+      },
+      "rejected": true,
+      "error": "non-equilibrium initial amount must be below twice feed equilibrium"
+    },
+    {
+      "case": "zero concentration",
+      "parameters": {
+        "V": 500,
+        "r": 25,
+        "c": 0,
+        "q0": 7,
+        "context": "coolant"
+      },
+      "rejected": true,
+      "error": "outside equal-flow arithmetic bounds"
+    },
+    {
+      "case": "outside source arithmetic",
+      "parameters": {
+        "V": 299,
+        "r": 25,
+        "c": "0.02",
+        "q0": 7,
+        "context": "coolant"
+      },
+      "rejected": true,
+      "error": "outside equal-flow arithmetic bounds"
+    }
+  ],
+  "external_outputs": "Generator returns records/stdout only; no plotting or asset subprocess code.",
+  "repair_history_exists": false,
+  "repair_preflight_exists": false
+}
