@@ -1,0 +1,19 @@
+# Preserve source None choices in generators
+
+The user requested the generator follow-up to the database repair in `../2026-10-20-explicit-none/`. That earlier repair changed stored questions and guidance, but did not change generator behavior.
+
+At math basis 5136, the live registry contained 634 generators. The 561 restored source questions belong to 178 knowledge points; 26 have registered generators. Eighteen use repository scripts and eight use immutable packages. `source-none-by-kp.json`, `affected.json`, the prior source bank proof, and this run's EDB reads bind that scope. Unrelated registrations remain unchanged.
+
+All 26 affected checkbox families now preserve a visible “None of the above” option through the opt-in `none_label` argument to `nonempty_checkbox`. Its correct value is derived from the ordinary Boolean keys: true exactly when every ordinary option is false. The default policy for other generators still rejects empty correct subsets. The opt-in requires reviewed source None evidence; it is not a blanket invention of None answers for arbitrary generators. Radio/blank content and historical evidence-only records are left intact.
+
+The changed response shape gets deterministic new question, field, and owned answer identities, retaining all ordinary answer values and mathematical truth flags. This avoids revising earlier generated questions or sharing their component banks. Repeated adapters are idempotent. Obsolete prompt instructions to leave every box unchecked are removed, and content fingerprints are refreshed. The source mathematical fingerprints remain intact.
+
+The earlier erroneous exclusions were reversed for the Bernoulli q-108916 family, the all-false first-order ODE decision case, the empty rank-inspection selection, and the four-number membership mask zero. These are now answerable by selecting the visible None option. The ODE parameter-domain buckets retain all four supported decision cases.
+
+`legacy-before/` preserves the 18 repository entrypoints before editing. Their active references are retained and guarded in the database request. `originals/` retains the eight prior immutable packages; `packages/` contains reviewed candidate revisions, including the exact standalone shared helper and source evidence. New packages receive new generator entities and content-addressed paths. Old immutable package bytes and generator entities remain unchanged.
+
+Validation covers 683 CLI records across all supported bands and 86 special/explicit-parameter records. All 769 pass publication validation. There are 86 None-correct checkbox outputs and 604 None-distractor outputs; the remaining outputs retain their original non-checkbox contract. The current native grader accepts 87 representative questions and rejects each alternative checkbox flip. The generator policy and publication suites pass 38 tests. Six representative questions render at 1280 and 390 pixels (12 pages), covering None-correct and None-distractor cases, matrices, graphs, number sets and ODEs. Delivery verification separately runs all eight committed immutable packages from disposable execution copies without repository Python imports.
+
+The registration transaction committed at **5147 → 5148**, source `:agent/codex`. It uses exact CAS guards for all 26 registrations and their old script references. `request.json`, `transaction.edn`, `preview.edn`, `receipt.edn`, and `verification.json` retain the exact intent and result. Datom checks allow only eight new generator entities, their pointer replacements, and unchanged-value guards. No stored question, answer, learner response or progress record was changed by this transaction.
+
+Do not rerun successful requests under new identities. For an unknown outcome, reconcile the exact saved request first. `verification.json`, `quality-verification.json`, `ui-verification.json`, and `delivery-verification.json` are the final evidence.
