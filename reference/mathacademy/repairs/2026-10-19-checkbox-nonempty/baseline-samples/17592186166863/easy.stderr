@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "/home/jake/Developer/Course_Academy/generate/scratch/17592186166863.py", line 70, in <module>
+    ap=argparse.ArgumentParser();ap.add_argument('--difficulty',default='moderate');ap.add_argument('--count',type=int,default=5);ap.add_argument('--seed',type=int,default=0);ap.add_argument('--format',choices=['json','markdown'],default='json');a=ap.parse_args();rows=batch(a.difficulty,a.count,a.seed);print(json.dumps(rows,indent=2) if a.format=='json' else '\n\n---\n\n'.join(markdown(r) for r in rows))
+                                                                                                                                                                                                                                                                             ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jake/Developer/Course_Academy/generate/scratch/17592186166863.py", line 66, in batch
+    def batch(difficulty,count,seed):return [generate(difficulty,seed+i,template=PROFILES[i%len(PROFILES)]) for i in range(count)]
+                                             ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jake/Developer/Course_Academy/generate/scratch/17592186166863.py", line 40, in generate
+    if difficulty not in SUPPORTED_LEVELS:raise ValueError('Unsupported difficulty '+difficulty+'; no source evidence')
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: Unsupported difficulty easy; no source evidence

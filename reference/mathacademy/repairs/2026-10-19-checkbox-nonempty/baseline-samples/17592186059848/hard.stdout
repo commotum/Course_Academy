@@ -1,0 +1,1335 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186059848,
+      "id": "32df8909-a239-5167-b8ea-412f7cdaea93",
+      "title": "Identifying Singular Matrices"
+    },
+    "question": {
+      ":question/id": "dd9d931e-2a0f-52b2-a5f5-940ff95dd292",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "Which of the following statements are true regarding the matrix $M$ given below?\n\nSelect all that apply.\n\n- **I.** $M$ is a singular matrix\n- **II.** $M$ is **not** a singular matrix\n- **III.** $det(M)=0$\n\n$$\nM=\\begin{bmatrix}\\sqrt{3} & \\frac{2}{5} & - \\sqrt{3} \\\\ \\frac{2 \\sqrt{3}}{3} & - \\frac{3}{5} & \\frac{4 \\sqrt{3}}{3} \\\\ \\frac{5 \\sqrt{3}}{3} & - \\frac{1}{5} & \\frac{\\sqrt{3}}{3}\\end{bmatrix}\n$$",
+      ":question/worked-solution": "Remember that a square matrix is singular if its determinant is equal to $0.$\n\nUsing the formula, we take the alternating sum of the entries in the top row of the matrix, multiplied by their respective minors, as follows:\n\n$$\n\\begin{aligned}det(M) & =|\\begin{aligned}\\sqrt{3} & \\frac{2}{5} & - \\sqrt{3} \\\\ \\frac{2 \\sqrt{3}}{3} & - \\frac{3}{5} & \\frac{4 \\sqrt{3}}{3} \\\\ \\frac{5 \\sqrt{3}}{3} & - \\frac{1}{5} & \\frac{\\sqrt{3}}{3}\\end{aligned}| \\\\  & =\\sqrt{3}|\\begin{aligned}- \\frac{3}{5} & \\frac{4 \\sqrt{3}}{3} \\\\ - \\frac{1}{5} & \\frac{\\sqrt{3}}{3}\\end{aligned}|+(- \\frac{2}{5})|\\begin{aligned}\\frac{2 \\sqrt{3}}{3} & \\frac{4 \\sqrt{3}}{3} \\\\ \\frac{5 \\sqrt{3}}{3} & \\frac{\\sqrt{3}}{3}\\end{aligned}|+(- \\sqrt{3})|\\begin{aligned}\\frac{2 \\sqrt{3}}{3} & - \\frac{3}{5} \\\\ \\frac{5 \\sqrt{3}}{3} & - \\frac{1}{5}\\end{aligned}| \\\\  & =\\sqrt{3}(- \\frac{\\sqrt{3}}{5}+\\frac{4 \\sqrt{3}}{15})+(- \\frac{2}{5})(\\frac{2}{3}- \\frac{20}{3})+(- \\sqrt{3})(- \\frac{2 \\sqrt{3}}{15}+\\sqrt{3}) \\\\  & =\\sqrt{3}\\cdot \\frac{\\sqrt{3}}{15}+(- \\frac{2}{5})\\cdot (-6)+(- \\sqrt{3})\\cdot \\frac{13 \\sqrt{3}}{15} \\\\  & =\\frac{1}{5}+\\frac{12}{5}- \\frac{13}{5} \\\\  & =0\\end{aligned}\n$$\n\nSince $det(M)=0$, the matrix is singular. \n\nTherefore, only statements I and III are true.",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "17ba5c70-f600-52ad-82de-405de156d62e",
+          ":answer-field/key": "I",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "1e6d04d3-2cec-5ec9-aba1-502ad5b677a5",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false"
+            },
+            {
+              ":answer/id": "e1dc9961-8e71-5e83-8ab4-88f1904ce292",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "e1dc9961-8e71-5e83-8ab4-88f1904ce292"
+          ]
+        },
+        {
+          ":answer-field/id": "74799535-eaca-589b-b4fd-543282e64ffb",
+          ":answer-field/key": "II",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "743970c8-0eed-5a59-ba72-b1cae93c1449",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false"
+            },
+            {
+              ":answer/id": "9036167d-2365-5ef0-90cf-00181a6630c0",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "743970c8-0eed-5a59-ba72-b1cae93c1449"
+          ]
+        },
+        {
+          ":answer-field/id": "61bae063-c02c-5563-970c-62d8bf67603c",
+          ":answer-field/key": "III",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "d09e5997-a0ea-5ef4-8ba4-1b5682571671",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false"
+            },
+            {
+              ":answer/id": "89d03c1f-22c0-523c-a4aa-c82c822de4ef",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "89d03c1f-22c0-523c-a4aa-c82c822de4ef"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "singularity-cofactor-checkbox-4-bmatrix",
+      "sympy_version": "1.14.0",
+      "seed": 17,
+      "template": "dense_exact",
+      "parameters": {
+        "matrix": [
+          "sqrt(3)",
+          "2/5",
+          "-sqrt(3)",
+          "2*sqrt(3)/3",
+          "-3/5",
+          "4*sqrt(3)/3",
+          "5*sqrt(3)/3",
+          "-1/5",
+          "sqrt(3)/3"
+        ],
+        "name": "M",
+        "claims": [
+          null,
+          null,
+          "0"
+        ]
+      },
+      "parameter_fingerprint": "5231ce23ede9ea7a423238cfa3336b85bc9857ebd8a998e40228e9283be78981",
+      "content_fingerprint": "48e777d7f2c3cc64c22369dd3665b02bbd85aaad6dd218e49ae2d6036b5f4d26",
+      "bank_profile": "checkbox_I_II_III",
+      "bank_origin": "authored-reuse",
+      "profile_extension": true,
+      "authored_extension": true,
+      "source_analysis": {
+        "database": "math",
+        "basis": 2484,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+        "question_ids": []
+      },
+      "plot_rating": "none",
+      "plot_assets": {},
+      "mathematics": {
+        "products": [
+          [
+            "-sqrt(3)/5",
+            "-4*sqrt(3)/15"
+          ],
+          [
+            "2/3",
+            "20/3"
+          ],
+          [
+            "-2*sqrt(3)/15",
+            "-sqrt(3)"
+          ]
+        ],
+        "minors": [
+          "sqrt(3)/15",
+          "-6",
+          "13*sqrt(3)/15"
+        ],
+        "terms": [
+          "1/5",
+          "12/5",
+          "-13/5"
+        ],
+        "determinant": "0",
+        "rows": 6
+      },
+      "truth_indices": [
+        1,
+        3
+      ],
+      "domain": "finite real algebraic constants; numeric 3x3 matrix",
+      "sampling_origin": "authored variation of observed scope",
+      "sampling": {
+        "matrix_family": "authored_dense_scaled_columns",
+        "dependency": "row_combination",
+        "arithmetic_workload": {
+          "entry": "5*sqrt(3)/3",
+          "product": "20/3",
+          "term": "13/5",
+          "term_sum": "26/5",
+          "determinant": "0"
+        },
+        "claim_recipes": [
+          null,
+          null,
+          "correct_determinant"
+        ]
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186059848,
+      "id": "32df8909-a239-5167-b8ea-412f7cdaea93",
+      "title": "Identifying Singular Matrices"
+    },
+    "question": {
+      ":question/id": "dd30859a-fdb1-5c1c-991a-c79d100877ee",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "Which of the following statements are true regarding the matrix $P$ given below?\n\nSelect all that apply.\n\n- **I.** $P$ is a singular matrix\n- **II.** $P$ is **not** a singular matrix\n- **III.** $det(P)=\\frac{3}{4} - \\frac{\\sqrt{3}}{4}$\n\n$$\nP=\\begin{bmatrix}\\sqrt{3} & \\frac{2}{5} & \\frac{\\sqrt{3}}{4} \\\\ \\frac{\\sqrt{3}}{3} & \\frac{1}{5} & - \\frac{\\sqrt{3}}{2} \\\\ - \\sqrt{3} & - \\frac{2}{5} & - \\frac{\\sqrt{3}}{4}\\end{bmatrix}\n$$",
+      ":question/worked-solution": "Remember that a square matrix is singular if its determinant is equal to $0.$\n\nUsing the formula, we take the alternating sum of the entries in the top row of the matrix, multiplied by their respective minors, as follows:\n\n$$\n\\begin{aligned}det(P) & =|\\begin{aligned}\\sqrt{3} & \\frac{2}{5} & \\frac{\\sqrt{3}}{4} \\\\ \\frac{\\sqrt{3}}{3} & \\frac{1}{5} & - \\frac{\\sqrt{3}}{2} \\\\ - \\sqrt{3} & - \\frac{2}{5} & - \\frac{\\sqrt{3}}{4}\\end{aligned}| \\\\  & =\\sqrt{3}|\\begin{aligned}\\frac{1}{5} & - \\frac{\\sqrt{3}}{2} \\\\ - \\frac{2}{5} & - \\frac{\\sqrt{3}}{4}\\end{aligned}|+(- \\frac{2}{5})|\\begin{aligned}\\frac{\\sqrt{3}}{3} & - \\frac{\\sqrt{3}}{2} \\\\ - \\sqrt{3} & - \\frac{\\sqrt{3}}{4}\\end{aligned}|+\\frac{\\sqrt{3}}{4}|\\begin{aligned}\\frac{\\sqrt{3}}{3} & \\frac{1}{5} \\\\ - \\sqrt{3} & - \\frac{2}{5}\\end{aligned}| \\\\  & =\\sqrt{3}(- \\frac{\\sqrt{3}}{20}- \\frac{\\sqrt{3}}{5})+(- \\frac{2}{5})(- \\frac{1}{4}- \\frac{3}{2})+\\frac{\\sqrt{3}}{4}(- \\frac{2 \\sqrt{3}}{15}+\\frac{\\sqrt{3}}{5}) \\\\  & =\\sqrt{3}\\cdot (- \\frac{\\sqrt{3}}{4})+(- \\frac{2}{5})\\cdot (- \\frac{7}{4})+\\frac{\\sqrt{3}}{4}\\cdot \\frac{\\sqrt{3}}{15} \\\\  & =- \\frac{3}{4}+\\frac{7}{10}+\\frac{1}{20} \\\\  & =0\\end{aligned}\n$$\n\nSince $det(P)=0$, the matrix is singular. \n\nTherefore, only statement I is true.",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "4146ca8e-2c4e-5d6f-8b97-7b54ab3f6164",
+          ":answer-field/key": "I",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "f4a27574-e873-58e9-a171-507da42b23ea",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false"
+            },
+            {
+              ":answer/id": "2a5f73c0-dedd-56cf-bf71-eef6b2070b45",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "2a5f73c0-dedd-56cf-bf71-eef6b2070b45"
+          ]
+        },
+        {
+          ":answer-field/id": "759571f6-fdeb-5256-a7a0-8429fb0ee216",
+          ":answer-field/key": "II",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "877519be-207a-505e-ad9b-e07ca5e8fef3",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false"
+            },
+            {
+              ":answer/id": "8bf10ecc-e1af-5c53-9882-260c9b35a9ae",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "877519be-207a-505e-ad9b-e07ca5e8fef3"
+          ]
+        },
+        {
+          ":answer-field/id": "23f635f8-ddbe-56ee-baa8-c94bbec97931",
+          ":answer-field/key": "III",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "6b763440-f159-5ca5-a29f-d63104a34231",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false"
+            },
+            {
+              ":answer/id": "25a2e1da-ebec-5ec7-80c6-a5e546976eef",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "6b763440-f159-5ca5-a29f-d63104a34231"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "singularity-cofactor-checkbox-4-bmatrix",
+      "sympy_version": "1.14.0",
+      "seed": 18,
+      "template": "dense_exact",
+      "parameters": {
+        "matrix": [
+          "sqrt(3)",
+          "2/5",
+          "sqrt(3)/4",
+          "sqrt(3)/3",
+          "1/5",
+          "-sqrt(3)/2",
+          "-sqrt(3)",
+          "-2/5",
+          "-sqrt(3)/4"
+        ],
+        "name": "P",
+        "claims": [
+          null,
+          null,
+          "3/4 - sqrt(3)/4"
+        ]
+      },
+      "parameter_fingerprint": "a9ba30ea6f0c8bbb00352ba684815e0cfbde9b931c81a306d126795a33277303",
+      "content_fingerprint": "d9b528ecf3fdf31719aefe8fe7ea2bed3a9c5f36c299b458aa8264965229058f",
+      "bank_profile": "checkbox_I_II_III",
+      "bank_origin": "authored-reuse",
+      "profile_extension": true,
+      "authored_extension": true,
+      "source_analysis": {
+        "database": "math",
+        "basis": 2484,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+        "question_ids": []
+      },
+      "plot_rating": "none",
+      "plot_assets": {},
+      "mathematics": {
+        "products": [
+          [
+            "-sqrt(3)/20",
+            "sqrt(3)/5"
+          ],
+          [
+            "-1/4",
+            "3/2"
+          ],
+          [
+            "-2*sqrt(3)/15",
+            "-sqrt(3)/5"
+          ]
+        ],
+        "minors": [
+          "-sqrt(3)/4",
+          "-7/4",
+          "sqrt(3)/15"
+        ],
+        "terms": [
+          "-3/4",
+          "7/10",
+          "1/20"
+        ],
+        "determinant": "0",
+        "rows": 6
+      },
+      "truth_indices": [
+        1
+      ],
+      "domain": "finite real algebraic constants; numeric 3x3 matrix",
+      "sampling_origin": "authored variation of observed scope",
+      "sampling": {
+        "matrix_family": "authored_dense_scaled_columns",
+        "dependency": "proportional_rows",
+        "arithmetic_workload": {
+          "entry": "sqrt(3)",
+          "product": "3/2",
+          "term": "3/4",
+          "term_sum": "3/2",
+          "determinant": "0"
+        },
+        "claim_recipes": [
+          null,
+          null,
+          "omit_coefficient_0"
+        ]
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186059848,
+      "id": "32df8909-a239-5167-b8ea-412f7cdaea93",
+      "title": "Identifying Singular Matrices"
+    },
+    "question": {
+      ":question/id": "eb644a1f-27b6-5ed8-948f-77f04d00ec88",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "Which of the following statements are true regarding the matrix $D$ given below?\n\nSelect all that apply.\n\n- **I.** $D$ is a singular matrix\n- **II.** $D$ is **not** a singular matrix\n- **III.** $det(D)=0$\n\n$$\nD=\\begin{bmatrix}\\frac{3 \\sqrt{5}}{4} & 1 & \\frac{\\sqrt{5}}{4} \\\\ - \\frac{\\sqrt{5}}{4} & \\frac{1}{2} & - \\frac{\\sqrt{5}}{2} \\\\ - \\frac{3 \\sqrt{5}}{2} & -2 & - \\frac{\\sqrt{5}}{2}\\end{bmatrix}\n$$",
+      ":question/worked-solution": "Remember that a square matrix is singular if its determinant is equal to $0.$\n\nUsing the formula, we take the alternating sum of the entries in the top row of the matrix, multiplied by their respective minors, as follows:\n\n$$\n\\begin{aligned}det(D) & =|\\begin{aligned}\\frac{3 \\sqrt{5}}{4} & 1 & \\frac{\\sqrt{5}}{4} \\\\ - \\frac{\\sqrt{5}}{4} & \\frac{1}{2} & - \\frac{\\sqrt{5}}{2} \\\\ - \\frac{3 \\sqrt{5}}{2} & -2 & - \\frac{\\sqrt{5}}{2}\\end{aligned}| \\\\  & =\\frac{3 \\sqrt{5}}{4}|\\begin{aligned}\\frac{1}{2} & - \\frac{\\sqrt{5}}{2} \\\\ -2 & - \\frac{\\sqrt{5}}{2}\\end{aligned}|+(-1)|\\begin{aligned}- \\frac{\\sqrt{5}}{4} & - \\frac{\\sqrt{5}}{2} \\\\ - \\frac{3 \\sqrt{5}}{2} & - \\frac{\\sqrt{5}}{2}\\end{aligned}|+\\frac{\\sqrt{5}}{4}|\\begin{aligned}- \\frac{\\sqrt{5}}{4} & \\frac{1}{2} \\\\ - \\frac{3 \\sqrt{5}}{2} & -2\\end{aligned}| \\\\  & =\\frac{3 \\sqrt{5}}{4}(- \\frac{\\sqrt{5}}{4}- \\sqrt{5})+(-1)(\\frac{5}{8}- \\frac{15}{4})+\\frac{\\sqrt{5}}{4}(\\frac{\\sqrt{5}}{2}+\\frac{3 \\sqrt{5}}{4}) \\\\  & =\\frac{3 \\sqrt{5}}{4}\\cdot (- \\frac{5 \\sqrt{5}}{4})+(-1)\\cdot (- \\frac{25}{8})+\\frac{\\sqrt{5}}{4}\\cdot \\frac{5 \\sqrt{5}}{4} \\\\  & =- \\frac{75}{16}+\\frac{25}{8}+\\frac{25}{16} \\\\  & =0\\end{aligned}\n$$\n\nSince $det(D)=0$, the matrix is singular. \n\nTherefore, only statements I and III are true.",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "32c1361e-dc2b-516e-a1c8-e77d013e3b08",
+          ":answer-field/key": "I",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "704605d9-3e4f-5713-a6b8-d20438e7066b",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false"
+            },
+            {
+              ":answer/id": "e01a8489-0373-549b-b7a6-6b331afcd13b",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "e01a8489-0373-549b-b7a6-6b331afcd13b"
+          ]
+        },
+        {
+          ":answer-field/id": "af729108-6ef6-5698-90c6-5720b117a859",
+          ":answer-field/key": "II",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "58f7efdc-24f9-5c37-a096-0dcde9f042a7",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false"
+            },
+            {
+              ":answer/id": "d22949b1-3716-569f-8235-c4ebd53739e0",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "58f7efdc-24f9-5c37-a096-0dcde9f042a7"
+          ]
+        },
+        {
+          ":answer-field/id": "9e502313-e7fb-56b3-b4d6-003c6b04fd24",
+          ":answer-field/key": "III",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "d02f1e39-1312-5eff-be10-d46dae508fc6",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false"
+            },
+            {
+              ":answer/id": "bc49095b-59d0-5897-919d-320a35b53365",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "bc49095b-59d0-5897-919d-320a35b53365"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "singularity-cofactor-checkbox-4-bmatrix",
+      "sympy_version": "1.14.0",
+      "seed": 19,
+      "template": "dense_exact",
+      "parameters": {
+        "matrix": [
+          "3*sqrt(5)/4",
+          "1",
+          "sqrt(5)/4",
+          "-sqrt(5)/4",
+          "1/2",
+          "-sqrt(5)/2",
+          "-3*sqrt(5)/2",
+          "-2",
+          "-sqrt(5)/2"
+        ],
+        "name": "D",
+        "claims": [
+          null,
+          null,
+          "0"
+        ]
+      },
+      "parameter_fingerprint": "c0ffa3f4793ab71aaebcc03d9d93fb38b1a217d44831c29a303589a99deb0c5e",
+      "content_fingerprint": "c80bc85ef43d0dfd038d5298e8a402ef56a1f955ddcc0f084bc64ab4e7b46764",
+      "bank_profile": "checkbox_I_II_III",
+      "bank_origin": "authored-reuse",
+      "profile_extension": true,
+      "authored_extension": true,
+      "source_analysis": {
+        "database": "math",
+        "basis": 2484,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+        "question_ids": []
+      },
+      "plot_rating": "none",
+      "plot_assets": {},
+      "mathematics": {
+        "products": [
+          [
+            "-sqrt(5)/4",
+            "sqrt(5)"
+          ],
+          [
+            "5/8",
+            "15/4"
+          ],
+          [
+            "sqrt(5)/2",
+            "-3*sqrt(5)/4"
+          ]
+        ],
+        "minors": [
+          "-5*sqrt(5)/4",
+          "-25/8",
+          "5*sqrt(5)/4"
+        ],
+        "terms": [
+          "-75/16",
+          "25/8",
+          "25/16"
+        ],
+        "determinant": "0",
+        "rows": 6
+      },
+      "truth_indices": [
+        1,
+        3
+      ],
+      "domain": "finite real algebraic constants; numeric 3x3 matrix",
+      "sampling_origin": "authored variation of observed scope",
+      "sampling": {
+        "matrix_family": "authored_dense_scaled_columns",
+        "dependency": "proportional_rows",
+        "arithmetic_workload": {
+          "entry": "3*sqrt(5)/2",
+          "product": "15/4",
+          "term": "75/16",
+          "term_sum": "75/8",
+          "determinant": "0"
+        },
+        "claim_recipes": [
+          null,
+          null,
+          "correct_determinant"
+        ]
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186059848,
+      "id": "32df8909-a239-5167-b8ea-412f7cdaea93",
+      "title": "Identifying Singular Matrices"
+    },
+    "question": {
+      ":question/id": "ac68321d-566d-51d3-9027-74b9e95c777b",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "Which of the following statements are true regarding the matrix $P$ given below?\n\nSelect all that apply.\n\n- **I.** $P$ is a singular matrix\n- **II.** $P$ is **not** a singular matrix\n- **III.** $det(P)=-42$\n\n$$\nP=\\begin{bmatrix}\\frac{2 \\sqrt{7}}{3} & - \\frac{1}{2} & - \\sqrt{7} \\\\ \\sqrt{7} & \\frac{3}{2} & - \\frac{2 \\sqrt{7}}{3} \\\\ \\frac{4 \\sqrt{7}}{3} & -1 & - 2 \\sqrt{7}\\end{bmatrix}\n$$",
+      ":question/worked-solution": "Remember that a square matrix is singular if its determinant is equal to $0.$\n\nUsing the formula, we take the alternating sum of the entries in the top row of the matrix, multiplied by their respective minors, as follows:\n\n$$\n\\begin{aligned}det(P) & =|\\begin{aligned}\\frac{2 \\sqrt{7}}{3} & - \\frac{1}{2} & - \\sqrt{7} \\\\ \\sqrt{7} & \\frac{3}{2} & - \\frac{2 \\sqrt{7}}{3} \\\\ \\frac{4 \\sqrt{7}}{3} & -1 & - 2 \\sqrt{7}\\end{aligned}| \\\\  & =\\frac{2 \\sqrt{7}}{3}|\\begin{aligned}\\frac{3}{2} & - \\frac{2 \\sqrt{7}}{3} \\\\ -1 & - 2 \\sqrt{7}\\end{aligned}|+\\frac{1}{2}|\\begin{aligned}\\sqrt{7} & - \\frac{2 \\sqrt{7}}{3} \\\\ \\frac{4 \\sqrt{7}}{3} & - 2 \\sqrt{7}\\end{aligned}|+(- \\sqrt{7})|\\begin{aligned}\\sqrt{7} & \\frac{3}{2} \\\\ \\frac{4 \\sqrt{7}}{3} & -1\\end{aligned}| \\\\  & =\\frac{2 \\sqrt{7}}{3}(- 3 \\sqrt{7}- \\frac{2 \\sqrt{7}}{3})+\\frac{1}{2}(-14+\\frac{56}{9})+(- \\sqrt{7})(- \\sqrt{7}- 2 \\sqrt{7}) \\\\  & =\\frac{2 \\sqrt{7}}{3}\\cdot (- \\frac{11 \\sqrt{7}}{3})+\\frac{1}{2}\\cdot (- \\frac{70}{9})+(- \\sqrt{7})\\cdot (- 3 \\sqrt{7}) \\\\  & =- \\frac{154}{9}- \\frac{35}{9}+21 \\\\  & =0\\end{aligned}\n$$\n\nSince $det(P)=0$, the matrix is singular. \n\nTherefore, only statement I is true.",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "ee9ad6b8-6c6c-564d-ba3f-871398b78843",
+          ":answer-field/key": "I",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "3659aa50-5316-5513-bb56-9c5b9238b812",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false"
+            },
+            {
+              ":answer/id": "cfdeba8a-dce2-57dd-8ac7-7266254c022a",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "cfdeba8a-dce2-57dd-8ac7-7266254c022a"
+          ]
+        },
+        {
+          ":answer-field/id": "6315800c-df47-5ecc-83f8-a846114900b1",
+          ":answer-field/key": "II",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "0c50a371-1716-5430-b892-c419139e7b3a",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false"
+            },
+            {
+              ":answer/id": "ab7bbcef-9d2b-5454-a4d9-b789843db61f",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "0c50a371-1716-5430-b892-c419139e7b3a"
+          ]
+        },
+        {
+          ":answer-field/id": "be2c20d1-a3f7-506a-b065-ca41ebd4e1b7",
+          ":answer-field/key": "III",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "45c7b162-5b59-568e-bc97-2bf3ab6de19f",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false"
+            },
+            {
+              ":answer/id": "f0fbf27d-4bde-57ed-a8e8-9792fd79f88b",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "45c7b162-5b59-568e-bc97-2bf3ab6de19f"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "singularity-cofactor-checkbox-4-bmatrix",
+      "sympy_version": "1.14.0",
+      "seed": 20,
+      "template": "dense_exact",
+      "parameters": {
+        "matrix": [
+          "2*sqrt(7)/3",
+          "-1/2",
+          "-sqrt(7)",
+          "sqrt(7)",
+          "3/2",
+          "-2*sqrt(7)/3",
+          "4*sqrt(7)/3",
+          "-1",
+          "-2*sqrt(7)"
+        ],
+        "name": "P",
+        "claims": [
+          null,
+          null,
+          "-42"
+        ]
+      },
+      "parameter_fingerprint": "770f92713ad2abf99f0352a660bf7f67afe41834556777bf1127656b8fb7603a",
+      "content_fingerprint": "8413ae40aaeb1b28f082f178d320ec70152f3da40a7bc1c8d8ad5bea251df44c",
+      "bank_profile": "checkbox_I_II_III",
+      "bank_origin": "authored-reuse",
+      "profile_extension": true,
+      "authored_extension": true,
+      "source_analysis": {
+        "database": "math",
+        "basis": 2484,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+        "question_ids": []
+      },
+      "plot_rating": "none",
+      "plot_assets": {},
+      "mathematics": {
+        "products": [
+          [
+            "-3*sqrt(7)",
+            "2*sqrt(7)/3"
+          ],
+          [
+            "-14",
+            "-56/9"
+          ],
+          [
+            "-sqrt(7)",
+            "2*sqrt(7)"
+          ]
+        ],
+        "minors": [
+          "-11*sqrt(7)/3",
+          "-70/9",
+          "-3*sqrt(7)"
+        ],
+        "terms": [
+          "-154/9",
+          "-35/9",
+          "21"
+        ],
+        "determinant": "0",
+        "rows": 6
+      },
+      "truth_indices": [
+        1
+      ],
+      "domain": "finite real algebraic constants; numeric 3x3 matrix",
+      "sampling_origin": "authored variation of observed scope",
+      "sampling": {
+        "matrix_family": "authored_dense_scaled_columns",
+        "dependency": "proportional_rows",
+        "arithmetic_workload": {
+          "entry": "2*sqrt(7)",
+          "product": "14",
+          "term": "21",
+          "term_sum": "42",
+          "determinant": "0"
+        },
+        "claim_recipes": [
+          null,
+          null,
+          "reverse_cofactor_sign_2"
+        ]
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186059848,
+      "id": "32df8909-a239-5167-b8ea-412f7cdaea93",
+      "title": "Identifying Singular Matrices"
+    },
+    "question": {
+      ":question/id": "4babbbbb-b2ef-50a6-b25c-023b37598137",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "Which of the following statements are true regarding the matrix $R$ given below?\n\nSelect all that apply.\n\n- **I.** $R$ is a singular matrix\n- **II.** $R$ is **not** a singular matrix\n- **III.** $det(R)=0$\n\n$$\nR=\\begin{bmatrix}- \\frac{3 \\sqrt{2}}{2} & \\frac{3}{2} & \\sqrt{2} \\\\ 2 \\sqrt{2} & - \\frac{3}{2} & \\frac{2 \\sqrt{2}}{3} \\\\ - 5 \\sqrt{2} & \\frac{9}{2} & \\frac{4 \\sqrt{2}}{3}\\end{bmatrix}\n$$",
+      ":question/worked-solution": "Remember that a square matrix is singular if its determinant is equal to $0.$\n\nUsing the formula, we take the alternating sum of the entries in the top row of the matrix, multiplied by their respective minors, as follows:\n\n$$\n\\begin{aligned}det(R) & =|\\begin{aligned}- \\frac{3 \\sqrt{2}}{2} & \\frac{3}{2} & \\sqrt{2} \\\\ 2 \\sqrt{2} & - \\frac{3}{2} & \\frac{2 \\sqrt{2}}{3} \\\\ - 5 \\sqrt{2} & \\frac{9}{2} & \\frac{4 \\sqrt{2}}{3}\\end{aligned}| \\\\  & =(- \\frac{3 \\sqrt{2}}{2})|\\begin{aligned}- \\frac{3}{2} & \\frac{2 \\sqrt{2}}{3} \\\\ \\frac{9}{2} & \\frac{4 \\sqrt{2}}{3}\\end{aligned}|+(- \\frac{3}{2})|\\begin{aligned}2 \\sqrt{2} & \\frac{2 \\sqrt{2}}{3} \\\\ - 5 \\sqrt{2} & \\frac{4 \\sqrt{2}}{3}\\end{aligned}|+\\sqrt{2}|\\begin{aligned}2 \\sqrt{2} & - \\frac{3}{2} \\\\ - 5 \\sqrt{2} & \\frac{9}{2}\\end{aligned}| \\\\  & =(- \\frac{3 \\sqrt{2}}{2})(- 2 \\sqrt{2}- 3 \\sqrt{2})+(- \\frac{3}{2})(\\frac{16}{3}+\\frac{20}{3})+\\sqrt{2}(9 \\sqrt{2}- \\frac{15 \\sqrt{2}}{2}) \\\\  & =(- \\frac{3 \\sqrt{2}}{2})\\cdot (- 5 \\sqrt{2})+(- \\frac{3}{2})\\cdot 12+\\sqrt{2}\\cdot \\frac{3 \\sqrt{2}}{2} \\\\  & =15-18+3 \\\\  & =0\\end{aligned}\n$$\n\nSince $det(R)=0$, the matrix is singular. \n\nTherefore, only statements I and III are true.",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "896cc58c-6d9c-5986-b32f-f3629548fb9b",
+          ":answer-field/key": "I",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "ea273b7d-5972-5509-8470-e02a167f8c12",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false"
+            },
+            {
+              ":answer/id": "51d70f4d-0dea-5b76-b59f-b202c56232e3",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "51d70f4d-0dea-5b76-b59f-b202c56232e3"
+          ]
+        },
+        {
+          ":answer-field/id": "86a9778e-e85d-5e72-ae9b-a5d95282f6e9",
+          ":answer-field/key": "II",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "bd6e3fc6-e86e-53d3-a48d-4f33e6178b72",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false"
+            },
+            {
+              ":answer/id": "7a32bea5-4850-5861-b487-396d1f34a2cc",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "bd6e3fc6-e86e-53d3-a48d-4f33e6178b72"
+          ]
+        },
+        {
+          ":answer-field/id": "03e3dbc6-076e-5312-82de-187c423b9f9d",
+          ":answer-field/key": "III",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "835d3259-9ec1-5afc-9afe-db5f4a4943d0",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false"
+            },
+            {
+              ":answer/id": "7c97f887-2856-52e9-b1ae-4b7fc10b75aa",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "7c97f887-2856-52e9-b1ae-4b7fc10b75aa"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "singularity-cofactor-checkbox-4-bmatrix",
+      "sympy_version": "1.14.0",
+      "seed": 21,
+      "template": "dense_exact",
+      "parameters": {
+        "matrix": [
+          "-3*sqrt(2)/2",
+          "3/2",
+          "sqrt(2)",
+          "2*sqrt(2)",
+          "-3/2",
+          "2*sqrt(2)/3",
+          "-5*sqrt(2)",
+          "9/2",
+          "4*sqrt(2)/3"
+        ],
+        "name": "R",
+        "claims": [
+          null,
+          null,
+          "0"
+        ]
+      },
+      "parameter_fingerprint": "4dd46278df6a5e2531a322e962e0b5e9e1af68b93f44b59c319f3271a18497a4",
+      "content_fingerprint": "8595c13153de8201da5142c647f59c215854e11b8364b94657d194e60943f39f",
+      "bank_profile": "checkbox_I_II_III",
+      "bank_origin": "authored-reuse",
+      "profile_extension": true,
+      "authored_extension": true,
+      "source_analysis": {
+        "database": "math",
+        "basis": 2484,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+        "question_ids": []
+      },
+      "plot_rating": "none",
+      "plot_assets": {},
+      "mathematics": {
+        "products": [
+          [
+            "-2*sqrt(2)",
+            "3*sqrt(2)"
+          ],
+          [
+            "16/3",
+            "-20/3"
+          ],
+          [
+            "9*sqrt(2)",
+            "15*sqrt(2)/2"
+          ]
+        ],
+        "minors": [
+          "-5*sqrt(2)",
+          "12",
+          "3*sqrt(2)/2"
+        ],
+        "terms": [
+          "15",
+          "-18",
+          "3"
+        ],
+        "determinant": "0",
+        "rows": 6
+      },
+      "truth_indices": [
+        1,
+        3
+      ],
+      "domain": "finite real algebraic constants; numeric 3x3 matrix",
+      "sampling_origin": "authored variation of observed scope",
+      "sampling": {
+        "matrix_family": "authored_dense_scaled_columns",
+        "dependency": "row_combination",
+        "arithmetic_workload": {
+          "entry": "5*sqrt(2)",
+          "product": "9*sqrt(2)",
+          "term": "18",
+          "term_sum": "36",
+          "determinant": "0"
+        },
+        "claim_recipes": [
+          null,
+          null,
+          "correct_determinant"
+        ]
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186059848,
+      "id": "32df8909-a239-5167-b8ea-412f7cdaea93",
+      "title": "Identifying Singular Matrices"
+    },
+    "question": {
+      ":question/id": "0b6e5ae2-3cd0-54a9-97e4-ad4f1817308b",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "Which of the following statements are true regarding the matrix $P$ given below?\n\nSelect all that apply.\n\n- **I.** $P$ is a singular matrix\n- **II.** $P$ is **not** a singular matrix\n- **III.** $det(P)=2 \\sqrt{7}$\n\n$$\nP=\\begin{bmatrix}2 \\sqrt{7} & - \\frac{1}{5} & - 2 \\sqrt{7} \\\\ \\sqrt{7} & - \\frac{2}{5} & - \\sqrt{7} \\\\ \\frac{\\sqrt{7}}{2} & - \\frac{3}{5} & - \\frac{\\sqrt{7}}{2}\\end{bmatrix}\n$$",
+      ":question/worked-solution": "Remember that a square matrix is singular if its determinant is equal to $0.$\n\nUsing the formula, we take the alternating sum of the entries in the top row of the matrix, multiplied by their respective minors, as follows:\n\n$$\n\\begin{aligned}det(P) & =|\\begin{aligned}2 \\sqrt{7} & - \\frac{1}{5} & - 2 \\sqrt{7} \\\\ \\sqrt{7} & - \\frac{2}{5} & - \\sqrt{7} \\\\ \\frac{\\sqrt{7}}{2} & - \\frac{3}{5} & - \\frac{\\sqrt{7}}{2}\\end{aligned}| \\\\  & =2 \\sqrt{7}|\\begin{aligned}- \\frac{2}{5} & - \\sqrt{7} \\\\ - \\frac{3}{5} & - \\frac{\\sqrt{7}}{2}\\end{aligned}|+\\frac{1}{5}|\\begin{aligned}\\sqrt{7} & - \\sqrt{7} \\\\ \\frac{\\sqrt{7}}{2} & - \\frac{\\sqrt{7}}{2}\\end{aligned}|+(- 2 \\sqrt{7})|\\begin{aligned}\\sqrt{7} & - \\frac{2}{5} \\\\ \\frac{\\sqrt{7}}{2} & - \\frac{3}{5}\\end{aligned}| \\\\  & =2 \\sqrt{7}(\\frac{\\sqrt{7}}{5}- \\frac{3 \\sqrt{7}}{5})+\\frac{1}{5}(- \\frac{7}{2}+\\frac{7}{2})+(- 2 \\sqrt{7})(- \\frac{3 \\sqrt{7}}{5}+\\frac{\\sqrt{7}}{5}) \\\\  & =2 \\sqrt{7}\\cdot (- \\frac{2 \\sqrt{7}}{5})+\\frac{1}{5}\\cdot 0+(- 2 \\sqrt{7})\\cdot (- \\frac{2 \\sqrt{7}}{5}) \\\\  & =- \\frac{28}{5}+\\frac{28}{5} \\\\  & =0\\end{aligned}\n$$\n\nSince $det(P)=0$, the matrix is singular. \n\nTherefore, only statement I is true.",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "6e04419e-dd7f-5eae-8700-31f5e6230714",
+          ":answer-field/key": "I",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "94b5d5a3-4846-5061-8de7-f93da3a3fae1",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false"
+            },
+            {
+              ":answer/id": "4058038d-1192-59ab-8f49-58aa653a9404",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "4058038d-1192-59ab-8f49-58aa653a9404"
+          ]
+        },
+        {
+          ":answer-field/id": "aa4d8baa-6ca5-50f7-8d87-9e9c3f24b73b",
+          ":answer-field/key": "II",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "f8102324-6ee9-51cb-95b7-4e6b6929d32b",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false"
+            },
+            {
+              ":answer/id": "66249aa8-e38a-5f21-909b-3f5e2051ddc9",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "f8102324-6ee9-51cb-95b7-4e6b6929d32b"
+          ]
+        },
+        {
+          ":answer-field/id": "98bbad98-ee00-59db-956b-b3a71b32712d",
+          ":answer-field/key": "III",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "5a7a6d0e-5acb-5a76-a768-a5524cbacdd7",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false"
+            },
+            {
+              ":answer/id": "e8dbc8a0-ebf9-5e68-bdb2-ca5fa490332c",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "5a7a6d0e-5acb-5a76-a768-a5524cbacdd7"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "singularity-cofactor-checkbox-4-bmatrix",
+      "sympy_version": "1.14.0",
+      "seed": 22,
+      "template": "dense_exact",
+      "parameters": {
+        "matrix": [
+          "2*sqrt(7)",
+          "-1/5",
+          "-2*sqrt(7)",
+          "sqrt(7)",
+          "-2/5",
+          "-sqrt(7)",
+          "sqrt(7)/2",
+          "-3/5",
+          "-sqrt(7)/2"
+        ],
+        "name": "P",
+        "claims": [
+          null,
+          null,
+          "2*sqrt(7)"
+        ]
+      },
+      "parameter_fingerprint": "f0fd26de32c132e623b31777e1cd88f0ee5698b266129a669070be659f3e5a54",
+      "content_fingerprint": "b1d8b8cf5e787aa28b56124ff265d338db3a7322e4fe00d84c67b6f21e952f4b",
+      "bank_profile": "checkbox_I_II_III",
+      "bank_origin": "authored-reuse",
+      "profile_extension": true,
+      "authored_extension": true,
+      "source_analysis": {
+        "database": "math",
+        "basis": 2484,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+        "question_ids": []
+      },
+      "plot_rating": "none",
+      "plot_assets": {},
+      "mathematics": {
+        "products": [
+          [
+            "sqrt(7)/5",
+            "3*sqrt(7)/5"
+          ],
+          [
+            "-7/2",
+            "-7/2"
+          ],
+          [
+            "-3*sqrt(7)/5",
+            "-sqrt(7)/5"
+          ]
+        ],
+        "minors": [
+          "-2*sqrt(7)/5",
+          "0",
+          "-2*sqrt(7)/5"
+        ],
+        "terms": [
+          "-28/5",
+          "0",
+          "28/5"
+        ],
+        "determinant": "0",
+        "rows": 6
+      },
+      "truth_indices": [
+        1
+      ],
+      "domain": "finite real algebraic constants; numeric 3x3 matrix",
+      "sampling_origin": "authored variation of observed scope",
+      "sampling": {
+        "matrix_family": "authored_dense_scaled_columns",
+        "dependency": "proportional_columns",
+        "arithmetic_workload": {
+          "entry": "2*sqrt(7)",
+          "product": "7/2",
+          "term": "28/5",
+          "term_sum": "56/5",
+          "determinant": "0"
+        },
+        "claim_recipes": [
+          null,
+          null,
+          "report_entry_0"
+        ]
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186059848,
+      "id": "32df8909-a239-5167-b8ea-412f7cdaea93",
+      "title": "Identifying Singular Matrices"
+    },
+    "question": {
+      ":question/id": "138aa783-d25a-55bb-a2b8-9c3752526774",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "Which of the following statements are true regarding the matrix $D$ given below?\n\nSelect all that apply.\n\n- **I.** $D$ is a singular matrix\n- **II.** $D$ is **not** a singular matrix\n- **III.** $det(D)=5$\n\n$$\nD=\\begin{bmatrix}\\frac{2 \\sqrt{5}}{3} & - \\frac{2}{5} & 2 \\sqrt{5} \\\\ - \\frac{\\sqrt{5}}{3} & \\frac{4}{5} & 2 \\sqrt{5} \\\\ - \\frac{\\sqrt{5}}{3} & - \\frac{1}{5} & - \\frac{\\sqrt{5}}{2}\\end{bmatrix}\n$$",
+      ":question/worked-solution": "Remember that a square matrix is singular if its determinant is equal to $0.$\n\nUsing the formula, we take the alternating sum of the entries in the top row of the matrix, multiplied by their respective minors, as follows:\n\n$$\n\\begin{aligned}det(D) & =|\\begin{aligned}\\frac{2 \\sqrt{5}}{3} & - \\frac{2}{5} & 2 \\sqrt{5} \\\\ - \\frac{\\sqrt{5}}{3} & \\frac{4}{5} & 2 \\sqrt{5} \\\\ - \\frac{\\sqrt{5}}{3} & - \\frac{1}{5} & - \\frac{\\sqrt{5}}{2}\\end{aligned}| \\\\  & =\\frac{2 \\sqrt{5}}{3}|\\begin{aligned}\\frac{4}{5} & 2 \\sqrt{5} \\\\ - \\frac{1}{5} & - \\frac{\\sqrt{5}}{2}\\end{aligned}|+\\frac{2}{5}|\\begin{aligned}- \\frac{\\sqrt{5}}{3} & 2 \\sqrt{5} \\\\ - \\frac{\\sqrt{5}}{3} & - \\frac{\\sqrt{5}}{2}\\end{aligned}|+2 \\sqrt{5}|\\begin{aligned}- \\frac{\\sqrt{5}}{3} & \\frac{4}{5} \\\\ - \\frac{\\sqrt{5}}{3} & - \\frac{1}{5}\\end{aligned}| \\\\  & =\\frac{2 \\sqrt{5}}{3}(- \\frac{2 \\sqrt{5}}{5}+\\frac{2 \\sqrt{5}}{5})+\\frac{2}{5}(\\frac{5}{6}+\\frac{10}{3})+2 \\sqrt{5}(\\frac{\\sqrt{5}}{15}+\\frac{4 \\sqrt{5}}{15}) \\\\  & =\\frac{2 \\sqrt{5}}{3}\\cdot 0+\\frac{2}{5}\\cdot \\frac{25}{6}+2 \\sqrt{5}\\cdot \\frac{\\sqrt{5}}{3} \\\\  & =\\frac{5}{3}+\\frac{10}{3} \\\\  & =5\\end{aligned}\n$$\n\nSince $det(D)=5\\ne 0$, the matrix is **not** singular. \n\nTherefore, only statements II and III are true.",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "190351a8-2a1d-560f-b8e5-bc1f155b59c1",
+          ":answer-field/key": "I",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "fcb9b2bd-9637-5e7b-bf3b-b7672c862ec5",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false"
+            },
+            {
+              ":answer/id": "0863c18b-6adc-5084-bf7e-ae331aae91ce",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "fcb9b2bd-9637-5e7b-bf3b-b7672c862ec5"
+          ]
+        },
+        {
+          ":answer-field/id": "ab6313c4-0bce-5d45-ad51-34b038f27f31",
+          ":answer-field/key": "II",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "d1ece909-db52-5dd7-ac9f-25c816df5ef6",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false"
+            },
+            {
+              ":answer/id": "0dfe80dd-d00c-575b-b098-5aea6941ddc4",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "0dfe80dd-d00c-575b-b098-5aea6941ddc4"
+          ]
+        },
+        {
+          ":answer-field/id": "2731abb3-4e37-5cc3-bedf-87384badb710",
+          ":answer-field/key": "III",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "2f35f74b-780f-52b4-8e93-46b350923af6",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false"
+            },
+            {
+              ":answer/id": "7d48a0f9-28cb-5afd-beb7-162c39e74536",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "7d48a0f9-28cb-5afd-beb7-162c39e74536"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "singularity-cofactor-checkbox-4-bmatrix",
+      "sympy_version": "1.14.0",
+      "seed": 23,
+      "template": "dense_exact",
+      "parameters": {
+        "matrix": [
+          "2*sqrt(5)/3",
+          "-2/5",
+          "2*sqrt(5)",
+          "-sqrt(5)/3",
+          "4/5",
+          "2*sqrt(5)",
+          "-sqrt(5)/3",
+          "-1/5",
+          "-sqrt(5)/2"
+        ],
+        "name": "D",
+        "claims": [
+          null,
+          null,
+          "5"
+        ]
+      },
+      "parameter_fingerprint": "b0e77cea15001d961ee920b1d6d0041d566182c0631f435d8462401b5dee2675",
+      "content_fingerprint": "664213ced12bfefd9dad59f2240abe44c7cb94796636360de9a396ea5df7a4f1",
+      "bank_profile": "checkbox_I_II_III",
+      "bank_origin": "authored-reuse",
+      "profile_extension": true,
+      "authored_extension": true,
+      "source_analysis": {
+        "database": "math",
+        "basis": 2484,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+        "question_ids": []
+      },
+      "plot_rating": "none",
+      "plot_assets": {},
+      "mathematics": {
+        "products": [
+          [
+            "-2*sqrt(5)/5",
+            "-2*sqrt(5)/5"
+          ],
+          [
+            "5/6",
+            "-10/3"
+          ],
+          [
+            "sqrt(5)/15",
+            "-4*sqrt(5)/15"
+          ]
+        ],
+        "minors": [
+          "0",
+          "25/6",
+          "sqrt(5)/3"
+        ],
+        "terms": [
+          "0",
+          "5/3",
+          "10/3"
+        ],
+        "determinant": "5",
+        "rows": 6
+      },
+      "truth_indices": [
+        2,
+        3
+      ],
+      "domain": "finite real algebraic constants; numeric 3x3 matrix",
+      "sampling_origin": "authored variation of observed scope",
+      "sampling": {
+        "matrix_family": "authored_dense_scaled_columns",
+        "dependency": "independent",
+        "arithmetic_workload": {
+          "entry": "2*sqrt(5)",
+          "product": "10/3",
+          "term": "10/3",
+          "term_sum": "5",
+          "determinant": "5"
+        },
+        "claim_recipes": [
+          null,
+          null,
+          "correct_determinant"
+        ]
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186059848,
+      "id": "32df8909-a239-5167-b8ea-412f7cdaea93",
+      "title": "Identifying Singular Matrices"
+    },
+    "question": {
+      ":question/id": "47babca6-773f-52a9-800d-9c009f7fee15",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "Which of the following statements are true regarding the matrix $M$ given below?\n\nSelect all that apply.\n\n- **I.** $M$ is a singular matrix\n- **II.** $M$ is **not** a singular matrix\n- **III.** $det(M)=\\frac{8}{27}$\n\n$$\nM=\\begin{bmatrix}\\frac{\\sqrt{2}}{3} & \\frac{4}{3} & - \\frac{2 \\sqrt{2}}{3} \\\\ \\frac{\\sqrt{2}}{3} & - \\frac{1}{3} & \\frac{2 \\sqrt{2}}{3} \\\\ \\frac{\\sqrt{2}}{3} & - \\frac{2}{3} & \\frac{2 \\sqrt{2}}{3}\\end{bmatrix}\n$$",
+      ":question/worked-solution": "Remember that a square matrix is singular if its determinant is equal to $0.$\n\nUsing the formula, we take the alternating sum of the entries in the top row of the matrix, multiplied by their respective minors, as follows:\n\n$$\n\\begin{aligned}det(M) & =|\\begin{aligned}\\frac{\\sqrt{2}}{3} & \\frac{4}{3} & - \\frac{2 \\sqrt{2}}{3} \\\\ \\frac{\\sqrt{2}}{3} & - \\frac{1}{3} & \\frac{2 \\sqrt{2}}{3} \\\\ \\frac{\\sqrt{2}}{3} & - \\frac{2}{3} & \\frac{2 \\sqrt{2}}{3}\\end{aligned}| \\\\  & =\\frac{\\sqrt{2}}{3}|\\begin{aligned}- \\frac{1}{3} & \\frac{2 \\sqrt{2}}{3} \\\\ - \\frac{2}{3} & \\frac{2 \\sqrt{2}}{3}\\end{aligned}|+(- \\frac{4}{3})|\\begin{aligned}\\frac{\\sqrt{2}}{3} & \\frac{2 \\sqrt{2}}{3} \\\\ \\frac{\\sqrt{2}}{3} & \\frac{2 \\sqrt{2}}{3}\\end{aligned}|+(- \\frac{2 \\sqrt{2}}{3})|\\begin{aligned}\\frac{\\sqrt{2}}{3} & - \\frac{1}{3} \\\\ \\frac{\\sqrt{2}}{3} & - \\frac{2}{3}\\end{aligned}| \\\\  & =\\frac{\\sqrt{2}}{3}(- \\frac{2 \\sqrt{2}}{9}+\\frac{4 \\sqrt{2}}{9})+(- \\frac{4}{3})(\\frac{4}{9}- \\frac{4}{9})+(- \\frac{2 \\sqrt{2}}{3})(- \\frac{2 \\sqrt{2}}{9}+\\frac{\\sqrt{2}}{9}) \\\\  & =\\frac{\\sqrt{2}}{3}\\cdot \\frac{2 \\sqrt{2}}{9}+(- \\frac{4}{3})\\cdot 0+(- \\frac{2 \\sqrt{2}}{3})\\cdot (- \\frac{\\sqrt{2}}{9}) \\\\  & =\\frac{4}{27}+\\frac{4}{27} \\\\  & =\\frac{8}{27}\\end{aligned}\n$$\n\nSince $det(M)=\\frac{8}{27}\\ne 0$, the matrix is **not** singular. \n\nTherefore, only statements II and III are true.",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "f2f9424d-fdb4-5e73-b02a-d0d0b9aadd5c",
+          ":answer-field/key": "I",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "106f22f4-8881-5c62-8563-f3dc9850837e",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false"
+            },
+            {
+              ":answer/id": "1165f9d3-ff59-5f96-931b-da59908d5f34",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "106f22f4-8881-5c62-8563-f3dc9850837e"
+          ]
+        },
+        {
+          ":answer-field/id": "47fdb815-8765-5901-bcc1-f582de9a9375",
+          ":answer-field/key": "II",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "ca897099-4977-547e-adec-af833bbda186",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false"
+            },
+            {
+              ":answer/id": "02b9e83e-cf14-5850-b34f-88f7649f738e",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "02b9e83e-cf14-5850-b34f-88f7649f738e"
+          ]
+        },
+        {
+          ":answer-field/id": "e3a711a4-4baa-5e05-a274-66b61ba73c17",
+          ":answer-field/key": "III",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "8ac1ac6d-f071-5a4a-b099-c3ba13fb9903",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false"
+            },
+            {
+              ":answer/id": "634b3e42-ee4e-585e-89f1-1d35c7b2a9d2",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "634b3e42-ee4e-585e-89f1-1d35c7b2a9d2"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "singularity-cofactor-checkbox-4-bmatrix",
+      "sympy_version": "1.14.0",
+      "seed": 24,
+      "template": "dense_exact",
+      "parameters": {
+        "matrix": [
+          "sqrt(2)/3",
+          "4/3",
+          "-2*sqrt(2)/3",
+          "sqrt(2)/3",
+          "-1/3",
+          "2*sqrt(2)/3",
+          "sqrt(2)/3",
+          "-2/3",
+          "2*sqrt(2)/3"
+        ],
+        "name": "M",
+        "claims": [
+          null,
+          null,
+          "8/27"
+        ]
+      },
+      "parameter_fingerprint": "70d9babc97b5dc4099d3ea531c99b20047b49d3a82187a5635c0c044da80df75",
+      "content_fingerprint": "9047da221efa49f06dad4b454eb4339080a06ae97bd9898197bce207af64e64d",
+      "bank_profile": "checkbox_I_II_III",
+      "bank_origin": "authored-reuse",
+      "profile_extension": true,
+      "authored_extension": true,
+      "source_analysis": {
+        "database": "math",
+        "basis": 2484,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+        "question_ids": []
+      },
+      "plot_rating": "none",
+      "plot_assets": {},
+      "mathematics": {
+        "products": [
+          [
+            "-2*sqrt(2)/9",
+            "-4*sqrt(2)/9"
+          ],
+          [
+            "4/9",
+            "4/9"
+          ],
+          [
+            "-2*sqrt(2)/9",
+            "-sqrt(2)/9"
+          ]
+        ],
+        "minors": [
+          "2*sqrt(2)/9",
+          "0",
+          "-sqrt(2)/9"
+        ],
+        "terms": [
+          "4/27",
+          "0",
+          "4/27"
+        ],
+        "determinant": "8/27",
+        "rows": 6
+      },
+      "truth_indices": [
+        2,
+        3
+      ],
+      "domain": "finite real algebraic constants; numeric 3x3 matrix",
+      "sampling_origin": "authored variation of observed scope",
+      "sampling": {
+        "matrix_family": "authored_dense_scaled_columns",
+        "dependency": "independent",
+        "arithmetic_workload": {
+          "entry": "4/3",
+          "product": "4*sqrt(2)/9",
+          "term": "4/27",
+          "term_sum": "8/27",
+          "determinant": "8/27"
+        },
+        "claim_recipes": [
+          null,
+          null,
+          "correct_determinant"
+        ]
+      }
+    }
+  }
+]
