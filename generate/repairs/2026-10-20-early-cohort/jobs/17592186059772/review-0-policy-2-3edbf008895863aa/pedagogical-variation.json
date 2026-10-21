@@ -1,0 +1,444 @@
+{
+  "learner_operation": "Read operation type, target and source row indices and scalar; swap whole rows or update every entry (including the constants column); for two operations use the updated intermediate matrix, then distinguish the matching option.",
+  "fixed_features": [
+    {
+      "feature": "One operation for easy, one addition for moderate, two sequential operations for hard",
+      "justification": "Grounded in source q-130070, q-130071, q-10217 and q-130072; prevents extra reasoning stages at the requested difficulty."
+    },
+    {
+      "feature": "Five radio choices with one correct whole matrix",
+      "justification": "Every captured answer bank uses this response contract."
+    },
+    {
+      "feature": "Three-row easy samples; swap banks use three columns and scale banks four",
+      "justification": "These are observed source shapes from q-130070 and q-130071 and keep arithmetic workload stable. This is a bounded subset, not an essential mathematical restriction; omitted source q-10252 replay is separately a failure."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Swapped row pair",
+      "eligible_variation": "Any two distinct rows",
+      "observed": "Independent easy sample: all three pairs, counts 43/41/34; exact runner batch: two swaps both R1/R2."
+    },
+    {
+      "role": "Scaled target row and scalar",
+      "eligible_variation": "Any row; nonzero nonidentity small integer or reciprocal scalar",
+      "observed": "All three targets and all 19 declared factors in independent samples. Batch targets R1 and R2 with factors -5, -7, 1/2."
+    },
+    {
+      "role": "Addition donor, recipient, coefficient and sequential first operation",
+      "eligible_variation": "Distinct rows and either sign of small coefficient; dependent updated row roles",
+      "observed": "30 moderate and 50 hard samples plus source replay profiles; controlled coefficient and target changes tested."
+    },
+    {
+      "role": "Correct display position",
+      "eligible_variation": "Any of five positions",
+      "observed": "All five positions in each independent easy template; batch stored positions 1,4,2,3,3; actual UI may additionally reorder choices."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "Raw and post-filter easy roles/scalars/key positions",
+      "sample_refs": [
+        "easy-samples.json",
+        "stage-coverage.json",
+        "delivery-sample/accepted.json"
+      ],
+      "result": "240 of 240 survive the shared publisher filter; every sampled decision case survives."
+    },
+    {
+      "case": "Exact five-record runner batch",
+      "sample_refs": [
+        "runner-batch.json",
+        "delivery-batch/accepted.json",
+        "stage-coverage.json"
+      ],
+      "result": "All five survive. Two swap items share pair R1/R2; three scaling items vary factor and include two targets. This finite batch does not establish all-pair mastery."
+    },
+    {
+      "case": "Reject/resample degenerate arithmetic while retaining chosen roles",
+      "sample_refs": [
+        "rejection-results.json",
+        "samples.json"
+      ],
+      "result": "Forced all-zero first matrices are resampled and degenerate explicit banks rejected. Scale sample attempts: 119 first, two second, one third; roles selected outside retry loop."
+    },
+    {
+      "case": "Learner selection after captured inventory and hypothetical history exclusion",
+      "sample_refs": [
+        "selection-results.json",
+        "delivery-batch/accepted.json"
+      ],
+      "result": "Faithful read-only band-first model selects every batch item under positive easy-band eligibility, with and without captured inventory excluded. Policy/history are not supplied; no exact live next-draw claim."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Hold input entries fixed, change requested swap pair, scale coefficient, addition coefficient, or second sequence coefficient; separately change scaling target row",
+      "expected": "Prompt, key and final solution must follow the new operation; old answer must no longer pass when it is a different matrix",
+      "observed": "All six controlled relevant changes yield different independently computed results; every option of all before/after records was tested through the native grader. Actual UI renders all 17 counterfactual records.",
+      "status": "passed",
+      "justification": "Source tutorial assignment operator assigns new values to each element of the specified row; e-4694 and q-130071 identify target roles.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-input.json",
+        "grader-results.json",
+        "render-all/input.json",
+        "render-all/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Rename only the matrix in each of five templates",
+      "expected": "Prompt and explanation name change while mathematical result and accepted matrix are preserved",
+      "observed": "All five renamings preserve independently computed matrices; new UUIDs correctly refer to semantically same choices; native grader and actual UI verified.",
+      "status": "passed",
+      "justification": "A/M/N/T/U/V/X in source examples are names rather than arithmetic operands.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-results.json",
+        "render-all/rendering.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "first-position",
+      "subgroup": "sample:scale",
+      "scope": "within_template",
+      "strategy": "Choose first-position option, with display-order tie breaking",
+      "correct": 17,
+      "total": 122,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among five choices. No tested cue predicts every response; finite small-batch rates are descriptive.",
+      "sample_refs": [
+        "easy-samples.json"
+      ]
+    },
+    {
+      "cue": "largest-magnitude",
+      "subgroup": "sample:scale",
+      "scope": "within_template",
+      "strategy": "Choose largest-magnitude option, with display-order tie breaking",
+      "correct": 28,
+      "total": 122,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among five choices. No tested cue predicts every response; finite small-batch rates are descriptive.",
+      "sample_refs": [
+        "easy-samples.json"
+      ]
+    },
+    {
+      "cue": "smallest-magnitude",
+      "subgroup": "sample:scale",
+      "scope": "within_template",
+      "strategy": "Choose smallest-magnitude option, with display-order tie breaking",
+      "correct": 25,
+      "total": 122,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among five choices. No tested cue predicts every response; finite small-batch rates are descriptive.",
+      "sample_refs": [
+        "easy-samples.json"
+      ]
+    },
+    {
+      "cue": "first-position",
+      "subgroup": "sample:swap",
+      "scope": "within_template",
+      "strategy": "Choose first-position option, with display-order tie breaking",
+      "correct": 17,
+      "total": 118,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among five choices. No tested cue predicts every response; finite small-batch rates are descriptive.",
+      "sample_refs": [
+        "easy-samples.json"
+      ]
+    },
+    {
+      "cue": "largest-magnitude",
+      "subgroup": "sample:swap",
+      "scope": "within_template",
+      "strategy": "Choose largest-magnitude option, with display-order tie breaking",
+      "correct": 17,
+      "total": 118,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among five choices. No tested cue predicts every response; finite small-batch rates are descriptive.",
+      "sample_refs": [
+        "easy-samples.json"
+      ]
+    },
+    {
+      "cue": "smallest-magnitude",
+      "subgroup": "sample:swap",
+      "scope": "within_template",
+      "strategy": "Choose smallest-magnitude option, with display-order tie breaking",
+      "correct": 17,
+      "total": 118,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among five choices. No tested cue predicts every response; finite small-batch rates are descriptive.",
+      "sample_refs": [
+        "easy-samples.json"
+      ]
+    },
+    {
+      "cue": "first-position",
+      "subgroup": "batch:scale",
+      "scope": "within_template",
+      "strategy": "Choose first-position option, with display-order tie breaking",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among five choices. No tested cue predicts every response; finite small-batch rates are descriptive.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "largest-magnitude",
+      "subgroup": "batch:scale",
+      "scope": "within_template",
+      "strategy": "Choose largest-magnitude option, with display-order tie breaking",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among five choices. No tested cue predicts every response; finite small-batch rates are descriptive.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "smallest-magnitude",
+      "subgroup": "batch:scale",
+      "scope": "within_template",
+      "strategy": "Choose smallest-magnitude option, with display-order tie breaking",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among five choices. No tested cue predicts every response; finite small-batch rates are descriptive.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "first-position",
+      "subgroup": "batch:swap",
+      "scope": "within_template",
+      "strategy": "Choose first-position option, with display-order tie breaking",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among five choices. No tested cue predicts every response; finite small-batch rates are descriptive.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "largest-magnitude",
+      "subgroup": "batch:swap",
+      "scope": "within_template",
+      "strategy": "Choose largest-magnitude option, with display-order tie breaking",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among five choices. No tested cue predicts every response; finite small-batch rates are descriptive.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "smallest-magnitude",
+      "subgroup": "batch:swap",
+      "scope": "within_template",
+      "strategy": "Choose smallest-magnitude option, with display-order tie breaking",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among five choices. No tested cue predicts every response; finite small-batch rates are descriptive.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "first-position",
+      "subgroup": "sample:add",
+      "scope": "within_template",
+      "strategy": "Choose first-position option, with display-order tie breaking",
+      "correct": 11,
+      "total": 30,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among five choices. No tested cue predicts every response; finite small-batch rates are descriptive.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "largest-magnitude",
+      "subgroup": "sample:add",
+      "scope": "within_template",
+      "strategy": "Choose largest-magnitude option, with display-order tie breaking",
+      "correct": 4,
+      "total": 30,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among five choices. No tested cue predicts every response; finite small-batch rates are descriptive.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "smallest-magnitude",
+      "subgroup": "sample:add",
+      "scope": "within_template",
+      "strategy": "Choose smallest-magnitude option, with display-order tie breaking",
+      "correct": 5,
+      "total": 30,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among five choices. No tested cue predicts every response; finite small-batch rates are descriptive.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "first-position",
+      "subgroup": "sample:scale-add",
+      "scope": "within_template",
+      "strategy": "Choose first-position option, with display-order tie breaking",
+      "correct": 5,
+      "total": 30,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among five choices. No tested cue predicts every response; finite small-batch rates are descriptive.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "largest-magnitude",
+      "subgroup": "sample:scale-add",
+      "scope": "within_template",
+      "strategy": "Choose largest-magnitude option, with display-order tie breaking",
+      "correct": 8,
+      "total": 30,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among five choices. No tested cue predicts every response; finite small-batch rates are descriptive.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "smallest-magnitude",
+      "subgroup": "sample:scale-add",
+      "scope": "within_template",
+      "strategy": "Choose smallest-magnitude option, with display-order tie breaking",
+      "correct": 5,
+      "total": 30,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among five choices. No tested cue predicts every response; finite small-batch rates are descriptive.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "first-position",
+      "subgroup": "sample:swap-add",
+      "scope": "within_template",
+      "strategy": "Choose first-position option, with display-order tie breaking",
+      "correct": 1,
+      "total": 20,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among five choices. No tested cue predicts every response; finite small-batch rates are descriptive.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "largest-magnitude",
+      "subgroup": "sample:swap-add",
+      "scope": "within_template",
+      "strategy": "Choose largest-magnitude option, with display-order tie breaking",
+      "correct": 2,
+      "total": 20,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among five choices. No tested cue predicts every response; finite small-batch rates are descriptive.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "smallest-magnitude",
+      "subgroup": "sample:swap-add",
+      "scope": "within_template",
+      "strategy": "Choose smallest-magnitude option, with display-order tie breaking",
+      "correct": 2,
+      "total": 20,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among five choices. No tested cue predicts every response; finite small-batch rates are descriptive.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "same target row, different scalar bank",
+      "subgroup": "scale-factor-comparison",
+      "scope": "within_template",
+      "strategy": "Multiply one nonzero target entry by the requested scalar and select the unique matching entry",
+      "correct": 125,
+      "total": 125,
+      "baseline": 0.2,
+      "disposition": "intended_skill",
+      "conclusion": "Uniform five-choice baseline is 0.2. This successful simplification requires identifying the target row and performing the stated multiplication; proportional-row distractors make one discriminating entry sufficient. It expresses the target arithmetic rather than an incidental label cue.",
+      "sample_refs": [
+        "samples.json",
+        "runner-batch.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "generator role selection and entry resampling",
+      "requested easy difficulty",
+      "actual publisher normalization and validation",
+      "captured inventory and within-batch deduplication",
+      "band-first selection and history exclusions (conditional read-only model)",
+      "actual UI rendering and answer controls"
+    ],
+    "sample_refs": [
+      "rejection-results.json",
+      "stage-coverage.json",
+      "delivery-batch/delivery.json",
+      "delivery-sample/delivery.json",
+      "selection-results.json",
+      "render-all/rendering.json"
+    ],
+    "result": "No sampled easy decision case was removed by rejection/normalization/deduplication. All exact batch records survive. Within eligible easy band the engine selects uniformly; hypothetical histories change available cases as documented."
+  },
+  "limitations": [
+    "Finite tests cannot establish absence of every shortcut.",
+    "Stored generation metadata is absent from the captured non-source inventory; no generated identity provenance can be inferred from a question lacking a Math Academy ID.",
+    "Actual policy weights, learner histories and future inventory changes were not supplied. Selection conclusions are conditional on positive easy-band weight and usable/fresh candidates.",
+    "Source q-10252 lacks key/solution; computed key is supported mathematically. Its complete bank and q-72747 source bank do not replay; see strict failing regression evidence.",
+    "Exact batch has only two swaps, both the same row pair. Repeated numerical row swapping remains needed to select the result; this sample alone supports no conclusion about recognizing other row pairs."
+  ]
+}

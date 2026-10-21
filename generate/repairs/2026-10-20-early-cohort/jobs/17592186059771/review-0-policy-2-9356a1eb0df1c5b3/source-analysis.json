@@ -1,0 +1,62 @@
+{
+  "skill": "Apply explicitly specified elementary row operations to an ordinary 3-by-3 coefficient matrix and select the resulting matrix.",
+  "reasoning_steps": [
+    "Read the operation type and indexed row roles.",
+    "Swap exactly the specified rows, multiply every entry of the specified row by a nonzero scalar, or add the indicated multiple of the source row to the destination row.",
+    "For two operations use the intermediate matrix in the listed order. Preserve all unassigned rows.",
+    "Compare the full resulting matrix against a five-choice math radio bank."
+  ],
+  "response_contract": "All 11 bank questions use one math radio field keyed selection, five complete matrix options, one correct choice. Canonical example has a solution but no captured answer bank.",
+  "difficulty": "easy: single swaps or reciprocal scaling with integral result; moderate: one row addition; hard: two row additions, either distinct destinations or repeated destination. Requested easy should retain easy workload.",
+  "invariants": [
+    "Ordinary coefficient matrix, no augmentation bar.",
+    "Specified operations, not inverse identification, elimination planning, solving systems, or entry targeting.",
+    "Row replacement uses the old/current source row and updates all columns; unchanged rows remain equal.",
+    "Nonzero scaling and distinct source/destination row indices."
+  ],
+  "permitted_variations": [
+    "Vary signed integer matrix entries conservatively with comparable arithmetic.",
+    "Swap any pair of distinct rows; vary scaling target across all rows and nonzero reciprocal scalar with divisible entries.",
+    "Vary addition source and destination rows, scalar sign/magnitude, and whether entries cancel: a zero in the first column is incidental, not a required answer role.",
+    "Vary hard ordered row roles within the demonstrated two-addition workload.",
+    "Vary matrix name, complete plausible distractors, and correct-choice position; none should predict correctness."
+  ],
+  "fixed_features": [
+    {
+      "feature": "3-by-3 matrices and five math radio choices",
+      "justification": "Every captured bank uses this shape and response format; conservative fidelity preserves workload."
+    },
+    {
+      "feature": "Specified row operation rather than choosing a suitable operation",
+      "justification": "Lesson separates applying coefficient operations from subsequent augmented/identifying-operation KPs."
+    }
+  ],
+  "source_refs": [
+    "73199f2e-4821-5c88-b3d1-fc53d8677008",
+    "855eebc5-e47a-5262-b735-bfa0d3ece889",
+    "89449fa7-e2ad-5aa8-8f8e-c30702d39ac6",
+    "1b5f24a7-25be-5f91-9261-490e6919b435",
+    "89540d9f-9bfa-5f07-91be-e72783b1a7bc",
+    "873c8162-c75c-5ddc-aed6-146d6160fb0b",
+    "e33508b0-e7bc-5f7b-ba8e-f8058d2dcab4",
+    "d89fad28-1b46-55f3-b90e-6ed4c3f194da",
+    "d1a5db75-1b21-5cae-946a-8cdf4a8b6bd6",
+    "19304b0c-e5c7-5753-b769-38318084c464",
+    "ca077f28-d99d-5d8c-83aa-140ea10ab237",
+    "836f2f1b-5dd4-5dba-81cc-eb9ffe7db8d1",
+    "tutorial 7aa753a7-1450-53dd-8e61-71e07952cecb, Introduction: switching any two rows; multiplying each element by a non-zero number; adding a multiple of one row to another, j != i",
+    "lesson step 46eeafc2-7d22-58a7-bc12-127e3c86f554: Applying Row Operations To a Coefficients Matrix"
+  ],
+  "source_corrections": [
+    {
+      "source_id": "73199f2e-4821-5c88-b3d1-fc53d8677008",
+      "defect": "Intermediate worked matrix wrongly negates unchanged row 1 to [1,-2,-4]; final matrix and key correctly preserve [-1,2,4]. Correct intermediate row must be preserved."
+    }
+  ],
+  "evidence_gaps": [
+    "Canonical example answer bank absent; do not invent it as observed evidence. No source images required."
+  ],
+  "evidence_paths": [
+    "source-analysis.json"
+  ]
+}

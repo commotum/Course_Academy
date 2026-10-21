@@ -1,0 +1,1184 @@
+{
+  "learner_operation": "Read operation type, target and source row indices and scalar; swap whole rows or update every entry (including the constants column); for two operations use the updated intermediate matrix, then distinguish the matching option.",
+  "fixed_features": [
+    {
+      "feature": "Easy one swap/scaling, moderate one row addition, hard two sequential operations",
+      "justification": "Observed workload in q-130070, q-130071, q-10217, q-130072 and q-72786. Keeps operation interpretation and arithmetic within source scope."
+    },
+    {
+      "feature": "Single radio response among five whole augmented matrices",
+      "justification": "All 12 captured practice banks use this contract. Every entry including constants belongs to its row, per tutorial 3150."
+    },
+    {
+      "feature": "Three rows in easy practice; small signed integer inputs and compatible reciprocal factors",
+      "justification": "Conservative source-grounded workload from q-130070 and q-130071. Matrix dimensions and exact values are not essential to the mathematical rule; the retained source q-10252 supplies the three-column scaling case."
+    },
+    {
+      "feature": "Exact source-only bank parameters for two uncertain historical distractor banks",
+      "justification": "q-10252 contains an unusual distractor without a uniquely supported general construction. Guarded complete replay preserves evidence without replacing the existing freely varied scale/add practice families. The fixed source example is not sampled as a purported variable family."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Rows exchanged",
+      "eligible_variation": "All three unordered pairs in three-row matrices",
+      "observed": "Fresh independent easy sample: 23 swaps, pairs [0,2]:14, [1,2]:6, [0,1]:3. Controlled same-input pair change alters result. Exact batch: two different matrices both request R1/R2."
+    },
+    {
+      "role": "Scaling target and scalar",
+      "eligible_variation": "Any row; either scalar sign and bounded nonzero nonidentity integer/reciprocal factors",
+      "observed": "25 independent scales cover all three targets and 16 factors. Earlier bound-matched independent sample covered all 19 factors; current unchanged code retains them. Batch has R2/R1 targets and factors -5,-7,1/2."
+    },
+    {
+      "role": "Addition donor/target/coefficient and preceding sequence",
+      "eligible_variation": "Distinct donor/target; supported coefficients of either sign; updated intermediate row dependency",
+      "observed": "Eight moderate and eight hard regression samples plus every supplied source profile; controlled coefficient changes for addition and both sequential templates."
+    },
+    {
+      "role": "Correct choice location",
+      "eligible_variation": "Any of five bank positions; UI reorders using question-field and item identity",
+      "observed": "No fixed bank or UI position answers either delivered easy template. Delivered preview correct positions are [1,4,3,3,1]; source/control UI ordering checked directly from all HTML radio inputs."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "Retained defect checks and added source-only profiles",
+      "sample_refs": [
+        "retained-test-runs.json",
+        "retained-before.json",
+        "retained-current.json",
+        "repaired-records.json",
+        "source-profile-guards.json"
+      ],
+      "result": "Both strict checks fail on the preserved old package and pass current. Complete-bank equality, unique independently computed key and solution are checked; changed source-profile operands are rejected."
+    },
+    {
+      "case": "Independent easy sample before and after shared delivery filtering",
+      "sample_refs": [
+        "easy-samples.json",
+        "delivery-sample/accepted.json",
+        "delivery-sample/delivery.json",
+        "stage-coverage.json"
+      ],
+      "result": "48 of 48 survive. All sampled row-pair/target/factor decision cases survive normalization, requested easy filtering and captured-inventory/within-batch deduplication."
+    },
+    {
+      "case": "Exact runner batch separately",
+      "sample_refs": [
+        "runner-batch.json",
+        "delivery-batch/accepted.json",
+        "delivery-batch/delivery.json",
+        "stage-coverage.json",
+        "ui-order-results.json"
+      ],
+      "result": "Five of five survive. Two swaps share R1/R2; three scales use two targets and three factors. No tested fixed position or extreme-magnitude action solves either finite batch template. This batch alone does not cover all row roles."
+    },
+    {
+      "case": "Degenerate arithmetic rejection and retry",
+      "sample_refs": [
+        "rejection-results.json",
+        "source-profile-guards.json"
+      ],
+      "result": "Zero-row degenerate banks reject; forced initial zero matrices retry. Roles/scalars are selected outside entry resampling, so retries retain decision roles. One of 25 ordinary independent scales needed a second entry attempt."
+    },
+    {
+      "case": "Conditional learner selection from captured inventory and batch",
+      "sample_refs": [
+        "selection-results.json",
+        "delivery-batch/accepted.json"
+      ],
+      "result": "Read-only model of the actual band-first SHA256 selection picks every batch item under positive easy-band weighting, with no exclusions and with captured questions previously seen. Within the eligible easy band selection is uniform. The no-weight configured fallback uses first eligible ID; no live policy/history was supplied."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Keep matrix entries fixed and change swap pair, scalar, addition coefficient or second sequence coefficient; separately move scaling target",
+      "expected": "Prompt/interpretation, final matrix, correct answer and learner grading must follow the changed operation. The former matrix must be rejected when the result changes.",
+      "observed": "Six controlled changes across 17 total records change the exact computed result. Five coefficient/pair comparisons retain the same mathematical bank. Native grader tests every option before and after; full actual UI renderer includes all pairs.",
+      "status": "passed",
+      "justification": "Tutorial 3150 assigns every element of the named target row; source e-4694 and q-130071 show that row role/scalar are answer-bearing rather than incidental.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-input.json",
+        "grader-results.json",
+        "render-all/rendering.json",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Change only matrix letter in each of the five templates",
+      "expected": "Displayed name changes in prompt/solution while computed matrix and accepted mathematical choice remain the same.",
+      "observed": "All five renamings preserve independently computed results, complete mathematical banks and correctly graded responses despite regenerated UUIDs. Rendered prompts and solutions use the corresponding letter.",
+      "status": "passed",
+      "justification": "Source examples use A,M,N,T,U,V,X as matrix names without changing row-operation semantics.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-results.json",
+        "render-all/rendering.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "first-position",
+      "subgroup": "sample:scale",
+      "scope": "within_template",
+      "strategy": "Choose first-position option, with display-order tie breaking",
+      "correct": 0,
+      "total": 25,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among five choices. No tested cue predicts every response; finite small-batch rates are descriptive.",
+      "sample_refs": [
+        "easy-samples.json"
+      ]
+    },
+    {
+      "cue": "largest-magnitude",
+      "subgroup": "sample:scale",
+      "scope": "within_template",
+      "strategy": "Choose largest-magnitude option, with display-order tie breaking",
+      "correct": 4,
+      "total": 25,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among five choices. No tested cue predicts every response; finite small-batch rates are descriptive.",
+      "sample_refs": [
+        "easy-samples.json"
+      ]
+    },
+    {
+      "cue": "smallest-magnitude",
+      "subgroup": "sample:scale",
+      "scope": "within_template",
+      "strategy": "Choose smallest-magnitude option, with display-order tie breaking",
+      "correct": 5,
+      "total": 25,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among five choices. No tested cue predicts every response; finite small-batch rates are descriptive.",
+      "sample_refs": [
+        "easy-samples.json"
+      ]
+    },
+    {
+      "cue": "first-position",
+      "subgroup": "sample:swap",
+      "scope": "within_template",
+      "strategy": "Choose first-position option, with display-order tie breaking",
+      "correct": 6,
+      "total": 23,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among five choices. No tested cue predicts every response; finite small-batch rates are descriptive.",
+      "sample_refs": [
+        "easy-samples.json"
+      ]
+    },
+    {
+      "cue": "largest-magnitude",
+      "subgroup": "sample:swap",
+      "scope": "within_template",
+      "strategy": "Choose largest-magnitude option, with display-order tie breaking",
+      "correct": 6,
+      "total": 23,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among five choices. No tested cue predicts every response; finite small-batch rates are descriptive.",
+      "sample_refs": [
+        "easy-samples.json"
+      ]
+    },
+    {
+      "cue": "smallest-magnitude",
+      "subgroup": "sample:swap",
+      "scope": "within_template",
+      "strategy": "Choose smallest-magnitude option, with display-order tie breaking",
+      "correct": 6,
+      "total": 23,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among five choices. No tested cue predicts every response; finite small-batch rates are descriptive.",
+      "sample_refs": [
+        "easy-samples.json"
+      ]
+    },
+    {
+      "cue": "first-position",
+      "subgroup": "batch:scale",
+      "scope": "within_template",
+      "strategy": "Choose first-position option, with display-order tie breaking",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among five choices. No tested cue predicts every response; finite small-batch rates are descriptive.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "largest-magnitude",
+      "subgroup": "batch:scale",
+      "scope": "within_template",
+      "strategy": "Choose largest-magnitude option, with display-order tie breaking",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among five choices. No tested cue predicts every response; finite small-batch rates are descriptive.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "smallest-magnitude",
+      "subgroup": "batch:scale",
+      "scope": "within_template",
+      "strategy": "Choose smallest-magnitude option, with display-order tie breaking",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among five choices. No tested cue predicts every response; finite small-batch rates are descriptive.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "first-position",
+      "subgroup": "batch:swap",
+      "scope": "within_template",
+      "strategy": "Choose first-position option, with display-order tie breaking",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among five choices. No tested cue predicts every response; finite small-batch rates are descriptive.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "largest-magnitude",
+      "subgroup": "batch:swap",
+      "scope": "within_template",
+      "strategy": "Choose largest-magnitude option, with display-order tie breaking",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among five choices. No tested cue predicts every response; finite small-batch rates are descriptive.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "smallest-magnitude",
+      "subgroup": "batch:swap",
+      "scope": "within_template",
+      "strategy": "Choose smallest-magnitude option, with display-order tie breaking",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among five choices. No tested cue predicts every response; finite small-batch rates are descriptive.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "first-position",
+      "subgroup": "sample:add",
+      "scope": "within_template",
+      "strategy": "Choose first-position option, with display-order tie breaking",
+      "correct": 1,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among five choices. No tested cue predicts every response; finite small-batch rates are descriptive.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "largest-magnitude",
+      "subgroup": "sample:add",
+      "scope": "within_template",
+      "strategy": "Choose largest-magnitude option, with display-order tie breaking",
+      "correct": 1,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among five choices. No tested cue predicts every response; finite small-batch rates are descriptive.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "smallest-magnitude",
+      "subgroup": "sample:add",
+      "scope": "within_template",
+      "strategy": "Choose smallest-magnitude option, with display-order tie breaking",
+      "correct": 1,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among five choices. No tested cue predicts every response; finite small-batch rates are descriptive.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "first-position",
+      "subgroup": "sample:scale-add",
+      "scope": "within_template",
+      "strategy": "Choose first-position option, with display-order tie breaking",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among five choices. No tested cue predicts every response; finite small-batch rates are descriptive.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "largest-magnitude",
+      "subgroup": "sample:scale-add",
+      "scope": "within_template",
+      "strategy": "Choose largest-magnitude option, with display-order tie breaking",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among five choices. No tested cue predicts every response; finite small-batch rates are descriptive.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "smallest-magnitude",
+      "subgroup": "sample:scale-add",
+      "scope": "within_template",
+      "strategy": "Choose smallest-magnitude option, with display-order tie breaking",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among five choices. No tested cue predicts every response; finite small-batch rates are descriptive.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "first-position",
+      "subgroup": "sample:swap-add",
+      "scope": "within_template",
+      "strategy": "Choose first-position option, with display-order tie breaking",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among five choices. No tested cue predicts every response; finite small-batch rates are descriptive.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "largest-magnitude",
+      "subgroup": "sample:swap-add",
+      "scope": "within_template",
+      "strategy": "Choose largest-magnitude option, with display-order tie breaking",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among five choices. No tested cue predicts every response; finite small-batch rates are descriptive.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "smallest-magnitude",
+      "subgroup": "sample:swap-add",
+      "scope": "within_template",
+      "strategy": "Choose smallest-magnitude option, with display-order tie breaking",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among five choices. No tested cue predicts every response; finite small-batch rates are descriptive.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "position 1",
+      "subgroup": "sample:swap",
+      "scope": "within_template",
+      "strategy": "Always select displayed option 1",
+      "correct": 6,
+      "total": 23,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-option baseline is 0.2. No fixed position solves this subgroup; rates in two- or three-item batch subgroups are descriptive and cannot certify general balance.",
+      "sample_refs": [
+        "easy-samples.json"
+      ]
+    },
+    {
+      "cue": "position 2",
+      "subgroup": "sample:swap",
+      "scope": "within_template",
+      "strategy": "Always select displayed option 2",
+      "correct": 5,
+      "total": 23,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-option baseline is 0.2. No fixed position solves this subgroup; rates in two- or three-item batch subgroups are descriptive and cannot certify general balance.",
+      "sample_refs": [
+        "easy-samples.json"
+      ]
+    },
+    {
+      "cue": "position 3",
+      "subgroup": "sample:swap",
+      "scope": "within_template",
+      "strategy": "Always select displayed option 3",
+      "correct": 6,
+      "total": 23,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-option baseline is 0.2. No fixed position solves this subgroup; rates in two- or three-item batch subgroups are descriptive and cannot certify general balance.",
+      "sample_refs": [
+        "easy-samples.json"
+      ]
+    },
+    {
+      "cue": "position 4",
+      "subgroup": "sample:swap",
+      "scope": "within_template",
+      "strategy": "Always select displayed option 4",
+      "correct": 5,
+      "total": 23,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-option baseline is 0.2. No fixed position solves this subgroup; rates in two- or three-item batch subgroups are descriptive and cannot certify general balance.",
+      "sample_refs": [
+        "easy-samples.json"
+      ]
+    },
+    {
+      "cue": "position 5",
+      "subgroup": "sample:swap",
+      "scope": "within_template",
+      "strategy": "Always select displayed option 5",
+      "correct": 1,
+      "total": 23,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-option baseline is 0.2. No fixed position solves this subgroup; rates in two- or three-item batch subgroups are descriptive and cannot certify general balance.",
+      "sample_refs": [
+        "easy-samples.json"
+      ]
+    },
+    {
+      "cue": "position 1",
+      "subgroup": "sample:scale",
+      "scope": "within_template",
+      "strategy": "Always select displayed option 1",
+      "correct": 0,
+      "total": 25,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-option baseline is 0.2. No fixed position solves this subgroup; rates in two- or three-item batch subgroups are descriptive and cannot certify general balance.",
+      "sample_refs": [
+        "easy-samples.json"
+      ]
+    },
+    {
+      "cue": "position 2",
+      "subgroup": "sample:scale",
+      "scope": "within_template",
+      "strategy": "Always select displayed option 2",
+      "correct": 4,
+      "total": 25,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-option baseline is 0.2. No fixed position solves this subgroup; rates in two- or three-item batch subgroups are descriptive and cannot certify general balance.",
+      "sample_refs": [
+        "easy-samples.json"
+      ]
+    },
+    {
+      "cue": "position 3",
+      "subgroup": "sample:scale",
+      "scope": "within_template",
+      "strategy": "Always select displayed option 3",
+      "correct": 10,
+      "total": 25,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-option baseline is 0.2. No fixed position solves this subgroup; rates in two- or three-item batch subgroups are descriptive and cannot certify general balance.",
+      "sample_refs": [
+        "easy-samples.json"
+      ]
+    },
+    {
+      "cue": "position 4",
+      "subgroup": "sample:scale",
+      "scope": "within_template",
+      "strategy": "Always select displayed option 4",
+      "correct": 6,
+      "total": 25,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-option baseline is 0.2. No fixed position solves this subgroup; rates in two- or three-item batch subgroups are descriptive and cannot certify general balance.",
+      "sample_refs": [
+        "easy-samples.json"
+      ]
+    },
+    {
+      "cue": "position 5",
+      "subgroup": "sample:scale",
+      "scope": "within_template",
+      "strategy": "Always select displayed option 5",
+      "correct": 5,
+      "total": 25,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-option baseline is 0.2. No fixed position solves this subgroup; rates in two- or three-item batch subgroups are descriptive and cannot certify general balance.",
+      "sample_refs": [
+        "easy-samples.json"
+      ]
+    },
+    {
+      "cue": "position 1",
+      "subgroup": "batch:swap",
+      "scope": "within_template",
+      "strategy": "Always select displayed option 1",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-option baseline is 0.2. No fixed position solves this subgroup; rates in two- or three-item batch subgroups are descriptive and cannot certify general balance.",
+      "sample_refs": [
+        "runner-batch.json"
+      ]
+    },
+    {
+      "cue": "position 2",
+      "subgroup": "batch:swap",
+      "scope": "within_template",
+      "strategy": "Always select displayed option 2",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-option baseline is 0.2. No fixed position solves this subgroup; rates in two- or three-item batch subgroups are descriptive and cannot certify general balance.",
+      "sample_refs": [
+        "runner-batch.json"
+      ]
+    },
+    {
+      "cue": "position 3",
+      "subgroup": "batch:swap",
+      "scope": "within_template",
+      "strategy": "Always select displayed option 3",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-option baseline is 0.2. No fixed position solves this subgroup; rates in two- or three-item batch subgroups are descriptive and cannot certify general balance.",
+      "sample_refs": [
+        "runner-batch.json"
+      ]
+    },
+    {
+      "cue": "position 4",
+      "subgroup": "batch:swap",
+      "scope": "within_template",
+      "strategy": "Always select displayed option 4",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-option baseline is 0.2. No fixed position solves this subgroup; rates in two- or three-item batch subgroups are descriptive and cannot certify general balance.",
+      "sample_refs": [
+        "runner-batch.json"
+      ]
+    },
+    {
+      "cue": "position 5",
+      "subgroup": "batch:swap",
+      "scope": "within_template",
+      "strategy": "Always select displayed option 5",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-option baseline is 0.2. No fixed position solves this subgroup; rates in two- or three-item batch subgroups are descriptive and cannot certify general balance.",
+      "sample_refs": [
+        "runner-batch.json"
+      ]
+    },
+    {
+      "cue": "position 1",
+      "subgroup": "batch:scale",
+      "scope": "within_template",
+      "strategy": "Always select displayed option 1",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-option baseline is 0.2. No fixed position solves this subgroup; rates in two- or three-item batch subgroups are descriptive and cannot certify general balance.",
+      "sample_refs": [
+        "runner-batch.json"
+      ]
+    },
+    {
+      "cue": "position 2",
+      "subgroup": "batch:scale",
+      "scope": "within_template",
+      "strategy": "Always select displayed option 2",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-option baseline is 0.2. No fixed position solves this subgroup; rates in two- or three-item batch subgroups are descriptive and cannot certify general balance.",
+      "sample_refs": [
+        "runner-batch.json"
+      ]
+    },
+    {
+      "cue": "position 3",
+      "subgroup": "batch:scale",
+      "scope": "within_template",
+      "strategy": "Always select displayed option 3",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-option baseline is 0.2. No fixed position solves this subgroup; rates in two- or three-item batch subgroups are descriptive and cannot certify general balance.",
+      "sample_refs": [
+        "runner-batch.json"
+      ]
+    },
+    {
+      "cue": "position 4",
+      "subgroup": "batch:scale",
+      "scope": "within_template",
+      "strategy": "Always select displayed option 4",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-option baseline is 0.2. No fixed position solves this subgroup; rates in two- or three-item batch subgroups are descriptive and cannot certify general balance.",
+      "sample_refs": [
+        "runner-batch.json"
+      ]
+    },
+    {
+      "cue": "position 5",
+      "subgroup": "batch:scale",
+      "scope": "within_template",
+      "strategy": "Always select displayed option 5",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-option baseline is 0.2. No fixed position solves this subgroup; rates in two- or three-item batch subgroups are descriptive and cannot certify general balance.",
+      "sample_refs": [
+        "runner-batch.json"
+      ]
+    },
+    {
+      "cue": "position 1",
+      "subgroup": "delivered-sample:swap",
+      "scope": "within_template",
+      "strategy": "Always select displayed option 1",
+      "correct": 6,
+      "total": 23,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-option baseline is 0.2. No fixed position solves this subgroup; rates in two- or three-item batch subgroups are descriptive and cannot certify general balance.",
+      "sample_refs": [
+        "delivery-sample/accepted.json"
+      ]
+    },
+    {
+      "cue": "position 2",
+      "subgroup": "delivered-sample:swap",
+      "scope": "within_template",
+      "strategy": "Always select displayed option 2",
+      "correct": 5,
+      "total": 23,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-option baseline is 0.2. No fixed position solves this subgroup; rates in two- or three-item batch subgroups are descriptive and cannot certify general balance.",
+      "sample_refs": [
+        "delivery-sample/accepted.json"
+      ]
+    },
+    {
+      "cue": "position 3",
+      "subgroup": "delivered-sample:swap",
+      "scope": "within_template",
+      "strategy": "Always select displayed option 3",
+      "correct": 6,
+      "total": 23,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-option baseline is 0.2. No fixed position solves this subgroup; rates in two- or three-item batch subgroups are descriptive and cannot certify general balance.",
+      "sample_refs": [
+        "delivery-sample/accepted.json"
+      ]
+    },
+    {
+      "cue": "position 4",
+      "subgroup": "delivered-sample:swap",
+      "scope": "within_template",
+      "strategy": "Always select displayed option 4",
+      "correct": 5,
+      "total": 23,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-option baseline is 0.2. No fixed position solves this subgroup; rates in two- or three-item batch subgroups are descriptive and cannot certify general balance.",
+      "sample_refs": [
+        "delivery-sample/accepted.json"
+      ]
+    },
+    {
+      "cue": "position 5",
+      "subgroup": "delivered-sample:swap",
+      "scope": "within_template",
+      "strategy": "Always select displayed option 5",
+      "correct": 1,
+      "total": 23,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-option baseline is 0.2. No fixed position solves this subgroup; rates in two- or three-item batch subgroups are descriptive and cannot certify general balance.",
+      "sample_refs": [
+        "delivery-sample/accepted.json"
+      ]
+    },
+    {
+      "cue": "position 1",
+      "subgroup": "delivered-sample:scale",
+      "scope": "within_template",
+      "strategy": "Always select displayed option 1",
+      "correct": 0,
+      "total": 25,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-option baseline is 0.2. No fixed position solves this subgroup; rates in two- or three-item batch subgroups are descriptive and cannot certify general balance.",
+      "sample_refs": [
+        "delivery-sample/accepted.json"
+      ]
+    },
+    {
+      "cue": "position 2",
+      "subgroup": "delivered-sample:scale",
+      "scope": "within_template",
+      "strategy": "Always select displayed option 2",
+      "correct": 4,
+      "total": 25,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-option baseline is 0.2. No fixed position solves this subgroup; rates in two- or three-item batch subgroups are descriptive and cannot certify general balance.",
+      "sample_refs": [
+        "delivery-sample/accepted.json"
+      ]
+    },
+    {
+      "cue": "position 3",
+      "subgroup": "delivered-sample:scale",
+      "scope": "within_template",
+      "strategy": "Always select displayed option 3",
+      "correct": 10,
+      "total": 25,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-option baseline is 0.2. No fixed position solves this subgroup; rates in two- or three-item batch subgroups are descriptive and cannot certify general balance.",
+      "sample_refs": [
+        "delivery-sample/accepted.json"
+      ]
+    },
+    {
+      "cue": "position 4",
+      "subgroup": "delivered-sample:scale",
+      "scope": "within_template",
+      "strategy": "Always select displayed option 4",
+      "correct": 6,
+      "total": 25,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-option baseline is 0.2. No fixed position solves this subgroup; rates in two- or three-item batch subgroups are descriptive and cannot certify general balance.",
+      "sample_refs": [
+        "delivery-sample/accepted.json"
+      ]
+    },
+    {
+      "cue": "position 5",
+      "subgroup": "delivered-sample:scale",
+      "scope": "within_template",
+      "strategy": "Always select displayed option 5",
+      "correct": 5,
+      "total": 25,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-option baseline is 0.2. No fixed position solves this subgroup; rates in two- or three-item batch subgroups are descriptive and cannot certify general balance.",
+      "sample_refs": [
+        "delivery-sample/accepted.json"
+      ]
+    },
+    {
+      "cue": "Proportional-row comparison bank",
+      "subgroup": "sample-and-batch:scale",
+      "scope": "within_template",
+      "strategy": "Apply the specified scalar to one nonzero entry in the specified row and select the unique matching value",
+      "correct": 28,
+      "total": 28,
+      "baseline": 0.2,
+      "disposition": "intended_skill",
+      "conclusion": "Five-choice guessing baseline 0.2. This works on all tested scaling comparison banks but requires reading target and scalar and doing the intended multiplication. The source skill does not require redundant arithmetic after a discriminating entry is found.",
+      "sample_refs": [
+        "samples.json",
+        "runner-batch.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 1",
+      "subgroup": "render-all:swap",
+      "scope": "within_template",
+      "strategy": "Always select UI option 1 after learning.js choiceOrder",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline 0.2. Fixture content IDs and actual question-field IDs determine the visible ordering. No fixed UI position answers all tested questions in this template. Production task/item IDs are not yet allocated, so no exact future layout is claimed.",
+      "sample_refs": [
+        "render-records.json",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 2",
+      "subgroup": "render-all:swap",
+      "scope": "within_template",
+      "strategy": "Always select UI option 2 after learning.js choiceOrder",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline 0.2. Fixture content IDs and actual question-field IDs determine the visible ordering. No fixed UI position answers all tested questions in this template. Production task/item IDs are not yet allocated, so no exact future layout is claimed.",
+      "sample_refs": [
+        "render-records.json",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 3",
+      "subgroup": "render-all:swap",
+      "scope": "within_template",
+      "strategy": "Always select UI option 3 after learning.js choiceOrder",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline 0.2. Fixture content IDs and actual question-field IDs determine the visible ordering. No fixed UI position answers all tested questions in this template. Production task/item IDs are not yet allocated, so no exact future layout is claimed.",
+      "sample_refs": [
+        "render-records.json",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 4",
+      "subgroup": "render-all:swap",
+      "scope": "within_template",
+      "strategy": "Always select UI option 4 after learning.js choiceOrder",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline 0.2. Fixture content IDs and actual question-field IDs determine the visible ordering. No fixed UI position answers all tested questions in this template. Production task/item IDs are not yet allocated, so no exact future layout is claimed.",
+      "sample_refs": [
+        "render-records.json",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 5",
+      "subgroup": "render-all:swap",
+      "scope": "within_template",
+      "strategy": "Always select UI option 5 after learning.js choiceOrder",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline 0.2. Fixture content IDs and actual question-field IDs determine the visible ordering. No fixed UI position answers all tested questions in this template. Production task/item IDs are not yet allocated, so no exact future layout is claimed.",
+      "sample_refs": [
+        "render-records.json",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 1",
+      "subgroup": "render-all:scale",
+      "scope": "within_template",
+      "strategy": "Always select UI option 1 after learning.js choiceOrder",
+      "correct": 1,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline 0.2. Fixture content IDs and actual question-field IDs determine the visible ordering. No fixed UI position answers all tested questions in this template. Production task/item IDs are not yet allocated, so no exact future layout is claimed.",
+      "sample_refs": [
+        "render-records.json",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 2",
+      "subgroup": "render-all:scale",
+      "scope": "within_template",
+      "strategy": "Always select UI option 2 after learning.js choiceOrder",
+      "correct": 3,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline 0.2. Fixture content IDs and actual question-field IDs determine the visible ordering. No fixed UI position answers all tested questions in this template. Production task/item IDs are not yet allocated, so no exact future layout is claimed.",
+      "sample_refs": [
+        "render-records.json",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 3",
+      "subgroup": "render-all:scale",
+      "scope": "within_template",
+      "strategy": "Always select UI option 3 after learning.js choiceOrder",
+      "correct": 1,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline 0.2. Fixture content IDs and actual question-field IDs determine the visible ordering. No fixed UI position answers all tested questions in this template. Production task/item IDs are not yet allocated, so no exact future layout is claimed.",
+      "sample_refs": [
+        "render-records.json",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 4",
+      "subgroup": "render-all:scale",
+      "scope": "within_template",
+      "strategy": "Always select UI option 4 after learning.js choiceOrder",
+      "correct": 2,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline 0.2. Fixture content IDs and actual question-field IDs determine the visible ordering. No fixed UI position answers all tested questions in this template. Production task/item IDs are not yet allocated, so no exact future layout is claimed.",
+      "sample_refs": [
+        "render-records.json",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 5",
+      "subgroup": "render-all:scale",
+      "scope": "within_template",
+      "strategy": "Always select UI option 5 after learning.js choiceOrder",
+      "correct": 2,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline 0.2. Fixture content IDs and actual question-field IDs determine the visible ordering. No fixed UI position answers all tested questions in this template. Production task/item IDs are not yet allocated, so no exact future layout is claimed.",
+      "sample_refs": [
+        "render-records.json",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 1",
+      "subgroup": "render-delivered:swap",
+      "scope": "within_template",
+      "strategy": "Always select UI option 1 after learning.js choiceOrder",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline 0.2. Fixture content IDs and actual question-field IDs determine the visible ordering. No fixed UI position answers all tested questions in this template. Production task/item IDs are not yet allocated, so no exact future layout is claimed.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 2",
+      "subgroup": "render-delivered:swap",
+      "scope": "within_template",
+      "strategy": "Always select UI option 2 after learning.js choiceOrder",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline 0.2. Fixture content IDs and actual question-field IDs determine the visible ordering. No fixed UI position answers all tested questions in this template. Production task/item IDs are not yet allocated, so no exact future layout is claimed.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 3",
+      "subgroup": "render-delivered:swap",
+      "scope": "within_template",
+      "strategy": "Always select UI option 3 after learning.js choiceOrder",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline 0.2. Fixture content IDs and actual question-field IDs determine the visible ordering. No fixed UI position answers all tested questions in this template. Production task/item IDs are not yet allocated, so no exact future layout is claimed.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 4",
+      "subgroup": "render-delivered:swap",
+      "scope": "within_template",
+      "strategy": "Always select UI option 4 after learning.js choiceOrder",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline 0.2. Fixture content IDs and actual question-field IDs determine the visible ordering. No fixed UI position answers all tested questions in this template. Production task/item IDs are not yet allocated, so no exact future layout is claimed.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 5",
+      "subgroup": "render-delivered:swap",
+      "scope": "within_template",
+      "strategy": "Always select UI option 5 after learning.js choiceOrder",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline 0.2. Fixture content IDs and actual question-field IDs determine the visible ordering. No fixed UI position answers all tested questions in this template. Production task/item IDs are not yet allocated, so no exact future layout is claimed.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 1",
+      "subgroup": "render-delivered:scale",
+      "scope": "within_template",
+      "strategy": "Always select UI option 1 after learning.js choiceOrder",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline 0.2. Fixture content IDs and actual question-field IDs determine the visible ordering. No fixed UI position answers all tested questions in this template. Production task/item IDs are not yet allocated, so no exact future layout is claimed.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 2",
+      "subgroup": "render-delivered:scale",
+      "scope": "within_template",
+      "strategy": "Always select UI option 2 after learning.js choiceOrder",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline 0.2. Fixture content IDs and actual question-field IDs determine the visible ordering. No fixed UI position answers all tested questions in this template. Production task/item IDs are not yet allocated, so no exact future layout is claimed.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 3",
+      "subgroup": "render-delivered:scale",
+      "scope": "within_template",
+      "strategy": "Always select UI option 3 after learning.js choiceOrder",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline 0.2. Fixture content IDs and actual question-field IDs determine the visible ordering. No fixed UI position answers all tested questions in this template. Production task/item IDs are not yet allocated, so no exact future layout is claimed.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 4",
+      "subgroup": "render-delivered:scale",
+      "scope": "within_template",
+      "strategy": "Always select UI option 4 after learning.js choiceOrder",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline 0.2. Fixture content IDs and actual question-field IDs determine the visible ordering. No fixed UI position answers all tested questions in this template. Production task/item IDs are not yet allocated, so no exact future layout is claimed.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 5",
+      "subgroup": "render-delivered:scale",
+      "scope": "within_template",
+      "strategy": "Always select UI option 5 after learning.js choiceOrder",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline 0.2. Fixture content IDs and actual question-field IDs determine the visible ordering. No fixed UI position answers all tested questions in this template. Production task/item IDs are not yet allocated, so no exact future layout is claimed.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "ui-order-results.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "generator role selection and entry rejection/resampling",
+      "requested difficulty filtering",
+      "actual publisher normalization/validation and stable identity assignment",
+      "captured inventory and within-batch deduplication",
+      "history exclusion and band-first learner selection (conditional read-only model)",
+      "actual UI choice ordering after normalized delivery"
+    ],
+    "sample_refs": [
+      "rejection-results.json",
+      "delivery-sample/delivery.json",
+      "delivery-batch/delivery.json",
+      "stage-coverage.json",
+      "selection-results.json",
+      "ui-order-results.json",
+      "render-delivered/rendering.json"
+    ],
+    "result": "No current sampled decision case is removed by delivery. Exact batch remains five records; raw and accepted coverage match. Actual DOM ordering of the five normalized batch records also has no fixed-position answer shortcut. Learner draws are conditional on positive easy weighting and item freshness."
+  },
+  "limitations": [
+    "Finite, targeted audit cannot prove absence of every shortcut. Unchanged sampling/engine evidence is reused with provenance rather than exhaustively re-audited.",
+    "Actual learner history, policy weights and future allocated item/entity IDs were not supplied. Selection and UI fixture observations do not predict an exact live next draw/layout.",
+    "Inventory basis 5361 is captured; later publication can change deduplication. No publication/preparation file currently exists, so shared read-only delivery filtering was used.",
+    "The exact batch has only two swaps and both request R1/R2. This is a limited finite practice sample; it does not establish all-pair coverage. Other row pairs occur in the unchanged general family and fresh controls.",
+    "Captured non-source inventory records lack generation provenance. No affected generated record was demonstrated for the two old omissions; no blanket absence of inventory defects is claimed.",
+    "q-10252 lacks captured key/solution/difficulty. Its key is inferred by exact row scaling; generated solution is authored and easy difficulty inferred. Canonical e-4694 has no captured bank."
+  ]
+}

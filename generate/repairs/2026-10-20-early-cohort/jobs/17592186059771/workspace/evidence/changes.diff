@@ -1,0 +1,425 @@
+--- original/easy.py
++++ current/easy.py
+@@ -6,18 +6,20 @@
+ import math
+ import random
+ import uuid
++from pathlib import Path
+ from math_format import checked_math_content, matrix_tex, normalize_prose, normalize_tex
+ 
+-VERSION = 'easy-row-operations-1.2.0'
++VERSION = 'easy-row-operations-1.3.0'
+ KP_UUID = 'eb1afe82-86ba-5a15-9037-74717692ecb2'
+ FACTORS = (Fraction(2),Fraction(3),Fraction(-2),Fraction(-3),Fraction(1,2),Fraction(1,3),Fraction(-1,2),Fraction(-1,3))
+ CASES = {
++ 'q-10251': {'matrix':[[-1,0,1],[1,0,0],[-1,1,0]],'rows':[0,2]},
+  'q-10250': {'matrix':[[0,8,1],[3,3,6],[4,-1,3]],'rows':[0,1]},
+  'q-10244': {'matrix':[[7,4,-1],[1,5,-3],[0,5,-2]],'rows':[0,1]},
+  'q-130006': {'matrix':[[2,2,7],[7,-1,3],[6,9,-3]],'target':2,'anchor':0,'factor':[1,3]},
+ }
+ PROFILES = ('q-10250', 'swap-complete', 'scale-arithmetic')
+-REPLAY_ONLY = ('q-10244', 'q-130006')
++REPLAY_ONLY = ('q-10244', 'q-130006', 'q-10251')
+ 
+ def is_scaling(profile):return profile in ('q-130006', 'scale-arithmetic')
+ 
+@@ -36,6 +38,10 @@
+ 
+ def bank(p,profile):
+     m=p['matrix']
++    if profile=='q-10251':
++        observed=json.loads(Path(__file__).with_name('source_banks.json').read_text())[profile]['bank']
++        good=swap(m,*p['rows'])
++        return [good]+[b for b in observed if b!=good]
+     if not is_scaling(profile):
+         x,y=p['rows'];z=3-x-y
+         def perm(order):
+@@ -92,8 +98,9 @@
+         transition='Multiplying the '+ordinals[t]+' row by $'+f+'$, we obtain the following:'
+         expanded=copy.deepcopy(m);expanded[t]=[f+r'\cdot ('+str(v)+')' for v in m[t]]
+         stages=matrix(expanded)+r' \\ & \sim '+matrix(good)
+-    prompt='Consider the matrix $A,$ given by\n\n$$\nA='+matrix(m)+'.\n$$\n\nWhat matrix results from carrying out the row operation $'+op+'$ on $A?$'
+-    solution=text+'\n\n'+transition+'\n\n$$\n'+r'\begin{aligned}A & ='+matrix(m)+r'\quad '+op+r' \\ & \sim '+stages+r'\end{aligned}'+'\n$$'
++    name='B' if profile=='q-10251' else 'A'
++    prompt='Consider the matrix $'+name+',$ given by\n\n$$\n'+name+'='+matrix(m)+'.\n$$\n\nWhat matrix results from carrying out the row operation $'+op+'$ on $'+name+'?$'
++    solution=text+'\n\n'+transition+'\n\n$$\n'+r'\begin{aligned}'+name+' & ='+matrix(m)+r'\quad '+op+r' \\ & \sim '+stages+r'\end{aligned}'+'\n$$'
+     return prompt,solution
+ 
+ @checked_math_content
+@@ -130,5 +137,6 @@
+     # Decouple display order from role sampling and rejection draw counts.
+     random.Random(hashlib.sha256((qid+':order:'+str(seed)).encode()).digest()).shuffle(choices)
+     recipes=(['requested-factor']+['alternative-factor']*4 if profile=='scale-arithmetic' else (['correct','scale-other-row-1','scale-other-row-2','scale-then-swap-anchor','reciprocal'] if profile=='q-130006' else (['correct','cycle-yzx','unchanged','cycle-zxy','swap-xz'] if profile=='q-10250' else (['correct','alternative-swap','alternative-swap','cycle-123','cycle-132'] if profile=='swap-complete' else ['correct','copy-x-to-y','swap-yz','swap-columns-xy','cycle-zxy']))))
++    if profile=='q-10251':recipes=['correct']+['exact-source-distractor; interpretation unresolved']*4
+     source='q-130006' if is_scaling(profile) else (['q-10250','q-10244'] if profile=='swap-complete' else profile)
+-    return {'knowledge_point':{'db_id':17592186059771,'id':KP_UUID,'title':'Applying Row Operations To a Coefficients Matrix'},'question':{':question/id':qid,':question/problem':prompt,':question/worked-solution':solution,':question/difficulty':':question.difficulty/easy',':question/answer-fields':[{':answer-field/id':fid,':answer-field/key':'selection',':answer-field/type':':answer-field.type/radio',':answer-field/choices':choices,':answer-field/correct':[':answer/id',correct]}]},'generation':{'version':VERSION,'template':'single-row-scale' if is_scaling(profile) else 'single-row-swap','profile':profile,'seed':seed,'parameters':p,'mathematical_fingerprint':fp,'source_question':source,'source_basis':4567,'sampling_attempts':attempts,'source_difficulty':'easy','replay_only':profile in REPLAY_ONLY,'choice_recipes':recipes}}
++    return {'knowledge_point':{'db_id':17592186059771,'id':KP_UUID,'title':'Applying Row Operations To a Coefficients Matrix'},'question':{':question/id':qid,':question/problem':prompt,':question/worked-solution':solution,':question/difficulty':':question.difficulty/easy',':question/answer-fields':[{':answer-field/id':fid,':answer-field/key':'selection',':answer-field/type':':answer-field.type/radio',':answer-field/choices':choices,':answer-field/correct':[':answer/id',correct]}]},'generation':{'version':VERSION,'template':'single-row-scale' if is_scaling(profile) else 'single-row-swap','profile':profile,'seed':seed,'parameters':p,'mathematical_fingerprint':fp,'source_question':source,'source_basis':5358 if profile=='q-10251' else 4567,'sampling_attempts':attempts,'source_difficulty':'easy','replay_only':profile in REPLAY_ONLY,'choice_recipes':recipes}}
+--- original/generator.py
++++ current/generator.py
+@@ -16,10 +16,11 @@
+ KP_UUID = 'eb1afe82-86ba-5a15-9037-74717692ecb2'
+ TITLE = 'Applying Row Operations To a Coefficients Matrix'
+ GENERATOR_UUID = str(uuid.uuid5(uuid.UUID(KP_UUID), 'question-generator'))
+-VERSION = 'row-addition-2.1.0'
++VERSION = 'row-addition-2.2.0'
+ MULTIPLIERS = (-5,-4,-3,-2,2,3,4,5)
+ CANONICAL = {'matrix': [[1,2,3],[4,2,-1],[7,12,13]], 'target':1, 'source':0, 'k':-4, 'name':'A'}
+ CASES = {
++    'q-10243': {'matrix':[[0,3,4],[0,1,2],[0,5,6]],'target':2,'source':1,'k':-5,'name':'G'},
+     'q-10248': {'matrix': [[-1,2,4],[8,3,1],[3,-1,9]], 'target':2, 'source':0, 'k':3, 'name':'M'},
+     'q-20239': {'matrix': [[1,2,1],[3,-1,1],[2,3,2]], 'target':1, 'source':0, 'k':-3, 'name':'X'},
+ }
+@@ -37,6 +38,9 @@
+     m,t,s,k = p['matrix'],p['target'],p['source'],p['k']
+     other=3-t-s
+     good=answer_matrix(m,t,s,k)
++    if profile=='q-10243':
++        observed=json.loads(Path(__file__).with_name('source_banks.json').read_text())[profile]['bank']
++        return [good]+[b for b in observed if b!=good]
+     if profile=='q-10248':
+         negswap=copy.deepcopy(m); negswap[s]=[-x for x in m[t]]; negswap[t]=m[s][:]
+         swap=copy.deepcopy(m); swap[s],swap[t]=swap[t],swap[s]
+@@ -90,7 +94,7 @@
+                 if any(v!=good[j] for v in column):raise ValueError('Shared simplification required')
+             elif len(set(column))!=5 or any(v==0 or v==m[t][j] for v in column):
+                 raise ValueError('Bank leaks zero, unchanged-cell, or consensus cue')
+-    if p['name'] not in ('M','X'):raise ValueError('Observed matrix notation required')
++    if p['name'] not in ('M','X','G'):raise ValueError('Observed matrix notation required')
+     if len({matrix(x) for x in bank(p,profile)})!=5:raise ValueError('Colliding choices')
+ 
+ def operation(p):
+@@ -168,14 +172,14 @@
+     qid=str(uuid.uuid5(uuid.UUID(GENERATOR_UUID),prompt+'|'+profile+'|'+VERSION+'|'+json.dumps(sorted(values),separators=(',',':'))));fid=str(uuid.uuid5(uuid.UUID(qid),'selection'))
+     choices=[{':answer/id':str(uuid.uuid5(uuid.UUID(fid),value)),':answer/type':':answer.type/math',':answer/value':value} for value in values]
+     correct=choices[0][':answer/id'];rng.shuffle(choices)
+-    return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':{':question/id':qid,':question/problem':prompt,':question/worked-solution':solution,':question/difficulty':':question.difficulty/moderate',':question/answer-fields':[{':answer-field/id':fid,':answer-field/key':'selection',':answer-field/type':':answer-field.type/radio',':answer-field/choices':choices,':answer-field/correct':[':answer/id',correct]}]},'generation':{'version':VERSION,'template':'single-row-addition','profile':profile,'seed':seed,'parameters':p,'mathematical_fingerprint':fp,'source_question':profile if profile in CASES else ['q-10248','q-20239','e-4693'],'source_basis':4144,'sampling_attempts':attempts,'domain':'3x3 signed integer matrix; distinct source/target rows; |k|=2..5; cancellation optional','choice_recipes':['correct','unchanged','swap','negate-target-and-swap','first-cell-only'] if profile=='q-10248' else (['correct','swap-solved-rows','altered-source-to-unused-row','move-altered-source-and-cycle','column-addition'] if profile=='q-20239' else ['requested-multiplier']+['alternative-multiplier']*4)}}
++    return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':{':question/id':qid,':question/problem':prompt,':question/worked-solution':solution,':question/difficulty':':question.difficulty/moderate',':question/answer-fields':[{':answer-field/id':fid,':answer-field/key':'selection',':answer-field/type':':answer-field.type/radio',':answer-field/choices':choices,':answer-field/correct':[':answer/id',correct]}]},'generation':{'version':VERSION,'template':'single-row-addition','profile':profile,'seed':seed,'parameters':p,'mathematical_fingerprint':fp,'source_question':profile if profile in CASES else ['q-10248','q-20239','e-4693'],'source_basis':5358 if profile=='q-10243' else 4144,'sampling_attempts':attempts,'domain':'3x3 signed integer matrix; distinct source/target rows; |k|=2..5; cancellation optional','replay_only':profile in CASES,'choice_recipes':(['correct']+['exact-source-distractor; interpretation unresolved']*4) if profile=='q-10243' else ['correct','unchanged','swap','negate-target-and-swap','first-cell-only'] if profile=='q-10248' else (['correct','swap-solved-rows','altered-source-to-unused-row','move-altered-source-and-cycle','column-addition'] if profile=='q-20239' else ['requested-multiplier']+['alternative-multiplier']*4)}}
+ 
+ def markdown(rec):
+     q=rec['question'];f=q[':question/answer-fields'][0]
+     return q[':question/problem']+'\n\n'+'\n\n'.join('$'+a[':answer/value']+'$'+(' [correct]' if a[':answer/id']==f[':answer-field/correct'][1] else '') for a in f[':answer-field/choices'])+'\n\n'+q[':question/worked-solution']
+ 
+ if __name__=='__main__':
+-    parser=argparse.ArgumentParser();parser.add_argument('--difficulty',default='easy');parser.add_argument('--count',type=int,default=5);parser.add_argument('--seed',type=int,default=0);parser.add_argument('--format',choices=['json','markdown'],default='json');parser.add_argument('--profile',choices=[*sorted(CASES),'arithmetic','q-10250','q-10244','q-130006','scale-arithmetic','swap-complete']);args=parser.parse_args()
++    parser=argparse.ArgumentParser();parser.add_argument('--difficulty',default='easy');parser.add_argument('--count',type=int,default=5);parser.add_argument('--seed',type=int,default=0);parser.add_argument('--format',choices=['json','markdown'],default='json');parser.add_argument('--profile',choices=[*sorted(CASES),'arithmetic','q-10250','q-10244','q-10251','q-130006','scale-arithmetic','swap-complete']);args=parser.parse_args()
+     if args.count<1:parser.error('count must be positive')
+     records=[];seen=set()
+     for offset in range(args.count*100):
+--- original/hard.py
++++ current/hard.py
+@@ -7,7 +7,7 @@
+ from pathlib import Path
+ from math_format import checked_math_content, matrix_tex, normalize_prose, normalize_tex
+ 
+-VERSION = 'hard-row-additions-1.0.0'
++VERSION = 'hard-row-additions-1.1.0'
+ KP_UUID = 'eb1afe82-86ba-5a15-9037-74717692ecb2'
+ COEFFICIENTS = tuple(range(-5, 0)) + tuple(range(1, 6))
+ PAIRS = tuple((a,b) for a in COEFFICIENTS for b in COEFFICIENTS)
+@@ -18,9 +18,40 @@
+         result[target] = [x + factor*y for x,y in zip(result[target], result[donor])]
+     return result
+ 
++def canonical_parameters(parameters):
++    """Translate the legacy shared-target API once, then own explicit operations."""
++    p = copy.deepcopy(parameters)
++    if 'operations' not in p:
++        a,b = p['coefficients']
++        p['operations'] = [[p['target'], p['donors'][0], a],
++                           [p['target'], p['donors'][1], b]]
++    for key in ('target','donors','coefficients'):
++        p.pop(key, None)
++    return p
++
++
+ def operations(p, pair=None):
+-    a,b = pair or p['coefficients']
+-    return [(p['target'], p['donors'][0], a), (p['target'], p['donors'][1], b)]
++    ops = p.get('operations')
++    if ops is None:
++        ops = canonical_parameters(p)['operations']
++    if pair is None:
++        return [tuple(op) for op in ops]
++    return [(t, donor, factor) for (t, donor, _), factor in zip(ops, pair)]
++
++
++def relationship(ops):
++    if len(ops)!=2 or any(len(op)!=3 for op in ops):
++        raise ValueError('Two explicit row additions are required')
++    if any(type(v)!=int for op in ops for v in op):
++        raise ValueError('Integer row roles and coefficients required')
++    if any(t not in range(3) or d not in range(3) or t==d or k not in COEFFICIENTS for t,d,k in ops):
++        raise ValueError('Distinct eligible row roles and bounded nonzero coefficients required')
++    t1,d1,_ = ops[0]; t2,d2,_ = ops[1]
++    if t1==t2 and d1!=d2:
++        return 'shared-target'
++    if d1==d2 and t1!=t2:
++        return 'shared-donor'
++    raise ValueError('Expected shared target with two donors or shared donor with two targets')
+ 
+ def op_tex(op):
+     t,s,k = op
+@@ -53,25 +84,28 @@
+     m = p['matrix']
+     if len(m)!=3 or any(len(row)!=3 for row in m) or any(type(v)!=int or not -9<=v<=9 for row in m for v in row):
+         raise ValueError('A 3x3 integer matrix with entries -9..9 is required')
+-    if sorted([p['target'],*p['donors']]) != [0,1,2]:
+-        raise ValueError('One target and two distinct donors are required')
++    ops = operations(p)
++    relationship(ops)
+     pairs = p['candidate_pairs']
+     if len(pairs)!=5 or len({tuple(pair) for pair in pairs})!=5 or any(tuple(pair) not in PAIRS for pair in pairs):
+         raise ValueError('Five distinct nonzero bounded coefficient pairs are required')
+-    if list(p['coefficients']) not in pairs or p['name'] not in ('B','C'):
++    if [op[2] for op in ops] not in pairs or p['name'] not in ('B','C'):
+         raise ValueError('Requested pair must belong to the complete bank')
+-    if any(not any(m[d]) for d in p['donors']):
++    if any(not any(m[d]) for d in {op[1] for op in ops}):
+         raise ValueError('Each donor must contribute nonzero evidence')
+     if len({matrix_tex(apply(m,operations(p,pair))) for pair in pairs})!=5:
+         raise ValueError('Candidate results collide')
+ 
+ def build(p, seed, attempts):
++    p = canonical_parameters(p)
+     validate(p)
++    case = relationship(operations(p))
+     pairs = sorted(p['candidate_pairs'])
+     bank = [apply(p['matrix'],operations(p,pair)) for pair in pairs]
+     return record(p['matrix'], operations(p), p['name'], bank, seed,
+-                  {'profile':'two-donor-arithmetic','parameters':copy.deepcopy(p),
+-                   'sampling_attempts':attempts,'source_question':['q-130010'],
++                  {'profile':'two-donor-arithmetic' if case=='shared-target' else 'two-target-arithmetic',
++                   'relationship':case,'parameters':copy.deepcopy(p),
++                   'sampling_attempts':attempts,'source_question':['q-130010'] if case=='shared-target' else ['q-130064','q-130065','q-10245'],
+                    'candidate_pairs_in_bank_order':pairs})
+ 
+ def record(matrix, ops, name, bank, seed, metadata):
+@@ -91,7 +125,8 @@
+         t = ops[0][0]
+         semantic = [matrix[t],sorted([[matrix[s],k] for _,s,k in ops])]
+     else:
+-        semantic = [matrix,ops]
++        donor = ops[0][1]
++        semantic = ['shared-donor',matrix[donor],sorted([[matrix[t],k] for t,_,k in ops])]
+     fingerprint = hashlib.sha256(json.dumps(semantic,separators=(',',':')).encode()).hexdigest()
+     return {'knowledge_point':{'db_id':17592186059771,'id':KP_UUID,'title':'Applying Row Operations To a Coefficients Matrix'},
+             'question':{':question/id':qid,':question/problem':prompt,':question/worked-solution':solution,
+@@ -107,11 +142,13 @@
+     if parameters is not None:
+         return build(copy.deepcopy(parameters),seed,1)
+     rng = random.Random(seed)
+-    target,d1,d2 = rng.sample(range(3),3)
++    case = rng.choice(('shared-target','shared-donor'))
++    anchor,r1,r2 = rng.sample(range(3),3)
+     pairs = sorted([list(pair) for pair in rng.sample(PAIRS,5)])
+     requested = rng.choice(pairs)
+     # Key choice does not enter either the bank or its acceptance criterion.
+-    p = {'target':target,'donors':[d1,d2],'coefficients':requested,
++    roles = [(anchor,r1),(anchor,r2)] if case=='shared-target' else [(r1,anchor),(r2,anchor)]
++    p = {'operations':[[t,d,k] for (t,d),k in zip(roles,requested)],
+          'candidate_pairs':pairs,'name':rng.choice(('B','C'))}
+     for attempts in range(1,501):
+         p['matrix'] = [[rng.randint(-9,9) for _ in range(3)] for _ in range(3)]
+--- original/source_banks.json
++++ current/source_banks.json
+@@ -0,0 +1,184 @@
++{
++  "q-10251": {
++    "source_question_id": "19304b0c-e5c7-5753-b769-38318084c464",
++    "bank": [
++      [
++        [
++          1,
++          0,
++          0
++        ],
++        [
++          0,
++          0,
++          1
++        ],
++        [
++          0,
++          1,
++          0
++        ]
++      ],
++      [
++        [
++          -1,
++          1,
++          0
++        ],
++        [
++          1,
++          0,
++          0
++        ],
++        [
++          -1,
++          0,
++          1
++        ]
++      ],
++      [
++        [
++          1,
++          0,
++          0
++        ],
++        [
++          0,
++          0,
++          1
++        ],
++        [
++          1,
++          1,
++          0
++        ]
++      ],
++      [
++        [
++          1,
++          0,
++          -1
++        ],
++        [
++          0,
++          0,
++          1
++        ],
++        [
++          0,
++          1,
++          -1
++        ]
++      ],
++      [
++        [
++          -1,
++          0,
++          1
++        ],
++        [
++          -1,
++          1,
++          0
++        ],
++        [
++          1,
++          0,
++          0
++        ]
++      ]
++    ],
++    "source_basis": 5358
++  },
++  "q-10243": {
++    "source_question_id": "ca077f28-d99d-5d8c-83aa-140ea10ab237",
++    "bank": [
++      [
++        [
++          1,
++          3,
++          4
++        ],
++        [
++          0,
++          1,
++          2
++        ],
++        [
++          0,
++          0,
++          1
++        ]
++      ],
++      [
++        [
++          0,
++          3,
++          4
++        ],
++        [
++          0,
++          1,
++          2
++        ],
++        [
++          0,
++          1,
++          5
++        ]
++      ],
++      [
++        [
++          0,
++          3,
++          4
++        ],
++        [
++          0,
++          1,
++          2
++        ],
++        [
++          0,
++          0,
++          -4
++        ]
++      ],
++      [
++        [
++          0,
++          3,
++          4
++        ],
++        [
++          0,
++          1,
++          2
++        ],
++        [
++          0,
++          0,
++          4
++        ]
++      ],
++      [
++        [
++          1,
++          3,
++          3
++        ],
++        [
++          0,
++          1,
++          2
++        ],
++        [
++          0,
++          0,
++          4
++        ]
++      ]
++    ],
++    "source_basis": 5358
++  }
++}
+--- original/package.json
++++ current/package.json
+@@ -6,11 +6,12 @@
+     "generator.py",
+     "hard.py",
+     "hard_sources.json",
+-    "math_format.py"
++    "math_format.py",
++    "source_banks.json"
+   ],
+   "dependencies": {
+     "packages": {},
+     "python": "3.13.5"
+   },
+   "default_difficulty": "easy"
+-}+}

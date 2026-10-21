@@ -1,0 +1,4658 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186059770,
+      "id": "14d047c8-f032-5ff3-aced-65d40bfeeaad",
+      "title": "Finding the Augmented Matrix of a Linear System With Variables Other Than x, y, z"
+    },
+    "question": {
+      ":question/id": "64281bb7-d83b-51cf-8f1b-bd9db8f6b579",
+      ":question/problem": "What is the coefficient matrix for the following system of linear equations?\n\n$$\n\\left\\{\\begin{aligned}10{x}_{3} &=-9 \\\\ 11{x}_{1}+15{x}_{2} &=-8{x}_{3}\\end{aligned}\\right.\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/worked-solution": "First, we organize the system so that the variables are ordered ${x}_{1},{x}_{2},{x}_{3}$ on the left-hand side, the constants are on the right-hand side, and every variable has a coefficient:\n\n$$\n\\left\\{\\begin{aligned}0{x}_{1}+0{x}_{2}+10{x}_{3} &=-9 \\\\ 11{x}_{1}+15{x}_{2}+8{x}_{3} &=0\\end{aligned}\\right.\n$$\n\nThe coefficient matrix consists of the coefficients of the variables:\n\n$$\n\\begin{bmatrix}0 & 0 & 10 \\\\ 11 & 15 & 8\\end{bmatrix}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "a63a998b-8bf1-57f3-b938-c4c93deeaee6",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "8e85c2cd-180e-5e28-baf4-39f989ee19c7",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}0 & 0 & 10 \\\\ 15 & 11 & 8\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "b011b03e-214e-5735-8ffd-9420decd5016",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}0 & 0 & 10 & -9 \\\\ 15 & 11 & 8 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "4182cc4b-589e-58b6-b683-c4c1ac9cd949",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}0 & 0 & 10 \\\\ 11 & 15 & 8\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "272ea982-17fc-58cf-9e2f-24f945aebc07",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}0 & 0 & 10 & -9 \\\\ 11 & 15 & -8 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "80d24cf3-6663-5a03-8c4e-63d447ce3f1b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}0 & 0 & 10 \\\\ 11 & 15 & -8\\end{bmatrix}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "4182cc4b-589e-58b6-b683-c4c1ac9cd949"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "other-variables-matrices-1.1",
+      "seed": 0,
+      "template": "coefficient",
+      "bank_profile": "q-1070",
+      "role_assignment": {
+        "columns": [
+          1,
+          0,
+          2
+        ],
+        "rows": [
+          1,
+          0
+        ]
+      },
+      "target_recipe": "keep_rhs_sign",
+      "parameters": {
+        "a": 15,
+        "b": 11,
+        "c": 8,
+        "d": 10,
+        "e": -9
+      },
+      "system_parameters": {
+        "a": 15,
+        "b": 11,
+        "c": -8,
+        "d": 10,
+        "e": -9
+      },
+      "source": {
+        "database": "math",
+        "basis": 5346,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_references": [
+        "q-1070"
+      ],
+      "eligible_for_learning": true,
+      "evidence_only": false,
+      "mathematical_fingerprint": "e0ffd54f8a28098479e281cc18dd04dcfed54b7184cd776353af32db02c2368b",
+      "content_identity": "cbbafbf9c88d21031436e409a8fdb8fb9a299d9765f2590323a99591d5d7cd9b",
+      "recipes": [
+        {
+          "recipe": "keep_rhs_sign",
+          "is_correct": true,
+          "matrix": [
+            [
+              0,
+              0,
+              10
+            ],
+            [
+              11,
+              15,
+              8
+            ]
+          ],
+          "augmented_notation": false
+        },
+        {
+          "recipe": "correct",
+          "is_correct": false,
+          "matrix": [
+            [
+              0,
+              0,
+              10
+            ],
+            [
+              11,
+              15,
+              -8
+            ]
+          ],
+          "augmented_notation": false
+        },
+        {
+          "recipe": "append_constants",
+          "is_correct": false,
+          "matrix": [
+            [
+              0,
+              0,
+              10,
+              -9
+            ],
+            [
+              11,
+              15,
+              -8,
+              0
+            ]
+          ],
+          "augmented_notation": false
+        },
+        {
+          "recipe": "appearance_order_and_keep_rhs_sign_with_constants",
+          "is_correct": false,
+          "matrix": [
+            [
+              0,
+              0,
+              10,
+              -9
+            ],
+            [
+              15,
+              11,
+              8,
+              0
+            ]
+          ],
+          "augmented_notation": false
+        },
+        {
+          "recipe": "appearance_order_and_keep_rhs_sign",
+          "is_correct": false,
+          "matrix": [
+            [
+              0,
+              0,
+              10
+            ],
+            [
+              15,
+              11,
+              8
+            ]
+          ],
+          "augmented_notation": false
+        }
+      ],
+      "plot_rating": "none",
+      "domains": "signed nonzero integer magnitude 1..15; eligible source-template answer roles, permuted variable roles and equation rows",
+      "runtime": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      }
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186059770,
+      "id": "14d047c8-f032-5ff3-aced-65d40bfeeaad",
+      "title": "Finding the Augmented Matrix of a Linear System With Variables Other Than x, y, z"
+    },
+    "question": {
+      ":question/id": "3c819071-ec82-5ca9-8fac-2b12fc526b28",
+      ":question/problem": "What is the coefficient matrix for the following system of linear equations?\n\n$$\n\\left\\{\\begin{aligned}-{x}_{1}+10{x}_{3} &=11{x}_{2} \\\\ 13{x}_{2} &=-2\\end{aligned}\\right.\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/worked-solution": "First, we organize the system so that the variables are ordered ${x}_{1},{x}_{2},{x}_{3}$ on the left-hand side, the constants are on the right-hand side, and every variable has a coefficient:\n\n$$\n\\left\\{\\begin{aligned}-1{x}_{1}-11{x}_{2}+10{x}_{3} &=0 \\\\ 0{x}_{1}+13{x}_{2}+0{x}_{3} &=-2\\end{aligned}\\right.\n$$\n\nThe coefficient matrix consists of the coefficients of the variables:\n\n$$\n\\begin{bmatrix}-1 & -11 & 10 \\\\ 0 & 13 & 0\\end{bmatrix}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "c5200955-751c-5fa6-a895-2fe1c5356a9a",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "b5f02043-3012-5411-8423-a6aa061f1875",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}10 & 11 & -1 \\\\ 0 & 13 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "697c009c-6a31-502c-9c6a-85c3cdf9206a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}10 & 11 & -1 & 0 \\\\ 0 & 13 & 0 & -2\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "f8c739cf-4d2e-5210-9346-5fb967df34cb",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-1 & -11 & 10 & 0 \\\\ 0 & 13 & 0 & -2\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "38ab430c-fec0-5b91-9fd4-fe3799d32968",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-1 & -11 & 10 \\\\ 0 & 13 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "72f0da8f-c0c1-5057-ad9b-ca5d3eee6297",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-1 & 11 & 10 \\\\ 0 & 13 & 0\\end{bmatrix}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "38ab430c-fec0-5b91-9fd4-fe3799d32968"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "other-variables-matrices-1.1",
+      "seed": 1,
+      "template": "coefficient",
+      "bank_profile": "q-1070",
+      "role_assignment": {
+        "columns": [
+          2,
+          0,
+          1
+        ],
+        "rows": [
+          0,
+          1
+        ]
+      },
+      "target_recipe": "correct",
+      "parameters": {
+        "a": 10,
+        "b": -1,
+        "c": 11,
+        "d": 13,
+        "e": -2
+      },
+      "system_parameters": {
+        "a": 10,
+        "b": -1,
+        "c": 11,
+        "d": 13,
+        "e": -2
+      },
+      "source": {
+        "database": "math",
+        "basis": 5346,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_references": [
+        "q-1070"
+      ],
+      "eligible_for_learning": true,
+      "evidence_only": false,
+      "mathematical_fingerprint": "be125c69432f3a193a63301903b6ae77d4e5c66fbbd02650c091be840fc0fce5",
+      "content_identity": "b963c96361507b930e2aa5c90cdef148e46f7c44b7b9ac399dcea194f83d0fcb",
+      "recipes": [
+        {
+          "recipe": "correct",
+          "is_correct": true,
+          "matrix": [
+            [
+              -1,
+              -11,
+              10
+            ],
+            [
+              0,
+              13,
+              0
+            ]
+          ],
+          "augmented_notation": false
+        },
+        {
+          "recipe": "append_constants",
+          "is_correct": false,
+          "matrix": [
+            [
+              -1,
+              -11,
+              10,
+              0
+            ],
+            [
+              0,
+              13,
+              0,
+              -2
+            ]
+          ],
+          "augmented_notation": false
+        },
+        {
+          "recipe": "appearance_order_and_keep_rhs_sign_with_constants",
+          "is_correct": false,
+          "matrix": [
+            [
+              10,
+              11,
+              -1,
+              0
+            ],
+            [
+              0,
+              13,
+              0,
+              -2
+            ]
+          ],
+          "augmented_notation": false
+        },
+        {
+          "recipe": "keep_rhs_sign",
+          "is_correct": false,
+          "matrix": [
+            [
+              -1,
+              11,
+              10
+            ],
+            [
+              0,
+              13,
+              0
+            ]
+          ],
+          "augmented_notation": false
+        },
+        {
+          "recipe": "appearance_order_and_keep_rhs_sign",
+          "is_correct": false,
+          "matrix": [
+            [
+              10,
+              11,
+              -1
+            ],
+            [
+              0,
+              13,
+              0
+            ]
+          ],
+          "augmented_notation": false
+        }
+      ],
+      "plot_rating": "none",
+      "domains": "signed nonzero integer magnitude 1..15; eligible source-template answer roles, permuted variable roles and equation rows",
+      "runtime": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      }
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186059770,
+      "id": "14d047c8-f032-5ff3-aced-65d40bfeeaad",
+      "title": "Finding the Augmented Matrix of a Linear System With Variables Other Than x, y, z"
+    },
+    "question": {
+      ":question/id": "c6d62ef5-8858-5eac-a378-34df6143a147",
+      ":question/problem": "What is the coefficient matrix for the following system of linear equations?\n\n$$\n\\left\\{\\begin{aligned}5{x}_{3}-7{x}_{1} &=-10{x}_{2} \\\\ -10{x}_{2} &=-7\\end{aligned}\\right.\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/worked-solution": "First, we organize the system so that the variables are ordered ${x}_{1},{x}_{2},{x}_{3}$ on the left-hand side, the constants are on the right-hand side, and every variable has a coefficient:\n\n$$\n\\left\\{\\begin{aligned}-7{x}_{1}+10{x}_{2}+5{x}_{3} &=0 \\\\ 0{x}_{1}-10{x}_{2}+0{x}_{3} &=-7\\end{aligned}\\right.\n$$\n\nThe coefficient matrix consists of the coefficients of the variables:\n\n$$\n\\begin{bmatrix}-7 & 10 & 5 \\\\ 0 & -10 & 0\\end{bmatrix}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "64cc81f4-b63d-52ce-9160-72e11c381c75",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "be064b15-15f5-55df-b872-187918539100",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-7 & 10 & 5 \\\\ 0 & -10 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "8ca3aee6-5078-5460-a331-5474a162c66a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-7 & 10 & 5 & 0 \\\\ 0 & -10 & 0 & -7\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "e828b3af-1250-538d-bfb2-b3a73bb6778b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}5 & -10 & -7 \\\\ 0 & -10 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "ce3b98bf-3831-55ea-a73a-5ce7aec1dbd6",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}5 & -10 & -7 & 0 \\\\ 0 & -10 & 0 & -7\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "ab7adef7-7a18-5b8c-80b1-9a8c38e8532f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-7 & -10 & 5 \\\\ 0 & -10 & 0\\end{bmatrix}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "be064b15-15f5-55df-b872-187918539100"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "other-variables-matrices-1.1",
+      "seed": 2,
+      "template": "coefficient",
+      "bank_profile": "q-1070",
+      "role_assignment": {
+        "columns": [
+          0,
+          2,
+          1
+        ],
+        "rows": [
+          0,
+          1
+        ]
+      },
+      "target_recipe": "correct",
+      "parameters": {
+        "a": -7,
+        "b": 5,
+        "c": -10,
+        "d": -10,
+        "e": -7
+      },
+      "system_parameters": {
+        "a": -7,
+        "b": 5,
+        "c": -10,
+        "d": -10,
+        "e": -7
+      },
+      "source": {
+        "database": "math",
+        "basis": 5346,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_references": [
+        "q-1070"
+      ],
+      "eligible_for_learning": true,
+      "evidence_only": false,
+      "mathematical_fingerprint": "09997c6faa85c248795b68790ced11a744162e5a940dd309e0df3b82c9a18813",
+      "content_identity": "e2bdb17c366c06d4c376de13bd1008bac3144b45756088a64845262a54aa0d85",
+      "recipes": [
+        {
+          "recipe": "correct",
+          "is_correct": true,
+          "matrix": [
+            [
+              -7,
+              10,
+              5
+            ],
+            [
+              0,
+              -10,
+              0
+            ]
+          ],
+          "augmented_notation": false
+        },
+        {
+          "recipe": "append_constants",
+          "is_correct": false,
+          "matrix": [
+            [
+              -7,
+              10,
+              5,
+              0
+            ],
+            [
+              0,
+              -10,
+              0,
+              -7
+            ]
+          ],
+          "augmented_notation": false
+        },
+        {
+          "recipe": "appearance_order_and_keep_rhs_sign_with_constants",
+          "is_correct": false,
+          "matrix": [
+            [
+              5,
+              -10,
+              -7,
+              0
+            ],
+            [
+              0,
+              -10,
+              0,
+              -7
+            ]
+          ],
+          "augmented_notation": false
+        },
+        {
+          "recipe": "keep_rhs_sign",
+          "is_correct": false,
+          "matrix": [
+            [
+              -7,
+              -10,
+              5
+            ],
+            [
+              0,
+              -10,
+              0
+            ]
+          ],
+          "augmented_notation": false
+        },
+        {
+          "recipe": "appearance_order_and_keep_rhs_sign",
+          "is_correct": false,
+          "matrix": [
+            [
+              5,
+              -10,
+              -7
+            ],
+            [
+              0,
+              -10,
+              0
+            ]
+          ],
+          "augmented_notation": false
+        }
+      ],
+      "plot_rating": "none",
+      "domains": "signed nonzero integer magnitude 1..15; eligible source-template answer roles, permuted variable roles and equation rows",
+      "runtime": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      }
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186059770,
+      "id": "14d047c8-f032-5ff3-aced-65d40bfeeaad",
+      "title": "Finding the Augmented Matrix of a Linear System With Variables Other Than x, y, z"
+    },
+    "question": {
+      ":question/id": "20e6009c-eef0-5a60-bb99-df8fb9829aaf",
+      ":question/problem": "What is the coefficient matrix for the following system of linear equations?\n\n$$\n\\left\\{\\begin{aligned}-4{x}_{2} &=9 \\\\ -15{x}_{1}+5{x}_{3} &=5{x}_{2}\\end{aligned}\\right.\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/worked-solution": "First, we organize the system so that the variables are ordered ${x}_{1},{x}_{2},{x}_{3}$ on the left-hand side, the constants are on the right-hand side, and every variable has a coefficient:\n\n$$\n\\left\\{\\begin{aligned}0{x}_{1}-4{x}_{2}+0{x}_{3} &=9 \\\\ -15{x}_{1}-5{x}_{2}+5{x}_{3} &=0\\end{aligned}\\right.\n$$\n\nThe coefficient matrix consists of the coefficients of the variables:\n\n$$\n\\begin{bmatrix}0 & -4 & 0 \\\\ -15 & -5 & 5\\end{bmatrix}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "3fe7fc46-2d44-52bf-b5be-40b93168691a",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "13f585a9-21e6-56d3-9d61-5cc94193f598",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}0 & -4 & 0 & 9 \\\\ 5 & 5 & -15 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "444f996f-f052-5bf4-bb2f-d388a261ca3c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}0 & -4 & 0 \\\\ -15 & -5 & 5\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "2021c576-9f06-5e67-a703-8d10cb0631f5",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}0 & -4 & 0 & 9 \\\\ -15 & -5 & 5 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "40cdfed6-9c91-595b-86c7-15531d4149e2",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}0 & -4 & 0 \\\\ -15 & 5 & 5\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "581b7221-2ee1-5d58-b40b-499f38e8464f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}0 & -4 & 0 \\\\ 5 & 5 & -15\\end{bmatrix}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "444f996f-f052-5bf4-bb2f-d388a261ca3c"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "other-variables-matrices-1.1",
+      "seed": 3,
+      "template": "coefficient",
+      "bank_profile": "q-1070",
+      "role_assignment": {
+        "columns": [
+          2,
+          0,
+          1
+        ],
+        "rows": [
+          1,
+          0
+        ]
+      },
+      "target_recipe": "correct",
+      "parameters": {
+        "a": 5,
+        "b": -15,
+        "c": 5,
+        "d": -4,
+        "e": 9
+      },
+      "system_parameters": {
+        "a": 5,
+        "b": -15,
+        "c": 5,
+        "d": -4,
+        "e": 9
+      },
+      "source": {
+        "database": "math",
+        "basis": 5346,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_references": [
+        "q-1070"
+      ],
+      "eligible_for_learning": true,
+      "evidence_only": false,
+      "mathematical_fingerprint": "f053d4a9a330b73827b64b40bcf1c61d4569c56ad56d0a67994ff446b14e75ec",
+      "content_identity": "1731b593183b2a406bfcede56e957b90bdb75e13b8546decfb07195d518dbc68",
+      "recipes": [
+        {
+          "recipe": "correct",
+          "is_correct": true,
+          "matrix": [
+            [
+              0,
+              -4,
+              0
+            ],
+            [
+              -15,
+              -5,
+              5
+            ]
+          ],
+          "augmented_notation": false
+        },
+        {
+          "recipe": "append_constants",
+          "is_correct": false,
+          "matrix": [
+            [
+              0,
+              -4,
+              0,
+              9
+            ],
+            [
+              -15,
+              -5,
+              5,
+              0
+            ]
+          ],
+          "augmented_notation": false
+        },
+        {
+          "recipe": "appearance_order_and_keep_rhs_sign_with_constants",
+          "is_correct": false,
+          "matrix": [
+            [
+              0,
+              -4,
+              0,
+              9
+            ],
+            [
+              5,
+              5,
+              -15,
+              0
+            ]
+          ],
+          "augmented_notation": false
+        },
+        {
+          "recipe": "keep_rhs_sign",
+          "is_correct": false,
+          "matrix": [
+            [
+              0,
+              -4,
+              0
+            ],
+            [
+              -15,
+              5,
+              5
+            ]
+          ],
+          "augmented_notation": false
+        },
+        {
+          "recipe": "appearance_order_and_keep_rhs_sign",
+          "is_correct": false,
+          "matrix": [
+            [
+              0,
+              -4,
+              0
+            ],
+            [
+              5,
+              5,
+              -15
+            ]
+          ],
+          "augmented_notation": false
+        }
+      ],
+      "plot_rating": "none",
+      "domains": "signed nonzero integer magnitude 1..15; eligible source-template answer roles, permuted variable roles and equation rows",
+      "runtime": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      }
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186059770,
+      "id": "14d047c8-f032-5ff3-aced-65d40bfeeaad",
+      "title": "Finding the Augmented Matrix of a Linear System With Variables Other Than x, y, z"
+    },
+    "question": {
+      ":question/id": "5619da47-a300-50f9-97c8-ad561a27dee8",
+      ":question/problem": "What is the coefficient matrix for the following system of linear equations?\n\n$$\n\\left\\{\\begin{aligned}13{x}_{3} &=-4 \\\\ -15{x}_{1}-13{x}_{2} &=9{x}_{3}\\end{aligned}\\right.\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/worked-solution": "First, we organize the system so that the variables are ordered ${x}_{1},{x}_{2},{x}_{3}$ on the left-hand side, the constants are on the right-hand side, and every variable has a coefficient:\n\n$$\n\\left\\{\\begin{aligned}0{x}_{1}+0{x}_{2}+13{x}_{3} &=-4 \\\\ -15{x}_{1}-13{x}_{2}-9{x}_{3} &=0\\end{aligned}\\right.\n$$\n\nThe coefficient matrix consists of the coefficients of the variables:\n\n$$\n\\begin{bmatrix}0 & 0 & 13 \\\\ -15 & -13 & -9\\end{bmatrix}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "6944b1ab-b649-59b6-9ed6-eccfec35931d",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "89ba62e6-3e5e-53ac-8d44-25473932cc25",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}0 & 0 & 13 \\\\ -15 & -13 & 9\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "8fe4c412-729a-5556-a7d9-c4a0d62ed273",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}0 & 0 & 13 \\\\ -15 & -13 & -9\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "a93c571a-9a09-523e-8369-e7a1c90e183c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}0 & 0 & 13 & -4 \\\\ -15 & -13 & -9 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "012e3112-8592-5aa6-af2e-141111b8bc58",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}0 & 0 & 13 & -4 \\\\ -13 & -15 & 9 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "e081351c-226f-5ab0-bd1c-4fb8d0959fcc",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}0 & 0 & 13 \\\\ -13 & -15 & 9\\end{bmatrix}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "8fe4c412-729a-5556-a7d9-c4a0d62ed273"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "other-variables-matrices-1.1",
+      "seed": 4,
+      "template": "coefficient",
+      "bank_profile": "q-1070",
+      "role_assignment": {
+        "columns": [
+          1,
+          0,
+          2
+        ],
+        "rows": [
+          1,
+          0
+        ]
+      },
+      "target_recipe": "correct",
+      "parameters": {
+        "a": -13,
+        "b": -15,
+        "c": 9,
+        "d": 13,
+        "e": -4
+      },
+      "system_parameters": {
+        "a": -13,
+        "b": -15,
+        "c": 9,
+        "d": 13,
+        "e": -4
+      },
+      "source": {
+        "database": "math",
+        "basis": 5346,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_references": [
+        "q-1070"
+      ],
+      "eligible_for_learning": true,
+      "evidence_only": false,
+      "mathematical_fingerprint": "6d3f57e7dcb4325e75e973d07e039346ca8bb9e664cfe0e6abb3d763753403da",
+      "content_identity": "c92d221ec23bf6506d0b49dca004790ae3904d7bea348b6784d05fa76c88c170",
+      "recipes": [
+        {
+          "recipe": "correct",
+          "is_correct": true,
+          "matrix": [
+            [
+              0,
+              0,
+              13
+            ],
+            [
+              -15,
+              -13,
+              -9
+            ]
+          ],
+          "augmented_notation": false
+        },
+        {
+          "recipe": "append_constants",
+          "is_correct": false,
+          "matrix": [
+            [
+              0,
+              0,
+              13,
+              -4
+            ],
+            [
+              -15,
+              -13,
+              -9,
+              0
+            ]
+          ],
+          "augmented_notation": false
+        },
+        {
+          "recipe": "appearance_order_and_keep_rhs_sign_with_constants",
+          "is_correct": false,
+          "matrix": [
+            [
+              0,
+              0,
+              13,
+              -4
+            ],
+            [
+              -13,
+              -15,
+              9,
+              0
+            ]
+          ],
+          "augmented_notation": false
+        },
+        {
+          "recipe": "keep_rhs_sign",
+          "is_correct": false,
+          "matrix": [
+            [
+              0,
+              0,
+              13
+            ],
+            [
+              -15,
+              -13,
+              9
+            ]
+          ],
+          "augmented_notation": false
+        },
+        {
+          "recipe": "appearance_order_and_keep_rhs_sign",
+          "is_correct": false,
+          "matrix": [
+            [
+              0,
+              0,
+              13
+            ],
+            [
+              -13,
+              -15,
+              9
+            ]
+          ],
+          "augmented_notation": false
+        }
+      ],
+      "plot_rating": "none",
+      "domains": "signed nonzero integer magnitude 1..15; eligible source-template answer roles, permuted variable roles and equation rows",
+      "runtime": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      }
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186059770,
+      "id": "14d047c8-f032-5ff3-aced-65d40bfeeaad",
+      "title": "Finding the Augmented Matrix of a Linear System With Variables Other Than x, y, z"
+    },
+    "question": {
+      ":question/id": "faea4526-5a10-527c-9326-a6117dc8d712",
+      ":question/problem": "What is the coefficient matrix for the following system of linear equations?\n\n$$\n\\left\\{\\begin{aligned}8{x}_{1} &=-7 \\\\ 6{x}_{3}-14{x}_{2} &=2{x}_{1}\\end{aligned}\\right.\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/worked-solution": "First, we organize the system so that the variables are ordered ${x}_{1},{x}_{2},{x}_{3}$ on the left-hand side, the constants are on the right-hand side, and every variable has a coefficient:\n\n$$\n\\left\\{\\begin{aligned}8{x}_{1}+0{x}_{2}+0{x}_{3} &=-7 \\\\ -2{x}_{1}-14{x}_{2}+6{x}_{3} &=0\\end{aligned}\\right.\n$$\n\nThe coefficient matrix consists of the coefficients of the variables:\n\n$$\n\\begin{bmatrix}8 & 0 & 0 \\\\ -2 & -14 & 6\\end{bmatrix}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "53afc363-89c4-57d5-9456-a5dc00112425",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "903379c3-7366-5339-afa4-1f80a3d4f76e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}8 & 0 & 0 \\\\ 2 & 6 & -14\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "51094c64-b7ba-5bbe-aada-312332d48690",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}8 & 0 & 0 & -7 \\\\ -2 & -14 & 6 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "572da7e0-7142-5ed3-9135-7dbb72ee8935",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}8 & 0 & 0 & -7 \\\\ 2 & 6 & -14 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "4321a466-217c-5b05-afc7-15d3b7190efa",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}8 & 0 & 0 \\\\ -2 & -14 & 6\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "0732e143-5744-5b72-8f0b-08b168482fd5",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}8 & 0 & 0 \\\\ -2 & 6 & -14\\end{bmatrix}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "4321a466-217c-5b05-afc7-15d3b7190efa"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "other-variables-matrices-1.1",
+      "seed": 5,
+      "template": "coefficient",
+      "bank_profile": "q-1070",
+      "role_assignment": {
+        "columns": [
+          1,
+          2,
+          0
+        ],
+        "rows": [
+          1,
+          0
+        ]
+      },
+      "target_recipe": "appearance_order_and_keep_rhs_sign",
+      "parameters": {
+        "a": 6,
+        "b": -14,
+        "c": -2,
+        "d": 8,
+        "e": -7
+      },
+      "system_parameters": {
+        "a": -14,
+        "b": 6,
+        "c": 2,
+        "d": 8,
+        "e": -7
+      },
+      "source": {
+        "database": "math",
+        "basis": 5346,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_references": [
+        "q-1070"
+      ],
+      "eligible_for_learning": true,
+      "evidence_only": false,
+      "mathematical_fingerprint": "70847282a92bbd6f57253b9c2ccd7eeb63fc9d73577d5312aad4146ea62550bd",
+      "content_identity": "a198917269cc2ada663a5da9457a58ba70664a5e8f75506f3e2c3bfc89e0f63c",
+      "recipes": [
+        {
+          "recipe": "appearance_order_and_keep_rhs_sign",
+          "is_correct": true,
+          "matrix": [
+            [
+              8,
+              0,
+              0
+            ],
+            [
+              -2,
+              -14,
+              6
+            ]
+          ],
+          "augmented_notation": false
+        },
+        {
+          "recipe": "correct",
+          "is_correct": false,
+          "matrix": [
+            [
+              8,
+              0,
+              0
+            ],
+            [
+              2,
+              6,
+              -14
+            ]
+          ],
+          "augmented_notation": false
+        },
+        {
+          "recipe": "append_constants",
+          "is_correct": false,
+          "matrix": [
+            [
+              8,
+              0,
+              0,
+              -7
+            ],
+            [
+              2,
+              6,
+              -14,
+              0
+            ]
+          ],
+          "augmented_notation": false
+        },
+        {
+          "recipe": "appearance_order_and_keep_rhs_sign_with_constants",
+          "is_correct": false,
+          "matrix": [
+            [
+              8,
+              0,
+              0,
+              -7
+            ],
+            [
+              -2,
+              -14,
+              6,
+              0
+            ]
+          ],
+          "augmented_notation": false
+        },
+        {
+          "recipe": "keep_rhs_sign",
+          "is_correct": false,
+          "matrix": [
+            [
+              8,
+              0,
+              0
+            ],
+            [
+              -2,
+              6,
+              -14
+            ]
+          ],
+          "augmented_notation": false
+        }
+      ],
+      "plot_rating": "none",
+      "domains": "signed nonzero integer magnitude 1..15; eligible source-template answer roles, permuted variable roles and equation rows",
+      "runtime": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      }
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186059770,
+      "id": "14d047c8-f032-5ff3-aced-65d40bfeeaad",
+      "title": "Finding the Augmented Matrix of a Linear System With Variables Other Than x, y, z"
+    },
+    "question": {
+      ":question/id": "05ac052e-ebd0-5ee4-9828-26705c45da14",
+      ":question/problem": "What is the coefficient matrix for the following system of linear equations?\n\n$$\n\\left\\{\\begin{aligned}-11{x}_{2}+7{x}_{1} &=-13{x}_{3} \\\\ 6{x}_{3} &=-5\\end{aligned}\\right.\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/worked-solution": "First, we organize the system so that the variables are ordered ${x}_{1},{x}_{2},{x}_{3}$ on the left-hand side, the constants are on the right-hand side, and every variable has a coefficient:\n\n$$\n\\left\\{\\begin{aligned}7{x}_{1}-11{x}_{2}+13{x}_{3} &=0 \\\\ 0{x}_{1}+0{x}_{2}+6{x}_{3} &=-5\\end{aligned}\\right.\n$$\n\nThe coefficient matrix consists of the coefficients of the variables:\n\n$$\n\\begin{bmatrix}7 & -11 & 13 \\\\ 0 & 0 & 6\\end{bmatrix}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "e25a02a1-aafe-5c72-8de8-3bb95c3c1cb6",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "ee6d1469-1afe-5300-8b0a-130f132870b0",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}7 & -11 & 13 \\\\ 0 & 0 & 6\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "f8d6a41c-0981-52c6-8091-77a3edd064b6",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-11 & 7 & 13 \\\\ 0 & 0 & 6\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "b3bef7cf-2061-5b96-bc69-3a36cf6c0ff3",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-11 & 7 & -13 & 0 \\\\ 0 & 0 & 6 & -5\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "3ab49413-f5c7-5ce1-bb30-91032f17c003",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-11 & 7 & -13 \\\\ 0 & 0 & 6\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "495bc1a9-2cbe-5f1e-9e0a-2f391089bd72",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}7 & -11 & 13 & 0 \\\\ 0 & 0 & 6 & -5\\end{bmatrix}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "ee6d1469-1afe-5300-8b0a-130f132870b0"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "other-variables-matrices-1.1",
+      "seed": 6,
+      "template": "coefficient",
+      "bank_profile": "q-1070",
+      "role_assignment": {
+        "columns": [
+          0,
+          1,
+          2
+        ],
+        "rows": [
+          0,
+          1
+        ]
+      },
+      "target_recipe": "appearance_order_and_keep_rhs_sign",
+      "parameters": {
+        "a": -11,
+        "b": 7,
+        "c": 13,
+        "d": 6,
+        "e": -5
+      },
+      "system_parameters": {
+        "a": 7,
+        "b": -11,
+        "c": -13,
+        "d": 6,
+        "e": -5
+      },
+      "source": {
+        "database": "math",
+        "basis": 5346,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_references": [
+        "q-1070"
+      ],
+      "eligible_for_learning": true,
+      "evidence_only": false,
+      "mathematical_fingerprint": "d82131986a5a4494a5dc5717ea147f144949747319cc35b4265f90b987eb3b24",
+      "content_identity": "3bc60831019fd267996f05afc264edd9bf48a9d07ca48f81f1a06a351ce82833",
+      "recipes": [
+        {
+          "recipe": "appearance_order_and_keep_rhs_sign",
+          "is_correct": true,
+          "matrix": [
+            [
+              7,
+              -11,
+              13
+            ],
+            [
+              0,
+              0,
+              6
+            ]
+          ],
+          "augmented_notation": false
+        },
+        {
+          "recipe": "correct",
+          "is_correct": false,
+          "matrix": [
+            [
+              -11,
+              7,
+              -13
+            ],
+            [
+              0,
+              0,
+              6
+            ]
+          ],
+          "augmented_notation": false
+        },
+        {
+          "recipe": "append_constants",
+          "is_correct": false,
+          "matrix": [
+            [
+              -11,
+              7,
+              -13,
+              0
+            ],
+            [
+              0,
+              0,
+              6,
+              -5
+            ]
+          ],
+          "augmented_notation": false
+        },
+        {
+          "recipe": "appearance_order_and_keep_rhs_sign_with_constants",
+          "is_correct": false,
+          "matrix": [
+            [
+              7,
+              -11,
+              13,
+              0
+            ],
+            [
+              0,
+              0,
+              6,
+              -5
+            ]
+          ],
+          "augmented_notation": false
+        },
+        {
+          "recipe": "keep_rhs_sign",
+          "is_correct": false,
+          "matrix": [
+            [
+              -11,
+              7,
+              13
+            ],
+            [
+              0,
+              0,
+              6
+            ]
+          ],
+          "augmented_notation": false
+        }
+      ],
+      "plot_rating": "none",
+      "domains": "signed nonzero integer magnitude 1..15; eligible source-template answer roles, permuted variable roles and equation rows",
+      "runtime": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      }
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186059770,
+      "id": "14d047c8-f032-5ff3-aced-65d40bfeeaad",
+      "title": "Finding the Augmented Matrix of a Linear System With Variables Other Than x, y, z"
+    },
+    "question": {
+      ":question/id": "2b6bf325-460f-5097-8892-d2a06525568d",
+      ":question/problem": "What is the coefficient matrix for the following system of linear equations?\n\n$$\n\\left\\{\\begin{aligned}4{x}_{2}-4{x}_{1} &=15{x}_{3} \\\\ -{x}_{3} &=-7\\end{aligned}\\right.\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/worked-solution": "First, we organize the system so that the variables are ordered ${x}_{1},{x}_{2},{x}_{3}$ on the left-hand side, the constants are on the right-hand side, and every variable has a coefficient:\n\n$$\n\\left\\{\\begin{aligned}-4{x}_{1}+4{x}_{2}-15{x}_{3} &=0 \\\\ 0{x}_{1}+0{x}_{2}-1{x}_{3} &=-7\\end{aligned}\\right.\n$$\n\nThe coefficient matrix consists of the coefficients of the variables:\n\n$$\n\\begin{bmatrix}-4 & 4 & -15 \\\\ 0 & 0 & -1\\end{bmatrix}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "bb109041-3abb-540f-9050-0c187ba8fb24",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "c5c357ab-05e6-5ad9-97fe-a88d3b556601",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-4 & 4 & 15 \\\\ 0 & 0 & -1\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "0fae32b0-228d-5888-932a-984097c55e95",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-4 & 4 & 15 & 0 \\\\ 0 & 0 & -1 & -7\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "afc861c5-e0bd-58cf-ba51-bc76fa086554",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}4 & -4 & -15 \\\\ 0 & 0 & -1\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "4ee93f5a-89f2-5cab-b5da-f6c4dc23f3e4",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-4 & 4 & -15 \\\\ 0 & 0 & -1\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "ab4cd969-05f4-52b8-9d1b-7c3f34a9b4e1",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}4 & -4 & -15 & 0 \\\\ 0 & 0 & -1 & -7\\end{bmatrix}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "4ee93f5a-89f2-5cab-b5da-f6c4dc23f3e4"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "other-variables-matrices-1.1",
+      "seed": 7,
+      "template": "coefficient",
+      "bank_profile": "q-1070",
+      "role_assignment": {
+        "columns": [
+          0,
+          1,
+          2
+        ],
+        "rows": [
+          0,
+          1
+        ]
+      },
+      "target_recipe": "keep_rhs_sign",
+      "parameters": {
+        "a": -4,
+        "b": 4,
+        "c": -15,
+        "d": -1,
+        "e": -7
+      },
+      "system_parameters": {
+        "a": -4,
+        "b": 4,
+        "c": 15,
+        "d": -1,
+        "e": -7
+      },
+      "source": {
+        "database": "math",
+        "basis": 5346,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_references": [
+        "q-1070"
+      ],
+      "eligible_for_learning": true,
+      "evidence_only": false,
+      "mathematical_fingerprint": "81b6a36b9d6a52e544b1d48466c6166c6618ddad9e0362b405f8f81f9fc1202c",
+      "content_identity": "6bfa14000eb04e051da1a7bf581d7197809d003a0572c9c2600f4505ad4ab569",
+      "recipes": [
+        {
+          "recipe": "keep_rhs_sign",
+          "is_correct": true,
+          "matrix": [
+            [
+              -4,
+              4,
+              -15
+            ],
+            [
+              0,
+              0,
+              -1
+            ]
+          ],
+          "augmented_notation": false
+        },
+        {
+          "recipe": "correct",
+          "is_correct": false,
+          "matrix": [
+            [
+              -4,
+              4,
+              15
+            ],
+            [
+              0,
+              0,
+              -1
+            ]
+          ],
+          "augmented_notation": false
+        },
+        {
+          "recipe": "append_constants",
+          "is_correct": false,
+          "matrix": [
+            [
+              -4,
+              4,
+              15,
+              0
+            ],
+            [
+              0,
+              0,
+              -1,
+              -7
+            ]
+          ],
+          "augmented_notation": false
+        },
+        {
+          "recipe": "appearance_order_and_keep_rhs_sign_with_constants",
+          "is_correct": false,
+          "matrix": [
+            [
+              4,
+              -4,
+              -15,
+              0
+            ],
+            [
+              0,
+              0,
+              -1,
+              -7
+            ]
+          ],
+          "augmented_notation": false
+        },
+        {
+          "recipe": "appearance_order_and_keep_rhs_sign",
+          "is_correct": false,
+          "matrix": [
+            [
+              4,
+              -4,
+              -15
+            ],
+            [
+              0,
+              0,
+              -1
+            ]
+          ],
+          "augmented_notation": false
+        }
+      ],
+      "plot_rating": "none",
+      "domains": "signed nonzero integer magnitude 1..15; eligible source-template answer roles, permuted variable roles and equation rows",
+      "runtime": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      }
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186059770,
+      "id": "14d047c8-f032-5ff3-aced-65d40bfeeaad",
+      "title": "Finding the Augmented Matrix of a Linear System With Variables Other Than x, y, z"
+    },
+    "question": {
+      ":question/id": "0a934795-7371-5044-b6ce-60552ef382f9",
+      ":question/problem": "What is the coefficient matrix for the following system of linear equations?\n\n$$\n\\left\\{\\begin{aligned}-11{x}_{3}-13{x}_{2} &=-13{x}_{1} \\\\ -7{x}_{1} &=-8\\end{aligned}\\right.\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/worked-solution": "First, we organize the system so that the variables are ordered ${x}_{1},{x}_{2},{x}_{3}$ on the left-hand side, the constants are on the right-hand side, and every variable has a coefficient:\n\n$$\n\\left\\{\\begin{aligned}13{x}_{1}-13{x}_{2}-11{x}_{3} &=0 \\\\ -7{x}_{1}+0{x}_{2}+0{x}_{3} &=-8\\end{aligned}\\right.\n$$\n\nThe coefficient matrix consists of the coefficients of the variables:\n\n$$\n\\begin{bmatrix}13 & -13 & -11 \\\\ -7 & 0 & 0\\end{bmatrix}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "e534d68f-e908-520c-87c6-885712d3f637",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "9130207f-f853-55f9-b5da-c67830498964",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}13 & -13 & -11 \\\\ -7 & 0 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "60ec63a2-e211-5c0e-ac3d-a439ec9c4d28",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-13 & -11 & -13 & 0 \\\\ -7 & 0 & 0 & -8\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "57d89f38-bae1-5209-a339-e2f1eccc4208",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}13 & -13 & -11 & 0 \\\\ -7 & 0 & 0 & -8\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "9da4c315-c15f-5400-966f-6170f9f79aab",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-13 & -11 & -13 \\\\ -7 & 0 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "9ecc3145-bed2-5488-b398-b62d5124c86f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-13 & -13 & -11 \\\\ -7 & 0 & 0\\end{bmatrix}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "9130207f-f853-55f9-b5da-c67830498964"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "other-variables-matrices-1.1",
+      "seed": 8,
+      "template": "coefficient",
+      "bank_profile": "q-1070",
+      "role_assignment": {
+        "columns": [
+          1,
+          2,
+          0
+        ],
+        "rows": [
+          0,
+          1
+        ]
+      },
+      "target_recipe": "correct",
+      "parameters": {
+        "a": -13,
+        "b": -11,
+        "c": -13,
+        "d": -7,
+        "e": -8
+      },
+      "system_parameters": {
+        "a": -13,
+        "b": -11,
+        "c": -13,
+        "d": -7,
+        "e": -8
+      },
+      "source": {
+        "database": "math",
+        "basis": 5346,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_references": [
+        "q-1070"
+      ],
+      "eligible_for_learning": true,
+      "evidence_only": false,
+      "mathematical_fingerprint": "763951ccbd66427c3bd139aefcb7d6ce423505ae17a3f47d48c053b42021d792",
+      "content_identity": "1e134d2591505b894b41c5be33ad1ea311cc7fcceb2bf48677ebe887ea92d2b7",
+      "recipes": [
+        {
+          "recipe": "correct",
+          "is_correct": true,
+          "matrix": [
+            [
+              13,
+              -13,
+              -11
+            ],
+            [
+              -7,
+              0,
+              0
+            ]
+          ],
+          "augmented_notation": false
+        },
+        {
+          "recipe": "append_constants",
+          "is_correct": false,
+          "matrix": [
+            [
+              13,
+              -13,
+              -11,
+              0
+            ],
+            [
+              -7,
+              0,
+              0,
+              -8
+            ]
+          ],
+          "augmented_notation": false
+        },
+        {
+          "recipe": "appearance_order_and_keep_rhs_sign_with_constants",
+          "is_correct": false,
+          "matrix": [
+            [
+              -13,
+              -11,
+              -13,
+              0
+            ],
+            [
+              -7,
+              0,
+              0,
+              -8
+            ]
+          ],
+          "augmented_notation": false
+        },
+        {
+          "recipe": "keep_rhs_sign",
+          "is_correct": false,
+          "matrix": [
+            [
+              -13,
+              -13,
+              -11
+            ],
+            [
+              -7,
+              0,
+              0
+            ]
+          ],
+          "augmented_notation": false
+        },
+        {
+          "recipe": "appearance_order_and_keep_rhs_sign",
+          "is_correct": false,
+          "matrix": [
+            [
+              -13,
+              -11,
+              -13
+            ],
+            [
+              -7,
+              0,
+              0
+            ]
+          ],
+          "augmented_notation": false
+        }
+      ],
+      "plot_rating": "none",
+      "domains": "signed nonzero integer magnitude 1..15; eligible source-template answer roles, permuted variable roles and equation rows",
+      "runtime": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      }
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186059770,
+      "id": "14d047c8-f032-5ff3-aced-65d40bfeeaad",
+      "title": "Finding the Augmented Matrix of a Linear System With Variables Other Than x, y, z"
+    },
+    "question": {
+      ":question/id": "abbf955f-7a29-5ba3-94ea-356edee9869a",
+      ":question/problem": "What is the coefficient matrix for the following system of linear equations?\n\n$$\n\\left\\{\\begin{aligned}7{x}_{2}+13{x}_{3} &=6{x}_{1} \\\\ 15{x}_{1} &=-6\\end{aligned}\\right.\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/worked-solution": "First, we organize the system so that the variables are ordered ${x}_{1},{x}_{2},{x}_{3}$ on the left-hand side, the constants are on the right-hand side, and every variable has a coefficient:\n\n$$\n\\left\\{\\begin{aligned}-6{x}_{1}+7{x}_{2}+13{x}_{3} &=0 \\\\ 15{x}_{1}+0{x}_{2}+0{x}_{3} &=-6\\end{aligned}\\right.\n$$\n\nThe coefficient matrix consists of the coefficients of the variables:\n\n$$\n\\begin{bmatrix}-6 & 7 & 13 \\\\ 15 & 0 & 0\\end{bmatrix}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "da242b8f-2642-5dfa-8dc5-48b041f0cd6b",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "0d868507-b864-5825-8692-85c1d38a1a16",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-6 & 13 & 7 & 0 \\\\ 15 & 0 & 0 & -6\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "3e998a66-18fb-5f22-b76c-8b7b637142f1",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}6 & 7 & 13 \\\\ 15 & 0 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "3682838f-6d4f-5251-bb44-7bcaba77faae",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}6 & 7 & 13 & 0 \\\\ 15 & 0 & 0 & -6\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "2dcd4ac6-90f4-5669-95e2-e6c46693fcd0",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-6 & 7 & 13 \\\\ 15 & 0 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "31a388f4-ff6e-5096-b5e0-0fecce8bb4de",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-6 & 13 & 7 \\\\ 15 & 0 & 0\\end{bmatrix}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "2dcd4ac6-90f4-5669-95e2-e6c46693fcd0"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "other-variables-matrices-1.1",
+      "seed": 9,
+      "template": "coefficient",
+      "bank_profile": "q-1070",
+      "role_assignment": {
+        "columns": [
+          2,
+          1,
+          0
+        ],
+        "rows": [
+          0,
+          1
+        ]
+      },
+      "target_recipe": "keep_rhs_sign",
+      "parameters": {
+        "a": 13,
+        "b": 7,
+        "c": -6,
+        "d": 15,
+        "e": -6
+      },
+      "system_parameters": {
+        "a": 13,
+        "b": 7,
+        "c": 6,
+        "d": 15,
+        "e": -6
+      },
+      "source": {
+        "database": "math",
+        "basis": 5346,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_references": [
+        "q-1070"
+      ],
+      "eligible_for_learning": true,
+      "evidence_only": false,
+      "mathematical_fingerprint": "0a0448d753a8dc4f6588aee4b0a7a6c6e3fc0f0821b463237f1d052505a14d8d",
+      "content_identity": "e54e2e06ee2d33bb8e615f8ac2707fd16c8ec950eafbf43724e687000311a055",
+      "recipes": [
+        {
+          "recipe": "keep_rhs_sign",
+          "is_correct": true,
+          "matrix": [
+            [
+              -6,
+              7,
+              13
+            ],
+            [
+              15,
+              0,
+              0
+            ]
+          ],
+          "augmented_notation": false
+        },
+        {
+          "recipe": "correct",
+          "is_correct": false,
+          "matrix": [
+            [
+              6,
+              7,
+              13
+            ],
+            [
+              15,
+              0,
+              0
+            ]
+          ],
+          "augmented_notation": false
+        },
+        {
+          "recipe": "append_constants",
+          "is_correct": false,
+          "matrix": [
+            [
+              6,
+              7,
+              13,
+              0
+            ],
+            [
+              15,
+              0,
+              0,
+              -6
+            ]
+          ],
+          "augmented_notation": false
+        },
+        {
+          "recipe": "appearance_order_and_keep_rhs_sign_with_constants",
+          "is_correct": false,
+          "matrix": [
+            [
+              -6,
+              13,
+              7,
+              0
+            ],
+            [
+              15,
+              0,
+              0,
+              -6
+            ]
+          ],
+          "augmented_notation": false
+        },
+        {
+          "recipe": "appearance_order_and_keep_rhs_sign",
+          "is_correct": false,
+          "matrix": [
+            [
+              -6,
+              13,
+              7
+            ],
+            [
+              15,
+              0,
+              0
+            ]
+          ],
+          "augmented_notation": false
+        }
+      ],
+      "plot_rating": "none",
+      "domains": "signed nonzero integer magnitude 1..15; eligible source-template answer roles, permuted variable roles and equation rows",
+      "runtime": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      }
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186059770,
+      "id": "14d047c8-f032-5ff3-aced-65d40bfeeaad",
+      "title": "Finding the Augmented Matrix of a Linear System With Variables Other Than x, y, z"
+    },
+    "question": {
+      ":question/id": "f38c085b-35ee-555b-8af6-d411fa24e45a",
+      ":question/problem": "What is the coefficient matrix for the following system of linear equations?\n\n$$\n\\left\\{\\begin{aligned}-{x}_{2}+12{x}_{1} &=-14{x}_{3} \\\\ 11{x}_{3} &=-1\\end{aligned}\\right.\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/worked-solution": "First, we organize the system so that the variables are ordered ${x}_{1},{x}_{2},{x}_{3}$ on the left-hand side, the constants are on the right-hand side, and every variable has a coefficient:\n\n$$\n\\left\\{\\begin{aligned}12{x}_{1}-1{x}_{2}+14{x}_{3} &=0 \\\\ 0{x}_{1}+0{x}_{2}+11{x}_{3} &=-1\\end{aligned}\\right.\n$$\n\nThe coefficient matrix consists of the coefficients of the variables:\n\n$$\n\\begin{bmatrix}12 & -1 & 14 \\\\ 0 & 0 & 11\\end{bmatrix}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "9f0fa6b0-ef1f-5b81-a5bb-5d5cd740d30b",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "005286f5-7a6c-573f-9504-aa8bcea43150",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-1 & 12 & -14 & 0 \\\\ 0 & 0 & 11 & -1\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "034388ab-6a2e-54bb-94ad-3e6f1ac549bf",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}12 & -1 & 14 \\\\ 0 & 0 & 11\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "b1b19e9e-568a-50fd-a0d6-d296487cb4ff",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-1 & 12 & -14 \\\\ 0 & 0 & 11\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "a7b15e1c-a146-546c-b1a3-db7cdc69a500",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}12 & -1 & 14 & 0 \\\\ 0 & 0 & 11 & -1\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "5b7b25a9-7c7e-5242-babe-df64fae152d2",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-1 & 12 & 14 \\\\ 0 & 0 & 11\\end{bmatrix}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "034388ab-6a2e-54bb-94ad-3e6f1ac549bf"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "other-variables-matrices-1.1",
+      "seed": 10,
+      "template": "coefficient",
+      "bank_profile": "q-1070",
+      "role_assignment": {
+        "columns": [
+          0,
+          1,
+          2
+        ],
+        "rows": [
+          0,
+          1
+        ]
+      },
+      "target_recipe": "appearance_order_and_keep_rhs_sign",
+      "parameters": {
+        "a": -1,
+        "b": 12,
+        "c": 14,
+        "d": 11,
+        "e": -1
+      },
+      "system_parameters": {
+        "a": 12,
+        "b": -1,
+        "c": -14,
+        "d": 11,
+        "e": -1
+      },
+      "source": {
+        "database": "math",
+        "basis": 5346,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_references": [
+        "q-1070"
+      ],
+      "eligible_for_learning": true,
+      "evidence_only": false,
+      "mathematical_fingerprint": "320984e7920b9d7d5811f3b2c1a8d2e3ce48166d5e58281c5274f46dd7dda270",
+      "content_identity": "54d6ecf639b747745a7442b46fb398810a0b213aad5ba2e66bf15903af67319d",
+      "recipes": [
+        {
+          "recipe": "appearance_order_and_keep_rhs_sign",
+          "is_correct": true,
+          "matrix": [
+            [
+              12,
+              -1,
+              14
+            ],
+            [
+              0,
+              0,
+              11
+            ]
+          ],
+          "augmented_notation": false
+        },
+        {
+          "recipe": "correct",
+          "is_correct": false,
+          "matrix": [
+            [
+              -1,
+              12,
+              -14
+            ],
+            [
+              0,
+              0,
+              11
+            ]
+          ],
+          "augmented_notation": false
+        },
+        {
+          "recipe": "append_constants",
+          "is_correct": false,
+          "matrix": [
+            [
+              -1,
+              12,
+              -14,
+              0
+            ],
+            [
+              0,
+              0,
+              11,
+              -1
+            ]
+          ],
+          "augmented_notation": false
+        },
+        {
+          "recipe": "appearance_order_and_keep_rhs_sign_with_constants",
+          "is_correct": false,
+          "matrix": [
+            [
+              12,
+              -1,
+              14,
+              0
+            ],
+            [
+              0,
+              0,
+              11,
+              -1
+            ]
+          ],
+          "augmented_notation": false
+        },
+        {
+          "recipe": "keep_rhs_sign",
+          "is_correct": false,
+          "matrix": [
+            [
+              -1,
+              12,
+              14
+            ],
+            [
+              0,
+              0,
+              11
+            ]
+          ],
+          "augmented_notation": false
+        }
+      ],
+      "plot_rating": "none",
+      "domains": "signed nonzero integer magnitude 1..15; eligible source-template answer roles, permuted variable roles and equation rows",
+      "runtime": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      }
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186059770,
+      "id": "14d047c8-f032-5ff3-aced-65d40bfeeaad",
+      "title": "Finding the Augmented Matrix of a Linear System With Variables Other Than x, y, z"
+    },
+    "question": {
+      ":question/id": "bd0ae541-a505-58d4-a802-24e154553d6b",
+      ":question/problem": "What is the coefficient matrix for the following system of linear equations?\n\n$$\n\\left\\{\\begin{aligned}2{x}_{2}+11{x}_{3} &=-11{x}_{1} \\\\ -2{x}_{1} &=5\\end{aligned}\\right.\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/worked-solution": "First, we organize the system so that the variables are ordered ${x}_{1},{x}_{2},{x}_{3}$ on the left-hand side, the constants are on the right-hand side, and every variable has a coefficient:\n\n$$\n\\left\\{\\begin{aligned}11{x}_{1}+2{x}_{2}+11{x}_{3} &=0 \\\\ -2{x}_{1}+0{x}_{2}+0{x}_{3} &=5\\end{aligned}\\right.\n$$\n\nThe coefficient matrix consists of the coefficients of the variables:\n\n$$\n\\begin{bmatrix}11 & 2 & 11 \\\\ -2 & 0 & 0\\end{bmatrix}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "42450ad0-c55c-510e-b81d-f79fadbc2725",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "595575a7-721b-55eb-bb6e-e605159d2627",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}11 & 11 & 2 \\\\ -2 & 0 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "268fa9f4-1878-5a8f-93c2-0ac2ef148636",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}11 & 11 & 2 & 0 \\\\ -2 & 0 & 0 & 5\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "0c272c02-c5de-576c-aad0-87059c96d2e4",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-11 & 2 & 11 & 0 \\\\ -2 & 0 & 0 & 5\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "e7eb321c-29e9-5548-a7bf-399fe1117a1e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}11 & 2 & 11 \\\\ -2 & 0 & 0\\end{bmatrix}"
+            },
+            {
+              ":answer/id": "86e41381-1b20-5bb1-ab0b-2318e2fe97c9",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-11 & 2 & 11 \\\\ -2 & 0 & 0\\end{bmatrix}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "e7eb321c-29e9-5548-a7bf-399fe1117a1e"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "other-variables-matrices-1.1",
+      "seed": 11,
+      "template": "coefficient",
+      "bank_profile": "q-1070",
+      "role_assignment": {
+        "columns": [
+          2,
+          1,
+          0
+        ],
+        "rows": [
+          0,
+          1
+        ]
+      },
+      "target_recipe": "keep_rhs_sign",
+      "parameters": {
+        "a": 11,
+        "b": 2,
+        "c": 11,
+        "d": -2,
+        "e": 5
+      },
+      "system_parameters": {
+        "a": 11,
+        "b": 2,
+        "c": -11,
+        "d": -2,
+        "e": 5
+      },
+      "source": {
+        "database": "math",
+        "basis": 5346,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_references": [
+        "q-1070"
+      ],
+      "eligible_for_learning": true,
+      "evidence_only": false,
+      "mathematical_fingerprint": "b01966c0366559de90a331a8aafa28b3aa7b44b20d15836b4541d70252fba627",
+      "content_identity": "bb009a2d5244628dec1de83cb633f08b4c06530a598b917eaa40b9620fe1f95a",
+      "recipes": [
+        {
+          "recipe": "keep_rhs_sign",
+          "is_correct": true,
+          "matrix": [
+            [
+              11,
+              2,
+              11
+            ],
+            [
+              -2,
+              0,
+              0
+            ]
+          ],
+          "augmented_notation": false
+        },
+        {
+          "recipe": "correct",
+          "is_correct": false,
+          "matrix": [
+            [
+              -11,
+              2,
+              11
+            ],
+            [
+              -2,
+              0,
+              0
+            ]
+          ],
+          "augmented_notation": false
+        },
+        {
+          "recipe": "append_constants",
+          "is_correct": false,
+          "matrix": [
+            [
+              -11,
+              2,
+              11,
+              0
+            ],
+            [
+              -2,
+              0,
+              0,
+              5
+            ]
+          ],
+          "augmented_notation": false
+        },
+        {
+          "recipe": "appearance_order_and_keep_rhs_sign_with_constants",
+          "is_correct": false,
+          "matrix": [
+            [
+              11,
+              11,
+              2,
+              0
+            ],
+            [
+              -2,
+              0,
+              0,
+              5
+            ]
+          ],
+          "augmented_notation": false
+        },
+        {
+          "recipe": "appearance_order_and_keep_rhs_sign",
+          "is_correct": false,
+          "matrix": [
+            [
+              11,
+              11,
+              2
+            ],
+            [
+              -2,
+              0,
+              0
+            ]
+          ],
+          "augmented_notation": false
+        }
+      ],
+      "plot_rating": "none",
+      "domains": "signed nonzero integer magnitude 1..15; eligible source-template answer roles, permuted variable roles and equation rows",
+      "runtime": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      }
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186059770,
+      "id": "14d047c8-f032-5ff3-aced-65d40bfeeaad",
+      "title": "Finding the Augmented Matrix of a Linear System With Variables Other Than x, y, z"
+    },
+    "question": {
+      ":question/id": "72e365ef-e7ba-5b3e-a0d7-8342ac95fa82",
+      ":question/problem": "What is the augmented matrix for the following system of linear equations?\n\n$$\n\\left\\{\\begin{aligned}-9c-10b &=5 \\\\ b-c &=8a\\end{aligned}\\right.\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/worked-solution": "First, we organize the system so that the variables are ordered $a,b,c$ on the left-hand side, the constants are on the right-hand side, and every variable has a coefficient:\n\n$$\n\\left\\{\\begin{aligned}0a-10b-9c &=5 \\\\ -8a+1b-1c &=0\\end{aligned}\\right.\n$$\n\nThe coefficient matrix consists of the coefficients of the variables:\n\n$$\n\\begin{bmatrix}0 & -10 & -9 \\\\ -8 & 1 & -1\\end{bmatrix}\n$$\n\nThe augmented matrix is the coefficient matrix augmented with the column that represents the right-hand sides of the equations:\n\n$$\n\\left[\\begin{array}{ccc|c}0 & -10 & -9 & 5 \\\\ -8 & 1 & -1 & 0\\end{array}\\right]\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "b7f1b323-1e28-51a2-b62d-3c4c965cc01b",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "17e27776-f469-579b-bb4f-e6c5b0ea46a5",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{cc|c}-9 & -10 & -5 \\\\ 1 & -1 & 8\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "38556149-e1a2-5e35-a278-eb8d9b20ef4a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{ccc|c}-10 & 9 & 0 & -5 \\\\ -1 & 1 & 0 & 8\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "5df86e3b-f834-5325-be14-817efbbfb71c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{ccc|c}0 & -10 & -9 & -5 \\\\ 0 & 1 & -1 & 8\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "a976ad7b-52c1-58ec-9472-91ec90aa41e9",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{ccc|c}0 & -10 & -9 & 5 \\\\ -8 & 1 & -1 & 0\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "ed50d6cd-99ce-58ef-b8ba-afeb3a835fb1",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{ccc|c}0 & -10 & -9 & -5 \\\\ -8 & 1 & -1 & 0\\end{array}\\right]"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "a976ad7b-52c1-58ec-9472-91ec90aa41e9"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "other-variables-matrices-1.1",
+      "seed": 0,
+      "template": "augmented",
+      "bank_profile": "q-1073",
+      "role_assignment": {
+        "columns": [
+          1,
+          0,
+          2
+        ],
+        "rows": [
+          1,
+          0
+        ]
+      },
+      "target_recipe": "reverse_second_constant",
+      "parameters": {
+        "k": 8,
+        "l": 10,
+        "m": -9,
+        "r": -5
+      },
+      "system_parameters": {
+        "k": 8,
+        "l": 10,
+        "m": -9,
+        "r": 5
+      },
+      "source": {
+        "database": "math",
+        "basis": 5346,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_references": [
+        "q-1073"
+      ],
+      "eligible_for_learning": true,
+      "evidence_only": false,
+      "mathematical_fingerprint": "49990feab8e9a8b250640778f3e4ef377ebb8ff16fd0c5fe2eab5446c1fbc3c0",
+      "content_identity": "3fa359c5719d2f5ad3686e7a6d25f9fe7ffb5142e767dbb4091c44312ee6a527",
+      "recipes": [
+        {
+          "recipe": "reverse_second_constant",
+          "is_correct": true,
+          "matrix": [
+            [
+              0,
+              -10,
+              -9,
+              5
+            ],
+            [
+              -8,
+              1,
+              -1,
+              0
+            ]
+          ],
+          "augmented_notation": true
+        },
+        {
+          "recipe": "correct",
+          "is_correct": false,
+          "matrix": [
+            [
+              0,
+              -10,
+              -9,
+              -5
+            ],
+            [
+              -8,
+              1,
+              -1,
+              0
+            ]
+          ],
+          "augmented_notation": true
+        },
+        {
+          "recipe": "treat_b_coefficient_as_constant",
+          "is_correct": false,
+          "matrix": [
+            [
+              0,
+              -10,
+              -9,
+              -5
+            ],
+            [
+              0,
+              1,
+              -1,
+              8
+            ]
+          ],
+          "augmented_notation": true
+        },
+        {
+          "recipe": "omit_b_column_and_use_second_row_appearance_order",
+          "is_correct": false,
+          "matrix": [
+            [
+              -9,
+              -10,
+              -5
+            ],
+            [
+              1,
+              -1,
+              8
+            ]
+          ],
+          "augmented_notation": true
+        },
+        {
+          "recipe": "appearance_order_and_negate_c_second_row",
+          "is_correct": false,
+          "matrix": [
+            [
+              -10,
+              9,
+              0,
+              -5
+            ],
+            [
+              -1,
+              1,
+              0,
+              8
+            ]
+          ],
+          "augmented_notation": true
+        }
+      ],
+      "plot_rating": "none",
+      "domains": "signed nonzero integer magnitude 1..15; eligible source-template answer roles, permuted variable roles and equation rows",
+      "runtime": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      }
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186059770,
+      "id": "14d047c8-f032-5ff3-aced-65d40bfeeaad",
+      "title": "Finding the Augmented Matrix of a Linear System With Variables Other Than x, y, z"
+    },
+    "question": {
+      ":question/id": "601f0c2f-8142-571a-8f34-c11278f34c36",
+      ":question/problem": "What is the augmented matrix for the following system of linear equations?\n\n$$\n\\left\\{\\begin{aligned}c-b &=8a \\\\ -2b-13c &=1\\end{aligned}\\right.\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/worked-solution": "First, we organize the system so that the variables are ordered $a,b,c$ on the left-hand side, the constants are on the right-hand side, and every variable has a coefficient:\n\n$$\n\\left\\{\\begin{aligned}-8a-1b+1c &=0 \\\\ 0a-2b-13c &=1\\end{aligned}\\right.\n$$\n\nThe coefficient matrix consists of the coefficients of the variables:\n\n$$\n\\begin{bmatrix}-8 & -1 & 1 \\\\ 0 & -2 & -13\\end{bmatrix}\n$$\n\nThe augmented matrix is the coefficient matrix augmented with the column that represents the right-hand sides of the equations:\n\n$$\n\\left[\\begin{array}{ccc|c}-8 & -1 & 1 & 0 \\\\ 0 & -2 & -13 & 1\\end{array}\\right]\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "5db4261d-b144-5fa6-8618-df6468568d67",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "427fa52f-f0c0-5bc6-afa7-3b1436cbc93b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{ccc|c}0 & -1 & 1 & 8 \\\\ 0 & -2 & -13 & 1\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "455bcf5a-d3f0-55b5-92d1-6539a5af00eb",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{ccc|c}-8 & -1 & 1 & 0 \\\\ 0 & -2 & -13 & 1\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "bd782cdf-cf98-5224-a750-915b378c7dea",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{cc|c}-1 & 1 & 8 \\\\ -13 & -2 & 1\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "9111c88d-329c-53aa-8354-729c1d6e665a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{ccc|c}-1 & 0 & 1 & 8 \\\\ -13 & 0 & 2 & 1\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "703cae9d-d4b9-5de7-b7d6-4e7d9734b83e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{ccc|c}-8 & -1 & 1 & 0 \\\\ 0 & -2 & -13 & -1\\end{array}\\right]"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "455bcf5a-d3f0-55b5-92d1-6539a5af00eb"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "other-variables-matrices-1.1",
+      "seed": 1,
+      "template": "augmented",
+      "bank_profile": "q-1073",
+      "role_assignment": {
+        "columns": [
+          2,
+          0,
+          1
+        ],
+        "rows": [
+          0,
+          1
+        ]
+      },
+      "target_recipe": "correct",
+      "parameters": {
+        "k": 8,
+        "l": 13,
+        "m": -2,
+        "r": 1
+      },
+      "system_parameters": {
+        "k": 8,
+        "l": 13,
+        "m": -2,
+        "r": 1
+      },
+      "source": {
+        "database": "math",
+        "basis": 5346,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_references": [
+        "q-1073"
+      ],
+      "eligible_for_learning": true,
+      "evidence_only": false,
+      "mathematical_fingerprint": "d56a1a0b11475f12efbc8ad10aa83492464fc32ddbea2428dacf8a1df78d34e1",
+      "content_identity": "41bca9e3b62dd237664cc79366b8a44ffee3c556ee2d3cc272aad4102a01da84",
+      "recipes": [
+        {
+          "recipe": "correct",
+          "is_correct": true,
+          "matrix": [
+            [
+              -8,
+              -1,
+              1,
+              0
+            ],
+            [
+              0,
+              -2,
+              -13,
+              1
+            ]
+          ],
+          "augmented_notation": true
+        },
+        {
+          "recipe": "treat_b_coefficient_as_constant",
+          "is_correct": false,
+          "matrix": [
+            [
+              0,
+              -1,
+              1,
+              8
+            ],
+            [
+              0,
+              -2,
+              -13,
+              1
+            ]
+          ],
+          "augmented_notation": true
+        },
+        {
+          "recipe": "omit_b_column_and_use_second_row_appearance_order",
+          "is_correct": false,
+          "matrix": [
+            [
+              -1,
+              1,
+              8
+            ],
+            [
+              -13,
+              -2,
+              1
+            ]
+          ],
+          "augmented_notation": true
+        },
+        {
+          "recipe": "reverse_second_constant",
+          "is_correct": false,
+          "matrix": [
+            [
+              -8,
+              -1,
+              1,
+              0
+            ],
+            [
+              0,
+              -2,
+              -13,
+              -1
+            ]
+          ],
+          "augmented_notation": true
+        },
+        {
+          "recipe": "appearance_order_and_negate_c_second_row",
+          "is_correct": false,
+          "matrix": [
+            [
+              -1,
+              0,
+              1,
+              8
+            ],
+            [
+              -13,
+              0,
+              2,
+              1
+            ]
+          ],
+          "augmented_notation": true
+        }
+      ],
+      "plot_rating": "none",
+      "domains": "signed nonzero integer magnitude 1..15; eligible source-template answer roles, permuted variable roles and equation rows",
+      "runtime": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      }
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186059770,
+      "id": "14d047c8-f032-5ff3-aced-65d40bfeeaad",
+      "title": "Finding the Augmented Matrix of a Linear System With Variables Other Than x, y, z"
+    },
+    "question": {
+      ":question/id": "9a1d3ce4-716b-5998-83dd-f1923cd6aa53",
+      ":question/problem": "What is the augmented matrix for the following system of linear equations?\n\n$$\n\\left\\{\\begin{aligned}a-b &=10c \\\\ -10b+10a &=-7\\end{aligned}\\right.\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/worked-solution": "First, we organize the system so that the variables are ordered $a,b,c$ on the left-hand side, the constants are on the right-hand side, and every variable has a coefficient:\n\n$$\n\\left\\{\\begin{aligned}1a-1b-10c &=0 \\\\ 10a-10b+0c &=-7\\end{aligned}\\right.\n$$\n\nThe coefficient matrix consists of the coefficients of the variables:\n\n$$\n\\begin{bmatrix}1 & -1 & -10 \\\\ 10 & -10 & 0\\end{bmatrix}\n$$\n\nThe augmented matrix is the coefficient matrix augmented with the column that represents the right-hand sides of the equations:\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -1 & -10 & 0 \\\\ 10 & -10 & 0 & -7\\end{array}\\right]\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "14344435-0a38-5e11-8149-054ef87ec338",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "6917bd9c-04ed-5728-8d1f-433e463ec5cc",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{ccc|c}1 & -1 & -10 & 0 \\\\ 10 & -10 & 0 & -7\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "c07d8807-358b-523a-a087-72a3b4cbb7f8",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{ccc|c}1 & -1 & 0 & 10 \\\\ 10 & -10 & 0 & -7\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "3d21b445-ccff-5ddd-9a63-09f91ecac228",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{ccc|c}1 & 0 & -1 & 10 \\\\ 10 & 0 & 10 & -7\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "70e5b222-f3b5-52a5-95f5-567338c53678",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{cc|c}1 & -1 & 10 \\\\ -10 & 10 & -7\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "6b586f34-1aba-5558-a981-a5f02be665fb",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{ccc|c}1 & -1 & -10 & 0 \\\\ 10 & -10 & 0 & 7\\end{array}\\right]"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "6917bd9c-04ed-5728-8d1f-433e463ec5cc"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "other-variables-matrices-1.1",
+      "seed": 2,
+      "template": "augmented",
+      "bank_profile": "q-1073",
+      "role_assignment": {
+        "columns": [
+          0,
+          2,
+          1
+        ],
+        "rows": [
+          0,
+          1
+        ]
+      },
+      "target_recipe": "correct",
+      "parameters": {
+        "k": 10,
+        "l": -10,
+        "m": -10,
+        "r": -7
+      },
+      "system_parameters": {
+        "k": 10,
+        "l": -10,
+        "m": -10,
+        "r": -7
+      },
+      "source": {
+        "database": "math",
+        "basis": 5346,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_references": [
+        "q-1073"
+      ],
+      "eligible_for_learning": true,
+      "evidence_only": false,
+      "mathematical_fingerprint": "c670b1e2911b91350565012c38e60ee1204ea259374c073c6ae33bf5d005e3e5",
+      "content_identity": "c963969f81085a193995c6711707186319974c6bf653f05b9da7801f82564dde",
+      "recipes": [
+        {
+          "recipe": "correct",
+          "is_correct": true,
+          "matrix": [
+            [
+              1,
+              -1,
+              -10,
+              0
+            ],
+            [
+              10,
+              -10,
+              0,
+              -7
+            ]
+          ],
+          "augmented_notation": true
+        },
+        {
+          "recipe": "treat_b_coefficient_as_constant",
+          "is_correct": false,
+          "matrix": [
+            [
+              1,
+              -1,
+              0,
+              10
+            ],
+            [
+              10,
+              -10,
+              0,
+              -7
+            ]
+          ],
+          "augmented_notation": true
+        },
+        {
+          "recipe": "omit_b_column_and_use_second_row_appearance_order",
+          "is_correct": false,
+          "matrix": [
+            [
+              1,
+              -1,
+              10
+            ],
+            [
+              -10,
+              10,
+              -7
+            ]
+          ],
+          "augmented_notation": true
+        },
+        {
+          "recipe": "reverse_second_constant",
+          "is_correct": false,
+          "matrix": [
+            [
+              1,
+              -1,
+              -10,
+              0
+            ],
+            [
+              10,
+              -10,
+              0,
+              7
+            ]
+          ],
+          "augmented_notation": true
+        },
+        {
+          "recipe": "appearance_order_and_negate_c_second_row",
+          "is_correct": false,
+          "matrix": [
+            [
+              1,
+              0,
+              -1,
+              10
+            ],
+            [
+              10,
+              0,
+              10,
+              -7
+            ]
+          ],
+          "augmented_notation": true
+        }
+      ],
+      "plot_rating": "none",
+      "domains": "signed nonzero integer magnitude 1..15; eligible source-template answer roles, permuted variable roles and equation rows",
+      "runtime": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      }
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186059770,
+      "id": "14d047c8-f032-5ff3-aced-65d40bfeeaad",
+      "title": "Finding the Augmented Matrix of a Linear System With Variables Other Than x, y, z"
+    },
+    "question": {
+      ":question/id": "c2ad9a6c-9ad0-5410-be95-f22f43e944c2",
+      ":question/problem": "What is the augmented matrix for the following system of linear equations?\n\n$$\n\\left\\{\\begin{aligned}-4b-5c &=9 \\\\ c-b &=-15a\\end{aligned}\\right.\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/worked-solution": "First, we organize the system so that the variables are ordered $a,b,c$ on the left-hand side, the constants are on the right-hand side, and every variable has a coefficient:\n\n$$\n\\left\\{\\begin{aligned}0a-4b-5c &=9 \\\\ 15a-1b+1c &=0\\end{aligned}\\right.\n$$\n\nThe coefficient matrix consists of the coefficients of the variables:\n\n$$\n\\begin{bmatrix}0 & -4 & -5 \\\\ 15 & -1 & 1\\end{bmatrix}\n$$\n\nThe augmented matrix is the coefficient matrix augmented with the column that represents the right-hand sides of the equations:\n\n$$\n\\left[\\begin{array}{ccc|c}0 & -4 & -5 & 9 \\\\ 15 & -1 & 1 & 0\\end{array}\\right]\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "6a85c3bb-441b-5d34-9b7b-1fb55d5da45e",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "14f48766-35ce-5178-bc76-bddee3c0d6d8",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{cc|c}-5 & -4 & 9 \\\\ -1 & 1 & -15\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "3d09f206-1f8f-5f02-99cc-bb2b93d7fe25",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{ccc|c}0 & -4 & -5 & 9 \\\\ 15 & -1 & 1 & 0\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "99fc364e-c6ab-583e-a63a-7b9f570e50f7",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{ccc|c}0 & -4 & -5 & 9 \\\\ 0 & -1 & 1 & -15\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "b2f1b5fb-ffc9-5728-a745-ff9b365d2b51",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{ccc|c}0 & -4 & -5 & -9 \\\\ 15 & -1 & 1 & 0\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "aa6e3aea-4b00-58bb-8d9f-faecf11ed9a3",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{ccc|c}-5 & 0 & 4 & 9 \\\\ -1 & 0 & 1 & -15\\end{array}\\right]"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "3d09f206-1f8f-5f02-99cc-bb2b93d7fe25"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "other-variables-matrices-1.1",
+      "seed": 3,
+      "template": "augmented",
+      "bank_profile": "q-1073",
+      "role_assignment": {
+        "columns": [
+          2,
+          0,
+          1
+        ],
+        "rows": [
+          1,
+          0
+        ]
+      },
+      "target_recipe": "correct",
+      "parameters": {
+        "k": -15,
+        "l": 5,
+        "m": -4,
+        "r": 9
+      },
+      "system_parameters": {
+        "k": -15,
+        "l": 5,
+        "m": -4,
+        "r": 9
+      },
+      "source": {
+        "database": "math",
+        "basis": 5346,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_references": [
+        "q-1073"
+      ],
+      "eligible_for_learning": true,
+      "evidence_only": false,
+      "mathematical_fingerprint": "c40f31aef5b2da2b64c37b306a62e161ca951121e6b31471676d107cf31c588f",
+      "content_identity": "5201772a75e1f143b74083bc1b47fc62f6d46a3657968833b80e3bc7d76b3272",
+      "recipes": [
+        {
+          "recipe": "correct",
+          "is_correct": true,
+          "matrix": [
+            [
+              0,
+              -4,
+              -5,
+              9
+            ],
+            [
+              15,
+              -1,
+              1,
+              0
+            ]
+          ],
+          "augmented_notation": true
+        },
+        {
+          "recipe": "treat_b_coefficient_as_constant",
+          "is_correct": false,
+          "matrix": [
+            [
+              0,
+              -4,
+              -5,
+              9
+            ],
+            [
+              0,
+              -1,
+              1,
+              -15
+            ]
+          ],
+          "augmented_notation": true
+        },
+        {
+          "recipe": "omit_b_column_and_use_second_row_appearance_order",
+          "is_correct": false,
+          "matrix": [
+            [
+              -5,
+              -4,
+              9
+            ],
+            [
+              -1,
+              1,
+              -15
+            ]
+          ],
+          "augmented_notation": true
+        },
+        {
+          "recipe": "reverse_second_constant",
+          "is_correct": false,
+          "matrix": [
+            [
+              0,
+              -4,
+              -5,
+              -9
+            ],
+            [
+              15,
+              -1,
+              1,
+              0
+            ]
+          ],
+          "augmented_notation": true
+        },
+        {
+          "recipe": "appearance_order_and_negate_c_second_row",
+          "is_correct": false,
+          "matrix": [
+            [
+              -5,
+              0,
+              4,
+              9
+            ],
+            [
+              -1,
+              0,
+              1,
+              -15
+            ]
+          ],
+          "augmented_notation": true
+        }
+      ],
+      "plot_rating": "none",
+      "domains": "signed nonzero integer magnitude 1..15; eligible source-template answer roles, permuted variable roles and equation rows",
+      "runtime": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      }
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186059770,
+      "id": "14d047c8-f032-5ff3-aced-65d40bfeeaad",
+      "title": "Finding the Augmented Matrix of a Linear System With Variables Other Than x, y, z"
+    },
+    "question": {
+      ":question/id": "aed4944f-3b34-59cf-ac46-2120c4e8d335",
+      ":question/problem": "What is the augmented matrix for the following system of linear equations?\n\n$$\n\\left\\{\\begin{aligned}13c+7b &=-4 \\\\ b-c &=-2a\\end{aligned}\\right.\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/worked-solution": "First, we organize the system so that the variables are ordered $a,b,c$ on the left-hand side, the constants are on the right-hand side, and every variable has a coefficient:\n\n$$\n\\left\\{\\begin{aligned}0a+7b+13c &=-4 \\\\ 2a+1b-1c &=0\\end{aligned}\\right.\n$$\n\nThe coefficient matrix consists of the coefficients of the variables:\n\n$$\n\\begin{bmatrix}0 & 7 & 13 \\\\ 2 & 1 & -1\\end{bmatrix}\n$$\n\nThe augmented matrix is the coefficient matrix augmented with the column that represents the right-hand sides of the equations:\n\n$$\n\\left[\\begin{array}{ccc|c}0 & 7 & 13 & -4 \\\\ 2 & 1 & -1 & 0\\end{array}\\right]\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "0d923ac1-2a89-5401-9298-f2c991fbe930",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "82c74056-2a0c-5998-b8a7-dfb05af3f802",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{ccc|c}0 & 7 & 13 & 4 \\\\ 2 & 1 & -1 & 0\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "44fac713-6b01-5e76-9006-38fa4b16c70e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{ccc|c}0 & 7 & 13 & -4 \\\\ 2 & 1 & -1 & 0\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "3719ee9b-951b-51fa-a756-7d530edb62ce",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{ccc|c}0 & 7 & 13 & -4 \\\\ 0 & 1 & -1 & -2\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "3e6972a2-a49c-513e-a9a3-85e092d2e827",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{cc|c}13 & 7 & -4 \\\\ 1 & -1 & -2\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "330f1af7-3e25-571f-b20f-fc3c62032259",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{ccc|c}7 & -13 & 0 & -4 \\\\ -1 & 1 & 0 & -2\\end{array}\\right]"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "44fac713-6b01-5e76-9006-38fa4b16c70e"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "other-variables-matrices-1.1",
+      "seed": 4,
+      "template": "augmented",
+      "bank_profile": "q-1073",
+      "role_assignment": {
+        "columns": [
+          1,
+          0,
+          2
+        ],
+        "rows": [
+          1,
+          0
+        ]
+      },
+      "target_recipe": "correct",
+      "parameters": {
+        "k": -2,
+        "l": -7,
+        "m": 13,
+        "r": -4
+      },
+      "system_parameters": {
+        "k": -2,
+        "l": -7,
+        "m": 13,
+        "r": -4
+      },
+      "source": {
+        "database": "math",
+        "basis": 5346,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_references": [
+        "q-1073"
+      ],
+      "eligible_for_learning": true,
+      "evidence_only": false,
+      "mathematical_fingerprint": "646c9cfc65490f1d06a25275f8be629e2acc95536f83bdfd04eade67942d5544",
+      "content_identity": "84a1773bc032c6535a41737fa8c07139308ee73a66dd926d608557f71957058a",
+      "recipes": [
+        {
+          "recipe": "correct",
+          "is_correct": true,
+          "matrix": [
+            [
+              0,
+              7,
+              13,
+              -4
+            ],
+            [
+              2,
+              1,
+              -1,
+              0
+            ]
+          ],
+          "augmented_notation": true
+        },
+        {
+          "recipe": "treat_b_coefficient_as_constant",
+          "is_correct": false,
+          "matrix": [
+            [
+              0,
+              7,
+              13,
+              -4
+            ],
+            [
+              0,
+              1,
+              -1,
+              -2
+            ]
+          ],
+          "augmented_notation": true
+        },
+        {
+          "recipe": "omit_b_column_and_use_second_row_appearance_order",
+          "is_correct": false,
+          "matrix": [
+            [
+              13,
+              7,
+              -4
+            ],
+            [
+              1,
+              -1,
+              -2
+            ]
+          ],
+          "augmented_notation": true
+        },
+        {
+          "recipe": "reverse_second_constant",
+          "is_correct": false,
+          "matrix": [
+            [
+              0,
+              7,
+              13,
+              4
+            ],
+            [
+              2,
+              1,
+              -1,
+              0
+            ]
+          ],
+          "augmented_notation": true
+        },
+        {
+          "recipe": "appearance_order_and_negate_c_second_row",
+          "is_correct": false,
+          "matrix": [
+            [
+              7,
+              -13,
+              0,
+              -4
+            ],
+            [
+              -1,
+              1,
+              0,
+              -2
+            ]
+          ],
+          "augmented_notation": true
+        }
+      ],
+      "plot_rating": "none",
+      "domains": "signed nonzero integer magnitude 1..15; eligible source-template answer roles, permuted variable roles and equation rows",
+      "runtime": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      }
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186059770,
+      "id": "14d047c8-f032-5ff3-aced-65d40bfeeaad",
+      "title": "Finding the Augmented Matrix of a Linear System With Variables Other Than x, y, z"
+    },
+    "question": {
+      ":question/id": "7964a81e-5664-580e-91ce-1f30a734cb30",
+      ":question/problem": "What is the augmented matrix for the following system of linear equations?\n\n$$\n\\left\\{\\begin{aligned}8a+2c &=7 \\\\ c-a &=-15b\\end{aligned}\\right.\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/worked-solution": "First, we organize the system so that the variables are ordered $a,b,c$ on the left-hand side, the constants are on the right-hand side, and every variable has a coefficient:\n\n$$\n\\left\\{\\begin{aligned}8a+0b+2c &=7 \\\\ -1a+15b+1c &=0\\end{aligned}\\right.\n$$\n\nThe coefficient matrix consists of the coefficients of the variables:\n\n$$\n\\begin{bmatrix}8 & 0 & 2 \\\\ -1 & 15 & 1\\end{bmatrix}\n$$\n\nThe augmented matrix is the coefficient matrix augmented with the column that represents the right-hand sides of the equations:\n\n$$\n\\left[\\begin{array}{ccc|c}8 & 0 & 2 & 7 \\\\ -1 & 15 & 1 & 0\\end{array}\\right]\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "f0e17498-ea38-58c1-ad22-8fe07a838004",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "4d2349cc-cc14-5b9e-b8c8-3d83b9919eef",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{ccc|c}8 & 0 & 2 & -7 \\\\ -1 & 15 & 1 & 0\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "fee1ff17-1e37-537c-a68c-01e186628ed7",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{cc|c}2 & 8 & -7 \\\\ -1 & 1 & -15\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "6a2c86ea-0bc4-53dd-9a30-919c94da977c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{ccc|c}8 & 0 & 2 & -7 \\\\ -1 & 0 & 1 & -15\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "6e89d358-1a40-5441-b229-91f77cb4adae",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{ccc|c}8 & 0 & 2 & 7 \\\\ -1 & 15 & 1 & 0\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "4552d78e-df40-5e18-8656-ae5c7a77152f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{ccc|c}0 & 2 & -8 & -7 \\\\ 0 & -1 & 1 & -15\\end{array}\\right]"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "6e89d358-1a40-5441-b229-91f77cb4adae"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "other-variables-matrices-1.1",
+      "seed": 5,
+      "template": "augmented",
+      "bank_profile": "q-1073",
+      "role_assignment": {
+        "columns": [
+          2,
+          1,
+          0
+        ],
+        "rows": [
+          1,
+          0
+        ]
+      },
+      "target_recipe": "reverse_second_constant",
+      "parameters": {
+        "k": -15,
+        "l": -2,
+        "m": 8,
+        "r": -7
+      },
+      "system_parameters": {
+        "k": -15,
+        "l": -2,
+        "m": 8,
+        "r": 7
+      },
+      "source": {
+        "database": "math",
+        "basis": 5346,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_references": [
+        "q-1073"
+      ],
+      "eligible_for_learning": true,
+      "evidence_only": false,
+      "mathematical_fingerprint": "1a37dd5b0c10ee471b9267e34fd39c4a04c6d8a46172113a04755282c74d080a",
+      "content_identity": "ee25e7c096d745d614f9899dabe2072ae2551a021b0d22f857b1fc6d083870b6",
+      "recipes": [
+        {
+          "recipe": "reverse_second_constant",
+          "is_correct": true,
+          "matrix": [
+            [
+              8,
+              0,
+              2,
+              7
+            ],
+            [
+              -1,
+              15,
+              1,
+              0
+            ]
+          ],
+          "augmented_notation": true
+        },
+        {
+          "recipe": "correct",
+          "is_correct": false,
+          "matrix": [
+            [
+              8,
+              0,
+              2,
+              -7
+            ],
+            [
+              -1,
+              15,
+              1,
+              0
+            ]
+          ],
+          "augmented_notation": true
+        },
+        {
+          "recipe": "treat_b_coefficient_as_constant",
+          "is_correct": false,
+          "matrix": [
+            [
+              8,
+              0,
+              2,
+              -7
+            ],
+            [
+              -1,
+              0,
+              1,
+              -15
+            ]
+          ],
+          "augmented_notation": true
+        },
+        {
+          "recipe": "omit_b_column_and_use_second_row_appearance_order",
+          "is_correct": false,
+          "matrix": [
+            [
+              2,
+              8,
+              -7
+            ],
+            [
+              -1,
+              1,
+              -15
+            ]
+          ],
+          "augmented_notation": true
+        },
+        {
+          "recipe": "appearance_order_and_negate_c_second_row",
+          "is_correct": false,
+          "matrix": [
+            [
+              0,
+              2,
+              -8,
+              -7
+            ],
+            [
+              0,
+              -1,
+              1,
+              -15
+            ]
+          ],
+          "augmented_notation": true
+        }
+      ],
+      "plot_rating": "none",
+      "domains": "signed nonzero integer magnitude 1..15; eligible source-template answer roles, permuted variable roles and equation rows",
+      "runtime": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      }
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186059770,
+      "id": "14d047c8-f032-5ff3-aced-65d40bfeeaad",
+      "title": "Finding the Augmented Matrix of a Linear System With Variables Other Than x, y, z"
+    },
+    "question": {
+      ":question/id": "c298da05-a74a-5fd5-aba1-53c3ccb1a434",
+      ":question/problem": "What is the augmented matrix for the following system of linear equations?\n\n$$\n\\left\\{\\begin{aligned}b-a &=13c \\\\ -5a-6b &=13\\end{aligned}\\right.\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/worked-solution": "First, we organize the system so that the variables are ordered $a,b,c$ on the left-hand side, the constants are on the right-hand side, and every variable has a coefficient:\n\n$$\n\\left\\{\\begin{aligned}-1a+1b-13c &=0 \\\\ -5a-6b+0c &=13\\end{aligned}\\right.\n$$\n\nThe coefficient matrix consists of the coefficients of the variables:\n\n$$\n\\begin{bmatrix}-1 & 1 & -13 \\\\ -5 & -6 & 0\\end{bmatrix}\n$$\n\nThe augmented matrix is the coefficient matrix augmented with the column that represents the right-hand sides of the equations:\n\n$$\n\\left[\\begin{array}{ccc|c}-1 & 1 & -13 & 0 \\\\ -5 & -6 & 0 & 13\\end{array}\\right]\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "801b8c50-41b2-5f1a-b694-9949b9810f97",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "aeda790c-dc76-5299-8867-fc0165abf529",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{ccc|c}0 & 1 & -1 & 13 \\\\ 0 & 5 & -6 & 13\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "272865bb-c730-5e24-a238-ffedd28a6f89",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{ccc|c}-1 & 1 & -13 & 0 \\\\ -5 & -6 & 0 & 13\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "c6abb7c1-228b-5d88-87a8-1fc2ac16c9ad",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{cc|c}-1 & 1 & 13 \\\\ -6 & -5 & 13\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "51354a77-d197-5845-85c6-270add4a7bb8",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{ccc|c}-1 & 1 & -13 & 0 \\\\ -5 & -6 & 0 & -13\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "d7b64781-9dec-517f-8a8c-0724c784b99c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{ccc|c}-1 & 1 & 0 & 13 \\\\ -5 & -6 & 0 & 13\\end{array}\\right]"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "272865bb-c730-5e24-a238-ffedd28a6f89"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "other-variables-matrices-1.1",
+      "seed": 6,
+      "template": "augmented",
+      "bank_profile": "q-1073",
+      "role_assignment": {
+        "columns": [
+          1,
+          2,
+          0
+        ],
+        "rows": [
+          0,
+          1
+        ]
+      },
+      "target_recipe": "correct",
+      "parameters": {
+        "k": 13,
+        "l": 6,
+        "m": -5,
+        "r": 13
+      },
+      "system_parameters": {
+        "k": 13,
+        "l": 6,
+        "m": -5,
+        "r": 13
+      },
+      "source": {
+        "database": "math",
+        "basis": 5346,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_references": [
+        "q-1073"
+      ],
+      "eligible_for_learning": true,
+      "evidence_only": false,
+      "mathematical_fingerprint": "dd39f1b94c650f0c4aae49c1b4e34926dec86cef39e12c39094314e0580cda95",
+      "content_identity": "e63f3a47daba04c493fc9d5c4989be097cb45b8f9fb7ecccd23088b790703e9e",
+      "recipes": [
+        {
+          "recipe": "correct",
+          "is_correct": true,
+          "matrix": [
+            [
+              -1,
+              1,
+              -13,
+              0
+            ],
+            [
+              -5,
+              -6,
+              0,
+              13
+            ]
+          ],
+          "augmented_notation": true
+        },
+        {
+          "recipe": "treat_b_coefficient_as_constant",
+          "is_correct": false,
+          "matrix": [
+            [
+              -1,
+              1,
+              0,
+              13
+            ],
+            [
+              -5,
+              -6,
+              0,
+              13
+            ]
+          ],
+          "augmented_notation": true
+        },
+        {
+          "recipe": "omit_b_column_and_use_second_row_appearance_order",
+          "is_correct": false,
+          "matrix": [
+            [
+              -1,
+              1,
+              13
+            ],
+            [
+              -6,
+              -5,
+              13
+            ]
+          ],
+          "augmented_notation": true
+        },
+        {
+          "recipe": "reverse_second_constant",
+          "is_correct": false,
+          "matrix": [
+            [
+              -1,
+              1,
+              -13,
+              0
+            ],
+            [
+              -5,
+              -6,
+              0,
+              -13
+            ]
+          ],
+          "augmented_notation": true
+        },
+        {
+          "recipe": "appearance_order_and_negate_c_second_row",
+          "is_correct": false,
+          "matrix": [
+            [
+              0,
+              1,
+              -1,
+              13
+            ],
+            [
+              0,
+              5,
+              -6,
+              13
+            ]
+          ],
+          "augmented_notation": true
+        }
+      ],
+      "plot_rating": "none",
+      "domains": "signed nonzero integer magnitude 1..15; eligible source-template answer roles, permuted variable roles and equation rows",
+      "runtime": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      }
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186059770,
+      "id": "14d047c8-f032-5ff3-aced-65d40bfeeaad",
+      "title": "Finding the Augmented Matrix of a Linear System With Variables Other Than x, y, z"
+    },
+    "question": {
+      ":question/id": "e809e822-7996-59ac-b18f-926854848565",
+      ":question/problem": "What is the augmented matrix for the following system of linear equations?\n\n$$\n\\left\\{\\begin{aligned}a-c &=10b \\\\ -c+15a &=7\\end{aligned}\\right.\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/worked-solution": "First, we organize the system so that the variables are ordered $a,b,c$ on the left-hand side, the constants are on the right-hand side, and every variable has a coefficient:\n\n$$\n\\left\\{\\begin{aligned}1a-10b-1c &=0 \\\\ 15a+0b-1c &=7\\end{aligned}\\right.\n$$\n\nThe coefficient matrix consists of the coefficients of the variables:\n\n$$\n\\begin{bmatrix}1 & -10 & -1 \\\\ 15 & 0 & -1\\end{bmatrix}\n$$\n\nThe augmented matrix is the coefficient matrix augmented with the column that represents the right-hand sides of the equations:\n\n$$\n\\left[\\begin{array}{ccc|c}1 & -10 & -1 & 0 \\\\ 15 & 0 & -1 & 7\\end{array}\\right]\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "cf483959-1fe4-50c4-a4fb-7f1811476ed4",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "95fea07b-df09-516f-ad77-a4edbac3c610",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{ccc|c}1 & -10 & -1 & 0 \\\\ 15 & 0 & -1 & -7\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "2944140f-934c-529a-a55a-960b673baf2a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{ccc|c}1 & 0 & -1 & 10 \\\\ 15 & 0 & -1 & -7\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "dda3b97f-4637-5b1b-9cfb-efed91534542",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{ccc|c}1 & -1 & 0 & 10 \\\\ 1 & 15 & 0 & -7\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "2032bc84-b79d-543d-bd02-19e15d42283a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{ccc|c}1 & -10 & -1 & 0 \\\\ 15 & 0 & -1 & 7\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "7c13b241-2cb1-5024-9b08-c028687592c9",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{cc|c}1 & -1 & 10 \\\\ -1 & 15 & -7\\end{array}\\right]"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "2032bc84-b79d-543d-bd02-19e15d42283a"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "other-variables-matrices-1.1",
+      "seed": 7,
+      "template": "augmented",
+      "bank_profile": "q-1073",
+      "role_assignment": {
+        "columns": [
+          0,
+          1,
+          2
+        ],
+        "rows": [
+          0,
+          1
+        ]
+      },
+      "target_recipe": "reverse_second_constant",
+      "parameters": {
+        "k": 10,
+        "l": -15,
+        "m": -1,
+        "r": -7
+      },
+      "system_parameters": {
+        "k": 10,
+        "l": -15,
+        "m": -1,
+        "r": 7
+      },
+      "source": {
+        "database": "math",
+        "basis": 5346,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_references": [
+        "q-1073"
+      ],
+      "eligible_for_learning": true,
+      "evidence_only": false,
+      "mathematical_fingerprint": "c637f4080692bc28b370a3483c109e843b21f0934ca0bef6414ba8855c356535",
+      "content_identity": "ff6080e28512b22a7b839dc7502dff51e4377a52ee6b6022147cabb5102234ec",
+      "recipes": [
+        {
+          "recipe": "reverse_second_constant",
+          "is_correct": true,
+          "matrix": [
+            [
+              1,
+              -10,
+              -1,
+              0
+            ],
+            [
+              15,
+              0,
+              -1,
+              7
+            ]
+          ],
+          "augmented_notation": true
+        },
+        {
+          "recipe": "correct",
+          "is_correct": false,
+          "matrix": [
+            [
+              1,
+              -10,
+              -1,
+              0
+            ],
+            [
+              15,
+              0,
+              -1,
+              -7
+            ]
+          ],
+          "augmented_notation": true
+        },
+        {
+          "recipe": "treat_b_coefficient_as_constant",
+          "is_correct": false,
+          "matrix": [
+            [
+              1,
+              0,
+              -1,
+              10
+            ],
+            [
+              15,
+              0,
+              -1,
+              -7
+            ]
+          ],
+          "augmented_notation": true
+        },
+        {
+          "recipe": "omit_b_column_and_use_second_row_appearance_order",
+          "is_correct": false,
+          "matrix": [
+            [
+              1,
+              -1,
+              10
+            ],
+            [
+              -1,
+              15,
+              -7
+            ]
+          ],
+          "augmented_notation": true
+        },
+        {
+          "recipe": "appearance_order_and_negate_c_second_row",
+          "is_correct": false,
+          "matrix": [
+            [
+              1,
+              -1,
+              0,
+              10
+            ],
+            [
+              1,
+              15,
+              0,
+              -7
+            ]
+          ],
+          "augmented_notation": true
+        }
+      ],
+      "plot_rating": "none",
+      "domains": "signed nonzero integer magnitude 1..15; eligible source-template answer roles, permuted variable roles and equation rows",
+      "runtime": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      }
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186059770,
+      "id": "14d047c8-f032-5ff3-aced-65d40bfeeaad",
+      "title": "Finding the Augmented Matrix of a Linear System With Variables Other Than x, y, z"
+    },
+    "question": {
+      ":question/id": "5881f9e8-1070-5e82-9905-2de72ad284bc",
+      ":question/problem": "What is the augmented matrix for the following system of linear equations?\n\n$$\n\\left\\{\\begin{aligned}b-a &=-3c \\\\ -7a+13b &=-8\\end{aligned}\\right.\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/worked-solution": "First, we organize the system so that the variables are ordered $a,b,c$ on the left-hand side, the constants are on the right-hand side, and every variable has a coefficient:\n\n$$\n\\left\\{\\begin{aligned}-1a+1b+3c &=0 \\\\ -7a+13b+0c &=-8\\end{aligned}\\right.\n$$\n\nThe coefficient matrix consists of the coefficients of the variables:\n\n$$\n\\begin{bmatrix}-1 & 1 & 3 \\\\ -7 & 13 & 0\\end{bmatrix}\n$$\n\nThe augmented matrix is the coefficient matrix augmented with the column that represents the right-hand sides of the equations:\n\n$$\n\\left[\\begin{array}{ccc|c}-1 & 1 & 3 & 0 \\\\ -7 & 13 & 0 & -8\\end{array}\\right]\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "860056aa-da8b-5383-aa60-8e32bbfccfe9",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "bcd090c0-2c3b-56bb-8695-b65adf2a5790",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{ccc|c}-1 & 1 & 3 & 0 \\\\ -7 & 13 & 0 & -8\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "4dbe1122-8af5-5de8-8ad9-9f14db463d81",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{cc|c}-1 & 1 & -3 \\\\ 13 & -7 & -8\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "590bfc51-bb75-5eeb-89fd-b18e61d23111",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{ccc|c}-1 & 1 & 0 & -3 \\\\ -7 & 13 & 0 & -8\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "72acf882-6276-5faa-9f65-087197b9160b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{ccc|c}0 & 1 & -1 & -3 \\\\ 0 & 7 & 13 & -8\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "235d034b-0b53-559f-b7c1-345480137940",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{ccc|c}-1 & 1 & 3 & 0 \\\\ -7 & 13 & 0 & 8\\end{array}\\right]"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "bcd090c0-2c3b-56bb-8695-b65adf2a5790"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "other-variables-matrices-1.1",
+      "seed": 8,
+      "template": "augmented",
+      "bank_profile": "q-1073",
+      "role_assignment": {
+        "columns": [
+          1,
+          2,
+          0
+        ],
+        "rows": [
+          0,
+          1
+        ]
+      },
+      "target_recipe": "correct",
+      "parameters": {
+        "k": -3,
+        "l": -13,
+        "m": -7,
+        "r": -8
+      },
+      "system_parameters": {
+        "k": -3,
+        "l": -13,
+        "m": -7,
+        "r": -8
+      },
+      "source": {
+        "database": "math",
+        "basis": 5346,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_references": [
+        "q-1073"
+      ],
+      "eligible_for_learning": true,
+      "evidence_only": false,
+      "mathematical_fingerprint": "d57ece3d26a3b48dbbc9752a0b54f5fee700600be90b41bc9ff53c1d0860a041",
+      "content_identity": "1d532f35dbc5a87157327f581dc95b84f2c3988412507e8cf48b1d620919492e",
+      "recipes": [
+        {
+          "recipe": "correct",
+          "is_correct": true,
+          "matrix": [
+            [
+              -1,
+              1,
+              3,
+              0
+            ],
+            [
+              -7,
+              13,
+              0,
+              -8
+            ]
+          ],
+          "augmented_notation": true
+        },
+        {
+          "recipe": "treat_b_coefficient_as_constant",
+          "is_correct": false,
+          "matrix": [
+            [
+              -1,
+              1,
+              0,
+              -3
+            ],
+            [
+              -7,
+              13,
+              0,
+              -8
+            ]
+          ],
+          "augmented_notation": true
+        },
+        {
+          "recipe": "omit_b_column_and_use_second_row_appearance_order",
+          "is_correct": false,
+          "matrix": [
+            [
+              -1,
+              1,
+              -3
+            ],
+            [
+              13,
+              -7,
+              -8
+            ]
+          ],
+          "augmented_notation": true
+        },
+        {
+          "recipe": "reverse_second_constant",
+          "is_correct": false,
+          "matrix": [
+            [
+              -1,
+              1,
+              3,
+              0
+            ],
+            [
+              -7,
+              13,
+              0,
+              8
+            ]
+          ],
+          "augmented_notation": true
+        },
+        {
+          "recipe": "appearance_order_and_negate_c_second_row",
+          "is_correct": false,
+          "matrix": [
+            [
+              0,
+              1,
+              -1,
+              -3
+            ],
+            [
+              0,
+              7,
+              13,
+              -8
+            ]
+          ],
+          "augmented_notation": true
+        }
+      ],
+      "plot_rating": "none",
+      "domains": "signed nonzero integer magnitude 1..15; eligible source-template answer roles, permuted variable roles and equation rows",
+      "runtime": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      }
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186059770,
+      "id": "14d047c8-f032-5ff3-aced-65d40bfeeaad",
+      "title": "Finding the Augmented Matrix of a Linear System With Variables Other Than x, y, z"
+    },
+    "question": {
+      ":question/id": "0c89c1ed-c1c5-5a88-8a51-e5570a471478",
+      ":question/problem": "What is the augmented matrix for the following system of linear equations?\n\n$$\n\\left\\{\\begin{aligned}c-a &=-6b \\\\ -6a-15c &=12\\end{aligned}\\right.\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/worked-solution": "First, we organize the system so that the variables are ordered $a,b,c$ on the left-hand side, the constants are on the right-hand side, and every variable has a coefficient:\n\n$$\n\\left\\{\\begin{aligned}-1a+6b+1c &=0 \\\\ -6a+0b-15c &=12\\end{aligned}\\right.\n$$\n\nThe coefficient matrix consists of the coefficients of the variables:\n\n$$\n\\begin{bmatrix}-1 & 6 & 1 \\\\ -6 & 0 & -15\\end{bmatrix}\n$$\n\nThe augmented matrix is the coefficient matrix augmented with the column that represents the right-hand sides of the equations:\n\n$$\n\\left[\\begin{array}{ccc|c}-1 & 6 & 1 & 0 \\\\ -6 & 0 & -15 & 12\\end{array}\\right]\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "41cfdf06-92b2-5613-96e8-1f9296e4b4ff",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "33d286a4-1b5b-5d64-ab89-807f4e1ad8f0",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{ccc|c}-1 & 6 & 1 & 0 \\\\ -6 & 0 & -15 & 12\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "b465f572-8837-5518-8c40-e7078089c377",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{ccc|c}0 & -1 & 1 & -6 \\\\ 0 & -15 & 6 & -12\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "76e06abe-1b22-542e-81a7-dedc2a188a03",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{ccc|c}-1 & 0 & 1 & -6 \\\\ -6 & 0 & -15 & -12\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "9eb49b42-b71c-56ab-9a0f-1a0b66808014",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{ccc|c}-1 & 6 & 1 & 0 \\\\ -6 & 0 & -15 & -12\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "16f649bb-62c9-5b29-973c-ab79b1d4d7e6",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{cc|c}-1 & 1 & -6 \\\\ -15 & -6 & -12\\end{array}\\right]"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "33d286a4-1b5b-5d64-ab89-807f4e1ad8f0"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "other-variables-matrices-1.1",
+      "seed": 9,
+      "template": "augmented",
+      "bank_profile": "q-1073",
+      "role_assignment": {
+        "columns": [
+          2,
+          1,
+          0
+        ],
+        "rows": [
+          0,
+          1
+        ]
+      },
+      "target_recipe": "reverse_second_constant",
+      "parameters": {
+        "k": -6,
+        "l": 15,
+        "m": -6,
+        "r": -12
+      },
+      "system_parameters": {
+        "k": -6,
+        "l": 15,
+        "m": -6,
+        "r": 12
+      },
+      "source": {
+        "database": "math",
+        "basis": 5346,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_references": [
+        "q-1073"
+      ],
+      "eligible_for_learning": true,
+      "evidence_only": false,
+      "mathematical_fingerprint": "2fb11c4b135c14b2fcb48808bc0fa9696e3c4ed20d2bb18199524cd2fc238e59",
+      "content_identity": "f3b41a9c2dae4bf899de48e3c061d149d75275b3f9e9338b4ced993c1fa4692c",
+      "recipes": [
+        {
+          "recipe": "reverse_second_constant",
+          "is_correct": true,
+          "matrix": [
+            [
+              -1,
+              6,
+              1,
+              0
+            ],
+            [
+              -6,
+              0,
+              -15,
+              12
+            ]
+          ],
+          "augmented_notation": true
+        },
+        {
+          "recipe": "correct",
+          "is_correct": false,
+          "matrix": [
+            [
+              -1,
+              6,
+              1,
+              0
+            ],
+            [
+              -6,
+              0,
+              -15,
+              -12
+            ]
+          ],
+          "augmented_notation": true
+        },
+        {
+          "recipe": "treat_b_coefficient_as_constant",
+          "is_correct": false,
+          "matrix": [
+            [
+              -1,
+              0,
+              1,
+              -6
+            ],
+            [
+              -6,
+              0,
+              -15,
+              -12
+            ]
+          ],
+          "augmented_notation": true
+        },
+        {
+          "recipe": "omit_b_column_and_use_second_row_appearance_order",
+          "is_correct": false,
+          "matrix": [
+            [
+              -1,
+              1,
+              -6
+            ],
+            [
+              -15,
+              -6,
+              -12
+            ]
+          ],
+          "augmented_notation": true
+        },
+        {
+          "recipe": "appearance_order_and_negate_c_second_row",
+          "is_correct": false,
+          "matrix": [
+            [
+              0,
+              -1,
+              1,
+              -6
+            ],
+            [
+              0,
+              -15,
+              6,
+              -12
+            ]
+          ],
+          "augmented_notation": true
+        }
+      ],
+      "plot_rating": "none",
+      "domains": "signed nonzero integer magnitude 1..15; eligible source-template answer roles, permuted variable roles and equation rows",
+      "runtime": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      }
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186059770,
+      "id": "14d047c8-f032-5ff3-aced-65d40bfeeaad",
+      "title": "Finding the Augmented Matrix of a Linear System With Variables Other Than x, y, z"
+    },
+    "question": {
+      ":question/id": "11952615-75dd-5905-9daa-3d644ba0a0f2",
+      ":question/problem": "What is the augmented matrix for the following system of linear equations?\n\n$$\n\\left\\{\\begin{aligned}b-a &=14c \\\\ -a-11b &=6\\end{aligned}\\right.\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/worked-solution": "First, we organize the system so that the variables are ordered $a,b,c$ on the left-hand side, the constants are on the right-hand side, and every variable has a coefficient:\n\n$$\n\\left\\{\\begin{aligned}-1a+1b-14c &=0 \\\\ -1a-11b+0c &=6\\end{aligned}\\right.\n$$\n\nThe coefficient matrix consists of the coefficients of the variables:\n\n$$\n\\begin{bmatrix}-1 & 1 & -14 \\\\ -1 & -11 & 0\\end{bmatrix}\n$$\n\nThe augmented matrix is the coefficient matrix augmented with the column that represents the right-hand sides of the equations:\n\n$$\n\\left[\\begin{array}{ccc|c}-1 & 1 & -14 & 0 \\\\ -1 & -11 & 0 & 6\\end{array}\\right]\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "5b93779c-276d-589b-9e2b-11b3045892d1",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "4c656dc3-09b3-579e-8c7c-6b49e6eff332",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{ccc|c}0 & 1 & -1 & 14 \\\\ 0 & 1 & -11 & 6\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "80b05211-b20a-5df8-a702-1e67bd81569e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{ccc|c}-1 & 1 & -14 & 0 \\\\ -1 & -11 & 0 & -6\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "ae9e9d07-d525-5260-b183-042612dc2626",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{cc|c}-1 & 1 & 14 \\\\ -11 & -1 & 6\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "e2bb03a8-91f8-55b3-8b16-fdd09642ea17",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{ccc|c}-1 & 1 & 0 & 14 \\\\ -1 & -11 & 0 & 6\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "c36983c5-b89d-5521-97d5-08f010f4e912",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{ccc|c}-1 & 1 & -14 & 0 \\\\ -1 & -11 & 0 & 6\\end{array}\\right]"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "c36983c5-b89d-5521-97d5-08f010f4e912"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "other-variables-matrices-1.1",
+      "seed": 10,
+      "template": "augmented",
+      "bank_profile": "q-1073",
+      "role_assignment": {
+        "columns": [
+          1,
+          2,
+          0
+        ],
+        "rows": [
+          0,
+          1
+        ]
+      },
+      "target_recipe": "correct",
+      "parameters": {
+        "k": 14,
+        "l": 11,
+        "m": -1,
+        "r": 6
+      },
+      "system_parameters": {
+        "k": 14,
+        "l": 11,
+        "m": -1,
+        "r": 6
+      },
+      "source": {
+        "database": "math",
+        "basis": 5346,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_references": [
+        "q-1073"
+      ],
+      "eligible_for_learning": true,
+      "evidence_only": false,
+      "mathematical_fingerprint": "3d91b47404acea073faf4195e5d9097b1a10eaa1a682d678a5d60854950cd21a",
+      "content_identity": "16a6557d814cec7d9958d88f511aa95053d801a97cbfd84ee140ab71b91c4660",
+      "recipes": [
+        {
+          "recipe": "correct",
+          "is_correct": true,
+          "matrix": [
+            [
+              -1,
+              1,
+              -14,
+              0
+            ],
+            [
+              -1,
+              -11,
+              0,
+              6
+            ]
+          ],
+          "augmented_notation": true
+        },
+        {
+          "recipe": "treat_b_coefficient_as_constant",
+          "is_correct": false,
+          "matrix": [
+            [
+              -1,
+              1,
+              0,
+              14
+            ],
+            [
+              -1,
+              -11,
+              0,
+              6
+            ]
+          ],
+          "augmented_notation": true
+        },
+        {
+          "recipe": "omit_b_column_and_use_second_row_appearance_order",
+          "is_correct": false,
+          "matrix": [
+            [
+              -1,
+              1,
+              14
+            ],
+            [
+              -11,
+              -1,
+              6
+            ]
+          ],
+          "augmented_notation": true
+        },
+        {
+          "recipe": "reverse_second_constant",
+          "is_correct": false,
+          "matrix": [
+            [
+              -1,
+              1,
+              -14,
+              0
+            ],
+            [
+              -1,
+              -11,
+              0,
+              -6
+            ]
+          ],
+          "augmented_notation": true
+        },
+        {
+          "recipe": "appearance_order_and_negate_c_second_row",
+          "is_correct": false,
+          "matrix": [
+            [
+              0,
+              1,
+              -1,
+              14
+            ],
+            [
+              0,
+              1,
+              -11,
+              6
+            ]
+          ],
+          "augmented_notation": true
+        }
+      ],
+      "plot_rating": "none",
+      "domains": "signed nonzero integer magnitude 1..15; eligible source-template answer roles, permuted variable roles and equation rows",
+      "runtime": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      }
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186059770,
+      "id": "14d047c8-f032-5ff3-aced-65d40bfeeaad",
+      "title": "Finding the Augmented Matrix of a Linear System With Variables Other Than x, y, z"
+    },
+    "question": {
+      ":question/id": "0dd68f06-e63a-5fa2-9c78-7302ba9eef0b",
+      ":question/problem": "What is the augmented matrix for the following system of linear equations?\n\n$$\n\\left\\{\\begin{aligned}c-a &=11b \\\\ 5a+2c &=2\\end{aligned}\\right.\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/worked-solution": "First, we organize the system so that the variables are ordered $a,b,c$ on the left-hand side, the constants are on the right-hand side, and every variable has a coefficient:\n\n$$\n\\left\\{\\begin{aligned}-1a-11b+1c &=0 \\\\ 5a+0b+2c &=2\\end{aligned}\\right.\n$$\n\nThe coefficient matrix consists of the coefficients of the variables:\n\n$$\n\\begin{bmatrix}-1 & -11 & 1 \\\\ 5 & 0 & 2\\end{bmatrix}\n$$\n\nThe augmented matrix is the coefficient matrix augmented with the column that represents the right-hand sides of the equations:\n\n$$\n\\left[\\begin{array}{ccc|c}-1 & -11 & 1 & 0 \\\\ 5 & 0 & 2 & 2\\end{array}\\right]\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "9b2d495d-e38b-5bd8-a00c-88f1fdf7a4dc",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "3ba53d37-ff48-55a3-8314-3a6a4bdb562c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{cc|c}-1 & 1 & 11 \\\\ 2 & 5 & -2\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "3a6ca2dd-dc62-58a7-8a7c-e423f577b394",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{ccc|c}-1 & -11 & 1 & 0 \\\\ 5 & 0 & 2 & -2\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "10c6c3fa-c016-5b8e-b7bd-4c31d1e0d18e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{ccc|c}-1 & 0 & 1 & 11 \\\\ 5 & 0 & 2 & -2\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "aec36c7d-1f73-588e-b93d-4d31259a4e2c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{ccc|c}-1 & -11 & 1 & 0 \\\\ 5 & 0 & 2 & 2\\end{array}\\right]"
+            },
+            {
+              ":answer/id": "eb611886-e335-53e6-9eb8-663b334bed08",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\left[\\begin{array}{ccc|c}0 & -1 & 1 & 11 \\\\ 0 & 2 & -5 & -2\\end{array}\\right]"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "aec36c7d-1f73-588e-b93d-4d31259a4e2c"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "other-variables-matrices-1.1",
+      "seed": 11,
+      "template": "augmented",
+      "bank_profile": "q-1073",
+      "role_assignment": {
+        "columns": [
+          2,
+          1,
+          0
+        ],
+        "rows": [
+          0,
+          1
+        ]
+      },
+      "target_recipe": "reverse_second_constant",
+      "parameters": {
+        "k": 11,
+        "l": -2,
+        "m": 5,
+        "r": -2
+      },
+      "system_parameters": {
+        "k": 11,
+        "l": -2,
+        "m": 5,
+        "r": 2
+      },
+      "source": {
+        "database": "math",
+        "basis": 5346,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_references": [
+        "q-1073"
+      ],
+      "eligible_for_learning": true,
+      "evidence_only": false,
+      "mathematical_fingerprint": "3f28e71656ae0f16665fbd9fe246c49a05f27bd1a991033e86b55f274d03a328",
+      "content_identity": "e36290de7f7cf31e589b8d2c8c2efeec9194c82a284567d92da12b5fbb83c04c",
+      "recipes": [
+        {
+          "recipe": "reverse_second_constant",
+          "is_correct": true,
+          "matrix": [
+            [
+              -1,
+              -11,
+              1,
+              0
+            ],
+            [
+              5,
+              0,
+              2,
+              2
+            ]
+          ],
+          "augmented_notation": true
+        },
+        {
+          "recipe": "correct",
+          "is_correct": false,
+          "matrix": [
+            [
+              -1,
+              -11,
+              1,
+              0
+            ],
+            [
+              5,
+              0,
+              2,
+              -2
+            ]
+          ],
+          "augmented_notation": true
+        },
+        {
+          "recipe": "treat_b_coefficient_as_constant",
+          "is_correct": false,
+          "matrix": [
+            [
+              -1,
+              0,
+              1,
+              11
+            ],
+            [
+              5,
+              0,
+              2,
+              -2
+            ]
+          ],
+          "augmented_notation": true
+        },
+        {
+          "recipe": "omit_b_column_and_use_second_row_appearance_order",
+          "is_correct": false,
+          "matrix": [
+            [
+              -1,
+              1,
+              11
+            ],
+            [
+              2,
+              5,
+              -2
+            ]
+          ],
+          "augmented_notation": true
+        },
+        {
+          "recipe": "appearance_order_and_negate_c_second_row",
+          "is_correct": false,
+          "matrix": [
+            [
+              0,
+              -1,
+              1,
+              11
+            ],
+            [
+              0,
+              2,
+              -5,
+              -2
+            ]
+          ],
+          "augmented_notation": true
+        }
+      ],
+      "plot_rating": "none",
+      "domains": "signed nonzero integer magnitude 1..15; eligible source-template answer roles, permuted variable roles and equation rows",
+      "runtime": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      }
+    },
+    "assets": {}
+  }
+]

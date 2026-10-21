@@ -1,0 +1,153 @@
+{
+  "verdict": "revise",
+  "summary": "Two captured source banks do not replay: q-10252 scaling and q-72747 addition. Sampled mathematics, native grading, rendering, delivery and packaging checks passed. Package unchanged.",
+  "source_analysis": {
+    "skill": "Apply stated elementary row operations to an augmented matrix and select the resulting matrix from five choices.",
+    "reasoning_steps": [
+      "Identify row roles and operation",
+      "Apply the operation entrywise including the augmented column",
+      "Carry updated rows into a second operation when specified",
+      "Compare the whole result with the five-option bank"
+    ],
+    "invariants": [
+      "Preserve augmented constants column semantics",
+      "Only stated elementary row operations; nonzero scaling and distinct source/target rows",
+      "All unchanged rows remain unchanged",
+      "One correct five-option choice",
+      "Two-step questions use sequential state, not simultaneous original rows"
+    ],
+    "permitted_variations": [
+      "Small signed integer entries, occasional zeros, and exact reciprocal scalars",
+      "Two or three rows and three or four total columns grounded in source shapes",
+      "Any eligible row index or swap pair rather than fixed source row roles",
+      "Vary coefficients without requiring cancellation in a predetermined column",
+      "Permute option positions and maintain plausible distinct whole-matrix distractors",
+      "Matrix renaming is irrelevant and must preserve the mathematical result"
+    ],
+    "source_refs": [
+      "2ff0a6f5-f3b2-5b39-8b69-1a0c969548cf (e-4694): swap R1/R2 in 3x4 augmented matrix",
+      "926d4b45-89b4-5d26-9733-b0d97c69c160 (q-130070): easy swap R1/R2, five row-permutation options",
+      "0f08a2c2-eb16-5d85-a714-beb36e4a0c94 (q-130071): easy R3 := -1/3 R3; all four entries change together",
+      "afe0707b-0259-50d7-a719-7a8d24334500 (q-10252): R1 := 2R1; missing key/solution",
+      "00a500f4-f378-5f41-9cd3-c3d0604af452; 7de40719-e1b7-5230-a137-1dc3c55de0ef; 7e529998-60b8-53c0-bae5-50351fb55c46; 4f1ba7f0-e4f6-511d-875d-abce33676c37; 2facacda-0611-5507-a35e-091ce7069bfa; 337ae2e1-4641-5c8b-9b2a-9435340f0134: one row-addition cases",
+      "25230851-35bf-5052-9d49-2045d4671518; 4f7e0cb8-b82b-5c57-8695-0b8e08268369; 56624c75-a028-5dc9-962f-9700b721674f: sequential two-operation cases",
+      "tutorial 7aa753a7-1450-53dd-8e61-71e07952cecb (3150), Introduction: 'switching any two rows'; 'multiplying (each element of) a row by a non-zero number'; 'adding a multiple of one row to another row'; assignment 'assign new values to every element of a given row'",
+      "lesson step 797229e4-e202-5744-a0d3-6e8c4cae4059 identifies this KP between applying operations to a coefficient matrix and identifying an operation from two matrices"
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "failed",
+      "evidence_paths": [
+        "source-replay-results.json",
+        "source-replay-regression.py",
+        "source-replay-regression-results.json",
+        "source-replays.json",
+        "source-math-results.json"
+      ],
+      "details": "11 of 13 source cases match mathematical parameters and captured banks where present; canonical has no captured bank. q-10252 bank fails all 12 eligible source-style scaling assignments; q-72747 source profile is missing. Its missing separator may be normalized, but its complete bank is still required. q-10252 key/solution absence is documented, with correct fifth choice independently inferred."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "audit.py",
+        "math-results.json",
+        "samples.json",
+        "source-math-results.json",
+        "counterfactual-results.json"
+      ],
+      "details": "Exact rational arithmetic reconstructed operations from prompts independently of generation metadata. All 337 generated records have exactly one mathematically correct choice and correct final solution matrix. Captured source keys and final solutions also pass where supplied."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "stage-coverage.json",
+        "samples.json",
+        "rejection-results.json",
+        "delivery-batch/delivery.json",
+        "delivery-sample/delivery.json",
+        "selection-results.json"
+      ],
+      "details": "240 independent easy samples cover all three swap pairs, three scaling targets and 19 factors; all survive delivery at captured basis 5361. Forced degenerate values resample without changing preselected roles. Exact five-item batch survives; its two swaps share R1/R2, limiting row-pair coverage. Conditional band-first selection tested with inventory present and excluded; actual learner history/policy unavailable."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "scope-results.json",
+        "samples.json"
+      ],
+      "details": "Requested easy questions use one swap or nonzero scaling. Moderate/hard controls preserve one-addition/two-sequential-operation workloads. No unsupported operator, prerequisite or response type demonstrated. Source completeness is separately failed."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-results.json",
+        "counterfactual-records.json"
+      ],
+      "details": "Real database-free native grade_field accepts 44 independently correct choices and rejects 176 plausible distractors, including every option of controlled changes. All questions are radio fields; free-entry equivalence is inapplicable."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render-all/rendering.json",
+        "render-all/input.json",
+        "visual-inspection.json",
+        "render-all/question-007.png",
+        "render-all/question-022.png",
+        "render-all/question-025.png"
+      ],
+      "details": "Actual unmodified UI renders 25 records, including all five batch items, all 17 counterfactuals and all template types. Automated report passes; representative screenshots inspected for notation, controls, solutions and clipping at 1280px viewport."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-check.py",
+        "packaging-results.json",
+        "package-hashes-before.json",
+        "package-hashes-after.json"
+      ],
+      "details": "Python version exactly 3.13.5 matches manifest, packages is empty and imports are standard-library/bundled. Explicit-difficulty CLI output is deterministic and replays after relocation for easy/moderate/hard. No assets or external output paths are required. Package file hashes unchanged."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "stage-coverage.json",
+        "selection-results.json",
+        "grader-results.json",
+        "render-all/rendering.json"
+      ],
+      "details": "Controlled relevant changes alter expected and graded results; irrelevant matrix renaming preserves them. Position and magnitude strategies tested within each recognizable template and separately on exact batch. One-entry scalar comparison succeeds through intended arithmetic. No incidental shortcut demonstrated in these probes; finite batch does not demonstrate every row role."
+    }
+  },
+  "findings": [
+    {
+      "kind": "source_fidelity",
+      "description": "The captured q-10252 scaling bank has no faithful replay profile. Correct mathematics is retained, but three captured distractor constructions are replaced by the q-130071 partial/column bank. For example the captured option [[2,2,3],[6,4,5],[8,6,7]] is absent from every supported partial-column assignment at these source parameters.",
+      "source_refs": [
+        "afe0707b-0259-50d7-a719-7a8d24334500 (q-10252)",
+        "generate/principles.md: Establish fidelity first, complete answer banks"
+      ],
+      "reproduction": "Run PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python source-replay-regression.py from evidence_root (exits 1). Minimal instance: template=scale, matrix=[[1,2,3],[3,4,5],[4,6,7]], target=0, factor=2. q10252-replay-candidates.json retains all 12 complete generated candidates; source-replay-regression-results.json records failure.",
+      "requested_change": "Add a distinct source replay profile for q-10252 reproducing all five captured matrices, infer/document its missing correct-answer link as the fifth option, and supply a mathematically derived solution. Retain the complete-bank regression and the existing random scaling family."
+    },
+    {
+      "kind": "source_fidelity",
+      "description": "The two-row addition source q-72747 is omitted from moderate source_data. Requesting its source replay profile raises StopIteration, although its operation and complete bank are captured and within the supported addition skill.",
+      "source_refs": [
+        "337ae2e1-4641-5c8b-9b2a-9435340f0134 (q-72747)",
+        "tutorial 7aa753a7-1450-53dd-8e61-71e07952cecb: adding a multiple of one row to another",
+        "generate/principles.md: Establish fidelity first"
+      ],
+      "reproduction": "The same strict regression command tests template=add, profile=source:337ae2e1-4641-5c8b-9b2a-9435340f0134, matrix=[[1,-1,2],[3,-4,4]], target=1, donor=0, coefficient=-3, letter=B. generator.build raises StopIteration in moderate_ops.bank. Exact parameters and exception retained in source-replay-regression-results.json.",
+      "requested_change": "Include this source in the complete-bank replay data with expected result [[1,-1,2],[0,-1,-2]], preserving all five captured options and solution stages. Normalize the augmented separator consistently and document that presentation correction. Keep this strict source regression."
+    }
+  ]
+}

@@ -1,0 +1,2766 @@
+{
+  "learner_operation": "Read the explicit row operation(s), resolve indexed source and destination roles, apply the specified swap/scaling/addition to every entry while retaining other rows, and select the full resulting coefficient matrix. For hard instances update the intermediate matrix before the second addition.",
+  "fixed_features": [
+    {
+      "feature": "3-by-3 matrices and five math radio choices",
+      "justification": "Every captured bank uses this shape and response format; conservative fidelity preserves workload."
+    },
+    {
+      "feature": "Specified row operation rather than choosing a suitable operation",
+      "justification": "Lesson separates applying coefficient operations from subsequent augmented/identifying-operation KPs."
+    },
+    {
+      "feature": "Easy single swap/scaling, moderate single addition, hard two additions",
+      "justification": "These workloads and difficulty labels occur in the eleven captured source banks; adjoining lesson KPs cover augmented matrices and operation discovery separately."
+    },
+    {
+      "feature": "Hard relationship is shared target with distinct donors or shared donor with distinct targets",
+      "justification": "Both are explicitly observed: q-130010 versus q-130064/q-130065/q-10245. A chained updated donor would introduce a different dependency beyond these captured hard cases; preserving the two observed relationships is a defensible conservative family."
+    },
+    {
+      "feature": "Bounded integer inputs and short nonzero factors; easy scaling bank outputs integral",
+      "justification": "Keeps source arithmetic workload. Applying integral constraints to the whole scaling bank prevents integral-format correctness cues. The source lesson explicitly permits nonzero scaling and donor multiples."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Swapped row pair",
+      "eligible_variation": "Any distinct rows; pair reversal is irrelevant.",
+      "observed": "Fresh samples include all three unordered pairs; exact batch contains multiple pair assignments across both swap profiles. Fixed-pair actions fail within both exact-batch profiles."
+    },
+    {
+      "role": "Scaling target/factor",
+      "eligible_variation": "All three target rows and nonzero signed factors of comparable arithmetic.",
+      "observed": "All three targets observed in seven fresh scaling instances; controlled sign/magnitude change updates key and grader correctly. Scope of unchanged scaling was also independently checked previously."
+    },
+    {
+      "role": "Addition target/donor and optional cancellation column",
+      "eligible_variation": "Any distinct rows, scalar sign/magnitude, optional cancellations.",
+      "observed": "Fresh eight moderate samples cover all six ordered donor/target assignments. Source replay q-10243 now includes its complete bank."
+    },
+    {
+      "role": "Hard shared donor or shared destination and coefficient pair",
+      "eligible_variation": "Both source-supported relationships, all six role assignments each, any eligible nonzero signed pair.",
+      "observed": "Fresh hard sample: 21 shared-donor and 15 shared-target; all twelve explicit boundaries pass. Same-bank controls make each of five alternatives correct in each relationship."
+    },
+    {
+      "role": "Correct-choice position",
+      "eligible_variation": "Any of five positions without a fixed qualifying label.",
+      "observed": "Exact batch actual displayed positions are 4,5,4,3,2; conditional position and superficial numeric probes do not solve the tested subgroups."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "Source fidelity and original retained counterexamples",
+      "sample_refs": [
+        "source-replay-results.json",
+        "source-replays.json",
+        "canonical-replay.json",
+        "prior-regression-original.json",
+        "prior-regression-results.json",
+        "reuse-provenance.json"
+      ],
+      "result": "11/11 complete banks and keys reproduce; original strict checks fail on verified old package and pass current. Canonical retains no invented bank. Documented intermediate sign error is corrected."
+    },
+    {
+      "case": "Fresh construction and row-role boundaries",
+      "sample_refs": [
+        "coverage-results.json",
+        "control-records.json",
+        "role-records.json",
+        "packaging-results.json"
+      ],
+      "result": "18 easy, 8 moderate and 36 hard fresh production records plus 12 explicit hard role boundaries. No sampled hard rejection removed a chosen relationship; both source families survive actual delivery."
+    },
+    {
+      "case": "Exact delivered five-item batch",
+      "sample_refs": [
+        "batch-records.json",
+        "delivery-batch/accepted.json",
+        "shortcut-results.json",
+        "rendered-choice-results.json"
+      ],
+      "result": "Five swaps: two q-10250 and three swap-complete. This is a source-supported finite swap practice batch, with varying row roles, not scaling coverage. No tested fixed pair/position/zero/norm/unchanged-cell rule solves either recognizable subgroup. Larger controls are not used to waive these separate batch measurements."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "shared-target: replace requested coefficient pair while keeping entries, row roles, five candidate pairs, name and seed fixed.",
+      "expected": "Every member of the same bank can become correct; visible operation, arithmetic steps and grader acceptances must track it. Former keys must be rejected when incorrect.",
+      "observed": "All five different requested pairs yield five different keys/prompts/solutions with an identical complete value bank. All stages match exact arithmetic. Native grader accepts the independently computed result and rejects all four alternatives for every variant. Actual UI renders the first before/after pair, with matching matrices and final solutions.",
+      "status": "passed",
+      "justification": "The tutorial permits nonzero multiples of another row. Particular coefficient assignments and correct alternatives are incidental source details.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "math-results.json",
+        "grader-input.json",
+        "grader-results.json",
+        "render-changed/input.json",
+        "render-changed/rendering.json",
+        "rendered-choice-results.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "shared-target: change destination/donor roles while holding matrix, factors, candidate pairs, name and seed fixed.",
+      "expected": "The changed operation affects its newly indexed destination(s), preserving the other row(s); prompt, solution, key and actual grading follow.",
+      "observed": "Both role changes alter the prompt, key and worked result as expected; exact arithmetic, all five native grader outcomes and rendered numeric matrices agree. Twelve explicit boundary records cover all ordered row-role assignments across both relationships.",
+      "status": "passed",
+      "justification": "The tutorial says any two rows and distinct donor/destination; example row numbers are not fixed roles.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "role-records.json",
+        "math-results.json",
+        "grader-results.json",
+        "render-changed/rendering.json",
+        "rendered-choice-results.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "shared-target: rename matrix C to B, or reverse the two commuting operations together with the coefficient-pair order.",
+      "expected": "Final matrix/key value and mathematical fingerprint remain equal. Explanatory labels or intermediate steps may change appropriately.",
+      "observed": "Both irrelevant changes preserve all three invariants. Exact intermediate calculations remain correct, native grading preserves the same mathematical response, and actual UI prompt/final matrix checks pass.",
+      "status": "passed",
+      "justification": "A matrix label does not change arithmetic. In both observed hard relationships neither donor is updated, so the two specified additions commute. This is not an assertion that arbitrary elementary operations commute.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "math-results.json",
+        "grader-results.json",
+        "render-changed/rendering.json",
+        "rendered-choice-results.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "shared-donor: replace requested coefficient pair while keeping entries, row roles, five candidate pairs, name and seed fixed.",
+      "expected": "Every member of the same bank can become correct; visible operation, arithmetic steps and grader acceptances must track it. Former keys must be rejected when incorrect.",
+      "observed": "All five different requested pairs yield five different keys/prompts/solutions with an identical complete value bank. All stages match exact arithmetic. Native grader accepts the independently computed result and rejects all four alternatives for every variant. Actual UI renders the first before/after pair, with matching matrices and final solutions.",
+      "status": "passed",
+      "justification": "The tutorial permits nonzero multiples of another row. Particular coefficient assignments and correct alternatives are incidental source details.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "math-results.json",
+        "grader-input.json",
+        "grader-results.json",
+        "render-changed/input.json",
+        "render-changed/rendering.json",
+        "rendered-choice-results.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "shared-donor: change destination/donor roles while holding matrix, factors, candidate pairs, name and seed fixed.",
+      "expected": "The changed operation affects its newly indexed destination(s), preserving the other row(s); prompt, solution, key and actual grading follow.",
+      "observed": "Both role changes alter the prompt, key and worked result as expected; exact arithmetic, all five native grader outcomes and rendered numeric matrices agree. Twelve explicit boundary records cover all ordered row-role assignments across both relationships.",
+      "status": "passed",
+      "justification": "The tutorial says any two rows and distinct donor/destination; example row numbers are not fixed roles.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "role-records.json",
+        "math-results.json",
+        "grader-results.json",
+        "render-changed/rendering.json",
+        "rendered-choice-results.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "shared-donor: rename matrix C to B, or reverse the two commuting operations together with the coefficient-pair order.",
+      "expected": "Final matrix/key value and mathematical fingerprint remain equal. Explanatory labels or intermediate steps may change appropriately.",
+      "observed": "Both irrelevant changes preserve all three invariants. Exact intermediate calculations remain correct, native grading preserves the same mathematical response, and actual UI prompt/final matrix checks pass.",
+      "status": "passed",
+      "justification": "A matrix label does not change arithmetic. In both observed hard relationships neither donor is updated, so the two specified additions commute. This is not an assertion that arbitrary elementary operations commute.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "math-results.json",
+        "grader-results.json",
+        "render-changed/rendering.json",
+        "rendered-choice-results.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "first_position",
+      "subgroup": "batch_raw:overall",
+      "scope": "overall",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "strategy": "Select the first stored radio choice.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "batch-records.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "largest_norm",
+      "subgroup": "batch_raw:overall",
+      "scope": "overall",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with the greatest sum of absolute entries, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "batch-records.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "smallest_norm",
+      "subgroup": "batch_raw:overall",
+      "scope": "overall",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with the least sum of absolute entries, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "batch-records.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "most_zero_entries",
+      "subgroup": "batch_raw:overall",
+      "scope": "overall",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with most zero entries, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "batch-records.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "most_unchanged_cells",
+      "subgroup": "batch_raw:overall",
+      "scope": "overall",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with most entries equal to the original in the same positions, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "batch-records.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "first_position",
+      "subgroup": "batch_raw:q-10250",
+      "scope": "within_template",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "strategy": "Select the first stored radio choice.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "batch-records.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "largest_norm",
+      "subgroup": "batch_raw:q-10250",
+      "scope": "within_template",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with the greatest sum of absolute entries, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "batch-records.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "smallest_norm",
+      "subgroup": "batch_raw:q-10250",
+      "scope": "within_template",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with the least sum of absolute entries, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "batch-records.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "most_zero_entries",
+      "subgroup": "batch_raw:q-10250",
+      "scope": "within_template",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with most zero entries, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "batch-records.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "most_unchanged_cells",
+      "subgroup": "batch_raw:q-10250",
+      "scope": "within_template",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with most entries equal to the original in the same positions, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "batch-records.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "first_position",
+      "subgroup": "batch_raw:swap-complete",
+      "scope": "within_template",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "strategy": "Select the first stored radio choice.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "batch-records.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "largest_norm",
+      "subgroup": "batch_raw:swap-complete",
+      "scope": "within_template",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with the greatest sum of absolute entries, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "batch-records.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "smallest_norm",
+      "subgroup": "batch_raw:swap-complete",
+      "scope": "within_template",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with the least sum of absolute entries, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "batch-records.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "most_zero_entries",
+      "subgroup": "batch_raw:swap-complete",
+      "scope": "within_template",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with most zero entries, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "batch-records.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "most_unchanged_cells",
+      "subgroup": "batch_raw:swap-complete",
+      "scope": "within_template",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with most entries equal to the original in the same positions, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "batch-records.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "first_position",
+      "subgroup": "batch_delivered:overall",
+      "scope": "overall",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "strategy": "Select the first stored radio choice.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "largest_norm",
+      "subgroup": "batch_delivered:overall",
+      "scope": "overall",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with the greatest sum of absolute entries, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "smallest_norm",
+      "subgroup": "batch_delivered:overall",
+      "scope": "overall",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with the least sum of absolute entries, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "most_zero_entries",
+      "subgroup": "batch_delivered:overall",
+      "scope": "overall",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with most zero entries, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "most_unchanged_cells",
+      "subgroup": "batch_delivered:overall",
+      "scope": "overall",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with most entries equal to the original in the same positions, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "first_position",
+      "subgroup": "batch_delivered:q-10250",
+      "scope": "within_template",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "strategy": "Select the first stored radio choice.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "largest_norm",
+      "subgroup": "batch_delivered:q-10250",
+      "scope": "within_template",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with the greatest sum of absolute entries, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "smallest_norm",
+      "subgroup": "batch_delivered:q-10250",
+      "scope": "within_template",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with the least sum of absolute entries, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "most_zero_entries",
+      "subgroup": "batch_delivered:q-10250",
+      "scope": "within_template",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with most zero entries, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "most_unchanged_cells",
+      "subgroup": "batch_delivered:q-10250",
+      "scope": "within_template",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with most entries equal to the original in the same positions, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "first_position",
+      "subgroup": "batch_delivered:swap-complete",
+      "scope": "within_template",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "strategy": "Select the first stored radio choice.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "largest_norm",
+      "subgroup": "batch_delivered:swap-complete",
+      "scope": "within_template",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with the greatest sum of absolute entries, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "smallest_norm",
+      "subgroup": "batch_delivered:swap-complete",
+      "scope": "within_template",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with the least sum of absolute entries, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "most_zero_entries",
+      "subgroup": "batch_delivered:swap-complete",
+      "scope": "within_template",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with most zero entries, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "most_unchanged_cells",
+      "subgroup": "batch_delivered:swap-complete",
+      "scope": "within_template",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with most entries equal to the original in the same positions, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "first_position",
+      "subgroup": "easy_raw:overall",
+      "scope": "overall",
+      "correct": 2,
+      "total": 18,
+      "baseline": 0.2,
+      "strategy": "Select the first stored radio choice.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-records.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "largest_norm",
+      "subgroup": "easy_raw:overall",
+      "scope": "overall",
+      "correct": 3,
+      "total": 18,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with the greatest sum of absolute entries, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-records.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "smallest_norm",
+      "subgroup": "easy_raw:overall",
+      "scope": "overall",
+      "correct": 1,
+      "total": 18,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with the least sum of absolute entries, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-records.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "most_zero_entries",
+      "subgroup": "easy_raw:overall",
+      "scope": "overall",
+      "correct": 2,
+      "total": 18,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with most zero entries, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-records.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "most_unchanged_cells",
+      "subgroup": "easy_raw:overall",
+      "scope": "overall",
+      "correct": 2,
+      "total": 18,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with most entries equal to the original in the same positions, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-records.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "first_position",
+      "subgroup": "easy_raw:q-10250",
+      "scope": "within_template",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "strategy": "Select the first stored radio choice.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-records.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "largest_norm",
+      "subgroup": "easy_raw:q-10250",
+      "scope": "within_template",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with the greatest sum of absolute entries, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-records.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "smallest_norm",
+      "subgroup": "easy_raw:q-10250",
+      "scope": "within_template",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with the least sum of absolute entries, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-records.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "most_zero_entries",
+      "subgroup": "easy_raw:q-10250",
+      "scope": "within_template",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with most zero entries, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-records.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "most_unchanged_cells",
+      "subgroup": "easy_raw:q-10250",
+      "scope": "within_template",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with most entries equal to the original in the same positions, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-records.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "first_position",
+      "subgroup": "easy_raw:scale-arithmetic",
+      "scope": "within_template",
+      "correct": 1,
+      "total": 7,
+      "baseline": 0.2,
+      "strategy": "Select the first stored radio choice.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-records.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "largest_norm",
+      "subgroup": "easy_raw:scale-arithmetic",
+      "scope": "within_template",
+      "correct": 2,
+      "total": 7,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with the greatest sum of absolute entries, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-records.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "smallest_norm",
+      "subgroup": "easy_raw:scale-arithmetic",
+      "scope": "within_template",
+      "correct": 0,
+      "total": 7,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with the least sum of absolute entries, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-records.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "most_zero_entries",
+      "subgroup": "easy_raw:scale-arithmetic",
+      "scope": "within_template",
+      "correct": 1,
+      "total": 7,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with most zero entries, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-records.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "most_unchanged_cells",
+      "subgroup": "easy_raw:scale-arithmetic",
+      "scope": "within_template",
+      "correct": 1,
+      "total": 7,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with most entries equal to the original in the same positions, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-records.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "first_position",
+      "subgroup": "easy_raw:swap-complete",
+      "scope": "within_template",
+      "correct": 1,
+      "total": 7,
+      "baseline": 0.2,
+      "strategy": "Select the first stored radio choice.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-records.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "largest_norm",
+      "subgroup": "easy_raw:swap-complete",
+      "scope": "within_template",
+      "correct": 1,
+      "total": 7,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with the greatest sum of absolute entries, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-records.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "smallest_norm",
+      "subgroup": "easy_raw:swap-complete",
+      "scope": "within_template",
+      "correct": 1,
+      "total": 7,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with the least sum of absolute entries, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-records.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "most_zero_entries",
+      "subgroup": "easy_raw:swap-complete",
+      "scope": "within_template",
+      "correct": 1,
+      "total": 7,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with most zero entries, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-records.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "most_unchanged_cells",
+      "subgroup": "easy_raw:swap-complete",
+      "scope": "within_template",
+      "correct": 1,
+      "total": 7,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with most entries equal to the original in the same positions, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-records.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "first_position",
+      "subgroup": "easy_delivered:overall",
+      "scope": "overall",
+      "correct": 2,
+      "total": 18,
+      "baseline": 0.2,
+      "strategy": "Select the first stored radio choice.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-easy/accepted.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "largest_norm",
+      "subgroup": "easy_delivered:overall",
+      "scope": "overall",
+      "correct": 3,
+      "total": 18,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with the greatest sum of absolute entries, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-easy/accepted.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "smallest_norm",
+      "subgroup": "easy_delivered:overall",
+      "scope": "overall",
+      "correct": 1,
+      "total": 18,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with the least sum of absolute entries, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-easy/accepted.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "most_zero_entries",
+      "subgroup": "easy_delivered:overall",
+      "scope": "overall",
+      "correct": 2,
+      "total": 18,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with most zero entries, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-easy/accepted.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "most_unchanged_cells",
+      "subgroup": "easy_delivered:overall",
+      "scope": "overall",
+      "correct": 2,
+      "total": 18,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with most entries equal to the original in the same positions, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-easy/accepted.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "first_position",
+      "subgroup": "easy_delivered:q-10250",
+      "scope": "within_template",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "strategy": "Select the first stored radio choice.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-easy/accepted.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "largest_norm",
+      "subgroup": "easy_delivered:q-10250",
+      "scope": "within_template",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with the greatest sum of absolute entries, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-easy/accepted.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "smallest_norm",
+      "subgroup": "easy_delivered:q-10250",
+      "scope": "within_template",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with the least sum of absolute entries, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-easy/accepted.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "most_zero_entries",
+      "subgroup": "easy_delivered:q-10250",
+      "scope": "within_template",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with most zero entries, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-easy/accepted.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "most_unchanged_cells",
+      "subgroup": "easy_delivered:q-10250",
+      "scope": "within_template",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with most entries equal to the original in the same positions, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-easy/accepted.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "first_position",
+      "subgroup": "easy_delivered:scale-arithmetic",
+      "scope": "within_template",
+      "correct": 1,
+      "total": 7,
+      "baseline": 0.2,
+      "strategy": "Select the first stored radio choice.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-easy/accepted.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "largest_norm",
+      "subgroup": "easy_delivered:scale-arithmetic",
+      "scope": "within_template",
+      "correct": 2,
+      "total": 7,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with the greatest sum of absolute entries, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-easy/accepted.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "smallest_norm",
+      "subgroup": "easy_delivered:scale-arithmetic",
+      "scope": "within_template",
+      "correct": 0,
+      "total": 7,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with the least sum of absolute entries, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-easy/accepted.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "most_zero_entries",
+      "subgroup": "easy_delivered:scale-arithmetic",
+      "scope": "within_template",
+      "correct": 1,
+      "total": 7,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with most zero entries, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-easy/accepted.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "most_unchanged_cells",
+      "subgroup": "easy_delivered:scale-arithmetic",
+      "scope": "within_template",
+      "correct": 1,
+      "total": 7,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with most entries equal to the original in the same positions, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-easy/accepted.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "first_position",
+      "subgroup": "easy_delivered:swap-complete",
+      "scope": "within_template",
+      "correct": 1,
+      "total": 7,
+      "baseline": 0.2,
+      "strategy": "Select the first stored radio choice.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-easy/accepted.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "largest_norm",
+      "subgroup": "easy_delivered:swap-complete",
+      "scope": "within_template",
+      "correct": 1,
+      "total": 7,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with the greatest sum of absolute entries, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-easy/accepted.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "smallest_norm",
+      "subgroup": "easy_delivered:swap-complete",
+      "scope": "within_template",
+      "correct": 1,
+      "total": 7,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with the least sum of absolute entries, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-easy/accepted.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "most_zero_entries",
+      "subgroup": "easy_delivered:swap-complete",
+      "scope": "within_template",
+      "correct": 1,
+      "total": 7,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with most zero entries, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-easy/accepted.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "most_unchanged_cells",
+      "subgroup": "easy_delivered:swap-complete",
+      "scope": "within_template",
+      "correct": 1,
+      "total": 7,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with most entries equal to the original in the same positions, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-easy/accepted.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "first_position",
+      "subgroup": "moderate_raw:overall",
+      "scope": "overall",
+      "correct": 0,
+      "total": 8,
+      "baseline": 0.2,
+      "strategy": "Select the first stored radio choice.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "moderate-records.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "largest_norm",
+      "subgroup": "moderate_raw:overall",
+      "scope": "overall",
+      "correct": 1,
+      "total": 8,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with the greatest sum of absolute entries, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "moderate-records.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "smallest_norm",
+      "subgroup": "moderate_raw:overall",
+      "scope": "overall",
+      "correct": 0,
+      "total": 8,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with the least sum of absolute entries, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "moderate-records.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "most_zero_entries",
+      "subgroup": "moderate_raw:overall",
+      "scope": "overall",
+      "correct": 0,
+      "total": 8,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with most zero entries, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "moderate-records.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "most_unchanged_cells",
+      "subgroup": "moderate_raw:overall",
+      "scope": "overall",
+      "correct": 0,
+      "total": 8,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with most entries equal to the original in the same positions, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "moderate-records.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "first_position",
+      "subgroup": "moderate_raw:arithmetic",
+      "scope": "within_template",
+      "correct": 0,
+      "total": 8,
+      "baseline": 0.2,
+      "strategy": "Select the first stored radio choice.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "moderate-records.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "largest_norm",
+      "subgroup": "moderate_raw:arithmetic",
+      "scope": "within_template",
+      "correct": 1,
+      "total": 8,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with the greatest sum of absolute entries, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "moderate-records.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "smallest_norm",
+      "subgroup": "moderate_raw:arithmetic",
+      "scope": "within_template",
+      "correct": 0,
+      "total": 8,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with the least sum of absolute entries, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "moderate-records.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "most_zero_entries",
+      "subgroup": "moderate_raw:arithmetic",
+      "scope": "within_template",
+      "correct": 0,
+      "total": 8,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with most zero entries, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "moderate-records.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "most_unchanged_cells",
+      "subgroup": "moderate_raw:arithmetic",
+      "scope": "within_template",
+      "correct": 0,
+      "total": 8,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with most entries equal to the original in the same positions, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "moderate-records.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "first_position",
+      "subgroup": "moderate_delivered:overall",
+      "scope": "overall",
+      "correct": 0,
+      "total": 8,
+      "baseline": 0.2,
+      "strategy": "Select the first stored radio choice.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-moderate/accepted.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "largest_norm",
+      "subgroup": "moderate_delivered:overall",
+      "scope": "overall",
+      "correct": 1,
+      "total": 8,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with the greatest sum of absolute entries, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-moderate/accepted.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "smallest_norm",
+      "subgroup": "moderate_delivered:overall",
+      "scope": "overall",
+      "correct": 0,
+      "total": 8,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with the least sum of absolute entries, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-moderate/accepted.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "most_zero_entries",
+      "subgroup": "moderate_delivered:overall",
+      "scope": "overall",
+      "correct": 0,
+      "total": 8,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with most zero entries, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-moderate/accepted.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "most_unchanged_cells",
+      "subgroup": "moderate_delivered:overall",
+      "scope": "overall",
+      "correct": 0,
+      "total": 8,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with most entries equal to the original in the same positions, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-moderate/accepted.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "first_position",
+      "subgroup": "moderate_delivered:arithmetic",
+      "scope": "within_template",
+      "correct": 0,
+      "total": 8,
+      "baseline": 0.2,
+      "strategy": "Select the first stored radio choice.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-moderate/accepted.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "largest_norm",
+      "subgroup": "moderate_delivered:arithmetic",
+      "scope": "within_template",
+      "correct": 1,
+      "total": 8,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with the greatest sum of absolute entries, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-moderate/accepted.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "smallest_norm",
+      "subgroup": "moderate_delivered:arithmetic",
+      "scope": "within_template",
+      "correct": 0,
+      "total": 8,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with the least sum of absolute entries, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-moderate/accepted.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "most_zero_entries",
+      "subgroup": "moderate_delivered:arithmetic",
+      "scope": "within_template",
+      "correct": 0,
+      "total": 8,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with most zero entries, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-moderate/accepted.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "most_unchanged_cells",
+      "subgroup": "moderate_delivered:arithmetic",
+      "scope": "within_template",
+      "correct": 0,
+      "total": 8,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with most entries equal to the original in the same positions, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-moderate/accepted.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "first_position",
+      "subgroup": "hard_raw:overall",
+      "scope": "overall",
+      "correct": 6,
+      "total": 36,
+      "baseline": 0.2,
+      "strategy": "Select the first stored radio choice.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "hard-records.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "largest_norm",
+      "subgroup": "hard_raw:overall",
+      "scope": "overall",
+      "correct": 5,
+      "total": 36,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with the greatest sum of absolute entries, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "hard-records.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "smallest_norm",
+      "subgroup": "hard_raw:overall",
+      "scope": "overall",
+      "correct": 7,
+      "total": 36,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with the least sum of absolute entries, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "hard-records.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "most_zero_entries",
+      "subgroup": "hard_raw:overall",
+      "scope": "overall",
+      "correct": 7,
+      "total": 36,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with most zero entries, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "hard-records.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "most_unchanged_cells",
+      "subgroup": "hard_raw:overall",
+      "scope": "overall",
+      "correct": 6,
+      "total": 36,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with most entries equal to the original in the same positions, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "hard-records.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "first_position",
+      "subgroup": "hard_raw:two-donor-arithmetic",
+      "scope": "within_template",
+      "correct": 4,
+      "total": 15,
+      "baseline": 0.2,
+      "strategy": "Select the first stored radio choice.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "hard-records.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "largest_norm",
+      "subgroup": "hard_raw:two-donor-arithmetic",
+      "scope": "within_template",
+      "correct": 1,
+      "total": 15,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with the greatest sum of absolute entries, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "hard-records.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "smallest_norm",
+      "subgroup": "hard_raw:two-donor-arithmetic",
+      "scope": "within_template",
+      "correct": 3,
+      "total": 15,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with the least sum of absolute entries, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "hard-records.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "most_zero_entries",
+      "subgroup": "hard_raw:two-donor-arithmetic",
+      "scope": "within_template",
+      "correct": 4,
+      "total": 15,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with most zero entries, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "hard-records.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "most_unchanged_cells",
+      "subgroup": "hard_raw:two-donor-arithmetic",
+      "scope": "within_template",
+      "correct": 4,
+      "total": 15,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with most entries equal to the original in the same positions, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "hard-records.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "first_position",
+      "subgroup": "hard_raw:two-target-arithmetic",
+      "scope": "within_template",
+      "correct": 2,
+      "total": 21,
+      "baseline": 0.2,
+      "strategy": "Select the first stored radio choice.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "hard-records.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "largest_norm",
+      "subgroup": "hard_raw:two-target-arithmetic",
+      "scope": "within_template",
+      "correct": 4,
+      "total": 21,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with the greatest sum of absolute entries, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "hard-records.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "smallest_norm",
+      "subgroup": "hard_raw:two-target-arithmetic",
+      "scope": "within_template",
+      "correct": 4,
+      "total": 21,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with the least sum of absolute entries, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "hard-records.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "most_zero_entries",
+      "subgroup": "hard_raw:two-target-arithmetic",
+      "scope": "within_template",
+      "correct": 3,
+      "total": 21,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with most zero entries, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "hard-records.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "most_unchanged_cells",
+      "subgroup": "hard_raw:two-target-arithmetic",
+      "scope": "within_template",
+      "correct": 2,
+      "total": 21,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with most entries equal to the original in the same positions, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "hard-records.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "first_position",
+      "subgroup": "hard_delivered:overall",
+      "scope": "overall",
+      "correct": 6,
+      "total": 36,
+      "baseline": 0.2,
+      "strategy": "Select the first stored radio choice.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-hard/accepted.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "largest_norm",
+      "subgroup": "hard_delivered:overall",
+      "scope": "overall",
+      "correct": 5,
+      "total": 36,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with the greatest sum of absolute entries, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-hard/accepted.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "smallest_norm",
+      "subgroup": "hard_delivered:overall",
+      "scope": "overall",
+      "correct": 7,
+      "total": 36,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with the least sum of absolute entries, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-hard/accepted.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "most_zero_entries",
+      "subgroup": "hard_delivered:overall",
+      "scope": "overall",
+      "correct": 7,
+      "total": 36,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with most zero entries, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-hard/accepted.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "most_unchanged_cells",
+      "subgroup": "hard_delivered:overall",
+      "scope": "overall",
+      "correct": 6,
+      "total": 36,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with most entries equal to the original in the same positions, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-hard/accepted.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "first_position",
+      "subgroup": "hard_delivered:two-donor-arithmetic",
+      "scope": "within_template",
+      "correct": 4,
+      "total": 15,
+      "baseline": 0.2,
+      "strategy": "Select the first stored radio choice.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-hard/accepted.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "largest_norm",
+      "subgroup": "hard_delivered:two-donor-arithmetic",
+      "scope": "within_template",
+      "correct": 1,
+      "total": 15,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with the greatest sum of absolute entries, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-hard/accepted.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "smallest_norm",
+      "subgroup": "hard_delivered:two-donor-arithmetic",
+      "scope": "within_template",
+      "correct": 3,
+      "total": 15,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with the least sum of absolute entries, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-hard/accepted.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "most_zero_entries",
+      "subgroup": "hard_delivered:two-donor-arithmetic",
+      "scope": "within_template",
+      "correct": 4,
+      "total": 15,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with most zero entries, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-hard/accepted.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "most_unchanged_cells",
+      "subgroup": "hard_delivered:two-donor-arithmetic",
+      "scope": "within_template",
+      "correct": 4,
+      "total": 15,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with most entries equal to the original in the same positions, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-hard/accepted.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "first_position",
+      "subgroup": "hard_delivered:two-target-arithmetic",
+      "scope": "within_template",
+      "correct": 2,
+      "total": 21,
+      "baseline": 0.2,
+      "strategy": "Select the first stored radio choice.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-hard/accepted.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "largest_norm",
+      "subgroup": "hard_delivered:two-target-arithmetic",
+      "scope": "within_template",
+      "correct": 4,
+      "total": 21,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with the greatest sum of absolute entries, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-hard/accepted.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "smallest_norm",
+      "subgroup": "hard_delivered:two-target-arithmetic",
+      "scope": "within_template",
+      "correct": 4,
+      "total": 21,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with the least sum of absolute entries, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-hard/accepted.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "most_zero_entries",
+      "subgroup": "hard_delivered:two-target-arithmetic",
+      "scope": "within_template",
+      "correct": 3,
+      "total": 21,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with most zero entries, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-hard/accepted.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "most_unchanged_cells",
+      "subgroup": "hard_delivered:two-target-arithmetic",
+      "scope": "within_template",
+      "correct": 2,
+      "total": 21,
+      "baseline": 0.2,
+      "strategy": "Select the matrix with most entries equal to the original in the same positions, ties first.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-hard/accepted.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "always_swap_12",
+      "subgroup": "batch_raw:q-10250",
+      "scope": "within_template",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "strategy": "Ignore the requested pair and always swap rows 1 and 2.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "batch-records.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "always_swap_13",
+      "subgroup": "batch_raw:q-10250",
+      "scope": "within_template",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "strategy": "Ignore the requested pair and always swap rows 1 and 3.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "batch-records.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "always_swap_23",
+      "subgroup": "batch_raw:q-10250",
+      "scope": "within_template",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "strategy": "Ignore the requested pair and always swap rows 2 and 3.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "batch-records.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "always_swap_12",
+      "subgroup": "batch_raw:swap-complete",
+      "scope": "within_template",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "strategy": "Ignore the requested pair and always swap rows 1 and 2.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "batch-records.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "always_swap_13",
+      "subgroup": "batch_raw:swap-complete",
+      "scope": "within_template",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "strategy": "Ignore the requested pair and always swap rows 1 and 3.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "batch-records.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "always_swap_23",
+      "subgroup": "batch_raw:swap-complete",
+      "scope": "within_template",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "strategy": "Ignore the requested pair and always swap rows 2 and 3.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "batch-records.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "always_swap_12",
+      "subgroup": "batch_delivered:q-10250",
+      "scope": "within_template",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "strategy": "Ignore the requested pair and always swap rows 1 and 2.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "always_swap_13",
+      "subgroup": "batch_delivered:q-10250",
+      "scope": "within_template",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "strategy": "Ignore the requested pair and always swap rows 1 and 3.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "always_swap_23",
+      "subgroup": "batch_delivered:q-10250",
+      "scope": "within_template",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "strategy": "Ignore the requested pair and always swap rows 2 and 3.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "always_swap_12",
+      "subgroup": "batch_delivered:swap-complete",
+      "scope": "within_template",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "strategy": "Ignore the requested pair and always swap rows 1 and 2.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "always_swap_13",
+      "subgroup": "batch_delivered:swap-complete",
+      "scope": "within_template",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "strategy": "Ignore the requested pair and always swap rows 1 and 3.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "always_swap_23",
+      "subgroup": "batch_delivered:swap-complete",
+      "scope": "within_template",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "strategy": "Ignore the requested pair and always swap rows 2 and 3.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "always_swap_12",
+      "subgroup": "easy_raw:q-10250",
+      "scope": "within_template",
+      "correct": 3,
+      "total": 4,
+      "baseline": 0.2,
+      "strategy": "Ignore the requested pair and always swap rows 1 and 2.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-records.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "always_swap_13",
+      "subgroup": "easy_raw:q-10250",
+      "scope": "within_template",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "strategy": "Ignore the requested pair and always swap rows 1 and 3.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-records.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "always_swap_23",
+      "subgroup": "easy_raw:q-10250",
+      "scope": "within_template",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "strategy": "Ignore the requested pair and always swap rows 2 and 3.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-records.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "always_swap_12",
+      "subgroup": "easy_raw:swap-complete",
+      "scope": "within_template",
+      "correct": 3,
+      "total": 7,
+      "baseline": 0.2,
+      "strategy": "Ignore the requested pair and always swap rows 1 and 2.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-records.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "always_swap_13",
+      "subgroup": "easy_raw:swap-complete",
+      "scope": "within_template",
+      "correct": 3,
+      "total": 7,
+      "baseline": 0.2,
+      "strategy": "Ignore the requested pair and always swap rows 1 and 3.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-records.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "always_swap_23",
+      "subgroup": "easy_raw:swap-complete",
+      "scope": "within_template",
+      "correct": 1,
+      "total": 7,
+      "baseline": 0.2,
+      "strategy": "Ignore the requested pair and always swap rows 2 and 3.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "easy-records.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "always_swap_12",
+      "subgroup": "easy_delivered:q-10250",
+      "scope": "within_template",
+      "correct": 3,
+      "total": 4,
+      "baseline": 0.2,
+      "strategy": "Ignore the requested pair and always swap rows 1 and 2.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-easy/accepted.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "always_swap_13",
+      "subgroup": "easy_delivered:q-10250",
+      "scope": "within_template",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "strategy": "Ignore the requested pair and always swap rows 1 and 3.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-easy/accepted.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "always_swap_23",
+      "subgroup": "easy_delivered:q-10250",
+      "scope": "within_template",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "strategy": "Ignore the requested pair and always swap rows 2 and 3.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-easy/accepted.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "always_swap_12",
+      "subgroup": "easy_delivered:swap-complete",
+      "scope": "within_template",
+      "correct": 3,
+      "total": 7,
+      "baseline": 0.2,
+      "strategy": "Ignore the requested pair and always swap rows 1 and 2.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-easy/accepted.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "always_swap_13",
+      "subgroup": "easy_delivered:swap-complete",
+      "scope": "within_template",
+      "correct": 3,
+      "total": 7,
+      "baseline": 0.2,
+      "strategy": "Ignore the requested pair and always swap rows 1 and 3.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-easy/accepted.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "always_swap_23",
+      "subgroup": "easy_delivered:swap-complete",
+      "scope": "within_template",
+      "correct": 1,
+      "total": 7,
+      "baseline": 0.2,
+      "strategy": "Ignore the requested pair and always swap rows 2 and 3.",
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing among five unique options. This strategy does not solve the subgroup. These bounded samples do not establish population significance or absence of every shortcut. Fixed-pair guesses are also compared with the actual varying row roles; their natural role-guess baseline is one of three pairs. Bank size and norm are permutation invariants for swaps, so their tie-breaking reduces to the first position.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-easy/accepted.json",
+        "variation-check.py"
+      ]
+    },
+    {
+      "cue": "actual UI position 1",
+      "subgroup": "exact_batch:all",
+      "scope": "overall",
+      "strategy": "Select rendered radio position 1 without computing the operation.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. No fixed position solves this subgroup. Preview ordering is the actual UI ordering for fixture item IDs; live item IDs may produce another deterministic order.",
+      "sample_refs": [
+        "rendered-choice-results.json",
+        "render-batch/input.json",
+        "render-batch/rendering.json"
+      ]
+    },
+    {
+      "cue": "actual UI position 2",
+      "subgroup": "exact_batch:all",
+      "scope": "overall",
+      "strategy": "Select rendered radio position 2 without computing the operation.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. No fixed position solves this subgroup. Preview ordering is the actual UI ordering for fixture item IDs; live item IDs may produce another deterministic order.",
+      "sample_refs": [
+        "rendered-choice-results.json",
+        "render-batch/input.json",
+        "render-batch/rendering.json"
+      ]
+    },
+    {
+      "cue": "actual UI position 3",
+      "subgroup": "exact_batch:all",
+      "scope": "overall",
+      "strategy": "Select rendered radio position 3 without computing the operation.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. No fixed position solves this subgroup. Preview ordering is the actual UI ordering for fixture item IDs; live item IDs may produce another deterministic order.",
+      "sample_refs": [
+        "rendered-choice-results.json",
+        "render-batch/input.json",
+        "render-batch/rendering.json"
+      ]
+    },
+    {
+      "cue": "actual UI position 4",
+      "subgroup": "exact_batch:all",
+      "scope": "overall",
+      "strategy": "Select rendered radio position 4 without computing the operation.",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. No fixed position solves this subgroup. Preview ordering is the actual UI ordering for fixture item IDs; live item IDs may produce another deterministic order.",
+      "sample_refs": [
+        "rendered-choice-results.json",
+        "render-batch/input.json",
+        "render-batch/rendering.json"
+      ]
+    },
+    {
+      "cue": "actual UI position 5",
+      "subgroup": "exact_batch:all",
+      "scope": "overall",
+      "strategy": "Select rendered radio position 5 without computing the operation.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. No fixed position solves this subgroup. Preview ordering is the actual UI ordering for fixture item IDs; live item IDs may produce another deterministic order.",
+      "sample_refs": [
+        "rendered-choice-results.json",
+        "render-batch/input.json",
+        "render-batch/rendering.json"
+      ]
+    },
+    {
+      "cue": "actual UI position 1",
+      "subgroup": "exact_batch:q-10250",
+      "scope": "within_template",
+      "strategy": "Select rendered radio position 1 without computing the operation.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. No fixed position solves this subgroup. Preview ordering is the actual UI ordering for fixture item IDs; live item IDs may produce another deterministic order.",
+      "sample_refs": [
+        "rendered-choice-results.json",
+        "render-batch/input.json",
+        "render-batch/rendering.json"
+      ]
+    },
+    {
+      "cue": "actual UI position 2",
+      "subgroup": "exact_batch:q-10250",
+      "scope": "within_template",
+      "strategy": "Select rendered radio position 2 without computing the operation.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. No fixed position solves this subgroup. Preview ordering is the actual UI ordering for fixture item IDs; live item IDs may produce another deterministic order.",
+      "sample_refs": [
+        "rendered-choice-results.json",
+        "render-batch/input.json",
+        "render-batch/rendering.json"
+      ]
+    },
+    {
+      "cue": "actual UI position 3",
+      "subgroup": "exact_batch:q-10250",
+      "scope": "within_template",
+      "strategy": "Select rendered radio position 3 without computing the operation.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. No fixed position solves this subgroup. Preview ordering is the actual UI ordering for fixture item IDs; live item IDs may produce another deterministic order.",
+      "sample_refs": [
+        "rendered-choice-results.json",
+        "render-batch/input.json",
+        "render-batch/rendering.json"
+      ]
+    },
+    {
+      "cue": "actual UI position 4",
+      "subgroup": "exact_batch:q-10250",
+      "scope": "within_template",
+      "strategy": "Select rendered radio position 4 without computing the operation.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. No fixed position solves this subgroup. Preview ordering is the actual UI ordering for fixture item IDs; live item IDs may produce another deterministic order.",
+      "sample_refs": [
+        "rendered-choice-results.json",
+        "render-batch/input.json",
+        "render-batch/rendering.json"
+      ]
+    },
+    {
+      "cue": "actual UI position 5",
+      "subgroup": "exact_batch:q-10250",
+      "scope": "within_template",
+      "strategy": "Select rendered radio position 5 without computing the operation.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. No fixed position solves this subgroup. Preview ordering is the actual UI ordering for fixture item IDs; live item IDs may produce another deterministic order.",
+      "sample_refs": [
+        "rendered-choice-results.json",
+        "render-batch/input.json",
+        "render-batch/rendering.json"
+      ]
+    },
+    {
+      "cue": "actual UI position 1",
+      "subgroup": "exact_batch:swap-complete",
+      "scope": "within_template",
+      "strategy": "Select rendered radio position 1 without computing the operation.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. No fixed position solves this subgroup. Preview ordering is the actual UI ordering for fixture item IDs; live item IDs may produce another deterministic order.",
+      "sample_refs": [
+        "rendered-choice-results.json",
+        "render-batch/input.json",
+        "render-batch/rendering.json"
+      ]
+    },
+    {
+      "cue": "actual UI position 2",
+      "subgroup": "exact_batch:swap-complete",
+      "scope": "within_template",
+      "strategy": "Select rendered radio position 2 without computing the operation.",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. No fixed position solves this subgroup. Preview ordering is the actual UI ordering for fixture item IDs; live item IDs may produce another deterministic order.",
+      "sample_refs": [
+        "rendered-choice-results.json",
+        "render-batch/input.json",
+        "render-batch/rendering.json"
+      ]
+    },
+    {
+      "cue": "actual UI position 3",
+      "subgroup": "exact_batch:swap-complete",
+      "scope": "within_template",
+      "strategy": "Select rendered radio position 3 without computing the operation.",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. No fixed position solves this subgroup. Preview ordering is the actual UI ordering for fixture item IDs; live item IDs may produce another deterministic order.",
+      "sample_refs": [
+        "rendered-choice-results.json",
+        "render-batch/input.json",
+        "render-batch/rendering.json"
+      ]
+    },
+    {
+      "cue": "actual UI position 4",
+      "subgroup": "exact_batch:swap-complete",
+      "scope": "within_template",
+      "strategy": "Select rendered radio position 4 without computing the operation.",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. No fixed position solves this subgroup. Preview ordering is the actual UI ordering for fixture item IDs; live item IDs may produce another deterministic order.",
+      "sample_refs": [
+        "rendered-choice-results.json",
+        "render-batch/input.json",
+        "render-batch/rendering.json"
+      ]
+    },
+    {
+      "cue": "actual UI position 5",
+      "subgroup": "exact_batch:swap-complete",
+      "scope": "within_template",
+      "strategy": "Select rendered radio position 5 without computing the operation.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. No fixed position solves this subgroup. Preview ordering is the actual UI ordering for fixture item IDs; live item IDs may produce another deterministic order.",
+      "sample_refs": [
+        "rendered-choice-results.json",
+        "render-batch/input.json",
+        "render-batch/rendering.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "generator role/candidate choice before bounded validation and resampling",
+      "actual publisher validation, content identity, captured inventory and within-batch deduplication",
+      "requested easy difficulty filtering for the actual batch and controls; separate moderate/hard filter checks",
+      "freshness exclusions, zero-weight and depleted bands, weighted uniform within-band learner choice, and unconfigured-policy minimum-ID fallback",
+      "actual unmodified UI radio ordering and mathematical rendering"
+    ],
+    "sample_refs": [
+      "coverage-results.json",
+      "packaging-results.json",
+      "delivery-batch/delivery.json",
+      "delivery-easy/delivery.json",
+      "delivery-moderate/delivery.json",
+      "delivery-hard/delivery.json",
+      "shortcut-results.json",
+      "selection-results.json",
+      "rendered-choice-results.json",
+      "variation-check.py"
+    ],
+    "result": "Actual delivery retained 5/5 batch,18/18 easy,8/8 moderate,36/36 hard controls, preserving measured decision coverage. Learner selection inspected and reproduced conditionally for every rated band, fresh/seen/depleted supply and unconfigured fallback. It adds no answer-dependent filter. Future live sequence cannot be inferred without policy/history and future entity IDs."
+  },
+  "limitations": [
+    "Finite tests cannot prove absence of every shortcut. Small exact-batch subgroup counts are descriptive, not statistical estimates.",
+    "The exact batch provides swap practice only; general scaling coverage is independently demonstrated in controls rather than attributed to the batch.",
+    "Inventory capture basis is 5358; concurrent publication and future learner histories may alter eligible supply. Live policy weights/history are not captured; selection tests are explicit conditional scenarios. Future accepted item IDs are represented by labeled surrogates for illustrative selection only.",
+    "No existing non-source inventory question was reproduced with matching generation metadata, which the capture lacks. Empty affected-inventory means no demonstrated affected record, not verified absence of every defect.",
+    "All source responses are math radio selections. Free-entry equivalent-notation grading is inapplicable; every tested choice is graded through the actual native engine.",
+    "Canonical e-4693 lacks a captured bank. The cognitive recipes of the two restored ad hoc source banks are underdetermined, so their parameters remain exact-replay-only while production roles vary."
+  ]
+}

@@ -1,0 +1,160 @@
+{
+  "verdict": "revise",
+  "summary": "Two source replay banks are missing, and hard production excludes the source-supported two-destination family. Tested math, native grading, rendering and packaging pass; package unchanged.",
+  "source_analysis": {
+    "skill": "Apply explicitly specified elementary row operations to an ordinary 3-by-3 coefficient matrix and select the resulting matrix.",
+    "reasoning_steps": [
+      "Read the operation type and indexed row roles.",
+      "Swap exactly the specified rows, multiply every entry of the specified row by a nonzero scalar, or add the indicated multiple of the source row to the destination row.",
+      "For two operations use the intermediate matrix in the listed order. Preserve all unassigned rows.",
+      "Compare the full resulting matrix against a five-choice math radio bank."
+    ],
+    "invariants": [
+      "Ordinary coefficient matrix, no augmentation bar.",
+      "Specified operations, not inverse identification, elimination planning, solving systems, or entry targeting.",
+      "Row replacement uses the old/current source row and updates all columns; unchanged rows remain equal.",
+      "Nonzero scaling and distinct source/destination row indices."
+    ],
+    "permitted_variations": [
+      "Vary signed integer matrix entries conservatively with comparable arithmetic.",
+      "Swap any pair of distinct rows; vary scaling target across all rows and nonzero reciprocal scalar with divisible entries.",
+      "Vary addition source and destination rows, scalar sign/magnitude, and whether entries cancel: a zero in the first column is incidental, not a required answer role.",
+      "Vary hard ordered row roles within the demonstrated two-addition workload.",
+      "Vary matrix name, complete plausible distractors, and correct-choice position; none should predict correctness."
+    ],
+    "source_refs": [
+      "73199f2e-4821-5c88-b3d1-fc53d8677008",
+      "855eebc5-e47a-5262-b735-bfa0d3ece889",
+      "89449fa7-e2ad-5aa8-8f8e-c30702d39ac6",
+      "1b5f24a7-25be-5f91-9261-490e6919b435",
+      "89540d9f-9bfa-5f07-91be-e72783b1a7bc",
+      "873c8162-c75c-5ddc-aed6-146d6160fb0b",
+      "e33508b0-e7bc-5f7b-ba8e-f8058d2dcab4",
+      "d89fad28-1b46-55f3-b90e-6ed4c3f194da",
+      "d1a5db75-1b21-5cae-946a-8cdf4a8b6bd6",
+      "19304b0c-e5c7-5753-b769-38318084c464",
+      "ca077f28-d99d-5d8c-83aa-140ea10ab237",
+      "836f2f1b-5dd4-5dba-81cc-eb9ffe7db8d1",
+      "tutorial 7aa753a7-1450-53dd-8e61-71e07952cecb, Introduction: switching any two rows; multiplying each element by a non-zero number; adding a multiple of one row to another, j != i",
+      "lesson step 46eeafc2-7d22-58a7-bc12-127e3c86f554: Applying Row Operations To a Coefficients Matrix"
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "failed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "source-replay-results.json",
+        "source-replays.json",
+        "canonical-replay.json",
+        "regression-results.json"
+      ],
+      "details": "9/11 supplied complete banks reproduced and independently compared mathematically, including keys; two unknown-profile omissions. Canonical worked example replayed without inventing an answer bank. Source q-10248 intermediate unchanged-row error corrected."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "review.py",
+        "math-results.json",
+        "control-records.json",
+        "target-results.json"
+      ],
+      "details": "199 records parsed from prompt TeX independently of metadata: exact Fraction arithmetic verifies keys, five unique choices, exactly one correct choice and final solution matrices. Additional controlled target matrices checked explicitly. No mathematical mismatch found in tested records."
+    },
+    "variety": {
+      "status": "failed",
+      "evidence_paths": [
+        "coverage-results.json",
+        "control-records.json",
+        "regression-results.json",
+        "delivery-control/delivery.json",
+        "delivery-batch/delivery.json"
+      ],
+      "details": "Easy covers all swap pairs, all scale targets and both kinds in control; moderate target roles vary. Hard construction suppresses distinct destinations from three supplied source cases. Exact easy batch contains five swaps and no scales; no all-item shortcut was demonstrated."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "source-replays.json",
+        "control-records.json",
+        "coverage-results.json"
+      ],
+      "details": "Tested generated instances retain ordinary 3x3 matrices, specified elementary operations, five-choice math radio, and one easy/moderate or two hard operations. Conservative integer/reciprocal scaling extensions use the lesson rule. Missing families are reported separately as restrictions."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-results.json",
+        "target-results.json"
+      ],
+      "details": "Actual native grade_field: 21 correct-choice acceptances and 84 wrong-choice rejections, zero unresolved. All bank choices for exact batch, controlled pairs and source replays exercised. Equivalent free-entry notation does not apply to this radio contract."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-pairs/rendering.json",
+        "render-targets/rendering.json",
+        "render-other/rendering.json",
+        "visual-inspection.json",
+        "rendered-choice-results.json"
+      ],
+      "details": "Unmodified UI rendered exact batch, all controlled pair records, and representative moderate/hard output. Reports show no math, glyph, image, font or JS failures. Representative screenshots inspected for complete matrices, choice controls and worked steps; actual choice order inspected separately."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "package-hashes-before.json",
+        "package-hashes-after.json",
+        "relocation-records.json",
+        "commands.md"
+      ],
+      "details": "Manifest declares exact installed Python 3.13.5 and empty nested packages; imports are standard library/local files. Deterministic seed replay and relocated CLI agree; invalid boundaries rejected. Final recursive package hashes match initial snapshot; no publication/database writes."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "regression-results.json",
+        "shortcut-results.json",
+        "counterfactual-records.json",
+        "grader-results.json",
+        "selection-results.json",
+        "delivery-batch/delivery.json"
+      ],
+      "details": "Controlled relevant and irrelevant easy changes follow prompts, explanations, keys and native grading. Conditional cue tests find no universal shortcut, including exact batch. Hard source operation roles are nevertheless fixed to one destination. Captured filtering/selection examined with explicit live-policy/history limits."
+    }
+  },
+  "findings": [
+    {
+      "kind": "source_fidelity",
+      "description": "Two supplied source banks cannot be replayed: q-10251 (easy swap first/third) and q-10243 (moderate add -5 times row 2 to row 3). Both raise unknown-profile errors. Nine other banks reproduce, so these are concrete omissions rather than absent source evidence.",
+      "source_refs": [
+        "19304b0c-e5c7-5753-b769-38318084c464 / q-10251",
+        "ca077f28-d99d-5d8c-83aa-140ea10ab237 / q-10243",
+        "generate/principles.md: Establish fidelity first"
+      ],
+      "reproduction": "Run /home/jake/Developer/Course_Academy/.venv/bin/python -B regressions.py from evidence_root. Minimal easy case: generate(\"easy\",991,\"q-10251\",{\"matrix\":[[-1,0,1],[1,0,0],[-1,1,0]],\"rows\":[0,2]}) raises ValueError: Unknown easy profile. The second exact source case and both complete expected source banks are retained by source/source.json and regression-results.json.",
+      "requested_change": "Add exact replay paths for both complete source banks, preserving their correct matrices and worked-solution stages. Keep the strict source-bank regressions and all existing replay families."
+    },
+    {
+      "kind": "restriction",
+      "description": "Hard production fixes both additions to one destination and requires two distinct donors. This excludes the supported shared-donor/two-destination family in q-130064, q-130065 and q-10245. Row labels vary, but the eligible destination relationship is fixed without an instructional reason. These cases exist only behind hard.replay.",
+      "source_refs": [
+        "89540d9f-9bfa-5f07-91be-e72783b1a7bc / q-130064",
+        "873c8162-c75c-5ddc-aed6-146d6160fb0b / q-130065",
+        "d89fad28-1b46-55f3-b90e-6ed4c3f194da / q-10245",
+        "d1a5db75-1b21-5cae-946a-8cdf4a8b6bd6 / q-130010",
+        "tutorial 7aa753a7-1450-53dd-8e61-71e07952cecb: adding a multiple of one row to another"
+      ],
+      "reproduction": "Run the same regressions.py. Source q-130064 minimally specifies R1:=R1-2R2 then R3:=R3+R2 on [[0,4,7],[5,2,1],[1,3,0]], producing [[-10,0,5],[5,2,1],[6,5,1]]. Normal hard seed 72011 instead uses R3 for both destinations; all seeds 72011..72070 do so. hard.operations() explicitly emits p[\"target\"] twice and validate() forces the other two rows to be donors, proving the domain exclusion.",
+      "requested_change": "Represent both ordered row operations and sample both demonstrated role relationships: shared destination/two donors and shared donor/two destinations. Derive the full bank, prompt, intermediate matrices, key and fingerprint from the operation list; retain the same two-addition workload and source replay banks."
+    }
+  ]
+}

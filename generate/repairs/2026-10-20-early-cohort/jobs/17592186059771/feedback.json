@@ -1,0 +1,137 @@
+{
+  "verdict": "revise",
+  "summary": "Two source banks cannot be replayed, and hard generation excludes a supported operation family. Tested mathematics, grading, rendering and packaging pass. Package files remain unchanged.",
+  "source_analysis": {
+    "skill": "Apply specified elementary row operations to a coefficient matrix and select the resulting matrix.",
+    "reasoning_steps": [
+      "Identify the operation and indexed row roles.",
+      "Apply it to every entry of each destination row, preserving unassigned rows.",
+      "For two operations, use the intermediate matrix.",
+      "Select the complete resulting matrix."
+    ],
+    "invariants": [
+      "Ordinary 3\u00d73 coefficient matrices.",
+      "Five-choice math radio response.",
+      "Nonzero scaling and distinct donor/destination rows.",
+      "One operation for easy/moderate; two additions for hard."
+    ],
+    "permitted_variations": [
+      "Matrix entries, eligible row roles, factors and choice positions.",
+      "Hard operations sharing either a destination or a donor.",
+      "Optional cancellation without fixing which entry becomes zero."
+    ],
+    "source_refs": [
+      "19304b0c-e5c7-5753-b769-38318084c464",
+      "ca077f28-d99d-5d8c-83aa-140ea10ab237",
+      "89540d9f-9bfa-5f07-91be-e72783b1a7bc",
+      "873c8162-c75c-5ddc-aed6-146d6160fb0b",
+      "d89fad28-1b46-55f3-b90e-6ed4c3f194da",
+      "Tutorial 7aa753a7-1450-53dd-8e61-71e07952cecb: elementary row-operation definitions."
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "failed",
+      "evidence_paths": [
+        "source-replay-results.json",
+        "source-replays.json",
+        "regression-results.json"
+      ],
+      "details": "Nine complete source banks reproduce; q-10251 and q-10243 raise unknown-profile errors."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "target-results.json"
+      ],
+      "details": "199 independently parsed records have correct keys, unique choices and correct final solution matrices. Additional target cases also agree."
+    },
+    "variety": {
+      "status": "failed",
+      "evidence_paths": [
+        "coverage-results.json",
+        "control-records.json",
+        "regression-results.json"
+      ],
+      "details": "Hard production structurally excludes distinct destinations. Easy controls cover swaps and scaling; the exact five-item batch contains swaps only."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "control-records.json"
+      ],
+      "details": "Tested instances preserve the source operations, representations, response format and workload."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-results.json"
+      ],
+      "details": "Native grader: 21 correct-choice acceptances and 84 wrong-choice rejections; zero unresolved."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-pairs/rendering.json",
+        "render-targets/rendering.json",
+        "render-other/rendering.json",
+        "visual-inspection.json"
+      ],
+      "details": "Actual UI reports pass; inspected screenshots show readable matrices, controls and worked steps."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "package-hashes-before.json",
+        "package-hashes-after.json",
+        "commands.md"
+      ],
+      "details": "Exact Python dependency version matches. Deterministic replay, relocation and rejection checks pass. Recursive package hashes are unchanged."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "shortcut-results.json",
+        "rendered-choice-results.json",
+        "selection-results.json",
+        "delivery-batch/delivery.json",
+        "delivery-control/delivery.json"
+      ],
+      "details": "Controlled easy changes pass, and no universal tested shortcut answers the exact batch. Hard destination relationships remain unjustifiably fixed. Delivery retained all tested easy records; live policy/history limitations are documented."
+    }
+  },
+  "findings": [
+    {
+      "kind": "source_fidelity",
+      "description": "Complete source banks q-10251 and q-10243 are unsupported.",
+      "source_refs": [
+        "19304b0c-e5c7-5753-b769-38318084c464",
+        "ca077f28-d99d-5d8c-83aa-140ea10ab237"
+      ],
+      "reproduction": "Run `/home/jake/Developer/Course_Academy/.venv/bin/python -B regressions.py` from evidence_root. Minimal case: generate('easy',991,'q-10251',{'matrix':[[-1,0,1],[1,0,0],[-1,1,0]],'rows':[0,2]}) raises ValueError: Unknown easy profile. The script also reproduces q-10243's rejection.",
+      "requested_change": "Add exact replay paths for both complete banks and retain strict bank-comparison regressions."
+    },
+    {
+      "kind": "restriction",
+      "description": "Hard production always updates one destination twice, excluding three supplied shared-donor/two-destination cases.",
+      "source_refs": [
+        "89540d9f-9bfa-5f07-91be-e72783b1a7bc",
+        "873c8162-c75c-5ddc-aed6-146d6160fb0b",
+        "d89fad28-1b46-55f3-b90e-6ed4c3f194da"
+      ],
+      "reproduction": "Run regressions.py. Source q-130064 requires R1:=R1-2R2 followed by R3:=R3+R2. Normal hard seeds 72011\u201372070 all repeat one destination. hard.operations() explicitly emits p['target'] twice, proving structural exclusion.",
+      "requested_change": "Sample both demonstrated destination relationships using explicit ordered operations, deriving banks, prompts, intermediate matrices, keys and fingerprints consistently."
+    }
+  ],
+  "repair_history_file": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186059771/repair-history.json",
+  "instruction": "Fix the root cause, retain every earlier counterexample, and declare executable checks in repair-regressions.json. A failed check is another repair task, not permission to abandon the generator."
+}

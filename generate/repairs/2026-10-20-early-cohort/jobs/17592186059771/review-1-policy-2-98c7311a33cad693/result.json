@@ -1,0 +1,117 @@
+{
+  "verdict": "accepted",
+  "summary": "Both retained defects are repaired. All eight checks pass; no new failure demonstrated. Package files remain unchanged.",
+  "source_analysis": {
+    "skill": "Apply specified elementary row operations to a coefficient matrix and select the resulting matrix.",
+    "reasoning_steps": [
+      "Identify the operation and indexed row roles.",
+      "Update every destination entry while preserving unassigned rows.",
+      "Use the intermediate matrix for the second operation.",
+      "Select the complete resulting matrix."
+    ],
+    "invariants": [
+      "Ordinary 3\u00d73 coefficient matrices.",
+      "Five-choice math radio response.",
+      "Nonzero scaling and distinct donor/destination rows.",
+      "Source-supported operation counts and difficulty workloads."
+    ],
+    "permitted_variations": [
+      "Matrix entries, eligible row roles, factors and choice positions.",
+      "Hard operations sharing a destination or sharing a donor.",
+      "Optional cancellation without fixing its location."
+    ],
+    "source_refs": [
+      "19304b0c-e5c7-5753-b769-38318084c464",
+      "ca077f28-d99d-5d8c-83aa-140ea10ab237",
+      "89540d9f-9bfa-5f07-91be-e72783b1a7bc",
+      "873c8162-c75c-5ddc-aed6-146d6160fb0b",
+      "d89fad28-1b46-55f3-b90e-6ed4c3f194da",
+      "d1a5db75-1b21-5cae-946a-8cdf4a8b6bd6",
+      "Tutorial 7aa753a7-1450-53dd-8e61-71e07952cecb: switching any two rows; nonzero scaling; adding a multiple of another row."
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "reuse-provenance.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay-results.json",
+        "source-replays.json",
+        "canonical-replay.json",
+        "prior-regression-original.json",
+        "prior-regression-results.json"
+      ],
+      "details": "All eleven complete banks reproduce. Retained tests fail on the hash-verified original package and pass current code."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json"
+      ],
+      "details": "111 records pass independent exact-arithmetic checks of keys, unique options and every worked matrix stage."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "coverage-results.json",
+        "role-records.json",
+        "delivery-hard/delivery.json"
+      ],
+      "details": "Both hard relationships occur and survive delivery. All twelve ordered role boundaries pass."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "control-records.json",
+        "pedagogical-variation.json"
+      ],
+      "details": "Representations, response format, operations and difficulty workloads remain supported by the source."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-results.json"
+      ],
+      "details": "Native grader: 49 correct choices accepted, 196 wrong choices rejected, zero unresolved."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render-batch/rendering.json",
+        "render-changed/rendering.json",
+        "rendered-choice-results.json",
+        "visual-inspection.json"
+      ],
+      "details": "All 22 actual-UI previews pass. Representative screenshots inspected; rendered numeric matrices independently verified."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "package-hashes-before.json",
+        "package-hashes-after.json",
+        "commands.md"
+      ],
+      "details": "Exact dependency contract, deterministic replay, relocation and rejection checks pass. Recursive package hashes are unchanged."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "selection-results.json",
+        "delivery-batch/delivery.json",
+        "affected-inventory.json",
+        "inventory-inspection.json"
+      ],
+      "details": "Relevant and irrelevant changes track prompts, solutions, keys and actual grading. Conditional shortcut probes reveal no demonstrated bypass. The exact batch is five valid swap-practice items; live-selection and inventory limitations are documented."
+    }
+  },
+  "findings": []
+}

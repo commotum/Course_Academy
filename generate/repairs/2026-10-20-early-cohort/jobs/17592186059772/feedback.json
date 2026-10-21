@@ -1,0 +1,142 @@
+{
+  "verdict": "revise",
+  "summary": "Two captured source banks do not replay. Independent mathematics, grading, rendering, delivery and packaging checks passed. The package remains unchanged.",
+  "source_analysis": {
+    "skill": "Apply stated elementary row operations to an augmented matrix and select the resulting matrix.",
+    "reasoning_steps": [
+      "Identify the operation, row roles and scalar.",
+      "Update every affected entry, including the constants column.",
+      "Use updated intermediate rows for sequential operations.",
+      "Select the matching whole matrix."
+    ],
+    "invariants": [
+      "Preserve augmented-column semantics.",
+      "Leave unaffected rows unchanged.",
+      "Use nonzero scaling and distinct addition source/target rows.",
+      "Provide exactly one correct radio choice among five."
+    ],
+    "permitted_variations": [
+      "Vary entries, eligible row roles, scalar signs and magnitudes.",
+      "Vary correct-choice position.",
+      "Rename matrices without changing mathematical responses.",
+      "Preserve the source difficulty and operation count."
+    ],
+    "source_refs": [
+      "2ff0a6f5-f3b2-5b39-8b69-1a0c969548cf: canonical row swap",
+      "926d4b45-89b4-5d26-9733-b0d97c69c160: easy swap",
+      "0f08a2c2-eb16-5d85-a714-beb36e4a0c94: easy reciprocal scaling",
+      "afe0707b-0259-50d7-a719-7a8d24334500: scaling with missing captured key and solution",
+      "337ae2e1-4641-5c8b-9b2a-9435340f0134: two-row addition",
+      "Tutorial 7aa753a7-1450-53dd-8e61-71e07952cecb: elementary row operations and assignment to every row entry"
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "source-math-results.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "failed",
+      "evidence_paths": [
+        "source-replay-results.json",
+        "source-replay-regression.py",
+        "source-replay-regression-results.json",
+        "inventory-audit.json",
+        "affected-inventory.json"
+      ],
+      "details": "Two of 13 source cases fail complete replay: q-10252 has no matching scaling bank; q-72747 lacks its source profile. No affected generated inventory record was demonstrated; this is not a verified absence of other inventory defects."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "audit.py",
+        "math-results.json",
+        "source-math-results.json"
+      ],
+      "details": "Exact arithmetic reconstructed from prompts verifies the unique correct choice and final solution matrix for all 337 generated records."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "stage-coverage.json",
+        "rejection-results.json",
+        "delivery-batch/delivery.json",
+        "delivery-sample/delivery.json",
+        "selection-results.json"
+      ],
+      "details": "Independent easy samples cover all three swap pairs, three scaling targets and 19 factors. All 240 samples and five batch records survive delivery filtering. Learner selection was examined conditionally using the captured inventory; actual policy and history were unavailable."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "scope-results.json"
+      ],
+      "details": "Observed questions preserve the supported operations, radio response contract and difficulty-specific workloads."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-results.json"
+      ],
+      "details": "The native grader correctly accepts 44 selections and rejects 176 distractors, including controlled counterfactuals. Free-entry notation is inapplicable."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render-all/rendering.json",
+        "visual-inspection.json",
+        "render-all/question-007.png",
+        "render-all/question-022.png",
+        "render-all/question-025.png"
+      ],
+      "details": "The actual UI rendered 25 records successfully. Representative screenshots show readable notation, answer controls and worked solutions."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "package-hashes-before.json",
+        "package-hashes-after.json"
+      ],
+      "details": "Exact Python version 3.13.5 matches the manifest. Deterministic replay and relocation pass for all difficulties. Package hashes are unchanged."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "stage-coverage.json",
+        "grader-results.json",
+        "render-all/rendering.json"
+      ],
+      "details": "Relevant operation changes alter the computed and graded result; renaming preserves it. Conditional position and magnitude probes found no demonstrated incidental shortcut. Both batch swaps use R1/R2, limiting claims about row-pair coverage."
+    }
+  },
+  "findings": [
+    {
+      "kind": "source_fidelity",
+      "description": "q-10252's complete five-choice scaling bank cannot be replayed. Three captured distractor constructions are replaced by another source's partial-row/column constructions.",
+      "source_refs": [
+        "afe0707b-0259-50d7-a719-7a8d24334500 (q-10252)",
+        "generate/principles.md: reproduce complete answer banks"
+      ],
+      "reproduction": "From evidence_root run PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python source-replay-regression.py; it exits 1. Minimal instance: matrix=[[1,2,3],[3,4,5],[4,6,7]], template=scale, target=0, factor=2. All 12 eligible partial-column assignments fail bank equality; complete candidates are retained in q10252-replay-candidates.json.",
+      "requested_change": "Add a distinct complete-bank replay profile for q-10252. Document its independently inferred fifth-choice key and derived solution. Retain the strict regression and existing random scaling family."
+    },
+    {
+      "kind": "source_fidelity",
+      "description": "q-72747 is absent from the moderate source-bank data. Its replay profile raises StopIteration despite the captured operation and complete bank.",
+      "source_refs": [
+        "337ae2e1-4641-5c8b-9b2a-9435340f0134 (q-72747)",
+        "generate/principles.md: establish source fidelity first"
+      ],
+      "reproduction": "The same regression tests template=add, profile=source:337ae2e1-4641-5c8b-9b2a-9435340f0134, matrix=[[1,-1,2],[3,-4,4]], target=1, donor=0, coefficient=-3, letter=B. generator.build raises StopIteration in moderate_ops.bank.",
+      "requested_change": "Include this source's complete five-option replay bank and solution stages, with result [[1,-1,2],[0,-1,-2]]. Document any augmented-separator normalization and retain the strict regression."
+    }
+  ],
+  "repair_history_file": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186059772/repair-history.json",
+  "instruction": "Fix the root cause, retain every earlier counterexample, and declare executable checks in repair-regressions.json. A failed check is another repair task, not permission to abandon the generator."
+}
