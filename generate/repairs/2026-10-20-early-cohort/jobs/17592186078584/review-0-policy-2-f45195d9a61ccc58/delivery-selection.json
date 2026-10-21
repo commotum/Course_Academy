@@ -1,0 +1,168 @@
+{
+  "stages": {
+    "raw_easy": {
+      "count": 50,
+      "median_success": 50,
+      "templates": {
+        "exhaust": 10,
+        "coffee": 10,
+        "iron": 10,
+        "cake": 10,
+        "compressor": 10
+      }
+    },
+    "delivered_easy": {
+      "count": 50,
+      "median_success": 50,
+      "templates": {
+        "exhaust": 10,
+        "coffee": 10,
+        "iron": 10,
+        "cake": 10,
+        "compressor": 10
+      }
+    },
+    "raw_batch": {
+      "count": 5,
+      "median_success": 5,
+      "templates": {
+        "compressor": 2,
+        "coffee": 1,
+        "iron": 2
+      }
+    },
+    "delivered_batch": {
+      "count": 5,
+      "median_success": 5,
+      "templates": {
+        "compressor": 2,
+        "coffee": 1,
+        "iron": 2
+      }
+    }
+  },
+  "inventory_basis": 5392,
+  "captured_inventory_bands": {
+    "easy": {
+      "count": 6,
+      "rank_strategy_correct": 2,
+      "strategy": "median"
+    },
+    "moderate": {
+      "count": 7,
+      "rank_strategy_correct": 5,
+      "strategy": "second-largest"
+    },
+    "hard": {
+      "count": 5,
+      "rank_strategy_correct": 5,
+      "strategy": "second-largest"
+    }
+  },
+  "selection_rule": "question_selection.rs select: sorted unique fresh IDs; difficulty band chosen by positive weights then uniform within band; unknown fallback only when no weighted rated band remains; previous tasks excluded by seen_before_task and prefix by caller.",
+  "conditional_selection_reproduction": [
+    {
+      "seed": "independent-0",
+      "conditional_band": "easy",
+      "seen_exclusion": [],
+      "selected_entity": 17592186078744,
+      "selected_question": "daa15db5-c1a1-535c-9031-79b2bb1e03e9"
+    },
+    {
+      "seed": "independent-1",
+      "conditional_band": "easy",
+      "seen_exclusion": [],
+      "selected_entity": 17592186244028,
+      "selected_question": "6ff863d3-8088-512b-858b-b0b33302607f"
+    },
+    {
+      "seed": "independent-2",
+      "conditional_band": "easy",
+      "seen_exclusion": [],
+      "selected_entity": 17592186244026,
+      "selected_question": "f919d480-6159-52e5-bf01-76d804f5fa17"
+    },
+    {
+      "seed": "independent-3",
+      "conditional_band": "easy",
+      "seen_exclusion": [],
+      "selected_entity": 17592186078744,
+      "selected_question": "daa15db5-c1a1-535c-9031-79b2bb1e03e9"
+    },
+    {
+      "seed": "independent-4",
+      "conditional_band": "easy",
+      "seen_exclusion": [],
+      "selected_entity": 17592186244026,
+      "selected_question": "f919d480-6159-52e5-bf01-76d804f5fa17"
+    },
+    {
+      "seed": "independent-5",
+      "conditional_band": "easy",
+      "seen_exclusion": [],
+      "selected_entity": 17592186244024,
+      "selected_question": "2b60de53-dea5-5dd2-908e-421b529445e3"
+    },
+    {
+      "seed": "independent-6",
+      "conditional_band": "easy",
+      "seen_exclusion": [
+        17592186078744
+      ],
+      "selected_entity": 17592186487327,
+      "selected_question": "533feaf7-7a54-5e3c-8829-f3324ed43a28"
+    },
+    {
+      "seed": "independent-7",
+      "conditional_band": "easy",
+      "seen_exclusion": [
+        17592186078744
+      ],
+      "selected_entity": 17592186487327,
+      "selected_question": "533feaf7-7a54-5e3c-8829-f3324ed43a28"
+    },
+    {
+      "seed": "independent-8",
+      "conditional_band": "easy",
+      "seen_exclusion": [
+        17592186078744
+      ],
+      "selected_entity": 17592186244024,
+      "selected_question": "2b60de53-dea5-5dd2-908e-421b529445e3"
+    },
+    {
+      "seed": "independent-9",
+      "conditional_band": "easy",
+      "seen_exclusion": [
+        17592186078744
+      ],
+      "selected_entity": 17592186244028,
+      "selected_question": "6ff863d3-8088-512b-858b-b0b33302607f"
+    },
+    {
+      "seed": "independent-10",
+      "conditional_band": "easy",
+      "seen_exclusion": [
+        17592186078744
+      ],
+      "selected_entity": 17592186244028,
+      "selected_question": "6ff863d3-8088-512b-858b-b0b33302607f"
+    },
+    {
+      "seed": "independent-11",
+      "conditional_band": "easy",
+      "seen_exclusion": [
+        17592186078744
+      ],
+      "selected_entity": 17592186244024,
+      "selected_question": "2b60de53-dea5-5dd2-908e-421b529445e3"
+    }
+  ],
+  "new_batch_selection": "Every nonempty subset of the five newly accepted easy records remains 100% median-answerable, regardless of IDs or selection seed.",
+  "resampling": "Whole bank collision/domain validation rejects the entire instance up to 1000 times, after the template is selected. Conditional on acceptance the two-below/two-above invariant cannot change.",
+  "limitations": [
+    "No live learner history or policy weights supplied; these are conditional eligible-band conclusions, not a prediction of a named learner session.",
+    "Preparation file absent; helper uses actual shared prepare_records against captured basis5392. Future inventory changes can alter deduplication."
+  ],
+  "difficulty_negative_test": "Mixed easy/moderate fresh-samples input rejected by actual check_delivery before prepare_records; requested easy subset accepted50/50."
+}

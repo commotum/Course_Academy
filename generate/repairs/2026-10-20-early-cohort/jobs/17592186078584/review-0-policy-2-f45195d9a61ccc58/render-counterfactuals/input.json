@@ -1,0 +1,389 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186078584,
+      "id": "bfe4679b-9724-5502-89d4-05e7661a1b5f",
+      "title": "Solving an Inhibited Decay Model"
+    },
+    "question": {
+      ":question/id": "739ab0bd-e6e0-5551-82c2-3d350a7e5b17",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/problem": "The temperature $T(t),$ in degrees Celsius, of a cup of coffee can be modeled by the differential equation\n\n$$\n\\frac{dT}{dt}=-0.05(T-25)\n$$\n\nwhere $t>0$ is the time, measured in minutes. If the initial temperature of the coffee is ${100}^{\u2218}C,$ calculate the temperature of the coffee after $6$ minutes. Round your answer to the nearest integer.",
+      ":question/worked-solution": "We're told that the temperature of the cup of coffee is modeled by the inhibited decay equation\n\n$$\n\\frac{dT}{dt}=-0.05(T-25).\n$$\n\nFirst, we integrate our differential equation by separating the variables:\n\n$$\n\\begin{aligned}\\frac{dT}{T-25} & =-0.05\\,dt \\\\ \\int \\frac{dT}{T-25} & =-\\int 0.05\\,\\text{d}t \\\\ \\operatorname{ln}\u2061|T-25| & =-0.05t+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited decay equation, we have $T-25>0$ for all $t>0.$\nNext, we solve for $T(t),$ as follows:\n\n$$\n\\begin{aligned}T-25 & ={e}^{-0.05t+C} \\\\ T-25 & ={e}^{C}{e}^{-0.05t} \\\\ T-25 & =K{e}^{-0.05t} \\\\ T & =25+K{e}^{-0.05t}\\end{aligned}\n$$\n\nNote that $K={e}^{C}$ is a constant of integration. \n\nWe're told that the initial temperature of the coffee was ${100}^{\u2218}C.$ So, we apply the initial condition $T(0)=100,$ and solve for $K:$\n\n$$\n\\begin{aligned}100 & =25+K{e}^{0} \\\\ 100 & =25+K \\\\ K & =75\\end{aligned}\n$$\n\nTherefore, the solution to our initial value problem is\n\n$$\nT(t)=25+75{e}^{-0.05t}.\n$$\n\nFinally, the temperature of the coffee after $t=6$ minutes is\n\n$$\nT(6)=25+75{e}^{-0.05\\cdot 6}\u2248{81}^{\u2218}\\text{C},\n$$\n\nrounded to the nearest integer.",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "9bb6e74d-33bc-53cb-b435-0bcf95f9fcb1",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "4133adfa-c7b4-5d20-a0c4-8292203675e8",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "{66}^{\u2218}\\text{C}"
+            },
+            {
+              ":answer/id": "0ad40251-dbbe-5340-8f57-d16560bc75ff",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "{99}^{\u2218}\\text{C}"
+            },
+            {
+              ":answer/id": "ea666124-a0df-5c0a-8f03-5aaced92a60f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "{56}^{\u2218}\\text{C}"
+            },
+            {
+              ":answer/id": "4e8438c1-8ceb-5d07-9cb0-61d96ae12fab",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "{81}^{\u2218}\\text{C}"
+            },
+            {
+              ":answer/id": "7a9a8594-6bfb-508a-8a1a-05e643bdfb48",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "{90}^{\u2218}\\text{C}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "4e8438c1-8ceb-5d07-9cb0-61d96ae12fab"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "1.1.0",
+      "seed": 84161,
+      "template": "coffee",
+      "parameters": {
+        "ambient": 25,
+        "initial": 100,
+        "rate": "0.05",
+        "time": 6
+      },
+      "bank_profile": "authored_operations",
+      "origin": "observed_template",
+      "bank_origin": "authored_operations",
+      "source_basis": 2496,
+      "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+      "mathematical_fingerprint": "130ea8773b950ed92173d56250343797b12bcb601c9f18d479d056338cf6e1f1",
+      "content_fingerprint": "af0fecab91315b833096a8e471d6582c4d8a8c5bac7f5db32cfa45ac2f57f03e",
+      "domain": "T(t)>ambient; positive rate; t>=0; observations strictly cooling",
+      "recipes": [
+        "correct",
+        "omit_ambient",
+        "do_not_subtract_ambient_in_K",
+        "halve_rate",
+        "double_rate"
+      ]
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186078584,
+      "id": "bfe4679b-9724-5502-89d4-05e7661a1b5f",
+      "title": "Solving an Inhibited Decay Model"
+    },
+    "question": {
+      ":question/id": "fa887c48-6001-5b11-b8ce-27899bb4a7d7",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/problem": "The temperature $T(t),$ in degrees Celsius, of a cup of coffee can be modeled by the differential equation\n\n$$\n\\frac{dT}{dt}=-0.05(T-25)\n$$\n\nwhere $t>0$ is the time, measured in minutes. If the initial temperature of the coffee is ${100}^{\u2218}C,$ calculate the temperature of the coffee after $9$ minutes. Round your answer to the nearest integer.",
+      ":question/worked-solution": "We're told that the temperature of the cup of coffee is modeled by the inhibited decay equation\n\n$$\n\\frac{dT}{dt}=-0.05(T-25).\n$$\n\nFirst, we integrate our differential equation by separating the variables:\n\n$$\n\\begin{aligned}\\frac{dT}{T-25} & =-0.05\\,dt \\\\ \\int \\frac{dT}{T-25} & =-\\int 0.05\\,\\text{d}t \\\\ \\operatorname{ln}\u2061|T-25| & =-0.05t+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited decay equation, we have $T-25>0$ for all $t>0.$\nNext, we solve for $T(t),$ as follows:\n\n$$\n\\begin{aligned}T-25 & ={e}^{-0.05t+C} \\\\ T-25 & ={e}^{C}{e}^{-0.05t} \\\\ T-25 & =K{e}^{-0.05t} \\\\ T & =25+K{e}^{-0.05t}\\end{aligned}\n$$\n\nNote that $K={e}^{C}$ is a constant of integration. \n\nWe're told that the initial temperature of the coffee was ${100}^{\u2218}C.$ So, we apply the initial condition $T(0)=100,$ and solve for $K:$\n\n$$\n\\begin{aligned}100 & =25+K{e}^{0} \\\\ 100 & =25+K \\\\ K & =75\\end{aligned}\n$$\n\nTherefore, the solution to our initial value problem is\n\n$$\nT(t)=25+75{e}^{-0.05t}.\n$$\n\nFinally, the temperature of the coffee after $t=9$ minutes is\n\n$$\nT(9)=25+75{e}^{-0.05\\cdot 9}\u2248{73}^{\u2218}\\text{C},\n$$\n\nrounded to the nearest integer.",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "37d8dc6d-c362-5cec-9303-7ff9aa9eaade",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "1e098b07-9d96-5d31-a1a9-76583068dc79",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "{55}^{\u2218}\\text{C}"
+            },
+            {
+              ":answer/id": "ab146b31-871a-52bd-a521-7116e1eeebc9",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "{89}^{\u2218}\\text{C}"
+            },
+            {
+              ":answer/id": "360f833a-d7b6-56c5-892b-01608d27d52f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "{48}^{\u2218}\\text{C}"
+            },
+            {
+              ":answer/id": "e039ad0f-7dd6-5a3d-8b99-d9e3ed7ce31f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "{73}^{\u2218}\\text{C}"
+            },
+            {
+              ":answer/id": "cbf8d8e4-2017-50d8-a27b-e6af129d15e7",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "{85}^{\u2218}\\text{C}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "e039ad0f-7dd6-5a3d-8b99-d9e3ed7ce31f"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "1.1.0",
+      "seed": 84161,
+      "template": "coffee",
+      "parameters": {
+        "ambient": 25,
+        "initial": 100,
+        "rate": "0.05",
+        "time": 9
+      },
+      "bank_profile": "authored_operations",
+      "origin": "observed_template",
+      "bank_origin": "authored_operations",
+      "source_basis": 2496,
+      "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+      "mathematical_fingerprint": "ce3ee92f2a1dea5a66a4dbd42d47e7750e8baa6bb2098cbe03800bcedf0c12ba",
+      "content_fingerprint": "17db185b9154892da3150f843e126935df77bf7aaa70b8852ce1eb099dbca802",
+      "domain": "T(t)>ambient; positive rate; t>=0; observations strictly cooling",
+      "recipes": [
+        "correct",
+        "omit_ambient",
+        "do_not_subtract_ambient_in_K",
+        "halve_rate",
+        "double_rate"
+      ]
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186078584,
+      "id": "bfe4679b-9724-5502-89d4-05e7661a1b5f",
+      "title": "Solving an Inhibited Decay Model"
+    },
+    "question": {
+      ":question/id": "257c49da-d3e0-5546-93d2-0572d5e5e479",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/problem": "The temperature $T(t),$ in degrees Celsius, of a compressor of a refrigerator can be modeled by the differential equation\n\n$$\n\\frac{dT}{dt}=-0.05(T-25)\n$$\n\nwhere $t>0$ is the time, measured in minutes. If the initial temperature of the compressor is ${100}^{\u2218}C,$ calculate the temperature of the compressor after $6$ minutes. Round your answer to the nearest integer.",
+      ":question/worked-solution": "We're told that the temperature of the compressor of a refrigerator is modeled by the inhibited decay equation\n\n$$\n\\frac{dT}{dt}=-0.05(T-25).\n$$\n\nFirst, we integrate our differential equation by separating the variables:\n\n$$\n\\begin{aligned}\\frac{dT}{T-25} & =-0.05\\,dt \\\\ \\int \\frac{dT}{T-25} & =-\\int 0.05\\,\\text{d}t \\\\ \\operatorname{ln}\u2061|T-25| & =-0.05t+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited decay equation, we have $T-25>0$ for all $t>0.$\nNext, we solve for $T(t),$ as follows:\n\n$$\n\\begin{aligned}T-25 & ={e}^{-0.05t+C} \\\\ T-25 & ={e}^{C}{e}^{-0.05t} \\\\ T-25 & =K{e}^{-0.05t} \\\\ T & =25+K{e}^{-0.05t}\\end{aligned}\n$$\n\nNote that $K={e}^{C}$ is a constant of integration. \n\nWe're told that the initial temperature of the compressor was ${100}^{\u2218}C.$ So, we apply the initial condition $T(0)=100,$ and solve for $K:$\n\n$$\n\\begin{aligned}100 & =25+K{e}^{0} \\\\ 100 & =25+K \\\\ K & =75\\end{aligned}\n$$\n\nTherefore, the solution to our initial value problem is\n\n$$\nT(t)=25+75{e}^{-0.05t}.\n$$\n\nFinally, the temperature of the compressor after $t=6$ minutes is\n\n$$\nT(6)=25+75{e}^{-0.05\\cdot 6}\u2248{81}^{\u2218}\\text{C},\n$$\n\nrounded to the nearest integer.",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "7e1a29a1-8055-5cfe-af6c-2ff9a98ab645",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "076d5d05-c8e4-5979-8a64-e12857114880",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "{66}^{\u2218}\\text{C}"
+            },
+            {
+              ":answer/id": "bce07437-186f-5d9c-b1f8-1cb4dbdb4a30",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "{99}^{\u2218}\\text{C}"
+            },
+            {
+              ":answer/id": "4faf3277-b222-53cc-8d99-bdc088e7f9e5",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "{56}^{\u2218}\\text{C}"
+            },
+            {
+              ":answer/id": "0de56197-6f09-51f6-a64f-f71d06b8203a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "{81}^{\u2218}\\text{C}"
+            },
+            {
+              ":answer/id": "b1ac6beb-15eb-5088-a0eb-2f2eb85e7002",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "{90}^{\u2218}\\text{C}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "0de56197-6f09-51f6-a64f-f71d06b8203a"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "1.1.0",
+      "seed": 84161,
+      "template": "compressor",
+      "parameters": {
+        "ambient": 25,
+        "initial": 100,
+        "rate": "0.05",
+        "time": 6
+      },
+      "bank_profile": "authored_operations",
+      "origin": "observed_template",
+      "bank_origin": "authored_operations",
+      "source_basis": 2496,
+      "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+      "mathematical_fingerprint": "130ea8773b950ed92173d56250343797b12bcb601c9f18d479d056338cf6e1f1",
+      "content_fingerprint": "f632f13abf2bc9f058fb8ff1ade980ebba4f8381013286acc11f8aff6dd73117",
+      "domain": "T(t)>ambient; positive rate; t>=0; observations strictly cooling",
+      "recipes": [
+        "correct",
+        "omit_ambient",
+        "do_not_subtract_ambient_in_K",
+        "halve_rate",
+        "double_rate"
+      ]
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186078584,
+      "id": "bfe4679b-9724-5502-89d4-05e7661a1b5f",
+      "title": "Solving an Inhibited Decay Model"
+    },
+    "question": {
+      ":question/id": "1dc47df5-4e7c-5635-89c6-3863ae19fae7",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "A thermometer is placed into a water bath and displays a reading of ${50}^{\u2218}C.$ The thermometer is then transferred to a ${10}^{\u2218}C$ water bath, and its reading begins to decrease. After $5$ minutes, the thermometer reading is ${40}^{\u2218}C.$ To the nearest minute, how long does it take for the thermometer to register a reading of ${30}^{\u2218}C?$ \n\n*Hint: You may assume that the temperature reading $T(t)$ of the thermometer decreases at a rate that obeys Newton's law of cooling, where $T$ is measured in degrees Celsius and $t>0$ is the time, in minutes, since the thermometer was transferred into the ${10}^{\u2218}C$ water bath.*",
+      ":question/worked-solution": "Newton's law of cooling states that the rate at which the temperature $T(t)$ of a body changes is proportional to the difference between its temperature and its surroundings. Therefore, we have the inhibited decay equation\n\n$$\n\\frac{\\text{d}T}{\\text{d}t}=-k(T-{T}_{S}),\n$$\n\nwhere ${T}_{S}$ is the temperature of the surroundings, and $k>0$ is a constant of proportionality.\n\nIn our case, ${T}_{S}={10}^{\u2218}\\text{C},$ and we have\n\n$$\n\\frac{\\text{d}T}{\\text{d}t}=-k(T-10).\n$$\n\nFirst, we integrate our differential equation by separating the variables:\n\n$$\n\\begin{aligned}\\frac{dT}{T-10} & =-k\\,dt \\\\ \\int \\frac{dT}{T-10} & =-k\\int dt \\\\ \\operatorname{ln}\u2061|T-10| & =-kt+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited decay equation, we have $T-10>0$ for all $t>0.$\nNext, we solve for $T(t),$ as follows:\n\n$$\n\\begin{aligned}T-10 & ={e}^{-kt+C} \\\\ T-10 & ={e}^{C}{e}^{-kt} \\\\ T-10 & =K{e}^{-kt} \\\\ T & =10+K{e}^{-kt}\\end{aligned}\n$$\n\nNote that $K={e}^{C}$ is a constant of integration. \n\nWe're told that the initial temperature reading was ${50}^{\u2218}C.$ So, we apply the initial condition $T(0)=50,$ and solve for $K:$\n\n$$\n\\begin{aligned}50 & =10+K{e}^{0} \\\\ 50 & =10+K \\\\ K & =40\\end{aligned}\n$$\n\nTherefore, we have the following expression for $T(t):$\n\n$$\nT(t)=10+40{e}^{-kt}\n$$\n\nWe're also told that, after $5$ minutes, the thermometer reading is ${40}^{\u2218}C.$ So, applying the condition $T(5)=40,$ we can solve for $k:$\n\n$$\n\\begin{aligned}40 & =10+40{e}^{-5k} \\\\ 30 & =40{e}^{-5k} \\\\ \\frac{3}{4} & ={e}^{-5k} \\\\ \\operatorname{ln}\u2061(\\frac{3}{4}) & =-5k \\\\ k & =-\\frac{1}{5}\\operatorname{ln}\u2061(\\frac{3}{4})\\end{aligned}\n$$\n\nFinally, let ${t}_{1}$ be the time when the thermometer reads ${30}^{\u2218}C.$ Then, we have\n\n$$\n\\begin{aligned}T({t}_{1}) & =30 \\\\ 10+40{e}^{-k{t}_{1}} & =30 \\\\ 40{e}^{-k{t}_{1}} & =20 \\\\ {e}^{-k{t}_{1}} & =\\frac{1}{2} \\\\ -k{t}_{1} & =\\operatorname{ln}\u2061(\\frac{1}{2}) \\\\ {t}_{1} & =-\\frac{1}{k}\\operatorname{ln}\u2061(\\frac{1}{2}).\\end{aligned}\n$$\n\nSubstituting in our value for $k,$ we conclude that the thermometer will read ${30}^{\u2218}C$ after\n\n$$\n{t}_{1}=\\frac{-\\operatorname{ln}\u2061(\\frac{1}{2})}{-\\frac{1}{5}\\operatorname{ln}\u2061(\\frac{3}{4})}\u224812\\,\\text{min},\n$$\n\nrounded to the nearest minute.",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "13f78573-b51f-516d-bb6b-b46a0d125ae5",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "1100a3b8-bfd1-5df0-a478-655f6a16892f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "6\\,\\text{min}"
+            },
+            {
+              ":answer/id": "279fc435-092b-5b40-9aef-ac74fd7b4c08",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "24\\,\\text{min}"
+            },
+            {
+              ":answer/id": "43e5f3d4-fed0-5353-a919-17334e266bad",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "11\\,\\text{min}"
+            },
+            {
+              ":answer/id": "fa486e66-39f7-523c-ba19-25cb4a03c679",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "9\\,\\text{min}"
+            },
+            {
+              ":answer/id": "85e78370-8f96-5ef2-bcd9-638a13216a95",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "12\\,\\text{min}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "85e78370-8f96-5ef2-bcd9-638a13216a95"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "1.1.0",
+      "seed": 84179,
+      "template": "bath",
+      "parameters": {
+        "ambient": 10,
+        "initial": 50,
+        "observed": 40,
+        "target": 30,
+        "time": 5
+      },
+      "bank_profile": "authored_operations",
+      "origin": "observed_template",
+      "bank_origin": "authored_operations",
+      "source_basis": 2496,
+      "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+      "mathematical_fingerprint": "aa038ac8071c2086d5bac35cf223413d2294c32eb34cef0f35f2403668e5d978",
+      "content_fingerprint": "82c118e3139e00b303ef293fa2cf8ac411d31c173b43ac9b80df784d0741f2b5",
+      "domain": "T(t)>ambient; positive rate; t>=0; observations strictly cooling",
+      "recipes": [
+        "correct",
+        "omit_ambient_in_both_ratios",
+        "omit_ambient_in_target_ratio",
+        "double_rate",
+        "halve_rate"
+      ]
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186078584,
+      "id": "bfe4679b-9724-5502-89d4-05e7661a1b5f",
+      "title": "Solving an Inhibited Decay Model"
+    },
+    "question": {
+      ":question/id": "dbbcb385-3f5e-58d5-b184-428d32d12330",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "A thermometer is placed into a water bath and displays a reading of ${50}^{\u2218}C.$ The thermometer is then transferred to a ${10}^{\u2218}C$ water bath, and its reading begins to decrease. After $5$ minutes, the thermometer reading is ${40}^{\u2218}C.$ To the nearest minute, how long does it take for the thermometer to register a reading of ${25}^{\u2218}C?$ \n\n*Hint: You may assume that the temperature reading $T(t)$ of the thermometer decreases at a rate that obeys Newton's law of cooling, where $T$ is measured in degrees Celsius and $t>0$ is the time, in minutes, since the thermometer was transferred into the ${10}^{\u2218}C$ water bath.*",
+      ":question/worked-solution": "Newton's law of cooling states that the rate at which the temperature $T(t)$ of a body changes is proportional to the difference between its temperature and its surroundings. Therefore, we have the inhibited decay equation\n\n$$\n\\frac{\\text{d}T}{\\text{d}t}=-k(T-{T}_{S}),\n$$\n\nwhere ${T}_{S}$ is the temperature of the surroundings, and $k>0$ is a constant of proportionality.\n\nIn our case, ${T}_{S}={10}^{\u2218}\\text{C},$ and we have\n\n$$\n\\frac{\\text{d}T}{\\text{d}t}=-k(T-10).\n$$\n\nFirst, we integrate our differential equation by separating the variables:\n\n$$\n\\begin{aligned}\\frac{dT}{T-10} & =-k\\,dt \\\\ \\int \\frac{dT}{T-10} & =-k\\int dt \\\\ \\operatorname{ln}\u2061|T-10| & =-kt+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited decay equation, we have $T-10>0$ for all $t>0.$\nNext, we solve for $T(t),$ as follows:\n\n$$\n\\begin{aligned}T-10 & ={e}^{-kt+C} \\\\ T-10 & ={e}^{C}{e}^{-kt} \\\\ T-10 & =K{e}^{-kt} \\\\ T & =10+K{e}^{-kt}\\end{aligned}\n$$\n\nNote that $K={e}^{C}$ is a constant of integration. \n\nWe're told that the initial temperature reading was ${50}^{\u2218}C.$ So, we apply the initial condition $T(0)=50,$ and solve for $K:$\n\n$$\n\\begin{aligned}50 & =10+K{e}^{0} \\\\ 50 & =10+K \\\\ K & =40\\end{aligned}\n$$\n\nTherefore, we have the following expression for $T(t):$\n\n$$\nT(t)=10+40{e}^{-kt}\n$$\n\nWe're also told that, after $5$ minutes, the thermometer reading is ${40}^{\u2218}C.$ So, applying the condition $T(5)=40,$ we can solve for $k:$\n\n$$\n\\begin{aligned}40 & =10+40{e}^{-5k} \\\\ 30 & =40{e}^{-5k} \\\\ \\frac{3}{4} & ={e}^{-5k} \\\\ \\operatorname{ln}\u2061(\\frac{3}{4}) & =-5k \\\\ k & =-\\frac{1}{5}\\operatorname{ln}\u2061(\\frac{3}{4})\\end{aligned}\n$$\n\nFinally, let ${t}_{1}$ be the time when the thermometer reads ${25}^{\u2218}C.$ Then, we have\n\n$$\n\\begin{aligned}T({t}_{1}) & =25 \\\\ 10+40{e}^{-k{t}_{1}} & =25 \\\\ 40{e}^{-k{t}_{1}} & =15 \\\\ {e}^{-k{t}_{1}} & =\\frac{3}{8} \\\\ -k{t}_{1} & =\\operatorname{ln}\u2061(\\frac{3}{8}) \\\\ {t}_{1} & =-\\frac{1}{k}\\operatorname{ln}\u2061(\\frac{3}{8}).\\end{aligned}\n$$\n\nSubstituting in our value for $k,$ we conclude that the thermometer will read ${25}^{\u2218}C$ after\n\n$$\n{t}_{1}=\\frac{-\\operatorname{ln}\u2061(\\frac{3}{8})}{-\\frac{1}{5}\\operatorname{ln}\u2061(\\frac{3}{4})}\u224817\\,\\text{min},\n$$\n\nrounded to the nearest minute.",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "c65cf684-f6a1-56a6-92e5-55f4ed1f4c32",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "10ba602b-4e14-5608-b578-d6967fc87961",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "9\\,\\text{min}"
+            },
+            {
+              ":answer/id": "21a60a30-4703-57b3-9e19-56e920fe277f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "34\\,\\text{min}"
+            },
+            {
+              ":answer/id": "9ff50689-f0c9-582d-8bf7-87f37672b57a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "16\\,\\text{min}"
+            },
+            {
+              ":answer/id": "e5664f5d-a4c4-52a7-aa89-617e04b5a7bd",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "12\\,\\text{min}"
+            },
+            {
+              ":answer/id": "191f9d32-b7e5-543d-b438-4222b87d7256",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "17\\,\\text{min}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "191f9d32-b7e5-543d-b438-4222b87d7256"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "1.1.0",
+      "seed": 84179,
+      "template": "bath",
+      "parameters": {
+        "ambient": 10,
+        "initial": 50,
+        "observed": 40,
+        "target": 25,
+        "time": 5
+      },
+      "bank_profile": "authored_operations",
+      "origin": "observed_template",
+      "bank_origin": "authored_operations",
+      "source_basis": 2496,
+      "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+      "mathematical_fingerprint": "13b0420d3b151c47f9ce7673e73f253887983aa043ce71c11b299e4cb1d16e03",
+      "content_fingerprint": "33169e68836c3fdb157361b3b05f5237addfa974dc11636fe5a730a573c58cea",
+      "domain": "T(t)>ambient; positive rate; t>=0; observations strictly cooling",
+      "recipes": [
+        "correct",
+        "omit_ambient_in_both_ratios",
+        "omit_ambient_in_target_ratio",
+        "double_rate",
+        "halve_rate"
+      ]
+    }
+  }
+]

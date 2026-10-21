@@ -1,0 +1,1 @@
+Source account complete. Fresh samples, source replays, independent numeric checks, controlled pairs, native grader input and packaging checks saved by audit.py. Demonstrated easy bank median shortcut across 50 fresh easy records and runner batch; delivery/native grading/rendering next. Missing latest body and pork source profiles. No repair history or preflight file exists.

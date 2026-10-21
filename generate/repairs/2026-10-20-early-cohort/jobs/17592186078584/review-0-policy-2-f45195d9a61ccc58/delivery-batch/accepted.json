@@ -1,0 +1,392 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186078584,
+      "id": "bfe4679b-9724-5502-89d4-05e7661a1b5f",
+      "title": "Solving an Inhibited Decay Model"
+    },
+    "question": {
+      ":question/id": "bb337070-9189-54d6-b490-85e8f6c5f729",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/problem": "The temperature $T(t),$ in degrees Celsius, of a compressor of a refrigerator can be modeled by the differential equation\n\n$$\n\\frac{dT}{dt}=-0.09(T-20)\n$$\n\nwhere $t>0$ is the time, measured in minutes. If the initial temperature of the compressor is ${96}^{∘}C,$ calculate the temperature of the compressor after $12$ minutes. Round your answer to the nearest integer.",
+      ":question/worked-solution": "We're told that the temperature of the compressor of a refrigerator is modeled by the inhibited decay equation\n\n$$\n\\frac{dT}{dt}=-0.09(T-20).\n$$\n\nFirst, we integrate our differential equation by separating the variables:\n\n$$\n\\begin{aligned}\\frac{dT}{T-20} & =-0.09\\,dt \\\\ \\int \\frac{dT}{T-20} & =-\\int 0.09\\,\\text{d}t \\\\ \\operatorname{ln}⁡|T-20| & =-0.09t+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited decay equation, we have $T-20>0$ for all $t>0.$\nNext, we solve for $T(t),$ as follows:\n\n$$\n\\begin{aligned}T-20 & ={e}^{-0.09t+C} \\\\ T-20 & ={e}^{C}{e}^{-0.09t} \\\\ T-20 & =K{e}^{-0.09t} \\\\ T & =20+K{e}^{-0.09t}\\end{aligned}\n$$\n\nNote that $K={e}^{C}$ is a constant of integration. \n\nWe're told that the initial temperature of the compressor was ${96}^{∘}C.$ So, we apply the initial condition $T(0)=96,$ and solve for $K:$\n\n$$\n\\begin{aligned}96 & =20+K{e}^{0} \\\\ 96 & =20+K \\\\ K & =76\\end{aligned}\n$$\n\nTherefore, the solution to our initial value problem is\n\n$$\nT(t)=20+76{e}^{-0.09t}.\n$$\n\nFinally, the temperature of the compressor after $t=12$ minutes is\n\n$$\nT(12)=20+76{e}^{-0.09\\cdot 12}≈{46}^{∘}\\text{C},\n$$\n\nrounded to the nearest integer.",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "99ca09d9-6bc7-519f-ab7e-7810f330b8ee",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "19aa140e-8959-574b-84c1-8d94643a012b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "{29}^{∘}\\text{C}"
+            },
+            {
+              ":answer/id": "9491f242-1dc7-5264-85fc-45feedf8cef3",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "{64}^{∘}\\text{C}"
+            },
+            {
+              ":answer/id": "e52450a4-167f-54e7-9836-2523a9930392",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "{46}^{∘}\\text{C}"
+            },
+            {
+              ":answer/id": "cfc60c8f-e504-57c1-9664-c79320533db5",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "{53}^{∘}\\text{C}"
+            },
+            {
+              ":answer/id": "89cd60ad-ba89-537f-88cf-098a8238ca33",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "{26}^{∘}\\text{C}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "e52450a4-167f-54e7-9836-2523a9930392"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "1.1.0",
+      "seed": 1403253416,
+      "template": "compressor",
+      "parameters": {
+        "ambient": 20,
+        "initial": 96,
+        "rate": "0.09",
+        "time": 12
+      },
+      "bank_profile": "authored_operations",
+      "origin": "observed_template",
+      "bank_origin": "authored_operations",
+      "source_basis": 2496,
+      "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+      "mathematical_fingerprint": "2541b53fa32654fceae3ac8e9235044dc3f9e2db2409c89ee1bb8e49950f206c",
+      "content_fingerprint": "04f8d6e8d550736eb10517ed076319a138374e32c9f5ece251dc8dc7235ef51c",
+      "domain": "T(t)>ambient; positive rate; t>=0; observations strictly cooling",
+      "recipes": [
+        "correct",
+        "omit_ambient",
+        "do_not_subtract_ambient_in_K",
+        "halve_rate",
+        "double_rate"
+      ]
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186078584,
+      "id": "bfe4679b-9724-5502-89d4-05e7661a1b5f",
+      "title": "Solving an Inhibited Decay Model"
+    },
+    "question": {
+      ":question/id": "404ce841-8c4a-51e0-9f4a-150fc46fa99e",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/problem": "The temperature $T(t),$ in degrees Celsius, of a cup of coffee can be modeled by the differential equation\n\n$$\n\\frac{dT}{dt}=-0.19(T-23)\n$$\n\nwhere $t>0$ is the time, measured in minutes. If the initial temperature of the coffee is ${73}^{∘}C,$ calculate the temperature of the coffee after $3$ minutes. Round your answer to the nearest integer.",
+      ":question/worked-solution": "We're told that the temperature of the cup of coffee is modeled by the inhibited decay equation\n\n$$\n\\frac{dT}{dt}=-0.19(T-23).\n$$\n\nFirst, we integrate our differential equation by separating the variables:\n\n$$\n\\begin{aligned}\\frac{dT}{T-23} & =-0.19\\,dt \\\\ \\int \\frac{dT}{T-23} & =-\\int 0.19\\,\\text{d}t \\\\ \\operatorname{ln}⁡|T-23| & =-0.19t+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited decay equation, we have $T-23>0$ for all $t>0.$\nNext, we solve for $T(t),$ as follows:\n\n$$\n\\begin{aligned}T-23 & ={e}^{-0.19t+C} \\\\ T-23 & ={e}^{C}{e}^{-0.19t} \\\\ T-23 & =K{e}^{-0.19t} \\\\ T & =23+K{e}^{-0.19t}\\end{aligned}\n$$\n\nNote that $K={e}^{C}$ is a constant of integration. \n\nWe're told that the initial temperature of the coffee was ${73}^{∘}C.$ So, we apply the initial condition $T(0)=73,$ and solve for $K:$\n\n$$\n\\begin{aligned}73 & =23+K{e}^{0} \\\\ 73 & =23+K \\\\ K & =50\\end{aligned}\n$$\n\nTherefore, the solution to our initial value problem is\n\n$$\nT(t)=23+50{e}^{-0.19t}.\n$$\n\nFinally, the temperature of the coffee after $t=3$ minutes is\n\n$$\nT(3)=23+50{e}^{-0.19\\cdot 3}≈{51}^{∘}\\text{C},\n$$\n\nrounded to the nearest integer.",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "df2ce129-2499-5f2c-b983-59a3bddcd80d",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "9fc3ad4a-8037-50ce-b018-b8fcd3b51efb",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "{39}^{∘}\\text{C}"
+            },
+            {
+              ":answer/id": "1cfdbaf8-a273-54ee-b870-508391b919d5",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "{64}^{∘}\\text{C}"
+            },
+            {
+              ":answer/id": "f227d16a-aa86-5aae-8da0-a02f65023201",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "{51}^{∘}\\text{C}"
+            },
+            {
+              ":answer/id": "77d5e171-75ba-5c45-9a9d-c830149d7e3f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "{61}^{∘}\\text{C}"
+            },
+            {
+              ":answer/id": "a4b6a10a-9677-5a80-8352-e7d0f288a8c3",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "{28}^{∘}\\text{C}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "f227d16a-aa86-5aae-8da0-a02f65023201"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "1.1.0",
+      "seed": 1403253417,
+      "template": "coffee",
+      "parameters": {
+        "ambient": 23,
+        "initial": 73,
+        "rate": "0.19",
+        "time": 3
+      },
+      "bank_profile": "authored_operations",
+      "origin": "observed_template",
+      "bank_origin": "authored_operations",
+      "source_basis": 2496,
+      "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+      "mathematical_fingerprint": "386eadca2f569107877156e257cc63f09ffca3e93b4ccf6f58b47ada1e097f0a",
+      "content_fingerprint": "462eb33e235ce0131c59ee0b58fdaaf8d70cb74a36516ebe2d9eb37b61698956",
+      "domain": "T(t)>ambient; positive rate; t>=0; observations strictly cooling",
+      "recipes": [
+        "correct",
+        "omit_ambient",
+        "do_not_subtract_ambient_in_K",
+        "halve_rate",
+        "double_rate"
+      ]
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186078584,
+      "id": "bfe4679b-9724-5502-89d4-05e7661a1b5f",
+      "title": "Solving an Inhibited Decay Model"
+    },
+    "question": {
+      ":question/id": "c8da6d0b-e211-5828-a598-78029b749188",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/problem": "The temperature $T(t),$ in degrees Celsius, of a cooling iron can be modeled by the differential equation\n\n$$\n\\frac{dT}{dt}=-0.07(T-15)\n$$\n\nwhere $t>0$ is the time, measured in minutes. If the initial temperature of the iron is ${162}^{∘}C,$ calculate its temperature after $12$ minutes. Round your answer to the nearest integer.",
+      ":question/worked-solution": "We're told that the temperature of the cooling iron is modeled by the inhibited decay equation\n\n$$\n\\frac{dT}{dt}=-0.07(T-15).\n$$\n\nFirst, we integrate our differential equation by separating the variables:\n\n$$\n\\begin{aligned}\\frac{dT}{T-15} & =-0.07\\,dt \\\\ \\int \\frac{dT}{T-15} & =-\\int 0.07\\,\\text{d}t \\\\ \\operatorname{ln}⁡|T-15| & =-0.07t+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited decay equation, we have $T-15>0$ for all $t>0.$\nNext, we solve for $T(t),$ as follows:\n\n$$\n\\begin{aligned}T-15 & ={e}^{-0.07t+C} \\\\ T-15 & ={e}^{C}{e}^{-0.07t} \\\\ T-15 & =K{e}^{-0.07t} \\\\ T & =15+K{e}^{-0.07t}\\end{aligned}\n$$\n\nNote that $K={e}^{C}$ is a constant of integration. \n\nWe're told that the initial temperature of the iron was ${162}^{∘}C.$ So, we apply the initial condition $T(0)=162,$ and solve for $K:$\n\n$$\n\\begin{aligned}162 & =15+K{e}^{0} \\\\ 162 & =15+K \\\\ K & =147\\end{aligned}\n$$\n\nTherefore, the solution to our initial value problem is\n\n$$\nT(t)=15+147{e}^{-0.07t}.\n$$\n\nFinally, the temperature of the iron after $t=12$ minutes is\n\n$$\nT(12)=15+147{e}^{-0.07\\cdot 12}≈{78}^{∘}\\text{C},\n$$\n\nrounded to the nearest integer.",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "18174816-bae2-5435-886f-c4ed2ba046d2",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "4877d83e-030b-5a93-bd59-f6984d69d4a8",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "{112}^{∘}\\text{C}"
+            },
+            {
+              ":answer/id": "c38d630d-345c-546b-8d0b-17b5dd5a907b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "{85}^{∘}\\text{C}"
+            },
+            {
+              ":answer/id": "ead59de1-418c-5cba-b2f0-29cdbb3d1253",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "{63}^{∘}\\text{C}"
+            },
+            {
+              ":answer/id": "8fed265f-55f1-52c7-bfae-c03f89661fd0",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "{42}^{∘}\\text{C}"
+            },
+            {
+              ":answer/id": "a2f805a0-80be-5d76-8548-b44d9ccdc06c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "{78}^{∘}\\text{C}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "a2f805a0-80be-5d76-8548-b44d9ccdc06c"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "1.1.0",
+      "seed": 1403253418,
+      "template": "iron",
+      "parameters": {
+        "ambient": 15,
+        "initial": 162,
+        "rate": "0.07",
+        "time": 12
+      },
+      "bank_profile": "authored_operations",
+      "origin": "observed_template",
+      "bank_origin": "authored_operations",
+      "source_basis": 2496,
+      "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+      "mathematical_fingerprint": "0dc25a5f5b240abf7f3d8941a027e9228cb579baa9aa05c1dbbb58a80a4da5b8",
+      "content_fingerprint": "7bb870f8307979619affc2da6bb9ab6db457c6e719e292d718981d37a50a15a7",
+      "domain": "T(t)>ambient; positive rate; t>=0; observations strictly cooling",
+      "recipes": [
+        "correct",
+        "omit_ambient",
+        "do_not_subtract_ambient_in_K",
+        "halve_rate",
+        "double_rate"
+      ]
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186078584,
+      "id": "bfe4679b-9724-5502-89d4-05e7661a1b5f",
+      "title": "Solving an Inhibited Decay Model"
+    },
+    "question": {
+      ":question/id": "083db024-a5fc-5ef7-97e3-e75c7fe68aae",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/problem": "The temperature $T(t),$ in degrees Celsius, of a compressor of a refrigerator can be modeled by the differential equation\n\n$$\n\\frac{dT}{dt}=-0.1(T-19)\n$$\n\nwhere $t>0$ is the time, measured in minutes. If the initial temperature of the compressor is ${87}^{∘}C,$ calculate the temperature of the compressor after $12$ minutes. Round your answer to the nearest integer.",
+      ":question/worked-solution": "We're told that the temperature of the compressor of a refrigerator is modeled by the inhibited decay equation\n\n$$\n\\frac{dT}{dt}=-0.1(T-19).\n$$\n\nFirst, we integrate our differential equation by separating the variables:\n\n$$\n\\begin{aligned}\\frac{dT}{T-19} & =-0.1\\,dt \\\\ \\int \\frac{dT}{T-19} & =-\\int 0.1\\,\\text{d}t \\\\ \\operatorname{ln}⁡|T-19| & =-0.1t+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited decay equation, we have $T-19>0$ for all $t>0.$\nNext, we solve for $T(t),$ as follows:\n\n$$\n\\begin{aligned}T-19 & ={e}^{-0.1t+C} \\\\ T-19 & ={e}^{C}{e}^{-0.1t} \\\\ T-19 & =K{e}^{-0.1t} \\\\ T & =19+K{e}^{-0.1t}\\end{aligned}\n$$\n\nNote that $K={e}^{C}$ is a constant of integration. \n\nWe're told that the initial temperature of the compressor was ${87}^{∘}C.$ So, we apply the initial condition $T(0)=87,$ and solve for $K:$\n\n$$\n\\begin{aligned}87 & =19+K{e}^{0} \\\\ 87 & =19+K \\\\ K & =68\\end{aligned}\n$$\n\nTherefore, the solution to our initial value problem is\n\n$$\nT(t)=19+68{e}^{-0.1t}.\n$$\n\nFinally, the temperature of the compressor after $t=12$ minutes is\n\n$$\nT(12)=19+68{e}^{-0.1\\cdot 12}≈{39}^{∘}\\text{C},\n$$\n\nrounded to the nearest integer.",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "1a2361e0-817e-5ea5-a14b-75b150090cb5",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "97fbd54e-62b3-5251-a709-a6247c437f24",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "{45}^{∘}\\text{C}"
+            },
+            {
+              ":answer/id": "491eb535-1699-5541-8b7a-f44087d449f5",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "{39}^{∘}\\text{C}"
+            },
+            {
+              ":answer/id": "1511cc6b-efb3-54c4-b634-a9d3a64b65ca",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "{25}^{∘}\\text{C}"
+            },
+            {
+              ":answer/id": "72132572-1c37-5c7d-8787-4732d21290f1",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "{56}^{∘}\\text{C}"
+            },
+            {
+              ":answer/id": "64c81934-a424-5788-aac7-234645b7f8e9",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "{20}^{∘}\\text{C}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "491eb535-1699-5541-8b7a-f44087d449f5"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "1.1.0",
+      "seed": 1403253419,
+      "template": "compressor",
+      "parameters": {
+        "ambient": 19,
+        "initial": 87,
+        "rate": "0.1",
+        "time": 12
+      },
+      "bank_profile": "authored_operations",
+      "origin": "observed_template",
+      "bank_origin": "authored_operations",
+      "source_basis": 2496,
+      "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+      "mathematical_fingerprint": "5c1f216d94971eb738fb6a5752241a3b6f9efefe14c1646cfecf4a736fe52f91",
+      "content_fingerprint": "fa763e9add460a4c64ca1368669e3682e3cff0a3e6eb20e1a7f0fdbf94a1b5d6",
+      "domain": "T(t)>ambient; positive rate; t>=0; observations strictly cooling",
+      "recipes": [
+        "correct",
+        "omit_ambient",
+        "do_not_subtract_ambient_in_K",
+        "halve_rate",
+        "double_rate"
+      ]
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186078584,
+      "id": "bfe4679b-9724-5502-89d4-05e7661a1b5f",
+      "title": "Solving an Inhibited Decay Model"
+    },
+    "question": {
+      ":question/id": "2d46f4ff-a28d-5f92-8289-d46e0ef8b63a",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/problem": "The temperature $T(t),$ in degrees Celsius, of a cooling iron can be modeled by the differential equation\n\n$$\n\\frac{dT}{dt}=-0.15(T-25)\n$$\n\nwhere $t>0$ is the time, measured in minutes. If the initial temperature of the iron is ${176}^{∘}C,$ calculate its temperature after $7$ minutes. Round your answer to the nearest integer.",
+      ":question/worked-solution": "We're told that the temperature of the cooling iron is modeled by the inhibited decay equation\n\n$$\n\\frac{dT}{dt}=-0.15(T-25).\n$$\n\nFirst, we integrate our differential equation by separating the variables:\n\n$$\n\\begin{aligned}\\frac{dT}{T-25} & =-0.15\\,dt \\\\ \\int \\frac{dT}{T-25} & =-\\int 0.15\\,\\text{d}t \\\\ \\operatorname{ln}⁡|T-25| & =-0.15t+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited decay equation, we have $T-25>0$ for all $t>0.$\nNext, we solve for $T(t),$ as follows:\n\n$$\n\\begin{aligned}T-25 & ={e}^{-0.15t+C} \\\\ T-25 & ={e}^{C}{e}^{-0.15t} \\\\ T-25 & =K{e}^{-0.15t} \\\\ T & =25+K{e}^{-0.15t}\\end{aligned}\n$$\n\nNote that $K={e}^{C}$ is a constant of integration. \n\nWe're told that the initial temperature of the iron was ${176}^{∘}C.$ So, we apply the initial condition $T(0)=176,$ and solve for $K:$\n\n$$\n\\begin{aligned}176 & =25+K{e}^{0} \\\\ 176 & =25+K \\\\ K & =151\\end{aligned}\n$$\n\nTherefore, the solution to our initial value problem is\n\n$$\nT(t)=25+151{e}^{-0.15t}.\n$$\n\nFinally, the temperature of the iron after $t=7$ minutes is\n\n$$\nT(7)=25+151{e}^{-0.15\\cdot 7}≈{78}^{∘}\\text{C},\n$$\n\nrounded to the nearest integer.",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "67e9f8af-cf9b-52fc-b59a-49df089f079a",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "323e0ccb-b8be-54c2-801b-42d72d4427f6",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "{53}^{∘}\\text{C}"
+            },
+            {
+              ":answer/id": "af562ad0-3a9c-557c-89ec-4c17a4a703ce",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "{87}^{∘}\\text{C}"
+            },
+            {
+              ":answer/id": "2908db75-b878-5465-8e82-61c2753830e5",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "{43}^{∘}\\text{C}"
+            },
+            {
+              ":answer/id": "ec0ba319-22f9-5db1-a675-118d729892d7",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "{114}^{∘}\\text{C}"
+            },
+            {
+              ":answer/id": "a4e461e0-6fd1-5815-8759-f01cb783d1ae",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "{78}^{∘}\\text{C}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "a4e461e0-6fd1-5815-8759-f01cb783d1ae"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "1.1.0",
+      "seed": 1403253420,
+      "template": "iron",
+      "parameters": {
+        "ambient": 25,
+        "initial": 176,
+        "rate": "0.15",
+        "time": 7
+      },
+      "bank_profile": "authored_operations",
+      "origin": "observed_template",
+      "bank_origin": "authored_operations",
+      "source_basis": 2496,
+      "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+      "mathematical_fingerprint": "ff6dc10a30826d0bdef15fbca3987efe6c399b8746bab73955aee30503ac1728",
+      "content_fingerprint": "4b9ab687e638f1f8c8057e5114a36325210cda39fd180c5a9a703b26763f4b27",
+      "domain": "T(t)>ambient; positive rate; t>=0; observations strictly cooling",
+      "recipes": [
+        "correct",
+        "omit_ambient",
+        "do_not_subtract_ambient_in_K",
+        "halve_rate",
+        "double_rate"
+      ]
+    },
+    "assets": {}
+  }
+]

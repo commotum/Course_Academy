@@ -1,0 +1,2922 @@
+[
+  {
+    "label": "review-0-9d4ab96c-d8a2-56aa-91e4-663ddd431436",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186078584,
+        "id": "bfe4679b-9724-5502-89d4-05e7661a1b5f",
+        "title": "Solving an Inhibited Decay Model"
+      },
+      "question": {
+        ":question/id": "9d4ab96c-d8a2-56aa-91e4-663ddd431436",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/problem": "The temperature $T(t),$ in degrees Celsius, of a compressor of a refrigerator can be modeled by the differential equation\n\n$$\n\\frac{dT}{dt}=-0.09(T-20)\n$$\n\nwhere $t>0$ is the time, measured in minutes. If the initial temperature of the compressor is ${96}^{∘}C,$ calculate the temperature of the compressor after $12$ minutes. Round your answer to the nearest integer.",
+        ":question/worked-solution": "We're told that the temperature of the compressor of a refrigerator is modeled by the inhibited decay equation\n\n$$\n\\frac{dT}{dt}=-0.09(T-20).\n$$\n\nFirst, we integrate our differential equation by separating the variables:\n\n$$\n\\begin{aligned}\\frac{dT}{T-20} & =-0.09\\,dt \\\\ \\int \\frac{dT}{T-20} & =-\\int 0.09\\,\\text{d}t \\\\ \\operatorname{ln}⁡|T-20| & =-0.09t+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited decay equation, we have $T-20>0$ for all $t>0.$\nNext, we solve for $T(t),$ as follows:\n\n$$\n\\begin{aligned}T-20 & ={e}^{-0.09t+C} \\\\ T-20 & ={e}^{C}{e}^{-0.09t} \\\\ T-20 & =K{e}^{-0.09t} \\\\ T & =20+K{e}^{-0.09t}\\end{aligned}\n$$\n\nNote that $K={e}^{C}$ is a constant of integration. \n\nWe're told that the initial temperature of the compressor was ${96}^{∘}C.$ So, we apply the initial condition $T(0)=96,$ and solve for $K:$\n\n$$\n\\begin{aligned}96 & =20+K{e}^{0} \\\\ 96 & =20+K \\\\ K & =76\\end{aligned}\n$$\n\nTherefore, the solution to our initial value problem is\n\n$$\nT(t)=20+76{e}^{-0.09t}.\n$$\n\nFinally, the temperature of the compressor after $t=12$ minutes is\n\n$$\nT(12)=20+76{e}^{-0.09\\cdot 12}≈{46}^{∘}\\text{C},\n$$\n\nrounded to the nearest integer.",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "1c5adb84-bd1a-5e22-875b-aff8785d78cd",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "14ef92a8-a0a7-5422-ae83-422a293dd465",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{29}^{∘}\\text{C}"
+              },
+              {
+                ":answer/id": "a43df10e-6c2f-533b-a9c5-168023fec923",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{64}^{∘}\\text{C}"
+              },
+              {
+                ":answer/id": "49557cb7-c34e-5d87-b27e-df35dcc61db6",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{46}^{∘}\\text{C}"
+              },
+              {
+                ":answer/id": "0815dcb2-db32-5d63-9849-4de1f7caf0f8",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{53}^{∘}\\text{C}"
+              },
+              {
+                ":answer/id": "9b8b110b-7749-5e81-90fe-7f0914b29dd5",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{26}^{∘}\\text{C}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "49557cb7-c34e-5d87-b27e-df35dcc61db6"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "1.1.0",
+        "seed": 1403253416,
+        "template": "compressor",
+        "parameters": {
+          "ambient": 20,
+          "initial": 96,
+          "rate": "0.09",
+          "time": 12
+        },
+        "bank_profile": "authored_operations",
+        "origin": "observed_template",
+        "bank_origin": "authored_operations",
+        "source_basis": 2496,
+        "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+        "mathematical_fingerprint": "2541b53fa32654fceae3ac8e9235044dc3f9e2db2409c89ee1bb8e49950f206c",
+        "content_fingerprint": "04f8d6e8d550736eb10517ed076319a138374e32c9f5ece251dc8dc7235ef51c",
+        "domain": "T(t)>ambient; positive rate; t>=0; observations strictly cooling",
+        "recipes": [
+          "correct",
+          "omit_ambient",
+          "do_not_subtract_ambient_in_K",
+          "halve_rate",
+          "double_rate"
+        ]
+      }
+    },
+    "checks": [
+      {
+        "field_index": 0,
+        "submitted_answer_id": "14ef92a8-a0a7-5422-ae83-422a293dd465",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "a43df10e-6c2f-533b-a9c5-168023fec923",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "49557cb7-c34e-5d87-b27e-df35dcc61db6",
+        "expected": "accepted",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "0815dcb2-db32-5d63-9849-4de1f7caf0f8",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "9b8b110b-7749-5e81-90fe-7f0914b29dd5",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      }
+    ]
+  },
+  {
+    "label": "review-1-fb8991b5-06af-5c96-bef0-872edf615cb7",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186078584,
+        "id": "bfe4679b-9724-5502-89d4-05e7661a1b5f",
+        "title": "Solving an Inhibited Decay Model"
+      },
+      "question": {
+        ":question/id": "fb8991b5-06af-5c96-bef0-872edf615cb7",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/problem": "The temperature $T(t),$ in degrees Celsius, of a cup of coffee can be modeled by the differential equation\n\n$$\n\\frac{dT}{dt}=-0.19(T-23)\n$$\n\nwhere $t>0$ is the time, measured in minutes. If the initial temperature of the coffee is ${73}^{∘}C,$ calculate the temperature of the coffee after $3$ minutes. Round your answer to the nearest integer.",
+        ":question/worked-solution": "We're told that the temperature of the cup of coffee is modeled by the inhibited decay equation\n\n$$\n\\frac{dT}{dt}=-0.19(T-23).\n$$\n\nFirst, we integrate our differential equation by separating the variables:\n\n$$\n\\begin{aligned}\\frac{dT}{T-23} & =-0.19\\,dt \\\\ \\int \\frac{dT}{T-23} & =-\\int 0.19\\,\\text{d}t \\\\ \\operatorname{ln}⁡|T-23| & =-0.19t+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited decay equation, we have $T-23>0$ for all $t>0.$\nNext, we solve for $T(t),$ as follows:\n\n$$\n\\begin{aligned}T-23 & ={e}^{-0.19t+C} \\\\ T-23 & ={e}^{C}{e}^{-0.19t} \\\\ T-23 & =K{e}^{-0.19t} \\\\ T & =23+K{e}^{-0.19t}\\end{aligned}\n$$\n\nNote that $K={e}^{C}$ is a constant of integration. \n\nWe're told that the initial temperature of the coffee was ${73}^{∘}C.$ So, we apply the initial condition $T(0)=73,$ and solve for $K:$\n\n$$\n\\begin{aligned}73 & =23+K{e}^{0} \\\\ 73 & =23+K \\\\ K & =50\\end{aligned}\n$$\n\nTherefore, the solution to our initial value problem is\n\n$$\nT(t)=23+50{e}^{-0.19t}.\n$$\n\nFinally, the temperature of the coffee after $t=3$ minutes is\n\n$$\nT(3)=23+50{e}^{-0.19\\cdot 3}≈{51}^{∘}\\text{C},\n$$\n\nrounded to the nearest integer.",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "77edba5e-fcb6-5a40-90d6-b29717ab2cd4",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "43cb94e4-6c7d-504b-b6b5-c0d5a22c5079",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{39}^{∘}\\text{C}"
+              },
+              {
+                ":answer/id": "2a6239e2-ffba-57c9-b8e6-3b658fa9391a",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{64}^{∘}\\text{C}"
+              },
+              {
+                ":answer/id": "843118f1-e5a9-5cfd-a32f-e1e6522385c9",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{51}^{∘}\\text{C}"
+              },
+              {
+                ":answer/id": "aa1c439e-9fe4-5fd5-947a-797bd87b0405",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{61}^{∘}\\text{C}"
+              },
+              {
+                ":answer/id": "7dd2f9a8-9773-52d4-a297-135f736e5f9b",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{28}^{∘}\\text{C}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "843118f1-e5a9-5cfd-a32f-e1e6522385c9"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "1.1.0",
+        "seed": 1403253417,
+        "template": "coffee",
+        "parameters": {
+          "ambient": 23,
+          "initial": 73,
+          "rate": "0.19",
+          "time": 3
+        },
+        "bank_profile": "authored_operations",
+        "origin": "observed_template",
+        "bank_origin": "authored_operations",
+        "source_basis": 2496,
+        "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+        "mathematical_fingerprint": "386eadca2f569107877156e257cc63f09ffca3e93b4ccf6f58b47ada1e097f0a",
+        "content_fingerprint": "462eb33e235ce0131c59ee0b58fdaaf8d70cb74a36516ebe2d9eb37b61698956",
+        "domain": "T(t)>ambient; positive rate; t>=0; observations strictly cooling",
+        "recipes": [
+          "correct",
+          "omit_ambient",
+          "do_not_subtract_ambient_in_K",
+          "halve_rate",
+          "double_rate"
+        ]
+      }
+    },
+    "checks": [
+      {
+        "field_index": 0,
+        "submitted_answer_id": "43cb94e4-6c7d-504b-b6b5-c0d5a22c5079",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "2a6239e2-ffba-57c9-b8e6-3b658fa9391a",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "843118f1-e5a9-5cfd-a32f-e1e6522385c9",
+        "expected": "accepted",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "aa1c439e-9fe4-5fd5-947a-797bd87b0405",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "7dd2f9a8-9773-52d4-a297-135f736e5f9b",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      }
+    ]
+  },
+  {
+    "label": "review-2-d096731c-841a-5372-a449-a83e1aba2395",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186078584,
+        "id": "bfe4679b-9724-5502-89d4-05e7661a1b5f",
+        "title": "Solving an Inhibited Decay Model"
+      },
+      "question": {
+        ":question/id": "d096731c-841a-5372-a449-a83e1aba2395",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/problem": "The temperature $T(t),$ in degrees Celsius, of a cooling iron can be modeled by the differential equation\n\n$$\n\\frac{dT}{dt}=-0.07(T-15)\n$$\n\nwhere $t>0$ is the time, measured in minutes. If the initial temperature of the iron is ${162}^{∘}C,$ calculate its temperature after $12$ minutes. Round your answer to the nearest integer.",
+        ":question/worked-solution": "We're told that the temperature of the cooling iron is modeled by the inhibited decay equation\n\n$$\n\\frac{dT}{dt}=-0.07(T-15).\n$$\n\nFirst, we integrate our differential equation by separating the variables:\n\n$$\n\\begin{aligned}\\frac{dT}{T-15} & =-0.07\\,dt \\\\ \\int \\frac{dT}{T-15} & =-\\int 0.07\\,\\text{d}t \\\\ \\operatorname{ln}⁡|T-15| & =-0.07t+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited decay equation, we have $T-15>0$ for all $t>0.$\nNext, we solve for $T(t),$ as follows:\n\n$$\n\\begin{aligned}T-15 & ={e}^{-0.07t+C} \\\\ T-15 & ={e}^{C}{e}^{-0.07t} \\\\ T-15 & =K{e}^{-0.07t} \\\\ T & =15+K{e}^{-0.07t}\\end{aligned}\n$$\n\nNote that $K={e}^{C}$ is a constant of integration. \n\nWe're told that the initial temperature of the iron was ${162}^{∘}C.$ So, we apply the initial condition $T(0)=162,$ and solve for $K:$\n\n$$\n\\begin{aligned}162 & =15+K{e}^{0} \\\\ 162 & =15+K \\\\ K & =147\\end{aligned}\n$$\n\nTherefore, the solution to our initial value problem is\n\n$$\nT(t)=15+147{e}^{-0.07t}.\n$$\n\nFinally, the temperature of the iron after $t=12$ minutes is\n\n$$\nT(12)=15+147{e}^{-0.07\\cdot 12}≈{78}^{∘}\\text{C},\n$$\n\nrounded to the nearest integer.",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "63ad949e-76a7-5437-8a29-4ec83361eda1",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "ccd42620-3507-5add-8f60-c33896a94232",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{112}^{∘}\\text{C}"
+              },
+              {
+                ":answer/id": "708e59a6-1b43-5efb-922b-0163eb34f7c8",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{85}^{∘}\\text{C}"
+              },
+              {
+                ":answer/id": "66f49644-f344-52c2-94d2-801f1c9480ba",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{63}^{∘}\\text{C}"
+              },
+              {
+                ":answer/id": "277170b3-3898-5d1b-8458-3a8bfb3d4556",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{42}^{∘}\\text{C}"
+              },
+              {
+                ":answer/id": "51302916-293d-5bfc-ba94-b3af6259ebc0",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{78}^{∘}\\text{C}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "51302916-293d-5bfc-ba94-b3af6259ebc0"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "1.1.0",
+        "seed": 1403253418,
+        "template": "iron",
+        "parameters": {
+          "ambient": 15,
+          "initial": 162,
+          "rate": "0.07",
+          "time": 12
+        },
+        "bank_profile": "authored_operations",
+        "origin": "observed_template",
+        "bank_origin": "authored_operations",
+        "source_basis": 2496,
+        "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+        "mathematical_fingerprint": "0dc25a5f5b240abf7f3d8941a027e9228cb579baa9aa05c1dbbb58a80a4da5b8",
+        "content_fingerprint": "7bb870f8307979619affc2da6bb9ab6db457c6e719e292d718981d37a50a15a7",
+        "domain": "T(t)>ambient; positive rate; t>=0; observations strictly cooling",
+        "recipes": [
+          "correct",
+          "omit_ambient",
+          "do_not_subtract_ambient_in_K",
+          "halve_rate",
+          "double_rate"
+        ]
+      }
+    },
+    "checks": [
+      {
+        "field_index": 0,
+        "submitted_answer_id": "ccd42620-3507-5add-8f60-c33896a94232",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "708e59a6-1b43-5efb-922b-0163eb34f7c8",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "66f49644-f344-52c2-94d2-801f1c9480ba",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "277170b3-3898-5d1b-8458-3a8bfb3d4556",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "51302916-293d-5bfc-ba94-b3af6259ebc0",
+        "expected": "accepted",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      }
+    ]
+  },
+  {
+    "label": "review-3-870272b9-d540-5a33-a730-334ae0acf525",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186078584,
+        "id": "bfe4679b-9724-5502-89d4-05e7661a1b5f",
+        "title": "Solving an Inhibited Decay Model"
+      },
+      "question": {
+        ":question/id": "870272b9-d540-5a33-a730-334ae0acf525",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/problem": "The temperature $T(t),$ in degrees Celsius, of a compressor of a refrigerator can be modeled by the differential equation\n\n$$\n\\frac{dT}{dt}=-0.1(T-19)\n$$\n\nwhere $t>0$ is the time, measured in minutes. If the initial temperature of the compressor is ${87}^{∘}C,$ calculate the temperature of the compressor after $12$ minutes. Round your answer to the nearest integer.",
+        ":question/worked-solution": "We're told that the temperature of the compressor of a refrigerator is modeled by the inhibited decay equation\n\n$$\n\\frac{dT}{dt}=-0.1(T-19).\n$$\n\nFirst, we integrate our differential equation by separating the variables:\n\n$$\n\\begin{aligned}\\frac{dT}{T-19} & =-0.1\\,dt \\\\ \\int \\frac{dT}{T-19} & =-\\int 0.1\\,\\text{d}t \\\\ \\operatorname{ln}⁡|T-19| & =-0.1t+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited decay equation, we have $T-19>0$ for all $t>0.$\nNext, we solve for $T(t),$ as follows:\n\n$$\n\\begin{aligned}T-19 & ={e}^{-0.1t+C} \\\\ T-19 & ={e}^{C}{e}^{-0.1t} \\\\ T-19 & =K{e}^{-0.1t} \\\\ T & =19+K{e}^{-0.1t}\\end{aligned}\n$$\n\nNote that $K={e}^{C}$ is a constant of integration. \n\nWe're told that the initial temperature of the compressor was ${87}^{∘}C.$ So, we apply the initial condition $T(0)=87,$ and solve for $K:$\n\n$$\n\\begin{aligned}87 & =19+K{e}^{0} \\\\ 87 & =19+K \\\\ K & =68\\end{aligned}\n$$\n\nTherefore, the solution to our initial value problem is\n\n$$\nT(t)=19+68{e}^{-0.1t}.\n$$\n\nFinally, the temperature of the compressor after $t=12$ minutes is\n\n$$\nT(12)=19+68{e}^{-0.1\\cdot 12}≈{39}^{∘}\\text{C},\n$$\n\nrounded to the nearest integer.",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "77814fa0-4eb8-5d99-ac96-6cbb4b64d861",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "c56bd7c9-30f3-5ee6-aa0f-cf251d238642",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{45}^{∘}\\text{C}"
+              },
+              {
+                ":answer/id": "239c34b9-6990-543b-97aa-ec8512898c0c",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{39}^{∘}\\text{C}"
+              },
+              {
+                ":answer/id": "2b696f76-5802-512f-968b-ddf615142557",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{25}^{∘}\\text{C}"
+              },
+              {
+                ":answer/id": "287653f8-dd97-52f7-9a57-e753b23a3df2",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{56}^{∘}\\text{C}"
+              },
+              {
+                ":answer/id": "781f6ba3-e4d4-54f5-8a01-13f8c043178a",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{20}^{∘}\\text{C}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "239c34b9-6990-543b-97aa-ec8512898c0c"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "1.1.0",
+        "seed": 1403253419,
+        "template": "compressor",
+        "parameters": {
+          "ambient": 19,
+          "initial": 87,
+          "rate": "0.1",
+          "time": 12
+        },
+        "bank_profile": "authored_operations",
+        "origin": "observed_template",
+        "bank_origin": "authored_operations",
+        "source_basis": 2496,
+        "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+        "mathematical_fingerprint": "5c1f216d94971eb738fb6a5752241a3b6f9efefe14c1646cfecf4a736fe52f91",
+        "content_fingerprint": "fa763e9add460a4c64ca1368669e3682e3cff0a3e6eb20e1a7f0fdbf94a1b5d6",
+        "domain": "T(t)>ambient; positive rate; t>=0; observations strictly cooling",
+        "recipes": [
+          "correct",
+          "omit_ambient",
+          "do_not_subtract_ambient_in_K",
+          "halve_rate",
+          "double_rate"
+        ]
+      }
+    },
+    "checks": [
+      {
+        "field_index": 0,
+        "submitted_answer_id": "c56bd7c9-30f3-5ee6-aa0f-cf251d238642",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "239c34b9-6990-543b-97aa-ec8512898c0c",
+        "expected": "accepted",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "2b696f76-5802-512f-968b-ddf615142557",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "287653f8-dd97-52f7-9a57-e753b23a3df2",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "781f6ba3-e4d4-54f5-8a01-13f8c043178a",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      }
+    ]
+  },
+  {
+    "label": "review-4-377d7505-be43-5716-b379-51477dd6b208",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186078584,
+        "id": "bfe4679b-9724-5502-89d4-05e7661a1b5f",
+        "title": "Solving an Inhibited Decay Model"
+      },
+      "question": {
+        ":question/id": "377d7505-be43-5716-b379-51477dd6b208",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/problem": "The temperature $T(t),$ in degrees Celsius, of a cooling iron can be modeled by the differential equation\n\n$$\n\\frac{dT}{dt}=-0.15(T-25)\n$$\n\nwhere $t>0$ is the time, measured in minutes. If the initial temperature of the iron is ${176}^{∘}C,$ calculate its temperature after $7$ minutes. Round your answer to the nearest integer.",
+        ":question/worked-solution": "We're told that the temperature of the cooling iron is modeled by the inhibited decay equation\n\n$$\n\\frac{dT}{dt}=-0.15(T-25).\n$$\n\nFirst, we integrate our differential equation by separating the variables:\n\n$$\n\\begin{aligned}\\frac{dT}{T-25} & =-0.15\\,dt \\\\ \\int \\frac{dT}{T-25} & =-\\int 0.15\\,\\text{d}t \\\\ \\operatorname{ln}⁡|T-25| & =-0.15t+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited decay equation, we have $T-25>0$ for all $t>0.$\nNext, we solve for $T(t),$ as follows:\n\n$$\n\\begin{aligned}T-25 & ={e}^{-0.15t+C} \\\\ T-25 & ={e}^{C}{e}^{-0.15t} \\\\ T-25 & =K{e}^{-0.15t} \\\\ T & =25+K{e}^{-0.15t}\\end{aligned}\n$$\n\nNote that $K={e}^{C}$ is a constant of integration. \n\nWe're told that the initial temperature of the iron was ${176}^{∘}C.$ So, we apply the initial condition $T(0)=176,$ and solve for $K:$\n\n$$\n\\begin{aligned}176 & =25+K{e}^{0} \\\\ 176 & =25+K \\\\ K & =151\\end{aligned}\n$$\n\nTherefore, the solution to our initial value problem is\n\n$$\nT(t)=25+151{e}^{-0.15t}.\n$$\n\nFinally, the temperature of the iron after $t=7$ minutes is\n\n$$\nT(7)=25+151{e}^{-0.15\\cdot 7}≈{78}^{∘}\\text{C},\n$$\n\nrounded to the nearest integer.",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "bc0118d9-9ab9-590c-a96b-cb38837edc5e",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "29dbe240-f1ea-586e-a449-2595faa07ca3",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{53}^{∘}\\text{C}"
+              },
+              {
+                ":answer/id": "700e9b2c-08bb-51cf-9f13-547602022ff6",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{87}^{∘}\\text{C}"
+              },
+              {
+                ":answer/id": "7b225b5c-3493-554a-892f-1f0c91221df0",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{43}^{∘}\\text{C}"
+              },
+              {
+                ":answer/id": "8da00d88-2dd2-560a-a6a5-dcdd09e87391",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{114}^{∘}\\text{C}"
+              },
+              {
+                ":answer/id": "8e9aa18b-9475-58d0-bf35-1bada1473600",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{78}^{∘}\\text{C}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "8e9aa18b-9475-58d0-bf35-1bada1473600"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "1.1.0",
+        "seed": 1403253420,
+        "template": "iron",
+        "parameters": {
+          "ambient": 25,
+          "initial": 176,
+          "rate": "0.15",
+          "time": 7
+        },
+        "bank_profile": "authored_operations",
+        "origin": "observed_template",
+        "bank_origin": "authored_operations",
+        "source_basis": 2496,
+        "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+        "mathematical_fingerprint": "ff6dc10a30826d0bdef15fbca3987efe6c399b8746bab73955aee30503ac1728",
+        "content_fingerprint": "4b9ab687e638f1f8c8057e5114a36325210cda39fd180c5a9a703b26763f4b27",
+        "domain": "T(t)>ambient; positive rate; t>=0; observations strictly cooling",
+        "recipes": [
+          "correct",
+          "omit_ambient",
+          "do_not_subtract_ambient_in_K",
+          "halve_rate",
+          "double_rate"
+        ]
+      }
+    },
+    "checks": [
+      {
+        "field_index": 0,
+        "submitted_answer_id": "29dbe240-f1ea-586e-a449-2595faa07ca3",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "700e9b2c-08bb-51cf-9f13-547602022ff6",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "7b225b5c-3493-554a-892f-1f0c91221df0",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "8da00d88-2dd2-560a-a6a5-dcdd09e87391",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "8e9aa18b-9475-58d0-bf35-1bada1473600",
+        "expected": "accepted",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      }
+    ]
+  },
+  {
+    "label": "review-5-5beaacb3-d1c0-5438-b064-13dd9f0f471a",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186078584,
+        "id": "bfe4679b-9724-5502-89d4-05e7661a1b5f",
+        "title": "Solving an Inhibited Decay Model"
+      },
+      "question": {
+        ":question/id": "5beaacb3-d1c0-5438-b064-13dd9f0f471a",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/problem": "The temperature $T(t),$ in degrees Fahrenheit, of an exhaust pipe of a motorcycle can be modeled by the differential equation\n\n$$\n\\frac{dT}{dt}=-0.05(T-72)\n$$\n\nwhere $t>0$ is the time, measured in minutes. If the initial temperature of the exhaust pipe is ${205}^{∘}F,$ calculate its temperature after $10$ minutes. Round your answer to the nearest integer.",
+        ":question/worked-solution": "We're told that the temperature of the exhaust pipe of a motorcycle is modeled by the inhibited decay equation\n\n$$\n\\frac{dT}{dt}=-0.05(T-72).\n$$\n\nFirst, we integrate our differential equation by separating the variables:\n\n$$\n\\begin{aligned}\\frac{dT}{T-72} & =-0.05\\,dt \\\\ \\int \\frac{dT}{T-72} & =-\\int 0.05\\,\\text{d}t \\\\ \\operatorname{ln}⁡|T-72| & =-0.05t+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited decay equation, we have $T-72>0$ for all $t>0.$\nNext, we solve for $T(t),$ as follows:\n\n$$\n\\begin{aligned}T-72 & ={e}^{-0.05t+C} \\\\ T-72 & ={e}^{C}{e}^{-0.05t} \\\\ T-72 & =K{e}^{-0.05t} \\\\ T & =72+K{e}^{-0.05t}\\end{aligned}\n$$\n\nNote that $K={e}^{C}$ is a constant of integration. \n\nWe're told that the initial temperature of the exhaust pipe was ${205}^{∘}F.$ So, we apply the initial condition $T(0)=205,$ and solve for $K:$\n\n$$\n\\begin{aligned}205 & =72+K{e}^{0} \\\\ 205 & =72+K \\\\ K & =133\\end{aligned}\n$$\n\nTherefore, the solution to our initial value problem is\n\n$$\nT(t)=72+133{e}^{-0.05t}.\n$$\n\nFinally, the temperature of the exhaust pipe after $t=10$ minutes is\n\n$$\nT(10)=72+133{e}^{-0.05\\cdot 10}≈{153}^{∘}\\text{F},\n$$\n\nrounded to the nearest integer.",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "0c1a1f16-f858-5f7a-9d9f-32cdb0109765",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "1b4e1e8e-1960-50c8-9aa7-e32b206d924f",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{176}^{∘}\\text{F}"
+              },
+              {
+                ":answer/id": "6d942611-4ddf-5405-8fdd-0321d37b2189",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{121}^{∘}\\text{F}"
+              },
+              {
+                ":answer/id": "fc395742-f165-5ea5-a2e6-265a7c4a65af",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{81}^{∘}\\text{F}"
+              },
+              {
+                ":answer/id": "5df98b50-dcee-593c-89f2-2faccca78903",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{196}^{∘}\\text{F}"
+              },
+              {
+                ":answer/id": "2997669e-0d12-56f9-9762-fb8a2d50ac10",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{153}^{∘}\\text{F}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "2997669e-0d12-56f9-9762-fb8a2d50ac10"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "1.1.0",
+        "seed": 84101,
+        "template": "exhaust",
+        "parameters": {
+          "ambient": 72,
+          "initial": 205,
+          "rate": "0.05",
+          "time": 10
+        },
+        "bank_profile": "authored_operations",
+        "origin": "observed_template",
+        "bank_origin": "authored_operations",
+        "source_basis": 2496,
+        "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+        "mathematical_fingerprint": "d4d05a579d161031f8c059bb7a1a4b59b6f5108ac586dc2dd99909f35ca1cabc",
+        "content_fingerprint": "814d2f9b6bae7193730fa283a1199b157d1cf7d9a9bb43e428e6254dd60fda72",
+        "domain": "T(t)>ambient; positive rate; t>=0; observations strictly cooling",
+        "recipes": [
+          "correct",
+          "omit_ambient",
+          "do_not_subtract_ambient_in_K",
+          "halve_rate",
+          "double_rate"
+        ]
+      }
+    },
+    "checks": [
+      {
+        "field_index": 0,
+        "submitted_answer_id": "1b4e1e8e-1960-50c8-9aa7-e32b206d924f",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "6d942611-4ddf-5405-8fdd-0321d37b2189",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "fc395742-f165-5ea5-a2e6-265a7c4a65af",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "5df98b50-dcee-593c-89f2-2faccca78903",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "2997669e-0d12-56f9-9762-fb8a2d50ac10",
+        "expected": "accepted",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      }
+    ]
+  },
+  {
+    "label": "review-6-2b026f55-12c9-5925-b70d-dcaa62712410",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186078584,
+        "id": "bfe4679b-9724-5502-89d4-05e7661a1b5f",
+        "title": "Solving an Inhibited Decay Model"
+      },
+      "question": {
+        ":question/id": "2b026f55-12c9-5925-b70d-dcaa62712410",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/problem": "The temperature $T(t),$ in degrees Celsius, of a cup of coffee can be modeled by the differential equation\n\n$$\n\\frac{dT}{dt}=-0.05(T-26)\n$$\n\nwhere $t>0$ is the time, measured in minutes. If the initial temperature of the coffee is ${76}^{∘}C,$ calculate the temperature of the coffee after $11$ minutes. Round your answer to the nearest integer.",
+        ":question/worked-solution": "We're told that the temperature of the cup of coffee is modeled by the inhibited decay equation\n\n$$\n\\frac{dT}{dt}=-0.05(T-26).\n$$\n\nFirst, we integrate our differential equation by separating the variables:\n\n$$\n\\begin{aligned}\\frac{dT}{T-26} & =-0.05\\,dt \\\\ \\int \\frac{dT}{T-26} & =-\\int 0.05\\,\\text{d}t \\\\ \\operatorname{ln}⁡|T-26| & =-0.05t+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited decay equation, we have $T-26>0$ for all $t>0.$\nNext, we solve for $T(t),$ as follows:\n\n$$\n\\begin{aligned}T-26 & ={e}^{-0.05t+C} \\\\ T-26 & ={e}^{C}{e}^{-0.05t} \\\\ T-26 & =K{e}^{-0.05t} \\\\ T & =26+K{e}^{-0.05t}\\end{aligned}\n$$\n\nNote that $K={e}^{C}$ is a constant of integration. \n\nWe're told that the initial temperature of the coffee was ${76}^{∘}C.$ So, we apply the initial condition $T(0)=76,$ and solve for $K:$\n\n$$\n\\begin{aligned}76 & =26+K{e}^{0} \\\\ 76 & =26+K \\\\ K & =50\\end{aligned}\n$$\n\nTherefore, the solution to our initial value problem is\n\n$$\nT(t)=26+50{e}^{-0.05t}.\n$$\n\nFinally, the temperature of the coffee after $t=11$ minutes is\n\n$$\nT(11)=26+50{e}^{-0.05\\cdot 11}≈{55}^{∘}\\text{C},\n$$\n\nrounded to the nearest integer.",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "077bea12-595d-57d4-a15d-68b5272d3a2a",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "774035e3-3de1-552a-8c16-898809a2bcc1",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{64}^{∘}\\text{C}"
+              },
+              {
+                ":answer/id": "33259139-3e27-56f8-b359-1b6f240b32bb",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{70}^{∘}\\text{C}"
+              },
+              {
+                ":answer/id": "0908623c-3300-5db8-b37e-d83fd435d4bf",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{29}^{∘}\\text{C}"
+              },
+              {
+                ":answer/id": "03163bfa-14f7-5fe3-a3c2-3a3f35a68238",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{55}^{∘}\\text{C}"
+              },
+              {
+                ":answer/id": "9b3987c2-0291-53b3-9de6-b2a6971c3700",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{43}^{∘}\\text{C}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "03163bfa-14f7-5fe3-a3c2-3a3f35a68238"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "1.1.0",
+        "seed": 84101,
+        "template": "coffee",
+        "parameters": {
+          "ambient": 26,
+          "initial": 76,
+          "rate": "0.05",
+          "time": 11
+        },
+        "bank_profile": "authored_operations",
+        "origin": "observed_template",
+        "bank_origin": "authored_operations",
+        "source_basis": 2496,
+        "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+        "mathematical_fingerprint": "785145d8f202156df15886077d5496d9249af55495e84b8da0a2f6b5c28d5a2f",
+        "content_fingerprint": "c423f7af0e78dc277dfade6c1cb24764959a68257c3fb1764b48139047282ba8",
+        "domain": "T(t)>ambient; positive rate; t>=0; observations strictly cooling",
+        "recipes": [
+          "correct",
+          "omit_ambient",
+          "do_not_subtract_ambient_in_K",
+          "halve_rate",
+          "double_rate"
+        ]
+      }
+    },
+    "checks": [
+      {
+        "field_index": 0,
+        "submitted_answer_id": "774035e3-3de1-552a-8c16-898809a2bcc1",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "33259139-3e27-56f8-b359-1b6f240b32bb",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "0908623c-3300-5db8-b37e-d83fd435d4bf",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "03163bfa-14f7-5fe3-a3c2-3a3f35a68238",
+        "expected": "accepted",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "9b3987c2-0291-53b3-9de6-b2a6971c3700",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      }
+    ]
+  },
+  {
+    "label": "review-7-bb4b50e1-5a05-543e-8b8d-93193a0d11c6",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186078584,
+        "id": "bfe4679b-9724-5502-89d4-05e7661a1b5f",
+        "title": "Solving an Inhibited Decay Model"
+      },
+      "question": {
+        ":question/id": "bb4b50e1-5a05-543e-8b8d-93193a0d11c6",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/problem": "The temperature $T(t),$ in degrees Celsius, of a cooling iron can be modeled by the differential equation\n\n$$\n\\frac{dT}{dt}=-0.05(T-28)\n$$\n\nwhere $t>0$ is the time, measured in minutes. If the initial temperature of the iron is ${119}^{∘}C,$ calculate its temperature after $6$ minutes. Round your answer to the nearest integer.",
+        ":question/worked-solution": "We're told that the temperature of the cooling iron is modeled by the inhibited decay equation\n\n$$\n\\frac{dT}{dt}=-0.05(T-28).\n$$\n\nFirst, we integrate our differential equation by separating the variables:\n\n$$\n\\begin{aligned}\\frac{dT}{T-28} & =-0.05\\,dt \\\\ \\int \\frac{dT}{T-28} & =-\\int 0.05\\,\\text{d}t \\\\ \\operatorname{ln}⁡|T-28| & =-0.05t+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited decay equation, we have $T-28>0$ for all $t>0.$\nNext, we solve for $T(t),$ as follows:\n\n$$\n\\begin{aligned}T-28 & ={e}^{-0.05t+C} \\\\ T-28 & ={e}^{C}{e}^{-0.05t} \\\\ T-28 & =K{e}^{-0.05t} \\\\ T & =28+K{e}^{-0.05t}\\end{aligned}\n$$\n\nNote that $K={e}^{C}$ is a constant of integration. \n\nWe're told that the initial temperature of the iron was ${119}^{∘}C.$ So, we apply the initial condition $T(0)=119,$ and solve for $K:$\n\n$$\n\\begin{aligned}119 & =28+K{e}^{0} \\\\ 119 & =28+K \\\\ K & =91\\end{aligned}\n$$\n\nTherefore, the solution to our initial value problem is\n\n$$\nT(t)=28+91{e}^{-0.05t}.\n$$\n\nFinally, the temperature of the iron after $t=6$ minutes is\n\n$$\nT(6)=28+91{e}^{-0.05\\cdot 6}≈{95}^{∘}\\text{C},\n$$\n\nrounded to the nearest integer.",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "c738a31c-0574-5ce6-a6f6-a0a98c863578",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "4602e1bf-d756-5d08-b9d6-55c6164d1110",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{67}^{∘}\\text{C}"
+              },
+              {
+                ":answer/id": "32525614-8bbe-5514-8fbe-9103a8873838",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{106}^{∘}\\text{C}"
+              },
+              {
+                ":answer/id": "e5270378-69db-5dd8-b51a-b247189044de",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{78}^{∘}\\text{C}"
+              },
+              {
+                ":answer/id": "05439cc7-3c66-5248-8f67-631893498530",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{116}^{∘}\\text{C}"
+              },
+              {
+                ":answer/id": "b4289c36-a0c2-5853-b256-0e9c0ce9e3c5",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{95}^{∘}\\text{C}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "b4289c36-a0c2-5853-b256-0e9c0ce9e3c5"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "1.1.0",
+        "seed": 84101,
+        "template": "iron",
+        "parameters": {
+          "ambient": 28,
+          "initial": 119,
+          "rate": "0.05",
+          "time": 6
+        },
+        "bank_profile": "authored_operations",
+        "origin": "observed_template",
+        "bank_origin": "authored_operations",
+        "source_basis": 2496,
+        "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+        "mathematical_fingerprint": "d089cc4a0d3a02a5156c07cdde234439f9333987797ef18b7d26fe73896af480",
+        "content_fingerprint": "dfd9f2ca2a458ec260d7e5d5ceae6b98ec09e0bb5ffbaa12337a19c67b952c6c",
+        "domain": "T(t)>ambient; positive rate; t>=0; observations strictly cooling",
+        "recipes": [
+          "correct",
+          "omit_ambient",
+          "do_not_subtract_ambient_in_K",
+          "halve_rate",
+          "double_rate"
+        ]
+      }
+    },
+    "checks": [
+      {
+        "field_index": 0,
+        "submitted_answer_id": "4602e1bf-d756-5d08-b9d6-55c6164d1110",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "32525614-8bbe-5514-8fbe-9103a8873838",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "e5270378-69db-5dd8-b51a-b247189044de",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "05439cc7-3c66-5248-8f67-631893498530",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "b4289c36-a0c2-5853-b256-0e9c0ce9e3c5",
+        "expected": "accepted",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      }
+    ]
+  },
+  {
+    "label": "review-8-e9ae151d-4d26-5795-b274-4d17d9c5ca1d",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186078584,
+        "id": "bfe4679b-9724-5502-89d4-05e7661a1b5f",
+        "title": "Solving an Inhibited Decay Model"
+      },
+      "question": {
+        ":question/id": "e9ae151d-4d26-5795-b274-4d17d9c5ca1d",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/problem": "The temperature $T(t),$ in degrees Fahrenheit, of a fresh-baked cake can be modeled by the differential equation\n\n$$\n\\frac{dT}{dt}=-0.05(T-71)\n$$\n\nwhere $t>0$ is the time, measured in minutes. If the initial temperature of the cake is ${274}^{∘}F,$ calculate the temperature of the cake after $11$ minutes. Round your answer to the nearest integer.",
+        ":question/worked-solution": "We're told that the temperature of the fresh-baked cake is modeled by the inhibited decay equation\n\n$$\n\\frac{dT}{dt}=-0.05(T-71).\n$$\n\nFirst, we integrate our differential equation by separating the variables:\n\n$$\n\\begin{aligned}\\frac{dT}{T-71} & =-0.05\\,dt \\\\ \\int \\frac{dT}{T-71} & =-\\int 0.05\\,\\text{d}t \\\\ \\operatorname{ln}⁡|T-71| & =-0.05t+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited decay equation, we have $T-71>0$ for all $t>0.$\nNext, we solve for $T(t),$ as follows:\n\n$$\n\\begin{aligned}T-71 & ={e}^{-0.05t+C} \\\\ T-71 & ={e}^{C}{e}^{-0.05t} \\\\ T-71 & =K{e}^{-0.05t} \\\\ T & =71+K{e}^{-0.05t}\\end{aligned}\n$$\n\nNote that $K={e}^{C}$ is a constant of integration. \n\nWe're told that the initial temperature of the cake was ${274}^{∘}F.$ So, we apply the initial condition $T(0)=274,$ and solve for $K:$\n\n$$\n\\begin{aligned}274 & =71+K{e}^{0} \\\\ 274 & =71+K \\\\ K & =203\\end{aligned}\n$$\n\nTherefore, the solution to our initial value problem is\n\n$$\nT(t)=71+203{e}^{-0.05t}.\n$$\n\nFinally, the temperature of the cake after $t=11$ minutes is\n\n$$\nT(11)=71+203{e}^{-0.05\\cdot 11}≈{188}^{∘}\\text{F},\n$$\n\nrounded to the nearest integer.",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "7e300c1f-5954-54c3-94ba-749c89b4385a",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "2a4fb0a1-7756-5fe9-ad26-fc33d6fcde41",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{225}^{∘}\\text{F}"
+              },
+              {
+                ":answer/id": "35e9c187-5bf3-5c0a-82b6-2dc776d68a00",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{229}^{∘}\\text{F}"
+              },
+              {
+                ":answer/id": "4fa87a2d-202a-5ff0-a1c2-1cec7234373d",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{117}^{∘}\\text{F}"
+              },
+              {
+                ":answer/id": "67d4260c-8fae-5b01-b883-8025500440b7",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{188}^{∘}\\text{F}"
+              },
+              {
+                ":answer/id": "492e583c-ed97-585b-9a6e-8901d7f40eb0",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{139}^{∘}\\text{F}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "67d4260c-8fae-5b01-b883-8025500440b7"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "1.1.0",
+        "seed": 84101,
+        "template": "cake",
+        "parameters": {
+          "ambient": 71,
+          "initial": 274,
+          "rate": "0.05",
+          "time": 11
+        },
+        "bank_profile": "authored_operations",
+        "origin": "observed_template",
+        "bank_origin": "authored_operations",
+        "source_basis": 2496,
+        "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+        "mathematical_fingerprint": "40f0296dab8ea728ebebf37239fb0e47c0ebaed233078b00bdc167cb2b9bcd4d",
+        "content_fingerprint": "9cac1e2c1fbad18f668de573af8210d6c9212dae15cbd72639dfc4023b1fe1b8",
+        "domain": "T(t)>ambient; positive rate; t>=0; observations strictly cooling",
+        "recipes": [
+          "correct",
+          "omit_ambient",
+          "do_not_subtract_ambient_in_K",
+          "halve_rate",
+          "double_rate"
+        ]
+      }
+    },
+    "checks": [
+      {
+        "field_index": 0,
+        "submitted_answer_id": "2a4fb0a1-7756-5fe9-ad26-fc33d6fcde41",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "35e9c187-5bf3-5c0a-82b6-2dc776d68a00",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "4fa87a2d-202a-5ff0-a1c2-1cec7234373d",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "67d4260c-8fae-5b01-b883-8025500440b7",
+        "expected": "accepted",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "492e583c-ed97-585b-9a6e-8901d7f40eb0",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      }
+    ]
+  },
+  {
+    "label": "review-9-09e4c07f-a384-506e-a64a-db1bfcc45ef9",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186078584,
+        "id": "bfe4679b-9724-5502-89d4-05e7661a1b5f",
+        "title": "Solving an Inhibited Decay Model"
+      },
+      "question": {
+        ":question/id": "09e4c07f-a384-506e-a64a-db1bfcc45ef9",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/problem": "The temperature $T(t),$ in degrees Celsius, of a compressor of a refrigerator can be modeled by the differential equation\n\n$$\n\\frac{dT}{dt}=-0.05(T-26)\n$$\n\nwhere $t>0$ is the time, measured in minutes. If the initial temperature of the compressor is ${77}^{∘}C,$ calculate the temperature of the compressor after $11$ minutes. Round your answer to the nearest integer.",
+        ":question/worked-solution": "We're told that the temperature of the compressor of a refrigerator is modeled by the inhibited decay equation\n\n$$\n\\frac{dT}{dt}=-0.05(T-26).\n$$\n\nFirst, we integrate our differential equation by separating the variables:\n\n$$\n\\begin{aligned}\\frac{dT}{T-26} & =-0.05\\,dt \\\\ \\int \\frac{dT}{T-26} & =-\\int 0.05\\,\\text{d}t \\\\ \\operatorname{ln}⁡|T-26| & =-0.05t+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited decay equation, we have $T-26>0$ for all $t>0.$\nNext, we solve for $T(t),$ as follows:\n\n$$\n\\begin{aligned}T-26 & ={e}^{-0.05t+C} \\\\ T-26 & ={e}^{C}{e}^{-0.05t} \\\\ T-26 & =K{e}^{-0.05t} \\\\ T & =26+K{e}^{-0.05t}\\end{aligned}\n$$\n\nNote that $K={e}^{C}$ is a constant of integration. \n\nWe're told that the initial temperature of the compressor was ${77}^{∘}C.$ So, we apply the initial condition $T(0)=77,$ and solve for $K:$\n\n$$\n\\begin{aligned}77 & =26+K{e}^{0} \\\\ 77 & =26+K \\\\ K & =51\\end{aligned}\n$$\n\nTherefore, the solution to our initial value problem is\n\n$$\nT(t)=26+51{e}^{-0.05t}.\n$$\n\nFinally, the temperature of the compressor after $t=11$ minutes is\n\n$$\nT(11)=26+51{e}^{-0.05\\cdot 11}≈{55}^{∘}\\text{C},\n$$\n\nrounded to the nearest integer.",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "1d8be255-1563-572d-b851-a1d3e25c44a1",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "4ede7cca-25ae-5dc7-9b04-f805bdc6fb3c",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{65}^{∘}\\text{C}"
+              },
+              {
+                ":answer/id": "6e559ee8-a14a-5e54-b53f-6a2c2862d7e7",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{70}^{∘}\\text{C}"
+              },
+              {
+                ":answer/id": "70cdda31-41e4-5de7-a41b-7ca6ce5b67ed",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{29}^{∘}\\text{C}"
+              },
+              {
+                ":answer/id": "cc9f6ace-a0a6-54fe-92db-54e4a89e2f3e",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{55}^{∘}\\text{C}"
+              },
+              {
+                ":answer/id": "132a1ddc-54f8-50d8-9e25-a8319dcc61b4",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{43}^{∘}\\text{C}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "cc9f6ace-a0a6-54fe-92db-54e4a89e2f3e"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "1.1.0",
+        "seed": 84101,
+        "template": "compressor",
+        "parameters": {
+          "ambient": 26,
+          "initial": 77,
+          "rate": "0.05",
+          "time": 11
+        },
+        "bank_profile": "authored_operations",
+        "origin": "observed_template",
+        "bank_origin": "authored_operations",
+        "source_basis": 2496,
+        "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+        "mathematical_fingerprint": "f88bad27e0184d3cc67625e054cd7895737f66ab4950671edc1beb9e6c445391",
+        "content_fingerprint": "199fcb9d607f3fdbc9c8cf35c53527de7e4cbd6036c0e7e106ec355a823d0f47",
+        "domain": "T(t)>ambient; positive rate; t>=0; observations strictly cooling",
+        "recipes": [
+          "correct",
+          "omit_ambient",
+          "do_not_subtract_ambient_in_K",
+          "halve_rate",
+          "double_rate"
+        ]
+      }
+    },
+    "checks": [
+      {
+        "field_index": 0,
+        "submitted_answer_id": "4ede7cca-25ae-5dc7-9b04-f805bdc6fb3c",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "6e559ee8-a14a-5e54-b53f-6a2c2862d7e7",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "70cdda31-41e4-5de7-a41b-7ca6ce5b67ed",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "cc9f6ace-a0a6-54fe-92db-54e4a89e2f3e",
+        "expected": "accepted",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "132a1ddc-54f8-50d8-9e25-a8319dcc61b4",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      }
+    ]
+  },
+  {
+    "label": "review-10-5e0597d5-32f2-587a-9f87-ed9b5208f4d0",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186078584,
+        "id": "bfe4679b-9724-5502-89d4-05e7661a1b5f",
+        "title": "Solving an Inhibited Decay Model"
+      },
+      "question": {
+        ":question/id": "5e0597d5-32f2-587a-9f87-ed9b5208f4d0",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/problem": "A thermometer is placed into a water bath and displays a reading of ${84}^{∘}C.$ The thermometer is then transferred to a ${21}^{∘}C$ water bath, and its reading begins to decrease. After $8$ minutes, the thermometer reading is ${74}^{∘}C.$ To the nearest minute, how long does it take for the thermometer to register a reading of ${63}^{∘}C?$ \n\n*Hint: You may assume that the temperature reading $T(t)$ of the thermometer decreases at a rate that obeys Newton's law of cooling, where $T$ is measured in degrees Celsius and $t>0$ is the time, in minutes, since the thermometer was transferred into the ${21}^{∘}C$ water bath.*",
+        ":question/worked-solution": "Newton's law of cooling states that the rate at which the temperature $T(t)$ of a body changes is proportional to the difference between its temperature and its surroundings. Therefore, we have the inhibited decay equation\n\n$$\n\\frac{\\text{d}T}{\\text{d}t}=-k(T-{T}_{S}),\n$$\n\nwhere ${T}_{S}$ is the temperature of the surroundings, and $k>0$ is a constant of proportionality.\n\nIn our case, ${T}_{S}={21}^{∘}\\text{C},$ and we have\n\n$$\n\\frac{\\text{d}T}{\\text{d}t}=-k(T-21).\n$$\n\nFirst, we integrate our differential equation by separating the variables:\n\n$$\n\\begin{aligned}\\frac{dT}{T-21} & =-k\\,dt \\\\ \\int \\frac{dT}{T-21} & =-k\\int dt \\\\ \\operatorname{ln}⁡|T-21| & =-kt+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited decay equation, we have $T-21>0$ for all $t>0.$\nNext, we solve for $T(t),$ as follows:\n\n$$\n\\begin{aligned}T-21 & ={e}^{-kt+C} \\\\ T-21 & ={e}^{C}{e}^{-kt} \\\\ T-21 & =K{e}^{-kt} \\\\ T & =21+K{e}^{-kt}\\end{aligned}\n$$\n\nNote that $K={e}^{C}$ is a constant of integration. \n\nWe're told that the initial temperature reading was ${84}^{∘}C.$ So, we apply the initial condition $T(0)=84,$ and solve for $K:$\n\n$$\n\\begin{aligned}84 & =21+K{e}^{0} \\\\ 84 & =21+K \\\\ K & =63\\end{aligned}\n$$\n\nTherefore, we have the following expression for $T(t):$\n\n$$\nT(t)=21+63{e}^{-kt}\n$$\n\nWe're also told that, after $8$ minutes, the thermometer reading is ${74}^{∘}C.$ So, applying the condition $T(8)=74,$ we can solve for $k:$\n\n$$\n\\begin{aligned}74 & =21+63{e}^{-8k} \\\\ 53 & =63{e}^{-8k} \\\\ \\frac{53}{63} & ={e}^{-8k} \\\\ \\operatorname{ln}⁡(\\frac{53}{63}) & =-8k \\\\ k & =-\\frac{1}{8}\\operatorname{ln}⁡(\\frac{53}{63})\\end{aligned}\n$$\n\nFinally, let ${t}_{1}$ be the time when the thermometer reads ${63}^{∘}C.$ Then, we have\n\n$$\n\\begin{aligned}T({t}_{1}) & =63 \\\\ 21+63{e}^{-k{t}_{1}} & =63 \\\\ 63{e}^{-k{t}_{1}} & =42 \\\\ {e}^{-k{t}_{1}} & =\\frac{2}{3} \\\\ -k{t}_{1} & =\\operatorname{ln}⁡(\\frac{2}{3}) \\\\ {t}_{1} & =-\\frac{1}{k}\\operatorname{ln}⁡(\\frac{2}{3}).\\end{aligned}\n$$\n\nSubstituting in our value for $k,$ we conclude that the thermometer will read ${63}^{∘}C$ after\n\n$$\n{t}_{1}=\\frac{-\\operatorname{ln}⁡(\\frac{2}{3})}{-\\frac{1}{8}\\operatorname{ln}⁡(\\frac{53}{63})}≈19\\,\\text{min},\n$$\n\nrounded to the nearest minute.",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "843460c9-a744-5260-b51f-6da993be7898",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "beb2cce5-42f7-5cbe-92a0-0a1c0412cbae",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "38\\,\\text{min}"
+              },
+              {
+                ":answer/id": "9228cf0f-8217-5653-87bc-1b56e3961646",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "9\\,\\text{min}"
+              },
+              {
+                ":answer/id": "0b6e1a40-37d7-5424-8645-97acc7ed1512",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "13\\,\\text{min}"
+              },
+              {
+                ":answer/id": "eb92ff1b-50ad-5947-b762-9e12febd9107",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "19\\,\\text{min}"
+              },
+              {
+                ":answer/id": "590cb2cf-ec09-5ccc-810d-59ea06dace67",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "18\\,\\text{min}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "eb92ff1b-50ad-5947-b762-9e12febd9107"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "1.1.0",
+        "seed": 84101,
+        "template": "bath",
+        "parameters": {
+          "ambient": 21,
+          "initial": 84,
+          "observed": 74,
+          "target": 63,
+          "time": 8
+        },
+        "bank_profile": "authored_operations",
+        "origin": "observed_template",
+        "bank_origin": "authored_operations",
+        "source_basis": 2496,
+        "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+        "mathematical_fingerprint": "9004609f23d9948e457b5db7df8e5d4dd35cb5e9e66e791f7c03c640f283f33f",
+        "content_fingerprint": "83b5264160485759c4f6b4e2bb45326fbc99d7f6a8d01b39723fc2afb361e3d4",
+        "domain": "T(t)>ambient; positive rate; t>=0; observations strictly cooling",
+        "recipes": [
+          "correct",
+          "omit_ambient_in_both_ratios",
+          "omit_ambient_in_target_ratio",
+          "double_rate",
+          "halve_rate"
+        ]
+      }
+    },
+    "checks": [
+      {
+        "field_index": 0,
+        "submitted_answer_id": "beb2cce5-42f7-5cbe-92a0-0a1c0412cbae",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "9228cf0f-8217-5653-87bc-1b56e3961646",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "0b6e1a40-37d7-5424-8645-97acc7ed1512",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "eb92ff1b-50ad-5947-b762-9e12febd9107",
+        "expected": "accepted",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "590cb2cf-ec09-5ccc-810d-59ea06dace67",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      }
+    ]
+  },
+  {
+    "label": "review-11-785683f3-4d9d-5dbe-b158-bd4954201e5e",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186078584,
+        "id": "bfe4679b-9724-5502-89d4-05e7661a1b5f",
+        "title": "Solving an Inhibited Decay Model"
+      },
+      "question": {
+        ":question/id": "785683f3-4d9d-5dbe-b158-bd4954201e5e",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/problem": "Simon measures the temperature of the tea in his cup, and the thermometer displays a reading of ${76}^{∘}C.$ After $3$ minutes, Simon repeats the measurement and the thermometer displays a reading of  ${66}^{∘}C.$ To the nearest minute, how long does it take for the tea to decrease its temperature to ${14}^{∘}C$ if the temperature in the room is ${10}^{∘}C?$ \n\n*Hint: You may assume that the temperature $T(t)$ of the tea in Simon's cup decreases at a rate that obeys Newton's law of cooling, where $T$ is measured in degrees Celsius and $t>0$ is the time, in minutes, since the first measurement.*",
+        ":question/worked-solution": "Newton's law of cooling states that the rate at which the temperature $T(t)$ of a body changes is proportional to the difference between its temperature and its surroundings. Therefore, we have the inhibited decay equation\n\n$$\n\\frac{\\text{d}T}{\\text{d}t}=-k(T-{T}_{S}),\n$$\n\nwhere ${T}_{S}$ is the temperature of the surroundings, and $k>0$ is a constant of proportionality.\n\nIn our case, ${T}_{S}={10}^{∘}\\text{C},$ and we have\n\n$$\n\\frac{\\text{d}T}{\\text{d}t}=-k(T-10).\n$$\n\nFirst, we integrate our differential equation by separating the variables:\n\n$$\n\\begin{aligned}\\frac{dT}{T-10} & =-k\\,dt \\\\ \\int \\frac{dT}{T-10} & =-k\\int dt \\\\ \\operatorname{ln}⁡|T-10| & =-kt+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited decay equation, we have $T-10>0$ for all $t>0.$\nNext, we solve for $T(t),$ as follows:\n\n$$\n\\begin{aligned}T-10 & ={e}^{-kt+C} \\\\ T-10 & ={e}^{C}{e}^{-kt} \\\\ T-10 & =K{e}^{-kt} \\\\ T & =10+K{e}^{-kt}\\end{aligned}\n$$\n\nNote that $K={e}^{C}$ is a constant of integration. \n\nWe're told that the initial temperature reading was ${76}^{∘}C.$ So, we apply the initial condition $T(0)=76,$ and solve for $K:$\n\n$$\n\\begin{aligned}76 & =10+K{e}^{0} \\\\ 76 & =10+K \\\\ K & =66\\end{aligned}\n$$\n\nTherefore, we have the following expression for $T(t):$\n\n$$\nT(t)=10+66{e}^{-kt}\n$$\n\nWe're also told that, after $3$ minutes, the thermometer reading is ${66}^{∘}C.$ So, applying the condition $T(3)=66,$ we can solve for $k:$\n\n$$\n\\begin{aligned}66 & =10+66{e}^{-3k} \\\\ 56 & =66{e}^{-3k} \\\\ \\frac{28}{33} & ={e}^{-3k} \\\\ \\operatorname{ln}⁡(\\frac{28}{33}) & =-3k \\\\ k & =-\\frac{1}{3}\\operatorname{ln}⁡(\\frac{28}{33})\\end{aligned}\n$$\n\nFinally, let ${t}_{1}$ be the time when the temperature of the tea is ${14}^{∘}C.$ Then, we have\n\n$$\n\\begin{aligned}T({t}_{1}) & =14 \\\\ 10+66{e}^{-k{t}_{1}} & =14 \\\\ 66{e}^{-k{t}_{1}} & =4 \\\\ {e}^{-k{t}_{1}} & =\\frac{2}{33} \\\\ -k{t}_{1} & =\\operatorname{ln}⁡(\\frac{2}{33}) \\\\ {t}_{1} & =-\\frac{1}{k}\\operatorname{ln}⁡(\\frac{2}{33}).\\end{aligned}\n$$\n\nSubstituting in our value for $k,$ we conclude that the tea will have a temperature of ${14}^{∘}C$ after\n\n$$\n{t}_{1}=\\frac{-\\operatorname{ln}⁡(\\frac{2}{33})}{-\\frac{1}{3}\\operatorname{ln}⁡(\\frac{28}{33})}≈51\\,\\text{min},\n$$\n\nrounded to the nearest minute.",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "542bb447-4a9d-5b80-b2ab-06ea9c799f05",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "b1b530d7-25db-5acb-946a-08f42e29bf23",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "26\\,\\text{min}"
+              },
+              {
+                ":answer/id": "dbebde53-940c-5553-aeb1-fdd6edc5d6ac",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "102\\,\\text{min}"
+              },
+              {
+                ":answer/id": "275ee736-e1eb-51ab-9419-e0bde69e54b8",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "51\\,\\text{min}"
+              },
+              {
+                ":answer/id": "1452b981-c88a-5a49-a0de-c55babaa8c4d",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "36\\,\\text{min}"
+              },
+              {
+                ":answer/id": "8fe9bfae-194f-5e63-aaf2-3cd307bb0ae3",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "31\\,\\text{min}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "275ee736-e1eb-51ab-9419-e0bde69e54b8"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "1.1.0",
+        "seed": 84102,
+        "template": "tea",
+        "parameters": {
+          "ambient": 10,
+          "initial": 76,
+          "observed": 66,
+          "target": 14,
+          "time": 3
+        },
+        "bank_profile": "authored_operations",
+        "origin": "observed_template",
+        "bank_origin": "authored_operations",
+        "source_basis": 2496,
+        "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+        "mathematical_fingerprint": "c0356e79787430ea23834542de7f835cd55bea4f21f56092a19a09dcd2670aaa",
+        "content_fingerprint": "86eb303b1357968dde8eed48310fb255adf17a4c2cbb16f54644fcd5d951a260",
+        "domain": "T(t)>ambient; positive rate; t>=0; observations strictly cooling",
+        "recipes": [
+          "correct",
+          "omit_ambient_in_both_ratios",
+          "omit_ambient_in_target_ratio",
+          "double_rate",
+          "halve_rate"
+        ]
+      }
+    },
+    "checks": [
+      {
+        "field_index": 0,
+        "submitted_answer_id": "b1b530d7-25db-5acb-946a-08f42e29bf23",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "dbebde53-940c-5553-aeb1-fdd6edc5d6ac",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "275ee736-e1eb-51ab-9419-e0bde69e54b8",
+        "expected": "accepted",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "1452b981-c88a-5a49-a0de-c55babaa8c4d",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "8fe9bfae-194f-5e63-aaf2-3cd307bb0ae3",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      }
+    ]
+  },
+  {
+    "label": "review-12-739ab0bd-e6e0-5551-82c2-3d350a7e5b17",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186078584,
+        "id": "bfe4679b-9724-5502-89d4-05e7661a1b5f",
+        "title": "Solving an Inhibited Decay Model"
+      },
+      "question": {
+        ":question/id": "739ab0bd-e6e0-5551-82c2-3d350a7e5b17",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/problem": "The temperature $T(t),$ in degrees Celsius, of a cup of coffee can be modeled by the differential equation\n\n$$\n\\frac{dT}{dt}=-0.05(T-25)\n$$\n\nwhere $t>0$ is the time, measured in minutes. If the initial temperature of the coffee is ${100}^{∘}C,$ calculate the temperature of the coffee after $6$ minutes. Round your answer to the nearest integer.",
+        ":question/worked-solution": "We're told that the temperature of the cup of coffee is modeled by the inhibited decay equation\n\n$$\n\\frac{dT}{dt}=-0.05(T-25).\n$$\n\nFirst, we integrate our differential equation by separating the variables:\n\n$$\n\\begin{aligned}\\frac{dT}{T-25} & =-0.05\\,dt \\\\ \\int \\frac{dT}{T-25} & =-\\int 0.05\\,\\text{d}t \\\\ \\operatorname{ln}⁡|T-25| & =-0.05t+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited decay equation, we have $T-25>0$ for all $t>0.$\nNext, we solve for $T(t),$ as follows:\n\n$$\n\\begin{aligned}T-25 & ={e}^{-0.05t+C} \\\\ T-25 & ={e}^{C}{e}^{-0.05t} \\\\ T-25 & =K{e}^{-0.05t} \\\\ T & =25+K{e}^{-0.05t}\\end{aligned}\n$$\n\nNote that $K={e}^{C}$ is a constant of integration. \n\nWe're told that the initial temperature of the coffee was ${100}^{∘}C.$ So, we apply the initial condition $T(0)=100,$ and solve for $K:$\n\n$$\n\\begin{aligned}100 & =25+K{e}^{0} \\\\ 100 & =25+K \\\\ K & =75\\end{aligned}\n$$\n\nTherefore, the solution to our initial value problem is\n\n$$\nT(t)=25+75{e}^{-0.05t}.\n$$\n\nFinally, the temperature of the coffee after $t=6$ minutes is\n\n$$\nT(6)=25+75{e}^{-0.05\\cdot 6}≈{81}^{∘}\\text{C},\n$$\n\nrounded to the nearest integer.",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "9bb6e74d-33bc-53cb-b435-0bcf95f9fcb1",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "4133adfa-c7b4-5d20-a0c4-8292203675e8",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{66}^{∘}\\text{C}"
+              },
+              {
+                ":answer/id": "0ad40251-dbbe-5340-8f57-d16560bc75ff",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{99}^{∘}\\text{C}"
+              },
+              {
+                ":answer/id": "ea666124-a0df-5c0a-8f03-5aaced92a60f",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{56}^{∘}\\text{C}"
+              },
+              {
+                ":answer/id": "4e8438c1-8ceb-5d07-9cb0-61d96ae12fab",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{81}^{∘}\\text{C}"
+              },
+              {
+                ":answer/id": "7a9a8594-6bfb-508a-8a1a-05e643bdfb48",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{90}^{∘}\\text{C}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "4e8438c1-8ceb-5d07-9cb0-61d96ae12fab"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "1.1.0",
+        "seed": 84161,
+        "template": "coffee",
+        "parameters": {
+          "ambient": 25,
+          "initial": 100,
+          "rate": "0.05",
+          "time": 6
+        },
+        "bank_profile": "authored_operations",
+        "origin": "observed_template",
+        "bank_origin": "authored_operations",
+        "source_basis": 2496,
+        "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+        "mathematical_fingerprint": "130ea8773b950ed92173d56250343797b12bcb601c9f18d479d056338cf6e1f1",
+        "content_fingerprint": "af0fecab91315b833096a8e471d6582c4d8a8c5bac7f5db32cfa45ac2f57f03e",
+        "domain": "T(t)>ambient; positive rate; t>=0; observations strictly cooling",
+        "recipes": [
+          "correct",
+          "omit_ambient",
+          "do_not_subtract_ambient_in_K",
+          "halve_rate",
+          "double_rate"
+        ]
+      }
+    },
+    "checks": [
+      {
+        "field_index": 0,
+        "submitted_answer_id": "4133adfa-c7b4-5d20-a0c4-8292203675e8",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "0ad40251-dbbe-5340-8f57-d16560bc75ff",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "ea666124-a0df-5c0a-8f03-5aaced92a60f",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "4e8438c1-8ceb-5d07-9cb0-61d96ae12fab",
+        "expected": "accepted",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "7a9a8594-6bfb-508a-8a1a-05e643bdfb48",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      }
+    ]
+  },
+  {
+    "label": "review-13-fa887c48-6001-5b11-b8ce-27899bb4a7d7",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186078584,
+        "id": "bfe4679b-9724-5502-89d4-05e7661a1b5f",
+        "title": "Solving an Inhibited Decay Model"
+      },
+      "question": {
+        ":question/id": "fa887c48-6001-5b11-b8ce-27899bb4a7d7",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/problem": "The temperature $T(t),$ in degrees Celsius, of a cup of coffee can be modeled by the differential equation\n\n$$\n\\frac{dT}{dt}=-0.05(T-25)\n$$\n\nwhere $t>0$ is the time, measured in minutes. If the initial temperature of the coffee is ${100}^{∘}C,$ calculate the temperature of the coffee after $9$ minutes. Round your answer to the nearest integer.",
+        ":question/worked-solution": "We're told that the temperature of the cup of coffee is modeled by the inhibited decay equation\n\n$$\n\\frac{dT}{dt}=-0.05(T-25).\n$$\n\nFirst, we integrate our differential equation by separating the variables:\n\n$$\n\\begin{aligned}\\frac{dT}{T-25} & =-0.05\\,dt \\\\ \\int \\frac{dT}{T-25} & =-\\int 0.05\\,\\text{d}t \\\\ \\operatorname{ln}⁡|T-25| & =-0.05t+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited decay equation, we have $T-25>0$ for all $t>0.$\nNext, we solve for $T(t),$ as follows:\n\n$$\n\\begin{aligned}T-25 & ={e}^{-0.05t+C} \\\\ T-25 & ={e}^{C}{e}^{-0.05t} \\\\ T-25 & =K{e}^{-0.05t} \\\\ T & =25+K{e}^{-0.05t}\\end{aligned}\n$$\n\nNote that $K={e}^{C}$ is a constant of integration. \n\nWe're told that the initial temperature of the coffee was ${100}^{∘}C.$ So, we apply the initial condition $T(0)=100,$ and solve for $K:$\n\n$$\n\\begin{aligned}100 & =25+K{e}^{0} \\\\ 100 & =25+K \\\\ K & =75\\end{aligned}\n$$\n\nTherefore, the solution to our initial value problem is\n\n$$\nT(t)=25+75{e}^{-0.05t}.\n$$\n\nFinally, the temperature of the coffee after $t=9$ minutes is\n\n$$\nT(9)=25+75{e}^{-0.05\\cdot 9}≈{73}^{∘}\\text{C},\n$$\n\nrounded to the nearest integer.",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "37d8dc6d-c362-5cec-9303-7ff9aa9eaade",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "1e098b07-9d96-5d31-a1a9-76583068dc79",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{55}^{∘}\\text{C}"
+              },
+              {
+                ":answer/id": "ab146b31-871a-52bd-a521-7116e1eeebc9",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{89}^{∘}\\text{C}"
+              },
+              {
+                ":answer/id": "360f833a-d7b6-56c5-892b-01608d27d52f",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{48}^{∘}\\text{C}"
+              },
+              {
+                ":answer/id": "e039ad0f-7dd6-5a3d-8b99-d9e3ed7ce31f",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{73}^{∘}\\text{C}"
+              },
+              {
+                ":answer/id": "cbf8d8e4-2017-50d8-a27b-e6af129d15e7",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{85}^{∘}\\text{C}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "e039ad0f-7dd6-5a3d-8b99-d9e3ed7ce31f"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "1.1.0",
+        "seed": 84161,
+        "template": "coffee",
+        "parameters": {
+          "ambient": 25,
+          "initial": 100,
+          "rate": "0.05",
+          "time": 9
+        },
+        "bank_profile": "authored_operations",
+        "origin": "observed_template",
+        "bank_origin": "authored_operations",
+        "source_basis": 2496,
+        "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+        "mathematical_fingerprint": "ce3ee92f2a1dea5a66a4dbd42d47e7750e8baa6bb2098cbe03800bcedf0c12ba",
+        "content_fingerprint": "17db185b9154892da3150f843e126935df77bf7aaa70b8852ce1eb099dbca802",
+        "domain": "T(t)>ambient; positive rate; t>=0; observations strictly cooling",
+        "recipes": [
+          "correct",
+          "omit_ambient",
+          "do_not_subtract_ambient_in_K",
+          "halve_rate",
+          "double_rate"
+        ]
+      }
+    },
+    "checks": [
+      {
+        "field_index": 0,
+        "submitted_answer_id": "1e098b07-9d96-5d31-a1a9-76583068dc79",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "ab146b31-871a-52bd-a521-7116e1eeebc9",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "360f833a-d7b6-56c5-892b-01608d27d52f",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "e039ad0f-7dd6-5a3d-8b99-d9e3ed7ce31f",
+        "expected": "accepted",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "cbf8d8e4-2017-50d8-a27b-e6af129d15e7",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      }
+    ]
+  },
+  {
+    "label": "review-14-257c49da-d3e0-5546-93d2-0572d5e5e479",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186078584,
+        "id": "bfe4679b-9724-5502-89d4-05e7661a1b5f",
+        "title": "Solving an Inhibited Decay Model"
+      },
+      "question": {
+        ":question/id": "257c49da-d3e0-5546-93d2-0572d5e5e479",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/problem": "The temperature $T(t),$ in degrees Celsius, of a compressor of a refrigerator can be modeled by the differential equation\n\n$$\n\\frac{dT}{dt}=-0.05(T-25)\n$$\n\nwhere $t>0$ is the time, measured in minutes. If the initial temperature of the compressor is ${100}^{∘}C,$ calculate the temperature of the compressor after $6$ minutes. Round your answer to the nearest integer.",
+        ":question/worked-solution": "We're told that the temperature of the compressor of a refrigerator is modeled by the inhibited decay equation\n\n$$\n\\frac{dT}{dt}=-0.05(T-25).\n$$\n\nFirst, we integrate our differential equation by separating the variables:\n\n$$\n\\begin{aligned}\\frac{dT}{T-25} & =-0.05\\,dt \\\\ \\int \\frac{dT}{T-25} & =-\\int 0.05\\,\\text{d}t \\\\ \\operatorname{ln}⁡|T-25| & =-0.05t+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited decay equation, we have $T-25>0$ for all $t>0.$\nNext, we solve for $T(t),$ as follows:\n\n$$\n\\begin{aligned}T-25 & ={e}^{-0.05t+C} \\\\ T-25 & ={e}^{C}{e}^{-0.05t} \\\\ T-25 & =K{e}^{-0.05t} \\\\ T & =25+K{e}^{-0.05t}\\end{aligned}\n$$\n\nNote that $K={e}^{C}$ is a constant of integration. \n\nWe're told that the initial temperature of the compressor was ${100}^{∘}C.$ So, we apply the initial condition $T(0)=100,$ and solve for $K:$\n\n$$\n\\begin{aligned}100 & =25+K{e}^{0} \\\\ 100 & =25+K \\\\ K & =75\\end{aligned}\n$$\n\nTherefore, the solution to our initial value problem is\n\n$$\nT(t)=25+75{e}^{-0.05t}.\n$$\n\nFinally, the temperature of the compressor after $t=6$ minutes is\n\n$$\nT(6)=25+75{e}^{-0.05\\cdot 6}≈{81}^{∘}\\text{C},\n$$\n\nrounded to the nearest integer.",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "7e1a29a1-8055-5cfe-af6c-2ff9a98ab645",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "076d5d05-c8e4-5979-8a64-e12857114880",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{66}^{∘}\\text{C}"
+              },
+              {
+                ":answer/id": "bce07437-186f-5d9c-b1f8-1cb4dbdb4a30",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{99}^{∘}\\text{C}"
+              },
+              {
+                ":answer/id": "4faf3277-b222-53cc-8d99-bdc088e7f9e5",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{56}^{∘}\\text{C}"
+              },
+              {
+                ":answer/id": "0de56197-6f09-51f6-a64f-f71d06b8203a",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{81}^{∘}\\text{C}"
+              },
+              {
+                ":answer/id": "b1ac6beb-15eb-5088-a0eb-2f2eb85e7002",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{90}^{∘}\\text{C}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "0de56197-6f09-51f6-a64f-f71d06b8203a"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "1.1.0",
+        "seed": 84161,
+        "template": "compressor",
+        "parameters": {
+          "ambient": 25,
+          "initial": 100,
+          "rate": "0.05",
+          "time": 6
+        },
+        "bank_profile": "authored_operations",
+        "origin": "observed_template",
+        "bank_origin": "authored_operations",
+        "source_basis": 2496,
+        "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+        "mathematical_fingerprint": "130ea8773b950ed92173d56250343797b12bcb601c9f18d479d056338cf6e1f1",
+        "content_fingerprint": "f632f13abf2bc9f058fb8ff1ade980ebba4f8381013286acc11f8aff6dd73117",
+        "domain": "T(t)>ambient; positive rate; t>=0; observations strictly cooling",
+        "recipes": [
+          "correct",
+          "omit_ambient",
+          "do_not_subtract_ambient_in_K",
+          "halve_rate",
+          "double_rate"
+        ]
+      }
+    },
+    "checks": [
+      {
+        "field_index": 0,
+        "submitted_answer_id": "076d5d05-c8e4-5979-8a64-e12857114880",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "bce07437-186f-5d9c-b1f8-1cb4dbdb4a30",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "4faf3277-b222-53cc-8d99-bdc088e7f9e5",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "0de56197-6f09-51f6-a64f-f71d06b8203a",
+        "expected": "accepted",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "b1ac6beb-15eb-5088-a0eb-2f2eb85e7002",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      }
+    ]
+  },
+  {
+    "label": "review-15-bfdad26b-1e7e-50cb-995e-c895d503624c",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186078584,
+        "id": "bfe4679b-9724-5502-89d4-05e7661a1b5f",
+        "title": "Solving an Inhibited Decay Model"
+      },
+      "question": {
+        ":question/id": "bfdad26b-1e7e-50cb-995e-c895d503624c",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/problem": "The temperature $T(t),$ in degrees Fahrenheit, of an exhaust pipe of a motorcycle can be modeled by the differential equation\n\n$$\n\\frac{dT}{dt}=-0.08(T-74)\n$$\n\nwhere $t>0$ is the time, measured in minutes. If the initial temperature of the exhaust pipe is ${140}^{∘}F,$ calculate its temperature after $3$ minutes. Round your answer to the nearest integer.",
+        ":question/worked-solution": "We're told that the temperature of the exhaust pipe of a motorcycle is modeled by the inhibited decay equation\n\n$$\n\\frac{dT}{dt}=-0.08(T-74).\n$$\n\nFirst, we integrate our differential equation by separating the variables:\n\n$$\n\\begin{aligned}\\frac{dT}{T-74} & =-0.08\\,dt \\\\ \\int \\frac{dT}{T-74} & =-\\int 0.08\\,\\text{d}t \\\\ \\operatorname{ln}⁡|T-74| & =-0.08t+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited decay equation, we have $T-74>0$ for all $t>0.$\nNext, we solve for $T(t),$ as follows:\n\n$$\n\\begin{aligned}T-74 & ={e}^{-0.08t+C} \\\\ T-74 & ={e}^{C}{e}^{-0.08t} \\\\ T-74 & =K{e}^{-0.08t} \\\\ T & =74+K{e}^{-0.08t}\\end{aligned}\n$$\n\nNote that $K={e}^{C}$ is a constant of integration. \n\nWe're told that the initial temperature of the exhaust pipe was ${140}^{∘}F.$ So, we apply the initial condition $T(0)=140,$ and solve for $K:$\n\n$$\n\\begin{aligned}140 & =74+K{e}^{0} \\\\ 140 & =74+K \\\\ K & =66\\end{aligned}\n$$\n\nTherefore, the solution to our initial value problem is\n\n$$\nT(t)=74+66{e}^{-0.08t}.\n$$\n\nFinally, the temperature of the exhaust pipe after $t=3$ minutes is\n\n$$\nT(3)=74+66{e}^{-0.08\\cdot 3}≈{126}^{∘}\\text{F},\n$$\n\nrounded to the nearest integer.",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "d12f828e-cffa-569a-a53d-58ff77bc3c95",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "60c83c90-f726-5e99-a7ab-dfc9b0efb2d9",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{112}^{∘}\\text{F}"
+              },
+              {
+                ":answer/id": "7090d6b9-3614-52f5-992b-741d9ba300c8",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{126}^{∘}\\text{F}"
+              },
+              {
+                ":answer/id": "99b117ab-7ba6-5230-9a6a-d5906dd9b99a",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{98}^{∘}\\text{F}"
+              },
+              {
+                ":answer/id": "c144c190-ef34-529f-a691-9cec7cf3ac03",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{92}^{∘}\\text{F}"
+              },
+              {
+                ":answer/id": "5c1463c8-8404-5115-a957-6ce383c52c81",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{134}^{∘}\\text{F}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "7090d6b9-3614-52f5-992b-741d9ba300c8"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "1.1.0",
+        "seed": 84153,
+        "template": "exhaust",
+        "parameters": {
+          "ambient": 74,
+          "initial": 140,
+          "rate": "0.08",
+          "time": 3
+        },
+        "bank_profile": "q-107128",
+        "origin": "observed_template",
+        "bank_origin": "observed_scalar_offsets_intent_underdetermined",
+        "source_basis": 2496,
+        "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+        "mathematical_fingerprint": "45121142e71cf50dee0f401d8029f34bc33ef166955520d9823bab79fb0bc4bd",
+        "content_fingerprint": "df5e3196eb2bda66783bb0eb8cb1fa6b1e65171003d48a37185e325384d9480c",
+        "domain": "T(t)>ambient; positive rate; t>=0; observations strictly cooling",
+        "recipes": [
+          "rounded_correct_plus_-28",
+          "rounded_correct_plus_0",
+          "rounded_correct_plus_-14",
+          "rounded_correct_plus_-34",
+          "rounded_correct_plus_8"
+        ]
+      }
+    },
+    "checks": [
+      {
+        "field_index": 0,
+        "submitted_answer_id": "60c83c90-f726-5e99-a7ab-dfc9b0efb2d9",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "7090d6b9-3614-52f5-992b-741d9ba300c8",
+        "expected": "accepted",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "99b117ab-7ba6-5230-9a6a-d5906dd9b99a",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "c144c190-ef34-529f-a691-9cec7cf3ac03",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "5c1463c8-8404-5115-a957-6ce383c52c81",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      }
+    ]
+  },
+  {
+    "label": "review-16-e99747a5-6cb3-58b7-af68-46e32aa15c1e",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186078584,
+        "id": "bfe4679b-9724-5502-89d4-05e7661a1b5f",
+        "title": "Solving an Inhibited Decay Model"
+      },
+      "question": {
+        ":question/id": "e99747a5-6cb3-58b7-af68-46e32aa15c1e",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/problem": "The temperature $T(t),$ in degrees Celsius, of a cup of coffee can be modeled by the differential equation\n\n$$\n\\frac{dT}{dt}=-0.05(T-25)\n$$\n\nwhere $t>0$ is the time, measured in minutes. If the initial temperature of the coffee is ${100}^{∘}C,$ calculate the temperature of the coffee after $6$ minutes. Round your answer to the nearest integer.",
+        ":question/worked-solution": "We're told that the temperature of the cup of coffee is modeled by the inhibited decay equation\n\n$$\n\\frac{dT}{dt}=-0.05(T-25).\n$$\n\nFirst, we integrate our differential equation by separating the variables:\n\n$$\n\\begin{aligned}\\frac{dT}{T-25} & =-0.05\\,dt \\\\ \\int \\frac{dT}{T-25} & =-\\int 0.05\\,\\text{d}t \\\\ \\operatorname{ln}⁡|T-25| & =-0.05t+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited decay equation, we have $T-25>0$ for all $t>0.$\nNext, we solve for $T(t),$ as follows:\n\n$$\n\\begin{aligned}T-25 & ={e}^{-0.05t+C} \\\\ T-25 & ={e}^{C}{e}^{-0.05t} \\\\ T-25 & =K{e}^{-0.05t} \\\\ T & =25+K{e}^{-0.05t}\\end{aligned}\n$$\n\nNote that $K={e}^{C}$ is a constant of integration. \n\nWe're told that the initial temperature of the coffee was ${100}^{∘}C.$ So, we apply the initial condition $T(0)=100,$ and solve for $K:$\n\n$$\n\\begin{aligned}100 & =25+K{e}^{0} \\\\ 100 & =25+K \\\\ K & =75\\end{aligned}\n$$\n\nTherefore, the solution to our initial value problem is\n\n$$\nT(t)=25+75{e}^{-0.05t}.\n$$\n\nFinally, the temperature of the coffee after $t=6$ minutes is\n\n$$\nT(6)=25+75{e}^{-0.05\\cdot 6}≈{81}^{∘}\\text{C},\n$$\n\nrounded to the nearest integer.",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "5cc6e838-f6ed-5cfb-a579-321655e71c9a",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "dad6fd49-9693-5c96-ad51-159e06750aed",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{85}^{∘}\\text{C}"
+              },
+              {
+                ":answer/id": "9a2203ce-518e-5d16-8bf9-8de04bd88ea5",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{79}^{∘}\\text{C}"
+              },
+              {
+                ":answer/id": "77a452fa-5ed4-5645-864c-0bcfd58f6139",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{83}^{∘}\\text{C}"
+              },
+              {
+                ":answer/id": "39ddee38-1f5a-5918-9dee-17a6fa177ef1",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{81}^{∘}\\text{C}"
+              },
+              {
+                ":answer/id": "82dc402d-c653-5be5-b8c2-be6acf839dc1",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{77}^{∘}\\text{C}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "39ddee38-1f5a-5918-9dee-17a6fa177ef1"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "1.1.0",
+        "seed": 84153,
+        "template": "coffee",
+        "parameters": {
+          "ambient": 25,
+          "initial": 100,
+          "rate": "0.05",
+          "time": 6
+        },
+        "bank_profile": "q-15595",
+        "origin": "observed_template",
+        "bank_origin": "observed_scalar_offsets_intent_underdetermined",
+        "source_basis": 2496,
+        "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+        "mathematical_fingerprint": "130ea8773b950ed92173d56250343797b12bcb601c9f18d479d056338cf6e1f1",
+        "content_fingerprint": "d657330d0cff5a9ba247577e64cbba4a9f47ab018aca2649985d922c6af212e5",
+        "domain": "T(t)>ambient; positive rate; t>=0; observations strictly cooling",
+        "recipes": [
+          "rounded_correct_plus_2",
+          "rounded_correct_plus_-2",
+          "rounded_correct_plus_4",
+          "rounded_correct_plus_0",
+          "rounded_correct_plus_-4"
+        ]
+      }
+    },
+    "checks": [
+      {
+        "field_index": 0,
+        "submitted_answer_id": "dad6fd49-9693-5c96-ad51-159e06750aed",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "9a2203ce-518e-5d16-8bf9-8de04bd88ea5",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "77a452fa-5ed4-5645-864c-0bcfd58f6139",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "39ddee38-1f5a-5918-9dee-17a6fa177ef1",
+        "expected": "accepted",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "82dc402d-c653-5be5-b8c2-be6acf839dc1",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      }
+    ]
+  },
+  {
+    "label": "review-17-857fd90d-4612-5952-84fa-82643cb93eb1",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186078584,
+        "id": "bfe4679b-9724-5502-89d4-05e7661a1b5f",
+        "title": "Solving an Inhibited Decay Model"
+      },
+      "question": {
+        ":question/id": "857fd90d-4612-5952-84fa-82643cb93eb1",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/problem": "The temperature $T(t),$ in degrees Celsius, of a cooling iron can be modeled by the differential equation\n\n$$\n\\frac{dT}{dt}=-0.1(T-28)\n$$\n\nwhere $t>0$ is the time, measured in minutes. If the initial temperature of the iron is ${140}^{∘}C,$ calculate its temperature after $5$ minutes. Round your answer to the nearest integer.",
+        ":question/worked-solution": "We're told that the temperature of the cooling iron is modeled by the inhibited decay equation\n\n$$\n\\frac{dT}{dt}=-0.1(T-28).\n$$\n\nFirst, we integrate our differential equation by separating the variables:\n\n$$\n\\begin{aligned}\\frac{dT}{T-28} & =-0.1\\,dt \\\\ \\int \\frac{dT}{T-28} & =-\\int 0.1\\,\\text{d}t \\\\ \\operatorname{ln}⁡|T-28| & =-0.1t+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited decay equation, we have $T-28>0$ for all $t>0.$\nNext, we solve for $T(t),$ as follows:\n\n$$\n\\begin{aligned}T-28 & ={e}^{-0.1t+C} \\\\ T-28 & ={e}^{C}{e}^{-0.1t} \\\\ T-28 & =K{e}^{-0.1t} \\\\ T & =28+K{e}^{-0.1t}\\end{aligned}\n$$\n\nNote that $K={e}^{C}$ is a constant of integration. \n\nWe're told that the initial temperature of the iron was ${140}^{∘}C.$ So, we apply the initial condition $T(0)=140,$ and solve for $K:$\n\n$$\n\\begin{aligned}140 & =28+K{e}^{0} \\\\ 140 & =28+K \\\\ K & =112\\end{aligned}\n$$\n\nTherefore, the solution to our initial value problem is\n\n$$\nT(t)=28+112{e}^{-0.1t}.\n$$\n\nFinally, the temperature of the iron after $t=5$ minutes is\n\n$$\nT(5)=28+112{e}^{-0.1\\cdot 5}≈{96}^{∘}\\text{C},\n$$\n\nrounded to the nearest integer.",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "bdab18c2-1f60-5c1d-af85-a168f3aef4d6",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "57e36b0f-b920-5dbe-9791-d555eaf0ea87",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{79}^{∘}\\text{C}"
+              },
+              {
+                ":answer/id": "21b96ae4-89cf-5fbe-953c-5bf2c0b3514b",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{92}^{∘}\\text{C}"
+              },
+              {
+                ":answer/id": "55147569-a305-5c68-a7fd-c451a1dff238",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{96}^{∘}\\text{C}"
+              },
+              {
+                ":answer/id": "5c649ddc-5a8c-59d2-919a-0cac710854aa",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{76}^{∘}\\text{C}"
+              },
+              {
+                ":answer/id": "3d5044f9-9a11-5fcb-b2b2-7bfe0ecc8238",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{81}^{∘}\\text{C}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "55147569-a305-5c68-a7fd-c451a1dff238"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "1.1.0",
+        "seed": 84153,
+        "template": "iron",
+        "parameters": {
+          "ambient": 28,
+          "initial": 140,
+          "rate": "0.1",
+          "time": 5
+        },
+        "bank_profile": "q-107118",
+        "origin": "observed_template",
+        "bank_origin": "observed_scalar_offsets_intent_underdetermined",
+        "source_basis": 2496,
+        "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+        "mathematical_fingerprint": "b5ee55ecfcc588f22d53766ac2bdf537fc9a54edb9d168cb9ce365d866fce2b6",
+        "content_fingerprint": "8c607a4ffa7297224f28913045f8e55dac9ea49b77c0daba9e24d57d4c0e3ecf",
+        "domain": "T(t)>ambient; positive rate; t>=0; observations strictly cooling",
+        "recipes": [
+          "rounded_correct_plus_0",
+          "rounded_correct_plus_-4",
+          "rounded_correct_plus_-17",
+          "rounded_correct_plus_-20",
+          "rounded_correct_plus_-15"
+        ]
+      }
+    },
+    "checks": [
+      {
+        "field_index": 0,
+        "submitted_answer_id": "57e36b0f-b920-5dbe-9791-d555eaf0ea87",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "21b96ae4-89cf-5fbe-953c-5bf2c0b3514b",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "55147569-a305-5c68-a7fd-c451a1dff238",
+        "expected": "accepted",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "5c649ddc-5a8c-59d2-919a-0cac710854aa",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "3d5044f9-9a11-5fcb-b2b2-7bfe0ecc8238",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      }
+    ]
+  },
+  {
+    "label": "review-18-5d596759-9626-54c1-8935-6bef6d4f7438",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186078584,
+        "id": "bfe4679b-9724-5502-89d4-05e7661a1b5f",
+        "title": "Solving an Inhibited Decay Model"
+      },
+      "question": {
+        ":question/id": "5d596759-9626-54c1-8935-6bef6d4f7438",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/problem": "The temperature $T(t),$ in degrees Fahrenheit, of a fresh-baked cake can be modeled by the differential equation\n\n$$\n\\frac{dT}{dt}=-0.09(T-70)\n$$\n\nwhere $t>0$ is the time, measured in minutes. If the initial temperature of the cake is ${340}^{∘}F,$ calculate the temperature of the cake after $8$ minutes. Round your answer to the nearest integer.",
+        ":question/worked-solution": "We're told that the temperature of the fresh-baked cake is modeled by the inhibited decay equation\n\n$$\n\\frac{dT}{dt}=-0.09(T-70).\n$$\n\nFirst, we integrate our differential equation by separating the variables:\n\n$$\n\\begin{aligned}\\frac{dT}{T-70} & =-0.09\\,dt \\\\ \\int \\frac{dT}{T-70} & =-\\int 0.09\\,\\text{d}t \\\\ \\operatorname{ln}⁡|T-70| & =-0.09t+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited decay equation, we have $T-70>0$ for all $t>0.$\nNext, we solve for $T(t),$ as follows:\n\n$$\n\\begin{aligned}T-70 & ={e}^{-0.09t+C} \\\\ T-70 & ={e}^{C}{e}^{-0.09t} \\\\ T-70 & =K{e}^{-0.09t} \\\\ T & =70+K{e}^{-0.09t}\\end{aligned}\n$$\n\nNote that $K={e}^{C}$ is a constant of integration. \n\nWe're told that the initial temperature of the cake was ${340}^{∘}F.$ So, we apply the initial condition $T(0)=340,$ and solve for $K:$\n\n$$\n\\begin{aligned}340 & =70+K{e}^{0} \\\\ 340 & =70+K \\\\ K & =270\\end{aligned}\n$$\n\nTherefore, the solution to our initial value problem is\n\n$$\nT(t)=70+270{e}^{-0.09t}.\n$$\n\nFinally, the temperature of the cake after $t=8$ minutes is\n\n$$\nT(8)=70+270{e}^{-0.09\\cdot 8}≈{201}^{∘}\\text{F},\n$$\n\nrounded to the nearest integer.",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "6d39eb3d-938e-5244-aa55-36c8a0278c44",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "1f671519-11a3-57f8-9201-9d541d8432b7",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{194}^{∘}\\text{F}"
+              },
+              {
+                ":answer/id": "4cc35667-adc0-5bbf-a80a-e5a48937f6b9",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{223}^{∘}\\text{F}"
+              },
+              {
+                ":answer/id": "5a6a1fac-a0d0-58d7-b928-51100e7aff16",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{198}^{∘}\\text{F}"
+              },
+              {
+                ":answer/id": "38268dbd-8cd0-51fe-915e-62b530ce3c81",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{201}^{∘}\\text{F}"
+              },
+              {
+                ":answer/id": "e0e2d607-153e-5e22-accf-f235347a5104",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{189}^{∘}\\text{F}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "38268dbd-8cd0-51fe-915e-62b530ce3c81"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "1.1.0",
+        "seed": 84153,
+        "template": "cake",
+        "parameters": {
+          "ambient": 70,
+          "initial": 340,
+          "rate": "0.09",
+          "time": 8
+        },
+        "bank_profile": "q-107120",
+        "origin": "observed_template",
+        "bank_origin": "observed_scalar_offsets_intent_underdetermined",
+        "source_basis": 2496,
+        "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+        "mathematical_fingerprint": "b5626dbbeb86921adc9a39da360fb2ad7be7db720933681ab9bf76d328cc2251",
+        "content_fingerprint": "8e402d180ae23938090c2aba0cbbbb8cadc226b803b8d3f0f08d4bb55334f95a",
+        "domain": "T(t)>ambient; positive rate; t>=0; observations strictly cooling",
+        "recipes": [
+          "rounded_correct_plus_-3",
+          "rounded_correct_plus_22",
+          "rounded_correct_plus_-7",
+          "rounded_correct_plus_0",
+          "rounded_correct_plus_-12"
+        ]
+      }
+    },
+    "checks": [
+      {
+        "field_index": 0,
+        "submitted_answer_id": "1f671519-11a3-57f8-9201-9d541d8432b7",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "4cc35667-adc0-5bbf-a80a-e5a48937f6b9",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "5a6a1fac-a0d0-58d7-b928-51100e7aff16",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "38268dbd-8cd0-51fe-915e-62b530ce3c81",
+        "expected": "accepted",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "e0e2d607-153e-5e22-accf-f235347a5104",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      }
+    ]
+  },
+  {
+    "label": "review-19-5bdc20c7-9b0b-5989-9bdc-87769e7cd117",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186078584,
+        "id": "bfe4679b-9724-5502-89d4-05e7661a1b5f",
+        "title": "Solving an Inhibited Decay Model"
+      },
+      "question": {
+        ":question/id": "5bdc20c7-9b0b-5989-9bdc-87769e7cd117",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/problem": "The temperature $T(t),$ in degrees Celsius, of a compressor of a refrigerator can be modeled by the differential equation\n\n$$\n\\frac{dT}{dt}=-0.12(T-21)\n$$\n\nwhere $t>0$ is the time, measured in minutes. If the initial temperature of the compressor is ${65}^{∘}C,$ calculate the temperature of the compressor after $8$ minutes. Round your answer to the nearest integer.",
+        ":question/worked-solution": "We're told that the temperature of the compressor of a refrigerator is modeled by the inhibited decay equation\n\n$$\n\\frac{dT}{dt}=-0.12(T-21).\n$$\n\nFirst, we integrate our differential equation by separating the variables:\n\n$$\n\\begin{aligned}\\frac{dT}{T-21} & =-0.12\\,dt \\\\ \\int \\frac{dT}{T-21} & =-\\int 0.12\\,\\text{d}t \\\\ \\operatorname{ln}⁡|T-21| & =-0.12t+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited decay equation, we have $T-21>0$ for all $t>0.$\nNext, we solve for $T(t),$ as follows:\n\n$$\n\\begin{aligned}T-21 & ={e}^{-0.12t+C} \\\\ T-21 & ={e}^{C}{e}^{-0.12t} \\\\ T-21 & =K{e}^{-0.12t} \\\\ T & =21+K{e}^{-0.12t}\\end{aligned}\n$$\n\nNote that $K={e}^{C}$ is a constant of integration. \n\nWe're told that the initial temperature of the compressor was ${65}^{∘}C.$ So, we apply the initial condition $T(0)=65,$ and solve for $K:$\n\n$$\n\\begin{aligned}65 & =21+K{e}^{0} \\\\ 65 & =21+K \\\\ K & =44\\end{aligned}\n$$\n\nTherefore, the solution to our initial value problem is\n\n$$\nT(t)=21+44{e}^{-0.12t}.\n$$\n\nFinally, the temperature of the compressor after $t=8$ minutes is\n\n$$\nT(8)=21+44{e}^{-0.12\\cdot 8}≈{38}^{∘}\\text{C},\n$$\n\nrounded to the nearest integer.",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "6d7cc5e9-6b23-5bb9-90b3-cc353169597d",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "506fdc3d-e7ba-55e8-ac33-efc0eb8733d4",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{43}^{∘}\\text{C}"
+              },
+              {
+                ":answer/id": "8e7fde19-18b8-5cd9-89a1-efa573f558ba",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{38}^{∘}\\text{C}"
+              },
+              {
+                ":answer/id": "f0a4a5c2-ae6d-585b-b353-16ef004ffb91",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{31}^{∘}\\text{C}"
+              },
+              {
+                ":answer/id": "e9aa70e0-8497-5bfe-93ec-8b093bfd3553",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{29}^{∘}\\text{C}"
+              },
+              {
+                ":answer/id": "be921f8a-162e-599d-bcab-d1fcc0440f7d",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{58}^{∘}\\text{C}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "8e7fde19-18b8-5cd9-89a1-efa573f558ba"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "1.1.0",
+        "seed": 84153,
+        "template": "compressor",
+        "parameters": {
+          "ambient": 21,
+          "initial": 65,
+          "rate": "0.12",
+          "time": 8
+        },
+        "bank_profile": "q-107129",
+        "origin": "observed_template",
+        "bank_origin": "observed_scalar_offsets_intent_underdetermined",
+        "source_basis": 2496,
+        "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+        "mathematical_fingerprint": "eb5c332a2af48255bf402d66a441d326ed26ad1469d59b091afbe8099936cffc",
+        "content_fingerprint": "fa5d147c043008277971217762e1c8562fc908c58589f01a80652b830cf3005c",
+        "domain": "T(t)>ambient; positive rate; t>=0; observations strictly cooling",
+        "recipes": [
+          "rounded_correct_plus_-7",
+          "rounded_correct_plus_0",
+          "rounded_correct_plus_5",
+          "rounded_correct_plus_-9",
+          "rounded_correct_plus_20"
+        ]
+      }
+    },
+    "checks": [
+      {
+        "field_index": 0,
+        "submitted_answer_id": "506fdc3d-e7ba-55e8-ac33-efc0eb8733d4",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "8e7fde19-18b8-5cd9-89a1-efa573f558ba",
+        "expected": "accepted",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "f0a4a5c2-ae6d-585b-b353-16ef004ffb91",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "e9aa70e0-8497-5bfe-93ec-8b093bfd3553",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "be921f8a-162e-599d-bcab-d1fcc0440f7d",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      }
+    ]
+  },
+  {
+    "label": "review-20-174d51a9-dbd4-5dd7-b749-fec65baf32c3",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186078584,
+        "id": "bfe4679b-9724-5502-89d4-05e7661a1b5f",
+        "title": "Solving an Inhibited Decay Model"
+      },
+      "question": {
+        ":question/id": "174d51a9-dbd4-5dd7-b749-fec65baf32c3",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/problem": "A thermometer is placed into a water bath and displays a reading of ${50}^{∘}C.$ The thermometer is then transferred to a ${10}^{∘}C$ water bath, and its reading begins to decrease. After $5$ minutes, the thermometer reading is ${40}^{∘}C.$ To the nearest minute, how long does it take for the thermometer to register a reading of ${30}^{∘}C?$ \n\n*Hint: You may assume that the temperature reading $T(t)$ of the thermometer decreases at a rate that obeys Newton's law of cooling, where $T$ is measured in degrees Celsius and $t>0$ is the time, in minutes, since the thermometer was transferred into the ${10}^{∘}C$ water bath.*",
+        ":question/worked-solution": "Newton's law of cooling states that the rate at which the temperature $T(t)$ of a body changes is proportional to the difference between its temperature and its surroundings. Therefore, we have the inhibited decay equation\n\n$$\n\\frac{\\text{d}T}{\\text{d}t}=-k(T-{T}_{S}),\n$$\n\nwhere ${T}_{S}$ is the temperature of the surroundings, and $k>0$ is a constant of proportionality.\n\nIn our case, ${T}_{S}={10}^{∘}\\text{C},$ and we have\n\n$$\n\\frac{\\text{d}T}{\\text{d}t}=-k(T-10).\n$$\n\nFirst, we integrate our differential equation by separating the variables:\n\n$$\n\\begin{aligned}\\frac{dT}{T-10} & =-k\\,dt \\\\ \\int \\frac{dT}{T-10} & =-k\\int dt \\\\ \\operatorname{ln}⁡|T-10| & =-kt+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited decay equation, we have $T-10>0$ for all $t>0.$\nNext, we solve for $T(t),$ as follows:\n\n$$\n\\begin{aligned}T-10 & ={e}^{-kt+C} \\\\ T-10 & ={e}^{C}{e}^{-kt} \\\\ T-10 & =K{e}^{-kt} \\\\ T & =10+K{e}^{-kt}\\end{aligned}\n$$\n\nNote that $K={e}^{C}$ is a constant of integration. \n\nWe're told that the initial temperature reading was ${50}^{∘}C.$ So, we apply the initial condition $T(0)=50,$ and solve for $K:$\n\n$$\n\\begin{aligned}50 & =10+K{e}^{0} \\\\ 50 & =10+K \\\\ K & =40\\end{aligned}\n$$\n\nTherefore, we have the following expression for $T(t):$\n\n$$\nT(t)=10+40{e}^{-kt}\n$$\n\nWe're also told that, after $5$ minutes, the thermometer reading is ${40}^{∘}C.$ So, applying the condition $T(5)=40,$ we can solve for $k:$\n\n$$\n\\begin{aligned}40 & =10+40{e}^{-5k} \\\\ 30 & =40{e}^{-5k} \\\\ \\frac{3}{4} & ={e}^{-5k} \\\\ \\operatorname{ln}⁡(\\frac{3}{4}) & =-5k \\\\ k & =-\\frac{1}{5}\\operatorname{ln}⁡(\\frac{3}{4})\\end{aligned}\n$$\n\nFinally, let ${t}_{1}$ be the time when the thermometer reads ${30}^{∘}C.$ Then, we have\n\n$$\n\\begin{aligned}T({t}_{1}) & =30 \\\\ 10+40{e}^{-k{t}_{1}} & =30 \\\\ 40{e}^{-k{t}_{1}} & =20 \\\\ {e}^{-k{t}_{1}} & =\\frac{1}{2} \\\\ -k{t}_{1} & =\\operatorname{ln}⁡(\\frac{1}{2}) \\\\ {t}_{1} & =-\\frac{1}{k}\\operatorname{ln}⁡(\\frac{1}{2}).\\end{aligned}\n$$\n\nSubstituting in our value for $k,$ we conclude that the thermometer will read ${30}^{∘}C$ after\n\n$$\n{t}_{1}=\\frac{-\\operatorname{ln}⁡(\\frac{1}{2})}{-\\frac{1}{5}\\operatorname{ln}⁡(\\frac{3}{4})}≈12\\,\\text{min},\n$$\n\nrounded to the nearest minute.",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "cef36c5e-0c7c-5a26-be27-0ecba6951b56",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "18eb433f-eb4a-54d5-aa4c-d632f24bece3",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "13\\,\\text{min}"
+              },
+              {
+                ":answer/id": "23d54135-8680-567f-b982-36b6ded836b3",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "15\\,\\text{min}"
+              },
+              {
+                ":answer/id": "ade15135-3b0f-5afa-9852-519360cba1ae",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "12\\,\\text{min}"
+              },
+              {
+                ":answer/id": "c40da23c-c2ae-55d6-a1ee-15283fd8eeb1",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "14\\,\\text{min}"
+              },
+              {
+                ":answer/id": "a47dc4d3-2637-5cc5-a231-da93e3f32347",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "10\\,\\text{min}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "ade15135-3b0f-5afa-9852-519360cba1ae"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "1.1.0",
+        "seed": 84153,
+        "template": "bath",
+        "parameters": {
+          "ambient": 10,
+          "initial": 50,
+          "observed": 40,
+          "target": 30,
+          "time": 5
+        },
+        "bank_profile": "q-15384",
+        "origin": "observed_template",
+        "bank_origin": "observed_scalar_offsets_intent_underdetermined",
+        "source_basis": 2496,
+        "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+        "mathematical_fingerprint": "aa038ac8071c2086d5bac35cf223413d2294c32eb34cef0f35f2403668e5d978",
+        "content_fingerprint": "13835f12847950fe5bc488b95d6d8aa508573f93bd567527b513ab66f111b744",
+        "domain": "T(t)>ambient; positive rate; t>=0; observations strictly cooling",
+        "recipes": [
+          "rounded_correct_plus_0",
+          "rounded_correct_plus_3",
+          "rounded_correct_plus_1",
+          "rounded_correct_plus_2",
+          "rounded_correct_plus_-2"
+        ]
+      }
+    },
+    "checks": [
+      {
+        "field_index": 0,
+        "submitted_answer_id": "18eb433f-eb4a-54d5-aa4c-d632f24bece3",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "23d54135-8680-567f-b982-36b6ded836b3",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "ade15135-3b0f-5afa-9852-519360cba1ae",
+        "expected": "accepted",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "c40da23c-c2ae-55d6-a1ee-15283fd8eeb1",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "a47dc4d3-2637-5cc5-a231-da93e3f32347",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      }
+    ]
+  },
+  {
+    "label": "review-21-fc436ac8-db77-5184-8c33-6fa2bd60eaaa",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186078584,
+        "id": "bfe4679b-9724-5502-89d4-05e7661a1b5f",
+        "title": "Solving an Inhibited Decay Model"
+      },
+      "question": {
+        ":question/id": "fc436ac8-db77-5184-8c33-6fa2bd60eaaa",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/problem": "A thermometer is taken out of a room where the air temperature is ${72}^{∘}F$  and brought outside where the temperature is ${15}^{∘}F,$ and its reading begins to decrease. After $2$ minutes, the thermometer reading is ${54}^{∘}F.$ To the nearest minute, how long does it take for the thermometer to register a reading of ${25}^{∘}F?$ \n\n*Hint: You may assume that the temperature reading $T(t)$ of the thermometer decreases at a rate that obeys Newton's law of cooling, where $T$ is measured in degrees Fahrenheit and $t>0$ is the time, in minutes, since the thermometer was transferred outside to ${15}^{∘}F.$*",
+        ":question/worked-solution": "Newton's law of cooling states that the rate at which the temperature $T(t)$ of a body changes is proportional to the difference between its temperature and its surroundings. Therefore, we have the inhibited decay equation\n\n$$\n\\frac{\\text{d}T}{\\text{d}t}=-k(T-{T}_{S}),\n$$\n\nwhere ${T}_{S}$ is the temperature of the surroundings, and $k>0$ is a constant of proportionality.\n\nIn our case, ${T}_{S}={15}^{∘}\\text{C},$ and we have\n\n$$\n\\frac{\\text{d}T}{\\text{d}t}=-k(T-15).\n$$\n\nFirst, we integrate our differential equation by separating the variables:\n\n$$\n\\begin{aligned}\\frac{dT}{T-15} & =-k\\,dt \\\\ \\int \\frac{dT}{T-15} & =-k\\int dt \\\\ \\operatorname{ln}⁡|T-15| & =-kt+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited decay equation, we have $T-15>0$ for all $t>0.$\nNext, we solve for $T(t),$ as follows:\n\n$$\n\\begin{aligned}T-15 & ={e}^{-kt+C} \\\\ T-15 & ={e}^{C}{e}^{-kt} \\\\ T-15 & =K{e}^{-kt} \\\\ T & =15+K{e}^{-kt}\\end{aligned}\n$$\n\nNote that $K={e}^{C}$ is a constant of integration. \n\nWe're told that the initial temperature reading was ${72}^{∘}F.$ So, we apply the initial condition $T(0)=72,$ and solve for $K:$\n\n$$\n\\begin{aligned}72 & =15+K{e}^{0} \\\\ 72 & =15+K \\\\ K & =57\\end{aligned}\n$$\n\nTherefore, we have the following expression for $T(t):$\n\n$$\nT(t)=15+57{e}^{-kt}\n$$\n\nWe're also told that, after $2$ minutes, the thermometer reading is ${54}^{∘}C.$ So, applying the condition $T(2)=54,$ we can solve for $k:$\n\n$$\n\\begin{aligned}54 & =15+57{e}^{-2k} \\\\ 39 & =57{e}^{-2k} \\\\ \\frac{39}{57} & ={e}^{-2k} \\\\ \\operatorname{ln}⁡(\\frac{39}{57}) & =-2k \\\\ k & =-\\frac{1}{2}\\operatorname{ln}⁡(\\frac{39}{57})\\end{aligned}\n$$\n\nFinally, let ${t}_{1}$ be the time when the thermometer reads ${25}^{∘}F.$ Then, we have\n\n$$\n\\begin{aligned}T({t}_{1}) & =25 \\\\ 15+57{e}^{-k{t}_{1}} & =25 \\\\ 57{e}^{-k{t}_{1}} & =10 \\\\ {e}^{-k{t}_{1}} & =\\frac{10}{57} \\\\ -k{t}_{1} & =\\operatorname{ln}⁡(\\frac{10}{57}) \\\\ {t}_{1} & =-\\frac{1}{k}\\operatorname{ln}⁡(\\frac{10}{57}).\\end{aligned}\n$$\n\nSubstituting in our value for $k,$ we conclude that the thermometer will read ${25}^{∘}C$ after\n\n$$\n{t}_{1}=\\frac{-\\operatorname{ln}⁡(\\frac{10}{57})}{-\\frac{1}{2}\\operatorname{ln}⁡(\\frac{39}{57})}≈9\\,\\text{min},\n$$\n\nrounded to the nearest minute.",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "0373a56c-9a26-5677-8b8c-1415893866e8",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "cb27d051-296f-5374-b2a2-15d05371e6ef",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "9\\,\\text{min}"
+              },
+              {
+                ":answer/id": "9b1f1810-e415-5b29-b3bb-83f8eb223c6f",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "15\\,\\text{min}"
+              },
+              {
+                ":answer/id": "e47bf3ad-4599-5338-9c8d-ad24f628e44b",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "11\\,\\text{min}"
+              },
+              {
+                ":answer/id": "28e581f7-6db4-5562-90e5-8cdfa33a0fda",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "8\\,\\text{min}"
+              },
+              {
+                ":answer/id": "77664f7e-fcaa-54a4-9249-75c4e001246c",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "13\\,\\text{min}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "cb27d051-296f-5374-b2a2-15d05371e6ef"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "1.1.0",
+        "seed": 84153,
+        "template": "outside",
+        "parameters": {
+          "ambient": 15,
+          "initial": 72,
+          "observed": 54,
+          "target": 25,
+          "time": 2
+        },
+        "bank_profile": "q-107122",
+        "origin": "observed_template",
+        "bank_origin": "observed_scalar_offsets_intent_underdetermined",
+        "source_basis": 2496,
+        "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+        "mathematical_fingerprint": "50246029c8c94e1c1d3c06f60e6b09b09bd2c785e6ab93dbdcb02401f315463a",
+        "content_fingerprint": "35c59848923d65fe85fdfc2af5dddae9e4efded4ea40f64b0e5c0bac70cdac2d",
+        "domain": "T(t)>ambient; positive rate; t>=0; observations strictly cooling",
+        "recipes": [
+          "rounded_correct_plus_2",
+          "rounded_correct_plus_6",
+          "rounded_correct_plus_0",
+          "rounded_correct_plus_-1",
+          "rounded_correct_plus_4"
+        ]
+      }
+    },
+    "checks": [
+      {
+        "field_index": 0,
+        "submitted_answer_id": "cb27d051-296f-5374-b2a2-15d05371e6ef",
+        "expected": "accepted",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "9b1f1810-e415-5b29-b3bb-83f8eb223c6f",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "e47bf3ad-4599-5338-9c8d-ad24f628e44b",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "28e581f7-6db4-5562-90e5-8cdfa33a0fda",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "77664f7e-fcaa-54a4-9249-75c4e001246c",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      }
+    ]
+  },
+  {
+    "label": "review-22-37b843e0-3b2e-5a5d-8154-41d7518c9162",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186078584,
+        "id": "bfe4679b-9724-5502-89d4-05e7661a1b5f",
+        "title": "Solving an Inhibited Decay Model"
+      },
+      "question": {
+        ":question/id": "37b843e0-3b2e-5a5d-8154-41d7518c9162",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/problem": "The water boils in a pan at a temperature of ${100}^{∘}C.$ The pan with water is then placed to a room with a temperature of ${25}^{∘}C,$ and the temperature of water decreases. After $5$ minutes, it cools to ${90}^{∘}C.$ To the nearest minute, how long does it take for the water to have a temperature of ${30}^{∘}C?$ \n\n*Hint: You may assume that the temperature reading $T(t)$ of the water in the pan decreases at a rate that obeys Newton's law of cooling, where $T$ is measured in degrees Celsius and $t>0$ is the time, in minutes, since the water starts cooling.*",
+        ":question/worked-solution": "Newton's law of cooling states that the rate at which the temperature $T(t)$ of a body changes is proportional to the difference between its temperature and its surroundings. Therefore, we have the inhibited decay equation\n\n$$\n\\frac{\\text{d}T}{\\text{d}t}=-k(T-{T}_{S}),\n$$\n\nwhere ${T}_{S}$ is the temperature of the surroundings, and $k>0$ is a constant of proportionality.\n\nIn our case, ${T}_{S}={25}^{∘}\\text{C},$ and we have\n\n$$\n\\frac{\\text{d}T}{\\text{d}t}=-k(T-25).\n$$\n\nFirst, we integrate our differential equation by separating the variables:\n\n$$\n\\begin{aligned}\\frac{dT}{T-25} & =-k\\,dt \\\\ \\int \\frac{dT}{T-25} & =-k\\int dt \\\\ \\operatorname{ln}⁡|T-25| & =-kt+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited decay equation, we have $T-25>0$ for all $t>0.$\nNext, we solve for $T(t),$ as follows:\n\n$$\n\\begin{aligned}T-25 & ={e}^{-kt+C} \\\\ T-25 & ={e}^{C}{e}^{-kt} \\\\ T-25 & =K{e}^{-kt} \\\\ T & =25+K{e}^{-kt}\\end{aligned}\n$$\n\nNote that $K={e}^{C}$ is a constant of integration. \n\nWe're told that the initial temperature was ${100}^{∘}C.$ So, we apply the initial condition $T(0)=100,$ and solve for $K:$\n\n$$\n\\begin{aligned}100 & =25+K{e}^{0} \\\\ 100 & =25+K \\\\ K & =75\\end{aligned}\n$$\n\nTherefore, we have the following expression for $T(t):$\n\n$$\nT(t)=25+75{e}^{-kt}\n$$\n\nWe're also told that, after $5$ minutes, it cools to ${90}^{∘}C.$ So, applying the condition $T(5)=90,$ we can solve for $k:$\n\n$$\n\\begin{aligned}90 & =25+75{e}^{-5k} \\\\ 65 & =75{e}^{-5k} \\\\ \\frac{13}{15} & ={e}^{-5k} \\\\ \\operatorname{ln}⁡(\\frac{13}{15}) & =-5k \\\\ k & =-\\frac{1}{5}\\operatorname{ln}⁡(\\frac{13}{15})\\end{aligned}\n$$\n\nFinally, let ${t}_{1}$ be the time when the water has a temperature of ${30}^{∘}C.$ Then, we have\n\n$$\n\\begin{aligned}T({t}_{1}) & =30 \\\\ 25+75{e}^{-k{t}_{1}} & =30 \\\\ 75{e}^{-k{t}_{1}} & =5 \\\\ {e}^{-k{t}_{1}} & =\\frac{1}{15} \\\\ -k{t}_{1} & =\\operatorname{ln}⁡(\\frac{1}{15}) \\\\ {t}_{1} & =-\\frac{1}{k}\\operatorname{ln}⁡(\\frac{1}{15}).\\end{aligned}\n$$\n\nSubstituting in our value for $k,$ we conclude that the temperature of water will be ${30}^{∘}C$ after\n\n$$\n{t}_{1}=\\frac{-\\operatorname{ln}⁡(\\frac{1}{15})}{-\\frac{1}{5}\\operatorname{ln}⁡(\\frac{13}{15})}≈95\\,\\text{min},\n$$\n\nrounded to the nearest minute.",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "3efe9ee3-afac-5c6c-beed-3ea18b37dcd7",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "4b110f52-ccb1-55c6-9989-20dcbf0ab2c5",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "98\\,\\text{min}"
+              },
+              {
+                ":answer/id": "6ad11f4a-9de2-5939-99fe-783ccc4667a3",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "95\\,\\text{min}"
+              },
+              {
+                ":answer/id": "d7b0c9c2-c1a1-592b-8039-b6a62a158a47",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "87\\,\\text{min}"
+              },
+              {
+                ":answer/id": "bf7dce59-4f40-5ad0-a274-03ea1187cbd7",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "89\\,\\text{min}"
+              },
+              {
+                ":answer/id": "93bfdde3-d44b-5f93-85b8-f287c0b6efa7",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "67\\,\\text{min}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "6ad11f4a-9de2-5939-99fe-783ccc4667a3"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "1.1.0",
+        "seed": 84153,
+        "template": "water",
+        "parameters": {
+          "ambient": 25,
+          "initial": 100,
+          "observed": 90,
+          "target": 30,
+          "time": 5
+        },
+        "bank_profile": "q-15589",
+        "origin": "observed_template",
+        "bank_origin": "observed_scalar_offsets_intent_underdetermined",
+        "source_basis": 2496,
+        "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+        "mathematical_fingerprint": "77c6ebeacef0b0bf435ab392c0338220b5325c0a9c19768b4412db528d634d50",
+        "content_fingerprint": "469a3bc44e3a29b5748aee4a3957b5d4d18c85965b2899b4705d2713d184b145",
+        "domain": "T(t)>ambient; positive rate; t>=0; observations strictly cooling",
+        "recipes": [
+          "rounded_correct_plus_-8",
+          "rounded_correct_plus_0",
+          "rounded_correct_plus_3",
+          "rounded_correct_plus_-6",
+          "rounded_correct_plus_-28"
+        ]
+      }
+    },
+    "checks": [
+      {
+        "field_index": 0,
+        "submitted_answer_id": "4b110f52-ccb1-55c6-9989-20dcbf0ab2c5",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "6ad11f4a-9de2-5939-99fe-783ccc4667a3",
+        "expected": "accepted",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "d7b0c9c2-c1a1-592b-8039-b6a62a158a47",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "bf7dce59-4f40-5ad0-a274-03ea1187cbd7",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "93bfdde3-d44b-5f93-85b8-f287c0b6efa7",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      }
+    ]
+  },
+  {
+    "label": "review-23-83d1068d-0759-54c5-ac7c-08bf622ed7f9",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186078584,
+        "id": "bfe4679b-9724-5502-89d4-05e7661a1b5f",
+        "title": "Solving an Inhibited Decay Model"
+      },
+      "question": {
+        ":question/id": "83d1068d-0759-54c5-ac7c-08bf622ed7f9",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/problem": "Simon measures the temperature of the tea in his cup, and the thermometer displays a reading of ${60}^{∘}C.$ After $10$ minutes, Simon repeats the measurement and the thermometer displays a reading of  ${52}^{∘}C.$ To the nearest minute, how long does it take for the tea to decrease its temperature to ${40}^{∘}C$ if the temperature in the room is ${28}^{∘}C?$ \n\n*Hint: You may assume that the temperature $T(t)$ of the tea in Simon's cup decreases at a rate that obeys Newton's law of cooling, where $T$ is measured in degrees Celsius and $t>0$ is the time, in minutes, since the first measurement.*",
+        ":question/worked-solution": "Newton's law of cooling states that the rate at which the temperature $T(t)$ of a body changes is proportional to the difference between its temperature and its surroundings. Therefore, we have the inhibited decay equation\n\n$$\n\\frac{\\text{d}T}{\\text{d}t}=-k(T-{T}_{S}),\n$$\n\nwhere ${T}_{S}$ is the temperature of the surroundings, and $k>0$ is a constant of proportionality.\n\nIn our case, ${T}_{S}={28}^{∘}\\text{C},$ and we have\n\n$$\n\\frac{\\text{d}T}{\\text{d}t}=-k(T-28).\n$$\n\nFirst, we integrate our differential equation by separating the variables:\n\n$$\n\\begin{aligned}\\frac{dT}{T-28} & =-k\\,dt \\\\ \\int \\frac{dT}{T-28} & =-k\\int dt \\\\ \\operatorname{ln}⁡|T-28| & =-kt+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited decay equation, we have $T-28>0$ for all $t>0.$\nNext, we solve for $T(t),$ as follows:\n\n$$\n\\begin{aligned}T-28 & ={e}^{-kt+C} \\\\ T-28 & ={e}^{C}{e}^{-kt} \\\\ T-28 & =K{e}^{-kt} \\\\ T & =28+K{e}^{-kt}\\end{aligned}\n$$\n\nNote that $K={e}^{C}$ is a constant of integration. \n\nWe're told that the initial temperature reading was ${60}^{∘}C.$ So, we apply the initial condition $T(0)=60,$ and solve for $K:$\n\n$$\n\\begin{aligned}60 & =28+K{e}^{0} \\\\ 60 & =28+K \\\\ K & =32\\end{aligned}\n$$\n\nTherefore, we have the following expression for $T(t):$\n\n$$\nT(t)=28+32{e}^{-kt}\n$$\n\nWe're also told that, after $10$ minutes, the thermometer reading is ${52}^{∘}C.$ So, applying the condition $T(10)=52,$ we can solve for $k:$\n\n$$\n\\begin{aligned}52 & =28+32{e}^{-10k} \\\\ 24 & =32{e}^{-10k} \\\\ \\frac{3}{4} & ={e}^{-10k} \\\\ \\operatorname{ln}⁡(\\frac{3}{4}) & =-10k \\\\ k & =-\\frac{1}{10}\\operatorname{ln}⁡(\\frac{3}{4})\\end{aligned}\n$$\n\nFinally, let ${t}_{1}$ be the time when the temperature of the tea is ${40}^{∘}C.$ Then, we have\n\n$$\n\\begin{aligned}T({t}_{1}) & =40 \\\\ 28+32{e}^{-k{t}_{1}} & =40 \\\\ 32{e}^{-k{t}_{1}} & =12 \\\\ {e}^{-k{t}_{1}} & =\\frac{3}{8} \\\\ -k{t}_{1} & =\\operatorname{ln}⁡(\\frac{3}{8}) \\\\ {t}_{1} & =-\\frac{1}{k}\\operatorname{ln}⁡(\\frac{3}{8}).\\end{aligned}\n$$\n\nSubstituting in our value for $k,$ we conclude that the tea will have a temperature of ${40}^{∘}C$ after\n\n$$\n{t}_{1}=\\frac{-\\operatorname{ln}⁡(\\frac{3}{8})}{-\\frac{1}{10}\\operatorname{ln}⁡(\\frac{3}{4})}≈34\\,\\text{min},\n$$\n\nrounded to the nearest minute.",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "d9944999-57be-5ba5-bcf3-4cf9b0decab5",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "d87c856e-f37d-51dd-9dce-ee5e479ddb45",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "45\\,\\text{min}"
+              },
+              {
+                ":answer/id": "60729f3a-2491-5aab-8f5c-79737de60e0d",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "31\\,\\text{min}"
+              },
+              {
+                ":answer/id": "6a9fd4ed-a84a-56f0-966a-8b8b8dc4346a",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "23\\,\\text{min}"
+              },
+              {
+                ":answer/id": "cf4db0b6-7b9d-5554-8269-68ed5d831cc3",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "34\\,\\text{min}"
+              },
+              {
+                ":answer/id": "70f26db3-758d-57a3-8b59-a715ceb0587b",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "28\\,\\text{min}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "cf4db0b6-7b9d-5554-8269-68ed5d831cc3"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "1.1.0",
+        "seed": 84153,
+        "template": "tea",
+        "parameters": {
+          "ambient": 28,
+          "initial": 60,
+          "observed": 52,
+          "target": 40,
+          "time": 10
+        },
+        "bank_profile": "q-107125",
+        "origin": "observed_template",
+        "bank_origin": "observed_scalar_offsets_intent_underdetermined",
+        "source_basis": 2496,
+        "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+        "mathematical_fingerprint": "96c4117fde4b61d1a22da5c049b3a01bf43f8ab346a48312118694a3ba426e0b",
+        "content_fingerprint": "84149be5bc46c9191c5bdf6249707cd2c6ad0fa42e4238523699e8924408bd6c",
+        "domain": "T(t)>ambient; positive rate; t>=0; observations strictly cooling",
+        "recipes": [
+          "rounded_correct_plus_-11",
+          "rounded_correct_plus_-3",
+          "rounded_correct_plus_11",
+          "rounded_correct_plus_0",
+          "rounded_correct_plus_-6"
+        ]
+      }
+    },
+    "checks": [
+      {
+        "field_index": 0,
+        "submitted_answer_id": "d87c856e-f37d-51dd-9dce-ee5e479ddb45",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "60729f3a-2491-5aab-8f5c-79737de60e0d",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "6a9fd4ed-a84a-56f0-966a-8b8b8dc4346a",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "cf4db0b6-7b9d-5554-8269-68ed5d831cc3",
+        "expected": "accepted",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "70f26db3-758d-57a3-8b59-a715ceb0587b",
+        "expected": "rejected",
+        "purpose": "independently computed correct integer or plausible wrong option"
+      }
+    ]
+  },
+  {
+    "label": "target counterfactual",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186078584,
+        "id": "bfe4679b-9724-5502-89d4-05e7661a1b5f",
+        "title": "Solving an Inhibited Decay Model"
+      },
+      "question": {
+        ":question/id": "1dc47df5-4e7c-5635-89c6-3863ae19fae7",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/problem": "A thermometer is placed into a water bath and displays a reading of ${50}^{∘}C.$ The thermometer is then transferred to a ${10}^{∘}C$ water bath, and its reading begins to decrease. After $5$ minutes, the thermometer reading is ${40}^{∘}C.$ To the nearest minute, how long does it take for the thermometer to register a reading of ${30}^{∘}C?$ \n\n*Hint: You may assume that the temperature reading $T(t)$ of the thermometer decreases at a rate that obeys Newton's law of cooling, where $T$ is measured in degrees Celsius and $t>0$ is the time, in minutes, since the thermometer was transferred into the ${10}^{∘}C$ water bath.*",
+        ":question/worked-solution": "Newton's law of cooling states that the rate at which the temperature $T(t)$ of a body changes is proportional to the difference between its temperature and its surroundings. Therefore, we have the inhibited decay equation\n\n$$\n\\frac{\\text{d}T}{\\text{d}t}=-k(T-{T}_{S}),\n$$\n\nwhere ${T}_{S}$ is the temperature of the surroundings, and $k>0$ is a constant of proportionality.\n\nIn our case, ${T}_{S}={10}^{∘}\\text{C},$ and we have\n\n$$\n\\frac{\\text{d}T}{\\text{d}t}=-k(T-10).\n$$\n\nFirst, we integrate our differential equation by separating the variables:\n\n$$\n\\begin{aligned}\\frac{dT}{T-10} & =-k\\,dt \\\\ \\int \\frac{dT}{T-10} & =-k\\int dt \\\\ \\operatorname{ln}⁡|T-10| & =-kt+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited decay equation, we have $T-10>0$ for all $t>0.$\nNext, we solve for $T(t),$ as follows:\n\n$$\n\\begin{aligned}T-10 & ={e}^{-kt+C} \\\\ T-10 & ={e}^{C}{e}^{-kt} \\\\ T-10 & =K{e}^{-kt} \\\\ T & =10+K{e}^{-kt}\\end{aligned}\n$$\n\nNote that $K={e}^{C}$ is a constant of integration. \n\nWe're told that the initial temperature reading was ${50}^{∘}C.$ So, we apply the initial condition $T(0)=50,$ and solve for $K:$\n\n$$\n\\begin{aligned}50 & =10+K{e}^{0} \\\\ 50 & =10+K \\\\ K & =40\\end{aligned}\n$$\n\nTherefore, we have the following expression for $T(t):$\n\n$$\nT(t)=10+40{e}^{-kt}\n$$\n\nWe're also told that, after $5$ minutes, the thermometer reading is ${40}^{∘}C.$ So, applying the condition $T(5)=40,$ we can solve for $k:$\n\n$$\n\\begin{aligned}40 & =10+40{e}^{-5k} \\\\ 30 & =40{e}^{-5k} \\\\ \\frac{3}{4} & ={e}^{-5k} \\\\ \\operatorname{ln}⁡(\\frac{3}{4}) & =-5k \\\\ k & =-\\frac{1}{5}\\operatorname{ln}⁡(\\frac{3}{4})\\end{aligned}\n$$\n\nFinally, let ${t}_{1}$ be the time when the thermometer reads ${30}^{∘}C.$ Then, we have\n\n$$\n\\begin{aligned}T({t}_{1}) & =30 \\\\ 10+40{e}^{-k{t}_{1}} & =30 \\\\ 40{e}^{-k{t}_{1}} & =20 \\\\ {e}^{-k{t}_{1}} & =\\frac{1}{2} \\\\ -k{t}_{1} & =\\operatorname{ln}⁡(\\frac{1}{2}) \\\\ {t}_{1} & =-\\frac{1}{k}\\operatorname{ln}⁡(\\frac{1}{2}).\\end{aligned}\n$$\n\nSubstituting in our value for $k,$ we conclude that the thermometer will read ${30}^{∘}C$ after\n\n$$\n{t}_{1}=\\frac{-\\operatorname{ln}⁡(\\frac{1}{2})}{-\\frac{1}{5}\\operatorname{ln}⁡(\\frac{3}{4})}≈12\\,\\text{min},\n$$\n\nrounded to the nearest minute.",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "13f78573-b51f-516d-bb6b-b46a0d125ae5",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "1100a3b8-bfd1-5df0-a478-655f6a16892f",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "6\\,\\text{min}"
+              },
+              {
+                ":answer/id": "279fc435-092b-5b40-9aef-ac74fd7b4c08",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "24\\,\\text{min}"
+              },
+              {
+                ":answer/id": "43e5f3d4-fed0-5353-a919-17334e266bad",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "11\\,\\text{min}"
+              },
+              {
+                ":answer/id": "fa486e66-39f7-523c-ba19-25cb4a03c679",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "9\\,\\text{min}"
+              },
+              {
+                ":answer/id": "85e78370-8f96-5ef2-bcd9-638a13216a95",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "12\\,\\text{min}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "85e78370-8f96-5ef2-bcd9-638a13216a95"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "1.1.0",
+        "seed": 84179,
+        "template": "bath",
+        "parameters": {
+          "ambient": 10,
+          "initial": 50,
+          "observed": 40,
+          "target": 30,
+          "time": 5
+        },
+        "bank_profile": "authored_operations",
+        "origin": "observed_template",
+        "bank_origin": "authored_operations",
+        "source_basis": 2496,
+        "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+        "mathematical_fingerprint": "aa038ac8071c2086d5bac35cf223413d2294c32eb34cef0f35f2403668e5d978",
+        "content_fingerprint": "82c118e3139e00b303ef293fa2cf8ac411d31c173b43ac9b80df784d0741f2b5",
+        "domain": "T(t)>ambient; positive rate; t>=0; observations strictly cooling",
+        "recipes": [
+          "correct",
+          "omit_ambient_in_both_ratios",
+          "omit_ambient_in_target_ratio",
+          "double_rate",
+          "halve_rate"
+        ]
+      }
+    },
+    "checks": [
+      {
+        "field_index": 0,
+        "submitted_answer_id": "1100a3b8-bfd1-5df0-a478-655f6a16892f",
+        "expected": "rejected",
+        "purpose": "independent logarithmic target-time computation or distractor"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "279fc435-092b-5b40-9aef-ac74fd7b4c08",
+        "expected": "rejected",
+        "purpose": "independent logarithmic target-time computation or distractor"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "43e5f3d4-fed0-5353-a919-17334e266bad",
+        "expected": "rejected",
+        "purpose": "independent logarithmic target-time computation or distractor"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "fa486e66-39f7-523c-ba19-25cb4a03c679",
+        "expected": "rejected",
+        "purpose": "independent logarithmic target-time computation or distractor"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "85e78370-8f96-5ef2-bcd9-638a13216a95",
+        "expected": "accepted",
+        "purpose": "independent logarithmic target-time computation or distractor"
+      }
+    ]
+  },
+  {
+    "label": "target counterfactual",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186078584,
+        "id": "bfe4679b-9724-5502-89d4-05e7661a1b5f",
+        "title": "Solving an Inhibited Decay Model"
+      },
+      "question": {
+        ":question/id": "dbbcb385-3f5e-58d5-b184-428d32d12330",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/problem": "A thermometer is placed into a water bath and displays a reading of ${50}^{∘}C.$ The thermometer is then transferred to a ${10}^{∘}C$ water bath, and its reading begins to decrease. After $5$ minutes, the thermometer reading is ${40}^{∘}C.$ To the nearest minute, how long does it take for the thermometer to register a reading of ${25}^{∘}C?$ \n\n*Hint: You may assume that the temperature reading $T(t)$ of the thermometer decreases at a rate that obeys Newton's law of cooling, where $T$ is measured in degrees Celsius and $t>0$ is the time, in minutes, since the thermometer was transferred into the ${10}^{∘}C$ water bath.*",
+        ":question/worked-solution": "Newton's law of cooling states that the rate at which the temperature $T(t)$ of a body changes is proportional to the difference between its temperature and its surroundings. Therefore, we have the inhibited decay equation\n\n$$\n\\frac{\\text{d}T}{\\text{d}t}=-k(T-{T}_{S}),\n$$\n\nwhere ${T}_{S}$ is the temperature of the surroundings, and $k>0$ is a constant of proportionality.\n\nIn our case, ${T}_{S}={10}^{∘}\\text{C},$ and we have\n\n$$\n\\frac{\\text{d}T}{\\text{d}t}=-k(T-10).\n$$\n\nFirst, we integrate our differential equation by separating the variables:\n\n$$\n\\begin{aligned}\\frac{dT}{T-10} & =-k\\,dt \\\\ \\int \\frac{dT}{T-10} & =-k\\int dt \\\\ \\operatorname{ln}⁡|T-10| & =-kt+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited decay equation, we have $T-10>0$ for all $t>0.$\nNext, we solve for $T(t),$ as follows:\n\n$$\n\\begin{aligned}T-10 & ={e}^{-kt+C} \\\\ T-10 & ={e}^{C}{e}^{-kt} \\\\ T-10 & =K{e}^{-kt} \\\\ T & =10+K{e}^{-kt}\\end{aligned}\n$$\n\nNote that $K={e}^{C}$ is a constant of integration. \n\nWe're told that the initial temperature reading was ${50}^{∘}C.$ So, we apply the initial condition $T(0)=50,$ and solve for $K:$\n\n$$\n\\begin{aligned}50 & =10+K{e}^{0} \\\\ 50 & =10+K \\\\ K & =40\\end{aligned}\n$$\n\nTherefore, we have the following expression for $T(t):$\n\n$$\nT(t)=10+40{e}^{-kt}\n$$\n\nWe're also told that, after $5$ minutes, the thermometer reading is ${40}^{∘}C.$ So, applying the condition $T(5)=40,$ we can solve for $k:$\n\n$$\n\\begin{aligned}40 & =10+40{e}^{-5k} \\\\ 30 & =40{e}^{-5k} \\\\ \\frac{3}{4} & ={e}^{-5k} \\\\ \\operatorname{ln}⁡(\\frac{3}{4}) & =-5k \\\\ k & =-\\frac{1}{5}\\operatorname{ln}⁡(\\frac{3}{4})\\end{aligned}\n$$\n\nFinally, let ${t}_{1}$ be the time when the thermometer reads ${25}^{∘}C.$ Then, we have\n\n$$\n\\begin{aligned}T({t}_{1}) & =25 \\\\ 10+40{e}^{-k{t}_{1}} & =25 \\\\ 40{e}^{-k{t}_{1}} & =15 \\\\ {e}^{-k{t}_{1}} & =\\frac{3}{8} \\\\ -k{t}_{1} & =\\operatorname{ln}⁡(\\frac{3}{8}) \\\\ {t}_{1} & =-\\frac{1}{k}\\operatorname{ln}⁡(\\frac{3}{8}).\\end{aligned}\n$$\n\nSubstituting in our value for $k,$ we conclude that the thermometer will read ${25}^{∘}C$ after\n\n$$\n{t}_{1}=\\frac{-\\operatorname{ln}⁡(\\frac{3}{8})}{-\\frac{1}{5}\\operatorname{ln}⁡(\\frac{3}{4})}≈17\\,\\text{min},\n$$\n\nrounded to the nearest minute.",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "c65cf684-f6a1-56a6-92e5-55f4ed1f4c32",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "10ba602b-4e14-5608-b578-d6967fc87961",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "9\\,\\text{min}"
+              },
+              {
+                ":answer/id": "21a60a30-4703-57b3-9e19-56e920fe277f",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "34\\,\\text{min}"
+              },
+              {
+                ":answer/id": "9ff50689-f0c9-582d-8bf7-87f37672b57a",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "16\\,\\text{min}"
+              },
+              {
+                ":answer/id": "e5664f5d-a4c4-52a7-aa89-617e04b5a7bd",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "12\\,\\text{min}"
+              },
+              {
+                ":answer/id": "191f9d32-b7e5-543d-b438-4222b87d7256",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "17\\,\\text{min}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "191f9d32-b7e5-543d-b438-4222b87d7256"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "1.1.0",
+        "seed": 84179,
+        "template": "bath",
+        "parameters": {
+          "ambient": 10,
+          "initial": 50,
+          "observed": 40,
+          "target": 25,
+          "time": 5
+        },
+        "bank_profile": "authored_operations",
+        "origin": "observed_template",
+        "bank_origin": "authored_operations",
+        "source_basis": 2496,
+        "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+        "mathematical_fingerprint": "13b0420d3b151c47f9ce7673e73f253887983aa043ce71c11b299e4cb1d16e03",
+        "content_fingerprint": "33169e68836c3fdb157361b3b05f5237addfa974dc11636fe5a730a573c58cea",
+        "domain": "T(t)>ambient; positive rate; t>=0; observations strictly cooling",
+        "recipes": [
+          "correct",
+          "omit_ambient_in_both_ratios",
+          "omit_ambient_in_target_ratio",
+          "double_rate",
+          "halve_rate"
+        ]
+      }
+    },
+    "checks": [
+      {
+        "field_index": 0,
+        "submitted_answer_id": "10ba602b-4e14-5608-b578-d6967fc87961",
+        "expected": "rejected",
+        "purpose": "independent logarithmic target-time computation or distractor"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "21a60a30-4703-57b3-9e19-56e920fe277f",
+        "expected": "rejected",
+        "purpose": "independent logarithmic target-time computation or distractor"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "9ff50689-f0c9-582d-8bf7-87f37672b57a",
+        "expected": "rejected",
+        "purpose": "independent logarithmic target-time computation or distractor"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "e5664f5d-a4c4-52a7-aa89-617e04b5a7bd",
+        "expected": "rejected",
+        "purpose": "independent logarithmic target-time computation or distractor"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "191f9d32-b7e5-543d-b438-4222b87d7256",
+        "expected": "accepted",
+        "purpose": "independent logarithmic target-time computation or distractor"
+      }
+    ]
+  }
+]

@@ -1,0 +1,79 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186078584,
+      "id": "bfe4679b-9724-5502-89d4-05e7661a1b5f",
+      "title": "Solving an Inhibited Decay Model"
+    },
+    "question": {
+      ":question/id": "97dbb94a-ee89-5ce3-ba2d-bf221c8603ac",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/problem": "The temperature $T(t),$ in degrees Celsius, of a cooling iron can be modeled by the differential equation\n\n$$\n\\frac{dT}{dt}=-0.16(T-29)\n$$\n\nwhere $t>0$ is the time, measured in minutes. If the initial temperature of the iron is ${166}^{∘}C,$ calculate its temperature after $5$ minutes. Round your answer to the nearest integer.",
+      ":question/worked-solution": "We're told that the temperature of the cooling iron is modeled by the inhibited decay equation\n\n$$\n\\frac{dT}{dt}=-0.16(T-29).\n$$\n\nFirst, we integrate our differential equation by separating the variables:\n\n$$\n\\begin{aligned}\\frac{dT}{T-29} & =-0.16\\,dt \\\\ \\int \\frac{dT}{T-29} & =-\\int 0.16\\,\\text{d}t \\\\ \\operatorname{ln}⁡|T-29| & =-0.16t+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited decay equation, we have $T-29>0$ for all $t>0.$\nNext, we solve for $T(t),$ as follows:\n\n$$\n\\begin{aligned}T-29 & ={e}^{-0.16t+C} \\\\ T-29 & ={e}^{C}{e}^{-0.16t} \\\\ T-29 & =K{e}^{-0.16t} \\\\ T & =29+K{e}^{-0.16t}\\end{aligned}\n$$\n\nNote that $K={e}^{C}$ is a constant of integration. \n\nWe're told that the initial temperature of the iron was ${166}^{∘}C.$ So, we apply the initial condition $T(0)=166,$ and solve for $K:$\n\n$$\n\\begin{aligned}166 & =29+K{e}^{0} \\\\ 166 & =29+K \\\\ K & =137\\end{aligned}\n$$\n\nTherefore, the solution to our initial value problem is\n\n$$\nT(t)=29+137{e}^{-0.16t}.\n$$\n\nFinally, the temperature of the iron after $t=5$ minutes is\n\n$$\nT(5)=29+137{e}^{-0.16\\cdot 5}≈{91}^{∘}\\text{C},\n$$\n\nrounded to the nearest integer.",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "f2428a5d-939d-5283-a46f-c075867c69d2",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "af2c9357-1e2f-59d0-8500-611bcadfd8b2",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "{121}^{∘}\\text{C}"
+            },
+            {
+              ":answer/id": "b174e3c2-56eb-5850-808a-10ea436e66f3",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "{57}^{∘}\\text{C}"
+            },
+            {
+              ":answer/id": "b221a214-1e56-571b-9f19-0f72db14f28a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "{104}^{∘}\\text{C}"
+            },
+            {
+              ":answer/id": "231d8258-a855-562e-bc53-570a6b5888ca",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "{62}^{∘}\\text{C}"
+            },
+            {
+              ":answer/id": "b8dc1e21-cfd2-5e9b-b5e7-5317d1f8e911",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "{91}^{∘}\\text{C}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "b8dc1e21-cfd2-5e9b-b5e7-5317d1f8e911"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "1.1.0",
+      "seed": 84101,
+      "template": "iron",
+      "parameters": {
+        "ambient": 29,
+        "initial": 166,
+        "rate": "0.16",
+        "time": 5
+      },
+      "bank_profile": "authored_operations",
+      "origin": "observed_template",
+      "bank_origin": "authored_operations",
+      "source_basis": 2496,
+      "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+      "mathematical_fingerprint": "98d168ffaaf0db49d69d5b5a558d032229d25518f2608ce59389d284a19e504f",
+      "content_fingerprint": "f3d423f93bd307bc27bc7431d6248bd32986b01d1abfa01290084835ffb6c9dd",
+      "domain": "T(t)>ambient; positive rate; t>=0; observations strictly cooling",
+      "recipes": [
+        "correct",
+        "omit_ambient",
+        "do_not_subtract_ambient_in_K",
+        "halve_rate",
+        "double_rate"
+      ]
+    }
+  }
+]
