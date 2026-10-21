@@ -1,33 +1,37 @@
-# Current repair state — pass 12
+# Current repair state — pass 16
 
-Read feedback and all five findings in repair-history.json. The first executed
-check reproduced the latest failure:
+Read latest feedback, all retained finding descriptions and prior session state.
+Preserved the completed runtime repairs and instructional account. Reviewed the
+original lesson, all 17 practice prompts, full banks and solutions, canonical
+example, prerequisite context, supplied flowchart, and required generation docs.
+No new runtime construction defect is demonstrated by the latest feedback.
+
+First executed test:
 `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory`
-exits 1: five exact captured stored records; 64/64 shortcut successes in the
-retained possible-history witness. Captured inputs have not changed.
+Exit 1: five historical stored banks retain the sign-extremum shortcut, with
+64/64 successes in the retained possible-history witness.
 
 Validation command:
-`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/repair-12`
-exits 1. Four current-generator finding regressions pass, including 17 complete
-source-bank replays, valid zero roots, counterfactuals, conditional shortcut
-probes and shared delivery filtering (14/14). Native grader accepts 7 correct
-responses and rejects 28 wrong choices. Dependencies and relocation pass.
-Runtime, manifest, source and inventory hashes match retained evidence. All
-five generated inventory records were reproduced; none remain untested.
+`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/repair-16`
+Exit 1 solely for finding 591f580cadb749294588. All four current-generator
+regressions pass; 17 source banks replay; shared delivery accepts 14/14 records;
+native grading accepts 7 correct choices and rejects 28 wrong choices; pinned
+dependencies and relocated execution pass. The five replacement records and
+old/new identity mapping remain verified, staged and unpublished. All captured
+non-source generated inventory was tested; five remain affected.
 
-Five replacements remain staged at
-`evidence/repair-3/inventory-repair-proposal.json`; their identities and current
-output were verified. Both retained actual-UI screenshots were inspected;
-render inputs and all four UI hashes are unchanged. Current evidence:
-`evidence/repair-12/commands.json`, `results.json`, `visual-inspection.json`.
-All five executable finding declarations remain in repair-regressions.json.
-No runtime, engine, database, publication or other-job changes were made.
+Two retained actual-UI screenshots and the source flowchart were inspected.
+No rerender was needed for unchanged records. Runtime, source, inventory and
+manifest hashes match the preserved proposal. No database, publication, engine,
+other-job or runtime changes were made. Strict acceptance remains unchanged.
 
-Status: unsupported. Next unfinished action is the separate inventory-remediation
-workflow expressly requested by finding 591f580cadb749294588, followed by refreshed
-inventory and the same strict check. This task prohibits its database changes.
-The native selector reads stored candidates; changing this Python generator cannot
-alter their old answer banks. Preserve the repaired package, complete source scope,
-and strict failure. Do not substitute staged replacements for observed inventory.
-Previous session notes: evidence/repair-12/previous-session-state.md. Full findings
-and historical evidence remain in repair-history.json and evidence/repair-1..11.
+Evidence: evidence/repair-16/commands.json, results.json, grader-report.json,
+visual-inspection.json; affected-inventory.json; evidence/generated-records.json;
+evidence/repair-3/inventory-repair-proposal.json; repair-regressions.json.
+
+Next unfinished step: separate inventory remediation required by retained
+finding 591f580cadb749294588, followed by a refreshed inventory capture and the
+same strict regression. The explicit no-database-change task constraint prevents
+that action here. Generator edits cannot alter already stored candidate banks.
+Status remains unsupported; do not substitute the staged proposal for observed
+inventory or repeat unchanged implementation passes.

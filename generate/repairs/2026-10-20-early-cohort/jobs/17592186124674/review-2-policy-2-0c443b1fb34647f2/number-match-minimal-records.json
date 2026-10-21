@@ -1,0 +1,104 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186124674,
+      "id": "53776591-13cc-549e-9f32-c5abaeced1dc",
+      "title": "Modeling Inhibited Growth"
+    },
+    "question": {
+      ":question/id": "87141569-6717-56d7-8aa5-b890565a05fc",
+      ":question/problem": "The growth of the number of deer in a protected forest is directly proportional to the difference between its maximum capacity and its current population. Let $N(t)$ be the number of deer, and let $t\\ge 0$ be the time in years. If the maximum capacity is $60$ deer, which differential equation models this population? Assume that $k>0$ is a constant of proportionality.",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "f1e8c695-d376-53f4-b78d-e9f0c15f8c68",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "9e1fab19-9c41-53fe-b04f-e012cf5ed8eb",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\text{d}N}{\\text{d}t}=k(60-N)"
+            },
+            {
+              ":answer/id": "f924cbf3-c5b8-52f0-bf7d-d33323d5d3ca",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\text{d}N}{\\text{d}t}=k(N-60)"
+            },
+            {
+              ":answer/id": "ae3bb683-402b-52fd-8adc-0fccde960a5b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\text{d}N}{\\text{d}t}=k(N-66)"
+            },
+            {
+              ":answer/id": "dac97248-b185-589e-add6-fb14c800be16",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\text{d}N}{\\text{d}t}=kN(60-N)"
+            },
+            {
+              ":answer/id": "ca1224f7-2021-5763-9526-26fe0928ed9d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{\\text{d}N}{\\text{d}t}=k(66-N)"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "9e1fab19-9c41-53fe-b04f-e012cf5ed8eb"
+          ]
+        }
+      ],
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/worked-solution": "The rate of change is proportional to the difference between the maximum capacity and the current quantity. Therefore,\n\n$$\n\\frac{\\text{d}N}{\\text{d}t}=k(a-N),\n$$\n\nwhere $a$ is the maximum capacity and $k>0$.\n\nHere $a=60$, so\n\n$$\n\\frac{\\text{d}N}{\\text{d}t}=k(60-N).\n$$"
+    },
+    "generation": {
+      "version": "inhibited-growth-easy-repair-3",
+      "seed": 3,
+      "template": "direct_model",
+      "profile": "model_operations",
+      "parameters": {
+        "context": "deer",
+        "capacity": 60,
+        "candidates": [
+          60,
+          66
+        ],
+        "target_rank": 0,
+        "linear_indices": [
+          0,
+          1
+        ]
+      },
+      "source": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_id": null,
+      "raw_evidence": false,
+      "evidence_only": false,
+      "eligible_for_learning": true,
+      "origin": "observed-method/authored-context",
+      "content_sha256": "5f79ed9f65d636edd4f9d3fc1d611c29080ef20d4b84cd24d5cdbcec20642bce",
+      "mathematical_fingerprint": "ada6bedf1aecaa5e887830e5141b8b657e706f7a60988b4460eb8b666c78c6ec",
+      "symbol": "N",
+      "domains": {
+        "capacity": "positive integer; current stock below capacity",
+        "k": "positive",
+        "time": "t>=0"
+      },
+      "recipes": [
+        "linear_gap",
+        "linear_gap",
+        "reverse_gap",
+        "reverse_gap",
+        "population_factor"
+      ],
+      "plots": [],
+      "bank_kind": "mixed",
+      "target_rank": 0,
+      "mixed_extra": {
+        "operation": "population_factor",
+        "candidate_rank": 0
+      }
+    }
+  }
+]
