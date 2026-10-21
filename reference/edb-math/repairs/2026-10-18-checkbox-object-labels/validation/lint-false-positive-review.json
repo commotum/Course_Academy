@@ -1,0 +1,31 @@
+{
+  "reviewed": true,
+  "findings_sha256": "f70350fc33e990b5bcfa72fcd0d62d0e9a726aab63eccafe532078c240a3f4a4",
+  "questions": [
+    {
+      "question": 17592186262879,
+      "codes": [
+        "matrix_left_in_prompt"
+      ],
+      "fields": [
+        17592186464766,
+        17592186464768
+      ],
+      "finding": "False positive: the checkbox objects are complete propositions concerning the matrix in the shared homogeneous-system setup. The setup must retain the coefficient matrix; the options are inverse nonexistence and determinant nonzero, not copies of a selectable matrix object.",
+      "allowed_shared_math": "\\begin{bmatrix}a & b \\\\ c & d\\end{bmatrix}",
+      "required_check": "Preserve the complete given homogeneous system and verify the original labelled proposition list was removed; retain each proposition in its own field key."
+    },
+    {
+      "question": 17592186326879,
+      "codes": [
+        "source_left_in_prompt"
+      ],
+      "fields": [
+        17592186468459
+      ],
+      "finding": "False positive: canonicalizing removed list fragment - $0$ produces -0, a substring of the unrelated -0.5 constant in the preserved function. The complete original list fragment no longer appears.",
+      "required_check": "Check the exact source span was removed. Preserve f(x)=(1.5)^(2x)-0.5 and the complete checkbox label The number $0$."
+    }
+  ],
+  "database_writes": 0
+}
