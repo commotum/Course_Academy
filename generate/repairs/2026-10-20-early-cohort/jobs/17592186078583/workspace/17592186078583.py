@@ -5,8 +5,8 @@ Easy and moderate preserve the observed supplied givens, five-option radio
 layout and generic/substituted two-stage solution. Hard is unsupported: the
 historical authored extra-reading extension changes supplied information.
 Raw source profiles are replay-only and retain source defects; normal output
-uses complete source banks, with the documented oil duplicate repair and TeX
-escape/context wording corrections. No ODE solving or parameter fitting.
+retains easy banks and uses documented mixed-source moderate practice banks.
+The oil duplicate repair and TeX/context corrections remain. No ODE solving.
 Task fingerprints exclude initial reading, context, seed and choice ordering.
 """
 from __future__ import annotations
@@ -22,11 +22,22 @@ SUPPORTED_LEVELS=('easy','moderate')
 T,K=sp.symbols('T k',positive=True)
 TEMPLATES=json.loads((HERE/'templates.json').read_text())
 LEVELS=SUPPORTED_LEVELS
-DEFAULT_TEMPLATES={'easy':['q-105917','q-106936','q-106878','q-106932'],'moderate':['q-37365','q-106883','q-106934','q-106935','q-106937']}
+DEFAULT_TEMPLATES={'easy':['q-105917','q-106936','q-106878','q-106932','q-106877'],'moderate':['q-37365','q-106883','q-106934','q-106935','q-106937']}
 PROFILE_LEVELS={sid:x['level'] for sid,x in TEMPLATES.items()}|{'oil_repaired':'easy'}
 INITIAL_BOUNDS={'q-37365':(90,110),'q-106883':(120,180),'q-106934':(140,212),'q-106935':(40,99),'q-106937':(200,450)}
 DEFAULT_BANKS={
  'oil_repaired':[r'k(T-@@S@@)',r'-kT(T-@@S@@)',r'-kT',r'-k(T+@@S@@)',r'-k(T-@@S@@)']}
+# Choose a complete practice bank before sampling temperatures. The two
+# ambient-sign distractors remove the length-only cue without padding TeX or
+# excluding three-digit initial readings. Explicit source profiles stay raw.
+MODERATE_FIFTH={
+ 'q-37365':r'-k(T-@@SUM@@)', 'q-106883':r'-kT(T-@@S@@)',
+ 'q-106934':r'@@I@@k(T-@@S@@)', 'q-106935':r'-@@I@@k(T-@@S@@)',
+ 'q-106937':r'-@@I@@k(T-@@S@@)'}
+for _template,_fifth in MODERATE_FIFTH.items():
+ _profile=_template+'_practice'
+ DEFAULT_BANKS[_profile]=[r'-k(T-@@S@@)',r'-k(T-@@I@@)',r'-k(T+@@S@@)',r'k(T-@@S@@)',_fifth]
+ PROFILE_LEVELS[_profile]='moderate'
 
 def digest(data):return hashlib.sha256(json.dumps(data,sort_keys=True,separators=(',',':')).encode()).hexdigest()
 def number(value):
@@ -77,9 +88,10 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
   template=profile
  if template is None:template=rng.choice(DEFAULT_TEMPLATES[level])
  if template not in DEFAULT_TEMPLATES[level]:raise ValueError('Template does not belong to level')
- profile=profile or ('oil_repaired' if template=='q-106936' else template)
+ profile=profile or ('oil_repaired' if template=='q-106936' else template+'_practice' if level=='moderate' else template)
  if PROFILE_LEVELS.get(profile)!=level:raise ValueError('Profile outside difficulty')
  if profile=='oil_repaired' and template!='q-106936':raise ValueError('Oil repair belongs to oil template')
+ if profile.endswith('_practice') and profile!=template+'_practice':raise ValueError('Practice bank belongs to its context')
  explicit=parameters is not None
  for attempt in range(1000):
   p=validate_parameters(level,parameters if explicit else sample(level,rng,template),template)
@@ -112,7 +124,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
  qid=uuid.uuid5(uuid.NAMESPACE_URL,f'course-academy/{KP_UUID}/{VERSION}/{content}');fid=uuid.uuid5(qid,'selection')
  answers=[{':answer/id':str(uuid.uuid5(fid,'math:'+v)),':answer/type':':answer.type/math',':answer/value':v} for v in values]
  correct_uuid=answers[correct[0]][':answer/id'];rng.shuffle(answers)
- return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':{':question/id':str(qid),':question/difficulty':':question.difficulty/'+level,':question/problem':prompt,':question/worked-solution':solution,':question/answer-fields':[{':answer-field/id':str(fid),':answer-field/key':'selection',':answer-field/type':':answer-field.type/radio',':answer-field/choices':answers,':answer-field/correct':[':answer/id',correct_uuid]}]},'generation':{'version':VERSION,'seed':seed,'template':template,'parameters':p,'bank_profile':profile,'profile_origin':'raw observed source bank' if raw else 'documented oil duplicate repair' if profile=='oil_repaired' else 'complete observed bank with TeX/context corrections','level_origin':TEMPLATES[template]['level_origin'] if template in TEMPLATES else 'authored hard: additional reading selection, same model setup','source':{'database':'math','basis':2710,'lineage':'01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1'},'domain':'k>0; T>ambient; all times in minutes; temperatures in one declared scale','parameter_fingerprint':fingerprint,'content_fingerprint':content,'raw_ambiguous_bank':raw and profile=='q-106936','sympy_version':sp.__version__}}
+ return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':{':question/id':str(qid),':question/difficulty':':question.difficulty/'+level,':question/problem':prompt,':question/worked-solution':solution,':question/answer-fields':[{':answer-field/id':str(fid),':answer-field/key':'selection',':answer-field/type':':answer-field.type/radio',':answer-field/choices':answers,':answer-field/correct':[':answer/id',correct_uuid]}]},'generation':{'version':VERSION,'seed':seed,'template':template,'parameters':p,'bank_profile':profile,'profile_origin':'raw observed source bank' if raw else 'documented oil duplicate repair' if profile=='oil_repaired' else 'authored mixed-source moderate bank removing length cue' if profile.endswith('_practice') else 'complete observed bank with TeX/context corrections','level_origin':TEMPLATES[template]['level_origin'] if template in TEMPLATES else 'authored hard: additional reading selection, same model setup','source':{'database':'math','basis':5389 if template=='q-106877' else 2710,'lineage':'01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1'},'domain':'k>0; T>ambient; all times in minutes; temperatures in one declared scale','parameter_fingerprint':fingerprint,'content_fingerprint':content,'raw_ambiguous_bank':raw and profile=='q-106936','sympy_version':sp.__version__}}
 
 # EASY: single ambient, direct rate/difference recognition. No internal progression.
 def generate_easy(seed=0,template=None,field_type=None,parameters=None,profile=None):return generate('easy',seed,template,field_type,parameters,profile)

@@ -187,4 +187,9 @@ def main():
  report={'passed':True,'status':'pass','source':{k:source[k] for k in ('database','basis','lineage')},'original_questions':len(cases),'complete_banks_exact_matched':len(cases),'source_options_matched':5*len(cases),'source_options_total':5*len(cases),'available_designations_matched':len(cases),'available_full_solutions_matched':len(cases),'sweep_records':sweep,'slot_coverage':coverage,'native_grading':json.loads((HERE/'engine-report.json').read_text()),'supported_levels':list(g.LEVELS),'unsupported_levels':['hard'],'source_errors':['Raw oil profile contains two equivalent wrong equations; normal oil bank replaces -k(S-T) with -kT.','Captured derivative fractions in five source banks have doubled TeX escapes; normal output uses single escapes.','Source body/soup/oil/chocolate wording corrected only in generated output.'],'hashes':{str(f.relative_to(ROOT)):hashlib.sha256(f.read_bytes()).hexdigest() for f in files},'engine_sha256':hashlib.sha256(engine.read_bytes()).hexdigest(),'no_database_writes':True}
  (HERE/'validation.json').write_text(json.dumps(report,indent=2)+'\n')
  print(f'PASS: {len(cases)} complete source banks, {len(cases)*5} choices, {sweep} boundary records and actual native grading.')
-if __name__=='__main__':main()
+if __name__=='__main__':
+ # The retained independent/fidelity witnesses above are reused by the targeted
+ # repair suite. The historical main assumes nine banks and predates practice
+ # bank repairs; execute the current ten-bank checks when invoked as a script.
+ import runpy
+ runpy.run_path(str(HERE.parent/'checks/repair_checks.py'),run_name='__main__')

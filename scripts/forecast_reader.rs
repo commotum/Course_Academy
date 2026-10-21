@@ -4,7 +4,7 @@ use super::*;
 // Only relationships, prices and learner evidence; never export question prose.
 const ATTRIBUTES: &[&str] = &[
     "topic/id", "topic/title", "topic/next", "topic/knowledge-points",
-    "knowledge-point/key-prerequisites", "course/id", "course/code", "course/title",
+    "knowledge-point/id", "knowledge-point/key-prerequisites", "course/id", "course/code", "course/title",
     "course/units", "unit/modules", "module/topics", "learner/id",
     "learner/targets", "learner/queue", "learner/assignments", "learner/activity",
     "learner/knowledge-profile", "learner/daily-xp-goal", "activity/id", "activity/type",
@@ -111,10 +111,12 @@ pub(super) fn capture(db: &DatabaseValue, learner_id: &str) -> Result<Capture> {
             .is_some_and(|kind|*kind=="activity.type/lesson").then_some(e)
     }).collect();
     let mut prices=BTreeMap::new();
-    for e in lessons {
+    for &e in &lessons {
         if !entities[&e].contains_key("activity/expected-seconds") {load_estimator_content(db,&mut entities,e)?;}
-        let s=EntitySnapshot::new(entities.clone(),db.basis_t())?;
-        prices.insert(e,match base_xp::activity_base(&s,e) {
+    }
+    let price_snapshot=EntitySnapshot::new(entities,db.basis_t())?;
+    for e in lessons {
+        prices.insert(e,match base_xp::activity_base(&price_snapshot,e) {
             Ok(base)=>json!({"baseXp":base}),Err(error)=>json!({"baseXp":null,"reason":error}),
         });
     }
@@ -133,22 +135,34 @@ pub(super) fn read(capture: &Capture, body: &Json, now: DateTime<Utc>) -> Result
     // Preserve the engine's dating semantics: an undated import has no recent
     // completion date. Original recovered dates remain authoritative.
     let mut dates=BTreeMap::new();
+    let mut recorded=BTreeMap::new();
+    let mut started=BTreeSet::new();
     let mut first_observed=None;
     for event in &capture.timing.status_history {
         if event.attribute!="learner-task/status" {continue;}
         let at=schema::parse_instant(&event.at)?;
         if at>now {continue;}
         first_observed=Some(first_observed.map_or(at,|old:DateTime<Utc>|old.min(at)));
-        if matches!(capture.timing.ident(&event.value)?.as_str(),"learner-task.status/completed"|"learner-task.status/failed") {
-            let started=capture.timing.status_history.iter().any(|h|h.entity==event.entity && h.attribute=="learner-task/status" && capture.timing.ident(&h.value).ok().as_deref()==Some("learner-task.status/started"));
-            if started || capture.timing.entities[&event.entity].contains_key("learner-task/finished-at") {
-                let finished=timing::task_finished_at(&capture.timing,event.entity,at)?;
-                dates.insert(event.entity,finished.timestamp_millis());
-                first_observed=Some(first_observed.unwrap().min(finished));
-            }
+        match capture.timing.ident(&event.value)?.as_str() {
+            "learner-task.status/started"=>{started.insert(event.entity);},
+            "learner-task.status/completed"|"learner-task.status/failed"=>{recorded.insert(event.entity,at);},
+            _=>{},
         }
     }
+    let mut unknown_timing=BTreeSet::new();
+    let timed_items:BTreeSet<_>=capture.timing.status_history.iter().filter(|h|h.attribute=="task-item/status").map(|h|h.entity).collect();
+    for (task,at) in recorded {
+        if !matches!(status(&capture.timing,task,"learner-task/status")?.as_str(),"completed"|"failed") {continue;}
+        if started.contains(&task) || capture.timing.entities[&task].contains_key("learner-task/finished-at") {
+            let finished=timing::task_finished_at(&capture.timing,task,at)?;
+            dates.insert(task,finished.timestamp_millis());
+            first_observed=Some(first_observed.unwrap().min(finished));
+        }
+        let items=capture.timing.refs(task,"learner-task/items")?;
+        if !items.iter().any(|item|timed_items.contains(item)) {unknown_timing.insert(task);}
+    }
     data["finishedAt"]=json!(dates);
+    data["timingUnknownTasks"]=json!(unknown_timing);
     data["firstObservedAt"]=json!(first_observed.map(|at|at.timestamp_millis()));
     Ok(data)
 }
