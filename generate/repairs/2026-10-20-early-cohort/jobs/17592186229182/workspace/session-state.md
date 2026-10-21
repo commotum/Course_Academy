@@ -1,0 +1,5 @@
+Implementation milestone: repaired generator remains at 17592186229182.py. All four exact original review regressions passed after removing sign/integer guards, replacing rank-constrained banks, and reconciling all ten source profiles. Current runtime source is source-current.json; historical source retained. Manifest now declares only runtime files with exact installed versions. Instructional constraints recorded before implementation in instructional-account.md.
+
+Commands: job Python regression-tests.py (original acceptance: 4 passed; evidence/before-regressions.txt and after-regressions.txt). Expanded retained checks declared in repair-regressions.json. Running job Python checks/validate_repair.py; independent parser required explicit multiplication for zero-valued alpha/beta/C, now fixed in checks/math_witness.py.
+
+Next: finish expanded equation audit, run declared regressions and shared delivery/native grader, inspect actual UI screenshots, inventory reproduction and relocation. No database writes or image publication.

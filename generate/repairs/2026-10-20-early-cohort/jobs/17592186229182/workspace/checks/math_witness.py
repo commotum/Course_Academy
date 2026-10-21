@@ -70,6 +70,7 @@ def algebra(s,env,units=False):
    else:out+=s[i];i+=1
   return out
  s=convert(s).replace('^','**')
+ s=re.sub(r'\b(alpha|beta|C|J)\s*(?=\()',r'\1*',s)
  # ln(B+t)^n in e^{ln(...)} denotes log of that powered argument.
  s=re.sub(r'log\s*\(([^()]+)\)\*\*\(([-\d]+)\)',r'log((\1)**(\2))',s)
  if '\\' in s:raise AssertionError('Unparsed notation '+s)
