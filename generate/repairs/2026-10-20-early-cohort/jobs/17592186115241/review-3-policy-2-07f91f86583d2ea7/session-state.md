@@ -1,0 +1,1 @@
+Completed source reconstruction and exact 14-bank replay; 60 fresh seeds 71320–71379; repaired-profile variants; controlled relevant, irrelevant, free-column cases; boundaries; exact math; runtime/determinism/relocation. Delivery, native grader, rendered visual inspection and inventory follow-up pending. Package writes disabled.

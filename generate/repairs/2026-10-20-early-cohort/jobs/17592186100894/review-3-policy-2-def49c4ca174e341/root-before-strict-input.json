@@ -1,0 +1,66 @@
+[
+  {
+    "label": "q-355559 h=1 id=55e170cd-d49f-5508-90bb-45c1b2a35dd7",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186100894,
+        "id": "de2e3a7c-d4f0-5b0f-8014-1519fb3a9473",
+        "title": "Finding Particular Solutions of Differential Equations by First Rearranging and Then Separating"
+      },
+      "question": {
+        ":question/id": "55e170cd-d49f-5508-90bb-45c1b2a35dd7",
+        ":question/problem": "Find the particular solution to the differential equation $2y\\frac{\\text{d}y}{\\text{d}x}-4(x - 1){y}^{2}=4(x - 1)$ that satisfies $y(1)=1.$ Assume that $y>0.$\n\n$y(x)=$\n{{field-1}}",
+        ":question/worked-solution": "We first find the general solution and then apply the given initial condition to find a particular solution.\n\nSeparating variables and integrating both sides with respect to $x,$ we get\n\n$$\n\\begin{aligned}2y\\frac{\\text{d}y}{\\text{d}x}-4(x - 1){y}^{2} & =4(x - 1) \\\\ 2y\\frac{\\text{d}y}{\\text{d}x} & =4(x - 1){y}^{2}+4(x - 1) \\\\ 2y\\frac{\\text{d}y}{\\text{d}x} & =4(x - 1)({y}^{2}+1) \\\\ \\frac{2y}{{y}^{2}+1}\\,\\text{d}y & =4(x - 1)\\,\\text{d}x \\\\ \\int \\frac{2y}{{y}^{2}+1}\\,\\text{d}y & =\\int 4(x - 1)\\,\\text{d}x \\\\ \\operatorname{ln}\u2061({y}^{2}+1) & =2{(x - 1)}^{2}+C.\\end{aligned}\n$$\n\nExponentiating both sides, we find the general solution:\n\n$$\n\\begin{aligned}{e}^{\\operatorname{ln}\u2061({y}^{2}+1)} & ={e}^{2{(x - 1)}^{2}+C} \\\\ {y}^{2}+1 & =C{e}^{2{(x - 1)}^{2}} \\\\ y & =\\sqrt{C{e}^{2{(x - 1)}^{2}}-1}\\end{aligned}\n$$\n\nwhere we used that $y>0.$\n\nWe now apply the initial condition $y(1)=1$ to find $C:$\n\n$$\n\\begin{aligned}y(1) & =1 \\\\ \\sqrt{C{e}^{2(0)^{2}}-1} & =1 \\\\ \\sqrt{C-1} & =1 \\\\ C-1 & =1 \\\\ C & =2\\end{aligned}\n$$\n\nThus, the particular solution is\n\n$$\ny(x)=\\sqrt{2{e}^{2{(x - 1)}^{2}}-1}.\n$$",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "2c348b1d-8fec-5cf8-a769-abe7988c52b8",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "aff035d7-5d27-5242-ab17-073e289cd29a",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\sqrt{2{e}^{2{(x - 1)}^{2}}-1}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "aff035d7-5d27-5242-ab17-073e289cd29a"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "rearrange-separate-ivp-2026-10-15-v1",
+        "seed": 77072,
+        "template": "q-355559",
+        "bank_profile": "blank-q-355559",
+        "parameters": {
+          "h": 1
+        },
+        "source_ids": [
+          "q-355559"
+        ],
+        "source_basis": 2634,
+        "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+        "eligible_for_learning": false,
+        "grading_exclusion": "Real grader cannot grade the canonical square-root-of-exponential blank (root of a symbolic quotient unsupported).",
+        "math_fingerprint": "9b7b0207aa3b2c5c3a40a3370a7b51ee53d96003c4dffb03d313edc67012921e",
+        "domain": "connected real interval through translated initial point where the original ODE and solution are defined; positive branch when specified",
+        "plot_rating": "none",
+        "recipe": "simultaneous exact substitution x -> x-h in every complete source option; IC abscissa x0 -> x0+h; no pooled distractors",
+        "python_version": "3.13.5",
+        "sympy_version": "1.14.0",
+        "math_format": "course-academy-tex-v1"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "\\sqrt{2{e}^{2{(x - 1)}^{2}}-1}",
+        "expected": "accepted",
+        "purpose": "canonical expression"
+      }
+    ]
+  }
+]

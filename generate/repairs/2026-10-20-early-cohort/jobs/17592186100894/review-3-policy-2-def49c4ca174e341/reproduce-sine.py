@@ -1,4 +1,4 @@
-"""Strict minimal regression. Current exit 1; repaired grading must exit 0.
+"""Strict minimal regression. Current repaired grading exits 0; baseline native engine failed this same strict input.
 Run from any cwd: python3 /absolute/path/to/evidence_root/reproduce-sine.py
 Native engine is database free; both input and result remain in evidence_root.
 """

@@ -28,7 +28,7 @@
     {
       "role": "Sine-argument antiderivative modulo arbitrary constant",
       "eligible_variation": "The same solution family may be written using argument fragments differing by any additive constant.",
-      "observed": "Stored key is correct, but native grader rejects equivalent x\u00b2-6x and (x-3)\u00b2+1 in exact delivered batch. This is the separate grading finding."
+      "observed": "Current native grader accepts equivalent x\u00b2-6x and (x-3)\u00b2+1 in the exact delivered batch and rejects derivative-distinct fragments. Fresh boundary/interior shifts also pass."
     }
   ],
   "coverage": [
@@ -48,7 +48,7 @@
         "retained-finding-records.json",
         "retained-finding-results.json",
         "regression-records.json",
-        "grader-observation-report.json"
+        "current-grader-report.json"
       ],
       "result": "Original symbol and conditional cues reproduced on earlier packages and defeated currently; restored source families and repaired native root/log cases pass their old strict checks."
     },
@@ -58,9 +58,19 @@
         "batch.json",
         "delivery-batch/accepted.json",
         "batch-shortcut-results.json",
-        "delivered-grader-report.json"
+        "delivered-current-grader-report.json"
       ],
-      "result": "5/5 survive captured-inventory filtering; four blank families and no trig item. Keys correct; valid sine family-equivalent submissions rejected."
+      "result": "5/5 survive captured-inventory filtering; four blank families and no trig item. Keys, valid sine family equivalents and plausible wrong entries now grade correctly."
+    },
+    {
+      "case": "Repaired native sine scaffold context",
+      "sample_refs": [
+        "sine-current-records.json",
+        "sine-current-proof.json",
+        "current-grader-report.json",
+        "delivered-current-grader-report.json"
+      ],
+      "result": "Fresh shifts -4,-1,0,2,4 plus exact h=3 batch pass constant-shift/expanded notation acceptance and derivative-distinct rejection. Raw and delivered checks have zero unresolved results."
     }
   ],
   "counterfactuals": [
@@ -75,7 +85,7 @@
         "counterfactual-records.json",
         "counterfactual-results.json",
         "math-results.json",
-        "grader-observation-report.json",
+        "current-grader-report.json",
         "render/rendering.json"
       ]
     },
@@ -90,7 +100,7 @@
         "counterfactual-records.json",
         "counterfactual-results.json",
         "math-results.json",
-        "grader-observation-report.json",
+        "current-grader-report.json",
         "render/rendering.json"
       ]
     },
@@ -98,14 +108,29 @@
       "kind": "irrelevant",
       "change": "Find -> Determine and reverse answer array, preserving mathematical data and choice UUIDs.",
       "expected": "Same mathematical answer, explanation and native choice outcomes.",
-      "observed": "counterfactual record 4 preserves record 0 key UUID and solution. Own-key acceptance and every wrong-choice rejection unchanged; actual UI screenshots 6 and 10 show same relation with changed wording/order.",
+      "observed": "counterfactual record 4 preserves record 0 key UUID and solution. Own-key acceptance and every wrong-choice rejection unchanged; actual UI screenshots 7 and 11 show same relation with changed wording/order.",
       "status": "passed",
       "justification": "Source task assesses integration and initial data, not option order or the instruction verb.",
       "sample_refs": [
         "counterfactual-records.json",
         "counterfactual-results.json",
-        "grader-observation-report.json",
+        "current-grader-report.json",
         "render/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Rewrite the sine-argument fragment by a variable-free additive constant or expand its square.",
+      "expected": "The arbitrary C absorbs that change, preserving the solution family and native acceptance.",
+      "observed": "Expanded/factored spelling, +1, -7/3 and +pi pass current native grading; exact previous strings pass both current and delivered tests.",
+      "status": "passed",
+      "justification": "Source q-126765 displays sin(fragment+C) with C arbitrary; constants change only the parameterization of the same local family.",
+      "sample_refs": [
+        "sine-current-records.json",
+        "sine-current-proof.json",
+        "current-grader-input.json",
+        "current-grader-report.json",
+        "delivered-current-grader-report.json"
       ]
     }
   ],
@@ -410,8 +435,8 @@
       "conclusion": "Actual native grading rejects 0 in 5/5; comparison copy-the-IC strategy also succeeds 0/4 applicable IVPs (rate 0). No random free-expression guessing rate is asserted. Correct derived keys succeed 5/5.",
       "sample_refs": [
         "batch-shortcut-results.json",
-        "delivered-grader-input.json",
-        "delivered-grader-report.json"
+        "delivered-current-grader-input.json",
+        "delivered-current-grader-report.json"
       ]
     }
   ],
@@ -430,13 +455,14 @@
       "delivery-moderate/delivery.json",
       "delivery-batch/delivery.json",
       "selection.json",
-      "render/rendering.json"
+      "render/rendering.json",
+      "delivery-sine/delivery.json"
     ],
-    "result": "All 75 changed-role controls survive; easy 84->83 (one duplicate), moderate 5->5, exact batch 5->5. Source and inventory basis 5372. No publication preparation exists. Positive-weight fresh easy selection supports every accepted easy item; zero weights/history may exclude items, without changing their keys."
+    "result": "All 75 changed-role controls survive; easy 84->83 (one duplicate), moderate 5->5, exact batch 5->5. Source and inventory basis 5372. No publication preparation exists. Positive-weight fresh easy selection supports every accepted easy item; zero weights/history may exclude items, without changing their keys. Fresh sine controls 5->5; all 468 post-delivery native acceptance/rejection checks pass. Selection uses captured basis 5372 with explicit conditional live-history/weight limits."
   },
   "limitations": [
     "Targeted revision review reuses confirmed unchanged prior independent analysis; no second exhaustive audit of unchanged families.",
     "Live learner histories, exact future entity IDs and policy weights are unavailable; selection conclusion is conditional on explicit captured fresh-pool assumptions.",
-    "Finite probes do not prove absence of every imaginable shortcut. Passing decision variation is separate from the demonstrated sine response-equivalence grading failure."
+    "Finite probes do not prove absence of every shortcut. Engine context changes received fresh tests; unchanged generator construction and 75-role math evidence were reused with verified identical runtime and source bindings."
   ]
 }
