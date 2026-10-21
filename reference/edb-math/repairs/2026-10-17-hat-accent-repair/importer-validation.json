@@ -1,0 +1,101 @@
+{
+  "recorded_at": "2026-10-18T02:56:41.555504+00:00",
+  "passed": true,
+  "distinct_tests_passed": 53,
+  "implementation": {
+    "source_backed_glyph": "ASCII ^ in mover/mo; archived census contains no other hat glyph variants. Existing legacy handling of U+02C6 was left unchanged; no speculative Unicode expansion added.",
+    "width": "MathML mo stretchy=false emits hat; absent or true emits widehat. Confirmed against authentic archives and native MathJax output.",
+    "scope": "Preserves entire MathML base, source spacing, nested hats, and neighboring scripts.",
+    "font_variants": "Authentic full-base bold and bold-italic styles become mathbf and native mathbfit, including transparent mstyle/mrow wrappers. Explicitly styled Greek bases retain their source Unicode glyph because MathJax Greek command macros override surrounding font commands. Rendered bold-italic beta is verified as bold-italic MathML and glyph U+1D737.",
+    "unsupported_cues": "Operator-only styles/sizing, explicit accent=false, unrecognized stretchy values, and unsupported partial/nested font variants produce explicit Unsupported MathML hat review gaps instead of silently discarding source cues. Existing source color serialization in question_capture remains scoped.",
+    "unchanged": "Ordinary movers, operator limits, scripts, and the brace repair retain their behavior.",
+    "ui_dependency_changes": false,
+    "database_writes_by_validation": false
+  },
+  "test_runs": [
+    {
+      "working_directory": "/home/jake/Developer/Course_Academy",
+      "command": "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/MA/.venv/bin/python tests/test_mathml_hat_import.py -v",
+      "passed": 7,
+      "failed": 0,
+      "exit_code": 0,
+      "elapsed_seconds": 4.884,
+      "revision": "Final implementation, including literal Greek font preservation",
+      "coverage": [
+        "Authenticated wide/narrow hat source fixtures",
+        "All three importers",
+        "Nested bases and neighboring scripts",
+        "Ordinary limits and oversets",
+        "Explicit unsupported source-style gaps",
+        "Native MathJax width, font variants, and extraction round trips"
+      ]
+    },
+    {
+      "working_directory": "/home/jake/Developer/Course_Academy",
+      "command": "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/MA/.venv/bin/python tests/test_mathml_brace_import.py -v",
+      "passed": 8,
+      "failed": 0,
+      "exit_code": 0,
+      "elapsed_seconds": 3.59,
+      "revision": "Hat implementation before the final isolated explicit-Greek-font serialization correction"
+    },
+    {
+      "working_directory": "/home/jake/Developer/Course_Academy/scripts/question_capture",
+      "command": "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/MA/.venv/bin/python -m unittest test_matrix_capture test_minus_plus_extraction -v",
+      "passed": 25,
+      "failed": 0,
+      "exit_code": 0,
+      "elapsed_seconds": 4.254,
+      "revision": "Hat implementation before the final isolated explicit-Greek-font serialization correction"
+    },
+    {
+      "working_directory": "/home/jake/Developer/Course_Academy/capture",
+      "command": "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/MA/.venv/bin/python -m unittest scripts.tests.test_zero_bar_fractions scripts.tests.test_literal_set_braces -v",
+      "passed": 13,
+      "failed": 0,
+      "exit_code": 0,
+      "elapsed_seconds": 5.664,
+      "revision": "Hat implementation before the final isolated explicit-Greek-font serialization correction"
+    }
+  ],
+  "full_archived_source_check": {
+    "evidence": "importer-source-validation.json",
+    "revision": "Final",
+    "occurrences": 383,
+    "pipelines": 3,
+    "cases": 1149,
+    "outputs_identical_across_pipelines": true,
+    "source_stretch_and_font_variants_preserved": true,
+    "unique_rendered_accents": 29,
+    "render_errors": 0
+  },
+  "syntax_and_diff_checks": [
+    {
+      "command": "node --check scripts/question_capture/dom.js",
+      "exit_code": 0
+    },
+    {
+      "command": "node --check capture/scripts/browser/extract.js",
+      "exit_code": 0
+    },
+    {
+      "command": "git diff --check -- scripts/question_capture/dom.js capture/scripts/browser/extract.js scripts/import_historical_question_content.py scripts/question_capture/test_matrix_capture.py tests/test_mathml_hat_import.py tests/fixtures/mathml-hats.json",
+      "exit_code": 0
+    }
+  ],
+  "validation_environment": {
+    "python": "/home/jake/Developer/MA/.venv/bin/python",
+    "browser": "Playwright Chromium, headless",
+    "network": "Browser requests aborted; saved source and local vendored MathJax only",
+    "permissions": "Sandbox escalation for local Chromium launch; approved"
+  },
+  "files_sha256": {
+    "scripts/question_capture/dom.js": "c8204b3d30aaa3fb4ab28300c7b993f4fd98063cd44f74d93c7af3d95b506fba",
+    "capture/scripts/browser/extract.js": "6a4f081b26f3f102258ae724d3052edf29adcbc907f785dc17ee6d070f9a5c6d",
+    "scripts/import_historical_question_content.py": "a77fae162abc583c68f6c7ec2ad475b32f26e71031e1347de2d9684b3aaddb01",
+    "scripts/question_capture/test_matrix_capture.py": "b50fccb8746b4a1159888c1376c79c25908438847fa42870b3adef4ed9bdea36",
+    "tests/test_mathml_hat_import.py": "1710f43f6ffa18a66002730f028d95778390f172f780eb85f4f0221b62ad3023",
+    "tests/fixtures/mathml-hats.json": "b761d10a6d1c362d1aae7c13fa1a50dbf402b0625a5ede266144849230ee2048",
+    "ui/vendor/mathjax/tex-svg.js": "d4295dc33744836935c1399feece5159577b34c5c8ffb9f1c6324cd82e03a882"
+  }
+}
