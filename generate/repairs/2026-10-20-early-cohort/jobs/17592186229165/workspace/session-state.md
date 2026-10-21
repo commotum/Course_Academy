@@ -1,3 +1,21 @@
+# Author-13 milestone
+
+Read feedback and repair history; reproduced the strict required-report failure first (exit 1). Retained role/delivery/native-grader regression and package relocation/five-easy checks pass (exit 0). The report check passes local schema, actual contract and 26 current-record replays before failing on the stale external report. Runtime hashes and acceptance criteria remain unchanged. Exact commands/results: `evidence/author-13-validation.json`.
+
+Finding 645672a4cd3f9bf609ca remains unresolved. Installing `evidence/corrected-review/` at the required prior-review destination exceeds workspace-only authorization and writable roots. No external write attempted. Next unfinished step is runner installation followed by the strict regression and fresh review. No further generator change is supported by the evidence-only finding.
+
+# Author-12 milestone
+
+Reproduced the latest strict report failure first (exit 1). Retained role/delivery/native-grader regression and relocation/five-easy check pass (exit 0). The same strict report run validates the local corrected schema, actual contract and 26 current-record replays before rejecting the stale required external report. Runtime hashes and regression criteria remain unchanged. Reinspected the retained actual-UI second-position-resonance screenshot. Commands and results: `evidence/author-12-validation.json`.
+
+No authorized workspace edit can install the corrected report at the required prior-review destination. Finding 645672a4cd3f9bf609ca remains open; the strict regression is preserved. Next action requires runner installation of `evidence/corrected-review/` followed by default regression and fresh review. No external write, publication, database change or generator change performed.
+
+# Author-11 milestone
+
+Read feedback and repair history; reproduced the latest required-destination failure first (exit 1). Local report schema/contract and 26 current visible-record replays pass in that same execution, but the external prior-review report remains stale. Retained role/delivery/native-grader regression and package/relocation/five-easy check pass (exit 0). Runtime hashes and both regression criteria are unchanged. Reinspected the retained actual-UI second-position-resonance screenshot. Exact commands and results: `evidence/author-11-validation.json`.
+
+Finding 645672a4cd3f9bf609ca remains unresolved: its requested installation is outside both the user-authorized workspace and writable roots. No external write attempted. Next action is runner installation of `evidence/corrected-review/` at the required prior-review destination, followed by the strict regression and fresh independent review. No generator design change is justified by this evidence-only finding.
+
 # Author-9 milestone
 
 Latest strict report failure reproduced first (exit 1) and retained after revalidation. Role/delivery/native-grader regression, package relocation and five-easy check, and local corrected report validation all pass (exit 0). Runtime files and regression criteria are unchanged. Reinspected retained actual-UI second-position resonance screenshot. Exact commands, results and limits: `evidence/author-9-validation.json`.

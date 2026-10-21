@@ -1,0 +1,58 @@
+{
+  "skill": "Infer the sign of a monomial slope function in each open quadrant and select every true universal sign statement.",
+  "reasoning_steps": [
+    "Read y'=f(x,y), identify axes as zero sets.",
+    "Determine the sign using coefficient sign and parity of x and y powers (or one test point per open quadrant).",
+    "Compare each offered positive/negative claim to the sign in its quadrant; select true claims and None of the above only if all substantive claims fail."
+  ],
+  "response_contract": "Checkbox fields, each with complete true/false choice bank. Usually three distinct quadrant claims, optionally None of the above. Canonical example is prose statements with a subset conclusion.",
+  "difficulty": "Moderate captured questions use nonzero cxy; hard and one undifferentiated supplemental question introduce squared factors. Parity extensions are source-supported at their corresponding level.",
+  "invariants": [
+    "Open quadrants avoid axes; nonzero monomials have constant nonzero sign in each quadrant.",
+    "Slope sign is f sign; no differential equation solving or integration required.",
+    "Prompt, claims, field keys, sign diagram, answer and explanation must agree.",
+    "Complete checkbox bank and solution progression must replay original parameters."
+  ],
+  "permitted_variations": [
+    "Nonzero coefficient magnitude and sign. Magnitude is irrelevant to sign; sign reverses all quadrant signs.",
+    "Which three quadrants appear, their order, and positive/negative assertion in each are incidental assignments and can vary independently.",
+    "Truth subset including zero, one, two or three substantive truths; optional None must track empty subset.",
+    "Source-supported exponent parity where difficulty permits, with derived signs and diagrams."
+  ],
+  "fixed_features": [
+    {
+      "feature": "Axes bounding four standard open quadrants",
+      "justification": "Target KP and all observed monomial zero sets; shifted rectangular regions belong to adjacent KP 17592186172041."
+    },
+    {
+      "feature": "Three substantive universal sign claims",
+      "justification": "Consistent observed workload; no need to increase count."
+    }
+  ],
+  "source_refs": [
+    "fd7005de-da4a-5aae-a0ea-f0c01c178438",
+    "1142a38e-b72d-5615-beec-20a68972aab2",
+    "d92f1990-38b8-544d-a68e-c6daa48b1c4f",
+    "e15411d6-1039-50b8-8bc5-cef852747aab",
+    "c47e99b0-49b1-5362-97e1-164913960980",
+    "9ebbc31b-8f74-56d3-8d4f-392a8aeeda85",
+    "4ffe3a0e-6b8b-5f1d-8f45-5dd040381266",
+    "90e895ee-1be8-55c1-ab2d-a3596627f1b5",
+    "0444de80-19f1-5251-b159-5dc55756bb19",
+    "tutorial 790a4898-1668-5214-a911-83977b559c34: We then calculate the slope at each point and record each answer in the table.",
+    "prerequisite 51d10b95-2ba8-5125-8f0d-b21455269c1e: To determine the sign of f(x,y) in each region, we pick four test points, one for each region.",
+    "generate/principles.md sections 1-3"
+  ],
+  "source_observations": {
+    "canonical": "-2xy; II negative false, III negative true, IV positive true. Diagram inspected: I/III minus and II/IV plus.",
+    "moderate": "2xy claims I+/II+/III+ gives T/F/T; 6xy II-/III+/IV- gives T/T/T; -5xy I+/II-/IV+ gives F/F/T; -xy I+/II+/IV- gives F/T/F; 9xy I-/II-/IV+ gives F/T/F. Positive diagram inspected: I/III plus, II/IV minus.",
+    "other": "xy^2 supplemental: I-/II-/III- gives F/T/T; 8x^2y^2 hard: I-/III+/IV- gives F/T/F; -4xy^2 hard: I-/II+/IV- all true."
+  },
+  "gaps": [
+    "Canonical example lacks its answer-field bank in the canonical-example object, but all eight supplied question objects provide full banks. Supplemental xy^2 has terse prose solution and no declared difficulty."
+  ],
+  "essential_vs_incidental": "The sign/parity operation and open quadrants are essential. Coefficient sign, qualifying quadrant labels, claim polarity, choice order and truth count are answer-bearing assignments, not fixed pedagogical requirements.",
+  "evidence_paths": [
+    "source-analysis.json"
+  ]
+}

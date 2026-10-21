@@ -1,0 +1,1 @@
+Completed independent source replays (8), fresh seeded sampling, explicit truth cases, controlled pairs, mathematical/key and captured inventory checks, invalid inputs and manifest-only relocation. Next: shared delivery, native grader, renderer and selection/probe analysis.
