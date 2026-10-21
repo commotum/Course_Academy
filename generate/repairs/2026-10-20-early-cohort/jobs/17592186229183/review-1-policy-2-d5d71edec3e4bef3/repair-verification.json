@@ -1,0 +1,38 @@
+{
+  "preflight": {
+    "passed": true,
+    "finding_ids": [
+      "74a9fcca07a8526db5eb",
+      "430695a16af4478adc1f"
+    ],
+    "checks": [
+      {
+        "script": "repair_checks.py",
+        "args": [],
+        "sha256": "c10aa0d0225a1bfa3c4de94fbfa63b45227c273aaa276e3ae959e39ac57fa9d8",
+        "exit_code": 0,
+        "stdout": "{\"passed\": true, \"normal_records\": 88, \"source_cases\": 11, \"ode_and_solution_checks\": 31, \"batch\": 5}\n",
+        "stderr": ""
+      }
+    ]
+  },
+  "executed_command": "<job python> author-check/<fixture>/workspace/repair_checks.py",
+  "current": {
+    "stdout": "{\"passed\": true, \"normal_records\": 88, \"source_cases\": 11, \"ode_and_solution_checks\": 31, \"batch\": 5}\n",
+    "stderr": "",
+    "passed": true
+  },
+  "negative_controls": [
+    {
+      "fixture": "old-source",
+      "source": "previous independent relocated package entrypoint and old masks/source",
+      "failure": "Traceback (most recent call last):\n  File \"/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186229183/review-1-policy-2-d5d71edec3e4bef3/author-check/old-source/workspace/repair_checks.py\", line 112, in <module>\n    if __name__=='__main__':main()\n                            ~~~~^^\n  File \"/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186229183/review-1-policy-2-d5d71edec3e4bef3/author-check/old-source/workspace/repair_checks.py\", line 57, in main\n    assert rq.get(key)==q.get(key),(sid,key)\n           ^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: ('q-336451', ':question/worked-solution')\n"
+    },
+    {
+      "fixture": "old-bank",
+      "source": "previous independent relocated package entrypoint; refreshed masks/source isolate bank rule",
+      "failure": "Traceback (most recent call last):\n  File \"/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186229183/review-1-policy-2-d5d71edec3e4bef3/author-check/old-bank/workspace/repair_checks.py\", line 112, in <module>\n    if __name__=='__main__':main()\n                            ~~~~^^\n  File \"/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186229183/review-1-policy-2-d5d71edec3e4bef3/author-check/old-bank/workspace/repair_checks.py\", line 72, in main\n    assert measure(minimal)['rank']!=3,'exact latest counterexample still median'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: exact latest counterexample still median\n"
+    }
+  ],
+  "independent_regression": "regression-checks.json"
+}
