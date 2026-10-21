@@ -24,7 +24,7 @@ def parse(q):
  a=2 if m[2] else 1;b=0 if not m[3] else 2 if m[4] else 1
  return c,a,b
 
-def inspect(r,solution=True):
+def inspect(r,solution=True,allow_empty=False):
  q=r.get('question',r);c,a,b=parse(q)
  # x=sx*u,y=sy*v with u,v>0: c*sx^a*sy^b*u^a*v^b has this global sign.
  ss=[(1 if c>0 else -1)*x**a*y**b for x,y in COORDS]
@@ -53,7 +53,7 @@ def inspect(r,solution=True):
    assert ('when $x=0$ or $y=0.$' in sol)==(b>0)
   else:
    assert a==1 and b==2
-   assert ('the opposite sign to x' in sol)==(c<0)
+   assert ('the opposite sign to x' in sol.replace('$',''))==(c<0)
    for sign,names in re.findall(r'(negative|positive) in quadrants? ([IV, and]+)',sol):
     for name in re.findall(r'\b(?:IV|III|II|I)\b',names):assert ss[('I','II','III','IV').index(name)]==(1 if sign=='positive' else -1)
   # Check the displayed diagram, using independently verified source sign maps or generated sidecars.
@@ -67,7 +67,7 @@ def inspect(r,solution=True):
  assert len(ordinary)==3 and len(set(q for q,_ in ordinary))==3
  none=[f for f in fields if f[':answer-field/key']=='None of the above']
  if none:assert len(none)==1 and correct(none[0])==str(not any(answers)).lower()
- assert any(answers) or none,'No correct selectable checkbox'
+ assert any(answers) or none or allow_empty,'No correct selectable checkbox'
  return {'coefficient_sign':1 if c>0 else -1,'powers':(a,b),'statements':tuple(ordinary),'truths':tuple(answers),'mask':sum(1<<i for i,v in enumerate(answers) if v)}
 SOURCE_PLOTS={
 'images/6e/6ef852c9c15dc6f591119906abe479949f929edb6dc26f21588b4de545d02da2.png':(1,-1,1,-1),
@@ -90,12 +90,12 @@ def main():
   inspect(r);q=r['question']
   assert q[':question/problem']==old[':question/problem'],case['source_id']
   assert bank(q)==bank(old),case['source_id']
-  assert q[':question/worked-solution']==old[':question/worked-solution'],case['source_id']
-  replays.append({'source_id':case['source_id'],'prompt_exact':True,'solution_exact':True,'fields':len(bank(q)),'bank_values':2*len(bank(q)),'source_difficulty':old.get(':question/difficulty')})
+  assert q[':question/worked-solution'].replace('$','')==old[':question/worked-solution'].replace('$',''),case['source_id']
+  replays.append({'source_id':case['source_id'],'prompt_exact':True,'solution_exact':q[':question/worked-solution']==old[':question/worked-solution'],'solution_wording_and_mathematics_exact':True,'presentation_correction':'Added inline math delimiters around bare expressions' if case['source_id']=='q-97483' else None,'fields':len(bank(q)),'bank_values':2*len(bank(q)),'source_difficulty':old.get(':question/difficulty')})
   replay_records.append({'source':old,'replay':r});graders.append(native(r,case['source_id']))
  # Each recognizable presentation gets all 8 truth assignments, with other data held fixed.
  # Include both exponent orientations and uniform-sign parity as independent hard families.
- configurations=[('easy','single_coordinate',1,0),('moderate','bilinear_open_thin',1,1),('moderate','bilinear_open',1,1),('moderate','bilinear_closed',1,1),('hard','parity_open',1,2),('hard','parity_closed',2,1),('hard','parity_closed',2,2),('hard','parity_numbered',1,2)]
+ configurations=[('easy','single_coordinate',1,0),('moderate','bilinear_open_thin',1,1),('moderate','bilinear_open',1,1),('moderate','bilinear_closed',1,1),('hard','parity_open',1,2),('hard','parity_open',2,1),('hard','parity_open',2,2),('hard','parity_closed',1,2),('hard','parity_closed',2,1),('hard','parity_closed',2,2),('hard','parity_numbered',1,2)]
  counter=[]
  for level,template,a,b in configurations:
   family=[]
@@ -130,12 +130,27 @@ def main():
   else:raise AssertionError(('Invalid instance accepted',delta))
  # Exact source field/solution comparison already independently checked original keys.
  # Stored records are not executable packages: packaging failure alone affects no stored math.
- inv=[]
+ inv=[];affected=[]
+ from reproduce_inventory import reproduce
  for q in INVENTORY['questions']:
-  inv.append({'question_id':q[':question/id'],'entity_id':q[':db/id'],'visible_math_and_keys_checked':True,'mask':inspect(q,solution=False)['mask']})
- save('affected-inventory.json',{'affected_questions':[],'audit':{'tested':len(inv),'untested':0,'scope':'All captured printed equations, visible statement labels, boolean keys and nonempty selection. Runtime closure does not execute in stored question records. No stored grading/math failure demonstrated.','records':inv}})
+  d=inspect(q,solution=False,allow_empty=True)
+  inv.append({'question_id':q[':question/id'],'entity_id':q[':db/id'],'visible_math_and_keys_checked':True,'mask':d['mask']})
+  if d['mask']==0 and not any(f[':answer-field/key']=='None of the above' for f in q[':question/answer-fields']):
+   witness=reproduce(g);assert witness[':question/id']==q[':question/id']
+   affected.append({'question_id':q[':question/id'],'entity_id':q[':db/id'],'finding':'All three ordinary claims are false and no visible None checkbox is available. Historical generation and current stored representation reproduced exactly.','reproduction':'/home/jake/Developer/Course_Academy/.venv/bin/python checks/validate_repair.py; historical generate(easy, seed=3504342439, parameters={c:-6,a:1,b:0,quadrants:[1,3,2],claims:[1,-1,-1]})','evidence_path':'../workspace/evidence/generated-records.json'})
+ save('affected-inventory.json',{'affected_questions':affected,'audit':{'tested':len(inv),'untested':0,'scope':'All captured printed equations, visible statement labels, boolean keys and nonempty selection. No stored mathematical key mismatch found. One empty selectable subset independently reproduced.','records':inv}})
+ # Also place the runner-facing inventory finding at the workspace root.
+ (ROOT/'affected-inventory.json').write_text((OUT/'affected-inventory.json').read_text())
  # Native inputs test actual acceptance AND rejection for each source and controlled pair.
- graders.extend(native(r,'controlled-'+str(i)) for i,r in enumerate(records[:128]))
+ graders.extend(native(r,'controlled-'+str(i)) for i,r in enumerate(records[:len(configurations)*16+2]))
+ for i in range(0,len(configurations)*16,16):
+  r=records[i];p=r['generation']['parameters']
+  rescaled=g.generate(r['generation']['level'],template=r['generation']['template'],parameters=p|{'c':1})
+  assert inspect(rescaled)['truths']==inspect(r)['truths']
+  graders.append(native(rescaled,'irrelevant-positive-rescaling-'+str(i)))
+
+ for level in ['easy','moderate','hard']:
+  save('records-'+level+'.json',[r for r in records if r['question'][':question/difficulty']==':question.difficulty/'+level])
  save('native-input.json',graders);save('source-replays.json',replay_records);save('records.json',records);save('counterfactuals.json',counter)
  save('validation.json',{'source_fidelity':replays,'source_bank_values_matched':sum(x['bank_values'] for x in replays),'record_count':len(records),'semantic_instances':len({semantic(r) for r in records}),'mathematics':'All global signs/checkbox keys and solution claims independently checked from visible expressions and labels, not metadata.','counterfactual_pairs':len(counter),'invalid_parameter_rejections':rejected,'inventory_checked':len(inv),'retained_finding_ids':[]})
  print(json.dumps({'source_replays':len(replays),'source_values':sum(x['bank_values'] for x in replays),'records':len(records),'semantic_instances':len({semantic(r) for r in records}),'inventory_checked':len(inv)}))

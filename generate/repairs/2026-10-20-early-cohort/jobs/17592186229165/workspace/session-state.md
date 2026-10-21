@@ -1,3 +1,27 @@
+# Author-9 milestone
+
+Latest strict report failure reproduced first (exit 1) and retained after revalidation. Role/delivery/native-grader regression, package relocation and five-easy check, and local corrected report validation all pass (exit 0). Runtime files and regression criteria are unchanged. Reinspected retained actual-UI second-position resonance screenshot. Exact commands, results and limits: `evidence/author-9-validation.json`.
+
+Next unfinished action: runner installation of `evidence/corrected-review/` at the required external prior-review destination, then the default regression and fresh independent review. This session is explicitly restricted to workspace writes; no external installation attempted. Finding 645672a4cd3f9bf609ca remains unresolved.
+
+# Author-8 milestone
+
+Read feedback and complete history. Reproduced the exact latest failure first: required external report remains stale (exit 1), after local schema/contract and 26 current visible-record replays pass. Retained role/delivery/native-grader regression and package/relocation/five-easy check pass (exit 0). Runtime and strict regression criteria remain unchanged; actual-UI second-position resonance screenshot reinspected. Commands, logs, hashes and current coverage: `evidence/author-8-validation.json`.
+
+Next unfinished action remains runner installation of the staged corrected report at the required prior-review destination, outside current workspace-only authorization. Finding 645672a4cd3f9bf609ca remains open; no external write attempted. No generator design change is justified by this evidence-only finding.
+
+# Author-7 milestone
+
+Reproduced the latest required-destination failure first (exit 1). That same execution passes local corrected-report validation and 26 current visible-record replays before rejecting the stale external report. Retained role/delivery/native-grader regression and package relocation/requested-five-easy check pass (exit 0). Runtime hashes and strict regression criteria unchanged. Reinspected retained actual-UI second-position resonance screenshot. Commands, exit codes, logs and coverage: `evidence/author-7-validation.json`. No external write attempted.
+
+Next unfinished action: authorized runner installs `evidence/corrected-review/` into the required prior-review directory, then runs the default report regression and fresh independent review. Current workspace-only authorization prevents that action. Finding 645672a4cd3f9bf609ca remains open; author result is unsupported.
+
+# Author-6 milestone
+
+Latest installation failure reproduced first (exit 1). Retained role regression, package relocation and local corrected-report validation pass (exit 0); final required-destination regression remains exit 1. Runtime and strict regression criteria unchanged. Commands, logs, delivery coverage and exact required destination: `evidence/author-6-validation.json`. Prior source and UI evidence retained; second-position resonance screenshot reinspected. No external write attempted.
+
+Next unfinished step: runner installation of `evidence/corrected-review/` at the required prior-review destination, then default regression and fresh independent review. This action remains outside the user-authorized workspace writes.
+
 # Author-5 milestone
 
 Reproduced default report regression first (exit 1), then reran retained role regression and package/relocation check (both exit 0). Local corrected report validation passed (26 current record replays); final default regression still exits 1 at the required prior-review destination. Exact commands, exit codes and logs: `evidence/author-5-validation.json`. Runtime and regression criteria unchanged. Reinspected second-position-resonance actual-UI screenshot. No external write attempted.

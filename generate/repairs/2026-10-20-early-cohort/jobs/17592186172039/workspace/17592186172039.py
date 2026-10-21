@@ -1,15 +1,11 @@
 #!/usr/bin/env python3
-"""Quadrant slope signs, basis 1356; current checkbox source contract at basis 2771.
+"""Seeded quadrant sign questions with current statement-labelled checkboxes.
 
-Observed bilinear/parity/numbered layouts and complete categorical banks replay
-through the same parameterized renderer. No literal question-return branches.
-Easy is a curriculum-anchored authored cx reduction. The authored default bank
-complements all truth classifications or toggles exactly one statement, without
-learner-facing diagnosis. authored_cycle is a compatibility alias for this bank,
-not an adjacent-integer recipe. Hard varies exponent parity
-only (1/2), not algebraic complexity. One fixed solution is stored per instance.
-|c| is presentation variety, never mathematical-task variety. All quadrants are
-open: axes are excluded. No translated rectangular regions or sums are admitted.
+The observed cxy and parity families retain their worked-solution stages.
+Easy cx is a documented curriculum reduction. Source-backed explicit None
+supports all truth subsets; historical radio banks remain replay helpers.
+Only coefficient sign, parity and quadrant claims count as task variation.
+Generated diagrams use COURSE_ACADEMY_GENERATOR_OUTPUT_DIR.
 """
 from __future__ import annotations
 import argparse, hashlib, json, random, os, uuid
@@ -165,7 +161,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
  q=r['question'];gen=r['generation']
  if gen['template']=='parity_numbered':
   p=gen['parameters'];ss=signs(p);expr=monomial(p,True).replace('{','').replace('}','')
-  q[':question/worked-solution']='For '+expr+', y^2 is positive in every open quadrant, so the slope has '+('the sign of x' if p['c']>0 else 'the opposite sign to x')+'. '
+  q[':question/worked-solution']='For $'+expr+'$, $y^2$ is positive in every open quadrant, so the slope has '+('the sign of $x$' if p['c']>0 else 'the opposite sign to $x$')+'. '
   groups=[]
   for sign in (-1,1):
    names=[('I','II','III','IV')[q-1] for q in sorted(p['quadrants']) if ss[q-1]==sign]
@@ -192,8 +188,9 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
   fields.append({':answer-field/id':fid,':answer-field/key':key,':answer-field/type':':answer-field.type/checkbox',':answer-field/choices':answers,':answer-field/correct':[':answer/id',correct]})
  q[':question/answer-fields']=fields
  gen['legacy_bank_profile']=gen['bank_profile'];gen['bank_profile']='checkbox_boolean'
- gen['bank_recipes']=[{'field':key,'values':['false','true'],'correct':bool(gen['truth_mask']&(1<<i))} for i,key in enumerate(ROMAN)]
+ gen['bank_recipes']=[{'field':key,'values':['false','true'],'correct':bool(gen['truth_mask']&(1<<i))} for i,key in enumerate(claims)]
  gen['content_identity']=identity
+ gen['source_question_ids']={'single_coordinate':['e-8506 (curriculum reduction)'],'bilinear_open_thin':['q-96767'],'bilinear_open':['q-97477','q-97482'],'bilinear_closed':['q-119766','q-119769'],'parity_open':['q-97487'],'parity_closed':['q-119774'],'parity_numbered':['q-97483']}[gen['template']]
  if include_none:
   from generator_policy import explicit_none_checkbox
   r=explicit_none_checkbox(r,'None of the above')
@@ -204,8 +201,8 @@ def generate_moderate(seed=0,**kwargs):return generate('moderate',seed,**kwargs)
 def generate_hard(seed=0,**kwargs):return generate('hard',seed,**kwargs)
 
 def markdown(record):
- q=record['question'];f=q[':question/answer-fields'][0]
- return q[':question/problem']+'\n\n'+'\n'.join('- '+a[':answer/value'] for a in f[':answer-field/choices'])+'\n\n'+q[':question/worked-solution']
+ q=record['question']
+ return q[':question/problem']+'\n\n'+'\n'.join('- [ ] '+f[':answer-field/key'] for f in q[':question/answer-fields'])+'\n\n'+q[':question/worked-solution']
 
 def main():
  parser=argparse.ArgumentParser(description=__doc__)
