@@ -1,0 +1,111 @@
+{
+  "verdict": "accepted",
+  "summary": "No demonstrated defect found within the audited scope. All eight checks passed. The package remained unchanged; no publication or database writes occurred.",
+  "source_analysis": {
+    "skill": "Classify first-order linear ODEs by whether their forcing function is identically zero after collecting y-terms.",
+    "reasoning_steps": [
+      "Identify the requested class.",
+      "Move dependent-variable terms to the left.",
+      "Determine whether the remaining forcing is identically zero.",
+      "Select every qualifying equation."
+    ],
+    "invariants": [
+      "Three equation-labelled checkbox decisions.",
+      "First-order linear equations with source-comparable rearrangement workload.",
+      "Prompts, keys and solutions must follow the actual forcing."
+    ],
+    "permitted_variations": [
+      "Signed coefficients and monomial degrees.",
+      "Assignments and positions of zero, moved-y and forcing roles.",
+      "Selection counts within the supported workload.",
+      "Source-supported classification targets and difficulties."
+    ],
+    "source_refs": [
+      "591724df-60a1-5a9d-9f71-6942e86af15b",
+      "a4c450ce-db9f-5997-8c48-e9942b8b8389",
+      "d7723c02-822f-5a83-b3af-429d938426d6",
+      "6f249bfa-e57b-5784-9da8-d0f9aff213bc",
+      "Tutorial 2107c0cc-b904-547f-b13d-9a0898b33d73"
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "canonical-evidence.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replays.json",
+        "source-replay-results.json",
+        "canonical-evidence.json"
+      ],
+      "details": "All 12 source banks replayed with complete choices, keys, prompts and solutions. Missing canonical answer controls are explicitly documented."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "audit.py",
+        "sampling-results.json",
+        "independent-samples.json"
+      ],
+      "details": "Independent exact checks covered displayed equations, solution transformations, conclusions, signed boundaries and coefficient cancellation."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "sampling-results.json",
+        "resampling-results.json",
+        "shortcut-results.json",
+        "selection-results.json"
+      ],
+      "details": "Tested 63 role profiles and 512 fresh seeded samples. All supported profiles survived delivery filtering; selection scenarios and limits are recorded."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "scope-results.json"
+      ],
+      "details": "Variations preserve forcing-identity recognition, checkbox responses and source-comparable workload."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-all-input.json",
+        "grader-all-report.json"
+      ],
+      "details": "Native grader tested 1,139 records: 3,417 correct responses accepted and 3,417 wrong responses rejected; none unresolved."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render-all/rendering.json",
+        "visual-inspection.json",
+        "render-all/question-007.png"
+      ],
+      "details": "Nine actual UI previews inspected, including controlled changes, cancellation, source replay and runner output."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "relocated-records.json",
+        "package-integrity.json"
+      ],
+      "details": "Manifest-only relocation and deterministic replay passed. Exact dependency versions matched; all 153 workspace files remained unchanged."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "selection-results.json",
+        "evidence-contract.json"
+      ],
+      "details": "Relevant changes altered decisions; irrelevant changes preserved them across math, grading and rendering. Tested conditional cues revealed no reliable incidental bypass. Finite-audit and captured-inventory limits are documented."
+    }
+  },
+  "findings": []
+}

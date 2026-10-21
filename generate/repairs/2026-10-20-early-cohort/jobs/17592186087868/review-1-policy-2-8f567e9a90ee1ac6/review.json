@@ -1,0 +1,135 @@
+{
+  "verdict": "accepted",
+  "summary": "No demonstrated defect in the audited package. All eight checks passed within the saved source, captured-inventory and finite-sampling limits; package unchanged.",
+  "source_analysis": {
+    "skill": "Identify homogeneous versus inhomogeneous first-order linear ODEs after collecting all dependent-variable terms on the left.",
+    "reasoning_steps": [
+      "Read whether homogeneous or inhomogeneous is requested.",
+      "For RHS zero, recognize homogeneous standard form.",
+      "For RHS a multiple of y, transfer it left and combine coefficients.",
+      "For nonzero constant or monomial forcing, recognize it is not identically zero, even if zero at individual x values.",
+      "Apply the requested class independently to each checkbox."
+    ],
+    "invariants": [
+      "First-order linear ODEs with derivative coefficient 1 in observed bank.",
+      "Three independently classified equations; exact forcing identity test after collecting y terms.",
+      "Every answer field and solution must follow equation and requested class.",
+      "Preserve full source banks and all-homogeneous easy case."
+    ],
+    "permitted_variations": [
+      "Change signed small integer coefficients and low-degree monomial P(x), nonzero forcing constants/monomials, and y multiples.",
+      "Change order and assignments of homogeneous versus nonhomogeneous roles to the three equations; eligible response counts must not be fixed merely because common source examples use two selections.",
+      "Within difficulty preserve easy homogeneous versus moderate inhomogeneous request unless a justified extension is stated.",
+      "Changing P(x) alone or a nonzero coefficient of a pure y RHS is irrelevant to class; changing pure-y RHS into a forcing term changes class.",
+      "Conservatively allow same-workload bank profiles composed from the observed equation forms; no new ODE solving skill."
+    ],
+    "source_refs": [
+      "591724df-60a1-5a9d-9f71-6942e86af15b",
+      "d7723c02-822f-5a83-b3af-429d938426d6",
+      "52b69d13-8d12-5e35-b5cc-e11a7f6b65a8",
+      "3ed9d4c5-c8ba-5702-acc9-702d6e5cd248",
+      "a4c450ce-db9f-5997-8c48-e9942b8b8389",
+      "8cb41985-a448-5edf-ac16-5140f9df994f",
+      "70f3dd1b-d16f-5aa1-9eba-10b4e0fd71e9",
+      "f8cfe21c-18ac-5f6d-9859-3a5cbe483542",
+      "8e88e764-3128-53c6-9d2a-d1f58dae12a8",
+      "f4b9025a-0c2a-511c-b23e-f617ee7031f9",
+      "ca0875e1-4252-5a69-bfc7-c43bf6770e82",
+      "26251e42-10da-5a5f-8853-15a03bb82549",
+      "6f249bfa-e57b-5784-9da8-d0f9aff213bc",
+      "tutorial 2107c0cc-b904-547f-b13d-9a0898b33d73 (14653), step b0d57580-3bcd-5a38-92ff-b1a7d2279815",
+      "tutorial d0517ea0-b60e-5c34-bfbc-41fd6c61af75 (4056)"
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "canonical-evidence.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "source-replays.json",
+        "source-replay-results.json",
+        "canonical-evidence.json"
+      ],
+      "details": "All 12 supported source banks replay exact prompts, solutions, field keys, full true/false choices and keys after shared presentation normalization. Canonical II-only mathematics checked; unavailable original controls explicitly documented."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "audit.py",
+        "sampling-results.json",
+        "independent-samples.json",
+        "counterfactual-results.json"
+      ],
+      "details": "Exact independent SymPy checks on 602 raw/replay/pair/batch records: displayed forcing, truth keys, every concrete solution transformation, and conclusion. Includes coefficient cancellation and signed boundaries."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "sampling-results.json",
+        "resampling-results.json",
+        "shortcut-results.json",
+        "delivery-easy/delivery.json",
+        "delivery-moderate/delivery.json",
+        "delivery-batch/delivery.json",
+        "selection-results.json"
+      ],
+      "details": "63 role profiles and 512 independent fresh seeds; all supported decision profiles survive actual captured-inventory filtering. Delivery and weighted-selection/history scenarios separately examined with stated limits."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "scope-results.json",
+        "source-analysis.json",
+        "sampling-results.json"
+      ],
+      "details": "Same three-equation forcing-identity recognition, one/two y transfers, observed target/difficulty mapping. No solving, nonlinear recognition, new response types or hard normalization extension."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-all-input.json",
+        "grader-all-report.json",
+        "counterfactual-results.json"
+      ],
+      "details": "Native grade_field: 1,139 records including 537 post-delivery records; 3,417 correct responses accepted and 3,417 wrong responses rejected, no unresolved cases. Choice-based checkbox contract; free-entry equivalence inapplicable."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render-records.json",
+        "render-all/rendering.json",
+        "visual-inspection.json",
+        "render-all/question-001.png",
+        "render-all/question-007.png",
+        "render-all/question-009.png"
+      ],
+      "details": "Nine actual UI previews, all inspected: relevant/irrelevant/target pairs, cancellation, source all-selected bank and runner record. No math, JS, glyph or image errors."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "relocated-records.json",
+        "package-integrity.json",
+        "package-before.json"
+      ],
+      "details": "Manifest-only relocation works outside repository import context with deterministic output. Exact Python 3.13.5 and SymPy 1.14.0 match declaration. All 153 workspace files unchanged; no assets/publication/database writes."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "shortcut-results.json",
+        "counterfactuals.json",
+        "counterfactual-results.json",
+        "selection-results.json"
+      ],
+      "details": "Independently assessed role assignments and constraints; controlled relevant and irrelevant changes verified in math, actual grading and rendering. Fixed positions/counts and degree/sign/template cue groups do not supply a reliable bypass in audited samples."
+    }
+  },
+  "findings": []
+}
