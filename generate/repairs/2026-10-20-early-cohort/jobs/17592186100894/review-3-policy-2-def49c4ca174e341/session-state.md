@@ -1,0 +1,1 @@
+Confirmed and wrote independent source account. All five declared runtime files match previous independent relocated package byte-for-byte; batch/package/source bindings unchanged. Reused source, math, coverage and controlled-pair evidence with provenance.json. New engine grading tests, delivery and rendering pending.

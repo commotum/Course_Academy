@@ -4,4 +4,4 @@ w=pathlib.Path(__file__).resolve().parent;root=w.parents[5];deps=root/'target/re
 libs={}
 for name in ('serde_json','course_academy_engine'):
  lib=max(deps.glob('lib'+name+'-*.rlib'),key=lambda p:p.stat().st_mtime);args+=['--extern',name+'='+str(lib)];libs[name]={'path':str(lib.relative_to(root)),'sha256':hashlib.sha256(lib.read_bytes()).hexdigest()}
-p=subprocess.run(args,capture_output=True,text=True);(w/'evidence/harness-build.json').write_text(json.dumps({'command':args,'libraries':libs,'returncode':p.returncode,'stdout':p.stdout,'stderr':p.stderr},indent=2));print('harness rebuild',p.returncode);p.check_returncode()
+p=subprocess.run(args,capture_output=True,text=True);(w/'evidence-author-3/harness-build.json').write_text(json.dumps({'command':args,'libraries':libs,'returncode':p.returncode,'stdout':p.stdout,'stderr':p.stderr},indent=2));print('harness rebuild',p.returncode);p.check_returncode()

@@ -35,6 +35,10 @@ scaled/shifted k. Hard preserves swap, fractional elimination (including bare
 k), and negative-parameter families. Original source labels remain unchanged.
 No additional band is claimed.
 
+The supplied canonical example has no answer fields. Replay checks its printed
+system and elimination result; the five-choice response contract and complete
+banks are supported by all 17 practice questions, not inferred canonical choices.
+
 Eligible answer-bearing assignments are the singular k's sign/value, zero or
 nonzero shift in fractional elimination, and the correct choice's numeric rank
 and display position. Coefficient signs, multipliers, constants and shifts vary

@@ -1,0 +1,175 @@
+{
+  "cwd": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186115242/workspace",
+  "commands": [
+    {
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "-B",
+        "../review-0-policy-2-7164cf0480f72dae/acceptance-tests.py"
+      ],
+      "exit": 1,
+      "result": "Exact latest three failures reproduced before changes; baseline-acceptance.json"
+    },
+    {
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "-B",
+        "checks/review-acceptance.py"
+      ],
+      "exit": 0,
+      "result": "All three retained acceptance tests pass; evidence/acceptance-results.json"
+    },
+    {
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "-B",
+        "checks/validate_repair.py"
+      ],
+      "exit": 0,
+      "result": "17 complete source banks, 157 printed-record checks; evidence/math-results.json"
+    },
+    {
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "/home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py",
+        "--input",
+        "evidence/easy-samples.json",
+        "--source",
+        "../source/source.json",
+        "--inventory",
+        "../source/inventory.json",
+        "--difficulty",
+        "easy",
+        "--output",
+        "evidence/delivery",
+        "--asset-root",
+        "evidence/assets",
+        "--math-root",
+        "/media/jake/SSD/EDB/math"
+      ],
+      "exit": 0,
+      "result": "48 input, 48 accepted, 0 duplicates"
+    },
+    {
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "/home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py",
+        "--input",
+        "evidence/batch.json",
+        "--source",
+        "../source/source.json",
+        "--inventory",
+        "../source/inventory.json",
+        "--difficulty",
+        "easy",
+        "--output",
+        "evidence/delivery-batch",
+        "--asset-root",
+        "evidence/assets",
+        "--math-root",
+        "/media/jake/SSD/EDB/math"
+      ],
+      "exit": 0,
+      "result": "5 input, 5 accepted, 0 duplicates"
+    },
+    {
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "-B",
+        "checks/final_checks.py"
+      ],
+      "exit": 0,
+      "result": "Post-filter shortcut checks, eight controlled template pairs, sampler rejection traces, conditional selection, relocated deterministic CLI"
+    },
+    {
+      "command": [
+        "/home/jake/Developer/Course_Academy/generate/runs/current/check-engine",
+        "evidence/grader-complete-input.json",
+        "evidence/grader-complete-report.json"
+      ],
+      "exit": 0,
+      "result": "74 accepted, 296 rejected, 0 unresolved"
+    },
+    {
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "/home/jake/Developer/Course_Academy/generate/pipeline/render_preview.py",
+        "--input",
+        "evidence/render-records.json",
+        "--output",
+        "evidence/render",
+        "--asset-root",
+        "evidence/assets",
+        "--math-root",
+        "/media/jake/SSD/EDB/math"
+      ],
+      "exit": 0,
+      "result": "Default limit: 6 cases rendered, all pass"
+    },
+    {
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "/home/jake/Developer/Course_Academy/generate/pipeline/render_preview.py",
+        "--input",
+        "evidence/render-boundaries.json",
+        "--output",
+        "evidence/render-boundaries",
+        "--asset-root",
+        "evidence/assets",
+        "--math-root",
+        "/media/jake/SSD/EDB/math",
+        "--limit",
+        "5"
+      ],
+      "exit": 0,
+      "result": "5 cases rendered, all pass"
+    },
+    {
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "-B",
+        "checks/inventory_audit.py"
+      ],
+      "exit": 0,
+      "result": "Five historical generated records independently replayed and matched against captured inventory"
+    },
+    {
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "-B",
+        "checks/regressions.py",
+        "--finding",
+        "source"
+      ],
+      "exit": 0,
+      "result": "evidence/regression-source.json"
+    },
+    {
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "-B",
+        "checks/regressions.py",
+        "--finding",
+        "zero"
+      ],
+      "exit": 0,
+      "result": "evidence/regression-zero.json"
+    },
+    {
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "-B",
+        "checks/regressions.py",
+        "--finding",
+        "shortcut"
+      ],
+      "exit": 0,
+      "result": "evidence/regression-shortcut.json"
+    }
+  ],
+  "notes": [
+    "Initial attempt to filter mixed-band samples was correctly rejected by check_delivery; the easy-only input was then supplied.",
+    "easy-samples.json is the easy-band subset of samples.json.",
+    "No runtime changes followed successful package and native checks. All writes were inside workspace; no database writes or publication."
+  ]
+}

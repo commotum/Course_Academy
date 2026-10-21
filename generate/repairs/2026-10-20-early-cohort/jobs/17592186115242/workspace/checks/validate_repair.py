@@ -154,6 +154,7 @@ def main():
     for r in batch: printed_check(r)
     assert sum(z['sign_extremum_successes'] for n,z in probes(batch).items() if n.count(':') == 1) < 5
     write('samples.json',sample); write('batch.json',batch)
+    write('easy-samples.json',[r for r in sample if r['question'][':question/difficulty']==':question.difficulty/easy'])
     write('shortcut-results.json',dict(passed=True, input=before, batch=probes(batch)))
     representatives = batch + [sources[-3],boundaries[0]] + cf
     write('render-records.json', representatives)

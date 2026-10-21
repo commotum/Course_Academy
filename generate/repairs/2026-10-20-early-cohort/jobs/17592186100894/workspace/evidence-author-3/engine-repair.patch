@@ -1,0 +1,112 @@
+--- a/engine/rust/learning.rs
++++ b/engine/rust/learning.rs
+@@ -1985,31 +1985,57 @@
+ /// constant adjacent to this field. Merely mentioning K elsewhere is not enough.
+ fn displayed_solution_family_constant(prompt: &str, key: &str) -> bool {
+     if key.is_empty() || requires_answer_form(prompt)
+-        || !prompt.contains("general solution") || !prompt.contains("differential equation")
+-        || ["zero constant term", "constant term is zero", "constant term is 0", "nonconstant polynomial term"]
++        || !((prompt.contains("general solution") && prompt.contains("differential equation"))
++            || (prompt.contains("nonconstant local solution") && prompt.contains("separating variables")))
++        || ["zero constant term", "constant term is zero", "constant term is 0", "nonconstant polynomial term",
++            "initial condition", "particular solution", "satisfying", "given that"]
+             .iter().any(|text| prompt.contains(text))
+     {
+         return false;
+     }
+-    let compact = normalize_math(prompt).replace('$', "").to_lowercase();
+     let marker = format!("{{{{{}}}}}", key.to_lowercase());
+-    let Some((prefix, suffix)) = compact.split_once(&marker) else { return false; };
+-    if suffix.contains(&marker) { return false; }
+-    // An immediately preceding group opener makes the field a whole additive
+-    // term. This excludes x*blank+K and blank^2+K, whose shifts do not commute
+-    // with addition of K. Outer transformations of the whole group are safe.
++    let mut compact = normalize_math(prompt).to_lowercase();
++    if compact.matches(&marker).count() != 1 { return false; }
++
++    // Some forms print a named box in the equation and its input below it.
++    // Resolve only an unambiguous one-to-one label, not a nearby unrelated blank.
++    let boxes = regex::Regex::new(r"\\boxed\{\\text\{([a-z]+)\}\}").unwrap();
++    let named: Vec<_> = boxes.captures_iter(&compact).collect();
++    if named.len() == 1 {
++        let named_box = named[0][0].to_owned();
++        let label = named[0][1].to_owned();
++        let tail = format!("{label}:{marker}");
++        if compact.ends_with(&tail) {
++            compact.truncate(compact.len()-tail.len());
++            compact = compact.replace(&named_box, &marker);
++        }
++    }
++    // UI inputs may split one equation across separate inline math spans.
++    compact = compact.replace(&format!("${marker}$"), &marker);
++    // Limit coupling checks to the equation, not the prose declaring C arbitrary.
++    let Some(equation) = compact.split('$').find(|part| part.contains(&marker) && part.contains('='))
++        else { return false; };
++    let Some((prefix, suffix)) = equation.split_once(&marker) else { return false; };
+     let close = match prefix.chars().last() {
+         Some('(') => ')',
+         Some('{') => '}',
+         _ => return false,
+     };
+     let Some((_, outer)) = prefix.rsplit_once('=') else { return false; };
++    // Strip TeX command names when looking for additional uses of a parameter:
++    // the c in \\cos is not another occurrence of the integration constant C.
++    let commands = regex::Regex::new(r"\\[a-z]+").unwrap();
+     ['c', 'k'].iter().any(|constant| {
+-        // The same parameter elsewhere in the outer expression would couple
+-        // its occurrences, so a shift of this one occurrence is not enough.
+         suffix.starts_with(&format!("+{constant}{close}"))
+-            && !outer.contains(*constant) && !suffix[2..].contains(*constant)
+-            && compact.contains(&format!("{constant}isanarbitraryconstant"))
++            && !commands.replace_all(outer, "").contains(*constant)
++            && !commands.replace_all(&suffix[2..], "").contains(*constant)
++            // The general/local family contract permits the conventional +C;
++            // any explicit assignment of its value removes that freedom.
++            && !compact.contains(&format!("{constant}="))
++            && (compact.replace('$', "").contains(&format!("{constant}isanarbitraryconstant"))
++                // An unconstrained nonconstant local solution found by separation
++                // conventionally uses +C for its free integration constant.
++                || (prompt.contains("nonconstant local solution") && *constant == 'c'))
+     })
+ }
+ 
+@@ -3988,6 +4014,39 @@
+     }
+ 
+     #[test]
++    fn local_ode_argument_blanks_absorb_constants_in_direct_and_named_scaffolds() {
++        let mut s = fixture();
++        s.entities.get_mut(&300).unwrap().insert("answer/value".into(), json!("(x-3)^2"));
++        for prompt in [
++            "Find the nonconstant local solution to $y'=2(x-3)\\sqrt{1-y^2}$ by separating variables. Express the solution as $y=\\sin(\\boxed{\\text{expression}}+C)$.\n\nExpression: {{x}}",
++            "Find the general solution to the differential equation. $y=\\sin($ {{x}} $+C)$, where $C$ is an arbitrary constant.",
++            "Find the general solution to the differential equation. $y=\\cos($ {{x}} $+K)$, where $K$ is an arbitrary constant.",
++        ] {
++            s.entities.get_mut(&100).unwrap().insert("question/problem".into(), json!(prompt));
++            for value in ["x^2-6*x", "(x-3)^2+1", "(x-3)^2-2/3", "(x-3)^2+pi"] {
++                assert_eq!(grade_field(&s,100,200,value), Ok(true), "{prompt}: {value}");
++            }
++            for value in ["2*(x-3)^2", "(x-3)^2+x", "(x-3)^3", "0"] {
++                assert_eq!(grade_field(&s,100,200,value), Ok(false), "{prompt}: {value}");
++            }
++            assert!(grade_field(&s,100,200,"(x-3)^2+x/x").is_err());
++        }
++        for prompt in [
++            "Find the general solution to the differential equation. $y=\\sin(x*{{x}}+C)$, where C is an arbitrary constant.",
++            "Find the general solution to the differential equation. $y=\\sin({{x}}^2+C)$, where C is an arbitrary constant.",
++            "Find the general solution to the differential equation. $y=\\sin({{x}}+C)+C*x$, where C is an arbitrary constant.",
++            "Find the general solution to the differential equation. $y=\\sin({{x}}+C)$ with C=0.",
++            "Find the general solution to the differential equation with initial condition y(3)=0. $y=\\sin({{x}}+C)$.",
++            "Simplify $y=\\sin({{x}}+C)$.",
++            "Find the nonconstant local solution by separating variables. $y=\\sin(\\boxed{\\text{other}}+C)$. Expression: {{x}}",
++            "Find the nonconstant local solution by separating variables. $y=\\sin(\\boxed{\\text{expression}}+C)+C*x$. Expression: {{x}}",
++        ] {
++            s.entities.get_mut(&100).unwrap().insert("question/problem".into(), json!(prompt));
++            assert_eq!(grade_field(&s,100,200,"(x-3)^2+1"), Ok(false), "{prompt}");
++        }
++    }
++
++    #[test]
+     fn antiderivative_blanks_absorb_numeric_constants_only_when_displayed() {
+         let mut s = fixture();
+         s.entities.get_mut(&300).unwrap().insert("answer/value".into(), json!("t^7/7+5*t"));

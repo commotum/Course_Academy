@@ -16,7 +16,7 @@ import sympy as sp
 from sympy.parsing.sympy_parser import parse_expr, standard_transformations, implicit_multiplication_application
 KP=17592186115241
 HERE=Path(__file__).resolve().with_suffix('')
-VERSION='1.1.1'
+VERSION='1.1.2'
 FAMILIES={'q-32234':'unrated_constant_x','q-42040':'unrated_sign_coupled','q-131715':'two_additions_subscript','q-131717':'two_additions_subscript','q-32247':'two_additions_subscript','q-32244':'rank_one_three_operations','q-131712':'rank_one_three_operations','q-32517':'scale_then_eliminate_constant_pivot','q-42041':'scale_then_eliminate_full_vector','q-42019':'one_addition_constant_pivot','q-32220':'one_addition_latter_prose'}
 RAW=json.loads((HERE/'source.json').read_text())
 RECORD=RAW['record']
@@ -238,7 +238,11 @@ def candidate_bank(n,freecol,case,rng,vec=None):
    return [sp.Rational(k,denominator) for k in range(-bound*denominator,bound*denominator+1)
            if sp.Rational(k,denominator).q==denominator]
   intercepts=coefficients(6,None if actual is None else actual.subs(fv,0))
-  slopes=coefficients(5,None if actual is None else sp.diff(actual,fv))
+  actual_slope=None if actual is None else sp.diff(actual,fv)
+  slopes=coefficients(5,actual_slope)
+  # A fixed source slope must not be the only coefficient with its typography.
+  # Parallel candidates share it; the augmented constants decide among them.
+  if actual is not None and not const and not zero:slopes=[actual_slope]
   choices=[]
   for c in intercepts:
    for a in slopes:
@@ -248,7 +252,12 @@ def candidate_bank(n,freecol,case,rng,vec=None):
     if not zero and c==0:continue
     choices.append(c+a*fv)
   if actual is not None:choices=[v for v in choices if v!=actual]
-  values=rng.sample(choices,count-(actual is not None))
+  # Homogeneous coordinates cannot vary intercepts. Include both signed units
+  # when one is supplied, so omitted multipliers cannot identify the answer.
+  peer=-actual if zero and actual_slope is not None and abs(actual_slope)==1 else None
+  if peer is not None:choices.remove(peer)
+  values=rng.sample(choices,count-(actual is not None)-(peer is not None))
+  if peer is not None:values.insert(rng.randrange(len(values)+1),peer)
   if actual is not None:values.insert(index,actual)
   return values
  if len(piv)==1 or equal:

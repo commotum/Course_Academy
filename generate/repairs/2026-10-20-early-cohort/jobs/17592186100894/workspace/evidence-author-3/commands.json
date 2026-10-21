@@ -1,0 +1,129 @@
+{
+  "workspace": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186100894/workspace",
+  "commands": [
+    {
+      "command": "/home/jake/Developer/Course_Academy/generate/runs/current/check-engine evidence-author-3/before-input.json evidence-author-3/before-report.json",
+      "cwd": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186100894/workspace",
+      "exit": 1,
+      "result": "Exact x^2-6*x rejected",
+      "log": "exact-before-console.txt"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python check_repairs.py",
+      "stage": "baseline harness, original preflight expectation",
+      "exit": 0,
+      "log": "baseline-retained-console.txt"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python check_sine_family.py",
+      "stage": "baseline harness, strict family acceptance",
+      "exit": 1,
+      "log": "sine-before-console.txt"
+    },
+    {
+      "command": "cargo test --lib symbolic::tests -- --nocapture",
+      "cwd": "/home/jake/Developer/Course_Academy",
+      "exit": 0,
+      "result": "16 passed, including retained radical/logarithmic repairs"
+    },
+    {
+      "command": "cargo test --lib antiderivative -- --nocapture",
+      "cwd": "/home/jake/Developer/Course_Academy",
+      "exit": 0,
+      "result": "2 passed"
+    },
+    {
+      "command": "cargo test --lib ode_ -- --nocapture",
+      "cwd": "/home/jake/Developer/Course_Academy",
+      "exit": 0,
+      "log": "native-context-tests.txt"
+    },
+    {
+      "command": "cargo build --release --lib",
+      "cwd": "/home/jake/Developer/Course_Academy",
+      "exit": 0,
+      "log": "cargo-build-console.txt"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python rebuild_harness.py",
+      "exit": 0,
+      "details": "harness-build.json"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python check_sine_family.py",
+      "stage": "final rebuilt native grader",
+      "exit": 0,
+      "log": "sine-after-console.txt"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python check_repairs.py",
+      "stage": "final rebuilt native grader",
+      "exit": 0,
+      "log": "regression-console.txt"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python check_bank_roles.py",
+      "stage": "final rebuilt native grader",
+      "exit": 0,
+      "log": "role-console.txt"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python check_package.py",
+      "stage": "final rebuilt native grader",
+      "exit": 0,
+      "log": "package-console.txt"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python check_batch.py",
+      "stage": "final rebuilt native grader",
+      "exit": 0,
+      "log": "batch-console.txt"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/generate/runs/current/check-engine evidence-author-3/before-input.json evidence-author-3/exact-after-report.json",
+      "exit": 0,
+      "log": "exact-after-console.txt"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/render_preview.py --input evidence-author-3/render-records.json --output evidence-author-3/render --asset-root evidence-author-3 --math-root /media/jake/SSD/EDB/math",
+      "exit": 0,
+      "log": "render-console.txt"
+    }
+  ],
+  "regressions": [
+    {
+      "id": "eb86c81d41054c769ae2",
+      "script": "check_repairs.py",
+      "args": [],
+      "exit": 0
+    },
+    {
+      "id": "6ffd6956bea7b22e14eb",
+      "script": "check_repairs.py",
+      "args": [],
+      "exit": 0
+    },
+    {
+      "id": "f3b35aaeab20566aa269",
+      "script": "check_repairs.py",
+      "args": [],
+      "exit": 0
+    },
+    {
+      "id": "5ac1c47c524e5003d37e",
+      "script": "check_bank_roles.py",
+      "args": [],
+      "exit": 0
+    },
+    {
+      "id": "74d7bc6e85b704fc3ba0",
+      "script": "check_sine_family.py",
+      "args": [],
+      "exit": 0
+    }
+  ],
+  "engine_patch": "engine-repair.patch",
+  "build": "harness-build.json",
+  "delivery_commands": "sine-reproduction.json, role-results.json and check_repairs.py; exact publication filters used read-only",
+  "runtime_unchanged": "current-verification.json"
+}
