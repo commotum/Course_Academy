@@ -1,0 +1,143 @@
+{
+  "verdict": "revise",
+  "summary": "The median and source-replay repairs pass, but a new option-distance shortcut answers three of five delivered batch items. Every normal distractor is within 2 lb of the key, so a unique choice within 2 lb of all others identifies it without modeling. Package unchanged.",
+  "source_analysis": {
+    "skill": "Construct and solve a well-mixed variable-volume first-order linear mixture model, determine the overflow time from capacity, and evaluate solute mass there.",
+    "reasoning_steps": [
+      "Find net volume growth and overflow time.",
+      "Compute solute inflow and time-dependent outflow.",
+      "Use a variable-coefficient integrating factor and the initial condition.",
+      "Evaluate at overflow and round to one decimal place."
+    ],
+    "invariants": [
+      "Well-mixed single tank, constant positive inflow/outflow and incoming concentration.",
+      "Capacity greater than initial volume and inflow greater than outflow so a finite positive overflow time exists.",
+      "Mass balance, initial condition, capacity-defined evaluation time and consistent units.",
+      "Five numerical radio choices with one correct rounded mass."
+    ],
+    "permitted_variations": [
+      "Capacity, initial volume, initial mass, feed concentration, net flow, physical context, and nearby distractor offsets can vary jointly with consistent solutions.",
+      "Correct choice position and numerical rank are incidental and eligible to vary independently of context and parameter patterns.",
+      "Context names and common positive rescaling of both flows are irrelevant to final overflow mass, though overflow time changes.",
+      "Feed concentration, initial mass, capacity or volume changes must recompute the response; no source license fixes a correct label, rank or distractor configuration.",
+      "Source more-concentrated wording constrains initial/feed concentration ordering; opposing order would require changed wording and scope justification."
+    ],
+    "source_refs": [
+      "bbf602f0-1101-55d5-a6b3-9bfc5731e9ec",
+      "98f92dde-10ee-5a2e-ae0c-afe47e1981a5",
+      "138b92a0-177f-5f9d-993c-5b85e485defc",
+      "c2fb266c-0e36-5075-b402-7e3b0f1013d7",
+      "47a16983-dbf1-596b-b57d-9f38439fdd0f",
+      "729a2fd5-523f-5eb2-bf2f-20fedeba14f1",
+      "3c6933cf-ef37-5bf5-8816-b51b8e56e9df",
+      "9d3bb996-2c5a-57e9-940a-6b48f2e05670",
+      "0b0e00ac-15e0-50ff-896e-2fb3f25eb38a",
+      "c3e80580-6c31-591c-a6d6-df75a9aede3a",
+      "36a65a87-c8d0-5bbf-adbe-0789f4e08164",
+      "6c55e9d5-5244-5391-84ab-9850b2ba8152",
+      "lesson 70852def-fb14-50cc-b88d-6fe2af2343bf tutorial: rate of entry is no longer zero; Q'=Q_in'-Q_out'",
+      "lesson 51694459-f27a-580f-878c-371665540655 step ff264ca2-0325-5ecb-9be4-8cbee9d9ba83 / canonical bbf602f0: Steps 1\u20134, I(t)=(12+t)^2, Q(0)=32, V(t_o)=240, Q(18)\u2248342.1 lb"
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "source-replay-results.json",
+        "source-replay-records.json",
+        "canonical-parameter-records.json",
+        "repair-verification.json"
+      ],
+      "details": "Eleven complete observed banks, keys and source omissions replay; canonical parameters reproduce the independent model. Canonical has no observed bank. Source editorial correction and missing q-336499 evidence are distinguished."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "displayed-math-results.json",
+        "counterfactual-results.json"
+      ],
+      "details": "Exact prompt-derived ODE, initial condition, endpoint and rounded keys agree. Twenty-one displayed worked solutions independently match the solved expression and final mass."
+    },
+    "variety": {
+      "status": "failed",
+      "evidence_paths": [
+        "sampling-summary.json",
+        "shortcut-results.json",
+        "delivery-selection-results.json"
+      ],
+      "details": "Numerical ranks and positions vary, but the authored fixed-radius rule makes a recognizable subset answerable from choices alone. Three of five exact delivered batch records are affected."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "scope-results.json",
+        "source-analysis.json",
+        "displayed-math-results.json"
+      ],
+      "details": "Requested easy variants retain the source quadratic integrating-factor method, overflow endpoint and five-choice mass workload."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-report.json",
+        "shortcut-grader-input.json",
+        "shortcut-grader-report.json"
+      ],
+      "details": "Native grader accepts 26 independently computed correct choices and rejects all 104 distractors. It also accepts four shortcut-produced choices, confirming the pedagogical bypass. Radio response shape has no free-entry equivalence requirement."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-minimal/rendering.json",
+        "render-inspection.json",
+        "render-inspection/minimal-bank.png"
+      ],
+      "details": "Actual UI rendered 23 records; screenshots inspected for batch, eleven contexts, controlled dependencies and minimal shortcut. No reported rendering errors."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "runtime-results.json",
+        "package-before.json",
+        "package-after.json"
+      ],
+      "details": "Exact Python/SymPy versions, manifest-only relocation, deterministic replay and invalid physical boundaries pass. Original package snapshot is unchanged."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "shortcut-results.json",
+        "minimal-records.json",
+        "shortcut_checks.py",
+        "shortcut-grader-report.json",
+        "affected-inventory.json",
+        "generated-records.json",
+        "new-shortcut-inventory-results.json"
+      ],
+      "details": "Correct roles vary but option-radius geometry remains answer-bearing: select the unique choice no farther than 2 lb from every other choice. Proven by construction and reproduced before/after delivery and in real grading. Ten historical median-affected stored records are retained separately."
+    }
+  },
+  "findings": [
+    {
+      "kind": "decision_shortcut",
+      "description": "method_bank restricts every distractor to at most 20 tenths from the key. Therefore the key always lies within 2 lb of all options. In the recognizable subgroup where just one option has that property, its identity determines the answer without reading the tank problem. This answers 5/44 independent samples and 3/5 exact delivered batch records; all cue-selected native grader responses are accepted.",
+      "source_refs": [
+        "bbf602f0-1101-55d5-a6b3-9bfc5731e9ec: Steps 1\u20134 and capacity-defined endpoint",
+        "47a16983-dbf1-596b-b57d-9f38439fdd0f: five-choice mass response",
+        "98f92dde-10ee-5a2e-ae0c-afe47e1981a5: correct 207.6 lb and distractor 201.0 lb disprove any source-essential 2 lb radius",
+        "generate/principles.md: conditional cue subgroups and answer-producing actions"
+      ],
+      "reproduction": "Run /home/jake/Developer/Course_Academy/.venv/bin/python shortcut_checks.py in evidence_root; exits 1. Minimal API: generate('easy', seed=41072, template='q-336506', parameters={'H':'20','v':'10','q':'1','c':'0.4','rin':'6','rout':'4'}). Sorted choices: 5.4, 7.3, 8.0, 8.3, 9.3 lb. Only 7.3 is within 2 lb of all others, and it is correct. Complete record: minimal-records.json; learner outcomes: shortcut-grader-report.json.",
+      "requested_change": "Change the family-wide bank-construction rule so an incidental fixed radius or unique geometric center cannot identify the key. Derive the complete choice configuration without privileging the correct option through a recoverable distance bound; retain supported source profiles, eligible ranks and physical parameter cases. Replace the affected batch and retain shortcut_checks.py as a strict regression. Do not merely exclude this seed, template or singleton-center cases."
+    }
+  ]
+}

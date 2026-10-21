@@ -1,0 +1,454 @@
+{
+  "learner_operation": "Translate incoming concentration and both flow rates into Q' = c*r_in - r_out*Q/(V0+(r_in-r_out)*t); solve with Q(0)=Q0, compute t_o=(capacity-V0)/(r_in-r_out), evaluate and round mass, then select among five nearby numerical masses.",
+  "fixed_features": [
+    {
+      "feature": "Overflow evaluation target",
+      "justification": "The KP is explicitly Determining an Amount at an Overflow Point; varying to a fixed unrelated time removes its extra operation."
+    },
+    {
+      "feature": "Inflow greater than outflow; positive capacity headroom",
+      "justification": "Necessary for the stated filling-to-overflow scenario."
+    },
+    {
+      "feature": "Small integral outflow/net-flow exponent (observed 2)",
+      "justification": "Observed easy method uses a quadratic integrating factor; retaining 2 is defensible for elementary workload, nearby small integral exponents need independent scope assessment."
+    },
+    {
+      "feature": "Five rounded mass choices",
+      "justification": "All eleven source practice banks use one five-choice radio field; numerical rank and pairwise option distances have no role in the ODE method."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Correct overflow mass",
+      "eligible_variation": "Physical quantities affect the mass-balance model, initial condition or endpoint; recompute every dependent expression.",
+      "observed": "Capacity and initial-mass changes update prompt, worked solution and native accepted response; flow scale and context preserve mass."
+    },
+    {
+      "role": "Correct choice rank and displayed position",
+      "eligible_variation": "All five numeric ranks and display positions are incidental and eligible.",
+      "observed": "All five ranks and positions occur. The median repair works, but fixed maximum distractor distance introduces a different identifying role."
+    },
+    {
+      "role": "Choice identifiable from option geometry",
+      "eligible_variation": "Correctness must follow overflow modeling, with no privileged arbitrary option-radius center.",
+      "observed": "Correct is always within 2 lb of every choice; when that role has one candidate it reveals the key. This is not an essential task constraint and original q-336451 does not obey it."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "Physical parameter and context coverage",
+      "sample_refs": [
+        "sample-records.json",
+        "sampling-summary.json"
+      ],
+      "result": "44 normal easy cases across eleven source contexts; actual post-filter sample retains every sampled rank and position."
+    },
+    {
+      "case": "Five eligible numerical answer ranks at fixed physical quantities",
+      "sample_refs": [
+        "rank-controlled-records.json",
+        "rank-control-results.json"
+      ],
+      "result": "Correct ranks 5,2,4,1,3 with the same 7.3 lb mass; the former forced-median defect is repaired."
+    },
+    {
+      "case": "Exact runner batch after actual shared delivery",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "shortcut-results.json"
+      ],
+      "result": "5/5 accepted. Three have a unique choice within 2 lb of all others, and all three choices are correct."
+    },
+    {
+      "case": "Retained source and author-regression repairs",
+      "sample_refs": [
+        "source-replay-records.json",
+        "source-replay-results.json",
+        "repair-verification.json"
+      ],
+      "result": "Eleven full observed banks, keys and omissions replay. Preflight passes current code and fails old source and old bank negative controls."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Capacity 210 to 240 with other physical quantities fixed",
+      "expected": "Response must change and endpoint/solution must follow capacity",
+      "observed": "100.0 to 116.2 lb; actual prompt and solved endpoint change, recomputed choice accepted.",
+      "status": "passed",
+      "justification": "Overflow time is capacity defined in canonical example bbf602f0.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "displayed-math-results.json",
+        "grader-input.json",
+        "grader-report.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "Initial solute mass 18 to 30 at fixed capacity, volume, feed and flows",
+      "expected": "Response must change through initial condition",
+      "observed": "100.0 to 102.2 lb; actual worked Q and key change, recomputed choice accepted.",
+      "status": "passed",
+      "justification": "Canonical Step 4 solves its integration constant using Q(0).",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "displayed-math-results.json",
+        "grader-input.json",
+        "grader-report.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Divide both flow rates by two",
+      "expected": "Overflow time doubles; overflow mass remains the same",
+      "observed": "20 to 40 min while mass remains 100.0 lb; correct numerical choice accepted in each.",
+      "status": "passed",
+      "justification": "The solution depends on volume ratio and outflow/net-flow exponent, unchanged by common flow scaling.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "displayed-math-results.json",
+        "grader-input.json",
+        "grader-report.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Change coolant context to fertilizer with all six quantities fixed",
+      "expected": "Mass must be preserved; entity wording changes",
+      "observed": "Both contexts give 100.0 lb in prompt-derived solution and real grading.",
+      "status": "passed",
+      "justification": "Substance/context names do not change the well-mixed constant-concentration mass balance.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "displayed-math-results.json",
+        "grader-input.json",
+        "grader-report.json",
+        "render/rendering.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "Numerical rank",
+      "subgroup": "normal independent sample",
+      "scope": "overall",
+      "strategy": "Choose third-smallest mass",
+      "correct": 18,
+      "total": 44,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Former median action is no longer universally correct; all five ranks are independently demonstrated. Finite success rate does not certify lack of weaker cues. Baseline 0.2 is random choice among five options.",
+      "sample_refs": [
+        "sample-records.json",
+        "sampling-summary.json",
+        "rank-controlled-records.json"
+      ]
+    },
+    {
+      "cue": "Numerical centrality",
+      "subgroup": "normal independent sample",
+      "scope": "overall",
+      "strategy": "Choose the mass nearest the mean of the five values",
+      "correct": 22,
+      "total": 44,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "This heuristic has partial incidental success, but is not a perfect answering rule on this sample. The guaranteed conditional geometry defect is tested separately. Baseline 0.2 is random choice among five options.",
+      "sample_refs": [
+        "sample-records.json",
+        "sampling-summary.json"
+      ]
+    },
+    {
+      "cue": "Numerical rank",
+      "subgroup": "q-336451",
+      "scope": "within_template",
+      "strategy": "Choose third-smallest mass",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Template identity does not force the rank in construction. Necessary retained regression tests and fixed-parameter controls vary rank; these small subgroup counts alone do not establish predictive accuracy. Baseline 0.2 is random choice among five options.",
+      "sample_refs": [
+        "sample-records.json",
+        "regression-checks.json",
+        "sampling-summary.json"
+      ]
+    },
+    {
+      "cue": "Numerical rank",
+      "subgroup": "q-336499",
+      "scope": "within_template",
+      "strategy": "Choose third-smallest mass",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Template identity does not force the rank in construction. Necessary retained regression tests and fixed-parameter controls vary rank; these small subgroup counts alone do not establish predictive accuracy. Baseline 0.2 is random choice among five options.",
+      "sample_refs": [
+        "sample-records.json",
+        "regression-checks.json",
+        "sampling-summary.json"
+      ]
+    },
+    {
+      "cue": "Numerical rank",
+      "subgroup": "q-336500",
+      "scope": "within_template",
+      "strategy": "Choose third-smallest mass",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Template identity does not force the rank in construction. Necessary retained regression tests and fixed-parameter controls vary rank; these small subgroup counts alone do not establish predictive accuracy. Baseline 0.2 is random choice among five options.",
+      "sample_refs": [
+        "sample-records.json",
+        "regression-checks.json",
+        "sampling-summary.json"
+      ]
+    },
+    {
+      "cue": "Numerical rank",
+      "subgroup": "q-336501",
+      "scope": "within_template",
+      "strategy": "Choose third-smallest mass",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Template identity does not force the rank in construction. Necessary retained regression tests and fixed-parameter controls vary rank; these small subgroup counts alone do not establish predictive accuracy. Baseline 0.2 is random choice among five options.",
+      "sample_refs": [
+        "sample-records.json",
+        "regression-checks.json",
+        "sampling-summary.json"
+      ]
+    },
+    {
+      "cue": "Numerical rank",
+      "subgroup": "q-336502",
+      "scope": "within_template",
+      "strategy": "Choose third-smallest mass",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Template identity does not force the rank in construction. Necessary retained regression tests and fixed-parameter controls vary rank; these small subgroup counts alone do not establish predictive accuracy. Baseline 0.2 is random choice among five options.",
+      "sample_refs": [
+        "sample-records.json",
+        "regression-checks.json",
+        "sampling-summary.json"
+      ]
+    },
+    {
+      "cue": "Numerical rank",
+      "subgroup": "q-336503",
+      "scope": "within_template",
+      "strategy": "Choose third-smallest mass",
+      "correct": 3,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Template identity does not force the rank in construction. Necessary retained regression tests and fixed-parameter controls vary rank; these small subgroup counts alone do not establish predictive accuracy. Baseline 0.2 is random choice among five options.",
+      "sample_refs": [
+        "sample-records.json",
+        "regression-checks.json",
+        "sampling-summary.json"
+      ]
+    },
+    {
+      "cue": "Numerical rank",
+      "subgroup": "q-336506",
+      "scope": "within_template",
+      "strategy": "Choose third-smallest mass",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Template identity does not force the rank in construction. Necessary retained regression tests and fixed-parameter controls vary rank; these small subgroup counts alone do not establish predictive accuracy. Baseline 0.2 is random choice among five options.",
+      "sample_refs": [
+        "sample-records.json",
+        "regression-checks.json",
+        "sampling-summary.json"
+      ]
+    },
+    {
+      "cue": "Numerical rank",
+      "subgroup": "q-336508",
+      "scope": "within_template",
+      "strategy": "Choose third-smallest mass",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Template identity does not force the rank in construction. Necessary retained regression tests and fixed-parameter controls vary rank; these small subgroup counts alone do not establish predictive accuracy. Baseline 0.2 is random choice among five options.",
+      "sample_refs": [
+        "sample-records.json",
+        "regression-checks.json",
+        "sampling-summary.json"
+      ]
+    },
+    {
+      "cue": "Numerical rank",
+      "subgroup": "q-336513",
+      "scope": "within_template",
+      "strategy": "Choose third-smallest mass",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Template identity does not force the rank in construction. Necessary retained regression tests and fixed-parameter controls vary rank; these small subgroup counts alone do not establish predictive accuracy. Baseline 0.2 is random choice among five options.",
+      "sample_refs": [
+        "sample-records.json",
+        "regression-checks.json",
+        "sampling-summary.json"
+      ]
+    },
+    {
+      "cue": "Numerical rank",
+      "subgroup": "q-336516",
+      "scope": "within_template",
+      "strategy": "Choose third-smallest mass",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Template identity does not force the rank in construction. Necessary retained regression tests and fixed-parameter controls vary rank; these small subgroup counts alone do not establish predictive accuracy. Baseline 0.2 is random choice among five options.",
+      "sample_refs": [
+        "sample-records.json",
+        "regression-checks.json",
+        "sampling-summary.json"
+      ]
+    },
+    {
+      "cue": "Numerical rank",
+      "subgroup": "q-336519",
+      "scope": "within_template",
+      "strategy": "Choose third-smallest mass",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Template identity does not force the rank in construction. Necessary retained regression tests and fixed-parameter controls vary rank; these small subgroup counts alone do not establish predictive accuracy. Baseline 0.2 is random choice among five options.",
+      "sample_refs": [
+        "sample-records.json",
+        "regression-checks.json",
+        "sampling-summary.json"
+      ]
+    },
+    {
+      "cue": "Maximum option distance",
+      "subgroup": "all normal cases with a unique option within 2 lb of every other option",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select that unique option, ignoring the prompt",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Guaranteed by the authored radius bound, not by mixture reasoning. Applies to 5/44 independently sampled cases before and after filtering. Baseline 0.2 is random choice among five options.",
+      "sample_refs": [
+        "shortcut_checks.py",
+        "shortcut-results.json",
+        "sample-records.json",
+        "delivery-sample/accepted.json"
+      ]
+    },
+    {
+      "cue": "Maximum option distance",
+      "subgroup": "actual delivered batch cases having that unique option",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select the unique option within 2 lb of every other option",
+      "correct": 3,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Covers three of the five actual batch members. Real learner grading accepts all three cue-produced responses. Baseline 0.2 is random choice among five options.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "shortcut-grader-input.json",
+        "shortcut-grader-report.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Maximum option distance",
+      "subgroup": "q-336451 / unique radius center",
+      "scope": "within_template",
+      "strategy": "Select the sole option within 2 lb of every other option",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "The conditional implication follows from the common bank-construction rule for this recognizable template as well as the aggregate family. Baseline 0.2 is random choice among five options.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-sample/accepted.json"
+      ]
+    },
+    {
+      "cue": "Maximum option distance",
+      "subgroup": "q-336501 / unique radius center",
+      "scope": "within_template",
+      "strategy": "Select the sole option within 2 lb of every other option",
+      "correct": 2,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "The conditional implication follows from the common bank-construction rule for this recognizable template as well as the aggregate family. Baseline 0.2 is random choice among five options.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-sample/accepted.json"
+      ]
+    },
+    {
+      "cue": "Maximum option distance",
+      "subgroup": "q-336506 / unique radius center",
+      "scope": "within_template",
+      "strategy": "Select the sole option within 2 lb of every other option",
+      "correct": 2,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "The conditional implication follows from the common bank-construction rule for this recognizable template as well as the aggregate family. Baseline 0.2 is random choice among five options.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-sample/accepted.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "generator physical guard rejection/resampling",
+      "normal bank construction and shuffle",
+      "actual publisher normalization and stable identities",
+      "inventory and within-batch deduplication at captured basis 5395",
+      "requested easy difficulty filter",
+      "faithful read-only weighted difficulty selection and freshness scenarios"
+    ],
+    "sample_refs": [
+      "runtime-results.json",
+      "delivery-sample/accepted.json",
+      "delivery-sample/delivery.json",
+      "delivery-batch/accepted.json",
+      "delivery-batch/delivery.json",
+      "delivery-selection-results.json",
+      "selection-pool-records.json",
+      "shortcut-results.json"
+    ],
+    "result": "44/44 independent records and 5/5 exact batch survive actual shared filtering. Shortcut coverage remains 5/44 and 3/5. Weighted selection draws from those records without changing geometry; current-batch-only freshness scenario retains the vulnerable members. Existing ten old generated inventory records retain the prior median weakness, recorded separately."
+  },
+  "limitations": [
+    "No live learner histories or current active-policy snapshot: selection scenarios are explicitly conditional.",
+    "Captured inventory may change after basis 5395. No database writes or publication occurred.",
+    "No current-version generated records are stored in the captured inventory; all ten old generated records were reproduced, and original source items are not labeled generated.",
+    "Review certifies tested easy math/scope/format separately from the demonstrated pedagogical failure; no claim of absence of other shortcuts."
+  ]
+}

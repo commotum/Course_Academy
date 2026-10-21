@@ -30,7 +30,7 @@ base={'H':'210','v':'90','q':'18','c':'0.5','rin':'18','rout':'12'}
 pairs=[g.generate('easy',seed=41077,template='q-336506',parameters=p) for p in [base,{**base,'H':'240'},{**base,'q':'30'},{**base,'rin':'9','rout':'6'}]]
 pairs.append(g.generate('easy',seed=41077,template='q-336503',parameters=base))
 pa=[inspect(x) for x in pairs];assert pa[0]['expected']!=pa[1]['expected'] and pa[0]['expected']!=pa[2]['expected'];assert pa[0]['expected']==pa[3]['expected']==pa[4]['expected']
-save('counterfactual-records.json',pairs);save('counterfactual-results.json',{'command':sys.argv,'order':['base','capacity 210 to 240','initial mass 18 to 30','common flow halving','context coolant to ink'],'results':pa,'relationships_pass':True})
+save('counterfactual-records.json',pairs);save('counterfactual-results.json',{'command':sys.argv,'order':['base','capacity 210 to 240','initial mass 18 to 30','common flow halving','context coolant to fertilizer'],'results':pa,'relationships_pass':True})
 # All five eligible numerical ranks at the exact earlier counterexample.
 p={'H':'20','v':'10','q':'1','c':'0.4','rin':'6','rout':'4'}
 controls=[g.generate('easy',seed=seed,template='q-336506',parameters=p) for seed in [41071,41072,41073,41076,41077]]

@@ -1,7 +1,15 @@
-# Current state — author 129
+# Current state — author 134
 
-Read the feedback, both retained findings, prior session state, and required generator/validation documentation. Reproduced the default report-installation regression first: exit 1, `decision_variation has an unresolved decision shortcut`. Log: `evidence/report-repair/current-reproduction.log`. The local corrected report passes actual schema/contract validation and 26 current-generator record replays; the original required prior-review report remains stale.
+Read feedback and both retained findings; history has 134 prior events and reports no new generator defect. Required authoring documents and the existing instructional account were read. Source and runtime hashes remain unchanged; prior source analysis and rendering are retained.
 
-Reran `checks/test_role_exchange.py`: exit 0, both resonance positions survive shared delivery, and 30 native grading expectations pass. Reran `checks/verify_retained_state.py`: exit 0, 55 handoff artifact hashes and eight unaffected-family mathematical records verified. Runtime, manifest, source, retained repairs, regression declarations and historical inventory evidence remain unchanged. Commands and results: `evidence/current-validation.json`.
+Reproduced the latest failure first:
+`/home/jake/Developer/Course_Academy/.venv/bin/python checks/check_report_installation.py`
+Exit 1: `decision_variation has an unresolved decision shortcut` at the required external prior-review destination. The staged correction passes the actual contract/schema, 26 records replay against the current generator, and conditional role counts are recomputed. Log: `evidence/report-repair/author-134-reproduction.log`.
 
-The only unfinished action is installation of the validated correction at the external prior-review destination specified in `evidence/review-installation-handoff.json`, followed by the unchanged default regression and fresh independent review. The user authorizes writes only inside this workspace. Do not retry an external write, weaken the regression, or repeat unchanged author retries. Runner installation is required. Status remains unsupported; no generator defect was demonstrated in this continuation.
+Retained checks:
+- `.../.venv/bin/python checks/test_role_exchange.py`: exit 0. Nine controlled cases, 24 mixed samples, eight default hard samples, both resonant positions after shared delivery, and 30 native-grader expectations pass. Log: `evidence/author-134-role-regression.log`.
+- `.../.venv/bin/python checks/verify_retained_state.py`: exit 0. All 55 handoff artifact hashes and eight independent unaffected-family math checks pass. Result: `evidence/author-134-retained-state.json`.
+
+Commands and outcomes: `evidence/current-validation.json`. Implementation and both strict regression declarations are preserved. No new rendering or generator changes are justified by this evidence-only finding.
+
+Unfinished action: the runner installs the validated correction at the destination in `evidence/review-installation-handoff.json`, reruns the unchanged default regression, and obtains fresh independent review. That directory is outside this session's workspace-only authorization. Do not weaken the regression, write outside the workspace, or schedule unchanged author retries. Status remains unsupported until retained finding 645672a4cd3f9bf609ca is resolved.

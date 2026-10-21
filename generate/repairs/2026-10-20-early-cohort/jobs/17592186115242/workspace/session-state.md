@@ -1,32 +1,34 @@
-# Current repair state — pass 122
+# Current repair state — pass 126
 
-Preserved the repaired runtime package, five executable regression declarations,
-and the verified one-to-one inventory replacement proposal. No runtime, engine,
-source, inventory, publication, or database changes were made.
-
-Read feedback and retained history first. Reproduced the latest failure first:
+Read feedback and retained history; first test reproduced the exact latest failure:
 `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory`
-Exit 1: five captured historical v2 banks retain the sign-only extremum shortcut.
-The possible new-seen selection scenario gives 64/64 successes; actual learner
-history is unavailable. This remains a failure, not a passed generator test.
+Exit 1: five historical v2 records preserve the sign-only extremum shortcut;
+possible-history selection witness succeeds 64/64. Actual learner history is
+unavailable. Source and inventory remain unchanged.
 
 Verification:
-`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/repair-122`
-Exit 1 solely for finding 591f580cadb749294588. Four current-generator finding
-regressions pass. All 17 practice banks and the canonical system replay. Three
-batches retain decision contrasts over 14 accepted records after shared delivery
-filtering; relevant and irrelevant counterfactuals pass. Native grading accepts
-7 correct choices and rejects 28 wrong choices. Relocation, dependencies,
-protected hashes, and staged replacement mappings pass. Commands and results
-are in evidence/repair-122. Reinspected retained actual UI screenshot
-`evidence/repair-3/render/question-001.png`; content is legible without clipping.
-Unchanged bound runtime and input hashes justify retaining that render.
+`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/repair-126`
+Exit 1 solely for 591f580cadb749294588. Four current-generator regressions pass;
+17 complete source banks and canonical system replay; 14 records across three
+small batches retain contrasts after shared delivery. Relevant and irrelevant
+counterfactuals pass. Native grader accepts 7 correct and rejects 28 wrong
+responses. Dependency versions, relocation, protected hashes and staged mappings
+pass. Visually reinspected retained actual UI screenshot
+`evidence/repair-3/render/question-001.png`; no visible clipping or overlap.
 
-Next unfinished step: the separate inventory-remediation workflow requested by
-the review must resolve the five stored generated identities, then recapture
-inventory and rerun the strict check. Complete proposed replacements remain in
-`evidence/repair-3/inventory-repair-proposal.json`; none have been applied.
-The author cannot perform that database/publication step under this task.
-Do not overwrite the repaired generator, weaken the strict inventory check,
-or repeat unchanged author passes expecting a workspace edit to alter stored
-question banks. Status remains unsupported for the delivered-pool claim.
+Preserved runtime, manifest, strict executable regressions and replacement
+proposal. No database, source, engine, publication or other-job changes.
+No new construction defect was demonstrated. Source lesson, complete question
+fields and contextual diagram support the retained elimination method.
+
+Current evidence: `evidence/repair-126/commands.json`, `results.json`,
+`grader-report.json`, `scope-resolution.json`. Exact affected identities and
+complete reproduced records remain in `affected-inventory.json` and
+`evidence/generated-records.json`.
+
+Next required action: the separate inventory-remediation workflow named in
+finding 591f580cadb749294588 must review/apply
+`evidence/repair-3/inventory-repair-proposal.json` and supply a fresh capture.
+This author task prohibits those database changes. Preserve the strict failure;
+do not substitute a hypothetical pool or repeat unchanged generator repairs.
+Status is unsupported for the delivered-pool claim.
