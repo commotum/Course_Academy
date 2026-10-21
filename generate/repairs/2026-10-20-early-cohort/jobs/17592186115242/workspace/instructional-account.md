@@ -74,3 +74,35 @@ baseline-acceptance.json. Prior detailed extraction remains in
 17592186115242/template-extraction.md; its old default-bank/rejection paragraphs
 are superseded by this account. Finite probes cannot establish absence of every
 possible shortcut, and actual learner history/policy is unavailable.
+
+## Second repair: finite delivery, not a new construction family
+
+Latest finding 41b3562c0b46bafedeed reproduces on exactly seeds 1475864945 and
+1475864946: both have b=4,d=-2 and root -8; their different residual constants
+and spacing leave the correct option at the minimum. The existing v3 sampler
+and all three earlier finding checks pass. A larger sampler probe therefore
+cannot repair this delivered subgroup. See evidence/repair-2/baseline-results.json.
+
+Before changing code, the repair is specified as finite selection from unchanged
+v3 instances. For authored easy batches of at least four, select a consecutive
+seed window that includes contrasting records in both coefficient-sign groups.
+Each group must have at least two singular values, an interior and an extreme
+correct numeric role, and at least two display positions. These are witnesses
+against the demonstrated coefficient/rank/position shortcuts, not a quota for
+all five answer ranks. No coefficient domain or valid learner notation is
+removed; individual seed replay and every observed source profile stay intact.
+Smaller requests lack room for both contrasts and retain individual sampling.
+Rejection moves the whole window deterministically, with a finite search bound;
+failure to find a defensible window raises an error rather than returning a
+known shortcut. The learner still performs the same one-row elimination, affine
+solve and residual interpretation supported by canonical f2c7cfd3-da43-5208-bd0e-
+21692357fabe, q-32245 (534e2a93-e71a-5475-894e-dfd5ca99a3a6), and the tutorial's
+contradiction/redundancy definitions. Values, explanations and banks stay v3.
+
+Latest finding 591f580cadb749294588 is a separate historical pool failure.
+The source inventory is read-only here and database edits are explicitly
+forbidden. The author must reproduce all five records, record their exact
+question and entity identities for the separate remediation workflow, and keep
+a strict failing regression while they remain selectable. New batch variety
+cannot waive that failure. This limits the final delivery claim even if all
+current-generator checks pass; no runtime filter will hide those stored records.

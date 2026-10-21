@@ -1,0 +1,278 @@
+{
+  "learner_operation": "Read the modeled quantity and equilibrium from prose, distinguish the maximum from an initial amount, translate positive rate proportional to the remaining gap into dX/dt=k(a-X), and select the corresponding equation.",
+  "fixed_features": [
+    {
+      "feature": "Correct mathematical form k(a-X), positive k",
+      "justification": "Essential inhibited-growth law in tutorial 9afedae3-a674-5a44-9d7a-4cdf57e66285 and canonical a568fc63-e81c-5210-93f0-bcbd429a9e40; changing the model is not needed for variety."
+    },
+    {
+      "feature": "Five whole-equation radio alternatives, no ODE solving",
+      "justification": "All 14 captured source banks use this response contract; current KP precedes solving models."
+    },
+    {
+      "feature": "Initial stock below capacity where given",
+      "justification": "Growth approaches equilibrium from below in the introduction; initial stock does not determine the differential equation."
+    },
+    {
+      "feature": "Default easy always has only one shortest equation and every choice uses the same capacity",
+      "justification": "No instructional necessity. This is an observed construction restriction, challenged by source all-linear capacity banks."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Equilibrium value selected from prose",
+      "eligible_variation": "Positive equilibrium values and competing plausible capacities in the bank; hold bank fixed and change which capacity is stated.",
+      "observed": "Default values vary 20..500 but the same value is inserted into all five choices; source candidate-capacity banks are excluded from default learning."
+    },
+    {
+      "role": "Initial stock versus equilibrium",
+      "eligible_variation": "Vary stock below equilibrium without changing answer; vary equilibrium while holding stock fixed to change answer.",
+      "observed": "Default easy has no initial stock; explicit repaired source fixture supports irrelevant changes but remains evidence-only."
+    },
+    {
+      "role": "Correct equation position and visible length",
+      "eligible_variation": "Correct choice may be any position and need not be uniquely shortest; distractors can share its form with a different capacity.",
+      "observed": "Seed shuffling varies position, but uniquely shortest choice is correct in every fresh and delivered easy record."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "Default structural bank across all five contexts",
+      "sample_refs": [
+        "samples.json",
+        "sampling-results.json",
+        "shortcut-fresh.json"
+      ],
+      "result": "40 fresh samples, seeds 48371..48410, cover all five contexts and all five raw correct positions; all are the same structural bank and all have length shortcut."
+    },
+    {
+      "case": "Exact runner batch and surviving batch",
+      "sample_refs": [
+        "runner-batch.json",
+        "delivery-batch/accepted.json",
+        "shortcut-delivered-batch.json"
+      ],
+      "result": "5/5 accepted, 0 duplicates; length-only action solves 5/5 before and after shared filtering."
+    },
+    {
+      "case": "Competing numeric capacities with irrelevant initial stock",
+      "sample_refs": [
+        "source-replay-records.json",
+        "counterfactual-records.json",
+        "restriction-results.json"
+      ],
+      "result": "Observed tutoring, aquarium, incubator, computer, garage, sanctuary and rehabilitation banks replay, but default easy excludes this family."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Capacity 120->240, context deer and seed624 held fixed.",
+      "expected": "Prompts, correct model and substituted solution change together. Each correct choice accepted; wrong options rejected.",
+      "observed": "Models k(120-N)->k(240-N); prompt/solution change; native grading passes; both rendered screenshots show the corresponding values.",
+      "status": "passed",
+      "justification": "Capacity is equilibrium in the canonical model. This verifies numeric dependency but does not itself challenge the shortest-answer assignment.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-all-results.json",
+        "render-pairs/rendering.json",
+        "visual-inspection.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "Hold tutoring source bank [95,30,60,100,950] fixed, initial10 unchanged, change stated capacity95->60.",
+      "expected": "Qualifying option changes from k(95-T) to k(60-T), with corresponding explanation and actual grader response. Valid same-method learner tasks should be available without arbitrary ratio constraints.",
+      "observed": "Reviewer reference pair renders and grades with changed qualifying choice (old choice rejected). Generator explicit capacity60 instead raises whole observed bank needs bounded integer constants; capacity95 version is evidence-only and default excludes entire family.",
+      "status": "failed",
+      "justification": "Source 5651275c-fd64-5799-85e0-52ab15ebd288 requires reading which numeric target is equilibrium. Exact distractor/capacity ratios are incidental, not a prerequisite of inhibited growth. Reference pair is clearly marked reviewer-authored, not claimed generated output.",
+      "sample_refs": [
+        "fixed-bank-records.json",
+        "restriction-results.json",
+        "fixed-bank-grader-input.json",
+        "fixed-bank-grader-results.json",
+        "render-fixed-bank/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Tutoring initial population10->20 with equilibrium95 and source template/seed624 fixed.",
+      "expected": "Only initial-context text changes; whole equation and explanation stay k(95-T), and grading accepts the same mathematical choice.",
+      "observed": "Bank and worked solution preserved; initial quantity rendered as10 then20; native grading accepts correct and rejects all distractors for both. This is explicit evidence-only source-profile coverage, not default sampling coverage.",
+      "status": "passed",
+      "justification": "Source initial populations supply context; requested ODE depends on maximum and positive proportionality law, not initial condition.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-all-results.json",
+        "render-pairs/rendering.json",
+        "visual-inspection.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "uniquely shortest equation",
+      "subgroup": "direct_model context=animals",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the equation with the fewest nonwhitespace characters, ignoring prose, values and mathematical meaning.",
+      "correct": 8,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "All subgroup members are solved by answer length. Baseline is uniform guessing among five radio choices (1/5). Visual screenshots confirm the extra minus signs/population factors also make distractors visibly longer.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-fresh.json"
+      ]
+    },
+    {
+      "cue": "uniquely shortest equation",
+      "subgroup": "direct_model context=computers",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the equation with the fewest nonwhitespace characters, ignoring prose, values and mathematical meaning.",
+      "correct": 12,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "All subgroup members are solved by answer length. Baseline is uniform guessing among five radio choices (1/5). Visual screenshots confirm the extra minus signs/population factors also make distractors visibly longer.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-fresh.json"
+      ]
+    },
+    {
+      "cue": "uniquely shortest equation",
+      "subgroup": "direct_model context=cultures",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the equation with the fewest nonwhitespace characters, ignoring prose, values and mathematical meaning.",
+      "correct": 7,
+      "total": 7,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "All subgroup members are solved by answer length. Baseline is uniform guessing among five radio choices (1/5). Visual screenshots confirm the extra minus signs/population factors also make distractors visibly longer.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-fresh.json"
+      ]
+    },
+    {
+      "cue": "uniquely shortest equation",
+      "subgroup": "direct_model context=deer",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the equation with the fewest nonwhitespace characters, ignoring prose, values and mathematical meaning.",
+      "correct": 8,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "All subgroup members are solved by answer length. Baseline is uniform guessing among five radio choices (1/5). Visual screenshots confirm the extra minus signs/population factors also make distractors visibly longer.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-fresh.json"
+      ]
+    },
+    {
+      "cue": "uniquely shortest equation",
+      "subgroup": "direct_model context=students",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the equation with the fewest nonwhitespace characters, ignoring prose, values and mathematical meaning.",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "All subgroup members are solved by answer length. Baseline is uniform guessing among five radio choices (1/5). Visual screenshots confirm the extra minus signs/population factors also make distractors visibly longer.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-fresh.json"
+      ]
+    },
+    {
+      "cue": "uniquely shortest equation",
+      "subgroup": "all independently sampled direct_model",
+      "scope": "within_template",
+      "strategy": "Choose the uniquely shortest equation without reading the prompt or interpreting its mathematics.",
+      "correct": 40,
+      "total": 40,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Perfect prediction without modeling or reading the capacity; uniform five-choice guessing baseline is 20%. This cue uses length alone, unlike recognizing that the rate is proportional to a positive remaining gap. Shuffling and changing capacity do not break it.",
+      "sample_refs": [
+        "shortcut-fresh.json",
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "uniquely shortest equation",
+      "subgroup": "exact runner batch",
+      "scope": "overall",
+      "strategy": "Choose the uniquely shortest equation without reading the prompt or interpreting its mathematics.",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Perfect prediction without modeling or reading the capacity; uniform five-choice guessing baseline is 20%. This cue uses length alone, unlike recognizing that the rate is proportional to a positive remaining gap. Shuffling and changing capacity do not break it.",
+      "sample_refs": [
+        "shortcut-batch.json",
+        "runner-batch.json"
+      ]
+    },
+    {
+      "cue": "uniquely shortest equation",
+      "subgroup": "exact delivered batch",
+      "scope": "within_template",
+      "strategy": "Choose the uniquely shortest equation without reading the prompt or interpreting its mathematics.",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Perfect prediction without modeling or reading the capacity; uniform five-choice guessing baseline is 20%. This cue uses length alone, unlike recognizing that the rate is proportional to a positive remaining gap. Shuffling and changing capacity do not break it.",
+      "sample_refs": [
+        "shortcut-delivered-batch.json",
+        "runner-batch.json"
+      ]
+    },
+    {
+      "cue": "first authored answer position",
+      "subgroup": "direct_model fresh raw order",
+      "scope": "within_template",
+      "strategy": "Choose first option.",
+      "correct": 8,
+      "total": 40,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 20%; observed position counts {0: 8, 1: 7, 2: 8, 3: 12, 4: 5}. Positions vary; this does not mitigate the independent length cue. UI may reorder by normalized IDs.",
+      "sample_refs": [
+        "samples.json",
+        "sampling-results.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "generator rejection/resampling branch inspection and explicit boundary rejection",
+      "actual shared publisher normalization, identity, inventory and within-batch deduplication",
+      "requested easy difficulty filter",
+      "captured inventory basis5380; generated record reproduction",
+      "learner selection code inspection, conditional invariance and bounded read-only within-easy digest/exclusion reproduction"
+    ],
+    "sample_refs": [
+      "packaging-results.json",
+      "delivery-fresh/delivery.json",
+      "delivery-batch/delivery.json",
+      "delivery-fresh/accepted.json",
+      "delivery-batch/accepted.json",
+      "selection-results.json",
+      "inventory-results.json",
+      "generated-records.json"
+    ],
+    "result": "40/40 independent and5/5 runner records survive. Default easy has no invalid draws requiring rejection. All five accepted batch members retain shortest-option cue under any nonempty history-filtered subset; illustrative within-easy selection reproductions select only cue-answerable members. Mixed learner pool can include originals or other difficulty bands, so no claim all future learner questions are shortcut-answerable."
+  },
+  "limitations": [
+    "Finite fresh sampling does not prove absence of every shortcut; demonstrated cue is structural in the inspected default easy bank.",
+    "No publication preparation file exists; shared read-only filtering uses captured inventory, not later changing state.",
+    "No actual active policy weights or learner history supplied; conditional selection results are explicit, not a claimed realized sequence.",
+    "Stored non-source inventory contains only moderate/hard records; this review does not certify their pedagogical variety.",
+    "Canonical fish example lacks captured answer bank; rehabilitation source lacks key/solution; independent inference is distinguished from replay."
+  ]
+}

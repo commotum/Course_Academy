@@ -1,0 +1,3013 @@
+[
+  {
+    "label": "independent-0",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186229165,
+        "id": "570160ff-c937-57e7-bd78-702f7f018e64",
+        "title": "Solving an Initial Value Problem"
+      },
+      "question": {
+        ":question/id": "bf4d3807-6dbb-54bc-a2bb-ff78dfc957d8",
+        ":question/problem": "Consider the following initial value problem:\n\n$$\n{y}^{′}-4y=10{e}^{3x},\\,y(0)=-6\n$$\n\nGiven that the differential equation \n\n$$\n{y}^{′}-4y=10{e}^{3x}\n$$\n\nhas the complementary solution ${y}_{c}=A{e}^{4x},$ solve the initial value problem.\n\n$y(x)=$\n{{field-1}}",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "a6154870-e60f-50fc-ac0d-c6d80bc32f20",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "69259ac6-373b-5718-a63f-c2a702af57a8",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "4{e}^{4x}-10{e}^{3x}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "69259ac6-373b-5718-a63f-c2a702af57a8"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/worked-solution": "To find the general solution of an inhomogeneous first-order linear equation with constant coefficients on the left-hand side, we must find the sum of the complementary and particular solutions.\n\nTo find the complementary solution ${y}_{c},$ we solve the corresponding homogeneous equation, given by\n\n$$\n{y}_{c}^{′}-4{y}_{c}=0.\n$$\n\nSolving this equation, we find that the complementary solution is\n\n$$\n{y}_{c}=A{e}^{4x}\n$$\n\nwhere $A$ is an arbitrary constant.\n\nWe now need to find the particular solution ${y}_{p}(x).$\n\nWe see that the right-hand side is $10{e}^{3x},$ and ${e}^{3x}$ is not a term in the complementary solution, so we assume a particular solution of the form\n\n$$\n{y}_{p}=\\alpha {e}^{3x},\n$$\n\nwhere $\\alpha $ is a constant to be determined.\n\nCalculating the first derivative of ${y}_{p}$ gives\n\n$$\n{y}_{p}^{′}=3\\alpha {e}^{3x}.\n$$\n\nTo find the value of $\\alpha ,$ we substitute ${y}_{p}$ and ${y}_{p}^{′}$ into the differential equation:\n\n$$\n\\begin{aligned}(3\\alpha {e}^{3x})-4(\\alpha {e}^{3x}) & =10{e}^{3x} \\\\ (3-4)\\alpha {e}^{3x} & =10{e}^{3x} \\\\ -\\alpha {e}^{3x} & =10{e}^{3x} \\\\ \\alpha  & =-10\\end{aligned}\n$$\n\nTherefore, the particular solution ${y}_{p}(x)$ is\n\n$$\n{y}_{p}(x)=-10{e}^{3x}.\n$$\n\nNow, since the general solution is given by\n\n$$\ny(x)={y}_{c}(x)+{y}_{p}(x),\n$$\n\nthe general solution in our case is\n\n$$\ny=A{e}^{4x}-10{e}^{3x}.\n$$\n\nWe can find the constant $A$ using the initial conditions.\n\nSubstituting $y(0)=-6$ into the general solution gives\n\n$$\n\\begin{aligned}A-10 & =-6 \\\\ A & =4\\end{aligned}\n$$\n\nTherefore, the solution to the initial value problem is\n\n$$\ny=4{e}^{4x}-10{e}^{3x}.\n$$"
+      },
+      "generation": {
+        "version": "exponential-ivp-1.0-frozen",
+        "seed": 2033944549,
+        "template": "nonresonant",
+        "parameters": {
+          "h": 4,
+          "k": 3,
+          "f": 10,
+          "v": -6
+        },
+        "bank_profile": null,
+        "origin": "authored",
+        "source_id": null,
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "mathematical_fingerprint": "07ecd494acaa0ff5946ba22441f6ead5e13bdaddad41af9c5e04778a09a2df29",
+        "content_identity": "4cf15c9ac6b985ae0c4fbd558661608ed20b21b96248366503ad4cddbfac3ddd",
+        "domain": "x real",
+        "source_missing_completion": false,
+        "sympy": "1.14.0"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "2 \\left(2 e^{x} - 5\\right) e^{3 x}",
+        "expected": "accepted",
+        "purpose": "Independent symbolic solution, refactored where possible"
+      },
+      {
+        "submitted": "5 e^{4 x} - 10 e^{3 x}",
+        "expected": "rejected",
+        "purpose": "Correct ODE but incorrect initial value"
+      },
+      {
+        "submitted": "0",
+        "expected": "rejected",
+        "purpose": "Ignore nonzero forcing"
+      },
+      {
+        "submitted": "4 e^{4 x} - 10 e^{3 x} + 1",
+        "expected": "rejected",
+        "purpose": "Add erroneous constant"
+      }
+    ]
+  },
+  {
+    "label": "independent-1",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186229165,
+        "id": "570160ff-c937-57e7-bd78-702f7f018e64",
+        "title": "Solving an Initial Value Problem"
+      },
+      "question": {
+        ":question/id": "71023e88-5181-598d-a582-a1af9d91dd29",
+        ":question/problem": "Consider the following initial value problem:\n\n$$\n{y}^{′}+5y=6{e}^{4x},\\,y(0)=5\n$$\n\nGiven that the differential equation \n\n$$\n{y}^{′}+5y=6{e}^{4x}\n$$\n\nhas the complementary solution ${y}_{c}=A{e}^{-5x},$ solve the initial value problem.\n\n$y(x)=$\n{{field-1}}",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "04eb6435-f4a6-55f6-9557-b93b92b1ae1d",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "76699d1d-8f1c-53b1-8cad-d4a8f3b6856b",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{13}{3}{e}^{-5x}+\\frac{2}{3}{e}^{4x}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "76699d1d-8f1c-53b1-8cad-d4a8f3b6856b"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/worked-solution": "To find the general solution of an inhomogeneous first-order linear equation with constant coefficients on the left-hand side, we must find the sum of the complementary and particular solutions.\n\nTo find the complementary solution ${y}_{c},$ we solve the corresponding homogeneous equation, given by\n\n$$\n{y}_{c}^{′}+5{y}_{c}=0.\n$$\n\nSolving this equation, we find that the complementary solution is\n\n$$\n{y}_{c}=A{e}^{-5x}\n$$\n\nwhere $A$ is an arbitrary constant.\n\nWe now need to find the particular solution ${y}_{p}(x).$\n\nWe see that the right-hand side is $6{e}^{4x},$ and ${e}^{4x}$ is not a term in the complementary solution, so we assume a particular solution of the form\n\n$$\n{y}_{p}=\\alpha {e}^{4x},\n$$\n\nwhere $\\alpha $ is a constant to be determined.\n\nCalculating the first derivative of ${y}_{p}$ gives\n\n$$\n{y}_{p}^{′}=4\\alpha {e}^{4x}.\n$$\n\nTo find the value of $\\alpha ,$ we substitute ${y}_{p}$ and ${y}_{p}^{′}$ into the differential equation:\n\n$$\n\\begin{aligned}(4\\alpha {e}^{4x})+5(\\alpha {e}^{4x}) & =6{e}^{4x} \\\\ (4+5)\\alpha {e}^{4x} & =6{e}^{4x} \\\\ 9\\alpha {e}^{4x} & =6{e}^{4x} \\\\ \\alpha  & =\\frac{2}{3}\\end{aligned}\n$$\n\nTherefore, the particular solution ${y}_{p}(x)$ is\n\n$$\n{y}_{p}(x)=\\frac{2}{3}{e}^{4x}.\n$$\n\nNow, since the general solution is given by\n\n$$\ny(x)={y}_{c}(x)+{y}_{p}(x),\n$$\n\nthe general solution in our case is\n\n$$\ny=A{e}^{-5x}+\\frac{2}{3}{e}^{4x}.\n$$\n\nWe can find the constant $A$ using the initial conditions.\n\nSubstituting $y(0)=5$ into the general solution gives\n\n$$\n\\begin{aligned}A+\\frac{2}{3} & =5 \\\\ A & =\\frac{13}{3}\\end{aligned}\n$$\n\nTherefore, the solution to the initial value problem is\n\n$$\ny=\\frac{13}{3}{e}^{-5x}+\\frac{2}{3}{e}^{4x}.\n$$"
+      },
+      "generation": {
+        "version": "exponential-ivp-1.0-frozen",
+        "seed": 2033944550,
+        "template": "nonresonant",
+        "parameters": {
+          "h": -5,
+          "k": 4,
+          "f": 6,
+          "v": 5
+        },
+        "bank_profile": null,
+        "origin": "authored",
+        "source_id": null,
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "mathematical_fingerprint": "633afc5791f9aaf611231638df2e531b7bf86bc4c79dddbe83d303f0eb85c9c4",
+        "content_identity": "74dbb429bcc690400075d923c7e3e3ba1440df673f6421e71cf4730eaabe8850",
+        "domain": "x real",
+        "source_missing_completion": false,
+        "sympy": "1.14.0"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "\\frac{\\left(2 e^{9 x} + 13\\right) e^{- 5 x}}{3}",
+        "expected": "accepted",
+        "purpose": "Independent symbolic solution, refactored where possible"
+      },
+      {
+        "submitted": "\\frac{2 e^{4 x}}{3} + \\frac{16 e^{- 5 x}}{3}",
+        "expected": "rejected",
+        "purpose": "Correct ODE but incorrect initial value"
+      },
+      {
+        "submitted": "0",
+        "expected": "rejected",
+        "purpose": "Ignore nonzero forcing"
+      },
+      {
+        "submitted": "\\frac{2 e^{4 x}}{3} + 1 + \\frac{13 e^{- 5 x}}{3}",
+        "expected": "rejected",
+        "purpose": "Add erroneous constant"
+      }
+    ]
+  },
+  {
+    "label": "independent-2",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186229165,
+        "id": "570160ff-c937-57e7-bd78-702f7f018e64",
+        "title": "Solving an Initial Value Problem"
+      },
+      "question": {
+        ":question/id": "e6269617-995b-5d78-9058-bec0d2d5e69f",
+        ":question/problem": "Consider the following initial value problem:\n\n$$\n{y}^{′}-6y=12{e}^{-6x},\\,y(0)=-7\n$$\n\nGiven that the differential equation \n\n$$\n{y}^{′}-6y=12{e}^{-6x}\n$$\n\nhas the complementary solution ${y}_{c}=A{e}^{6x},$ solve the initial value problem.\n\n$y(x)=$\n{{field-1}}",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "66e1a558-be74-5db2-97f1-b47039aabdd7",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "4145152d-74b6-5a94-9823-32f7b589bf34",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "-6{e}^{6x}-{e}^{-6x}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "4145152d-74b6-5a94-9823-32f7b589bf34"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/worked-solution": "To find the general solution of an inhomogeneous first-order linear equation with constant coefficients on the left-hand side, we must find the sum of the complementary and particular solutions.\n\nTo find the complementary solution ${y}_{c},$ we solve the corresponding homogeneous equation, given by\n\n$$\n{y}_{c}^{′}-6{y}_{c}=0.\n$$\n\nSolving this equation, we find that the complementary solution is\n\n$$\n{y}_{c}=A{e}^{6x}\n$$\n\nwhere $A$ is an arbitrary constant.\n\nWe now need to find the particular solution ${y}_{p}(x).$\n\nWe see that the right-hand side is $12{e}^{-6x},$ and ${e}^{-6x}$ is not a term in the complementary solution, so we assume a particular solution of the form\n\n$$\n{y}_{p}=\\alpha {e}^{-6x},\n$$\n\nwhere $\\alpha $ is a constant to be determined.\n\nCalculating the first derivative of ${y}_{p}$ gives\n\n$$\n{y}_{p}^{′}=-6\\alpha {e}^{-6x}.\n$$\n\nTo find the value of $\\alpha ,$ we substitute ${y}_{p}$ and ${y}_{p}^{′}$ into the differential equation:\n\n$$\n\\begin{aligned}(-6\\alpha {e}^{-6x})-6(\\alpha {e}^{-6x}) & =12{e}^{-6x} \\\\ (-6-6)\\alpha {e}^{-6x} & =12{e}^{-6x} \\\\ -12\\alpha {e}^{-6x} & =12{e}^{-6x} \\\\ \\alpha  & =-1\\end{aligned}\n$$\n\nTherefore, the particular solution ${y}_{p}(x)$ is\n\n$$\n{y}_{p}(x)=-{e}^{-6x}.\n$$\n\nNow, since the general solution is given by\n\n$$\ny(x)={y}_{c}(x)+{y}_{p}(x),\n$$\n\nthe general solution in our case is\n\n$$\ny=A{e}^{6x}-{e}^{-6x}.\n$$\n\nWe can find the constant $A$ using the initial conditions.\n\nSubstituting $y(0)=-7$ into the general solution gives\n\n$$\n\\begin{aligned}A-1 & =-7 \\\\ A & =-6\\end{aligned}\n$$\n\nTherefore, the solution to the initial value problem is\n\n$$\ny=-6{e}^{6x}-{e}^{-6x}.\n$$"
+      },
+      "generation": {
+        "version": "exponential-ivp-1.0-frozen",
+        "seed": 2033944551,
+        "template": "nonresonant",
+        "parameters": {
+          "h": 6,
+          "k": -6,
+          "f": 12,
+          "v": -7
+        },
+        "bank_profile": null,
+        "origin": "authored",
+        "source_id": null,
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "mathematical_fingerprint": "2ec20a028271c5662291e24fd4ee5b5967c940dd233e5cc592e4038c5ab09fbc",
+        "content_identity": "b32d92497be3db59849792bedbe1af01e58d614cb5e152135f8c2bd0872a4a8a",
+        "domain": "x real",
+        "source_missing_completion": false,
+        "sympy": "1.14.0"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "- \\left(6 e^{12 x} + 1\\right) e^{- 6 x}",
+        "expected": "accepted",
+        "purpose": "Independent symbolic solution, refactored where possible"
+      },
+      {
+        "submitted": "- 5 e^{6 x} - e^{- 6 x}",
+        "expected": "rejected",
+        "purpose": "Correct ODE but incorrect initial value"
+      },
+      {
+        "submitted": "0",
+        "expected": "rejected",
+        "purpose": "Ignore nonzero forcing"
+      },
+      {
+        "submitted": "- 6 e^{6 x} + 1 - e^{- 6 x}",
+        "expected": "rejected",
+        "purpose": "Add erroneous constant"
+      }
+    ]
+  },
+  {
+    "label": "independent-3",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186229165,
+        "id": "570160ff-c937-57e7-bd78-702f7f018e64",
+        "title": "Solving an Initial Value Problem"
+      },
+      "question": {
+        ":question/id": "e37dfd07-9b10-57e4-a973-a69bb8e68703",
+        ":question/problem": "Consider the following initial value problem:\n\n$$\n{y}^{′}+2y={e}^{5x},\\,y(0)=-8\n$$\n\nGiven that the differential equation \n\n$$\n{y}^{′}+2y={e}^{5x}\n$$\n\nhas the complementary solution ${y}_{c}=A{e}^{-2x},$ solve the initial value problem.\n\n$y(x)=$\n{{field-1}}",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "8f87dc40-f83f-5676-8986-3f3f40f2bd4b",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "38577973-8670-5a3f-ba35-f7e7981a4014",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "-\\frac{57}{7}{e}^{-2x}+\\frac{1}{7}{e}^{5x}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "38577973-8670-5a3f-ba35-f7e7981a4014"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/worked-solution": "To find the general solution of an inhomogeneous first-order linear equation with constant coefficients on the left-hand side, we must find the sum of the complementary and particular solutions.\n\nTo find the complementary solution ${y}_{c},$ we solve the corresponding homogeneous equation, given by\n\n$$\n{y}_{c}^{′}+2{y}_{c}=0.\n$$\n\nSolving this equation, we find that the complementary solution is\n\n$$\n{y}_{c}=A{e}^{-2x}\n$$\n\nwhere $A$ is an arbitrary constant.\n\nWe now need to find the particular solution ${y}_{p}(x).$\n\nWe see that the right-hand side is ${e}^{5x},$ and ${e}^{5x}$ is not a term in the complementary solution, so we assume a particular solution of the form\n\n$$\n{y}_{p}=\\alpha {e}^{5x},\n$$\n\nwhere $\\alpha $ is a constant to be determined.\n\nCalculating the first derivative of ${y}_{p}$ gives\n\n$$\n{y}_{p}^{′}=5\\alpha {e}^{5x}.\n$$\n\nTo find the value of $\\alpha ,$ we substitute ${y}_{p}$ and ${y}_{p}^{′}$ into the differential equation:\n\n$$\n\\begin{aligned}(5\\alpha {e}^{5x})+2(\\alpha {e}^{5x}) & ={e}^{5x} \\\\ (5+2)\\alpha {e}^{5x} & ={e}^{5x} \\\\ 7\\alpha {e}^{5x} & ={e}^{5x} \\\\ \\alpha  & =\\frac{1}{7}\\end{aligned}\n$$\n\nTherefore, the particular solution ${y}_{p}(x)$ is\n\n$$\n{y}_{p}(x)=\\frac{1}{7}{e}^{5x}.\n$$\n\nNow, since the general solution is given by\n\n$$\ny(x)={y}_{c}(x)+{y}_{p}(x),\n$$\n\nthe general solution in our case is\n\n$$\ny=A{e}^{-2x}+\\frac{1}{7}{e}^{5x}.\n$$\n\nWe can find the constant $A$ using the initial conditions.\n\nSubstituting $y(0)=-8$ into the general solution gives\n\n$$\n\\begin{aligned}A+\\frac{1}{7} & =-8 \\\\ A & =-\\frac{57}{7}\\end{aligned}\n$$\n\nTherefore, the solution to the initial value problem is\n\n$$\ny=-\\frac{57}{7}{e}^{-2x}+\\frac{1}{7}{e}^{5x}.\n$$"
+      },
+      "generation": {
+        "version": "exponential-ivp-1.0-frozen",
+        "seed": 2033944552,
+        "template": "nonresonant",
+        "parameters": {
+          "h": -2,
+          "k": 5,
+          "f": 1,
+          "v": -8
+        },
+        "bank_profile": null,
+        "origin": "authored",
+        "source_id": null,
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "mathematical_fingerprint": "34fe3da9ba9e8fa33e422545f5484fed9c204fee9c891445dc7733195906f63a",
+        "content_identity": "bc7b1704bcf99caad6cad764a45716f547c94753428d64d93ec081a9e74a13f5",
+        "domain": "x real",
+        "source_missing_completion": false,
+        "sympy": "1.14.0"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "\\frac{\\left(e^{7 x} - 57\\right) e^{- 2 x}}{7}",
+        "expected": "accepted",
+        "purpose": "Independent symbolic solution, refactored where possible"
+      },
+      {
+        "submitted": "\\frac{e^{5 x}}{7} - \\frac{50 e^{- 2 x}}{7}",
+        "expected": "rejected",
+        "purpose": "Correct ODE but incorrect initial value"
+      },
+      {
+        "submitted": "0",
+        "expected": "rejected",
+        "purpose": "Ignore nonzero forcing"
+      },
+      {
+        "submitted": "\\frac{e^{5 x}}{7} + 1 - \\frac{57 e^{- 2 x}}{7}",
+        "expected": "rejected",
+        "purpose": "Add erroneous constant"
+      }
+    ]
+  },
+  {
+    "label": "independent-4",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186229165,
+        "id": "570160ff-c937-57e7-bd78-702f7f018e64",
+        "title": "Solving an Initial Value Problem"
+      },
+      "question": {
+        ":question/id": "30dc0989-56ae-5d5b-9ae3-3f3057ef0af6",
+        ":question/problem": "Consider the following initial value problem:\n\n$$\n{y}^{′}+4y=5{e}^{-3x},\\,y(0)=-1\n$$\n\nGiven that the differential equation \n\n$$\n{y}^{′}+4y=5{e}^{-3x}\n$$\n\nhas the complementary solution ${y}_{c}=A{e}^{-4x},$ solve the initial value problem.\n\n$y(x)=$\n{{field-1}}",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "1dbbc056-3cbf-5a7c-b99a-81e82597f715",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "344cf055-9e46-50bc-8396-84d62fb2e3a5",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "-6{e}^{-4x}+5{e}^{-3x}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "344cf055-9e46-50bc-8396-84d62fb2e3a5"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/worked-solution": "To find the general solution of an inhomogeneous first-order linear equation with constant coefficients on the left-hand side, we must find the sum of the complementary and particular solutions.\n\nTo find the complementary solution ${y}_{c},$ we solve the corresponding homogeneous equation, given by\n\n$$\n{y}_{c}^{′}+4{y}_{c}=0.\n$$\n\nSolving this equation, we find that the complementary solution is\n\n$$\n{y}_{c}=A{e}^{-4x}\n$$\n\nwhere $A$ is an arbitrary constant.\n\nWe now need to find the particular solution ${y}_{p}(x).$\n\nWe see that the right-hand side is $5{e}^{-3x},$ and ${e}^{-3x}$ is not a term in the complementary solution, so we assume a particular solution of the form\n\n$$\n{y}_{p}=\\alpha {e}^{-3x},\n$$\n\nwhere $\\alpha $ is a constant to be determined.\n\nCalculating the first derivative of ${y}_{p}$ gives\n\n$$\n{y}_{p}^{′}=-3\\alpha {e}^{-3x}.\n$$\n\nTo find the value of $\\alpha ,$ we substitute ${y}_{p}$ and ${y}_{p}^{′}$ into the differential equation:\n\n$$\n\\begin{aligned}(-3\\alpha {e}^{-3x})+4(\\alpha {e}^{-3x}) & =5{e}^{-3x} \\\\ (-3+4)\\alpha {e}^{-3x} & =5{e}^{-3x} \\\\ \\alpha {e}^{-3x} & =5{e}^{-3x} \\\\ \\alpha  & =5\\end{aligned}\n$$\n\nTherefore, the particular solution ${y}_{p}(x)$ is\n\n$$\n{y}_{p}(x)=5{e}^{-3x}.\n$$\n\nNow, since the general solution is given by\n\n$$\ny(x)={y}_{c}(x)+{y}_{p}(x),\n$$\n\nthe general solution in our case is\n\n$$\ny=A{e}^{-4x}+5{e}^{-3x}.\n$$\n\nWe can find the constant $A$ using the initial conditions.\n\nSubstituting $y(0)=-1$ into the general solution gives\n\n$$\n\\begin{aligned}A+5 & =-1 \\\\ A & =-6\\end{aligned}\n$$\n\nTherefore, the solution to the initial value problem is\n\n$$\ny=-6{e}^{-4x}+5{e}^{-3x}.\n$$"
+      },
+      "generation": {
+        "version": "exponential-ivp-1.0-frozen",
+        "seed": 2033944553,
+        "template": "nonresonant",
+        "parameters": {
+          "h": -4,
+          "k": -3,
+          "f": 5,
+          "v": -1
+        },
+        "bank_profile": null,
+        "origin": "authored",
+        "source_id": null,
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "mathematical_fingerprint": "968d2d48fd6d362817410acd946b3f6a79216deabc53f909833e7fb3e46e0e32",
+        "content_identity": "7590fad434c1d7bbc0c4513a3207f046438a8265d6937c7963f31acb4a845ab8",
+        "domain": "x real",
+        "source_missing_completion": false,
+        "sympy": "1.14.0"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "\\left(5 e^{x} - 6\\right) e^{- 4 x}",
+        "expected": "accepted",
+        "purpose": "Independent symbolic solution, refactored where possible"
+      },
+      {
+        "submitted": "5 e^{- 3 x} - 5 e^{- 4 x}",
+        "expected": "rejected",
+        "purpose": "Correct ODE but incorrect initial value"
+      },
+      {
+        "submitted": "0",
+        "expected": "rejected",
+        "purpose": "Ignore nonzero forcing"
+      },
+      {
+        "submitted": "1 + 5 e^{- 3 x} - 6 e^{- 4 x}",
+        "expected": "rejected",
+        "purpose": "Add erroneous constant"
+      }
+    ]
+  },
+  {
+    "label": "independent-5",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186229165,
+        "id": "570160ff-c937-57e7-bd78-702f7f018e64",
+        "title": "Solving an Initial Value Problem"
+      },
+      "question": {
+        ":question/id": "3c014441-20d7-5c85-9c0e-3d98871cc8c8",
+        ":question/problem": "Consider the following initial value problem:\n\n$$\n{y}^{′}-2y=4{e}^{3x},\\,y(0)=1\n$$\n\nGiven that the differential equation \n\n$$\n{y}^{′}-2y=4{e}^{3x}\n$$\n\nhas the complementary solution ${y}_{c}=A{e}^{2x},$ solve the initial value problem.\n\n$y(x)=$\n{{field-1}}",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "3fc59679-e01c-5fae-a1dd-83028fc4e7cc",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "bbc5bca4-c598-5778-afaf-203584ba0b19",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "-3{e}^{2x}+4{e}^{3x}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "bbc5bca4-c598-5778-afaf-203584ba0b19"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/worked-solution": "To find the general solution of an inhomogeneous first-order linear equation with constant coefficients on the left-hand side, we must find the sum of the complementary and particular solutions.\n\nTo find the complementary solution ${y}_{c},$ we solve the corresponding homogeneous equation, given by\n\n$$\n{y}_{c}^{′}-2{y}_{c}=0.\n$$\n\nSolving this equation, we find that the complementary solution is\n\n$$\n{y}_{c}=A{e}^{2x}\n$$\n\nwhere $A$ is an arbitrary constant.\n\nWe now need to find the particular solution ${y}_{p}(x).$\n\nWe see that the right-hand side is $4{e}^{3x},$ and ${e}^{3x}$ is not a term in the complementary solution, so we assume a particular solution of the form\n\n$$\n{y}_{p}=\\alpha {e}^{3x},\n$$\n\nwhere $\\alpha $ is a constant to be determined.\n\nCalculating the first derivative of ${y}_{p}$ gives\n\n$$\n{y}_{p}^{′}=3\\alpha {e}^{3x}.\n$$\n\nTo find the value of $\\alpha ,$ we substitute ${y}_{p}$ and ${y}_{p}^{′}$ into the differential equation:\n\n$$\n\\begin{aligned}(3\\alpha {e}^{3x})-2(\\alpha {e}^{3x}) & =4{e}^{3x} \\\\ (3-2)\\alpha {e}^{3x} & =4{e}^{3x} \\\\ \\alpha {e}^{3x} & =4{e}^{3x} \\\\ \\alpha  & =4\\end{aligned}\n$$\n\nTherefore, the particular solution ${y}_{p}(x)$ is\n\n$$\n{y}_{p}(x)=4{e}^{3x}.\n$$\n\nNow, since the general solution is given by\n\n$$\ny(x)={y}_{c}(x)+{y}_{p}(x),\n$$\n\nthe general solution in our case is\n\n$$\ny=A{e}^{2x}+4{e}^{3x}.\n$$\n\nWe can find the constant $A$ using the initial conditions.\n\nSubstituting $y(0)=1$ into the general solution gives\n\n$$\n\\begin{aligned}A+4 & =1 \\\\ A & =-3\\end{aligned}\n$$\n\nTherefore, the solution to the initial value problem is\n\n$$\ny=-3{e}^{2x}+4{e}^{3x}.\n$$"
+      },
+      "generation": {
+        "version": "exponential-ivp-1.0-frozen",
+        "seed": 770,
+        "template": "nonresonant",
+        "parameters": {
+          "h": 2,
+          "k": 3,
+          "f": 4,
+          "v": 1
+        },
+        "bank_profile": null,
+        "origin": "authored",
+        "source_id": null,
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "mathematical_fingerprint": "42f2574988b6b843058dd6f909085315676bb0930a443114828765a1009c871b",
+        "content_identity": "73fe37a6b761883e75ec12105bdd8978b084a0cb7ba4b499065f64033eff70c1",
+        "domain": "x real",
+        "source_missing_completion": false,
+        "sympy": "1.14.0"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "\\left(4 e^{x} - 3\\right) e^{2 x}",
+        "expected": "accepted",
+        "purpose": "Independent symbolic solution, refactored where possible"
+      },
+      {
+        "submitted": "4 e^{3 x} - 2 e^{2 x}",
+        "expected": "rejected",
+        "purpose": "Correct ODE but incorrect initial value"
+      },
+      {
+        "submitted": "0",
+        "expected": "rejected",
+        "purpose": "Ignore nonzero forcing"
+      },
+      {
+        "submitted": "4 e^{3 x} - 3 e^{2 x} + 1",
+        "expected": "rejected",
+        "purpose": "Add erroneous constant"
+      },
+      {
+        "submitted": "4 e^{3 x} - 3 e^{2 x}",
+        "expected": "accepted",
+        "purpose": "Controlled pair: original answer must track relevant evidence and ignore profile/seed"
+      }
+    ]
+  },
+  {
+    "label": "independent-6",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186229165,
+        "id": "570160ff-c937-57e7-bd78-702f7f018e64",
+        "title": "Solving an Initial Value Problem"
+      },
+      "question": {
+        ":question/id": "57d4246e-faea-5bc4-bc00-e888cd979275",
+        ":question/problem": "Consider the following initial value problem:\n\n$$\n{y}^{′}-2y=4{e}^{3x},\\,y(0)=4\n$$\n\nGiven that the differential equation \n\n$$\n{y}^{′}-2y=4{e}^{3x}\n$$\n\nhas the complementary solution ${y}_{c}=A{e}^{2x},$ solve the initial value problem.\n\n$y(x)=$\n{{field-1}}",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "f2b75270-4e7f-54e0-90d7-a902633767ad",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "e62e450c-90cd-529f-98bd-d088d9112634",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "4{e}^{3x}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "e62e450c-90cd-529f-98bd-d088d9112634"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/worked-solution": "To find the general solution of an inhomogeneous first-order linear equation with constant coefficients on the left-hand side, we must find the sum of the complementary and particular solutions.\n\nTo find the complementary solution ${y}_{c},$ we solve the corresponding homogeneous equation, given by\n\n$$\n{y}_{c}^{′}-2{y}_{c}=0.\n$$\n\nSolving this equation, we find that the complementary solution is\n\n$$\n{y}_{c}=A{e}^{2x}\n$$\n\nwhere $A$ is an arbitrary constant.\n\nWe now need to find the particular solution ${y}_{p}(x).$\n\nWe see that the right-hand side is $4{e}^{3x},$ and ${e}^{3x}$ is not a term in the complementary solution, so we assume a particular solution of the form\n\n$$\n{y}_{p}=\\alpha {e}^{3x},\n$$\n\nwhere $\\alpha $ is a constant to be determined.\n\nCalculating the first derivative of ${y}_{p}$ gives\n\n$$\n{y}_{p}^{′}=3\\alpha {e}^{3x}.\n$$\n\nTo find the value of $\\alpha ,$ we substitute ${y}_{p}$ and ${y}_{p}^{′}$ into the differential equation:\n\n$$\n\\begin{aligned}(3\\alpha {e}^{3x})-2(\\alpha {e}^{3x}) & =4{e}^{3x} \\\\ (3-2)\\alpha {e}^{3x} & =4{e}^{3x} \\\\ \\alpha {e}^{3x} & =4{e}^{3x} \\\\ \\alpha  & =4\\end{aligned}\n$$\n\nTherefore, the particular solution ${y}_{p}(x)$ is\n\n$$\n{y}_{p}(x)=4{e}^{3x}.\n$$\n\nNow, since the general solution is given by\n\n$$\ny(x)={y}_{c}(x)+{y}_{p}(x),\n$$\n\nthe general solution in our case is\n\n$$\ny=A{e}^{2x}+4{e}^{3x}.\n$$\n\nWe can find the constant $A$ using the initial conditions.\n\nSubstituting $y(0)=4$ into the general solution gives\n\n$$\n\\begin{aligned}A+4 & =4 \\\\ A & =0\\end{aligned}\n$$\n\nTherefore, the solution to the initial value problem is\n\n$$\ny=4{e}^{3x}.\n$$"
+      },
+      "generation": {
+        "version": "exponential-ivp-1.0-frozen",
+        "seed": 770,
+        "template": "nonresonant",
+        "parameters": {
+          "h": 2,
+          "k": 3,
+          "f": 4,
+          "v": 4
+        },
+        "bank_profile": null,
+        "origin": "authored",
+        "source_id": null,
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "mathematical_fingerprint": "9c9ea3f2152a614bea382995283a31e466fac6ef477673209170f8677ace5ca2",
+        "content_identity": "cf4837efc0284ab965ff8cf6c756707ca534bffe9398dcbf128a742bfd2d5196",
+        "domain": "x real",
+        "source_missing_completion": false,
+        "sympy": "1.14.0"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "4 e^{3 x}",
+        "expected": "accepted",
+        "purpose": "Independent symbolic solution, refactored where possible"
+      },
+      {
+        "submitted": "4 e^{3 x} + e^{2 x}",
+        "expected": "rejected",
+        "purpose": "Correct ODE but incorrect initial value"
+      },
+      {
+        "submitted": "0",
+        "expected": "rejected",
+        "purpose": "Ignore nonzero forcing"
+      },
+      {
+        "submitted": "4 e^{3 x} + 1",
+        "expected": "rejected",
+        "purpose": "Add erroneous constant"
+      },
+      {
+        "submitted": "4 e^{3 x} - 3 e^{2 x}",
+        "expected": "rejected",
+        "purpose": "Controlled pair: original answer must track relevant evidence and ignore profile/seed"
+      }
+    ]
+  },
+  {
+    "label": "independent-7",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186229165,
+        "id": "570160ff-c937-57e7-bd78-702f7f018e64",
+        "title": "Solving an Initial Value Problem"
+      },
+      "question": {
+        ":question/id": "0353bca8-a354-582d-a4b8-c9eb7f336e3c",
+        ":question/problem": "Consider the following initial value problem:\n\n$$\n{y}^{′}-2y=-4{e}^{3x},\\,y(0)=1\n$$\n\nGiven that the differential equation \n\n$$\n{y}^{′}-2y=-4{e}^{3x}\n$$\n\nhas the complementary solution ${y}_{c}=A{e}^{2x},$ solve the initial value problem.\n\n$y(x)=$\n{{field-1}}",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "a9143959-cd77-5656-bade-6f26c2ba5a2a",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "1f4f2331-c3ad-5083-b422-49e3f1c849b2",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "5{e}^{2x}-4{e}^{3x}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "1f4f2331-c3ad-5083-b422-49e3f1c849b2"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/worked-solution": "To find the general solution of an inhomogeneous first-order linear equation with constant coefficients on the left-hand side, we must find the sum of the complementary and particular solutions.\n\nTo find the complementary solution ${y}_{c},$ we solve the corresponding homogeneous equation, given by\n\n$$\n{y}_{c}^{′}-2{y}_{c}=0.\n$$\n\nSolving this equation, we find that the complementary solution is\n\n$$\n{y}_{c}=A{e}^{2x}\n$$\n\nwhere $A$ is an arbitrary constant.\n\nWe now need to find the particular solution ${y}_{p}(x).$\n\nWe see that the right-hand side is $-4{e}^{3x},$ and ${e}^{3x}$ is not a term in the complementary solution, so we assume a particular solution of the form\n\n$$\n{y}_{p}=\\alpha {e}^{3x},\n$$\n\nwhere $\\alpha $ is a constant to be determined.\n\nCalculating the first derivative of ${y}_{p}$ gives\n\n$$\n{y}_{p}^{′}=3\\alpha {e}^{3x}.\n$$\n\nTo find the value of $\\alpha ,$ we substitute ${y}_{p}$ and ${y}_{p}^{′}$ into the differential equation:\n\n$$\n\\begin{aligned}(3\\alpha {e}^{3x})-2(\\alpha {e}^{3x}) & =-4{e}^{3x} \\\\ (3-2)\\alpha {e}^{3x} & =-4{e}^{3x} \\\\ \\alpha {e}^{3x} & =-4{e}^{3x} \\\\ \\alpha  & =-4\\end{aligned}\n$$\n\nTherefore, the particular solution ${y}_{p}(x)$ is\n\n$$\n{y}_{p}(x)=-4{e}^{3x}.\n$$\n\nNow, since the general solution is given by\n\n$$\ny(x)={y}_{c}(x)+{y}_{p}(x),\n$$\n\nthe general solution in our case is\n\n$$\ny=A{e}^{2x}-4{e}^{3x}.\n$$\n\nWe can find the constant $A$ using the initial conditions.\n\nSubstituting $y(0)=1$ into the general solution gives\n\n$$\n\\begin{aligned}A-4 & =1 \\\\ A & =5\\end{aligned}\n$$\n\nTherefore, the solution to the initial value problem is\n\n$$\ny=5{e}^{2x}-4{e}^{3x}.\n$$"
+      },
+      "generation": {
+        "version": "exponential-ivp-1.0-frozen",
+        "seed": 770,
+        "template": "nonresonant",
+        "parameters": {
+          "h": 2,
+          "k": 3,
+          "f": -4,
+          "v": 1
+        },
+        "bank_profile": null,
+        "origin": "authored",
+        "source_id": null,
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "mathematical_fingerprint": "7b58267c5ae514feb530f98c100c7360a50de8cee07347f7783ce9730e2bd650",
+        "content_identity": "c6d6880d744c64d9537faf259686a7066f2f78e2e1462e559321df38dcd4f4b9",
+        "domain": "x real",
+        "source_missing_completion": false,
+        "sympy": "1.14.0"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "- \\left(4 e^{x} - 5\\right) e^{2 x}",
+        "expected": "accepted",
+        "purpose": "Independent symbolic solution, refactored where possible"
+      },
+      {
+        "submitted": "- 4 e^{3 x} + 6 e^{2 x}",
+        "expected": "rejected",
+        "purpose": "Correct ODE but incorrect initial value"
+      },
+      {
+        "submitted": "0",
+        "expected": "rejected",
+        "purpose": "Ignore nonzero forcing"
+      },
+      {
+        "submitted": "- 4 e^{3 x} + 5 e^{2 x} + 1",
+        "expected": "rejected",
+        "purpose": "Add erroneous constant"
+      },
+      {
+        "submitted": "4 e^{3 x} - 3 e^{2 x}",
+        "expected": "rejected",
+        "purpose": "Controlled pair: original answer must track relevant evidence and ignore profile/seed"
+      }
+    ]
+  },
+  {
+    "label": "independent-8",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186229165,
+        "id": "570160ff-c937-57e7-bd78-702f7f018e64",
+        "title": "Solving an Initial Value Problem"
+      },
+      "question": {
+        ":question/id": "36bbe7cc-ae67-58c1-b0e3-e6f47fb4db05",
+        ":question/problem": "Consider the following initial value problem:\n\n$$\n{y}^{′}-2y=4{e}^{x},\\,y(0)=1\n$$\n\nGiven that the differential equation \n\n$$\n{y}^{′}-2y=4{e}^{x}\n$$\n\nhas the complementary solution ${y}_{c}=A{e}^{2x},$ solve the initial value problem.\n\n$y(x)=$\n{{field-1}}",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "b1a27d4b-b505-5a38-a048-d474e69261eb",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "8b5c26b2-551a-5ebf-b5ac-97678119b9ec",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "5{e}^{2x}-4{e}^{x}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "8b5c26b2-551a-5ebf-b5ac-97678119b9ec"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/worked-solution": "To find the general solution of an inhomogeneous first-order linear equation with constant coefficients on the left-hand side, we must find the sum of the complementary and particular solutions.\n\nTo find the complementary solution ${y}_{c},$ we solve the corresponding homogeneous equation, given by\n\n$$\n{y}_{c}^{′}-2{y}_{c}=0.\n$$\n\nSolving this equation, we find that the complementary solution is\n\n$$\n{y}_{c}=A{e}^{2x}\n$$\n\nwhere $A$ is an arbitrary constant.\n\nWe now need to find the particular solution ${y}_{p}(x).$\n\nWe see that the right-hand side is $4{e}^{x},$ and ${e}^{x}$ is not a term in the complementary solution, so we assume a particular solution of the form\n\n$$\n{y}_{p}=\\alpha {e}^{x},\n$$\n\nwhere $\\alpha $ is a constant to be determined.\n\nCalculating the first derivative of ${y}_{p}$ gives\n\n$$\n{y}_{p}^{′}=\\alpha {e}^{x}.\n$$\n\nTo find the value of $\\alpha ,$ we substitute ${y}_{p}$ and ${y}_{p}^{′}$ into the differential equation:\n\n$$\n\\begin{aligned}(\\alpha {e}^{x})-2(\\alpha {e}^{x}) & =4{e}^{x} \\\\ (1-2)\\alpha {e}^{x} & =4{e}^{x} \\\\ -\\alpha {e}^{x} & =4{e}^{x} \\\\ \\alpha  & =-4\\end{aligned}\n$$\n\nTherefore, the particular solution ${y}_{p}(x)$ is\n\n$$\n{y}_{p}(x)=-4{e}^{x}.\n$$\n\nNow, since the general solution is given by\n\n$$\ny(x)={y}_{c}(x)+{y}_{p}(x),\n$$\n\nthe general solution in our case is\n\n$$\ny=A{e}^{2x}-4{e}^{x}.\n$$\n\nWe can find the constant $A$ using the initial conditions.\n\nSubstituting $y(0)=1$ into the general solution gives\n\n$$\n\\begin{aligned}A-4 & =1 \\\\ A & =5\\end{aligned}\n$$\n\nTherefore, the solution to the initial value problem is\n\n$$\ny=5{e}^{2x}-4{e}^{x}.\n$$"
+      },
+      "generation": {
+        "version": "exponential-ivp-1.0-frozen",
+        "seed": 770,
+        "template": "nonresonant",
+        "parameters": {
+          "h": 2,
+          "k": 1,
+          "f": 4,
+          "v": 1
+        },
+        "bank_profile": null,
+        "origin": "authored",
+        "source_id": null,
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "mathematical_fingerprint": "013f5e02c8bb717030cde7c8885e94ac15fbf5c7adf8e520032e8ce582ae38b3",
+        "content_identity": "780813154fa133350e2133dade05e2e0e9716faf07184422846f1e87ee41ab56",
+        "domain": "x real",
+        "source_missing_completion": false,
+        "sympy": "1.14.0"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "\\left(5 e^{x} - 4\\right) e^{x}",
+        "expected": "accepted",
+        "purpose": "Independent symbolic solution, refactored where possible"
+      },
+      {
+        "submitted": "6 e^{2 x} - 4 e^{x}",
+        "expected": "rejected",
+        "purpose": "Correct ODE but incorrect initial value"
+      },
+      {
+        "submitted": "0",
+        "expected": "rejected",
+        "purpose": "Ignore nonzero forcing"
+      },
+      {
+        "submitted": "5 e^{2 x} - 4 e^{x} + 1",
+        "expected": "rejected",
+        "purpose": "Add erroneous constant"
+      },
+      {
+        "submitted": "4 e^{3 x} - 3 e^{2 x}",
+        "expected": "rejected",
+        "purpose": "Controlled pair: original answer must track relevant evidence and ignore profile/seed"
+      }
+    ]
+  },
+  {
+    "label": "independent-9",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186229165,
+        "id": "570160ff-c937-57e7-bd78-702f7f018e64",
+        "title": "Solving an Initial Value Problem"
+      },
+      "question": {
+        ":question/id": "1d2de015-d1df-5d63-9f8c-086d8ddd9e60",
+        ":question/problem": "Consider the following initial value problem:\n\n$$\n{y}^{′}-2y=4{e}^{3x},\\,y(0)=1\n$$\n\nGiven that the differential equation \n\n$$\n{y}^{′}-2y=4{e}^{3x}\n$$\n\nhas the complementary solution ${y}_{c}=A{e}^{2x},$ solve the initial value problem.\n\n$y(x)=$\n{{field-1}}",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "5f9c4c47-edb5-5b13-8f22-ca14e9fe9209",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "e5bb3380-1c85-5d82-a276-23a3854fd194",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "-3{e}^{2x}+4{e}^{3x}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "e5bb3380-1c85-5d82-a276-23a3854fd194"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/worked-solution": "To find the general solution of an inhomogeneous first-order linear equation with constant coefficients on the left-hand side, we must find the sum of the complementary and particular solutions.\n\nTo find the complementary solution ${y}_{c},$ we solve the corresponding homogeneous equation, given by\n\n$$\n{y}_{c}^{′}-2{y}_{c}=0.\n$$\n\nSolving this equation, we find that the complementary solution is\n\n$$\n{y}_{c}=A{e}^{2x}\n$$\n\nwhere $A$ is an arbitrary constant.\n\nWe now need to find the particular solution ${y}_{p}(x).$\n\nWe see that the right-hand side is $4{e}^{3x},$ and ${e}^{3x}$ is not a term in the complementary solution, so we assume a particular solution of the form\n\n$$\n{y}_{p}=\\alpha {e}^{3x},\n$$\n\nwhere $\\alpha $ is a constant to be determined.\n\nCalculating the first derivative of ${y}_{p}$ gives\n\n$$\n{y}_{p}^{′}=3\\alpha {e}^{3x}.\n$$\n\nTo find the value of $\\alpha ,$ we substitute ${y}_{p}$ and ${y}_{p}^{′}$ into the differential equation:\n\n$$\n\\begin{aligned}3\\alpha {e}^{3x}-2\\alpha {e}^{3x} & =4{e}^{3x} \\\\ \\alpha {e}^{3x} & =4{e}^{3x} \\\\ \\alpha  & =4\\end{aligned}\n$$\n\nTherefore, the particular solution ${y}_{p}(x)$ is\n\n$$\n{y}_{p}(x)=4{e}^{3x}.\n$$\n\nNow, since the general solution is given by\n\n$$\ny(x)={y}_{c}(x)+{y}_{p}(x),\n$$\n\nthe general solution in our case is\n\n$$\ny=A{e}^{2x}+4{e}^{3x}.\n$$\n\nWe can find the constant $A$ using the initial conditions.\n\nSubstituting $y(0)=1$ into the general solution gives\n\n$$\n\\begin{aligned}A+4 & =1 \\\\ A & =-3\\end{aligned}\n$$\n\nTherefore, the solution to the initial value problem is\n\n$$\ny=-3{e}^{2x}+4{e}^{3x}.\n$$"
+      },
+      "generation": {
+        "version": "exponential-ivp-1.0-frozen",
+        "seed": 770,
+        "template": "nonresonant",
+        "parameters": {
+          "h": 2,
+          "k": 3,
+          "f": 4,
+          "v": 1
+        },
+        "bank_profile": "q-332906",
+        "origin": "observed",
+        "source_id": "q-332906",
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "mathematical_fingerprint": "42f2574988b6b843058dd6f909085315676bb0930a443114828765a1009c871b",
+        "content_identity": "46a747a563be11526ea9578369f2a03ece02d8f8a6bca100c79d8e53ff1d9417",
+        "domain": "x real",
+        "source_missing_completion": false,
+        "sympy": "1.14.0"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "\\left(4 e^{x} - 3\\right) e^{2 x}",
+        "expected": "accepted",
+        "purpose": "Independent symbolic solution, refactored where possible"
+      },
+      {
+        "submitted": "4 e^{3 x} - 2 e^{2 x}",
+        "expected": "rejected",
+        "purpose": "Correct ODE but incorrect initial value"
+      },
+      {
+        "submitted": "0",
+        "expected": "rejected",
+        "purpose": "Ignore nonzero forcing"
+      },
+      {
+        "submitted": "4 e^{3 x} - 3 e^{2 x} + 1",
+        "expected": "rejected",
+        "purpose": "Add erroneous constant"
+      },
+      {
+        "submitted": "4 e^{3 x} - 3 e^{2 x}",
+        "expected": "accepted",
+        "purpose": "Controlled pair: original answer must track relevant evidence and ignore profile/seed"
+      }
+    ]
+  },
+  {
+    "label": "independent-10",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186229165,
+        "id": "570160ff-c937-57e7-bd78-702f7f018e64",
+        "title": "Solving an Initial Value Problem"
+      },
+      "question": {
+        ":question/id": "3c014441-20d7-5c85-9c0e-3d98871cc8c8",
+        ":question/problem": "Consider the following initial value problem:\n\n$$\n{y}^{′}-2y=4{e}^{3x},\\,y(0)=1\n$$\n\nGiven that the differential equation \n\n$$\n{y}^{′}-2y=4{e}^{3x}\n$$\n\nhas the complementary solution ${y}_{c}=A{e}^{2x},$ solve the initial value problem.\n\n$y(x)=$\n{{field-1}}",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "3fc59679-e01c-5fae-a1dd-83028fc4e7cc",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "bbc5bca4-c598-5778-afaf-203584ba0b19",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "-3{e}^{2x}+4{e}^{3x}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "bbc5bca4-c598-5778-afaf-203584ba0b19"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/worked-solution": "To find the general solution of an inhomogeneous first-order linear equation with constant coefficients on the left-hand side, we must find the sum of the complementary and particular solutions.\n\nTo find the complementary solution ${y}_{c},$ we solve the corresponding homogeneous equation, given by\n\n$$\n{y}_{c}^{′}-2{y}_{c}=0.\n$$\n\nSolving this equation, we find that the complementary solution is\n\n$$\n{y}_{c}=A{e}^{2x}\n$$\n\nwhere $A$ is an arbitrary constant.\n\nWe now need to find the particular solution ${y}_{p}(x).$\n\nWe see that the right-hand side is $4{e}^{3x},$ and ${e}^{3x}$ is not a term in the complementary solution, so we assume a particular solution of the form\n\n$$\n{y}_{p}=\\alpha {e}^{3x},\n$$\n\nwhere $\\alpha $ is a constant to be determined.\n\nCalculating the first derivative of ${y}_{p}$ gives\n\n$$\n{y}_{p}^{′}=3\\alpha {e}^{3x}.\n$$\n\nTo find the value of $\\alpha ,$ we substitute ${y}_{p}$ and ${y}_{p}^{′}$ into the differential equation:\n\n$$\n\\begin{aligned}(3\\alpha {e}^{3x})-2(\\alpha {e}^{3x}) & =4{e}^{3x} \\\\ (3-2)\\alpha {e}^{3x} & =4{e}^{3x} \\\\ \\alpha {e}^{3x} & =4{e}^{3x} \\\\ \\alpha  & =4\\end{aligned}\n$$\n\nTherefore, the particular solution ${y}_{p}(x)$ is\n\n$$\n{y}_{p}(x)=4{e}^{3x}.\n$$\n\nNow, since the general solution is given by\n\n$$\ny(x)={y}_{c}(x)+{y}_{p}(x),\n$$\n\nthe general solution in our case is\n\n$$\ny=A{e}^{2x}+4{e}^{3x}.\n$$\n\nWe can find the constant $A$ using the initial conditions.\n\nSubstituting $y(0)=1$ into the general solution gives\n\n$$\n\\begin{aligned}A+4 & =1 \\\\ A & =-3\\end{aligned}\n$$\n\nTherefore, the solution to the initial value problem is\n\n$$\ny=-3{e}^{2x}+4{e}^{3x}.\n$$"
+      },
+      "generation": {
+        "version": "exponential-ivp-1.0-frozen",
+        "seed": 771,
+        "template": "nonresonant",
+        "parameters": {
+          "h": 2,
+          "k": 3,
+          "f": 4,
+          "v": 1
+        },
+        "bank_profile": null,
+        "origin": "authored",
+        "source_id": null,
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "mathematical_fingerprint": "42f2574988b6b843058dd6f909085315676bb0930a443114828765a1009c871b",
+        "content_identity": "73fe37a6b761883e75ec12105bdd8978b084a0cb7ba4b499065f64033eff70c1",
+        "domain": "x real",
+        "source_missing_completion": false,
+        "sympy": "1.14.0"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "\\left(4 e^{x} - 3\\right) e^{2 x}",
+        "expected": "accepted",
+        "purpose": "Independent symbolic solution, refactored where possible"
+      },
+      {
+        "submitted": "4 e^{3 x} - 2 e^{2 x}",
+        "expected": "rejected",
+        "purpose": "Correct ODE but incorrect initial value"
+      },
+      {
+        "submitted": "0",
+        "expected": "rejected",
+        "purpose": "Ignore nonzero forcing"
+      },
+      {
+        "submitted": "4 e^{3 x} - 3 e^{2 x} + 1",
+        "expected": "rejected",
+        "purpose": "Add erroneous constant"
+      },
+      {
+        "submitted": "4 e^{3 x} - 3 e^{2 x}",
+        "expected": "accepted",
+        "purpose": "Controlled pair: original answer must track relevant evidence and ignore profile/seed"
+      }
+    ]
+  },
+  {
+    "label": "independent-11",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186229165,
+        "id": "570160ff-c937-57e7-bd78-702f7f018e64",
+        "title": "Solving an Initial Value Problem"
+      },
+      "question": {
+        ":question/id": "88251ab6-c24f-58ed-b7a7-4b5dbc37a946",
+        ":question/problem": "Consider the following initial value problem:\n\n$$\n{y}^{′}-2y=4{e}^{2x},\\,y(0)=1\n$$\n\nGiven that the differential equation \n\n$$\n{y}^{′}-2y=4{e}^{2x}\n$$\n\nhas the complementary solution ${y}_{c}=A{e}^{2x},$ solve the initial value problem.\n\n$y(x)=$\n{{field-1}}",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "0ff49dbd-8d53-5517-9581-89db26bc8a89",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "7f0eff9e-9ad5-5dd9-8d4c-23780cba74ef",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{e}^{2x}+4x{e}^{2x}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "7f0eff9e-9ad5-5dd9-8d4c-23780cba74ef"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/worked-solution": "To find the general solution of an inhomogeneous first-order linear equation with constant coefficients on the left-hand side, we must find the sum of the complementary and particular solutions.\n\nTo find the complementary solution ${y}_{c},$ we solve the corresponding homogeneous equation, given by\n\n$$\n{y}_{c}^{′}-2{y}_{c}=0.\n$$\n\nSolving this equation, we find that the complementary solution is\n\n$$\n{y}_{c}=A{e}^{2x}\n$$\n\nwhere $A$ is an arbitrary constant.\n\nWe now need to find the particular solution ${y}_{p}(x).$\n\nWe see that the right-hand side is $4{e}^{2x},$ and ${e}^{2x}$ is a term in the complementary solution, so we assume a particular solution of the form\n\n$$\n{y}_{p}=\\alpha x{e}^{2x},\n$$\n\nwhere $\\alpha $ is a constant to be determined.\n\nWe calculate the first derivative of ${y}_{p}$ using the product rule for differentiation:\n\n$$\n\\begin{aligned}{y}_{p}^{′} & =(\\alpha x{e}^{2x})^{′} \\\\  & =\\alpha (x{e}^{2x})^{′} \\\\  & =\\alpha ({e}^{2x}+2x{e}^{2x}) \\\\  & =\\alpha (1+2x){e}^{2x}.\\end{aligned}\n$$\n\nTo find the value of $\\alpha ,$ we substitute ${y}_{p}$ and ${y}_{p}^{′}$ into the differential equation:\n\n$$\n\\begin{aligned}(\\alpha (1+2x){e}^{2x})-2(\\alpha x{e}^{2x}) & =4{e}^{2x} \\\\ (1+2x-2x)\\alpha {e}^{2x} & =4{e}^{2x} \\\\ \\alpha {e}^{2x} & =4{e}^{2x} \\\\ \\alpha  & =4.\\end{aligned}\n$$\n\nTherefore, the particular solution ${y}_{p}(x)$ is\n\n$$\n{y}_{p}(x)=4x{e}^{2x}.\n$$\n\nNow, since the general solution is given by\n\n$$\ny(x)={y}_{c}(x)+{y}_{p}(x),\n$$\n\nthe general solution in our case is\n\n$$\ny=A{e}^{2x}+4x{e}^{2x}.\n$$\n\nWe can find the constant $A$ using the initial conditions.\n\nSubstituting $y(0)=1$ into the general solution gives\n\n$$\n\\begin{aligned}A+0 & =1 \\\\ A & =1.\\end{aligned}\n$$\n\nTherefore, the solution to the initial value problem is\n\n$$\ny={e}^{2x}+4x{e}^{2x}.\n$$"
+      },
+      "generation": {
+        "version": "exponential-ivp-1.0-frozen",
+        "seed": 770,
+        "template": "resonant",
+        "parameters": {
+          "h": 2,
+          "k": 2,
+          "f": 4,
+          "v": 1
+        },
+        "bank_profile": null,
+        "origin": "authored",
+        "source_id": null,
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "mathematical_fingerprint": "2ace59fdca6ea0620809cdedea01a88d779ba2daee5fc7f8fd97054d113af06d",
+        "content_identity": "8013e08ade0ab5927c8e5b40f092394eed7438140a00c91e484ab6e8893ed9b5",
+        "domain": "x real",
+        "source_missing_completion": false,
+        "sympy": "1.14.0"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "\\left(4 x + 1\\right) e^{2 x}",
+        "expected": "accepted",
+        "purpose": "Independent symbolic solution, refactored where possible"
+      },
+      {
+        "submitted": "4 x e^{2 x} + 2 e^{2 x}",
+        "expected": "rejected",
+        "purpose": "Correct ODE but incorrect initial value"
+      },
+      {
+        "submitted": "0",
+        "expected": "rejected",
+        "purpose": "Ignore nonzero forcing"
+      },
+      {
+        "submitted": "4 x e^{2 x} + e^{2 x} + 1",
+        "expected": "rejected",
+        "purpose": "Add erroneous constant"
+      },
+      {
+        "submitted": "4 e^{3 x} - 3 e^{2 x}",
+        "expected": "rejected",
+        "purpose": "Controlled pair: original answer must track relevant evidence and ignore profile/seed"
+      }
+    ]
+  },
+  {
+    "label": "independent-12",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186229165,
+        "id": "570160ff-c937-57e7-bd78-702f7f018e64",
+        "title": "Solving an Initial Value Problem"
+      },
+      "question": {
+        ":question/id": "72ad5c13-12bf-5aab-ad9b-b259df93803b",
+        ":question/problem": "Consider the following initial value problem:\n\n$$\n{y}^{′}+6y=-15{e}^{6x},\\,y(0)=10\n$$\n\nGiven that the differential equation \n\n$$\n{y}^{′}+6y=-15{e}^{6x}\n$$\n\nhas the complementary solution ${y}_{c}=A{e}^{-6x},$ solve the initial value problem.\n\n$y(x)=$\n{{field-1}}",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "dcc8e803-e7dd-5a3e-a4e6-ac4e2095eb67",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "2486b9af-dde1-5f5f-b305-f81c68114839",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{45}{4}{e}^{-6x}-\\frac{5}{4}{e}^{6x}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "2486b9af-dde1-5f5f-b305-f81c68114839"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/worked-solution": "To find the general solution of an inhomogeneous first-order linear equation with constant coefficients on the left-hand side, we must find the sum of the complementary and particular solutions.\n\nTo find the complementary solution ${y}_{c},$ we solve the corresponding homogeneous equation, given by\n\n$$\n{y}_{c}^{′}+6{y}_{c}=0.\n$$\n\nSolving this equation, we find that the complementary solution is\n\n$$\n{y}_{c}=A{e}^{-6x}\n$$\n\nwhere $A$ is an arbitrary constant.\n\nWe now need to find the particular solution ${y}_{p}(x).$\n\nWe see that the right-hand side is $-15{e}^{6x},$ and ${e}^{6x}$ is not a term in the complementary solution, so we assume a particular solution of the form\n\n$$\n{y}_{p}=\\alpha {e}^{6x},\n$$\n\nwhere $\\alpha $ is a constant to be determined.\n\nCalculating the first derivative of ${y}_{p}$ gives\n\n$$\n{y}_{p}^{′}=6\\alpha {e}^{6x}.\n$$\n\nTo find the value of $\\alpha ,$ we substitute ${y}_{p}$ and ${y}_{p}^{′}$ into the differential equation:\n\n$$\n\\begin{aligned}(6\\alpha {e}^{6x})+6(\\alpha {e}^{6x}) & =-15{e}^{6x} \\\\ (6+6)\\alpha {e}^{6x} & =-15{e}^{6x} \\\\ 12\\alpha {e}^{6x} & =-15{e}^{6x} \\\\ \\alpha  & =-\\frac{5}{4}\\end{aligned}\n$$\n\nTherefore, the particular solution ${y}_{p}(x)$ is\n\n$$\n{y}_{p}(x)=-\\frac{5}{4}{e}^{6x}.\n$$\n\nNow, since the general solution is given by\n\n$$\ny(x)={y}_{c}(x)+{y}_{p}(x),\n$$\n\nthe general solution in our case is\n\n$$\ny=A{e}^{-6x}-\\frac{5}{4}{e}^{6x}.\n$$\n\nWe can find the constant $A$ using the initial conditions.\n\nSubstituting $y(0)=10$ into the general solution gives\n\n$$\n\\begin{aligned}A-\\frac{5}{4} & =10 \\\\ A & =\\frac{45}{4}\\end{aligned}\n$$\n\nTherefore, the solution to the initial value problem is\n\n$$\ny=\\frac{45}{4}{e}^{-6x}-\\frac{5}{4}{e}^{6x}.\n$$"
+      },
+      "generation": {
+        "version": "exponential-ivp-1.0-frozen",
+        "seed": 0,
+        "template": "nonresonant",
+        "parameters": {
+          "h": -6,
+          "k": 6,
+          "f": -15,
+          "v": 10
+        },
+        "bank_profile": null,
+        "origin": "authored",
+        "source_id": null,
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "mathematical_fingerprint": "aaa01f0cc91cd66b7e8daf392ad23a50b1e8331a523d4faafda29516e91e59d8",
+        "content_identity": "77c07f711d2e181bc9a0c4d3f3e327a2640486c0e533c0a4b98f429bfd2e6cce",
+        "domain": "x real",
+        "source_missing_completion": false,
+        "sympy": "1.14.0"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "- \\frac{5 \\left(e^{6 x} - 3\\right) \\left(e^{6 x} + 3\\right) e^{- 6 x}}{4}",
+        "expected": "accepted",
+        "purpose": "Independent symbolic solution, refactored where possible"
+      },
+      {
+        "submitted": "- \\frac{5 e^{6 x}}{4} + \\frac{49 e^{- 6 x}}{4}",
+        "expected": "rejected",
+        "purpose": "Correct ODE but incorrect initial value"
+      },
+      {
+        "submitted": "0",
+        "expected": "rejected",
+        "purpose": "Ignore nonzero forcing"
+      },
+      {
+        "submitted": "- \\frac{5 e^{6 x}}{4} + 1 + \\frac{45 e^{- 6 x}}{4}",
+        "expected": "rejected",
+        "purpose": "Add erroneous constant"
+      }
+    ]
+  },
+  {
+    "label": "independent-13",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186229165,
+        "id": "570160ff-c937-57e7-bd78-702f7f018e64",
+        "title": "Solving an Initial Value Problem"
+      },
+      "question": {
+        ":question/id": "0e2c3c3d-91f0-59df-9be7-87e605b3ec68",
+        ":question/problem": "Consider the following initial value problem:\n\n$$\n{y}^{′}-6y=15{e}^{-6x},\\,y(0)=-10\n$$\n\nGiven that the differential equation \n\n$$\n{y}^{′}-6y=15{e}^{-6x}\n$$\n\nhas the complementary solution ${y}_{c}=A{e}^{6x},$ solve the initial value problem.\n\n$y(x)=$\n{{field-1}}",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "3971c21b-5abf-5a07-95f5-8dd0a86441da",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "9a6fed88-3aa6-5aba-9040-a6e2545a2727",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "-\\frac{35}{4}{e}^{6x}-\\frac{5}{4}{e}^{-6x}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "9a6fed88-3aa6-5aba-9040-a6e2545a2727"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/worked-solution": "To find the general solution of an inhomogeneous first-order linear equation with constant coefficients on the left-hand side, we must find the sum of the complementary and particular solutions.\n\nTo find the complementary solution ${y}_{c},$ we solve the corresponding homogeneous equation, given by\n\n$$\n{y}_{c}^{′}-6{y}_{c}=0.\n$$\n\nSolving this equation, we find that the complementary solution is\n\n$$\n{y}_{c}=A{e}^{6x}\n$$\n\nwhere $A$ is an arbitrary constant.\n\nWe now need to find the particular solution ${y}_{p}(x).$\n\nWe see that the right-hand side is $15{e}^{-6x},$ and ${e}^{-6x}$ is not a term in the complementary solution, so we assume a particular solution of the form\n\n$$\n{y}_{p}=\\alpha {e}^{-6x},\n$$\n\nwhere $\\alpha $ is a constant to be determined.\n\nCalculating the first derivative of ${y}_{p}$ gives\n\n$$\n{y}_{p}^{′}=-6\\alpha {e}^{-6x}.\n$$\n\nTo find the value of $\\alpha ,$ we substitute ${y}_{p}$ and ${y}_{p}^{′}$ into the differential equation:\n\n$$\n\\begin{aligned}(-6\\alpha {e}^{-6x})-6(\\alpha {e}^{-6x}) & =15{e}^{-6x} \\\\ (-6-6)\\alpha {e}^{-6x} & =15{e}^{-6x} \\\\ -12\\alpha {e}^{-6x} & =15{e}^{-6x} \\\\ \\alpha  & =-\\frac{5}{4}\\end{aligned}\n$$\n\nTherefore, the particular solution ${y}_{p}(x)$ is\n\n$$\n{y}_{p}(x)=-\\frac{5}{4}{e}^{-6x}.\n$$\n\nNow, since the general solution is given by\n\n$$\ny(x)={y}_{c}(x)+{y}_{p}(x),\n$$\n\nthe general solution in our case is\n\n$$\ny=A{e}^{6x}-\\frac{5}{4}{e}^{-6x}.\n$$\n\nWe can find the constant $A$ using the initial conditions.\n\nSubstituting $y(0)=-10$ into the general solution gives\n\n$$\n\\begin{aligned}A-\\frac{5}{4} & =-10 \\\\ A & =-\\frac{35}{4}\\end{aligned}\n$$\n\nTherefore, the solution to the initial value problem is\n\n$$\ny=-\\frac{35}{4}{e}^{6x}-\\frac{5}{4}{e}^{-6x}.\n$$"
+      },
+      "generation": {
+        "version": "exponential-ivp-1.0-frozen",
+        "seed": 0,
+        "template": "nonresonant",
+        "parameters": {
+          "h": 6,
+          "k": -6,
+          "f": 15,
+          "v": -10
+        },
+        "bank_profile": null,
+        "origin": "authored",
+        "source_id": null,
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "mathematical_fingerprint": "1fa92fb2bfc7a2bb02d488ecec63cac35e72002ee3a75b805006eb3d2b2858ce",
+        "content_identity": "f04956d026ee76041ae8886906ee1477a07a019d2101de7a739e0e6942df1c31",
+        "domain": "x real",
+        "source_missing_completion": false,
+        "sympy": "1.14.0"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "- \\frac{5 \\left(7 e^{12 x} + 1\\right) e^{- 6 x}}{4}",
+        "expected": "accepted",
+        "purpose": "Independent symbolic solution, refactored where possible"
+      },
+      {
+        "submitted": "- \\frac{31 e^{6 x}}{4} - \\frac{5 e^{- 6 x}}{4}",
+        "expected": "rejected",
+        "purpose": "Correct ODE but incorrect initial value"
+      },
+      {
+        "submitted": "0",
+        "expected": "rejected",
+        "purpose": "Ignore nonzero forcing"
+      },
+      {
+        "submitted": "- \\frac{35 e^{6 x}}{4} + 1 - \\frac{5 e^{- 6 x}}{4}",
+        "expected": "rejected",
+        "purpose": "Add erroneous constant"
+      }
+    ]
+  },
+  {
+    "label": "independent-14",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186229165,
+        "id": "570160ff-c937-57e7-bd78-702f7f018e64",
+        "title": "Solving an Initial Value Problem"
+      },
+      "question": {
+        ":question/id": "3eed3cae-7348-5ad2-b449-db12e2630c4b",
+        ":question/problem": "Consider the following initial value problem:\n\n$$\n{y}^{′}+6y=15{e}^{-6x},\\,y(0)=0\n$$\n\nGiven that the differential equation \n\n$$\n{y}^{′}+6y=15{e}^{-6x}\n$$\n\nhas the complementary solution ${y}_{c}=A{e}^{-6x},$ solve the initial value problem.\n\n$y(x)=$\n{{field-1}}",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "ac07a02a-a498-5ae7-af78-8f1de120e1e2",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "5c12ed6e-3abf-508e-b0f9-5d3c28fe9ce0",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "15x{e}^{-6x}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "5c12ed6e-3abf-508e-b0f9-5d3c28fe9ce0"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/worked-solution": "To find the general solution of an inhomogeneous first-order linear equation with constant coefficients on the left-hand side, we must find the sum of the complementary and particular solutions.\n\nTo find the complementary solution ${y}_{c},$ we solve the corresponding homogeneous equation, given by\n\n$$\n{y}_{c}^{′}+6{y}_{c}=0.\n$$\n\nSolving this equation, we find that the complementary solution is\n\n$$\n{y}_{c}=A{e}^{-6x}\n$$\n\nwhere $A$ is an arbitrary constant.\n\nWe now need to find the particular solution ${y}_{p}(x).$\n\nWe see that the right-hand side is $15{e}^{-6x},$ and ${e}^{-6x}$ is a term in the complementary solution, so we assume a particular solution of the form\n\n$$\n{y}_{p}=\\alpha x{e}^{-6x},\n$$\n\nwhere $\\alpha $ is a constant to be determined.\n\nWe calculate the first derivative of ${y}_{p}$ using the product rule for differentiation:\n\n$$\n\\begin{aligned}{y}_{p}^{′} & =(\\alpha x{e}^{-6x})^{′} \\\\  & =\\alpha (x{e}^{-6x})^{′} \\\\  & =\\alpha ({e}^{-6x}-6x{e}^{-6x}) \\\\  & =\\alpha (1-6x){e}^{-6x}.\\end{aligned}\n$$\n\nTo find the value of $\\alpha ,$ we substitute ${y}_{p}$ and ${y}_{p}^{′}$ into the differential equation:\n\n$$\n\\begin{aligned}(\\alpha (1-6x){e}^{-6x})+6(\\alpha x{e}^{-6x}) & =15{e}^{-6x} \\\\ (1-6x+6x)\\alpha {e}^{-6x} & =15{e}^{-6x} \\\\ \\alpha {e}^{-6x} & =15{e}^{-6x} \\\\ \\alpha  & =15.\\end{aligned}\n$$\n\nTherefore, the particular solution ${y}_{p}(x)$ is\n\n$$\n{y}_{p}(x)=15x{e}^{-6x}.\n$$\n\nNow, since the general solution is given by\n\n$$\ny(x)={y}_{c}(x)+{y}_{p}(x),\n$$\n\nthe general solution in our case is\n\n$$\ny=A{e}^{-6x}+15x{e}^{-6x}.\n$$\n\nWe can find the constant $A$ using the initial conditions.\n\nSubstituting $y(0)=0$ into the general solution gives\n\n$$\n\\begin{aligned}A+0 & =0 \\\\ A & =0.\\end{aligned}\n$$\n\nTherefore, the solution to the initial value problem is\n\n$$\ny=15x{e}^{-6x}.\n$$"
+      },
+      "generation": {
+        "version": "exponential-ivp-1.0-frozen",
+        "seed": 0,
+        "template": "resonant",
+        "parameters": {
+          "h": -6,
+          "k": -6,
+          "f": 15,
+          "v": 0
+        },
+        "bank_profile": null,
+        "origin": "authored",
+        "source_id": null,
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "mathematical_fingerprint": "5bf3e9a77c348b58fb667994dd749573407bba07c08523871bb932005278d4f7",
+        "content_identity": "281686914e2f0032733bd11ee2e642b4c5d9761be0715481c28ad71ade123183",
+        "domain": "x real",
+        "source_missing_completion": false,
+        "sympy": "1.14.0"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "15 x e^{- 6 x}",
+        "expected": "accepted",
+        "purpose": "Independent symbolic solution, refactored where possible"
+      },
+      {
+        "submitted": "15 x e^{- 6 x} + e^{- 6 x}",
+        "expected": "rejected",
+        "purpose": "Correct ODE but incorrect initial value"
+      },
+      {
+        "submitted": "0",
+        "expected": "rejected",
+        "purpose": "Ignore nonzero forcing"
+      },
+      {
+        "submitted": "15 x e^{- 6 x} + 1",
+        "expected": "rejected",
+        "purpose": "Add erroneous constant"
+      }
+    ]
+  },
+  {
+    "label": "independent-15",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186229165,
+        "id": "570160ff-c937-57e7-bd78-702f7f018e64",
+        "title": "Solving an Initial Value Problem"
+      },
+      "question": {
+        ":question/id": "8fc65dd6-b66a-54d8-9b36-9e110572c0ad",
+        ":question/problem": "Consider the following initial value problem:\n\n$$\n{y}^{′}-2y=12{e}^{-x},\\,y(0)=1\n$$\n\nGiven that the differential equation \n\n$$\n{y}^{′}-2y=12{e}^{-x}\n$$\n\nhas the complementary solution ${y}_{c}=A{e}^{2x},$ solve the initial value problem.\n\n$y(x)=$\n{{field-1}}",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "0d212806-fa88-5847-8f84-6cea79674ee6",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "126ef506-982a-500a-9889-5a83a6377da4",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "5{e}^{2x}-4{e}^{-x}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "126ef506-982a-500a-9889-5a83a6377da4"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/worked-solution": "To find the general solution of an inhomogeneous first-order linear equation with constant coefficients on the left-hand side, we must find the sum of the complementary and particular solutions.\n\nTo find the complementary solution ${y}_{c},$ we solve the corresponding homogeneous equation, given by\n\n$$\n{y}_{c}^{′}-2{y}_{c}=0.\n$$\n\nSolving this equation, we find that the complementary solution is\n\n$$\n{y}_{c}=A{e}^{2x}\n$$\n\nwhere $A$ is an arbitrary constant.\n\nWe now need to find the particular solution ${y}_{p}(x).$\n\nWe see that the right-hand side is $12{e}^{-x},$ and ${e}^{-x}$ is not a term in the complementary solution, so we assume a particular solution of the form\n\n$$\n{y}_{p}=\\alpha {e}^{-x},\n$$\n\nwhere $\\alpha $ is a constant to be determined.\n\nCalculating the first derivative of ${y}_{p}$ gives\n\n$$\n{y}_{p}^{′}=-\\alpha {e}^{-x}.\n$$\n\nTo find the value of $\\alpha ,$ we substitute ${y}_{p}$ and ${y}_{p}^{′}$ into the differential equation:\n\n$$\n\\begin{aligned}(-\\alpha {e}^{-x})-2(\\alpha {e}^{-x}) & =12{e}^{-x} \\\\ (-1-2)\\alpha {e}^{-x} & =12{e}^{-x} \\\\ -3\\alpha {e}^{-x} & =12{e}^{-x} \\\\ \\alpha  & =-4\\end{aligned}\n$$\n\nTherefore, the particular solution ${y}_{p}(x)$ is\n\n$$\n{y}_{p}(x)=-4{e}^{-x}.\n$$\n\nNow, since the general solution is given by\n\n$$\ny(x)={y}_{c}(x)+{y}_{p}(x),\n$$\n\nthe general solution in our case is\n\n$$\ny=A{e}^{2x}-4{e}^{-x}.\n$$\n\nWe can find the constant $A$ using the initial conditions.\n\nSubstituting $y(0)=1$ into the general solution gives\n\n$$\n\\begin{aligned}A-4 & =1 \\\\ A & =5\\end{aligned}\n$$\n\nTherefore, the solution to the initial value problem is\n\n$$\ny=5{e}^{2x}-4{e}^{-x}.\n$$"
+      },
+      "generation": {
+        "version": "exponential-ivp-1.0-frozen",
+        "seed": 67031,
+        "template": "nonresonant",
+        "parameters": {
+          "h": 2,
+          "k": -1,
+          "f": 12,
+          "v": 1
+        },
+        "bank_profile": null,
+        "origin": "authored",
+        "source_id": null,
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "mathematical_fingerprint": "7152be4b71bed1a4f6f875ba3096dff5e6f4620bc8413cb09725831e711b4f4c",
+        "content_identity": "81db8e92a0e6b849e9795170a2939df00fe5d6a583df6493e6fe07a6b5e519ca",
+        "domain": "x real",
+        "source_missing_completion": false,
+        "sympy": "1.14.0"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "\\left(5 e^{3 x} - 4\\right) e^{- x}",
+        "expected": "accepted",
+        "purpose": "Independent symbolic solution, refactored where possible"
+      },
+      {
+        "submitted": "6 e^{2 x} - 4 e^{- x}",
+        "expected": "rejected",
+        "purpose": "Correct ODE but incorrect initial value"
+      },
+      {
+        "submitted": "0",
+        "expected": "rejected",
+        "purpose": "Ignore nonzero forcing"
+      },
+      {
+        "submitted": "5 e^{2 x} + 1 - 4 e^{- x}",
+        "expected": "rejected",
+        "purpose": "Add erroneous constant"
+      }
+    ]
+  },
+  {
+    "label": "independent-16",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186229165,
+        "id": "570160ff-c937-57e7-bd78-702f7f018e64",
+        "title": "Solving an Initial Value Problem"
+      },
+      "question": {
+        ":question/id": "7726cf8c-88a2-5b2e-88a1-ec6630271b2a",
+        ":question/problem": "Consider the following initial value problem:\n\n$$\n{y}^{′}-5y=12{e}^{4x},\\,y(0)=-3\n$$\n\nGiven that the differential equation \n\n$$\n{y}^{′}-5y=12{e}^{4x}\n$$\n\nhas the complementary solution ${y}_{c}=A{e}^{5x},$ solve the initial value problem.\n\n$y(x)=$\n{{field-1}}",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "ff0e7a54-0d75-5a92-a8cc-8603b8ce92bb",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "b5637f4e-f843-5e34-9516-dc16cdfc6ec7",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "9{e}^{5x}-12{e}^{4x}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "b5637f4e-f843-5e34-9516-dc16cdfc6ec7"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/worked-solution": "To find the general solution of an inhomogeneous first-order linear equation with constant coefficients on the left-hand side, we must find the sum of the complementary and particular solutions.\n\nTo find the complementary solution ${y}_{c},$ we solve the corresponding homogeneous equation, given by\n\n$$\n{y}_{c}^{′}-5{y}_{c}=0.\n$$\n\nSolving this equation, we find that the complementary solution is\n\n$$\n{y}_{c}=A{e}^{5x}\n$$\n\nwhere $A$ is an arbitrary constant.\n\nWe now need to find the particular solution ${y}_{p}(x).$\n\nWe see that the right-hand side is $12{e}^{4x},$ and ${e}^{4x}$ is not a term in the complementary solution, so we assume a particular solution of the form\n\n$$\n{y}_{p}=\\alpha {e}^{4x},\n$$\n\nwhere $\\alpha $ is a constant to be determined.\n\nCalculating the first derivative of ${y}_{p}$ gives\n\n$$\n{y}_{p}^{′}=4\\alpha {e}^{4x}.\n$$\n\nTo find the value of $\\alpha ,$ we substitute ${y}_{p}$ and ${y}_{p}^{′}$ into the differential equation:\n\n$$\n\\begin{aligned}(4\\alpha {e}^{4x})-5(\\alpha {e}^{4x}) & =12{e}^{4x} \\\\ (4-5)\\alpha {e}^{4x} & =12{e}^{4x} \\\\ -\\alpha {e}^{4x} & =12{e}^{4x} \\\\ \\alpha  & =-12\\end{aligned}\n$$\n\nTherefore, the particular solution ${y}_{p}(x)$ is\n\n$$\n{y}_{p}(x)=-12{e}^{4x}.\n$$\n\nNow, since the general solution is given by\n\n$$\ny(x)={y}_{c}(x)+{y}_{p}(x),\n$$\n\nthe general solution in our case is\n\n$$\ny=A{e}^{5x}-12{e}^{4x}.\n$$\n\nWe can find the constant $A$ using the initial conditions.\n\nSubstituting $y(0)=-3$ into the general solution gives\n\n$$\n\\begin{aligned}A-12 & =-3 \\\\ A & =9\\end{aligned}\n$$\n\nTherefore, the solution to the initial value problem is\n\n$$\ny=9{e}^{5x}-12{e}^{4x}.\n$$"
+      },
+      "generation": {
+        "version": "exponential-ivp-1.0-frozen",
+        "seed": 67039,
+        "template": "nonresonant",
+        "parameters": {
+          "h": 5,
+          "k": 4,
+          "f": 12,
+          "v": -3
+        },
+        "bank_profile": null,
+        "origin": "authored",
+        "source_id": null,
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "mathematical_fingerprint": "3e7d9ae45eeadeef5ede34eb0ea57ed317eb769e27525df7b1972488ecbfdbb0",
+        "content_identity": "1322a97db4efa074159f7795aa12cdc3f59551838401d4495edd310f224731e3",
+        "domain": "x real",
+        "source_missing_completion": false,
+        "sympy": "1.14.0"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "3 \\left(3 e^{x} - 4\\right) e^{4 x}",
+        "expected": "accepted",
+        "purpose": "Independent symbolic solution, refactored where possible"
+      },
+      {
+        "submitted": "10 e^{5 x} - 12 e^{4 x}",
+        "expected": "rejected",
+        "purpose": "Correct ODE but incorrect initial value"
+      },
+      {
+        "submitted": "0",
+        "expected": "rejected",
+        "purpose": "Ignore nonzero forcing"
+      },
+      {
+        "submitted": "9 e^{5 x} - 12 e^{4 x} + 1",
+        "expected": "rejected",
+        "purpose": "Add erroneous constant"
+      }
+    ]
+  },
+  {
+    "label": "independent-17",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186229165,
+        "id": "570160ff-c937-57e7-bd78-702f7f018e64",
+        "title": "Solving an Initial Value Problem"
+      },
+      "question": {
+        ":question/id": "6a53f166-cd44-5e6a-ac99-e26d396db7de",
+        ":question/problem": "Consider the following initial value problem:\n\n$$\n{y}^{′}+y=-3{e}^{-5x},\\,y(0)=-5\n$$\n\nGiven that the differential equation \n\n$$\n{y}^{′}+y=-3{e}^{-5x}\n$$\n\nhas the complementary solution ${y}_{c}=A{e}^{-x},$ solve the initial value problem.\n\n$y(x)=$\n{{field-1}}",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "51b7a4d9-b396-5074-a74e-49bcb6e30d6b",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "4fdb572e-052e-500c-81b9-4c112389031c",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "-\\frac{23}{4}{e}^{-x}+\\frac{3}{4}{e}^{-5x}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "4fdb572e-052e-500c-81b9-4c112389031c"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/worked-solution": "To find the general solution of an inhomogeneous first-order linear equation with constant coefficients on the left-hand side, we must find the sum of the complementary and particular solutions.\n\nTo find the complementary solution ${y}_{c},$ we solve the corresponding homogeneous equation, given by\n\n$$\n{y}_{c}^{′}+{y}_{c}=0.\n$$\n\nSolving this equation, we find that the complementary solution is\n\n$$\n{y}_{c}=A{e}^{-x}\n$$\n\nwhere $A$ is an arbitrary constant.\n\nWe now need to find the particular solution ${y}_{p}(x).$\n\nWe see that the right-hand side is $-3{e}^{-5x},$ and ${e}^{-5x}$ is not a term in the complementary solution, so we assume a particular solution of the form\n\n$$\n{y}_{p}=\\alpha {e}^{-5x},\n$$\n\nwhere $\\alpha $ is a constant to be determined.\n\nCalculating the first derivative of ${y}_{p}$ gives\n\n$$\n{y}_{p}^{′}=-5\\alpha {e}^{-5x}.\n$$\n\nTo find the value of $\\alpha ,$ we substitute ${y}_{p}$ and ${y}_{p}^{′}$ into the differential equation:\n\n$$\n\\begin{aligned}(-5\\alpha {e}^{-5x})+(\\alpha {e}^{-5x}) & =-3{e}^{-5x} \\\\ (-5+1)\\alpha {e}^{-5x} & =-3{e}^{-5x} \\\\ -4\\alpha {e}^{-5x} & =-3{e}^{-5x} \\\\ \\alpha  & =\\frac{3}{4}\\end{aligned}\n$$\n\nTherefore, the particular solution ${y}_{p}(x)$ is\n\n$$\n{y}_{p}(x)=\\frac{3}{4}{e}^{-5x}.\n$$\n\nNow, since the general solution is given by\n\n$$\ny(x)={y}_{c}(x)+{y}_{p}(x),\n$$\n\nthe general solution in our case is\n\n$$\ny=A{e}^{-x}+\\frac{3}{4}{e}^{-5x}.\n$$\n\nWe can find the constant $A$ using the initial conditions.\n\nSubstituting $y(0)=-5$ into the general solution gives\n\n$$\n\\begin{aligned}A+\\frac{3}{4} & =-5 \\\\ A & =-\\frac{23}{4}\\end{aligned}\n$$\n\nTherefore, the solution to the initial value problem is\n\n$$\ny=-\\frac{23}{4}{e}^{-x}+\\frac{3}{4}{e}^{-5x}.\n$$"
+      },
+      "generation": {
+        "version": "exponential-ivp-1.0-frozen",
+        "seed": 67047,
+        "template": "nonresonant",
+        "parameters": {
+          "h": -1,
+          "k": -5,
+          "f": -3,
+          "v": -5
+        },
+        "bank_profile": null,
+        "origin": "authored",
+        "source_id": null,
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "mathematical_fingerprint": "2b45b761de45fe6b38dc9688f3590328c8ddf69778fccffe2d2d0fb85b3a6d4c",
+        "content_identity": "1a75e03003a980440d17b2be039eed1e92e396ed6fd65067e8029aa93051251f",
+        "domain": "x real",
+        "source_missing_completion": false,
+        "sympy": "1.14.0"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "- \\frac{\\left(23 e^{4 x} - 3\\right) e^{- 5 x}}{4}",
+        "expected": "accepted",
+        "purpose": "Independent symbolic solution, refactored where possible"
+      },
+      {
+        "submitted": "- \\frac{19 e^{- x}}{4} + \\frac{3 e^{- 5 x}}{4}",
+        "expected": "rejected",
+        "purpose": "Correct ODE but incorrect initial value"
+      },
+      {
+        "submitted": "0",
+        "expected": "rejected",
+        "purpose": "Ignore nonzero forcing"
+      },
+      {
+        "submitted": "1 - \\frac{23 e^{- x}}{4} + \\frac{3 e^{- 5 x}}{4}",
+        "expected": "rejected",
+        "purpose": "Add erroneous constant"
+      }
+    ]
+  },
+  {
+    "label": "independent-18",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186229165,
+        "id": "570160ff-c937-57e7-bd78-702f7f018e64",
+        "title": "Solving an Initial Value Problem"
+      },
+      "question": {
+        ":question/id": "2497918b-e185-5d48-bd61-49087fbe6c2c",
+        ":question/problem": "Consider the following initial value problem:\n\n$$\n{y}^{′}-2y=-2{e}^{2x},\\,y(0)=1\n$$\n\nGiven that the differential equation \n\n$$\n{y}^{′}-2y=-2{e}^{2x}\n$$\n\nhas the complementary solution ${y}_{c}=A{e}^{2x},$ solve the initial value problem.\n\n$y(x)=$\n{{field-1}}",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "4431fd6f-993c-5f0f-8522-d2fc0041bb2d",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "363e8422-1908-55cf-a4aa-b2ab919be5e2",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{e}^{2x}-2x{e}^{2x}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "363e8422-1908-55cf-a4aa-b2ab919be5e2"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/worked-solution": "To find the general solution of an inhomogeneous first-order linear equation with constant coefficients on the left-hand side, we must find the sum of the complementary and particular solutions.\n\nTo find the complementary solution ${y}_{c},$ we solve the corresponding homogeneous equation, given by\n\n$$\n{y}_{c}^{′}-2{y}_{c}=0.\n$$\n\nSolving this equation, we find that the complementary solution is\n\n$$\n{y}_{c}=A{e}^{2x}\n$$\n\nwhere $A$ is an arbitrary constant.\n\nWe now need to find the particular solution ${y}_{p}(x).$\n\nWe see that the right-hand side is $-2{e}^{2x},$ and ${e}^{2x}$ is a term in the complementary solution, so we assume a particular solution of the form\n\n$$\n{y}_{p}=\\alpha x{e}^{2x},\n$$\n\nwhere $\\alpha $ is a constant to be determined.\n\nWe calculate the first derivative of ${y}_{p}$ using the product rule for differentiation:\n\n$$\n\\begin{aligned}{y}_{p}^{′} & =(\\alpha x{e}^{2x})^{′} \\\\  & =\\alpha (x{e}^{2x})^{′} \\\\  & =\\alpha ({e}^{2x}+2x{e}^{2x}) \\\\  & =\\alpha (1+2x){e}^{2x}.\\end{aligned}\n$$\n\nTo find the value of $\\alpha ,$ we substitute ${y}_{p}$ and ${y}_{p}^{′}$ into the differential equation:\n\n$$\n\\begin{aligned}(\\alpha (1+2x){e}^{2x})-2(\\alpha x{e}^{2x}) & =-2{e}^{2x} \\\\ (1+2x-2x)\\alpha {e}^{2x} & =-2{e}^{2x} \\\\ \\alpha {e}^{2x} & =-2{e}^{2x} \\\\ \\alpha  & =-2.\\end{aligned}\n$$\n\nTherefore, the particular solution ${y}_{p}(x)$ is\n\n$$\n{y}_{p}(x)=-2x{e}^{2x}.\n$$\n\nNow, since the general solution is given by\n\n$$\ny(x)={y}_{c}(x)+{y}_{p}(x),\n$$\n\nthe general solution in our case is\n\n$$\ny=A{e}^{2x}-2x{e}^{2x}.\n$$\n\nWe can find the constant $A$ using the initial conditions.\n\nSubstituting $y(0)=1$ into the general solution gives\n\n$$\n\\begin{aligned}A+0 & =1 \\\\ A & =1.\\end{aligned}\n$$\n\nTherefore, the solution to the initial value problem is\n\n$$\ny={e}^{2x}-2x{e}^{2x}.\n$$"
+      },
+      "generation": {
+        "version": "exponential-ivp-1.0-frozen",
+        "seed": 67031,
+        "template": "resonant",
+        "parameters": {
+          "h": 2,
+          "k": 2,
+          "f": -2,
+          "v": 1
+        },
+        "bank_profile": null,
+        "origin": "authored",
+        "source_id": null,
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "mathematical_fingerprint": "b0df9abfe66ed69dc5a5f93cc4a169675c895b00683372946b710128b62995de",
+        "content_identity": "4525d4dbe8b4c17c30a6def1617fd3561aae0060ecac8dd3f2cc1b1b43a0a972",
+        "domain": "x real",
+        "source_missing_completion": false,
+        "sympy": "1.14.0"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "- \\left(2 x - 1\\right) e^{2 x}",
+        "expected": "accepted",
+        "purpose": "Independent symbolic solution, refactored where possible"
+      },
+      {
+        "submitted": "- 2 x e^{2 x} + 2 e^{2 x}",
+        "expected": "rejected",
+        "purpose": "Correct ODE but incorrect initial value"
+      },
+      {
+        "submitted": "0",
+        "expected": "rejected",
+        "purpose": "Ignore nonzero forcing"
+      },
+      {
+        "submitted": "- 2 x e^{2 x} + e^{2 x} + 1",
+        "expected": "rejected",
+        "purpose": "Add erroneous constant"
+      }
+    ]
+  },
+  {
+    "label": "independent-19",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186229165,
+        "id": "570160ff-c937-57e7-bd78-702f7f018e64",
+        "title": "Solving an Initial Value Problem"
+      },
+      "question": {
+        ":question/id": "e2f3a90a-c489-5589-97cb-fc12f7fa5b4a",
+        ":question/problem": "Consider the following initial value problem:\n\n$$\n{y}^{′}-5y=11{e}^{5x},\\,y(0)=-3\n$$\n\nGiven that the differential equation \n\n$$\n{y}^{′}-5y=11{e}^{5x}\n$$\n\nhas the complementary solution ${y}_{c}=A{e}^{5x},$ solve the initial value problem.\n\n$y(x)=$\n{{field-1}}",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "05d3a246-0c36-5486-8fbf-ed90b8264baa",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "8bc5b982-7957-502c-ac8a-94fb318a32eb",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "-3{e}^{5x}+11x{e}^{5x}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "8bc5b982-7957-502c-ac8a-94fb318a32eb"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/worked-solution": "To find the general solution of an inhomogeneous first-order linear equation with constant coefficients on the left-hand side, we must find the sum of the complementary and particular solutions.\n\nTo find the complementary solution ${y}_{c},$ we solve the corresponding homogeneous equation, given by\n\n$$\n{y}_{c}^{′}-5{y}_{c}=0.\n$$\n\nSolving this equation, we find that the complementary solution is\n\n$$\n{y}_{c}=A{e}^{5x}\n$$\n\nwhere $A$ is an arbitrary constant.\n\nWe now need to find the particular solution ${y}_{p}(x).$\n\nWe see that the right-hand side is $11{e}^{5x},$ and ${e}^{5x}$ is a term in the complementary solution, so we assume a particular solution of the form\n\n$$\n{y}_{p}=\\alpha x{e}^{5x},\n$$\n\nwhere $\\alpha $ is a constant to be determined.\n\nWe calculate the first derivative of ${y}_{p}$ using the product rule for differentiation:\n\n$$\n\\begin{aligned}{y}_{p}^{′} & =(\\alpha x{e}^{5x})^{′} \\\\  & =\\alpha (x{e}^{5x})^{′} \\\\  & =\\alpha ({e}^{5x}+5x{e}^{5x}) \\\\  & =\\alpha (1+5x){e}^{5x}.\\end{aligned}\n$$\n\nTo find the value of $\\alpha ,$ we substitute ${y}_{p}$ and ${y}_{p}^{′}$ into the differential equation:\n\n$$\n\\begin{aligned}(\\alpha (1+5x){e}^{5x})-5(\\alpha x{e}^{5x}) & =11{e}^{5x} \\\\ (1+5x-5x)\\alpha {e}^{5x} & =11{e}^{5x} \\\\ \\alpha {e}^{5x} & =11{e}^{5x} \\\\ \\alpha  & =11.\\end{aligned}\n$$\n\nTherefore, the particular solution ${y}_{p}(x)$ is\n\n$$\n{y}_{p}(x)=11x{e}^{5x}.\n$$\n\nNow, since the general solution is given by\n\n$$\ny(x)={y}_{c}(x)+{y}_{p}(x),\n$$\n\nthe general solution in our case is\n\n$$\ny=A{e}^{5x}+11x{e}^{5x}.\n$$\n\nWe can find the constant $A$ using the initial conditions.\n\nSubstituting $y(0)=-3$ into the general solution gives\n\n$$\n\\begin{aligned}A+0 & =-3 \\\\ A & =-3.\\end{aligned}\n$$\n\nTherefore, the solution to the initial value problem is\n\n$$\ny=-3{e}^{5x}+11x{e}^{5x}.\n$$"
+      },
+      "generation": {
+        "version": "exponential-ivp-1.0-frozen",
+        "seed": 67039,
+        "template": "resonant",
+        "parameters": {
+          "h": 5,
+          "k": 5,
+          "f": 11,
+          "v": -3
+        },
+        "bank_profile": null,
+        "origin": "authored",
+        "source_id": null,
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "mathematical_fingerprint": "e5799fb39eea90b734e5de6fbda4ee71cc6efb545f29412c7a2a28a65f067e6f",
+        "content_identity": "7098bd0ad7ca5e91975cc5ba24ca41a6a9487216085703bbfd8b95723b367a29",
+        "domain": "x real",
+        "source_missing_completion": false,
+        "sympy": "1.14.0"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "\\left(11 x - 3\\right) e^{5 x}",
+        "expected": "accepted",
+        "purpose": "Independent symbolic solution, refactored where possible"
+      },
+      {
+        "submitted": "11 x e^{5 x} - 2 e^{5 x}",
+        "expected": "rejected",
+        "purpose": "Correct ODE but incorrect initial value"
+      },
+      {
+        "submitted": "0",
+        "expected": "rejected",
+        "purpose": "Ignore nonzero forcing"
+      },
+      {
+        "submitted": "11 x e^{5 x} - 3 e^{5 x} + 1",
+        "expected": "rejected",
+        "purpose": "Add erroneous constant"
+      }
+    ]
+  },
+  {
+    "label": "independent-20",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186229165,
+        "id": "570160ff-c937-57e7-bd78-702f7f018e64",
+        "title": "Solving an Initial Value Problem"
+      },
+      "question": {
+        ":question/id": "1768ef37-a195-51b5-bf6b-ec372cfcd952",
+        ":question/problem": "Consider the following initial value problem:\n\n$$\n{y}^{′}+y=12{e}^{-x},\\,y(0)=-5\n$$\n\nGiven that the differential equation \n\n$$\n{y}^{′}+y=12{e}^{-x}\n$$\n\nhas the complementary solution ${y}_{c}=A{e}^{-x},$ solve the initial value problem.\n\n$y(x)=$\n{{field-1}}",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "c7478858-02a6-52ec-84ff-6c7b8af64fc3",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "096fe798-f7af-598d-aa67-a2fc26aeafa7",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "-5{e}^{-x}+12x{e}^{-x}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "096fe798-f7af-598d-aa67-a2fc26aeafa7"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/worked-solution": "To find the general solution of an inhomogeneous first-order linear equation with constant coefficients on the left-hand side, we must find the sum of the complementary and particular solutions.\n\nTo find the complementary solution ${y}_{c},$ we solve the corresponding homogeneous equation, given by\n\n$$\n{y}_{c}^{′}+{y}_{c}=0.\n$$\n\nSolving this equation, we find that the complementary solution is\n\n$$\n{y}_{c}=A{e}^{-x}\n$$\n\nwhere $A$ is an arbitrary constant.\n\nWe now need to find the particular solution ${y}_{p}(x).$\n\nWe see that the right-hand side is $12{e}^{-x},$ and ${e}^{-x}$ is a term in the complementary solution, so we assume a particular solution of the form\n\n$$\n{y}_{p}=\\alpha x{e}^{-x},\n$$\n\nwhere $\\alpha $ is a constant to be determined.\n\nWe calculate the first derivative of ${y}_{p}$ using the product rule for differentiation:\n\n$$\n\\begin{aligned}{y}_{p}^{′} & =(\\alpha x{e}^{-x})^{′} \\\\  & =\\alpha (x{e}^{-x})^{′} \\\\  & =\\alpha ({e}^{-x}-x{e}^{-x}) \\\\  & =\\alpha (1-x){e}^{-x}.\\end{aligned}\n$$\n\nTo find the value of $\\alpha ,$ we substitute ${y}_{p}$ and ${y}_{p}^{′}$ into the differential equation:\n\n$$\n\\begin{aligned}(\\alpha (1-x){e}^{-x})+(\\alpha x{e}^{-x}) & =12{e}^{-x} \\\\ (1-x+x)\\alpha {e}^{-x} & =12{e}^{-x} \\\\ \\alpha {e}^{-x} & =12{e}^{-x} \\\\ \\alpha  & =12.\\end{aligned}\n$$\n\nTherefore, the particular solution ${y}_{p}(x)$ is\n\n$$\n{y}_{p}(x)=12x{e}^{-x}.\n$$\n\nNow, since the general solution is given by\n\n$$\ny(x)={y}_{c}(x)+{y}_{p}(x),\n$$\n\nthe general solution in our case is\n\n$$\ny=A{e}^{-x}+12x{e}^{-x}.\n$$\n\nWe can find the constant $A$ using the initial conditions.\n\nSubstituting $y(0)=-5$ into the general solution gives\n\n$$\n\\begin{aligned}A+0 & =-5 \\\\ A & =-5.\\end{aligned}\n$$\n\nTherefore, the solution to the initial value problem is\n\n$$\ny=-5{e}^{-x}+12x{e}^{-x}.\n$$"
+      },
+      "generation": {
+        "version": "exponential-ivp-1.0-frozen",
+        "seed": 67047,
+        "template": "resonant",
+        "parameters": {
+          "h": -1,
+          "k": -1,
+          "f": 12,
+          "v": -5
+        },
+        "bank_profile": null,
+        "origin": "authored",
+        "source_id": null,
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "mathematical_fingerprint": "b58ed6958b47b40806c78a2d3790f946c807504b5bc4f0ee1e9bc4086a4558bd",
+        "content_identity": "97dce7e04d5d25652b9bc1934351cfe660ce852f42b0b2fbd99a001e036a0a49",
+        "domain": "x real",
+        "source_missing_completion": false,
+        "sympy": "1.14.0"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "\\left(12 x - 5\\right) e^{- x}",
+        "expected": "accepted",
+        "purpose": "Independent symbolic solution, refactored where possible"
+      },
+      {
+        "submitted": "12 x e^{- x} - 4 e^{- x}",
+        "expected": "rejected",
+        "purpose": "Correct ODE but incorrect initial value"
+      },
+      {
+        "submitted": "0",
+        "expected": "rejected",
+        "purpose": "Ignore nonzero forcing"
+      },
+      {
+        "submitted": "12 x e^{- x} + 1 - 5 e^{- x}",
+        "expected": "rejected",
+        "purpose": "Add erroneous constant"
+      }
+    ]
+  },
+  {
+    "label": "independent-21",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186229165,
+        "id": "570160ff-c937-57e7-bd78-702f7f018e64",
+        "title": "Solving an Initial Value Problem"
+      },
+      "question": {
+        ":question/id": "f9c41c76-1b88-5b07-a115-57dbad7eb0db",
+        ":question/problem": "Consider the following initial value problem:\n\n$$\n{y}^{′}-2y=-2{e}^{2x}-11{e}^{6x},\\,y(0)=1\n$$\n\nGiven that the differential equation \n\n$$\n{y}^{′}-2y=-2{e}^{2x}-11{e}^{6x}\n$$\n\nhas the complementary solution ${y}_{c}=A{e}^{2x},$ solve the initial value problem.\n\n$y(x)=$\n{{field-1}}",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "2daec097-50d7-56ae-a55f-45e02717fd18",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "4be5f4ea-a770-5974-a034-44a920b8ba7f",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{15}{4}{e}^{2x}-2x{e}^{2x}-\\frac{11}{4}{e}^{6x}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "4be5f4ea-a770-5974-a034-44a920b8ba7f"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/worked-solution": "To find the general solution of an inhomogeneous first-order linear equation with constant coefficients on the left-hand side, we must find the sum of the complementary and particular solutions.\n\nTo find the complementary solution ${y}_{c},$ we solve the corresponding homogeneous equation, given by\n\n$$\n{y}_{c}^{′}-2{y}_{c}=0.\n$$\n\nSolving this equation, we find that the complementary solution is\n\n$$\n{y}_{c}=A{e}^{2x}\n$$\n\nwhere $A$ is an arbitrary constant.\n\nWe now need to find the particular solution ${y}_{p}(x).$\n\nWe examine both exponential forcing terms. The first exponential is a term in the complementary solution, so its trial term is multiplied by $x$; the other exponential is not. We assume a particular solution of the form\n\n$$\n{y}_{p}=\\alpha x{e}^{2x}+\\beta {e}^{6x},\n$$\n\nwhere $\\alpha $ and $\\beta $ are constants that are to be determined.\n\nWe calculate the first derivative of ${y}_{p}$ using the product rule for differentiation:\n\n$$\n\\begin{aligned}{y}_{p}^{′} & =(\\alpha x{e}^{2x}+\\beta {e}^{6x})^{′} \\\\  & =\\alpha (x{e}^{2x})^{′}+6\\beta {e}^{6x} \\\\  & =\\alpha ({e}^{2x}+2x{e}^{2x})+6\\beta {e}^{6x} \\\\  & =\\alpha (1+2x){e}^{2x}+6\\beta {e}^{6x}.\\end{aligned}\n$$\n\nTo find the values of $\\alpha $ and $\\beta,$ we substitute ${y}_{p}$ and ${y}_{p}^{′}$ into the differential equation:\n\n$$\n\\begin{aligned}(\\alpha (1+2x){e}^{2x}+6\\beta {e}^{6x})-2(\\alpha x{e}^{2x}+\\beta {e}^{6x}) & =-2{e}^{2x}-11{e}^{6x} \\\\ (1+2x-2x)\\alpha {e}^{2x}+(6-2)\\beta {e}^{6x} & =-2{e}^{2x}-11{e}^{6x} \\\\ \\alpha {e}^{2x}+4\\beta {e}^{6x} & =-2{e}^{2x}-11{e}^{6x}\\end{aligned}\n$$\n\nEquating coefficients of the two distinct exponentials gives\n\n$$\n\\alpha =-2,\\qquad 4\\beta =-11.\n$$\n\nSo, we have\n\n$$\n\\alpha =-2,\\qquad \\beta =-\\frac{11}{4}.\n$$\n\nTherefore, the particular solution ${y}_{p}(x)$ is\n\n$$\n{y}_{p}(x)=-2x{e}^{2x}-\\frac{11}{4}{e}^{6x}.\n$$\n\nNow, since the general solution is given by\n\n$$\ny(x)={y}_{c}(x)+{y}_{p}(x),\n$$\n\nthe general solution in our case is\n\n$$\ny=A{e}^{2x}-2x{e}^{2x}-\\frac{11}{4}{e}^{6x}.\n$$\n\nWe can find the constant $A$ using the initial conditions.\n\nSubstituting $y(0)=1$ into the general solution gives\n\n$$\n\\begin{aligned}A+0-\\frac{11}{4} & =1 \\\\ A & =\\frac{15}{4}.\\end{aligned}\n$$\n\nTherefore, the solution to the initial value problem is\n\n$$\ny=\\frac{15}{4}{e}^{2x}-2x{e}^{2x}-\\frac{11}{4}{e}^{6x}.\n$$"
+      },
+      "generation": {
+        "version": "exponential-ivp-1.0-frozen",
+        "seed": 67031,
+        "template": "mixed",
+        "parameters": {
+          "h": 2,
+          "k": 2,
+          "f": -2,
+          "v": 1,
+          "k2": 6,
+          "f2": -11
+        },
+        "bank_profile": null,
+        "origin": "authored",
+        "source_id": null,
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "mathematical_fingerprint": "1bc7bc46b41689ac1d43f34e5ba7e18a565b597d8a655175097ccce3f1b0838d",
+        "content_identity": "783b1210726b025bc6969f290919ec53b5cff2d987a3421cae69bc72ca28f3b8",
+        "domain": "x real",
+        "source_missing_completion": false,
+        "sympy": "1.14.0"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "- \\frac{\\left(8 x + 11 e^{4 x} - 15\\right) e^{2 x}}{4}",
+        "expected": "accepted",
+        "purpose": "Independent symbolic solution, refactored where possible"
+      },
+      {
+        "submitted": "- 2 x e^{2 x} - \\frac{11 e^{6 x}}{4} + \\frac{19 e^{2 x}}{4}",
+        "expected": "rejected",
+        "purpose": "Correct ODE but incorrect initial value"
+      },
+      {
+        "submitted": "0",
+        "expected": "rejected",
+        "purpose": "Ignore nonzero forcing"
+      },
+      {
+        "submitted": "- 2 x e^{2 x} - \\frac{11 e^{6 x}}{4} + \\frac{15 e^{2 x}}{4} + 1",
+        "expected": "rejected",
+        "purpose": "Add erroneous constant"
+      }
+    ]
+  },
+  {
+    "label": "independent-22",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186229165,
+        "id": "570160ff-c937-57e7-bd78-702f7f018e64",
+        "title": "Solving an Initial Value Problem"
+      },
+      "question": {
+        ":question/id": "41ffaae2-bdaa-584c-9f95-de1c4dff966b",
+        ":question/problem": "Consider the following initial value problem:\n\n$$\n{y}^{′}-5y=11{e}^{5x}-10{e}^{-4x},\\,y(0)=-3\n$$\n\nGiven that the differential equation \n\n$$\n{y}^{′}-5y=11{e}^{5x}-10{e}^{-4x}\n$$\n\nhas the complementary solution ${y}_{c}=A{e}^{5x},$ solve the initial value problem.\n\n$y(x)=$\n{{field-1}}",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "1ef22f92-0d4d-521b-9548-d834d264f9f3",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "7b6c0d45-12df-5779-af44-6eedd12a1cc3",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "-\\frac{37}{9}{e}^{5x}+11x{e}^{5x}+\\frac{10}{9}{e}^{-4x}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "7b6c0d45-12df-5779-af44-6eedd12a1cc3"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/worked-solution": "To find the general solution of an inhomogeneous first-order linear equation with constant coefficients on the left-hand side, we must find the sum of the complementary and particular solutions.\n\nTo find the complementary solution ${y}_{c},$ we solve the corresponding homogeneous equation, given by\n\n$$\n{y}_{c}^{′}-5{y}_{c}=0.\n$$\n\nSolving this equation, we find that the complementary solution is\n\n$$\n{y}_{c}=A{e}^{5x}\n$$\n\nwhere $A$ is an arbitrary constant.\n\nWe now need to find the particular solution ${y}_{p}(x).$\n\nWe examine both exponential forcing terms. The first exponential is a term in the complementary solution, so its trial term is multiplied by $x$; the other exponential is not. We assume a particular solution of the form\n\n$$\n{y}_{p}=\\alpha x{e}^{5x}+\\beta {e}^{-4x},\n$$\n\nwhere $\\alpha $ and $\\beta $ are constants that are to be determined.\n\nWe calculate the first derivative of ${y}_{p}$ using the product rule for differentiation:\n\n$$\n\\begin{aligned}{y}_{p}^{′} & =(\\alpha x{e}^{5x}+\\beta {e}^{-4x})^{′} \\\\  & =\\alpha (x{e}^{5x})^{′}-4\\beta {e}^{-4x} \\\\  & =\\alpha ({e}^{5x}+5x{e}^{5x})-4\\beta {e}^{-4x} \\\\  & =\\alpha (1+5x){e}^{5x}-4\\beta {e}^{-4x}.\\end{aligned}\n$$\n\nTo find the values of $\\alpha $ and $\\beta,$ we substitute ${y}_{p}$ and ${y}_{p}^{′}$ into the differential equation:\n\n$$\n\\begin{aligned}(\\alpha (1+5x){e}^{5x}-4\\beta {e}^{-4x})-5(\\alpha x{e}^{5x}+\\beta {e}^{-4x}) & =11{e}^{5x}-10{e}^{-4x} \\\\ (1+5x-5x)\\alpha {e}^{5x}+(-4-5)\\beta {e}^{-4x} & =11{e}^{5x}-10{e}^{-4x} \\\\ \\alpha {e}^{5x}-9\\beta {e}^{-4x} & =11{e}^{5x}-10{e}^{-4x}\\end{aligned}\n$$\n\nEquating coefficients of the two distinct exponentials gives\n\n$$\n\\alpha =11,\\qquad -9\\beta =-10.\n$$\n\nSo, we have\n\n$$\n\\alpha =11,\\qquad \\beta =\\frac{10}{9}.\n$$\n\nTherefore, the particular solution ${y}_{p}(x)$ is\n\n$$\n{y}_{p}(x)=11x{e}^{5x}+\\frac{10}{9}{e}^{-4x}.\n$$\n\nNow, since the general solution is given by\n\n$$\ny(x)={y}_{c}(x)+{y}_{p}(x),\n$$\n\nthe general solution in our case is\n\n$$\ny=A{e}^{5x}+11x{e}^{5x}+\\frac{10}{9}{e}^{-4x}.\n$$\n\nWe can find the constant $A$ using the initial conditions.\n\nSubstituting $y(0)=-3$ into the general solution gives\n\n$$\n\\begin{aligned}A+0+\\frac{10}{9} & =-3 \\\\ A & =-\\frac{37}{9}.\\end{aligned}\n$$\n\nTherefore, the solution to the initial value problem is\n\n$$\ny=-\\frac{37}{9}{e}^{5x}+11x{e}^{5x}+\\frac{10}{9}{e}^{-4x}.\n$$"
+      },
+      "generation": {
+        "version": "exponential-ivp-1.0-frozen",
+        "seed": 67039,
+        "template": "mixed",
+        "parameters": {
+          "h": 5,
+          "k": 5,
+          "f": 11,
+          "v": -3,
+          "k2": -4,
+          "f2": -10
+        },
+        "bank_profile": null,
+        "origin": "authored",
+        "source_id": null,
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "mathematical_fingerprint": "17407ee0821679d091d6f9f4036ea08d36d972ad44a96e2b5797c3a879609e0d",
+        "content_identity": "aed43d2a28a609e64d63a3670e5b22bb89843479d05a3aa1593a6e1cc0e3793b",
+        "domain": "x real",
+        "source_missing_completion": false,
+        "sympy": "1.14.0"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "\\frac{\\left(99 x e^{9 x} - 37 e^{9 x} + 10\\right) e^{- 4 x}}{9}",
+        "expected": "accepted",
+        "purpose": "Independent symbolic solution, refactored where possible"
+      },
+      {
+        "submitted": "11 x e^{5 x} - \\frac{28 e^{5 x}}{9} + \\frac{10 e^{- 4 x}}{9}",
+        "expected": "rejected",
+        "purpose": "Correct ODE but incorrect initial value"
+      },
+      {
+        "submitted": "0",
+        "expected": "rejected",
+        "purpose": "Ignore nonzero forcing"
+      },
+      {
+        "submitted": "11 x e^{5 x} - \\frac{37 e^{5 x}}{9} + 1 + \\frac{10 e^{- 4 x}}{9}",
+        "expected": "rejected",
+        "purpose": "Add erroneous constant"
+      }
+    ]
+  },
+  {
+    "label": "independent-23",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186229165,
+        "id": "570160ff-c937-57e7-bd78-702f7f018e64",
+        "title": "Solving an Initial Value Problem"
+      },
+      "question": {
+        ":question/id": "44b85dcd-b2c8-5284-98d9-2f8039221038",
+        ":question/problem": "Consider the following initial value problem:\n\n$$\n{y}^{′}+y=12{e}^{-x}+7{e}^{-2x},\\,y(0)=-5\n$$\n\nGiven that the differential equation \n\n$$\n{y}^{′}+y=12{e}^{-x}+7{e}^{-2x}\n$$\n\nhas the complementary solution ${y}_{c}=A{e}^{-x},$ solve the initial value problem.\n\n$y(x)=$\n{{field-1}}",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "6295e577-8960-59b7-975c-4784e24b1d78",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "bd15289d-af99-5121-ab39-7514fbb84d46",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "2{e}^{-x}+12x{e}^{-x}-7{e}^{-2x}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "bd15289d-af99-5121-ab39-7514fbb84d46"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/worked-solution": "To find the general solution of an inhomogeneous first-order linear equation with constant coefficients on the left-hand side, we must find the sum of the complementary and particular solutions.\n\nTo find the complementary solution ${y}_{c},$ we solve the corresponding homogeneous equation, given by\n\n$$\n{y}_{c}^{′}+{y}_{c}=0.\n$$\n\nSolving this equation, we find that the complementary solution is\n\n$$\n{y}_{c}=A{e}^{-x}\n$$\n\nwhere $A$ is an arbitrary constant.\n\nWe now need to find the particular solution ${y}_{p}(x).$\n\nWe examine both exponential forcing terms. The first exponential is a term in the complementary solution, so its trial term is multiplied by $x$; the other exponential is not. We assume a particular solution of the form\n\n$$\n{y}_{p}=\\alpha x{e}^{-x}+\\beta {e}^{-2x},\n$$\n\nwhere $\\alpha $ and $\\beta $ are constants that are to be determined.\n\nWe calculate the first derivative of ${y}_{p}$ using the product rule for differentiation:\n\n$$\n\\begin{aligned}{y}_{p}^{′} & =(\\alpha x{e}^{-x}+\\beta {e}^{-2x})^{′} \\\\  & =\\alpha (x{e}^{-x})^{′}-2\\beta {e}^{-2x} \\\\  & =\\alpha ({e}^{-x}-x{e}^{-x})-2\\beta {e}^{-2x} \\\\  & =\\alpha (1-x){e}^{-x}-2\\beta {e}^{-2x}.\\end{aligned}\n$$\n\nTo find the values of $\\alpha $ and $\\beta,$ we substitute ${y}_{p}$ and ${y}_{p}^{′}$ into the differential equation:\n\n$$\n\\begin{aligned}(\\alpha (1-x){e}^{-x}-2\\beta {e}^{-2x})+(\\alpha x{e}^{-x}+\\beta {e}^{-2x}) & =12{e}^{-x}+7{e}^{-2x} \\\\ (1-x+x)\\alpha {e}^{-x}+(-2+1)\\beta {e}^{-2x} & =12{e}^{-x}+7{e}^{-2x} \\\\ \\alpha {e}^{-x}-\\beta {e}^{-2x} & =12{e}^{-x}+7{e}^{-2x}\\end{aligned}\n$$\n\nEquating coefficients of the two distinct exponentials gives\n\n$$\n\\alpha =12,\\qquad -\\beta =7.\n$$\n\nSo, we have\n\n$$\n\\alpha =12,\\qquad \\beta =-7.\n$$\n\nTherefore, the particular solution ${y}_{p}(x)$ is\n\n$$\n{y}_{p}(x)=12x{e}^{-x}-7{e}^{-2x}.\n$$\n\nNow, since the general solution is given by\n\n$$\ny(x)={y}_{c}(x)+{y}_{p}(x),\n$$\n\nthe general solution in our case is\n\n$$\ny=A{e}^{-x}+12x{e}^{-x}-7{e}^{-2x}.\n$$\n\nWe can find the constant $A$ using the initial conditions.\n\nSubstituting $y(0)=-5$ into the general solution gives\n\n$$\n\\begin{aligned}A+0-7 & =-5 \\\\ A & =2.\\end{aligned}\n$$\n\nTherefore, the solution to the initial value problem is\n\n$$\ny=2{e}^{-x}+12x{e}^{-x}-7{e}^{-2x}.\n$$"
+      },
+      "generation": {
+        "version": "exponential-ivp-1.0-frozen",
+        "seed": 67047,
+        "template": "mixed",
+        "parameters": {
+          "h": -1,
+          "k": -1,
+          "f": 12,
+          "v": -5,
+          "k2": -2,
+          "f2": 7
+        },
+        "bank_profile": null,
+        "origin": "authored",
+        "source_id": null,
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "mathematical_fingerprint": "354a1264d6ee9b45e93b20279506bf0327d6f888eaeb9bcdd77946f4078c04f3",
+        "content_identity": "d2cbc21aea2e0f37a5ef7ab71dc69f9caffa661f2e9415488787c399b6722aea",
+        "domain": "x real",
+        "source_missing_completion": false,
+        "sympy": "1.14.0"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "\\left(12 x e^{x} + 2 e^{x} - 7\\right) e^{- 2 x}",
+        "expected": "accepted",
+        "purpose": "Independent symbolic solution, refactored where possible"
+      },
+      {
+        "submitted": "12 x e^{- x} + 3 e^{- x} - 7 e^{- 2 x}",
+        "expected": "rejected",
+        "purpose": "Correct ODE but incorrect initial value"
+      },
+      {
+        "submitted": "0",
+        "expected": "rejected",
+        "purpose": "Ignore nonzero forcing"
+      },
+      {
+        "submitted": "12 x e^{- x} + 1 + 2 e^{- x} - 7 e^{- 2 x}",
+        "expected": "rejected",
+        "purpose": "Add erroneous constant"
+      }
+    ]
+  },
+  {
+    "label": "independent-24",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186229165,
+        "id": "570160ff-c937-57e7-bd78-702f7f018e64",
+        "title": "Solving an Initial Value Problem"
+      },
+      "question": {
+        ":question/id": "f5a9697c-d08f-5313-ad9f-630adfaa618e",
+        ":question/problem": "Consider the following initial value problem:\n\n$$\n{y}^{′}-5y=6{e}^{2x},\\,y(0)=4\n$$\n\nGiven that the differential equation \n\n$$\n{y}^{′}-5y=6{e}^{2x}\n$$\n\nhas the complementary solution ${y}_{c}=A{e}^{5x},$ solve the initial value problem.\n\n$y(x)=$\n{{field-1}}",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "b3773385-c63a-5121-873d-841ad799920d",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "5e31a116-843c-5275-b3b0-23b65853b680",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "6{e}^{5x}-2{e}^{2x}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "5e31a116-843c-5275-b3b0-23b65853b680"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/worked-solution": "To find the general solution of an inhomogeneous first-order linear equation with constant coefficients on the left-hand side, we must find the sum of the complementary and particular solutions.\n\nTo find the complementary solution ${y}_{c},$ we solve the corresponding homogeneous equation, given by\n\n$$\n{y}_{c}^{′}-5{y}_{c}=0.\n$$\n\nSolving this equation, we find that the complementary solution is\n\n$$\n{y}_{c}=A{e}^{5x}\n$$\n\nwhere $A$ is an arbitrary constant.\n\nWe now need to find the particular solution ${y}_{p}(x).$\n\nWe see that the right-hand side is $6{e}^{2x},$ and ${e}^{2x}$ is not a term in the complementary solution, so we assume a particular solution of the form\n\n$$\n{y}_{p}=\\alpha {e}^{2x},\n$$\n\nwhere $\\alpha $ is a constant to be determined.\n\nCalculating the first derivative of ${y}_{p}$ gives\n\n$$\n{y}_{p}^{′}=2\\alpha {e}^{2x}.\n$$\n\nTo find the value of $\\alpha ,$ we substitute ${y}_{p}$ and ${y}_{p}^{′}$ into the differential equation:\n\n$$\n\\begin{aligned}(2\\alpha {e}^{2x})-5(\\alpha {e}^{2x}) & =6{e}^{2x} \\\\ (2-5)\\alpha {e}^{2x} & =6{e}^{2x} \\\\ -3\\alpha {e}^{2x} & =6{e}^{2x} \\\\ \\alpha  & =-2\\end{aligned}\n$$\n\nTherefore, the particular solution ${y}_{p}(x)$ is\n\n$$\n{y}_{p}(x)=-2{e}^{2x}.\n$$\n\nNow, since the general solution is given by\n\n$$\ny(x)={y}_{c}(x)+{y}_{p}(x),\n$$\n\nthe general solution in our case is\n\n$$\ny=A{e}^{5x}-2{e}^{2x}.\n$$\n\nWe can find the constant $A$ using the initial conditions.\n\nSubstituting $y(0)=4$ into the general solution gives\n\n$$\n\\begin{aligned}A-2 & =4 \\\\ A & =6.\\end{aligned}\n$$\n\nTherefore, the solution to the initial value problem is\n\n$$\ny=6{e}^{5x}-2{e}^{2x}.\n$$"
+      },
+      "generation": {
+        "version": "exponential-ivp-1.0-frozen",
+        "seed": 941,
+        "template": "nonresonant",
+        "parameters": {
+          "h": 5,
+          "k": 2,
+          "f": 6,
+          "v": 4
+        },
+        "bank_profile": "raw:q-332903",
+        "origin": "observed",
+        "source_id": "q-332903",
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "mathematical_fingerprint": "563e55559a611c33166073532a94bc1ffb2c22100a26689be620bde48777029a",
+        "content_identity": "984599c177722e66882e6149a87ecb114a2402b47281060885e39dfe7f7053f1",
+        "domain": "x real",
+        "source_missing_completion": false,
+        "sympy": "1.14.0"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "2 \\left(3 e^{3 x} - 1\\right) e^{2 x}",
+        "expected": "accepted",
+        "purpose": "Independent symbolic solution, refactored where possible"
+      },
+      {
+        "submitted": "7 e^{5 x} - 2 e^{2 x}",
+        "expected": "rejected",
+        "purpose": "Correct ODE but incorrect initial value"
+      },
+      {
+        "submitted": "0",
+        "expected": "rejected",
+        "purpose": "Ignore nonzero forcing"
+      },
+      {
+        "submitted": "6 e^{5 x} - 2 e^{2 x} + 1",
+        "expected": "rejected",
+        "purpose": "Add erroneous constant"
+      }
+    ]
+  },
+  {
+    "label": "independent-25",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186229165,
+        "id": "570160ff-c937-57e7-bd78-702f7f018e64",
+        "title": "Solving an Initial Value Problem"
+      },
+      "question": {
+        ":question/id": "36d47665-8195-5db5-807e-92d449253f57",
+        ":question/problem": "Consider the following initial value problem:\n\n$$\n{y}^{′}-4y=5{e}^{-x},\\,y(0)=-1\n$$\n\nGiven that the differential equation \n\n$$\n{y}^{′}-4y=5{e}^{-x}\n$$\n\nhas the complementary solution ${y}_{c}=A{e}^{4x},$ solve the initial value problem.\n\n$y(x)=$\n{{field-1}}",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "ced56d5f-0d3d-5733-a398-6ac784ef58fd",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "7e4c935f-0fd3-522b-99d2-9c096e8ea2fe",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "-{e}^{-x}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "7e4c935f-0fd3-522b-99d2-9c096e8ea2fe"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/worked-solution": "To find the general solution of an inhomogeneous first-order linear equation with constant coefficients on the left-hand side, we must find the sum of the complementary and particular solutions.\n\nTo find the complementary solution ${y}_{c},$ we solve the corresponding homogeneous equation, given by\n\n$$\n{y}_{c}^{′}-4{y}_{c}=0.\n$$\n\nSolving this equation, we find that the complementary solution is\n\n$$\n{y}_{c}=A{e}^{4x}\n$$\n\nwhere $A$ is an arbitrary constant.\n\nWe now need to find the particular solution ${y}_{p}(x).$\n\nWe see that the right-hand side is $5{e}^{-x},$ and ${e}^{-x}$ is not a term in the complementary solution, so we assume a particular solution of the form\n\n$$\n{y}_{p}=\\alpha {e}^{-x},\n$$\n\nwhere $\\alpha $ is a constant to be determined.\n\nCalculating the first derivative of ${y}_{p}$ gives\n\n$$\n{y}_{p}^{′}=-\\alpha {e}^{-x}.\n$$\n\nTo find the value of $\\alpha ,$ we substitute ${y}_{p}$ and ${y}_{p}^{′}$ into the differential equation:\n\n$$\n\\begin{aligned}(-\\alpha {e}^{-x})-4(\\alpha {e}^{-x}) & =5{e}^{-x} \\\\ (-1-4)\\alpha {e}^{-x} & =5{e}^{-x} \\\\ -5\\alpha {e}^{-x} & =5{e}^{-x} \\\\ \\alpha  & =-1\\end{aligned}\n$$\n\nTherefore, the particular solution ${y}_{p}(x)$ is\n\n$$\n{y}_{p}(x)=-{e}^{-x}.\n$$\n\nNow, since the general solution is given by\n\n$$\ny(x)={y}_{c}(x)+{y}_{p}(x),\n$$\n\nthe general solution in our case is\n\n$$\ny=A{e}^{4x}-{e}^{-x}.\n$$\n\nWe can find the constant $A$ using the initial conditions.\n\nSubstituting $y(0)=-1$ into the general solution gives\n\n$$\n\\begin{aligned}A-1 & =-1 \\\\ A & =0.\\end{aligned}\n$$\n\nTherefore, the solution to the initial value problem is\n\n$$\ny=-{e}^{-x}.\n$$"
+      },
+      "generation": {
+        "version": "exponential-ivp-1.0-frozen",
+        "seed": 941,
+        "template": "nonresonant",
+        "parameters": {
+          "h": 4,
+          "k": -1,
+          "f": 5,
+          "v": -1
+        },
+        "bank_profile": "raw:q-332905",
+        "origin": "observed",
+        "source_id": "q-332905",
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "mathematical_fingerprint": "9cdb19df5c59ec0e5f410b220449ea0013f466488b68352c208b9c997409a585",
+        "content_identity": "f2b66b4451abbd1dc646feed7b875dbb0ab37af75312cd0fc318128414b88d9e",
+        "domain": "x real",
+        "source_missing_completion": false,
+        "sympy": "1.14.0"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "- e^{- x}",
+        "expected": "accepted",
+        "purpose": "Independent symbolic solution, refactored where possible"
+      },
+      {
+        "submitted": "e^{4 x} - e^{- x}",
+        "expected": "rejected",
+        "purpose": "Correct ODE but incorrect initial value"
+      },
+      {
+        "submitted": "0",
+        "expected": "rejected",
+        "purpose": "Ignore nonzero forcing"
+      },
+      {
+        "submitted": "1 - e^{- x}",
+        "expected": "rejected",
+        "purpose": "Add erroneous constant"
+      }
+    ]
+  },
+  {
+    "label": "independent-26",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186229165,
+        "id": "570160ff-c937-57e7-bd78-702f7f018e64",
+        "title": "Solving an Initial Value Problem"
+      },
+      "question": {
+        ":question/id": "03d2aabe-422a-5bbf-8d07-7c952719f153",
+        ":question/problem": "Consider the following initial value problem:\n\n$$\n{y}^{′}-3y=7{e}^{-2x},\\,y(0)=0\n$$\n\nGiven that the differential equation \n\n$$\n{y}^{′}-3y=7{e}^{-2x}\n$$\n\nhas the complementary solution ${y}_{c}=A{e}^{3x},$ solve the initial value problem.\n\n$y(x)=$\n{{field-1}}",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "86aaf075-99f5-518b-8dc8-b5b8ef84fb3e",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "c426d86c-930a-50c5-aec4-ba05d8348706",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{7}{5}{e}^{3x}-\\frac{7}{5}{e}^{-2x}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "c426d86c-930a-50c5-aec4-ba05d8348706"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/worked-solution": "To find the general solution of an inhomogeneous first-order linear equation with constant coefficients on the left-hand side, we must find the sum of the complementary and particular solutions.\n\nTo find the complementary solution ${y}_{c},$ we solve the corresponding homogeneous equation, given by\n\n$$\n{y}_{c}^{′}-3{y}_{c}=0.\n$$\n\nSolving this equation, we find that the complementary solution is\n\n$$\n{y}_{c}=A{e}^{3x}\n$$\n\nwhere $A$ is an arbitrary constant.\n\nWe now need to find the particular solution ${y}_{p}(x).$\n\nWe see that the right-hand side is $7{e}^{-2x},$ and ${e}^{-2x}$ is not a term in the complementary solution, so we assume a particular solution of the form\n\n$$\n{y}_{p}=\\alpha {e}^{-2x},\n$$\n\nwhere $\\alpha $ is a constant to be determined.\n\nCalculating the first derivative of ${y}_{p}$ gives\n\n$$\n{y}_{p}^{′}=-2\\alpha {e}^{-2x}.\n$$\n\nTo find the value of $\\alpha ,$ we substitute ${y}_{p}$ and ${y}_{p}^{′}$ into the differential equation:\n\n$$\n\\begin{aligned}-2\\alpha {e}^{-2x}-3\\alpha {e}^{-2x} & =7{e}^{-2x} \\\\ -5\\alpha {e}^{-2x} & =7{e}^{-2x} \\\\ \\alpha  & =-\\frac{7}{5}\\end{aligned}\n$$\n\nTherefore, the particular solution ${y}_{p}(x)$ is\n\n$$\n{y}_{p}(x)=-\\frac{7}{5}{e}^{-2x}.\n$$\n\nNow, since the general solution is given by\n\n$$\ny(x)={y}_{c}(x)+{y}_{p}(x),\n$$\n\nthe general solution in our case is\n\n$$\ny=A{e}^{3x}-\\frac{7}{5}{e}^{-2x}.\n$$\n\nWe can find the constant $A$ using the initial conditions.\n\nSubstituting $y(0)=0$ into the general solution gives\n\n$$\n\\begin{aligned}A-\\frac{7}{5} & =0 \\\\ A & =\\frac{7}{5}\\end{aligned}\n$$\n\nTherefore, the solution to the initial value problem is\n\n$$\ny=\\frac{7}{5}{e}^{3x}-\\frac{7}{5}{e}^{-2x}.\n$$"
+      },
+      "generation": {
+        "version": "exponential-ivp-1.0-frozen",
+        "seed": 941,
+        "template": "nonresonant",
+        "parameters": {
+          "h": 3,
+          "k": -2,
+          "f": 7,
+          "v": 0
+        },
+        "bank_profile": "raw:q-332906",
+        "origin": "observed",
+        "source_id": "q-332906",
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "mathematical_fingerprint": "ec29fb15246a2ae4b9558bce8f9ebf31a6e711df6631dac6d3e9d7e3345e6637",
+        "content_identity": "f0c2fe912401f2b3bfec68fe24efa8b918dd5b1ee94c3d66cee19c1dd15d29f2",
+        "domain": "x real",
+        "source_missing_completion": false,
+        "sympy": "1.14.0"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "\\frac{7 \\left(e^{x} - 1\\right) \\left(e^{4 x} + e^{3 x} + e^{2 x} + e^{x} + 1\\right) e^{- 2 x}}{5}",
+        "expected": "accepted",
+        "purpose": "Independent symbolic solution, refactored where possible"
+      },
+      {
+        "submitted": "\\frac{12 e^{3 x}}{5} - \\frac{7 e^{- 2 x}}{5}",
+        "expected": "rejected",
+        "purpose": "Correct ODE but incorrect initial value"
+      },
+      {
+        "submitted": "0",
+        "expected": "rejected",
+        "purpose": "Ignore nonzero forcing"
+      },
+      {
+        "submitted": "\\frac{7 e^{3 x}}{5} + 1 - \\frac{7 e^{- 2 x}}{5}",
+        "expected": "rejected",
+        "purpose": "Add erroneous constant"
+      }
+    ]
+  },
+  {
+    "label": "independent-27",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186229165,
+        "id": "570160ff-c937-57e7-bd78-702f7f018e64",
+        "title": "Solving an Initial Value Problem"
+      },
+      "question": {
+        ":question/id": "ebf01113-6783-5fa5-8043-ecb551c71b91",
+        ":question/problem": "Consider the following initial value problem:\n\n$$\n{y}^{′}-y=2{e}^{4x},\\,y(0)=10\n$$\n\nGiven that the differential equation \n\n$$\n{y}^{′}-y=2{e}^{4x}\n$$\n\nhas the complementary solution ${y}_{c}=A{e}^{x},$ solve the initial value problem.\n\n$y(x)=$\n{{field-1}}",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "d33725f3-3756-5e91-b53d-8cc808a1072e",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "6904b908-9cce-5460-a1aa-6abfe31c2146",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{2}{3}{e}^{4x}+\\frac{28}{3}{e}^{x}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "6904b908-9cce-5460-a1aa-6abfe31c2146"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/worked-solution": "To find the general solution of an inhomogeneous first-order linear equation with constant coefficients on the left-hand side, we must find the sum of the complementary and particular solutions.\n\nTo find the complementary solution ${y}_{c},$ we solve the corresponding homogeneous equation, given by\n\n$$\n{y}_{c}^{′}-{y}_{c}=0.\n$$\n\nSolving this equation, we find that the complementary solution is\n\n$$\n{y}_{c}=A{e}^{x}\n$$\n\nwhere $A$ is an arbitrary constant.\n\nWe now need to find the particular solution ${y}_{p}(x).$\n\nWe see that the right-hand side is $2{e}^{4x},$ and ${e}^{4x}$ is not a term in the complementary solution, so we assume a particular solution of the form\n\n$$\n{y}_{p}=\\alpha {e}^{4x},\n$$\n\nwhere $\\alpha $ is a constant to be determined.\n\nCalculating the first derivative of ${y}_{p}$ gives\n\n$$\n{y}_{p}^{′}=4\\alpha {e}^{4x}.\n$$\n\nTo find the value of $\\alpha ,$ we substitute ${y}_{p}$ and ${y}_{p}^{′}$ into the differential equation:\n\n$$\n\\begin{aligned}4\\alpha {e}^{4x}-\\alpha {e}^{4x} & =2{e}^{4x} \\\\ 3\\alpha {e}^{4x} & =2{e}^{4x} \\\\ \\alpha  & =\\frac{2}{3}\\end{aligned}\n$$\n\nTherefore, the particular solution ${y}_{p}(x)$ is\n\n$$\n{y}_{p}(x)=\\frac{2}{3}{e}^{4x}.\n$$\n\nNow, since the general solution is given by\n\n$$\ny(x)={y}_{c}(x)+{y}_{p}(x),\n$$\n\nthe general solution in our case is\n\n$$\ny=A{e}^{x}+\\frac{2}{3}{e}^{4x}.\n$$\n\nWe can find the constant $A$ using the initial conditions.\n\nSubstituting $y(0)=10$ into the general solution gives\n\n$$\n\\begin{aligned}A+\\frac{2}{3} & =10 \\\\ A & =\\frac{28}{3}\\end{aligned}\n$$\n\nTherefore, the solution to the initial value problem is\n\n$$\ny=\\frac{28}{3}{e}^{x}+\\frac{2}{3}{e}^{4x}.\n$$"
+      },
+      "generation": {
+        "version": "exponential-ivp-1.0-frozen",
+        "seed": 941,
+        "template": "nonresonant",
+        "parameters": {
+          "h": 1,
+          "k": 4,
+          "f": 2,
+          "v": 10
+        },
+        "bank_profile": "raw:q-332908",
+        "origin": "observed",
+        "source_id": "q-332908",
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "mathematical_fingerprint": "f76e96b9e9e0febda2710b8cf3fe5c67fbca917788a313f46ff7f028057da922",
+        "content_identity": "f3e74adc3c38d2fa7dc75e46abb22c18a068e2c7c7892daf27fa33950262eb7c",
+        "domain": "x real",
+        "source_missing_completion": false,
+        "sympy": "1.14.0"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "\\frac{2 \\left(e^{3 x} + 14\\right) e^{x}}{3}",
+        "expected": "accepted",
+        "purpose": "Independent symbolic solution, refactored where possible"
+      },
+      {
+        "submitted": "\\frac{2 e^{4 x}}{3} + \\frac{31 e^{x}}{3}",
+        "expected": "rejected",
+        "purpose": "Correct ODE but incorrect initial value"
+      },
+      {
+        "submitted": "0",
+        "expected": "rejected",
+        "purpose": "Ignore nonzero forcing"
+      },
+      {
+        "submitted": "\\frac{2 e^{4 x}}{3} + \\frac{28 e^{x}}{3} + 1",
+        "expected": "rejected",
+        "purpose": "Add erroneous constant"
+      }
+    ]
+  },
+  {
+    "label": "independent-28",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186229165,
+        "id": "570160ff-c937-57e7-bd78-702f7f018e64",
+        "title": "Solving an Initial Value Problem"
+      },
+      "question": {
+        ":question/id": "966e2749-592e-5672-aed2-bc2ee90d6a82",
+        ":question/problem": "Consider the following initial value problem:\n\n$$\n{y}^{′}+2y=-5{e}^{-3x},\\,y(0)=8\n$$\n\nGiven that the differential equation \n\n$$\n{y}^{′}+2y=-5{e}^{-3x}\n$$\n\nhas the complementary solution ${y}_{c}=A{e}^{-2x},$ solve the initial value problem.\n\n$y(x)=$\n{{field-1}}",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "3b5585b1-1863-5c7d-ae35-e8dbaa4a8e6b",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "5940bda9-770f-5cda-b7a2-5a68c57acf7e",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "3{e}^{-2x}+5{e}^{-3x}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "5940bda9-770f-5cda-b7a2-5a68c57acf7e"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/worked-solution": "To find the general solution of an inhomogeneous first-order linear equation with constant coefficients on the left-hand side, we must find the sum of the complementary and particular solutions.\n\nTo find the complementary solution ${y}_{c},$ we solve the corresponding homogeneous equation, given by\n\n$$\n{y}_{c}^{′}+2{y}_{c}=0.\n$$\n\nSolving this equation, we find that the complementary solution is\n\n$$\n{y}_{c}=A{e}^{-2x}\n$$\n\nwhere $A$ is an arbitrary constant.\n\nWe now need to find the particular solution ${y}_{p}(x).$\n\nWe see that the right-hand side is $-5{e}^{-3x},$ and ${e}^{-3x}$ is not a term in the complementary solution, so we assume a particular solution of the form\n\n$$\n{y}_{p}=\\alpha {e}^{-3x},\n$$\n\nwhere $\\alpha $ is a constant to be determined.\n\nCalculating the first derivative of ${y}_{p}$ gives\n\n$$\n{y}_{p}^{′}=-3\\alpha {e}^{-3x}.\n$$\n\nTo find the value of $\\alpha ,$ we substitute ${y}_{p}$ and ${y}_{p}^{′}$ into the differential equation:\n\n$$\n\\begin{aligned}-3\\alpha {e}^{-3x}+2\\alpha {e}^{-3x} & =-5{e}^{-3x} \\\\ -\\alpha {e}^{-3x} & =-5{e}^{-3x} \\\\ \\alpha  & =5\\end{aligned}\n$$\n\nTherefore, the particular solution ${y}_{p}(x)$ is\n\n$$\n{y}_{p}(x)=5{e}^{-3x}.\n$$\n\nNow, since the general solution is given by\n\n$$\ny(x)={y}_{c}(x)+{y}_{p}(x),\n$$\n\nthe general solution in our case is\n\n$$\ny=A{e}^{-2x}+5{e}^{-3x}.\n$$\n\nWe can find the constant $A$ using the initial conditions.\n\nSubstituting $y(0)=8$ into the general solution gives\n\n$$\n\\begin{aligned}A+5 & =8 \\\\ A & =3\\end{aligned}\n$$\n\nTherefore, the solution to the initial value problem is\n\n$$\ny=3{e}^{-2x}+5{e}^{-3x}.\n$$"
+      },
+      "generation": {
+        "version": "exponential-ivp-1.0-frozen",
+        "seed": 941,
+        "template": "nonresonant",
+        "parameters": {
+          "h": -2,
+          "k": -3,
+          "f": -5,
+          "v": 8
+        },
+        "bank_profile": "raw:q-332909",
+        "origin": "observed",
+        "source_id": "q-332909",
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "mathematical_fingerprint": "d7eba77c51b782d03cd2491d88d879fe6ecb2a7ef8eae0a09580814437ee1a67",
+        "content_identity": "93fd0417f01218106883e8bf2fff1bb3fcdff29eeb3dbc85bb8160b82deaf058",
+        "domain": "x real",
+        "source_missing_completion": false,
+        "sympy": "1.14.0"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "\\left(3 e^{x} + 5\\right) e^{- 3 x}",
+        "expected": "accepted",
+        "purpose": "Independent symbolic solution, refactored where possible"
+      },
+      {
+        "submitted": "4 e^{- 2 x} + 5 e^{- 3 x}",
+        "expected": "rejected",
+        "purpose": "Correct ODE but incorrect initial value"
+      },
+      {
+        "submitted": "0",
+        "expected": "rejected",
+        "purpose": "Ignore nonzero forcing"
+      },
+      {
+        "submitted": "1 + 3 e^{- 2 x} + 5 e^{- 3 x}",
+        "expected": "rejected",
+        "purpose": "Add erroneous constant"
+      }
+    ]
+  },
+  {
+    "label": "independent-29",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186229165,
+        "id": "570160ff-c937-57e7-bd78-702f7f018e64",
+        "title": "Solving an Initial Value Problem"
+      },
+      "question": {
+        ":question/id": "4920a025-1bba-5f88-b27e-b899c7589a82",
+        ":question/problem": "Consider the following initial value problem:\n\n$$\n{y}^{′}+2y=8{e}^{-2x},\\,y(0)=-1\n$$\n\nGiven that the differential equation \n\n$$\n{y}^{′}+2y=8{e}^{-2x}\n$$\n\nhas the complementary solution ${y}_{c}=A{e}^{-2x},$ solve the initial value problem.\n\n$y(x)=$\n{{field-1}}",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "68952c8c-0330-5288-83e8-1384cce5f354",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "85f8f5ce-3109-5135-ada9-7d015b4a961c",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "-{e}^{-2x}+8x{e}^{-2x}"
+              },
+              {
+                ":answer/id": "9f88ce3e-a43e-515a-8bc1-9420e26426c3",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "(8x-1)e^{-2x}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "9f88ce3e-a43e-515a-8bc1-9420e26426c3"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/worked-solution": "To find the general solution of an inhomogeneous first-order linear equation with constant coefficients on the left-hand side, we must find the sum of the complementary and particular solutions.\n\nTo find the complementary solution ${y}_{c},$ we solve the corresponding homogeneous equation, given by\n\n$$\n{y}_{c}^{′}+2{y}_{c}=0.\n$$\n\nSolving this equation, we find that the complementary solution is\n\n$$\n{y}_{c}=A{e}^{-2x}\n$$\n\nwhere $A$ is an arbitrary constant.\n\nWe now need to find the particular solution ${y}_{p}(x).$\n\nWe see that the right-hand side is $8{e}^{-2x},$ and ${e}^{-2x}$ is a term in the complementary solution, so we assume a particular solution of the form\n\n$$\n{y}_{p}=\\alpha x{e}^{-2x},\n$$\n\nwhere $\\alpha $ is a constant to be determined.\n\nWe calculate the first derivative of ${y}_{p}$ using the product rule for differentiation:\n\n$$\n\\begin{aligned}{y}_{p}^{′} & =(\\alpha x{e}^{-2x})^{′} \\\\  & =\\alpha (x{e}^{-2x})^{′} \\\\  & =\\alpha ({e}^{-2x}-2x{e}^{-2x}) \\\\  & =\\alpha (1-2x){e}^{-2x}.\\end{aligned}\n$$\n\nTo find the value of $\\alpha ,$ we substitute ${y}_{p}$ and ${y}_{p}^{′}$ into the differential equation:\n\n$$\n\\begin{aligned}(\\alpha (1-2x){e}^{-2x})+2(\\alpha x{e}^{-2x}) & =8{e}^{-2x} \\\\ (1-2x+2x)\\alpha {e}^{-2x} & =8{e}^{-2x} \\\\ \\alpha {e}^{-2x} & =8{e}^{-2x} \\\\ \\alpha  & =8.\\end{aligned}\n$$\n\nTherefore, the particular solution ${y}_{p}(x)$ is\n\n$$\n{y}_{p}(x)=8x{e}^{-2x}.\n$$\n\nNow, since the general solution is given by\n\n$$\ny(x)={y}_{c}(x)+{y}_{p}(x),\n$$\n\nthe general solution in our case is\n\n$$\ny=A{e}^{-2x}+8x{e}^{-2x}.\n$$\n\nWe can find the constant $A$ using the initial conditions.\n\nSubstituting $y(0)=-1$ into the general solution gives\n\n$$\n\\begin{aligned}A+0 & =-1 \\\\ A & =-1.\\end{aligned}\n$$\n\nTherefore, the solution to the initial value problem is\n\n$$\ny=-{e}^{-2x}+8x{e}^{-2x}.\n$$"
+      },
+      "generation": {
+        "version": "exponential-ivp-1.0-frozen",
+        "seed": 941,
+        "template": "resonant",
+        "parameters": {
+          "h": -2,
+          "k": -2,
+          "f": 8,
+          "v": -1
+        },
+        "bank_profile": "raw:q-332936",
+        "origin": "observed",
+        "source_id": "q-332936",
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "mathematical_fingerprint": "33a59d50d3e2b28cb8c88805da0a084592f77d261be5a9be6534b913248bcb34",
+        "content_identity": "a4ce4b76e065ff751b105ba3e2ba019d62cbd50c5acb922e073f3375546305aa",
+        "domain": "x real",
+        "source_missing_completion": false,
+        "sympy": "1.14.0"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "\\left(8 x - 1\\right) e^{- 2 x}",
+        "expected": "accepted",
+        "purpose": "Independent symbolic solution, refactored where possible"
+      },
+      {
+        "submitted": "8 x e^{- 2 x}",
+        "expected": "rejected",
+        "purpose": "Correct ODE but incorrect initial value"
+      },
+      {
+        "submitted": "0",
+        "expected": "rejected",
+        "purpose": "Ignore nonzero forcing"
+      },
+      {
+        "submitted": "8 x e^{- 2 x} + 1 - e^{- 2 x}",
+        "expected": "rejected",
+        "purpose": "Add erroneous constant"
+      }
+    ]
+  },
+  {
+    "label": "independent-30",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186229165,
+        "id": "570160ff-c937-57e7-bd78-702f7f018e64",
+        "title": "Solving an Initial Value Problem"
+      },
+      "question": {
+        ":question/id": "177af1ad-912c-53ab-9150-1461c9147247",
+        ":question/problem": "Consider the following initial value problem:\n\n$$\n{y}^{′}-4y=-2{e}^{4x},\\,y(0)=1\n$$\n\nGiven that the differential equation \n\n$$\n{y}^{′}-4y=-2{e}^{4x}\n$$\n\nhas the complementary solution ${y}_{c}=A{e}^{4x},$ solve the initial value problem.\n\n$y(x)=$\n{{field-1}}",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "79120df2-c518-52c5-834e-ddfb7a18f5c6",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "aeac77c2-998e-5479-864c-5bf76fab701a",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{e}^{4x}-2x{e}^{4x}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "aeac77c2-998e-5479-864c-5bf76fab701a"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/worked-solution": "To find the general solution of an inhomogeneous first-order linear equation with constant coefficients on the left-hand side, we must find the sum of the complementary and particular solutions.\n\nTo find the complementary solution ${y}_{c},$ we solve the corresponding homogeneous equation, given by\n\n$$\n{y}_{c}^{′}-4{y}_{c}=0.\n$$\n\nSolving this equation, we find that the complementary solution is\n\n$$\n{y}_{c}=A{e}^{4x}\n$$\n\nwhere $A$ is an arbitrary constant.\n\nWe now need to find the particular solution ${y}_{p}(x).$\n\nWe see that the right-hand side is $-2{e}^{4x},$ and ${e}^{4x}$ is a term in the complementary solution, so we assume a particular solution of the form\n\n$$\n{y}_{p}=\\alpha x{e}^{4x},\n$$\n\nwhere $\\alpha $ is a constant to be determined.\n\nWe calculate the first derivative of ${y}_{p}$ using the product rule for differentiation:\n\n$$\n\\begin{aligned}{y}_{p}^{′} & =(\\alpha x{e}^{4x})^{′} \\\\  & =\\alpha (x{e}^{4x})^{′} \\\\  & =\\alpha ({e}^{4x}+4x{e}^{4x}) \\\\  & =\\alpha (1+4x){e}^{4x}.\\end{aligned}\n$$\n\nTo find the value of $\\alpha ,$ we substitute ${y}_{p}$ and ${y}_{p}^{′}$ into the differential equation:\n\n$$\n\\begin{aligned}(\\alpha (1+4x){e}^{4x})-4(\\alpha x{e}^{4x}) & =-2{e}^{4x} \\\\ (1+4x-4x)\\alpha {e}^{4x} & =-2{e}^{4x} \\\\ \\alpha {e}^{4x} & =-2{e}^{4x} \\\\ \\alpha  & =-2.\\end{aligned}\n$$\n\nTherefore, the particular solution ${y}_{p}(x)$ is\n\n$$\n{y}_{p}(x)=-2x{e}^{4x}.\n$$\n\nNow, since the general solution is given by\n\n$$\ny(x)={y}_{c}(x)+{y}_{p}(x),\n$$\n\nthe general solution in our case is\n\n$$\ny=A{e}^{4x}-2x{e}^{4x}.\n$$\n\nWe can find the constant $A$ using the initial conditions.\n\nSubstituting $y(0)=1$ into the general solution gives\n\n$$\n\\begin{aligned}A+0 & =1 \\\\ A & =1.\\end{aligned}\n$$\n\nTherefore, the solution to the initial value problem is\n\n$$\ny={e}^{4x}-2x{e}^{4x}.\n$$"
+      },
+      "generation": {
+        "version": "exponential-ivp-1.0-frozen",
+        "seed": 941,
+        "template": "resonant",
+        "parameters": {
+          "h": 4,
+          "k": 4,
+          "f": -2,
+          "v": 1
+        },
+        "bank_profile": "raw:q-332937",
+        "origin": "observed",
+        "source_id": "q-332937",
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "mathematical_fingerprint": "f3dd32caec874f04f5640a2b472a1d7e8a86c20b06a29d8f4c9f324365f76421",
+        "content_identity": "9c804d461ccb4f9d372976c3ec1a311eab7a64e9197a1b55dda5f6b234a39f92",
+        "domain": "x real",
+        "source_missing_completion": false,
+        "sympy": "1.14.0"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "- \\left(2 x - 1\\right) e^{4 x}",
+        "expected": "accepted",
+        "purpose": "Independent symbolic solution, refactored where possible"
+      },
+      {
+        "submitted": "- 2 x e^{4 x} + 2 e^{4 x}",
+        "expected": "rejected",
+        "purpose": "Correct ODE but incorrect initial value"
+      },
+      {
+        "submitted": "0",
+        "expected": "rejected",
+        "purpose": "Ignore nonzero forcing"
+      },
+      {
+        "submitted": "- 2 x e^{4 x} + e^{4 x} + 1",
+        "expected": "rejected",
+        "purpose": "Add erroneous constant"
+      }
+    ]
+  },
+  {
+    "label": "independent-31",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186229165,
+        "id": "570160ff-c937-57e7-bd78-702f7f018e64",
+        "title": "Solving an Initial Value Problem"
+      },
+      "question": {
+        ":question/id": "8117cb9d-1698-5f2a-ac80-9714a86b45f1",
+        ":question/problem": "Consider the following initial value problem:\n\n$$\n{y}^{′}-5y=15{e}^{5x},\\,y(0)=1\n$$\n\nGiven that the differential equation \n\n$$\n{y}^{′}-5y=15{e}^{5x}\n$$\n\nhas the complementary solution ${y}_{c}=A{e}^{5x},$ solve the initial value problem.\n\n$y(x)=$\n{{field-1}}",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "2b8e86c2-54c5-5fa2-ab35-d8e0406de075",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "04269bab-8fc6-5ea1-bd5c-6387d92bb3f6",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{e}^{5x}+15x{e}^{5x}"
+              },
+              {
+                ":answer/id": "78a691c4-04f1-5248-ba46-84627e38b78d",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "e^{5x}+15xe^{5x}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "78a691c4-04f1-5248-ba46-84627e38b78d"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/worked-solution": "To find the general solution of an inhomogeneous first-order linear equation with constant coefficients on the left-hand side, we must find the sum of the complementary and particular solutions.\n\nTo find the complementary solution ${y}_{c},$ we solve the corresponding homogeneous equation, given by\n\n$$\n{y}_{c}^{′}-5{y}_{c}=0.\n$$\n\nSolving this equation, we find that the complementary solution is\n\n$$\n{y}_{c}=A{e}^{5x}\n$$\n\nwhere $A$ is an arbitrary constant.\n\nWe now need to find the particular solution ${y}_{p}(x).$\n\nWe see that the right-hand side is $15{e}^{5x},$ and ${e}^{5x}$ is a term in the complementary solution, so we assume a particular solution of the form\n\n$$\n{y}_{p}=\\alpha x{e}^{5x},\n$$\n\nwhere $\\alpha $ is a constant to be determined.\n\nWe calculate the first derivative of ${y}_{p}$ using the product rule for differentiation:\n\n$$\n\\begin{aligned}{y}_{p}^{′} & =(\\alpha x{e}^{5x})^{′} \\\\  & =\\alpha (x{e}^{5x})^{′} \\\\  & =\\alpha ({e}^{5x}+5x{e}^{5x}) \\\\  & =\\alpha (1+5x){e}^{5x}.\\end{aligned}\n$$\n\nTo find the value of $\\alpha ,$ we substitute ${y}_{p}$ and ${y}_{p}^{′}$ into the differential equation:\n\n$$\n\\begin{aligned}(\\alpha (1+5x){e}^{5x})-5(\\alpha x{e}^{5x}) & =15{e}^{5x} \\\\ (1+5x-5x)\\alpha {e}^{5x} & =15{e}^{5x} \\\\ \\alpha {e}^{5x} & =15{e}^{5x} \\\\ \\alpha  & =15.\\end{aligned}\n$$\n\nTherefore, the particular solution ${y}_{p}(x)$ is\n\n$$\n{y}_{p}(x)=15x{e}^{5x}.\n$$\n\nNow, since the general solution is given by\n\n$$\ny(x)={y}_{c}(x)+{y}_{p}(x),\n$$\n\nthe general solution in our case is\n\n$$\ny=A{e}^{5x}+15x{e}^{5x}.\n$$\n\nWe can find the constant $A$ using the initial conditions.\n\nSubstituting $y(0)=1$ into the general solution gives\n\n$$\n\\begin{aligned}A+0 & =1 \\\\ A & =1.\\end{aligned}\n$$\n\nTherefore, the solution to the initial value problem is\n\n$$\ny={e}^{5x}+15x{e}^{5x}.\n$$"
+      },
+      "generation": {
+        "version": "exponential-ivp-1.0-frozen",
+        "seed": 941,
+        "template": "resonant",
+        "parameters": {
+          "h": 5,
+          "k": 5,
+          "f": 15,
+          "v": 1
+        },
+        "bank_profile": "raw:q-332938",
+        "origin": "observed",
+        "source_id": "q-332938",
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "mathematical_fingerprint": "8ba4389e4b0d50aec0fa3b046eaab6e986b23c1cb1541cb1c5a44948a5913c7e",
+        "content_identity": "cc29af64ffdcbf3c40890f6f5d1e352487a0a939c7af2bb0953cdc3d3f2d121f",
+        "domain": "x real",
+        "source_missing_completion": false,
+        "sympy": "1.14.0"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "\\left(15 x + 1\\right) e^{5 x}",
+        "expected": "accepted",
+        "purpose": "Independent symbolic solution, refactored where possible"
+      },
+      {
+        "submitted": "15 x e^{5 x} + 2 e^{5 x}",
+        "expected": "rejected",
+        "purpose": "Correct ODE but incorrect initial value"
+      },
+      {
+        "submitted": "0",
+        "expected": "rejected",
+        "purpose": "Ignore nonzero forcing"
+      },
+      {
+        "submitted": "15 x e^{5 x} + e^{5 x} + 1",
+        "expected": "rejected",
+        "purpose": "Add erroneous constant"
+      }
+    ]
+  },
+  {
+    "label": "independent-32",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186229165,
+        "id": "570160ff-c937-57e7-bd78-702f7f018e64",
+        "title": "Solving an Initial Value Problem"
+      },
+      "question": {
+        ":question/id": "878f9401-e80f-5913-aefc-bde45caf9543",
+        ":question/problem": "Consider the following initial value problem:\n\n$$\n{y}^{′}-2y=-10{e}^{2x},\\,y(0)=0\n$$\n\nGiven that the differential equation \n\n$$\n{y}^{′}-2y=-10{e}^{2x}\n$$\n\nhas the complementary solution ${y}_{c}=A{e}^{2x},$ solve the initial value problem.\n\n$y(x)=$\n{{field-1}}",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "2b3654de-71a0-5426-a5af-c67b4d0f2616",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "ac2f22ce-a79d-5fb5-bcb9-73d5707cf96a",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "-10x{e}^{2x}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "ac2f22ce-a79d-5fb5-bcb9-73d5707cf96a"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/worked-solution": "To find the general solution of an inhomogeneous first-order linear equation with constant coefficients on the left-hand side, we must find the sum of the complementary and particular solutions.\n\nTo find the complementary solution ${y}_{c},$ we solve the corresponding homogeneous equation, given by\n\n$$\n{y}_{c}^{′}-2{y}_{c}=0.\n$$\n\nSolving this equation, we find that the complementary solution is\n\n$$\n{y}_{c}=A{e}^{2x}\n$$\n\nwhere $A$ is an arbitrary constant.\n\nWe now need to find the particular solution ${y}_{p}(x).$\n\nWe see that the right-hand side is $-10{e}^{2x},$ and ${e}^{2x}$ is a term in the complementary solution, so we assume a particular solution of the form\n\n$$\n{y}_{p}=\\alpha x{e}^{2x},\n$$\n\nwhere $\\alpha $ is a constant to be determined.\n\nWe calculate the first derivative of ${y}_{p}$ using the product rule for differentiation:\n\n$$\n\\begin{aligned}{y}_{p}^{′} & =(\\alpha x{e}^{2x})^{′} \\\\  & =\\alpha (x{e}^{2x})^{′} \\\\  & =\\alpha ({e}^{2x}+2x{e}^{2x}) \\\\  & =\\alpha (1+2x){e}^{2x}.\\end{aligned}\n$$\n\nTo find the value of $\\alpha ,$ we substitute ${y}_{p}$ and ${y}_{p}^{′}$ into the differential equation:\n\n$$\n\\begin{aligned}(\\alpha (1+2x){e}^{2x})-2(\\alpha x{e}^{2x}) & =-10{e}^{2x} \\\\ (1+2x-2x)\\alpha {e}^{2x} & =-10{e}^{2x} \\\\ \\alpha {e}^{2x} & =-10{e}^{2x} \\\\ \\alpha  & =-10.\\end{aligned}\n$$\n\nTherefore, the particular solution ${y}_{p}(x)$ is\n\n$$\n{y}_{p}(x)=-10x{e}^{2x}.\n$$\n\nNow, since the general solution is given by\n\n$$\ny(x)={y}_{c}(x)+{y}_{p}(x),\n$$\n\nthe general solution in our case is\n\n$$\ny=A{e}^{2x}-10x{e}^{2x}.\n$$\n\nWe can find the constant $A$ using the initial conditions.\n\nSubstituting $y(0)=0$ into the general solution gives\n\n$$\n\\begin{aligned}A+0 & =0 \\\\ A & =0.\\end{aligned}\n$$\n\nTherefore, the solution to the initial value problem is\n\n$$\ny=-10x{e}^{2x}.\n$$"
+      },
+      "generation": {
+        "version": "exponential-ivp-1.0-frozen",
+        "seed": 941,
+        "template": "resonant",
+        "parameters": {
+          "h": 2,
+          "k": 2,
+          "f": -10,
+          "v": 0
+        },
+        "bank_profile": "raw:q-332940",
+        "origin": "observed",
+        "source_id": "q-332940",
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "mathematical_fingerprint": "38dc51e759d9e1287d716c54504699d1dff6296a07953bfbcd215f99b9285b33",
+        "content_identity": "5bcc8e77641e792e135413ec9ac2d3acdb2fde3ab6e0248e04c199f9a0b60750",
+        "domain": "x real",
+        "source_missing_completion": false,
+        "sympy": "1.14.0"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "- 10 x e^{2 x}",
+        "expected": "accepted",
+        "purpose": "Independent symbolic solution, refactored where possible"
+      },
+      {
+        "submitted": "- 10 x e^{2 x} + e^{2 x}",
+        "expected": "rejected",
+        "purpose": "Correct ODE but incorrect initial value"
+      },
+      {
+        "submitted": "0",
+        "expected": "rejected",
+        "purpose": "Ignore nonzero forcing"
+      },
+      {
+        "submitted": "- 10 x e^{2 x} + 1",
+        "expected": "rejected",
+        "purpose": "Add erroneous constant"
+      }
+    ]
+  },
+  {
+    "label": "independent-33",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186229165,
+        "id": "570160ff-c937-57e7-bd78-702f7f018e64",
+        "title": "Solving an Initial Value Problem"
+      },
+      "question": {
+        ":question/id": "bf065e4c-6f8f-5d34-81bd-eccfc75ee485",
+        ":question/problem": "Consider the following initial value problem:\n\n$$\n{y}^{′}+3y=12{e}^{-3x},\\,y(0)=1\n$$\n\nGiven that the differential equation \n\n$$\n{y}^{′}+3y=12{e}^{-3x}\n$$\n\nhas the complementary solution ${y}_{c}=A{e}^{-3x},$ solve the initial value problem.\n\n$y(x)=$\n{{field-1}}",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "784fe5ff-f5d6-5408-9231-818039f11c38",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "0b36e15a-11cc-5a9a-823f-1e8e7d5e798d",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{e}^{-3x}+12x{e}^{-3x}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "0b36e15a-11cc-5a9a-823f-1e8e7d5e798d"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/worked-solution": "To find the general solution of an inhomogeneous first-order linear equation with constant coefficients on the left-hand side, we must find the sum of the complementary and particular solutions.\n\nTo find the complementary solution ${y}_{c},$ we solve the corresponding homogeneous equation, given by\n\n$$\n{y}_{c}^{′}+3{y}_{c}=0.\n$$\n\nSolving this equation, we find that the complementary solution is\n\n$$\n{y}_{c}=A{e}^{-3x}\n$$\n\nwhere $A$ is an arbitrary constant.\n\nWe now need to find the particular solution ${y}_{p}(x).$\n\nWe see that the right-hand side is $12{e}^{-3x},$ and ${e}^{-3x}$ is a term in the complementary solution, so we assume a particular solution of the form\n\n$$\n{y}_{p}=\\alpha x{e}^{-3x},\n$$\n\nwhere $\\alpha $ is a constant to be determined.\n\nWe calculate the first derivative of ${y}_{p}$ using the product rule for differentiation:\n\n$$\n\\begin{aligned}{y}_{p}^{′} & =(\\alpha x{e}^{-3x})^{′} \\\\  & =\\alpha (x{e}^{-3x})^{′} \\\\  & =\\alpha ({e}^{-3x}-3x{e}^{-3x}) \\\\  & =\\alpha (1-3x){e}^{-3x}.\\end{aligned}\n$$\n\nTo find the value of $\\alpha ,$ we substitute ${y}_{p}$ and ${y}_{p}^{′}$ into the differential equation:\n\n$$\n\\begin{aligned}(\\alpha (1-3x){e}^{-3x})+3(\\alpha x{e}^{-3x}) & =12{e}^{-3x} \\\\ (1-3x+3x)\\alpha {e}^{-3x} & =12{e}^{-3x} \\\\ \\alpha {e}^{-3x} & =12{e}^{-3x} \\\\ \\alpha  & =12.\\end{aligned}\n$$\n\nTherefore, the particular solution ${y}_{p}(x)$ is\n\n$$\n{y}_{p}(x)=12x{e}^{-3x}.\n$$\n\nNow, since the general solution is given by\n\n$$\ny(x)={y}_{c}(x)+{y}_{p}(x),\n$$\n\nthe general solution in our case is\n\n$$\ny=A{e}^{-3x}+12x{e}^{-3x}.\n$$\n\nWe can find the constant $A$ using the initial conditions.\n\nSubstituting $y(0)=1$ into the general solution gives\n\n$$\n\\begin{aligned}A+0 & =1 \\\\ A & =1.\\end{aligned}\n$$\n\nTherefore, the solution to the initial value problem is\n\n$$\ny={e}^{-3x}+12x{e}^{-3x}.\n$$"
+      },
+      "generation": {
+        "version": "exponential-ivp-1.0-frozen",
+        "seed": 941,
+        "template": "resonant",
+        "parameters": {
+          "h": -3,
+          "k": -3,
+          "f": 12,
+          "v": 1
+        },
+        "bank_profile": "raw:q-333160",
+        "origin": "observed",
+        "source_id": "q-333160",
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "mathematical_fingerprint": "7bfc437683a1b151618ed4f3d856a0a93f66792b510814ec5029e804180cef01",
+        "content_identity": "75037fb9f4bc14756b227ce0a5a114071295f2504a714890e47c6ef6024bb0ec",
+        "domain": "x real",
+        "source_missing_completion": false,
+        "sympy": "1.14.0"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "\\left(12 x + 1\\right) e^{- 3 x}",
+        "expected": "accepted",
+        "purpose": "Independent symbolic solution, refactored where possible"
+      },
+      {
+        "submitted": "12 x e^{- 3 x} + 2 e^{- 3 x}",
+        "expected": "rejected",
+        "purpose": "Correct ODE but incorrect initial value"
+      },
+      {
+        "submitted": "0",
+        "expected": "rejected",
+        "purpose": "Ignore nonzero forcing"
+      },
+      {
+        "submitted": "12 x e^{- 3 x} + 1 + e^{- 3 x}",
+        "expected": "rejected",
+        "purpose": "Add erroneous constant"
+      }
+    ]
+  },
+  {
+    "label": "independent-34",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186229165,
+        "id": "570160ff-c937-57e7-bd78-702f7f018e64",
+        "title": "Solving an Initial Value Problem"
+      },
+      "question": {
+        ":question/id": "09c8663b-53ce-5ec2-be54-490e4e61606f",
+        ":question/problem": "Consider the following initial value problem:\n\n$$\n{y}^{′}-3y=8{e}^{x},\\,y(0)=1\n$$\n\nGiven that the differential equation \n\n$$\n{y}^{′}-3y=8{e}^{x}\n$$\n\nhas the complementary solution ${y}_{c}=A{e}^{3x},$ solve the initial value problem.\n\n$y(x)=$\n{{field-1}}",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "3aa076bc-7923-5644-a707-b1e8146bb97b",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "529ad00e-028b-5c14-b342-16c9b6c0bd7f",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "5{e}^{3x}-4{e}^{x}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "529ad00e-028b-5c14-b342-16c9b6c0bd7f"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/worked-solution": "To find the general solution of an inhomogeneous first-order linear equation with constant coefficients on the left-hand side, we must find the sum of the complementary and particular solutions.\n\nTo find the complementary solution ${y}_{c},$ we solve the corresponding homogeneous equation, given by\n\n$$\n{y}_{c}^{′}-3{y}_{c}=0.\n$$\n\nSolving this equation, we find that the complementary solution is\n\n$$\n{y}_{c}=A{e}^{3x}\n$$\n\nwhere $A$ is an arbitrary constant.\n\nWe now need to find the particular solution ${y}_{p}(x).$\n\nWe see that the right-hand side is $8{e}^{x},$ and ${e}^{x}$ is not a term in the complementary solution, so we assume a particular solution of the form\n\n$$\n{y}_{p}=\\alpha {e}^{x},\n$$\n\nwhere $\\alpha $ is a constant to be determined.\n\nCalculating the first derivative of ${y}_{p}$ gives\n\n$$\n{y}_{p}^{′}=\\alpha {e}^{x}.\n$$\n\nTo find the value of $\\alpha ,$ we substitute ${y}_{p}$ and ${y}_{p}^{′}$ into the differential equation:\n\n$$\n\\begin{aligned}(\\alpha {e}^{x})-3(\\alpha {e}^{x}) & =8{e}^{x} \\\\ (1-3)\\alpha {e}^{x} & =8{e}^{x} \\\\ -2\\alpha {e}^{x} & =8{e}^{x} \\\\ \\alpha  & =-4.\\end{aligned}\n$$\n\nTherefore, the particular solution ${y}_{p}(x)$ is\n\n$$\n{y}_{p}(x)=-4{e}^{x}.\n$$\n\nNow, since the general solution is given by\n\n$$\ny(x)={y}_{c}(x)+{y}_{p}(x),\n$$\n\nthe general solution in our case is\n\n$$\ny=A{e}^{3x}-4{e}^{x}.\n$$\n\nWe can find the constant $A$ using the initial conditions.\n\nSubstituting $y(0)=1$ into the general solution gives\n\n$$\n\\begin{aligned}A-4 & =1 \\\\ A & =5.\\end{aligned}\n$$\n\nTherefore, the solution to the initial value problem is\n\n$$\ny=5{e}^{3x}-4{e}^{x}.\n$$"
+      },
+      "generation": {
+        "version": "exponential-ivp-1.0-frozen",
+        "seed": 941,
+        "template": "nonresonant",
+        "parameters": {
+          "h": 3,
+          "k": 1,
+          "f": 8,
+          "v": 1
+        },
+        "bank_profile": "raw:q-333171",
+        "origin": "observed",
+        "source_id": "q-333171",
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "mathematical_fingerprint": "0d232764e46608c51a6f8d1fd77d9fa3e7c9366fd0739ea6fc726772f9e7e4e7",
+        "content_identity": "e35ddbdf0998a948284862a9888280b73be2d5fca8c76f9b2994b036a7f37104",
+        "domain": "x real",
+        "source_missing_completion": false,
+        "sympy": "1.14.0"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "\\left(5 e^{2 x} - 4\\right) e^{x}",
+        "expected": "accepted",
+        "purpose": "Independent symbolic solution, refactored where possible"
+      },
+      {
+        "submitted": "6 e^{3 x} - 4 e^{x}",
+        "expected": "rejected",
+        "purpose": "Correct ODE but incorrect initial value"
+      },
+      {
+        "submitted": "0",
+        "expected": "rejected",
+        "purpose": "Ignore nonzero forcing"
+      },
+      {
+        "submitted": "5 e^{3 x} - 4 e^{x} + 1",
+        "expected": "rejected",
+        "purpose": "Add erroneous constant"
+      }
+    ]
+  },
+  {
+    "label": "independent-35",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186229165,
+        "id": "570160ff-c937-57e7-bd78-702f7f018e64",
+        "title": "Solving an Initial Value Problem"
+      },
+      "question": {
+        ":question/id": "0a33226b-aaf7-5a0f-9a38-ba29f89a2eb9",
+        ":question/problem": "Consider the following initial value problem:\n\n$$\n{y}^{′}-y=7{e}^{x},\\,y(0)=4\n$$\n\nGiven that the differential equation \n\n$$\n{y}^{′}-y=7{e}^{x}\n$$\n\nhas the complementary solution ${y}_{c}=A{e}^{x},$ solve the initial value problem.\n\n$y(x)=$\n{{field-1}}",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "74f21891-639d-5b7a-9fd9-f78cab8b71b4",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "450abdcf-cc84-5612-9351-02fb3058b6b2",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "4{e}^{x}+7x{e}^{x}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "450abdcf-cc84-5612-9351-02fb3058b6b2"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/worked-solution": "To find the general solution of an inhomogeneous first-order linear equation with constant coefficients on the left-hand side, we must find the sum of the complementary and particular solutions.\n\nTo find the complementary solution ${y}_{c},$ we solve the corresponding homogeneous equation, given by\n\n$$\n{y}_{c}^{′}-{y}_{c}=0.\n$$\n\nSolving this equation, we find that the complementary solution is\n\n$$\n{y}_{c}=A{e}^{x}\n$$\n\nwhere $A$ is an arbitrary constant.\n\nWe now need to find the particular solution ${y}_{p}(x).$\n\nWe see that the right-hand side is $7{e}^{x},$ and ${e}^{x}$ is a term in the complementary solution, so we assume a particular solution of the form\n\n$$\n{y}_{p}=\\alpha x{e}^{x},\n$$\n\nwhere $\\alpha $ is a constant to be determined.\n\nWe calculate the first derivative of ${y}_{p}$ using the product rule for differentiation:\n\n$$\n\\begin{aligned}{y}_{p}^{′} & =(\\alpha x{e}^{x})^{′} \\\\  & =\\alpha (x{e}^{x})^{′} \\\\  & =\\alpha ({e}^{x}+x{e}^{x}) \\\\  & =\\alpha (1+x){e}^{x}.\\end{aligned}\n$$\n\nTo find the value of $\\alpha ,$ we substitute ${y}_{p}$ and ${y}_{p}^{′}$ into the differential equation:\n\n$$\n\\begin{aligned}(\\alpha (1+x){e}^{x})-(\\alpha x{e}^{x}) & =7{e}^{x} \\\\ (1+x-x)\\alpha {e}^{x} & =7{e}^{x} \\\\ \\alpha {e}^{x} & =7{e}^{x} \\\\ \\alpha  & =7.\\end{aligned}\n$$\n\nTherefore, the particular solution ${y}_{p}(x)$ is\n\n$$\n{y}_{p}(x)=7x{e}^{x}.\n$$\n\nNow, since the general solution is given by\n\n$$\ny(x)={y}_{c}(x)+{y}_{p}(x),\n$$\n\nthe general solution in our case is\n\n$$\ny=A{e}^{x}+7x{e}^{x}.\n$$\n\nWe can find the constant $A$ using the initial conditions.\n\nSubstituting $y(0)=4$ into the general solution gives\n\n$$\n\\begin{aligned}A+0 & =4 \\\\ A & =4.\\end{aligned}\n$$\n\nTherefore, the solution to the initial value problem is\n\n$$\ny=4{e}^{x}+7x{e}^{x}.\n$$"
+      },
+      "generation": {
+        "version": "exponential-ivp-1.0-frozen",
+        "seed": 941,
+        "template": "resonant",
+        "parameters": {
+          "h": 1,
+          "k": 1,
+          "f": 7,
+          "v": 4
+        },
+        "bank_profile": "raw:q-332942",
+        "origin": "observed",
+        "source_id": "q-332942",
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "mathematical_fingerprint": "99c0806871124967c3c7713d1d302496d5b35236a4e16cac2afbb90c7961e9d1",
+        "content_identity": "4b025ce961def94d7d4de3d42f53bc1c3651065403f1e611a17c08b9b180f7cb",
+        "domain": "x real",
+        "source_missing_completion": false,
+        "sympy": "1.14.0"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "\\left(7 x + 4\\right) e^{x}",
+        "expected": "accepted",
+        "purpose": "Independent symbolic solution, refactored where possible"
+      },
+      {
+        "submitted": "7 x e^{x} + 5 e^{x}",
+        "expected": "rejected",
+        "purpose": "Correct ODE but incorrect initial value"
+      },
+      {
+        "submitted": "0",
+        "expected": "rejected",
+        "purpose": "Ignore nonzero forcing"
+      },
+      {
+        "submitted": "7 x e^{x} + 4 e^{x} + 1",
+        "expected": "rejected",
+        "purpose": "Add erroneous constant"
+      }
+    ]
+  },
+  {
+    "label": "independent-36",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186229165,
+        "id": "570160ff-c937-57e7-bd78-702f7f018e64",
+        "title": "Solving an Initial Value Problem"
+      },
+      "question": {
+        ":question/id": "b895fa7e-4e3f-575b-8cd6-18ee03c3f743",
+        ":question/problem": "Consider the following initial value problem:\n\n$$\n{y}^{′}-5y=4{e}^{5x},\\,y(0)=-1.\n$$\n\nGiven that the differential equation \n\n$$\n{y}^{′}-5y=4{e}^{5x}\n$$\n\nhas the complementary solution ${y}_{c}=A{e}^{5x},$ solve the initial value problem.\n\n$y(x)=$\n{{field-1}}",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "4ad4feec-54fb-56f6-9c10-8d156f7594bc",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "51a4867c-1a6d-58d9-bf8d-727331219217",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "-{e}^{5x}+4x{e}^{5x}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "51a4867c-1a6d-58d9-bf8d-727331219217"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/worked-solution": "To find the general solution of an inhomogeneous first-order linear equation with constant coefficients on the left-hand side, we must find the sum of the complementary and particular solutions.\n\nTo find the complementary solution ${y}_{c},$ we solve the corresponding homogeneous equation, given by\n\n$$\n{y}_{c}^{′}-5{y}_{c}=0.\n$$\n\nSolving this equation, we find that the complementary solution is\n\n$$\n{y}_{c}=A{e}^{5x}\n$$\n\nwhere $A$ is an arbitrary constant.\n\nWe now need to find the particular solution ${y}_{p}(x).$\n\nWe see that the right-hand side is $4{e}^{5x},$ and ${e}^{5x}$ is a term in the complementary solution, so we assume a particular solution of the form\n\n$$\n{y}_{p}=\\alpha x{e}^{5x},\n$$\n\nwhere $\\alpha $ is a constant to be determined.\n\nWe calculate the first derivative of ${y}_{p}$ using the product rule for differentiation:\n\n$$\n\\begin{aligned}{y}_{p}^{′} & =(\\alpha x{e}^{5x})^{′} \\\\  & =\\alpha (x{e}^{5x})^{′} \\\\  & =\\alpha ({e}^{5x}+5x{e}^{5x}) \\\\  & =\\alpha (1+5x){e}^{5x}.\\end{aligned}\n$$\n\nTo find the value of $\\alpha ,$ we substitute ${y}_{p}$ and ${y}_{p}^{′}$ into the differential equation:\n\n$$\n\\begin{aligned}(\\alpha (1+5x){e}^{5x})-5(\\alpha x{e}^{5x}) & =4{e}^{5x} \\\\ (1+5x-5x)\\alpha {e}^{5x} & =4{e}^{5x} \\\\ \\alpha {e}^{5x} & =4{e}^{5x} \\\\ \\alpha  & =4.\\end{aligned}\n$$\n\nTherefore, the particular solution ${y}_{p}(x)$ is\n\n$$\n{y}_{p}(x)=4x{e}^{5x}.\n$$\n\nNow, since the general solution is given by\n\n$$\ny(x)={y}_{c}(x)+{y}_{p}(x),\n$$\n\nthe general solution in our case is\n\n$$\ny=A{e}^{5x}+4x{e}^{5x}.\n$$\n\nWe can find the constant $A$ using the initial conditions.\n\nSubstituting $y(0)=-1$ into the general solution gives\n\n$$\n\\begin{aligned}A+0 & =-1 \\\\ A & =-1.\\end{aligned}\n$$\n\nTherefore, the solution to the initial value problem is\n\n$$\ny=-{e}^{5x}+4x{e}^{5x}.\n$$"
+      },
+      "generation": {
+        "version": "exponential-ivp-1.0-frozen",
+        "seed": 941,
+        "template": "resonant",
+        "parameters": {
+          "h": 5,
+          "k": 5,
+          "f": 4,
+          "v": -1
+        },
+        "bank_profile": "raw:q-333174",
+        "origin": "observed",
+        "source_id": "q-333174",
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "mathematical_fingerprint": "9527ab4463b244ea8d8922cb54e959d6acb0b72c8f8064362e995e8b45a718ba",
+        "content_identity": "274ef242960866420147037b601025859b2a74192f731fd805ec8a22c5a8a753",
+        "domain": "x real",
+        "source_missing_completion": false,
+        "sympy": "1.14.0"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "\\left(4 x - 1\\right) e^{5 x}",
+        "expected": "accepted",
+        "purpose": "Independent symbolic solution, refactored where possible"
+      },
+      {
+        "submitted": "4 x e^{5 x}",
+        "expected": "rejected",
+        "purpose": "Correct ODE but incorrect initial value"
+      },
+      {
+        "submitted": "0",
+        "expected": "rejected",
+        "purpose": "Ignore nonzero forcing"
+      },
+      {
+        "submitted": "4 x e^{5 x} - e^{5 x} + 1",
+        "expected": "rejected",
+        "purpose": "Add erroneous constant"
+      }
+    ]
+  }
+]

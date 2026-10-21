@@ -1,0 +1,16 @@
+import sys,pathlib,json,copy,importlib.util,uuid
+sys.dont_write_bytecode=True
+E=pathlib.Path(__file__).resolve().parent;W=E.parent/'workspace'
+s=importlib.util.spec_from_file_location('reviewed',W/'17592186124674.py');m=importlib.util.module_from_spec(s);s.loader.exec_module(m)
+a=m.generate_easy(seed=624,template='source_17592186308739',parameters={'capacity':95,'initial':10})
+# Reviewer-authored valid counterfactual reference: bank remains unchanged, only stated equilibrium and its dependent response/solution change.
+b=copy.deepcopy(a);q=b['question'];q[':question/problem']=q[':question/problem'].replace('is $95$ students','is $60$ students');q[':question/worked-solution']=q[':question/worked-solution'].replace('a=95','a=60').replace('(95-T)','(60-T)');q[':question/id']=str(uuid.uuid5(uuid.NAMESPACE_URL,'independent-review-fixed-bank-capacity60'));f=q[':question/answer-fields'][0];answer=next(x for x in f[':answer-field/choices'] if '=k(60-T)' in x[':answer/value']);old=f[':answer-field/correct'][1];f[':answer-field/correct']=[':answer/id',answer[':answer/id']];b['generation']={'reviewer_authored_counterfactual':True,'source_record':'counterfactual-records.json index 2','capacity':60,'initial':10,'held_fixed':'all five choice values and IDs; context; variable; time; initial population','not_generator_output':True}
+(E/'fixed-bank-records.json').write_text(json.dumps([a,b],indent=2)+'\n')
+cases=[]
+for i,r in enumerate([a,b]):
+ f=r['question'][':question/answer-fields'][0];cases.append({'label':'fixed-bank '+str(i),'record':r,'checks':[{'submitted_answer_id':c[':answer/id'],'expected':'accepted' if c[':answer/id']==f[':answer-field/correct'][1] else 'rejected','purpose':'same bank, different stated equilibrium changes qualifying choice'} for c in f[':answer-field/choices']]})
+(E/'fixed-bank-grader-input.json').write_text(json.dumps(cases,indent=2)+'\n')
+try:m.generate_easy(seed=624,template='source_17592186308739',parameters={'capacity':60,'initial':10});result='accepted'
+except ValueError as ex:result=str(ex)
+(E/'restriction-results.json').write_text(json.dumps({'command':'/home/jake/Developer/Course_Academy/.venv/bin/python -B fixed_bank_probe.py','source_id':'5651275c-fd64-5799-85e0-52ab15ebd288','reference_pair':'fixed-bank-records.json','reference_description':'Source bank k(95-T), k(30-T), k(60-T), k(100-T), k(950-T). Stated max 95->60, initial remains 10. Unique correct option changes from k(95-T) to k(60-T).','generator_explicit_parameters':{'template':'source_17592186308739','capacity':60,'initial':10,'seed':624},'generator_result':result,'capacity95_evidence_only':a['generation']['evidence_only'],'specification_rule':'Exact source distractor/capacity ratios must produce integers; opaque-capacity profiles marked evidence-only; default easy omits this family entirely.','assessment':'Rejecting source-ratio scaling is an implementation artifact; this valid fixed-bank equilibrium reassignment uses no new operator, prerequisite, answer format, or workload. Default absence of competing candidate capacities suppresses legitimate source reasoning.'},indent=2)+'\n')
+print('Generator capacity60 outcome:',result,'; capacity95 evidence_only:',a['generation']['evidence_only'])

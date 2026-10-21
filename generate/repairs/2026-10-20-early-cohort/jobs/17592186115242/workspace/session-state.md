@@ -26,3 +26,22 @@ zero roots. All three declared retained regressions pass. Exact commands and
 results: evidence/commands.json. Five historical affected records are listed in
 affected-inventory.json with complete replay evidence; inventory remains unchanged.
 No unfinished implementation or validation steps. Independent review is next.
+
+Second repair started: exact latest opposite-sign 2/2 minimum shortcut and all
+five historical shortcuts reproduced (baseline command exits 1). Original three
+retained regressions pass before changes. New finite-selection specification
+written in instructional-account.md. Next: implement easy batch window selection,
+add the two latest finding regressions, run affected delivery/grading/rendering
+and preserve the strict historical failure without database changes.
+
+Second repair implementation/validation milestone: CLI now selects the first
+consecutive v3 seed window with within-sign root/rank/position contrasts for
+authored easy count>=4. Individual generation, source profiles and runtime
+manifest remain unchanged. Exact bad seeds still replay for regression.
+`checks/batch_regressions.py --finding batch` passes 3 CLI/delivery requests
+(5+4+5 records); required request now selects seeds 1475864966..1475864970.
+`--finding inventory` exits 1 honestly: five exact historical records reproduce,
+and conditional new-seen selection gives 64/64 sign-extremum successes.
+All five finding IDs are declared in repair-regressions.json. No database or
+other-job edits. Next: inspect new UI renders, native grading, relocation;
+finish with unsupported status unless historical remediation is demonstrated.

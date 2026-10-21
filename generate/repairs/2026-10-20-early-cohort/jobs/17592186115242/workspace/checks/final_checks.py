@@ -24,7 +24,10 @@ assert before == after
 for name,z in after.items():
     assert z['sign_extremum_successes'] < z['total']
     assert len(z['numeric_ranks']) == 5
-assert next(iter(probes(batch).values()))['sign_extremum_successes'] < len(batch)
+for name,z in probes(batch).items():
+    ranks={int(rank) for rank in z['numeric_ranks']}
+    assert z['distinct_roots']>=2 and ranks & {0,4} and ranks & {1,2,3}, (name,z)
+    assert z['sign_extremum_successes']<z['total'] and z['fixed_position_best']<z['total'], (name,z)
 write('post-delivery-shortcuts.json',dict(passed=True,before=before,after=after,batch=probes(batch),interpretation='All five numeric roles survive filtering in both easy sign groups. No fixed rank, position, template or sign-extremum rule solves the sampled family. These finite probes do not establish absence of every possible shortcut.'))
 
 coverage = {}; pairs = []; pair_report = []

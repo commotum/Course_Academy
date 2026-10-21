@@ -33,14 +33,15 @@ for saved in captured:
     assert q[':question/worked-solution'] == r['question'][':question/worked-solution']
     f = q[':question/answer-fields'][0]; rf = field(r)
     assert {value(a) for a in f[':answer-field/choices']} == {value(a) for a in rf[':answer-field/choices']}
+    assert sorted((a[':answer/id'],a[':answer/value']) for a in f[':answer-field/choices']) == sorted((a[':answer/id'],a[':answer/value']) for a in rf[':answer-field/choices'])
     assert f[':answer-field/correct'][':answer/id'] == rf[':answer-field/correct'][1]
     printed_check(r)
     z = next(iter(probes([r]).values()))
     assert z['sign_extremum_successes'] == 1
     records.append(r)
-    findings.append(dict(question_id=q[':question/id'],entity_id=q[':db/id'],finding='Historical easy bank is solved by the sign-only extremal-choice action; no magnitude calculation required.',reproduction=f'/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/inventory_audit.py (historical seed {gen["seed"]})',evidence_path=os.path.relpath(E/'generated-records.json',W.parent/'author-1')))
+    findings.append(dict(question_id=q[':question/id'],entity_id=q[':db/id'],finding='Historical easy bank is solved by the sign-only extremal-choice action; no magnitude calculation required.',reproduction=f'/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/inventory_audit.py (historical seed {gen["seed"]})',evidence_path=os.path.relpath(E/'generated-records.json',W.parent/'author-2')))
     audits.append(dict(question_id=q[':question/id'],matched_generation=True,matched_prompt_solution_bank_key=True))
 write('generated-records.json',records)
 (W/'affected-inventory.json').write_text(json.dumps(dict(affected_questions=findings),indent=2)+'\n')
-write('inventory-audit.json',dict(basis=inventory['basis'],total=len(inventory['questions']),source_questions=len(original),reproduced_generated=len(records),cases=audits,untested_inventory_ids=[q[':question/id'] for q in inventory['questions'] if q[':question/id'] not in source_ids and q[':question/id'] not in {r['question'][':question/id'] for r in records}],limitations=['Only historical generated records are tagged affected; sources are not marked generated. Missing-family and zero-root findings concern generator reachability, not stored-item correctness. No database writes. evidence_path is relative to the requested author-1 evidence root; files remain in workspace.']))
+write('inventory-audit.json',dict(basis=inventory['basis'],total=len(inventory['questions']),source_questions=len(original),reproduced_generated=len(records),cases=audits,untested_inventory_ids=[q[':question/id'] for q in inventory['questions'] if q[':question/id'] not in source_ids and q[':question/id'] not in {r['question'][':question/id'] for r in records}],limitations=['Only historical generated records are tagged affected; sources are not marked generated. Missing-family and zero-root findings concern generator reachability, not stored-item correctness. No database writes. evidence_path is relative to the requested author-2 evidence root; files remain in workspace.']))
 print(json.dumps(dict(passed=True,affected=len(findings),inventory_total=len(inventory['questions']))))

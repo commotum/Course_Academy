@@ -150,9 +150,12 @@ def main():
         assert ranks & {0,4} and ranks & {1,2,3}, (name,stats)
         assert stats['sign_extremum_successes'] < stats['total'], (name,stats)
         assert stats['fixed_position_best'] < stats['total'], (name,stats)
-    batch = [g.generate('easy',seed=1475864943+i) for i in range(5)]
+    batch = g.generate_batch('easy',5,seed=1475864943)
     for r in batch: printed_check(r)
-    assert sum(z['sign_extremum_successes'] for n,z in probes(batch).items() if n.count(':') == 1) < 5
+    for name,z in probes(batch).items():
+        ranks={int(rank) for rank in z['numeric_ranks']}
+        assert z['distinct_roots']>=2 and ranks & {0,4} and ranks & {1,2,3}, (name,z)
+        assert z['sign_extremum_successes']<z['total'] and z['fixed_position_best']<z['total'], (name,z)
     write('samples.json',sample); write('batch.json',batch)
     write('easy-samples.json',[r for r in sample if r['question'][':question/difficulty']==':question.difficulty/easy'])
     write('shortcut-results.json',dict(passed=True, input=before, batch=probes(batch)))
