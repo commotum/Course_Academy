@@ -1,12 +1,12 @@
 # Simple workload and completion forecast
 
-Estimate remaining work, average weekly additions through today, completion at the current pace, and the pace needed by a chosen date. Calculate overall and per course. This document replaces the larger implementation plan; [estimate-forecast.md](estimate-forecast.md) contains the schema and engine details.
+Show two estimated catch-up dates: **at the current seven-day moving-average pace**, and **at the configured daily XP goal**. Both include continuing workload growth. Changing the goal updates the goal-pace date; no deadline input or backward calculation is needed. Keep workload and growth breakdowns per course. [estimate-forecast.md](estimate-forecast.md) contains the schema and engine details.
 
 **Use base XP throughout: 1 base XP is 1 estimated minute of activity workload.** Actual minutes per base XP are measured separately. Reviews, quizzes, and failed lesson attempts all count toward completed base XP. Earned XP and its bonuses/penalties are not the workload unit.
 
 ## 1. Remaining lessons and historical growth
 
-Let `S_c` be the topics assigned to course track `c` by the Targets graph. Reuse its exact course/Queue/week filters, unassigned-target handling, deduplication, and track allocation, with prerequisite depth **2** and displayed layers **L30+**. Each physical topic belongs to one reporting track.
+Let `S_c` be the final topic set assigned to course track `c` by the Targets graph. Reuse its exact course/Queue/week filters, unassigned-target handling, and track allocation, with prerequisite depth **2** and displayed layers **L30+**. Its final sets already contain each physical topic once in one reporting track; no separate deduplication step is needed.
 
 ```text
 L_c = sum(lesson base XP for unfinished topics in S_c)
@@ -25,7 +25,7 @@ For growth, use all reliable comparable history through now, applying the same g
 
 Also report weekly added-topic counts and lesson XP for targets, queue, and prerequisite-only topics. For additive categories, use target first, then queue, then prerequisite-only. A category change adds no total workload. Withdrawals can be shown separately; do not assume they will continue reducing future demand.
 
-Future assignments already represented in `L` are not added again. Continuing `g` is a rough assumption about additional, not-yet-represented work; also show a no-new-work estimate with `g = 0`.
+Future assignments already represented in `L` are not added again. Continuing `g` is a rough assumption about additional, not-yet-represented work. Use the same growth estimate for both completion dates.
 
 ## 2. Current speed and simple overhead estimates
 
@@ -41,6 +41,16 @@ v = X / M                         base XP per active minute
 ```
 
 Include reviews, quizzes, and failed lessons in `X`. Include recorded work on unfinished activities and homework in `M`; exclude pauses. These are recent throughput estimates, not earned XP or successful-acquisition-only metrics.
+
+The existing daily goal is **earned XP/day**, so convert it before comparing it with base-XP workload:
+
+```text
+G = learner/daily-xp-goal
+e = sum(earned XP) / sum(base XP) for the same finished attempts over those dates
+s_goal = G / e                     estimated base XP/day at the goal
+```
+
+Use attempts with both values for `e`, including failed attempts and their actual awards. This assumes the recent bonus/penalty mix continues; it does not change the workload unit. If no goal is set or no usable positive conversion is available, leave the goal date unavailable. The goal date assumes the goal is achieved every day.
 
 Use three small estimates to put future lessons, retries, reviews, and quizzes on that same workload scale:
 
@@ -62,7 +72,7 @@ r = (finished review base XP + other non-quiz base XP outside the modeled lesson
 
 These approximate the recent study mix continuing. Review demand may increase as more topics are learned; this first estimate does not simulate FIRe. Show the observed review rate so the assumption is visible.
 
-## 3. Workload, completion date, and required pace
+## 3. Workload and the two completion dates
 
 For a horizon of `T` calendar days:
 
@@ -80,20 +90,14 @@ Define two convenient totals:
 B = (1 + q) * a * L                 initial work, including retry/quiz allowance
 k = (1 + q) * (a*g + r)             additional base XP/day, including overhead
 
-T = B / (s - k)                     estimated calendar days to catch up
-completion date = now + T days
+T_current = B / (s - k)
+T_goal    = B / (s_goal - k)
+
+current-pace completion date = now + T_current days
+goal-pace completion date    = now + T_goal days
 ```
 
-Calculate this twice: `g = 0` for today's lessons, and observed `g` for continuing additions. If `L = 0`, today's lesson backlog is already complete. For positive backlog, if `s <= k`, report that the assumed pace does not catch up. Do not manufacture a date.
-
-For a user-selected deadline `H` calendar days away:
-
-```text
-required total base XP/day = W(H) / H = B/H + k
-required active minutes/day = (B/H + k) / v
-```
-
-If the learner plans to study on only `K` of those dates, required active minutes per study day are `W(H) / (K*v)`. The deadline and optional `K` are user inputs, not database facts.
+If `L = 0`, today's lesson backlog is already complete. For positive backlog, a pace at or below `k` does not catch up under the assumed growth/overhead: report that separately for each pace instead of manufacturing a date. Recompute the goal date when the daily XP goal changes. Keep `a`, `q`, `r`, and `g` the same in both scenarios so the goal controls only assumed daily capacity.
 
 ## 4. Per-course results share one budget
 
@@ -102,11 +106,12 @@ Use `L_c` and `g_c` above. Allocate review/other overhead to courses using the g
 ```text
 B_c = (1 + q) * a * L_c
 k_c = (1 + q) * (a*g_c + r_c)
-required course base XP/day by H = B_c/H + k_c
-required course minutes/day     = (B_c/H + k_c) / v
+
+B = sum_c B_c
+k = sum_c k_c
 ```
 
-These course budgets sum to the overall budget. The overall completion equation assumes study effort can move between courses as needed. If showing dates under unchanged allocation, use observed course shares `p_c` (summing to 1), `s_c = p_c*s`, and `T_c = B_c/(s_c-k_c)`. Give no finite course date when its positive backlog has insufficient allocated capacity. The overall date under that fixed allocation is the largest course date, not three courses each using the full `s`.
+These course workloads sum to the overall workload. The two overall dates assume study effort can move between courses as needed. They use one shared current pace or goal pace; never give each course the full daily capacity. Separate course completion dates or a course-allocation planner are not required.
 
 ## 5. Values to read from the database
 
@@ -116,10 +121,11 @@ These course budgets sum to the overall budget. The overall completion equation 
 | Unfinished lessons and `L_c` | Topic progress (`progress/learned`, legacy repetitions) plus historical lesson/review evidence, using existing engine preparation semantics. Lesson definitions use `activity/type` and `activity/scope`. |
 | Lesson bases | Frozen `learner-task/xp-base` for an existing attempt; otherwise existing `base_xp::activity_base`, using `activity/expected-seconds` or the existing content estimator. |
 | `X`, lesson/review/quiz subtotals, `a`, `q`, course shares | Learner-owned tasks: activity reference/type/topic, `learner-task/xp-base`, terminal `learner-task/status`, original `learner-task/finished-at` or terminal status history. Count both completed and failed attempts once. |
+| `G`, `e`, `s_goal` | `learner/daily-xp-goal` is the existing earned-XP goal. Use paired `learner-task/xp-earned` and `learner-task/xp-base` over the same recent dates to estimate its base-XP equivalent. |
 | `M` | Existing timing calculation over task-item status intervals and `task-item/working-ended-at`; saved elapsed durations where dated reliably. Do not add item durations to their parent task aggregate. |
 | `g_c`, observation duration | Historical filtered scope entries and topic completion state when they entered. Value genuinely additional lesson work using existing lesson bases. Track transfers and completions are not arrivals. |
 | `r`, `r_c`, expected review count | Dated review and other finished attempts, their bases, topics/tracks, and observation days. This is an empirical estimate of work likely to surface, not an exact future due-date simulation. |
 
 Use original activity dates rather than import dates. Unknown costs or time remain unknown, with known subtotals shown. Do not present incomplete timing as a complete productivity measurement.
 
-The output needs only: remaining lesson XP; recent base XP and active minutes/day; average weekly topic/XP additions and observation dates; estimated quiz/review work; completion with and without additions; and required XP/minutes for the chosen date, overall and per course. These are approximate planning estimates, not exam-readiness guarantees. No ledger subsystem, exact partial-stage accounting, engine simulation, or probability model is required.
+The main output is the two completion dates: **at the current seven-day average** and **at the daily XP goal**. Supporting values are remaining lesson XP, recent base XP and active minutes/day, average weekly topic/XP additions and observation dates, and estimated quiz/review work, with course workload breakdowns. These are approximate planning estimates, not exam-readiness guarantees. No deadline planner, ledger subsystem, exact partial-stage accounting, engine simulation, or probability model is required.

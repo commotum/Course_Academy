@@ -1,53 +1,48 @@
 {
   "verdict": "accepted",
-  "summary": "Both retained failures are resolved and independently reproduced on prior code. All eight checks pass for the current package and exact five-record batch; no new defect demonstrated. Package unchanged.",
+  "summary": "Both retained defects are resolved. All eight checks pass for the current package and exact five-record batch. No new defect demonstrated; package unchanged.",
   "source_analysis": {
-    "skill": "Identify possible or impossible slope fields from dependence on x, y, or both, by comparing slope variation along vertical and horizontal lines.",
+    "skill": "Identify possible or impossible slope fields by inspecting dependence on x and y.",
     "reasoning_steps": [
-      "Recognize the RHS dependence class.",
-      "Compare slopes along horizontal and vertical lines, avoiding exceptional zero-slope lines as sole witnesses.",
-      "Apply could/cannot polarity and select the unique image.",
-      "Explain the directional variation with a representative horizontal/vertical line."
+      "Determine the equation\u2019s coordinate dependence.",
+      "Compare slopes along horizontal and vertical lines.",
+      "Apply could/cannot polarity and select the qualifying field."
     ],
     "invariants": [
-      "Comparable slope-field image choices and one correct response; five choices in practice, four in the canonical composite",
-      "Dependence discrimination remains central",
-      "Could vs cannot follows source difficulty families",
-      "No integration, solution curves, or multi-select",
-      "All panels must use the same visual conventions"
+      "One correct radio selection.",
+      "Coordinate-dependence reasoning remains central.",
+      "No differential-equation solving."
     ],
     "permitted_variations": [
-      "Nonzero coefficients and signs in the observed simple RHS families",
-      "Permutation of correct choice position",
-      "Which compatible image occupies the answer role",
-      "For cannot, either missing x or missing y dependence as independently witnessed in source",
-      "One-variable distractor profiles and signs without requiring extra prerequisites"
+      "Coefficients, signs and supported field shapes.",
+      "Correct-choice position.",
+      "Either x-only or y-only impossible outlier.",
+      "Consistent changes to equations, diagrams, keys and explanations."
     ],
     "source_refs": [
-      "3602a14d-6bd7-5586-a6e8-51d069dc8641 (e-8507): x+y; solution says 'the only one that varies with both x and y'",
-      "8e4e2c73-61a2-51eb-9aeb-b173fc18ef10: xy; full five-image bank and correct image a324b98...",
-      "a04c1b90-953c-573f-89ab-d961bb6587e1: y-x^2; full bank and correct 1bd04b...",
-      "5ca31a32-1c1a-5bad-882d-872d4b1f5188: exp(xy); full bank and correct 7d5df9...",
-      "b2eadfcb-db6a-5800-9cd9-5adcd903a84a: cannot; fixed-x slopes do not vary with y",
-      "f091f74e-0c30-5dbb-bb79-6cf50cc68036; d1772040-8608-5c67-8243-2a903b40e108; 6e290eb2-4c30-594d-9303-2ef73ece0ff6: cannot; fixed-y slopes do not vary with x",
-      "lesson step 17592186172978/tutorial 17592186173194: y'=f(x) vertical symmetry; y'=g(y) horizontal symmetry; f(x,y) usually neither",
-      "lesson step 17592186172906/tutorial 17592186173161: substitute coordinates into x-y table and sketch segments"
+      "3602a14d-6bd7-5586-a6e8-51d069dc8641: canonical x+y example",
+      "8e4e2c73-61a2-51eb-9aeb-b173fc18ef10: xy",
+      "a04c1b90-953c-573f-89ab-d961bb6587e1: y-x\u00b2",
+      "5ca31a32-1c1a-5bad-882d-872d4b1f5188: exp(xy)",
+      "b2eadfcb-db6a-5800-9cd9-5adcd903a84a: x-only outlier",
+      "6e290eb2-4c30-594d-9303-2ef73ece0ff6: y-only outlier",
+      "Tutorial 17592186173194: slope-field symmetry"
     ],
     "evidence_paths": [
-      "source-analysis.json"
+      "source-analysis.json",
+      "confirmed-source-passages.json"
     ]
   },
   "checks": {
     "source_replay": {
       "status": "passed",
       "evidence_paths": [
-        "source-analysis.json",
         "source-replay-results.json",
         "source-replay-records.json",
         "current-canonical_replay_probe/canonical-result.json",
         "source-assets.json"
       ],
-      "details": "Seven complete practice banks replay exactly. Canonical composite, worked content and all four panel controls restored; III verified from source pixels. Missing eighth-source key/solution/rating distinguished from authored completion."
+      "details": "Seven complete practice banks replay exactly. Canonical four-panel content is restored, with panel III independently verified. Missing eighth-source fields are explicitly distinguished from authored completion."
     },
     "math": {
       "status": "passed",
@@ -57,17 +52,16 @@
         "boundary-results.json",
         "cold-math-results.json"
       ],
-      "details": "Independent substitutions, served-TeX parsing and actual serialized-slope dependence checks found no errors in fresh, controlled, boundary and runner samples. Cold renderer outputs independently retain unique qualifying fields."
+      "details": "Independent substitutions, prompt parsing and serialized-slope checks found no tested equation or key errors."
     },
     "variety": {
       "status": "passed",
       "evidence_paths": [
         "fresh-records.json",
         "sampling-results.json",
-        "boundary-records.json",
-        "source-replay-results.json"
+        "boundary-records.json"
       ],
-      "details": "18 fresh records cover all six default templates; controlled/boundary samples vary target sign, outlier coordinate, one-variable shape and empirical scales. Construction rules are unchanged; no unjustified restriction demonstrated."
+      "details": "Eighteen fresh records cover all six default templates. Controlled and boundary cases exercise signs, outlier coordinates, shapes and empirical scaling."
     },
     "scope": {
       "status": "passed",
@@ -75,19 +69,18 @@
         "source-analysis.json",
         "scope-report.json"
       ],
-      "details": "Coordinate-dependence recognition and single radio workload preserved. Canonical replay adapter and missing-source completion are disclosed; no differential-equation solving introduced."
+      "details": "Variations preserve coordinate-dependence recognition and comparable workload. Canonical response and difficulty adapters are disclosed."
     },
     "grading": {
       "status": "passed",
       "evidence_paths": [
         "grader-input.json",
         "grader-report.json",
-        "second-grader-input.json",
         "second-grader-report.json",
         "delivered-grader-input.json",
         "delivered-grader-report.json"
       ],
-      "details": "Native grader: 49 accepted and 195 rejected responses, zero unresolved, including every alternative in normalized runner batch and controlled pairs. Response contract is radio; free-entry equivalence is inapplicable."
+      "details": "Native grader produced 49 accepted and 195 rejected responses, with zero unresolved outcomes, including every alternative in the normalized runner batch."
     },
     "rendering": {
       "status": "passed",
@@ -98,7 +91,7 @@
         "render-rest/rendering.json",
         "render-canonical/rendering.json"
       ],
-      "details": "19 actual-UI records render successfully. Representative screenshots inspected for equations, image controls, plot distinctions, worked guides and canonical panel labels."
+      "details": "Nineteen actual-UI records rendered successfully. Representative screenshots were inspected, including counterfactuals and canonical panel controls."
     },
     "packaging": {
       "status": "passed",
@@ -111,7 +104,7 @@
         "relocation-results.json",
         "package-integrity.json"
       ],
-      "details": "Exact declared versions match. Original cold-cache PermissionError reproduced on old code; current cold symbolic and empirical rendering succeeds with old interpreter/cache hidden, relocated package read-only, and external output directory. Deterministic replay and normalized relocation pass; original package hashes unchanged."
+      "details": "Exact dependency versions match. Original cold-render failure reproduces on old code; current cold rendering succeeds with the old interpreter and cache hidden. Relocation and deterministic replay pass. Package hashes remain unchanged."
     },
     "decision_variation": {
       "status": "passed",
@@ -123,9 +116,10 @@
         "ui-position-results.json",
         "selection-results.json",
         "delivery-batch/delivery.json",
-        "affected-inventory.json"
+        "affected-inventory.json",
+        "evidence-contract.json"
       ],
-      "details": "Relevant and irrelevant controlled changes agree across prompts, images, explanations and native grading. All five batch items survive delivery; array/UI position probes reveal no fixed-action shortcut. Selection rules examined with live-state limits. Captured inventory has no generated records to implicate."
+      "details": "Relevant and irrelevant changes propagate correctly through displayed content and grading. All five batch records survive delivery; tested position and annotation cues reveal no shortcut. Selection rules were examined with live-state limits recorded. Captured inventory contains no generated records."
     }
   },
   "findings": []

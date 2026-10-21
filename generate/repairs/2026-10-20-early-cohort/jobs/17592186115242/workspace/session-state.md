@@ -1,29 +1,34 @@
-# Current repair state — pass 49
+# Current repair state — pass 52
 
-Read latest feedback and retained history, prior session state, instructional
-account, source lesson/canonical example, and required generation/validation docs.
-First executed test:
+Read latest feedback and retained findings/history, prior session state,
+instructional account, source lesson/context and required generation/validation
+docs. Preserved repaired runtime and all five strict regression declarations.
+
+First test:
 `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory`
-Exit 1: five captured historical banks retain the sign-only extremum shortcut;
-the conditional possible-history witness succeeds 64/64 times.
+Exit 1: all five historical banks reproduce against captured inventory; the
+possible new-seen-history shortcut succeeds 64/64.
 
 Validation:
-`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/repair-49`
-Exit 1 solely for finding 591f580cadb749294588. All four current-generator
-finding checks pass. Source banks, zero roots, sampler/batch shortcut checks,
-14 delivered records, native grading (7 accepted/28 rejected), pinned dependencies
-and seeded relocation pass. Five staged replacements and mapping verify.
-Protected runtime, manifest, source and inventory hashes are unchanged.
-Reinspected retained UI screenshot: readable, no clipping.
+`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/repair-52`
+Exit 1 solely for 591f580cadb749294588. Four generator finding regressions pass:
+17 complete source banks, zero roots, construction and finite-batch shortcut
+checks; shared delivery retains all 14 records; native grading accepts 7 correct
+and rejects 28 wrong submissions; exact dependency and relocated replay checks
+pass. Staged replacement mappings and unchanged runtime/source/inventory/manifest
+hashes verified. Reinspected retained actual-UI screenshot question-002.png:
+readable with no clipping. Also inspected the source lesson classification chart.
 
-No runtime edit is supported by the unchanged failure. The next unfinished
-state-changing action is the separate inventory-remediation workflow required
-by the finding: review/apply staged replacements, recapture inventory, rerun
-strict check. Database changes/publication are explicitly forbidden here.
-Preserve all repairs and strict failing regression; do not replace captured
-inventory with the hypothetical proposal or repeat unchanged repair cycles.
+No new runtime defect is demonstrated. No runtime files, source families,
+regression criteria, database content, publication or engine code were changed.
 
-Evidence: evidence/repair-49/commands.json, results.json, inventory-results.json,
-scope-diagnosis.json; affected-inventory.json; evidence/generated-records.json;
-evidence/repair-3/inventory-repair-proposal.json. Affected evidence paths resolve
-relative to author-49 as ../workspace/evidence/generated-records.json.
+Next unfinished step: separate inventory remediation must resolve the five
+historical generated selection candidates, then supply refreshed inventory.
+The author task explicitly prohibits that database/publication action. Do not
+repeat unchanged generator repairs or waive the failing historical-pool check.
+
+Current evidence: evidence/repair-52/commands.json, results.json and
+scope-diagnosis.json. Replacement handoff remains
+ evidence/repair-3/inventory-repair-proposal.json. Complete reproduced historical
+records: evidence/generated-records.json. affected-inventory.json evidence paths
+resolve relative to author-52 as ../workspace/evidence/generated-records.json.
