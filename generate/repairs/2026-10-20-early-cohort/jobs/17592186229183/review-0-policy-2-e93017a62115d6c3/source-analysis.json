@@ -1,0 +1,63 @@
+{
+  "skill": "Construct and solve a well-mixed variable-volume first-order linear mixture model, determine the overflow time from capacity, and evaluate solute mass there.",
+  "learner_operation": "Translate incoming concentration and both flow rates into Q' = c*r_in - r_out*Q/(V0+(r_in-r_out)*t); solve with Q(0)=Q0, compute t_o=(capacity-V0)/(r_in-r_out), evaluate and round mass, then select among five nearby numerical masses.",
+  "reasoning_steps": [
+    "Find net volume growth and overflow time.",
+    "Compute solute inflow and time-dependent outflow.",
+    "Use a variable-coefficient integrating factor and the initial condition.",
+    "Evaluate at overflow and round to one decimal place."
+  ],
+  "response_contract": "All 11 supplied bank questions use one radio field with five math mass choices in lb; ten have keys and solutions, one lacks both. Canonical example has a worked solution but no answer bank.",
+  "difficulty": "Supplied tagged bank items are easy; calculator allowed/required; all have r_out/(r_in-r_out)=2 and positive incoming concentration exceeding initial concentration. Preserve comparable elementary integration workload.",
+  "invariants": [
+    "Well-mixed single tank, constant positive inflow/outflow and incoming concentration.",
+    "Capacity greater than initial volume and inflow greater than outflow so a finite positive overflow time exists.",
+    "Mass balance, initial condition, capacity-defined evaluation time and consistent units.",
+    "Five numerical radio choices with one correct rounded mass."
+  ],
+  "fixed_features": [
+    {
+      "feature": "Overflow evaluation target",
+      "justification": "The KP is explicitly Determining an Amount at an Overflow Point; varying to a fixed unrelated time removes its extra operation."
+    },
+    {
+      "feature": "Inflow greater than outflow; positive capacity headroom",
+      "justification": "Necessary for the stated filling-to-overflow scenario."
+    },
+    {
+      "feature": "Small integral outflow/net-flow exponent (observed 2)",
+      "justification": "Observed easy method uses a quadratic integrating factor; retaining 2 is defensible for elementary workload, nearby small integral exponents need independent scope assessment."
+    }
+  ],
+  "permitted_variations": [
+    "Capacity, initial volume, initial mass, feed concentration, net flow, physical context, and nearby distractor offsets can vary jointly with consistent solutions.",
+    "Correct choice position and numerical rank are incidental and eligible to vary independently of context and parameter patterns.",
+    "Context names and common positive rescaling of both flows are irrelevant to final overflow mass, though overflow time changes.",
+    "Feed concentration, initial mass, capacity or volume changes must recompute the response; no source license fixes a correct label, rank or distractor configuration.",
+    "Source more-concentrated wording constrains initial/feed concentration ordering; opposing order would require changed wording and scope justification."
+  ],
+  "source_refs": [
+    "bbf602f0-1101-55d5-a6b3-9bfc5731e9ec",
+    "98f92dde-10ee-5a2e-ae0c-afe47e1981a5",
+    "138b92a0-177f-5f9d-993c-5b85e485defc",
+    "c2fb266c-0e36-5075-b402-7e3b0f1013d7",
+    "47a16983-dbf1-596b-b57d-9f38439fdd0f",
+    "729a2fd5-523f-5eb2-bf2f-20fedeba14f1",
+    "3c6933cf-ef37-5bf5-8816-b51b8e56e9df",
+    "9d3bb996-2c5a-57e9-940a-6b48f2e05670",
+    "0b0e00ac-15e0-50ff-896e-2fb3f25eb38a",
+    "c3e80580-6c31-591c-a6d6-df75a9aede3a",
+    "36a65a87-c8d0-5bbf-adbe-0789f4e08164",
+    "6c55e9d5-5244-5391-84ab-9850b2ba8152",
+    "lesson 70852def-fb14-50cc-b88d-6fe2af2343bf tutorial: rate of entry is no longer zero; Q'=Q_in'-Q_out'",
+    "lesson ff264ca2-0325-5ecb-9be4-8cbee9d9ba83 / canonical bbf602f0: Steps 1\u20134, I(t)=(12+t)^2, Q(0)=32, V(t_o)=240, Q(18)\u2248342.1 lb"
+  ],
+  "source_gaps": [
+    "138b92a0-177f-5f9d-993c-5b85e485defc has five choices but no correct answer or worked solution; independent calculation gives 95.204...\u219295.2 lb.",
+    "Canonical example lacks answer fields; cannot claim observed bank replay for that example.",
+    "98f92dde solution intro incorrectly names minerals and kg/min although prompt and computations use salt and lb/min; correct editorial unit/entity slips rather than reproduce."
+  ],
+  "evidence_paths": [
+    "source-analysis.json"
+  ]
+}

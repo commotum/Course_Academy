@@ -1,0 +1,91 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186229183,
+      "id": "c652164a-2e94-5e16-a410-5143037af134",
+      "title": "Determining an Amount at an Overflow Point"
+    },
+    "question": {
+      ":question/id": "ae149b7b-7eb9-594e-b450-768eff640aca",
+      ":question/problem": "A coolant reservoir in a manufacturing plant can hold up to $128\\,\\text{gal}$ of liquid. Initially, it contains $48\\,\\text{gal}$ of coolant solution with $24\\,\\text{lb}$ of dissolved corrosion inhibitor. A more concentrated coolant solution with concentration $1.0\\,\\text{lb/gal}$ flows into the reservoir at a rate of $24\\,\\text{gal/min},$ while the completely mixed solution drains out at a rate of $16\\,\\text{gal/min}.$ Rounded to one decimal place, find the amount of inhibitor in the reservoir at the moment it begins to overflow.",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "eb79b057-2a21-5c15-80d3-7ab42a51cb2c",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "58f5ed22-6eec-576d-869f-5b7043bd6ae4",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "119.0\\,\\text{lb}"
+            },
+            {
+              ":answer/id": "27751c22-ee3e-5d91-8cb4-1b4c671db483",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "126.7\\,\\text{lb}"
+            },
+            {
+              ":answer/id": "4ee2494a-067f-573b-a888-11335b06a197",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "124.6\\,\\text{lb}"
+            },
+            {
+              ":answer/id": "79b09fa0-3c3c-5642-b843-7215e0ea4feb",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "121.3\\,\\text{lb}"
+            },
+            {
+              ":answer/id": "c582705c-3cfe-56cf-bd9d-27a1d985b9a6",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "128.0\\,\\text{lb}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "4ee2494a-067f-573b-a888-11335b06a197"
+          ]
+        }
+      ],
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/worked-solution": "Since $Q$ is the amount of inhibitor in the reservoir at time $t,$ the derivative \n\n$$\n\\frac{dQ}{dt}\n$$\n\ndescribes how this amount changes with respect to time $t,$ in minutes. This is equal to the rate at which inhibitor enters the reservoir minus the rate at which inhibitor leaves the reservoir.\n\n$$\n\\frac{dQ}{dt}={Q}_{\\text{in}}^{\u2032}-{Q}_{\\text{out}}^{\u2032}\n$$\n\nNote that the units of $\\frac{dQ}{dt},{Q}_{\\text{in}}^{\u2032}$ and ${Q}_{\\text{out}}^{\u2032}$ are $\\text{lb}/\\text{min}.$ Now, let's compute the required rates of change in steps.\n\n**Step 1**: Calculating the rate at which inhibitor enters the reservoir.\n\nFirst, note that a solution containing $1.0\\,\\text{lb/gal}$ of inhibitor enters the reservoir at a rate of $24\\,\\text{gal/min}.$ So, the rate at which the *inhibitor* enters the reservoir is \n\n$$\n\\begin{aligned}{Q}_{\\text{in}}^{\u2032} & =(1.0\\,\\frac{\\text{lb}}{\\text{gal}})\\cdot (24\\,\\frac{\\text{gal}}{\\text{min}}) \\\\  & =(1.0\\,\\frac{\\text{lb}}{\\cancel{\\text{gal}}})\\cdot (24\\,\\frac{\\cancel{\\text{gal}}}{\\text{min}}) \\\\  & =24\\,\\frac{\\text{lb}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 2**: Calculating the rate at which inhibitor exits the reservoir.\n\nTo find the rate at which inhibitor leaves the reservoir, we must first determine the volume of solution in the reservoir at time $t.$\n\nThe reservoir initially contains $48\\,\\text{gal}$ of solution; solution enters at $24\\,\\text{gal/min}$ and mixed solution leaves at $16\\,\\text{gal/min}.$\nAs a result, the amount of solution in the reservoir after $t$ minutes is \n\n$$\nV(t)=48+24t-16t=8(6+t)\\,\\text{gal}.\n$$\n\nNote that $V(t)$ is an increasing function, so the reservoir is filling.\n\nSince $Q$ is the amount of inhibitor in the reservoir, the concentration of the solution at time $t$ is\n\n$$\n\\frac{Q}{8(6+t)}\\,\\text{lb/gal}.\n$$\n\nTherefore, as the completely mixed solution leaves at a rate of $16\\,\\text{gal/min},$ *inhibitor* leaves at a rate of\n\n$$\n\\begin{aligned}{Q}_{\\text{out}}^{\u2032} & =(16\\,\\frac{\\text{gal}}{\\text{min}})\\cdot (\\frac{Q}{8(6+t)}\\,\\frac{\\text{lb}}{\\text{gal}}) \\\\  & =(16\\,\\frac{\\cancel{\\text{gal}}}{\\text{min}})\\cdot (\\frac{Q}{8(6+t)}\\,\\frac{\\text{lb}}{\\cancel{\\text{gal}}}) \\\\  & =\\frac{16Q}{8(6+t)}\\,\\frac{\\text{lb}}{\\text{min}} \\\\  & =\\frac{2Q}{6+t}\\,\\frac{\\text{lb}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 3**: Calculate the overall rate of change.\n\nThe rate of change equals the rate of entry minus the rate of exit. Therefore, \n\n$$\n\\begin{aligned}\\frac{dQ}{dt} & ={Q}_{\\text{in}}^{\u2032}-{Q}_{\\text{out}}^{\u2032} \\\\  & =24-\\frac{2Q}{6+t}\\end{aligned}\n$$\n\nwhich gives the equation\n\n$$\n\\frac{dQ}{dt}+\\frac{2}{6+t}\\,Q=24.\n$$\n\n**Step 4**: Integrate the equation.\n\nThis is a first-order linear equation with variable coefficients. So we find the general solution using an integrating factor:\n\n$$\n\\begin{aligned}I(t) & ={e}^{\\int 2/(6+t)\\,dt} \\\\  & ={e}^{2\\operatorname{ln}\u2061|6+t|} \\\\  & ={e}^{\\operatorname{ln}\u2061(6+t)^{2}} \\\\  & =(6+t)^{2}.\\end{aligned}\n$$\n\nMultiplying both sides of the differential equation by $I(t)=(6+t)^{2}$ yields\n\n$$\n\\begin{aligned}(6+t)^{2}\\cdot (\\frac{dQ}{dt}+\\frac{2}{6+t}\\,Q) & =(6+t)^{2}\\cdot 24 \\\\ (6+t)^{2}\\frac{dQ}{dt}+2(6+t)Q & =24(6+t)^{2} \\\\ \\frac{d}{dt}(Q(6+t)^{2}) & =24(6+t)^{2}.\\end{aligned}\n$$\n\nNow, we integrate with respect to $t:$\n\n$$\n\\begin{aligned}\\int \\frac{d}{dt}(Q(6+t)^{2})\\,dt & =\\int 24(6+t)^{2}\\,dt \\\\ Q(6+t)^{2} & =24\\cdot \\frac{1}{3}(6+t)^{3}+C \\\\ Q(t) & =8(6+t)+\\frac{C}{(6+t)^{2}}.\\end{aligned}\n$$\n\nWe're told that the reservoir initially contains $24\\,\\text{lb}$ of inhibitor. So, we can apply the initial condition $Q(0)=24,$ and solve for $C:$\n\n$$\n\\begin{aligned}Q(0) & =24 \\\\ 8(6+0)+\\frac{C}{(6+0)^{2}} & =24 \\\\ 48+\\frac{C}{(6)^{2}} & =24 \\\\ \\frac{C}{{6}^{2}} & =-24 \\\\ C & =-24(6)^{2}.\\end{aligned}\n$$\n\nTherefore, we obtain the following expression for $Q(t):$\n\n$$\n\\begin{aligned}Q(t) & =8(6+t)-\\frac{24(6)^{2}}{(6+t)^{2}} \\\\  & =8(6+t)-24{(\\frac{6}{6+t})}^{2}.\\end{aligned}\n$$\n\nNow, let ${t}_{o}$ be the time when the reservoir begins to overflow. The reservoir has a capacity of $128\\,\\text{gal},$ so we can use the condition $V({t}_{o})=128$ to solve for ${t}_{o}:$\n\n$$\n\\begin{aligned}V({t}_{o}) & =128 \\\\ 48+24{t}_{o}-16{t}_{o} & =128 \\\\ 48+8{t}_{o} & =128 \\\\ 8{t}_{o} & =80 \\\\ {t}_{o} & =10\\,\\text{min}.\\end{aligned}\n$$\n\nFinally, rounded to one decimal place, the amount of inhibitor in the reservoir at the moment it begins to overflow is\n\n$$\n\\begin{aligned}Q(10) & =8(6+10)-24{(\\frac{6}{6+10})}^{2} \\\\  & =128-24{(\\frac{6}{16})}^{2} \\\\  & \u2248124.6\\,\\text{lb}.\\end{aligned}\n$$"
+    },
+    "generation": {
+      "version": "overflow-onset-1",
+      "level": "easy",
+      "difficulty_provenance": "authored workload policy",
+      "template": "q-336506",
+      "profile": "method",
+      "seed": 7319,
+      "parameters": {
+        "H": "128",
+        "v": "48",
+        "q": "24",
+        "c": "1.0",
+        "rin": "24",
+        "rout": "16"
+      },
+      "source": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "origin": "generated variant",
+      "evidence_only": false,
+      "eligible_for_learning": true,
+      "mathematical_fingerprint": "bf9bcb92d88e47546269e20a940f30064071b85c8c9ba5e19b4775e251cbca72",
+      "content_fingerprint": "d49dd26f11dd5e69591da0dbf3f1af0abed8e567dede406da4cbe4974cb764f6",
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      },
+      "domain": "0 <= t <= overflow onset; capacity > initial volume, inflow > outflow, incoming concentration > initial concentration",
+      "bank_recipes": [
+        "correct",
+        "omit transient",
+        "use exponent n+1",
+        "use exponent n-1",
+        "omit initial amount"
+      ]
+    }
+  }
+]

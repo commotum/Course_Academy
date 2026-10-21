@@ -1,0 +1,978 @@
+{
+  "schema_version": 2,
+  "topic_id": "6700",
+  "topic_title": "Modeling Mixture Problems With First-Order Linear ODEs",
+  "source_html": "/home/jake/Developer/MA/DATA/Lessons/6700/Source/6700.html",
+  "source_url": "https://mathacademy.com/topics/6700",
+  "normalization": {
+    "math_placeholder": "[MATH: ...]",
+    "image_placeholder": "[IMG: /graphics/...]",
+    "free_entry_placeholder": "[FREE_ENTRY n]",
+    "select_placeholder": "[SELECT n]"
+  },
+  "toc": {
+    "sidebar_selector": "#sidebar",
+    "section_links_selector": "#sectionLinks .sectionLink",
+    "section_links": [
+      {
+        "index": 1,
+        "step_id": "601750",
+        "dom_id": "sectionLink-601750",
+        "name": "",
+        "title": "Introduction",
+        "selector": "#sectionLink-601750"
+      },
+      {
+        "index": 2,
+        "step_id": "601751",
+        "dom_id": "sectionLink-601751",
+        "name": "",
+        "title": "Constructing and Solving a Dilution Model: Inflow Equals Outflow",
+        "selector": "#sectionLink-601751"
+      },
+      {
+        "index": 3,
+        "step_id": "601754",
+        "dom_id": "sectionLink-601754",
+        "name": "",
+        "title": "Constructing and Solving a Dilution Model",
+        "selector": "#sectionLink-601754"
+      },
+      {
+        "index": 4,
+        "step_id": "601757",
+        "dom_id": "sectionLink-601757",
+        "name": "",
+        "title": "Determining an Amount at an Overflow Point",
+        "selector": "#sectionLink-601757"
+      }
+    ],
+    "topic_prerequisites": [
+      {
+        "topic_id": "877",
+        "name": "Solving First-Order Linear ODEs Using Integrating Factors",
+        "href": "/topics/solving-first-order-linear-odes-using-integrating-factors-877"
+      },
+      {
+        "topic_id": "1713",
+        "name": "Modeling Mixture Problems With First-Order Separable ODEs",
+        "href": "/topics/modeling-mixture-problems-with-first-order-separable-odes-1713"
+      },
+      {
+        "topic_id": "6678",
+        "name": "General Solutions of First-Order Linear ODEs",
+        "href": "/topics/general-solutions-of-first-order-linear-odes-6678"
+      }
+    ]
+  },
+  "lesson": {
+    "container_selector": "#lessonContent",
+    "item_count": 10,
+    "step_count": 4,
+    "question_count": 6,
+    "items": [
+      {
+        "lesson_index": 1,
+        "step_index": 1,
+        "item_type": "step",
+        "step_type": "tutorial",
+        "step_id": "601750",
+        "content_id": "14578",
+        "dom_id": "step-601750",
+        "selector": "#step-601750",
+        "step_anchor": "step-1",
+        "title": "Introduction",
+        "key_prerequisites": [],
+        "has_content_in_snapshot": true,
+        "sections": [
+          {
+            "section_type": "content",
+            "normalized_html": "<p>In the previous lesson, we focused on dilution problems in which the incoming solution contained none of the substance being modeled. In those cases, the rate at which the substance entered the container was zero.</p>",
+            "readable_text": "In the previous lesson, we focused on dilution problems in which the incoming solution contained none of the substance being modeled. In those cases, the rate at which the substance entered the container was zero.",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "section_type": "content",
+            "normalized_html": "<p>In many practical situations, however, the incoming solution <em>does</em> contain some amount of the substance. When this happens,</p>",
+            "readable_text": "In many practical situations, however, the incoming solution does contain some amount of the substance. When this happens,",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "section_type": "content",
+            "normalized_html": "<ul><li><p>the rate of entry is no longer zero, and</p></li><li><p>the resulting differential equation takes the form of a first-order linear differential equation.</p></li></ul>",
+            "readable_text": "- the rate of entry is no longer zero, and\n- the resulting differential equation takes the form of a first-order linear differential equation.",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "section_type": "content",
+            "normalized_html": "<p>For example, suppose a storage tank initially holds <span class=\"math\">[MATH: 650\\,\\textrm{L}]</span> of water containing <span class=\"math\">[MATH: 1\\,300\\,\\textrm{g}]</span> of dissolved chlorine.</p>",
+            "readable_text": "For example, suppose a storage tank initially holds [MATH: 650\\,\\textrm{L}] of water containing [MATH: 1\\,300\\,\\textrm{g}] of dissolved chlorine.",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "section_type": "content",
+            "normalized_html": "<ul><li><p>A solution containing <span class=\"math\">[MATH: 20\\,\\textrm{g/L}]</span> of dissolved chlorine is pumped into the tank at a rate of <span class=\"math\">[MATH: 5\\,\\textrm{L/min}.]</span></p></li><li><p>At the same time, the completely mixed water is drained out at a rate of <span class=\"math\">[MATH: 5\\,\\textrm{L/min}.]</span></p></li></ul>",
+            "readable_text": "- A solution containing [MATH: 20\\,\\textrm{g/L}] of dissolved chlorine is pumped into the tank at a rate of [MATH: 5\\,\\textrm{L/min}.]\n- At the same time, the completely mixed water is drained out at a rate of [MATH: 5\\,\\textrm{L/min}.]",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "section_type": "content",
+            "normalized_html": "<p>To construct the model for the amount of chlorine <span class=\"math\">[MATH: Q]</span> in the tank, we compare the rates of chlorine entering and leaving. The derivative \n<span class=\"math\">[MATH: \\dfrac{\\mathrm{d}Q}{\\mathrm{d}t}]</span>\ndescribes how this amount changes with respect to time <span class=\"math\">[MATH: t.]</span> This is equal to the rate at which chlorine enters the tank minus the rate at which chlorine leaves the tank.</p>",
+            "readable_text": "To construct the model for the amount of chlorine [MATH: Q] in the tank, we compare the rates of chlorine entering and leaving. The derivative\n[MATH: \\dfrac{\\mathrm{d}Q}{\\mathrm{d}t}]\ndescribes how this amount changes with respect to time [MATH: t.] This is equal to the rate at which chlorine enters the tank minus the rate at which chlorine leaves the tank.",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "section_type": "content",
+            "normalized_html": "<p><span class=\"math\">[MATH: \\bbox[4pt,border: 1px solid lightgray]{\\dfrac{\\mathrm{d}Q}{\\mathrm{d}t} = Q&#x27;_{\\textrm{in}} - Q&#x27;_{\\textrm{out}}}]</span></p>",
+            "readable_text": "[MATH: \\bbox[4pt,border: 1px solid lightgray]{\\dfrac{\\mathrm{d}Q}{\\mathrm{d}t} = Q'_{\\textrm{in}} - Q'_{\\textrm{out}}}]",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "section_type": "content",
+            "normalized_html": "<p>We compute the required rates of change in steps.</p>",
+            "readable_text": "We compute the required rates of change in steps.",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "section_type": "content",
+            "normalized_html": "<p><strong>Step 1</strong>: Calculating the rate at which chlorine enters the tank.</p>",
+            "readable_text": "Step 1: Calculating the rate at which chlorine enters the tank.",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "section_type": "content",
+            "normalized_html": "<p>The rate of chlorine entering is the concentration times the flow rate:\n<span class=\"math\">[MATH: Q_{in}^{\u2032}|= (20(g)/(L)) \u22c5 (5(L)/(min)); = (20(g)/(L)) \u22c5 (5(L)/(min)); = 100(g)/(min)]</span></p>",
+            "readable_text": "The rate of chlorine entering is the concentration times the flow rate:\n[MATH: Q_{in}^{\u2032}|= (20(g)/(L)) \u22c5 (5(L)/(min)); = (20(g)/(L)) \u22c5 (5(L)/(min)); = 100(g)/(min)]",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "section_type": "content",
+            "normalized_html": "<p><strong>Step 2</strong>: Calculating the rate at which chlorine exits the tank.</p>",
+            "readable_text": "Step 2: Calculating the rate at which chlorine exits the tank.",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "section_type": "content",
+            "normalized_html": "<p>Since the volume remains constant at <span class=\"math\">[MATH: 650\\,\\textrm{L},]</span> the concentration in the tank is <span class=\"math\">[MATH: \\dfrac{Q}{650}\\,\\dfrac{\\textrm{g}}{\\textrm{L}}.]</span> So, the rate of chlorine exiting is\n<span class=\"math\">[MATH: Q_{out}^{\u2032}|= (5(L)/(min)) \u22c5 ((Q)/(650)(g)/(L)); = (5(L)/(min)) \u22c5 ((Q)/(650)(g)/(L)); = (Q)/(130)(g)/(min).]</span></p>",
+            "readable_text": "Since the volume remains constant at [MATH: 650\\,\\textrm{L},] the concentration in the tank is [MATH: \\dfrac{Q}{650}\\,\\dfrac{\\textrm{g}}{\\textrm{L}}.] So, the rate of chlorine exiting is\n[MATH: Q_{out}^{\u2032}|= (5(L)/(min)) \u22c5 ((Q)/(650)(g)/(L)); = (5(L)/(min)) \u22c5 ((Q)/(650)(g)/(L)); = (Q)/(130)(g)/(min).]",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "section_type": "content",
+            "normalized_html": "<p><strong>Step 3</strong>: Calculate the overall rate of change.</p>",
+            "readable_text": "Step 3: Calculate the overall rate of change.",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "section_type": "content",
+            "normalized_html": "<p>The net rate of change <span class=\"math\">[MATH: \\dfrac{\\mathrm{d}Q}{\\mathrm{d}t} = Q&#x27;_\\text{in} - Q&#x27;_\\text{out}]</span> is the difference between the rate in and the rate out. Combining this with the initial condition <span class=\"math\">[MATH: Q(0) = 1\\,300\\,\\textrm{g},]</span> we can state the complete initial value problem:\n<span class=\"math\">[MATH: \\dfrac{\\mathrm{d}Q}{\\mathrm{d}t} = 100 - \\dfrac{1}{130}Q\n\\quad\\Longrightarrow\\quad\n\\bbox[4pt,border: 1px solid lightgray]{\\dfrac{\\mathrm{d}Q}{\\mathrm{d}t} + \\dfrac{1}{130}Q = 100, \\quad Q(0) = 1\\,300\\,\\textrm{g}}]</span></p>",
+            "readable_text": "The net rate of change [MATH: \\dfrac{\\mathrm{d}Q}{\\mathrm{d}t} = Q'_\\text{in} - Q'_\\text{out}] is the difference between the rate in and the rate out. Combining this with the initial condition [MATH: Q(0) = 1\\,300\\,\\textrm{g},] we can state the complete initial value problem:\n[MATH: \\dfrac{\\mathrm{d}Q}{\\mathrm{d}t} = 100 - \\dfrac{1}{130}Q\n\\quad\\Longrightarrow\\quad\n\\bbox[4pt,border: 1px solid lightgray]{\\dfrac{\\mathrm{d}Q}{\\mathrm{d}t} + \\dfrac{1}{130}Q = 100, \\quad Q(0) = 1\\,300\\,\\textrm{g}}]",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          }
+        ],
+        "images": [],
+        "free_entry_blanks": [],
+        "select_lists": [],
+        "readable_text": "Content:\nIn the previous lesson, we focused on dilution problems in which the incoming solution contained none of the substance being modeled. In those cases, the rate at which the substance entered the container was zero.\n\nContent:\nIn many practical situations, however, the incoming solution does contain some amount of the substance. When this happens,\n\nContent:\n- the rate of entry is no longer zero, and\n- the resulting differential equation takes the form of a first-order linear differential equation.\n\nContent:\nFor example, suppose a storage tank initially holds [MATH: 650\\,\\textrm{L}] of water containing [MATH: 1\\,300\\,\\textrm{g}] of dissolved chlorine.\n\nContent:\n- A solution containing [MATH: 20\\,\\textrm{g/L}] of dissolved chlorine is pumped into the tank at a rate of [MATH: 5\\,\\textrm{L/min}.]\n- At the same time, the completely mixed water is drained out at a rate of [MATH: 5\\,\\textrm{L/min}.]\n\nContent:\nTo construct the model for the amount of chlorine [MATH: Q] in the tank, we compare the rates of chlorine entering and leaving. The derivative\n[MATH: \\dfrac{\\mathrm{d}Q}{\\mathrm{d}t}]\ndescribes how this amount changes with respect to time [MATH: t.] This is equal to the rate at which chlorine enters the tank minus the rate at which chlorine leaves the tank.\n\nContent:\n[MATH: \\bbox[4pt,border: 1px solid lightgray]{\\dfrac{\\mathrm{d}Q}{\\mathrm{d}t} = Q'_{\\textrm{in}} - Q'_{\\textrm{out}}}]\n\nContent:\nWe compute the required rates of change in steps.\n\nContent:\nStep 1: Calculating the rate at which chlorine enters the tank.\n\nContent:\nThe rate of chlorine entering is the concentration times the flow rate:\n[MATH: Q_{in}^{\u2032}|= (20(g)/(L)) \u22c5 (5(L)/(min)); = (20(g)/(L)) \u22c5 (5(L)/(min)); = 100(g)/(min)]\n\nContent:\nStep 2: Calculating the rate at which chlorine exits the tank.\n\nContent:\nSince the volume remains constant at [MATH: 650\\,\\textrm{L},] the concentration in the tank is [MATH: \\dfrac{Q}{650}\\,\\dfrac{\\textrm{g}}{\\textrm{L}}.] So, the rate of chlorine exiting is\n[MATH: Q_{out}^{\u2032}|= (5(L)/(min)) \u22c5 ((Q)/(650)(g)/(L)); = (5(L)/(min)) \u22c5 ((Q)/(650)(g)/(L)); = (Q)/(130)(g)/(min).]\n\nContent:\nStep 3: Calculate the overall rate of change.\n\nContent:\nThe net rate of change [MATH: \\dfrac{\\mathrm{d}Q}{\\mathrm{d}t} = Q'_\\text{in} - Q'_\\text{out}] is the difference between the rate in and the rate out. Combining this with the initial condition [MATH: Q(0) = 1\\,300\\,\\textrm{g},] we can state the complete initial value problem:\n[MATH: \\dfrac{\\mathrm{d}Q}{\\mathrm{d}t} = 100 - \\dfrac{1}{130}Q\n\\quad\\Longrightarrow\\quad\n\\bbox[4pt,border: 1px solid lightgray]{\\dfrac{\\mathrm{d}Q}{\\mathrm{d}t} + \\dfrac{1}{130}Q = 100, \\quad Q(0) = 1\\,300\\,\\textrm{g}}]"
+      },
+      {
+        "lesson_index": 2,
+        "step_index": 2,
+        "item_type": "step",
+        "step_type": "example",
+        "step_id": "601751",
+        "content_id": "21880",
+        "dom_id": "step-601751",
+        "selector": "#step-601751",
+        "step_anchor": "step-2",
+        "title": "Constructing and Solving a Dilution Model: Inflow Equals Outflow",
+        "key_prerequisites": [
+          {
+            "topic_id": "877",
+            "name": "Solving First-Order Linear ODEs Using Integrating Factors",
+            "href": "/topics/877",
+            "type": ""
+          },
+          {
+            "topic_id": "1713",
+            "name": "Modeling Mixture Problems With First-Order Separable ODEs",
+            "href": "/topics/1713",
+            "type": ""
+          },
+          {
+            "topic_id": "6678",
+            "name": "General Solutions of First-Order Linear ODEs",
+            "href": "/topics/6678",
+            "type": ""
+          }
+        ],
+        "has_content_in_snapshot": true,
+        "sections": [
+          {
+            "section_type": "example_question",
+            "normalized_html": "<p>A fertilizer tank initially holds <span class=\"math\">[MATH: 800\\,\\textrm{L}]</span> of liquid containing <span class=\"math\">[MATH: 7\\,\\textrm{kg}]</span> of dissolved nutrient.\nA solution containing <span class=\"math\">[MATH: 0.01\\,\\textrm{kg/L}]</span> of dissolved nutrient is pumped into the tank at a rate of <span class=\"math\">[MATH: 40\\,\\textrm{L/min},]</span> while the completely mixed liquid is drained out at a rate of <span class=\"math\">[MATH: 40\\,\\textrm{L/min}.]</span> Which expression gives the amount of nutrient <span class=\"math\">[MATH: Q(t),]</span> in kilograms, in the tank <span class=\"math\">[MATH: t]</span> minutes after pumping begins?</p>",
+            "readable_text": "A fertilizer tank initially holds [MATH: 800\\,\\textrm{L}] of liquid containing [MATH: 7\\,\\textrm{kg}] of dissolved nutrient.\nA solution containing [MATH: 0.01\\,\\textrm{kg/L}] of dissolved nutrient is pumped into the tank at a rate of [MATH: 40\\,\\textrm{L/min},] while the completely mixed liquid is drained out at a rate of [MATH: 40\\,\\textrm{L/min}.] Which expression gives the amount of nutrient [MATH: Q(t),] in kilograms, in the tank [MATH: t] minutes after pumping begins?",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "section_type": "content",
+            "normalized_html": "<p>EXPLANATION</p>",
+            "readable_text": "EXPLANATION",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "section_type": "example_explanation",
+            "normalized_html": "<p>Let <span class=\"math\">[MATH: Q]</span> be the amount of nutrient in the tank at time <span class=\"math\">[MATH: t,]</span> in minutes. Then, the derivative \n<span class=\"math\">[MATH: \\dfrac{\\mathrm{d}Q}{\\mathrm{d}t}]</span>\ndescribes how this amount changes with respect to time <span class=\"math\">[MATH: t.]</span> This is equal to the rate at which nutrient enters the tank minus the rate at which nutrient leaves the tank.</p><p><span class=\"math\">[MATH: \\dfrac{\\mathrm{d}Q}{\\mathrm{d}t} = Q&#x27;_{\\textrm{in}} - Q&#x27;_{\\textrm{out}}]</span></p><p>Note that the units of <span class=\"math\">[MATH: \\dfrac{\\mathrm{d}Q}{\\mathrm{d}t}, Q&#x27;_{\\textrm{in}}]</span> and <span class=\"math\">[MATH: Q&#x27;_{\\textrm{out}}]</span> are <span class=\"math\">[MATH: \\textrm{kg}/\\textrm{min}.]</span> Now, let&#x27;s compute the required rates of change in steps.</p><p><strong>Step 1</strong>: Calculating the rate at which additives enter the tank.</p><p>Note that a feed solution containing <span class=\"math\">[MATH: 0.01\\,\\textrm{kg/L}]</span> of the nutrient enters the tank at a rate of <span class=\"math\">[MATH: 40\\,\\textrm{L/min}.]</span> So, the rate at which the <em>nutrient</em> enters the tank is </p><p><span class=\"math\">[MATH: Q_{in}^{\u2032}|= (0.01(kg)/(L)) \u22c5 (40(L)/(min)); = (0.01(kg)/(L)) \u22c5 (40(L)/(min)); = 0.4(kg)/(min).]</span></p><p><strong>Step 2</strong>: Calculating the rate at which additives exit the tank.</p><p>Next, note that the rate of flow in equals the rate of flow out, so the volume in the tank remains <span class=\"math\">[MATH: 800\\,\\textrm{L}.]</span> Then, since <span class=\"math\">[MATH: Q]</span> is the amount of nutrient in the tank, the <em>concentration</em> of the solution at time <span class=\"math\">[MATH: t]</span> is\n<span class=\"math\">[MATH: \\dfrac{Q}{800}\\,\\textrm{kg/L}.]</span></p><p>Therefore, as the completely mixed liquid leaves at a rate of <span class=\"math\">[MATH: 40\\,\\textrm{L/min},]</span> <em>nutrient</em> leaves at a rate of</p><p><span class=\"math\">[MATH: Q_{out}^{\u2032}|= (40(L)/(min)) \u22c5 ((Q)/(800)(kg)/(L)); = (40(L)/(min)) \u22c5 ((Q)/(800)(kg)/(L)); = (40Q)/(800)(kg)/(min); = (Q)/(20)(kg)/(min).]</span></p><p><strong>Step 3</strong>: Calculate the overall rate of change.</p><p>The rate of change equals the rate of entry minus the rate of exit. Therefore, </p><p><span class=\"math\">[MATH: (dQ)/(dt)|= Q_{in}^{\u2032} \u2212 Q_{out}^{\u2032}; = 0.4 \u2212 (Q)/(20)]</span></p><p>which gives the equation</p><p><span class=\"math\">[MATH: \\dfrac{\\mathrm{d}Q}{\\mathrm{d}t} + \\dfrac{1}{20}Q = 0.4.]</span></p><p><strong>Step 4</strong>: Integrate the equation.</p><p>This is a first-order linear equation with constant coefficients. To find the general solution, we must sum the complementary and particular solutions.</p><ul><li><p>To find the complementary solution <span class=\"math\">[MATH: Q_c,]</span> we solve the corresponding homogeneous equation, given by\n<span class=\"math\">[MATH: \\dfrac{\\mathrm{d}Q_c}{\\mathrm{d}t} + \\dfrac{1}{20}Q_c = 0.]</span>\nSolving using an integration technique, such as separation of variables, we obtain the complementary solution\n<span class=\"math\">[MATH: Q_c(t) = Ae^{-t/20},]</span>\nwhere <span class=\"math\">[MATH: A]</span> is a constant of integration.</p></li><li><p>Next, we find the particular solution. Note that the right-hand side of the inhomogeneous equation is a polynomial of degree <span class=\"math\">[MATH: 0.]</span> So, we assume that the particular solution is also a polynomial of degree <span class=\"math\">[MATH: 0,]</span> i.e.,\n<span class=\"math\">[MATH: Q_p(t) = \\alpha.]</span>\nTo find the value of <span class=\"math\">[MATH: \\alpha,]</span> we substitute <span class=\"math\">[MATH: Q_p = \\alpha]</span> and <span class=\"math\">[MATH: \\dfrac{\\mathrm{d}Q_p}{\\mathrm{d}t} = (\\alpha)&#x27; = 0]</span> into the inhomogeneous equation:\n<span class=\"math\">[MATH: 0 + \\dfrac{1}{20}\\alpha = 0.4\n\\quad\\Longrightarrow\\quad\n\\alpha = 8.]</span>\nTherefore, the particular solution is <span class=\"math\">[MATH: Q_p(t) = 8.]</span></p></li></ul><p>Now, since the general solution is given by the sum of the complementary solution and the particular solution, the general solution in our case is</p><p><span class=\"math\">[MATH: Q(t) = Q_c(t) + Q_p(t) = Ae^{-t/20} + 8.]</span></p><p>We&#x27;re told that the tank initially contains <span class=\"math\">[MATH: 7\\,\\textrm{kg}]</span> of dissolved nutrient. So, we can apply the initial condition <span class=\"math\">[MATH: Q(0) = 7,]</span> and solve for <span class=\"math\">[MATH: A{:}]</span></p><p><span class=\"math\">[MATH: Q(0)|= 7; Ae^{\u2212 0/20} + 8|= 7; A|= \u2212 1]</span></p><p>Therefore, we obtain the following expression for <span class=\"math\">[MATH: Q(t){:}]</span></p><p><span class=\"math\">[MATH: Q(t) = 8 - e^{-t/20}.]</span></p>",
+            "readable_text": "Let [MATH: Q] be the amount of nutrient in the tank at time [MATH: t,] in minutes. Then, the derivative\n[MATH: \\dfrac{\\mathrm{d}Q}{\\mathrm{d}t}]\ndescribes how this amount changes with respect to time [MATH: t.] This is equal to the rate at which nutrient enters the tank minus the rate at which nutrient leaves the tank.\n\n[MATH: \\dfrac{\\mathrm{d}Q}{\\mathrm{d}t} = Q'_{\\textrm{in}} - Q'_{\\textrm{out}}]\n\nNote that the units of [MATH: \\dfrac{\\mathrm{d}Q}{\\mathrm{d}t}, Q'_{\\textrm{in}}] and [MATH: Q'_{\\textrm{out}}] are [MATH: \\textrm{kg}/\\textrm{min}.] Now, let's compute the required rates of change in steps.\n\nStep 1: Calculating the rate at which additives enter the tank.\n\nNote that a feed solution containing [MATH: 0.01\\,\\textrm{kg/L}] of the nutrient enters the tank at a rate of [MATH: 40\\,\\textrm{L/min}.] So, the rate at which the nutrient enters the tank is\n\n[MATH: Q_{in}^{\u2032}|= (0.01(kg)/(L)) \u22c5 (40(L)/(min)); = (0.01(kg)/(L)) \u22c5 (40(L)/(min)); = 0.4(kg)/(min).]\n\nStep 2: Calculating the rate at which additives exit the tank.\n\nNext, note that the rate of flow in equals the rate of flow out, so the volume in the tank remains [MATH: 800\\,\\textrm{L}.] Then, since [MATH: Q] is the amount of nutrient in the tank, the concentration of the solution at time [MATH: t] is\n[MATH: \\dfrac{Q}{800}\\,\\textrm{kg/L}.]\n\nTherefore, as the completely mixed liquid leaves at a rate of [MATH: 40\\,\\textrm{L/min},] nutrient leaves at a rate of\n\n[MATH: Q_{out}^{\u2032}|= (40(L)/(min)) \u22c5 ((Q)/(800)(kg)/(L)); = (40(L)/(min)) \u22c5 ((Q)/(800)(kg)/(L)); = (40Q)/(800)(kg)/(min); = (Q)/(20)(kg)/(min).]\n\nStep 3: Calculate the overall rate of change.\n\nThe rate of change equals the rate of entry minus the rate of exit. Therefore,\n\n[MATH: (dQ)/(dt)|= Q_{in}^{\u2032} \u2212 Q_{out}^{\u2032}; = 0.4 \u2212 (Q)/(20)]\n\nwhich gives the equation\n\n[MATH: \\dfrac{\\mathrm{d}Q}{\\mathrm{d}t} + \\dfrac{1}{20}Q = 0.4.]\n\nStep 4: Integrate the equation.\n\nThis is a first-order linear equation with constant coefficients. To find the general solution, we must sum the complementary and particular solutions.\n\n- To find the complementary solution [MATH: Q_c,] we solve the corresponding homogeneous equation, given by\n[MATH: \\dfrac{\\mathrm{d}Q_c}{\\mathrm{d}t} + \\dfrac{1}{20}Q_c = 0.]\nSolving using an integration technique, such as separation of variables, we obtain the complementary solution\n[MATH: Q_c(t) = Ae^{-t/20},]\nwhere [MATH: A] is a constant of integration.\n- Next, we find the particular solution. Note that the right-hand side of the inhomogeneous equation is a polynomial of degree [MATH: 0.] So, we assume that the particular solution is also a polynomial of degree [MATH: 0,] i.e.,\n[MATH: Q_p(t) = \\alpha.]\nTo find the value of [MATH: \\alpha,] we substitute [MATH: Q_p = \\alpha] and [MATH: \\dfrac{\\mathrm{d}Q_p}{\\mathrm{d}t} = (\\alpha)' = 0] into the inhomogeneous equation:\n[MATH: 0 + \\dfrac{1}{20}\\alpha = 0.4\n\\quad\\Longrightarrow\\quad\n\\alpha = 8.]\nTherefore, the particular solution is [MATH: Q_p(t) = 8.]\n\nNow, since the general solution is given by the sum of the complementary solution and the particular solution, the general solution in our case is\n\n[MATH: Q(t) = Q_c(t) + Q_p(t) = Ae^{-t/20} + 8.]\n\nWe're told that the tank initially contains [MATH: 7\\,\\textrm{kg}] of dissolved nutrient. So, we can apply the initial condition [MATH: Q(0) = 7,] and solve for [MATH: A{:}]\n\n[MATH: Q(0)|= 7; Ae^{\u2212 0/20} + 8|= 7; A|= \u2212 1]\n\nTherefore, we obtain the following expression for [MATH: Q(t){:}]\n\n[MATH: Q(t) = 8 - e^{-t/20}.]",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          }
+        ],
+        "images": [],
+        "free_entry_blanks": [],
+        "select_lists": [],
+        "readable_text": "Example Prompt:\nA fertilizer tank initially holds [MATH: 800\\,\\textrm{L}] of liquid containing [MATH: 7\\,\\textrm{kg}] of dissolved nutrient.\nA solution containing [MATH: 0.01\\,\\textrm{kg/L}] of dissolved nutrient is pumped into the tank at a rate of [MATH: 40\\,\\textrm{L/min},] while the completely mixed liquid is drained out at a rate of [MATH: 40\\,\\textrm{L/min}.] Which expression gives the amount of nutrient [MATH: Q(t),] in kilograms, in the tank [MATH: t] minutes after pumping begins?\n\nContent:\nEXPLANATION\n\nExplanation:\nLet [MATH: Q] be the amount of nutrient in the tank at time [MATH: t,] in minutes. Then, the derivative\n[MATH: \\dfrac{\\mathrm{d}Q}{\\mathrm{d}t}]\ndescribes how this amount changes with respect to time [MATH: t.] This is equal to the rate at which nutrient enters the tank minus the rate at which nutrient leaves the tank.\n\n[MATH: \\dfrac{\\mathrm{d}Q}{\\mathrm{d}t} = Q'_{\\textrm{in}} - Q'_{\\textrm{out}}]\n\nNote that the units of [MATH: \\dfrac{\\mathrm{d}Q}{\\mathrm{d}t}, Q'_{\\textrm{in}}] and [MATH: Q'_{\\textrm{out}}] are [MATH: \\textrm{kg}/\\textrm{min}.] Now, let's compute the required rates of change in steps.\n\nStep 1: Calculating the rate at which additives enter the tank.\n\nNote that a feed solution containing [MATH: 0.01\\,\\textrm{kg/L}] of the nutrient enters the tank at a rate of [MATH: 40\\,\\textrm{L/min}.] So, the rate at which the nutrient enters the tank is\n\n[MATH: Q_{in}^{\u2032}|= (0.01(kg)/(L)) \u22c5 (40(L)/(min)); = (0.01(kg)/(L)) \u22c5 (40(L)/(min)); = 0.4(kg)/(min).]\n\nStep 2: Calculating the rate at which additives exit the tank.\n\nNext, note that the rate of flow in equals the rate of flow out, so the volume in the tank remains [MATH: 800\\,\\textrm{L}.] Then, since [MATH: Q] is the amount of nutrient in the tank, the concentration of the solution at time [MATH: t] is\n[MATH: \\dfrac{Q}{800}\\,\\textrm{kg/L}.]\n\nTherefore, as the completely mixed liquid leaves at a rate of [MATH: 40\\,\\textrm{L/min},] nutrient leaves at a rate of\n\n[MATH: Q_{out}^{\u2032}|= (40(L)/(min)) \u22c5 ((Q)/(800)(kg)/(L)); = (40(L)/(min)) \u22c5 ((Q)/(800)(kg)/(L)); = (40Q)/(800)(kg)/(min); = (Q)/(20)(kg)/(min).]\n\nStep 3: Calculate the overall rate of change.\n\nThe rate of change equals the rate of entry minus the rate of exit. Therefore,\n\n[MATH: (dQ)/(dt)|= Q_{in}^{\u2032} \u2212 Q_{out}^{\u2032}; = 0.4 \u2212 (Q)/(20)]\n\nwhich gives the equation\n\n[MATH: \\dfrac{\\mathrm{d}Q}{\\mathrm{d}t} + \\dfrac{1}{20}Q = 0.4.]\n\nStep 4: Integrate the equation.\n\nThis is a first-order linear equation with constant coefficients. To find the general solution, we must sum the complementary and particular solutions.\n\n- To find the complementary solution [MATH: Q_c,] we solve the corresponding homogeneous equation, given by\n[MATH: \\dfrac{\\mathrm{d}Q_c}{\\mathrm{d}t} + \\dfrac{1}{20}Q_c = 0.]\nSolving using an integration technique, such as separation of variables, we obtain the complementary solution\n[MATH: Q_c(t) = Ae^{-t/20},]\nwhere [MATH: A] is a constant of integration.\n- Next, we find the particular solution. Note that the right-hand side of the inhomogeneous equation is a polynomial of degree [MATH: 0.] So, we assume that the particular solution is also a polynomial of degree [MATH: 0,] i.e.,\n[MATH: Q_p(t) = \\alpha.]\nTo find the value of [MATH: \\alpha,] we substitute [MATH: Q_p = \\alpha] and [MATH: \\dfrac{\\mathrm{d}Q_p}{\\mathrm{d}t} = (\\alpha)' = 0] into the inhomogeneous equation:\n[MATH: 0 + \\dfrac{1}{20}\\alpha = 0.4\n\\quad\\Longrightarrow\\quad\n\\alpha = 8.]\nTherefore, the particular solution is [MATH: Q_p(t) = 8.]\n\nNow, since the general solution is given by the sum of the complementary solution and the particular solution, the general solution in our case is\n\n[MATH: Q(t) = Q_c(t) + Q_p(t) = Ae^{-t/20} + 8.]\n\nWe're told that the tank initially contains [MATH: 7\\,\\textrm{kg}] of dissolved nutrient. So, we can apply the initial condition [MATH: Q(0) = 7,] and solve for [MATH: A{:}]\n\n[MATH: Q(0)|= 7; Ae^{\u2212 0/20} + 8|= 7; A|= \u2212 1]\n\nTherefore, we obtain the following expression for [MATH: Q(t){:}]\n\n[MATH: Q(t) = 8 - e^{-t/20}.]"
+      },
+      {
+        "lesson_index": 3,
+        "question_index": 1,
+        "item_type": "question",
+        "question_id": "339385",
+        "dom_id": "question-339385",
+        "selector": "#question-339385",
+        "title": "Question 1",
+        "question_number": 1,
+        "question_format": "multiple-choice",
+        "choice_count": 5,
+        "has_content_in_snapshot": true,
+        "hydration_required": false,
+        "graphic": {
+          "normalized_html": "",
+          "readable_text": "",
+          "images": [],
+          "free_entry_blanks": [],
+          "select_lists": []
+        },
+        "calculator_instructions": {
+          "normalized_html": "",
+          "readable_text": "",
+          "images": [],
+          "free_entry_blanks": [],
+          "select_lists": []
+        },
+        "prompt": {
+          "normalized_html": "<p>A wastewater basin initially holds <span class=\"math\">[MATH: 750L]</span> of water containing <span class=\"math\">[MATH: 6kg]</span> of dissolved pollutant.\nA solution containing <span class=\"math\">[MATH: 0.03kg/L]</span> of dissolved pollutant is pumped into the basin at a rate of <span class=\"math\">[MATH: 30L/min,]</span> while the completely mixed liquid is drained out at a rate of <span class=\"math\">[MATH: 30L/min.]</span> Which expression gives the amount of pollutant <span class=\"math\">[MATH: Q(t),]</span> in kilograms, in the basin <span class=\"math\">[MATH: t]</span> minutes after pumping begins?</p>",
+          "readable_text": "A wastewater basin initially holds [MATH: 750L] of water containing [MATH: 6kg] of dissolved pollutant.\nA solution containing [MATH: 0.03kg/L] of dissolved pollutant is pumped into the basin at a rate of [MATH: 30L/min,] while the completely mixed liquid is drained out at a rate of [MATH: 30L/min.] Which expression gives the amount of pollutant [MATH: Q(t),] in kilograms, in the basin [MATH: t] minutes after pumping begins?",
+          "images": [],
+          "free_entry_blanks": [],
+          "select_lists": []
+        },
+        "body": {
+          "normalized_html": "",
+          "readable_text": "",
+          "images": [],
+          "free_entry_blanks": [],
+          "select_lists": []
+        },
+        "choices": [
+          {
+            "choice_index": 1,
+            "label": "a",
+            "dom_id": "questionWidget-choiceLetterCircle-339385-a",
+            "content_type": "text",
+            "normalized_html": "<p><span class=\"math\">[MATH: Q(t) = 22.5 + 16.5e^{\u2212 t/25}]</span></p>",
+            "readable_text": "[MATH: Q(t) = 22.5 + 16.5e^{\u2212 t/25}]",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "choice_index": 2,
+            "label": "b",
+            "dom_id": "questionWidget-choiceLetterCircle-339385-b",
+            "content_type": "text",
+            "normalized_html": "<p><span class=\"math\">[MATH: Q(t) = 6 \u2212 22.5e^{\u2212 t/25}]</span></p>",
+            "readable_text": "[MATH: Q(t) = 6 \u2212 22.5e^{\u2212 t/25}]",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "choice_index": 3,
+            "label": "c",
+            "dom_id": "questionWidget-choiceLetterCircle-339385-c",
+            "content_type": "text",
+            "normalized_html": "<p><span class=\"math\">[MATH: Q(t) = 22.5 \u2212 16.5e^{t/25}]</span></p>",
+            "readable_text": "[MATH: Q(t) = 22.5 \u2212 16.5e^{t/25}]",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "choice_index": 4,
+            "label": "d",
+            "dom_id": "questionWidget-choiceLetterCircle-339385-d",
+            "content_type": "text",
+            "normalized_html": "<p><span class=\"math\">[MATH: Q(t) = 22.5 \u2212 16.5e^{\u2212 t/25}]</span></p>",
+            "readable_text": "[MATH: Q(t) = 22.5 \u2212 16.5e^{\u2212 t/25}]",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "choice_index": 5,
+            "label": "e",
+            "dom_id": "questionWidget-choiceLetterCircle-339385-e",
+            "content_type": "text",
+            "normalized_html": "<p><span class=\"math\">[MATH: Q(t) = 22.5 \u2212 16.5e^{\u2212 t/20}]</span></p>",
+            "readable_text": "[MATH: Q(t) = 22.5 \u2212 16.5e^{\u2212 t/20}]",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          }
+        ],
+        "images": [],
+        "free_entry_blanks": [],
+        "select_lists": [],
+        "readable_text": "Prompt:\nA wastewater basin initially holds [MATH: 750L] of water containing [MATH: 6kg] of dissolved pollutant.\nA solution containing [MATH: 0.03kg/L] of dissolved pollutant is pumped into the basin at a rate of [MATH: 30L/min,] while the completely mixed liquid is drained out at a rate of [MATH: 30L/min.] Which expression gives the amount of pollutant [MATH: Q(t),] in kilograms, in the basin [MATH: t] minutes after pumping begins?\n\nChoices:\na. [MATH: Q(t) = 22.5 + 16.5e^{\u2212 t/25}]\nb. [MATH: Q(t) = 6 \u2212 22.5e^{\u2212 t/25}]\nc. [MATH: Q(t) = 22.5 \u2212 16.5e^{t/25}]\nd. [MATH: Q(t) = 22.5 \u2212 16.5e^{\u2212 t/25}]\ne. [MATH: Q(t) = 22.5 \u2212 16.5e^{\u2212 t/20}]"
+      },
+      {
+        "lesson_index": 4,
+        "question_index": 2,
+        "item_type": "question",
+        "question_id": "339392",
+        "dom_id": "question-339392",
+        "selector": "#question-339392",
+        "title": "Question 2",
+        "question_number": 2,
+        "question_format": "multiple-choice",
+        "choice_count": 5,
+        "has_content_in_snapshot": true,
+        "hydration_required": false,
+        "graphic": {
+          "normalized_html": "",
+          "readable_text": "",
+          "images": [],
+          "free_entry_blanks": [],
+          "select_lists": []
+        },
+        "calculator_instructions": {
+          "normalized_html": "",
+          "readable_text": "",
+          "images": [],
+          "free_entry_blanks": [],
+          "select_lists": []
+        },
+        "prompt": {
+          "normalized_html": "<p>A fish hatchery tank initially holds <span class=\"math\">[MATH: 900L]</span> of water containing <span class=\"math\">[MATH: 10kg]</span> of dissolved salt.\nA feed solution containing <span class=\"math\">[MATH: 0.02kg/L]</span> of the salt is pumped into the tank at a rate of <span class=\"math\">[MATH: 30L/min,]</span> while the completely mixed liquid is drained out at a rate of <span class=\"math\">[MATH: 30L/min.]</span>\nFind, rounded to two decimal places, the amount of salt in the tank <span class=\"math\">[MATH: 6]</span> minutes after pumping begins.</p>",
+          "readable_text": "A fish hatchery tank initially holds [MATH: 900L] of water containing [MATH: 10kg] of dissolved salt.\nA feed solution containing [MATH: 0.02kg/L] of the salt is pumped into the tank at a rate of [MATH: 30L/min,] while the completely mixed liquid is drained out at a rate of [MATH: 30L/min.]\nFind, rounded to two decimal places, the amount of salt in the tank [MATH: 6] minutes after pumping begins.",
+          "images": [],
+          "free_entry_blanks": [],
+          "select_lists": []
+        },
+        "body": {
+          "normalized_html": "",
+          "readable_text": "",
+          "images": [],
+          "free_entry_blanks": [],
+          "select_lists": []
+        },
+        "choices": [
+          {
+            "choice_index": 1,
+            "label": "a",
+            "dom_id": "questionWidget-choiceLetterCircle-339392-a",
+            "content_type": "text",
+            "normalized_html": "<p><span class=\"math\">[MATH: 10.76kg]</span></p>",
+            "readable_text": "[MATH: 10.76kg]",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "choice_index": 2,
+            "label": "b",
+            "dom_id": "questionWidget-choiceLetterCircle-339392-b",
+            "content_type": "text",
+            "normalized_html": "<p><span class=\"math\">[MATH: 11.83kg]</span></p>",
+            "readable_text": "[MATH: 11.83kg]",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "choice_index": 3,
+            "label": "c",
+            "dom_id": "questionWidget-choiceLetterCircle-339392-c",
+            "content_type": "text",
+            "normalized_html": "<p><span class=\"math\">[MATH: 11.45kg]</span></p>",
+            "readable_text": "[MATH: 11.45kg]",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "choice_index": 4,
+            "label": "d",
+            "dom_id": "questionWidget-choiceLetterCircle-339392-d",
+            "content_type": "text",
+            "normalized_html": "<p><span class=\"math\">[MATH: 12.11kg]</span></p>",
+            "readable_text": "[MATH: 12.11kg]",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "choice_index": 5,
+            "label": "e",
+            "dom_id": "questionWidget-choiceLetterCircle-339392-e",
+            "content_type": "text",
+            "normalized_html": "<p><span class=\"math\">[MATH: 11.02kg]</span></p>",
+            "readable_text": "[MATH: 11.02kg]",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          }
+        ],
+        "images": [],
+        "free_entry_blanks": [],
+        "select_lists": [],
+        "readable_text": "Prompt:\nA fish hatchery tank initially holds [MATH: 900L] of water containing [MATH: 10kg] of dissolved salt.\nA feed solution containing [MATH: 0.02kg/L] of the salt is pumped into the tank at a rate of [MATH: 30L/min,] while the completely mixed liquid is drained out at a rate of [MATH: 30L/min.]\nFind, rounded to two decimal places, the amount of salt in the tank [MATH: 6] minutes after pumping begins.\n\nChoices:\na. [MATH: 10.76kg]\nb. [MATH: 11.83kg]\nc. [MATH: 11.45kg]\nd. [MATH: 12.11kg]\ne. [MATH: 11.02kg]"
+      },
+      {
+        "lesson_index": 5,
+        "step_index": 3,
+        "item_type": "step",
+        "step_type": "example",
+        "step_id": "601754",
+        "content_id": "21765",
+        "dom_id": "step-601754",
+        "selector": "#step-601754",
+        "step_anchor": "step-5",
+        "title": "Constructing and Solving a Dilution Model",
+        "key_prerequisites": [],
+        "has_content_in_snapshot": true,
+        "sections": [
+          {
+            "section_type": "example_question",
+            "normalized_html": "<p>A water-treatment holding tank initially holds <span class=\"math\">[MATH: 700\\,\\textrm{L}]</span> of liquid containing <span class=\"math\">[MATH: 12\\,\\textrm{kg}]</span> of dissolved coagulant.\nA feed solution containing <span class=\"math\">[MATH: 0.05\\,\\textrm{kg/L}]</span> of the coagulant is pumped into the tank at a rate of <span class=\"math\">[MATH: 30\\,\\textrm{L/min},]</span> while the completely mixed liquid is drained out at a rate of <span class=\"math\">[MATH: 20\\,\\textrm{L/min}.]</span>\nFind, rounded to two decimal places, the amount of coagulant in the tank <span class=\"math\">[MATH: 8]</span> minutes after pumping begins.</p>",
+            "readable_text": "A water-treatment holding tank initially holds [MATH: 700\\,\\textrm{L}] of liquid containing [MATH: 12\\,\\textrm{kg}] of dissolved coagulant.\nA feed solution containing [MATH: 0.05\\,\\textrm{kg/L}] of the coagulant is pumped into the tank at a rate of [MATH: 30\\,\\textrm{L/min},] while the completely mixed liquid is drained out at a rate of [MATH: 20\\,\\textrm{L/min}.]\nFind, rounded to two decimal places, the amount of coagulant in the tank [MATH: 8] minutes after pumping begins.",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "section_type": "content",
+            "normalized_html": "<p>EXPLANATION</p>",
+            "readable_text": "EXPLANATION",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "section_type": "example_explanation",
+            "normalized_html": "<p>Let <span class=\"math\">[MATH: Q]</span> be the amount of coagulant in the tank at time <span class=\"math\">[MATH: t,]</span> in minutes. Then, the derivative \n<span class=\"math\">[MATH: \\dfrac{\\mathrm{d}Q}{\\mathrm{d}t}]</span>\ndescribes how this amount changes with respect to time <span class=\"math\">[MATH: t.]</span> This is equal to the rate at which coagulant enters the tank minus the rate at which coagulant leaves the tank.</p><p><span class=\"math\">[MATH: \\dfrac{\\mathrm{d}Q}{\\mathrm{d}t} = Q&#x27;_{\\textrm{in}} - Q&#x27;_{\\textrm{out}}]</span></p><p>Note that the units of <span class=\"math\">[MATH: \\dfrac{\\mathrm{d}Q}{\\mathrm{d}t}, Q&#x27;_{\\textrm{in}}]</span> and <span class=\"math\">[MATH: Q&#x27;_{\\textrm{out}}]</span> are <span class=\"math\">[MATH: \\textrm{kg}/\\textrm{min}.]</span> Now, let&#x27;s compute the required rates of change in steps.</p><p><strong>Step 1</strong>: Calculating the rate at which coagulant enters the tank.</p><p>Note that a feed solution containing <span class=\"math\">[MATH: 0.05\\,\\textrm{kg/L}]</span> of the coagulant enters the tank at a rate of <span class=\"math\">[MATH: 30\\,\\textrm{L/min}.]</span> So, the rate at which the <em>coagulant</em> enters the tank is </p><p><span class=\"math\">[MATH: Q_{in}^{\u2032}|= (0.05(kg)/(L)) \u22c5 (30(L)/(min)); = (0.05(kg)/(L)) \u22c5 (30(L)/(min)); = 1.5(kg)/(min).]</span></p><p><strong>Step 2</strong>: Calculating the rate at which coagulant exits the tank.</p><p>To find the rate at which coagulant leaves the tank, we must first determine the volume of liquid in the tank at time <span class=\"math\">[MATH: t.]</span></p><p>The tank initially contains <span class=\"math\">[MATH: 700\\,\\textrm{L}]</span> of liquid; a solution enters at <span class=\"math\">[MATH: 30\\,\\textrm{L/min}]</span> and leaves at <span class=\"math\">[MATH: 20\\,\\textrm{L/min}.]</span>\nAs a result, the volume of liquid in the tank after <span class=\"math\">[MATH: t]</span> minutes is \n<span class=\"math\">[MATH: 700 + 30t - 20t = (700+10t)\\,\\textrm{L}.]</span></p><p>Since <span class=\"math\">[MATH: Q]</span> is the amount of coagulant in the tank, the <em>concentration</em> of the mixed solution at time <span class=\"math\">[MATH: t]</span> is\n<span class=\"math\">[MATH: \\dfrac{Q}{700+10t}\\,\\textrm{kg/L}.]</span></p><p>Therefore, as the completely mixed liquid leaves at a rate of <span class=\"math\">[MATH: 20\\,\\textrm{L/min},]</span> <em>coagulant</em> leaves at a rate of</p><p><span class=\"math\">[MATH: Q_{out}^{\u2032}|= (20(L)/(min)) \u22c5 ((Q)/(700 + 10t)(kg)/(L)); = (20(L)/(min)) \u22c5 ((Q)/(700 + 10t)(kg)/(L)); = (20Q)/(700 + 10t)(kg)/(min); = (2Q)/(70 + t)(kg)/(min).]</span></p><p><strong>Step 3</strong>: Calculate the overall rate of change.</p><p>The rate of change equals the rate of entry minus the rate of exit. Therefore, </p><p><span class=\"math\">[MATH: (dQ)/(dt)|= Q_{in}^{\u2032} \u2212 Q_{out}^{\u2032}; = 1.5 \u2212 (2Q)/(70 + t)]</span></p><p>which gives the equation\n<span class=\"math\">[MATH: (dQ)/(dt) + (2)/(70 + t)Q = 1.5.]</span></p><p><strong>Step 4</strong>: Integrate the equation.</p><p>This is a first-order linear equation with variable coefficients. So we find the general solution using an integrating factor:</p><p><span class=\"math\">[MATH: I(t)|= e^{\u222b2/(70 + t)dt}; = e^{2\\ln|70 + t|}; = e^{\\ln (70 + t)^{2}}; = (70 + t)^{2}]</span></p><p>Multiplying both sides of the differential equation by <span class=\"math\">[MATH: I(t) = (70+t)^2]</span> yields</p><p><span class=\"math\">[MATH: (70 + t)^{2} \u22c5 ((dQ)/(dt) + (2)/(70 + t)Q)|= (70 + t)^{2} \u22c5 1.5; (70 + t)^{2}(dQ)/(dt) + 2(70 + t)Q|= 1.5(70 + t)^{2}; (d)/(dt)(Q(70 + t)^{2})|= 1.5(70 + t)^{2}.]</span></p><p>Now, we integrate with respect to <span class=\"math\">[MATH: t{:}]</span></p><p><span class=\"math\">[MATH: \u222b(d)/(dt)(Q(70 + t)^{2})dt|= \u222b1.5(70 + t)^{2}dt; Q(70 + t)^{2}|= 1.5 \u22c5 (1)/(3)(70 + t)^{3} + C; Q(t)|= 0.5(70 + t) + (C)/((70 + t)^{2})]</span></p><p>Note that <span class=\"math\">[MATH: C]</span> is a constant of integration.</p><p>We&#x27;re told that the tank initially contains <span class=\"math\">[MATH: 12\\,\\textrm{kg}]</span> of coagulant. So, we can apply the initial condition <span class=\"math\">[MATH: Q(0) = 12,]</span> and solve for <span class=\"math\">[MATH: C{:}]</span></p><p><span class=\"math\">[MATH: Q(0)|= 12; 0.5(70 + 0) + (C)/((70 + 0)^{2})|= 12; 35 + (C)/(70^{2})|= 12; (C)/(70^{2})|= \u2212 23; C|= \u2212 23(70)^{2}]</span></p><p>Finally, we obtain the following expression for <span class=\"math\">[MATH: Q(t){:}]</span></p><p><span class=\"math\">[MATH: Q(t)|= 0.5(70 + t) \u2212 (23(70)^{2})/((70 + t)^{2}); = 0.5(70 + t) \u2212 23((70)/(70 + t))^{2}.]</span></p><p>Finally,  the amount of coagulant in the tank <span class=\"math\">[MATH: 8]</span> minutes after pumping begins is</p><p><span class=\"math\">[MATH: Q(8)|= 0.5(70 + 8) \u2212 23((70)/(70 + 8))^{2}; = 39 \u2212 23((70)/(78))^{2}; \u2248 20.48kg,]</span></p><p>rounded to two decimal places.</p>",
+            "readable_text": "Let [MATH: Q] be the amount of coagulant in the tank at time [MATH: t,] in minutes. Then, the derivative\n[MATH: \\dfrac{\\mathrm{d}Q}{\\mathrm{d}t}]\ndescribes how this amount changes with respect to time [MATH: t.] This is equal to the rate at which coagulant enters the tank minus the rate at which coagulant leaves the tank.\n\n[MATH: \\dfrac{\\mathrm{d}Q}{\\mathrm{d}t} = Q'_{\\textrm{in}} - Q'_{\\textrm{out}}]\n\nNote that the units of [MATH: \\dfrac{\\mathrm{d}Q}{\\mathrm{d}t}, Q'_{\\textrm{in}}] and [MATH: Q'_{\\textrm{out}}] are [MATH: \\textrm{kg}/\\textrm{min}.] Now, let's compute the required rates of change in steps.\n\nStep 1: Calculating the rate at which coagulant enters the tank.\n\nNote that a feed solution containing [MATH: 0.05\\,\\textrm{kg/L}] of the coagulant enters the tank at a rate of [MATH: 30\\,\\textrm{L/min}.] So, the rate at which the coagulant enters the tank is\n\n[MATH: Q_{in}^{\u2032}|= (0.05(kg)/(L)) \u22c5 (30(L)/(min)); = (0.05(kg)/(L)) \u22c5 (30(L)/(min)); = 1.5(kg)/(min).]\n\nStep 2: Calculating the rate at which coagulant exits the tank.\n\nTo find the rate at which coagulant leaves the tank, we must first determine the volume of liquid in the tank at time [MATH: t.]\n\nThe tank initially contains [MATH: 700\\,\\textrm{L}] of liquid; a solution enters at [MATH: 30\\,\\textrm{L/min}] and leaves at [MATH: 20\\,\\textrm{L/min}.]\nAs a result, the volume of liquid in the tank after [MATH: t] minutes is\n[MATH: 700 + 30t - 20t = (700+10t)\\,\\textrm{L}.]\n\nSince [MATH: Q] is the amount of coagulant in the tank, the concentration of the mixed solution at time [MATH: t] is\n[MATH: \\dfrac{Q}{700+10t}\\,\\textrm{kg/L}.]\n\nTherefore, as the completely mixed liquid leaves at a rate of [MATH: 20\\,\\textrm{L/min},] coagulant leaves at a rate of\n\n[MATH: Q_{out}^{\u2032}|= (20(L)/(min)) \u22c5 ((Q)/(700 + 10t)(kg)/(L)); = (20(L)/(min)) \u22c5 ((Q)/(700 + 10t)(kg)/(L)); = (20Q)/(700 + 10t)(kg)/(min); = (2Q)/(70 + t)(kg)/(min).]\n\nStep 3: Calculate the overall rate of change.\n\nThe rate of change equals the rate of entry minus the rate of exit. Therefore,\n\n[MATH: (dQ)/(dt)|= Q_{in}^{\u2032} \u2212 Q_{out}^{\u2032}; = 1.5 \u2212 (2Q)/(70 + t)]\n\nwhich gives the equation\n[MATH: (dQ)/(dt) + (2)/(70 + t)Q = 1.5.]\n\nStep 4: Integrate the equation.\n\nThis is a first-order linear equation with variable coefficients. So we find the general solution using an integrating factor:\n\n[MATH: I(t)|= e^{\u222b2/(70 + t)dt}; = e^{2\\ln|70 + t|}; = e^{\\ln (70 + t)^{2}}; = (70 + t)^{2}]\n\nMultiplying both sides of the differential equation by [MATH: I(t) = (70+t)^2] yields\n\n[MATH: (70 + t)^{2} \u22c5 ((dQ)/(dt) + (2)/(70 + t)Q)|= (70 + t)^{2} \u22c5 1.5; (70 + t)^{2}(dQ)/(dt) + 2(70 + t)Q|= 1.5(70 + t)^{2}; (d)/(dt)(Q(70 + t)^{2})|= 1.5(70 + t)^{2}.]\n\nNow, we integrate with respect to [MATH: t{:}]\n\n[MATH: \u222b(d)/(dt)(Q(70 + t)^{2})dt|= \u222b1.5(70 + t)^{2}dt; Q(70 + t)^{2}|= 1.5 \u22c5 (1)/(3)(70 + t)^{3} + C; Q(t)|= 0.5(70 + t) + (C)/((70 + t)^{2})]\n\nNote that [MATH: C] is a constant of integration.\n\nWe're told that the tank initially contains [MATH: 12\\,\\textrm{kg}] of coagulant. So, we can apply the initial condition [MATH: Q(0) = 12,] and solve for [MATH: C{:}]\n\n[MATH: Q(0)|= 12; 0.5(70 + 0) + (C)/((70 + 0)^{2})|= 12; 35 + (C)/(70^{2})|= 12; (C)/(70^{2})|= \u2212 23; C|= \u2212 23(70)^{2}]\n\nFinally, we obtain the following expression for [MATH: Q(t){:}]\n\n[MATH: Q(t)|= 0.5(70 + t) \u2212 (23(70)^{2})/((70 + t)^{2}); = 0.5(70 + t) \u2212 23((70)/(70 + t))^{2}.]\n\nFinally, the amount of coagulant in the tank [MATH: 8] minutes after pumping begins is\n\n[MATH: Q(8)|= 0.5(70 + 8) \u2212 23((70)/(70 + 8))^{2}; = 39 \u2212 23((70)/(78))^{2}; \u2248 20.48kg,]\n\nrounded to two decimal places.",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          }
+        ],
+        "images": [],
+        "free_entry_blanks": [],
+        "select_lists": [],
+        "readable_text": "Example Prompt:\nA water-treatment holding tank initially holds [MATH: 700\\,\\textrm{L}] of liquid containing [MATH: 12\\,\\textrm{kg}] of dissolved coagulant.\nA feed solution containing [MATH: 0.05\\,\\textrm{kg/L}] of the coagulant is pumped into the tank at a rate of [MATH: 30\\,\\textrm{L/min},] while the completely mixed liquid is drained out at a rate of [MATH: 20\\,\\textrm{L/min}.]\nFind, rounded to two decimal places, the amount of coagulant in the tank [MATH: 8] minutes after pumping begins.\n\nContent:\nEXPLANATION\n\nExplanation:\nLet [MATH: Q] be the amount of coagulant in the tank at time [MATH: t,] in minutes. Then, the derivative\n[MATH: \\dfrac{\\mathrm{d}Q}{\\mathrm{d}t}]\ndescribes how this amount changes with respect to time [MATH: t.] This is equal to the rate at which coagulant enters the tank minus the rate at which coagulant leaves the tank.\n\n[MATH: \\dfrac{\\mathrm{d}Q}{\\mathrm{d}t} = Q'_{\\textrm{in}} - Q'_{\\textrm{out}}]\n\nNote that the units of [MATH: \\dfrac{\\mathrm{d}Q}{\\mathrm{d}t}, Q'_{\\textrm{in}}] and [MATH: Q'_{\\textrm{out}}] are [MATH: \\textrm{kg}/\\textrm{min}.] Now, let's compute the required rates of change in steps.\n\nStep 1: Calculating the rate at which coagulant enters the tank.\n\nNote that a feed solution containing [MATH: 0.05\\,\\textrm{kg/L}] of the coagulant enters the tank at a rate of [MATH: 30\\,\\textrm{L/min}.] So, the rate at which the coagulant enters the tank is\n\n[MATH: Q_{in}^{\u2032}|= (0.05(kg)/(L)) \u22c5 (30(L)/(min)); = (0.05(kg)/(L)) \u22c5 (30(L)/(min)); = 1.5(kg)/(min).]\n\nStep 2: Calculating the rate at which coagulant exits the tank.\n\nTo find the rate at which coagulant leaves the tank, we must first determine the volume of liquid in the tank at time [MATH: t.]\n\nThe tank initially contains [MATH: 700\\,\\textrm{L}] of liquid; a solution enters at [MATH: 30\\,\\textrm{L/min}] and leaves at [MATH: 20\\,\\textrm{L/min}.]\nAs a result, the volume of liquid in the tank after [MATH: t] minutes is\n[MATH: 700 + 30t - 20t = (700+10t)\\,\\textrm{L}.]\n\nSince [MATH: Q] is the amount of coagulant in the tank, the concentration of the mixed solution at time [MATH: t] is\n[MATH: \\dfrac{Q}{700+10t}\\,\\textrm{kg/L}.]\n\nTherefore, as the completely mixed liquid leaves at a rate of [MATH: 20\\,\\textrm{L/min},] coagulant leaves at a rate of\n\n[MATH: Q_{out}^{\u2032}|= (20(L)/(min)) \u22c5 ((Q)/(700 + 10t)(kg)/(L)); = (20(L)/(min)) \u22c5 ((Q)/(700 + 10t)(kg)/(L)); = (20Q)/(700 + 10t)(kg)/(min); = (2Q)/(70 + t)(kg)/(min).]\n\nStep 3: Calculate the overall rate of change.\n\nThe rate of change equals the rate of entry minus the rate of exit. Therefore,\n\n[MATH: (dQ)/(dt)|= Q_{in}^{\u2032} \u2212 Q_{out}^{\u2032}; = 1.5 \u2212 (2Q)/(70 + t)]\n\nwhich gives the equation\n[MATH: (dQ)/(dt) + (2)/(70 + t)Q = 1.5.]\n\nStep 4: Integrate the equation.\n\nThis is a first-order linear equation with variable coefficients. So we find the general solution using an integrating factor:\n\n[MATH: I(t)|= e^{\u222b2/(70 + t)dt}; = e^{2\\ln|70 + t|}; = e^{\\ln (70 + t)^{2}}; = (70 + t)^{2}]\n\nMultiplying both sides of the differential equation by [MATH: I(t) = (70+t)^2] yields\n\n[MATH: (70 + t)^{2} \u22c5 ((dQ)/(dt) + (2)/(70 + t)Q)|= (70 + t)^{2} \u22c5 1.5; (70 + t)^{2}(dQ)/(dt) + 2(70 + t)Q|= 1.5(70 + t)^{2}; (d)/(dt)(Q(70 + t)^{2})|= 1.5(70 + t)^{2}.]\n\nNow, we integrate with respect to [MATH: t{:}]\n\n[MATH: \u222b(d)/(dt)(Q(70 + t)^{2})dt|= \u222b1.5(70 + t)^{2}dt; Q(70 + t)^{2}|= 1.5 \u22c5 (1)/(3)(70 + t)^{3} + C; Q(t)|= 0.5(70 + t) + (C)/((70 + t)^{2})]\n\nNote that [MATH: C] is a constant of integration.\n\nWe're told that the tank initially contains [MATH: 12\\,\\textrm{kg}] of coagulant. So, we can apply the initial condition [MATH: Q(0) = 12,] and solve for [MATH: C{:}]\n\n[MATH: Q(0)|= 12; 0.5(70 + 0) + (C)/((70 + 0)^{2})|= 12; 35 + (C)/(70^{2})|= 12; (C)/(70^{2})|= \u2212 23; C|= \u2212 23(70)^{2}]\n\nFinally, we obtain the following expression for [MATH: Q(t){:}]\n\n[MATH: Q(t)|= 0.5(70 + t) \u2212 (23(70)^{2})/((70 + t)^{2}); = 0.5(70 + t) \u2212 23((70)/(70 + t))^{2}.]\n\nFinally, the amount of coagulant in the tank [MATH: 8] minutes after pumping begins is\n\n[MATH: Q(8)|= 0.5(70 + 8) \u2212 23((70)/(70 + 8))^{2}; = 39 \u2212 23((70)/(78))^{2}; \u2248 20.48kg,]\n\nrounded to two decimal places."
+      },
+      {
+        "lesson_index": 6,
+        "question_index": 3,
+        "item_type": "question",
+        "question_id": "336439",
+        "dom_id": "question-336439",
+        "selector": "#question-336439",
+        "title": "Question 3",
+        "question_number": 3,
+        "question_format": "multiple-choice",
+        "choice_count": 5,
+        "has_content_in_snapshot": true,
+        "hydration_required": false,
+        "graphic": {
+          "normalized_html": "",
+          "readable_text": "",
+          "images": [],
+          "free_entry_blanks": [],
+          "select_lists": []
+        },
+        "calculator_instructions": {
+          "normalized_html": "<p>A scientific calculator is required to answer this question.</p>",
+          "readable_text": "A scientific calculator is required to answer this question.",
+          "images": [],
+          "free_entry_blanks": [],
+          "select_lists": []
+        },
+        "prompt": {
+          "normalized_html": "<p>An aquarium initially holds <span class=\"math\">[MATH: 300L]</span> of water containing <span class=\"math\">[MATH: 6kg]</span> of dissolved minerals.\nA solution containing <span class=\"math\">[MATH: 0.03kg/L]</span> of dissolved minerals is pumped into the aquarium at a rate of <span class=\"math\">[MATH: 24L/min,]</span> while the completely mixed water is drained out at a rate of <span class=\"math\">[MATH: 36L/min.]</span> If the amount of minerals <span class=\"math\">[MATH: Q(t),]</span> in kilograms, in the tank <span class=\"math\">[MATH: t]</span> minutes after pumping begins is given by\n<span class=\"math\">[MATH: Q(t) = \u03b1(1 \u2212 (t)/(25)) + \u03b2(1 \u2212 (t)/(25))^{3}]</span>\nwhere <span class=\"math\">[MATH: \u03b1]</span> and <span class=\"math\">[MATH: \u03b2]</span> are constants, what is the value of <span class=\"math\">[MATH: \u03b1 + \u03b2?]</span></p>",
+          "readable_text": "An aquarium initially holds [MATH: 300L] of water containing [MATH: 6kg] of dissolved minerals.\nA solution containing [MATH: 0.03kg/L] of dissolved minerals is pumped into the aquarium at a rate of [MATH: 24L/min,] while the completely mixed water is drained out at a rate of [MATH: 36L/min.] If the amount of minerals [MATH: Q(t),] in kilograms, in the tank [MATH: t] minutes after pumping begins is given by\n[MATH: Q(t) = \u03b1(1 \u2212 (t)/(25)) + \u03b2(1 \u2212 (t)/(25))^{3}]\nwhere [MATH: \u03b1] and [MATH: \u03b2] are constants, what is the value of [MATH: \u03b1 + \u03b2?]",
+          "images": [],
+          "free_entry_blanks": [],
+          "select_lists": []
+        },
+        "body": {
+          "normalized_html": "",
+          "readable_text": "",
+          "images": [],
+          "free_entry_blanks": [],
+          "select_lists": []
+        },
+        "choices": [
+          {
+            "choice_index": 1,
+            "label": "a",
+            "dom_id": "questionWidget-choiceLetterCircle-336439-a",
+            "content_type": "text",
+            "normalized_html": "<p><span class=\"math\">[MATH: 15]</span> </p>",
+            "readable_text": "[MATH: 15]",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "choice_index": 2,
+            "label": "b",
+            "dom_id": "questionWidget-choiceLetterCircle-336439-b",
+            "content_type": "text",
+            "normalized_html": "<p><span class=\"math\">[MATH: 12]</span> </p>",
+            "readable_text": "[MATH: 12]",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "choice_index": 3,
+            "label": "c",
+            "dom_id": "questionWidget-choiceLetterCircle-336439-c",
+            "content_type": "text",
+            "normalized_html": "<p><span class=\"math\">[MATH: 6]</span></p>",
+            "readable_text": "[MATH: 6]",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "choice_index": 4,
+            "label": "d",
+            "dom_id": "questionWidget-choiceLetterCircle-336439-d",
+            "content_type": "text",
+            "normalized_html": "<p><span class=\"math\">[MATH: 8]</span> </p>",
+            "readable_text": "[MATH: 8]",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "choice_index": 5,
+            "label": "e",
+            "dom_id": "questionWidget-choiceLetterCircle-336439-e",
+            "content_type": "text",
+            "normalized_html": "<p><span class=\"math\">[MATH: 10]</span> </p>",
+            "readable_text": "[MATH: 10]",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          }
+        ],
+        "images": [],
+        "free_entry_blanks": [],
+        "select_lists": [],
+        "readable_text": "Calculator Instructions:\nA scientific calculator is required to answer this question.\n\nPrompt:\nAn aquarium initially holds [MATH: 300L] of water containing [MATH: 6kg] of dissolved minerals.\nA solution containing [MATH: 0.03kg/L] of dissolved minerals is pumped into the aquarium at a rate of [MATH: 24L/min,] while the completely mixed water is drained out at a rate of [MATH: 36L/min.] If the amount of minerals [MATH: Q(t),] in kilograms, in the tank [MATH: t] minutes after pumping begins is given by\n[MATH: Q(t) = \u03b1(1 \u2212 (t)/(25)) + \u03b2(1 \u2212 (t)/(25))^{3}]\nwhere [MATH: \u03b1] and [MATH: \u03b2] are constants, what is the value of [MATH: \u03b1 + \u03b2?]\n\nChoices:\na. [MATH: 15]\nb. [MATH: 12]\nc. [MATH: 6]\nd. [MATH: 8]\ne. [MATH: 10]"
+      },
+      {
+        "lesson_index": 7,
+        "question_index": 4,
+        "item_type": "question",
+        "question_id": "336738",
+        "dom_id": "question-336738",
+        "selector": "#question-336738",
+        "title": "Question 4",
+        "question_number": 4,
+        "question_format": "multiple-choice",
+        "choice_count": 5,
+        "has_content_in_snapshot": true,
+        "hydration_required": false,
+        "graphic": {
+          "normalized_html": "",
+          "readable_text": "",
+          "images": [],
+          "free_entry_blanks": [],
+          "select_lists": []
+        },
+        "calculator_instructions": {
+          "normalized_html": "<p>A scientific calculator is required to answer this question.</p>",
+          "readable_text": "A scientific calculator is required to answer this question.",
+          "images": [],
+          "free_entry_blanks": [],
+          "select_lists": []
+        },
+        "prompt": {
+          "normalized_html": "<p>A storage tank initially holds <span class=\"math\">[MATH: 600L]</span> of liquid containing <span class=\"math\">[MATH: 5kg]</span> of dissolved stabilizer.\nA feed solution containing <span class=\"math\">[MATH: 0.04kg/L]</span> of the stabilizer is pumped into the tank at a rate of <span class=\"math\">[MATH: 15L/min,]</span> while the completely mixed liquid is drained out at a rate of <span class=\"math\">[MATH: 10L/min.]</span>\nFind, rounded to two decimal places, the amount of stabilizer in the tank <span class=\"math\">[MATH: 10]</span> minutes after pumping begins.</p>",
+          "readable_text": "A storage tank initially holds [MATH: 600L] of liquid containing [MATH: 5kg] of dissolved stabilizer.\nA feed solution containing [MATH: 0.04kg/L] of the stabilizer is pumped into the tank at a rate of [MATH: 15L/min,] while the completely mixed liquid is drained out at a rate of [MATH: 10L/min.]\nFind, rounded to two decimal places, the amount of stabilizer in the tank [MATH: 10] minutes after pumping begins.",
+          "images": [],
+          "free_entry_blanks": [],
+          "select_lists": []
+        },
+        "body": {
+          "normalized_html": "",
+          "readable_text": "",
+          "images": [],
+          "free_entry_blanks": [],
+          "select_lists": []
+        },
+        "choices": [
+          {
+            "choice_index": 1,
+            "label": "a",
+            "dom_id": "questionWidget-choiceLetterCircle-336738-a",
+            "content_type": "text",
+            "normalized_html": "<p><span class=\"math\">[MATH: 9.18kg]</span></p>",
+            "readable_text": "[MATH: 9.18kg]",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "choice_index": 2,
+            "label": "b",
+            "dom_id": "questionWidget-choiceLetterCircle-336738-b",
+            "content_type": "text",
+            "normalized_html": "<p><span class=\"math\">[MATH: 9.81kg]</span></p>",
+            "readable_text": "[MATH: 9.81kg]",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "choice_index": 3,
+            "label": "c",
+            "dom_id": "questionWidget-choiceLetterCircle-336738-c",
+            "content_type": "text",
+            "normalized_html": "<p><span class=\"math\">[MATH: 7.99kg]</span></p>",
+            "readable_text": "[MATH: 7.99kg]",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "choice_index": 4,
+            "label": "d",
+            "dom_id": "questionWidget-choiceLetterCircle-336738-d",
+            "content_type": "text",
+            "normalized_html": "<p><span class=\"math\">[MATH: 8.21kg]</span></p>",
+            "readable_text": "[MATH: 8.21kg]",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "choice_index": 5,
+            "label": "e",
+            "dom_id": "questionWidget-choiceLetterCircle-336738-e",
+            "content_type": "text",
+            "normalized_html": "<p><span class=\"math\">[MATH: 8.63kg]</span></p>",
+            "readable_text": "[MATH: 8.63kg]",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          }
+        ],
+        "images": [],
+        "free_entry_blanks": [],
+        "select_lists": [],
+        "readable_text": "Calculator Instructions:\nA scientific calculator is required to answer this question.\n\nPrompt:\nA storage tank initially holds [MATH: 600L] of liquid containing [MATH: 5kg] of dissolved stabilizer.\nA feed solution containing [MATH: 0.04kg/L] of the stabilizer is pumped into the tank at a rate of [MATH: 15L/min,] while the completely mixed liquid is drained out at a rate of [MATH: 10L/min.]\nFind, rounded to two decimal places, the amount of stabilizer in the tank [MATH: 10] minutes after pumping begins.\n\nChoices:\na. [MATH: 9.18kg]\nb. [MATH: 9.81kg]\nc. [MATH: 7.99kg]\nd. [MATH: 8.21kg]\ne. [MATH: 8.63kg]"
+      },
+      {
+        "lesson_index": 8,
+        "step_index": 4,
+        "item_type": "step",
+        "step_type": "example",
+        "step_id": "601757",
+        "content_id": "21766",
+        "dom_id": "step-601757",
+        "selector": "#step-601757",
+        "step_anchor": "step-8",
+        "title": "Determining an Amount at an Overflow Point",
+        "key_prerequisites": [],
+        "has_content_in_snapshot": true,
+        "sections": [
+          {
+            "section_type": "example_question",
+            "normalized_html": "<p>A syrup mixing tank in a confectionery factory can hold up to <span class=\"math\">[MATH: 240\\,\\textrm{gal}]</span> of liquid. Initially, it contains <span class=\"math\">[MATH: 96\\,\\textrm{gal}]</span> of syrup solution with <span class=\"math\">[MATH: 32\\,\\textrm{lb}]</span> of dissolved sugar. A more concentrated syrup with concentration <span class=\"math\">[MATH: 1.5\\,\\textrm{lb/gal}]</span> flows into the tank at a rate of <span class=\"math\">[MATH: 24\\,\\textrm{gal/min},]</span> while the completely mixed solution drains out at a rate of <span class=\"math\">[MATH: 16\\,\\textrm{gal/min}.]</span> Rounded to one decimal place, find the amount of sugar in the tank at the moment it begins to overflow.</p>",
+            "readable_text": "A syrup mixing tank in a confectionery factory can hold up to [MATH: 240\\,\\textrm{gal}] of liquid. Initially, it contains [MATH: 96\\,\\textrm{gal}] of syrup solution with [MATH: 32\\,\\textrm{lb}] of dissolved sugar. A more concentrated syrup with concentration [MATH: 1.5\\,\\textrm{lb/gal}] flows into the tank at a rate of [MATH: 24\\,\\textrm{gal/min},] while the completely mixed solution drains out at a rate of [MATH: 16\\,\\textrm{gal/min}.] Rounded to one decimal place, find the amount of sugar in the tank at the moment it begins to overflow.",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "section_type": "content",
+            "normalized_html": "<p>EXPLANATION</p>",
+            "readable_text": "EXPLANATION",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "section_type": "example_explanation",
+            "normalized_html": "<p>Since <span class=\"math\">[MATH: Q]</span> is the amount of sugar in the tank at time <span class=\"math\">[MATH: t,]</span> the derivative \n<span class=\"math\">[MATH: \\dfrac{\\mathrm{d}Q}{\\mathrm{d}t}]</span>\ndescribes how this amount changes with respect to time <span class=\"math\">[MATH: t,]</span> in minutes. This is equal to the rate at which sugar enters the tank minus the rate at which sugar leaves the tank.</p><p><span class=\"math\">[MATH: \\dfrac{\\mathrm{d}Q}{\\mathrm{d}t} = Q&#x27;_{\\textrm{in}} - Q&#x27;_{\\textrm{out}}]</span></p><p>Note that the units of <span class=\"math\">[MATH: \\dfrac{\\mathrm{d}Q}{\\mathrm{d}t}, Q&#x27;_{\\textrm{in}}]</span> and <span class=\"math\">[MATH: Q&#x27;_{\\textrm{out}}]</span> are <span class=\"math\">[MATH: \\textrm{lb}/\\textrm{min}.]</span> Now, let&#x27;s compute the required rates of change in steps.</p><p><strong>Step 1</strong>: Calculating the rate at which sugar enters the tank.</p><p>First, note that a solution containing <span class=\"math\">[MATH: 1.5\\,\\textrm{lb/gal}]</span> of sugar enters the tank at a rate of <span class=\"math\">[MATH: 24\\,\\textrm{gal/min}.]</span> So, the rate at which the <em>sugar</em> enters the tank is </p><p><span class=\"math\">[MATH: Q_{in}^{\u2032}|= (1.5(lb)/(gal)) \u22c5 (24(gal)/(min)); = (1.5(lb)/(gal)) \u22c5 (24(gal)/(min)); = 36(lb)/(min).]</span></p><p><strong>Step 2</strong>: Calculating the rate at which sugar exits the tank.</p><p>To find the rate at which sugar leaves the tank, we must first determine the volume of solution in the tank at time <span class=\"math\">[MATH: t.]</span></p><p>The tank initially contains <span class=\"math\">[MATH: 96\\,\\textrm{gal}]</span> of solution; solution enters at <span class=\"math\">[MATH: 24\\,\\textrm{gal/min}]</span> and mixed solution leaves at <span class=\"math\">[MATH: 16\\,\\textrm{gal/min}.]</span>\nAs a result, the amount of solution in the tank after <span class=\"math\">[MATH: t]</span> minutes is \n<span class=\"math\">[MATH: V(t) = 96 + 24t - 16t = 8(12+t)\\,\\textrm{gal}.]</span></p><p>Note that <span class=\"math\">[MATH: V(t)]</span> is an increasing function, so the tank is filling.</p><p>Since <span class=\"math\">[MATH: Q]</span> is the amount of sugar in the tank, the concentration of the solution at time <span class=\"math\">[MATH: t]</span> is\n<span class=\"math\">[MATH: \\dfrac{Q}{8(12 + t)}\\,\\textrm{lb/gal}.]</span></p><p>Therefore, as the completely mixed solution leaves at a rate of <span class=\"math\">[MATH: 16\\,\\textrm{gal/min},]</span> <em>sugar</em> leaves at a rate of</p><p><span class=\"math\">[MATH: Q_{out}^{\u2032}|= (16(gal)/(min)) \u22c5 ((Q)/(8(12 + t))(lb)/(gal)); = (16(gal)/(min)) \u22c5 ((Q)/(8(12 + t))(lb)/(gal)); = (16Q)/(8(12 + t))(lb)/(min); = (2Q)/(12 + t)(lb)/(min).]</span></p><p><strong>Step 3</strong>: Calculate the overall rate of change.</p><p>The rate of change equals the rate of entry minus the rate of exit. Therefore, </p><p><span class=\"math\">[MATH: (dQ)/(dt)|= Q_{in}^{\u2032} \u2212 Q_{out}^{\u2032}; = 36 \u2212 (2Q)/(12 + t)]</span></p><p>which gives the equation\n<span class=\"math\">[MATH: \\dfrac{\\mathrm{d}Q}{\\mathrm{d}t} + \\dfrac{2}{12 + t}\\,Q = 36.]</span></p><p><strong>Step 4</strong>: Integrate the equation.</p><p>This is a first-order linear equation with variable coefficients. So we find the general solution using an integrating factor:</p><p><span class=\"math\">[MATH: I(t)|= e^{\u222b2/(12 + t)dt}; = e^{2\\ln|12 + t|}; = e^{\\ln (12 + t)^{2}}; = (12 + t)^{2}.]</span></p><p>Multiplying both sides of the differential equation by <span class=\"math\">[MATH: I(t) = (12+t)^2]</span> yields</p><p><span class=\"math\">[MATH: (12 + t)^{2} \u22c5 ((dQ)/(dt) + (2)/(12 + t)Q)|= (12 + t)^{2} \u22c5 36; (12 + t)^{2}(dQ)/(dt) + 2(12 + t)Q|= 36(12 + t)^{2}; (d)/(dt)(Q(12 + t)^{2})|= 36(12 + t)^{2}.]</span></p><p>Now, we integrate with respect to <span class=\"math\">[MATH: t{:}]</span></p><p><span class=\"math\">[MATH: \u222b(d)/(dt)(Q(12 + t)^{2})dt|= \u222b36(12 + t)^{2}dt; Q(12 + t)^{2}|= 36 \u22c5 (1)/(3)(12 + t)^{3} + C; Q(t)|= 12(12 + t) + (C)/((12 + t)^{2}).]</span></p><p>We&#x27;re told that the tank initially contains <span class=\"math\">[MATH: 32\\,\\textrm{lb}]</span> of sugar. So, we can apply the initial condition <span class=\"math\">[MATH: Q(0) = 32,]</span> and solve for <span class=\"math\">[MATH: C{:}]</span></p><p><span class=\"math\">[MATH: Q(0)|= 32; 12(12 + 0) + (C)/((12 + 0)^{2})|= 32; 12 \u22c5 12 + (C)/((12)^{2})|= 32; 144 + (C)/(12^{2})|= 32; (C)/(12^{2})|= \u2212 112; C|= \u2212 112(12)^{2}.]</span></p><p>Therefore, we obtain the following expression for <span class=\"math\">[MATH: Q(t){:}]</span></p><p><span class=\"math\">[MATH: Q(t)|= 12(12 + t) \u2212 (112(12)^{2})/((12 + t)^{2}); = 12(12 + t) \u2212 112((12)/(12 + t))^{2}.]</span></p><p>Now, let <span class=\"math\">[MATH: t_o]</span> be the time when the tank begins to overflow. The tank has a capacity of <span class=\"math\">[MATH: 240\\,\\textrm{gal},]</span> so we can use the condition <span class=\"math\">[MATH: V(t_o) = 240]</span> to solve for <span class=\"math\">[MATH: t_o{:}]</span></p><p><span class=\"math\">[MATH: V(t_{o})|= 240; 96 + 24t_{o} \u2212 16t_{o}|= 240; 96 + 8t_{o}|= 240; 8t_{o}|= 144; t_{o}|= 18min.]</span></p><p>Finally, rounded to one decimal place, the amount of sugar in the tank at the moment it begins to overflow is</p><p><span class=\"math\">[MATH: Q(18)|= 12(12 + 18) \u2212 112((12)/(12 + 18))^{2}; = 360 \u2212 112((12)/(30))^{2}; \u2248 342.1lb.]</span></p>",
+            "readable_text": "Since [MATH: Q] is the amount of sugar in the tank at time [MATH: t,] the derivative\n[MATH: \\dfrac{\\mathrm{d}Q}{\\mathrm{d}t}]\ndescribes how this amount changes with respect to time [MATH: t,] in minutes. This is equal to the rate at which sugar enters the tank minus the rate at which sugar leaves the tank.\n\n[MATH: \\dfrac{\\mathrm{d}Q}{\\mathrm{d}t} = Q'_{\\textrm{in}} - Q'_{\\textrm{out}}]\n\nNote that the units of [MATH: \\dfrac{\\mathrm{d}Q}{\\mathrm{d}t}, Q'_{\\textrm{in}}] and [MATH: Q'_{\\textrm{out}}] are [MATH: \\textrm{lb}/\\textrm{min}.] Now, let's compute the required rates of change in steps.\n\nStep 1: Calculating the rate at which sugar enters the tank.\n\nFirst, note that a solution containing [MATH: 1.5\\,\\textrm{lb/gal}] of sugar enters the tank at a rate of [MATH: 24\\,\\textrm{gal/min}.] So, the rate at which the sugar enters the tank is\n\n[MATH: Q_{in}^{\u2032}|= (1.5(lb)/(gal)) \u22c5 (24(gal)/(min)); = (1.5(lb)/(gal)) \u22c5 (24(gal)/(min)); = 36(lb)/(min).]\n\nStep 2: Calculating the rate at which sugar exits the tank.\n\nTo find the rate at which sugar leaves the tank, we must first determine the volume of solution in the tank at time [MATH: t.]\n\nThe tank initially contains [MATH: 96\\,\\textrm{gal}] of solution; solution enters at [MATH: 24\\,\\textrm{gal/min}] and mixed solution leaves at [MATH: 16\\,\\textrm{gal/min}.]\nAs a result, the amount of solution in the tank after [MATH: t] minutes is\n[MATH: V(t) = 96 + 24t - 16t = 8(12+t)\\,\\textrm{gal}.]\n\nNote that [MATH: V(t)] is an increasing function, so the tank is filling.\n\nSince [MATH: Q] is the amount of sugar in the tank, the concentration of the solution at time [MATH: t] is\n[MATH: \\dfrac{Q}{8(12 + t)}\\,\\textrm{lb/gal}.]\n\nTherefore, as the completely mixed solution leaves at a rate of [MATH: 16\\,\\textrm{gal/min},] sugar leaves at a rate of\n\n[MATH: Q_{out}^{\u2032}|= (16(gal)/(min)) \u22c5 ((Q)/(8(12 + t))(lb)/(gal)); = (16(gal)/(min)) \u22c5 ((Q)/(8(12 + t))(lb)/(gal)); = (16Q)/(8(12 + t))(lb)/(min); = (2Q)/(12 + t)(lb)/(min).]\n\nStep 3: Calculate the overall rate of change.\n\nThe rate of change equals the rate of entry minus the rate of exit. Therefore,\n\n[MATH: (dQ)/(dt)|= Q_{in}^{\u2032} \u2212 Q_{out}^{\u2032}; = 36 \u2212 (2Q)/(12 + t)]\n\nwhich gives the equation\n[MATH: \\dfrac{\\mathrm{d}Q}{\\mathrm{d}t} + \\dfrac{2}{12 + t}\\,Q = 36.]\n\nStep 4: Integrate the equation.\n\nThis is a first-order linear equation with variable coefficients. So we find the general solution using an integrating factor:\n\n[MATH: I(t)|= e^{\u222b2/(12 + t)dt}; = e^{2\\ln|12 + t|}; = e^{\\ln (12 + t)^{2}}; = (12 + t)^{2}.]\n\nMultiplying both sides of the differential equation by [MATH: I(t) = (12+t)^2] yields\n\n[MATH: (12 + t)^{2} \u22c5 ((dQ)/(dt) + (2)/(12 + t)Q)|= (12 + t)^{2} \u22c5 36; (12 + t)^{2}(dQ)/(dt) + 2(12 + t)Q|= 36(12 + t)^{2}; (d)/(dt)(Q(12 + t)^{2})|= 36(12 + t)^{2}.]\n\nNow, we integrate with respect to [MATH: t{:}]\n\n[MATH: \u222b(d)/(dt)(Q(12 + t)^{2})dt|= \u222b36(12 + t)^{2}dt; Q(12 + t)^{2}|= 36 \u22c5 (1)/(3)(12 + t)^{3} + C; Q(t)|= 12(12 + t) + (C)/((12 + t)^{2}).]\n\nWe're told that the tank initially contains [MATH: 32\\,\\textrm{lb}] of sugar. So, we can apply the initial condition [MATH: Q(0) = 32,] and solve for [MATH: C{:}]\n\n[MATH: Q(0)|= 32; 12(12 + 0) + (C)/((12 + 0)^{2})|= 32; 12 \u22c5 12 + (C)/((12)^{2})|= 32; 144 + (C)/(12^{2})|= 32; (C)/(12^{2})|= \u2212 112; C|= \u2212 112(12)^{2}.]\n\nTherefore, we obtain the following expression for [MATH: Q(t){:}]\n\n[MATH: Q(t)|= 12(12 + t) \u2212 (112(12)^{2})/((12 + t)^{2}); = 12(12 + t) \u2212 112((12)/(12 + t))^{2}.]\n\nNow, let [MATH: t_o] be the time when the tank begins to overflow. The tank has a capacity of [MATH: 240\\,\\textrm{gal},] so we can use the condition [MATH: V(t_o) = 240] to solve for [MATH: t_o{:}]\n\n[MATH: V(t_{o})|= 240; 96 + 24t_{o} \u2212 16t_{o}|= 240; 96 + 8t_{o}|= 240; 8t_{o}|= 144; t_{o}|= 18min.]\n\nFinally, rounded to one decimal place, the amount of sugar in the tank at the moment it begins to overflow is\n\n[MATH: Q(18)|= 12(12 + 18) \u2212 112((12)/(12 + 18))^{2}; = 360 \u2212 112((12)/(30))^{2}; \u2248 342.1lb.]",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          }
+        ],
+        "images": [],
+        "free_entry_blanks": [],
+        "select_lists": [],
+        "readable_text": "Example Prompt:\nA syrup mixing tank in a confectionery factory can hold up to [MATH: 240\\,\\textrm{gal}] of liquid. Initially, it contains [MATH: 96\\,\\textrm{gal}] of syrup solution with [MATH: 32\\,\\textrm{lb}] of dissolved sugar. A more concentrated syrup with concentration [MATH: 1.5\\,\\textrm{lb/gal}] flows into the tank at a rate of [MATH: 24\\,\\textrm{gal/min},] while the completely mixed solution drains out at a rate of [MATH: 16\\,\\textrm{gal/min}.] Rounded to one decimal place, find the amount of sugar in the tank at the moment it begins to overflow.\n\nContent:\nEXPLANATION\n\nExplanation:\nSince [MATH: Q] is the amount of sugar in the tank at time [MATH: t,] the derivative\n[MATH: \\dfrac{\\mathrm{d}Q}{\\mathrm{d}t}]\ndescribes how this amount changes with respect to time [MATH: t,] in minutes. This is equal to the rate at which sugar enters the tank minus the rate at which sugar leaves the tank.\n\n[MATH: \\dfrac{\\mathrm{d}Q}{\\mathrm{d}t} = Q'_{\\textrm{in}} - Q'_{\\textrm{out}}]\n\nNote that the units of [MATH: \\dfrac{\\mathrm{d}Q}{\\mathrm{d}t}, Q'_{\\textrm{in}}] and [MATH: Q'_{\\textrm{out}}] are [MATH: \\textrm{lb}/\\textrm{min}.] Now, let's compute the required rates of change in steps.\n\nStep 1: Calculating the rate at which sugar enters the tank.\n\nFirst, note that a solution containing [MATH: 1.5\\,\\textrm{lb/gal}] of sugar enters the tank at a rate of [MATH: 24\\,\\textrm{gal/min}.] So, the rate at which the sugar enters the tank is\n\n[MATH: Q_{in}^{\u2032}|= (1.5(lb)/(gal)) \u22c5 (24(gal)/(min)); = (1.5(lb)/(gal)) \u22c5 (24(gal)/(min)); = 36(lb)/(min).]\n\nStep 2: Calculating the rate at which sugar exits the tank.\n\nTo find the rate at which sugar leaves the tank, we must first determine the volume of solution in the tank at time [MATH: t.]\n\nThe tank initially contains [MATH: 96\\,\\textrm{gal}] of solution; solution enters at [MATH: 24\\,\\textrm{gal/min}] and mixed solution leaves at [MATH: 16\\,\\textrm{gal/min}.]\nAs a result, the amount of solution in the tank after [MATH: t] minutes is\n[MATH: V(t) = 96 + 24t - 16t = 8(12+t)\\,\\textrm{gal}.]\n\nNote that [MATH: V(t)] is an increasing function, so the tank is filling.\n\nSince [MATH: Q] is the amount of sugar in the tank, the concentration of the solution at time [MATH: t] is\n[MATH: \\dfrac{Q}{8(12 + t)}\\,\\textrm{lb/gal}.]\n\nTherefore, as the completely mixed solution leaves at a rate of [MATH: 16\\,\\textrm{gal/min},] sugar leaves at a rate of\n\n[MATH: Q_{out}^{\u2032}|= (16(gal)/(min)) \u22c5 ((Q)/(8(12 + t))(lb)/(gal)); = (16(gal)/(min)) \u22c5 ((Q)/(8(12 + t))(lb)/(gal)); = (16Q)/(8(12 + t))(lb)/(min); = (2Q)/(12 + t)(lb)/(min).]\n\nStep 3: Calculate the overall rate of change.\n\nThe rate of change equals the rate of entry minus the rate of exit. Therefore,\n\n[MATH: (dQ)/(dt)|= Q_{in}^{\u2032} \u2212 Q_{out}^{\u2032}; = 36 \u2212 (2Q)/(12 + t)]\n\nwhich gives the equation\n[MATH: \\dfrac{\\mathrm{d}Q}{\\mathrm{d}t} + \\dfrac{2}{12 + t}\\,Q = 36.]\n\nStep 4: Integrate the equation.\n\nThis is a first-order linear equation with variable coefficients. So we find the general solution using an integrating factor:\n\n[MATH: I(t)|= e^{\u222b2/(12 + t)dt}; = e^{2\\ln|12 + t|}; = e^{\\ln (12 + t)^{2}}; = (12 + t)^{2}.]\n\nMultiplying both sides of the differential equation by [MATH: I(t) = (12+t)^2] yields\n\n[MATH: (12 + t)^{2} \u22c5 ((dQ)/(dt) + (2)/(12 + t)Q)|= (12 + t)^{2} \u22c5 36; (12 + t)^{2}(dQ)/(dt) + 2(12 + t)Q|= 36(12 + t)^{2}; (d)/(dt)(Q(12 + t)^{2})|= 36(12 + t)^{2}.]\n\nNow, we integrate with respect to [MATH: t{:}]\n\n[MATH: \u222b(d)/(dt)(Q(12 + t)^{2})dt|= \u222b36(12 + t)^{2}dt; Q(12 + t)^{2}|= 36 \u22c5 (1)/(3)(12 + t)^{3} + C; Q(t)|= 12(12 + t) + (C)/((12 + t)^{2}).]\n\nWe're told that the tank initially contains [MATH: 32\\,\\textrm{lb}] of sugar. So, we can apply the initial condition [MATH: Q(0) = 32,] and solve for [MATH: C{:}]\n\n[MATH: Q(0)|= 32; 12(12 + 0) + (C)/((12 + 0)^{2})|= 32; 12 \u22c5 12 + (C)/((12)^{2})|= 32; 144 + (C)/(12^{2})|= 32; (C)/(12^{2})|= \u2212 112; C|= \u2212 112(12)^{2}.]\n\nTherefore, we obtain the following expression for [MATH: Q(t){:}]\n\n[MATH: Q(t)|= 12(12 + t) \u2212 (112(12)^{2})/((12 + t)^{2}); = 12(12 + t) \u2212 112((12)/(12 + t))^{2}.]\n\nNow, let [MATH: t_o] be the time when the tank begins to overflow. The tank has a capacity of [MATH: 240\\,\\textrm{gal},] so we can use the condition [MATH: V(t_o) = 240] to solve for [MATH: t_o{:}]\n\n[MATH: V(t_{o})|= 240; 96 + 24t_{o} \u2212 16t_{o}|= 240; 96 + 8t_{o}|= 240; 8t_{o}|= 144; t_{o}|= 18min.]\n\nFinally, rounded to one decimal place, the amount of sugar in the tank at the moment it begins to overflow is\n\n[MATH: Q(18)|= 12(12 + 18) \u2212 112((12)/(12 + 18))^{2}; = 360 \u2212 112((12)/(30))^{2}; \u2248 342.1lb.]"
+      },
+      {
+        "lesson_index": 9,
+        "question_index": 5,
+        "item_type": "question",
+        "question_id": "336451",
+        "dom_id": "question-336451",
+        "selector": "#question-336451",
+        "title": "Question 5",
+        "question_number": 5,
+        "question_format": "multiple-choice",
+        "choice_count": 5,
+        "has_content_in_snapshot": true,
+        "hydration_required": false,
+        "graphic": {
+          "normalized_html": "",
+          "readable_text": "",
+          "images": [],
+          "free_entry_blanks": [],
+          "select_lists": []
+        },
+        "calculator_instructions": {
+          "normalized_html": "<p>A scientific calculator is required to answer this question.</p>",
+          "readable_text": "A scientific calculator is required to answer this question.",
+          "images": [],
+          "free_entry_blanks": [],
+          "select_lists": []
+        },
+        "prompt": {
+          "normalized_html": "<p>A de-icing salt reservoir can hold up to <span class=\"math\">[MATH: 300gal]</span> of liquid. Initially, it contains <span class=\"math\">[MATH: 180gal]</span> of brine with <span class=\"math\">[MATH: 54lb]</span> of dissolved salt. A stronger brine with concentration <span class=\"math\">[MATH: 0.8lb/gal]</span> flows into the reservoir at a rate of <span class=\"math\">[MATH: 6gal/min,]</span> while the completely mixed brine drains out at a rate of <span class=\"math\">[MATH: 4gal/min.]</span>\nFind the amount of salt in the reservoir at the moment it begins to overflow.</p>",
+          "readable_text": "A de-icing salt reservoir can hold up to [MATH: 300gal] of liquid. Initially, it contains [MATH: 180gal] of brine with [MATH: 54lb] of dissolved salt. A stronger brine with concentration [MATH: 0.8lb/gal] flows into the reservoir at a rate of [MATH: 6gal/min,] while the completely mixed brine drains out at a rate of [MATH: 4gal/min.]\nFind the amount of salt in the reservoir at the moment it begins to overflow.",
+          "images": [],
+          "free_entry_blanks": [],
+          "select_lists": []
+        },
+        "body": {
+          "normalized_html": "",
+          "readable_text": "",
+          "images": [],
+          "free_entry_blanks": [],
+          "select_lists": []
+        },
+        "choices": [
+          {
+            "choice_index": 1,
+            "label": "a",
+            "dom_id": "questionWidget-choiceLetterCircle-336451-a",
+            "content_type": "text",
+            "normalized_html": "<p><span class=\"math\">[MATH: 205.4lb]</span> </p>",
+            "readable_text": "[MATH: 205.4lb]",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "choice_index": 2,
+            "label": "b",
+            "dom_id": "questionWidget-choiceLetterCircle-336451-b",
+            "content_type": "text",
+            "normalized_html": "<p><span class=\"math\">[MATH: 204.3lb]</span> </p>",
+            "readable_text": "[MATH: 204.3lb]",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "choice_index": 3,
+            "label": "c",
+            "dom_id": "questionWidget-choiceLetterCircle-336451-c",
+            "content_type": "text",
+            "normalized_html": "<p><span class=\"math\">[MATH: 207.6lb]</span></p>",
+            "readable_text": "[MATH: 207.6lb]",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "choice_index": 4,
+            "label": "d",
+            "dom_id": "questionWidget-choiceLetterCircle-336451-d",
+            "content_type": "text",
+            "normalized_html": "<p><span class=\"math\">[MATH: 206.2lb]</span></p>",
+            "readable_text": "[MATH: 206.2lb]",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "choice_index": 5,
+            "label": "e",
+            "dom_id": "questionWidget-choiceLetterCircle-336451-e",
+            "content_type": "text",
+            "normalized_html": "<p><span class=\"math\">[MATH: 201.0lb]</span> </p>",
+            "readable_text": "[MATH: 201.0lb]",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          }
+        ],
+        "images": [],
+        "free_entry_blanks": [],
+        "select_lists": [],
+        "readable_text": "Calculator Instructions:\nA scientific calculator is required to answer this question.\n\nPrompt:\nA de-icing salt reservoir can hold up to [MATH: 300gal] of liquid. Initially, it contains [MATH: 180gal] of brine with [MATH: 54lb] of dissolved salt. A stronger brine with concentration [MATH: 0.8lb/gal] flows into the reservoir at a rate of [MATH: 6gal/min,] while the completely mixed brine drains out at a rate of [MATH: 4gal/min.]\nFind the amount of salt in the reservoir at the moment it begins to overflow.\n\nChoices:\na. [MATH: 205.4lb]\nb. [MATH: 204.3lb]\nc. [MATH: 207.6lb]\nd. [MATH: 206.2lb]\ne. [MATH: 201.0lb]"
+      },
+      {
+        "lesson_index": 10,
+        "question_index": 6,
+        "item_type": "question",
+        "question_id": "336499",
+        "dom_id": "question-336499",
+        "selector": "#question-336499",
+        "title": "Question 6",
+        "question_number": 6,
+        "question_format": "multiple-choice",
+        "choice_count": 5,
+        "has_content_in_snapshot": true,
+        "hydration_required": false,
+        "graphic": {
+          "normalized_html": "",
+          "readable_text": "",
+          "images": [],
+          "free_entry_blanks": [],
+          "select_lists": []
+        },
+        "calculator_instructions": {
+          "normalized_html": "<p>A scientific calculator is required to answer this question.</p>",
+          "readable_text": "A scientific calculator is required to answer this question.",
+          "images": [],
+          "free_entry_blanks": [],
+          "select_lists": []
+        },
+        "prompt": {
+          "normalized_html": "<p>A nutrient tank for a hydroponic greenhouse can hold up to <span class=\"math\">[MATH: 210gal]</span> of solution. Initially, it contains <span class=\"math\">[MATH: 120gal]</span> of nutrient solution with <span class=\"math\">[MATH: 30lb]</span> of dissolved nutrient. A more concentrated solution with concentration <span class=\"math\">[MATH: 0.5lb/gal]</span> flows into the tank at a rate of <span class=\"math\">[MATH: 9gal/min,]</span> while the completely mixed solution drains out at a rate of <span class=\"math\">[MATH: 6gal/min.]</span> Rounded to one decimal place, find the amount of nutrient in the tank at the moment it begins to overflow.</p>",
+          "readable_text": "A nutrient tank for a hydroponic greenhouse can hold up to [MATH: 210gal] of solution. Initially, it contains [MATH: 120gal] of nutrient solution with [MATH: 30lb] of dissolved nutrient. A more concentrated solution with concentration [MATH: 0.5lb/gal] flows into the tank at a rate of [MATH: 9gal/min,] while the completely mixed solution drains out at a rate of [MATH: 6gal/min.] Rounded to one decimal place, find the amount of nutrient in the tank at the moment it begins to overflow.",
+          "images": [],
+          "free_entry_blanks": [],
+          "select_lists": []
+        },
+        "body": {
+          "normalized_html": "",
+          "readable_text": "",
+          "images": [],
+          "free_entry_blanks": [],
+          "select_lists": []
+        },
+        "choices": [
+          {
+            "choice_index": 1,
+            "label": "a",
+            "dom_id": "questionWidget-choiceLetterCircle-336499-a",
+            "content_type": "text",
+            "normalized_html": "<p><span class=\"math\">[MATH: 93.5lb]</span></p>",
+            "readable_text": "[MATH: 93.5lb]",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "choice_index": 2,
+            "label": "b",
+            "dom_id": "questionWidget-choiceLetterCircle-336499-b",
+            "content_type": "text",
+            "normalized_html": "<p><span class=\"math\">[MATH: 94.2lb]</span></p>",
+            "readable_text": "[MATH: 94.2lb]",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "choice_index": 3,
+            "label": "c",
+            "dom_id": "questionWidget-choiceLetterCircle-336499-c",
+            "content_type": "text",
+            "normalized_html": "<p><span class=\"math\">[MATH: 95.2lb]</span></p>",
+            "readable_text": "[MATH: 95.2lb]",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "choice_index": 4,
+            "label": "d",
+            "dom_id": "questionWidget-choiceLetterCircle-336499-d",
+            "content_type": "text",
+            "normalized_html": "<p><span class=\"math\">[MATH: 95.0lb]</span></p>",
+            "readable_text": "[MATH: 95.0lb]",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "choice_index": 5,
+            "label": "e",
+            "dom_id": "questionWidget-choiceLetterCircle-336499-e",
+            "content_type": "text",
+            "normalized_html": "<p><span class=\"math\">[MATH: 94.7lb]</span></p>",
+            "readable_text": "[MATH: 94.7lb]",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          }
+        ],
+        "images": [],
+        "free_entry_blanks": [],
+        "select_lists": [],
+        "readable_text": "Calculator Instructions:\nA scientific calculator is required to answer this question.\n\nPrompt:\nA nutrient tank for a hydroponic greenhouse can hold up to [MATH: 210gal] of solution. Initially, it contains [MATH: 120gal] of nutrient solution with [MATH: 30lb] of dissolved nutrient. A more concentrated solution with concentration [MATH: 0.5lb/gal] flows into the tank at a rate of [MATH: 9gal/min,] while the completely mixed solution drains out at a rate of [MATH: 6gal/min.] Rounded to one decimal place, find the amount of nutrient in the tank at the moment it begins to overflow.\n\nChoices:\na. [MATH: 93.5lb]\nb. [MATH: 94.2lb]\nc. [MATH: 95.2lb]\nd. [MATH: 95.0lb]\ne. [MATH: 94.7lb]"
+      }
+    ],
+    "readable_text": "Item 1 \u2014 Tutorial: Introduction\n\nContent:\nIn the previous lesson, we focused on dilution problems in which the incoming solution contained none of the substance being modeled. In those cases, the rate at which the substance entered the container was zero.\n\nContent:\nIn many practical situations, however, the incoming solution does contain some amount of the substance. When this happens,\n\nContent:\n- the rate of entry is no longer zero, and\n- the resulting differential equation takes the form of a first-order linear differential equation.\n\nContent:\nFor example, suppose a storage tank initially holds [MATH: 650\\,\\textrm{L}] of water containing [MATH: 1\\,300\\,\\textrm{g}] of dissolved chlorine.\n\nContent:\n- A solution containing [MATH: 20\\,\\textrm{g/L}] of dissolved chlorine is pumped into the tank at a rate of [MATH: 5\\,\\textrm{L/min}.]\n- At the same time, the completely mixed water is drained out at a rate of [MATH: 5\\,\\textrm{L/min}.]\n\nContent:\nTo construct the model for the amount of chlorine [MATH: Q] in the tank, we compare the rates of chlorine entering and leaving. The derivative\n[MATH: \\dfrac{\\mathrm{d}Q}{\\mathrm{d}t}]\ndescribes how this amount changes with respect to time [MATH: t.] This is equal to the rate at which chlorine enters the tank minus the rate at which chlorine leaves the tank.\n\nContent:\n[MATH: \\bbox[4pt,border: 1px solid lightgray]{\\dfrac{\\mathrm{d}Q}{\\mathrm{d}t} = Q'_{\\textrm{in}} - Q'_{\\textrm{out}}}]\n\nContent:\nWe compute the required rates of change in steps.\n\nContent:\nStep 1: Calculating the rate at which chlorine enters the tank.\n\nContent:\nThe rate of chlorine entering is the concentration times the flow rate:\n[MATH: Q_{in}^{\u2032}|= (20(g)/(L)) \u22c5 (5(L)/(min)); = (20(g)/(L)) \u22c5 (5(L)/(min)); = 100(g)/(min)]\n\nContent:\nStep 2: Calculating the rate at which chlorine exits the tank.\n\nContent:\nSince the volume remains constant at [MATH: 650\\,\\textrm{L},] the concentration in the tank is [MATH: \\dfrac{Q}{650}\\,\\dfrac{\\textrm{g}}{\\textrm{L}}.] So, the rate of chlorine exiting is\n[MATH: Q_{out}^{\u2032}|= (5(L)/(min)) \u22c5 ((Q)/(650)(g)/(L)); = (5(L)/(min)) \u22c5 ((Q)/(650)(g)/(L)); = (Q)/(130)(g)/(min).]\n\nContent:\nStep 3: Calculate the overall rate of change.\n\nContent:\nThe net rate of change [MATH: \\dfrac{\\mathrm{d}Q}{\\mathrm{d}t} = Q'_\\text{in} - Q'_\\text{out}] is the difference between the rate in and the rate out. Combining this with the initial condition [MATH: Q(0) = 1\\,300\\,\\textrm{g},] we can state the complete initial value problem:\n[MATH: \\dfrac{\\mathrm{d}Q}{\\mathrm{d}t} = 100 - \\dfrac{1}{130}Q\n\\quad\\Longrightarrow\\quad\n\\bbox[4pt,border: 1px solid lightgray]{\\dfrac{\\mathrm{d}Q}{\\mathrm{d}t} + \\dfrac{1}{130}Q = 100, \\quad Q(0) = 1\\,300\\,\\textrm{g}}]\n\n---\n\nItem 2 \u2014 Example: Constructing and Solving a Dilution Model: Inflow Equals Outflow\n\nExample Prompt:\nA fertilizer tank initially holds [MATH: 800\\,\\textrm{L}] of liquid containing [MATH: 7\\,\\textrm{kg}] of dissolved nutrient.\nA solution containing [MATH: 0.01\\,\\textrm{kg/L}] of dissolved nutrient is pumped into the tank at a rate of [MATH: 40\\,\\textrm{L/min},] while the completely mixed liquid is drained out at a rate of [MATH: 40\\,\\textrm{L/min}.] Which expression gives the amount of nutrient [MATH: Q(t),] in kilograms, in the tank [MATH: t] minutes after pumping begins?\n\nContent:\nEXPLANATION\n\nExplanation:\nLet [MATH: Q] be the amount of nutrient in the tank at time [MATH: t,] in minutes. Then, the derivative\n[MATH: \\dfrac{\\mathrm{d}Q}{\\mathrm{d}t}]\ndescribes how this amount changes with respect to time [MATH: t.] This is equal to the rate at which nutrient enters the tank minus the rate at which nutrient leaves the tank.\n\n[MATH: \\dfrac{\\mathrm{d}Q}{\\mathrm{d}t} = Q'_{\\textrm{in}} - Q'_{\\textrm{out}}]\n\nNote that the units of [MATH: \\dfrac{\\mathrm{d}Q}{\\mathrm{d}t}, Q'_{\\textrm{in}}] and [MATH: Q'_{\\textrm{out}}] are [MATH: \\textrm{kg}/\\textrm{min}.] Now, let's compute the required rates of change in steps.\n\nStep 1: Calculating the rate at which additives enter the tank.\n\nNote that a feed solution containing [MATH: 0.01\\,\\textrm{kg/L}] of the nutrient enters the tank at a rate of [MATH: 40\\,\\textrm{L/min}.] So, the rate at which the nutrient enters the tank is\n\n[MATH: Q_{in}^{\u2032}|= (0.01(kg)/(L)) \u22c5 (40(L)/(min)); = (0.01(kg)/(L)) \u22c5 (40(L)/(min)); = 0.4(kg)/(min).]\n\nStep 2: Calculating the rate at which additives exit the tank.\n\nNext, note that the rate of flow in equals the rate of flow out, so the volume in the tank remains [MATH: 800\\,\\textrm{L}.] Then, since [MATH: Q] is the amount of nutrient in the tank, the concentration of the solution at time [MATH: t] is\n[MATH: \\dfrac{Q}{800}\\,\\textrm{kg/L}.]\n\nTherefore, as the completely mixed liquid leaves at a rate of [MATH: 40\\,\\textrm{L/min},] nutrient leaves at a rate of\n\n[MATH: Q_{out}^{\u2032}|= (40(L)/(min)) \u22c5 ((Q)/(800)(kg)/(L)); = (40(L)/(min)) \u22c5 ((Q)/(800)(kg)/(L)); = (40Q)/(800)(kg)/(min); = (Q)/(20)(kg)/(min).]\n\nStep 3: Calculate the overall rate of change.\n\nThe rate of change equals the rate of entry minus the rate of exit. Therefore,\n\n[MATH: (dQ)/(dt)|= Q_{in}^{\u2032} \u2212 Q_{out}^{\u2032}; = 0.4 \u2212 (Q)/(20)]\n\nwhich gives the equation\n\n[MATH: \\dfrac{\\mathrm{d}Q}{\\mathrm{d}t} + \\dfrac{1}{20}Q = 0.4.]\n\nStep 4: Integrate the equation.\n\nThis is a first-order linear equation with constant coefficients. To find the general solution, we must sum the complementary and particular solutions.\n\n- To find the complementary solution [MATH: Q_c,] we solve the corresponding homogeneous equation, given by\n[MATH: \\dfrac{\\mathrm{d}Q_c}{\\mathrm{d}t} + \\dfrac{1}{20}Q_c = 0.]\nSolving using an integration technique, such as separation of variables, we obtain the complementary solution\n[MATH: Q_c(t) = Ae^{-t/20},]\nwhere [MATH: A] is a constant of integration.\n- Next, we find the particular solution. Note that the right-hand side of the inhomogeneous equation is a polynomial of degree [MATH: 0.] So, we assume that the particular solution is also a polynomial of degree [MATH: 0,] i.e.,\n[MATH: Q_p(t) = \\alpha.]\nTo find the value of [MATH: \\alpha,] we substitute [MATH: Q_p = \\alpha] and [MATH: \\dfrac{\\mathrm{d}Q_p}{\\mathrm{d}t} = (\\alpha)' = 0] into the inhomogeneous equation:\n[MATH: 0 + \\dfrac{1}{20}\\alpha = 0.4\n\\quad\\Longrightarrow\\quad\n\\alpha = 8.]\nTherefore, the particular solution is [MATH: Q_p(t) = 8.]\n\nNow, since the general solution is given by the sum of the complementary solution and the particular solution, the general solution in our case is\n\n[MATH: Q(t) = Q_c(t) + Q_p(t) = Ae^{-t/20} + 8.]\n\nWe're told that the tank initially contains [MATH: 7\\,\\textrm{kg}] of dissolved nutrient. So, we can apply the initial condition [MATH: Q(0) = 7,] and solve for [MATH: A{:}]\n\n[MATH: Q(0)|= 7; Ae^{\u2212 0/20} + 8|= 7; A|= \u2212 1]\n\nTherefore, we obtain the following expression for [MATH: Q(t){:}]\n\n[MATH: Q(t) = 8 - e^{-t/20}.]\n\n---\n\nItem 3 \u2014 Question 1\n\nPrompt:\nA wastewater basin initially holds [MATH: 750L] of water containing [MATH: 6kg] of dissolved pollutant.\nA solution containing [MATH: 0.03kg/L] of dissolved pollutant is pumped into the basin at a rate of [MATH: 30L/min,] while the completely mixed liquid is drained out at a rate of [MATH: 30L/min.] Which expression gives the amount of pollutant [MATH: Q(t),] in kilograms, in the basin [MATH: t] minutes after pumping begins?\n\nChoices:\na. [MATH: Q(t) = 22.5 + 16.5e^{\u2212 t/25}]\nb. [MATH: Q(t) = 6 \u2212 22.5e^{\u2212 t/25}]\nc. [MATH: Q(t) = 22.5 \u2212 16.5e^{t/25}]\nd. [MATH: Q(t) = 22.5 \u2212 16.5e^{\u2212 t/25}]\ne. [MATH: Q(t) = 22.5 \u2212 16.5e^{\u2212 t/20}]\n\n---\n\nItem 4 \u2014 Question 2\n\nPrompt:\nA fish hatchery tank initially holds [MATH: 900L] of water containing [MATH: 10kg] of dissolved salt.\nA feed solution containing [MATH: 0.02kg/L] of the salt is pumped into the tank at a rate of [MATH: 30L/min,] while the completely mixed liquid is drained out at a rate of [MATH: 30L/min.]\nFind, rounded to two decimal places, the amount of salt in the tank [MATH: 6] minutes after pumping begins.\n\nChoices:\na. [MATH: 10.76kg]\nb. [MATH: 11.83kg]\nc. [MATH: 11.45kg]\nd. [MATH: 12.11kg]\ne. [MATH: 11.02kg]\n\n---\n\nItem 5 \u2014 Example: Constructing and Solving a Dilution Model\n\nExample Prompt:\nA water-treatment holding tank initially holds [MATH: 700\\,\\textrm{L}] of liquid containing [MATH: 12\\,\\textrm{kg}] of dissolved coagulant.\nA feed solution containing [MATH: 0.05\\,\\textrm{kg/L}] of the coagulant is pumped into the tank at a rate of [MATH: 30\\,\\textrm{L/min},] while the completely mixed liquid is drained out at a rate of [MATH: 20\\,\\textrm{L/min}.]\nFind, rounded to two decimal places, the amount of coagulant in the tank [MATH: 8] minutes after pumping begins.\n\nContent:\nEXPLANATION\n\nExplanation:\nLet [MATH: Q] be the amount of coagulant in the tank at time [MATH: t,] in minutes. Then, the derivative\n[MATH: \\dfrac{\\mathrm{d}Q}{\\mathrm{d}t}]\ndescribes how this amount changes with respect to time [MATH: t.] This is equal to the rate at which coagulant enters the tank minus the rate at which coagulant leaves the tank.\n\n[MATH: \\dfrac{\\mathrm{d}Q}{\\mathrm{d}t} = Q'_{\\textrm{in}} - Q'_{\\textrm{out}}]\n\nNote that the units of [MATH: \\dfrac{\\mathrm{d}Q}{\\mathrm{d}t}, Q'_{\\textrm{in}}] and [MATH: Q'_{\\textrm{out}}] are [MATH: \\textrm{kg}/\\textrm{min}.] Now, let's compute the required rates of change in steps.\n\nStep 1: Calculating the rate at which coagulant enters the tank.\n\nNote that a feed solution containing [MATH: 0.05\\,\\textrm{kg/L}] of the coagulant enters the tank at a rate of [MATH: 30\\,\\textrm{L/min}.] So, the rate at which the coagulant enters the tank is\n\n[MATH: Q_{in}^{\u2032}|= (0.05(kg)/(L)) \u22c5 (30(L)/(min)); = (0.05(kg)/(L)) \u22c5 (30(L)/(min)); = 1.5(kg)/(min).]\n\nStep 2: Calculating the rate at which coagulant exits the tank.\n\nTo find the rate at which coagulant leaves the tank, we must first determine the volume of liquid in the tank at time [MATH: t.]\n\nThe tank initially contains [MATH: 700\\,\\textrm{L}] of liquid; a solution enters at [MATH: 30\\,\\textrm{L/min}] and leaves at [MATH: 20\\,\\textrm{L/min}.]\nAs a result, the volume of liquid in the tank after [MATH: t] minutes is\n[MATH: 700 + 30t - 20t = (700+10t)\\,\\textrm{L}.]\n\nSince [MATH: Q] is the amount of coagulant in the tank, the concentration of the mixed solution at time [MATH: t] is\n[MATH: \\dfrac{Q}{700+10t}\\,\\textrm{kg/L}.]\n\nTherefore, as the completely mixed liquid leaves at a rate of [MATH: 20\\,\\textrm{L/min},] coagulant leaves at a rate of\n\n[MATH: Q_{out}^{\u2032}|= (20(L)/(min)) \u22c5 ((Q)/(700 + 10t)(kg)/(L)); = (20(L)/(min)) \u22c5 ((Q)/(700 + 10t)(kg)/(L)); = (20Q)/(700 + 10t)(kg)/(min); = (2Q)/(70 + t)(kg)/(min).]\n\nStep 3: Calculate the overall rate of change.\n\nThe rate of change equals the rate of entry minus the rate of exit. Therefore,\n\n[MATH: (dQ)/(dt)|= Q_{in}^{\u2032} \u2212 Q_{out}^{\u2032}; = 1.5 \u2212 (2Q)/(70 + t)]\n\nwhich gives the equation\n[MATH: (dQ)/(dt) + (2)/(70 + t)Q = 1.5.]\n\nStep 4: Integrate the equation.\n\nThis is a first-order linear equation with variable coefficients. So we find the general solution using an integrating factor:\n\n[MATH: I(t)|= e^{\u222b2/(70 + t)dt}; = e^{2\\ln|70 + t|}; = e^{\\ln (70 + t)^{2}}; = (70 + t)^{2}]\n\nMultiplying both sides of the differential equation by [MATH: I(t) = (70+t)^2] yields\n\n[MATH: (70 + t)^{2} \u22c5 ((dQ)/(dt) + (2)/(70 + t)Q)|= (70 + t)^{2} \u22c5 1.5; (70 + t)^{2}(dQ)/(dt) + 2(70 + t)Q|= 1.5(70 + t)^{2}; (d)/(dt)(Q(70 + t)^{2})|= 1.5(70 + t)^{2}.]\n\nNow, we integrate with respect to [MATH: t{:}]\n\n[MATH: \u222b(d)/(dt)(Q(70 + t)^{2})dt|= \u222b1.5(70 + t)^{2}dt; Q(70 + t)^{2}|= 1.5 \u22c5 (1)/(3)(70 + t)^{3} + C; Q(t)|= 0.5(70 + t) + (C)/((70 + t)^{2})]\n\nNote that [MATH: C] is a constant of integration.\n\nWe're told that the tank initially contains [MATH: 12\\,\\textrm{kg}] of coagulant. So, we can apply the initial condition [MATH: Q(0) = 12,] and solve for [MATH: C{:}]\n\n[MATH: Q(0)|= 12; 0.5(70 + 0) + (C)/((70 + 0)^{2})|= 12; 35 + (C)/(70^{2})|= 12; (C)/(70^{2})|= \u2212 23; C|= \u2212 23(70)^{2}]\n\nFinally, we obtain the following expression for [MATH: Q(t){:}]\n\n[MATH: Q(t)|= 0.5(70 + t) \u2212 (23(70)^{2})/((70 + t)^{2}); = 0.5(70 + t) \u2212 23((70)/(70 + t))^{2}.]\n\nFinally, the amount of coagulant in the tank [MATH: 8] minutes after pumping begins is\n\n[MATH: Q(8)|= 0.5(70 + 8) \u2212 23((70)/(70 + 8))^{2}; = 39 \u2212 23((70)/(78))^{2}; \u2248 20.48kg,]\n\nrounded to two decimal places.\n\n---\n\nItem 6 \u2014 Question 3\n\nCalculator Instructions:\nA scientific calculator is required to answer this question.\n\nPrompt:\nAn aquarium initially holds [MATH: 300L] of water containing [MATH: 6kg] of dissolved minerals.\nA solution containing [MATH: 0.03kg/L] of dissolved minerals is pumped into the aquarium at a rate of [MATH: 24L/min,] while the completely mixed water is drained out at a rate of [MATH: 36L/min.] If the amount of minerals [MATH: Q(t),] in kilograms, in the tank [MATH: t] minutes after pumping begins is given by\n[MATH: Q(t) = \u03b1(1 \u2212 (t)/(25)) + \u03b2(1 \u2212 (t)/(25))^{3}]\nwhere [MATH: \u03b1] and [MATH: \u03b2] are constants, what is the value of [MATH: \u03b1 + \u03b2?]\n\nChoices:\na. [MATH: 15]\nb. [MATH: 12]\nc. [MATH: 6]\nd. [MATH: 8]\ne. [MATH: 10]\n\n---\n\nItem 7 \u2014 Question 4\n\nCalculator Instructions:\nA scientific calculator is required to answer this question.\n\nPrompt:\nA storage tank initially holds [MATH: 600L] of liquid containing [MATH: 5kg] of dissolved stabilizer.\nA feed solution containing [MATH: 0.04kg/L] of the stabilizer is pumped into the tank at a rate of [MATH: 15L/min,] while the completely mixed liquid is drained out at a rate of [MATH: 10L/min.]\nFind, rounded to two decimal places, the amount of stabilizer in the tank [MATH: 10] minutes after pumping begins.\n\nChoices:\na. [MATH: 9.18kg]\nb. [MATH: 9.81kg]\nc. [MATH: 7.99kg]\nd. [MATH: 8.21kg]\ne. [MATH: 8.63kg]\n\n---\n\nItem 8 \u2014 Example: Determining an Amount at an Overflow Point\n\nExample Prompt:\nA syrup mixing tank in a confectionery factory can hold up to [MATH: 240\\,\\textrm{gal}] of liquid. Initially, it contains [MATH: 96\\,\\textrm{gal}] of syrup solution with [MATH: 32\\,\\textrm{lb}] of dissolved sugar. A more concentrated syrup with concentration [MATH: 1.5\\,\\textrm{lb/gal}] flows into the tank at a rate of [MATH: 24\\,\\textrm{gal/min},] while the completely mixed solution drains out at a rate of [MATH: 16\\,\\textrm{gal/min}.] Rounded to one decimal place, find the amount of sugar in the tank at the moment it begins to overflow.\n\nContent:\nEXPLANATION\n\nExplanation:\nSince [MATH: Q] is the amount of sugar in the tank at time [MATH: t,] the derivative\n[MATH: \\dfrac{\\mathrm{d}Q}{\\mathrm{d}t}]\ndescribes how this amount changes with respect to time [MATH: t,] in minutes. This is equal to the rate at which sugar enters the tank minus the rate at which sugar leaves the tank.\n\n[MATH: \\dfrac{\\mathrm{d}Q}{\\mathrm{d}t} = Q'_{\\textrm{in}} - Q'_{\\textrm{out}}]\n\nNote that the units of [MATH: \\dfrac{\\mathrm{d}Q}{\\mathrm{d}t}, Q'_{\\textrm{in}}] and [MATH: Q'_{\\textrm{out}}] are [MATH: \\textrm{lb}/\\textrm{min}.] Now, let's compute the required rates of change in steps.\n\nStep 1: Calculating the rate at which sugar enters the tank.\n\nFirst, note that a solution containing [MATH: 1.5\\,\\textrm{lb/gal}] of sugar enters the tank at a rate of [MATH: 24\\,\\textrm{gal/min}.] So, the rate at which the sugar enters the tank is\n\n[MATH: Q_{in}^{\u2032}|= (1.5(lb)/(gal)) \u22c5 (24(gal)/(min)); = (1.5(lb)/(gal)) \u22c5 (24(gal)/(min)); = 36(lb)/(min).]\n\nStep 2: Calculating the rate at which sugar exits the tank.\n\nTo find the rate at which sugar leaves the tank, we must first determine the volume of solution in the tank at time [MATH: t.]\n\nThe tank initially contains [MATH: 96\\,\\textrm{gal}] of solution; solution enters at [MATH: 24\\,\\textrm{gal/min}] and mixed solution leaves at [MATH: 16\\,\\textrm{gal/min}.]\nAs a result, the amount of solution in the tank after [MATH: t] minutes is\n[MATH: V(t) = 96 + 24t - 16t = 8(12+t)\\,\\textrm{gal}.]\n\nNote that [MATH: V(t)] is an increasing function, so the tank is filling.\n\nSince [MATH: Q] is the amount of sugar in the tank, the concentration of the solution at time [MATH: t] is\n[MATH: \\dfrac{Q}{8(12 + t)}\\,\\textrm{lb/gal}.]\n\nTherefore, as the completely mixed solution leaves at a rate of [MATH: 16\\,\\textrm{gal/min},] sugar leaves at a rate of\n\n[MATH: Q_{out}^{\u2032}|= (16(gal)/(min)) \u22c5 ((Q)/(8(12 + t))(lb)/(gal)); = (16(gal)/(min)) \u22c5 ((Q)/(8(12 + t))(lb)/(gal)); = (16Q)/(8(12 + t))(lb)/(min); = (2Q)/(12 + t)(lb)/(min).]\n\nStep 3: Calculate the overall rate of change.\n\nThe rate of change equals the rate of entry minus the rate of exit. Therefore,\n\n[MATH: (dQ)/(dt)|= Q_{in}^{\u2032} \u2212 Q_{out}^{\u2032}; = 36 \u2212 (2Q)/(12 + t)]\n\nwhich gives the equation\n[MATH: \\dfrac{\\mathrm{d}Q}{\\mathrm{d}t} + \\dfrac{2}{12 + t}\\,Q = 36.]\n\nStep 4: Integrate the equation.\n\nThis is a first-order linear equation with variable coefficients. So we find the general solution using an integrating factor:\n\n[MATH: I(t)|= e^{\u222b2/(12 + t)dt}; = e^{2\\ln|12 + t|}; = e^{\\ln (12 + t)^{2}}; = (12 + t)^{2}.]\n\nMultiplying both sides of the differential equation by [MATH: I(t) = (12+t)^2] yields\n\n[MATH: (12 + t)^{2} \u22c5 ((dQ)/(dt) + (2)/(12 + t)Q)|= (12 + t)^{2} \u22c5 36; (12 + t)^{2}(dQ)/(dt) + 2(12 + t)Q|= 36(12 + t)^{2}; (d)/(dt)(Q(12 + t)^{2})|= 36(12 + t)^{2}.]\n\nNow, we integrate with respect to [MATH: t{:}]\n\n[MATH: \u222b(d)/(dt)(Q(12 + t)^{2})dt|= \u222b36(12 + t)^{2}dt; Q(12 + t)^{2}|= 36 \u22c5 (1)/(3)(12 + t)^{3} + C; Q(t)|= 12(12 + t) + (C)/((12 + t)^{2}).]\n\nWe're told that the tank initially contains [MATH: 32\\,\\textrm{lb}] of sugar. So, we can apply the initial condition [MATH: Q(0) = 32,] and solve for [MATH: C{:}]\n\n[MATH: Q(0)|= 32; 12(12 + 0) + (C)/((12 + 0)^{2})|= 32; 12 \u22c5 12 + (C)/((12)^{2})|= 32; 144 + (C)/(12^{2})|= 32; (C)/(12^{2})|= \u2212 112; C|= \u2212 112(12)^{2}.]\n\nTherefore, we obtain the following expression for [MATH: Q(t){:}]\n\n[MATH: Q(t)|= 12(12 + t) \u2212 (112(12)^{2})/((12 + t)^{2}); = 12(12 + t) \u2212 112((12)/(12 + t))^{2}.]\n\nNow, let [MATH: t_o] be the time when the tank begins to overflow. The tank has a capacity of [MATH: 240\\,\\textrm{gal},] so we can use the condition [MATH: V(t_o) = 240] to solve for [MATH: t_o{:}]\n\n[MATH: V(t_{o})|= 240; 96 + 24t_{o} \u2212 16t_{o}|= 240; 96 + 8t_{o}|= 240; 8t_{o}|= 144; t_{o}|= 18min.]\n\nFinally, rounded to one decimal place, the amount of sugar in the tank at the moment it begins to overflow is\n\n[MATH: Q(18)|= 12(12 + 18) \u2212 112((12)/(12 + 18))^{2}; = 360 \u2212 112((12)/(30))^{2}; \u2248 342.1lb.]\n\n---\n\nItem 9 \u2014 Question 5\n\nCalculator Instructions:\nA scientific calculator is required to answer this question.\n\nPrompt:\nA de-icing salt reservoir can hold up to [MATH: 300gal] of liquid. Initially, it contains [MATH: 180gal] of brine with [MATH: 54lb] of dissolved salt. A stronger brine with concentration [MATH: 0.8lb/gal] flows into the reservoir at a rate of [MATH: 6gal/min,] while the completely mixed brine drains out at a rate of [MATH: 4gal/min.]\nFind the amount of salt in the reservoir at the moment it begins to overflow.\n\nChoices:\na. [MATH: 205.4lb]\nb. [MATH: 204.3lb]\nc. [MATH: 207.6lb]\nd. [MATH: 206.2lb]\ne. [MATH: 201.0lb]\n\n---\n\nItem 10 \u2014 Question 6\n\nCalculator Instructions:\nA scientific calculator is required to answer this question.\n\nPrompt:\nA nutrient tank for a hydroponic greenhouse can hold up to [MATH: 210gal] of solution. Initially, it contains [MATH: 120gal] of nutrient solution with [MATH: 30lb] of dissolved nutrient. A more concentrated solution with concentration [MATH: 0.5lb/gal] flows into the tank at a rate of [MATH: 9gal/min,] while the completely mixed solution drains out at a rate of [MATH: 6gal/min.] Rounded to one decimal place, find the amount of nutrient in the tank at the moment it begins to overflow.\n\nChoices:\na. [MATH: 93.5lb]\nb. [MATH: 94.2lb]\nc. [MATH: 95.2lb]\nd. [MATH: 95.0lb]\ne. [MATH: 94.7lb]"
+  }
+}
