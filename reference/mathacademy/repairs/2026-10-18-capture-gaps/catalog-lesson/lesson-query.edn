@@ -1,0 +1,5 @@
+[:find (pull ?a [* {:activity/steps [* {:step/content [*
+ {:knowledge-point/canonical-example [:db/id :question/math-academy-id]}]}]}])
+ :in $ ?tid :where [?src :db/ident :org/Math-Academy]
+ [?t :topic/math-academy-id ?tid _ ?src] [?a :activity/scope ?t _ ?src]
+ [?a :activity/type ?type _ ?src] [?type :db/ident :activity.type/lesson]]

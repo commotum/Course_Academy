@@ -1,0 +1,803 @@
+[
+  [
+    {
+      ":activity/first-step": {
+        ":db/id": 17592186148435
+      },
+      ":activity/id": "c33fcd20-192a-525c-a003-08244d7958fe",
+      ":activity/scope": {
+        ":db/id": 17592186049950
+      },
+      ":activity/steps": [
+        {
+          ":db/id": 17592186148435,
+          ":step/content": {
+            ":db/id": 17592186148757,
+            ":tutorial/content": "In this lesson, we will learn how to use Laplace transforms to solve second-order ODEs. As before, let's practice finding the Laplace transform of a second-order differential equation first.\n\nFor example, let's find the Laplace transform of $y(t)$ if \n\n$$\ny''  =  t, \\qquad y(0)=2, \\qquad y'(0)=3.\n$$\n\nFirst, we take the Laplace transform of both sides of the equation:\n\n$$\n\\mathcal{L}\\left\\{ y'' \\right\\} =  \\mathcal{L}\\left\\{ t \\right\\}\n$$\n\nNext, we simplify each side.\n\n- For the left-hand side, we use the formula for the Laplace transform of a second derivative. Letting $\\mathcal{L}\\left\\{ y \\right\\}=Y(s)$ and using the initial conditions $y(0)=2, \\, y'(0)=3,$ we have\n\n$$\n\\begin{aligned}L{{y}^{''}} & ={s}^{2}L{y}-sy(0)-{y}^{'}(0) \\\\  & ={s}^{2}Y(s)-sy(0)-{y}^{'}(0) \\\\  & ={s}^{2}Y(s)-2s-3.\\end{aligned}\n$$\n\n- For the right-hand side, we use the following result from the table of Laplace transforms:\n\n$$\n\\mathcal{L} \\{  t  \\} = \\dfrac{1}{s^2}.\n$$\n\nFinally, we can solve for $Y(s){:}$\n\n$$\n\\begin{aligned}L{{y}^{''}} & =L{t} \\\\ {s}^{2}Y(s)-2s-3 & =\\frac{1}{{s}^{2}} \\\\ {s}^{2}Y(s) & =\\frac{1}{{s}^{2}}+3+2s \\\\ Y(s) & =\\frac{1}{{s}^{4}}+\\frac{3}{{s}^{2}}+\\frac{2}{s}\\end{aligned}\n$$\n\nTherefore, the Laplace transform of $y(t)$ is $Y(s) =  \\dfrac{1}{s^4} + \\dfrac{3}{s^2} + \\dfrac{2}{s}.$\n\nLet's see more examples.",
+            ":tutorial/id": "d4b52997-ca96-5bc0-845a-b2943def6e25",
+            ":tutorial/math-academy-id": 4113,
+            ":tutorial/title": "Introduction"
+          },
+          ":step/id": "19d3669b-0462-5b59-8a2f-88a325af813e",
+          ":step/math-academy-id": 604719,
+          ":step/next": {
+            ":db/id": 17592186148436
+          }
+        },
+        {
+          ":db/id": 17592186148436,
+          ":step/content": {
+            ":db/id": 17592186147516,
+            ":knowledge-point/canonical-example": {
+              ":db/id": 17592186147364
+            },
+            ":knowledge-point/id": "4487c2b9-b681-5e1d-a2d9-c3231afcf03d",
+            ":knowledge-point/key-prerequisites": [
+              {
+                ":db/id": 17592186048580
+              },
+              {
+                ":db/id": 17592186048605
+              },
+              {
+                ":db/id": 17592186050677
+              }
+            ],
+            ":knowledge-point/questions": [
+              {
+                ":db/id": 17592186148149
+              },
+              {
+                ":db/id": 17592186148205
+              },
+              {
+                ":db/id": 17592186237895
+              },
+              {
+                ":db/id": 17592186351494
+              },
+              {
+                ":db/id": 17592186351495
+              },
+              {
+                ":db/id": 17592186351496
+              },
+              {
+                ":db/id": 17592186377621
+              },
+              {
+                ":db/id": 17592186377628
+              },
+              {
+                ":db/id": 17592186377886
+              },
+              {
+                ":db/id": 17592186593226
+              },
+              {
+                ":db/id": 17592186593260
+              },
+              {
+                ":db/id": 17592186593279
+              },
+              {
+                ":db/id": 17592186596627
+              },
+              {
+                ":db/id": 17592186596632
+              },
+              {
+                ":db/id": 17592186607581
+              }
+            ],
+            ":knowledge-point/title": "Finding the Laplace Transform of a Second-Order ODE"
+          },
+          ":step/id": "04d715c4-570a-53d3-be33-0a3fbcda94ed",
+          ":step/math-academy-id": 604720,
+          ":step/next": {
+            ":db/id": 17592186148437
+          }
+        },
+        {
+          ":db/id": 17592186148437,
+          ":step/content": {
+            ":db/id": 17592186148758,
+            ":tutorial/content": "Now, let's see how to use Laplace transforms to solve second-order ODEs. There are two steps:\n\n- **Step 1:** Find the Laplace transform of the equation, and solve for $Y(s)$.\n\n- **Step 2:** Find the solution by taking the inverse Laplace transform.\n\nTo illustrate, let's continue solving the following differential equation:\n\n$$\ny''  =  t, \\quad y(0)=2, \\quad y'(0)=3\n$$\n\nEarlier, we found that the Laplace transform of $y(t)$ is\n\n$$\nY(s) =  \\dfrac{1}{s^4} + \\dfrac{3}{s^2} + \\dfrac{2}{s}.\n$$\n\nNow, we need to take the inverse Laplace transform. From the table of Laplace transforms, we have\n\n$$\n\\begin{aligned}{L}^{-1}{\\frac{6}{{s}^{4}}} & ={t}^{3}, \\\\ {L}^{-1}{\\frac{1}{{s}^{2}}} & =t, \\\\ {L}^{-1}{\\frac{1}{s}} & =1.\\end{aligned}\n$$\n\nSo, taking the inverse Laplace transform, we get\n\n$$\n\\begin{aligned}{L}^{-1}{Y(s)} & ={L}^{-1}{\\frac{1}{{s}^{4}}+\\frac{3}{{s}^{2}}+\\frac{2}{s}} \\\\ y(t) & ={L}^{-1}{\\frac{1}{{s}^{4}}}+{L}^{-1}{\\frac{3}{{s}^{2}}}+{L}^{-1}{\\frac{2}{s}} \\\\ y(t) & =\\frac{1}{6}{L}^{-1}{\\frac{6}{{s}^{4}}}+3{L}^{-1}{\\frac{1}{{s}^{2}}}+2{L}^{-1}{\\frac{1}{s}} \\\\ y(t) & =\\frac{1}{6}{t}^{3}+3t+2.\\end{aligned}\n$$\n\nTherefore, the solution to the ODE is $y(t) = \\dfrac{1}{6} t^3 + 3 t + 2.$",
+            ":tutorial/id": "1d2f1d1a-f65f-58b0-81e3-b67a89dcee71",
+            ":tutorial/math-academy-id": 4114,
+            ":tutorial/title": "Using Laplace Transforms to Solve Second-Order Differential Equations"
+          },
+          ":step/id": "b201edef-c1ff-5f79-848c-4e3e546b3a32",
+          ":step/math-academy-id": 604724,
+          ":step/next": {
+            ":db/id": 17592186148438
+          }
+        },
+        {
+          ":db/id": 17592186148438,
+          ":step/content": {
+            ":db/id": 17592186147517,
+            ":knowledge-point/canonical-example": {
+              ":db/id": 17592186147365
+            },
+            ":knowledge-point/id": "30d5c275-af4a-5bdd-a97c-c937824d8e94",
+            ":knowledge-point/questions": [
+              {
+                ":db/id": 17592186147793
+              },
+              {
+                ":db/id": 17592186147794
+              },
+              {
+                ":db/id": 17592186318963
+              },
+              {
+                ":db/id": 17592186318964
+              },
+              {
+                ":db/id": 17592186318965
+              },
+              {
+                ":db/id": 17592186318966
+              },
+              {
+                ":db/id": 17592186377411
+              },
+              {
+                ":db/id": 17592186377414
+              },
+              {
+                ":db/id": 17592186593233
+              },
+              {
+                ":db/id": 17592186593257
+              },
+              {
+                ":db/id": 17592186596697
+              },
+              {
+                ":db/id": 17592186607639
+              }
+            ],
+            ":knowledge-point/title": "Solving a Second-Order Initial Value Problem Using Laplace Transforms"
+          },
+          ":step/id": "26d61a91-facd-5261-adc5-a1ee7c1d2edb",
+          ":step/math-academy-id": 604725
+        }
+      ],
+      ":activity/title": "Solving Second-Order ODEs Using Laplace Transforms",
+      ":activity/type": {
+        ":db/id": 17592186045463
+      },
+      ":db/id": 17592186147719
+    }
+  ],
+  [
+    {
+      ":activity/course": {
+        ":db/id": 17592186046660
+      },
+      ":activity/first-step": {
+        ":db/id": 17592186596778
+      },
+      ":activity/id": "1605a4e3-be66-5b9c-9f37-99f8f8d04ea3",
+      ":activity/scope": {
+        ":db/id": 17592186049950
+      },
+      ":activity/steps": [
+        {
+          ":db/id": 17592186596726,
+          ":step/content": {
+            ":db/id": 17592186596632,
+            ":question/answer-fields": [
+              {
+                ":answer-field/choices": [
+                  {
+                    ":answer/id": "8ad535cd-f22c-5e40-b80f-5be771e9b996",
+                    ":answer/type": {
+                      ":db/id": 17592186045498
+                    },
+                    ":answer/value": "Y(s)=-\\frac{2}{(s+1)^{3}}",
+                    ":db/id": 17592186596301
+                  },
+                  {
+                    ":answer/id": "a74692c3-fee5-5f5e-a2d3-826c79173e0f",
+                    ":answer/type": {
+                      ":db/id": 17592186045498
+                    },
+                    ":answer/value": "Y(s)=-\\frac{s}{{s}^{2}+1}",
+                    ":db/id": 17592186596350
+                  },
+                  {
+                    ":answer/id": "a7769cf7-c6bf-59a9-82aa-5a335fb86b8d",
+                    ":answer/type": {
+                      ":db/id": 17592186045498
+                    },
+                    ":answer/value": "Y(s)=\\frac{2}{{s}^{2}+1}",
+                    ":db/id": 17592186596351
+                  },
+                  {
+                    ":answer/id": "d839f9f2-7150-5cbe-a643-881bf0ae882c",
+                    ":answer/type": {
+                      ":db/id": 17592186045498
+                    },
+                    ":answer/value": "Y(s)=-\\frac{1}{(s+1)^{2}}",
+                    ":db/id": 17592186596426
+                  },
+                  {
+                    ":answer/id": "f3827992-72ac-5fe0-835c-76adace4477b",
+                    ":answer/type": {
+                      ":db/id": 17592186045498
+                    },
+                    ":answer/value": "Y(s)=\\frac{s}{{s}^{2}+16}",
+                    ":db/id": 17592186596467
+                  }
+                ],
+                ":answer-field/correct": {
+                  ":db/id": 17592186596350
+                },
+                ":answer-field/id": "0b053b9e-38ef-5012-9398-c0be995a1334",
+                ":answer-field/key": "selection",
+                ":answer-field/type": {
+                  ":db/id": 17592186045493
+                },
+                ":db/id": 17592186596496
+              }
+            ],
+            ":question/difficulty": {
+              ":db/id": 17592186045486
+            },
+            ":question/id": "17b51113-bdfd-58cb-b8e8-8260320d70f2",
+            ":question/math-academy-id": "q-64457",
+            ":question/problem": "Find the Laplace transform $Y(s)=L\\{y(t)\\}$ if \n\n$$\n{y}^{″}+3{y}^{′}+y=3\\operatorname{sin}⁡t,\\,y(0)=-1,\\,{y}^{′}(0)=0.\n$$",
+            ":question/worked-solution": "First, we take the Laplace transform of both sides and use the addition and scalar multiplication properties of the Laplace transform:\n\n$$\n\\begin{aligned}L\\{{y}^{″}+3{y}^{′}+y\\} & =L\\{3\\operatorname{sin}⁡3\\} \\\\ L\\{{y}^{″}\\}+3L\\{{y}^{′}\\}+L\\{y\\} & =3L\\{\\operatorname{sin}⁡t\\}\\end{aligned}\n$$\n\nTo calculate $L\\{{y}^{′}\\}$ and $L\\{{y}^{″}\\},$  we use formulas for the Laplace transforms of the derivatives and apply the initial conditions:\n\n$$\n\\begin{aligned}L\\{{y}^{′}\\} & =sY(s)-y(0)=sY(s)+1 \\\\ L\\{{y}^{″}\\} & ={s}^{2}Y(s)-sy(0)-{y}^{′}(0)={s}^{2}Y(s)+s\\end{aligned}\n$$\n\nFrom the table of Laplace transforms, we have the following result:\n\n$$\nL\\{\\operatorname{sin}⁡t\\}=\\frac{1}{{s}^{2}+1}\n$$\n\nTherefore, we can solve for $Y(s):$\n\n$$\n\\begin{aligned}L\\{{y}^{″}\\}+3L\\{{y}^{′}\\}+L\\{y\\} & =3L\\{\\operatorname{sin}⁡t\\} \\\\ ({s}^{2}Y(s)+s)+3(sY(s)+1)+Y(s) & =\\frac{3}{{s}^{2}+1} \\\\ ({s}^{2}+3s+1)Y(s) & =\\frac{3}{{s}^{2}+1}-s-3 \\\\ ({s}^{2}+3s+1)Y(s) & =\\frac{3-{s}^{3}-s-3{s}^{2}-3}{{s}^{2}+1} \\\\ ({s}^{2}+3s+1)Y(s) & =-\\frac{s({s}^{2}+3s+1)}{{s}^{2}+1} \\\\ Y(s) & =-\\frac{s}{{s}^{2}+1}\\end{aligned}\n$$"
+          },
+          ":step/id": "046e3c6e-d695-5f48-9452-4b88a25f479c",
+          ":step/next": {
+            ":db/id": 17592186596771
+          }
+        },
+        {
+          ":db/id": 17592186596734,
+          ":step/content": {
+            ":db/id": 17592186596697,
+            ":question/answer-fields": [
+              {
+                ":answer-field/choices": [
+                  {
+                    ":answer/id": "f7bed7dd-1a61-553f-b7be-30bec2ade2fc",
+                    ":answer/type": {
+                      ":db/id": 17592186045498
+                    },
+                    ":answer/value": "3\\sin t",
+                    ":db/id": 17592186596474
+                  }
+                ],
+                ":answer-field/correct": {
+                  ":db/id": 17592186596474
+                },
+                ":answer-field/id": "4f95f2aa-11fe-54ab-85d9-428407f968a2",
+                ":answer-field/key": "field-1",
+                ":answer-field/type": {
+                  ":db/id": 17592186045492
+                },
+                ":db/id": 17592186596533
+              }
+            ],
+            ":question/difficulty": {
+              ":db/id": 17592186045485
+            },
+            ":question/id": "bec4a874-a41b-518a-a92a-6eedad8e8888",
+            ":question/math-academy-id": "q-345085",
+            ":question/problem": "Find $y(t)$ given that the Laplace transform of the initial value problem\n\n$$\n{y}^{″}(t)-y(t)=-6\\operatorname{sin}⁡t,\\,y(0)=0,\\,{y}^{′}(0)=3\n$$\n\nis given by\n\n$$\n{s}^{2}Y(s)-3-Y(s)=-6(\\frac{1}{{s}^{2}+1}).\n$$\n\nThe solution is $y(t)=$\n{{field-1}}",
+            ":question/worked-solution": "Using the transformed equation, we can solve for $Y(s)$ as follows:\n\n$$\n\\begin{aligned}{s}^{2}Y(s)-3-Y(s) & =-6(\\frac{1}{{s}^{2}+1}) \\\\ ({s}^{2}-1)Y(s) & =3-\\frac{6}{{s}^{2}+1} \\\\ ({s}^{2}-1)Y(s) & =\\frac{3({s}^{2}-1)}{{s}^{2}+1} \\\\ Y(s) & =\\frac{3}{{s}^{2}+1}\\end{aligned}\n$$\n\nwhich is valid for $s>1.$\n\nNow, taking the inverse Laplace transform, we get\n\n$$\n\\begin{aligned}{L}^{-1}(Y(s)) & ={L}^{-1}\\{\\frac{3}{{s}^{2}+1}\\} \\\\ y(t) & =3\\operatorname{sin}⁡t.\\end{aligned}\n$$"
+          },
+          ":step/id": "137af9d3-a59d-56f0-be38-839e3152a7c4"
+        },
+        {
+          ":db/id": 17592186596771,
+          ":step/content": {
+            ":db/id": 17592186318964,
+            ":question/answer-fields": [
+              {
+                ":answer-field/choices": [
+                  {
+                    ":answer/id": "9f50df46-18d5-59f1-b597-d6e94102488f",
+                    ":answer/type": {
+                      ":db/id": 17592186045498
+                    },
+                    ":answer/value": "{e}^{-t}+{e}^{3t}",
+                    ":db/id": 17592186318107
+                  }
+                ],
+                ":answer-field/correct": {
+                  ":db/id": 17592186318107
+                },
+                ":answer-field/id": "2c0e1c02-c3f4-5c21-8b39-62e4e98a9657",
+                ":answer-field/key": "field-1",
+                ":answer-field/type": {
+                  ":db/id": 17592186045492
+                },
+                ":db/id": 17592186318508
+              }
+            ],
+            ":question/difficulty": {
+              ":db/id": 17592186045487
+            },
+            ":question/id": "403b58d0-4bf5-5f05-968b-3eb6100a4249",
+            ":question/math-academy-id": "q-345078",
+            ":question/problem": "Find $y(t)$ given that the Laplace transform of the initial value problem\n\n$$\n{y}^{″}-9y=-8{e}^{-t},\\,y(0)=2,\\,{y}^{′}(0)=2\n$$\n\nis given by\n\n$$\n{s}^{2}Y(s)-2s-2-9Y(s)=-\\frac{8}{s+1}.\n$$\n\nThe solution is $y(t)=$\n{{field-1}}",
+            ":question/worked-solution": "Using the transformed equation, we can solve for $Y(s)$ as follows:\n\n$$\n\\begin{aligned}{s}^{2}Y(s)-2s-2-9Y(s) & =-\\frac{8}{s+1} \\\\ ({s}^{2}-9)Y(s) & =2s+2-\\frac{8}{s+1} \\\\ ({s}^{2}-9)Y(s) & =\\frac{2({s}^{2}+2s-3)}{s+1} \\\\ ({s}^{2}-9)Y(s) & =\\frac{2(s+3)(s-1)}{s+1} \\\\ Y(s) & =\\frac{2(s+3)(s-1)}{(s+1)(s-3)(s+3)} \\\\ Y(s) & =\\frac{2(s-1)}{(s+1)(s-3)} \\\\ Y(s) & =\\frac{1}{s+1}+\\frac{1}{s-3}\\end{aligned}\n$$\n\nwhich is valid for $s>3.$\n\nNow, taking the inverse Laplace transform, we get\n\n$$\n\\begin{aligned}{L}^{-1}(Y(s)) & ={L}^{-1}{\\frac{1}{s+1}+\\frac{1}{s-3}} \\\\ y(t) & ={L}^{-1}{\\frac{1}{s+1}}+{L}^{-1}{\\frac{1}{s-3}} \\\\ y(t) & ={e}^{-t}+{e}^{3t}.\\end{aligned}\n$$"
+          },
+          ":step/id": "78b8a5e4-d1f2-57c0-bae0-1e50d5582f1b",
+          ":step/next": {
+            ":db/id": 17592186596734
+          }
+        },
+        {
+          ":db/id": 17592186596778,
+          ":step/content": {
+            ":db/id": 17592186596627,
+            ":question/answer-fields": [
+              {
+                ":answer-field/choices": [
+                  {
+                    ":answer/id": "00856def-8663-5367-8cf0-c4bc98d4a8b3",
+                    ":answer/type": {
+                      ":db/id": 17592186045498
+                    },
+                    ":answer/value": "Y(s)=\\frac{s(s+8)}{({s}^{2}-4)^{2}}",
+                    ":db/id": 17592186596080
+                  },
+                  {
+                    ":answer/id": "64176ff4-586e-55bb-bc1d-757be5a75dae",
+                    ":answer/type": {
+                      ":db/id": 17592186045498
+                    },
+                    ":answer/value": "Y(s)=\\frac{s({s}^{2}+8)}{({s}^{2}+4)^{2}}",
+                    ":db/id": 17592186596242
+                  },
+                  {
+                    ":answer/id": "9b94103c-20c0-580c-9766-f9111f41a860",
+                    ":answer/type": {
+                      ":db/id": 17592186045498
+                    },
+                    ":answer/value": "Y(s)=\\frac{{s}^{2}+8}{{s}^{4}-16}",
+                    ":db/id": 17592186596325
+                  },
+                  {
+                    ":answer/id": "aea90755-85f2-53c8-94fe-6f8ef18cc3aa",
+                    ":answer/type": {
+                      ":db/id": 17592186045498
+                    },
+                    ":answer/value": "Y(s)=\\frac{s}{{s}^{2}+4}",
+                    ":db/id": 17592186596358
+                  },
+                  {
+                    ":answer/id": "c1bf493c-854e-54f3-9d6f-18371399278b",
+                    ":answer/type": {
+                      ":db/id": 17592186045498
+                    },
+                    ":answer/value": "Y(s)=\\frac{s(s+8)}{({s}^{2}+4)}",
+                    ":db/id": 17592186596390
+                  }
+                ],
+                ":answer-field/correct": {
+                  ":db/id": 17592186596242
+                },
+                ":answer-field/id": "d61ebd9e-c7f1-51b1-aea9-8aca2468a233",
+                ":answer-field/key": "selection",
+                ":answer-field/type": {
+                  ":db/id": 17592186045493
+                },
+                ":db/id": 17592186596603
+              }
+            ],
+            ":question/difficulty": {
+              ":db/id": 17592186045485
+            },
+            ":question/id": "0d0b4871-7488-5edb-9a57-3591dd91bca5",
+            ":question/math-academy-id": "q-64365",
+            ":question/problem": "Find the Laplace transform of $y(t),$ if \n\n$$\n{y}^{″}+4y=4\\operatorname{cos}⁡2t,\\,y(0)=1,\\,{y}^{′}(0)=0.\n$$",
+            ":question/worked-solution": "First, we take the Laplace transform of both sides and use the addition and scalar multiplication properties of the Laplace transform:\n\n$$\n\\begin{aligned}L\\{{y}^{″}+4y\\} & =L\\{4\\operatorname{cos}⁡2t\\} \\\\ L\\{{y}^{″}\\}+4L\\{y\\} & =4L\\{\\operatorname{cos}⁡2t\\}\\end{aligned}\n$$\n\nLet's introduce $L\\{y\\}=Y(s).$ \n\nTo calculate $L\\{{y}^{″}\\},$ we use the formula for the Laplace transform of a second derivative:\n\n$$\nL\\{{y}^{″}\\}={s}^{2}L\\{y\\}-sy(0)-{y}^{′}(0)={s}^{2}Y(s)-sy(0)-{y}^{′}(0)\n$$\n\nTaking into account the given initial conditions, we get\n\n$$\nL\\{{y}^{′}\\}={s}^{2}Y(s)-s.\n$$\n\nFrom the table of Laplace transforms, we have the following result:\n\n$$\nL\\{\\operatorname{cos}⁡2t\\}=\\frac{s}{{s}^{2}+4}\n$$\n\nTherefore, we can solve for $Y(s):$\n\n$$\n\\begin{aligned}L\\{{y}^{″}\\}+4L\\{y\\} & =4L\\{4\\operatorname{cos}⁡2t\\} \\\\ ({s}^{2}Y(s)-s)+4Y(s) & =4(\\frac{s}{{s}^{2}+4}) \\\\ ({s}^{2}+4)Y(s) & =s+\\frac{4s}{{s}^{2}+4} \\\\ ({s}^{2}+4)Y(s) & =\\frac{{s}^{3}+8s}{{s}^{2}+4} \\\\ Y(s) & =\\frac{s({s}^{2}+8)}{({s}^{2}+4)^{2}}\\end{aligned}\n$$"
+          },
+          ":step/id": "9c5a01c0-e925-5326-b7f0-4846bd17bb96",
+          ":step/next": {
+            ":db/id": 17592186596799
+          }
+        },
+        {
+          ":db/id": 17592186596799,
+          ":step/content": {
+            ":db/id": 17592186377628,
+            ":question/answer-fields": [
+              {
+                ":answer-field/choices": [
+                  {
+                    ":answer/id": "d554bf10-57e5-5f86-8b09-eaf13ad30fca",
+                    ":answer/type": {
+                      ":db/id": 17592186045498
+                    },
+                    ":answer/value": "Y(s)=\\frac{1}{({s}^{2}+1)({s}^{2}+2)}",
+                    ":db/id": 17592186377630
+                  },
+                  {
+                    ":answer/id": "9c8365cd-e130-5f3a-ab4a-85fa4a9532b8",
+                    ":answer/type": {
+                      ":db/id": 17592186045498
+                    },
+                    ":answer/value": "Y(s)=\\frac{2}{{s}^{2}({s}^{2}+1)}",
+                    ":db/id": 17592186377631
+                  },
+                  {
+                    ":answer/id": "e277bf6e-7800-5ce8-9842-89362c193549",
+                    ":answer/type": {
+                      ":db/id": 17592186045498
+                    },
+                    ":answer/value": "Y(s)=\\frac{2}{{s}^{2}+1}",
+                    ":db/id": 17592186377632
+                  },
+                  {
+                    ":answer/id": "5c5e0b28-adb7-5e1a-bf7e-73828e4ac456",
+                    ":answer/type": {
+                      ":db/id": 17592186045498
+                    },
+                    ":answer/value": "Y(s)=\\frac{1}{{s}^{2}+2}",
+                    ":db/id": 17592186377633
+                  },
+                  {
+                    ":answer/id": "cf8a735c-eb62-5fdd-be08-c0802535d5f8",
+                    ":answer/type": {
+                      ":db/id": 17592186045498
+                    },
+                    ":answer/value": "Y(s)=\\frac{s+2}{{s}^{2}+1}",
+                    ":db/id": 17592186377634
+                  }
+                ],
+                ":answer-field/correct": {
+                  ":db/id": 17592186377630
+                },
+                ":answer-field/id": "5d0fefa5-85f6-59fc-a300-683a27f430a4",
+                ":answer-field/key": "selection",
+                ":answer-field/type": {
+                  ":db/id": 17592186045493
+                },
+                ":db/id": 17592186377629
+              }
+            ],
+            ":question/difficulty": {
+              ":db/id": 17592186045487
+            },
+            ":question/id": "13a9a15d-ac85-53b3-add8-7182d6e7ac2b",
+            ":question/math-academy-id": "q-64444",
+            ":question/problem": "Find the Laplace transform of $y(t),$ if \n\n$$\n{y}^{″}+2y=\\operatorname{sin}⁡t,\\,y(0)=0,\\,{y}^{′}(0)=0.\n$$",
+            ":question/worked-solution": "First, we take the Laplace transform of both sides and use the addition and scalar multiplication properties of the Laplace transform:\n\n$$\n\\begin{aligned}L{{y}^{″}+2y} & =L{\\operatorname{sin}⁡t} \\\\ L{{y}^{″}}+2L{y} & =L{\\operatorname{sin}⁡t}\\end{aligned}\n$$\n\nLet's introduce $L{y}=Y(s).$ \n\nTo calculate $L{{y}^{″}},$ we use the formula for the Laplace transform of a second derivative:\n\n$$\nL{{y}^{″}}={s}^{2}L{y}-sy(0)-{y}^{′}(0)={s}^{2}Y(s)-sy(0)-{y}^{′}(0)\n$$\n\nTaking into account the given initial conditions, we get\n\n$$\nL{{y}^{″}}={s}^{2}Y(s).\n$$\n\nFrom the table of Laplace transforms, we have the following result:\n\n$$\nL{\\operatorname{sin}⁡t}=\\frac{1}{{s}^{2}+1}\n$$\n\nTherefore, we get\n\n$$\n\\begin{aligned}L{{y}^{″}}+2L{y} & =L{\\operatorname{sin}⁡t} \\\\ {s}^{2}Y(s)+2Y(s) & =\\frac{1}{{s}^{2}+1} \\\\ ({s}^{2}+2)Y(s) & =\\frac{1}{{s}^{2}+1} \\\\ Y(s) & =\\frac{1}{({s}^{2}+1)({s}^{2}+2)}.\\end{aligned}\n$$"
+          },
+          ":step/id": "d3734a8b-5f2c-5363-b406-1c09fca1fce6",
+          ":step/next": {
+            ":db/id": 17592186596726
+          }
+        }
+      ],
+      ":activity/title": "Solving Second-Order ODEs Using Laplace Transforms",
+      ":activity/type": {
+        ":db/id": 17592186045464
+      },
+      ":db/id": 17592186596060
+    }
+  ],
+  [
+    {
+      ":activity/course": {
+        ":db/id": 17592186046660
+      },
+      ":activity/first-step": {
+        ":db/id": 17592186607697
+      },
+      ":activity/id": "9c04d7cd-9b24-5520-a7f5-75da890f2779",
+      ":activity/scope": {
+        ":db/id": 17592186049950
+      },
+      ":activity/steps": [
+        {
+          ":db/id": 17592186607646,
+          ":step/content": {
+            ":db/id": 17592186351494,
+            ":question/answer-fields": [
+              {
+                ":answer-field/choices": [
+                  {
+                    ":answer/id": "2dbbbb2b-89e9-558d-a1f7-ee13d25dd6b7",
+                    ":answer/type": {
+                      ":db/id": 17592186045498
+                    },
+                    ":answer/value": "Y(s)=\\frac{2{s}^{2}}{{s}^{2}+4}",
+                    ":db/id": 17592186348848
+                  },
+                  {
+                    ":answer/id": "54408306-7b73-554d-9781-c07425f840b7",
+                    ":answer/type": {
+                      ":db/id": 17592186045498
+                    },
+                    ":answer/value": "Y(s)=\\frac{2}{s({s}^{2}+2)}",
+                    ":db/id": 17592186349217
+                  },
+                  {
+                    ":answer/id": "9534b96b-cb83-5c65-84fb-91b5357243b0",
+                    ":answer/type": {
+                      ":db/id": 17592186045498
+                    },
+                    ":answer/value": "Y(s)=\\frac{1}{2{s}^{2}({s}^{2}+4)}",
+                    ":db/id": 17592186349784
+                  },
+                  {
+                    ":answer/id": "fad017d7-f903-58e5-aa63-96793167f728",
+                    ":answer/type": {
+                      ":db/id": 17592186045498
+                    },
+                    ":answer/value": "Y(s)=\\frac{2}{{s}^{2}({s}^{2}+4)}",
+                    ":db/id": 17592186350656
+                  },
+                  {
+                    ":answer/id": "fcc8ece9-663f-5ed2-9f83-f6fa4ac9e93b",
+                    ":answer/type": {
+                      ":db/id": 17592186045498
+                    },
+                    ":answer/value": "Y(s)=\\frac{2{s}^{2}}{{s}^{2}+2}",
+                    ":db/id": 17592186350673
+                  }
+                ],
+                ":answer-field/correct": {
+                  ":db/id": 17592186350656
+                },
+                ":answer-field/id": "bd60883f-9b6b-5be7-8981-5ab91e765030",
+                ":answer-field/key": "selection",
+                ":answer-field/type": {
+                  ":db/id": 17592186045493
+                },
+                ":db/id": 17592186351036
+              }
+            ],
+            ":question/difficulty": {
+              ":db/id": 17592186045485
+            },
+            ":question/id": "a20f719b-fffb-54f1-86ce-695c8fbec6a2",
+            ":question/math-academy-id": "q-83344",
+            ":question/problem": "Find the Laplace transform of $y(t),$ if \n\n$$\n{y}^{″}=\\operatorname{sin}⁡(2t),\\,y(0)=0,\\,{y}^{′}(0)=0.\n$$",
+            ":question/worked-solution": "First, we take the Laplace transform of both sides:\n\n$$\n\\begin{aligned}L{{y}^{″}} & =L{\\operatorname{sin}⁡(2t)}\\end{aligned}\n$$\n\nLet's introduce $L{y}=Y(s).$ \n\nTo calculate $L{{y}^{″}},$ we use the formula for the Laplace transform of a second derivative:\n\n$$\nL{{y}^{″}}={s}^{2}L{y}-sy(0)-{y}^{′}(0)={s}^{2}Y(s)-sy(0)-{y}^{′}(0)\n$$\n\nTaking into account the given initial conditions, we get\n\n$$\n\\begin{aligned}L{{y}^{″}}={s}^{2}Y(s).\\end{aligned}\n$$\n\nFrom the table of Laplace transforms, we have the following result:\n\n$$\nL{\\operatorname{sin}⁡(2t)}=\\frac{2}{{s}^{2}+4}\n$$\n\nTherefore, we get\n\n$$\n\\begin{aligned}L{{y}^{″}} & =L{\\operatorname{sin}⁡(2t)} \\\\ {s}^{2}Y(s) & =\\frac{2}{{s}^{2}+4} \\\\ Y(s) & =\\frac{2}{{s}^{2}({s}^{2}+4)}.\\end{aligned}\n$$"
+          },
+          ":step/id": "059c5a25-9cf6-517e-a354-e0426c9392f8",
+          ":step/next": {
+            ":db/id": 17592186607668
+          }
+        },
+        {
+          ":db/id": 17592186607668,
+          ":step/content": {
+            ":db/id": 17592186607581,
+            ":question/answer-fields": [
+              {
+                ":answer-field/choices": [
+                  {
+                    ":answer/id": "2a21f9e1-b292-564b-a2b7-04d4168cdf07",
+                    ":answer/type": {
+                      ":db/id": 17592186045498
+                    },
+                    ":answer/value": "Y(s)=\\frac{1}{(s+1)^{2}}",
+                    ":db/id": 17592186607106
+                  },
+                  {
+                    ":answer/id": "72752ae9-6a60-567d-a71b-c2a2c5b783dd",
+                    ":answer/type": {
+                      ":db/id": 17592186045498
+                    },
+                    ":answer/value": "Y(s)=-\\frac{2}{{s}^{2}(s-1)}",
+                    ":db/id": 17592186607213
+                  },
+                  {
+                    ":answer/id": "92fb2024-b42f-5ec4-8b9c-b16dd0c8f366",
+                    ":answer/type": {
+                      ":db/id": 17592186045498
+                    },
+                    ":answer/value": "Y(s)=-\\frac{2}{s(s+1)}",
+                    ":db/id": 17592186607268
+                  },
+                  {
+                    ":answer/id": "abcf2341-793e-56a5-b564-835cb023a751",
+                    ":answer/type": {
+                      ":db/id": 17592186045498
+                    },
+                    ":answer/value": "Y(s)=-\\frac{1}{s({s}^{2}+1)}",
+                    ":db/id": 17592186607299
+                  },
+                  {
+                    ":answer/id": "c1dbe2c9-e0c9-5e21-b727-4f4ffb0c52b9",
+                    ":answer/type": {
+                      ":db/id": 17592186045498
+                    },
+                    ":answer/value": "Y(s)=\\frac{2}{{s}^{2}(s+2)}",
+                    ":db/id": 17592186607334
+                  }
+                ],
+                ":answer-field/correct": {
+                  ":db/id": 17592186607268
+                },
+                ":answer-field/id": "35d60a8b-5668-50ac-89e9-9861fc142727",
+                ":answer-field/key": "selection",
+                ":answer-field/type": {
+                  ":db/id": 17592186045493
+                },
+                ":db/id": 17592186607453
+              }
+            ],
+            ":question/difficulty": {
+              ":db/id": 17592186045485
+            },
+            ":question/id": "61af81f9-0a01-5fbc-ac1b-8537aa10ae0f",
+            ":question/math-academy-id": "q-102395",
+            ":question/problem": "Find the Laplace transform of $y(t),$ if \n\n$$\n{y}^{″}=2{e}^{-t},\\,y(0)=0,\\,{y}^{′}(0)=-2.\n$$",
+            ":question/worked-solution": "First, we take the Laplace transform of both sides and use the scalar multiplication property of the Laplace transform:\n\n$$\n\\begin{aligned}L\\{{y}^{″}\\} & =L\\{2{e}^{-t}\\} \\\\ L\\{{y}^{″}\\} & =2L\\{{e}^{-t}\\}\\end{aligned}\n$$\n\nLet's introduce $L\\{y\\}=Y(s).$ \n\nTo calculate $L\\{{y}^{″}\\},$ we use the formula for the Laplace transform of a second derivative:\n\n$$\nL\\{{y}^{″}\\}={s}^{2}L\\{y\\}-sy(0)-{y}^{′}(0)={s}^{2}Y(s)-sy(0)-{y}^{′}(0)\n$$\n\nTaking into account the given initial conditions, we get\n\n$$\n\\begin{aligned}L\\{{y}^{″}\\} &={s}^{2}Y(s)+2.\\end{aligned}\n$$\n\nFrom the table of Laplace transforms, we have the following result:\n\n$$\nL\\{{e}^{-t}\\}=\\frac{1}{s+1}\n$$\n\nTherefore, we get\n\n$$\n\\begin{aligned}L\\{{y}^{″}\\} & =2L\\{{e}^{-t}\\} \\\\ {s}^{2}Y(s)+2 & =\\frac{2}{s+1} \\\\ {s}^{2}Y(s) & =\\frac{2}{s+1}-2 \\\\ {s}^{2}Y(s) & =-\\frac{2s}{s+1} \\\\ Y(s) & =-\\frac{2}{s(s+1)}.\\end{aligned}\n$$"
+          },
+          ":step/id": "39667cec-df24-57c8-ab92-dfcf8a8852b7",
+          ":step/next": {
+            ":db/id": 17592186607689
+          }
+        },
+        {
+          ":db/id": 17592186607689,
+          ":step/content": {
+            ":db/id": 17592186318963,
+            ":question/answer-fields": [
+              {
+                ":answer-field/choices": [
+                  {
+                    ":answer/id": "1312e08e-4f37-5db4-8853-7b51aad5fc9d",
+                    ":answer/type": {
+                      ":db/id": 17592186045498
+                    },
+                    ":answer/value": "1",
+                    ":db/id": 17592186317627
+                  }
+                ],
+                ":answer-field/correct": {
+                  ":db/id": 17592186317627
+                },
+                ":answer-field/id": "402900ea-183d-589a-b954-5f915c2780f7",
+                ":answer-field/key": "field-1",
+                ":answer-field/type": {
+                  ":db/id": 17592186045492
+                },
+                ":db/id": 17592186318558
+              }
+            ],
+            ":question/difficulty": {
+              ":db/id": 17592186045485
+            },
+            ":question/id": "77cd7be7-8bc7-5670-aea2-bdee8c6eb4f3",
+            ":question/math-academy-id": "q-345076",
+            ":question/problem": "Find $y(t)$ given that the Laplace transform of the initial value problem\n\n$$\n{y}^{″}(t)-4y(t)=-4,\\,y(0)=1,\\,{y}^{′}(0)=0\n$$\n\nis given by\n\n$$\n{s}^{2}Y(s)-s-4Y(s)=-\\frac{4}{s}.\n$$\n\nThe solution is $y(t)=$\n{{field-1}}",
+            ":question/worked-solution": "Using the transformed equation, we can solve for $Y(s)$ as follows:\n\n$$\n\\begin{aligned}{s}^{2}Y(s)-s-4Y(s) & =-\\frac{4}{s} \\\\ ({s}^{2}-4)Y(s) & =s-\\frac{4}{s} \\\\ ({s}^{2}-4)Y(s) & =\\frac{{s}^{2}-4}{s} \\\\ Y(s) & =\\frac{{s}^{2}-4}{s({s}^{2}-4)} \\\\ Y(s) & =\\frac{1}{s}\\end{aligned}\n$$\n\nwhich is valid for $s>2.$\n\nNow, taking the inverse Laplace transform, we get\n\n$$\n\\begin{aligned}{L}^{-1}(Y(s)) & ={L}^{-1}{\\frac{1}{s}} \\\\ y(t) & =1.\\end{aligned}\n$$"
+          },
+          ":step/id": "88aad528-1150-5b52-b9bf-bdde25709d73",
+          ":step/next": {
+            ":db/id": 17592186607693
+          }
+        },
+        {
+          ":db/id": 17592186607693,
+          ":step/content": {
+            ":db/id": 17592186607639,
+            ":question/answer-fields": [
+              {
+                ":answer-field/choices": [
+                  {
+                    ":answer/id": "34c51693-a948-5e43-86ab-336b7004efc2",
+                    ":answer/type": {
+                      ":db/id": 17592186045498
+                    },
+                    ":answer/value": "e^t-e^{-t}-t",
+                    ":db/id": 17592186607118
+                  }
+                ],
+                ":answer-field/correct": {
+                  ":db/id": 17592186607118
+                },
+                ":answer-field/id": "7ebae82f-25fd-5c98-b5c0-014613edded9",
+                ":answer-field/key": "field-1",
+                ":answer-field/type": {
+                  ":db/id": 17592186045492
+                },
+                ":db/id": 17592186607491
+              }
+            ],
+            ":question/difficulty": {
+              ":db/id": 17592186045486
+            },
+            ":question/id": "f21a15ed-abf7-5278-871e-1f270a771383",
+            ":question/math-academy-id": "q-345080",
+            ":question/problem": "Find $y(t)$ given that the Laplace transform of the initial value problem\n\n$$\n{y}^{″}-y=t,\\,y(0)=0,\\,{y}^{′}(0)=1\n$$\n\nis given by\n\n$$\n{s}^{2}Y(s)-1-Y(s)=\\frac{1}{{s}^{2}}.\n$$\n\nThe solution is $y(t)=$\n{{field-1}}",
+            ":question/worked-solution": "Using the transformed equation, we can solve for $Y(s):$\n\n$$\n\\begin{aligned}{s}^{2}Y(s)-1-Y(s) & =\\frac{1}{{s}^{2}} \\\\ ({s}^{2}-1)Y(s) & =\\frac{1}{{s}^{2}}+1 \\\\ ({s}^{2}-1)Y(s) & =\\frac{{s}^{2}+1}{{s}^{2}} \\\\ Y(s) & =\\frac{{s}^{2}+1}{{s}^{2}({s}^{2}-1)} \\\\ Y(s) & =\\frac{1}{s-1}-\\frac{1}{s+1}-\\frac{1}{{s}^{2}}\\end{aligned}\n$$\n\nwhich is valid for $s>1.$\n\nNow, taking the inverse Laplace transform, we get\n\n$$\n\\begin{aligned}{L}^{-1}(Y(s)) & ={L}^{-1}\\{\\frac{1}{s-1}-\\frac{1}{s+1}-\\frac{1}{{s}^{2}}\\} \\\\ y(t) & ={L}^{-1}\\{\\frac{1}{s-1}\\}-{L}^{-1}\\{\\frac{1}{s+1}\\}-{L}^{-1}\\{\\frac{1}{{s}^{2}}\\} \\\\ y(t) & ={e}^{t}-{e}^{-t}-t.\\end{aligned}\n$$"
+          },
+          ":step/id": "99979996-29b4-55c8-a002-d4f8e1d80966"
+        },
+        {
+          ":db/id": 17592186607697,
+          ":step/content": {
+            ":db/id": 17592186148149,
+            ":question/answer-fields": [
+              {
+                ":answer-field/choices": [
+                  {
+                    ":answer/id": "187968b0-6c88-5487-9c5b-8275b024eecb",
+                    ":answer/type": {
+                      ":db/id": 17592186045498
+                    },
+                    ":answer/value": "Y(s)=\\frac{{s}^{3}}{{s}^{2}-1}",
+                    ":db/id": 17592186333207
+                  },
+                  {
+                    ":answer/id": "256a3c2c-7990-5253-95d0-20f2b9727771",
+                    ":answer/type": {
+                      ":db/id": 17592186045498
+                    },
+                    ":answer/value": "Y(s)=\\frac{2}{{s}^{3}({s}^{2}-2)}",
+                    ":db/id": 17592186333336
+                  },
+                  {
+                    ":answer/id": "56e36a29-a97e-58e0-a796-744e4aea359f",
+                    ":answer/type": {
+                      ":db/id": 17592186045498
+                    },
+                    ":answer/value": "Y(s)=\\frac{{s}^{3}+1}{s({s}^{2}-2)}",
+                    ":db/id": 17592186333776
+                  },
+                  {
+                    ":answer/id": "67a2fa63-cbb0-5aca-8229-d750c602f74d",
+                    ":answer/type": {
+                      ":db/id": 17592186045498
+                    },
+                    ":answer/value": "Y(s)=\\frac{2({s}^{3}+1)}{{s}^{3}({s}^{2}-2)}",
+                    ":db/id": 17592186333939
+                  },
+                  {
+                    ":answer/id": "71a2d64b-e8d5-5f0b-9d96-794ee0195cf9",
+                    ":answer/type": {
+                      ":db/id": 17592186045498
+                    },
+                    ":answer/value": "Y(s)=\\frac{2({s}^{3}+2)}{{s}^{3}({s}^{2}-1)}",
+                    ":db/id": 17592186334020
+                  }
+                ],
+                ":answer-field/correct": {
+                  ":db/id": 17592186333939
+                },
+                ":answer-field/id": "2fd489e4-145c-5d66-863c-bc0895c9d260",
+                ":answer-field/key": "selection",
+                ":answer-field/type": {
+                  ":db/id": 17592186045493
+                },
+                ":db/id": 17592186335333
+              }
+            ],
+            ":question/difficulty": {
+              ":db/id": 17592186045487
+            },
+            ":question/id": "e3ffd082-96ac-58ad-b713-c48e243a1029",
+            ":question/math-academy-id": "q-64442",
+            ":question/problem": "Find the Laplace transform $Y(s)=L{y(t)}$ for $s\\ge \\sqrt{2}$ if \n\n$$\n{y}^{″}-2y={t}^{2},\\,y(0)=0,\\,{y}^{′}(0)=2.\n$$",
+            ":question/worked-solution": "First, we take the Laplace transform of both sides and use the addition and scalar multiplication properties of the Laplace transform:\n\n$$\n\\begin{aligned}L{{y}^{″}-2y} & =L{{t}^{2}} \\\\ L{{y}^{″}}-2L{y} & =L{{t}^{2}}\\end{aligned}\n$$\n\nTo calculate $L{{y}^{″}},$ we use the formula for the Laplace transform of a second derivative:\n\n$$\nL{{y}^{″}}={s}^{2}L{y}-sy(0)-{y}^{′}(0)={s}^{2}Y(s)-sy(0)-{y}^{′}(0)\n$$\n\nTaking into account the given initial conditions, we get\n\n$$\nL{{y}^{″}}={s}^{2}Y(s)-2.\n$$\n\nFrom the table of Laplace transforms, we have the following result:\n\n$$\nL{{t}^{2}}=\\frac{2}{{s}^{3}}\n$$\n\nTherefore, we can solve for $Y(s):$\n\n$$\n\\begin{aligned}L{{y}^{″}}-2L{y} & =L{{t}^{2}} \\\\ ({s}^{2}Y(s)-2)-2Y(s) & =\\frac{2}{{s}^{3}} \\\\ ({s}^{2}-2)Y(s) & =2+\\frac{2}{{s}^{3}} \\\\ ({s}^{2}-2)Y(s) & =\\frac{2({s}^{3}+1)}{{s}^{3}} \\\\ Y(s) & =\\frac{2({s}^{3}+1)}{{s}^{3}({s}^{2}-2)}\\end{aligned}\n$$"
+          },
+          ":step/id": "b3656554-92e5-5107-b68d-c192a24e568a",
+          ":step/next": {
+            ":db/id": 17592186607646
+          }
+        }
+      ],
+      ":activity/title": "Solving Second-Order ODEs Using Laplace Transforms",
+      ":activity/type": {
+        ":db/id": 17592186045464
+      },
+      ":db/id": 17592186607038
+    }
+  ]
+]
