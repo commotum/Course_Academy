@@ -1,0 +1,607 @@
+{
+  "learner_operation": "Read the radicand and root index (implicit 2 for square roots), preserve the radicand as base, and place the index in the denominator under numerator 1; distinguish swapped and inverted assignments among five radio choices.",
+  "fixed_features": [
+    {
+      "feature": "Convert radical to a unit fraction exponent, numerator1.",
+      "justification": "Tutorial3293 and e-4959 explicitly state sqrt[n]{x}=x^(1/n). Numerator1 expresses the assessed operation."
+    },
+    {
+      "feature": "One positive numerical radical, one five-choice radio selection.",
+      "justification": "All three captured assessed questions use this contract; preserving one direct conversion keeps easy workload."
+    },
+    {
+      "feature": "Square-root items have implicit index2.",
+      "justification": "Tutorial3293 explicitly identifies unindexed square roots as n=2. Reading2 and applying its reciprocal is intended mathematical knowledge."
+    },
+    {
+      "feature": "Finite small numeric family; indexed x!=n and (x,n)!=(2,4).",
+      "justification": "Shared supported domain avoids repeated/equivalent legacy swapped-role distractors. Revised grids can support broader inputs, but current family already varies both numeral-role orderings and every source assignment. No requirement for every possible radical; this is a conservative practice family, not complete mastery coverage."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "radicand assigned as exponent base",
+      "eligible_variation": "Vary numerical value and lower/upper member of complete bank, including x<n andx>n.",
+      "observed": "All four base/index assignments reachable in each of1,765 indexed profiles; both radicands reachable in each of21 square pairs."
+    },
+    {
+      "role": "root index assigned as denominator",
+      "eligible_variation": "Indices3..10 and implicit2; both denominator options within an indexed complete bank.",
+      "observed": "Every indexed bank has four distinct eligible targets; source n7,n3 and implicit2 replay. Controlled n3\u219210 changes accepted answer and solution."
+    },
+    {
+      "role": "foil numerator/denominator and inverted-base assignment",
+      "eligible_variation": "May not encode target independently of intended operation.",
+      "observed": "Indexed foil sampled independently from bank bases/indices. Square bank chooses inverted-power base before target; both orientations and foil indices1,3,4,5 tested."
+    },
+    {
+      "role": "correct displayed position",
+      "eligible_variation": "All five positions; position is incidental.",
+      "observed": "All five occur in each recognizable template across512 fresh batches; irrelevant reorder preserves correct mathematical value and changes position."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "All supported source questions and complete banks",
+      "sample_refs": [
+        "source-replay.json"
+      ],
+      "result": "Three captured prompts and15 options replay; captured solutions match under brace/whitespace normalization. Missing q-69158 fields and canonical answer bank explicitly acknowledged."
+    },
+    {
+      "case": "Complete indexed-bank target groups",
+      "sample_refs": [
+        "profile-records.json",
+        "profile-results.json",
+        "profile-delivery/accepted.json",
+        "postdelivery-bank-results.json"
+      ],
+      "result": "1,765 profiles \u00d74 targets=7,060 records. All groups retain four target answers after actual normalization/deduplication."
+    },
+    {
+      "case": "Complete square-bank target pairs",
+      "sample_refs": [
+        "profile-records.json",
+        "profile-results.json",
+        "profile-delivery/accepted.json"
+      ],
+      "result": "21 pairs \u00d74 foil indices \u00d72 inverted bases \u00d72 targets=336 records. Integer and decimal targets, both magnitude orientations and both inverted-base assignments verified."
+    },
+    {
+      "case": "Fresh count5 delivered distribution and requested batch",
+      "sample_refs": [
+        "shortcut-trials.json",
+        "shortcut-results.json",
+        "runner-batch.json",
+        "batch-delivery/delivery.json",
+        "coverage-results.json"
+      ],
+      "result": "512 independent publications retain2,560/2,560 records. Runner batch retains5/5. Initial broader312-record audit deduplicates9 records to303 without losing template/decision classes."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Hold complete answer multiset fixed; change radicand and/or root index, including all four indexed targets and both square targets.",
+      "expected": "Correct mathematical value changes; prompt, solution substitutions and final equality follow target; old target selection becomes rejected and new target selection accepted.",
+      "observed": "All relevant pairs pass independent arithmetic and actual cross-submitted native outcomes. Rendered index3\u219210, base2\u219215, square2\u21923, and decimal1.8\u21922.5 pairs show coherent prompts, keys and solutions.",
+      "status": "passed",
+      "justification": "The tutorial identity depends on both radicand and index. Particular source assignments are incidental, so eligible targets must not be fixed by their bank.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-input.json",
+        "grader-results.json",
+        "render-all/input.json",
+        "render-inspection.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Change only order_seed51\u219252 for sqrt[7]{9}.",
+      "expected": "Correct mathematical value and prompt/solution preserved; correct position can move.",
+      "observed": "9^(1/7) moves from third to second displayed position; both native selections accepted; other choices rejected; both screenshots inspected.",
+      "status": "passed",
+      "justification": "Choice order is absent from the mathematical identity and must not determine the response.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-results.json",
+        "render-all/question-009.html",
+        "render-all/question-010.html",
+        "render-inspection.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "visual answer position",
+      "subgroup": "indexed-equation / accepted fresh trials",
+      "scope": "within_template",
+      "strategy": "Always select the first displayed choice.",
+      "correct": 180,
+      "total": 869,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-choice blind baseline is0.20. Observed first-position success remains near chance and every position occurs; source template identity does not determine position.",
+      "sample_refs": [
+        "shortcut-trials.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "base1 foil numerator and denominator",
+      "subgroup": "indexed-equation / accepted fresh trials",
+      "scope": "within_template",
+      "strategy": "Read 1^(u/v) from answer bank, choose u^(1/v), without inspecting prompt.",
+      "correct": 203,
+      "total": 869,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "After recognizing the base1 distractor, there are four unit-fraction candidates: baseline0.25. Old perfect cue now succeeds203/869 or235/874, consistent with independently assigned foil parameters. Full target groups refute fixed-role inference.",
+      "sample_refs": [
+        "shortcut-trials.json",
+        "shortcut-results.json",
+        "profile-results.json"
+      ]
+    },
+    {
+      "cue": "visual answer position",
+      "subgroup": "indexed-what / accepted fresh trials",
+      "scope": "within_template",
+      "strategy": "Always select the first displayed choice.",
+      "correct": 172,
+      "total": 874,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-choice blind baseline is0.20. Observed first-position success remains near chance and every position occurs; source template identity does not determine position.",
+      "sample_refs": [
+        "shortcut-trials.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "base1 foil numerator and denominator",
+      "subgroup": "indexed-what / accepted fresh trials",
+      "scope": "within_template",
+      "strategy": "Read 1^(u/v) from answer bank, choose u^(1/v), without inspecting prompt.",
+      "correct": 235,
+      "total": 874,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "After recognizing the base1 distractor, there are four unit-fraction candidates: baseline0.25. Old perfect cue now succeeds203/869 or235/874, consistent with independently assigned foil parameters. Full target groups refute fixed-role inference.",
+      "sample_refs": [
+        "shortcut-trials.json",
+        "shortcut-results.json",
+        "profile-results.json"
+      ]
+    },
+    {
+      "cue": "visual answer position",
+      "subgroup": "square-equation / accepted fresh trials",
+      "scope": "within_template",
+      "strategy": "Always select the first displayed choice.",
+      "correct": 153,
+      "total": 817,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-choice blind baseline is0.20. Observed first-position success remains near chance and every position occurs; source template identity does not determine position.",
+      "sample_refs": [
+        "shortcut-trials.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "recognizable square bank containing both 2^(1/2) and3^(1/2)",
+      "subgroup": "raw / pair{2,3}",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose 2^(1/2) using only answer-bank values.",
+      "correct": 15,
+      "total": 29,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline0.50 is random choice between the two square-root candidates, after using intended n=2 knowledge. Old34/37 conditional sampling bias is absent: first-square exact probability1/2, empirical9/17; raw/postdelivery15/29. Learner model is conditional on usable fresh easy items and positive easy weight; prospective DB IDs/history are not captured.",
+      "sample_refs": [
+        "shortcut-trials.json",
+        "shortcut-results.json",
+        "selection-records.json"
+      ]
+    },
+    {
+      "cue": "recognizable square bank containing both 2^(1/2) and3^(1/2)",
+      "subgroup": "accepted / pair{2,3}",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose 2^(1/2) using only answer-bank values.",
+      "correct": 15,
+      "total": 29,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline0.50 is random choice between the two square-root candidates, after using intended n=2 knowledge. Old34/37 conditional sampling bias is absent: first-square exact probability1/2, empirical9/17; raw/postdelivery15/29. Learner model is conditional on usable fresh easy items and positive easy weight; prospective DB IDs/history are not captured.",
+      "sample_refs": [
+        "shortcut-trials.json",
+        "shortcut-results.json",
+        "selection-records.json"
+      ]
+    },
+    {
+      "cue": "recognizable square bank containing both 2^(1/2) and3^(1/2)",
+      "subgroup": "learner_no_history / pair{2,3}",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose 2^(1/2) using only answer-bank values.",
+      "correct": 37,
+      "total": 65,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline0.50 is random choice between the two square-root candidates, after using intended n=2 knowledge. Old34/37 conditional sampling bias is absent: first-square exact probability1/2, empirical9/17; raw/postdelivery15/29. Learner model is conditional on usable fresh easy items and positive easy weight; prospective DB IDs/history are not captured.",
+      "sample_refs": [
+        "shortcut-trials.json",
+        "shortcut-results.json",
+        "selection-records.json"
+      ]
+    },
+    {
+      "cue": "recognizable square bank containing both 2^(1/2) and3^(1/2)",
+      "subgroup": "learner_progressive_history / pair{2,3}",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose 2^(1/2) using only answer-bank values.",
+      "correct": 15,
+      "total": 29,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline0.50 is random choice between the two square-root candidates, after using intended n=2 knowledge. Old34/37 conditional sampling bias is absent: first-square exact probability1/2, empirical9/17; raw/postdelivery15/29. Learner model is conditional on usable fresh easy items and positive easy weight; prospective DB IDs/history are not captured.",
+      "sample_refs": [
+        "shortcut-trials.json",
+        "shortcut-results.json",
+        "selection-records.json"
+      ]
+    },
+    {
+      "cue": "answer-bank numerical rank or power shape",
+      "subgroup": "indexed-equation / complete accepted target groups",
+      "scope": "within_template",
+      "strategy": "base1-foil reconstruction",
+      "correct": 883,
+      "total": 3532,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline0.25 is uniform choice among four indexed or two square eligible targets within the same bank. Observed883/3532 equals that baseline. Bank-only strategy cannot identify which prompt target is asked, including conditional decimal/integer and foil-index subgroups.",
+      "sample_refs": [
+        "profile-delivery/accepted.json",
+        "profile-results.json",
+        "conditional-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "answer-bank numerical rank or power shape",
+      "subgroup": "indexed-equation / complete accepted target groups",
+      "scope": "within_template",
+      "strategy": "smallest base and denominator",
+      "correct": 883,
+      "total": 3532,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline0.25 is uniform choice among four indexed or two square eligible targets within the same bank. Observed883/3532 equals that baseline. Bank-only strategy cannot identify which prompt target is asked, including conditional decimal/integer and foil-index subgroups.",
+      "sample_refs": [
+        "profile-delivery/accepted.json",
+        "profile-results.json",
+        "conditional-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "answer-bank numerical rank or power shape",
+      "subgroup": "indexed-what / complete accepted target groups",
+      "scope": "within_template",
+      "strategy": "base1-foil reconstruction",
+      "correct": 882,
+      "total": 3528,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline0.25 is uniform choice among four indexed or two square eligible targets within the same bank. Observed882/3528 equals that baseline. Bank-only strategy cannot identify which prompt target is asked, including conditional decimal/integer and foil-index subgroups.",
+      "sample_refs": [
+        "profile-delivery/accepted.json",
+        "profile-results.json",
+        "conditional-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "answer-bank numerical rank or power shape",
+      "subgroup": "indexed-what / complete accepted target groups",
+      "scope": "within_template",
+      "strategy": "smallest base and denominator",
+      "correct": 882,
+      "total": 3528,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline0.25 is uniform choice among four indexed or two square eligible targets within the same bank. Observed882/3528 equals that baseline. Bank-only strategy cannot identify which prompt target is asked, including conditional decimal/integer and foil-index subgroups.",
+      "sample_refs": [
+        "profile-delivery/accepted.json",
+        "profile-results.json",
+        "conditional-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "answer-bank numerical rank or power shape",
+      "subgroup": "square-equation/integer/foil=1 / complete accepted target groups",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "copy inverted-power base",
+      "correct": 26,
+      "total": 52,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline0.5 is uniform choice among four indexed or two square eligible targets within the same bank. Observed26/52 equals that baseline. Bank-only strategy cannot identify which prompt target is asked, including conditional decimal/integer and foil-index subgroups.",
+      "sample_refs": [
+        "profile-delivery/accepted.json",
+        "profile-results.json",
+        "conditional-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "answer-bank numerical rank or power shape",
+      "subgroup": "square-equation/integer/foil=1 / complete accepted target groups",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "choose smaller square-root base",
+      "correct": 26,
+      "total": 52,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline0.5 is uniform choice among four indexed or two square eligible targets within the same bank. Observed26/52 equals that baseline. Bank-only strategy cannot identify which prompt target is asked, including conditional decimal/integer and foil-index subgroups.",
+      "sample_refs": [
+        "profile-delivery/accepted.json",
+        "profile-results.json",
+        "conditional-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "answer-bank numerical rank or power shape",
+      "subgroup": "square-equation/integer/foil=3 / complete accepted target groups",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "copy inverted-power base",
+      "correct": 26,
+      "total": 52,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline0.5 is uniform choice among four indexed or two square eligible targets within the same bank. Observed26/52 equals that baseline. Bank-only strategy cannot identify which prompt target is asked, including conditional decimal/integer and foil-index subgroups.",
+      "sample_refs": [
+        "profile-delivery/accepted.json",
+        "profile-results.json",
+        "conditional-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "answer-bank numerical rank or power shape",
+      "subgroup": "square-equation/integer/foil=3 / complete accepted target groups",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "choose smaller square-root base",
+      "correct": 26,
+      "total": 52,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline0.5 is uniform choice among four indexed or two square eligible targets within the same bank. Observed26/52 equals that baseline. Bank-only strategy cannot identify which prompt target is asked, including conditional decimal/integer and foil-index subgroups.",
+      "sample_refs": [
+        "profile-delivery/accepted.json",
+        "profile-results.json",
+        "conditional-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "answer-bank numerical rank or power shape",
+      "subgroup": "square-equation/integer/foil=4 / complete accepted target groups",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "copy inverted-power base",
+      "correct": 26,
+      "total": 52,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline0.5 is uniform choice among four indexed or two square eligible targets within the same bank. Observed26/52 equals that baseline. Bank-only strategy cannot identify which prompt target is asked, including conditional decimal/integer and foil-index subgroups.",
+      "sample_refs": [
+        "profile-delivery/accepted.json",
+        "profile-results.json",
+        "conditional-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "answer-bank numerical rank or power shape",
+      "subgroup": "square-equation/integer/foil=4 / complete accepted target groups",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "choose smaller square-root base",
+      "correct": 26,
+      "total": 52,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline0.5 is uniform choice among four indexed or two square eligible targets within the same bank. Observed26/52 equals that baseline. Bank-only strategy cannot identify which prompt target is asked, including conditional decimal/integer and foil-index subgroups.",
+      "sample_refs": [
+        "profile-delivery/accepted.json",
+        "profile-results.json",
+        "conditional-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "answer-bank numerical rank or power shape",
+      "subgroup": "square-equation/integer/foil=5 / complete accepted target groups",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "copy inverted-power base",
+      "correct": 26,
+      "total": 52,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline0.5 is uniform choice among four indexed or two square eligible targets within the same bank. Observed26/52 equals that baseline. Bank-only strategy cannot identify which prompt target is asked, including conditional decimal/integer and foil-index subgroups.",
+      "sample_refs": [
+        "profile-delivery/accepted.json",
+        "profile-results.json",
+        "conditional-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "answer-bank numerical rank or power shape",
+      "subgroup": "square-equation/integer/foil=5 / complete accepted target groups",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "choose smaller square-root base",
+      "correct": 26,
+      "total": 52,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline0.5 is uniform choice among four indexed or two square eligible targets within the same bank. Observed26/52 equals that baseline. Bank-only strategy cannot identify which prompt target is asked, including conditional decimal/integer and foil-index subgroups.",
+      "sample_refs": [
+        "profile-delivery/accepted.json",
+        "profile-results.json",
+        "conditional-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "answer-bank numerical rank or power shape",
+      "subgroup": "square-equation/decimal/foil=1 / complete accepted target groups",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "copy inverted-power base",
+      "correct": 16,
+      "total": 32,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline0.5 is uniform choice among four indexed or two square eligible targets within the same bank. Observed16/32 equals that baseline. Bank-only strategy cannot identify which prompt target is asked, including conditional decimal/integer and foil-index subgroups.",
+      "sample_refs": [
+        "profile-delivery/accepted.json",
+        "profile-results.json",
+        "conditional-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "answer-bank numerical rank or power shape",
+      "subgroup": "square-equation/decimal/foil=1 / complete accepted target groups",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "choose smaller square-root base",
+      "correct": 16,
+      "total": 32,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline0.5 is uniform choice among four indexed or two square eligible targets within the same bank. Observed16/32 equals that baseline. Bank-only strategy cannot identify which prompt target is asked, including conditional decimal/integer and foil-index subgroups.",
+      "sample_refs": [
+        "profile-delivery/accepted.json",
+        "profile-results.json",
+        "conditional-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "answer-bank numerical rank or power shape",
+      "subgroup": "square-equation/decimal/foil=3 / complete accepted target groups",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "copy inverted-power base",
+      "correct": 16,
+      "total": 32,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline0.5 is uniform choice among four indexed or two square eligible targets within the same bank. Observed16/32 equals that baseline. Bank-only strategy cannot identify which prompt target is asked, including conditional decimal/integer and foil-index subgroups.",
+      "sample_refs": [
+        "profile-delivery/accepted.json",
+        "profile-results.json",
+        "conditional-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "answer-bank numerical rank or power shape",
+      "subgroup": "square-equation/decimal/foil=3 / complete accepted target groups",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "choose smaller square-root base",
+      "correct": 16,
+      "total": 32,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline0.5 is uniform choice among four indexed or two square eligible targets within the same bank. Observed16/32 equals that baseline. Bank-only strategy cannot identify which prompt target is asked, including conditional decimal/integer and foil-index subgroups.",
+      "sample_refs": [
+        "profile-delivery/accepted.json",
+        "profile-results.json",
+        "conditional-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "answer-bank numerical rank or power shape",
+      "subgroup": "square-equation/decimal/foil=4 / complete accepted target groups",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "copy inverted-power base",
+      "correct": 16,
+      "total": 32,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline0.5 is uniform choice among four indexed or two square eligible targets within the same bank. Observed16/32 equals that baseline. Bank-only strategy cannot identify which prompt target is asked, including conditional decimal/integer and foil-index subgroups.",
+      "sample_refs": [
+        "profile-delivery/accepted.json",
+        "profile-results.json",
+        "conditional-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "answer-bank numerical rank or power shape",
+      "subgroup": "square-equation/decimal/foil=4 / complete accepted target groups",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "choose smaller square-root base",
+      "correct": 16,
+      "total": 32,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline0.5 is uniform choice among four indexed or two square eligible targets within the same bank. Observed16/32 equals that baseline. Bank-only strategy cannot identify which prompt target is asked, including conditional decimal/integer and foil-index subgroups.",
+      "sample_refs": [
+        "profile-delivery/accepted.json",
+        "profile-results.json",
+        "conditional-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "answer-bank numerical rank or power shape",
+      "subgroup": "square-equation/decimal/foil=5 / complete accepted target groups",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "copy inverted-power base",
+      "correct": 16,
+      "total": 32,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline0.5 is uniform choice among four indexed or two square eligible targets within the same bank. Observed16/32 equals that baseline. Bank-only strategy cannot identify which prompt target is asked, including conditional decimal/integer and foil-index subgroups.",
+      "sample_refs": [
+        "profile-delivery/accepted.json",
+        "profile-results.json",
+        "conditional-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "answer-bank numerical rank or power shape",
+      "subgroup": "square-equation/decimal/foil=5 / complete accepted target groups",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "choose smaller square-root base",
+      "correct": 16,
+      "total": 32,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline0.5 is uniform choice among four indexed or two square eligible targets within the same bank. Observed16/32 equals that baseline. Bank-only strategy cannot identify which prompt target is asked, including conditional decimal/integer and foil-index subgroups.",
+      "sample_refs": [
+        "profile-delivery/accepted.json",
+        "profile-results.json",
+        "conditional-shortcuts.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "generator valid-domain construction and unused-target exclusion; no rejection loop",
+      "requested easy difficulty filtering",
+      "publisher prepare_records normalization and KP/question validation",
+      "captured inventory basis4319 and within-batch content deduplication",
+      "learner select(): usable/fresh pool, positive easy band, SHA256 uniform selection within band; history exclusion and unconfigured/zero-weight limits inspected"
+    ],
+    "sample_refs": [
+      "boundary-results.json",
+      "sample-runs.json",
+      "delivery/delivery.json",
+      "batch-delivery/delivery.json",
+      "profile-delivery/delivery.json",
+      "postdelivery-bank-results.json",
+      "shortcut-trials.json",
+      "shortcut-results.json",
+      "selection-records.json"
+    ],
+    "result": "All complete-bank decision groups survive filtering. All5 runner records and2,560 fresh trial records accepted. Learner-model pair{2,3} cue37/65 without history and15/29 with progressive history; exact first-square1/2. All generated records are easy; nonempty easy band and positive easy weight give uniform within-band draws. Unconfigured selection picks lowest DB ID; zero easy weight yields no rated fallback. Neither mode is misrepresented as balanced random practice."
+  },
+  "limitations": [
+    "Captured inventory basis4319; no live publication or learner/database writes. Concurrent inventory changes may alter deduplication.",
+    "Future DB IDs, active policy weights and individual history are not supplied. Learner simulation uses ordinal surrogate IDs with the exact SHA256 draw rule and includes the two usable captured easy questions; conclusions about random learner exposure are conditional on positive easy weighting and fresh usable pool. Unconfigured lowest-ID selection cannot be empirically predicted from this snapshot.",
+    "All1,765 indexed banks tested for four targets with one independently sampled foil assignment each; foil dependence additionally tested in controlled groups and512 fresh batches. Not every RNG seed was exhausted.",
+    "Numeric domain is a conservative finite family, including authored positive-decimal tokens; no claim to exhaust every legitimate radical or every possible incidental cue.",
+    "q-69158 has no captured key, solution or difficulty; those fields are inferred transparently from tutorial identity. Canonical e-4959 has no captured answer bank."
+  ]
+}
