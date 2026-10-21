@@ -1,0 +1,24 @@
+--- old/generator.py
+
++++ current/generator.py
+
+@@ -19,7 +19,7 @@
+
+ KP_ID = 17592186129176
+ KP_UUID = '31c3678b-4f00-54d6-bb84-c7718fd622cb'
+ TITLE = 'Identifying the Leading Entries of a Matrix'
+-VERSION = '1.1.0'
++VERSION = '1.1.1'
+ HERE = Path(__file__).resolve().parent
+ SOURCE = json.loads((HERE / 'source.json').read_text())
+ LINEAGE = '01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1'
+@@ -57,6 +57,8 @@
+
+     return digest({'rows': rows, 'leading': [next((j, x) for j, x in enumerate(m[r]) if x) for r in rows]})
+ 
+ 
++# Build every profile from the complete captured snapshot, including its bank.
++# checks/source_coverage.py compares against an independent capture fixture.
+ CASES = {}
+ for q in SOURCE['record'][':knowledge-point/questions']:
+     p = parse(q[':question/problem'])

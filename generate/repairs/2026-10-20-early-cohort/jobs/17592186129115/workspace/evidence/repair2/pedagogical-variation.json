@@ -1,0 +1,85 @@
+{
+  "fidelity": {
+    "source_banks": 15,
+    "matched_choices": 75,
+    "canonical_transform_valid": true,
+    "canonical_bank": "Not captured; no claim of complete canonical-bank replay.",
+    "evidence": "../source-replay.json"
+  },
+  "correctness": {
+    "method": "Independent parsed visible matrices, operations, transformed solution matrices and unique keys; lower-pivot and zero-row witnesses.",
+    "fresh_sample": 32,
+    "cli_semantic_instances": 64,
+    "cli_zero_structures": 63,
+    "requested_batch": 5,
+    "fixed_bank_controls": 20,
+    "dependency_controls": 5
+  },
+  "grading": {
+    "native_entrypoint": "course_academy_engine::learning::grade_field",
+    "accepted": 63,
+    "rejected": 271,
+    "unexpected": 0,
+    "unresolved": 0,
+    "evidence": "grader-results.json"
+  },
+  "decision_variation": {
+    "construction": "Choose size and bottom-zero-row case, then an offered bank with witnesses for every key; uniform key draw precedes compatible zero-pattern and magnitude selection. Bank rejection never depends on selected key. Therefore any bank-only predictor has conditional success probability 1/5 before later delivery filters.",
+    "old_median_hits": 24,
+    "new_median_hits": 9,
+    "cli_records": 64,
+    "cli_candidates": 70,
+    "all_16_correct_coordinate_slots_observed": true,
+    "coordinate_counts": {
+      "a23": 8,
+      "a32": 12,
+      "a14": 9,
+      "a33": 12,
+      "a42": 15,
+      "a13": 8,
+      "a24": 8,
+      "a12": 9,
+      "a44": 13,
+      "a34": 12,
+      "a22": 5,
+      "a11": 8,
+      "a41": 5,
+      "a21": 8,
+      "a31": 14,
+      "a43": 12
+    },
+    "nonzero_entries_actually_changed": {
+      "1": 37,
+      "3": 3,
+      "2": 24
+    },
+    "case_counts": {
+      "(2, True)": 18,
+      "(3, False)": 13,
+      "(2, False)": 16,
+      "(3, True)": 17
+    },
+    "controls": "Four fixed banks each realize all five keys under independently enumerated visible matrix changes.",
+    "irrelevant_changes": "Nonzero rescaling preserves the bank and key; see ../counterfactual-results.json.",
+    "probes": "regression/results.json",
+    "delivery": "64 CLI + 20 fixed-bank controls + 5 requested batch + 5 additional CLI + 5 dependency records survive shared filtering. CLI and controlled-case probes are preserved.",
+    "shortcut_scope": "Matrix-blind rank, position, coordinate frequency/sum/span, first-row and gap cues tested per size/zero-row case. No rank/position family-wise alarm, no deterministic predictor found. No-op counting alone never identifies a fresh key; it uses relevant matrix evidence and may help elimination."
+  },
+  "instructional_extension": {
+    "scope": "Same two echelon conditions, four by four ordinary integer matrix, five offered operations, two/three named coordinates. Full compatible zero patterns replace the legacy minimum-edit catalogue. Original profiles/explicit valid banks retained.",
+    "limits": "Correct operations may include zero or redundant coordinates. In the delivered CLI sample 37/64 change only one nonzero entry (while naming two/three coordinates), 24 change two, 3 change three. This is a disclosed same-method extension of operation selection; it is not a claim of a fixed minimum-edit workload."
+  },
+  "rendering": {
+    "actual_ui_renders": 4,
+    "screenshots_visually_inspected": [
+      "render/question-001.png",
+      "render/question-002.png",
+      "render/question-003.png",
+      "render/question-004.png"
+    ],
+    "observations": "Readable subscripts, radio choices and side-by-side full matrix transformations; no clipping or overlap observed."
+  },
+  "packaging": "Declared files alone relocate and reproduce exact five-record CLI output; standard library only; runtime hashes unchanged after checks.",
+  "inventory": "All 20 captured records inspected. Five non-source candidates attempted; no historical metadata/matching generated identity. Empty affected-inventory is not verified absence.",
+  "selection_limits": "Read question_selection.rs select and seen_before_task. Seen history excludes prior task contents; positive-weight moderate band selects within eligible pool, while unconfigured distribution returns first eligible ID. Future allocated IDs, learner history and policy weights are unavailable. Delivery tests use captured inventory basis only."
+}

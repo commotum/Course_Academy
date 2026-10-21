@@ -1,0 +1,24 @@
+Run from evidence_root. Python bytecode generation is disabled to keep the package read-only. No commands publish or access a database.
+
+PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python audit.py
+PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python targeted.py
+PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python strict-regressions.py > strict-current-results.txt 2>&1
+REVIEW_GENERATOR_ROOT=../review-0-policy-2-e45bbb237eaca1f1/relocated PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python strict-regressions.py > strict-prior-results.txt 2>&1
+# The prior-generator command intentionally fails: two ValueErrors and one assertion failure.
+PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python ../workspace/checks/regressions.py > author-regression-results.txt 2>&1
+PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py --input independent-samples.json --source ../source/source.json --inventory ../source/inventory.json --difficulty moderate --output delivery-independent --math-root /media/jake/SSD/EDB/math
+PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py --input batch-records.json --source ../source/source.json --inventory ../source/inventory.json --difficulty moderate --output delivery-batch --math-root /media/jake/SSD/EDB/math
+PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python cue_probe.py
+PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py --input cue-control-records.json --source ../source/source.json --inventory ../source/inventory.json --difficulty moderate --output delivery-cue-control --math-root /media/jake/SSD/EDB/math
+PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python shortcut_reproduction.py
+PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python delivery_selection.py
+PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py --input cli-control-records.json --source ../source/source.json --inventory ../source/inventory.json --difficulty moderate --output delivery-cli-control --math-root /media/jake/SSD/EDB/math
+/home/jake/Developer/Course_Academy/generate/runs/current/check-engine grader-input.json grader-results.json
+PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/render_preview.py --input render-records.json --output render-full --limit 9 --math-root /media/jake/SSD/EDB/math
+PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/render_preview.py --input target-render-input.json --output render-target --limit 2 --math-root /media/jake/SSD/EDB/math
+PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python inventory_review.py
+python3 finalize.py
+python3 validate_evidence.py
+
+Fresh seeds: 815921..815944 for initial regression sample; 932611..932706 for held-out cue control. Actual CLI resampling: seed 932611, count 64, consumes 77 candidates and skips 13 fingerprints. Exact batch seeds: 431440324..431440328.
+Minimal new-defect witness: generate('moderate', 431440325), complete record shortcut-minimal-records.json. Its keyed coordinate set is the lexicographic median; both available side pools have 12 wrong choices. Exact median probability from bank construction = choose(4,2)/16 = 3/8, independent of numerical matrix values.

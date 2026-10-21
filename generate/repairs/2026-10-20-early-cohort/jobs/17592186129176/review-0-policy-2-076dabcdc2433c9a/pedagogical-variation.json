@@ -1,0 +1,1206 @@
+{
+  "learner_operation": "Identify the first nonzero entry from the left in each requested matrix row and add those entries.",
+  "fixed_features": [
+    {
+      "feature": "4 by 4 matrix and two or three selected rows",
+      "justification": "All supplied questions share this workload; preserves easy difficulty."
+    },
+    {
+      "feature": "nonzero selected rows",
+      "justification": "Tutorial states zero rows have no leading entry; summing nonexistent entries is undefined."
+    },
+    {
+      "feature": "Five numeric radio choices",
+      "justification": "All captured question banks use this response contract; selected position and numeric rank are incidental."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Requested row subset",
+      "eligible_variation": "Any of six pairs or four triples of four rows.",
+      "observed": "All ten subsets observed across fresh samples; four subsets in exact five-record batch."
+    },
+    {
+      "role": "First nonzero column in a requested row",
+      "eligible_variation": "Any column 1 to 4, independently of row index or template.",
+      "observed": "All four columns observed before and after delivery; controlled earlier-entry change updates the key."
+    },
+    {
+      "role": "Leading signed value and sum",
+      "eligible_variation": "Nonzero small signed integer values, cancellation, negative/zero/positive sums.",
+      "observed": "Fresh sample sums: 156 negative, 18 zero, 162 positive; exact batch: 3 negative and 2 positive."
+    },
+    {
+      "role": "Correct bank value rank and visible position",
+      "eligible_variation": "Any bank rank or UI position; no instructional reason to preserve source key rank.",
+      "observed": "All five numeric ranks in fresh samples; exact delivered batch ranks [1,1,0,1,2] using zero-based ranks. Actual preview visible positions [4,2,2,3,3], zero-based. No fixed action answers all five."
+    },
+    {
+      "role": "Complete source bank profile",
+      "eligible_variation": "Every captured complete numeric bank should be reproducible.",
+      "observed": "Defect: q-129207 is absent from embedded CASES; its gap pattern [4,2,6,3] cannot be obtained by translating any existing profile. This fails source replay and variety, separately from fixed-role shortcut tests."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "Profile and row/column coverage before and after filtering",
+      "sample_refs": [
+        "fresh-records.json",
+        "delivery-fresh/accepted.json",
+        "coverage-results.json"
+      ],
+      "result": "336 records, 24 for each of 14 supported profiles; all ten requested subsets, all four leading columns, all five ranks. All survive captured-inventory filtering unchanged in these decision measurements."
+    },
+    {
+      "case": "Exact runner batch after delivery",
+      "sample_refs": [
+        "batch-records.json",
+        "delivery-batch/accepted.json",
+        "coverage-results.json",
+        "render-delivered/rendering.json"
+      ],
+      "result": "5/5 accepted, four distinct requested subsets, both signs, three numeric key ranks; no uniform visible-position answer in actual UI. No claim that five samples cover all outcomes."
+    },
+    {
+      "case": "Source profile coverage failure",
+      "sample_refs": [
+        "unsupported-source.json",
+        "source-coverage-failure.json",
+        "bank-shapes.json"
+      ],
+      "result": "Only 14 of 15 captured banks replay; strict executable assertion fails on q-129207."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Increase first requested leading value 2 to 3; hold rows, other entries, seed, profile, bank anchor fixed.",
+      "expected": "Answer -1 becomes 0.",
+      "observed": "Rendered 3+(-3)=0; native grader rejects choice 0 in base and accepts it after the change.",
+      "status": "passed",
+      "justification": "The source operation depends on target rows and the first nonzero values within them.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-input-final.json",
+        "grader-results-final.json",
+        "render-additional/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "Replace first row initial zero by 5, leaving its later 2 in place.",
+      "expected": "First nonzero moves earlier; answer -1 becomes 2.",
+      "observed": "Rendered matrix shows 5,2,5,-1 in first row; explanation uses 5+(-3)=2. Choice 2 changes from rejected in base to accepted.",
+      "status": "passed",
+      "justification": "The source operation depends on target rows and the first nonzero values within them.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-input-final.json",
+        "grader-results-final.json",
+        "render-additional/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "Keep entire matrix fixed; change target rows [0,1] to [0,2].",
+      "expected": "Answer -1 becomes 6.",
+      "observed": "Prompt changes 1st/2nd to 1st/3rd; solution uses 2 and 4; native grader accepts 6 and rejects all four distractors.",
+      "status": "passed",
+      "justification": "The source operation depends on target rows and the first nonzero values within them.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-input-final.json",
+        "grader-results-final.json",
+        "render-additional/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Change trailing first-row entry 5 to 9, after its leading 2.",
+      "expected": "Answer remains -1.",
+      "observed": "Rendered changed matrix and preserved 2+(-3)=-1 explanation; same numeric bank and native acceptance of -1, with every distractor rejected.",
+      "status": "passed",
+      "justification": "Only first nonzero entries of requested rows contribute, per tutorial 3148 and the canonical example.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-input-final.json",
+        "grader-results-final.json",
+        "render-additional/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Change unselected third row [4,0,6,-2] to [-9,8,7,6].",
+      "expected": "Answer remains -1.",
+      "observed": "Rendered changed matrix and preserved 2+(-3)=-1 explanation; same numeric bank and native acceptance of -1, with every distractor rejected.",
+      "status": "passed",
+      "justification": "Only first nonzero entries of requested rows contribute, per tutorial 3148 and the canonical example.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-input-final.json",
+        "grader-results-final.json",
+        "render-additional/rendering.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "choose numeric rank 0",
+      "subgroup": "fresh before/after delivery",
+      "scope": "overall",
+      "strategy": "choose numeric rank 0",
+      "correct": 69,
+      "total": 336,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio choices give a 0.2 uniform-choice baseline. 69/336 in this finite subgroup; no source-backed deterministic answer rule established by this cue.",
+      "sample_refs": [
+        "fresh-records.json"
+      ]
+    },
+    {
+      "cue": "choose numeric rank 1",
+      "subgroup": "fresh before/after delivery",
+      "scope": "overall",
+      "strategy": "choose numeric rank 1",
+      "correct": 63,
+      "total": 336,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio choices give a 0.2 uniform-choice baseline. 63/336 in this finite subgroup; no source-backed deterministic answer rule established by this cue.",
+      "sample_refs": [
+        "fresh-records.json"
+      ]
+    },
+    {
+      "cue": "choose numeric rank 2",
+      "subgroup": "fresh before/after delivery",
+      "scope": "overall",
+      "strategy": "choose numeric rank 2",
+      "correct": 63,
+      "total": 336,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio choices give a 0.2 uniform-choice baseline. 63/336 in this finite subgroup; no source-backed deterministic answer rule established by this cue.",
+      "sample_refs": [
+        "fresh-records.json"
+      ]
+    },
+    {
+      "cue": "choose numeric rank 3",
+      "subgroup": "fresh before/after delivery",
+      "scope": "overall",
+      "strategy": "choose numeric rank 3",
+      "correct": 71,
+      "total": 336,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio choices give a 0.2 uniform-choice baseline. 71/336 in this finite subgroup; no source-backed deterministic answer rule established by this cue.",
+      "sample_refs": [
+        "fresh-records.json"
+      ]
+    },
+    {
+      "cue": "choose numeric rank 4",
+      "subgroup": "fresh before/after delivery",
+      "scope": "overall",
+      "strategy": "choose numeric rank 4",
+      "correct": 70,
+      "total": 336,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio choices give a 0.2 uniform-choice baseline. 70/336 in this finite subgroup; no source-backed deterministic answer rule established by this cue.",
+      "sample_refs": [
+        "fresh-records.json"
+      ]
+    },
+    {
+      "cue": "choose raw position 0",
+      "subgroup": "fresh before/after delivery",
+      "scope": "overall",
+      "strategy": "choose raw position 0",
+      "correct": 63,
+      "total": 336,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio choices give a 0.2 uniform-choice baseline. 63/336 in this finite subgroup; no source-backed deterministic answer rule established by this cue.",
+      "sample_refs": [
+        "fresh-records.json"
+      ]
+    },
+    {
+      "cue": "choose raw position 1",
+      "subgroup": "fresh before/after delivery",
+      "scope": "overall",
+      "strategy": "choose raw position 1",
+      "correct": 62,
+      "total": 336,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio choices give a 0.2 uniform-choice baseline. 62/336 in this finite subgroup; no source-backed deterministic answer rule established by this cue.",
+      "sample_refs": [
+        "fresh-records.json"
+      ]
+    },
+    {
+      "cue": "choose raw position 2",
+      "subgroup": "fresh before/after delivery",
+      "scope": "overall",
+      "strategy": "choose raw position 2",
+      "correct": 80,
+      "total": 336,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio choices give a 0.2 uniform-choice baseline. 80/336 in this finite subgroup; no source-backed deterministic answer rule established by this cue.",
+      "sample_refs": [
+        "fresh-records.json"
+      ]
+    },
+    {
+      "cue": "choose raw position 3",
+      "subgroup": "fresh before/after delivery",
+      "scope": "overall",
+      "strategy": "choose raw position 3",
+      "correct": 59,
+      "total": 336,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio choices give a 0.2 uniform-choice baseline. 59/336 in this finite subgroup; no source-backed deterministic answer rule established by this cue.",
+      "sample_refs": [
+        "fresh-records.json"
+      ]
+    },
+    {
+      "cue": "choose raw position 4",
+      "subgroup": "fresh before/after delivery",
+      "scope": "overall",
+      "strategy": "choose raw position 4",
+      "correct": 72,
+      "total": 336,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio choices give a 0.2 uniform-choice baseline. 72/336 in this finite subgroup; no source-backed deterministic answer rule established by this cue.",
+      "sample_refs": [
+        "fresh-records.json"
+      ]
+    },
+    {
+      "cue": "sum diagonal entries of requested rows",
+      "subgroup": "fresh before/after delivery",
+      "scope": "overall",
+      "strategy": "sum diagonal entries of requested rows",
+      "correct": 25,
+      "total": 336,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio choices give a 0.2 uniform-choice baseline. 25/336 in this finite subgroup; no source-backed deterministic answer rule established by this cue.",
+      "sample_refs": [
+        "fresh-records.json"
+      ]
+    },
+    {
+      "cue": "sum first-column entries of requested rows",
+      "subgroup": "fresh before/after delivery",
+      "scope": "overall",
+      "strategy": "sum first-column entries of requested rows",
+      "correct": 25,
+      "total": 336,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio choices give a 0.2 uniform-choice baseline. 25/336 in this finite subgroup; no source-backed deterministic answer rule established by this cue.",
+      "sample_refs": [
+        "fresh-records.json"
+      ]
+    },
+    {
+      "cue": "sum last-column entries of requested rows",
+      "subgroup": "fresh before/after delivery",
+      "scope": "overall",
+      "strategy": "sum last-column entries of requested rows",
+      "correct": 34,
+      "total": 336,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio choices give a 0.2 uniform-choice baseline. 34/336 in this finite subgroup; no source-backed deterministic answer rule established by this cue.",
+      "sample_refs": [
+        "fresh-records.json"
+      ]
+    },
+    {
+      "cue": "ignore targets and sum all leading entries",
+      "subgroup": "fresh before/after delivery",
+      "scope": "overall",
+      "strategy": "ignore targets and sum all leading entries",
+      "correct": 10,
+      "total": 336,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio choices give a 0.2 uniform-choice baseline. 10/336 in this finite subgroup; no source-backed deterministic answer rule established by this cue.",
+      "sample_refs": [
+        "fresh-records.json"
+      ]
+    },
+    {
+      "cue": "choose numeric rank 1",
+      "subgroup": "fresh before/after delivery/sum_2_rows",
+      "scope": "within_template",
+      "strategy": "choose numeric rank 1",
+      "correct": 40,
+      "total": 216,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio choices give a 0.2 uniform-choice baseline. 40/216 in this finite subgroup; no source-backed deterministic answer rule established by this cue.",
+      "sample_refs": [
+        "fresh-records.json"
+      ]
+    },
+    {
+      "cue": "choose numeric rank 2",
+      "subgroup": "fresh before/after delivery/sum_2_rows",
+      "scope": "within_template",
+      "strategy": "choose numeric rank 2",
+      "correct": 40,
+      "total": 216,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio choices give a 0.2 uniform-choice baseline. 40/216 in this finite subgroup; no source-backed deterministic answer rule established by this cue.",
+      "sample_refs": [
+        "fresh-records.json"
+      ]
+    },
+    {
+      "cue": "choose raw position 0",
+      "subgroup": "fresh before/after delivery/sum_2_rows",
+      "scope": "within_template",
+      "strategy": "choose raw position 0",
+      "correct": 42,
+      "total": 216,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio choices give a 0.2 uniform-choice baseline. 42/216 in this finite subgroup; no source-backed deterministic answer rule established by this cue.",
+      "sample_refs": [
+        "fresh-records.json"
+      ]
+    },
+    {
+      "cue": "sum diagonal entries of requested rows",
+      "subgroup": "fresh before/after delivery/sum_2_rows",
+      "scope": "within_template",
+      "strategy": "sum diagonal entries of requested rows",
+      "correct": 23,
+      "total": 216,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio choices give a 0.2 uniform-choice baseline. 23/216 in this finite subgroup; no source-backed deterministic answer rule established by this cue.",
+      "sample_refs": [
+        "fresh-records.json"
+      ]
+    },
+    {
+      "cue": "ignore targets and sum all leading entries",
+      "subgroup": "fresh before/after delivery/sum_2_rows",
+      "scope": "within_template",
+      "strategy": "ignore targets and sum all leading entries",
+      "correct": 10,
+      "total": 216,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio choices give a 0.2 uniform-choice baseline. 10/216 in this finite subgroup; no source-backed deterministic answer rule established by this cue.",
+      "sample_refs": [
+        "fresh-records.json"
+      ]
+    },
+    {
+      "cue": "choose numeric rank 1",
+      "subgroup": "fresh before/after delivery/sum_3_rows",
+      "scope": "within_template",
+      "strategy": "choose numeric rank 1",
+      "correct": 23,
+      "total": 120,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio choices give a 0.2 uniform-choice baseline. 23/120 in this finite subgroup; no source-backed deterministic answer rule established by this cue.",
+      "sample_refs": [
+        "fresh-records.json"
+      ]
+    },
+    {
+      "cue": "choose numeric rank 2",
+      "subgroup": "fresh before/after delivery/sum_3_rows",
+      "scope": "within_template",
+      "strategy": "choose numeric rank 2",
+      "correct": 23,
+      "total": 120,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio choices give a 0.2 uniform-choice baseline. 23/120 in this finite subgroup; no source-backed deterministic answer rule established by this cue.",
+      "sample_refs": [
+        "fresh-records.json"
+      ]
+    },
+    {
+      "cue": "choose raw position 0",
+      "subgroup": "fresh before/after delivery/sum_3_rows",
+      "scope": "within_template",
+      "strategy": "choose raw position 0",
+      "correct": 21,
+      "total": 120,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio choices give a 0.2 uniform-choice baseline. 21/120 in this finite subgroup; no source-backed deterministic answer rule established by this cue.",
+      "sample_refs": [
+        "fresh-records.json"
+      ]
+    },
+    {
+      "cue": "sum diagonal entries of requested rows",
+      "subgroup": "fresh before/after delivery/sum_3_rows",
+      "scope": "within_template",
+      "strategy": "sum diagonal entries of requested rows",
+      "correct": 2,
+      "total": 120,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio choices give a 0.2 uniform-choice baseline. 2/120 in this finite subgroup; no source-backed deterministic answer rule established by this cue.",
+      "sample_refs": [
+        "fresh-records.json"
+      ]
+    },
+    {
+      "cue": "ignore targets and sum all leading entries",
+      "subgroup": "fresh before/after delivery/sum_3_rows",
+      "scope": "within_template",
+      "strategy": "ignore targets and sum all leading entries",
+      "correct": 0,
+      "total": 120,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio choices give a 0.2 uniform-choice baseline. 0/120 in this finite subgroup; no source-backed deterministic answer rule established by this cue.",
+      "sample_refs": [
+        "fresh-records.json"
+      ]
+    },
+    {
+      "cue": "choose numeric rank 0",
+      "subgroup": "fresh before/after delivery/numeric gaps (3, 3, 2, 3)",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "choose numeric rank 0",
+      "correct": 5,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio choices give a 0.2 uniform-choice baseline. 5/24 in this finite subgroup; no source-backed deterministic answer rule established by this cue.",
+      "sample_refs": [
+        "fresh-records.json"
+      ]
+    },
+    {
+      "cue": "choose numeric rank 0",
+      "subgroup": "fresh before/after delivery/numeric gaps (5, 2, 3, 2)",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "choose numeric rank 0",
+      "correct": 3,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio choices give a 0.2 uniform-choice baseline. 3/24 in this finite subgroup; no source-backed deterministic answer rule established by this cue.",
+      "sample_refs": [
+        "fresh-records.json"
+      ]
+    },
+    {
+      "cue": "choose numeric rank 0",
+      "subgroup": "fresh before/after delivery/numeric gaps (8, 4, 5, 1)",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "choose numeric rank 0",
+      "correct": 5,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio choices give a 0.2 uniform-choice baseline. 5/24 in this finite subgroup; no source-backed deterministic answer rule established by this cue.",
+      "sample_refs": [
+        "fresh-records.json"
+      ]
+    },
+    {
+      "cue": "choose numeric rank 0",
+      "subgroup": "fresh before/after delivery/numeric gaps (2, 8, 2, 4)",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "choose numeric rank 0",
+      "correct": 5,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio choices give a 0.2 uniform-choice baseline. 5/24 in this finite subgroup; no source-backed deterministic answer rule established by this cue.",
+      "sample_refs": [
+        "fresh-records.json"
+      ]
+    },
+    {
+      "cue": "choose numeric rank 0",
+      "subgroup": "fresh before/after delivery/numeric gaps (7, 10, 4, 2)",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "choose numeric rank 0",
+      "correct": 7,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio choices give a 0.2 uniform-choice baseline. 7/24 in this finite subgroup; no source-backed deterministic answer rule established by this cue.",
+      "sample_refs": [
+        "fresh-records.json"
+      ]
+    },
+    {
+      "cue": "choose numeric rank 0",
+      "subgroup": "fresh before/after delivery/numeric gaps (1, 1, 1, 2)",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "choose numeric rank 0",
+      "correct": 5,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio choices give a 0.2 uniform-choice baseline. 5/24 in this finite subgroup; no source-backed deterministic answer rule established by this cue.",
+      "sample_refs": [
+        "fresh-records.json"
+      ]
+    },
+    {
+      "cue": "choose numeric rank 0",
+      "subgroup": "fresh before/after delivery/numeric gaps (1, 2, 1, 2)",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "choose numeric rank 0",
+      "correct": 10,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio choices give a 0.2 uniform-choice baseline. 10/24 in this finite subgroup; no source-backed deterministic answer rule established by this cue.",
+      "sample_refs": [
+        "fresh-records.json"
+      ]
+    },
+    {
+      "cue": "choose numeric rank 0",
+      "subgroup": "fresh before/after delivery/numeric gaps (5, 2, 2, 3)",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "choose numeric rank 0",
+      "correct": 4,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio choices give a 0.2 uniform-choice baseline. 4/24 in this finite subgroup; no source-backed deterministic answer rule established by this cue.",
+      "sample_refs": [
+        "fresh-records.json"
+      ]
+    },
+    {
+      "cue": "choose numeric rank 0",
+      "subgroup": "fresh before/after delivery/numeric gaps (1, 4, 6, 5)",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "choose numeric rank 0",
+      "correct": 6,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio choices give a 0.2 uniform-choice baseline. 6/24 in this finite subgroup; no source-backed deterministic answer rule established by this cue.",
+      "sample_refs": [
+        "fresh-records.json"
+      ]
+    },
+    {
+      "cue": "choose numeric rank 0",
+      "subgroup": "fresh before/after delivery/numeric gaps (5, 6, 1, 5)",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "choose numeric rank 0",
+      "correct": 2,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio choices give a 0.2 uniform-choice baseline. 2/24 in this finite subgroup; no source-backed deterministic answer rule established by this cue.",
+      "sample_refs": [
+        "fresh-records.json"
+      ]
+    },
+    {
+      "cue": "choose numeric rank 0",
+      "subgroup": "fresh before/after delivery/numeric gaps (4, 2, 1, 2)",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "choose numeric rank 0",
+      "correct": 5,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio choices give a 0.2 uniform-choice baseline. 5/24 in this finite subgroup; no source-backed deterministic answer rule established by this cue.",
+      "sample_refs": [
+        "fresh-records.json"
+      ]
+    },
+    {
+      "cue": "choose numeric rank 0",
+      "subgroup": "fresh before/after delivery/numeric gaps (1, 2, 3, 2)",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "choose numeric rank 0",
+      "correct": 2,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio choices give a 0.2 uniform-choice baseline. 2/24 in this finite subgroup; no source-backed deterministic answer rule established by this cue.",
+      "sample_refs": [
+        "fresh-records.json"
+      ]
+    },
+    {
+      "cue": "choose numeric rank 0",
+      "subgroup": "fresh before/after delivery/numeric gaps (1, 7, 1, 1)",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "choose numeric rank 0",
+      "correct": 6,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio choices give a 0.2 uniform-choice baseline. 6/24 in this finite subgroup; no source-backed deterministic answer rule established by this cue.",
+      "sample_refs": [
+        "fresh-records.json"
+      ]
+    },
+    {
+      "cue": "choose numeric rank 0",
+      "subgroup": "fresh before/after delivery/numeric gaps (1, 1, 6, 2)",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "choose numeric rank 0",
+      "correct": 4,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio choices give a 0.2 uniform-choice baseline. 4/24 in this finite subgroup; no source-backed deterministic answer rule established by this cue.",
+      "sample_refs": [
+        "fresh-records.json"
+      ]
+    },
+    {
+      "cue": "choose numeric rank 0",
+      "subgroup": "exact surviving runner batch",
+      "scope": "overall",
+      "strategy": "choose numeric rank 0",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio choices give a 0.2 uniform-choice baseline. 1/5 in this finite subgroup; no source-backed deterministic answer rule established by this cue.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "choose numeric rank 1",
+      "subgroup": "exact surviving runner batch",
+      "scope": "overall",
+      "strategy": "choose numeric rank 1",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio choices give a 0.2 uniform-choice baseline. 3/5 in this finite subgroup; no source-backed deterministic answer rule established by this cue.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "choose numeric rank 2",
+      "subgroup": "exact surviving runner batch",
+      "scope": "overall",
+      "strategy": "choose numeric rank 2",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio choices give a 0.2 uniform-choice baseline. 1/5 in this finite subgroup; no source-backed deterministic answer rule established by this cue.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "choose numeric rank 3",
+      "subgroup": "exact surviving runner batch",
+      "scope": "overall",
+      "strategy": "choose numeric rank 3",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio choices give a 0.2 uniform-choice baseline. 0/5 in this finite subgroup; no source-backed deterministic answer rule established by this cue.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "choose numeric rank 4",
+      "subgroup": "exact surviving runner batch",
+      "scope": "overall",
+      "strategy": "choose numeric rank 4",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio choices give a 0.2 uniform-choice baseline. 0/5 in this finite subgroup; no source-backed deterministic answer rule established by this cue.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "choose raw position 0",
+      "subgroup": "exact surviving runner batch",
+      "scope": "overall",
+      "strategy": "choose raw position 0",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio choices give a 0.2 uniform-choice baseline. 1/5 in this finite subgroup; no source-backed deterministic answer rule established by this cue.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "choose raw position 1",
+      "subgroup": "exact surviving runner batch",
+      "scope": "overall",
+      "strategy": "choose raw position 1",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio choices give a 0.2 uniform-choice baseline. 1/5 in this finite subgroup; no source-backed deterministic answer rule established by this cue.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "choose raw position 2",
+      "subgroup": "exact surviving runner batch",
+      "scope": "overall",
+      "strategy": "choose raw position 2",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio choices give a 0.2 uniform-choice baseline. 0/5 in this finite subgroup; no source-backed deterministic answer rule established by this cue.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "choose raw position 3",
+      "subgroup": "exact surviving runner batch",
+      "scope": "overall",
+      "strategy": "choose raw position 3",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio choices give a 0.2 uniform-choice baseline. 3/5 in this finite subgroup; no source-backed deterministic answer rule established by this cue.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "choose raw position 4",
+      "subgroup": "exact surviving runner batch",
+      "scope": "overall",
+      "strategy": "choose raw position 4",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio choices give a 0.2 uniform-choice baseline. 0/5 in this finite subgroup; no source-backed deterministic answer rule established by this cue.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "sum diagonal entries of requested rows",
+      "subgroup": "exact surviving runner batch",
+      "scope": "overall",
+      "strategy": "sum diagonal entries of requested rows",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio choices give a 0.2 uniform-choice baseline. 0/5 in this finite subgroup; no source-backed deterministic answer rule established by this cue.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "sum first-column entries of requested rows",
+      "subgroup": "exact surviving runner batch",
+      "scope": "overall",
+      "strategy": "sum first-column entries of requested rows",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio choices give a 0.2 uniform-choice baseline. 0/5 in this finite subgroup; no source-backed deterministic answer rule established by this cue.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "sum last-column entries of requested rows",
+      "subgroup": "exact surviving runner batch",
+      "scope": "overall",
+      "strategy": "sum last-column entries of requested rows",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio choices give a 0.2 uniform-choice baseline. 0/5 in this finite subgroup; no source-backed deterministic answer rule established by this cue.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "ignore targets and sum all leading entries",
+      "subgroup": "exact surviving runner batch",
+      "scope": "overall",
+      "strategy": "ignore targets and sum all leading entries",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio choices give a 0.2 uniform-choice baseline. 0/5 in this finite subgroup; no source-backed deterministic answer rule established by this cue.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "choose numeric rank 1",
+      "subgroup": "exact surviving runner batch/sum_2_rows",
+      "scope": "within_template",
+      "strategy": "choose numeric rank 1",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio choices give a 0.2 uniform-choice baseline. 2/4 in this finite subgroup; no source-backed deterministic answer rule established by this cue.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "choose numeric rank 2",
+      "subgroup": "exact surviving runner batch/sum_2_rows",
+      "scope": "within_template",
+      "strategy": "choose numeric rank 2",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio choices give a 0.2 uniform-choice baseline. 1/4 in this finite subgroup; no source-backed deterministic answer rule established by this cue.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "choose raw position 0",
+      "subgroup": "exact surviving runner batch/sum_2_rows",
+      "scope": "within_template",
+      "strategy": "choose raw position 0",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio choices give a 0.2 uniform-choice baseline. 1/4 in this finite subgroup; no source-backed deterministic answer rule established by this cue.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "sum diagonal entries of requested rows",
+      "subgroup": "exact surviving runner batch/sum_2_rows",
+      "scope": "within_template",
+      "strategy": "sum diagonal entries of requested rows",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio choices give a 0.2 uniform-choice baseline. 0/4 in this finite subgroup; no source-backed deterministic answer rule established by this cue.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "ignore targets and sum all leading entries",
+      "subgroup": "exact surviving runner batch/sum_2_rows",
+      "scope": "within_template",
+      "strategy": "ignore targets and sum all leading entries",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio choices give a 0.2 uniform-choice baseline. 0/4 in this finite subgroup; no source-backed deterministic answer rule established by this cue.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "choose numeric rank 1",
+      "subgroup": "exact surviving runner batch/sum_3_rows",
+      "scope": "within_template",
+      "strategy": "choose numeric rank 1",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio choices give a 0.2 uniform-choice baseline. 1/1 in this finite subgroup; no source-backed deterministic answer rule established by this cue. Singleton subgroup is descriptive only.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "choose numeric rank 2",
+      "subgroup": "exact surviving runner batch/sum_3_rows",
+      "scope": "within_template",
+      "strategy": "choose numeric rank 2",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio choices give a 0.2 uniform-choice baseline. 0/1 in this finite subgroup; no source-backed deterministic answer rule established by this cue. Singleton subgroup is descriptive only.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "choose raw position 0",
+      "subgroup": "exact surviving runner batch/sum_3_rows",
+      "scope": "within_template",
+      "strategy": "choose raw position 0",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio choices give a 0.2 uniform-choice baseline. 0/1 in this finite subgroup; no source-backed deterministic answer rule established by this cue. Singleton subgroup is descriptive only.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "sum diagonal entries of requested rows",
+      "subgroup": "exact surviving runner batch/sum_3_rows",
+      "scope": "within_template",
+      "strategy": "sum diagonal entries of requested rows",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio choices give a 0.2 uniform-choice baseline. 0/1 in this finite subgroup; no source-backed deterministic answer rule established by this cue. Singleton subgroup is descriptive only.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "ignore targets and sum all leading entries",
+      "subgroup": "exact surviving runner batch/sum_3_rows",
+      "scope": "within_template",
+      "strategy": "ignore targets and sum all leading entries",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio choices give a 0.2 uniform-choice baseline. 0/1 in this finite subgroup; no source-backed deterministic answer rule established by this cue. Singleton subgroup is descriptive only.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible choice position",
+      "subgroup": "actual surviving runner batch",
+      "scope": "overall",
+      "strategy": "Always select visible position 1",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/5 in the actual UI after publisher normalization; 0.2 is random selection among five choices. Live task item IDs can reorder choices again; this measures the saved preview, not a universal position distribution.",
+      "sample_refs": [
+        "ui-order-results.json",
+        "render-delivered/rendering.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible choice position",
+      "subgroup": "actual surviving runner batch",
+      "scope": "overall",
+      "strategy": "Always select visible position 2",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/5 in the actual UI after publisher normalization; 0.2 is random selection among five choices. Live task item IDs can reorder choices again; this measures the saved preview, not a universal position distribution.",
+      "sample_refs": [
+        "ui-order-results.json",
+        "render-delivered/rendering.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible choice position",
+      "subgroup": "actual surviving runner batch",
+      "scope": "overall",
+      "strategy": "Always select visible position 3",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/5 in the actual UI after publisher normalization; 0.2 is random selection among five choices. Live task item IDs can reorder choices again; this measures the saved preview, not a universal position distribution.",
+      "sample_refs": [
+        "ui-order-results.json",
+        "render-delivered/rendering.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible choice position",
+      "subgroup": "actual surviving runner batch",
+      "scope": "overall",
+      "strategy": "Always select visible position 4",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/5 in the actual UI after publisher normalization; 0.2 is random selection among five choices. Live task item IDs can reorder choices again; this measures the saved preview, not a universal position distribution.",
+      "sample_refs": [
+        "ui-order-results.json",
+        "render-delivered/rendering.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible choice position",
+      "subgroup": "actual surviving runner batch",
+      "scope": "overall",
+      "strategy": "Always select visible position 5",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/5 in the actual UI after publisher normalization; 0.2 is random selection among five choices. Live task item IDs can reorder choices again; this measures the saved preview, not a universal position distribution.",
+      "sample_refs": [
+        "ui-order-results.json",
+        "render-delivered/rendering.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible choice position",
+      "subgroup": "actual surviving runner batch / two requested rows",
+      "scope": "within_template",
+      "strategy": "Always select visible position 1",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/4 in the actual UI after publisher normalization; 0.2 is random selection among five choices. Live task item IDs can reorder choices again; this measures the saved preview, not a universal position distribution.",
+      "sample_refs": [
+        "ui-order-results.json",
+        "render-delivered/rendering.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible choice position",
+      "subgroup": "actual surviving runner batch / two requested rows",
+      "scope": "within_template",
+      "strategy": "Always select visible position 2",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/4 in the actual UI after publisher normalization; 0.2 is random selection among five choices. Live task item IDs can reorder choices again; this measures the saved preview, not a universal position distribution.",
+      "sample_refs": [
+        "ui-order-results.json",
+        "render-delivered/rendering.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible choice position",
+      "subgroup": "actual surviving runner batch / two requested rows",
+      "scope": "within_template",
+      "strategy": "Always select visible position 3",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/4 in the actual UI after publisher normalization; 0.2 is random selection among five choices. Live task item IDs can reorder choices again; this measures the saved preview, not a universal position distribution.",
+      "sample_refs": [
+        "ui-order-results.json",
+        "render-delivered/rendering.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible choice position",
+      "subgroup": "actual surviving runner batch / two requested rows",
+      "scope": "within_template",
+      "strategy": "Always select visible position 4",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/4 in the actual UI after publisher normalization; 0.2 is random selection among five choices. Live task item IDs can reorder choices again; this measures the saved preview, not a universal position distribution.",
+      "sample_refs": [
+        "ui-order-results.json",
+        "render-delivered/rendering.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "visible choice position",
+      "subgroup": "actual surviving runner batch / two requested rows",
+      "scope": "within_template",
+      "strategy": "Always select visible position 5",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/4 in the actual UI after publisher normalization; 0.2 is random selection among five choices. Live task item IDs can reorder choices again; this measures the saved preview, not a universal position distribution.",
+      "sample_refs": [
+        "ui-order-results.json",
+        "render-delivered/rendering.json",
+        "delivery-batch/accepted.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "generator rejection/resampling and CLI semantic-fingerprint deduplication",
+      "requested easy difficulty",
+      "publisher validation, stable identities, inventory and within-batch deduplication",
+      "actual UI choice ordering before/after publisher normalization",
+      "captured inventory eligibility and read-only reproduction of difficulty-first learner selection with explicit policies and history exclusions"
+    ],
+    "sample_refs": [
+      "packaging-results.json",
+      "coverage-results.json",
+      "delivery-fresh/delivery.json",
+      "delivery-batch/delivery.json",
+      "selection-results.json",
+      "ui-order-results.json"
+    ],
+    "result": "336/336 fresh and 5/5 batch survive filtering at inventory basis 5355. Value resampling attempts range 1 to 12. Positive easy weights allow every fresh easy candidate; tested histories remove only designated IDs. Unconfigured policy selects the first fresh ID; disabled easy weights exclude this easy family. Actual live policy and history are absent; no live learner distribution is asserted."
+  },
+  "limitations": [
+    "Finite seed/cue tests do not establish absence of all shortcuts. Conditional subgroups and exact batch are measured separately.",
+    "Raw serialized choice-position probes are construction checks; actual UI reorders choices and is measured separately.",
+    "Source q-129207 omission is a bank coverage defect, not evidence of a fixed-role bypass in supported profiles.",
+    "Captured inventory basis 5355; later publications and learner histories can change availability. Five non-source inventory records lack generation metadata; no stored generated instance defect was demonstrated.",
+    "Canonical task has no captured bank; two bank questions have no stored solution/key, recorded as source gaps and mathematically reconstructed without inventing source evidence."
+  ]
+}

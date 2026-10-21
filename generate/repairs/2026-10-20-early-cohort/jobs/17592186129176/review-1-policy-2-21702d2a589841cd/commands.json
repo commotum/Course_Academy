@@ -1,0 +1,104 @@
+{
+  "commands": [
+    [
+      "/home/jake/Developer/Course_Academy/.venv/bin/python",
+      "-B",
+      "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186129176/review-1-policy-2-21702d2a589841cd/review.py"
+    ],
+    [
+      "/home/jake/Developer/Course_Academy/.venv/bin/python",
+      "-B",
+      "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186129176/review-1-policy-2-21702d2a589841cd/supplemental.py"
+    ],
+    [
+      "/home/jake/Developer/Course_Academy/.venv/bin/python",
+      "-B",
+      "/home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py",
+      "--input",
+      "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186129176/review-1-policy-2-21702d2a589841cd/fresh-records.json",
+      "--source",
+      "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186129176/source/source.json",
+      "--inventory",
+      "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186129176/source/inventory.json",
+      "--difficulty",
+      "easy",
+      "--output",
+      "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186129176/review-1-policy-2-21702d2a589841cd/delivery-fresh",
+      "--asset-root",
+      "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186129176/workspace",
+      "--math-root",
+      "/media/jake/SSD/EDB/math"
+    ],
+    [
+      "/home/jake/Developer/Course_Academy/.venv/bin/python",
+      "-B",
+      "/home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py",
+      "--input",
+      "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186129176/review-1-policy-2-21702d2a589841cd/batch-records.json",
+      "--source",
+      "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186129176/source/source.json",
+      "--inventory",
+      "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186129176/source/inventory.json",
+      "--difficulty",
+      "easy",
+      "--output",
+      "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186129176/review-1-policy-2-21702d2a589841cd/delivery-batch",
+      "--asset-root",
+      "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186129176/workspace",
+      "--math-root",
+      "/media/jake/SSD/EDB/math"
+    ],
+    [
+      "/home/jake/Developer/Course_Academy/generate/runs/current/check-engine",
+      "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186129176/review-1-policy-2-21702d2a589841cd/grader-input-final.json",
+      "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186129176/review-1-policy-2-21702d2a589841cd/grader-results-final.json"
+    ],
+    [
+      "/home/jake/Developer/Course_Academy/.venv/bin/python",
+      "-B",
+      "/home/jake/Developer/Course_Academy/generate/pipeline/render_preview.py",
+      "--input",
+      "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186129176/review-1-policy-2-21702d2a589841cd/render-records.json",
+      "--output",
+      "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186129176/review-1-policy-2-21702d2a589841cd/render",
+      "--asset-root",
+      "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186129176/workspace",
+      "--math-root",
+      "/media/jake/SSD/EDB/math",
+      "--limit",
+      "12"
+    ],
+    [
+      "/home/jake/Developer/Course_Academy/.venv/bin/python",
+      "-B",
+      "/home/jake/Developer/Course_Academy/generate/pipeline/render_preview.py",
+      "--input",
+      "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186129176/review-1-policy-2-21702d2a589841cd/delivery-batch/accepted.json",
+      "--output",
+      "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186129176/review-1-policy-2-21702d2a589841cd/render-delivered",
+      "--asset-root",
+      "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186129176/review-1-policy-2-21702d2a589841cd/delivery-batch/assets",
+      "--math-root",
+      "/media/jake/SSD/EDB/math",
+      "--limit",
+      "5"
+    ],
+    [
+      "/home/jake/Developer/Course_Academy/.venv/bin/python",
+      "-B",
+      "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186129176/review-1-policy-2-21702d2a589841cd/analyze.py"
+    ],
+    [
+      "python3",
+      "-B",
+      "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186129176/review-1-policy-2-21702d2a589841cd/finalize.py"
+    ]
+  ],
+  "notes": [
+    "Run review.py then supplemental.py sequentially; supplemental appends targeted cases to the fresh regression sample. All package imports disable bytecode writing.",
+    "grader-input-final.json is the retained complete native input including normalized batch and five normalized restored-profile samples.",
+    "Retained regression is run from disposable evidence copies so its output writes stay below evidence_root.",
+    "No publication preparation exists; shared check_delivery.py reproduces normalization/filtering read-only.",
+    "Source-analysis and previous-* scripts were copied with provenance from review-0; current review.py and analyze.py adapt those independent tests for the repaired package and fresh seeds."
+  ]
+}

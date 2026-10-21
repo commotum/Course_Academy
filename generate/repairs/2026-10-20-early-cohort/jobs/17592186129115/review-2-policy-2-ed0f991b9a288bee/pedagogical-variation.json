@@ -1,0 +1,1371 @@
+{
+  "learner_operation": "For each offered coordinate set, mentally zero exactly those entries, locate each remaining row leading entry, check strictly increasing leading columns and bottom-only zero rows; select the unique successful offered operation.",
+  "fixed_features": [
+    {
+      "feature": "Ordinary four-by-four integer matrix, five radio choices, entry replacement by zero.",
+      "justification": "All 15 captured practice items share this workload and response contract. No row arithmetic, augmented-matrix interpretation or global optimization is introduced."
+    },
+    {
+      "feature": "Fresh operations name two or three coordinates and retain at least two nonzero rows from at least three initially nonzero rows.",
+      "justification": "All captured keys name two or three coordinates and involve multirow inspection. These bounds preserve that workload. Already-zero and redundant named entries are legal; the explicit replay/parameter interface retains complete source banks."
+    },
+    {
+      "feature": "Exactly one successful offered operation.",
+      "justification": "The source radio banks require an unambiguous offered response; globally unique or minimum erasures are unnecessary."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Which offered operation succeeds.",
+      "eligible_variation": "Any of five coordinate sets with a mathematical witness.",
+      "observed": "Four fresh banks, conditional on two/three named entries and preexisting bottom zero row, independently admit every key position. Twenty visible matrix witnesses were generated and graded."
+    },
+    {
+      "role": "Coordinates removed versus retained leading entries.",
+      "eligible_variation": "Alter zero structure to shift pivots or create bottom zero rows without changing the two echelon conditions.",
+      "observed": "The controlled two-cell change moves the conflict from a21 to a31 and switches the fixed-bank key; fresh samples vary masks and erasure targets."
+    },
+    {
+      "role": "Named coordinate count, signs, magnitudes and option position.",
+      "eligible_variation": "Source keys have two or three coordinates; nonzero values and order can vary independently of echelon status.",
+      "observed": "Both fresh count cases and bottom-zero cases occur. All nonzero values -9 through 9 are represented in controls; source profiles retain mixed-size banks. Native UI display positions vary."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "Complete original banks and source solution transformations.",
+      "sample_refs": [
+        "source-replay.json",
+        "source-fidelity-results.json",
+        "profile-replay-records.json"
+      ],
+      "result": "All 15 source banks and keys match; their worked transformations match. Canonical operation checked, but no canonical answer bank was captured."
+    },
+    {
+      "case": "Two/three named coordinates, with/without a preexisting bottom zero row.",
+      "sample_refs": [
+        "fixed-bank-records.json",
+        "fixed-bank-results.json",
+        "fresh-control-records.json"
+      ],
+      "result": "All four recognizable groups have five independently enumerated successful roles within the same fixed bank."
+    },
+    {
+      "case": "Exact runner batch.",
+      "sample_refs": [
+        "batch-records.json",
+        "delivery-batch/accepted.json",
+        "sampling-summary.json",
+        "ui-position-results.json"
+      ],
+      "result": "Five exact seeds replay; all survive delivery. Median strategy scores 0/5. No tested single label/order/position strategy answers the entire batch; observed small conditional groups are not claimed to establish population rates."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Hold the complete bank and all other entries fixed; set a21 from 2 to 0 and a31 from 0 to 2.",
+      "expected": "The sole successful set switches from {a21,a43} to {a31,a43}; prompt matrices, explanation and grader follow it.",
+      "observed": "Independent visible-coordinate tests, native grading of all five answers, rendered before/after prompts and solutions agree.",
+      "status": "passed",
+      "justification": "Moving the conflicting leading entry changes which offered erasure restores increasing pivot columns.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-input.json",
+        "grader-results.json",
+        "render-records.json",
+        "render-tail-records.json",
+        "visual-inspection.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Hold zero structure and full bank fixed; replace a11=1 by -2.",
+      "expected": "All offered validity outcomes and the selected operation remain unchanged. The displayed number and worked matrix update.",
+      "observed": "Answer remains {a21,a43}; independent validation, native grader outcomes and actual UI render confirm the response preservation.",
+      "status": "passed",
+      "justification": "The lesson defines leading entries by zero/nonzero position; a nonzero magnitude/sign change cannot alter pivot columns.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-results.json",
+        "render-tail-records.json",
+        "visual-inspection.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "Keep each of four sampled banks fixed and vary matrix zero structure to realize each of its five successful roles.",
+      "expected": "Every role is mathematically possible and each new visible instance has precisely the corresponding accepted option.",
+      "observed": "Independent enumeration supplies 20 complete records; all five choices of each are checked by the native grader. Representative changed-role renders agree.",
+      "status": "passed",
+      "justification": "Source objects satisfying the echelon rule are eligible to change; a source-specific coordinate assignment is not an invariant.",
+      "sample_refs": [
+        "fixed-bank-records.json",
+        "fixed-bank-results.json",
+        "grader-results.json",
+        "render-tail-records.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "lex_rank_0",
+      "subgroup": "cli: overall",
+      "scope": "overall",
+      "strategy": "Choose lex rank 0 using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 13,
+      "total": 64,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "cli-control-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lex_rank_1",
+      "subgroup": "cli: overall",
+      "scope": "overall",
+      "strategy": "Choose lex rank 1 using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 15,
+      "total": 64,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "cli-control-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lex_rank_2",
+      "subgroup": "cli: overall",
+      "scope": "overall",
+      "strategy": "Choose lex rank 2 using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 9,
+      "total": 64,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "cli-control-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lex_rank_3",
+      "subgroup": "cli: overall",
+      "scope": "overall",
+      "strategy": "Choose lex rank 3 using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 15,
+      "total": 64,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "cli-control-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lex_rank_4",
+      "subgroup": "cli: overall",
+      "scope": "overall",
+      "strategy": "Choose lex rank 4 using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 12,
+      "total": 64,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "cli-control-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "serialized_position_0",
+      "subgroup": "cli: overall",
+      "scope": "overall",
+      "strategy": "Choose serialized position 0 using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 12,
+      "total": 64,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "cli-control-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "serialized_position_1",
+      "subgroup": "cli: overall",
+      "scope": "overall",
+      "strategy": "Choose serialized position 1 using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 13,
+      "total": 64,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "cli-control-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "serialized_position_2",
+      "subgroup": "cli: overall",
+      "scope": "overall",
+      "strategy": "Choose serialized position 2 using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 6,
+      "total": 64,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "cli-control-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "serialized_position_3",
+      "subgroup": "cli: overall",
+      "scope": "overall",
+      "strategy": "Choose serialized position 3 using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 14,
+      "total": 64,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "cli-control-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "serialized_position_4",
+      "subgroup": "cli: overall",
+      "scope": "overall",
+      "strategy": "Choose serialized position 4 using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 19,
+      "total": 64,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "cli-control-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "coordinate_sum_min",
+      "subgroup": "cli: overall",
+      "scope": "overall",
+      "strategy": "Choose coordinate sum min using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 12,
+      "total": 64,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "cli-control-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "coordinate_sum_max",
+      "subgroup": "cli: overall",
+      "scope": "overall",
+      "strategy": "Choose coordinate sum max using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 13,
+      "total": 64,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "cli-control-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "coordinate_frequency_min",
+      "subgroup": "cli: overall",
+      "scope": "overall",
+      "strategy": "Choose coordinate frequency min using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 11,
+      "total": 64,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "cli-control-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "coordinate_frequency_max",
+      "subgroup": "cli: overall",
+      "scope": "overall",
+      "strategy": "Choose coordinate frequency max using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 9,
+      "total": 64,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "cli-control-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "first_row_count_min",
+      "subgroup": "cli: overall",
+      "scope": "overall",
+      "strategy": "Choose first row count min using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 12,
+      "total": 64,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "cli-control-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "first_row_count_max",
+      "subgroup": "cli: overall",
+      "scope": "overall",
+      "strategy": "Choose first row count max using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 13,
+      "total": 64,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "cli-control-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "span_min",
+      "subgroup": "cli: overall",
+      "scope": "overall",
+      "strategy": "Choose span min using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 11,
+      "total": 64,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "cli-control-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "span_max",
+      "subgroup": "cli: overall",
+      "scope": "overall",
+      "strategy": "Choose span max using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 15,
+      "total": 64,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "cli-control-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lex_rank_2",
+      "subgroup": "cli: size=2",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose lex rank 2 using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 5,
+      "total": 34,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "cli-control-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lex_rank_2",
+      "subgroup": "cli: bottom_zero=True",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose lex rank 2 using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 3,
+      "total": 26,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "cli-control-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lex_rank_2",
+      "subgroup": "cli: size=2,bottom_zero=True",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose lex rank 2 using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 3,
+      "total": 16,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "cli-control-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lex_rank_2",
+      "subgroup": "cli: size=3",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose lex rank 2 using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 4,
+      "total": 30,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "cli-control-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lex_rank_2",
+      "subgroup": "cli: bottom_zero=False",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose lex rank 2 using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 6,
+      "total": 38,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "cli-control-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lex_rank_2",
+      "subgroup": "cli: size=3,bottom_zero=False",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose lex rank 2 using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 4,
+      "total": 20,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "cli-control-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lex_rank_2",
+      "subgroup": "cli: size=2,bottom_zero=False",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose lex rank 2 using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 2,
+      "total": 18,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "cli-control-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lex_rank_2",
+      "subgroup": "cli: size=3,bottom_zero=True",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose lex rank 2 using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 0,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "cli-control-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lex_rank_0",
+      "subgroup": "fresh: overall",
+      "scope": "overall",
+      "strategy": "Choose lex rank 0 using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 7,
+      "total": 32,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "fresh-control-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lex_rank_1",
+      "subgroup": "fresh: overall",
+      "scope": "overall",
+      "strategy": "Choose lex rank 1 using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 6,
+      "total": 32,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "fresh-control-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lex_rank_2",
+      "subgroup": "fresh: overall",
+      "scope": "overall",
+      "strategy": "Choose lex rank 2 using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 9,
+      "total": 32,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "fresh-control-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lex_rank_3",
+      "subgroup": "fresh: overall",
+      "scope": "overall",
+      "strategy": "Choose lex rank 3 using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 6,
+      "total": 32,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "fresh-control-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lex_rank_4",
+      "subgroup": "fresh: overall",
+      "scope": "overall",
+      "strategy": "Choose lex rank 4 using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 4,
+      "total": 32,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "fresh-control-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "serialized_position_0",
+      "subgroup": "fresh: overall",
+      "scope": "overall",
+      "strategy": "Choose serialized position 0 using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 6,
+      "total": 32,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "fresh-control-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "serialized_position_1",
+      "subgroup": "fresh: overall",
+      "scope": "overall",
+      "strategy": "Choose serialized position 1 using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 4,
+      "total": 32,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "fresh-control-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "serialized_position_2",
+      "subgroup": "fresh: overall",
+      "scope": "overall",
+      "strategy": "Choose serialized position 2 using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 7,
+      "total": 32,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "fresh-control-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "serialized_position_3",
+      "subgroup": "fresh: overall",
+      "scope": "overall",
+      "strategy": "Choose serialized position 3 using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 7,
+      "total": 32,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "fresh-control-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "serialized_position_4",
+      "subgroup": "fresh: overall",
+      "scope": "overall",
+      "strategy": "Choose serialized position 4 using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 8,
+      "total": 32,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "fresh-control-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "coordinate_sum_min",
+      "subgroup": "fresh: overall",
+      "scope": "overall",
+      "strategy": "Choose coordinate sum min using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 7,
+      "total": 32,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "fresh-control-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "coordinate_sum_max",
+      "subgroup": "fresh: overall",
+      "scope": "overall",
+      "strategy": "Choose coordinate sum max using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 4,
+      "total": 32,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "fresh-control-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "coordinate_frequency_min",
+      "subgroup": "fresh: overall",
+      "scope": "overall",
+      "strategy": "Choose coordinate frequency min using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 8,
+      "total": 32,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "fresh-control-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "coordinate_frequency_max",
+      "subgroup": "fresh: overall",
+      "scope": "overall",
+      "strategy": "Choose coordinate frequency max using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 6,
+      "total": 32,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "fresh-control-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "first_row_count_min",
+      "subgroup": "fresh: overall",
+      "scope": "overall",
+      "strategy": "Choose first row count min using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 7,
+      "total": 32,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "fresh-control-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "first_row_count_max",
+      "subgroup": "fresh: overall",
+      "scope": "overall",
+      "strategy": "Choose first row count max using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 8,
+      "total": 32,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "fresh-control-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "span_min",
+      "subgroup": "fresh: overall",
+      "scope": "overall",
+      "strategy": "Choose span min using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 6,
+      "total": 32,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "fresh-control-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "span_max",
+      "subgroup": "fresh: overall",
+      "scope": "overall",
+      "strategy": "Choose span max using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 5,
+      "total": 32,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "fresh-control-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lex_rank_2",
+      "subgroup": "fresh: size=2",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose lex rank 2 using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 5,
+      "total": 18,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "fresh-control-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lex_rank_2",
+      "subgroup": "fresh: bottom_zero=True",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose lex rank 2 using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 5,
+      "total": 19,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "fresh-control-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lex_rank_2",
+      "subgroup": "fresh: size=2,bottom_zero=True",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose lex rank 2 using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 2,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "fresh-control-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lex_rank_2",
+      "subgroup": "fresh: size=3",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose lex rank 2 using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 4,
+      "total": 14,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "fresh-control-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lex_rank_2",
+      "subgroup": "fresh: bottom_zero=False",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose lex rank 2 using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 4,
+      "total": 13,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "fresh-control-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lex_rank_2",
+      "subgroup": "fresh: size=3,bottom_zero=False",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose lex rank 2 using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "fresh-control-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lex_rank_2",
+      "subgroup": "fresh: size=3,bottom_zero=True",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose lex rank 2 using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 3,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "fresh-control-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lex_rank_2",
+      "subgroup": "fresh: size=2,bottom_zero=False",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose lex rank 2 using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 3,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "fresh-control-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lex_rank_0",
+      "subgroup": "batch: overall",
+      "scope": "overall",
+      "strategy": "Choose lex rank 0 using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "batch-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lex_rank_1",
+      "subgroup": "batch: overall",
+      "scope": "overall",
+      "strategy": "Choose lex rank 1 using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "batch-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lex_rank_2",
+      "subgroup": "batch: overall",
+      "scope": "overall",
+      "strategy": "Choose lex rank 2 using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "batch-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lex_rank_3",
+      "subgroup": "batch: overall",
+      "scope": "overall",
+      "strategy": "Choose lex rank 3 using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "batch-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lex_rank_4",
+      "subgroup": "batch: overall",
+      "scope": "overall",
+      "strategy": "Choose lex rank 4 using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "batch-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "serialized_position_0",
+      "subgroup": "batch: overall",
+      "scope": "overall",
+      "strategy": "Choose serialized position 0 using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "batch-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "serialized_position_1",
+      "subgroup": "batch: overall",
+      "scope": "overall",
+      "strategy": "Choose serialized position 1 using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "batch-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "serialized_position_2",
+      "subgroup": "batch: overall",
+      "scope": "overall",
+      "strategy": "Choose serialized position 2 using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "batch-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "serialized_position_3",
+      "subgroup": "batch: overall",
+      "scope": "overall",
+      "strategy": "Choose serialized position 3 using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "batch-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "serialized_position_4",
+      "subgroup": "batch: overall",
+      "scope": "overall",
+      "strategy": "Choose serialized position 4 using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "batch-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "coordinate_sum_min",
+      "subgroup": "batch: overall",
+      "scope": "overall",
+      "strategy": "Choose coordinate sum min using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "batch-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "coordinate_sum_max",
+      "subgroup": "batch: overall",
+      "scope": "overall",
+      "strategy": "Choose coordinate sum max using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "batch-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "coordinate_frequency_min",
+      "subgroup": "batch: overall",
+      "scope": "overall",
+      "strategy": "Choose coordinate frequency min using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "batch-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "coordinate_frequency_max",
+      "subgroup": "batch: overall",
+      "scope": "overall",
+      "strategy": "Choose coordinate frequency max using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "batch-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "first_row_count_min",
+      "subgroup": "batch: overall",
+      "scope": "overall",
+      "strategy": "Choose first row count min using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "batch-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "first_row_count_max",
+      "subgroup": "batch: overall",
+      "scope": "overall",
+      "strategy": "Choose first row count max using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "batch-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "span_min",
+      "subgroup": "batch: overall",
+      "scope": "overall",
+      "strategy": "Choose span min using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "batch-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "span_max",
+      "subgroup": "batch: overall",
+      "scope": "overall",
+      "strategy": "Choose span max using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "batch-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lex_rank_2",
+      "subgroup": "batch: size=2",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose lex rank 2 using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "batch-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lex_rank_2",
+      "subgroup": "batch: bottom_zero=True",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose lex rank 2 using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "batch-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lex_rank_2",
+      "subgroup": "batch: size=2,bottom_zero=True",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose lex rank 2 using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "batch-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lex_rank_2",
+      "subgroup": "batch: size=3",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose lex rank 2 using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "batch-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lex_rank_2",
+      "subgroup": "batch: size=3,bottom_zero=True",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose lex rank 2 using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "batch-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lex_rank_2",
+      "subgroup": "batch: bottom_zero=False",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose lex rank 2 using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "batch-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lex_rank_2",
+      "subgroup": "batch: size=2,bottom_zero=False",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose lex rank 2 using only coordinate labels or serialized option placement; ties use earliest serialized option.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. This finite subgroup does not demonstrate a reproducible shortcut. All five keys have independent witnesses for each tested fixed bank; bank rejection precedes the uniform key draw. Small subgroup counts are descriptive, not proof of balance. Exact batch is assessed separately.",
+      "sample_refs": [
+        "batch-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "actual displayed answer position",
+      "subgroup": "exact delivered five-record batch",
+      "scope": "within_template",
+      "strategy": "Always choose displayed position 1.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 0.2. No single actual displayed position answers all five batch members; the UI hashes ordering using item and answer identities. Future task IDs are unknown.",
+      "sample_refs": [
+        "render-records.json",
+        "ui-position-results.json"
+      ]
+    },
+    {
+      "cue": "actual displayed answer position",
+      "subgroup": "exact delivered five-record batch",
+      "scope": "within_template",
+      "strategy": "Always choose displayed position 2.",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 0.2. No single actual displayed position answers all five batch members; the UI hashes ordering using item and answer identities. Future task IDs are unknown.",
+      "sample_refs": [
+        "render-records.json",
+        "ui-position-results.json"
+      ]
+    },
+    {
+      "cue": "actual displayed answer position",
+      "subgroup": "exact delivered five-record batch",
+      "scope": "within_template",
+      "strategy": "Always choose displayed position 3.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 0.2. No single actual displayed position answers all five batch members; the UI hashes ordering using item and answer identities. Future task IDs are unknown.",
+      "sample_refs": [
+        "render-records.json",
+        "ui-position-results.json"
+      ]
+    },
+    {
+      "cue": "actual displayed answer position",
+      "subgroup": "exact delivered five-record batch",
+      "scope": "within_template",
+      "strategy": "Always choose displayed position 4.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 0.2. No single actual displayed position answers all five batch members; the UI hashes ordering using item and answer identities. Future task IDs are unknown.",
+      "sample_refs": [
+        "render-records.json",
+        "ui-position-results.json"
+      ]
+    },
+    {
+      "cue": "actual displayed answer position",
+      "subgroup": "exact delivered five-record batch",
+      "scope": "within_template",
+      "strategy": "Always choose displayed position 5.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 0.2. No single actual displayed position answers all five batch members; the UI hashes ordering using item and answer identities. Future task IDs are unknown.",
+      "sample_refs": [
+        "render-records.json",
+        "ui-position-results.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "whole-bank rejection before uniform key assignment",
+      "actual CLI semantic fingerprint deduplication/resampling",
+      "requested difficulty",
+      "actual shared publisher normalization and inventory/within-batch deduplication",
+      "captured learner-selection rules and history exclusions",
+      "actual UI choice ordering"
+    ],
+    "sample_refs": [
+      "sampler-rejection-results.json",
+      "resampling-prefix-records.json",
+      "resampling-results.json",
+      "delivery-comparison.json",
+      "delivery-batch/delivery.json",
+      "delivery-cli/delivery.json",
+      "selection-analysis.json",
+      "ui-position-results.json"
+    ],
+    "result": "535 bank attempts yield 32 fresh instances with 503 pre-key whole-bank rejections. CLI fingerprint survivor stream exactly reproduces actual CLI output. Shared delivery retains 5/5 batch, 16/16 initial samples, 64/64 CLI controls, 32/32 fresh controls, 20/20 role controls and 3/3 counterfactual records. Counts and all measured strategies are unchanged by publication filtering. All new records are moderate; positive moderate weight preserves eligible within-band proportions in expectation. History exclusions and unconfigured lowest-ID selection cannot promise profile balance."
+  },
+  "limitations": [
+    "No finite audit establishes the absence of every possible shortcut. Fresh subgroup counts are descriptive; independent fixed-bank witnesses and inspected key-independent rejection provide the stronger tested construction argument.",
+    "Canonical example has no captured answer bank.",
+    "Captured inventory basis 5354 is fixed for this review. Five non-source stored records were inspected and attempted, but matching generated identities and historical generation metadata were not recovered. Empty affected-inventory.json means no certified affected generated record, not verified absence.",
+    "Actual future learner history, task item IDs, post-publication entity IDs and concurrently changing inventory are unavailable. Selection and display-order conclusions are conditional on the inspected rules; no live publication or database operation was performed."
+  ]
+}

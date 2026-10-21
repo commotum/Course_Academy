@@ -1,0 +1,119 @@
+{
+  "verdict": "revise",
+  "summary": "The generator omits source profile q-129207 and cannot reproduce its complete answer bank. Other tested mathematics, grading, scope, rendering, packaging, and decision variation pass. Package files remain unchanged.",
+  "source_analysis": {
+    "skill": "Find the first nonzero entry in each requested row, add those entries, and select the matching numeric answer.",
+    "reasoning_steps": [
+      "Identify the requested rows.",
+      "Scan each requested row from left to right for its first nonzero entry.",
+      "Add the signed entries and select the matching radio choice."
+    ],
+    "invariants": [
+      "Only requested rows contribute.",
+      "Every requested row has a leading entry.",
+      "Five distinct numeric choices contain exactly one correct answer.",
+      "The explanation identifies and adds the appropriate leading entries."
+    ],
+    "permitted_variations": [
+      "Two- or three-row subsets.",
+      "Leading columns and signed integer values.",
+      "Trailing entries and unselected rows.",
+      "Positive, negative, and zero sums.",
+      "Choice positions and numeric answer ranks."
+    ],
+    "source_refs": [
+      "Canonical e-6166 / 7fd5c01f-c20e-5c47-b8d9-8cfbe634c14d",
+      "Tutorial 3148 / 24451a80-db9f-5a0f-a591-41500a69774c: definition of leading entry",
+      "q-129207 / 0d70558d-9878-55b8-b37b-3292e69959ea"
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "failed",
+      "evidence_paths": [
+        "source-replay-results.json",
+        "unsupported-source.json",
+        "source-coverage-failure.json"
+      ],
+      "details": "14 of 15 captured banks replay. q-129207 is rejected. Missing original keys and solutions are explicitly documented."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "boundary-records.json",
+        "counterfactual-records.json"
+      ],
+      "details": "406 records independently checked for leading entries, exact sums, unique banks, correct keys, and worked equations."
+    },
+    "variety": {
+      "status": "failed",
+      "evidence_paths": [
+        "coverage-results.json",
+        "bank-shapes.json"
+      ],
+      "details": "Supported profiles vary row subsets, leading columns, signs, and answer ranks. The omitted source bank has an unreachable numeric gap pattern."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "scope-results.json",
+        "packaging-results.json"
+      ],
+      "details": "Tested tasks retain the source's easy integer arithmetic and radio response contract."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input-final.json",
+        "grader-results-final.json"
+      ],
+      "details": "Native grading accepted 89 correct selections and rejected 356 distractors, including controlled pairs and normalized delivered records."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render-inspection.json",
+        "render-additional/rendering.json",
+        "render-delivered/rendering.json"
+      ],
+      "details": "Actual UI rendered 15 task instances across 21 previews. Representative screenshots were visually inspected."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "package-before.json",
+        "package-after.json",
+        "commands.json"
+      ],
+      "details": "Exact runtime dependencies, deterministic output, relocation, rejection checks, and unchanged package hashes verified."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "selection-results.json",
+        "ui-order-results.json"
+      ],
+      "details": "Controlled relevant and irrelevant changes behave correctly through explanations, grading, and rendering. Conditional shortcut probes found no demonstrated fixed-action bypass. Delivery and selection conclusions are limited to the captured inventory and documented policy scenarios."
+    }
+  },
+  "findings": [
+    {
+      "kind": "source_fidelity",
+      "description": "q-129207 is missing from the embedded source and CASES. Its matrix is [[2,-5,9,3],[0,7,0,8],[0,0,3,1],[0,0,-7,-1]], with zero-based target rows [1,2,3]. The correct sum is 7+3-7=3 and the complete bank is {3,12,9,-3,1}. Requesting this profile raises ValueError. Its sorted bank gap pattern [4,2,6,3] matches no available profile, so translation cannot reproduce it.",
+      "source_refs": [
+        "q-129207 / 0d70558d-9878-55b8-b37b-3292e69959ea",
+        "generate/principles.md \u00a71: reproduce complete source answer banks"
+      ],
+      "reproduction": "From evidence_root, run /home/jake/Developer/Course_Academy/.venv/bin/python -B assert_source_coverage.py. It exits 1 on q-129207 using seed 817 and its original parameters. Exact input and exception are retained in unsupported-source.json and source-coverage-failure.json.",
+      "requested_change": "Refresh the embedded source and derive profiles from every captured complete bank, including q-129207. Preserve its bank and verified solution while retaining current decision variation. Make the strict source-coverage regression pass. No stored generated instance was demonstrated affected; affected-inventory.json is empty, with inspection limits recorded in inventory-audit.json."
+    }
+  ]
+}

@@ -1,0 +1,112 @@
+{
+  "verdict": "accepted",
+  "summary": "The missing q-129207 source bank is restored. All eight checks pass; no demonstrated defect remains. Package files are unchanged.",
+  "source_analysis": {
+    "skill": "Identify the first nonzero entry in each requested matrix row, add those entries, and select the matching answer.",
+    "reasoning_steps": [
+      "Identify the requested rows.",
+      "Scan each row from left to right for its first nonzero entry.",
+      "Add the signed entries and select the matching numeric choice."
+    ],
+    "invariants": [
+      "Only requested rows contribute.",
+      "Every requested row has a leading entry.",
+      "Five distinct numeric choices contain exactly one correct answer.",
+      "The explanation identifies and adds the appropriate leading entries."
+    ],
+    "permitted_variations": [
+      "Two- or three-row subsets.",
+      "Leading columns and signed integer values.",
+      "Trailing entries and unselected rows.",
+      "Positive, negative and zero sums.",
+      "Correct-choice positions and numeric ranks."
+    ],
+    "source_refs": [
+      "Tutorial 3148 / 24451a80-db9f-5a0f-a591-41500a69774c: leading-entry definition",
+      "Canonical e-6166 / 7fd5c01f-c20e-5c47-b8d9-8cfbe634c14d",
+      "q-129207 / 0d70558d-9878-55b8-b37b-3292e69959ea"
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "change-impact.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay-results.json",
+        "source-replay-records.json",
+        "prior-counterexample.json",
+        "repair-regression-verification.json"
+      ],
+      "details": "All 15 source banks and 75 choices replay. The retained regression fails on the old package and passes on the current copy; the independent source assertion also passes. Missing original fields are documented."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "boundary-records.json",
+        "new-profile-records.json"
+      ],
+      "details": "197 records independently checked from visible matrices and requested rows, including the exact batch, source replays, extreme sums, cancellation and controlled changes."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "coverage-results.json",
+        "fresh-records.json",
+        "delivery-batch/accepted.json"
+      ],
+      "details": "All source profiles are supported. Fresh samples cover all eligible row subsets, leading columns, sum signs and answer ranks. The five-record batch retains five row subsets and three answer ranks."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "scope-results.json",
+        "packaging-results.json"
+      ],
+      "details": "Tasks retain the source's easy integer-arithmetic workload and radio response contract. Invalid parameters and unsupported difficulty are rejected."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input-final.json",
+        "grader-results-final.json"
+      ],
+      "details": "Native grading accepted 132 correct selections and rejected 528 distractors, including controlled cases and publisher-normalized records. No unresolved outcomes."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-delivered/rendering.json",
+        "render-inspection.json"
+      ],
+      "details": "The actual UI rendered 17 previews, including controlled changes, the restored source case and the entire delivered batch. Nine screenshots were visually inspected; no math, image or JavaScript errors were reported."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "package-before.json",
+        "package-after.json",
+        "commands.json",
+        "evidence-validation.json"
+      ],
+      "details": "Exact Python and SymPy versions match the manifest. Determinism, relocation, CLI distinctness and rejection checks pass. Package hashes are unchanged; no publishing or database writes occurred."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "new-counterfactual-results.json",
+        "shortcut-results-final.json",
+        "selection-results.json",
+        "ui-order-results.json"
+      ],
+      "details": "Relevant and irrelevant changes agree across prompts, explanations, native grading and rendering. Conditional shortcut probes found no demonstrated bypass. Delivery and learner selection were examined using captured inventory and explicit policy/history scenarios; live-state limits are documented."
+    }
+  },
+  "findings": []
+}

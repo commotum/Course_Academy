@@ -1,0 +1,117 @@
+{
+  "verdict": "accepted",
+  "summary": "All eight checks pass. Prior defects reproduce on older packages and are repaired currently. No new concrete failure was demonstrated. The exact five-record batch passes; package files remain unchanged.",
+  "source_analysis": {
+    "skill": "Select the offered entry replacements that produce row echelon form.",
+    "reasoning_steps": [
+      "Apply each offered replacement set.",
+      "Locate remaining leading entries and zero rows.",
+      "Check increasing leading columns and bottom-only zero rows.",
+      "Select the unique successful offered operation."
+    ],
+    "invariants": [
+      "Replace entries by zero without row arithmetic.",
+      "Exactly one offered operation succeeds.",
+      "Global minimality is not required."
+    ],
+    "permitted_variations": [
+      "Nonzero magnitudes and signs.",
+      "Zero structure, erased coordinates and surviving leading entries.",
+      "Valid offered operations, distractors and option positions."
+    ],
+    "source_refs": [
+      "2ab2c24d-7d61-5976-acd1-acab7ad4094a",
+      "5da4a360-a207-5df6-9d38-99e7b8b5a765",
+      "3458fbf5-87c4-5bfc-9974-f949a6151b73",
+      "tutorial 3896 / 137b0909-9a5e-5edf-8019-24e803307903"
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "provenance.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay.json",
+        "source-fidelity-results.json",
+        "profile-replay-records.json",
+        "canonical-check.json"
+      ],
+      "details": "All 15 complete source banks, keys, prompt wording and worked transformations replay. The canonical transformation passes; its answer bank was not captured."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "counterfactual-results.json",
+        "fixed-bank-results.json",
+        "decision-log.txt"
+      ],
+      "details": "Independent exact checks verify keys and worked matrices across the batch, fresh samples, CLI controls and controlled cases."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "sampling-summary.json",
+        "fixed-bank-records.json",
+        "fixed-bank-results.json",
+        "sampler-rejection-results.json"
+      ],
+      "details": "Both operation sizes and bottom-zero cases occur. Fresh controls contain 31 distinct masks and targets. Four fixed banks independently admit every successful answer role."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "scope-results.json",
+        "nonminimum-current-records.json",
+        "strict-current-results.txt"
+      ],
+      "details": "Moderate operation recognition is preserved. Global minimization remains removed; already-zero and redundant coordinates remain legal."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-results.json"
+      ],
+      "details": "The native learner grader matched all 175 expected outcomes: 35 accepted and 140 rejected. All fields are radio; free-entry equivalence is inapplicable."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "visual-inspection.json",
+        "render/rendering.json",
+        "render-tail/rendering.json",
+        "ui-position-results.json"
+      ],
+      "details": "Eleven actual-UI renders pass. Representative batch and counterfactual screenshots show correct notation, matrices, controls and worked solutions."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "package-integrity.json",
+        "packaging-results.json",
+        "rejection-results.json",
+        "repair-verification.json",
+        "strict-original-results.txt",
+        "strict-current-results.txt"
+      ],
+      "details": "Exact runtime declaration, relocation, deterministic replay and invalid-input checks pass. Retained failures reproduce on older code. All 153 package files remain byte-identical."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "repair-verification.json",
+        "delivery-comparison.json",
+        "selection-analysis.json",
+        "inventory-reproduction.json",
+        "evidence-validation.json"
+      ],
+      "details": "Prior median leakage reproduces at 24/64 and scores 9/64 currently; the exact batch scores 0/5. Counterfactuals agree across visible records, native grading and rendering. Delivery preserves measured coverage. Captured selection rules were examined; future history remains conditional. No matching historical generated identities were certified, so the empty affected-inventory list does not establish absence."
+    }
+  },
+  "findings": []
+}

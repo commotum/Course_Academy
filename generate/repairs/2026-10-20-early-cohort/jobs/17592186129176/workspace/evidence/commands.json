@@ -1,0 +1,159 @@
+{
+  "working_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186129176/workspace",
+  "commands": [
+    {
+      "phase": "before repair",
+      "argv": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "-B",
+        "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186129176/review-0-policy-2-076dabcdc2433c9a/assert_source_coverage.py"
+      ],
+      "result": "fails on q-129207, seed 817",
+      "evidence": "reproduction-before.txt"
+    },
+    {
+      "phase": "before repair",
+      "argv": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "-B",
+        "checks/source_coverage.py"
+      ],
+      "result": "fails on omitted profile",
+      "evidence": "evidence/regression-before.txt"
+    },
+    {
+      "phase": "after repair",
+      "argv": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "-B",
+        "checks/source_coverage.py"
+      ],
+      "exit_code": 0,
+      "result": "15 banks; 75/75 choices; visible sums, key, prompt and solution checks"
+    },
+    {
+      "phase": "after repair",
+      "argv": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "-B",
+        "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186129176/review-0-policy-2-076dabcdc2433c9a/assert_source_coverage.py"
+      ],
+      "exit_code": 0,
+      "result": "all captured source banks replay"
+    },
+    {
+      "phase": "after repair",
+      "argv": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "-B",
+        "checks/validate_repair.py"
+      ],
+      "exit_code": 0,
+      "result": "44 normal records; six counterfactuals; five anchors; relocation and determinism pass"
+    },
+    {
+      "argv": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "-B",
+        "/home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py",
+        "--input",
+        "evidence/normal-records.json",
+        "--source",
+        "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186129176/source/source.json",
+        "--inventory",
+        "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186129176/source/inventory.json",
+        "--difficulty",
+        "easy",
+        "--output",
+        "evidence/delivery",
+        "--asset-root",
+        "evidence/assets",
+        "--math-root",
+        "/media/jake/SSD/EDB/math"
+      ],
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "-B",
+        "/home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py",
+        "--input",
+        "evidence/batch-records.json",
+        "--source",
+        "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186129176/source/source.json",
+        "--inventory",
+        "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186129176/source/inventory.json",
+        "--difficulty",
+        "easy",
+        "--output",
+        "evidence/delivery-batch",
+        "--asset-root",
+        "evidence/assets",
+        "--math-root",
+        "/media/jake/SSD/EDB/math"
+      ],
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "-B",
+        "checks/check_delivery_inventory.py"
+      ],
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "/home/jake/Developer/Course_Academy/generate/runs/current/check-engine",
+        "evidence/grader-input.json",
+        "evidence/grader-results.json"
+      ],
+      "exit_code": 0,
+      "result": "70 accepted, 280 rejected"
+    },
+    {
+      "argv": [
+        "/home/jake/Developer/Course_Academy/generate/runs/current/check-engine",
+        "evidence/grader-delivered-input.json",
+        "evidence/grader-delivered-results.json"
+      ],
+      "exit_code": 0,
+      "result": "11 accepted, 44 rejected"
+    },
+    {
+      "argv": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "-B",
+        "/home/jake/Developer/Course_Academy/generate/pipeline/render_preview.py",
+        "--input",
+        "evidence/render-records.json",
+        "--output",
+        "evidence/render",
+        "--asset-root",
+        "evidence/assets",
+        "--math-root",
+        "/media/jake/SSD/EDB/math"
+      ],
+      "evidence": "evidence/render/rendering.json",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "-B",
+        "/home/jake/Developer/Course_Academy/generate/pipeline/render_preview.py",
+        "--input",
+        "evidence/render-delivered-records.json",
+        "--output",
+        "evidence/render-delivered",
+        "--asset-root",
+        "evidence/delivery/assets",
+        "--math-root",
+        "/media/jake/SSD/EDB/math"
+      ],
+      "evidence": "evidence/render-delivered/rendering.json",
+      "exit_code": 0
+    }
+  ]
+}

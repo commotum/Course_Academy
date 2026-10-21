@@ -1,0 +1,127 @@
+{
+  "time": 1792540845.7959826,
+  "reason": "Resume after failed transient-service reload. Earlier author attempts repaired packaging; allow one additional author attempt for the newly demonstrated diagram-consensus shortcut. Preserve all previous failed review evidence and session launch limits.",
+  "previous_stage": "failed",
+  "previous_attempt": 3,
+  "previous_error": {
+    "verdict": "revise",
+    "summary": "An equation-free visual shortcut survives delivery: 31/32 decisive fresh predictions and 5/5 runner predictions succeeded. Ten stored generated questions are affected. Package unchanged. Full report: result.json.",
+    "source_analysis": {
+      "skill": "Substitute three coordinate pairs into the differential equation and select the diagram with the resulting slopes.",
+      "reasoning_steps": [
+        "Read the indicated coordinates.",
+        "Evaluate the right-hand side at each point.",
+        "Match slope signs and magnitudes to the drawn segments."
+      ],
+      "invariants": [
+        "Three distinct points with defined slopes.",
+        "Five image choices with one correct diagram.",
+        "Equation, diagram, key and worked substitutions agree."
+      ],
+      "permitted_variations": [
+        "Small signed coefficients and coordinates within the observed equation families.",
+        "Changing slope signs, zero locations, target points and correct-choice positions.",
+        "Changing plausible distractors while preserving the response contract."
+      ],
+      "source_refs": [
+        "e-8505 / 231de5e4-8c55-5129-baaf-57673050ddbc",
+        "Tutorial 5050 / 790a4898-1668-5214-a911-83977b559c34: calculate the slope at each point",
+        "Seven source exercise IDs and complete banks documented in source-analysis.json"
+      ],
+      "evidence_paths": [
+        "source-analysis.json",
+        "source-banks.png"
+      ]
+    },
+    "checks": {
+      "source_replay": {
+        "status": "passed",
+        "evidence_paths": [
+          "source-bank-comparison.json",
+          "source-replay-records.json"
+        ],
+        "details": "Seven prompts and all 35 image geometries reproduced. Missing source keys and solutions are explicitly identified as inferences."
+      },
+      "math": {
+        "status": "passed",
+        "evidence_paths": [
+          "math-results.json",
+          "worked-solution-checks.json",
+          "runner-math.json",
+          "boundary-results.json"
+        ],
+        "details": "Exact checks verified visible equations, substitutions, unique matching diagrams and boundary arithmetic."
+      },
+      "variety": {
+        "status": "passed",
+        "evidence_paths": [
+          "coverage-results.json",
+          "sampling-attempts.json",
+          "generator-rejections.json"
+        ],
+        "details": "All six equation families sampled; coordinate and slope roles vary. Parameter coverage passes separately from the failed visual-shortcut check."
+      },
+      "scope": {
+        "status": "passed",
+        "evidence_paths": [
+          "source-analysis.json",
+          "independent-samples.json"
+        ],
+        "details": "Requested easy questions preserve the three-substitution workload and image-radio response."
+      },
+      "grading": {
+        "status": "passed",
+        "evidence_paths": [
+          "grader-results.json",
+          "delivered-grader-results.json"
+        ],
+        "details": "Native grader produced 89 expected acceptances and 214 expected rejections, including the stale-image counterfactual."
+      },
+      "rendering": {
+        "status": "passed",
+        "evidence_paths": [
+          "render-all/rendering.json",
+          "render-inspection.json"
+        ],
+        "details": "Actual UI rendering passed 19 cases. Representative source and controlled-counterfactual screenshots were inspected."
+      },
+      "packaging": {
+        "status": "passed",
+        "evidence_paths": [
+          "runtime.json",
+          "relocation-results.json",
+          "final-package-integrity.json",
+          "report-validation.json"
+        ],
+        "details": "Exact dependencies match; relocation, deterministic replay and external asset resolution passed. Package unchanged."
+      },
+      "decision_variation": {
+        "status": "failed",
+        "evidence_paths": [
+          "pedagogical-variation.json",
+          "shortcut-results.json",
+          "delivered-shortcuts.json",
+          "delivered-grader-results.json",
+          "affected-inventory.json",
+          "inventory-pixel-results.json",
+          "selection-results.json"
+        ],
+        "details": "A visual answer-bank strategy bypasses substitution and remains effective after delivery. Ten captured generated inventory records exhibit it. Live learner-policy conclusions are limited to the documented selection fixtures."
+      }
+    },
+    "findings": [
+      {
+        "kind": "decision_shortcut",
+        "description": "The fixed distractor construction creates a recognizable reflected pair. Choosing its member whose segment directions agree more often with the remaining diagrams ignores the equation, yet succeeds on 31/32 decisive fresh cases and all five runner cases. Native grading confirms the successful predictions. Ten stored generated questions are affected.",
+        "source_refs": [
+          "e-8505: substitute coordinates into the right-hand side",
+          "Tutorial 5050: calculate the slope at each point",
+          "generate/principles.md section 2: prevent incidental answer-producing cues"
+        ],
+        "reproduction": "Run audit.py and finish_checks.py with the supplied Python executable. For rational_square seed 73300, displayed choices 3 and 4 form the reflected pair; direction-consensus scores 1 and 5 select correct choice 4 without evaluating the equation. Runner seed 49412305 similarly selects correct choice 1. Records, commands and conditional counts are saved; affected-inventory.json lists exact stored UUID/entity IDs.",
+        "requested_change": "Vary distractor construction so reflected-pair membership and direction consensus do not systematically identify correctness. Preserve source families, replay banks and the five-image contract. Retain this strategy as a failing regression test within each recognizable family and after delivery."
+      }
+    ]
+  },
+  "max_attempts": 4
+}

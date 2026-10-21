@@ -1,0 +1,843 @@
+{
+  "learner_operation": "For each offered coordinate set, mentally zero exactly those entries, locate each remaining row leading entry, check strictly increasing leading columns and bottom-only zero rows; select the unique successful offered operation.",
+  "fixed_features": [
+    {
+      "feature": "Ordinary 4x4 integer matrix, five radio options, one successful offered operation",
+      "justification": "All 15 source practice questions have this moderate response shape and workload."
+    },
+    {
+      "feature": "Entry replacement by zero, strictly rightward leading entries, bottom-only zero rows",
+      "justification": "Tutorials 3148 and 3896 define the necessary operation and echelon conditions. Unit pivots or row arithmetic are not required."
+    },
+    {
+      "feature": "Fresh-bank option lengths and already-zero-coordinate counts are equal within each bank",
+      "justification": "This removes easy length/no-op cues while retaining source replay banks separately. It does not justify centering distractors around the keyed coordinate set."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Erased entries versus surviving leading entries",
+      "eligible_variation": "Change zero structure or offered operation while preserving echelon criterion and workload.",
+      "observed": "Fresh controls, 15 source profiles, and fixed-bank counterfactual show different correct coordinates, surviving pivots and zero rows."
+    },
+    {
+      "role": "Correct operation within the answer bank",
+      "eligible_variation": "Already-zero entries and redundant erasures are valid when the offered bank has one successful operation; no global minimum requirement.",
+      "observed": "Both prior exclusions repaired. New distractor neighborhood is defined around the keyed set in lexicographic order, leaking statistical information about its rank."
+    },
+    {
+      "role": "Displayed correct position and coordinate ordering rank",
+      "eligible_variation": "Radio placement and incidental coordinate-order rank must not replace echelon reasoning.",
+      "observed": "UI positions vary; lexicographic-median action succeeds 31/96 held-out controls and 24/64 after actual CLI rejection plus delivery, against 0.2 baseline."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "raw fresh",
+      "sample_refs": [
+        "independent-samples.json"
+      ],
+      "result": "{\"records\": 24, \"distinct_correct_sets\": 23, \"correct_sizes\": {\"3\": 23, \"2\": 1}, \"matrix_zero_structures\": 24}"
+    },
+    {
+      "case": "delivered fresh",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ],
+      "result": "{\"records\": 24, \"distinct_correct_sets\": 23, \"correct_sizes\": {\"3\": 23, \"2\": 1}, \"matrix_zero_structures\": 24}"
+    },
+    {
+      "case": "held-out control",
+      "sample_refs": [
+        "cue-control-records.json"
+      ],
+      "result": "{\"records\": 96, \"distinct_correct_sets\": 67, \"correct_sizes\": {\"3\": 75, \"2\": 21}, \"matrix_zero_structures\": 80}"
+    },
+    {
+      "case": "delivered control",
+      "sample_refs": [
+        "delivery-cue-control/accepted.json"
+      ],
+      "result": "{\"records\": 96, \"distinct_correct_sets\": 67, \"correct_sizes\": {\"3\": 75, \"2\": 21}, \"matrix_zero_structures\": 80}"
+    },
+    {
+      "case": "CLI after rejection",
+      "sample_refs": [
+        "cli-control-records.json"
+      ],
+      "result": "{\"records\": 64, \"distinct_correct_sets\": 59, \"correct_sizes\": {\"3\": 47, \"2\": 17}, \"matrix_zero_structures\": 63}"
+    },
+    {
+      "case": "CLI after delivery",
+      "sample_refs": [
+        "delivery-cli-control/accepted.json"
+      ],
+      "result": "{\"records\": 64, \"distinct_correct_sets\": 59, \"correct_sizes\": {\"3\": 47, \"2\": 17}, \"matrix_zero_structures\": 63}"
+    },
+    {
+      "case": "exact batch",
+      "sample_refs": [
+        "batch-records.json"
+      ],
+      "result": "{\"records\": 5, \"distinct_correct_sets\": 5, \"correct_sizes\": {\"2\": 1, \"3\": 4}, \"matrix_zero_structures\": 5}"
+    },
+    {
+      "case": "delivered exact batch",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ],
+      "result": "{\"records\": 5, \"distinct_correct_sets\": 5, \"correct_sizes\": {\"2\": 1, \"3\": 4}, \"matrix_zero_structures\": 5}"
+    },
+    {
+      "case": "Complete original profiles and already-zero distractor",
+      "sample_refs": [
+        "profile-replay-records.json",
+        "source-replay.json",
+        "strict-current-results.txt"
+      ],
+      "result": "All 15 profiles preserve all five coordinate sets and source key. q-73149 retains already-zero a21 in an incorrect offered operation."
+    },
+    {
+      "case": "Nonminimum but sole valid offered operation",
+      "sample_refs": [
+        "nonminimum-current-records.json",
+        "strict-current-results.txt"
+      ],
+      "result": "q-42008 matrix accepts a12,a21,a43, while unoffered a21,a43 also works. Global minimum is no longer required."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "With the bank fixed, set a21 from 2 to 0 and a31 from 0 to 2 in the q-42008 matrix.",
+      "expected": "Key switches from {a21,a43} to {a31,a43}; matrix, worked transformation and grading follow the change.",
+      "observed": "Independent exact echelon predicate gives key indices 0 -> 1. Native grader accepts new key and rejects old key. Actual UI renders changed entries and solution.",
+      "status": "passed",
+      "justification": "The first nonzero column in the affected rows determines whether an erasure is needed; this is precisely tutorial 3148/3896 reasoning.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-results.json",
+        "render-full/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "Keep q-42008 matrix and four distractors fixed; replace successful {a21,a43} option with redundant {a12,a21,a43}.",
+      "expected": "Prompt matrix stays fixed and solution/grader follow the new offered operation; an unoffered smaller operation must not cause rejection.",
+      "observed": "Exact regression, independent predicate and native grader pass; rendered nonminimum record shows a12 erased along with a21 and a43.",
+      "status": "passed",
+      "justification": "Source asks which offered operation works, not global minimization. Redundant erasure of a12 preserves the first-row leading entry.",
+      "sample_refs": [
+        "nonminimum-case.json",
+        "nonminimum-current-records.json",
+        "target-render-input.json",
+        "strict-current-results.txt",
+        "grader-results.json",
+        "render-full/rendering.json",
+        "render-target/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Change a11 from 1 to -2 in the before matrix, with bank fixed.",
+      "expected": "Same coordinate answer, different visible nonzero magnitude in prompt and worked matrices.",
+      "observed": "Key remains index 0; all five grader outcomes preserved; actual rendered matrix and worked transformation show -2.",
+      "status": "passed",
+      "justification": "Nonzero sign and magnitude do not change leading-column or zero-row order.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-results.json",
+        "render-full/rendering.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "Lexicographic rank of coordinate set",
+      "subgroup": "raw fresh / all",
+      "scope": "within_template",
+      "strategy": "Ignore the matrix; choose lexicographic rank 1 among the five coordinate sets.",
+      "correct": 0,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/24 versus uniform five-choice guessing 0.2. No reproducible advantage established for this extreme-order strategy in this bounded test.",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut-construction-law.json",
+        "cue-control-results.json"
+      ]
+    },
+    {
+      "cue": "Lexicographic rank of coordinate set",
+      "subgroup": "raw fresh / all",
+      "scope": "within_template",
+      "strategy": "Ignore the matrix; choose lexicographic rank 3 among the five coordinate sets.",
+      "correct": 13,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "13/24 versus uniform five-choice guessing 0.2. The action reads only coordinate labels. The keyed neighborhood construction gives exact median probability 3/8 when both side pools contain at least four choices; independent control and actual CLI survivors demonstrate statistical leakage. This is not a deterministic answer for every item. Exact-batch counts alone do not demonstrate a separate batch-selection failure.",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut-construction-law.json",
+        "cue-control-results.json"
+      ]
+    },
+    {
+      "cue": "Lexicographic rank of coordinate set",
+      "subgroup": "raw fresh / all",
+      "scope": "within_template",
+      "strategy": "Ignore the matrix; choose lexicographic rank 5 among the five coordinate sets.",
+      "correct": 4,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "4/24 versus uniform five-choice guessing 0.2. No reproducible advantage established for this extreme-order strategy in this bounded test.",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut-construction-law.json",
+        "cue-control-results.json"
+      ]
+    },
+    {
+      "cue": "Lexicographic rank of coordinate set",
+      "subgroup": "raw fresh / has existing zero row",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Ignore the matrix; choose lexicographic rank 3 among the five coordinate sets.",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "1/3 versus uniform five-choice guessing 0.2. The action reads only coordinate labels. The keyed neighborhood construction gives exact median probability 3/8 when both side pools contain at least four choices; independent control and actual CLI survivors demonstrate statistical leakage. This is not a deterministic answer for every item. Exact-batch counts alone do not demonstrate a separate batch-selection failure.",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut-construction-law.json",
+        "cue-control-results.json"
+      ]
+    },
+    {
+      "cue": "Lexicographic rank of coordinate set",
+      "subgroup": "raw fresh / no existing zero row",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Ignore the matrix; choose lexicographic rank 3 among the five coordinate sets.",
+      "correct": 12,
+      "total": 21,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "12/21 versus uniform five-choice guessing 0.2. The action reads only coordinate labels. The keyed neighborhood construction gives exact median probability 3/8 when both side pools contain at least four choices; independent control and actual CLI survivors demonstrate statistical leakage. This is not a deterministic answer for every item. Exact-batch counts alone do not demonstrate a separate batch-selection failure.",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut-construction-law.json",
+        "cue-control-results.json"
+      ]
+    },
+    {
+      "cue": "Lexicographic rank of coordinate set",
+      "subgroup": "delivered fresh / all",
+      "scope": "within_template",
+      "strategy": "Ignore the matrix; choose lexicographic rank 1 among the five coordinate sets.",
+      "correct": 0,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/24 versus uniform five-choice guessing 0.2. No reproducible advantage established for this extreme-order strategy in this bounded test.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "shortcut-construction-law.json",
+        "cue-control-results.json"
+      ]
+    },
+    {
+      "cue": "Lexicographic rank of coordinate set",
+      "subgroup": "delivered fresh / all",
+      "scope": "within_template",
+      "strategy": "Ignore the matrix; choose lexicographic rank 3 among the five coordinate sets.",
+      "correct": 13,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "13/24 versus uniform five-choice guessing 0.2. The action reads only coordinate labels. The keyed neighborhood construction gives exact median probability 3/8 when both side pools contain at least four choices; independent control and actual CLI survivors demonstrate statistical leakage. This is not a deterministic answer for every item. Exact-batch counts alone do not demonstrate a separate batch-selection failure.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "shortcut-construction-law.json",
+        "cue-control-results.json"
+      ]
+    },
+    {
+      "cue": "Lexicographic rank of coordinate set",
+      "subgroup": "delivered fresh / all",
+      "scope": "within_template",
+      "strategy": "Ignore the matrix; choose lexicographic rank 5 among the five coordinate sets.",
+      "correct": 4,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "4/24 versus uniform five-choice guessing 0.2. No reproducible advantage established for this extreme-order strategy in this bounded test.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "shortcut-construction-law.json",
+        "cue-control-results.json"
+      ]
+    },
+    {
+      "cue": "Lexicographic rank of coordinate set",
+      "subgroup": "delivered fresh / has existing zero row",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Ignore the matrix; choose lexicographic rank 3 among the five coordinate sets.",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "1/3 versus uniform five-choice guessing 0.2. The action reads only coordinate labels. The keyed neighborhood construction gives exact median probability 3/8 when both side pools contain at least four choices; independent control and actual CLI survivors demonstrate statistical leakage. This is not a deterministic answer for every item. Exact-batch counts alone do not demonstrate a separate batch-selection failure.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "shortcut-construction-law.json",
+        "cue-control-results.json"
+      ]
+    },
+    {
+      "cue": "Lexicographic rank of coordinate set",
+      "subgroup": "delivered fresh / no existing zero row",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Ignore the matrix; choose lexicographic rank 3 among the five coordinate sets.",
+      "correct": 12,
+      "total": 21,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "12/21 versus uniform five-choice guessing 0.2. The action reads only coordinate labels. The keyed neighborhood construction gives exact median probability 3/8 when both side pools contain at least four choices; independent control and actual CLI survivors demonstrate statistical leakage. This is not a deterministic answer for every item. Exact-batch counts alone do not demonstrate a separate batch-selection failure.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "shortcut-construction-law.json",
+        "cue-control-results.json"
+      ]
+    },
+    {
+      "cue": "Lexicographic rank of coordinate set",
+      "subgroup": "held-out control / all",
+      "scope": "within_template",
+      "strategy": "Ignore the matrix; choose lexicographic rank 1 among the five coordinate sets.",
+      "correct": 4,
+      "total": 96,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "4/96 versus uniform five-choice guessing 0.2. No reproducible advantage established for this extreme-order strategy in this bounded test.",
+      "sample_refs": [
+        "cue-control-records.json",
+        "shortcut-construction-law.json",
+        "cue-control-results.json"
+      ]
+    },
+    {
+      "cue": "Lexicographic rank of coordinate set",
+      "subgroup": "held-out control / all",
+      "scope": "within_template",
+      "strategy": "Ignore the matrix; choose lexicographic rank 3 among the five coordinate sets.",
+      "correct": 31,
+      "total": 96,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "31/96 versus uniform five-choice guessing 0.2. The action reads only coordinate labels. The keyed neighborhood construction gives exact median probability 3/8 when both side pools contain at least four choices; independent control and actual CLI survivors demonstrate statistical leakage. This is not a deterministic answer for every item. Exact-batch counts alone do not demonstrate a separate batch-selection failure.",
+      "sample_refs": [
+        "cue-control-records.json",
+        "shortcut-construction-law.json",
+        "cue-control-results.json"
+      ]
+    },
+    {
+      "cue": "Lexicographic rank of coordinate set",
+      "subgroup": "held-out control / all",
+      "scope": "within_template",
+      "strategy": "Ignore the matrix; choose lexicographic rank 5 among the five coordinate sets.",
+      "correct": 18,
+      "total": 96,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "18/96 versus uniform five-choice guessing 0.2. No reproducible advantage established for this extreme-order strategy in this bounded test.",
+      "sample_refs": [
+        "cue-control-records.json",
+        "shortcut-construction-law.json",
+        "cue-control-results.json"
+      ]
+    },
+    {
+      "cue": "Lexicographic rank of coordinate set",
+      "subgroup": "held-out control / has existing zero row",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Ignore the matrix; choose lexicographic rank 3 among the five coordinate sets.",
+      "correct": 6,
+      "total": 16,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "6/16 versus uniform five-choice guessing 0.2. The action reads only coordinate labels. The keyed neighborhood construction gives exact median probability 3/8 when both side pools contain at least four choices; independent control and actual CLI survivors demonstrate statistical leakage. This is not a deterministic answer for every item. Exact-batch counts alone do not demonstrate a separate batch-selection failure.",
+      "sample_refs": [
+        "cue-control-records.json",
+        "shortcut-construction-law.json",
+        "cue-control-results.json"
+      ]
+    },
+    {
+      "cue": "Lexicographic rank of coordinate set",
+      "subgroup": "held-out control / no existing zero row",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Ignore the matrix; choose lexicographic rank 3 among the five coordinate sets.",
+      "correct": 25,
+      "total": 80,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "25/80 versus uniform five-choice guessing 0.2. The action reads only coordinate labels. The keyed neighborhood construction gives exact median probability 3/8 when both side pools contain at least four choices; independent control and actual CLI survivors demonstrate statistical leakage. This is not a deterministic answer for every item. Exact-batch counts alone do not demonstrate a separate batch-selection failure.",
+      "sample_refs": [
+        "cue-control-records.json",
+        "shortcut-construction-law.json",
+        "cue-control-results.json"
+      ]
+    },
+    {
+      "cue": "Lexicographic rank of coordinate set",
+      "subgroup": "delivered control / all",
+      "scope": "within_template",
+      "strategy": "Ignore the matrix; choose lexicographic rank 1 among the five coordinate sets.",
+      "correct": 4,
+      "total": 96,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "4/96 versus uniform five-choice guessing 0.2. No reproducible advantage established for this extreme-order strategy in this bounded test.",
+      "sample_refs": [
+        "delivery-cue-control/accepted.json",
+        "shortcut-construction-law.json",
+        "cue-control-results.json"
+      ]
+    },
+    {
+      "cue": "Lexicographic rank of coordinate set",
+      "subgroup": "delivered control / all",
+      "scope": "within_template",
+      "strategy": "Ignore the matrix; choose lexicographic rank 3 among the five coordinate sets.",
+      "correct": 31,
+      "total": 96,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "31/96 versus uniform five-choice guessing 0.2. The action reads only coordinate labels. The keyed neighborhood construction gives exact median probability 3/8 when both side pools contain at least four choices; independent control and actual CLI survivors demonstrate statistical leakage. This is not a deterministic answer for every item. Exact-batch counts alone do not demonstrate a separate batch-selection failure.",
+      "sample_refs": [
+        "delivery-cue-control/accepted.json",
+        "shortcut-construction-law.json",
+        "cue-control-results.json"
+      ]
+    },
+    {
+      "cue": "Lexicographic rank of coordinate set",
+      "subgroup": "delivered control / all",
+      "scope": "within_template",
+      "strategy": "Ignore the matrix; choose lexicographic rank 5 among the five coordinate sets.",
+      "correct": 18,
+      "total": 96,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "18/96 versus uniform five-choice guessing 0.2. No reproducible advantage established for this extreme-order strategy in this bounded test.",
+      "sample_refs": [
+        "delivery-cue-control/accepted.json",
+        "shortcut-construction-law.json",
+        "cue-control-results.json"
+      ]
+    },
+    {
+      "cue": "Lexicographic rank of coordinate set",
+      "subgroup": "delivered control / has existing zero row",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Ignore the matrix; choose lexicographic rank 3 among the five coordinate sets.",
+      "correct": 6,
+      "total": 16,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "6/16 versus uniform five-choice guessing 0.2. The action reads only coordinate labels. The keyed neighborhood construction gives exact median probability 3/8 when both side pools contain at least four choices; independent control and actual CLI survivors demonstrate statistical leakage. This is not a deterministic answer for every item. Exact-batch counts alone do not demonstrate a separate batch-selection failure.",
+      "sample_refs": [
+        "delivery-cue-control/accepted.json",
+        "shortcut-construction-law.json",
+        "cue-control-results.json"
+      ]
+    },
+    {
+      "cue": "Lexicographic rank of coordinate set",
+      "subgroup": "delivered control / no existing zero row",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Ignore the matrix; choose lexicographic rank 3 among the five coordinate sets.",
+      "correct": 25,
+      "total": 80,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "25/80 versus uniform five-choice guessing 0.2. The action reads only coordinate labels. The keyed neighborhood construction gives exact median probability 3/8 when both side pools contain at least four choices; independent control and actual CLI survivors demonstrate statistical leakage. This is not a deterministic answer for every item. Exact-batch counts alone do not demonstrate a separate batch-selection failure.",
+      "sample_refs": [
+        "delivery-cue-control/accepted.json",
+        "shortcut-construction-law.json",
+        "cue-control-results.json"
+      ]
+    },
+    {
+      "cue": "Lexicographic rank of coordinate set",
+      "subgroup": "CLI after rejection / all",
+      "scope": "within_template",
+      "strategy": "Ignore the matrix; choose lexicographic rank 1 among the five coordinate sets.",
+      "correct": 3,
+      "total": 64,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/64 versus uniform five-choice guessing 0.2. No reproducible advantage established for this extreme-order strategy in this bounded test.",
+      "sample_refs": [
+        "cli-control-records.json",
+        "shortcut-construction-law.json",
+        "cue-control-results.json"
+      ]
+    },
+    {
+      "cue": "Lexicographic rank of coordinate set",
+      "subgroup": "CLI after rejection / all",
+      "scope": "within_template",
+      "strategy": "Ignore the matrix; choose lexicographic rank 3 among the five coordinate sets.",
+      "correct": 24,
+      "total": 64,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "24/64 versus uniform five-choice guessing 0.2. The action reads only coordinate labels. The keyed neighborhood construction gives exact median probability 3/8 when both side pools contain at least four choices; independent control and actual CLI survivors demonstrate statistical leakage. This is not a deterministic answer for every item. Exact-batch counts alone do not demonstrate a separate batch-selection failure.",
+      "sample_refs": [
+        "cli-control-records.json",
+        "shortcut-construction-law.json",
+        "cue-control-results.json"
+      ]
+    },
+    {
+      "cue": "Lexicographic rank of coordinate set",
+      "subgroup": "CLI after rejection / all",
+      "scope": "within_template",
+      "strategy": "Ignore the matrix; choose lexicographic rank 5 among the five coordinate sets.",
+      "correct": 11,
+      "total": 64,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "11/64 versus uniform five-choice guessing 0.2. No reproducible advantage established for this extreme-order strategy in this bounded test.",
+      "sample_refs": [
+        "cli-control-records.json",
+        "shortcut-construction-law.json",
+        "cue-control-results.json"
+      ]
+    },
+    {
+      "cue": "Lexicographic rank of coordinate set",
+      "subgroup": "CLI after rejection / has existing zero row",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Ignore the matrix; choose lexicographic rank 3 among the five coordinate sets.",
+      "correct": 3,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "3/8 versus uniform five-choice guessing 0.2. The action reads only coordinate labels. The keyed neighborhood construction gives exact median probability 3/8 when both side pools contain at least four choices; independent control and actual CLI survivors demonstrate statistical leakage. This is not a deterministic answer for every item. Exact-batch counts alone do not demonstrate a separate batch-selection failure.",
+      "sample_refs": [
+        "cli-control-records.json",
+        "shortcut-construction-law.json",
+        "cue-control-results.json"
+      ]
+    },
+    {
+      "cue": "Lexicographic rank of coordinate set",
+      "subgroup": "CLI after rejection / no existing zero row",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Ignore the matrix; choose lexicographic rank 3 among the five coordinate sets.",
+      "correct": 21,
+      "total": 56,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "21/56 versus uniform five-choice guessing 0.2. The action reads only coordinate labels. The keyed neighborhood construction gives exact median probability 3/8 when both side pools contain at least four choices; independent control and actual CLI survivors demonstrate statistical leakage. This is not a deterministic answer for every item. Exact-batch counts alone do not demonstrate a separate batch-selection failure.",
+      "sample_refs": [
+        "cli-control-records.json",
+        "shortcut-construction-law.json",
+        "cue-control-results.json"
+      ]
+    },
+    {
+      "cue": "Lexicographic rank of coordinate set",
+      "subgroup": "CLI after delivery / all",
+      "scope": "within_template",
+      "strategy": "Ignore the matrix; choose lexicographic rank 1 among the five coordinate sets.",
+      "correct": 3,
+      "total": 64,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/64 versus uniform five-choice guessing 0.2. No reproducible advantage established for this extreme-order strategy in this bounded test.",
+      "sample_refs": [
+        "delivery-cli-control/accepted.json",
+        "shortcut-construction-law.json",
+        "cue-control-results.json"
+      ]
+    },
+    {
+      "cue": "Lexicographic rank of coordinate set",
+      "subgroup": "CLI after delivery / all",
+      "scope": "within_template",
+      "strategy": "Ignore the matrix; choose lexicographic rank 3 among the five coordinate sets.",
+      "correct": 24,
+      "total": 64,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "24/64 versus uniform five-choice guessing 0.2. The action reads only coordinate labels. The keyed neighborhood construction gives exact median probability 3/8 when both side pools contain at least four choices; independent control and actual CLI survivors demonstrate statistical leakage. This is not a deterministic answer for every item. Exact-batch counts alone do not demonstrate a separate batch-selection failure.",
+      "sample_refs": [
+        "delivery-cli-control/accepted.json",
+        "shortcut-construction-law.json",
+        "cue-control-results.json"
+      ]
+    },
+    {
+      "cue": "Lexicographic rank of coordinate set",
+      "subgroup": "CLI after delivery / all",
+      "scope": "within_template",
+      "strategy": "Ignore the matrix; choose lexicographic rank 5 among the five coordinate sets.",
+      "correct": 11,
+      "total": 64,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "11/64 versus uniform five-choice guessing 0.2. No reproducible advantage established for this extreme-order strategy in this bounded test.",
+      "sample_refs": [
+        "delivery-cli-control/accepted.json",
+        "shortcut-construction-law.json",
+        "cue-control-results.json"
+      ]
+    },
+    {
+      "cue": "Lexicographic rank of coordinate set",
+      "subgroup": "CLI after delivery / has existing zero row",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Ignore the matrix; choose lexicographic rank 3 among the five coordinate sets.",
+      "correct": 3,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "3/8 versus uniform five-choice guessing 0.2. The action reads only coordinate labels. The keyed neighborhood construction gives exact median probability 3/8 when both side pools contain at least four choices; independent control and actual CLI survivors demonstrate statistical leakage. This is not a deterministic answer for every item. Exact-batch counts alone do not demonstrate a separate batch-selection failure.",
+      "sample_refs": [
+        "delivery-cli-control/accepted.json",
+        "shortcut-construction-law.json",
+        "cue-control-results.json"
+      ]
+    },
+    {
+      "cue": "Lexicographic rank of coordinate set",
+      "subgroup": "CLI after delivery / no existing zero row",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Ignore the matrix; choose lexicographic rank 3 among the five coordinate sets.",
+      "correct": 21,
+      "total": 56,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "21/56 versus uniform five-choice guessing 0.2. The action reads only coordinate labels. The keyed neighborhood construction gives exact median probability 3/8 when both side pools contain at least four choices; independent control and actual CLI survivors demonstrate statistical leakage. This is not a deterministic answer for every item. Exact-batch counts alone do not demonstrate a separate batch-selection failure.",
+      "sample_refs": [
+        "delivery-cli-control/accepted.json",
+        "shortcut-construction-law.json",
+        "cue-control-results.json"
+      ]
+    },
+    {
+      "cue": "Lexicographic rank of coordinate set",
+      "subgroup": "exact batch / all",
+      "scope": "within_template",
+      "strategy": "Ignore the matrix; choose lexicographic rank 1 among the five coordinate sets.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/5 versus uniform five-choice guessing 0.2. No reproducible advantage established for this extreme-order strategy in this bounded test.",
+      "sample_refs": [
+        "batch-records.json",
+        "shortcut-construction-law.json",
+        "cue-control-results.json"
+      ]
+    },
+    {
+      "cue": "Lexicographic rank of coordinate set",
+      "subgroup": "exact batch / all",
+      "scope": "within_template",
+      "strategy": "Ignore the matrix; choose lexicographic rank 3 among the five coordinate sets.",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/5 versus uniform five-choice guessing 0.2. The action reads only coordinate labels. The keyed neighborhood construction gives exact median probability 3/8 when both side pools contain at least four choices; independent control and actual CLI survivors demonstrate statistical leakage. This is not a deterministic answer for every item. Exact-batch counts alone do not demonstrate a separate batch-selection failure.",
+      "sample_refs": [
+        "batch-records.json",
+        "shortcut-construction-law.json",
+        "cue-control-results.json"
+      ]
+    },
+    {
+      "cue": "Lexicographic rank of coordinate set",
+      "subgroup": "exact batch / all",
+      "scope": "within_template",
+      "strategy": "Ignore the matrix; choose lexicographic rank 5 among the five coordinate sets.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/5 versus uniform five-choice guessing 0.2. No reproducible advantage established for this extreme-order strategy in this bounded test.",
+      "sample_refs": [
+        "batch-records.json",
+        "shortcut-construction-law.json",
+        "cue-control-results.json"
+      ]
+    },
+    {
+      "cue": "Lexicographic rank of coordinate set",
+      "subgroup": "exact batch / has existing zero row",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Ignore the matrix; choose lexicographic rank 3 among the five coordinate sets.",
+      "correct": 2,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/2 versus uniform five-choice guessing 0.2. The action reads only coordinate labels. The keyed neighborhood construction gives exact median probability 3/8 when both side pools contain at least four choices; independent control and actual CLI survivors demonstrate statistical leakage. This is not a deterministic answer for every item. Exact-batch counts alone do not demonstrate a separate batch-selection failure.",
+      "sample_refs": [
+        "batch-records.json",
+        "shortcut-construction-law.json",
+        "cue-control-results.json"
+      ]
+    },
+    {
+      "cue": "Lexicographic rank of coordinate set",
+      "subgroup": "exact batch / no existing zero row",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Ignore the matrix; choose lexicographic rank 3 among the five coordinate sets.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/3 versus uniform five-choice guessing 0.2. The action reads only coordinate labels. The keyed neighborhood construction gives exact median probability 3/8 when both side pools contain at least four choices; independent control and actual CLI survivors demonstrate statistical leakage. This is not a deterministic answer for every item. Exact-batch counts alone do not demonstrate a separate batch-selection failure.",
+      "sample_refs": [
+        "batch-records.json",
+        "shortcut-construction-law.json",
+        "cue-control-results.json"
+      ]
+    },
+    {
+      "cue": "Lexicographic rank of coordinate set",
+      "subgroup": "delivered exact batch / all",
+      "scope": "within_template",
+      "strategy": "Ignore the matrix; choose lexicographic rank 1 among the five coordinate sets.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/5 versus uniform five-choice guessing 0.2. No reproducible advantage established for this extreme-order strategy in this bounded test.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "shortcut-construction-law.json",
+        "cue-control-results.json"
+      ]
+    },
+    {
+      "cue": "Lexicographic rank of coordinate set",
+      "subgroup": "delivered exact batch / all",
+      "scope": "within_template",
+      "strategy": "Ignore the matrix; choose lexicographic rank 3 among the five coordinate sets.",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/5 versus uniform five-choice guessing 0.2. The action reads only coordinate labels. The keyed neighborhood construction gives exact median probability 3/8 when both side pools contain at least four choices; independent control and actual CLI survivors demonstrate statistical leakage. This is not a deterministic answer for every item. Exact-batch counts alone do not demonstrate a separate batch-selection failure.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "shortcut-construction-law.json",
+        "cue-control-results.json"
+      ]
+    },
+    {
+      "cue": "Lexicographic rank of coordinate set",
+      "subgroup": "delivered exact batch / all",
+      "scope": "within_template",
+      "strategy": "Ignore the matrix; choose lexicographic rank 5 among the five coordinate sets.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/5 versus uniform five-choice guessing 0.2. No reproducible advantage established for this extreme-order strategy in this bounded test.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "shortcut-construction-law.json",
+        "cue-control-results.json"
+      ]
+    },
+    {
+      "cue": "Lexicographic rank of coordinate set",
+      "subgroup": "delivered exact batch / has existing zero row",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Ignore the matrix; choose lexicographic rank 3 among the five coordinate sets.",
+      "correct": 2,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/2 versus uniform five-choice guessing 0.2. The action reads only coordinate labels. The keyed neighborhood construction gives exact median probability 3/8 when both side pools contain at least four choices; independent control and actual CLI survivors demonstrate statistical leakage. This is not a deterministic answer for every item. Exact-batch counts alone do not demonstrate a separate batch-selection failure.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "shortcut-construction-law.json",
+        "cue-control-results.json"
+      ]
+    },
+    {
+      "cue": "Lexicographic rank of coordinate set",
+      "subgroup": "delivered exact batch / no existing zero row",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Ignore the matrix; choose lexicographic rank 3 among the five coordinate sets.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/3 versus uniform five-choice guessing 0.2. The action reads only coordinate labels. The keyed neighborhood construction gives exact median probability 3/8 when both side pools contain at least four choices; independent control and actual CLI survivors demonstrate statistical leakage. This is not a deterministic answer for every item. Exact-batch counts alone do not demonstrate a separate batch-selection failure.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "shortcut-construction-law.json",
+        "cue-control-results.json"
+      ]
+    },
+    {
+      "cue": "Displayed radio position",
+      "subgroup": "exact delivered batch in actual UI",
+      "scope": "within_template",
+      "strategy": "Always select the first displayed radio choice.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline 0.2. Displayed positions are taken from actual UI HTML, not stored bank order; no universal position shortcut in the exact batch.",
+      "sample_refs": [
+        "ui-position-results.json",
+        "render-full/rendering.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "generator source profiles, validation, catalogue and new bank construction",
+      "actual CLI semantic-fingerprint rejection/resampling",
+      "requested moderate difficulty filtering",
+      "shared publisher normalization and stable identities",
+      "captured-inventory and within-batch deduplication",
+      "exact five-record runner batch",
+      "native learner selection rule and reused matching-binding captured-pool model",
+      "actual UI choice reordering"
+    ],
+    "sample_refs": [
+      "resampling-results.json",
+      "cli-control-records.json",
+      "delivery-cli-control/delivery.json",
+      "delivery-cue-control/delivery.json",
+      "delivery-batch/delivery.json",
+      "selection-analysis.json",
+      "ui-position-results.json"
+    ],
+    "result": "Actual CLI consumes 77 candidates, rejects 13 repeated semantic fingerprints, and returns 64; all survive shared delivery, and median cue wins 24/64. All 96 single-call controls and five batch items also survive. Exact-batch median wins 2/5: no separate universal batch shortcut or batch-selection failure established. Difficulty-first uniform-within-band selection retains cue rates in expectation if all moderate records are eligible; learner history and default lowest-ID selection can alter the subset."
+  },
+  "limitations": [
+    "Statistical leakage is demonstrated; median does not answer every item.",
+    "Initial 24-seed sample motivated the fresh 96-seed control; exact construction law supports the independent control result.",
+    "No finite audit excludes every possible cue.",
+    "Captured inventory basis 5354 is fixed. Future inventory, allocated entity IDs, policy weights and learner history are unavailable; selection conclusions are conditional.",
+    "Five non-source stored candidates were inspected and explicit reconstruction attempted, but matching identity/generation metadata was not reproduced. Empty affected-inventory.json is not verified absence of affected stored content.",
+    "Canonical example lacks an answer bank; only its stated transformation can be verified."
+  ]
+}
