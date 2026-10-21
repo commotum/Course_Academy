@@ -1,0 +1,95 @@
+[
+  {
+    "label": "grading blocker variant 1",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186092261,
+        "id": "2f4bfd24-dafd-57b3-940a-154a6e0acf3d",
+        "title": "Differentiating a General Exponential Function Using the Chain Rule"
+      },
+      "question": {
+        ":question/id": "1c7c43e3-1d43-5eeb-96e4-f80dabf8d7c8",
+        ":question/problem": "If $f(x)={4}^{-5{x}^{3}+1}$, find ${f}^{\\prime}(x)$.\n\n${f}^{\\prime}(x)$$=$\n{{field-1}}$\\cdot {4}^{-5{x}^{3}+1}$",
+        ":question/worked-solution": "First, we express $f$ as the composite function\n\n$$\nf={4}^{u},\\,u=-5{x}^{3}+1.\n$$\n\nDifferentiating gives\n\n$$\n\\frac{\\mathrm{d}f}{\\mathrm{d}u}={4}^{u}\\ln(4),\\,\\frac{\\mathrm{d}u}{\\mathrm{d}x}=-15{x}^{2}.\n$$\n\nWe now apply the chain rule and get\n\n$$\n\\begin{aligned}\\frac{\\mathrm{d}f}{\\mathrm{d}x} & =\\frac{\\mathrm{d}f}{\\mathrm{d}u}\\cdot \\frac{\\mathrm{d}u}{\\mathrm{d}x} \\\\ & ={4}^{u}\\ln(4)\\cdot (-15{x}^{2}) \\\\ & =(-15{x}^{2})\\cdot {4}^{u}\\ln(4) \\\\ & =-15{x}^{2}\\cdot {4}^{-5{x}^{3}+1}\\ln(4).\\end{aligned}\n$$",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "982cfaf9-b849-575e-8a09-8a5a28aea61b",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "8209c795-4e81-5fea-849a-fdf593fe0d69",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- 15 x^{2} \\ln{\\left(4 \\right)}"
+              },
+              {
+                ":answer/id": "856e88a3-82e2-5bd0-aad3-a07f5bcb6d94",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "-30x^2\\ln(2)"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "856e88a3-82e2-5bd0-aad3-a07f5bcb6d94"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "general-exponential-chain-2",
+        "template": "q-312462",
+        "profile": "method:q-312462",
+        "parameters": {
+          "b": 4,
+          "c": 1,
+          "a": -5,
+          "n": 3,
+          "k": 0,
+          "l": 0,
+          "d": 1
+        },
+        "seed": 782006,
+        "bank_seed": 3477729588832221329,
+        "bank_role": null,
+        "source": {
+          "database": "math",
+          "basis": 3948,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [
+          "q-312462"
+        ],
+        "difficulty_design": "observed",
+        "answer_shape": "coefficient-fragment",
+        "evidence_only": false,
+        "eligible_for_learning": true,
+        "presentation_and_completion_repairs": [
+          "normalize natural-log spelling and invisible function-apply characters",
+          "make numeric-base multiplication explicit"
+        ],
+        "mathematical_fingerprint": "368fd18bfaa1b1382994a5659f734511bb6116569655b6320d035ed8203aa022",
+        "answer_math": {
+          "1f5bc89f-8ce8-56c8-b1f6-4d6e6e4e40b9": "-15*x**2*log(4)"
+        },
+        "recipes": {
+          "1f5bc89f-8ce8-56c8-b1f6-4d6e6e4e40b9": "correct"
+        },
+        "runtime": {
+          "python": "3.13.5",
+          "sympy": "1.14.0"
+        },
+        "plot_rating": "none",
+        "math_format": "course-academy-tex-v1"
+      },
+      "assets": {}
+    },
+    "checks": [
+      {
+        "submitted": "15x^2\\ln(2)",
+        "expected": "rejected",
+        "purpose": "wrong sign in canonical log basis"
+      }
+    ]
+  }
+]

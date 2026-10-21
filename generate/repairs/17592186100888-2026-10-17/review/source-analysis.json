@@ -1,0 +1,59 @@
+{
+  "knowledge_point": 17592186100888,
+  "source_basis": 3683,
+  "independence": "Written from original source.json and principles.md before reading author files.",
+  "learner_operation": "Compute the actual derivative of the supplied function, independently assess the displayed derivative claim, substitute the actual function and derivative into the differential equation, and decide whether equality holds identically on the common domain.",
+  "source_refs": [
+    "tutorial17592186102031: To check whether a given function y satisfies a differential equation, we calculate the derivative and plug the result into the equation.",
+    "canonical17592186100725: f=1/x and y'= -y/x; derivative -1/x^2; all three statements true.",
+    "question17592186101155: f=x^4 and y'=4y/x; displayed derivative5x^5 false; II and III true.",
+    "question17592186272202: f=-3x^2 and y'=2y/x; displayed derivative-5x false; II and III true.",
+    "question17592186272196: f=sin(2x)/2, y'=2y; displayed2cos(2x) false; all false.",
+    "question17592186272197: f=cos(2x), y'=y cos(2x); derivative claim-2sin(2x) true; substitution/solution false.",
+    "question17592186101157: f=e^(2x), y'=2y; all true.",
+    "question17592186272198: f=ln(x), y'=exp(-y); all true on x>0.",
+    "question17592186272199: f=-1/x^2, y'=y/x^2; all false as identities on x!=0.",
+    "question17592186272200: f=3e^(-x), y'=-3y; all false.",
+    "question17592186272201: f=4ln(x), y'=4x exp(-y/2); derivative claim1/(4x) false; II and III true on x>0."
+  ],
+  "response_contract": "Three independent checkbox fields keyed I, II, III, each with true and false choices and exact stored booleans. No selections must be a valid submit-able response for all-false cases. Canonical example lacks answer fields but solution identifies all three.",
+  "invariants": [
+    "Statements II and III have the same truth value: a differentiable function is a solution exactly when its actual derivative satisfies the ODE identically on domain.",
+    "The derivative used for II must be calculated from f rather than copied from a false statement I.",
+    "I can be independently true/false of II/III, allowing truth tuples000,100,011,111.",
+    "Use identity on shared domain, not equality at a single point; logs require x>0, reciprocals x!=0.",
+    "This is verification, not solving ODEs, applying initial conditions, integration or advanced existence/uniqueness."
+  ],
+  "fixed_features": [
+    {
+      "feature": "Three statement meanings and II/III equivalence",
+      "justification": "Directly encodes derivative check, substitution check, and definition of solution."
+    },
+    {
+      "feature": "First-order ODE and supplied candidate function",
+      "justification": "Matches lesson and KP; learner verifies rather than constructs a general solution."
+    }
+  ],
+  "eligible_variation": [
+    "Within EACH recognizable power/exponential/log/trig/reciprocal family, independently vary derivative claim correctness and ODE coefficient or form so satisfying versus nonsatisfying is not fixed by family.",
+    "Vary small nonzero coefficients, integer exponents, inner linear rates, and signs while preserving existing differentiation rules and workload.",
+    "Hold f fixed and change claimed derivative only: I must toggle while II/III stay fixed. Hold f and derivative claim fixed and change ODE so identity fails: II/III must toggle while I stays fixed.",
+    "Rescale a homogeneous power/exponential solution and its derivative by same nonzero factor: truth should remain; irrelevant item IDs/order should not affect grading."
+  ],
+  "difficulty": {
+    "easy": "Observed bank contains power, exponential, trig, reciprocal and logarithmic verification, sometimes requiring chain rule/substitution simplification. Preserve those source families and modest arithmetic.",
+    "moderate": "Only one observed moderate example, negative monomial coefficient -3 and exponent2. Conservative extensions can vary negative monomial coefficient and modest integer exponent/ODE coefficient.",
+    "hard": "No captured hard source examples. Hard must be explicitly an authored extension retaining existing method/prerequisites; added workload must be justified instead of merely relabeling easy or introducing new topics."
+  },
+  "source_gaps": [
+    "No hard-band examples captured. Canonical source lacks field bank; infer its all-true contract only from worked solution. No images needed."
+  ],
+  "check_plan": [
+    "Replay all9 bank questions and canonical with complete checkbox banks and semantic prompt/solution fidelity.",
+    "Independently differentiate families with SymPy; compute ODE residual and statement truth; inspect rendered text separately from metadata.",
+    "For each family/band sample all4 admissible decisions and measure family, signs, equation form and claim-form cue subgroups.",
+    "Controlled relevant and irrelevant pairs; native grader exhaustive8checkbox responses for representativecases includingallfalse.",
+    "Run shared delivery-filter on independentlychosen sample and actual runnerbatch, assess postdedup/band/selection distribution.",
+    "Inspect actualUI screenshots and zero-check submit behavior; deterministic CLI replay and package relocation; dependencies exactinstalledversions."
+  ]
+}

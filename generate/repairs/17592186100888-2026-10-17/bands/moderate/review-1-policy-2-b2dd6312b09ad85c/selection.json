@@ -1,0 +1,92 @@
+{
+  "implementation": "faithful read-only reproduction of question_selection.rs select; candidateorder assigned stablefixture IDs in inputorder",
+  "code_sha256": "d59dea58989cfe9f3cd49ed3b45199d4e7a12723c4d8eae999e495b9660dd760",
+  "cases": [
+    {
+      "scenario": "all fresh mixedbands",
+      "policy_weights": [
+        1,
+        1,
+        1
+      ],
+      "candidates": 255,
+      "draws": 1024,
+      "truth_counts": {
+        "000": 273,
+        "111": 236,
+        "011": 262,
+        "100": 253
+      },
+      "seed_pattern": "independent-review-{0..1023}"
+    },
+    {
+      "scenario": "every7th candidate previously seen",
+      "policy_weights": [
+        1,
+        1,
+        1
+      ],
+      "candidates": 218,
+      "draws": 1024,
+      "truth_counts": {
+        "000": 281,
+        "111": 232,
+        "011": 254,
+        "100": 257
+      },
+      "seed_pattern": "independent-review-{0..1023}"
+    },
+    {
+      "scenario": "easy only",
+      "policy_weights": [
+        1,
+        0,
+        0
+      ],
+      "candidates": 255,
+      "draws": 1024,
+      "truth_counts": {
+        "000": 346,
+        "111": 165,
+        "011": 246,
+        "100": 267
+      },
+      "seed_pattern": "independent-review-{0..1023}"
+    },
+    {
+      "scenario": "moderate only",
+      "policy_weights": [
+        0,
+        1,
+        0
+      ],
+      "candidates": 255,
+      "draws": 1024,
+      "truth_counts": {
+        "000": 270,
+        "100": 248,
+        "111": 235,
+        "011": 271
+      },
+      "seed_pattern": "independent-review-{0..1023}"
+    },
+    {
+      "scenario": "hard only",
+      "policy_weights": [
+        0,
+        0,
+        1
+      ],
+      "candidates": 255,
+      "draws": 1024,
+      "truth_counts": {
+        "000": 231,
+        "100": 254,
+        "111": 278,
+        "011": 261
+      },
+      "seed_pattern": "independent-review-{0..1023}"
+    }
+  ],
+  "limits": "No live learner history queried. Priorhistory can exhaust any decision case; testedhistory mask removes every7threcord. Policypositiveband draw+uniformquestion cannot intentionally inspect truth. Nonconfigured legacy policy returnslowestid; defaultconfiguredpolicy is weighted. EDBassignedIDs not known beforepublication."
+}

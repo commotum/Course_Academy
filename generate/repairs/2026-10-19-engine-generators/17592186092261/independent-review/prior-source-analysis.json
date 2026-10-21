@@ -1,0 +1,243 @@
+{
+  "skill": "Differentiate C*b**u(x) using C*b**u(x)*ln(b)*u_prime(x).",
+  "learner_operation": "Identify the unchanged exponential, differentiate the polynomial exponent, retain the constant multiplier and natural-log factor; select or enter the resulting expression. Moderate evaluates it at a point; hard constructs a tangent line.",
+  "reasoning_steps": [
+    "Set u equal to the exponent.",
+    "Differentiate outer exponential and polynomial inner function separately.",
+    "Multiply derivatives and substitute u.",
+    "Only moderate: evaluate derivative at given abscissa. Only hard: evaluate curve and derivative and use point-slope form."
+  ],
+  "response_contract": "Easy includes five-choice radio and a factor-only math input (q-312462). Several easy examples have no captured answer field; do not infer a specific response type for those. Moderate includes radio and free math; hard radio line equation.",
+  "difficulty": "Requested easy: symbolic derivative, including linear, quadratic and cubic polynomial exponents, constants and constant outer multipliers; no evaluation or tangent construction.",
+  "invariants": [
+    "Constant positive base b != 1; outer multiplier constant.",
+    "Use chain rule with natural logarithm of base, preserve exponent.",
+    "Short polynomial exponent and source-comparable arithmetic; no product, quotient or trigonometric differentiation.",
+    "Derive prompt, all choices, key and worked explanation from same instance."
+  ],
+  "permitted_variations": [
+    "Base, outer multiplier, signs and small coefficients, polynomial degree 1/2/3, constant shifts, two-term cubic+linear exponents.",
+    "Correct choice position, distractor error role and formula wording may vary; no source position has instructional significance.",
+    "Within factor-only response preserve the supplied exponential while varying base and inner derivative.",
+    "Exponent constant shift changes exponential but does not change derivative factor; outer display name y/f is irrelevant."
+  ],
+  "fixed_vs_incidental": "The exponential-chain-rule relation and source-level workload are essential. Particular bases, positive/negative derivative, coefficients, labels and choice positions are incidental assignments. Eligible roles include sign/coefficient of inner derivative, qualifying choice and factor entered.",
+  "source_refs": [
+    "e-728 / 775dfc95-df31-5198-aeb2-4603b8386957",
+    "q-48565 / 8711f34a-9cc5-5a70-9af6-219e0592f067",
+    "q-48631 / 475f4a17-648a-5df1-a5af-24c4bc3218f3",
+    "q-107458 / 5b5b538e-387a-5bc3-9ad6-828140780508",
+    "q-71881 / cc156fa4-1ae1-5983-b7ca-740de211698e",
+    "q-107459 / f637ee3d-e925-50b9-8fb1-4aa44482e5e0",
+    "q-107461 / a0d30f56-0d1c-5b77-92c9-4ebf415c4add",
+    "q-1952 / 15807573-b299-5e98-85b6-db47d2fbe91c",
+    "q-312462 / 96fff31f-332c-5572-b655-bad437de2f44",
+    "q-340969 / 5d403927-9339-566e-9390-9903483d0c58",
+    "q-48659 / ac2dcbe2-d530-570b-ae79-f45a337889ca",
+    "q-340970 / 70b1c8a4-0636-5508-ab80-4e4e15ec81e5",
+    "q-107463 / 77c551c0-c155-56eb-9f11-d8d660941796",
+    "q-1951 / 0876dfcc-e11e-5c1c-a9e0-0c7b6f68915a",
+    "lesson 9ed557a5-e06f-5f5a-9230-32a93a80b727, step 646589 (87b44f73 introduction step 646582 precedes exponential-chain examples)"
+  ],
+  "lesson_passages": [
+    {
+      "ref": "lesson step 646589 / e-728",
+      "quote": "First, we express y as the composite function; y = 3*2^u, u=1-x. Differentiating gives dy/du=3*2^u ln(2), du/dx=-1. We now apply the chain rule."
+    },
+    {
+      "ref": "tutorial 1268 / cf67b8fb-2658-5221-b309-6cf09e93b5e7",
+      "quote": "We can use the chain rule to compute the derivative of this composite function; substituting u=3x, we obtain the final result."
+    }
+  ],
+  "evidence_gaps": [
+    "q-48631 lacks solution, difficulty and correct key; infer 12x*3**(6*x*x-4)*ln(3), but no observed solution template.",
+    "q-48565 has two captured radio banks, second lacking key; mathematical bank contents equivalent.",
+    "e-728, q-107458 and q-71881 lack answer fields.",
+    "No images or separate prerequisites captured.",
+    "q-1951 solution mistakenly switches f to y in notation; mathematics consistent."
+  ],
+  "source_cases": [
+    {
+      "id": "775dfc95-df31-5198-aeb2-4603b8386957",
+      "ma_id": "e-728",
+      "prompt": "Given that $y= 3\\cdot 2^{1 - x},$ find $\\dfrac{\\textrm d y}{\\textrm d x}.$",
+      "banks": [],
+      "solution_present": true
+    },
+    {
+      "id": "8711f34a-9cc5-5a70-9af6-219e0592f067",
+      "ma_id": "q-48565",
+      "prompt": "If $f(x)={3}^{2{x}^{2}},$ find ${f}^{\u2032}(x).$",
+      "banks": [
+        [
+          "2\\cdot {3}^{2x}\\operatorname{ln}\u2061(3)",
+          "x{3}^{2x}\\operatorname{ln}\u2061(3)",
+          "4x{3}^{2{x}^{2}}\\operatorname{ln}\u2061(3)",
+          "4x{3}^{2{x}^{2}}",
+          "2x{3}^{2{x}^{2}}"
+        ],
+        [
+          "x3^{2x}\\ln (3)",
+          "2 \\cdot 3^{2x}\\ln (3)",
+          "4x3^{2x^{2}}",
+          "2x3^{2x^{2}}",
+          "4x3^{2x^{2}}\\ln (3)"
+        ]
+      ],
+      "solution_present": true
+    },
+    {
+      "id": "475f4a17-648a-5df1-a5af-24c4bc3218f3",
+      "ma_id": "q-48631",
+      "prompt": "Given that $y = 3^{6x^{2} - 4}$, find $\\frac{dy}{dx}$.",
+      "banks": [
+        [
+          "(12x^{3})3^{12x}\\ln (3)",
+          "(12x)3^{6x^{2} - 4}",
+          "(12x)3^{6x^{2} - 4}\\ln (3)",
+          "(12x - 4)3^{6x^{2} - 4}",
+          "(12x - 4)3^{6x^{2} - 4}\\ln (3)"
+        ]
+      ],
+      "solution_present": false
+    },
+    {
+      "id": "5b5b538e-387a-5bc3-9ad6-828140780508",
+      "ma_id": "q-107458",
+      "prompt": "If $f(x)={2}^{3-{x}^{3}},$ find ${f}^{'}(x).$",
+      "banks": [],
+      "solution_present": true
+    },
+    {
+      "id": "cc156fa4-1ae1-5983-b7ca-740de211698e",
+      "ma_id": "q-71881",
+      "prompt": "Given that $y=2\\cdot {5}^{x+{x}^{3}},$ find $\\frac{\\text{d}y}{\\text{d}x}.$",
+      "banks": [],
+      "solution_present": true
+    },
+    {
+      "id": "f637ee3d-e925-50b9-8fb1-4aa44482e5e0",
+      "ma_id": "q-107459",
+      "prompt": "Given that $y=3\\cdot {4}^{{x}^{2}-1},$ find $\\frac{\\text{d}y}{\\text{d}x}.$",
+      "banks": [
+        [
+          "-2x\\cdot {4}^{{x}^{2}-1}ln\u20614",
+          "-6x\\cdot {4}^{{x}^{2}-1}ln\u20614",
+          "6x\\cdot {4}^{{x}^{2}-1}ln\u20614",
+          "2x\\cdot {4}^{{x}^{2}-1}ln\u20614",
+          "3x\\cdot {4}^{{x}^{2}-1}ln\u20614"
+        ]
+      ],
+      "solution_present": true
+    },
+    {
+      "id": "a0d30f56-0d1c-5b77-92c9-4ebf415c4add",
+      "ma_id": "q-107461",
+      "prompt": "If $f(x)={6}^{1-4x},$ find ${f}^{\u2032}(x).$",
+      "banks": [
+        [
+          "2\\cdot {6}^{1-4x}ln\u20616",
+          "4\\cdot {6}^{1-4x}ln\u20616",
+          "24\\cdot {6}^{1-4x}ln\u20616",
+          "-4\\cdot {6}^{1-4x}ln\u20616",
+          "-24\\cdot {6}^{1-4x}ln\u20616"
+        ]
+      ],
+      "solution_present": true
+    },
+    {
+      "id": "15807573-b299-5e98-85b6-db47d2fbe91c",
+      "ma_id": "q-1952",
+      "prompt": "Given that $y={2}^{9x},$ find $\\frac{\\text{d}y}{\\text{d}x}.$",
+      "banks": [
+        [
+          "9\\cdot {2}^{9x}",
+          "9x",
+          "{2}^{9x}",
+          "9\\operatorname{ln}\u20612\\cdot {2}^{9x}",
+          "\\operatorname{ln}\u20612\\cdot {2}^{9x}"
+        ]
+      ],
+      "solution_present": true
+    },
+    {
+      "id": "96fff31f-332c-5572-b655-bad437de2f44",
+      "ma_id": "q-312462",
+      "prompt": "Given that $f(x)={5}^{{x}^{3}+1},$ find ${f}^{\u2032}(x).$\n\n${f}^{\u2032}(x)=$\n{{field-1}}$\\cdot \\,{5}^{{x}^{3}+1}$",
+      "banks": [
+        [
+          "3{x}^{2}\\operatorname{ln}(5)"
+        ]
+      ],
+      "solution_present": true
+    },
+    {
+      "id": "5d403927-9339-566e-9390-9903483d0c58",
+      "ma_id": "q-340969",
+      "prompt": "Find the slope $m$ of the tangent to the curve $y={5}^{x-{x}^{3}}$ at the point where $x=1.$\n\n$m=$\n{{field-1}}",
+      "banks": [
+        [
+          "-2\\operatorname{ln}(5)",
+          "-2\\ln5"
+        ]
+      ],
+      "solution_present": true
+    },
+    {
+      "id": "ac2dcbe2-d530-570b-ae79-f45a337889ca",
+      "ma_id": "q-48659",
+      "prompt": "Find the slope of the tangent to the curve $y={4}^{7x}$ at the point where $x=\\frac{1}{7}.$",
+      "banks": [
+        [
+          "1",
+          "7ln\u2061(4)",
+          "28ln\u2061(4)",
+          "4",
+          "4ln\u2061(4)"
+        ]
+      ],
+      "solution_present": true
+    },
+    {
+      "id": "70b1c8a4-0636-5508-ab80-4e4e15ec81e5",
+      "ma_id": "q-340970",
+      "prompt": "Find the slope $m$ of the tangent to the curve $y=2\\cdot {5}^{1-3x}$ at the point where $x=0.$\n\n$m=$\n{{field-1}}",
+      "banks": [
+        [
+          "-30\\ln(5)"
+        ]
+      ],
+      "solution_present": true
+    },
+    {
+      "id": "77c551c0-c155-56eb-9f11-d8d660941796",
+      "ma_id": "q-107463",
+      "prompt": "Find the equation of the tangent to the curve $y={4}^{2x+1}$ at the point where $x=-1.$",
+      "banks": [
+        [
+          "y=\\operatorname{ln}\u2061(2)\\,x+\\operatorname{ln}\u2061(2)+\\frac{1}{4}",
+          "y=2\\operatorname{ln}\u2061(2)\\,x-2\\operatorname{ln}\u2061(2)+\\frac{1}{4}",
+          "y=-\\operatorname{ln}\u2061(2)\\,x-\\operatorname{ln}\u2061(2)",
+          "y=-\\operatorname{ln}\u2061(2)\\,x-2\\operatorname{ln}\u2061(2)+\\frac{1}{4}",
+          "y=\\operatorname{ln}\u2061(2)\\,x-\\frac{1}{4}"
+        ]
+      ],
+      "solution_present": true
+    },
+    {
+      "id": "0876dfcc-e11e-5c1c-a9e0-0c7b6f68915a",
+      "ma_id": "q-1951",
+      "prompt": "If $f(x)={4}^{7x},$ find ${f}^{\u2032}(x).$",
+      "banks": [
+        [
+          "7\\cdot {4}^{7x}",
+          "7x",
+          "\\operatorname{ln}\u20614\\cdot {4}^{7x}",
+          "{4}^{7x}",
+          "7\\operatorname{ln}\u20614\\cdot {4}^{7x}"
+        ]
+      ],
+      "solution_present": true
+    }
+  ]
+}

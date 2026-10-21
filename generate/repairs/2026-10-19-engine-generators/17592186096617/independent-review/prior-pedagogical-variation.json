@@ -1,0 +1,577 @@
+{
+  "learner_operation": "Apply the product rule to two factors, at least one trigonometric, and identify a complete derivative or the missing summand in a scaffolded derivative. Determine which product-rule contribution must be supplied, or select the complete derivative using the displayed factors.",
+  "fixed_features": [
+    {
+      "feature": "Two factors, one product-rule application, trig argument x",
+      "justification": "Canonical e-3634 and tutorial2622 teach u'v+uv'; chain rule and point evaluation belong outside this operation."
+    },
+    {
+      "feature": "One blank plus supplied complementary term, or five-choice radio",
+      "justification": "All captured response contracts have this workload; q-71004 missing response is documented as repaired full blank."
+    },
+    {
+      "feature": "Power n=2..4 in public polynomial profiles",
+      "justification": "Author fixes this range, but excludes the source canonical n=1 case without an instructional reason. Demonstrated restriction in canonical-replay-gap.json."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Missing contribution u'v vs uv'",
+      "eligible_variation": "Either contribution can be hidden for the same factors.",
+      "observed": "Both roles survive delivery in all five completion profiles; all five controlled swaps change the answer correctly."
+    },
+    {
+      "role": "Primitive trig in polynomial radio profiles",
+      "eligible_variation": "sin/cos/tan with same unscaled argument and same product-rule work.",
+      "observed": "All three survive delivery in q-1907 and q-104300; same numeric data with trig swapped update prompt, solution, key and grading."
+    },
+    {
+      "role": "Radio key position and presentation",
+      "eligible_variation": "Any of five positions; equivalent expansion does not alter mathematical answer.",
+      "observed": "No tested first/last/length/parenthesis action predicts answers perfectly within a supported template."
+    },
+    {
+      "role": "Polynomial factor power, including linear canonical factor",
+      "eligible_variation": "Low source-supported powers including n=1 canonical x cos x; nonzero scalar.",
+      "observed": "Signs and n=2/4 boundaries survive; n=1 rejected. See separate restriction finding."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "q-1907",
+      "sample_refs": [
+        "samples.json",
+        "delivery/accepted.json",
+        "distribution-probes.json"
+      ],
+      "result": "{'count': 10, 'missing=0': 4, 'trig=cos': 6, 'sign=positive': 4, 'missing=1': 6, 'sign=negative': 6, 'trig=sin': 3, 'trig=tan': 1}"
+    },
+    {
+      "case": "q-47965",
+      "sample_refs": [
+        "samples.json",
+        "delivery/accepted.json",
+        "distribution-probes.json"
+      ],
+      "result": "{'count': 13, 'missing=0': 7, 'sign=positive': 6, 'missing=1': 6, 'sign=negative': 7}"
+    },
+    {
+      "case": "q-310188",
+      "sample_refs": [
+        "samples.json",
+        "delivery/accepted.json",
+        "distribution-probes.json"
+      ],
+      "result": "{'count': 9, 'missing=1': 5, 'missing=0': 4}"
+    },
+    {
+      "case": "q-319402",
+      "sample_refs": [
+        "samples.json",
+        "delivery/accepted.json",
+        "distribution-probes.json"
+      ],
+      "result": "{'count': 8, 'missing=0': 4, 'missing=1': 4}"
+    },
+    {
+      "case": "q-71004",
+      "sample_refs": [
+        "samples.json",
+        "delivery/accepted.json",
+        "distribution-probes.json"
+      ],
+      "result": "{'count': 8, 'missing=full': 8, 'sign=positive': 4, 'sign=negative': 4}"
+    },
+    {
+      "case": "q-104297",
+      "sample_refs": [
+        "samples.json",
+        "delivery/accepted.json",
+        "distribution-probes.json"
+      ],
+      "result": "{'count': 9, 'missing=1': 3, 'sign=negative': 4, 'missing=0': 6, 'sign=positive': 5}"
+    },
+    {
+      "case": "q-1931",
+      "sample_refs": [
+        "samples.json",
+        "delivery/accepted.json",
+        "distribution-probes.json"
+      ],
+      "result": "{'count': 8, 'missing=0': 3, 'sign=negative': 5, 'missing=1': 5, 'sign=positive': 3}"
+    },
+    {
+      "case": "q-319350",
+      "sample_refs": [
+        "samples.json",
+        "delivery/accepted.json",
+        "distribution-probes.json"
+      ],
+      "result": "{'count': 13, 'missing=0': 7, 'sign=positive': 8, 'missing=1': 6, 'sign=negative': 5}"
+    },
+    {
+      "case": "q-319357",
+      "sample_refs": [
+        "samples.json",
+        "delivery/accepted.json",
+        "distribution-probes.json"
+      ],
+      "result": "{'count': 13, 'missing=1': 6, 'sign=positive': 5, 'missing=0': 7, 'sign=negative': 8}"
+    },
+    {
+      "case": "q-319385",
+      "sample_refs": [
+        "samples.json",
+        "delivery/accepted.json",
+        "distribution-probes.json"
+      ],
+      "result": "{'count': 12, 'missing=0': 5, 'sign=positive': 5, 'sign=negative': 7, 'missing=1': 7}"
+    },
+    {
+      "case": "q-104300",
+      "sample_refs": [
+        "samples.json",
+        "delivery/accepted.json",
+        "distribution-probes.json"
+      ],
+      "result": "{'count': 11, 'missing=0': 6, 'trig=sin': 4, 'sign=negative': 3, 'sign=positive': 8, 'missing=1': 5, 'trig=tan': 3, 'trig=cos': 4}"
+    },
+    {
+      "case": "linear polynomial factor from canonical e-3634",
+      "sample_refs": [
+        "canonical-replay-gap.json"
+      ],
+      "result": "Not representable: public bounds reject n=1. Covered as variety/source restriction, not as a missing-term role defect."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "missing_q-310188",
+      "expected": "Different missing summand, common total derivative",
+      "observed": "Independent displayed-expression checks verify different required answers and unchanged underlying product for missing-role pairs; native keys accepted and stale terms rejected.",
+      "status": "passed",
+      "justification": "Product rule determines each missing term and full derivative; option order and equivalent distribution are irrelevant to value.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "grader-report.json",
+        "render-all/input.json",
+        "counterfactual-delivery/accepted.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "missing_q-319402",
+      "expected": "Different missing summand, common total derivative",
+      "observed": "Independent displayed-expression checks verify different required answers and unchanged underlying product for missing-role pairs; native keys accepted and stale terms rejected.",
+      "status": "passed",
+      "justification": "Product rule determines each missing term and full derivative; option order and equivalent distribution are irrelevant to value.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "grader-report.json",
+        "render-all/input.json",
+        "counterfactual-delivery/accepted.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "missing_q-319350",
+      "expected": "Different missing summand, common total derivative",
+      "observed": "Independent displayed-expression checks verify different required answers and unchanged underlying product for missing-role pairs; native keys accepted and stale terms rejected.",
+      "status": "passed",
+      "justification": "Product rule determines each missing term and full derivative; option order and equivalent distribution are irrelevant to value.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "grader-report.json",
+        "render-all/input.json",
+        "counterfactual-delivery/accepted.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "missing_q-319357",
+      "expected": "Different missing summand, common total derivative",
+      "observed": "Independent displayed-expression checks verify different required answers and unchanged underlying product for missing-role pairs; native keys accepted and stale terms rejected.",
+      "status": "passed",
+      "justification": "Product rule determines each missing term and full derivative; option order and equivalent distribution are irrelevant to value.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "grader-report.json",
+        "render-all/input.json",
+        "counterfactual-delivery/accepted.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "missing_q-319385",
+      "expected": "Different missing summand, common total derivative",
+      "observed": "Independent displayed-expression checks verify different required answers and unchanged underlying product for missing-role pairs; native keys accepted and stale terms rejected.",
+      "status": "passed",
+      "justification": "Product rule determines each missing term and full derivative; option order and equivalent distribution are irrelevant to value.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "grader-report.json",
+        "render-all/input.json",
+        "counterfactual-delivery/accepted.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "trig_cos",
+      "expected": "Different prompt and derivative",
+      "observed": "Independent displayed-expression checks verify changed trig prompts, derivatives and accepted radio keys.",
+      "status": "passed",
+      "justification": "Product rule determines each missing term and full derivative; option order and equivalent distribution are irrelevant to value.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "grader-report.json",
+        "render-all/input.json",
+        "counterfactual-delivery/accepted.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "trig_tan",
+      "expected": "Different prompt and derivative",
+      "observed": "Independent displayed-expression checks verify changed trig prompts, derivatives and accepted radio keys.",
+      "status": "passed",
+      "justification": "Product rule determines each missing term and full derivative; option order and equivalent distribution are irrelevant to value.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "grader-report.json",
+        "render-all/input.json",
+        "counterfactual-delivery/accepted.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "presentation_seed",
+      "expected": "Same mathematical function, key and explanation; presentation/order can differ",
+      "observed": "Independent displayed-expression checks verify same derivative and solution, changed option order/distribution; matching answers accepted in each record.",
+      "status": "passed",
+      "justification": "Product rule determines each missing term and full derivative; option order and equivalent distribution are irrelevant to value.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "grader-report.json",
+        "render-all/input.json",
+        "counterfactual-delivery/accepted.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "choose_first",
+      "subgroup": "q-1907",
+      "scope": "within_template",
+      "strategy": "choose_first; abstain on tied extrema",
+      "correct": 3,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/10 on delivered records; uniform five-choice guessing baseline is 0.2. No perfect predictor in this tested profile. Abstentions 0.",
+      "sample_refs": [
+        "delivery/accepted.json",
+        "distribution-probes.json"
+      ]
+    },
+    {
+      "cue": "choose_last",
+      "subgroup": "q-1907",
+      "scope": "within_template",
+      "strategy": "choose_last; abstain on tied extrema",
+      "correct": 2,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/10 on delivered records; uniform five-choice guessing baseline is 0.2. No perfect predictor in this tested profile. Abstentions 0.",
+      "sample_refs": [
+        "delivery/accepted.json",
+        "distribution-probes.json"
+      ]
+    },
+    {
+      "cue": "tex_length_max",
+      "subgroup": "q-1907",
+      "scope": "within_template",
+      "strategy": "tex_length_max; abstain on tied extrema",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 on delivered records; uniform five-choice guessing baseline is 0.2. No perfect predictor in this tested profile. Abstentions 4.",
+      "sample_refs": [
+        "delivery/accepted.json",
+        "distribution-probes.json"
+      ]
+    },
+    {
+      "cue": "tex_length_min",
+      "subgroup": "q-1907",
+      "scope": "within_template",
+      "strategy": "tex_length_min; abstain on tied extrema",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 on delivered records; uniform five-choice guessing baseline is 0.2. No perfect predictor in this tested profile. Abstentions 4.",
+      "sample_refs": [
+        "delivery/accepted.json",
+        "distribution-probes.json"
+      ]
+    },
+    {
+      "cue": "choose_first",
+      "subgroup": "q-47965",
+      "scope": "within_template",
+      "strategy": "choose_first; abstain on tied extrema",
+      "correct": 1,
+      "total": 13,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/13 on delivered records; uniform five-choice guessing baseline is 0.2. No perfect predictor in this tested profile. Abstentions 0.",
+      "sample_refs": [
+        "delivery/accepted.json",
+        "distribution-probes.json"
+      ]
+    },
+    {
+      "cue": "choose_last",
+      "subgroup": "q-47965",
+      "scope": "within_template",
+      "strategy": "choose_last; abstain on tied extrema",
+      "correct": 2,
+      "total": 13,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/13 on delivered records; uniform five-choice guessing baseline is 0.2. No perfect predictor in this tested profile. Abstentions 0.",
+      "sample_refs": [
+        "delivery/accepted.json",
+        "distribution-probes.json"
+      ]
+    },
+    {
+      "cue": "tex_length_max",
+      "subgroup": "q-47965",
+      "scope": "within_template",
+      "strategy": "tex_length_max; abstain on tied extrema",
+      "correct": 4,
+      "total": 13,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "4/13 on delivered records; uniform five-choice guessing baseline is 0.2. No perfect predictor in this tested profile. Abstentions 0.",
+      "sample_refs": [
+        "delivery/accepted.json",
+        "distribution-probes.json"
+      ]
+    },
+    {
+      "cue": "tex_length_min",
+      "subgroup": "q-47965",
+      "scope": "within_template",
+      "strategy": "tex_length_min; abstain on tied extrema",
+      "correct": 0,
+      "total": 13,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/13 on delivered records; uniform five-choice guessing baseline is 0.2. No perfect predictor in this tested profile. Abstentions 0.",
+      "sample_refs": [
+        "delivery/accepted.json",
+        "distribution-probes.json"
+      ]
+    },
+    {
+      "cue": "choose_first",
+      "subgroup": "q-104297",
+      "scope": "within_template",
+      "strategy": "choose_first; abstain on tied extrema",
+      "correct": 2,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/9 on delivered records; uniform five-choice guessing baseline is 0.2. No perfect predictor in this tested profile. Abstentions 0.",
+      "sample_refs": [
+        "delivery/accepted.json",
+        "distribution-probes.json"
+      ]
+    },
+    {
+      "cue": "choose_last",
+      "subgroup": "q-104297",
+      "scope": "within_template",
+      "strategy": "choose_last; abstain on tied extrema",
+      "correct": 2,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/9 on delivered records; uniform five-choice guessing baseline is 0.2. No perfect predictor in this tested profile. Abstentions 0.",
+      "sample_refs": [
+        "delivery/accepted.json",
+        "distribution-probes.json"
+      ]
+    },
+    {
+      "cue": "tex_length_max",
+      "subgroup": "q-104297",
+      "scope": "within_template",
+      "strategy": "tex_length_max; abstain on tied extrema",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/4 on delivered records; uniform five-choice guessing baseline is 0.2. No perfect predictor in this tested profile. Abstentions 5.",
+      "sample_refs": [
+        "delivery/accepted.json",
+        "distribution-probes.json"
+      ]
+    },
+    {
+      "cue": "tex_length_min",
+      "subgroup": "q-104297",
+      "scope": "within_template",
+      "strategy": "tex_length_min; abstain on tied extrema",
+      "correct": 0,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/9 on delivered records; uniform five-choice guessing baseline is 0.2. No perfect predictor in this tested profile. Abstentions 0.",
+      "sample_refs": [
+        "delivery/accepted.json",
+        "distribution-probes.json"
+      ]
+    },
+    {
+      "cue": "choose_first",
+      "subgroup": "q-1931",
+      "scope": "within_template",
+      "strategy": "choose_first; abstain on tied extrema",
+      "correct": 2,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/8 on delivered records; uniform five-choice guessing baseline is 0.2. No perfect predictor in this tested profile. Abstentions 0.",
+      "sample_refs": [
+        "delivery/accepted.json",
+        "distribution-probes.json"
+      ]
+    },
+    {
+      "cue": "choose_last",
+      "subgroup": "q-1931",
+      "scope": "within_template",
+      "strategy": "choose_last; abstain on tied extrema",
+      "correct": 0,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/8 on delivered records; uniform five-choice guessing baseline is 0.2. No perfect predictor in this tested profile. Abstentions 0.",
+      "sample_refs": [
+        "delivery/accepted.json",
+        "distribution-probes.json"
+      ]
+    },
+    {
+      "cue": "choose_first",
+      "subgroup": "q-104300",
+      "scope": "within_template",
+      "strategy": "choose_first; abstain on tied extrema",
+      "correct": 4,
+      "total": 11,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "4/11 on delivered records; uniform five-choice guessing baseline is 0.2. No perfect predictor in this tested profile. Abstentions 0.",
+      "sample_refs": [
+        "delivery/accepted.json",
+        "distribution-probes.json"
+      ]
+    },
+    {
+      "cue": "choose_last",
+      "subgroup": "q-104300",
+      "scope": "within_template",
+      "strategy": "choose_last; abstain on tied extrema",
+      "correct": 1,
+      "total": 11,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/11 on delivered records; uniform five-choice guessing baseline is 0.2. No perfect predictor in this tested profile. Abstentions 0.",
+      "sample_refs": [
+        "delivery/accepted.json",
+        "distribution-probes.json"
+      ]
+    },
+    {
+      "cue": "tex_length_max",
+      "subgroup": "q-104300",
+      "scope": "within_template",
+      "strategy": "tex_length_max; abstain on tied extrema",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/2 on delivered records; uniform five-choice guessing baseline is 0.2. No perfect predictor in this tested profile. Abstentions 9.",
+      "sample_refs": [
+        "delivery/accepted.json",
+        "distribution-probes.json"
+      ]
+    },
+    {
+      "cue": "tex_length_min",
+      "subgroup": "q-104300",
+      "scope": "within_template",
+      "strategy": "tex_length_min; abstain on tied extrema",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/4 on delivered records; uniform five-choice guessing baseline is 0.2. No perfect predictor in this tested profile. Abstentions 7.",
+      "sample_refs": [
+        "delivery/accepted.json",
+        "distribution-probes.json"
+      ]
+    },
+    {
+      "cue": "unique maximum plus signs",
+      "subgroup": "q-104300 with positive scalar and positive-derivative trig (sin/tan)",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "choose the unique sum option when every other option includes subtraction",
+      "correct": 4,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "intended_skill",
+      "conclusion": "4/4 conditional matches versus five-choice baseline 0.2. Inspecting the bank shows that this is derivative-sign elimination: positive power factor and sin/tan have positive derivative contributions for positive x in a regular interval. Cosine reverses the trig derivative sign; negative coefficients reverse it again. This uses mathematical derivative signs, not a label/position cue. It does not establish complete calculation mastery.",
+      "sample_refs": [
+        "delivery/accepted.json",
+        "distribution-probes.json",
+        "render-all/input.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "public generator sampling and rejection",
+      "shared requested difficulty, identity and normalization",
+      "captured inventory/batch deduplication",
+      "independent counterfactual delivery",
+      "practice structural eligibility",
+      "learner seen exclusion and SHA256 weighted selection sensitivity"
+    ],
+    "sample_refs": [
+      "rejections.json",
+      "samples.json",
+      "delivery/delivery.json",
+      "runner-delivery/delivery.json",
+      "counterfactual-delivery/delivery.json",
+      "selection-inputs.json",
+      "selection-results.json",
+      "distribution-probes.json"
+    ],
+    "result": "143 ->114 samples, runner5->5, counterfactual17->16. Decision roles survive every examined stage when easy has positive selection weight; no role-specific resampling. Canonical n=1 restriction is already present before filtering. Base4 equivalent-entry failure also survives filtering."
+  },
+  "limitations": [
+    "No finite audit proves absence of every shortcut.",
+    "Active learner policy, history and future numerical database IDs not supplied; selector results are documented conditional sensitivity cases.",
+    "No generated diagrams or assets; actual UI checked on desktop only.",
+    "Canonical e-3634 has no captured response field; restriction concerns its factor/derivative operation, not an invented bank.",
+    "The valid ln4 equivalent is an integrated grading failure, not an incorrect stored derivative."
+  ]
+}

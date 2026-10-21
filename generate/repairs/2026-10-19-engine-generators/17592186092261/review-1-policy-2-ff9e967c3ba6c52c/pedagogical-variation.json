@@ -1,0 +1,1044 @@
+{
+  "learner_operation": "Identify the unchanged exponential, differentiate the polynomial exponent, retain the constant multiplier and natural-log factor; select or enter the resulting expression. Moderate evaluates it at a point; hard constructs a tangent line.",
+  "fixed_features": [
+    {
+      "feature": "One constant-base exponential times a constant; short polynomial exponent.",
+      "justification": "e-728 and q-48565/q-107458/q-71881 use the same outer exponential chain rule. No quotient/product or trigonometric rule is needed."
+    },
+    {
+      "feature": "Easy asks for a symbolic derivative or the supplied-exponential coefficient; moderate/hard add only their observed stages.",
+      "justification": "q-312462 specifies the coefficient field; q-48659 evaluates a slope; q-107463 builds a tangent line. These response demands cannot be interchanged merely to increase variety."
+    },
+    {
+      "feature": "Five options for radio fields, one mathematical input for a fragment.",
+      "justification": "All supplied radio banks contain five expressions. Missing answer fields on some source questions are documented completions, not captured evidence."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Inner derivative sign and magnitude",
+      "eligible_variation": "Signs, small coefficients, degree and source-grounded two-term exponents may change while applying the same chain rule.",
+      "observed": "Rechecked in the current sample, canonical and controlled records; see coverage and canonical-current-checks.json. Signs, small coefficients, degree and source-grounded two-term exponents may change while applying the same chain rule."
+    },
+    {
+      "role": "Outside constant multiplier",
+      "eligible_variation": "c=1 or nonunit constant where source workload allows; e-728 establishes a nonunit multiplier with a linear exponent.",
+      "observed": "Rechecked in the current sample, canonical and controlled records; see coverage and canonical-current-checks.json. c=1 or nonunit constant where source workload allows; e-728 establishes a nonunit multiplier with a linear exponent."
+    },
+    {
+      "role": "Correct radio choice position and magnitude role",
+      "eligible_variation": "Any choice position, sign-pair role or singleton may carry the computed expression; no source position is essential.",
+      "observed": "Rechecked in the current sample, canonical and controlled records; see coverage and canonical-current-checks.json. Any choice position, sign-pair role or singleton may carry the computed expression; no source position is essential."
+    },
+    {
+      "role": "Point used to evaluate slope and tangent line",
+      "eligible_variation": "Familiar source-scale points of either sign; correct slope, ordinate and line must follow.",
+      "observed": "Rechecked in the current sample, canonical and controlled records; see coverage and canonical-current-checks.json. Familiar source-scale points of either sign; correct slope, ordinate and line must follow."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "raw q-48565",
+      "sample_refs": [
+        "records.json"
+      ],
+      "result": "11 records; parameter values {'b': ['2', '3', '4', '5', '6'], 'c': ['1'], 'a': ['-1', '-2', '-3', '-6', '-7', '1', '2', '3', '4'], 'n': ['2'], 'k': ['0'], 'l': ['0'], 'd': ['0']}"
+    },
+    {
+      "case": "raw q-48631",
+      "sample_refs": [
+        "records.json"
+      ],
+      "result": "11 records; parameter values {'b': ['2', '3', '4', '5', '6'], 'c': ['1'], 'a': ['-2', '-6', '-7', '-8', '1', '3', '5', '6', '9'], 'n': ['2'], 'k': ['0'], 'l': ['0'], 'd': ['-1', '-3', '-4', '1', '2', '5']}"
+    },
+    {
+      "case": "raw q-107458",
+      "sample_refs": [
+        "records.json"
+      ],
+      "result": "11 records; parameter values {'b': ['2', '3', '4', '5'], 'c': ['1'], 'a': ['-1', '-3', '-5', '-8', '1', '2', '4', '9'], 'n': ['3'], 'k': ['0'], 'l': ['0'], 'd': ['-2', '-3', '-5', '1', '2', '3', '4']}"
+    },
+    {
+      "case": "raw q-71881",
+      "sample_refs": [
+        "records.json"
+      ],
+      "result": "12 records; parameter values {'b': ['2', '3', '4', '5', '6'], 'c': ['2', '3', '4', '5'], 'a': ['-1', '-2', '-7', '-9', '1', '2', '4', '6', '8'], 'n': ['3'], 'k': ['0'], 'l': ['-1', '-2', '1', '2', '3'], 'd': ['0']}"
+    },
+    {
+      "case": "raw q-107459",
+      "sample_refs": [
+        "records.json"
+      ],
+      "result": "14 records; parameter values {'b': ['2', '3', '4', '5', '6'], 'c': ['2', '3', '4', '5'], 'a': ['-1', '-2', '-9', '1', '2', '5', '9'], 'n': ['2'], 'k': ['0'], 'l': ['0'], 'd': ['-1', '-3', '-4', '-5', '1', '5']}"
+    },
+    {
+      "case": "raw q-107461",
+      "sample_refs": [
+        "records.json"
+      ],
+      "result": "11 records; parameter values {'b': ['2', '3', '4', '5', '6'], 'c': ['1', '2', '3', '4', '5'], 'a': ['-3', '-4', '2', '3', '4', '5', '6', '7', '8'], 'n': ['1'], 'k': ['0'], 'l': ['0'], 'd': ['-1', '-2', '-4', '1', '3', '4']}"
+    },
+    {
+      "case": "raw q-1952",
+      "sample_refs": [
+        "records.json"
+      ],
+      "result": "12 records; parameter values {'b': ['2', '3', '4', '5', '6'], 'c': ['1'], 'a': ['-2', '-4', '-5', '-6', '-7', '-9', '2', '4', '9'], 'n': ['1'], 'k': ['0'], 'l': ['0'], 'd': ['0']}"
+    },
+    {
+      "case": "raw q-312462",
+      "sample_refs": [
+        "records.json"
+      ],
+      "result": "14 records; parameter values {'b': ['2', '3', '4', '5', '6'], 'c': ['1'], 'a': ['-1', '-2', '-4', '-5', '-9', '1', '4', '5', '7', '9'], 'n': ['3'], 'k': ['0'], 'l': ['0'], 'd': ['-2', '-4', '-5', '1', '2', '3']}"
+    },
+    {
+      "case": "raw q-340969",
+      "sample_refs": [
+        "records.json"
+      ],
+      "result": "11 records; parameter values {'b': ['2', '3', '5'], 'c': ['1'], 'a': ['-1', '-2', '-3', '1', '3'], 'n': ['3'], 'k': ['0'], 'l': ['-1', '-2', '1', '2', '3'], 'd': ['0'], 'point': ['-1', '1']}"
+    },
+    {
+      "case": "raw q-48659",
+      "sample_refs": [
+        "records.json"
+      ],
+      "result": "11 records; parameter values {'b': ['2', '3', '4', '5', '6'], 'c': ['1'], 'a': ['-3', '-5', '-6', '-7', '2', '4', '7', '9'], 'n': ['1'], 'k': ['0'], 'l': ['0'], 'd': ['0'], 'point': ['-1/2', '-1/3', '-1/4', '-1/5', '-1/6', '-1/7', '-1/9', '1/5', '1/7']}"
+    },
+    {
+      "case": "raw q-1951",
+      "sample_refs": [
+        "records.json"
+      ],
+      "result": "11 records; parameter values {'b': ['2', '4', '5', '6'], 'c': ['1'], 'a': ['-2', '-6', '-7', '3', '5', '6', '7', '8', '9'], 'n': ['1'], 'k': ['0'], 'l': ['0'], 'd': ['0']}"
+    },
+    {
+      "case": "raw q-340970",
+      "sample_refs": [
+        "records.json"
+      ],
+      "result": "11 records; parameter values {'b': ['2', '4', '5', '6'], 'c': ['2', '3', '5'], 'a': ['-2', '-3', '-4', '-5', '-9', '3', '4', '6', '7', '8'], 'n': ['1'], 'k': ['0'], 'l': ['0'], 'd': ['-1', '-2', '-4', '1', '2', '4'], 'point': ['-1', '0', '1']}"
+    },
+    {
+      "case": "raw q-107463",
+      "sample_refs": [
+        "records.json"
+      ],
+      "result": "9 records; parameter values {'b': ['2', '3', '4', '5'], 'c': ['1'], 'a': ['-4', '-5', '-6', '-7', '-8', '2', '4', '9'], 'n': ['1'], 'k': ['0'], 'l': ['0'], 'd': ['-1', '-2', '-4', '2', '3', '5'], 'point': ['-1', '0', '1']}"
+    },
+    {
+      "case": "raw e-728",
+      "sample_refs": [
+        "records.json"
+      ],
+      "result": "11 records; parameter values {'b': ['2', '3', '4', '5', '6'], 'c': ['1', '2', '3', '4', '5'], 'a': ['-1', '-6', '-9', '1', '2', '4', '5', '8'], 'n': ['1'], 'k': ['0'], 'l': ['0'], 'd': ['-1', '-2', '-4', '-5', '1', '2', '3', '5']}"
+    },
+    {
+      "case": "delivered q-48565",
+      "sample_refs": [
+        "delivery-easy/accepted.json"
+      ],
+      "result": "11 records; parameter values {'b': ['2', '3', '4', '5', '6'], 'c': ['1'], 'a': ['-1', '-2', '-3', '-6', '-7', '1', '2', '3', '4'], 'n': ['2'], 'k': ['0'], 'l': ['0'], 'd': ['0']}"
+    },
+    {
+      "case": "delivered q-48631",
+      "sample_refs": [
+        "delivery-easy/accepted.json"
+      ],
+      "result": "11 records; parameter values {'b': ['2', '3', '4', '5', '6'], 'c': ['1'], 'a': ['-2', '-6', '-7', '-8', '1', '3', '5', '6', '9'], 'n': ['2'], 'k': ['0'], 'l': ['0'], 'd': ['-1', '-3', '-4', '1', '2', '5']}"
+    },
+    {
+      "case": "delivered q-107458",
+      "sample_refs": [
+        "delivery-easy/accepted.json"
+      ],
+      "result": "11 records; parameter values {'b': ['2', '3', '4', '5'], 'c': ['1'], 'a': ['-1', '-3', '-5', '-8', '1', '2', '4', '9'], 'n': ['3'], 'k': ['0'], 'l': ['0'], 'd': ['-2', '-3', '-5', '1', '2', '3', '4']}"
+    },
+    {
+      "case": "delivered q-71881",
+      "sample_refs": [
+        "delivery-easy/accepted.json"
+      ],
+      "result": "12 records; parameter values {'b': ['2', '3', '4', '5', '6'], 'c': ['2', '3', '4', '5'], 'a': ['-1', '-2', '-7', '-9', '1', '2', '4', '6', '8'], 'n': ['3'], 'k': ['0'], 'l': ['-1', '-2', '1', '2', '3'], 'd': ['0']}"
+    },
+    {
+      "case": "delivered q-107459",
+      "sample_refs": [
+        "delivery-easy/accepted.json"
+      ],
+      "result": "14 records; parameter values {'b': ['2', '3', '4', '5', '6'], 'c': ['2', '3', '4', '5'], 'a': ['-1', '-2', '-9', '1', '2', '5', '9'], 'n': ['2'], 'k': ['0'], 'l': ['0'], 'd': ['-1', '-3', '-4', '-5', '1', '5']}"
+    },
+    {
+      "case": "delivered q-107461",
+      "sample_refs": [
+        "delivery-easy/accepted.json"
+      ],
+      "result": "11 records; parameter values {'b': ['2', '3', '4', '5', '6'], 'c': ['1', '2', '3', '4', '5'], 'a': ['-3', '-4', '2', '3', '4', '5', '6', '7', '8'], 'n': ['1'], 'k': ['0'], 'l': ['0'], 'd': ['-1', '-2', '-4', '1', '3', '4']}"
+    },
+    {
+      "case": "delivered q-1952",
+      "sample_refs": [
+        "delivery-easy/accepted.json"
+      ],
+      "result": "12 records; parameter values {'b': ['2', '3', '4', '5', '6'], 'c': ['1'], 'a': ['-2', '-4', '-5', '-6', '-7', '-9', '2', '4', '9'], 'n': ['1'], 'k': ['0'], 'l': ['0'], 'd': ['0']}"
+    },
+    {
+      "case": "delivered q-312462",
+      "sample_refs": [
+        "delivery-easy/accepted.json"
+      ],
+      "result": "13 records; parameter values {'b': ['2', '3', '4', '5', '6'], 'c': ['1'], 'a': ['-1', '-2', '-4', '-5', '-9', '1', '4', '5', '7', '9'], 'n': ['3'], 'k': ['0'], 'l': ['0'], 'd': ['-2', '-4', '-5', '1', '2', '3']}"
+    },
+    {
+      "case": "delivered q-1951",
+      "sample_refs": [
+        "delivery-easy/accepted.json"
+      ],
+      "result": "11 records; parameter values {'b': ['2', '4', '5', '6'], 'c': ['1'], 'a': ['-2', '-6', '-7', '3', '5', '6', '7', '8', '9'], 'n': ['1'], 'k': ['0'], 'l': ['0'], 'd': ['0']}"
+    },
+    {
+      "case": "delivered e-728",
+      "sample_refs": [
+        "delivery-easy/accepted.json"
+      ],
+      "result": "11 records; parameter values {'b': ['2', '3', '4', '5', '6'], 'c': ['1', '2', '3', '4', '5'], 'a': ['-1', '-6', '-9', '1', '2', '4', '5', '8'], 'n': ['1'], 'k': ['0'], 'l': ['0'], 'd': ['-1', '-2', '-4', '-5', '1', '2', '3', '5']}"
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Switch missing product-rule term, exponent coefficient, or radical inner/target data at fixed remaining inputs.",
+      "expected": "Response follows the changed mathematical evidence.",
+      "observed": "Independent prompt differentiation and native grading agree; stale responses are rejected in applicable blank controls.",
+      "status": "passed",
+      "justification": "These changes alter a differentiated contribution or chain-rule factor without adding a reasoning stage.",
+      "sample_refs": [
+        "pairs.json",
+        "native-grading.json",
+        "current-regression-grading.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Change presentation/choice ordering, or an additive parameter absent from the requested derivative fragment.",
+      "expected": "Mathematical response is preserved.",
+      "observed": "Current controlled pairs preserve the response and native acceptance.",
+      "status": "passed",
+      "justification": "The selected source-style response depends on the differentiated mathematical evidence, not incidental presentation.",
+      "sample_refs": [
+        "pairs.json",
+        "native-grading.json",
+        "current-regression-grading.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "first",
+      "subgroup": "raw q-48565",
+      "scope": "within_template",
+      "strategy": "Choose first visible option",
+      "correct": 3,
+      "total": 11,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "records.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "raw q-48565",
+      "scope": "within_template",
+      "strategy": "Choose last visible option",
+      "correct": 2,
+      "total": 11,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "records.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "raw q-48565",
+      "scope": "within_template",
+      "strategy": "Choose shortest visible option",
+      "correct": 3,
+      "total": 11,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "records.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "raw q-48565",
+      "scope": "within_template",
+      "strategy": "Choose longest visible option",
+      "correct": 3,
+      "total": 11,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "records.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "raw q-48631",
+      "scope": "within_template",
+      "strategy": "Choose first visible option",
+      "correct": 0,
+      "total": 11,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "records.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "raw q-48631",
+      "scope": "within_template",
+      "strategy": "Choose last visible option",
+      "correct": 6,
+      "total": 11,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "records.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "raw q-48631",
+      "scope": "within_template",
+      "strategy": "Choose shortest visible option",
+      "correct": 0,
+      "total": 11,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "records.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "raw q-48631",
+      "scope": "within_template",
+      "strategy": "Choose longest visible option",
+      "correct": 2,
+      "total": 11,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "records.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "raw q-107459",
+      "scope": "within_template",
+      "strategy": "Choose first visible option",
+      "correct": 0,
+      "total": 14,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "records.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "raw q-107459",
+      "scope": "within_template",
+      "strategy": "Choose last visible option",
+      "correct": 7,
+      "total": 14,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "records.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "raw q-107459",
+      "scope": "within_template",
+      "strategy": "Choose shortest visible option",
+      "correct": 2,
+      "total": 14,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "records.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "raw q-107459",
+      "scope": "within_template",
+      "strategy": "Choose longest visible option",
+      "correct": 1,
+      "total": 14,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "records.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "raw q-107461",
+      "scope": "within_template",
+      "strategy": "Choose first visible option",
+      "correct": 2,
+      "total": 11,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "records.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "raw q-107461",
+      "scope": "within_template",
+      "strategy": "Choose last visible option",
+      "correct": 5,
+      "total": 11,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "records.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "raw q-107461",
+      "scope": "within_template",
+      "strategy": "Choose shortest visible option",
+      "correct": 3,
+      "total": 11,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "records.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "raw q-107461",
+      "scope": "within_template",
+      "strategy": "Choose longest visible option",
+      "correct": 1,
+      "total": 11,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "records.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "raw q-1952",
+      "scope": "within_template",
+      "strategy": "Choose first visible option",
+      "correct": 2,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "records.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "raw q-1952",
+      "scope": "within_template",
+      "strategy": "Choose last visible option",
+      "correct": 4,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "records.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "raw q-1952",
+      "scope": "within_template",
+      "strategy": "Choose shortest visible option",
+      "correct": 1,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "records.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "raw q-1952",
+      "scope": "within_template",
+      "strategy": "Choose longest visible option",
+      "correct": 5,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "records.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "raw q-48659",
+      "scope": "within_template",
+      "strategy": "Choose first visible option",
+      "correct": 4,
+      "total": 11,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "records.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "raw q-48659",
+      "scope": "within_template",
+      "strategy": "Choose last visible option",
+      "correct": 1,
+      "total": 11,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "records.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "raw q-48659",
+      "scope": "within_template",
+      "strategy": "Choose shortest visible option",
+      "correct": 3,
+      "total": 11,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "records.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "raw q-48659",
+      "scope": "within_template",
+      "strategy": "Choose longest visible option",
+      "correct": 3,
+      "total": 11,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "records.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "raw q-1951",
+      "scope": "within_template",
+      "strategy": "Choose first visible option",
+      "correct": 0,
+      "total": 11,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "records.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "raw q-1951",
+      "scope": "within_template",
+      "strategy": "Choose last visible option",
+      "correct": 3,
+      "total": 11,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "records.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "raw q-1951",
+      "scope": "within_template",
+      "strategy": "Choose shortest visible option",
+      "correct": 2,
+      "total": 11,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "records.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "raw q-1951",
+      "scope": "within_template",
+      "strategy": "Choose longest visible option",
+      "correct": 0,
+      "total": 11,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "records.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "raw q-107463",
+      "scope": "within_template",
+      "strategy": "Choose first visible option",
+      "correct": 1,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "records.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "raw q-107463",
+      "scope": "within_template",
+      "strategy": "Choose last visible option",
+      "correct": 3,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "records.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "raw q-107463",
+      "scope": "within_template",
+      "strategy": "Choose shortest visible option",
+      "correct": 0,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "records.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "raw q-107463",
+      "scope": "within_template",
+      "strategy": "Choose longest visible option",
+      "correct": 1,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "records.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "delivered q-48565",
+      "scope": "within_template",
+      "strategy": "Choose first visible option",
+      "correct": 3,
+      "total": 11,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "delivery-easy/accepted.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "delivered q-48565",
+      "scope": "within_template",
+      "strategy": "Choose last visible option",
+      "correct": 2,
+      "total": 11,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "delivery-easy/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "delivered q-48565",
+      "scope": "within_template",
+      "strategy": "Choose shortest visible option",
+      "correct": 3,
+      "total": 11,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "delivery-easy/accepted.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "delivered q-48565",
+      "scope": "within_template",
+      "strategy": "Choose longest visible option",
+      "correct": 3,
+      "total": 11,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "delivery-easy/accepted.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "delivered q-48631",
+      "scope": "within_template",
+      "strategy": "Choose first visible option",
+      "correct": 0,
+      "total": 11,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "delivery-easy/accepted.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "delivered q-48631",
+      "scope": "within_template",
+      "strategy": "Choose last visible option",
+      "correct": 6,
+      "total": 11,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "delivery-easy/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "delivered q-48631",
+      "scope": "within_template",
+      "strategy": "Choose shortest visible option",
+      "correct": 0,
+      "total": 11,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "delivery-easy/accepted.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "delivered q-48631",
+      "scope": "within_template",
+      "strategy": "Choose longest visible option",
+      "correct": 2,
+      "total": 11,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "delivery-easy/accepted.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "delivered q-107459",
+      "scope": "within_template",
+      "strategy": "Choose first visible option",
+      "correct": 0,
+      "total": 14,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "delivery-easy/accepted.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "delivered q-107459",
+      "scope": "within_template",
+      "strategy": "Choose last visible option",
+      "correct": 7,
+      "total": 14,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "delivery-easy/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "delivered q-107459",
+      "scope": "within_template",
+      "strategy": "Choose shortest visible option",
+      "correct": 2,
+      "total": 14,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "delivery-easy/accepted.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "delivered q-107459",
+      "scope": "within_template",
+      "strategy": "Choose longest visible option",
+      "correct": 1,
+      "total": 14,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "delivery-easy/accepted.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "delivered q-107461",
+      "scope": "within_template",
+      "strategy": "Choose first visible option",
+      "correct": 2,
+      "total": 11,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "delivery-easy/accepted.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "delivered q-107461",
+      "scope": "within_template",
+      "strategy": "Choose last visible option",
+      "correct": 5,
+      "total": 11,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "delivery-easy/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "delivered q-107461",
+      "scope": "within_template",
+      "strategy": "Choose shortest visible option",
+      "correct": 3,
+      "total": 11,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "delivery-easy/accepted.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "delivered q-107461",
+      "scope": "within_template",
+      "strategy": "Choose longest visible option",
+      "correct": 1,
+      "total": 11,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "delivery-easy/accepted.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "delivered q-1952",
+      "scope": "within_template",
+      "strategy": "Choose first visible option",
+      "correct": 2,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "delivery-easy/accepted.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "delivered q-1952",
+      "scope": "within_template",
+      "strategy": "Choose last visible option",
+      "correct": 4,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "delivery-easy/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "delivered q-1952",
+      "scope": "within_template",
+      "strategy": "Choose shortest visible option",
+      "correct": 1,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "delivery-easy/accepted.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "delivered q-1952",
+      "scope": "within_template",
+      "strategy": "Choose longest visible option",
+      "correct": 5,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "delivery-easy/accepted.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "delivered q-1951",
+      "scope": "within_template",
+      "strategy": "Choose first visible option",
+      "correct": 0,
+      "total": 11,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "delivery-easy/accepted.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "delivered q-1951",
+      "scope": "within_template",
+      "strategy": "Choose last visible option",
+      "correct": 3,
+      "total": 11,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "delivery-easy/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "delivered q-1951",
+      "scope": "within_template",
+      "strategy": "Choose shortest visible option",
+      "correct": 2,
+      "total": 11,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "delivery-easy/accepted.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "delivered q-1951",
+      "scope": "within_template",
+      "strategy": "Choose longest visible option",
+      "correct": 0,
+      "total": 11,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "delivery-easy/accepted.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "explicit boundary/domain validation",
+      "seeded sampling and rejection",
+      "shared publication normalization and deduplication",
+      "requested-band filtering",
+      "conditional learner selection"
+    ],
+    "sample_refs": [
+      "records.json",
+      "selection-current.json",
+      "delivery-easy/accepted.json"
+    ],
+    "result": "160 independently chosen raw records; 117 fresh records survive the reviewed band at basis 5048. Five deterministic runner records are retained. Role coverage and visible-cue probes are recorded separately before and after filtering."
+  },
+  "limitations": [
+    "Finite tests do not prove absence of every shortcut.",
+    "Learner selection is conditional on fresh eligible candidates and a positive weight for the reviewed band; real history and future IDs were not simulated as fact.",
+    "Only easy receives this publication certificate; other advertised bands require their own certificate.",
+    "Source omissions and explicit source corrections are retained in source-analysis.json. Canonical missing answer widgets are authored completions, not recovered historical fields."
+  ]
+}

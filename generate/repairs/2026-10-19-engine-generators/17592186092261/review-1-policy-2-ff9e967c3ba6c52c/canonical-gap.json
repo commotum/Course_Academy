@@ -1,0 +1,136 @@
+{
+  "source_id": "775dfc95-df31-5198-aeb2-4603b8386957 / e-728",
+  "function": "3*2**(1-x)",
+  "expected": "-3*2**(1-x)*ln(2)",
+  "attempts": [
+    {
+      "template": "q-48565",
+      "accepted": false,
+      "error": "Degree, term count or arithmetic bounds"
+    },
+    {
+      "template": "q-48631",
+      "accepted": false,
+      "error": "Degree, term count or arithmetic bounds"
+    },
+    {
+      "template": "q-107458",
+      "accepted": false,
+      "error": "Degree, term count or arithmetic bounds"
+    },
+    {
+      "template": "q-71881",
+      "accepted": false,
+      "error": "Degree, term count or arithmetic bounds"
+    },
+    {
+      "template": "q-107459",
+      "accepted": false,
+      "error": "Degree, term count or arithmetic bounds"
+    },
+    {
+      "template": "q-107461",
+      "accepted": false,
+      "error": "Avoid unit inner derivative colliding with omission"
+    },
+    {
+      "template": "q-1952",
+      "accepted": false,
+      "error": "Preserve source polynomial term presence"
+    },
+    {
+      "template": "q-312462",
+      "accepted": false,
+      "error": "Degree, term count or arithmetic bounds"
+    },
+    {
+      "template": "q-1951",
+      "accepted": false,
+      "error": "Preserve source polynomial term presence"
+    },
+    {
+      "template": "e-728",
+      "accepted": true,
+      "record": {
+        "knowledge_point": {
+          "db_id": 17592186092261,
+          "id": "2f4bfd24-dafd-57b3-940a-154a6e0acf3d",
+          "title": "Differentiating a General Exponential Function Using the Chain Rule"
+        },
+        "question": {
+          ":question/id": "f726a67d-81f9-5e52-b352-cf0e4487e7cb",
+          ":question/problem": "Given that $y= 3\\cdot 2^{1 - x},$ find $\\dfrac{\\textrm d y}{\\textrm d x}.$\n\n$\\frac{\\mathrm{d}y}{\\mathrm{d}x}=$\n{{field-1}}",
+          ":question/worked-solution": "First, we express $y$ as the composite function\n\n$$\ny = 3\\cdot 2^u, \\qquad u=1-x.\n$$\n\nDifferentiating gives\n\n$$\n\\dfrac{\\textrm d y}{\\textrm d u} = 3\\cdot 2^u\\ln(2),\\qquad \\dfrac{\\textrm d u}{\\textrm d x} =-1.\n$$\n\nWe now apply the chain rule, and get\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}x} & =\\frac{\\text{d}y}{\\text{d}u}\\cdot \\frac{\\text{d}u}{\\text{d}x} \\\\  & =3\\cdot {2}^{u}\\ln(2)\\cdot (-1) \\\\  & =-3\\cdot {2}^{u}\\ln(2) \\\\  & =-3\\cdot {2}^{1-x}\\ln(2).\\end{aligned}\n$$",
+          ":question/difficulty": ":question.difficulty/easy",
+          ":question/answer-fields": [
+            {
+              ":answer-field/id": "bd7b868b-5f2e-5467-a4ff-c0ce19494ff5",
+              ":answer-field/key": "field-1",
+              ":answer-field/type": ":answer-field.type/blank",
+              ":answer-field/choices": [
+                {
+                  ":answer/id": "f19c0221-4ea8-5971-8ab8-727c461612d8",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "- 3 \\cdot 2^{1 - x} \\ln{\\left(2 \\right)}"
+                }
+              ],
+              ":answer-field/correct": [
+                ":answer/id",
+                "f19c0221-4ea8-5971-8ab8-727c461612d8"
+              ]
+            }
+          ]
+        },
+        "generation": {
+          "version": "general-exponential-chain-2",
+          "template": "e-728",
+          "profile": "method:e-728",
+          "parameters": {
+            "b": 2,
+            "c": 3,
+            "a": -1,
+            "n": 1,
+            "k": 0,
+            "l": 0,
+            "d": 1
+          },
+          "seed": 801993,
+          "bank_seed": 7314121195087748972,
+          "bank_role": null,
+          "source": {
+            "database": "math",
+            "basis": 3948,
+            "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+          },
+          "source_ids": [
+            "e-728"
+          ],
+          "difficulty_design": "authored",
+          "answer_shape": "derivative",
+          "evidence_only": false,
+          "eligible_for_learning": true,
+          "presentation_and_completion_repairs": [
+            "normalize natural-log spelling and invisible function-apply characters",
+            "make numeric-base multiplication explicit",
+            "authored supported full-derivative blank with matching placeholder",
+            "authored easy difficulty"
+          ],
+          "mathematical_fingerprint": "da5e0f404caeb3eeee1b42ac4de999812fa808d399d02b1813290d8a409bb949",
+          "answer_math": {
+            "f19c0221-4ea8-5971-8ab8-727c461612d8": "-3*2**(1 - x)*log(2)"
+          },
+          "recipes": {
+            "f19c0221-4ea8-5971-8ab8-727c461612d8": "correct"
+          },
+          "runtime": {
+            "python": "3.13.5",
+            "sympy": "1.14.0"
+          },
+          "plot_rating": "none",
+          "math_format": "course-academy-tex-v1"
+        }
+      }
+    }
+  ],
+  "explanation": "No template includes an outside-scaled linear exponent in easy sampling; all scaled easy templates have degree 2 or 3."
+}

@@ -1,0 +1,125 @@
+{
+  "verdict": "accepted",
+  "summary": "Accept final package2c8062dd3f1d73428f92599f57ccc0eef028b08ee13f61c455e94eb877670695 for the easy, moderate and hard bound batches listed in bound-batches.json. All8 checks passed. The original power-template fixed answer is removed while source replay, checkbox semantics and differentiation/substitution reasoning remain intact.",
+  "source_analysis": {
+    "skill": "Compute the actual derivative of the supplied function, independently assess the displayed derivative claim, substitute the actual function and derivative into the differential equation, and decide whether equality holds identically on the common domain.",
+    "reasoning_steps": [
+      "Differentiate the candidate function.",
+      "Compare the actual derivative to statementI.",
+      "Substitute actual f and derivative into the ODE.",
+      "Determine identity on the common domain and select exactly the true statements."
+    ],
+    "invariants": [
+      "Statements II and III have the same truth value: a differentiable function is a solution exactly when its actual derivative satisfies the ODE identically on domain.",
+      "The derivative used for II must be calculated from f rather than copied from a false statement I.",
+      "I can be independently true/false of II/III, allowing truth tuples000,100,011,111.",
+      "Use identity on shared domain, not equality at a single point; logs require x>0, reciprocals x!=0.",
+      "This is verification, not solving ODEs, applying initial conditions, integration or advanced existence/uniqueness."
+    ],
+    "permitted_variations": [
+      "Within EACH recognizable power/exponential/log/trig/reciprocal family, independently vary derivative claim correctness and ODE coefficient or form so satisfying versus nonsatisfying is not fixed by family.",
+      "Vary small nonzero coefficients, integer exponents, inner linear rates, and signs while preserving existing differentiation rules and workload.",
+      "Hold f fixed and change claimed derivative only: I must toggle while II/III stay fixed. Hold f and derivative claim fixed and change ODE so identity fails: II/III must toggle while I stays fixed.",
+      "Rescale a homogeneous power/exponential solution and its derivative by same nonzero factor: truth should remain; irrelevant item IDs/order should not affect grading."
+    ],
+    "source_refs": [
+      "tutorial17592186102031: To check whether a given function y satisfies a differential equation, we calculate the derivative and plug the result into the equation.",
+      "canonical17592186100725: f=1/x and y'= -y/x; derivative -1/x^2; all three statements true.",
+      "question17592186101155: f=x^4 and y'=4y/x; displayed derivative5x^5 false; II and III true.",
+      "question17592186272202: f=-3x^2 and y'=2y/x; displayed derivative-5x false; II and III true.",
+      "question17592186272196: f=sin(2x)/2, y'=2y; displayed2cos(2x) false; all false.",
+      "question17592186272197: f=cos(2x), y'=y cos(2x); derivative claim-2sin(2x) true; substitution/solution false.",
+      "question17592186101157: f=e^(2x), y'=2y; all true.",
+      "question17592186272198: f=ln(x), y'=exp(-y); all true on x>0.",
+      "question17592186272199: f=-1/x^2, y'=y/x^2; all false as identities on x!=0.",
+      "question17592186272200: f=3e^(-x), y'=-3y; all false.",
+      "question17592186272201: f=4ln(x), y'=4x exp(-y/2); derivative claim1/(4x) false; II and III true on x>0."
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "source-math.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "source-math.json",
+        "replay.json"
+      ],
+      "details": "All9 captured practice questions exactly reproduce original raw prompt, worked solution, complete Boolean banks and correct values. Canonical reciprocal example independently verified mathematically; it is an instructional example without captured answer fields. Generated extensions normalize presentation and clarify common-domain identity."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "independent-tests.json",
+        "samples.json",
+        "source-math.json",
+        "counterfactuals.json",
+        "bound-batches.json"
+      ],
+      "details": "Independent SymPy differentiation and substitution agree with exposed prompt expressions, worked derivatives and truth keys for320 samples across10families,21 controlled pairs and all15 bound publication records. All original source keys also verified. No candidate or package files changed."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "sampling-boundaries.json",
+        "independent-tests.json",
+        "packaging-delivery.json",
+        "bound-batches.json"
+      ],
+      "details": "All4 admissible truth tuples occur within every family and survive independent captured-inventory filtering. Finite parameter domains validated; current batch generator enumerates/shuffles/pops instead of repeating expensive rejection. Each exact5-item band batch retainsall4 decisions after actual publisherfilter."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "source-math.json",
+        "render-inspection.json"
+      ],
+      "details": "Easy retains elementary first-order verification with stated same-method coefficient/chain-factor extensions; sine/cosine explicit RHS and reciprocal homogeneous RHS remove otherwise fixed false families without adding solving. Moderate retains negative monomial coefficients. Hard is explicitly an authored affine-log extension: outer factor, one affine chain derivative and exponential/log cancellation, supported by source log examples and prerequisite chain rules. No observed hard example is claimed."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-report.json",
+        "bound-grader-input.json",
+        "bound-grader-report.json",
+        "ui-checkbox-contract.json"
+      ],
+      "details": "Actual native learner grader passed1728 independent checks plus360 checks on all15 bound records; every8 Boolean response combinations exercised for representative family/decision cases and controlled pairs. Both true and false choice UUIDs tested, including all-unselected correct responses."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-inspection.json",
+        "counterfactual-render/rendering.json",
+        "root-render-provenance.json"
+      ],
+      "details": "All12 independent representative actual-UI renders passed with no math, JavaScript, image or glyph errors; reviewer visually inspected power, negative-power, trig, log and affine-log cases. Four already-rendered controlled variants of the user example were independently checked and inspected with provenance."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-delivery.json",
+        "sampling-boundaries.json",
+        "bound-batches.json"
+      ],
+      "details": "All3 bands repeat byte-identically forseed92817,count8; copied manifest-only package produces identical outputs after relocation. Exact installed Python3.13.5 and SymPy1.14.0 match manifest. Manifest bytes match all3 bound pipeline workspaces; canonical batch/source/inventory digests verified against context. Invalid counts and finite-capacity overflow fail before rendering."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "counterfactuals.json",
+        "selection.json",
+        "bound-batches.json"
+      ],
+      "details": "The identified template-to-answer defect is repaired: each of10 families supports000,011,100,111.42 conditional template/sign probes across raw and delivered samples found no constant-subset shortcut. Controlled claim-only/ODE-only changes alter the correct decisions; amplitude scaling preserves them. Actual filters preserve all4 cases in each bound batch; faithful read-only weighted selection tests preserve cases under tested fresh and seen-mask inventories. II/III equivalence is mathematically essential, not an incidental leak."
+    }
+  },
+  "findings": []
+}
