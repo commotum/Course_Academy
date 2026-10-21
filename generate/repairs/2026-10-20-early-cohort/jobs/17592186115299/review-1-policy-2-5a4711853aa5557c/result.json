@@ -1,0 +1,114 @@
+{
+  "verdict": "accepted",
+  "summary": "No concrete defect demonstrated. All eight checks passed. The package is unchanged; no assets were published or database content written.",
+  "source_analysis": {
+    "skill": "Classify a linear system by consistency and uniqueness, then select its true classification.",
+    "reasoning_steps": [
+      "Form the augmented matrix and perform Gaussian elimination.",
+      "Identify a contradiction, full column rank, or free variables.",
+      "Map the classification to the displayed statement and response control."
+    ],
+    "invariants": [
+      "Small linear systems with short elimination sequences.",
+      "Three mutually exclusive classifications.",
+      "Captured checkbox and complete radio answer banks."
+    ],
+    "permitted_variations": [
+      "Vary coefficients, constants, rank and consistency within supported shapes.",
+      "Vary qualifying statements and answer positions.",
+      "Preserve classification under nonzero equation scaling."
+    ],
+    "source_refs": [
+      "Tutorial e0c85152-daea-5a87-a3ba-81870558c7a2: consistency and uniqueness definitions.",
+      "Canonical cd56314d-f45a-55be-9762-983fe507a1a0: cancellation and free-variable interpretation.",
+      "402ab26a-a0df-5fc5-a264-b91a4c6d7d02, e7e2bc11-b1bf-5938-9267-7923a80ec463 and b0089d19-a4b5-5ec4-beaa-917a294458ba: different classifications within the same shape."
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "source-extract.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay-report.json",
+        "source-replays.json",
+        "solution-fidelity.json",
+        "canonical-report.json"
+      ],
+      "details": "All 17 captured practice systems and complete banks replay. Source solution corrections were independently verified. The canonical example's uncaptured bank remains explicitly uncertified."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "review.py",
+        "math-report.json",
+        "boundary-report.json",
+        "inventory-math-report.json"
+      ],
+      "details": "Exact checks pass for 170 fresh samples, five batch records, four controlled instances and all 27 inventory records. Boundary tests also pass."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "coverage-report.json",
+        "sampling-attempts.json",
+        "delivery-samples/delivery.json",
+        "delivery-batch/delivery.json",
+        "selection-report.json"
+      ],
+      "details": "Every template exhibits its feasible classifications. Filtering retains 170/170 controls and 5/5 batch records. Selection analysis records policy, history and synthetic-ID assumptions."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "coverage-report.json",
+        "boundary-report.json"
+      ],
+      "details": "Requested moderate outputs preserve source dimensions, response contracts and elimination workload."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "native-input.json",
+        "native-report.json",
+        "counterfactual-native-summary.json"
+      ],
+      "details": "The actual native grader passes 614 expected acceptances and 725 expected rejections across 196 records."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-source/rendering.json",
+        "render-counterfactual/rendering.json",
+        "visual-inspection.json"
+      ],
+      "details": "Eleven records rendered through the actual UI. Eight representative screenshots were inspected without a blocking defect."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-report.json",
+        "retained-regression.json",
+        "legacy-negative.json",
+        "package-integrity.json"
+      ],
+      "details": "Versions match exactly; relocated packages replay deterministically. The historical bootstrap failure reproduces under simulated external relocation, while current regression checks pass. Package files are unchanged."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "shortcut-report.json",
+        "counterfactual-report.json",
+        "counterfactual-native-summary.json",
+        "evidence-contract.json"
+      ],
+      "details": "Relevant and irrelevant controlled changes produce the expected prompt, solution, key and grading relationships. Conditional shortcut probes found no demonstrated structural bypass. Conclusions remain limited to tested cases and captured inventory basis 5374."
+    }
+  },
+  "findings": []
+}

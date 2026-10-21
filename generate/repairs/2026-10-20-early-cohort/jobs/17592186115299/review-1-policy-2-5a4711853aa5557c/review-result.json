@@ -1,0 +1,128 @@
+{
+  "verdict": "accepted",
+  "summary": "No demonstrated defect. All eight checks passed; the package is unchanged. Conclusions use captured inventory basis 5374 and the requested moderate difficulty.",
+  "source_analysis": {
+    "skill": "Classify a small linear system as inconsistent, consistent dependent, or consistent independent, then select exactly the true class statement using the observed checkbox or Roman-statement radio contract.",
+    "reasoning_steps": [
+      "Read coefficients and constants as an augmented matrix.",
+      "Use Gaussian elimination to expose a contradiction or determine pivots and free variables.",
+      "A contradiction gives no solutions; otherwise full column rank gives one solution and a free variable gives infinitely many.",
+      "Map the classification to the displayed wording and selection control."
+    ],
+    "invariants": [
+      "Linear equations in two or three variables; small integer or simple rational entries.",
+      "Observed shapes: 2 equations/2 variables, 2/3, 3/2.",
+      "Three mutually exclusive classifications; no requirement to enter the general solution.",
+      "Preserve full observed banks, including optional None of the above and radio distractors.",
+      "Moderate workload: short elimination, contradiction or free-variable interpretation; no parameter solving."
+    ],
+    "permitted_variations": [
+      "Change coefficients and RHS together or separately, permitting consistency to change within a fixed shape.",
+      "For 2/3, dependent and inconsistent are eligible; unique is impossible. For 2/2 and 3/2 all three classes are eligible.",
+      "Change dependent row, contradiction location, pivot positions, row order, signs, simple rational scalings and consistent solution values while keeping workload small.",
+      "Permute statement roles and option positions independently of the class. The source's qualifying Roman label or specific class per example is incidental, not essential.",
+      "Keep one true statement when the bank states the three disjoint classes; a fixed count here follows mathematics, unlike a fixed label."
+    ],
+    "source_refs": [
+      "lesson tutorial e0c85152-daea-5a87-a3ba-81870558c7a2 (3163): 'consistent if it has at least one solution'; 'consistent independent if the solution is unique'; 'consistent dependent if there are infinitely many solutions' and its decision-tree image.",
+      "canonical cd56314d-f45a-55be-9762-983fe507a1a0: row cancellation, free y, dependent.",
+      "402ab26a-a0df-5fc5-a264-b91a4c6d7d02: 3/2 inconsistent; e7e2bc11-b1bf-5938-9267-7923a80ec463: same shape dependent; b0089d19-a4b5-5ec4-beaa-917a294458ba: same shape independent.",
+      "e80c83a9-9107-528b-af57-73287d15e8e2 and a61d7528-3ce2-5d0a-af23-11395074997a: same 2/3 shape permits dependent or inconsistent.",
+      "22d64530-5ce7-515c-aafe-c528e2fc812f, 2f4a72f8-3bd3-5788-9d12-62ca6f611891, d63c26b5-97c7-566b-af91-3b869e17916f: complete five-choice radio banks, variable true Roman label.",
+      "35b0295d-1e16-59cc-a201-696e791e0b7d: includes coefficient 1/2; independent.",
+      "generate/principles.md sections 1-3: fidelity, eligible answer-bearing relationships, and same-method scope."
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "source-extract.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "source-extract.json",
+        "source-replay-report.json",
+        "source-replays.json",
+        "solution-fidelity.json",
+        "canonical-report.json"
+      ],
+      "details": "All 17 captured practice systems and complete answer banks replay. Worked prose and displayed stages match, allowing the independently verified source corrections. Canonical mathematics is supported; its uncaptured answer bank is not certified."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "review.py",
+        "math-report.json",
+        "boundary-report.json",
+        "inventory-math-report.json"
+      ],
+      "details": "Independent parsing, exact rank and displayed-matrix checks pass for 170 fresh samples, five batch records, four controlled instances and 27 inventory records. Signed affine boundaries also pass."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "coverage-report.json",
+        "sampling-attempts.json",
+        "boundary-report.json",
+        "delivery-samples/delivery.json",
+        "delivery-batch/delivery.json",
+        "selection-report.json"
+      ],
+      "details": "Each of 17 moderate templates exhibits every feasible classification. All 170 controls and five batch records survive actual filtering. Exact batch has two dependent, two inconsistent and one independent system. Selection and history effects were examined read-only with explicit policy/ID assumptions."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "coverage-report.json",
+        "boundary-report.json"
+      ],
+      "details": "Requested moderate outputs preserve source dimensions, categorical response contracts and short elimination schedules. Rank/consistency changes vary the intended decision without introducing parameter solving or general-solution entry."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "native-input.json",
+        "native-report.json",
+        "counterfactual-native-summary.json"
+      ],
+      "details": "Actual native grader passes 614 expected acceptances and 725 expected rejections across 196 records, including every field-owned alternative. No free-entry fields require equivalent-notation testing."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-source/rendering.json",
+        "render-counterfactual/rendering.json",
+        "visual-inspection.json"
+      ],
+      "details": "Actual UI rendered 11 records successfully. Eight representative screenshots inspected, including checkbox, radio, rational-source replay and all four controlled records; no blocking notation or control defect observed."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-report.json",
+        "retained-regression.json",
+        "legacy-negative.json",
+        "legacy-negative-control.py",
+        "package-integrity.json"
+      ],
+      "details": "Exact Python/package versions match. Manifest-only copies replay deterministically across all three difficulty bands. Current retained relocation regression passes; exact historical bootstrap reproduces StopIteration under simulated external relocation. All package files remain unchanged."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "shortcut-report.json",
+        "counterfactual-report.json",
+        "counterfactual-native-summary.json",
+        "selection-report.json",
+        "evidence-contract.json"
+      ],
+      "details": "Relevant RHS change updates classification, Roman response, solution and native outcomes; equation scaling preserves the response; statement permutation moves the key. Conditional template/shape/layout and answer-position probes demonstrate no structural bypass in tested controls or exact batch. Finite tests do not establish universal shortcut absence."
+    }
+  },
+  "findings": []
+}

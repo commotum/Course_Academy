@@ -1,0 +1,3707 @@
+{
+  "learner_operation": "Classify a small linear system as inconsistent, consistent dependent, or consistent independent, then select exactly the true class statement using the observed checkbox or Roman-statement radio contract.",
+  "fixed_features": [
+    {
+      "feature": "Three disjoint classification categories; exactly one true category; None never qualifies",
+      "justification": "Tutorial3163 partitions the systems by existence and uniqueness. Fixed correct-count is mathematical, not incidental."
+    },
+    {
+      "feature": "Small 2x2,2x3,3x2 moderate systems and short source elimination schedules",
+      "justification": "All source moderate practices use these shapes and Gaussian elimination; varying rank/consistency preserves the task."
+    },
+    {
+      "feature": "First pivot x, at least one nonzero coefficient pivot",
+      "justification": "All observed practice systems retain a leading x pivot and substantive elimination; conservative workload constraint. It does not determine consistency or true statement."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "qualifying semantic classification",
+      "eligible_variation": "All3 for2x2 and3x2; dependent/inconsistent for2x3",
+      "observed": "Every one of17 template controls exhibits all its feasible classifications. Exact batch contains2 dependent,2 inconsistent,1 independent."
+    },
+    {
+      "role": "correct displayed statement/position and full radio bank",
+      "eligible_variation": "Permute classes and choices; preserve each captured bank",
+      "observed": "Source banks replay exactly; normal keys/positions vary within templates. Controlled order permutation moves dependent answer II to I."
+    },
+    {
+      "role": "pivot/free columns and contradiction evidence",
+      "eligible_variation": "Rank1/2 where possible; free y/z; RHS contradiction vs zero",
+      "observed": "Coverage report measures ranks/free columns. Controlled contradiction7\u21926 changes answer III\u2192II; scaling preserves II."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "Every template before/after filtering",
+      "sample_refs": [
+        "coverage-report.json",
+        "independent-samples.json",
+        "delivery-samples/accepted.json"
+      ],
+      "result": "170/170 survived; all17 source schedules retain feasible classification cases and varying correct actions."
+    },
+    {
+      "case": "Exact five-record batch",
+      "sample_refs": [
+        "batch.json",
+        "coverage-report.json",
+        "delivery-batch/accepted.json"
+      ],
+      "result": "5/5 survived:2 dependent,2 inconsistent,1 independent. Shape2x3 subgroup has two inconsistent cases; fresh q-74635 controls include both consistency outcomes. No fixed superficial action answers all five. This small batch does not certify all eligible cases."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Hold q-74638 coefficients,order,seed fixed; final RHS7\u21926",
+      "expected": "Contradiction0=1 disappears; inconsistent III only becomes dependent II only",
+      "observed": "Keys,visible matrices,solution conclusions,rendered prompts and all native choice outcomes follow III\u2192II",
+      "status": "passed",
+      "justification": "Source contradiction vs redundant row is the necessary decision.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-report.json",
+        "native-report.json",
+        "render-counterfactual/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Multiply both equations of the dependent instance by2",
+      "expected": "Same solution set and II only answer",
+      "observed": "Visible coefficients and matrix stages scale; classification,conclusion,rendered correct control and native accepted semantic action stay II only",
+      "status": "passed",
+      "justification": "Nonzero equation scaling preserves real solution sets; source Gaussian operations use this invariance.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-report.json",
+        "native-report.json",
+        "render-counterfactual/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Permute category order with matrix fixed",
+      "expected": "Same dependent classification; response label follows its new position",
+      "observed": "Dependent moves fromII toI; prompt,solution,key and native accepted option follow",
+      "status": "passed",
+      "justification": "Statement position is incidental to the solution set; this checks an answer-producing action rather than only classification metadata.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-report.json",
+        "native-report.json",
+        "render-counterfactual/rendering.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "raw all",
+      "scope": "overall",
+      "strategy": "always select dependent",
+      "correct": 85,
+      "total": 170,
+      "baseline": 0.38235294117647056,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 85/170; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "raw all",
+      "scope": "overall",
+      "strategy": "always select independent",
+      "correct": 12,
+      "total": 170,
+      "baseline": 0.38235294117647056,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 12/170; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "raw all",
+      "scope": "overall",
+      "strategy": "always select inconsistent",
+      "correct": 73,
+      "total": 170,
+      "baseline": 0.38235294117647056,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 73/170; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "first visible answer control",
+      "subgroup": "raw all",
+      "scope": "overall",
+      "strategy": "select only first visible option",
+      "correct": 40,
+      "total": 170,
+      "baseline": 0.2656862745098039,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform random selection among visible alternatives. All fresh template groups include counterexamples to this action; no fixed-position defect demonstrated.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "raw template q-32242",
+      "scope": "within_template",
+      "strategy": "always select dependent",
+      "correct": 5,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 5/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "raw template q-32242",
+      "scope": "within_template",
+      "strategy": "always select independent",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 1/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "raw template q-32242",
+      "scope": "within_template",
+      "strategy": "always select inconsistent",
+      "correct": 4,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 4/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "first visible answer control",
+      "subgroup": "raw template q-32242",
+      "scope": "within_template",
+      "strategy": "select only first visible option",
+      "correct": 3,
+      "total": 10,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform random selection among visible alternatives. All fresh template groups include counterexamples to this action; no fixed-position defect demonstrated.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "raw shape 3x2 checkbox 4 fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always select dependent",
+      "correct": 25,
+      "total": 50,
+      "baseline": 0.33333333333333326,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 25/50; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "raw shape 3x2 checkbox 4 fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always select independent",
+      "correct": 5,
+      "total": 50,
+      "baseline": 0.33333333333333326,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 5/50; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "raw shape 3x2 checkbox 4 fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always select inconsistent",
+      "correct": 20,
+      "total": 50,
+      "baseline": 0.33333333333333326,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 20/50; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "first visible answer control",
+      "subgroup": "raw shape 3x2 checkbox 4 fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "select only first visible option",
+      "correct": 15,
+      "total": 50,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform random selection among visible alternatives. All fresh template groups include counterexamples to this action; no fixed-position defect demonstrated.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "raw template q-42061",
+      "scope": "within_template",
+      "strategy": "always select dependent",
+      "correct": 5,
+      "total": 10,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 5/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "raw template q-42061",
+      "scope": "within_template",
+      "strategy": "always select independent",
+      "correct": 0,
+      "total": 10,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 0/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "raw template q-42061",
+      "scope": "within_template",
+      "strategy": "always select inconsistent",
+      "correct": 5,
+      "total": 10,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 5/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "first visible answer control",
+      "subgroup": "raw template q-42061",
+      "scope": "within_template",
+      "strategy": "select only first visible option",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform random selection among visible alternatives. All fresh template groups include counterexamples to this action; no fixed-position defect demonstrated.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "raw shape 2x3 checkbox 4 fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always select dependent",
+      "correct": 20,
+      "total": 40,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 20/40; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "raw shape 2x3 checkbox 4 fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always select independent",
+      "correct": 0,
+      "total": 40,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 0/40; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "raw shape 2x3 checkbox 4 fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always select inconsistent",
+      "correct": 20,
+      "total": 40,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 20/40; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "first visible answer control",
+      "subgroup": "raw shape 2x3 checkbox 4 fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "select only first visible option",
+      "correct": 4,
+      "total": 40,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform random selection among visible alternatives. All fresh template groups include counterexamples to this action; no fixed-position defect demonstrated.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "raw template q-131719",
+      "scope": "within_template",
+      "strategy": "always select dependent",
+      "correct": 5,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 5/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "raw template q-131719",
+      "scope": "within_template",
+      "strategy": "always select independent",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 1/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "raw template q-131719",
+      "scope": "within_template",
+      "strategy": "always select inconsistent",
+      "correct": 4,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 4/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "first visible answer control",
+      "subgroup": "raw template q-131719",
+      "scope": "within_template",
+      "strategy": "select only first visible option",
+      "correct": 3,
+      "total": 10,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform random selection among visible alternatives. All fresh template groups include counterexamples to this action; no fixed-position defect demonstrated.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "raw template q-131723",
+      "scope": "within_template",
+      "strategy": "always select dependent",
+      "correct": 5,
+      "total": 10,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 5/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "raw template q-131723",
+      "scope": "within_template",
+      "strategy": "always select independent",
+      "correct": 0,
+      "total": 10,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 0/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "raw template q-131723",
+      "scope": "within_template",
+      "strategy": "always select inconsistent",
+      "correct": 5,
+      "total": 10,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 5/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "first visible answer control",
+      "subgroup": "raw template q-131723",
+      "scope": "within_template",
+      "strategy": "select only first visible option",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform random selection among visible alternatives. All fresh template groups include counterexamples to this action; no fixed-position defect demonstrated.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "raw template q-131724",
+      "scope": "within_template",
+      "strategy": "always select dependent",
+      "correct": 5,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 5/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "raw template q-131724",
+      "scope": "within_template",
+      "strategy": "always select independent",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 1/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "raw template q-131724",
+      "scope": "within_template",
+      "strategy": "always select inconsistent",
+      "correct": 4,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 4/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "first visible answer control",
+      "subgroup": "raw template q-131724",
+      "scope": "within_template",
+      "strategy": "select only first visible option",
+      "correct": 3,
+      "total": 10,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform random selection among visible alternatives. All fresh template groups include counterexamples to this action; no fixed-position defect demonstrated.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "raw template q-74635",
+      "scope": "within_template",
+      "strategy": "always select dependent",
+      "correct": 5,
+      "total": 10,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 5/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "raw template q-74635",
+      "scope": "within_template",
+      "strategy": "always select independent",
+      "correct": 0,
+      "total": 10,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 0/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "raw template q-74635",
+      "scope": "within_template",
+      "strategy": "always select inconsistent",
+      "correct": 5,
+      "total": 10,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 5/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "first visible answer control",
+      "subgroup": "raw template q-74635",
+      "scope": "within_template",
+      "strategy": "select only first visible option",
+      "correct": 2,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform random selection among visible alternatives. All fresh template groups include counterexamples to this action; no fixed-position defect demonstrated.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "raw shape 2x3 checkbox 3 fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always select dependent",
+      "correct": 5,
+      "total": 10,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 5/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "raw shape 2x3 checkbox 3 fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always select independent",
+      "correct": 0,
+      "total": 10,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 0/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "raw shape 2x3 checkbox 3 fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always select inconsistent",
+      "correct": 5,
+      "total": 10,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 5/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "first visible answer control",
+      "subgroup": "raw shape 2x3 checkbox 3 fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "select only first visible option",
+      "correct": 2,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform random selection among visible alternatives. All fresh template groups include counterexamples to this action; no fixed-position defect demonstrated.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "raw template q-74637",
+      "scope": "within_template",
+      "strategy": "always select dependent",
+      "correct": 5,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 5/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "raw template q-74637",
+      "scope": "within_template",
+      "strategy": "always select independent",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 1/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "raw template q-74637",
+      "scope": "within_template",
+      "strategy": "always select inconsistent",
+      "correct": 4,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 4/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "first visible answer control",
+      "subgroup": "raw template q-74637",
+      "scope": "within_template",
+      "strategy": "select only first visible option",
+      "correct": 3,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform random selection among visible alternatives. All fresh template groups include counterexamples to this action; no fixed-position defect demonstrated.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "raw shape 3x2 checkbox 3 fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always select dependent",
+      "correct": 20,
+      "total": 40,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 20/40; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "raw shape 3x2 checkbox 3 fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always select independent",
+      "correct": 4,
+      "total": 40,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 4/40; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "raw shape 3x2 checkbox 3 fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always select inconsistent",
+      "correct": 16,
+      "total": 40,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 16/40; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "first visible answer control",
+      "subgroup": "raw shape 3x2 checkbox 3 fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "select only first visible option",
+      "correct": 12,
+      "total": 40,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform random selection among visible alternatives. All fresh template groups include counterexamples to this action; no fixed-position defect demonstrated.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "raw template q-131718",
+      "scope": "within_template",
+      "strategy": "always select dependent",
+      "correct": 5,
+      "total": 10,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 5/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "raw template q-131718",
+      "scope": "within_template",
+      "strategy": "always select independent",
+      "correct": 0,
+      "total": 10,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 0/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "raw template q-131718",
+      "scope": "within_template",
+      "strategy": "always select inconsistent",
+      "correct": 5,
+      "total": 10,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 5/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "first visible answer control",
+      "subgroup": "raw template q-131718",
+      "scope": "within_template",
+      "strategy": "select only first visible option",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform random selection among visible alternatives. All fresh template groups include counterexamples to this action; no fixed-position defect demonstrated.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "raw template q-74643",
+      "scope": "within_template",
+      "strategy": "always select dependent",
+      "correct": 5,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 5/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "raw template q-74643",
+      "scope": "within_template",
+      "strategy": "always select independent",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 1/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "raw template q-74643",
+      "scope": "within_template",
+      "strategy": "always select inconsistent",
+      "correct": 4,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 4/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "first visible answer control",
+      "subgroup": "raw template q-74643",
+      "scope": "within_template",
+      "strategy": "select only first visible option",
+      "correct": 3,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform random selection among visible alternatives. All fresh template groups include counterexamples to this action; no fixed-position defect demonstrated.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "raw template q-131720",
+      "scope": "within_template",
+      "strategy": "always select dependent",
+      "correct": 5,
+      "total": 10,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 5/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "raw template q-131720",
+      "scope": "within_template",
+      "strategy": "always select independent",
+      "correct": 0,
+      "total": 10,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 0/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "raw template q-131720",
+      "scope": "within_template",
+      "strategy": "always select inconsistent",
+      "correct": 5,
+      "total": 10,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 5/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "first visible answer control",
+      "subgroup": "raw template q-131720",
+      "scope": "within_template",
+      "strategy": "select only first visible option",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform random selection among visible alternatives. All fresh template groups include counterexamples to this action; no fixed-position defect demonstrated.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "raw template q-131721",
+      "scope": "within_template",
+      "strategy": "always select dependent",
+      "correct": 5,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 5/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "raw template q-131721",
+      "scope": "within_template",
+      "strategy": "always select independent",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 1/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "raw template q-131721",
+      "scope": "within_template",
+      "strategy": "always select inconsistent",
+      "correct": 4,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 4/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "first visible answer control",
+      "subgroup": "raw template q-131721",
+      "scope": "within_template",
+      "strategy": "select only first visible option",
+      "correct": 3,
+      "total": 10,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform random selection among visible alternatives. All fresh template groups include counterexamples to this action; no fixed-position defect demonstrated.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "raw template q-131722",
+      "scope": "within_template",
+      "strategy": "always select dependent",
+      "correct": 5,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 5/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "raw template q-131722",
+      "scope": "within_template",
+      "strategy": "always select independent",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 1/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "raw template q-131722",
+      "scope": "within_template",
+      "strategy": "always select inconsistent",
+      "correct": 4,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 4/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "first visible answer control",
+      "subgroup": "raw template q-131722",
+      "scope": "within_template",
+      "strategy": "select only first visible option",
+      "correct": 3,
+      "total": 10,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform random selection among visible alternatives. All fresh template groups include counterexamples to this action; no fixed-position defect demonstrated.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "raw template q-42020",
+      "scope": "within_template",
+      "strategy": "always select dependent",
+      "correct": 5,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 5/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "raw template q-42020",
+      "scope": "within_template",
+      "strategy": "always select independent",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 1/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "raw template q-42020",
+      "scope": "within_template",
+      "strategy": "always select inconsistent",
+      "correct": 4,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 4/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "first visible answer control",
+      "subgroup": "raw template q-42020",
+      "scope": "within_template",
+      "strategy": "select only first visible option",
+      "correct": 3,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform random selection among visible alternatives. All fresh template groups include counterexamples to this action; no fixed-position defect demonstrated.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "raw template q-74634",
+      "scope": "within_template",
+      "strategy": "always select dependent",
+      "correct": 5,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 5/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "raw template q-74634",
+      "scope": "within_template",
+      "strategy": "always select independent",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 1/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "raw template q-74634",
+      "scope": "within_template",
+      "strategy": "always select inconsistent",
+      "correct": 4,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 4/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "first visible answer control",
+      "subgroup": "raw template q-74634",
+      "scope": "within_template",
+      "strategy": "select only first visible option",
+      "correct": 3,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform random selection among visible alternatives. All fresh template groups include counterexamples to this action; no fixed-position defect demonstrated.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "raw template q-74834",
+      "scope": "within_template",
+      "strategy": "always select dependent",
+      "correct": 5,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 5/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "raw template q-74834",
+      "scope": "within_template",
+      "strategy": "always select independent",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 1/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "raw template q-74834",
+      "scope": "within_template",
+      "strategy": "always select inconsistent",
+      "correct": 4,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 4/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "first visible answer control",
+      "subgroup": "raw template q-74834",
+      "scope": "within_template",
+      "strategy": "select only first visible option",
+      "correct": 2,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform random selection among visible alternatives. All fresh template groups include counterexamples to this action; no fixed-position defect demonstrated.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "raw shape 3x2 radio 1 fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always select dependent",
+      "correct": 10,
+      "total": 20,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 10/20; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "raw shape 3x2 radio 1 fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always select independent",
+      "correct": 2,
+      "total": 20,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 2/20; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "raw shape 3x2 radio 1 fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always select inconsistent",
+      "correct": 8,
+      "total": 20,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 8/20; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "first visible answer control",
+      "subgroup": "raw shape 3x2 radio 1 fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "select only first visible option",
+      "correct": 4,
+      "total": 20,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform random selection among visible alternatives. All fresh template groups include counterexamples to this action; no fixed-position defect demonstrated.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "raw template q-74636",
+      "scope": "within_template",
+      "strategy": "always select dependent",
+      "correct": 5,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 5/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "raw template q-74636",
+      "scope": "within_template",
+      "strategy": "always select independent",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 1/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "raw template q-74636",
+      "scope": "within_template",
+      "strategy": "always select inconsistent",
+      "correct": 4,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 4/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "first visible answer control",
+      "subgroup": "raw template q-74636",
+      "scope": "within_template",
+      "strategy": "select only first visible option",
+      "correct": 2,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform random selection among visible alternatives. All fresh template groups include counterexamples to this action; no fixed-position defect demonstrated.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "raw template q-74638",
+      "scope": "within_template",
+      "strategy": "always select dependent",
+      "correct": 5,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 5/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "raw template q-74638",
+      "scope": "within_template",
+      "strategy": "always select independent",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 1/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "raw template q-74638",
+      "scope": "within_template",
+      "strategy": "always select inconsistent",
+      "correct": 4,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 4/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "first visible answer control",
+      "subgroup": "raw template q-74638",
+      "scope": "within_template",
+      "strategy": "select only first visible option",
+      "correct": 3,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform random selection among visible alternatives. All fresh template groups include counterexamples to this action; no fixed-position defect demonstrated.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "raw shape 2x2 radio 1 fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always select dependent",
+      "correct": 5,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 5/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "raw shape 2x2 radio 1 fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always select independent",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 1/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "raw shape 2x2 radio 1 fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always select inconsistent",
+      "correct": 4,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 4/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "first visible answer control",
+      "subgroup": "raw shape 2x2 radio 1 fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "select only first visible option",
+      "correct": 3,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform random selection among visible alternatives. All fresh template groups include counterexamples to this action; no fixed-position defect demonstrated.",
+      "sample_refs": [
+        "independent-samples.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "accepted all",
+      "scope": "overall",
+      "strategy": "always select dependent",
+      "correct": 85,
+      "total": 170,
+      "baseline": 0.38235294117647056,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 85/170; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "accepted all",
+      "scope": "overall",
+      "strategy": "always select independent",
+      "correct": 12,
+      "total": 170,
+      "baseline": 0.38235294117647056,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 12/170; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "accepted all",
+      "scope": "overall",
+      "strategy": "always select inconsistent",
+      "correct": 73,
+      "total": 170,
+      "baseline": 0.38235294117647056,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 73/170; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "first visible answer control",
+      "subgroup": "accepted all",
+      "scope": "overall",
+      "strategy": "select only first visible option",
+      "correct": 40,
+      "total": 170,
+      "baseline": 0.2656862745098039,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform random selection among visible alternatives. All fresh template groups include counterexamples to this action; no fixed-position defect demonstrated.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "accepted template q-32242",
+      "scope": "within_template",
+      "strategy": "always select dependent",
+      "correct": 5,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 5/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "accepted template q-32242",
+      "scope": "within_template",
+      "strategy": "always select independent",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 1/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "accepted template q-32242",
+      "scope": "within_template",
+      "strategy": "always select inconsistent",
+      "correct": 4,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 4/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "first visible answer control",
+      "subgroup": "accepted template q-32242",
+      "scope": "within_template",
+      "strategy": "select only first visible option",
+      "correct": 3,
+      "total": 10,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform random selection among visible alternatives. All fresh template groups include counterexamples to this action; no fixed-position defect demonstrated.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "accepted shape 3x2 checkbox 4 fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always select dependent",
+      "correct": 25,
+      "total": 50,
+      "baseline": 0.33333333333333326,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 25/50; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "accepted shape 3x2 checkbox 4 fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always select independent",
+      "correct": 5,
+      "total": 50,
+      "baseline": 0.33333333333333326,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 5/50; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "accepted shape 3x2 checkbox 4 fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always select inconsistent",
+      "correct": 20,
+      "total": 50,
+      "baseline": 0.33333333333333326,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 20/50; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "first visible answer control",
+      "subgroup": "accepted shape 3x2 checkbox 4 fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "select only first visible option",
+      "correct": 15,
+      "total": 50,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform random selection among visible alternatives. All fresh template groups include counterexamples to this action; no fixed-position defect demonstrated.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "accepted template q-42061",
+      "scope": "within_template",
+      "strategy": "always select dependent",
+      "correct": 5,
+      "total": 10,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 5/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "accepted template q-42061",
+      "scope": "within_template",
+      "strategy": "always select independent",
+      "correct": 0,
+      "total": 10,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 0/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "accepted template q-42061",
+      "scope": "within_template",
+      "strategy": "always select inconsistent",
+      "correct": 5,
+      "total": 10,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 5/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "first visible answer control",
+      "subgroup": "accepted template q-42061",
+      "scope": "within_template",
+      "strategy": "select only first visible option",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform random selection among visible alternatives. All fresh template groups include counterexamples to this action; no fixed-position defect demonstrated.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "accepted shape 2x3 checkbox 4 fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always select dependent",
+      "correct": 20,
+      "total": 40,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 20/40; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "accepted shape 2x3 checkbox 4 fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always select independent",
+      "correct": 0,
+      "total": 40,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 0/40; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "accepted shape 2x3 checkbox 4 fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always select inconsistent",
+      "correct": 20,
+      "total": 40,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 20/40; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "first visible answer control",
+      "subgroup": "accepted shape 2x3 checkbox 4 fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "select only first visible option",
+      "correct": 4,
+      "total": 40,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform random selection among visible alternatives. All fresh template groups include counterexamples to this action; no fixed-position defect demonstrated.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "accepted template q-131719",
+      "scope": "within_template",
+      "strategy": "always select dependent",
+      "correct": 5,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 5/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "accepted template q-131719",
+      "scope": "within_template",
+      "strategy": "always select independent",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 1/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "accepted template q-131719",
+      "scope": "within_template",
+      "strategy": "always select inconsistent",
+      "correct": 4,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 4/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "first visible answer control",
+      "subgroup": "accepted template q-131719",
+      "scope": "within_template",
+      "strategy": "select only first visible option",
+      "correct": 3,
+      "total": 10,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform random selection among visible alternatives. All fresh template groups include counterexamples to this action; no fixed-position defect demonstrated.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "accepted template q-131723",
+      "scope": "within_template",
+      "strategy": "always select dependent",
+      "correct": 5,
+      "total": 10,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 5/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "accepted template q-131723",
+      "scope": "within_template",
+      "strategy": "always select independent",
+      "correct": 0,
+      "total": 10,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 0/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "accepted template q-131723",
+      "scope": "within_template",
+      "strategy": "always select inconsistent",
+      "correct": 5,
+      "total": 10,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 5/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "first visible answer control",
+      "subgroup": "accepted template q-131723",
+      "scope": "within_template",
+      "strategy": "select only first visible option",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform random selection among visible alternatives. All fresh template groups include counterexamples to this action; no fixed-position defect demonstrated.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "accepted template q-131724",
+      "scope": "within_template",
+      "strategy": "always select dependent",
+      "correct": 5,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 5/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "accepted template q-131724",
+      "scope": "within_template",
+      "strategy": "always select independent",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 1/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "accepted template q-131724",
+      "scope": "within_template",
+      "strategy": "always select inconsistent",
+      "correct": 4,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 4/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "first visible answer control",
+      "subgroup": "accepted template q-131724",
+      "scope": "within_template",
+      "strategy": "select only first visible option",
+      "correct": 3,
+      "total": 10,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform random selection among visible alternatives. All fresh template groups include counterexamples to this action; no fixed-position defect demonstrated.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "accepted template q-74635",
+      "scope": "within_template",
+      "strategy": "always select dependent",
+      "correct": 5,
+      "total": 10,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 5/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "accepted template q-74635",
+      "scope": "within_template",
+      "strategy": "always select independent",
+      "correct": 0,
+      "total": 10,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 0/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "accepted template q-74635",
+      "scope": "within_template",
+      "strategy": "always select inconsistent",
+      "correct": 5,
+      "total": 10,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 5/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "first visible answer control",
+      "subgroup": "accepted template q-74635",
+      "scope": "within_template",
+      "strategy": "select only first visible option",
+      "correct": 2,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform random selection among visible alternatives. All fresh template groups include counterexamples to this action; no fixed-position defect demonstrated.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "accepted shape 2x3 checkbox 3 fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always select dependent",
+      "correct": 5,
+      "total": 10,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 5/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "accepted shape 2x3 checkbox 3 fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always select independent",
+      "correct": 0,
+      "total": 10,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 0/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "accepted shape 2x3 checkbox 3 fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always select inconsistent",
+      "correct": 5,
+      "total": 10,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 5/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "first visible answer control",
+      "subgroup": "accepted shape 2x3 checkbox 3 fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "select only first visible option",
+      "correct": 2,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform random selection among visible alternatives. All fresh template groups include counterexamples to this action; no fixed-position defect demonstrated.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "accepted template q-74637",
+      "scope": "within_template",
+      "strategy": "always select dependent",
+      "correct": 5,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 5/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "accepted template q-74637",
+      "scope": "within_template",
+      "strategy": "always select independent",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 1/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "accepted template q-74637",
+      "scope": "within_template",
+      "strategy": "always select inconsistent",
+      "correct": 4,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 4/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "first visible answer control",
+      "subgroup": "accepted template q-74637",
+      "scope": "within_template",
+      "strategy": "select only first visible option",
+      "correct": 3,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform random selection among visible alternatives. All fresh template groups include counterexamples to this action; no fixed-position defect demonstrated.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "accepted shape 3x2 checkbox 3 fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always select dependent",
+      "correct": 20,
+      "total": 40,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 20/40; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "accepted shape 3x2 checkbox 3 fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always select independent",
+      "correct": 4,
+      "total": 40,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 4/40; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "accepted shape 3x2 checkbox 3 fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always select inconsistent",
+      "correct": 16,
+      "total": 40,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 16/40; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "first visible answer control",
+      "subgroup": "accepted shape 3x2 checkbox 3 fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "select only first visible option",
+      "correct": 12,
+      "total": 40,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform random selection among visible alternatives. All fresh template groups include counterexamples to this action; no fixed-position defect demonstrated.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "accepted template q-131718",
+      "scope": "within_template",
+      "strategy": "always select dependent",
+      "correct": 5,
+      "total": 10,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 5/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "accepted template q-131718",
+      "scope": "within_template",
+      "strategy": "always select independent",
+      "correct": 0,
+      "total": 10,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 0/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "accepted template q-131718",
+      "scope": "within_template",
+      "strategy": "always select inconsistent",
+      "correct": 5,
+      "total": 10,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 5/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "first visible answer control",
+      "subgroup": "accepted template q-131718",
+      "scope": "within_template",
+      "strategy": "select only first visible option",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform random selection among visible alternatives. All fresh template groups include counterexamples to this action; no fixed-position defect demonstrated.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "accepted template q-74643",
+      "scope": "within_template",
+      "strategy": "always select dependent",
+      "correct": 5,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 5/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "accepted template q-74643",
+      "scope": "within_template",
+      "strategy": "always select independent",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 1/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "accepted template q-74643",
+      "scope": "within_template",
+      "strategy": "always select inconsistent",
+      "correct": 4,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 4/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "first visible answer control",
+      "subgroup": "accepted template q-74643",
+      "scope": "within_template",
+      "strategy": "select only first visible option",
+      "correct": 3,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform random selection among visible alternatives. All fresh template groups include counterexamples to this action; no fixed-position defect demonstrated.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "accepted template q-131720",
+      "scope": "within_template",
+      "strategy": "always select dependent",
+      "correct": 5,
+      "total": 10,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 5/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "accepted template q-131720",
+      "scope": "within_template",
+      "strategy": "always select independent",
+      "correct": 0,
+      "total": 10,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 0/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "accepted template q-131720",
+      "scope": "within_template",
+      "strategy": "always select inconsistent",
+      "correct": 5,
+      "total": 10,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 5/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "first visible answer control",
+      "subgroup": "accepted template q-131720",
+      "scope": "within_template",
+      "strategy": "select only first visible option",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform random selection among visible alternatives. All fresh template groups include counterexamples to this action; no fixed-position defect demonstrated.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "accepted template q-131721",
+      "scope": "within_template",
+      "strategy": "always select dependent",
+      "correct": 5,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 5/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "accepted template q-131721",
+      "scope": "within_template",
+      "strategy": "always select independent",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 1/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "accepted template q-131721",
+      "scope": "within_template",
+      "strategy": "always select inconsistent",
+      "correct": 4,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 4/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "first visible answer control",
+      "subgroup": "accepted template q-131721",
+      "scope": "within_template",
+      "strategy": "select only first visible option",
+      "correct": 3,
+      "total": 10,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform random selection among visible alternatives. All fresh template groups include counterexamples to this action; no fixed-position defect demonstrated.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "accepted template q-131722",
+      "scope": "within_template",
+      "strategy": "always select dependent",
+      "correct": 5,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 5/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "accepted template q-131722",
+      "scope": "within_template",
+      "strategy": "always select independent",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 1/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "accepted template q-131722",
+      "scope": "within_template",
+      "strategy": "always select inconsistent",
+      "correct": 4,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 4/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "first visible answer control",
+      "subgroup": "accepted template q-131722",
+      "scope": "within_template",
+      "strategy": "select only first visible option",
+      "correct": 3,
+      "total": 10,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform random selection among visible alternatives. All fresh template groups include counterexamples to this action; no fixed-position defect demonstrated.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "accepted template q-42020",
+      "scope": "within_template",
+      "strategy": "always select dependent",
+      "correct": 5,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 5/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "accepted template q-42020",
+      "scope": "within_template",
+      "strategy": "always select independent",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 1/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "accepted template q-42020",
+      "scope": "within_template",
+      "strategy": "always select inconsistent",
+      "correct": 4,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 4/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "first visible answer control",
+      "subgroup": "accepted template q-42020",
+      "scope": "within_template",
+      "strategy": "select only first visible option",
+      "correct": 3,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform random selection among visible alternatives. All fresh template groups include counterexamples to this action; no fixed-position defect demonstrated.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "accepted template q-74634",
+      "scope": "within_template",
+      "strategy": "always select dependent",
+      "correct": 5,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 5/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "accepted template q-74634",
+      "scope": "within_template",
+      "strategy": "always select independent",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 1/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "accepted template q-74634",
+      "scope": "within_template",
+      "strategy": "always select inconsistent",
+      "correct": 4,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 4/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "first visible answer control",
+      "subgroup": "accepted template q-74634",
+      "scope": "within_template",
+      "strategy": "select only first visible option",
+      "correct": 3,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform random selection among visible alternatives. All fresh template groups include counterexamples to this action; no fixed-position defect demonstrated.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "accepted template q-74834",
+      "scope": "within_template",
+      "strategy": "always select dependent",
+      "correct": 5,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 5/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "accepted template q-74834",
+      "scope": "within_template",
+      "strategy": "always select independent",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 1/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "accepted template q-74834",
+      "scope": "within_template",
+      "strategy": "always select inconsistent",
+      "correct": 4,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 4/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "first visible answer control",
+      "subgroup": "accepted template q-74834",
+      "scope": "within_template",
+      "strategy": "select only first visible option",
+      "correct": 2,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform random selection among visible alternatives. All fresh template groups include counterexamples to this action; no fixed-position defect demonstrated.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "accepted shape 3x2 radio 1 fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always select dependent",
+      "correct": 10,
+      "total": 20,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 10/20; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "accepted shape 3x2 radio 1 fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always select independent",
+      "correct": 2,
+      "total": 20,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 2/20; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "accepted shape 3x2 radio 1 fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always select inconsistent",
+      "correct": 8,
+      "total": 20,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 8/20; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "first visible answer control",
+      "subgroup": "accepted shape 3x2 radio 1 fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "select only first visible option",
+      "correct": 4,
+      "total": 20,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform random selection among visible alternatives. All fresh template groups include counterexamples to this action; no fixed-position defect demonstrated.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "accepted template q-74636",
+      "scope": "within_template",
+      "strategy": "always select dependent",
+      "correct": 5,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 5/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "accepted template q-74636",
+      "scope": "within_template",
+      "strategy": "always select independent",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 1/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "accepted template q-74636",
+      "scope": "within_template",
+      "strategy": "always select inconsistent",
+      "correct": 4,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 4/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "first visible answer control",
+      "subgroup": "accepted template q-74636",
+      "scope": "within_template",
+      "strategy": "select only first visible option",
+      "correct": 2,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform random selection among visible alternatives. All fresh template groups include counterexamples to this action; no fixed-position defect demonstrated.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "accepted template q-74638",
+      "scope": "within_template",
+      "strategy": "always select dependent",
+      "correct": 5,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 5/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "accepted template q-74638",
+      "scope": "within_template",
+      "strategy": "always select independent",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 1/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "accepted template q-74638",
+      "scope": "within_template",
+      "strategy": "always select inconsistent",
+      "correct": 4,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 4/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "first visible answer control",
+      "subgroup": "accepted template q-74638",
+      "scope": "within_template",
+      "strategy": "select only first visible option",
+      "correct": 3,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform random selection among visible alternatives. All fresh template groups include counterexamples to this action; no fixed-position defect demonstrated.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "accepted shape 2x2 radio 1 fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always select dependent",
+      "correct": 5,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 5/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "accepted shape 2x2 radio 1 fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always select independent",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 1/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "accepted shape 2x2 radio 1 fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always select inconsistent",
+      "correct": 4,
+      "total": 10,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 4/10; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "first visible answer control",
+      "subgroup": "accepted shape 2x2 radio 1 fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "select only first visible option",
+      "correct": 3,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform random selection among visible alternatives. All fresh template groups include counterexamples to this action; no fixed-position defect demonstrated.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "batch raw all",
+      "scope": "overall",
+      "strategy": "always select dependent",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.4,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 2/5; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "batch.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "batch raw all",
+      "scope": "overall",
+      "strategy": "always select independent",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.4,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 1/5; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "batch.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "batch raw all",
+      "scope": "overall",
+      "strategy": "always select inconsistent",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.4,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 2/5; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "batch.json"
+      ]
+    },
+    {
+      "cue": "first visible answer control",
+      "subgroup": "batch raw all",
+      "scope": "overall",
+      "strategy": "select only first visible option",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.31666666666666665,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform random selection among visible alternatives. All fresh template groups include counterexamples to this action; no fixed-position defect demonstrated.",
+      "sample_refs": [
+        "batch.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "batch raw template q-74643",
+      "scope": "within_template",
+      "strategy": "always select dependent",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 1/1; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "batch.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "batch raw template q-74643",
+      "scope": "within_template",
+      "strategy": "always select independent",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 0/1; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "batch.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "batch raw template q-74643",
+      "scope": "within_template",
+      "strategy": "always select inconsistent",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 0/1; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "batch.json"
+      ]
+    },
+    {
+      "cue": "first visible answer control",
+      "subgroup": "batch raw template q-74643",
+      "scope": "within_template",
+      "strategy": "select only first visible option",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform random selection among visible alternatives. All fresh template groups include counterexamples to this action; no fixed-position defect demonstrated.",
+      "sample_refs": [
+        "batch.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "batch raw shape 3x2 checkbox 3 fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always select dependent",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 1/2; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "batch.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "batch raw shape 3x2 checkbox 3 fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always select independent",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 1/2; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "batch.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "batch raw shape 3x2 checkbox 3 fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always select inconsistent",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 0/2; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "batch.json"
+      ]
+    },
+    {
+      "cue": "first visible answer control",
+      "subgroup": "batch raw shape 3x2 checkbox 3 fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "select only first visible option",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform random selection among visible alternatives. All fresh template groups include counterexamples to this action; no fixed-position defect demonstrated.",
+      "sample_refs": [
+        "batch.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "batch raw template q-131721",
+      "scope": "within_template",
+      "strategy": "always select dependent",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 1/1; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "batch.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "batch raw template q-131721",
+      "scope": "within_template",
+      "strategy": "always select independent",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 0/1; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "batch.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "batch raw template q-131721",
+      "scope": "within_template",
+      "strategy": "always select inconsistent",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 0/1; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "batch.json"
+      ]
+    },
+    {
+      "cue": "first visible answer control",
+      "subgroup": "batch raw template q-131721",
+      "scope": "within_template",
+      "strategy": "select only first visible option",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform random selection among visible alternatives. All fresh template groups include counterexamples to this action; no fixed-position defect demonstrated.",
+      "sample_refs": [
+        "batch.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "batch raw shape 3x2 checkbox 4 fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always select dependent",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 1/1; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "batch.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "batch raw shape 3x2 checkbox 4 fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always select independent",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 0/1; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "batch.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "batch raw shape 3x2 checkbox 4 fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always select inconsistent",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 0/1; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "batch.json"
+      ]
+    },
+    {
+      "cue": "first visible answer control",
+      "subgroup": "batch raw shape 3x2 checkbox 4 fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "select only first visible option",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform random selection among visible alternatives. All fresh template groups include counterexamples to this action; no fixed-position defect demonstrated.",
+      "sample_refs": [
+        "batch.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "batch raw template q-74635",
+      "scope": "within_template",
+      "strategy": "always select dependent",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 0/2; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "batch.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "batch raw template q-74635",
+      "scope": "within_template",
+      "strategy": "always select independent",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 0/2; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "batch.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "batch raw template q-74635",
+      "scope": "within_template",
+      "strategy": "always select inconsistent",
+      "correct": 2,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 2/2; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "batch.json"
+      ]
+    },
+    {
+      "cue": "first visible answer control",
+      "subgroup": "batch raw template q-74635",
+      "scope": "within_template",
+      "strategy": "select only first visible option",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform random selection among visible alternatives. All fresh template groups include counterexamples to this action; no fixed-position defect demonstrated.",
+      "sample_refs": [
+        "batch.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "batch raw shape 2x3 checkbox 3 fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always select dependent",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 0/2; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "batch.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "batch raw shape 2x3 checkbox 3 fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always select independent",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 0/2; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "batch.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "batch raw shape 2x3 checkbox 3 fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always select inconsistent",
+      "correct": 2,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 2/2; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "batch.json"
+      ]
+    },
+    {
+      "cue": "first visible answer control",
+      "subgroup": "batch raw shape 2x3 checkbox 3 fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "select only first visible option",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform random selection among visible alternatives. All fresh template groups include counterexamples to this action; no fixed-position defect demonstrated.",
+      "sample_refs": [
+        "batch.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "batch raw template q-74637",
+      "scope": "within_template",
+      "strategy": "always select dependent",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 0/1; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "batch.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "batch raw template q-74637",
+      "scope": "within_template",
+      "strategy": "always select independent",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 1/1; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "batch.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "batch raw template q-74637",
+      "scope": "within_template",
+      "strategy": "always select inconsistent",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 0/1; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "batch.json"
+      ]
+    },
+    {
+      "cue": "first visible answer control",
+      "subgroup": "batch raw template q-74637",
+      "scope": "within_template",
+      "strategy": "select only first visible option",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform random selection among visible alternatives. All fresh template groups include counterexamples to this action; no fixed-position defect demonstrated.",
+      "sample_refs": [
+        "batch.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "batch accepted all",
+      "scope": "overall",
+      "strategy": "always select dependent",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.4,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 2/5; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "batch accepted all",
+      "scope": "overall",
+      "strategy": "always select independent",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.4,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 1/5; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "batch accepted all",
+      "scope": "overall",
+      "strategy": "always select inconsistent",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.4,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 2/5; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "first visible answer control",
+      "subgroup": "batch accepted all",
+      "scope": "overall",
+      "strategy": "select only first visible option",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.31666666666666665,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform random selection among visible alternatives. All fresh template groups include counterexamples to this action; no fixed-position defect demonstrated.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "batch accepted template q-74643",
+      "scope": "within_template",
+      "strategy": "always select dependent",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 1/1; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "batch accepted template q-74643",
+      "scope": "within_template",
+      "strategy": "always select independent",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 0/1; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "batch accepted template q-74643",
+      "scope": "within_template",
+      "strategy": "always select inconsistent",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 0/1; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "first visible answer control",
+      "subgroup": "batch accepted template q-74643",
+      "scope": "within_template",
+      "strategy": "select only first visible option",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform random selection among visible alternatives. All fresh template groups include counterexamples to this action; no fixed-position defect demonstrated.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "batch accepted shape 3x2 checkbox 3 fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always select dependent",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 1/2; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "batch accepted shape 3x2 checkbox 3 fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always select independent",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 1/2; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "batch accepted shape 3x2 checkbox 3 fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always select inconsistent",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 0/2; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "first visible answer control",
+      "subgroup": "batch accepted shape 3x2 checkbox 3 fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "select only first visible option",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform random selection among visible alternatives. All fresh template groups include counterexamples to this action; no fixed-position defect demonstrated.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "batch accepted template q-131721",
+      "scope": "within_template",
+      "strategy": "always select dependent",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 1/1; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "batch accepted template q-131721",
+      "scope": "within_template",
+      "strategy": "always select independent",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 0/1; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "batch accepted template q-131721",
+      "scope": "within_template",
+      "strategy": "always select inconsistent",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 0/1; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "first visible answer control",
+      "subgroup": "batch accepted template q-131721",
+      "scope": "within_template",
+      "strategy": "select only first visible option",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform random selection among visible alternatives. All fresh template groups include counterexamples to this action; no fixed-position defect demonstrated.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "batch accepted shape 3x2 checkbox 4 fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always select dependent",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 1/1; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "batch accepted shape 3x2 checkbox 4 fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always select independent",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 0/1; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "batch accepted shape 3x2 checkbox 4 fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always select inconsistent",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 0/1; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "first visible answer control",
+      "subgroup": "batch accepted shape 3x2 checkbox 4 fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "select only first visible option",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform random selection among visible alternatives. All fresh template groups include counterexamples to this action; no fixed-position defect demonstrated.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "batch accepted template q-74635",
+      "scope": "within_template",
+      "strategy": "always select dependent",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 0/2; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "batch accepted template q-74635",
+      "scope": "within_template",
+      "strategy": "always select independent",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 0/2; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "batch accepted template q-74635",
+      "scope": "within_template",
+      "strategy": "always select inconsistent",
+      "correct": 2,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 2/2; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "first visible answer control",
+      "subgroup": "batch accepted template q-74635",
+      "scope": "within_template",
+      "strategy": "select only first visible option",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform random selection among visible alternatives. All fresh template groups include counterexamples to this action; no fixed-position defect demonstrated.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "batch accepted shape 2x3 checkbox 3 fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always select dependent",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 0/2; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "batch accepted shape 2x3 checkbox 3 fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always select independent",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 0/2; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "batch accepted shape 2x3 checkbox 3 fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always select inconsistent",
+      "correct": 2,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 2/2; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "first visible answer control",
+      "subgroup": "batch accepted shape 2x3 checkbox 3 fields",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "select only first visible option",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform random selection among visible alternatives. All fresh template groups include counterexamples to this action; no fixed-position defect demonstrated.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "batch accepted template q-74637",
+      "scope": "within_template",
+      "strategy": "always select dependent",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 0/1; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "batch accepted template q-74637",
+      "scope": "within_template",
+      "strategy": "always select independent",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 1/1; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "template / response / dimensions, ignoring numerical entries",
+      "subgroup": "batch accepted template q-74637",
+      "scope": "within_template",
+      "strategy": "always select inconsistent",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform among feasible categories (1/2 for 2x3, otherwise 1/3), averaged across subgroup. 0/1; no class fixed across fresh instances of any template. Small batch subgroups can be coincidental, so compare fresh same-template controls rather than claiming universal predictability.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "first visible answer control",
+      "subgroup": "batch accepted template q-74637",
+      "scope": "within_template",
+      "strategy": "select only first visible option",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform random selection among visible alternatives. All fresh template groups include counterexamples to this action; no fixed-position defect demonstrated.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "generator rejection/resampling and explicit parameter guards",
+      "actual requested-difficulty filter",
+      "actual inventory/within-batch deduplication at basis5374",
+      "read-only reproduction of learner band weighting,within-band selection,history exclusions and unconfigured fallback"
+    ],
+    "sample_refs": [
+      "sampling-attempts.json",
+      "boundary-report.json",
+      "delivery-samples/delivery.json",
+      "delivery-batch/delivery.json",
+      "selection-report.json",
+      "coverage-report.json"
+    ],
+    "result": "No normal rejections in170; forced invalid first construction retries successfully. Actual filter retains170/170 controls and5/5 batch. Feasible cases remain in controls. Selection does not inspect class/template; moderate positive-weight support preserved subject to history."
+  },
+  "limitations": [
+    "Finite probes do not prove absence of every shortcut. Each small batch template subgroup is evaluated against independent controls; singleton conditional success alone is not a structural predictor.",
+    "Captured inventory basis5374; later inventory/history/policy may differ. Selection scenarios and synthetic insertion IDs are explicit, not actual live learner state.",
+    "Source canonical has no captured answer-fields, so its bank cannot be certified. All17 captured practice banks replay.",
+    "Inventory has10 non-source records but no captured generation metadata; independent math checks all27, with no defect demonstrated. No generated source attribution was invented."
+  ]
+}
