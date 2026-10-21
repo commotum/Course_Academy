@@ -1,0 +1,58 @@
+{
+  "skill": "Solve an inhibited decay IVP by separation of variables, determine the integration constant from an initial temperature, then evaluate and round a future temperature; in moderate cases infer the rate constant from a second observation and solve logarithmically for a target time.",
+  "reasoning_steps": [
+    "Recognize dT/dt=-k(T-S) with k>0 and T>S.",
+    "Separate, integrate ln|T-S|=-kt+C, exponentiate to T=S+K exp(-kt).",
+    "Use T(0)=T0 to derive K=T0-S.",
+    "Easy: substitute given k and future time, then round temperature to nearest integer.",
+    "Moderate: infer k=-ln((Tobs-S)/(T0-S))/tobs and solve t=-ln((Ttarget-S)/(T0-S))/k; round to nearest minute."
+  ],
+  "response_contract": "All eleven stored source questions use one radio field named selection and five math choices with temperature units for easy, minutes for moderate. The canonical example has a worked solution but no captured answer field.",
+  "difficulty": "Requested easy matches the direct specified-rate evaluation family. Five moderate stored questions require additional calibration and inversion; no captured hard question.",
+  "invariants": [
+    "Positive decay coefficient, initial temperature above equilibrium, positive times; cooling approaches equilibrium from above.",
+    "Temperature scales remain consistent within an instance.",
+    "Single rounded integer result, one correct option among five distinct choices.",
+    "Solutions retain separation, integration, initial-condition substitution and final evaluation; moderate adds observation calibration and target inversion."
+  ],
+  "permitted_variations": [
+    "Ambient and initial temperatures, positive rate and elapsed time can vary independently subject to cooling and reasonable workload.",
+    "Cooling object and Celsius/Fahrenheit are incidental context; units must propagate consistently.",
+    "Rounded answer, option position, numeric rank and distractor distribution are eligible answer-bearing assignments; no source-based justification fixes any of them.",
+    "Moderate observation and target temperatures and times can vary while preserving the same calibration/inversion stages; target need not always be later than the observation if wording remains clear.",
+    "Easy must continue asking a future temperature, rather than importing moderate unknown-rate or time-inversion work."
+  ],
+  "source_refs": [
+    "canonical e3e001a8-9294-59a4-82e6-b1122afdc72f (e-6677): bulb, S=23,T0=80,k=.25,t=4,answer 44",
+    "daa15db5-c1a1-535c-9031-79b2bb1e03e9: coffee,25,100,.05,6 ->81; bank 83,79,85,81,77",
+    "2b60de53-dea5-5dd2-908e-421b529445e3: iron,28,140,.1,5 ->96; bank 96,92,79,76,81",
+    "f919d480-6159-52e5-bf01-76d804f5fa17: cake,F,70,340,.09,8 ->201; bank 198,223,194,201,189",
+    "6ff863d3-8088-512b-858b-b0b33302607f: compressor,21,65,.12,8 ->38; bank 31,38,43,29,58",
+    "533feaf7-7a54-5e3c-8829-f3324ed43a28: exhaust,F,74,140,.08,3 ->126; bank 98,126,112,92,134",
+    "44b64320-501f-5d6a-b8c7-b8cf6a960fc2: body,21,40,.06,4 ->36; bank 28,34,30,32,36",
+    "8b0ed3c5-b3aa-5668-ae2c-48b159839332: bath 10,50,observation 40 at 5,target30 ->12; bank 12,15,13,14,10",
+    "39da46ca-e83e-580d-8039-34194e24ef5f: outdoors F,15,72,54 at 2,target25 ->9; bank 11,15,9,8,13",
+    "02ce9872-8986-5e67-bea1-b49d589c24ac: water,25,100,90 at5,target30 ->95; bank 87,95,67,89,98",
+    "fee906ee-def7-5194-a87e-a1f77108aa56: tea,28,60,52 at10,target40 ->34; bank23,45,28,34,31",
+    "4360bcb1-959b-53b1-855f-91f5d582be11: pork,24,150,100 at15,target60 ->37; bank31,45,37,29,28",
+    "tutorial da7cd802-d46b-546f-bdc3-8a783a8bb999 (5513), Introduction: inhibited decay has dP/dt=-r(P-a), r>0, P>a; equilibrium is a lower bound.",
+    "tutorial f58653bc-cafb-532a-b92d-8183054c181b (4075), Newton's Law of Cooling: separate dT/(T-20)=-k dt and derive T=20+K exp(-kt).",
+    "tutorial 7811364e-9b00-5478-8f01-6f3ddfee6f58 (14906), Continued: T(0)=100 gives K=80; T(7)=60 gives k=ln2/7."
+  ],
+  "source_corrections": [
+    "39da46ca-e83e-580d-8039-34194e24ef5f has inconsistent Celsius labels inside its worked solution; problem and bank consistently require Fahrenheit. Correct those labels without changing numbers.",
+    "Captured doubled TeX backslashes in some answer values are serialization/presentation defects to normalize, not reproduce literally."
+  ],
+  "evidence_gaps": [
+    "Canonical e-6677 has no captured answer bank; do not invent a source bank.",
+    "No hard source question is captured. Lesson image is contextual rather than a question diagram."
+  ],
+  "evidence_paths": [
+    "source-analysis.json"
+  ],
+  "provenance": {
+    "reused_from": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186078584/review-0-policy-2-f45195d9a61ccc58/source-analysis.json",
+    "source_sha256": "fdaa869074b9a373cf84611663029c060e6c244236888fba3a19a0954d01319b",
+    "confirmation": "Confirmed all eleven question IDs, canonical example, and cited tutorial contents in captured source before author/package inspection. Original source and policy matched by runner."
+  }
+}

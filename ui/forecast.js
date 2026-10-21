@@ -158,7 +158,7 @@ function calendarExposure(start, end) {
 
 // Date admission is applied to the viewer's selected roots, before expanding
 // prerequisites. A prerequisite inherits the earliest date of any needing root.
-export function topicDueDays(snapshot, scope, options) {
+export function topicDueDays(snapshot, scope, options, datedOnly = false) {
   const calendar = buildTargetCalendar(snapshot.targetSchedule || []);
   const courseIds = targetSelectors(snapshot, scope.graph, options, calendar).targetWeekCourseIds();
   const week = options.weekSelection ?? { kind: 'all' }, rootDays = new Map();
@@ -174,7 +174,8 @@ export function topicDueDays(snapshot, scope, options) {
   const dueDays = new Map();
   for (const root of scope.roots) {
     // Queue and undated targets are standing work; no invented future date.
-    const day = queued.has(root) ? -Infinity : rootDays.get(root) ?? -Infinity;
+    if (datedOnly && !rootDays.has(root)) continue;
+    const day = datedOnly ? rootDays.get(root) : queued.has(root) ? -Infinity : rootDays.get(root) ?? -Infinity;
     const pending = [[root, 0]], seen = new Set([root]);
     for (let i = 0; i < pending.length; i++) {
       const [id, distance] = pending[i];
@@ -190,10 +191,51 @@ export function topicDueDays(snapshot, scope, options) {
   return dueDays;
 }
 
+function preparationKnownAt(inputs, facts, learner, graph) {
+  const seeds = [], terminalDates = new Map();
+  const ownedProgress = new Set(facts.values(learner, 'learner/knowledge-profile'));
+  for (const event of inputs.history) {
+    const at = new Date(scalar(event.at)).getTime();
+    if (!Number.isFinite(at)) continue;
+    for (const [id, attr, value, added] of event.changes) {
+      if (!added) continue;
+      if (attr === 'learner-task/status' && (inputs.enums[value] || '').endsWith('/completed')) {
+        if (!terminalDates.has(id)) terminalDates.set(id, at);
+      }
+      if (!ownedProgress.has(id)) continue;
+      const learned = facts.get(id, 'progress/learned');
+      if ((attr === 'progress/learned' && value === true) ||
+        (attr === 'progress/repetitions' && positive(value) && learned === undefined)) {
+        const topic = facts.get(id, 'progress/topic');
+        if (topic !== undefined) seeds.push([topic, at]);
+      }
+    }
+  }
+  for (const task of facts.values(learner, 'learner/activity')) {
+    const activity = facts.get(task, 'learner-task/activity');
+    if (facts.kind(task, 'learner-task/status') !== 'completed' || !['lesson', 'review'].includes(facts.kind(activity, 'activity/type'))) continue;
+    const at = inputs.finishedAt[task] ?? terminalDates.get(task), topic = facts.get(activity, 'activity/scope');
+    if (Number.isFinite(at) && topic !== undefined) seeds.push([topic, at]);
+  }
+  const parents = new Map([...graph.inMap].map(([topic, ids]) => [topic, new Set(ids)]));
+  for (const topic of parents.keys()) for (const kp of facts.values(topic, 'topic/knowledge-points')) {
+    for (const previous of facts.values(kp, 'knowledge-point/key-prerequisites')) parents.get(topic).add(previous);
+  }
+  const known = new Map(), pending = seeds.sort((a, b) => a[1] - b[1]);
+  for (let i = 0; i < pending.length; i++) {
+    const [topic, at] = pending[i];
+    if ((known.get(topic) ?? Infinity) <= at) continue;
+    known.set(topic, at);
+    for (const previous of parents.get(topic) || []) pending.push([previous, at]);
+  }
+  return known;
+}
+
 export function historicalGrowth(inputs, options, currentScope, now) {
   const f = new ForecastFacts({}, inputs.enums), learner = inputs.learnerId;
   const courses = Object.fromEntries(TARGET_COURSE_CODES.map(code => [code, emptyGrowth()]));
-  const total = emptyGrowth(), modeledTasks = new Set();
+  const total = emptyGrowth(), modeledTasks = new Set(), introductions = new Map();
+  const courseStarts = Object.fromEntries(TARGET_COURSE_CODES.map(code => [code, null]));
   let previous = null, previousDue = new Set(), observedFrom = null, invalid = null, indexedGraph;
   // Review/lesson preparation creates steps too. Only assignment-owned
   // containment can change the Targets calendar or course associations.
@@ -211,19 +253,9 @@ export function historicalGrowth(inputs, options, currentScope, now) {
     if (!assignmentEntities.has(next)) { assignmentEntities.add(next); pending.push(next); }
   }
   const assignmentFields = new Set([...containment, 'assigned-problem/topic-coverage', 'activity/course', 'activity/due']);
-  const dueDays = new Set();
-  for (const event of inputs.history) for (const [e, a, v] of event.changes) {
-    if (a === 'activity/due' && assignments.has(e)) {
-      const day = targetCalendarDay(scalar(v));
-      if (day !== null) dueDays.add(day);
-    }
-  }
-  const events = [...inputs.history.map(event => ({ ...event, instant: new Date(scalar(event.at)).getTime() })),
-    ...[...dueDays].map(day => ({ instant: dayStartsAt(day), changes: [], virtual: true, t: -1 }))]
-    .filter(event => Number.isFinite(event.instant) && event.instant <= now)
-    .sort((a, b) => a.instant - b.instant || a.t - b.t);
-  for (const event of events) {
-    const at = event.instant;
+  for (const event of inputs.history) {
+    const at = new Date(scalar(event.at)).getTime();
+    if (!Number.isFinite(at) || at > now) continue;
     const completed = event.changes.filter(([, a, v, added]) => added && a === 'learner-task/status'
       && terminal((inputs.enums[v] || '').split('/').at(-1))).map(([task]) => task);
     f.apply(event.changes);
@@ -234,7 +266,7 @@ export function historicalGrowth(inputs, options, currentScope, now) {
       const topic = f.get(f.get(task, 'learner-task/activity'), 'activity/scope');
       if (previous?.nodeIds.has(topic)) modeledTasks.add(task);
     }
-    if (!event.virtual && !event.changes.some(([e, a]) => growthFields.has(a) && (!assignmentFields.has(a) || assignmentEntities.has(e)))) continue;
+    if (!event.changes.some(([e, a]) => growthFields.has(a) && (!assignmentFields.has(a) || assignmentEntities.has(e)))) continue;
     if (!f.get(learner, 'learner/id') || !f.ids('topic/id').length) continue;
     let scope, snapshot;
     try {
@@ -248,39 +280,78 @@ export function historicalGrowth(inputs, options, currentScope, now) {
       // Retained opening inventory is not an arrival. Future preloads become
       // arrivals only when their actual due day is reached, without a new tx.
       if (!scope.nodeIds.size) continue;
-      previous = scope; previousDue = due; observedFrom = at; continue;
+      previous = scope; previousDue = due; observedFrom = at;
+      for (const code of TARGET_COURSE_CODES) courseStarts[code] = at;
+      for (const topic of due) if (activation.get(topic) === -Infinity) introductions.set(topic, { at, opening: true });
+      continue;
     }
     const additions = [...due].filter(topic => !previousDue.has(topic));
-    const known = additions.length ? knownPreparationTopics(f, learner) : new Set();
     const price = additions.length ? topicPrices(f, learner, inputs.lessonBases) : null;
     for (const topic of additions) {
-      if (known.has(topic)) continue;
-      const cost = price(topic), course = courses[scope.tracks.get(topic)], category = scope.categories.get(topic);
-      for (const item of [total, course]) {
-        item.topics++; item.categories[category].topics++;
-        if (positive(cost.baseXp)) { item.baseXp += cost.baseXp; item.categories[category].baseXp += cost.baseXp; }
-        else item.unknownCosts++;
-      }
+      if (activation.get(topic) !== -Infinity || introductions.has(topic)) continue;
+      const cost = price(topic);
+      introductions.set(topic, { at, baseXp: cost.baseXp, course: scope.tracks.get(topic), category: scope.categories.get(topic) });
     }
     previous = scope; previousDue = due;
   }
-  if (previous === null || observedFrom === null) invalid ||= 'No reliable opening inventory in retained history.';
+  const currentFacts = new ForecastFacts(inputs.records, inputs.enums);
+  const snapshot = forecastGraph(currentFacts, learner), price = topicPrices(currentFacts, learner, inputs.lessonBases);
+  const scheduled = topicDueDays(snapshot, currentScope, options, true), today = targetCalendarDay(now);
+  // Course history is dated by the assignments themselves, including past
+  // assignments imported later. Their import dates are not academic arrivals.
+  for (const [topic, day] of scheduled) {
+    if (day > today) continue;
+    const at = dayStartsAt(day), existing = introductions.get(topic);
+    observedFrom = observedFrom === null ? at : Math.min(observedFrom, at);
+    const code = currentScope.tracks.get(topic);
+    courseStarts[code] = courseStarts[code] === null ? at : Math.min(courseStarts[code], at);
+    if (existing && existing.at <= at) continue;
+    const cost = price(topic);
+    introductions.set(topic, { at, baseXp: cost.baseXp, course: currentScope.tracks.get(topic), category: currentScope.categories.get(topic) });
+  }
+  const knownAt = preparationKnownAt(inputs, currentFacts, learner, currentScope.graph);
+  for (const [topic, entry] of introductions) {
+    if (entry.opening || entry.at > now || (knownAt.get(topic) ?? Infinity) < entry.at) continue;
+    const category = entry.category;
+    for (const item of [total, courses[entry.course]]) {
+      item.topics++; item.categories[category].topics++;
+      if (positive(entry.baseXp)) { item.baseXp += entry.baseXp; item.categories[category].baseXp += entry.baseXp; }
+      else item.unknownCosts++;
+    }
+  }
+  if (observedFrom === null) invalid ||= 'No reliable course dates or opening inventory in retained history.';
   if (previous && (previous.nodeIds.size !== currentScope.nodeIds.size || [...previous.nodeIds].some(id => !currentScope.nodeIds.has(id))
     || [...previous.tracks].some(([id, course]) => currentScope.tracks.get(id) !== course))) {
     invalid = 'Retained history does not reproduce the current filtered graph.';
   }
   const observedDays = observedFrom === null ? 0 : calendarExposure(observedFrom, now);
-  const summarize = item => ({ ...item,
-    baseXpPerDay: !invalid && observedDays > 0 && !item.unknownCosts ? item.baseXp / observedDays : null,
-    baseXpPerWeek: !invalid && observedDays > 0 && !item.unknownCosts ? 7 * item.baseXp / observedDays : null,
-    topicsPerWeek: !invalid && observedDays > 0 ? 7 * item.topics / observedDays : null,
-    categories: Object.fromEntries(Object.entries(item.categories).map(([key, value]) => [key, { ...value,
-      topicsPerWeek: observedDays > 0 && !invalid ? value.topics * 7 / observedDays : null,
-      baseXpPerWeek: observedDays > 0 && !invalid && !item.unknownCosts ? value.baseXp * 7 / observedDays : null }])),
-  });
-  return { clock: 'assignment-due-date-or-standing-entry', observedFrom: observedFrom === null ? null : new Date(observedFrom).toISOString(), observedThrough: new Date(now).toISOString(),
+  const summarize = (item, from = observedFrom) => {
+    const exposure = from === null ? 0 : calendarExposure(from, now);
+    const usable = !invalid && exposure > 0;
+    return { ...item, observedFrom: from === null ? null : new Date(from).toISOString(), observedDays: exposure,
+      baseXpPerDay: usable && !item.unknownCosts ? item.baseXp / exposure : null,
+      baseXpPerWeek: usable && !item.unknownCosts ? 7 * item.baseXp / exposure : null,
+      topicsPerWeek: usable ? 7 * item.topics / exposure : null,
+      categories: Object.fromEntries(Object.entries(item.categories).map(([key, value]) => [key, { ...value,
+        topicsPerWeek: usable ? value.topics * 7 / exposure : null,
+        baseXpPerWeek: usable && !item.unknownCosts ? value.baseXp * 7 / exposure : null }])),
+    };
+  };
+  const byCourse = Object.fromEntries(Object.entries(courses).map(([code, value]) => [code,
+    summarize(value, courseStarts[code] ?? observedFrom)]));
+  const aggregate = summarize(total);
+  const rateSum = key => Object.values(byCourse).every(c => c[key] !== null)
+    ? Object.values(byCourse).reduce((sum, c) => sum + c[key], 0) : null;
+  for (const key of ['baseXpPerDay', 'baseXpPerWeek', 'topicsPerWeek']) aggregate[key] = rateSum(key);
+  for (const category of Object.keys(aggregate.categories)) for (const key of ['topicsPerWeek', 'baseXpPerWeek']) {
+    const values = Object.values(byCourse).map(c => c.categories[category][key]);
+    aggregate.categories[category][key] = values.every(v => v !== null) ? values.reduce((sum, v) => sum + v, 0) : null;
+  }
+  return { clock: 'historical-assignment-due-dates-and-standing-entry',
+    observedFrom: observedFrom === null ? null : new Date(observedFrom).toISOString(), observedThrough: new Date(now).toISOString(),
     observedDays, reason: invalid || (observedDays > 0 ? null : 'No elapsed growth observation period.'),
-    total: summarize(total), courses: Object.fromEntries(Object.entries(courses).map(([code, value]) => [code, summarize(value)])), modeledTasks };
+    total: aggregate, courses: byCourse, modeledTasks };
+
 }
 
 export function completionEstimate(initialWork, dailyDemand, pace, now, remainingTopics = 1) {
@@ -294,81 +365,19 @@ export function completionEstimate(initialWork, dailyDemand, pace, now, remainin
   return { status: 'estimated', days, date: new Date(at).toISOString(), baseXpPerDay: pace };
 }
 
-// Known scheduled work and average growth describe the same incoming demand.
-// Use the larger cumulative amount per course, never their sum: known deadlines
-// are honored, while the historical trend can cover work not mapped yet.
-export function forecastWorkloadAt(forecast, days) {
-  const o = forecast.overhead, d = forecast.pace.observedDays;
-  const future = Object.fromEntries(TARGET_COURSE_CODES.map(code => [code, 0]));
-  const unknownCosts = [...forecast.inventory.unknownCosts];
-  for (const step of forecast.demandCurve.steps) {
-    if (step.days > days) break;
-    for (const topic of step.topics) {
-      if (positive(topic.baseXp)) future[topic.course] += topic.baseXp;
-      else unknownCosts.push(topic);
-    }
-  }
-  if (unknownCosts.length || !positive(o.retryFactor) || !Number.isFinite(o.reviewOtherBaseXpPerDay)
-    || forecast.courses.some(c => c.growth.baseXpPerDay === null)) return null;
-  let lessonBaseXp = 0, knownIncomingBaseXp = 0, additionalIncomingBaseXp = 0, slope = o.reviewOtherBaseXpPerDay;
-  for (const course of forecast.courses) {
-    const known = future[course.code], trend = course.growth.baseXpPerDay * days;
-    knownIncomingBaseXp += known;
-    additionalIncomingBaseXp += Math.max(0, trend - known);
-    lessonBaseXp += course.remainingLessonBaseXp + Math.max(known, trend);
-    if (trend >= known) slope += o.retryFactor * course.growth.baseXpPerDay;
-  }
-  const lessonAttemptBaseXp = o.retryFactor * lessonBaseXp;
-  const reviewBaseXp = d ? forecast.pace.reviewBaseXp / d * days : 0;
-  const otherBaseXp = d ? forecast.pace.otherBaseXp / d * days : 0;
-  const quizBaseXp = o.quizRatio * (lessonAttemptBaseXp + reviewBaseXp + otherBaseXp);
-  return { lessonBaseXp, lessonAttemptBaseXp, reviewBaseXp, otherBaseXp, quizBaseXp,
-    knownIncomingBaseXp, additionalIncomingBaseXp,
-    totalBaseXp: lessonAttemptBaseXp + reviewBaseXp + otherBaseXp + quizBaseXp,
-    slope: (1 + o.quizRatio) * slope,
-    estimatedReviews: d ? forecast.pace.reviewAttempts / d * days : 0,
-    estimatedQuizzes: quizBaseXp / o.averageQuizBaseXp };
-}
-
 function scenario(forecast, pace) {
-  const now = Date.parse(forecast.capturedAt);
-  if (!forecast.inventory.remainingTopics) return { status: 'complete', days: 0,
-    date: forecast.capturedAt, baseXpPerDay: pace, workload: { totalBaseXp: 0 } };
-  const unavailable = { status: 'unavailable', days: null, date: null, baseXpPerDay: pace, workload: null };
-  if (typeof pace !== 'number' || !Number.isFinite(pace) || pace < 0) return unavailable;
-  // Inspect every linear segment chronologically. A binary search could skip
-  // an early catch-up followed by another assignment becoming due tomorrow.
-  const boundaries = new Set([0]), steps = forecast.demandCurve.steps;
-  const known = Object.fromEntries(TARGET_COURSE_CODES.map(code => [code, 0]));
-  for (let i = -1; i < steps.length; i++) {
-    const start = i < 0 ? 0 : steps[i].days, end = steps[i + 1]?.days ?? Infinity;
-    if (i >= 0) {
-      boundaries.add(start);
-      for (const topic of steps[i].topics) if (positive(topic.baseXp)) known[topic.course] += topic.baseXp;
-    }
-    for (const course of forecast.courses) {
-      const g = course.growth.baseXpPerDay;
-      if (positive(g)) {
-        const crossing = known[course.code] / g;
-        if (crossing > start && crossing < end) boundaries.add(crossing);
-      }
-    }
-  }
-  const points = [...boundaries].sort((a, b) => a - b);
-  for (let i = 0; i < points.length; i++) {
-    const start = points[i], end = points[i + 1] ?? Infinity;
-    const work = forecastWorkloadAt(forecast, start);
-    if (work === null) return unavailable;
-    const gap = work.totalBaseXp - pace * start;
-    let days = gap <= 1e-8 ? start : pace > work.slope ? start + gap / (pace - work.slope) : Infinity;
-    // At a due-day boundary the new day's work must already be included.
-    if (!Number.isFinite(days) || (Number.isFinite(end) && days >= end - 1e-9)) continue;
-    const at = now + days * DAY;
-    if (!Number.isFinite(at) || Math.abs(at) > 8.64e15) return { ...unavailable, status: 'out-of-range' };
-    return { status: 'estimated', days, date: new Date(at).toISOString(), baseXpPerDay: pace,
-      workload: forecastWorkloadAt(forecast, days) };
-  }
-  return { ...unavailable, status: 'not-catching-up' };
+  const result = completionEstimate(forecast.initialWorkBaseXp, forecast.dailyDemandBaseXp, pace,
+    Date.parse(forecast.capturedAt), forecast.inventory.remainingTopics);
+  if (result.days === null) return { ...result, workload: null };
+  const T = result.days, d = forecast.pace.observedDays, o = forecast.overhead;
+  const lessonAttemptBaseXp = T === 0 ? 0 : o.retryFactor * (forecast.inventory.remainingLessonBaseXp + forecast.growth.total.baseXpPerDay * T);
+  const reviewBaseXp = d ? forecast.pace.reviewBaseXp / d * T : 0;
+  const otherBaseXp = d ? forecast.pace.otherBaseXp / d * T : 0;
+  const quizBaseXp = o.quizRatio * (lessonAttemptBaseXp + reviewBaseXp + otherBaseXp);
+  return { ...result, workload: { lessonAttemptBaseXp, reviewBaseXp, otherBaseXp, quizBaseXp,
+    totalBaseXp: lessonAttemptBaseXp + reviewBaseXp + otherBaseXp + quizBaseXp,
+    estimatedReviews: d ? forecast.pace.reviewAttempts / d * T : 0,
+    estimatedQuizzes: quizBaseXp / o.averageQuizBaseXp } };
 }
 
 // Goal previews reuse the measured workload/rates and update immediately,
@@ -391,7 +400,6 @@ export function calculateForecast(inputs, options = {}) {
   const scope = projectTargetScope(graph, scopeOptions), known = new Set(inputs.knownTopics ?? knownPreparationTopics(f, learner));
   const price = topicPrices(f, learner, inputs.lessonBases);
   const activation = topicDueDays(graph, scope, scopeOptions), today = targetCalendarDay(now);
-  const future = new Map();
   const courses = Object.fromEntries(TARGET_COURSE_CODES.map(code => [code, { code, selectedTopics: 0, remainingTopics: 0,
     remainingLessonBaseXp: 0, unknownCosts: [], futureRemainingTopics: 0, futureLessonBaseXp: 0,
     futureUnknownCosts: [], categories: emptyCategories() }]));
@@ -401,8 +409,6 @@ export function calculateForecast(inputs, options = {}) {
     const cost = price(topic), day = activation.get(topic), category = course.categories[scope.categories.get(topic)];
     if (day > today) {
       course.futureRemainingTopics++;
-      if (!future.has(day)) future.set(day, []);
-      future.get(day).push({ topicId: topic, course: course.code, baseXp: cost.baseXp, reason: cost.reason });
       if (positive(cost.baseXp)) course.futureLessonBaseXp += cost.baseXp;
       else course.futureUnknownCosts.push({ topicId: topic, dueDay: day, reason: cost.reason || 'Unknown lesson cost.' });
       continue;
@@ -504,9 +510,6 @@ export function calculateForecast(inputs, options = {}) {
       averageQuizBaseXp: totals.quizAttempts ? totals.quizBaseXp / totals.quizAttempts : 15,
       reviewOtherBaseXpPerDay: reviewOtherPerDay, reviewsPerDay: d ? totals.reviewAttempts / d : null },
     growth: publicGrowth, courses: values, initialWorkBaseXp: B, dailyDemandBaseXp: k,
-    demandCurve: { steps: [...future].sort(([a], [b]) => a - b).map(([day, topics]) => ({
-      dueDay: day, at: new Date(dayStartsAt(day)).toISOString(), days: (dayStartsAt(day) - now) / DAY, topics })),
-      growthRule: 'greater-of-known-due-work-and-average-growth-per-course' },
     warnings };
   return { ...forecast, currentPace: scenario(forecast, pace), goalPace: scenario(forecast, goalPace) };
 }

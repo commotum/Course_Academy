@@ -1,0 +1,25 @@
+All commands run from the supplied workspace. No publication, database writes, service calls, or engine changes.
+
+Initial exact reproduction against retained old runtime:
+/home/jake/Developer/Course_Academy/.venv/bin/python -B evidence/reproduce.py
+Result: original runner seed 1403253416 returned 29,64,46,53,26 (correct 46, rank 3); both source IVPs rejected; missing body/pork profiles; all tested old easy ranks 3 and moderate ranks 4. See before.json.
+
+Final current-generator regressions and actual shared delivery filters:
+/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/regressions.py
+Result: pass; all 3 retained finding IDs, 11 complete source banks / 55 options / 44 distractors, 6 source acceptance and rounding boundaries, 156 normal records across 13 layouts, 12 exact historical mathematical cases, controlled time/target/context changes, one representative complete solution per layout plus all source/historical cases. check_delivery.py commands are constructed explicitly in the script; accepted 84 easy,60 moderate,12 hard and five replacement runner records, no duplicates. All five ranks occur per normal layout. Regression summary/log and native grader input saved under evidence/.
+
+Frozen historical inventory reproduction, compared with supplied captured inventory:
+/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/inventory.py
+Result: 7/7 stored generated records reproduced exactly; 7 affected; zero untested generated records in captured inventory. Eleven original source questions excluded from generated classification. affected-inventory.json evidence_path resolves relative to supplied author-1 evidence_root into this workspace.
+
+Actual learner grader, one batch:
+/home/jake/Developer/Course_Academy/generate/runs/current/check-engine evidence/grader-input.json evidence/grader-report.json
+Result: 54 correct selections accepted, 216 incorrect selections rejected, zero unresolved, zero database operations.
+
+Actual UI rendering:
+python3 /home/jake/Developer/Course_Academy/generate/pipeline/render_preview.py --input evidence/render-records.json --output evidence/render --asset-root evidence --math-root /media/jake/SSD/EDB/math
+Result: 4/4 pass, no MathJax/image/JavaScript errors. All four screenshots visually inspected, affected normal banks inspected again after final construction change. See rendering-inspection.json.
+
+Relocation, exact versions, determinism, before/after shortcut probes:
+/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/final_checks.py
+Result: pass; three declared runtime files, Python 3.13.5 / SymPy 1.14.0; five deterministic relocated outputs from /tmp; 13 within-layout shortcut groups, 144 mathematical semantic instances (layout/bank-only differences excluded). No deterministic rank, position, nearest-mean or nearest-midrange strategy survives per group. Finite sample results and live-selection limitations recorded in pedagogical-variation.json. The final gap pattern is sampled independently of key rank, with physical/rounding boundaries handled without rejecting valid IVPs.

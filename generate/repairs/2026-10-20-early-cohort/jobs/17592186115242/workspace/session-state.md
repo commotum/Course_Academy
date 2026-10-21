@@ -1,38 +1,34 @@
-# Current repair state — pass 80
+# Current repair state — pass 84
 
-Read latest feedback and all five retained findings. History has 80 events;
-passes 2–79 report the same unresolved historical-pool failure. The candidate
-and completed construction repairs are preserved. No new runtime defect is
-established by the latest feedback.
+Read feedback and all five retained history findings before testing. Preserved
+existing runtime and completed repairs. Read original lesson, worked examples,
+complete source practice banks, required generation/validation docs and existing
+instructional account. No new generator construction defect is demonstrated.
 
-First executed check:
+First test:
 `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory`
-Exit 1: five historical records reproduce, including complete captured banks,
-keys, prompts, solutions and generation metadata. The retained possible-history
-witness has 64/64 sign-extremum shortcut successes. This is not a prediction
-about every learner history. No generated inventory entries remain untested.
+Exit 1: five captured historical records reproduce; the retained possible-history
+selection witness has 64/64 sign-extremum shortcut successes. This does not
+predict all learner histories. All five generated inventory records were tested;
+source questions remain original sources.
 
-Retained checks:
-`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/repair-80`
-Exit 1 solely for finding 591f580cadb749294588. All four current-generator
-regressions pass: 17 complete practice banks plus the canonical example,
-zero-root support, conditional shortcut probes, and three filtered batches
-with 14 accepted records. Relevant/irrelevant counterfactual checks pass.
-Native grading: 7 accepted correct responses, 28 rejected wrong responses.
-Exact dependencies, relocation, protected hashes and the staged five-record
-replacement mapping are verified. Proposal remains unapplied.
+Retained verification:
+`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/repair-84`
+Exit 1 solely for finding 591f580cadb749294588. The other four finding checks pass:
+17 complete practice banks and canonical replay, zero-root cases, conditional
+shortcut probes and three delivered batches (14 records). Relevant/irrelevant
+counterfactuals pass. Native grading accepts 7 correct choices and rejects 28
+wrong choices. Dependency pins, relocated CLI replay, protected hashes and the
+staged five-record replacement mapping pass. Retained actual-UI screenshot
+question-002.png was visually inspected again; no rendering change is needed.
 
-Evidence: `evidence/repair-80/commands.json`, `results.json`,
-`grader-report.json`, and `visual-inspection.json`. Visually inspected retained
-actual-UI screenshot `evidence/repair-3/render/question-002.png`: all content
-is legible. Inspected the source consistency flowchart; it agrees with the
-lesson. No new interchangeable rendering or runtime edit was needed.
+Current evidence: evidence/repair-84/commands.json, results.json,
+grader-report.json and visual-inspection.json. Runtime, manifest, source,
+inventory, engine and publication were not changed. No database writes.
 
-Status: unsupported. The remaining review finding explicitly calls for the
-separate inventory-remediation workflow. This task prohibits database changes;
-a workspace generator cannot retire or replace already stored question banks.
-Keep the strict regression failing while the captured defective pool remains.
-Do not restart an identical generator repair pass without changed evidence or
-new authorization. Next unfinished action is independent review/application of
-`evidence/repair-3/inventory-repair-proposal.json` by that separate workflow,
-followed by fresh inventory capture and the retained strict check.
+Status: unsupported. The remaining concrete action is the separate inventory
+remediation requested in the retained review, using
+`evidence/repair-3/inventory-repair-proposal.json`, then recapturing inventory and
+rerunning the strict checks. This author task expressly forbids the necessary
+database changes. Do not weaken that check, substitute proposed records for the
+captured pool, or rerun interchangeable passes against unchanged inputs.

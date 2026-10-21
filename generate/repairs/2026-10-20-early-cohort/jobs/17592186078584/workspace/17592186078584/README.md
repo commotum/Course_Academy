@@ -1,3 +1,7 @@
+# Current repair (2026-10-21)
+
+The current entry point is version 1.2.0. See [instructional account](../instructional-account.md) and [current regressions](../checks/regressions.py). Runtime source now includes all eleven supplied practice cases. There are seven normal easy prose layouts (six source practice layouts plus canonical bulb), five moderate source layouts, and the retained authored hard layout. Normal banks use independently sampled adjacent integer gaps and a variable key rank. Complete observed banks are explicit replay profiles. The historical analysis below describes the prior version; current results are in `../evidence/` and the manifest includes only runtime files.
+
 # Inhibited decay model generator
 
 Version 1.1.0 refreshes all nine current sources at basis 2496, adds the
