@@ -1,0 +1,1 @@
+[:find ?q (pull ?q [:db/id :question/id :question/math-academy-id {:step/_content [:db/id {:activity/_steps [:db/id :activity/title]}]} {:knowledge-point/_canonical-example [:db/id]}]) :where [?q :question/id _] (not-join [?q] [?kp :knowledge-point/questions ?q]) (not-join [?q] [?kp :knowledge-point/canonical-example ?q])]

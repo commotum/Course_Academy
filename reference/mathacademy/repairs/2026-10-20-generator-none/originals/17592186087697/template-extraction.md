@@ -1,0 +1,15 @@
+# Special square matrix recognition, version 2
+
+The assessed skill is deciding whether each of three displayed matrices is diagonal or an identity matrix. The previous generator fixed each named matrix's role and therefore its answer. Version 2 generalizes those roles under the user's request: any of the eight subsets of the three labels can be correct, including none and all. A seed samples a subset uniformly, then constructs suitable examples and counterexamples independently for each position.
+
+For diagonal questions, positives may be either identity matrices or nonidentity diagonal matrices; negatives may be rectangular or square with nonzero off-diagonal entries. For identity questions, positives are identity matrices; negatives may be nonidentity diagonal, rectangular, or square with off-diagonal nonzero entries. An identity matrix is also diagonal. A zero square matrix is diagonal but is not an identity matrix.
+
+The response remains three field-owned boolean checkbox fields. Dimensions remain 2 through 4, with at most 36 displayed entries in total. Entries are small integers in the original bounded domain [-3,7]. Off-diagonal counterexamples normally have one or two nonzero off-diagonal entries. Square orders, rectangular shapes, and witness positions vary. No arithmetic is added to the learner's task.
+
+Templates retain the original criterion and labels, but do not prescribe normal sampled classifications, their order, or the number of correct selections. The same matrix data determines the prompt, keys, individual explanations, witness subscripts and values, and final selected-label conclusion. Generated matrices use the shared stacked matrix renderer. Explicit original-parameter replay preserves each original prompt and worked solution exactly; all five complete original boolean banks are checked separately.
+
+Content identities depend on prompt and solution, not seed. Task fingerprints continue to ignore cosmetic labels, object order, and nonunit magnitudes irrelevant to classification. Invalid shapes, entries, witness coordinates, and requested selections are rejected. Sampling resamples oversized sets internally; a batch shortage raises an explicit error.
+
+Current validation is in `structural-fix/validation.json`. It independently reads displayed values as fractions, checks classification and explanations, exercises all eight selections for every template, and verifies normal sampling reaches every selection and every matrix role at each label. A controlled example changes one off-diagonal entry while holding all other data fixed, changing the correct selection from H,M to F,H,M. Stale keys, prompts and solutions must fail. Zero and identity boundary cases, all original banks, actual native grading, package relocation, and UI rendering are checked.
+
+Earlier validation and replenishment files describe version 1; the shared Publisher registers version 2 as an immutable package and preserves existing question records and learner history. Easy remains the only supported difficulty.

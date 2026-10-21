@@ -1,0 +1,1 @@
+[:find ?task ?q (pull ?q [:db/id :question/id :question/problem :question/retired {:knowledge-point/_questions [:db/id :knowledge-point/title]}]) :in $ ?learner :where [?l :learner/id ?learner] [?l :learner/activity ?task] [?task :learner-task/activity ?a] [?a :activity/steps ?s] [?s :step/content ?q] [?q :question/id _]]
