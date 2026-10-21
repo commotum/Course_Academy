@@ -1,0 +1,147 @@
+{
+  "verdict": "revise",
+  "summary": "Four demonstrated defects: a conditional answer-rank shortcut, unjustified sign and numeric restrictions, and incomplete source replay. Math, grading, rendering, and packaging checks passed. Package unchanged; no database writes. Full report: review.json.",
+  "source_analysis": {
+    "skill": "Construct and solve unequal-flow dilution models; easy questions use Q(0) to recover alpha+beta.",
+    "reasoning_steps": [
+      "Compute volume and solute flow rates.",
+      "Construct and solve the linear ODE when required.",
+      "Apply the initial condition.",
+      "Extract coefficients or evaluate the requested amount."
+    ],
+    "invariants": [
+      "Positive physical volume and a completely mixed solution.",
+      "Five numeric radio choices with one correct answer.",
+      "The normalized easy model implies alpha+beta=Q(0)."
+    ],
+    "permitted_variations": [
+      "Initial mass, volume, concentration, compatible flows, and evaluation time.",
+      "Source-supported coefficient signs and rational quantities.",
+      "Distractor values and correct-choice position."
+    ],
+    "source_refs": [
+      "5708b503-7d42-5d87-80c5-062229fe4d3c: normalized coefficient-sum question.",
+      "11c8e0ff-5f12-56c5-bbf7-d578f71b8d7f: alpha=6, beta=3.",
+      "d0340e70-b947-5b25-8e24-a63ff0f87f38: initial mass 2.2 kg.",
+      "Lesson 70852def-fb14-50cc-b88d-6fe2af2343bf: construct Q'=inflow-outflow."
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "failed",
+      "evidence_paths": [
+        "source-replay-results.json",
+        "source-replays.json"
+      ],
+      "details": "Three supplied source profiles are missing; q-336738 omits its currently available key, difficulty, and solution."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math.json",
+        "batch.json"
+      ],
+      "details": "All 52 independent samples and five exact batch records matched independently calculated targets."
+    },
+    "variety": {
+      "status": "failed",
+      "evidence_paths": [
+        "rejection-tests.json",
+        "rejection-coverage.json"
+      ],
+      "details": "Valid coefficient signs and source-supported rational quantities are excluded."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "scope.json",
+        "samples.json"
+      ],
+      "details": "Observed outputs preserve the source response demands and difficulty-specific workload."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-report.json",
+        "controlled-grader-report.json"
+      ],
+      "details": "Native grading accepted 66 correct selections and rejected 264 wrong selections."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "visual-inspection.json",
+        "render/rendering.json",
+        "render-controlled/rendering.json"
+      ],
+      "details": "Actual UI screenshots inspected, including controlled pairs and shortcut cases."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "runtime.json",
+        "package-before.json",
+        "package-final.json"
+      ],
+      "details": "Exact dependencies, deterministic replay, and relocation passed. Package hashes remain unchanged."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "shortcut-proof.json",
+        "delivery-shortcut/accepted.json",
+        "selection-analysis.json",
+        "inventory-reproduction.json",
+        "affected-inventory.json"
+      ],
+      "details": "The second-smallest-choice strategy solves every eligible single-digit easy bank. All three controls survive delivery and native grading. This subgroup is absent from the exact runner batch and seven reproduced generated inventory records."
+    }
+  },
+  "findings": [
+    {
+      "kind": "decision_shortcut",
+      "description": "When all five easy choices are single digits, the second-smallest value is always correct, bypassing the model.",
+      "source_refs": [
+        "5708b503-7d42-5d87-80c5-062229fe4d3c",
+        "generate/principles.md \u00a72"
+      ],
+      "reproduction": "Run regression-tests.py RepairAcceptance.test_no_single_digit_rank_bypass. Natural seed 8114 produces V=100, q0=3, c=.04, rin=8, rout=12; choices {1,3,4,5,7}, correct 3.",
+      "requested_change": "Revise the family-wide distractor construction and length rejection to remove conditional rank predictors while retaining these valid inputs."
+    },
+    {
+      "kind": "restriction",
+      "description": "The generator requires a negative transient, excluding source-supported positive coefficients and valid zero transients.",
+      "source_refs": [
+        "11c8e0ff-5f12-56c5-bbf7-d578f71b8d7f"
+      ],
+      "reproduction": "Run regression-tests.py RepairAcceptance.test_positive_transient_is_eligible. Easy seed 619 with V=240, q0=15, c=.05, rin=16, rout=24 should give alpha+beta=15 and beta=3; it raises 'Nonzero negative transient required'.",
+      "requested_change": "Allow eligible coefficient signs and derive sign-safe solutions and banks rather than rejecting those cases."
+    },
+    {
+      "kind": "restriction",
+      "description": "Integer-mass and hundredth-concentration restrictions exclude quantities explicitly supplied by the source.",
+      "source_refs": [
+        "d0340e70-b947-5b25-8e24-a63ff0f87f38",
+        "11c8e0ff-5f12-56c5-bbf7-d578f71b8d7f"
+      ],
+      "reproduction": "Run regression-tests.py RepairAcceptance.test_fractional_source_mass_is_eligible. V=320, q0=2.2, c=.05, rin=8, rout=4, T=5 should yield 4.01 kg; the integer-quantity guard rejects it.",
+      "requested_change": "Support the source rational quantities using exact arithmetic without increasing the assessed workload."
+    },
+    {
+      "kind": "source_fidelity",
+      "description": "Replay uses an outdated source snapshot: q-336738 drops available attributes, while q-336746, q-339403, and q-336744 lack executable profiles.",
+      "source_refs": [
+        "310f29d9-e5f9-5829-9c84-72d1324e1777",
+        "11c8e0ff-5f12-56c5-bbf7-d578f71b8d7f",
+        "d0340e70-b947-5b25-8e24-a63ff0f87f38",
+        "b6915e10-1543-50b0-a358-2c56a1366444"
+      ],
+      "reproduction": "Run regression-tests.py RepairAcceptance.test_current_source_key_and_solution_replay; inspect source-replay-results.json for the missing profiles.",
+      "requested_change": "Reconcile executable replay with the supplied source, including complete banks, correct links, difficulty, and worked solutions."
+    }
+  ]
+}

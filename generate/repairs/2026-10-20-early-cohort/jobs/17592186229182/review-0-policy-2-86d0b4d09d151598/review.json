@@ -1,0 +1,169 @@
+{
+  "verdict": "revise",
+  "summary": "Concrete failures: a perfect conditional answer-rank shortcut, unjustified sign/numeric restrictions, and stale/incomplete source replay. Sampled math, native grading, rendering and packaging pass. Package unchanged; no database writes.",
+  "source_analysis": {
+    "skill": "Construct and solve a well-mixed dilution model with nonzero solute inflow and unequal inflow/outflow; recover coefficients or evaluate the amount.",
+    "reasoning_steps": [
+      "Compute volume change and solute inflow/outflow rates.",
+      "Form linear ODE and integrating factor.",
+      "Integrate and apply initial condition.",
+      "Match normalized coefficients or evaluate at a supplied valid time; round only the latter to two decimals."
+    ],
+    "invariants": [
+      "Well-mixed tank and positive physical volume during the time interval.",
+      "Nonzero feed concentration; unequal positive flows for this KP.",
+      "Given normalized basis equals 1 at t=0, so alpha+beta=Q0.",
+      "Five numeric radio options with exactly one correct answer.",
+      "No overflow-time calculation: next lesson is a separate KP."
+    ],
+    "permitted_variations": [
+      "Initial volume/solute mass, concentration, flow difference and integral exponent compatible with the displayed solution.",
+      "Context and solute names; these do not alter the answer.",
+      "Initial concentration below, equal to, or above feed concentration can change coefficient signs without a new prerequisite.",
+      "Choice order and distractors may vary while remaining unique and plausible.",
+      "Within alpha+beta, both Q0 and option position must be eligible; flow/concentration are irrelevant to the coefficient sum but relevant to solution consistency.",
+      "Moderate coefficient difference and hard time/flow/exponent parameters vary within their own difficulty."
+    ],
+    "source_refs": [
+      "question 5708b503-7d42-5d87-80c5-062229fe4d3c (q-336439): Q=alpha(1-t/25)+beta(1-t/25)^3; asks alpha+beta; bank 6,12,8,15,10.",
+      "question 456aacfd-49e4-5a1e-8363-4f5725f307ee: alpha=12,beta=-8; alpha-beta=20.",
+      "question 35a9dbe2-5b3d-52d0-b235-b8068a9e0f15: exponent 4; alpha=12,beta=-5.",
+      "question 11c8e0ff-5f12-56c5-bbf7-d578f71b8d7f: alpha=6,beta=3 (positive beta).",
+      "question b6915e10-1543-50b0-a358-2c56a1366444: alpha=7.2,beta=-2.2.",
+      "hard questions 310f29d9-e5f9-5829-9c84-72d1324e1777,01365019-dd55-56aa-aa06-e538a69722fd,e6bee6b8-8870-5e26-916b-bf3b0601ff8e,46db6f1f-9edd-53d3-9387-f26ef7512b99,d0340e70-b947-5b25-8e24-a63ff0f87f38: complete banks and integrating-factor solutions.",
+      "canonical 2f5d8d59-2cc7-53bf-92ad-6062df331851: Q\u2032=1.5-2Q/(70+t); I=(70+t)^2; Q(8)=20.48.",
+      "lesson 70852def-fb14-50cc-b88d-6fe2af2343bf Introduction: rate of entry is no longer zero; differential equation is first-order linear; Q\u2032=Qin\u2032-Qout\u2032.",
+      "lesson 926db8f3-a67c-5f3b-9bd8-4eaeaa70c7cf is this KP; next step ff264ca2-0325-5ecb-9be4-8cbee9d9ba83 covers overflow separately."
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "failed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "source-replays.json",
+        "source-replay-results.json",
+        "regression-results.txt"
+      ],
+      "details": "Seven executable profiles replay their numeric banks; q-336738 drops its currently supplied key, hard rating and full solution. q-336746, q-339403 and q-336744 have no executable replay profile. Delimiter-sizing differences were separated from mathematical content."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math.json",
+        "samples.json",
+        "batch.json",
+        "audit.py"
+      ],
+      "details": "52 fresh controls plus exact 5-record batch: all independently parsed prompt targets agree with exact ODE/initial-condition calculations and appropriate two-decimal rounding. No sampled arithmetic defect demonstrated."
+    },
+    "variety": {
+      "status": "failed",
+      "evidence_paths": [
+        "coverage.json",
+        "rejection-tests.json",
+        "rejection-coverage.json",
+        "source-replay-results.json"
+      ],
+      "details": "Sampler excludes positive/zero transients and source-supported fractional inputs; 285/494 easy proposals were discarded by the negative-transient rule. Fixed negative beta is an incidental source assignment, not a requirement of the easy operation."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "scope.json",
+        "samples.json"
+      ],
+      "details": "Observed easy/moderate/hard outputs preserve their source response demands and workload; no overflow event or unsupported operator introduced. Restrictions are separate failures."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-report.json",
+        "controlled-grader-input.json",
+        "controlled-grader-report.json"
+      ],
+      "details": "Native learning::grade_field executed 330 radio response checks: 66 correct choices accepted, 264 wrong choices rejected. Includes every bank option, batch, controlled pairs and conditional shortcut records. Free-entry equivalents are inapplicable to this radio-only contract."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "visual-inspection.json",
+        "render/rendering.json",
+        "render-controlled/rendering.json"
+      ],
+      "details": "Actual unmodified UI rendered representative easy/moderate/hard records and both controlled pairs; screenshots inspected. No math, font, image or JavaScript failure observed."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "runtime.json",
+        "package-before.json",
+        "package-final.json",
+        "commands.json"
+      ],
+      "details": "Manifest exact dependencies match Python 3.13.5 and SymPy 1.14.0. Deterministic replay and relocated execution pass. Generator emits records through stdout and requires no generated assets. Every package file hash remains unchanged."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "shortcut-records.json",
+        "shortcut-proof.json",
+        "delivery-shortcut/accepted.json",
+        "selection-analysis.json",
+        "affected-inventory.json",
+        "inventory-reproduction.json"
+      ],
+      "details": "All one-digit easy banks admit a deterministic second-smallest shortcut, independent of prompt/model reasoning; seed 8114 naturally reaches it. Three explicit cases survive delivery and native grading. Exact runner batch has no one-digit case (4 distinct targets among 5 records); no universal batch shortcut claimed. Seven stored generated records reproduced; none has this conditional defect."
+    }
+  },
+  "findings": [
+    {
+      "kind": "decision_shortcut",
+      "description": "Within the recognizable easy subgroup whose five choices are single digits, selecting the second-smallest value always answers correctly without using Q(0). This follows from the fixed operation bank, q0>=3 and equal-length rejection. All three eligible (q0,alpha) configurations exhibit it.",
+      "source_refs": [
+        "5708b503-7d42-5d87-80c5-062229fe4d3c",
+        "generate/principles.md \u00a72"
+      ],
+      "reproduction": "Run /home/jake/Developer/Course_Academy/.venv/bin/python regression-tests.py RepairAcceptance.test_no_single_digit_rank_bypass. Minimal natural case: entrypoint --difficulty easy --seed 8114 --count 1 --format json; parameters V=100,q0=3,c=.04,rin=8,rout=12; bank {1,3,4,5,7}, correct 3. See shortcut-proof.json and controlled-grader-report.json.",
+      "requested_change": "Revise the family-wide distractor construction and length-based rejection so numeric rank cannot determine the response in recognizable subgroups. Retain these valid inputs and the alpha+beta task; changing option order cannot repair this cue."
+    },
+    {
+      "kind": "restriction",
+      "description": "guard() requires q0<cV for every level, fixing beta negative and excluding positive and zero transients without an instructional reason. The captured rinse-tank source explicitly has alpha=6,beta=3.",
+      "source_refs": [
+        "11c8e0ff-5f12-56c5-bbf7-d578f71b8d7f",
+        "5708b503-7d42-5d87-80c5-062229fe4d3c"
+      ],
+      "reproduction": "Run regression-tests.py RepairAcceptance.test_positive_transient_is_eligible: easy seed=619, V=240,q0=15,c=.05,rin=16,rout=24. Expected alpha+beta=15, beta=+3; actual ValueError: Nonzero negative transient required. Full parameters and zero-transient case are in rejection-tests.json.",
+      "requested_change": "Make coefficient sign an eligible assignment, derive sign-safe explanations and complete banks across the source-supported sign cases, and retain strict acceptance tests instead of resampling those cases away."
+    },
+    {
+      "kind": "restriction",
+      "description": "The integer-initial-mass and hundredth-concentration grids reject already supplied source arithmetic: Q0=2.2 kg and c=.025 kg/L. These do not introduce a new method or response demand.",
+      "source_refs": [
+        "d0340e70-b947-5b25-8e24-a63ff0f87f38",
+        "11c8e0ff-5f12-56c5-bbf7-d578f71b8d7f"
+      ],
+      "reproduction": "Run regression-tests.py RepairAcceptance.test_fractional_source_mass_is_eligible: hard q-339400 seed=619, V=320,q0=2.2,c=.05,rin=8,rout=4,T=5. Expected Q(5)=341/85=4.01 kg; actual ValueError: Authored physical integers and hundredth-step concentration required.",
+      "requested_change": "Admit source-supported rational quantities in the relevant family, deriving solutions and banks with exact arithmetic; retain the original workload and valid source cases."
+    },
+    {
+      "kind": "source_fidelity",
+      "description": "Executable replay remains bound to seven historical profiles. Three supplied complete source questions have no profile; q-336738 still omits the key, hard rating and worked solution that are present in the supplied source.",
+      "source_refs": [
+        "310f29d9-e5f9-5829-9c84-72d1324e1777",
+        "11c8e0ff-5f12-56c5-bbf7-d578f71b8d7f",
+        "d0340e70-b947-5b25-8e24-a63ff0f87f38",
+        "b6915e10-1543-50b0-a358-2c56a1366444"
+      ],
+      "reproduction": "Run regression-tests.py RepairAcceptance.test_current_source_key_and_solution_replay. Equivalent CLI: entrypoint --originals --difficulty hard --template q-336738 --format json. source-replay-results.json also records missing q-336746, q-339403 and q-336744.",
+      "requested_change": "Reconcile executable source profiles and source-parameter replay against the supplied source, including complete banks, keys, difficulty and worked stages. Preserve the genuinely absent key/solution only for q-336439; do not substitute archived validation claims for current replay."
+    }
+  ]
+}

@@ -1,0 +1,189 @@
+{
+  "learner_operation": "For easy, substitute t=0 in the supplied normalized model and use Q(0)=initial solute mass to determine alpha+beta, then identify that value among five choices. Solving the ODE is unnecessary for this source target.",
+  "fixed_features": [
+    {
+      "feature": "alpha+beta for easy",
+      "justification": "Only captured easy-like family directly tests the initial condition; alpha-beta requires additional solving as observed moderate."
+    },
+    {
+      "feature": "normalized basis has value 1 at zero",
+      "justification": "Defines the source coefficient representation and its easy simplification; fixing this expresses the intended mathematical operation."
+    },
+    {
+      "feature": "Five radio options",
+      "justification": "All captured source question banks have five single-selection numeric choices."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Value of alpha+beta",
+      "eligible_variation": "Initial solute mass, including eligible fractional values at matching difficulty; must drive key and explanation.",
+      "observed": "19 distinct easy answer values in 40 fresh seeds; runner batch has 4 distinct values in 5 records (17 repeated). Relevant pair changes 17 to 18 correctly."
+    },
+    {
+      "role": "Transient coefficient sign",
+      "eligible_variation": "q0-cV may be positive, negative or zero without changing the t=0 operation; positive beta is explicitly observed in source q-336746.",
+      "observed": "All generated records restricted to negative beta. Explicit positive and zero cases rejected."
+    },
+    {
+      "role": "Correct option position and magnitude rank",
+      "eligible_variation": "Choice order and distractor values may vary; no intended operation determines the numeric rank.",
+      "observed": "Choice positions vary, but correct easy answer always in bottom two; within single-digit banks it is always second-smallest."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "Source-derived coefficient-sum target",
+      "sample_refs": [
+        "easy-samples.json",
+        "coverage.json"
+      ],
+      "result": "40 seeds 8101..8140, 19 answer values; no fixed answer label."
+    },
+    {
+      "case": "Runner batch assessed separately",
+      "sample_refs": [
+        "batch.json",
+        "delivery-batch/accepted.json",
+        "selection-analysis.json"
+      ],
+      "result": "5/5 survive actual normalization/dedup/difficulty checks; 4 distinct easy tasks; numeric ranks 1,1,1,2,2. No one-digit conditional case in this batch, so no claim the deterministic shortcut answers all five."
+    },
+    {
+      "case": "Conditional one-digit bank",
+      "sample_refs": [
+        "shortcut-records.json",
+        "shortcut-proof.json",
+        "delivery-shortcut/accepted.json"
+      ],
+      "result": "All three eligible integer (q0,alpha) configurations have the correct value second-smallest. Fresh random seed 8114 independently hits one such case."
+    },
+    {
+      "case": "Source-supported sign and numeric branches",
+      "sample_refs": [
+        "rejection-tests.json",
+        "source-replay-results.json"
+      ],
+      "result": "Positive transient and fractional mass/concentration cases are unavailable; three source profiles absent."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Hold V=640,c=.05,rin=16,rout=24,seed=619 fixed; change q0=17 to 18.",
+      "expected": "Prompt, correct numeric selection and solution change from 17 to 18; other choices rejected by native grader.",
+      "observed": "17 becomes 18 in prompt/key/solution and rendered UI; native grading accepts the respective value and rejects all offered wrong values.",
+      "status": "passed",
+      "justification": "Q(0)=q0 is the source alpha+beta dependency.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "controlled-grader-report.json",
+        "render-controlled/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Hold q0=17,c=.05,rin=16,rout=24,seed=619 fixed; change V=640 to 800 (B=80 to 100).",
+      "expected": "Volume and supplied formula denominator change; alpha+beta remains 17; solution and learner grading preserve that value.",
+      "observed": "Rendered denominator changes 80 to 100; key/explanation stay 17; native grader accepts 17 and rejects all other offered choices.",
+      "status": "passed",
+      "justification": "Both normalized basis functions equal one at t=0, regardless of volume.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "controlled-grader-report.json",
+        "render-controlled/rendering.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "Initial amount in prompt",
+      "subgroup": "easy q-336439, seeds 8101..8140",
+      "scope": "within_template",
+      "strategy": "Use Q(0) to select initial solute mass.",
+      "correct": 40,
+      "total": 40,
+      "baseline": 0.2,
+      "disposition": "intended_skill",
+      "conclusion": "This is source-supported substitution, not an incidental cue; 0.2 is uniform guessing among five choices.",
+      "sample_refs": [
+        "easy-samples.json",
+        "math.json"
+      ]
+    },
+    {
+      "cue": "Numeric rank",
+      "subgroup": "easy q-336439, seeds 8101..8140",
+      "scope": "within_template",
+      "strategy": "Choose the second-smallest choice without reading the prompt.",
+      "correct": 25,
+      "total": 40,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "62.5% versus 20% uniform guessing is an incidental bank bias. This is not a universal predictor; the stronger conditional probe below is exhaustive for its cue.",
+      "sample_refs": [
+        "easy-samples.json",
+        "coverage.json"
+      ]
+    },
+    {
+      "cue": "All five choices are single-digit positive integers",
+      "subgroup": "easy q-336439, all eligible one-digit bank configurations",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the second-smallest numeric choice.",
+      "correct": 3,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "100% versus 20% uniform guessing. Exactly (q0,alpha)=(3,4),(3,5),(4,5) satisfy the generator bank and one-digit constraints. Source t=0 reasoning cannot justify the answer rank. All pass native grading and actual publication filtering; UI order shuffling leaves numeric rank unchanged.",
+      "sample_refs": [
+        "shortcut-records.json",
+        "shortcut-proof.json",
+        "controlled-grader-report.json",
+        "delivery-shortcut/accepted.json",
+        "render-controlled/rendering.json"
+      ]
+    },
+    {
+      "cue": "Numeric rank",
+      "subgroup": "exact five runner batch records",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the second-smallest value.",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/5 versus 1/5 uniform baseline in this tiny batch does not establish a reliable deterministic batch bypass. The conditional one-digit rule is inapplicable here; the batch has zero such cases.",
+      "sample_refs": [
+        "batch.json",
+        "selection-analysis.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "Generator proposal/rejection/resampling",
+      "Shared publisher prepare_records normalization, identity, inventory and within-input deduplication",
+      "Requested easy difficulty gate",
+      "Captured inventory at basis 5394",
+      "Learner difficulty-band selection and uniform within-band selection rules"
+    ],
+    "sample_refs": [
+      "rejection-coverage.json",
+      "delivery-sample/delivery.json",
+      "delivery-batch/delivery.json",
+      "delivery-shortcut/delivery.json",
+      "selection-analysis.json",
+      "inventory-reproduction.json"
+    ],
+    "result": "494 proposals yield 40 easy samples: 285 rejected for negative-transient requirement, 86 for integer/positive bank, 83 for bank collision/length. All 40 samples, all 5 runner records and all 3 shortcut records survive actual read-only delivery. Conditional easy learner selection can choose every fresh candidate; no selection rule repairs the bank cue."
+  },
+  "limitations": [
+    "Captured inventory can change after basis 5394; publication/preparation.json was absent, so actual shared read-only preparation was run.",
+    "Specific learner policy weights, history and reservations are not supplied. Selection conclusions are conditional on fresh usability and a positive easy band weight; future entity IDs are unknown.",
+    "No finite audit proves absence of all shortcuts. Only the one-digit subgroup was exhaustively enumerated; the larger sampler was not exhaustively audited.",
+    "Seven generated stored records replayed exactly with archived generation metadata; none has the one-digit cue. Original source records were excluded from generated-record attribution."
+  ]
+}

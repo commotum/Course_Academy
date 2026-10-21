@@ -4,9 +4,9 @@
 Easy (authored missing level): supplied draining model, apply Q(0) to alpha+beta.
 Moderate (observed): draining model, construct/solve to identify alpha-beta.
 Hard (observed): filling model, construct/solve and evaluate at a positive time.
-All default banks are complete method-derived authored banks. Seven historical
-banks are opaque public evidence profiles, never eligible for learning. Missing
-source attributes remain absent in these profiles; no inferred source keys.
+Default banks are authored neighboring numeric alternatives with variable rank.
+Ten current source profiles preserve exact complete evidence, including absent
+attributes only when absent from the supplied source; never eligible for learning.
 Source masks preserve every fixed worked stage at original parameters and expose
 quantity slots, with fixed per-family integer powers and stage omissions.
 No plots, database reads/writes, shared edits, or registration.
@@ -18,15 +18,18 @@ from decimal import Decimal,ROUND_HALF_UP
 import sympy as sp
 KP_ID=17592186229182
 D=Path(__file__).with_suffix('')
-RAW=json.loads((D/'source.json').read_text());SRC=RAW['record']
+RAW=json.loads((D/'source-current.json').read_text());SRC=RAW['record']
+SOURCES={q[':question/math-academy-id']:q for q in SRC[':knowledge-point/questions']}
 M={x['source_id']:x for x in json.loads((D/'masks.json').read_text())}
-VERSION='unequal-dilution-1'
+VERSION='unequal-dilution-2'
 t=sp.Symbol('t',real=True)
 NAMESPACE=uuid.UUID('2ab1d837-f782-5439-8e25-3c764f9cb5c5')
 class IneligibleInstance(ValueError):pass
 
+def exact(x):return sp.Rational(str(x))
+
 def num(x):
- x=sp.Rational(x)
+ x=exact(x)
  if x.q==1:return str(x.p)
  z=Decimal(int(x.p))/Decimal(int(x.q))
  if x.q%2==0 or x.q%5==0:
@@ -37,28 +40,25 @@ def tex(x):return sp.latex(x).replace('\\log','\\ln')
 def fingerprint(x):return hashlib.sha256(json.dumps(x,sort_keys=True,separators=(',',':')).encode()).hexdigest()
 def uid(x):return str(uuid.uuid5(NAMESPACE,x))
 def data(p):
- V,q,c,ri,ro=[sp.Rational(p[k]) for k in ['V','q0','c','rin','rout']]
+ V,q,c,ri,ro=[exact(p[k]) for k in ['V','q0','c','rin','rout']]
  delta=ri-ro;B=V/abs(delta);m=ro/abs(delta);s=1 if delta>0 else -1
  x=B+s*t;J=c*ri;a=J/(m+s);alpha=a*B;beta=q-alpha
  I=x**(s*m);primitive=J*x**(s*m+1)/(s*(s*m+1));C=beta*B**(s*m)
  Q=a*x+beta*(B/x)**(s*m)
- T=sp.Rational(p.get('T',0));ans=q if p.get('kind')=='sum' else alpha-beta if p.get('kind')=='difference' else Q.subs(t,T)
+ T=exact(p.get('T',0));ans=q if p.get('kind')=='sum' else alpha-beta if p.get('kind')=='difference' else Q.subs(t,T)
  rat=sp.Rational(B/(B+T))
  return dict(V=V,q0=q,c=c,rin=ri,rout=ro,delta=abs(delta),signed_delta=delta,B=B,m=m,s=s,x=x,J=J,a=a,alpha=alpha,beta=beta,deficit=-beta,I=I,primitive=primitive,C=C,absC=abs(C),Q=Q,T=T,answer=ans,rounded=round2(ans),partT=a*(B+T),BT=B+T,ratioN=rat.p,ratioD=rat.q)
 def guard(p,meta,level,evidence=False):
- if 'T' in p and (p['kind']!='amount' or not 1<=sp.Rational(p['T'])<=30):raise ValueError('Evaluation time belongs only to amount questions and must be 1..30')
- if any(sp.Rational(p[k])<=0 for k in ['V','q0','c','rin','rout']):raise ValueError('Positive physical quantities required')
- if sp.Rational(p['rin'])==sp.Rational(p['rout']):raise ValueError('Unequal rates required')
+ if 'T' in p and (p['kind']!='amount' or not 1<=exact(p['T'])<=30):raise ValueError('Evaluation time belongs only to amount questions and must be 1..30')
+ if any(exact(p[k])<=0 for k in ['V','q0','c','rin','rout']):raise ValueError('Positive physical quantities required')
+ if exact(p['rin'])==exact(p['rout']):raise ValueError('Unequal rates required')
  d=data(p)
- if not evidence and (any(d[k].q!=1 for k in ['V','q0','rin','rout']) or (100*d['c']).q!=1):raise ValueError('Authored physical integers and hundredth-step concentration required')
  for k in ['V','q0','c','rin','rout']:
   if d[k]<=0:raise ValueError('Positive physical quantities required')
  if not (100<=d['V']<=1200 and 1<=d['q0']<=50 and sp.Rational('0.01')<=d['c']<=sp.Rational('0.08') and 4<=d['rin']<=60 and 4<=d['rout']<=60):raise ValueError('Authored arithmetic bounds exceeded')
- if level=='easy' and not 3<=d['q0']<=44:raise ValueError('Authored easy initial amount 3..44')
  original=data(dict(meta['parameters'],kind=meta['kind']))
  if d['m']!=original['m'] or d['s']!=original['s']:raise ValueError('Family integer ratio/direction must be preserved')
  if d['B'].q!=1 or not 15<=d['B']<=200:raise ValueError('Integer normalized volume 15..200 required')
- if not d['q0']<d['c']*d['V']:raise ValueError('Nonzero negative transient required')
  if p['kind']=='amount':
   if not 1<=d['T']<=30 or d['T'].q!=1:raise ValueError('Evaluation time integer 1..30')
  if d['s']<0 and (d['T']<0 or d['T']>=d['B']):raise ValueError('Before emptying: 0<=t<B')
@@ -69,32 +69,30 @@ def fill(mask,d):
  return re.sub(r'\{\{(\w+)\}\}',lambda m:d['rounded'] if m[1]=='rounded' else num(d[m[1]]),mask)
 
 def observed_bank(meta,d):
- # Historical values have no recoverable operation derivation. A quantity-scale
- # replay, NOT an inferred misconception: preserve dimensionless bank/correct ratios.
- orig=data(dict(meta['parameters'],kind=meta['kind']))
- base=sp.Rational(orig['rounded']) if meta['kind']=='amount' else orig['answer']
- scale=(sp.Rational(d['rounded']) if meta['kind']=='amount' else d['answer'])/base
- vals=[]
- for a in meta['bank']:
-  x=sp.Rational(a['value'])*scale
-  vals.append((round2(x) if meta['kind']=='amount' else num(x))+a['suffix'])
- return vals
+ # Exact supplied evidence only: no scaling of opaque source distractors.
+ return [a['value']+a['suffix'] for a in meta['bank']]
 
-def authored_bank(d,kind):
- alpha,beta,q=d['alpha'],d['beta'],d['q0']
- if kind in ['sum','difference']:
-  values=[q,alpha,-beta,alpha-beta,alpha+q] if kind=='sum' else [alpha-beta,q,alpha,alpha+q,2*alpha]
-  correct=0
-  if any(x.q!=1 or x<=0 for x in values):raise IneligibleInstance('Integer positive coefficient bank required')
-  vals=[num(x) for x in values]
- else:
-  T=d['T'];Vt=d['V']+d['signed_delta']*T;m=d['m'];
-  # correct; erroneously fixed volume; omit transient; omit inflow; off-by-one exponent
-  values=[d['Q'].subs(t,T),d['J']*d['V']/d['rout']+(q-d['J']*d['V']/d['rout'])*sp.exp(-d['rout']*T/d['V']),d['c']*Vt,q*(d['V']/Vt)**m,d['c']*Vt+(q-d['c']*d['V'])*(d['V']/Vt)**(m+1)]
-  if any(x<=0 for x in values):raise IneligibleInstance('Positive physical amount bank required')
-  vals=[round2(x)+r'\,\text{kg}' for x in values];correct=0
- if len(set(vals))!=5 or len({len(re.match(r'[\d.]+',v)[0]) for v in vals})!=1:raise IneligibleInstance('Whole bank collision or length cue')
- return vals,correct
+def authored_bank(d,kind,rng):
+ """Choose feasible numeric rank, then distinct nearby source-shaped alternatives.
+
+ These are authored numerical alternatives, not inferred misconception recipes.
+ No physical instance is rejected because its transient vanishes or changes sign.
+ """
+ target=sp.Rational(d['rounded']) if kind=='amount' else d['answer']
+ step=sp.Rational(1,100) if kind=='amount' else sp.Integer(1)
+ span=100 if kind=='amount' else max(8,int(abs(target)))
+ lower=list(range(1,span+1))
+ if kind in ['sum','amount']:
+  lower=[i for i in lower if target-i*step>0]
+ count=rng.choice(range(min(4,len(lower))+1))
+ values=[target]+[target-i*step for i in rng.sample(lower,count)]+[target+i*step for i in rng.sample(range(1,span+1),4-count)]
+ vals=[round2(x)+r'\,\text{kg}' if kind=='amount' else num(x) for x in values]
+ assert len(set(vals))==5
+ return vals,0
+
+def signed_term(value,expression):
+ if value==0:return ''
+ return ('+' if value>0 else '-')+num(abs(value))+expression
 
 def model_solution(d,kind):
  """Full method stages, unit cancellation and IC rows; one fixed solution."""
@@ -134,27 +132,36 @@ $$\begin{{aligned}}\int\frac{{d}}{{dt}}(Q{I})\,dt&=\int {J}{I}\,dt\\Q{I}&={P}+C\
 Note that $C$ is a constant of integration.
 The initial condition is $Q(0)={num(d['q0'])}.$ Thus,
 $$\begin{{aligned}}{a}({B}{sign}0)+C({B}{sign}0)^{{{-n}}}&={num(d['q0'])}\\
-{alpha}+C({B})^{{{-n}}}&={num(d['q0'])}\\C({B})^{{{-n}}}&=-{deficit}\\C&={C}.\end{{aligned}}$$
+{alpha}+C({B})^{{{-n}}}&={num(d['q0'])}\\C({B})^{{{-n}}}&={const}\\C&={C}.\end{{aligned}}$$
 Finally, we obtain the following expression for $Q(t):$
 $$Q(t)={Q}.$$
 '''
  if kind=='difference':
   common+=rf'''Writing this in the supplied normalized form gives
-$$Q(t)={alpha}(1-\frac{{t}}{{{B}}})-{deficit}(1-\frac{{t}}{{{B}}})^{{{m}}}.$$
-Finally, we have $\alpha={alpha},\beta=-{deficit},$ and
-$$\alpha-\beta={alpha}-(-{deficit})={num(d['answer'])}.$$'''
+$$Q(t)={alpha}(1-\frac{{t}}{{{B}}}){signed_term(d['beta'],rf'(1-\frac{{t}}{{{B}}})^{{{m}}}')}.$$
+Finally, we have $\alpha={alpha},\beta={const},$ and
+$$\alpha-\beta={alpha}-({const})={num(d['answer'])}.$$'''
  else:
   T=num(d['T']);xT=f'({B}+{T})';ratio=rf'\frac{{{B}}}{{{B}+{T}}}';r=sp.Rational(d['B']/(d['B']+d['T']))
   common+=rf'''Finally, the amount in the tank ${T}$ minutes after pumping begins is
-$$\begin{{aligned}}Q({T})&={a}{xT}-{deficit}({ratio})^{{{m}}}\\&={num(d['partT'])}-{deficit}({tex(r)})^{{{m}}}\\&\approx {d['rounded']}\,\text{{kg}}.\end{{aligned}}$$
+$$\begin{{aligned}}Q({T})&={a}{xT}{signed_term(d['beta'],rf'({ratio})^{{{m}}}')}\\&={num(d['partT'])}{signed_term(d['beta'],rf'({tex(r)})^{{{m}}}')}\\&\approx {d['rounded']}\,\text{{kg}}.\end{{aligned}}$$
 This is rounded to two decimal places.'''
  return common
 
-def sample(meta,rng):
+def sample(meta,rng,transient_sign):
  base=meta['parameters'];m=data(dict(base,kind=meta['kind']))['m'];s=1 if base['rin']>base['rout'] else -1
  delta=rng.choice([4,5,6,8,10,12]);ro=int(m*delta);ri=ro+s*delta
- B=rng.choice([25,30,40,50,60,70,80,90,100]);V=B*delta
- return dict(V=V,q0=rng.randint(3,44 if meta['kind']=='sum' else 25),c=str(sp.Rational(rng.randint(2,8),100)),rin=ri,rout=ro,**({'T':rng.randint(3,25)} if meta['kind']=='amount' else {}))
+ B=rng.choice([18,25,30,40,50,60,70,80,90,100]);V=B*delta
+ c=rng.choice([sp.Rational(i,100) for i in range(2,9)]+[sp.Rational(i,1000) for i in [25,35,45,55,65,75]])
+ alpha=c*V
+ step=rng.choice([sp.Integer(1),sp.Rational(1,10)])
+ if transient_sign==0:q=alpha
+ else:
+  lo=1 if transient_sign<0 else max(1,sp.floor(alpha/step)*step+step)
+  hi=min(50,sp.ceiling(alpha/step)*step-step) if transient_sign<0 else 50
+  if lo>hi:raise IneligibleInstance('Resample quantities compatible with selected sign')
+  q=rng.randint(int(sp.ceiling(lo/step)),int(sp.floor(hi/step)))*step
+ return dict(V=V,q0=str(q),c=str(c),rin=ri,rout=ro,**({'T':rng.randint(3,25)} if meta['kind']=='amount' else {}))
 
 # EASY: authored missing-level initial-condition interpretation.
 def generate_easy(seed=0,**kwargs):return generate('easy',seed,**kwargs)
@@ -174,23 +181,27 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
  meta=M.get(template) if template else rng.choice([x for x in M.values() if x['level']==level])
  if not meta or meta['level']!=level:raise ValueError('Template level mismatch')
  template=meta['source_id'];raw=profile==f'observed:{template}'
+ transient_sign=rng.choice([-1,0,1])
+ if raw and (parameters is None or any(exact(parameters[k])!=sp.Rational(v) for k,v in meta['parameters'].items())):raise ValueError('Observed profiles require exact source parameters')
  if profile not in [None,'authored-operations',f'observed:{template}']:raise ValueError('Unknown profile')
  for attempt in range(2000):
-  p=dict(parameters) if parameters is not None else sample(meta,rng);p['kind']=meta['kind']
-  if set(p)-{'V','q0','c','rin','rout','T','kind'}:raise ValueError('Unknown parameter')
   try:
+   p=dict(parameters) if parameters is not None else sample(meta,rng,transient_sign);p['kind']=meta['kind']
+   if set(p)-{'V','q0','c','rin','rout','T','kind'}:raise ValueError('Unknown parameter')
    d=guard(p,meta,level,evidence=raw)
    if raw:
     vals=observed_bank(meta,d)
     if len(set(vals))!=5:raise IneligibleInstance('Opaque replay bank collision')
     correct=next((i for i,a in enumerate(meta['bank']) if a['correct']),None)
-   else:vals,correct=authored_bank(d,meta['kind'])
+   else:vals,correct=authored_bank(d,meta['kind'],rng)
    break
   except (IneligibleInstance,ValueError):
    if parameters is not None:raise
  else:raise IneligibleInstance('No complete eligible instance')
  prompt=fill(meta['prompt_mask'],d)
- if raw:solution=fill(meta['solution_mask'],d) if 'solution_mask' in meta else None
+ if raw:
+  prompt=SOURCES[template][':question/problem']
+  solution=SOURCES[template].get(':question/worked-solution')
  elif meta['kind']=='sum':solution=rf'''At $t=0,$ the supplied model gives $Q(0)=\alpha(1-0/{num(d['B'])})+\beta(1-0/{num(d['B'])})^{{{num(d['m'])}}}=\alpha+\beta.$ The initial amount is ${num(d['q0'])}\,\text{{kg}},$ so $\alpha+\beta={num(d['q0'])}.$'''
  else:solution=model_solution(d,meta['kind'])
  identity=fingerprint(dict(version=VERSION,level=level if not raw or ':question/difficulty' in meta['raw_keys'] else None,prompt=prompt,solution=solution,bank=sorted(vals),correct=None if correct is None else vals[correct]))
@@ -199,12 +210,13 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
  if correct is not None:field[':answer-field/correct']=[':answer/id',choices[correct][':answer/id']]
  rng.shuffle(choices)
  q={':question/id':qid,':question/problem':prompt,':question/answer-fields':[field]}
+ if ':question/requires-calculator' in SOURCES[template]:q[':question/requires-calculator']=SOURCES[template][':question/requires-calculator']
  if not raw or ':question/difficulty' in meta['raw_keys']:q[':question/difficulty']=':question.difficulty/'+level
  if solution is not None:q[':question/worked-solution']=solution
  mathematical={'kind':meta['kind'],'V':str(d['V']),'q0':str(d['q0']),'c':str(d['c']),'rin':str(d['rin']),'rout':str(d['rout'])}
  if meta['kind']=='amount':mathematical['T']=str(d['T'])
  if meta['kind']=='sum':mathematical={'kind':'sum','initial_amount':str(d['q0'])}
- return {'knowledge_point':{'db_id':KP_ID,'id':str(NAMESPACE),'title':SRC[':knowledge-point/title']},'question':q,'generation':{'version':VERSION,'template':template,'profile':profile or 'authored-operations','seed':seed,'parameters':{k:str(v) for k,v in p.items() if k!='kind'},'mathematical_fingerprint':fingerprint(mathematical),'content_fingerprint':identity,'origin':'observed evidence replay' if raw else 'authored operation bank and worked solution','difficulty_origin':'observed' if level!='easy' and ':question/difficulty' in meta['raw_keys'] else 'authored','eligible_for_learning':not raw,'evidence_only':raw,'bank_interpretation':'opaque normalized quantity-scale replay; not inferred error operations' if raw else 'complete method-derived operations','domain':f"t >= 0; V(t)>0"+ (f"; t < {num(d['B'])} min" if d['s']<0 else '; no capacity supplied; no overflow event assessed'),'source_parameter_replay':all(sp.Rational(p[k])==sp.Rational(v) for k,v in meta['parameters'].items()),'source':{k:RAW[k] for k in ['database','basis','lineage']},'dependencies':{'python':sys.version.split()[0],'sympy':sp.__version__},'plots':'none'}}
+ return {'knowledge_point':{'db_id':KP_ID,'id':str(NAMESPACE),'title':SRC[':knowledge-point/title']},'question':q,'generation':{'version':VERSION,'template':template,'profile':profile or 'authored-operations','seed':seed,'parameters':{k:str(v) for k,v in p.items() if k!='kind'},'mathematical_fingerprint':fingerprint(mathematical),'content_fingerprint':identity,'origin':'observed evidence replay' if raw else 'authored numeric bank and worked solution','difficulty_origin':'observed' if level!='easy' and ':question/difficulty' in meta['raw_keys'] else 'authored','eligible_for_learning':not raw,'evidence_only':raw,'bank_interpretation':'exact opaque source bank replay' if raw else 'rank-variable neighboring numeric alternatives','domain':f"t >= 0; V(t)>0"+ (f"; t < {num(d['B'])} min" if d['s']<0 else '; no capacity supplied; no overflow event assessed'),'source_parameter_replay':all(exact(p[k])==sp.Rational(v) for k,v in meta['parameters'].items()),'source':{k:RAW[k] for k in ['database','basis','lineage']},'dependencies':{'python':sys.version.split()[0],'sympy':sp.__version__},'plots':'none'}}
 
 def markdown(rec):
  q=rec['question'];g=rec['generation'];s=f"{g['template']} | {g['profile']} | {q.get(':question/difficulty','unrated original')} | eligible={g['eligible_for_learning']}\n\n{q[':question/problem']}\n\n"

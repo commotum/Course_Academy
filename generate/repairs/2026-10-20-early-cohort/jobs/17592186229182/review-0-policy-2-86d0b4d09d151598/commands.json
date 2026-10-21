@@ -1,0 +1,67 @@
+{
+  "cwd": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186229182/review-0-policy-2-86d0b4d09d151598",
+  "commands": [
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python audit.py",
+      "outputs": [
+        "samples.json",
+        "math.json",
+        "source-replays.json",
+        "runtime.json"
+      ],
+      "exit": 0
+    },
+    {
+      "command": "python3 source-compare.py",
+      "outputs": [
+        "source-replay-results.json"
+      ],
+      "exit": 0
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py --input easy-samples.json --source /home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186229182/source/source.json --inventory /home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186229182/source/inventory.json --difficulty easy --output delivery-sample --math-root /media/jake/SSD/EDB/math",
+      "exit": 0
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py --input batch.json --source /home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186229182/source/source.json --inventory /home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186229182/source/inventory.json --difficulty easy --output delivery-batch --math-root /media/jake/SSD/EDB/math",
+      "exit": 0
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/generate/runs/current/check-engine grader-input.json grader-report.json",
+      "exit": 0
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python followup.py",
+      "exit": 0
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/generate/runs/current/check-engine controlled-grader-input.json controlled-grader-report.json",
+      "exit": 0
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py --input shortcut-records.json --source /home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186229182/source/source.json --inventory /home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186229182/source/inventory.json --difficulty easy --output delivery-shortcut --math-root /media/jake/SSD/EDB/math",
+      "exit": 0
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/render_preview.py --input render-records.json --output render --math-root /media/jake/SSD/EDB/math",
+      "exit": 0
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/render_preview.py --input counterfactual-and-shortcut-records.json --output render-controlled --limit 10 --math-root /media/jake/SSD/EDB/math",
+      "exit": 0
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python rejection-coverage.py",
+      "exit": 0
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python regression-tests.py",
+      "exit": 1,
+      "expected": "2 failing assertions and 2 rejected-valid-input errors reproduce actual defects."
+    }
+  ],
+  "review_harness_corrections": [
+    "First sample delivery call used the mixed-level 52-record control set and correctly rejected it. Replaced with independently selected 40 easy records; this was a review input correction, not a generator failure.",
+    "Initial irrelevant c change led to noninteger bank; used source-valid volume change instead. No dependent pass claimed for failed draft pair."
+  ]
+}
