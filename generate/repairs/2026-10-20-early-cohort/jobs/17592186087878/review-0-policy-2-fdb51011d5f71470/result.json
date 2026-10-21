@@ -1,0 +1,135 @@
+{
+  "verdict": "accepted",
+  "summary": "No concrete generator defect demonstrated. All eight checks pass within documented limits. Package unchanged; no database writes or publication.",
+  "source_analysis": {
+    "skill": "Solve first-order linear ODEs using integrating factors, selecting an integrating factor and a general solution.",
+    "reasoning_steps": [
+      "Normalize the equation to y\u2032+Py=Q.",
+      "Compute I=exp(\u222bP dx).",
+      "Rewrite the equation as (Iy)\u2032=IQ.",
+      "Integrate, divide by I, and retain the arbitrary constant.",
+      "Identify the corresponding entries in both complete answer banks."
+    ],
+    "invariants": [
+      "First-order linear general-solution task with one arbitrary constant.",
+      "Two select fields for question-bank instances.",
+      "Positive-x domain for reciprocal-coefficient power families.",
+      "Elementary integration or one source-supported integration by parts."
+    ],
+    "permitted_variations": [
+      "Small coefficients, signs, rates and polynomial powers.",
+      "Source-supported forcing families and sine/cosine roles.",
+      "Qualifying mathematical values, distractor roles and answer positions."
+    ],
+    "source_refs": [
+      "68937b54-ea6f-5f98-bed9-b348cf356987",
+      "4a1a6466-f80e-5046-ab51-57e7bbf9cc79",
+      "6d9c5f46-c0e2-521b-a1ea-4da9cf275abc",
+      "d36870f2-83c3-53eb-b9c4-cfdc50550717",
+      "039312c7-7497-5736-bf10-d497d1c61328",
+      "f406ffe6-dbd4-575f-96ea-c90a9a6d9f11",
+      "6530e5db-b521-5f5c-99f7-59872d852e59",
+      "08d92346-a7e8-58c6-8d60-e4702d743dd1",
+      "536cae39-f031-5c30-a8b0-a9b62b8632a3",
+      "89446fd7-75c2-5da5-bd97-469100f3ca7b",
+      "Tutorial 14551: The Integrating Factor Method, steps 1\u20135",
+      "Tutorial 14640: Deriving the Integrating Factor, I\u2032=IP"
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "source-extract.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replays.json",
+        "source-replay-results.json",
+        "source-fidelity.json",
+        "boundary-records.json"
+      ],
+      "details": "All nine complete source banks replay faithfully; canonical cosine equation and solution match. The duplicated equivalent sine source answer is documented, and its repaired profile passes."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "boundary-math.json",
+        "inventory-math.json"
+      ],
+      "details": "Independent displayed-equation checks pass for 74 sample/replay/batch records and 15 boundary/counterfactual records. Five non-source stored records also have unique valid choices and matching keys."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "independent-records.json",
+        "coverage-results.json",
+        "delivery-easy/delivery.json",
+        "delivery-moderate/delivery.json",
+        "delivery-hard/delivery.json",
+        "delivery-batch/delivery.json",
+        "selection-results.json",
+        "inventory-audit.json",
+        "affected-inventory.json"
+      ],
+      "details": "60 fresh samples cover nine templates. All survive matching-difficulty delivery; all five runner records survive. Selection support was examined under the supplied rules and stated weight/history conditions. No affected generated inventory instances demonstrated."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "scope-analysis.json",
+        "source-analysis.json",
+        "source-fidelity.json"
+      ],
+      "details": "Variations retain the response contract, integrating-factor method and source-supported workload."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-results.json"
+      ],
+      "details": "Native grader matches 160 expected acceptances and 492 rejections across 80 records. Both fields and every choice were tested independently. Free entry is inapplicable."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render-all/rendering.json",
+        "render-inspection.json",
+        "render-all/question-007.png",
+        "render-all/question-009.png",
+        "render-all/question-010.png",
+        "render-all/question-011.png"
+      ],
+      "details": "Actual UI rendered 18 records without reported errors. Representative screenshots across all templates and controlled pairs show legible notation, controls and solutions."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "runtime.json",
+        "package-integrity.json",
+        "package-hashes-before.json",
+        "package-hashes-after.json",
+        "relocated-records.json",
+        "review-commands.md"
+      ],
+      "details": "Exact dependency versions match. Deterministic replay, relocation and six invalid-input rejection cases pass. Package hashes are unchanged."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "rank-shortcuts.json",
+        "grader-results.json",
+        "selection-results.json"
+      ],
+      "details": "Relevant and irrelevant controlled changes behave correctly through grading and rendering. Template-conditional position, length and numeric-rank probes demonstrate no reproducible incidental predictor. Finite-sample and captured-state limits are recorded."
+    }
+  },
+  "findings": []
+}

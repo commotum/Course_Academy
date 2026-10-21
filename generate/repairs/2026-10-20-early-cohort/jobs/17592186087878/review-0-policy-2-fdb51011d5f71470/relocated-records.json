@@ -1,0 +1,351 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186087878,
+      "id": "6bbeb4f6-23b2-586c-8cb9-9742cce5a9a9",
+      "title": "Solving First-Order Linear ODEs Using Integrating Factors"
+    },
+    "question": {
+      ":question/id": "d5ab9dbc-e859-5d79-8f57-ddab7f55c291",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/problem": "Consider the differential equation\n$\\frac{dy}{dx} - 5y = x^{2}e^{5x}$.\nSelect the correct options below.\nAn integrating factor for this equation is $I(x) =$ {{field-1}}.\n\nThe general solution is given by $y(x) =$ {{field-2}}.",
+      ":question/worked-solution": "This equation is in the standard form\n\n$$\n\\frac{\\text{d}y}{\\text{d}x}+P(x)y=Q(x)\n$$\n\nwith $P(x)=-5$ and $Q(x)={x}^{2}{e}^{5x}.$ We proceed to find an integrating factor $I(x)$ using the definition:\n\n$$\n\\begin{aligned}I(x) & ={e}^{\\int P(x)\\,\\text{d}x} \\\\  & ={e}^{\\int -5\\,\\text{d}x} \\\\  & ={e}^{-5x}\\end{aligned}\n$$\n\nNow, we multiply our differential equation through by $I(x)={e}^{-5x}$ as follows:\n\n$$\n\\begin{aligned}{e}^{-5x}\\cdot (\\frac{\\text{d}y}{\\text{d}x}-5y) & ={e}^{-5x}\\cdot {x}^{2}{e}^{5x} \\\\ {e}^{-5x}\\cdot \\frac{\\text{d}y}{\\text{d}x}-5{e}^{-5x}\\cdot y & ={x}^{2}\\end{aligned}\n$$\n\nFinally, we rewrite the left hand side as $\\frac{\\text{d}}{\\text{d}x}(y\\cdot I(x))$ and carry out the integration:\n\n$$\n\\begin{aligned}\\frac{\\text{d}}{\\text{d}x}(y{e}^{-5x}) & ={x}^{2} \\\\ \\int \\frac{\\text{d}}{\\text{d}x}(y{e}^{-5x})\\text{d}x & =\\int {x}^{2}\\,\\text{d}x \\\\ y{e}^{-5x} & =\\frac{{x}^{3}}{3}+C \\\\ y & =\\frac{{x}^{3}{e}^{5x}}{3}+C{e}^{5x}\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "43b5d482-e212-57a8-9bec-b4b14c13e232",
+          ":answer-field/key": "field-2",
+          ":answer-field/type": ":answer-field.type/select",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "cbd2d4a1-1124-5532-aefa-1a3e32c04a31",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "C e^{6 x} + \\frac{x^{3} e^{5 x}}{3}"
+            },
+            {
+              ":answer/id": "f801b5ce-ef27-5b9c-b2f9-d1520cdddf20",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "C e^{5 x} + \\frac{x^{3} e^{5 x}}{3}"
+            },
+            {
+              ":answer/id": "c5591f14-a751-5e7b-bb79-6132c799ae6a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "C e^{5 x} + \\frac{x^{3} e^{5 x}}{2}"
+            },
+            {
+              ":answer/id": "fce0395f-f14c-535d-9cd9-2bf13a2426bb",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "C e^{6 x} + \\frac{x^{3} e^{5 x}}{2}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "f801b5ce-ef27-5b9c-b2f9-d1520cdddf20"
+          ]
+        },
+        {
+          ":answer-field/id": "c9476c89-b9cb-5992-a139-051665b1fb53",
+          ":answer-field/key": "field-1",
+          ":answer-field/type": ":answer-field.type/select",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "d8638c21-16d4-5e33-ab96-47a90ad35ea7",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "e^{4 x}"
+            },
+            {
+              ":answer/id": "8dca6c38-e4ae-5507-965d-2e06cc7dc4ee",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "e^{- 6 x}"
+            },
+            {
+              ":answer/id": "05dc1cc1-22cc-5289-8a10-df6717e8df20",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "e^{- 3 x}"
+            },
+            {
+              ":answer/id": "cc5055f0-03aa-5544-8326-ebda2df5f3d5",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "e^{- 5 x}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "cc5055f0-03aa-5544-8326-ebda2df5f3d5"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "2.1.0",
+      "seed": 94179,
+      "template": "exp_cancel_legacy",
+      "parameters": {
+        "a": 5,
+        "m": 2
+      },
+      "roles": {
+        "if_rank": 1,
+        "homogeneous_delta": 1,
+        "coefficient_error": -1,
+        "factor_candidates": [
+          "-6",
+          "-5",
+          "-3",
+          "4"
+        ]
+      },
+      "rejections": 0,
+      "bank_profile": "exp_cancel_legacy_authored",
+      "bank_origin": "authored",
+      "evidence_only": false,
+      "raw_ambiguous_bank": false,
+      "source_analysis": {
+        "database": "math",
+        "basis": 3794,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_id": "q-335392",
+      "authored_level_assignment": true,
+      "content_fingerprint": "e5d76cab4d6f9377687ea8af709a313a6f4c11d8f9601a54c848104daf5ca98a",
+      "parameter_fingerprint": "242673410c4372d84852eb66ebb514561574b52e94dfbd4eb2ae2aed6732c2b4",
+      "plot_rating": "none",
+      "plot_assets": {},
+      "domain": "real x",
+      "sympy_version": "1.14.0",
+      "math_format": "course-academy-tex-v1"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186087878,
+      "id": "6bbeb4f6-23b2-586c-8cb9-9742cce5a9a9",
+      "title": "Solving First-Order Linear ODEs Using Integrating Factors"
+    },
+    "question": {
+      ":question/id": "eb452fc2-282c-5d96-9877-05e1a62f226e",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/problem": "Consider the differential equation\n\n$$\n\\frac{\\text{d}y}{\\text{d}x}-3y=6{e}^{5x}.\n$$\n\nSelect the correct options below.$\\,$ An integrating factor for this equation is $I(x)=$ {{field-1}}.\n\n$\\,$ The general solution is given by $y(x)=$ {{field-2}}.",
+      ":question/worked-solution": "This equation is already in the standard form\n\n$$\n\\frac{\\text{d}y}{\\text{d}x}+P(x)y=Q(x)\n$$\n\nwith $P(x)=-3$ and $Q(x)=6{e}^{5x}.$ We proceed to find an integrating factor $I(x)$ using the definition:\n\n$$\n\\begin{aligned}I(x) & ={e}^{\\int P(x)\\,\\text{d}x} \\\\  & ={e}^{\\int -3\\,\\text{d}x} \\\\  & ={e}^{-3x}\\end{aligned}\n$$\n\nNow, we multiply our differential equation through by $I(x)={e}^{-3x}$ as follows:\n\n$$\n\\begin{aligned}{e}^{-3x}\\cdot (\\frac{\\text{d}y}{\\text{d}x}-3y) & ={e}^{-3x}\\cdot 6{e}^{5x} \\\\ {e}^{-3x}\\cdot \\frac{\\text{d}y}{\\text{d}x}-3{e}^{-3x}\\cdot y & =6{e}^{2x}\\end{aligned}\n$$\n\nFinally, we rewrite the left hand side as $\\frac{\\text{d}}{\\text{d}x}(y\\cdot I(x))$ and carry out the integration:\n\n$$\n\\begin{aligned}\\frac{\\text{d}}{\\text{d}x}(y{e}^{-3x}) & =6{e}^{2x} \\\\ \\int \\frac{\\text{d}}{\\text{d}x}(y{e}^{-3x})\\text{d}x & =\\int 6{e}^{2x}\\,\\text{d}x \\\\ y{e}^{-3x} & =3{e}^{2x}+C \\\\ y & =3{e}^{5x}+C{e}^{3x}\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "177fb592-57aa-5b87-8793-108a01c38a88",
+          ":answer-field/key": "field-1",
+          ":answer-field/type": ":answer-field.type/select",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "e2dd3b79-2611-57e1-a62c-ce2d64eb862c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "e^{- 4 x}"
+            },
+            {
+              ":answer/id": "ffe651c3-2e05-5aa6-a089-4a6a1bfad4c7",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "e^{5 x}"
+            },
+            {
+              ":answer/id": "b3b51075-e877-5018-aacd-030c12d5e01d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "e^{- 3 x}"
+            },
+            {
+              ":answer/id": "ae5e762f-879e-5a0a-99de-db74dfa41591",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "e^{4 x}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "b3b51075-e877-5018-aacd-030c12d5e01d"
+          ]
+        },
+        {
+          ":answer-field/id": "6c2cf6ce-fcce-5d0e-abbb-4424ff1f7d61",
+          ":answer-field/key": "field-2",
+          ":answer-field/type": ":answer-field.type/select",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "6c43b58e-a8d2-5ef4-9eff-02887ff11d34",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "C e^{2 x} + 2 e^{5 x}"
+            },
+            {
+              ":answer/id": "f7d581d5-ee4b-5b7b-8013-04aef74f55be",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "C e^{3 x} + 3 e^{5 x}"
+            },
+            {
+              ":answer/id": "a9e1872d-016d-52ec-a548-fff9d26f2ab1",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "C e^{2 x} + 3 e^{5 x}"
+            },
+            {
+              ":answer/id": "89724d72-ecae-5bf3-aab9-dd6d44e09371",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "C e^{3 x} + 2 e^{5 x}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "f7d581d5-ee4b-5b7b-8013-04aef74f55be"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "2.1.0",
+      "seed": 94180,
+      "template": "exp_forcing",
+      "parameters": {
+        "a": 3,
+        "b": 6,
+        "r": 5
+      },
+      "roles": {
+        "if_rank": 1,
+        "homogeneous_delta": -1,
+        "coefficient_error": 1,
+        "factor_candidates": [
+          "-4",
+          "-3",
+          "4",
+          "5"
+        ]
+      },
+      "rejections": 0,
+      "bank_profile": "exp_forcing_authored",
+      "bank_origin": "authored",
+      "evidence_only": false,
+      "raw_ambiguous_bank": false,
+      "source_analysis": {
+        "database": "math",
+        "basis": 3794,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_id": "q-335402",
+      "authored_level_assignment": false,
+      "content_fingerprint": "5d7dde1a66d22a3eef465b91c1fcc488027a3ed1db34a07f3fd6693d26761ef1",
+      "parameter_fingerprint": "4dbe5f85235ccc07602a97da3e22877b319a77aa6c09f08135b446b796fb217b",
+      "plot_rating": "none",
+      "plot_assets": {},
+      "domain": "real x",
+      "sympy_version": "1.14.0",
+      "math_format": "course-academy-tex-v1"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186087878,
+      "id": "6bbeb4f6-23b2-586c-8cb9-9742cce5a9a9",
+      "title": "Solving First-Order Linear ODEs Using Integrating Factors"
+    },
+    "question": {
+      ":question/id": "69089274-8843-5d56-a9b5-59982f3c57e8",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/problem": "Consider the differential equation\n$\\frac{dy}{dx} - 6y = x^{1}e^{6x}$.\nSelect the correct options below.\nAn integrating factor for this equation is $I(x) =$ {{field-1}}.\n\nThe general solution is given by $y(x) =$ {{field-2}}.",
+      ":question/worked-solution": "This equation is in the standard form\n\n$$\n\\frac{\\text{d}y}{\\text{d}x}+P(x)y=Q(x)\n$$\n\nwith $P(x)=-6$ and $Q(x)=x{e}^{6x}.$ We proceed to find an integrating factor $I(x)$ using the definition:\n\n$$\n\\begin{aligned}I(x) & ={e}^{\\int P(x)\\,\\text{d}x} \\\\  & ={e}^{\\int -6\\,\\text{d}x} \\\\  & ={e}^{-6x}\\end{aligned}\n$$\n\nNow, we multiply our differential equation through by $I(x)={e}^{-6x}$ as follows:\n\n$$\n\\begin{aligned}{e}^{-6x}\\cdot (\\frac{\\text{d}y}{\\text{d}x}-6y) & ={e}^{-6x}\\cdot x{e}^{6x} \\\\ {e}^{-6x}\\cdot \\frac{\\text{d}y}{\\text{d}x}-6{e}^{-6x}\\cdot y & =x\\end{aligned}\n$$\n\nFinally, we rewrite the left hand side as $\\frac{\\text{d}}{\\text{d}x}(y\\cdot I(x))$ and carry out the integration:\n\n$$\n\\begin{aligned}\\frac{\\text{d}}{\\text{d}x}(y{e}^{-6x}) & =x \\\\ \\int \\frac{\\text{d}}{\\text{d}x}(y{e}^{-6x})\\text{d}x & =\\int x\\,\\text{d}x \\\\ y{e}^{-6x} & =\\frac{{x}^{2}}{2}+C \\\\ y & =\\frac{{x}^{2}{e}^{6x}}{2}+C{e}^{6x}\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "482a6577-c7de-5e5f-a8b7-fcbf2016092e",
+          ":answer-field/key": "field-2",
+          ":answer-field/type": ":answer-field.type/select",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "57a9f06d-a638-5e44-8ac2-fa2931e6c19f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "C e^{7 x} + x^{2} e^{6 x}"
+            },
+            {
+              ":answer/id": "8743ebf9-093b-5982-8bf7-79640c0132d1",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "C e^{6 x} + x^{2} e^{6 x}"
+            },
+            {
+              ":answer/id": "52bc92ef-b6f7-5adf-9be0-3076c4a4905c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "C e^{6 x} + \\frac{x^{2} e^{6 x}}{2}"
+            },
+            {
+              ":answer/id": "3863e187-ef04-5848-afe0-3f8c371b71b0",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "C e^{7 x} + \\frac{x^{2} e^{6 x}}{2}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "52bc92ef-b6f7-5adf-9be0-3076c4a4905c"
+          ]
+        },
+        {
+          ":answer-field/id": "d1ed6843-47ec-5c5d-bbfa-0ee8f25be98e",
+          ":answer-field/key": "field-1",
+          ":answer-field/type": ":answer-field.type/select",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "425c21c5-84af-5dce-b328-7161780e7b63",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "e^{- 5 x}"
+            },
+            {
+              ":answer/id": "4a39db57-01ad-5b01-bfb9-efee12a97f34",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "e^{- 3 x}"
+            },
+            {
+              ":answer/id": "d98b3698-497d-587d-bbe8-0856e3ce75fc",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "e^{- 6 x}"
+            },
+            {
+              ":answer/id": "8fb99cc3-6f0a-5779-8aae-67a17a601a24",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "e^{- 4 x}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "d98b3698-497d-587d-bbe8-0856e3ce75fc"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "2.1.0",
+      "seed": 94181,
+      "template": "exp_cancel_legacy",
+      "parameters": {
+        "a": 6,
+        "m": 1
+      },
+      "roles": {
+        "if_rank": 0,
+        "homogeneous_delta": 1,
+        "coefficient_error": -1,
+        "factor_candidates": [
+          "-6",
+          "-5",
+          "-4",
+          "-3"
+        ]
+      },
+      "rejections": 0,
+      "bank_profile": "exp_cancel_legacy_authored",
+      "bank_origin": "authored",
+      "evidence_only": false,
+      "raw_ambiguous_bank": false,
+      "source_analysis": {
+        "database": "math",
+        "basis": 3794,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_id": "q-335392",
+      "authored_level_assignment": true,
+      "content_fingerprint": "541f471f0cd8421c0b173e246181515f32f89a1d8bbb25652a2323f226a674bb",
+      "parameter_fingerprint": "ab744576c93429b5062a8a6f46ddf985ab8f4f901afebcfffd9354645afe6870",
+      "plot_rating": "none",
+      "plot_assets": {},
+      "domain": "real x",
+      "sympy_version": "1.14.0",
+      "math_format": "course-academy-tex-v1"
+    }
+  }
+]

@@ -1,0 +1,209 @@
+{
+  "learner_operation": "Normalize the ODE, integrate P to identify I, integrate I Q, divide by I, and impose the initial value; distinguish distractors by these dependencies rather than choice layout.",
+  "fixed_features": [
+    {
+      "feature": "First-order linear ODE with one initial condition",
+      "justification": "Canonical 09d09b0b-2132-59b2-9eb9-ae0748f09252 and all nine practice questions assess this method."
+    },
+    {
+      "feature": "Two select fields: integrating factor and particular solution",
+      "justification": "All nine source banks request these quantities; preserve response workload."
+    },
+    {
+      "feature": "Initial point zero in easy constant-coefficient family",
+      "justification": "Simplifies exponential evaluation and initial-condition arithmetic as in 9213a6d1-eed0-504f-8fac-112369977a1d; does not itself fix either full-function answer."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Integrating factor function",
+      "eligible_variation": "Vary small constant P=a (e.g. 1 and 2), retaining Q=a b; derive I=exp(a x), y=b+(h-b)exp(-a x). Both use exactly the same integration and initial-value steps.",
+      "observed": "easy_constant enforces a=1 in sampler and check_parameters. All 66 eligible current tasks key e^x. The otherwise valid a=2 is rejected."
+    },
+    {
+      "role": "Particular solution and sign of homogeneous term",
+      "eligible_variation": "Vary forcing equilibrium b and initial value h so y and sign of h-b change.",
+      "observed": "66 valid tasks; 51 negative and 15 positive homogeneous constants. This is useful variation of the second field; it does not remove the first-field shortcut."
+    },
+    {
+      "role": "Correct selection position",
+      "eligible_variation": "Shuffle complete choice banks independently of mathematical identity.",
+      "observed": "Fresh 24 easy records cover all four IF positions; fixed-position strategy first succeeds 6/24. Literal e^x succeeds regardless of position."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "Full bounded easy bank support",
+      "sample_refs": [
+        "easy-domain-records.json",
+        "easy-domain-results.json",
+        "easy-domain-math.json"
+      ],
+      "result": "78 b,h proposals with a=1; 66 accepted, 12 excluded for h=0 or h=b. Both h signs and homogeneous-constant signs survive. All 66 IF keys equal e^x."
+    },
+    {
+      "case": "Fresh seeds and real runner batch",
+      "sample_refs": [
+        "independent-samples.json",
+        "runner-batch.json",
+        "stage-coverage.json"
+      ],
+      "result": "Fresh seeds 70401..70424: 24/24 first answers e^x; runner seeds retained in records: 5/5."
+    },
+    {
+      "case": "Recognizable templates diagnostic",
+      "sample_refs": [
+        "shortcut-results.json",
+        "independent-samples.json"
+      ],
+      "result": "Three fresh records for each other default template. Fixed literal IF also observed within the rational-IF templates; variable exponential templates change IF. Only requested easy scope receives a domain-wide shortcut conclusion."
+    },
+    {
+      "case": "Stored generated easy questions",
+      "sample_refs": [
+        "generated-records.json",
+        "inventory-results.json",
+        "affected-inventory.json"
+      ],
+      "result": "Five stored easy questions reproduced with exact question UUID, prompt, worked solution, and answer UUID sets. Historical generation seed not captured; reconstruction seed 0 does not claim historical recovery."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Keep a=1,b=2,seed=991; change y(0) from -1 to -2.",
+      "expected": "I remains e^x; particular y changes from 2-3e^-x to 2-4e^-x; prompt and initial-condition explanation update.",
+      "observed": "Exact dependencies verified, native grader checks every choice before/after, and actual UI screenshots 002 and 003 show changed prompt, C and y.",
+      "status": "passed",
+      "justification": "Canonical example explicitly uses initial value to determine C after integrating.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-results-complete.json",
+        "render/rendering.json",
+        "render-inspection.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "Keep b=2,h=-1,seed=991; change a=1 to a=2 in easy constant family.",
+      "expected": "Generate y prime + 2y=4, I=e^(2x), y=2-3e^(-2x), using the same stages.",
+      "observed": "Rejected with ValueError: Easy fixes unit P. Strict regression exits 1. No after-prompt or after-grader exists because construction rejects the eligible assignment.",
+      "status": "failed",
+      "justification": "Lesson method tutorial a6a381ed-e9ab-5deb-9d74-30900610edf1 computes I from P, not from an easy-template label. Source cba95378-fbb4-59fe-bb7c-3f501d3e7ee9 demonstrates the same constant-coefficient operation with P=4; a=2 adds no stage or prerequisite.",
+      "sample_refs": [
+        "regression.py",
+        "regression-results.json",
+        "regression-records.json",
+        "regression-run.log"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Keep a=1,b=2,h=-1; change shuffle seed 991 to 992.",
+      "expected": "Prompt, solution, mathematical responses and correct UUIDs preserved; options reorder.",
+      "observed": "All preserved, option ordering changes, native grader accepts same correct choices and rejects wrong ones; screenshots 002 and 004 show identical mathematics.",
+      "status": "passed",
+      "justification": "Choice order is incidental to the integrating-factor reasoning in all source select questions.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-results-complete.json",
+        "render-inspection.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "Easy constant template identity",
+      "subgroup": "All current easy tasks",
+      "scope": "within_template",
+      "strategy": "Choose the literal e^x in field-1 without inspecting any ODE or initial value.",
+      "correct": 66,
+      "total": 66,
+      "baseline": 0.25,
+      "disposition": "defect",
+      "conclusion": "100% versus uniform four-option guessing at 25%; fixed I comes from a=1 construction, not from applying I=exp(integral P). This is a partial-question shortcut, not a claim of 100% full-question success. Native engine accepts this action on all 66.",
+      "sample_refs": [
+        "easy-domain-records.json",
+        "grader-results-complete.json",
+        "stage-coverage.json"
+      ]
+    },
+    {
+      "cue": "Positive initial value within easy template",
+      "subgroup": "h>0 easy tasks",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose e^x in field-1.",
+      "correct": 30,
+      "total": 30,
+      "baseline": 0.25,
+      "disposition": "defect",
+      "conclusion": "100% versus 25% uniform guessing; conditioning on positive h does not remove the fixed answer. Negative h also yields 36/36 in stage coverage.",
+      "sample_refs": [
+        "easy-domain-records.json",
+        "stage-coverage.json",
+        "grader-results-complete.json"
+      ]
+    },
+    {
+      "cue": "First displayed IF option",
+      "subgroup": "Fresh easy seeds 70401..70424",
+      "scope": "within_template",
+      "strategy": "Select first option regardless of its value.",
+      "correct": 6,
+      "total": 24,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "25% equals uniform four-option guessing. Option shuffling breaks this tested position cue, but cannot break the literal-value cue. Same-seed explicit parameter domain was not used to judge position diversity.",
+      "sample_refs": [
+        "independent-delivery-input.json",
+        "stage-coverage.json"
+      ]
+    },
+    {
+      "cue": "Easy template after publication filtering",
+      "subgroup": "Accepted fresh easy records",
+      "scope": "within_template",
+      "strategy": "Always select e^x in field-1.",
+      "correct": 17,
+      "total": 17,
+      "baseline": 0.25,
+      "disposition": "defect",
+      "conclusion": "100% versus 25% guessing after actual validation and inventory/batch deduplication. Runner accepted records independently show 3/3.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "delivery-independent/delivery.json",
+        "delivery-batch/accepted.json",
+        "stage-coverage.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "generator parameter validation",
+      "whole-bank rejection and resampling",
+      "requested difficulty",
+      "publisher prepare_records validation and stable identities",
+      "inventory and within-batch deduplication",
+      "learner fresh-candidate and weighted within-band selection code"
+    ],
+    "sample_refs": [
+      "rejection-results.json",
+      "easy-domain-results.json",
+      "delivery-commands.json",
+      "delivery-independent/delivery.json",
+      "delivery-batch/delivery.json",
+      "stage-coverage.json",
+      "selection-results.json"
+    ],
+    "result": "Easy 66/78 proposals survive bank rules. Fresh 24 -> 17; runner 5 -> 3 against inventory basis 5344. Every survivor keys e^x. Selection groups by difficulty then selects from fresh candidates; any nonempty easy subset preserves the same answer under every order, history and positive easy-band weight. No live learner history or policy frequency is inferred."
+  },
+  "limitations": [
+    "Captured inventory basis 5344 may differ from later inventory.",
+    "No finite audit proves absence of all shortcuts. Domain-wide conclusion is limited to current easy_constant support.",
+    "Other levels receive source replay and small diagnostic/math samples, not an exhaustive pedagogical audit.",
+    "Inventory has no generation metadata; inferred parameters and reproduction seed are retained with exact stored-identity matching, without claiming the historical seed.",
+    "Observed duplicate source banks are explicitly evidence-only; default authored banks are the graded practice scope."
+  ]
+}

@@ -1,0 +1,142 @@
+{
+  "verdict": "accepted",
+  "summary": "No concrete generator defect demonstrated. All eight checks pass within the recorded sampling and captured-inventory limits; package unchanged.",
+  "source_analysis": {
+    "skill": "Solve first-order linear ODEs by integrating factors; identify an integrating factor and the general solution in two select fields.",
+    "reasoning_steps": [
+      "Normalize to y′+P(x)y=Q(x).",
+      "Compute I with I′=P I.",
+      "Recognize (Iy)′=IQ.",
+      "Integrate IQ (directly or one integration by parts), then divide by I and retain C/I.",
+      "Select the corresponding entries from both full banks."
+    ],
+    "invariants": [
+      "First-order linear equation and one arbitrary constant, not an initial-value problem.",
+      "Two select fields for question-bank instances; canonical example is worked prose without fields.",
+      "Positive-x domain for powers/logarithms from P=n/x.",
+      "Source RHS families: constants with P=n/x; scaled derivative/constant P and linear forcing; resonant polynomial-exponential; nonresonant exponential; reciprocal powers times exponential; reciprocal powers times sine/cosine requiring one integration by parts."
+    ],
+    "permitted_variations": [
+      "Small coefficients and signs, derivative scaling and forcing amplitudes consistent with the observed integration workload.",
+      "P=n/x exponent, exponential rate and polynomial degree within simple observed scope.",
+      "Sine/cosine role, nonresonant exponent relationships, resonance when the same direct-integration method applies.",
+      "Distractor mathematical roles and ordering; which entry qualifies must follow the ODE, not a fixed label or position."
+    ],
+    "source_refs": [
+      "68937b54-ea6f-5f98-bed9-b348cf356987",
+      "4a1a6466-f80e-5046-ab51-57e7bbf9cc79",
+      "6d9c5f46-c0e2-521b-a1ea-4da9cf275abc",
+      "d36870f2-83c3-53eb-b9c4-cfdc50550717",
+      "039312c7-7497-5736-bf10-d497d1c61328",
+      "f406ffe6-dbd4-575f-96ea-c90a9a6d9f11",
+      "6530e5db-b521-5f5c-99f7-59872d852e59",
+      "08d92346-a7e8-58c6-8d60-e4702d743dd1",
+      "536cae39-f031-5c30-a8b0-a9b62b8632a3",
+      "89446fd7-75c2-5da5-bd97-469100f3ca7b",
+      "tutorial 14551 / a6a381ed-e9ab-5deb-9d74-30900610edf1: Steps 1–5",
+      "tutorial 14640 / a7f8aa2e-e022-57eb-be82-5f539a4512f6: I′=I P; multiplying by a nonzero constant does not change the method"
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "source-extract.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "source-replays.json",
+        "source-replay-results.json",
+        "source-fidelity.json",
+        "boundary-records.json"
+      ],
+      "details": "All nine source banks, equations and available solution prose replay faithfully. Canonical cosine equation/solution matches. The duplicate-equivalent sine source bank is documented; its repaired five-choice profile passes independently."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "boundary-math.json",
+        "audit-summary.json",
+        "inventory-math.json"
+      ],
+      "details": "Independent parsing of displayed ODEs and choices verifies I′=PI and y′+Py=Q with a nonzero arbitrary-constant term: 74 sample/replay/batch checks and 15 boundary/counterfactual checks pass. Five non-source stored records also have unique valid choices and matching stored keys."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "independent-records.json",
+        "coverage-results.json",
+        "shortcut-results.json",
+        "delivery-easy/delivery.json",
+        "delivery-moderate/delivery.json",
+        "delivery-hard/delivery.json",
+        "delivery-batch/delivery.json",
+        "selection-results.json",
+        "inventory-audit.json",
+        "affected-inventory.json"
+      ],
+      "details": "60 fresh samples span nine templates, signed exponential coefficients, rates, powers and both distractor-role offsets. All survive matching-difficulty delivery; all five actual easy batch records survive. Selection rules preserve support conditional on eligible positively weighted bands; live policy/history was not captured. No affected generated inventory instances demonstrated."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "scope-analysis.json",
+        "source-analysis.json",
+        "source-fidelity.json",
+        "boundary-records.json"
+      ],
+      "details": "Two-select integrating-factor/general-solution contract retained. Easy cases use direct integrations; hard cases add one source-supported integration by parts. No new ODE method or initial-value requirement introduced."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-results.json",
+        "counterfactual-records.json"
+      ],
+      "details": "Real native grade_field: 160 accepted and 492 rejected choice submissions across 80 records, with expected outcomes derived independently from the displayed equations. Both fields and every choice tested. Free-entry notation is inapplicable to this source contract."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render-records.json",
+        "render-all/rendering.json",
+        "render-inspection.json",
+        "render-all/question-007.png",
+        "render-all/question-009.png",
+        "render-all/question-010.png",
+        "render-all/question-011.png"
+      ],
+      "details": "Actual unmodified UI rendered 18 records without MathJax, image or JavaScript errors. Representative screenshots across all nine templates and controlled pairs were visually inspected; controls, notation and solution steps are legible."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "runtime.json",
+        "package-integrity.json",
+        "package-hashes-before.json",
+        "package-hashes-after.json",
+        "relocated-records.json",
+        "review-commands.md"
+      ],
+      "details": "Exact installed Python 3.13.5 and SymPy 1.14.0 match the nested manifest contract. Deterministic replay passes for every template; relocated package reproduces three CLI records. Six invalid input cases reject. No external-output dependency; package hashes unchanged."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "rank-shortcuts.json",
+        "grader-results.json",
+        "selection-results.json"
+      ],
+      "details": "Independent answer-role analysis and relevant/irrelevant controlled pairs pass through math, actual grading and rendering. Position, length and numeric-rank probes include each recognizable template and delivery stages; no reproducible incidental predictor demonstrated. Finite-audit limits are explicit."
+    }
+  },
+  "findings": []
+}

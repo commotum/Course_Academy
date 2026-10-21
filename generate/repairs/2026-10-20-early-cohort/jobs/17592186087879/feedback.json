@@ -1,0 +1,119 @@
+{
+  "verdict": "revise",
+  "summary": "The easy family permits a perfect shortcut: always choose e^x for the integrating-factor field. Five affected stored questions were reproduced. Other checks passed within the tested scope; the package remained unchanged.",
+  "source_analysis": {
+    "skill": "Solve first-order linear initial value problems using integrating factors.",
+    "reasoning_steps": [
+      "Normalize the differential equation.",
+      "Compute I=exp(integral P dx).",
+      "Integrate (Iy)'=IQ.",
+      "Apply the initial condition and select the particular solution."
+    ],
+    "invariants": [
+      "The integrating factor satisfies I'=PI.",
+      "The solution satisfies both the ODE and initial condition.",
+      "Normal practice has two unambiguous select fields."
+    ],
+    "permitted_variations": [
+      "Vary small coefficients and initial values while recomputing dependent content.",
+      "Vary correct expressions and choice positions without changing the method."
+    ],
+    "source_refs": [
+      "9213a6d1-eed0-504f-8fac-112369977a1d",
+      "cba95378-fbb4-59fe-bb7c-3f501d3e7ee9",
+      "09d09b0b-2132-59b2-9eb9-ae0748f09252",
+      "Tutorial a6a381ed-e9ab-5deb-9d74-30900610edf1, steps 1\u20135"
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replays.json",
+        "source-replay-results.json",
+        "source-solution-diffs.json"
+      ],
+      "details": "All nine source prompts and 80 choices replay mathematically. Missing source evidence and duplicate source choices are documented."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "easy-domain-math.json"
+      ],
+      "details": "Exact differentiation and initial-condition checks passed for fresh samples, runner records, controlled cases, and all 66 current easy tasks."
+    },
+    "variety": {
+      "status": "failed",
+      "evidence_paths": [
+        "easy-domain-results.json",
+        "stage-coverage.json",
+        "regression-results.json"
+      ],
+      "details": "Initial values and particular solutions vary, but every easy integrating-factor answer is e^x. An eligible coefficient change is rejected."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "independent-samples.json"
+      ],
+      "details": "Sampled questions preserve the source method, reasoning stages, and select response contract."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input-complete.json",
+        "grader-results-complete.json"
+      ],
+      "details": "Native grader: 163 accepted and 322 rejected checks, with no mismatches or unresolved cases."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-inspection.json"
+      ],
+      "details": "Eleven actual-UI renders passed; eight screenshots were visually inspected, including controlled pairs."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "runtime-results.json",
+        "relocation-results.json",
+        "package-integrity.json"
+      ],
+      "details": "Declared versions match runtime. Deterministic replay and relocated CLI execution pass. All 118 package files remain unchanged."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "regression.py",
+        "regression-results.json",
+        "affected-inventory.json",
+        "generated-records.json"
+      ],
+      "details": "Choosing e^x succeeds on all 66 easy tasks, all 17 accepted fresh records, and all 3 accepted runner records. Five stored easy questions reproduce the weakness."
+    }
+  },
+  "findings": [
+    {
+      "kind": "decision_shortcut",
+      "description": "easy_constant fixes P=1, making \u201cchoose e^x\u201d a perfect first-field strategy without inspecting the equation. Choice shuffling and delivery filtering preserve the shortcut.",
+      "source_refs": [
+        "9213a6d1-eed0-504f-8fac-112369977a1d",
+        "cba95378-fbb4-59fe-bb7c-3f501d3e7ee9",
+        "Tutorial a6a381ed-e9ab-5deb-9d74-30900610edf1, steps 1\u20135",
+        "generate/principles.md, section 2"
+      ],
+      "reproduction": "Run PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python regression.py from evidence_root. It exits 1: easy seed=991, parameters a=2,b=2,h=-1 raises 'Easy fixes unit P'. Expected I=e^(2x) and y=2-3e^(-2x). The a=1 counterpart generates successfully.",
+      "requested_change": "Allow small constant coefficients to change the integrating-factor answer while preserving easy workload. Derive the prompt, banks, solution, and key together. Retain the strict coefficient-change regression and rerun shortcut checks after delivery filtering."
+    }
+  ],
+  "repair_history_file": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186087879/repair-history.json",
+  "instruction": "Fix the root cause, retain every earlier counterexample, and declare executable checks in repair-regressions.json. A failed check is another repair task, not permission to abandon the generator."
+}

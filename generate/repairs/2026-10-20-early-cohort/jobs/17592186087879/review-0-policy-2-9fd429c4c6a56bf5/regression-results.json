@@ -1,0 +1,30 @@
+{
+  "command": "Strict regression: same-method easy coefficient change must be supported.\nRun: PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python regression.py\nExpected on reviewed package: exit 1, with regression-results.json retaining failure.\n",
+  "cases": [
+    {
+      "parameters": {
+        "a": 1,
+        "b": 2,
+        "h": -1
+      },
+      "accepted": true,
+      "correct_IF": "e^{x}",
+      "expected_IF": "exp(x)",
+      "passed": true
+    },
+    {
+      "parameters": {
+        "a": 2,
+        "b": 2,
+        "h": -1
+      },
+      "accepted": false,
+      "expected_IF": "exp(2*x)",
+      "expected_y": "2 - 3*exp(-2*x)",
+      "exception": "Easy fixes unit P",
+      "passed": false
+    }
+  ],
+  "passed": false,
+  "reason": "Both integrate constant P and apply y(0)=-1 to y=2+C exp(-a x). a=2 introduces no operator, prerequisite, or extra solution stage."
+}

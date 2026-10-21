@@ -1,0 +1,938 @@
+{
+  "learner_operation": "Identify P in y prime+Py=Q; compute I=exp(integral P), integrate IQ and impose the initial value. For constant P=a this legitimately simplifies to recognizing e^(a x), b=Q/a and C=h-b.",
+  "fixed_features": [
+    {
+      "feature": "Two selects, one for I and one for the particular y; four and five choices respectively",
+      "justification": "The banked source questions request these quantities; a single correct candidate per field is the response contract."
+    },
+    {
+      "feature": "Easy constant P positive integer 1..6, Q=a b with positive b 1..6, initial point 0",
+      "justification": "Conservative constant-coefficient practice grounded in source 9213a6d1 (P=1) and cba95378 (P=4). Changing a only changes an elementary exponential primitive, while Q=a b keeps arithmetic comparable. Other source families remain available at their source difficulty."
+    },
+    {
+      "feature": "Easy excludes h=0 and equilibrium C=0",
+      "justification": "Explicitly bounded nondegenerate practice family retains IC and homogeneous-component discrimination with unambiguous banks; not asserted to be a mathematical necessity. These unchanged exclusions do not constrain a or the integrating-factor decision."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Integrating-factor coefficient and selected candidate",
+      "eligible_variation": "a may change independently of b,h; correct option rank/position may vary",
+      "observed": "All six a values, all four IF ranks and positions in 48 independent easy records. Former e^x cue succeeds 11/48."
+    },
+    {
+      "role": "Particular level and integration constant",
+      "eligible_variation": "b,h may vary; C=h-b can be positive or negative; which solution candidate satisfies both conditions must follow",
+      "observed": "Both C signs, both initial-value signs and all five solution positions. Held a=2,b=2 with h=-1 to 3 changes y while preserving I."
+    },
+    {
+      "role": "Alternative slope shared between fields",
+      "eligible_variation": "d is distinct from a and both roles occur in the solution bank; extra-candidate slope can match either",
+      "observed": "Repeated-slope strategy 28/48 after filtering versus 1/2 two-slope baseline; no perfect predictor in positive/negative initial-value subgroups."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "Independent revised easy construction and delivered coefficient/rank/position cases",
+      "sample_refs": [
+        "independent-delivery-input.json",
+        "delivery-independent/accepted.json",
+        "stage-coverage.json"
+      ],
+      "result": "{\"count\": 48, \"coefficients\": {\"1\": 11, \"5\": 7, \"3\": 12, \"2\": 7, \"6\": 7, \"4\": 4}, \"h_signs\": {\"negative\": 35, \"positive\": 13}, \"c_signs\": {\"negative\": 42, \"positive\": 6}, \"IF_positions\": {\"1\": 12, \"3\": 12, \"2\": 12, \"0\": 12}, \"y_positions\": {\"4\": 12, \"2\": 7, \"3\": 8, \"0\": 10, \"1\": 11}, \"IF_ranks\": {\"0\": 13, \"3\": 11, \"2\": 10, \"1\": 14}}"
+    },
+    {
+      "case": "Runner batch before/after requested difficulty and deduplication",
+      "sample_refs": [
+        "runner-batch.json",
+        "delivery-batch/accepted.json",
+        "stage-coverage.json"
+      ],
+      "result": "All 5 accepted; coefficients 1,3,4 remain. The 5-record batch alone is not treated as full coverage."
+    },
+    {
+      "case": "Prior counterexample and coefficient boundaries",
+      "sample_refs": [
+        "regression-records.json",
+        "regression-results.json",
+        "boundary-records.json",
+        "retained-check-results.json"
+      ],
+      "result": "a=2,b=2,h=-1 succeeds; all six forced coefficients pass retained check; same check demonstrably fails on old code. Boundary values 1,6 and h=-6,6 have independently verified keys."
+    },
+    {
+      "case": "Rejection/resampling",
+      "sample_refs": [
+        "resampling-traces.json",
+        "rejection-results.json",
+        "stage-coverage.json"
+      ],
+      "result": "15 proposals produce 12 records; rejected proposals are h=0 or h=b, not a-dependent suppression. Invalid a=0,7 and out-of-range h rejected. Six coefficients survive in the larger fresh delivered sample."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "With seed=27181,b=2,h=-1 fixed, change a=1 to 2 and then 6",
+      "expected": "P,Q,I,y and dependent solution expressions change coherently; I=e^(a x),y=2-3e^(-a x)",
+      "observed": "Exact math verifies changes; native grader accepts exactly the corresponding I,y in each bank; UI screenshots 1,2,3 show correct updated prompts and worked primitive 1/a.",
+      "status": "passed",
+      "justification": "Tutorial a6a381ed steps 1-5 depend on P; source constant coefficients 1 and 4 demonstrate coefficient assignment is incidental.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-results-complete.json",
+        "render/rendering.json",
+        "render/question-001.png",
+        "render/question-002.png",
+        "render/question-003.png"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "Hold seed=27181,a=2,b=2; change h=-1 to 3",
+      "expected": "I preserved, C=-3 becomes 1, y changes from 2-3e^(-2x) to 2+e^(-2x)",
+      "observed": "Prompt, IC substitution, key and conclusion change together. All-choice native grading agrees with independent ODE+IC tests. Screenshots 2,4 confirm.",
+      "status": "passed",
+      "justification": "Initial condition selects the particular solution after integrating; it does not enter I.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-input-complete.json",
+        "grader-results-complete.json",
+        "render/question-002.png",
+        "render/question-004.png"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Hold a=2,b=2,h=-1; seed 27181 to 27182 changes distractors/order",
+      "expected": "Mathematical answers, prompt and worked solution preserved despite incidental bank/UUID changes",
+      "observed": "Both mathematical answers, prompt and worked solution are equal. All-choice grading uses each actual bank UUID. Screenshots 2,5 display the same mathematical response.",
+      "status": "passed",
+      "justification": "Source response is determined by the ODE and initial condition, independently of choice layout or distractor recipe.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-results-complete.json",
+        "render/question-002.png",
+        "render/question-005.png"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "strategy": "IF always e^x",
+      "correct": 11,
+      "total": 48,
+      "baseline": 0.25,
+      "cue": "IF always e^x",
+      "subgroup": "fresh accepted / easy_constant",
+      "scope": "within_template",
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among four IF candidates. This bounded probe does not identify a deterministic answer; small runner subgroup is not used to infer global absence.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json",
+        "grader-results-complete.json"
+      ]
+    },
+    {
+      "strategy": "IF first",
+      "correct": 12,
+      "total": 48,
+      "baseline": 0.25,
+      "cue": "IF first",
+      "subgroup": "fresh accepted / easy_constant",
+      "scope": "within_template",
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among four IF candidates. This bounded probe does not identify a deterministic answer; small runner subgroup is not used to infer global absence.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json",
+        "grader-results-complete.json"
+      ]
+    },
+    {
+      "strategy": "IF last",
+      "correct": 12,
+      "total": 48,
+      "baseline": 0.25,
+      "cue": "IF last",
+      "subgroup": "fresh accepted / easy_constant",
+      "scope": "within_template",
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among four IF candidates. This bounded probe does not identify a deterministic answer; small runner subgroup is not used to infer global absence.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json",
+        "grader-results-complete.json"
+      ]
+    },
+    {
+      "strategy": "IF shortest",
+      "correct": 14,
+      "total": 48,
+      "baseline": 0.25,
+      "cue": "IF shortest",
+      "subgroup": "fresh accepted / easy_constant",
+      "scope": "within_template",
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among four IF candidates. This bounded probe does not identify a deterministic answer; small runner subgroup is not used to infer global absence.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json",
+        "grader-results-complete.json"
+      ]
+    },
+    {
+      "strategy": "IF longest",
+      "correct": 13,
+      "total": 48,
+      "baseline": 0.25,
+      "cue": "IF longest",
+      "subgroup": "fresh accepted / easy_constant",
+      "scope": "within_template",
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among four IF candidates. This bounded probe does not identify a deterministic answer; small runner subgroup is not used to infer global absence.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json",
+        "grader-results-complete.json"
+      ]
+    },
+    {
+      "strategy": "IF minimum slope",
+      "correct": 13,
+      "total": 48,
+      "baseline": 0.25,
+      "cue": "IF minimum slope",
+      "subgroup": "fresh accepted / easy_constant",
+      "scope": "within_template",
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among four IF candidates. This bounded probe does not identify a deterministic answer; small runner subgroup is not used to infer global absence.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json",
+        "grader-results-complete.json"
+      ]
+    },
+    {
+      "strategy": "IF maximum slope",
+      "correct": 11,
+      "total": 48,
+      "baseline": 0.25,
+      "cue": "IF maximum slope",
+      "subgroup": "fresh accepted / easy_constant",
+      "scope": "within_template",
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among four IF candidates. This bounded probe does not identify a deterministic answer; small runner subgroup is not used to infer global absence.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json",
+        "grader-results-complete.json"
+      ]
+    },
+    {
+      "strategy": "IF most repeated y-bank slope",
+      "correct": 28,
+      "total": 48,
+      "baseline": 0.5,
+      "cue": "IF most repeated y-bank slope",
+      "subgroup": "fresh accepted / easy_constant",
+      "scope": "within_template",
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is 0.5 after narrowing to the two shared slopes; neither multiplicity role determines which slope is correct.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json",
+        "grader-results-complete.json"
+      ]
+    },
+    {
+      "strategy": "y first",
+      "correct": 10,
+      "total": 48,
+      "baseline": 0.2,
+      "cue": "y first",
+      "subgroup": "fresh accepted / easy_constant",
+      "scope": "within_template",
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among five solution candidates. This bounded probe does not identify a deterministic answer; small runner subgroup is not used to infer global absence.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json",
+        "grader-results-complete.json"
+      ]
+    },
+    {
+      "strategy": "y last",
+      "correct": 12,
+      "total": 48,
+      "baseline": 0.2,
+      "cue": "y last",
+      "subgroup": "fresh accepted / easy_constant",
+      "scope": "within_template",
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among five solution candidates. This bounded probe does not identify a deterministic answer; small runner subgroup is not used to infer global absence.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json",
+        "grader-results-complete.json"
+      ]
+    },
+    {
+      "strategy": "y shortest",
+      "correct": 5,
+      "total": 48,
+      "baseline": 0.2,
+      "cue": "y shortest",
+      "subgroup": "fresh accepted / easy_constant",
+      "scope": "within_template",
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among five solution candidates. This bounded probe does not identify a deterministic answer; small runner subgroup is not used to infer global absence.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json",
+        "grader-results-complete.json"
+      ]
+    },
+    {
+      "strategy": "y longest",
+      "correct": 7,
+      "total": 48,
+      "baseline": 0.2,
+      "cue": "y longest",
+      "subgroup": "fresh accepted / easy_constant",
+      "scope": "within_template",
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among five solution candidates. This bounded probe does not identify a deterministic answer; small runner subgroup is not used to infer global absence.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json",
+        "grader-results-complete.json"
+      ]
+    },
+    {
+      "strategy": "IF always e^x",
+      "correct": 10,
+      "total": 35,
+      "baseline": 0.25,
+      "cue": "IF always e^x",
+      "subgroup": "fresh accepted / negative initial value",
+      "scope": "other_recognizable_subgroup",
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among four IF candidates. This bounded probe does not identify a deterministic answer; small runner subgroup is not used to infer global absence.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json",
+        "grader-results-complete.json"
+      ]
+    },
+    {
+      "strategy": "IF first",
+      "correct": 8,
+      "total": 35,
+      "baseline": 0.25,
+      "cue": "IF first",
+      "subgroup": "fresh accepted / negative initial value",
+      "scope": "other_recognizable_subgroup",
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among four IF candidates. This bounded probe does not identify a deterministic answer; small runner subgroup is not used to infer global absence.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json",
+        "grader-results-complete.json"
+      ]
+    },
+    {
+      "strategy": "IF last",
+      "correct": 9,
+      "total": 35,
+      "baseline": 0.25,
+      "cue": "IF last",
+      "subgroup": "fresh accepted / negative initial value",
+      "scope": "other_recognizable_subgroup",
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among four IF candidates. This bounded probe does not identify a deterministic answer; small runner subgroup is not used to infer global absence.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json",
+        "grader-results-complete.json"
+      ]
+    },
+    {
+      "strategy": "IF shortest",
+      "correct": 13,
+      "total": 35,
+      "baseline": 0.25,
+      "cue": "IF shortest",
+      "subgroup": "fresh accepted / negative initial value",
+      "scope": "other_recognizable_subgroup",
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among four IF candidates. This bounded probe does not identify a deterministic answer; small runner subgroup is not used to infer global absence.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json",
+        "grader-results-complete.json"
+      ]
+    },
+    {
+      "strategy": "IF longest",
+      "correct": 7,
+      "total": 35,
+      "baseline": 0.25,
+      "cue": "IF longest",
+      "subgroup": "fresh accepted / negative initial value",
+      "scope": "other_recognizable_subgroup",
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among four IF candidates. This bounded probe does not identify a deterministic answer; small runner subgroup is not used to infer global absence.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json",
+        "grader-results-complete.json"
+      ]
+    },
+    {
+      "strategy": "IF minimum slope",
+      "correct": 10,
+      "total": 35,
+      "baseline": 0.25,
+      "cue": "IF minimum slope",
+      "subgroup": "fresh accepted / negative initial value",
+      "scope": "other_recognizable_subgroup",
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among four IF candidates. This bounded probe does not identify a deterministic answer; small runner subgroup is not used to infer global absence.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json",
+        "grader-results-complete.json"
+      ]
+    },
+    {
+      "strategy": "IF maximum slope",
+      "correct": 9,
+      "total": 35,
+      "baseline": 0.25,
+      "cue": "IF maximum slope",
+      "subgroup": "fresh accepted / negative initial value",
+      "scope": "other_recognizable_subgroup",
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among four IF candidates. This bounded probe does not identify a deterministic answer; small runner subgroup is not used to infer global absence.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json",
+        "grader-results-complete.json"
+      ]
+    },
+    {
+      "strategy": "IF most repeated y-bank slope",
+      "correct": 20,
+      "total": 35,
+      "baseline": 0.5,
+      "cue": "IF most repeated y-bank slope",
+      "subgroup": "fresh accepted / negative initial value",
+      "scope": "other_recognizable_subgroup",
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is 0.5 after narrowing to the two shared slopes; neither multiplicity role determines which slope is correct.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json",
+        "grader-results-complete.json"
+      ]
+    },
+    {
+      "strategy": "y first",
+      "correct": 6,
+      "total": 35,
+      "baseline": 0.2,
+      "cue": "y first",
+      "subgroup": "fresh accepted / negative initial value",
+      "scope": "other_recognizable_subgroup",
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among five solution candidates. This bounded probe does not identify a deterministic answer; small runner subgroup is not used to infer global absence.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json",
+        "grader-results-complete.json"
+      ]
+    },
+    {
+      "strategy": "y last",
+      "correct": 10,
+      "total": 35,
+      "baseline": 0.2,
+      "cue": "y last",
+      "subgroup": "fresh accepted / negative initial value",
+      "scope": "other_recognizable_subgroup",
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among five solution candidates. This bounded probe does not identify a deterministic answer; small runner subgroup is not used to infer global absence.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json",
+        "grader-results-complete.json"
+      ]
+    },
+    {
+      "strategy": "y shortest",
+      "correct": 4,
+      "total": 35,
+      "baseline": 0.2,
+      "cue": "y shortest",
+      "subgroup": "fresh accepted / negative initial value",
+      "scope": "other_recognizable_subgroup",
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among five solution candidates. This bounded probe does not identify a deterministic answer; small runner subgroup is not used to infer global absence.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json",
+        "grader-results-complete.json"
+      ]
+    },
+    {
+      "strategy": "y longest",
+      "correct": 4,
+      "total": 35,
+      "baseline": 0.2,
+      "cue": "y longest",
+      "subgroup": "fresh accepted / negative initial value",
+      "scope": "other_recognizable_subgroup",
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among five solution candidates. This bounded probe does not identify a deterministic answer; small runner subgroup is not used to infer global absence.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json",
+        "grader-results-complete.json"
+      ]
+    },
+    {
+      "strategy": "IF always e^x",
+      "correct": 1,
+      "total": 13,
+      "baseline": 0.25,
+      "cue": "IF always e^x",
+      "subgroup": "fresh accepted / positive initial value",
+      "scope": "other_recognizable_subgroup",
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among four IF candidates. This bounded probe does not identify a deterministic answer; small runner subgroup is not used to infer global absence.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json",
+        "grader-results-complete.json"
+      ]
+    },
+    {
+      "strategy": "IF first",
+      "correct": 4,
+      "total": 13,
+      "baseline": 0.25,
+      "cue": "IF first",
+      "subgroup": "fresh accepted / positive initial value",
+      "scope": "other_recognizable_subgroup",
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among four IF candidates. This bounded probe does not identify a deterministic answer; small runner subgroup is not used to infer global absence.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json",
+        "grader-results-complete.json"
+      ]
+    },
+    {
+      "strategy": "IF last",
+      "correct": 3,
+      "total": 13,
+      "baseline": 0.25,
+      "cue": "IF last",
+      "subgroup": "fresh accepted / positive initial value",
+      "scope": "other_recognizable_subgroup",
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among four IF candidates. This bounded probe does not identify a deterministic answer; small runner subgroup is not used to infer global absence.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json",
+        "grader-results-complete.json"
+      ]
+    },
+    {
+      "strategy": "IF shortest",
+      "correct": 1,
+      "total": 13,
+      "baseline": 0.25,
+      "cue": "IF shortest",
+      "subgroup": "fresh accepted / positive initial value",
+      "scope": "other_recognizable_subgroup",
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among four IF candidates. This bounded probe does not identify a deterministic answer; small runner subgroup is not used to infer global absence.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json",
+        "grader-results-complete.json"
+      ]
+    },
+    {
+      "strategy": "IF longest",
+      "correct": 6,
+      "total": 13,
+      "baseline": 0.25,
+      "cue": "IF longest",
+      "subgroup": "fresh accepted / positive initial value",
+      "scope": "other_recognizable_subgroup",
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among four IF candidates. This bounded probe does not identify a deterministic answer; small runner subgroup is not used to infer global absence.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json",
+        "grader-results-complete.json"
+      ]
+    },
+    {
+      "strategy": "IF minimum slope",
+      "correct": 3,
+      "total": 13,
+      "baseline": 0.25,
+      "cue": "IF minimum slope",
+      "subgroup": "fresh accepted / positive initial value",
+      "scope": "other_recognizable_subgroup",
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among four IF candidates. This bounded probe does not identify a deterministic answer; small runner subgroup is not used to infer global absence.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json",
+        "grader-results-complete.json"
+      ]
+    },
+    {
+      "strategy": "IF maximum slope",
+      "correct": 2,
+      "total": 13,
+      "baseline": 0.25,
+      "cue": "IF maximum slope",
+      "subgroup": "fresh accepted / positive initial value",
+      "scope": "other_recognizable_subgroup",
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among four IF candidates. This bounded probe does not identify a deterministic answer; small runner subgroup is not used to infer global absence.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json",
+        "grader-results-complete.json"
+      ]
+    },
+    {
+      "strategy": "IF most repeated y-bank slope",
+      "correct": 8,
+      "total": 13,
+      "baseline": 0.5,
+      "cue": "IF most repeated y-bank slope",
+      "subgroup": "fresh accepted / positive initial value",
+      "scope": "other_recognizable_subgroup",
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is 0.5 after narrowing to the two shared slopes; neither multiplicity role determines which slope is correct.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json",
+        "grader-results-complete.json"
+      ]
+    },
+    {
+      "strategy": "y first",
+      "correct": 4,
+      "total": 13,
+      "baseline": 0.2,
+      "cue": "y first",
+      "subgroup": "fresh accepted / positive initial value",
+      "scope": "other_recognizable_subgroup",
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among five solution candidates. This bounded probe does not identify a deterministic answer; small runner subgroup is not used to infer global absence.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json",
+        "grader-results-complete.json"
+      ]
+    },
+    {
+      "strategy": "y last",
+      "correct": 2,
+      "total": 13,
+      "baseline": 0.2,
+      "cue": "y last",
+      "subgroup": "fresh accepted / positive initial value",
+      "scope": "other_recognizable_subgroup",
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among five solution candidates. This bounded probe does not identify a deterministic answer; small runner subgroup is not used to infer global absence.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json",
+        "grader-results-complete.json"
+      ]
+    },
+    {
+      "strategy": "y shortest",
+      "correct": 1,
+      "total": 13,
+      "baseline": 0.2,
+      "cue": "y shortest",
+      "subgroup": "fresh accepted / positive initial value",
+      "scope": "other_recognizable_subgroup",
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among five solution candidates. This bounded probe does not identify a deterministic answer; small runner subgroup is not used to infer global absence.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json",
+        "grader-results-complete.json"
+      ]
+    },
+    {
+      "strategy": "y longest",
+      "correct": 3,
+      "total": 13,
+      "baseline": 0.2,
+      "cue": "y longest",
+      "subgroup": "fresh accepted / positive initial value",
+      "scope": "other_recognizable_subgroup",
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among five solution candidates. This bounded probe does not identify a deterministic answer; small runner subgroup is not used to infer global absence.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json",
+        "grader-results-complete.json"
+      ]
+    },
+    {
+      "strategy": "IF always e^x",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.25,
+      "cue": "IF always e^x",
+      "subgroup": "runner accepted / easy_constant",
+      "scope": "within_template",
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among four IF candidates. This bounded probe does not identify a deterministic answer; small runner subgroup is not used to infer global absence.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json",
+        "grader-results-complete.json"
+      ]
+    },
+    {
+      "strategy": "IF first",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.25,
+      "cue": "IF first",
+      "subgroup": "runner accepted / easy_constant",
+      "scope": "within_template",
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among four IF candidates. This bounded probe does not identify a deterministic answer; small runner subgroup is not used to infer global absence.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json",
+        "grader-results-complete.json"
+      ]
+    },
+    {
+      "strategy": "IF last",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.25,
+      "cue": "IF last",
+      "subgroup": "runner accepted / easy_constant",
+      "scope": "within_template",
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among four IF candidates. This bounded probe does not identify a deterministic answer; small runner subgroup is not used to infer global absence.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json",
+        "grader-results-complete.json"
+      ]
+    },
+    {
+      "strategy": "IF shortest",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.25,
+      "cue": "IF shortest",
+      "subgroup": "runner accepted / easy_constant",
+      "scope": "within_template",
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among four IF candidates. This bounded probe does not identify a deterministic answer; small runner subgroup is not used to infer global absence.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json",
+        "grader-results-complete.json"
+      ]
+    },
+    {
+      "strategy": "IF longest",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.25,
+      "cue": "IF longest",
+      "subgroup": "runner accepted / easy_constant",
+      "scope": "within_template",
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among four IF candidates. This bounded probe does not identify a deterministic answer; small runner subgroup is not used to infer global absence.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json",
+        "grader-results-complete.json"
+      ]
+    },
+    {
+      "strategy": "IF minimum slope",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.25,
+      "cue": "IF minimum slope",
+      "subgroup": "runner accepted / easy_constant",
+      "scope": "within_template",
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among four IF candidates. This bounded probe does not identify a deterministic answer; small runner subgroup is not used to infer global absence.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json",
+        "grader-results-complete.json"
+      ]
+    },
+    {
+      "strategy": "IF maximum slope",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.25,
+      "cue": "IF maximum slope",
+      "subgroup": "runner accepted / easy_constant",
+      "scope": "within_template",
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among four IF candidates. This bounded probe does not identify a deterministic answer; small runner subgroup is not used to infer global absence.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json",
+        "grader-results-complete.json"
+      ]
+    },
+    {
+      "strategy": "IF most repeated y-bank slope",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.5,
+      "cue": "IF most repeated y-bank slope",
+      "subgroup": "runner accepted / easy_constant",
+      "scope": "within_template",
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is 0.5 after narrowing to the two shared slopes; neither multiplicity role determines which slope is correct.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json",
+        "grader-results-complete.json"
+      ]
+    },
+    {
+      "strategy": "y first",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "cue": "y first",
+      "subgroup": "runner accepted / easy_constant",
+      "scope": "within_template",
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among five solution candidates. This bounded probe does not identify a deterministic answer; small runner subgroup is not used to infer global absence.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json",
+        "grader-results-complete.json"
+      ]
+    },
+    {
+      "strategy": "y last",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "cue": "y last",
+      "subgroup": "runner accepted / easy_constant",
+      "scope": "within_template",
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among five solution candidates. This bounded probe does not identify a deterministic answer; small runner subgroup is not used to infer global absence.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json",
+        "grader-results-complete.json"
+      ]
+    },
+    {
+      "strategy": "y shortest",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "cue": "y shortest",
+      "subgroup": "runner accepted / easy_constant",
+      "scope": "within_template",
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among five solution candidates. This bounded probe does not identify a deterministic answer; small runner subgroup is not used to infer global absence.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json",
+        "grader-results-complete.json"
+      ]
+    },
+    {
+      "strategy": "y longest",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "cue": "y longest",
+      "subgroup": "runner accepted / easy_constant",
+      "scope": "within_template",
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform guessing among five solution candidates. This bounded probe does not identify a deterministic answer; small runner subgroup is not used to infer global absence.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json",
+        "grader-results-complete.json"
+      ]
+    },
+    {
+      "cue": "Coefficient P=a in displayed normalized ODE",
+      "subgroup": "fresh accepted easy_constant",
+      "scope": "within_template",
+      "strategy": "Select e^(a x) by integrating constant P",
+      "correct": 48,
+      "total": 48,
+      "baseline": 0.25,
+      "disposition": "intended_skill",
+      "conclusion": "Baseline is 1/4 uniform IF guessing. Perfect coefficient-to-exponential matching performs the intended integrating-factor calculation.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "math-results.json",
+        "grader-results-complete.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "raw sampler",
+      "whole-bank rejection/resampling",
+      "requested easy difficulty",
+      "actual publisher normalization and key/UUID rewriting",
+      "captured inventory and within-batch deduplication",
+      "conditional within-easy learner selection and explicit history exclusions"
+    ],
+    "sample_refs": [
+      "resampling-traces.json",
+      "delivery-independent/accepted.json",
+      "delivery-independent/delivery.json",
+      "delivery-batch/accepted.json",
+      "delivery-batch/delivery.json",
+      "delivery-normalization.json",
+      "grader-results-complete.json",
+      "selection-results.json",
+      "stage-coverage.json"
+    ],
+    "result": "48/48 fresh and 5/5 runner records survive. Publisher changes IDs while preserving all prompts, solutions and ordered choices; native grader verifies rewritten key wiring. Fresh coverage/probe counts unchanged after delivery. Three 96-draw easy selection scenarios retain all six coefficients. Captured legacy bank remains separately affected; no database writes."
+  },
+  "limitations": [
+    "Targeted revision review: unchanged source-family validation reused only after nine current complete replays match earlier independent records exactly. Six non-easy authored examples provide a small math regression, not another exhaustive audit.",
+    "Captured inventory basis 5344 contains five previously demonstrated legacy easy shortcut records. They remain listed in affected-inventory.json with reproducible complete records; current package acceptance does not certify historical-bank cleanup.",
+    "Within-band selection is tested conditionally: actual live policy weights, histories, task seeds and new database IDs are unavailable. Synthetic new IDs define an explicit allocation scenario; uniform within-band support does not depend on that order.",
+    "Source q-334916 lacks original key/solution. Two source banks contain duplicate correct values; evidence-only replay retains these documented defects while ordinary authored banks reject ambiguity.",
+    "These finite tests do not prove absence of all possible shortcuts. Comparing candidate exponents to P is intended integrating-factor knowledge, not an incidental cue."
+  ]
+}

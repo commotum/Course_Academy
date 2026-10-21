@@ -1,0 +1,3388 @@
+{
+  "learner_operation": "Normalize the derivative coefficient; infer P and Q; compute I=exp(integral P); integrate IQ, divide by I, and distinguish candidate general solutions including the arbitrary-constant term.",
+  "fixed_features": [
+    {
+      "feature": "Two select answers",
+      "justification": "All nine bank questions ask for I and general solution."
+    },
+    {
+      "feature": "Single integration constant",
+      "justification": "First-order general-solution task."
+    },
+    {
+      "feature": "x>0 for power/log families",
+      "justification": "Captured reciprocal-coefficient questions and canonical example explicitly use x>0; it makes exp(n ln x)=x^n valid."
+    },
+    {
+      "feature": "Easy exponential families use direct antiderivatives; hard families use one integration by parts",
+      "justification": "14551 method plus source solutions q-335402, q-339138, q-335409 and canonical e-21742 support these workloads. Adjacent initial-value KP is a separate task."
+    },
+    {
+      "feature": "Observed full-bank profiles require explicit parameters; ordinary sampling uses authored banks",
+      "justification": "Original distractors are source-replay evidence; authored banks retain two-select shape and replace fixed superficial roles. Raw duplicate source bank is evidence-only; repaired bank is tested separately."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Qualifying integrating factor",
+      "eligible_variation": "Its exponent/rate/sign and eligible numeric rank within a same-form bank, driven by normalized P; no fixed label/position.",
+      "observed": "Signs, rates and powers vary; all four displayed positions observed overall. Forced identical IF bank with P sign reversed changes which factor qualifies."
+    },
+    {
+      "role": "General-solution particular term",
+      "eligible_variation": "Forcing amplitude/rate/power and simple sine/cosine role; eligible coefficient/sign competitors change while the integration rule stays fixed.",
+      "observed": "Direct exponential integration, resonance, power integration and one-IBP families pass exact displayed-ODE identities. Both coefficient-error signs observed."
+    },
+    {
+      "role": "General-solution homogeneous term",
+      "eligible_variation": "The exponent is derived from P; competitors can lie above or below it.",
+      "observed": "Both homogeneous exponent offsets observed. Relevant P pair reverses the true exponent; Q-only pair preserves it."
+    },
+    {
+      "role": "Choice layout and correct positions",
+      "eligible_variation": "Ordering is incidental and must not identify a qualifying role.",
+      "observed": "Deterministic shuffling varies positions; before/after seed-only pair preserves equations, keys as mathematical values and solutions."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "exp_forcing",
+      "sample_refs": [
+        "independent-records.json",
+        "coverage-results.json",
+        "boundary-records.json",
+        "boundary-math.json"
+      ],
+      "result": "12 independent samples plus explicit boundary. Displayed IF positions [0, 1, 3]; solution positions [0, 1, 2, 3]; roles {'1,1': 4, '1,-1': 4, '-1,1': 4}. Same mathematical method retained."
+    },
+    {
+      "case": "exp_cancel",
+      "sample_refs": [
+        "independent-records.json",
+        "coverage-results.json",
+        "boundary-records.json",
+        "boundary-math.json"
+      ],
+      "result": "12 independent samples plus explicit boundary. Displayed IF positions [0, 1, 2, 3]; solution positions [0, 1, 2, 3]; roles {'1,1': 6, '1,-1': 4, '-1,1': 2}. Same mathematical method retained."
+    },
+    {
+      "case": "exp_cancel_legacy",
+      "sample_refs": [
+        "independent-records.json",
+        "coverage-results.json",
+        "boundary-records.json",
+        "boundary-math.json"
+      ],
+      "result": "12 independent samples plus explicit boundary. Displayed IF positions [0, 1, 2, 3]; solution positions [0, 1, 2, 3]; roles {'1,1': 6, '1,-1': 4, '-1,1': 2}. Same mathematical method retained."
+    },
+    {
+      "case": "power_constant",
+      "sample_refs": [
+        "independent-records.json",
+        "coverage-results.json",
+        "boundary-records.json",
+        "boundary-math.json"
+      ],
+      "result": "4 independent samples plus explicit boundary. Displayed IF positions [0, 3]; solution positions [0, 2, 3]; roles {'1,1': 2, '1,-1': 1, '-1,1': 1}. Same mathematical method retained."
+    },
+    {
+      "case": "power_constant_legacy",
+      "sample_refs": [
+        "independent-records.json",
+        "coverage-results.json",
+        "boundary-records.json",
+        "boundary-math.json"
+      ],
+      "result": "4 independent samples plus explicit boundary. Displayed IF positions [0, 3]; solution positions [0, 2, 3]; roles {'1,1': 2, '1,-1': 1, '-1,1': 1}. Same mathematical method retained."
+    },
+    {
+      "case": "power_exp",
+      "sample_refs": [
+        "independent-records.json",
+        "coverage-results.json",
+        "boundary-records.json",
+        "boundary-math.json"
+      ],
+      "result": "4 independent samples plus explicit boundary. Displayed IF positions [0, 1, 3]; solution positions [0, 2, 3]; roles {'1,1': 2, '1,-1': 1, '-1,1': 1}. Same mathematical method retained."
+    },
+    {
+      "case": "power_sin",
+      "sample_refs": [
+        "independent-records.json",
+        "coverage-results.json",
+        "boundary-records.json",
+        "boundary-math.json"
+      ],
+      "result": "4 independent samples plus explicit boundary. Displayed IF positions [0, 1, 3]; solution positions [1, 2, 3, 4]; roles {'1,1': 2, '1,-1': 1, '-1,1': 1}. Same mathematical method retained."
+    },
+    {
+      "case": "power_cos",
+      "sample_refs": [
+        "independent-records.json",
+        "coverage-results.json",
+        "boundary-records.json",
+        "boundary-math.json"
+      ],
+      "result": "4 independent samples plus explicit boundary. Displayed IF positions [0, 1, 3]; solution positions [1, 2, 3, 4]; roles {'1,1': 2, '1,-1': 1, '-1,1': 1}. Same mathematical method retained."
+    },
+    {
+      "case": "normalize_linear",
+      "sample_refs": [
+        "independent-records.json",
+        "coverage-results.json",
+        "boundary-records.json",
+        "boundary-math.json"
+      ],
+      "result": "4 independent samples plus explicit boundary. Displayed IF positions [0, 1, 2]; solution positions [0, 2, 3]; roles {'1,1': 2, '1,-1': 1, '-1,1': 1}. Same mathematical method retained."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "exp_forcing: a=3 to a=-3 with b=6,r=2, seed=83017, identical forced factor candidates [-3,-2,2,3] and other role settings.",
+      "expected": "P flips -3 to +3; IF changes e^(-3x) to e^(3x), and Y changes -6e^(2x)+Ce^(3x) to (6/5)e^(2x)+Ce^(-3x). Prompt, explanation and grading must change together.",
+      "observed": "Independent residuals pass both records and all native choices have correct acceptance/rejection. Actual UI screenshots 010 and 011 show changed P, IF, particular coefficient and homogeneous term throughout.",
+      "status": "passed",
+      "justification": "14551 steps 1–5 and 14640 I′=PI make P answer-bearing. Original q-335402 is one sign assignment, not a constraint.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-input.json",
+        "grader-results.json",
+        "render-all/rendering.json",
+        "render-all/question-010.png",
+        "render-all/question-011.png"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "For the integrating-factor decision, change b=6 to b=8 while keeping a=3,r=2 and the same IF bank.",
+      "expected": "IF remains e^(-3x) because P is unchanged; Q and the particular solution change to 8e^(2x) and -8e^(2x), with the same homogeneous term.",
+      "observed": "Exact value comparison preserves IF; native grading and UI screenshots 010/012 confirm IF preservation and the dependent Y/explanation update.",
+      "status": "passed",
+      "justification": "14551 defines I solely from P, independently of Q. The forcing is irrelevant only to field-1, not field-2.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-results.json",
+        "render-all/question-010.png",
+        "render-all/question-012.png"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Keep the entire ODE, fixed candidate set and roles; change seed 83017 to 83018.",
+      "expected": "Only choice order can change; equation, solution and correct mathematical values remain equal.",
+      "observed": "Exact comparisons preserve I and Y. Both full banks pass native grading; rendered prompt and explanation are preserved in screenshots 010/013.",
+      "status": "passed",
+      "justification": "Answer order is absent from the mathematical integrating-factor method and is incidental to the two-select source contract.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-results.json",
+        "render-all/question-010.png",
+        "render-all/question-013.png"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "first displayed answer / field-1",
+      "subgroup": "raw / all",
+      "scope": "overall",
+      "strategy": "Choose the first option in field-1 without evaluating the ODE.",
+      "correct": 25,
+      "total": 60,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "25/60 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "shortest displayed answer / field-1",
+      "subgroup": "raw / all",
+      "scope": "overall",
+      "strategy": "Choose the shortest option in field-1 without evaluating the ODE.",
+      "correct": 18,
+      "total": 60,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "18/60 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "longest displayed answer / field-1",
+      "subgroup": "raw / all",
+      "scope": "overall",
+      "strategy": "Choose the longest option in field-1 without evaluating the ODE.",
+      "correct": 17,
+      "total": 60,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "17/60 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer / field-2",
+      "subgroup": "raw / all",
+      "scope": "overall",
+      "strategy": "Choose the first option in field-2 without evaluating the ODE.",
+      "correct": 13,
+      "total": 60,
+      "baseline": 0.24333333333333332,
+      "disposition": "not_predictive",
+      "conclusion": "13/60 observed successes versus uniform-choice baseline 0.243. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "shortest displayed answer / field-2",
+      "subgroup": "raw / all",
+      "scope": "overall",
+      "strategy": "Choose the shortest option in field-2 without evaluating the ODE.",
+      "correct": 11,
+      "total": 60,
+      "baseline": 0.24333333333333332,
+      "disposition": "not_predictive",
+      "conclusion": "11/60 observed successes versus uniform-choice baseline 0.243. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "longest displayed answer / field-2",
+      "subgroup": "raw / all",
+      "scope": "overall",
+      "strategy": "Choose the longest option in field-2 without evaluating the ODE.",
+      "correct": 10,
+      "total": 60,
+      "baseline": 0.24333333333333332,
+      "disposition": "not_predictive",
+      "conclusion": "10/60 observed successes versus uniform-choice baseline 0.243. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer / field-1",
+      "subgroup": "raw / exp_forcing",
+      "scope": "within_template",
+      "strategy": "Choose the first option in field-1 without evaluating the ODE.",
+      "correct": 7,
+      "total": 12,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "7/12 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "shortest displayed answer / field-1",
+      "subgroup": "raw / exp_forcing",
+      "scope": "within_template",
+      "strategy": "Choose the shortest option in field-1 without evaluating the ODE.",
+      "correct": 4,
+      "total": 12,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "4/12 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "longest displayed answer / field-1",
+      "subgroup": "raw / exp_forcing",
+      "scope": "within_template",
+      "strategy": "Choose the longest option in field-1 without evaluating the ODE.",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "3/12 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer / field-2",
+      "subgroup": "raw / exp_forcing",
+      "scope": "within_template",
+      "strategy": "Choose the first option in field-2 without evaluating the ODE.",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "3/12 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "shortest displayed answer / field-2",
+      "subgroup": "raw / exp_forcing",
+      "scope": "within_template",
+      "strategy": "Choose the shortest option in field-2 without evaluating the ODE.",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "3/12 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "longest displayed answer / field-2",
+      "subgroup": "raw / exp_forcing",
+      "scope": "within_template",
+      "strategy": "Choose the longest option in field-2 without evaluating the ODE.",
+      "correct": 2,
+      "total": 12,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "2/12 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer / field-1",
+      "subgroup": "raw / exp_cancel",
+      "scope": "within_template",
+      "strategy": "Choose the first option in field-1 without evaluating the ODE.",
+      "correct": 5,
+      "total": 12,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "5/12 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "shortest displayed answer / field-1",
+      "subgroup": "raw / exp_cancel",
+      "scope": "within_template",
+      "strategy": "Choose the shortest option in field-1 without evaluating the ODE.",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "3/12 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "longest displayed answer / field-1",
+      "subgroup": "raw / exp_cancel",
+      "scope": "within_template",
+      "strategy": "Choose the longest option in field-1 without evaluating the ODE.",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "3/12 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer / field-2",
+      "subgroup": "raw / exp_cancel",
+      "scope": "within_template",
+      "strategy": "Choose the first option in field-2 without evaluating the ODE.",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "3/12 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "shortest displayed answer / field-2",
+      "subgroup": "raw / exp_cancel",
+      "scope": "within_template",
+      "strategy": "Choose the shortest option in field-2 without evaluating the ODE.",
+      "correct": 2,
+      "total": 12,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "2/12 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "longest displayed answer / field-2",
+      "subgroup": "raw / exp_cancel",
+      "scope": "within_template",
+      "strategy": "Choose the longest option in field-2 without evaluating the ODE.",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "3/12 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer / field-1",
+      "subgroup": "raw / exp_cancel_legacy",
+      "scope": "within_template",
+      "strategy": "Choose the first option in field-1 without evaluating the ODE.",
+      "correct": 5,
+      "total": 12,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "5/12 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "shortest displayed answer / field-1",
+      "subgroup": "raw / exp_cancel_legacy",
+      "scope": "within_template",
+      "strategy": "Choose the shortest option in field-1 without evaluating the ODE.",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "3/12 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "longest displayed answer / field-1",
+      "subgroup": "raw / exp_cancel_legacy",
+      "scope": "within_template",
+      "strategy": "Choose the longest option in field-1 without evaluating the ODE.",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "3/12 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer / field-2",
+      "subgroup": "raw / exp_cancel_legacy",
+      "scope": "within_template",
+      "strategy": "Choose the first option in field-2 without evaluating the ODE.",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "3/12 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "shortest displayed answer / field-2",
+      "subgroup": "raw / exp_cancel_legacy",
+      "scope": "within_template",
+      "strategy": "Choose the shortest option in field-2 without evaluating the ODE.",
+      "correct": 2,
+      "total": 12,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "2/12 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "longest displayed answer / field-2",
+      "subgroup": "raw / exp_cancel_legacy",
+      "scope": "within_template",
+      "strategy": "Choose the longest option in field-2 without evaluating the ODE.",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "3/12 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer / field-1",
+      "subgroup": "raw / power_constant",
+      "scope": "within_template",
+      "strategy": "Choose the first option in field-1 without evaluating the ODE.",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "2/4 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "shortest displayed answer / field-1",
+      "subgroup": "raw / power_constant",
+      "scope": "within_template",
+      "strategy": "Choose the shortest option in field-1 without evaluating the ODE.",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "2/4 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "longest displayed answer / field-1",
+      "subgroup": "raw / power_constant",
+      "scope": "within_template",
+      "strategy": "Choose the longest option in field-1 without evaluating the ODE.",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "2/4 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer / field-2",
+      "subgroup": "raw / power_constant",
+      "scope": "within_template",
+      "strategy": "Choose the first option in field-2 without evaluating the ODE.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "1/4 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "shortest displayed answer / field-2",
+      "subgroup": "raw / power_constant",
+      "scope": "within_template",
+      "strategy": "Choose the shortest option in field-2 without evaluating the ODE.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "1/4 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "longest displayed answer / field-2",
+      "subgroup": "raw / power_constant",
+      "scope": "within_template",
+      "strategy": "Choose the longest option in field-2 without evaluating the ODE.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "0/4 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer / field-1",
+      "subgroup": "raw / power_constant_legacy",
+      "scope": "within_template",
+      "strategy": "Choose the first option in field-1 without evaluating the ODE.",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "2/4 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "shortest displayed answer / field-1",
+      "subgroup": "raw / power_constant_legacy",
+      "scope": "within_template",
+      "strategy": "Choose the shortest option in field-1 without evaluating the ODE.",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "2/4 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "longest displayed answer / field-1",
+      "subgroup": "raw / power_constant_legacy",
+      "scope": "within_template",
+      "strategy": "Choose the longest option in field-1 without evaluating the ODE.",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "2/4 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer / field-2",
+      "subgroup": "raw / power_constant_legacy",
+      "scope": "within_template",
+      "strategy": "Choose the first option in field-2 without evaluating the ODE.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "1/4 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "shortest displayed answer / field-2",
+      "subgroup": "raw / power_constant_legacy",
+      "scope": "within_template",
+      "strategy": "Choose the shortest option in field-2 without evaluating the ODE.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "1/4 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "longest displayed answer / field-2",
+      "subgroup": "raw / power_constant_legacy",
+      "scope": "within_template",
+      "strategy": "Choose the longest option in field-2 without evaluating the ODE.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "0/4 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer / field-1",
+      "subgroup": "raw / power_exp",
+      "scope": "within_template",
+      "strategy": "Choose the first option in field-1 without evaluating the ODE.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "1/4 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "shortest displayed answer / field-1",
+      "subgroup": "raw / power_exp",
+      "scope": "within_template",
+      "strategy": "Choose the shortest option in field-1 without evaluating the ODE.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "1/4 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "longest displayed answer / field-1",
+      "subgroup": "raw / power_exp",
+      "scope": "within_template",
+      "strategy": "Choose the longest option in field-1 without evaluating the ODE.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "1/4 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer / field-2",
+      "subgroup": "raw / power_exp",
+      "scope": "within_template",
+      "strategy": "Choose the first option in field-2 without evaluating the ODE.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "1/4 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "shortest displayed answer / field-2",
+      "subgroup": "raw / power_exp",
+      "scope": "within_template",
+      "strategy": "Choose the shortest option in field-2 without evaluating the ODE.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "1/4 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "longest displayed answer / field-2",
+      "subgroup": "raw / power_exp",
+      "scope": "within_template",
+      "strategy": "Choose the longest option in field-2 without evaluating the ODE.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "1/4 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer / field-1",
+      "subgroup": "raw / power_sin",
+      "scope": "within_template",
+      "strategy": "Choose the first option in field-1 without evaluating the ODE.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "1/4 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "shortest displayed answer / field-1",
+      "subgroup": "raw / power_sin",
+      "scope": "within_template",
+      "strategy": "Choose the shortest option in field-1 without evaluating the ODE.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "1/4 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "longest displayed answer / field-1",
+      "subgroup": "raw / power_sin",
+      "scope": "within_template",
+      "strategy": "Choose the longest option in field-1 without evaluating the ODE.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "1/4 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer / field-2",
+      "subgroup": "raw / power_sin",
+      "scope": "within_template",
+      "strategy": "Choose the first option in field-2 without evaluating the ODE.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/4 observed successes versus uniform-choice baseline 0.200. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "shortest displayed answer / field-2",
+      "subgroup": "raw / power_sin",
+      "scope": "within_template",
+      "strategy": "Choose the shortest option in field-2 without evaluating the ODE.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/4 observed successes versus uniform-choice baseline 0.200. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "longest displayed answer / field-2",
+      "subgroup": "raw / power_sin",
+      "scope": "within_template",
+      "strategy": "Choose the longest option in field-2 without evaluating the ODE.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/4 observed successes versus uniform-choice baseline 0.200. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer / field-1",
+      "subgroup": "raw / power_cos",
+      "scope": "within_template",
+      "strategy": "Choose the first option in field-1 without evaluating the ODE.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "1/4 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "shortest displayed answer / field-1",
+      "subgroup": "raw / power_cos",
+      "scope": "within_template",
+      "strategy": "Choose the shortest option in field-1 without evaluating the ODE.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "1/4 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "longest displayed answer / field-1",
+      "subgroup": "raw / power_cos",
+      "scope": "within_template",
+      "strategy": "Choose the longest option in field-1 without evaluating the ODE.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "1/4 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer / field-2",
+      "subgroup": "raw / power_cos",
+      "scope": "within_template",
+      "strategy": "Choose the first option in field-2 without evaluating the ODE.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/4 observed successes versus uniform-choice baseline 0.200. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "shortest displayed answer / field-2",
+      "subgroup": "raw / power_cos",
+      "scope": "within_template",
+      "strategy": "Choose the shortest option in field-2 without evaluating the ODE.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/4 observed successes versus uniform-choice baseline 0.200. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "longest displayed answer / field-2",
+      "subgroup": "raw / power_cos",
+      "scope": "within_template",
+      "strategy": "Choose the longest option in field-2 without evaluating the ODE.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/4 observed successes versus uniform-choice baseline 0.200. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer / field-1",
+      "subgroup": "raw / normalize_linear",
+      "scope": "within_template",
+      "strategy": "Choose the first option in field-1 without evaluating the ODE.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "1/4 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "shortest displayed answer / field-1",
+      "subgroup": "raw / normalize_linear",
+      "scope": "within_template",
+      "strategy": "Choose the shortest option in field-1 without evaluating the ODE.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "1/4 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "longest displayed answer / field-1",
+      "subgroup": "raw / normalize_linear",
+      "scope": "within_template",
+      "strategy": "Choose the longest option in field-1 without evaluating the ODE.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "1/4 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer / field-2",
+      "subgroup": "raw / normalize_linear",
+      "scope": "within_template",
+      "strategy": "Choose the first option in field-2 without evaluating the ODE.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "1/4 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "shortest displayed answer / field-2",
+      "subgroup": "raw / normalize_linear",
+      "scope": "within_template",
+      "strategy": "Choose the shortest option in field-2 without evaluating the ODE.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "1/4 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "longest displayed answer / field-2",
+      "subgroup": "raw / normalize_linear",
+      "scope": "within_template",
+      "strategy": "Choose the longest option in field-2 without evaluating the ODE.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "1/4 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer / field-1",
+      "subgroup": "accepted-easy / all",
+      "scope": "overall",
+      "strategy": "Choose the first option in field-1 without evaluating the ODE.",
+      "correct": 17,
+      "total": 36,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "17/36 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "shortest displayed answer / field-1",
+      "subgroup": "accepted-easy / all",
+      "scope": "overall",
+      "strategy": "Choose the shortest option in field-1 without evaluating the ODE.",
+      "correct": 10,
+      "total": 36,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "10/36 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "longest displayed answer / field-1",
+      "subgroup": "accepted-easy / all",
+      "scope": "overall",
+      "strategy": "Choose the longest option in field-1 without evaluating the ODE.",
+      "correct": 9,
+      "total": 36,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "9/36 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer / field-2",
+      "subgroup": "accepted-easy / all",
+      "scope": "overall",
+      "strategy": "Choose the first option in field-2 without evaluating the ODE.",
+      "correct": 9,
+      "total": 36,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "9/36 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "shortest displayed answer / field-2",
+      "subgroup": "accepted-easy / all",
+      "scope": "overall",
+      "strategy": "Choose the shortest option in field-2 without evaluating the ODE.",
+      "correct": 7,
+      "total": 36,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "7/36 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "longest displayed answer / field-2",
+      "subgroup": "accepted-easy / all",
+      "scope": "overall",
+      "strategy": "Choose the longest option in field-2 without evaluating the ODE.",
+      "correct": 8,
+      "total": 36,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "8/36 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer / field-1",
+      "subgroup": "accepted-easy / exp_forcing",
+      "scope": "within_template",
+      "strategy": "Choose the first option in field-1 without evaluating the ODE.",
+      "correct": 7,
+      "total": 12,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "7/12 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "shortest displayed answer / field-1",
+      "subgroup": "accepted-easy / exp_forcing",
+      "scope": "within_template",
+      "strategy": "Choose the shortest option in field-1 without evaluating the ODE.",
+      "correct": 4,
+      "total": 12,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "4/12 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "longest displayed answer / field-1",
+      "subgroup": "accepted-easy / exp_forcing",
+      "scope": "within_template",
+      "strategy": "Choose the longest option in field-1 without evaluating the ODE.",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "3/12 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer / field-2",
+      "subgroup": "accepted-easy / exp_forcing",
+      "scope": "within_template",
+      "strategy": "Choose the first option in field-2 without evaluating the ODE.",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "3/12 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "shortest displayed answer / field-2",
+      "subgroup": "accepted-easy / exp_forcing",
+      "scope": "within_template",
+      "strategy": "Choose the shortest option in field-2 without evaluating the ODE.",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "3/12 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "longest displayed answer / field-2",
+      "subgroup": "accepted-easy / exp_forcing",
+      "scope": "within_template",
+      "strategy": "Choose the longest option in field-2 without evaluating the ODE.",
+      "correct": 2,
+      "total": 12,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "2/12 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer / field-1",
+      "subgroup": "accepted-easy / exp_cancel",
+      "scope": "within_template",
+      "strategy": "Choose the first option in field-1 without evaluating the ODE.",
+      "correct": 5,
+      "total": 12,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "5/12 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "shortest displayed answer / field-1",
+      "subgroup": "accepted-easy / exp_cancel",
+      "scope": "within_template",
+      "strategy": "Choose the shortest option in field-1 without evaluating the ODE.",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "3/12 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "longest displayed answer / field-1",
+      "subgroup": "accepted-easy / exp_cancel",
+      "scope": "within_template",
+      "strategy": "Choose the longest option in field-1 without evaluating the ODE.",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "3/12 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer / field-2",
+      "subgroup": "accepted-easy / exp_cancel",
+      "scope": "within_template",
+      "strategy": "Choose the first option in field-2 without evaluating the ODE.",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "3/12 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "shortest displayed answer / field-2",
+      "subgroup": "accepted-easy / exp_cancel",
+      "scope": "within_template",
+      "strategy": "Choose the shortest option in field-2 without evaluating the ODE.",
+      "correct": 2,
+      "total": 12,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "2/12 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "longest displayed answer / field-2",
+      "subgroup": "accepted-easy / exp_cancel",
+      "scope": "within_template",
+      "strategy": "Choose the longest option in field-2 without evaluating the ODE.",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "3/12 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer / field-1",
+      "subgroup": "accepted-easy / exp_cancel_legacy",
+      "scope": "within_template",
+      "strategy": "Choose the first option in field-1 without evaluating the ODE.",
+      "correct": 5,
+      "total": 12,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "5/12 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "shortest displayed answer / field-1",
+      "subgroup": "accepted-easy / exp_cancel_legacy",
+      "scope": "within_template",
+      "strategy": "Choose the shortest option in field-1 without evaluating the ODE.",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "3/12 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "longest displayed answer / field-1",
+      "subgroup": "accepted-easy / exp_cancel_legacy",
+      "scope": "within_template",
+      "strategy": "Choose the longest option in field-1 without evaluating the ODE.",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "3/12 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer / field-2",
+      "subgroup": "accepted-easy / exp_cancel_legacy",
+      "scope": "within_template",
+      "strategy": "Choose the first option in field-2 without evaluating the ODE.",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "3/12 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "shortest displayed answer / field-2",
+      "subgroup": "accepted-easy / exp_cancel_legacy",
+      "scope": "within_template",
+      "strategy": "Choose the shortest option in field-2 without evaluating the ODE.",
+      "correct": 2,
+      "total": 12,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "2/12 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "longest displayed answer / field-2",
+      "subgroup": "accepted-easy / exp_cancel_legacy",
+      "scope": "within_template",
+      "strategy": "Choose the longest option in field-2 without evaluating the ODE.",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "3/12 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer / field-1",
+      "subgroup": "accepted-moderate / all",
+      "scope": "overall",
+      "strategy": "Choose the first option in field-1 without evaluating the ODE.",
+      "correct": 5,
+      "total": 12,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "5/12 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "shortest displayed answer / field-1",
+      "subgroup": "accepted-moderate / all",
+      "scope": "overall",
+      "strategy": "Choose the shortest option in field-1 without evaluating the ODE.",
+      "correct": 5,
+      "total": 12,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "5/12 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "longest displayed answer / field-1",
+      "subgroup": "accepted-moderate / all",
+      "scope": "overall",
+      "strategy": "Choose the longest option in field-1 without evaluating the ODE.",
+      "correct": 5,
+      "total": 12,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "5/12 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer / field-2",
+      "subgroup": "accepted-moderate / all",
+      "scope": "overall",
+      "strategy": "Choose the first option in field-2 without evaluating the ODE.",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "3/12 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "shortest displayed answer / field-2",
+      "subgroup": "accepted-moderate / all",
+      "scope": "overall",
+      "strategy": "Choose the shortest option in field-2 without evaluating the ODE.",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "3/12 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "longest displayed answer / field-2",
+      "subgroup": "accepted-moderate / all",
+      "scope": "overall",
+      "strategy": "Choose the longest option in field-2 without evaluating the ODE.",
+      "correct": 1,
+      "total": 12,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "1/12 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer / field-1",
+      "subgroup": "accepted-moderate / power_constant",
+      "scope": "within_template",
+      "strategy": "Choose the first option in field-1 without evaluating the ODE.",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "2/4 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "shortest displayed answer / field-1",
+      "subgroup": "accepted-moderate / power_constant",
+      "scope": "within_template",
+      "strategy": "Choose the shortest option in field-1 without evaluating the ODE.",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "2/4 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "longest displayed answer / field-1",
+      "subgroup": "accepted-moderate / power_constant",
+      "scope": "within_template",
+      "strategy": "Choose the longest option in field-1 without evaluating the ODE.",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "2/4 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer / field-2",
+      "subgroup": "accepted-moderate / power_constant",
+      "scope": "within_template",
+      "strategy": "Choose the first option in field-2 without evaluating the ODE.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "1/4 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "shortest displayed answer / field-2",
+      "subgroup": "accepted-moderate / power_constant",
+      "scope": "within_template",
+      "strategy": "Choose the shortest option in field-2 without evaluating the ODE.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "1/4 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "longest displayed answer / field-2",
+      "subgroup": "accepted-moderate / power_constant",
+      "scope": "within_template",
+      "strategy": "Choose the longest option in field-2 without evaluating the ODE.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "0/4 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer / field-1",
+      "subgroup": "accepted-moderate / power_constant_legacy",
+      "scope": "within_template",
+      "strategy": "Choose the first option in field-1 without evaluating the ODE.",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "2/4 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "shortest displayed answer / field-1",
+      "subgroup": "accepted-moderate / power_constant_legacy",
+      "scope": "within_template",
+      "strategy": "Choose the shortest option in field-1 without evaluating the ODE.",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "2/4 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "longest displayed answer / field-1",
+      "subgroup": "accepted-moderate / power_constant_legacy",
+      "scope": "within_template",
+      "strategy": "Choose the longest option in field-1 without evaluating the ODE.",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "2/4 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer / field-2",
+      "subgroup": "accepted-moderate / power_constant_legacy",
+      "scope": "within_template",
+      "strategy": "Choose the first option in field-2 without evaluating the ODE.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "1/4 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "shortest displayed answer / field-2",
+      "subgroup": "accepted-moderate / power_constant_legacy",
+      "scope": "within_template",
+      "strategy": "Choose the shortest option in field-2 without evaluating the ODE.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "1/4 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "longest displayed answer / field-2",
+      "subgroup": "accepted-moderate / power_constant_legacy",
+      "scope": "within_template",
+      "strategy": "Choose the longest option in field-2 without evaluating the ODE.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "0/4 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer / field-1",
+      "subgroup": "accepted-moderate / power_exp",
+      "scope": "within_template",
+      "strategy": "Choose the first option in field-1 without evaluating the ODE.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "1/4 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "shortest displayed answer / field-1",
+      "subgroup": "accepted-moderate / power_exp",
+      "scope": "within_template",
+      "strategy": "Choose the shortest option in field-1 without evaluating the ODE.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "1/4 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "longest displayed answer / field-1",
+      "subgroup": "accepted-moderate / power_exp",
+      "scope": "within_template",
+      "strategy": "Choose the longest option in field-1 without evaluating the ODE.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "1/4 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer / field-2",
+      "subgroup": "accepted-moderate / power_exp",
+      "scope": "within_template",
+      "strategy": "Choose the first option in field-2 without evaluating the ODE.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "1/4 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "shortest displayed answer / field-2",
+      "subgroup": "accepted-moderate / power_exp",
+      "scope": "within_template",
+      "strategy": "Choose the shortest option in field-2 without evaluating the ODE.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "1/4 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "longest displayed answer / field-2",
+      "subgroup": "accepted-moderate / power_exp",
+      "scope": "within_template",
+      "strategy": "Choose the longest option in field-2 without evaluating the ODE.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "1/4 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer / field-1",
+      "subgroup": "accepted-hard / all",
+      "scope": "overall",
+      "strategy": "Choose the first option in field-1 without evaluating the ODE.",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "3/12 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "shortest displayed answer / field-1",
+      "subgroup": "accepted-hard / all",
+      "scope": "overall",
+      "strategy": "Choose the shortest option in field-1 without evaluating the ODE.",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "3/12 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "longest displayed answer / field-1",
+      "subgroup": "accepted-hard / all",
+      "scope": "overall",
+      "strategy": "Choose the longest option in field-1 without evaluating the ODE.",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "3/12 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer / field-2",
+      "subgroup": "accepted-hard / all",
+      "scope": "overall",
+      "strategy": "Choose the first option in field-2 without evaluating the ODE.",
+      "correct": 1,
+      "total": 12,
+      "baseline": 0.21666666666666667,
+      "disposition": "not_predictive",
+      "conclusion": "1/12 observed successes versus uniform-choice baseline 0.217. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "shortest displayed answer / field-2",
+      "subgroup": "accepted-hard / all",
+      "scope": "overall",
+      "strategy": "Choose the shortest option in field-2 without evaluating the ODE.",
+      "correct": 1,
+      "total": 12,
+      "baseline": 0.21666666666666667,
+      "disposition": "not_predictive",
+      "conclusion": "1/12 observed successes versus uniform-choice baseline 0.217. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "longest displayed answer / field-2",
+      "subgroup": "accepted-hard / all",
+      "scope": "overall",
+      "strategy": "Choose the longest option in field-2 without evaluating the ODE.",
+      "correct": 1,
+      "total": 12,
+      "baseline": 0.21666666666666667,
+      "disposition": "not_predictive",
+      "conclusion": "1/12 observed successes versus uniform-choice baseline 0.217. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer / field-1",
+      "subgroup": "accepted-hard / power_sin",
+      "scope": "within_template",
+      "strategy": "Choose the first option in field-1 without evaluating the ODE.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "1/4 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "shortest displayed answer / field-1",
+      "subgroup": "accepted-hard / power_sin",
+      "scope": "within_template",
+      "strategy": "Choose the shortest option in field-1 without evaluating the ODE.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "1/4 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "longest displayed answer / field-1",
+      "subgroup": "accepted-hard / power_sin",
+      "scope": "within_template",
+      "strategy": "Choose the longest option in field-1 without evaluating the ODE.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "1/4 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer / field-2",
+      "subgroup": "accepted-hard / power_sin",
+      "scope": "within_template",
+      "strategy": "Choose the first option in field-2 without evaluating the ODE.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/4 observed successes versus uniform-choice baseline 0.200. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "shortest displayed answer / field-2",
+      "subgroup": "accepted-hard / power_sin",
+      "scope": "within_template",
+      "strategy": "Choose the shortest option in field-2 without evaluating the ODE.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/4 observed successes versus uniform-choice baseline 0.200. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "longest displayed answer / field-2",
+      "subgroup": "accepted-hard / power_sin",
+      "scope": "within_template",
+      "strategy": "Choose the longest option in field-2 without evaluating the ODE.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/4 observed successes versus uniform-choice baseline 0.200. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer / field-1",
+      "subgroup": "accepted-hard / power_cos",
+      "scope": "within_template",
+      "strategy": "Choose the first option in field-1 without evaluating the ODE.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "1/4 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "shortest displayed answer / field-1",
+      "subgroup": "accepted-hard / power_cos",
+      "scope": "within_template",
+      "strategy": "Choose the shortest option in field-1 without evaluating the ODE.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "1/4 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "longest displayed answer / field-1",
+      "subgroup": "accepted-hard / power_cos",
+      "scope": "within_template",
+      "strategy": "Choose the longest option in field-1 without evaluating the ODE.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "1/4 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer / field-2",
+      "subgroup": "accepted-hard / power_cos",
+      "scope": "within_template",
+      "strategy": "Choose the first option in field-2 without evaluating the ODE.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/4 observed successes versus uniform-choice baseline 0.200. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "shortest displayed answer / field-2",
+      "subgroup": "accepted-hard / power_cos",
+      "scope": "within_template",
+      "strategy": "Choose the shortest option in field-2 without evaluating the ODE.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/4 observed successes versus uniform-choice baseline 0.200. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "longest displayed answer / field-2",
+      "subgroup": "accepted-hard / power_cos",
+      "scope": "within_template",
+      "strategy": "Choose the longest option in field-2 without evaluating the ODE.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/4 observed successes versus uniform-choice baseline 0.200. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer / field-1",
+      "subgroup": "accepted-hard / normalize_linear",
+      "scope": "within_template",
+      "strategy": "Choose the first option in field-1 without evaluating the ODE.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "1/4 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "shortest displayed answer / field-1",
+      "subgroup": "accepted-hard / normalize_linear",
+      "scope": "within_template",
+      "strategy": "Choose the shortest option in field-1 without evaluating the ODE.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "1/4 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "longest displayed answer / field-1",
+      "subgroup": "accepted-hard / normalize_linear",
+      "scope": "within_template",
+      "strategy": "Choose the longest option in field-1 without evaluating the ODE.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "1/4 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer / field-2",
+      "subgroup": "accepted-hard / normalize_linear",
+      "scope": "within_template",
+      "strategy": "Choose the first option in field-2 without evaluating the ODE.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "1/4 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "shortest displayed answer / field-2",
+      "subgroup": "accepted-hard / normalize_linear",
+      "scope": "within_template",
+      "strategy": "Choose the shortest option in field-2 without evaluating the ODE.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "1/4 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "longest displayed answer / field-2",
+      "subgroup": "accepted-hard / normalize_linear",
+      "scope": "within_template",
+      "strategy": "Choose the longest option in field-2 without evaluating the ODE.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "1/4 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer / field-1",
+      "subgroup": "runner-batch / all",
+      "scope": "overall",
+      "strategy": "Choose the first option in field-1 without evaluating the ODE.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "0/5 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "shortest displayed answer / field-1",
+      "subgroup": "runner-batch / all",
+      "scope": "overall",
+      "strategy": "Choose the shortest option in field-1 without evaluating the ODE.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "1/5 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "longest displayed answer / field-1",
+      "subgroup": "runner-batch / all",
+      "scope": "overall",
+      "strategy": "Choose the longest option in field-1 without evaluating the ODE.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "1/5 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer / field-2",
+      "subgroup": "runner-batch / all",
+      "scope": "overall",
+      "strategy": "Choose the first option in field-2 without evaluating the ODE.",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "3/5 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "shortest displayed answer / field-2",
+      "subgroup": "runner-batch / all",
+      "scope": "overall",
+      "strategy": "Choose the shortest option in field-2 without evaluating the ODE.",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "2/5 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "longest displayed answer / field-2",
+      "subgroup": "runner-batch / all",
+      "scope": "overall",
+      "strategy": "Choose the longest option in field-2 without evaluating the ODE.",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "3/5 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer / field-1",
+      "subgroup": "runner-batch / exp_cancel",
+      "scope": "within_template",
+      "strategy": "Choose the first option in field-1 without evaluating the ODE.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "0/2 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "shortest displayed answer / field-1",
+      "subgroup": "runner-batch / exp_cancel",
+      "scope": "within_template",
+      "strategy": "Choose the shortest option in field-1 without evaluating the ODE.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "1/2 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "longest displayed answer / field-1",
+      "subgroup": "runner-batch / exp_cancel",
+      "scope": "within_template",
+      "strategy": "Choose the longest option in field-1 without evaluating the ODE.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "1/2 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer / field-2",
+      "subgroup": "runner-batch / exp_cancel",
+      "scope": "within_template",
+      "strategy": "Choose the first option in field-2 without evaluating the ODE.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "1/2 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "shortest displayed answer / field-2",
+      "subgroup": "runner-batch / exp_cancel",
+      "scope": "within_template",
+      "strategy": "Choose the shortest option in field-2 without evaluating the ODE.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "1/2 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "longest displayed answer / field-2",
+      "subgroup": "runner-batch / exp_cancel",
+      "scope": "within_template",
+      "strategy": "Choose the longest option in field-2 without evaluating the ODE.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "1/2 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer / field-1",
+      "subgroup": "runner-batch / exp_cancel_legacy",
+      "scope": "within_template",
+      "strategy": "Choose the first option in field-1 without evaluating the ODE.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "0/2 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "shortest displayed answer / field-1",
+      "subgroup": "runner-batch / exp_cancel_legacy",
+      "scope": "within_template",
+      "strategy": "Choose the shortest option in field-1 without evaluating the ODE.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "0/2 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "longest displayed answer / field-1",
+      "subgroup": "runner-batch / exp_cancel_legacy",
+      "scope": "within_template",
+      "strategy": "Choose the longest option in field-1 without evaluating the ODE.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "0/2 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer / field-2",
+      "subgroup": "runner-batch / exp_cancel_legacy",
+      "scope": "within_template",
+      "strategy": "Choose the first option in field-2 without evaluating the ODE.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "1/2 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "shortest displayed answer / field-2",
+      "subgroup": "runner-batch / exp_cancel_legacy",
+      "scope": "within_template",
+      "strategy": "Choose the shortest option in field-2 without evaluating the ODE.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "0/2 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "longest displayed answer / field-2",
+      "subgroup": "runner-batch / exp_cancel_legacy",
+      "scope": "within_template",
+      "strategy": "Choose the longest option in field-2 without evaluating the ODE.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "1/2 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer / field-1",
+      "subgroup": "runner-batch / exp_forcing",
+      "scope": "within_template",
+      "strategy": "Choose the first option in field-1 without evaluating the ODE.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "0/1 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "shortest displayed answer / field-1",
+      "subgroup": "runner-batch / exp_forcing",
+      "scope": "within_template",
+      "strategy": "Choose the shortest option in field-1 without evaluating the ODE.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "0/1 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "longest displayed answer / field-1",
+      "subgroup": "runner-batch / exp_forcing",
+      "scope": "within_template",
+      "strategy": "Choose the longest option in field-1 without evaluating the ODE.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "0/1 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer / field-2",
+      "subgroup": "runner-batch / exp_forcing",
+      "scope": "within_template",
+      "strategy": "Choose the first option in field-2 without evaluating the ODE.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "1/1 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "shortest displayed answer / field-2",
+      "subgroup": "runner-batch / exp_forcing",
+      "scope": "within_template",
+      "strategy": "Choose the shortest option in field-2 without evaluating the ODE.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "1/1 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "longest displayed answer / field-2",
+      "subgroup": "runner-batch / exp_forcing",
+      "scope": "within_template",
+      "strategy": "Choose the longest option in field-2 without evaluating the ODE.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "1/1 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer / field-1",
+      "subgroup": "runner-accepted / all",
+      "scope": "overall",
+      "strategy": "Choose the first option in field-1 without evaluating the ODE.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "0/5 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "shortest displayed answer / field-1",
+      "subgroup": "runner-accepted / all",
+      "scope": "overall",
+      "strategy": "Choose the shortest option in field-1 without evaluating the ODE.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "1/5 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "longest displayed answer / field-1",
+      "subgroup": "runner-accepted / all",
+      "scope": "overall",
+      "strategy": "Choose the longest option in field-1 without evaluating the ODE.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "1/5 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer / field-2",
+      "subgroup": "runner-accepted / all",
+      "scope": "overall",
+      "strategy": "Choose the first option in field-2 without evaluating the ODE.",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "3/5 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "shortest displayed answer / field-2",
+      "subgroup": "runner-accepted / all",
+      "scope": "overall",
+      "strategy": "Choose the shortest option in field-2 without evaluating the ODE.",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "2/5 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "longest displayed answer / field-2",
+      "subgroup": "runner-accepted / all",
+      "scope": "overall",
+      "strategy": "Choose the longest option in field-2 without evaluating the ODE.",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "3/5 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer / field-1",
+      "subgroup": "runner-accepted / exp_cancel",
+      "scope": "within_template",
+      "strategy": "Choose the first option in field-1 without evaluating the ODE.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "0/2 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "shortest displayed answer / field-1",
+      "subgroup": "runner-accepted / exp_cancel",
+      "scope": "within_template",
+      "strategy": "Choose the shortest option in field-1 without evaluating the ODE.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "1/2 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "longest displayed answer / field-1",
+      "subgroup": "runner-accepted / exp_cancel",
+      "scope": "within_template",
+      "strategy": "Choose the longest option in field-1 without evaluating the ODE.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "1/2 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer / field-2",
+      "subgroup": "runner-accepted / exp_cancel",
+      "scope": "within_template",
+      "strategy": "Choose the first option in field-2 without evaluating the ODE.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "1/2 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "shortest displayed answer / field-2",
+      "subgroup": "runner-accepted / exp_cancel",
+      "scope": "within_template",
+      "strategy": "Choose the shortest option in field-2 without evaluating the ODE.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "1/2 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "longest displayed answer / field-2",
+      "subgroup": "runner-accepted / exp_cancel",
+      "scope": "within_template",
+      "strategy": "Choose the longest option in field-2 without evaluating the ODE.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "1/2 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer / field-1",
+      "subgroup": "runner-accepted / exp_cancel_legacy",
+      "scope": "within_template",
+      "strategy": "Choose the first option in field-1 without evaluating the ODE.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "0/2 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "shortest displayed answer / field-1",
+      "subgroup": "runner-accepted / exp_cancel_legacy",
+      "scope": "within_template",
+      "strategy": "Choose the shortest option in field-1 without evaluating the ODE.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "0/2 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "longest displayed answer / field-1",
+      "subgroup": "runner-accepted / exp_cancel_legacy",
+      "scope": "within_template",
+      "strategy": "Choose the longest option in field-1 without evaluating the ODE.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "0/2 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer / field-2",
+      "subgroup": "runner-accepted / exp_cancel_legacy",
+      "scope": "within_template",
+      "strategy": "Choose the first option in field-2 without evaluating the ODE.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "1/2 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "shortest displayed answer / field-2",
+      "subgroup": "runner-accepted / exp_cancel_legacy",
+      "scope": "within_template",
+      "strategy": "Choose the shortest option in field-2 without evaluating the ODE.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "0/2 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "longest displayed answer / field-2",
+      "subgroup": "runner-accepted / exp_cancel_legacy",
+      "scope": "within_template",
+      "strategy": "Choose the longest option in field-2 without evaluating the ODE.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "1/2 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer / field-1",
+      "subgroup": "runner-accepted / exp_forcing",
+      "scope": "within_template",
+      "strategy": "Choose the first option in field-1 without evaluating the ODE.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "0/1 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "shortest displayed answer / field-1",
+      "subgroup": "runner-accepted / exp_forcing",
+      "scope": "within_template",
+      "strategy": "Choose the shortest option in field-1 without evaluating the ODE.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "0/1 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "longest displayed answer / field-1",
+      "subgroup": "runner-accepted / exp_forcing",
+      "scope": "within_template",
+      "strategy": "Choose the longest option in field-1 without evaluating the ODE.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "0/1 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer / field-2",
+      "subgroup": "runner-accepted / exp_forcing",
+      "scope": "within_template",
+      "strategy": "Choose the first option in field-2 without evaluating the ODE.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "1/1 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "shortest displayed answer / field-2",
+      "subgroup": "runner-accepted / exp_forcing",
+      "scope": "within_template",
+      "strategy": "Choose the shortest option in field-2 without evaluating the ODE.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "1/1 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "longest displayed answer / field-2",
+      "subgroup": "runner-accepted / exp_forcing",
+      "scope": "within_template",
+      "strategy": "Choose the longest option in field-2 without evaluating the ODE.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "1/1 observed successes versus uniform-choice baseline 0.250. No perfect template-conditional predictor in groups of at least three was found. Small samples are not independence proofs; code inspection confirms order shuffling and role derivation rather than fixing a qualifying position or string length.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "numeric integrating-factor rank",
+      "subgroup": "exp_forcing",
+      "scope": "within_template",
+      "strategy": "lowest numeric integrating-factor rank at x=1",
+      "correct": 2,
+      "total": 12,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "2/12 compared with four-choice uniform baseline 0.25. Authored IF target is sampled from the same coefficient domain as competitors; candidate subsets are uniform conditional on that target. Numeric rank is not fixed. A finite sample can favor a rank by chance.",
+      "sample_refs": [
+        "rank-shortcuts.json",
+        "independent-records.json",
+        "extra_probes.py"
+      ]
+    },
+    {
+      "cue": "numeric integrating-factor rank",
+      "subgroup": "exp_forcing",
+      "scope": "within_template",
+      "strategy": "highest numeric integrating-factor rank at x=1",
+      "correct": 4,
+      "total": 12,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "4/12 compared with four-choice uniform baseline 0.25. Authored IF target is sampled from the same coefficient domain as competitors; candidate subsets are uniform conditional on that target. Numeric rank is not fixed. A finite sample can favor a rank by chance.",
+      "sample_refs": [
+        "rank-shortcuts.json",
+        "independent-records.json",
+        "extra_probes.py"
+      ]
+    },
+    {
+      "cue": "numeric integrating-factor rank",
+      "subgroup": "exp_cancel",
+      "scope": "within_template",
+      "strategy": "lowest numeric integrating-factor rank at x=1",
+      "correct": 5,
+      "total": 12,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "5/12 compared with four-choice uniform baseline 0.25. Authored IF target is sampled from the same coefficient domain as competitors; candidate subsets are uniform conditional on that target. Numeric rank is not fixed. A finite sample can favor a rank by chance.",
+      "sample_refs": [
+        "rank-shortcuts.json",
+        "independent-records.json",
+        "extra_probes.py"
+      ]
+    },
+    {
+      "cue": "numeric integrating-factor rank",
+      "subgroup": "exp_cancel",
+      "scope": "within_template",
+      "strategy": "highest numeric integrating-factor rank at x=1",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "3/12 compared with four-choice uniform baseline 0.25. Authored IF target is sampled from the same coefficient domain as competitors; candidate subsets are uniform conditional on that target. Numeric rank is not fixed. A finite sample can favor a rank by chance.",
+      "sample_refs": [
+        "rank-shortcuts.json",
+        "independent-records.json",
+        "extra_probes.py"
+      ]
+    },
+    {
+      "cue": "numeric integrating-factor rank",
+      "subgroup": "exp_cancel_legacy",
+      "scope": "within_template",
+      "strategy": "lowest numeric integrating-factor rank at x=1",
+      "correct": 5,
+      "total": 12,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "5/12 compared with four-choice uniform baseline 0.25. Authored IF target is sampled from the same coefficient domain as competitors; candidate subsets are uniform conditional on that target. Numeric rank is not fixed. A finite sample can favor a rank by chance.",
+      "sample_refs": [
+        "rank-shortcuts.json",
+        "independent-records.json",
+        "extra_probes.py"
+      ]
+    },
+    {
+      "cue": "numeric integrating-factor rank",
+      "subgroup": "exp_cancel_legacy",
+      "scope": "within_template",
+      "strategy": "highest numeric integrating-factor rank at x=1",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "3/12 compared with four-choice uniform baseline 0.25. Authored IF target is sampled from the same coefficient domain as competitors; candidate subsets are uniform conditional on that target. Numeric rank is not fixed. A finite sample can favor a rank by chance.",
+      "sample_refs": [
+        "rank-shortcuts.json",
+        "independent-records.json",
+        "extra_probes.py"
+      ]
+    },
+    {
+      "cue": "numeric integrating-factor rank",
+      "subgroup": "power_constant",
+      "scope": "within_template",
+      "strategy": "lowest numeric integrating-factor rank at x=1",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "2/4 compared with four-choice uniform baseline 0.25. Authored IF target is sampled from the same coefficient domain as competitors; candidate subsets are uniform conditional on that target. Numeric rank is not fixed. A finite sample can favor a rank by chance.",
+      "sample_refs": [
+        "rank-shortcuts.json",
+        "independent-records.json",
+        "extra_probes.py"
+      ]
+    },
+    {
+      "cue": "numeric integrating-factor rank",
+      "subgroup": "power_constant",
+      "scope": "within_template",
+      "strategy": "highest numeric integrating-factor rank at x=1",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "2/4 compared with four-choice uniform baseline 0.25. Authored IF target is sampled from the same coefficient domain as competitors; candidate subsets are uniform conditional on that target. Numeric rank is not fixed. A finite sample can favor a rank by chance.",
+      "sample_refs": [
+        "rank-shortcuts.json",
+        "independent-records.json",
+        "extra_probes.py"
+      ]
+    },
+    {
+      "cue": "numeric integrating-factor rank",
+      "subgroup": "power_constant_legacy",
+      "scope": "within_template",
+      "strategy": "lowest numeric integrating-factor rank at x=1",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "2/4 compared with four-choice uniform baseline 0.25. Authored IF target is sampled from the same coefficient domain as competitors; candidate subsets are uniform conditional on that target. Numeric rank is not fixed. A finite sample can favor a rank by chance.",
+      "sample_refs": [
+        "rank-shortcuts.json",
+        "independent-records.json",
+        "extra_probes.py"
+      ]
+    },
+    {
+      "cue": "numeric integrating-factor rank",
+      "subgroup": "power_constant_legacy",
+      "scope": "within_template",
+      "strategy": "highest numeric integrating-factor rank at x=1",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "2/4 compared with four-choice uniform baseline 0.25. Authored IF target is sampled from the same coefficient domain as competitors; candidate subsets are uniform conditional on that target. Numeric rank is not fixed. A finite sample can favor a rank by chance.",
+      "sample_refs": [
+        "rank-shortcuts.json",
+        "independent-records.json",
+        "extra_probes.py"
+      ]
+    },
+    {
+      "cue": "numeric integrating-factor rank",
+      "subgroup": "power_exp",
+      "scope": "within_template",
+      "strategy": "lowest numeric integrating-factor rank at x=1",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "1/4 compared with four-choice uniform baseline 0.25. Authored IF target is sampled from the same coefficient domain as competitors; candidate subsets are uniform conditional on that target. Numeric rank is not fixed. A finite sample can favor a rank by chance.",
+      "sample_refs": [
+        "rank-shortcuts.json",
+        "independent-records.json",
+        "extra_probes.py"
+      ]
+    },
+    {
+      "cue": "numeric integrating-factor rank",
+      "subgroup": "power_exp",
+      "scope": "within_template",
+      "strategy": "highest numeric integrating-factor rank at x=1",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "2/4 compared with four-choice uniform baseline 0.25. Authored IF target is sampled from the same coefficient domain as competitors; candidate subsets are uniform conditional on that target. Numeric rank is not fixed. A finite sample can favor a rank by chance.",
+      "sample_refs": [
+        "rank-shortcuts.json",
+        "independent-records.json",
+        "extra_probes.py"
+      ]
+    },
+    {
+      "cue": "numeric integrating-factor rank",
+      "subgroup": "power_sin",
+      "scope": "within_template",
+      "strategy": "lowest numeric integrating-factor rank at x=1",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "1/4 compared with four-choice uniform baseline 0.25. Authored IF target is sampled from the same coefficient domain as competitors; candidate subsets are uniform conditional on that target. Numeric rank is not fixed. A finite sample can favor a rank by chance.",
+      "sample_refs": [
+        "rank-shortcuts.json",
+        "independent-records.json",
+        "extra_probes.py"
+      ]
+    },
+    {
+      "cue": "numeric integrating-factor rank",
+      "subgroup": "power_sin",
+      "scope": "within_template",
+      "strategy": "highest numeric integrating-factor rank at x=1",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "2/4 compared with four-choice uniform baseline 0.25. Authored IF target is sampled from the same coefficient domain as competitors; candidate subsets are uniform conditional on that target. Numeric rank is not fixed. A finite sample can favor a rank by chance.",
+      "sample_refs": [
+        "rank-shortcuts.json",
+        "independent-records.json",
+        "extra_probes.py"
+      ]
+    },
+    {
+      "cue": "numeric integrating-factor rank",
+      "subgroup": "power_cos",
+      "scope": "within_template",
+      "strategy": "lowest numeric integrating-factor rank at x=1",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "1/4 compared with four-choice uniform baseline 0.25. Authored IF target is sampled from the same coefficient domain as competitors; candidate subsets are uniform conditional on that target. Numeric rank is not fixed. A finite sample can favor a rank by chance.",
+      "sample_refs": [
+        "rank-shortcuts.json",
+        "independent-records.json",
+        "extra_probes.py"
+      ]
+    },
+    {
+      "cue": "numeric integrating-factor rank",
+      "subgroup": "power_cos",
+      "scope": "within_template",
+      "strategy": "highest numeric integrating-factor rank at x=1",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "2/4 compared with four-choice uniform baseline 0.25. Authored IF target is sampled from the same coefficient domain as competitors; candidate subsets are uniform conditional on that target. Numeric rank is not fixed. A finite sample can favor a rank by chance.",
+      "sample_refs": [
+        "rank-shortcuts.json",
+        "independent-records.json",
+        "extra_probes.py"
+      ]
+    },
+    {
+      "cue": "numeric integrating-factor rank",
+      "subgroup": "normalize_linear",
+      "scope": "within_template",
+      "strategy": "lowest numeric integrating-factor rank at x=1",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "2/4 compared with four-choice uniform baseline 0.25. Authored IF target is sampled from the same coefficient domain as competitors; candidate subsets are uniform conditional on that target. Numeric rank is not fixed. A finite sample can favor a rank by chance.",
+      "sample_refs": [
+        "rank-shortcuts.json",
+        "independent-records.json",
+        "extra_probes.py"
+      ]
+    },
+    {
+      "cue": "numeric integrating-factor rank",
+      "subgroup": "normalize_linear",
+      "scope": "within_template",
+      "strategy": "highest numeric integrating-factor rank at x=1",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "0/4 compared with four-choice uniform baseline 0.25. Authored IF target is sampled from the same coefficient domain as competitors; candidate subsets are uniform conditional on that target. Numeric rank is not fixed. A finite sample can favor a rank by chance.",
+      "sample_refs": [
+        "rank-shortcuts.json",
+        "independent-records.json",
+        "extra_probes.py"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "generator sampling and rejection/resampling code",
+      "explicit boundaries and invalid-input rejection",
+      "requested-difficulty filtering",
+      "publisher normalization and stable identities",
+      "captured inventory and within-batch deduplication",
+      "difficulty-first learner selection and history exclusions (faithful read-only rule reproduction)"
+    ],
+    "sample_refs": [
+      "independent-records.json",
+      "coverage-results.json",
+      "delivery-easy/delivery.json",
+      "delivery-easy/accepted.json",
+      "delivery-moderate/delivery.json",
+      "delivery-hard/delivery.json",
+      "delivery-batch/delivery.json",
+      "delivery-batch/accepted.json",
+      "selection-results.json",
+      "packaging-results.json"
+    ],
+    "result": "60/60 independently sampled ordinary records survive when sent in their matching difficulty groups; 36 are easy. Actual runner batch: 5/5 survive. Fresh-sample rejection counts are zero, so case distributions and shortcut counts are unchanged by delivery. Observed profiles never enter random sampling. At basis 5275 all five accepted runner records retain support in any positively weighted nonempty easy band. Selector does not consult answer positions or roles; zero band weights and explicit history exclusions behave as specified. No publication or database writes."
+  },
+  "limitations": [
+    "This finite audit does not prove absence of every possible shortcut or every untested numerical defect. Moderate/hard samples are smaller because this job requests easy; source and boundary cases supplement them.",
+    "Bank relationships such as I times the homogeneous factor being constant, or minus cosine in an antiderivative of sine, express the taught mathematics. Their use is not classified as an incidental cue merely because they can simplify a select question.",
+    "Source q-335409 contains duplicate equivalent solutions; raw replay is evidence only and not in ordinary delivered samples. The corrected five-entry profile was checked independently.",
+    "Live learner weights/history and future database IDs are absent from the capture. Selection analysis covers the supplied rule branches and support conditional on stated weights/history, not actual future draws. No live state was queried.",
+    "Inventory is frozen at basis 5275; later publications can change duplicates and available cases. Captured stored records omit generation provenance; no affected generator metadata was invented."
+  ]
+}
