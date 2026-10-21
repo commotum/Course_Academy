@@ -1,0 +1,117 @@
+{
+  "verdict": "accepted",
+  "summary": "All eight checks passed. The five retained findings are addressed in tested cases. Package files remained unchanged; no publishing or database writes occurred.",
+  "source_analysis": {
+    "skill": "Compute two-term indefinite integrals using the sum and power rules.",
+    "reasoning_steps": [
+      "Identify both signed summands and the integration variable.",
+      "Rewrite radicals and reciprocals as powers.",
+      "Integrate each summand by increasing its exponent and dividing by the new exponent.",
+      "Combine the results with one arbitrary constant."
+    ],
+    "invariants": [
+      "Preserve the elementary two-term workload and source response contracts.",
+      "Exclude logarithms, substitution and definite integrals.",
+      "Keep prompts, keys and worked solutions consistent."
+    ],
+    "permitted_variations": [
+      "Vary supported exponents, signs, constants, variables and summand order.",
+      "Vary correct-choice positions and eligible answer-bank roles.",
+      "Accept equivalent antiderivatives differing by a constant when external C is supplied."
+    ],
+    "source_refs": [
+      "e-371 / e4a94ca8-82ee-5776-a46d-b735d4ab60fb: integral of x\u00b2+1",
+      "q-71167 / 9e4827b1-c8af-5e0e-a92c-bab0c6f19c7d",
+      "q-71169 / 79aa6724-ce36-5977-907b-506fab54c4d7",
+      "q-133291 / 836e24be-b58e-500b-bb05-e9b2030ce5e6",
+      "Tutorial 701 / 207bbd12-158a-58be-b000-82cace6dcdde: sum rule and combining arbitrary constants",
+      "Tutorial 703 / 1b5ce4c9-ef44-52d9-a506-96aa15055e00: subsequent constant-factor extension"
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "source-replay-results.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay.json",
+        "source-replay-results.json",
+        "source-parameter-records.json"
+      ],
+      "details": "Seven supplied questions and all 21 captured choices checked; canonical example checked at original parameters. Missing evidence and source corrections are documented."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "role-control-results.json",
+        "additional-counterfactual-results.json",
+        "probes.py"
+      ],
+      "details": "Independent exact checks verified displayed integrands, unique correct choices and worked expressions across fresh, boundary, runner and controlled cases."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "coverage.json",
+        "samples.json",
+        "boundaries.json",
+        "role-controls.json",
+        "delivery-selection-summary.json"
+      ],
+      "details": "Supported mathematical slots and answer-bank roles vary. Delivery retained 125 of 128 fresh records, all five runner records and all 210 role controls."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "scope-results.json"
+      ],
+      "details": "Generated moderate questions preserve the two-term sum/power-rule workload. Unsupported source response families and conservative domain limits are explicit."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input-final.json",
+        "grading.json",
+        "historical-constant-shift-current.json",
+        "cue-grading.json"
+      ],
+      "details": "Native grading passed 492 accepted and 1335 rejected checks, plus 2720 cue-action checks. Equivalent and constant-shifted blanks were accepted; tested incorrect derivatives were rejected."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render-all/rendering.json",
+        "render-inspection.json",
+        "render-contact-sheet.png"
+      ],
+      "details": "All 38 selected records rendered through the actual UI. Representative full-size screenshots and controlled-pair previews were visually inspected without observed faults."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "package-integrity.json",
+        "package-before.json",
+        "package-after.json",
+        "commands.json"
+      ],
+      "details": "Exact runtime dependencies, deterministic replay, relocation and CLI boundaries passed. All 242 package files retained identical hashes."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "role-control-results.json",
+        "shortcut-stage-results.json",
+        "preflight-independent-review.json",
+        "evidence-contract.json"
+      ],
+      "details": "All five retained findings were examined independently. Controlled relevant and irrelevant changes pass mathematical, native-grader and rendering checks. Tested historical cues lose their structural advantage in delivered role controls. Captured-inventory and simulated-selection limits are documented."
+    }
+  },
+  "findings": []
+}

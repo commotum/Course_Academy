@@ -1,0 +1,247 @@
+{
+  "learner_operation": "Read both signed summands, identify their exponents, increase each exponent by one and divide by the new exponent, then combine both antiderivatives and one arbitrary constant. For radio, distinguish this result from errors in signs, powers, factors or constants.",
+  "fixed_features": [
+    {
+      "feature": "Two summands and elementary power-rule antiderivatives, with p != -1",
+      "justification": "e-371 and tutorial 701 establish sum splitting; prerequisites supply monomial, radical and reciprocal power rules. Excluding logarithms preserves scope."
+    },
+    {
+      "feature": "Unit-magnitude nonconstant integrand coefficient",
+      "justification": "Target KP examples use this structure; tutorial 703 and the next KP introduce nontrivial constant-factor workload."
+    },
+    {
+      "feature": "Five-choice radio or the derivative blank with external +C",
+      "justification": "Captured q-71167/q-71169 and q-133291 response contracts."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Signed constant and signed power, exponent, term order and variable",
+      "eligible_variation": "Change their values/signs and reorder, deriving all prompt/answer/solution dependencies together.",
+      "observed": "Both signs/orders and every served exponent occur in fresh and delivered samples; controlled dependencies pass."
+    },
+    {
+      "role": "Correct option position",
+      "eligible_variation": "Any of five shuffled positions.",
+      "observed": "Shuffled per instance; no fixed label assignment. See shortcut/coverage records."
+    },
+    {
+      "role": "Singleton constant-coefficient row in authored grid",
+      "eligible_variation": "It may be correct or wrong by omitting any noncorrect cell; this changes no integral or response contract.",
+      "observed": "Always wrong in 227 raw and 226 delivered radios and 695 positive-moderate selected radios; helper explicitly rejects the valid opposite assignment."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "P/B polynomial exponents, signed summands, constants and term order",
+      "sample_refs": [
+        "samples.json",
+        "boundaries.json",
+        "coverage.json"
+      ],
+      "result": "All n=2..6, both signs/orders, all constant values -6..-1 and 1..6 represented; boundaries -6,-1,1,6 explicitly checked."
+    },
+    {
+      "case": "Reciprocal n=3 and 7 and all three response templates",
+      "sample_refs": [
+        "samples.json",
+        "delivery/accepted.json",
+        "coverage.json"
+      ],
+      "result": "Raw counts P118/R109/B133; delivered P118/R108/B103. Both reciprocal exponents and all response templates survive."
+    },
+    {
+      "case": "Omitted-cell decisions conditional on radio template",
+      "sample_refs": [
+        "structural-shortcut-proof.json",
+        "bank-assignment-control.json",
+        "shortcut-trials.json"
+      ],
+      "result": "All four permitted omission positions leave the correct constant duplicated; the fifth mathematically valid wrong-cell omission is excluded."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Change polynomial/blank or reciprocal exponent, sign or constant, holding other eligible data fixed. Reciprocal exponent 3 -> 7 changes the answer from -2/sqrt(x)+4x+C to -2/(5sqrt(x^5))+4x+C.",
+      "expected": "Both transformed answer and power-rule solution must follow the changed integrand; exactly the newly correct choice/blank must grade accepted.",
+      "observed": "All 7 original and 6 additional pairs have expected semantic equality/change relationships. Exact text-derived differentiation, 733 native checks and rendered before/after pairs agree.",
+      "status": "passed",
+      "justification": "Tutorial 701 and e-371 require independent integration of both signed summands.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "additional-counterfactual-records.json",
+        "additional-counterfactual-results.json",
+        "grader-input-complete.json",
+        "grading-complete.json",
+        "render/rendering.json",
+        "additional-render/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Reorder summands, consistently rename variable, or change only the competing divisor in the answer bank.",
+      "expected": "Preserve the mathematical response under reordering/renaming; preserve the same antiderivative when distractors change.",
+      "observed": "Passed all applicable semantic comparisons, native accepted/rejected checks and visual pairs, including P_competitor_side.",
+      "status": "passed",
+      "justification": "Sum rule and commutativity do not depend on printed summand order or notation; distractors do not alter the integrand.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "additional-counterfactual-records.json",
+        "additional-counterfactual-results.json",
+        "grading-complete.json",
+        "additional-render/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Keep integral 5-x^3, correct answer 5x-x^4/4+C and solution fixed; omit the wrong-power choice from the true constant row instead of from a wrong constant row.",
+      "expected": "Five distinct choices and the same unique antiderivative; singleton status may belong to the correct constant because it has no integration meaning.",
+      "observed": "Independent control has five distinct choices, one correct derivative, same prompt/solution, passes shared delivery and native grader, and renders correctly. Current generator rejects omitted_row=0, omitted_col=1, unnecessarily fixing the singleton row as wrong.",
+      "status": "failed",
+      "justification": "Neither tutorial 701 nor q-71167/q-71169 imposes a frequency role on a correct constant coefficient. Excluding this assignment creates the demonstrated cue.",
+      "sample_refs": [
+        "bank-assignment-control.json",
+        "structural-shortcut-proof.json",
+        "control-delivery/accepted.json",
+        "control-delivery/delivery.json",
+        "grading-complete.json",
+        "additional-render/rendering.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "Frequency of the displayed linear coefficient across choices",
+      "subgroup": "all_radios after delivery",
+      "scope": "overall",
+      "strategy": "Eliminate the choice whose linear coefficient occurs only once; choose uniformly from the remaining four. No prompt inspection or integration.",
+      "correct": 60,
+      "total": 226,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Uniform choice among five has baseline 0.20. The cue always eliminates one wrong option, giving exact 0.25 expected success (25% relative advantage), independently of numerical parameters or option order. Seeded empirical success is 60/226; this is a partial shortcut, not a claim of perfect answer prediction. Four exhaustive omitted-cell graphs prove the advantage.",
+      "sample_refs": [
+        "samples.json",
+        "delivery/accepted.json",
+        "shortcut-trials.json",
+        "shortcut-results.json",
+        "structural-shortcut-proof.json"
+      ]
+    },
+    {
+      "cue": "Frequency of the displayed linear coefficient across choices",
+      "subgroup": "P after delivery",
+      "scope": "within_template",
+      "strategy": "Eliminate the choice whose linear coefficient occurs only once; choose uniformly from the remaining four. No prompt inspection or integration.",
+      "correct": 36,
+      "total": 118,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Uniform choice among five has baseline 0.20. The cue always eliminates one wrong option, giving exact 0.25 expected success (25% relative advantage), independently of numerical parameters or option order. Seeded empirical success is 36/118; this is a partial shortcut, not a claim of perfect answer prediction. Four exhaustive omitted-cell graphs prove the advantage.",
+      "sample_refs": [
+        "samples.json",
+        "delivery/accepted.json",
+        "shortcut-trials.json",
+        "shortcut-results.json",
+        "structural-shortcut-proof.json"
+      ]
+    },
+    {
+      "cue": "Frequency of the displayed linear coefficient across choices",
+      "subgroup": "R after delivery",
+      "scope": "within_template",
+      "strategy": "Eliminate the choice whose linear coefficient occurs only once; choose uniformly from the remaining four. No prompt inspection or integration.",
+      "correct": 24,
+      "total": 108,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Uniform choice among five has baseline 0.20. The cue always eliminates one wrong option, giving exact 0.25 expected success (25% relative advantage), independently of numerical parameters or option order. Seeded empirical success is 24/108; this is a partial shortcut, not a claim of perfect answer prediction. Four exhaustive omitted-cell graphs prove the advantage.",
+      "sample_refs": [
+        "samples.json",
+        "delivery/accepted.json",
+        "shortcut-trials.json",
+        "shortcut-results.json",
+        "structural-shortcut-proof.json"
+      ]
+    },
+    {
+      "cue": "Same singleton-frequency cue after weighted learner selection",
+      "subgroup": "generated positive-moderate selected radios",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Eliminate the singleton linear-coefficient row, then uniformly choose among four remaining choices.",
+      "correct": 182,
+      "total": 695,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "All 695 selected generated radios retain the cue. Baseline 0.20 compares uniform five-choice guessing with exact cue rate 0.25; observed seeded successes are 182/695. Captured inventory and synthetic IDs/policies are explicit, not live-state certification.",
+      "sample_refs": [
+        "selected-records.json",
+        "selection-results.json",
+        "delivery-selection-summary.json"
+      ]
+    },
+    {
+      "cue": "First answer position",
+      "subgroup": "P after delivery",
+      "scope": "within_template",
+      "strategy": "Always select the first displayed option.",
+      "correct": 23,
+      "total": 118,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.20 is uniform choice among five. Current option shuffling does not fix a correct position; this tested positional cue does not explain the structural defect. Other length/position measurements remain in shortcut-results.json.",
+      "sample_refs": [
+        "delivery/accepted.json",
+        "shortcut-results.json",
+        "shortcut-trials.json"
+      ]
+    },
+    {
+      "cue": "First answer position",
+      "subgroup": "R after delivery",
+      "scope": "within_template",
+      "strategy": "Always select the first displayed option.",
+      "correct": 18,
+      "total": 108,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.20 is uniform choice among five. Current option shuffling does not fix a correct position; this tested positional cue does not explain the structural defect. Other length/position measurements remain in shortcut-results.json.",
+      "sample_refs": [
+        "delivery/accepted.json",
+        "shortcut-results.json",
+        "shortcut-trials.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "generator prechoice constraints and absence of rejection/resampling",
+      "requested moderate difficulty",
+      "publisher validation and stable identity normalization",
+      "captured inventory and within-batch deduplication",
+      "learner usable/fresh candidate filtering",
+      "difficulty weights and SHA256 selection with explicit synthetic policies/history"
+    ],
+    "sample_refs": [
+      "samples.json",
+      "runner-batch.json",
+      "delivery/delivery.json",
+      "batch-delivery/delivery.json",
+      "delivery/accepted.json",
+      "selection-results.json",
+      "selected-records.json",
+      "delivery-selection-summary.json"
+    ],
+    "result": "360 ->329 fresh accepted records (31 duplicates), runner5 ->5; singleton cue survives every delivered radio and selected generated radio. No publication preparation existed; actual shared read-only filtering used captured basis 5277. No database writes."
+  },
+  "limitations": [
+    "No finite audit proves absence of all shortcuts.",
+    "Selection uses captured usable bank, synthetic new entity IDs and explicit policy/history scenarios; live policy, IDs, history and future inventory changes are not captured.",
+    "Unconfigured policy selects smallest usable ID and may deliver only existing source items; zero moderate weight excludes this generator by design.",
+    "The R3 even-numerator exploratory probe has an observed advantage, but no separate defect is asserted from numerical recognition of its mathematically forced coefficient 2; the reported failure uses only answer-bank multiplicity and does not require fixed-exponent recall.",
+    "Missing source keys/solutions and fields are documented in source-analysis.json; no response fields are invented for math-only replay families."
+  ]
+}

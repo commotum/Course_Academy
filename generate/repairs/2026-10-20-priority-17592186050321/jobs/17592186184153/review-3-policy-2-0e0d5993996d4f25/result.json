@@ -1,0 +1,136 @@
+{
+  "verdict": "revise",
+  "summary": "Two demonstrated defects: a delivered answer-range shortcut and rejection of a valid constant-shifted antiderivative. Package files remain unchanged. Full report: result.json.",
+  "source_analysis": {
+    "skill": "Integrate two signed summands separately using the sum rule and power rule, then combine their antiderivatives with one arbitrary constant.",
+    "reasoning_steps": [
+      "Identify the variable and signed summands.",
+      "Rewrite radicals and reciprocals as powers where necessary.",
+      "Increase each exponent by one and divide by the new exponent.",
+      "Combine the results; exclude the displayed external +C from blank entries."
+    ],
+    "invariants": [
+      "Two elementary power integrals; no logarithms, substitution or definite bounds.",
+      "Preserve supported radio and blank response contracts.",
+      "Keep moderate workload and unit-magnitude nonconstant coefficients."
+    ],
+    "permitted_variations": [
+      "Signs, small exponents, constant magnitudes, variables and summand order.",
+      "Correct-option positions and eligible distractor assignments.",
+      "A true-answer coefficient bound is incidental, not a constraint of the sum rule."
+    ],
+    "source_refs": [
+      "Tutorial 701 / 207bbd12-158a-58be-b000-82cace6dcdde: integrate each summand; arbitrary constants combine into C.",
+      "e-371 / e4a94ca8-82ee-5776-a46d-b735d4ab60fb: x\u00b2+1.",
+      "q-71167 / 9e4827b1-c8af-5e0e-a92c-bab0c6f19c7d: polynomial radio.",
+      "q-71169 / 79aa6724-ce36-5977-907b-506fab54c4d7: reciprocal-radical radio.",
+      "q-133291 / 836e24be-b58e-500b-bb05-e9b2030ce5e6: blank with external +C.",
+      "Tutorial 703 introduces additional constant-factor workload in the next knowledge point."
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "script-provenance.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay.json",
+        "source-replay-results.json",
+        "source-parameter-records.json"
+      ],
+      "details": "Seven source questions and all 21 captured choices checked. Missing keys were independently inferred; the missing derivative was restored from its source solution. Fieldless sources remain math-only."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "counterfactual-results.json",
+        "reciprocal-counterfactual-results.json"
+      ],
+      "details": "475 initial exact checks plus additional controlled cases verified integrands, unique radio keys, and worked-solution results."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "coverage.json",
+        "samples.json",
+        "boundaries.json"
+      ],
+      "details": "Fresh samples and boundary cases cover the declared profiles, exponents, signs, constants, variables, orders and omission roles. Shortcut resistance is assessed separately."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "scope-results.json"
+      ],
+      "details": "Generated problems retain the two-term sum/power-rule method and moderate workload. Unsupported source response families are explicitly limited."
+    },
+    "grading": {
+      "status": "failed",
+      "evidence_paths": [
+        "grading.json",
+        "additional-grader-input.json",
+        "additional-grading-run.log",
+        "constant-shift-math.json",
+        "native-observation.json"
+      ],
+      "details": "The initial native suite passed 616 checks, including equivalent blank entries and wrong responses. An additional mathematically valid constant-shifted antiderivative was rejected."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render-all/rendering.json",
+        "final-render/rendering.json",
+        "render-inspection.json"
+      ],
+      "details": "45 actual-UI renders passed. Representative polynomial, radical, blank, source-bank and controlled-bank screenshots were visually inspected."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "package-integrity.json"
+      ],
+      "details": "Exact dependency declaration, deterministic replay, CLI boundaries and relocation passed. All package file hashes are unchanged."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "shortcut-results.json",
+        "shortcut-trials.json",
+        "shortcut-perfect-records.json",
+        "selection-shortcut-summary.json",
+        "evidence-contract.json"
+      ],
+      "details": "The previous singleton shortcut is repaired. A remaining coefficient-range cue solves four delivered items perfectly without inspecting their integrands and remains reachable after learner selection."
+    }
+  },
+  "findings": [
+    {
+      "kind": "decision_shortcut",
+      "description": "True linear coefficients always have magnitude at most 6, while distractors can reach 9. Four delivered questions have exactly one in-range option; choosing it succeeds 4/4 without reading the integrand. Across the recognizable out-of-range subgroup, the strategy succeeds 24/61 against a 1/5 random baseline.",
+      "source_refs": [
+        "Tutorial 701 / 207bbd12-158a-58be-b000-82cace6dcdde",
+        "q-71167 / 9e4827b1-c8af-5e0e-a92c-bab0c6f19c7d",
+        "q-71169 / 79aa6724-ce36-5977-907b-506fab54c4d7",
+        "generate/principles.md, principle 2"
+      ],
+      "reproduction": "Seed 85290173; R profile, n=3, s=-1, k=-5, variable=t, constant_first=false, offset=-3, second_offset=-2, factors=[2], omitted_row=0, omitted_col=1. Delivered record a58bb565-8d43-5f86-8ad1-1bf56a4689fe has linear coefficients -7,-7,-8,-8,-5. Complete records and native outcomes are saved in shortcut-perfect-records.json and native-observation.json.",
+      "requested_change": "Remove the asymmetric true-answer/distractor range cue, for example by sampling wrong constants from the same feasible domain. Retest boundary layouts and conditional shortcuts through delivery and learner selection."
+    },
+    {
+      "kind": "grading",
+      "description": "For y'(t)=5+t^6, the blank displays an external arbitrary +C but does not require a zero constant term. The native grader rejects t^7/7+5*t+1, although its derivative is correct and the added 1 is absorbed into C.",
+      "source_refs": [
+        "q-133291 / 836e24be-b58e-500b-bb05-e9b2030ce5e6",
+        "Tutorial 701 / 207bbd12-158a-58be-b000-82cace6dcdde"
+      ],
+      "reproduction": "Run the native check-engine with additional-grader-input.json. The final case, valid constant-shift antiderivative, expects acceptance and fails with rejection. Exact differentiation and the complete record are retained in constant-shift-math.json.",
+      "requested_change": "Explicitly require zero constant term in the blank and align the explanation, or grade equivalent antiderivative families modulo an additive constant."
+    }
+  ]
+}

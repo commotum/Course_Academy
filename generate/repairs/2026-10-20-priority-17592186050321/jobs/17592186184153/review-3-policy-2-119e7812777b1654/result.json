@@ -1,0 +1,122 @@
+{
+  "verdict": "revise",
+  "summary": "A structural shortcut survives delivery: the singleton linear coefficient is always wrong. Eliminating it raises guessing success from 20% to 25% without integration. The package remained unchanged.",
+  "source_analysis": {
+    "skill": "Compute two-term indefinite integrals using the sum and power rules.",
+    "reasoning_steps": [
+      "Identify both signed summands and rewrite radicals or reciprocals as powers.",
+      "Integrate each term by increasing its exponent and dividing by the new exponent.",
+      "Combine the results with one arbitrary constant."
+    ],
+    "invariants": [
+      "Preserve elementary two-term integration and the observed response contracts.",
+      "Exclude logarithms, substitution, definite integrals and additional workload.",
+      "Answer-bank multiplicity has no instructional reason to determine correctness."
+    ],
+    "permitted_variations": [
+      "Vary supported exponents, signs, constants, variable names and summand order.",
+      "Vary answer positions and eligible distractor assignments while deriving all dependent content consistently."
+    ],
+    "source_refs": [
+      "Tutorial 701 / 207bbd12-158a-58be-b000-82cace6dcdde",
+      "e-371 / e4a94ca8-82ee-5776-a46d-b735d4ab60fb",
+      "q-71167 / 9e4827b1-c8af-5e0e-a92c-bab0c6f19c7d",
+      "q-71169 / 79aa6724-ce36-5977-907b-506fab54c4d7",
+      "q-133291 / 836e24be-b58e-500b-bb05-e9b2030ce5e6"
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "source-replay-results.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay.json",
+        "source-replay-results.json",
+        "source-parameter-records.json"
+      ],
+      "details": "Seven source cases and all 21 captured choices checked. Missing evidence and source-supported corrections are documented."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "additional-counterfactual-results.json",
+        "delivered-math-results.json"
+      ],
+      "details": "475 primary records plus additional controlled and delivered cases passed exact prompt, choice and solution checks."
+    },
+    "variety": {
+      "status": "failed",
+      "evidence_paths": [
+        "coverage.json",
+        "structural-shortcut-proof.json",
+        "bank-assignment-control.json"
+      ],
+      "details": "Numerical variation is broad, but both radio templates exclude a valid assignment where the correct constant coefficient appears once."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "scope-results.json",
+        "boundaries.json"
+      ],
+      "details": "Tested variations retain two elementary power integrals and moderate workload."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input-complete.json",
+        "grading-complete.json"
+      ],
+      "details": "Native learner grading passed 203 accepted and 530 rejected checks, including equivalent blank entries and normalized delivered records."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "additional-render/rendering.json",
+        "visual-inspection.json"
+      ],
+      "details": "38 actual-UI screenshots inspected; prompts, controls, notation and worked solutions displayed correctly."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "package-before.json",
+        "package-after.json"
+      ],
+      "details": "Exact runtime dependency declaration, deterministic replay, relocation and CLI boundaries passed. Package hashes remained unchanged."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "structural-shortcut-proof.json",
+        "shortcut-results.json",
+        "delivery-selection-summary.json"
+      ],
+      "details": "The singleton-frequency cue survives all 226 delivered radios and 695 selected generated radios. A valid counterfactual passes delivery, grading and rendering but is rejected by the generator."
+    }
+  },
+  "findings": [
+    {
+      "kind": "decision_shortcut",
+      "description": "Both radio templates omit a grid cell only from a wrong-constant row. Consequently, the linear coefficient appearing once is certainly wrong. Ignoring the integrand and eliminating that option gives exact 25% expected success instead of 20%. This is a partial shortcut, not perfect answer prediction.",
+      "source_refs": [
+        "Tutorial 701: integrate both signed summands separately",
+        "q-71167 / 9e4827b1-c8af-5e0e-a92c-bab0c6f19c7d",
+        "q-71169 / 79aa6724-ce36-5977-907b-506fab54c4d7",
+        "generator.py:99",
+        "generator.py:125",
+        "generator.py:217"
+      ],
+      "reproduction": "Run commands.md using fresh seeds 92746130, 61023879 and 31417029. Explicit case: P,n=3,s=-1,k=5,variable=x,constant_first=true,offset=-2,second_offset=2,factors=[4/3],omitted_row=1,omitted_col=1. Changing only the omission to row=0,col=1 is rejected. bank-assignment-control.json independently demonstrates that this alternative preserves five distinct choices, the same unique antiderivative, prompt and solution.",
+      "requested_change": "Remove the fixed association between singleton-row status and wrongness. Permit appropriately sampled eligible omissions in the correct-constant row, or redesign the bank equivalently. Recheck conditional frequency strategies after delivery filtering and learner selection."
+    }
+  ]
+}
