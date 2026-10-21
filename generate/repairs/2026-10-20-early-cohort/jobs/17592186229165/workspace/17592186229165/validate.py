@@ -52,8 +52,8 @@ def validate_record(r,level):
   assert dr[0].split('=',1)[1].count('^{′}')==1,('Missing formal derivative',dr)
  if len(dr)==4:
   assert dr[1].split('=',1)[1].count('^{′}')==1,('Missing component formal derivative',dr)
-  assert dr[2].split('=',1)[1].count('^{′}')==0 and re.search(r'\\alpha \([^)]*\{e\}',dr[2]),('Missing product-rule component row',dr)
-  assert r'\alpha (1' in dr[3],('Missing collected product derivative',dr)
+  assert dr[2].split('=',1)[1].count('^{′}')==0 and re.search(r'\\(?:alpha|beta) \([^)]*\{e\}',dr[2]),('Missing product-rule component row',dr)
+  assert any(a+'(1' in dr[3] for a in (r'\alpha ',r'\beta ')),('Missing collected product derivative',dr)
  for row in dr:
   if row.split('=',1)[0].replace('&','').strip():left,right=eq(row);assert left==DP
   else:right=scalar(row.split('=',1)[1])

@@ -1,0 +1,130 @@
+{
+  "verdict": "revise",
+  "summary": "The authored hard family contains a positional shortcut: the second forcing term is always nonresonant. Four stored mixed questions reproduce this weakness. The requested easy batch has no demonstrated defect. All 126 package files remain unchanged.",
+  "source_analysis": {
+    "skill": "Solve an exponential-forcing initial value problem using a supplied complementary solution, undetermined coefficients, and the initial condition.",
+    "reasoning_steps": [
+      "Compare each forcing exponent with the complementary exponent.",
+      "Choose an ordinary or x-multiplied exponential trial and solve its coefficient.",
+      "Apply the initial condition and enter the explicit solution."
+    ],
+    "invariants": [
+      "Preserve the supplied complementary solution, initial location zero, and math-blank response.",
+      "Easy source questions are nonresonant; moderate source questions are resonant.",
+      "Trial form depends on exponent overlap."
+    ],
+    "permitted_variations": [
+      "Vary signed rates, forcing coefficients, initial values, and resulting coefficient cancellation.",
+      "In the authored mixed hard extension, either forcing position may be resonant without changing the method or workload."
+    ],
+    "source_refs": [
+      "d2382def-85b2-5002-9614-692f272355c8",
+      "edaf01e0-f315-5b89-a42e-b20571efeafe",
+      "1ea06d66-de30-514a-817f-8749abb4ab25",
+      "tutorial e6655774-c9ab-58c6-bfec-5013b08b7918"
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "scope-results.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replays.json",
+        "source-replay-results.json",
+        "scope-results.json"
+      ],
+      "details": "All 15 practice cases replay available prompts, solutions, complete banks and designations. Two incomplete source captures remain documented gaps."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "audit.py",
+        "math-results.json"
+      ],
+      "details": "100 independently parsed instances satisfy their displayed ODEs and initial values; final displayed solutions match their answer banks."
+    },
+    "variety": {
+      "status": "failed",
+      "evidence_paths": [
+        "coverage-results.json",
+        "minimal-role-counterexample.json",
+        "test_role_exchange.py",
+        "role-exchange-test.log"
+      ],
+      "details": "Mixed hard construction excludes legitimate second-position resonance. Reordering an otherwise identical IVP is rejected."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "scope-results.json"
+      ],
+      "details": "Observed levels preserve source methods. The authored two-forcing hard extension uses methods taught earlier in the same lesson."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-report.json",
+        "grader-exponent-input.json",
+        "grader-exponent-report.json",
+        "grader-role-input.json",
+        "grader-role-report.json",
+        "grader-delivered-input.json",
+        "grader-delivered-report.json"
+      ],
+      "details": "Native grading matched 194 expectations: 57 accepted and 137 rejected, including equivalent expressions, stale counterfactual keys and delivered easy records."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render-inspection.json",
+        "render/rendering.json",
+        "render-pairs/rendering.json",
+        "render-hard/rendering.json"
+      ],
+      "details": "15 actual-UI render cases passed. Representative screenshots were inspected, including cancellation, resonance and both hard templates."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "package-before.json",
+        "package-integrity.json",
+        "runtime-results.json",
+        "relocation-results.json"
+      ],
+      "details": "Package unchanged. Exact dependency versions, deterministic replay, relocation, invalid-input guards and JSON CLI verified."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "evidence-contract.json",
+        "coverage-results.json",
+        "delivery-batch/delivery.json",
+        "delivery-hard/delivery.json",
+        "selection-results.json",
+        "affected-inventory.json"
+      ],
+      "details": "Choosing an ordinary trial for the second forcing term succeeds by position on 24/24 delivered fresh hard cases and 5/5 stored generated hard cases. Filtering and selection cannot restore the missing role placement. The easy batch survives without a demonstrated shortcut."
+    }
+  },
+  "findings": [
+    {
+      "kind": "decision_shortcut",
+      "description": "Hard mixed questions always place resonance first. Consequently, the learner can assign an ordinary exponential trial to the last forcing term without comparing its exponent with the complementary exponent. Four stored mixed instances are affected; their individual mathematical keys remain correct.",
+      "source_refs": [
+        "tutorial e6655774-c9ab-58c6-bfec-5013b08b7918: exponent overlap determines multiplication by x",
+        "1ea06d66-de30-514a-817f-8749abb4ab25: mixed forcing example",
+        "generate/principles.md: vary eligible answer-bearing roles"
+      ],
+      "reproduction": "Run /home/jake/Developer/Course_Academy/.venv/bin/python test_role_exchange.py; it exits 1. Accepted mixed parameters are h=1,k=1,f=1,k2=2,f2=1,v=0,seed=90211. Swapping k=2,k2=1 preserves the IVP and solution (x-1)e^x+e^(2x), but raises 'Mixed requires first component resonant, second nonresonant'.",
+      "requested_change": "Allow and sample either resonant position in the mixed family. Derive trial forms, derivatives, coefficient equations and explanations from each component's exponent equality to h. Retain the legitimate both-nonresonant and observed easy/moderate families. Adopt the strict reorder test and verify both positions survive delivery."
+    }
+  ],
+  "repair_history_file": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186229165/repair-history.json",
+  "instruction": "Fix the root cause, retain every earlier counterexample, and declare executable checks in repair-regressions.json. A failed check is another repair task, not permission to abandon the generator."
+}

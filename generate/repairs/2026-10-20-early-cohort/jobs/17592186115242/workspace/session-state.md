@@ -1,6 +1,40 @@
 # Repair state
 
-## Third pass (current)
+## Fourth pass (current)
+
+Read the latest feedback and full retained history first. The first executed
+check was `checks/batch_regressions.py --finding inventory`; it exits 1 with
+five affected records and the retained 64/64 sign-only selection witness.
+All four generator finding checks then passed: shortcut, source, zero, and
+finite batch. Batch checks include three requests (14 records total), shared
+delivery filtering, within-sign contrasts, and controlled relevant/irrelevant
+coefficient changes. No construction or runtime change was justified by the
+latest finding, which concerns already stored banks.
+
+Commands and exact outcomes: evidence/repair-4/commands.json. Native grading
+was rerun: 7 correct accepted, 28 wrong rejected, 0 unresolved. Relocation and
+exact dependency checks pass. checks/verify_retained_evidence.py confirms the
+runtime, manifest, source and inventory match the previous protected hashes;
+the current five-record batch equals the already staged replacement proposal.
+Both retained actual-UI screenshots were reinspected; no clipping, overlap or
+unresolved math was observed. Rendering was reused after those integrity checks.
+
+Only the audit's evidence-root wording/path anchor was updated to author-4;
+affected-inventory.json still resolves to the five complete historical records
+inside this workspace. After that change, the strict inventory regression was
+rerun and still exits 1. All five historical finding IDs remain executable in
+repair-regressions.json; the failing result was not waived.
+
+Current result: evidence/repair-4/results.json, status unsupported. The five
+stored records still require the separate authorized inventory-remediation
+stage identified in the retained review. The existing reviewed replacement
+proposal remains in evidence/repair-3/inventory-repair-proposal.json. No database
+content, runtime package file, published asset, engine, or other job was changed.
+Next unfinished step is external remediation followed by refreshed inventory
+and the same strict regression; another generator-only edit cannot remove the
+captured stored banks.
+
+## Third pass (retained)
 
 Read feedback.json AND all retained repair-history.json findings. Reproduced
 latest stored-pool failure before editing: five affected records, 64/64

@@ -188,6 +188,7 @@ def learning_easy(seed,template,profile,parameters=None):
    # Rank is sampled from its feasible domain, never silently forced to a source rank.
    feasible=[i for i in linear_indices if A-low>=i and high-A>=4-i]
    if not feasible:
+    if 'target_rank' in p or 'linear_indices' in p:raise ValueError('explicit linear target positions infeasible at this boundary')
     # Explicit boundary: choose eligible linear positions among feasible ranks.
     feasible=[i for i in range(5) if A-low>=i and high-A>=4-i]
     target=rng.choice(feasible)

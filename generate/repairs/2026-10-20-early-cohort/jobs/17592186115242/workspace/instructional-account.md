@@ -1,5 +1,28 @@
 # Instructional account and targeted repair
 
+Fifth-pass scope: the first executed regression again reproduced finding
+591f580cadb749294588: five unchanged stored banks, with 64/64 successes for
+the retained possible learner-history shortcut. Reuse the source analysis and
+completed construction repairs below. Source example
+f2c7cfd3-da43-5208-bd0e-21692357fabe still requires elimination and a false
+residual equation; tutorial e0c85152-daea-5a87-a3ba-81870558c7a2 still defines
+inconsistency by absence of solutions. No new mathematical construction change
+follows from the feedback. Verify the retained generator regressions and staged
+replacement evidence, and preserve the strict historical failure. The separate
+inventory workflow remains necessary; no workspace edit can retire stored
+questions from the selector. Evidence for this pass belongs in evidence/repair-5.
+
+Fourth-pass scope: replay the latest historical-pool failure and retain the
+completed construction repairs. The captured source, inventory, and runtime
+must match the third-pass hashes before reusing its replacement/render evidence.
+Canonical f2c7cfd3-da43-5208-bd0e-21692357fabe and the tutorial's
+contradiction/redundancy definitions still prescribe the same elimination skill.
+No new source or mathematical construction failure is reported. Changing a
+Python generator cannot change the banks already captured in inventory; the
+selector reads stored candidate identities independently of this entrypoint.
+Keep finding 591f580cadb749294588 failing while those records remain. This pass
+adds evidence verification only and makes no runtime or database changes.
+
 The learner eliminates x, sets the remaining affine coefficient of y to zero,
 then distinguishes a contradiction from a redundant equation. The response is
 one equation k=value selected from five radio choices. Tutorial

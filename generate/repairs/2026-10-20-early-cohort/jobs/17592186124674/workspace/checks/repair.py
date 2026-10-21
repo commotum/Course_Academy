@@ -100,7 +100,7 @@ def main():
     # is reassigned across EVERY eligible answer-bearing capacity.
     templates=['direct_model',*g.LEARNING_SOURCES]
     for template in templates:
-        seeds=[88,89] if template=='direct_model' else [624]
+        seeds=[88,3] if template=='direct_model' else [624]
         for seed in seeds:
             base=g.generate_easy(seed=seed,template=template)
             X=sp.Symbol(base['generation']['symbol']);k=sp.Symbol('k')
@@ -142,6 +142,8 @@ def main():
         try:g.generate_easy(seed=88,parameters={'context':'deer','capacity':cap})
         except ValueError:invalid.append(cap)
         else:raise AssertionError(('unexpected acceptance',cap))
+    for A in (10,99,100,5000):
+        witness(g.generate_easy(seed=624,template='source_17592186308739',parameters={'capacity':A,'initial':1}))
     records=[minimal,fixed60]+controlled+pairs+[irrelevant]+fresh+boundaries
     maths=[witness(r) for r in records]
     save('regression-records.json',records)
