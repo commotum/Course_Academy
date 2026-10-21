@@ -1,0 +1,90 @@
+{
+  "source": "engine/rust/question_selection.rs:132-216",
+  "command": "decision_audit.py",
+  "selection": {
+    "fresh": {
+      "pool_size": 45,
+      "trials": 300,
+      "index_counts": {
+        "4": 6,
+        "16": 7,
+        "14": 11,
+        "11": 8,
+        "40": 8,
+        "36": 8,
+        "17": 4,
+        "39": 9,
+        "43": 6,
+        "13": 4,
+        "1": 5,
+        "6": 11,
+        "3": 8,
+        "23": 5,
+        "32": 8,
+        "38": 3,
+        "35": 10,
+        "25": 6,
+        "28": 13,
+        "37": 7,
+        "10": 8,
+        "7": 6,
+        "19": 12,
+        "22": 9,
+        "31": 9,
+        "12": 8,
+        "5": 4,
+        "34": 6,
+        "15": 5,
+        "8": 6,
+        "20": 9,
+        "24": 4,
+        "9": 3,
+        "30": 4,
+        "33": 7,
+        "29": 7,
+        "44": 5,
+        "41": 5,
+        "0": 5,
+        "26": 7,
+        "42": 3,
+        "21": 6,
+        "27": 6,
+        "2": 7,
+        "18": 2
+      },
+      "selected_families": {
+        "vector": 24,
+        "matrix": 21
+      },
+      "eligible_support_preserved": true,
+      "unconfigured_policy": "selects smallest eligible entity ID; prospective published entity IDs unavailable",
+      "history": "seen_before_task excludes previous task content; current prefix also excluded by caller. Excluding by identity can exhaust a finite pool but does not inspect keys, slopes, profiles, or positions."
+    },
+    "batch": {
+      "pool_size": 5,
+      "trials": 300,
+      "index_counts": {
+        "0": 58,
+        "1": 58,
+        "4": 54,
+        "2": 60,
+        "3": 70
+      },
+      "selected_families": {
+        "matrix": 4,
+        "vector": 1
+      },
+      "eligible_support_preserved": true,
+      "unconfigured_policy": "selects smallest eligible entity ID; prospective published entity IDs unavailable",
+      "history": "seen_before_task excludes previous task content; current prefix also excluded by caller. Excluding by identity can exhaust a finite pool but does not inspect keys, slopes, profiles, or positions."
+    }
+  },
+  "assumptions": [
+    "Captured source and inventory omit active selection policy, learner history and future database entity IDs. Simulates a fresh learner with positive hard weight.",
+    "Since every generated record is hard, any positive hard band weight gives equal index support within this family. Zero hard weight makes this rated pool ineligible; no claim about a specific live learner.",
+    "Raw generator rejects duplicate candidate tuples and batch() duplicate RREFs, without sign or answer-index rejection. check_delivery uses actual prepare_records against captured inventory basis 5370."
+  ],
+  "limits": [
+    "Simulation compares support and family retention, not actual future draw frequencies or entity collisions. Publication file absent; no publication performed."
+  ]
+}

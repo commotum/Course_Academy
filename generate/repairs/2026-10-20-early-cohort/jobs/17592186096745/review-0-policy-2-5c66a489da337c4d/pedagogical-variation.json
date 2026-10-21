@@ -1,0 +1,1427 @@
+{
+  "learner_operation": "Read all coefficients and right-hand sides, identify independent rows, normalize pivots and eliminate below/above them, then distinguish the resulting matrix or full solution set from plausible erroneous alternatives.",
+  "fixed_features": [
+    {
+      "feature": "Consistent rank two",
+      "justification": "Target KP specifically two pivots; all 17 source keys are matrix rank two or one-parameter solutions. A No solution choice is a distractor, not grounds to introduce an inconsistent family."
+    },
+    {
+      "feature": "Pivots in x,y and free z for conservative reproduction",
+      "justification": "Tutorial 3949 specifically clears a12 using row 2; every assessed example uses this arrangement. Other pivot pairs may be same-method extensions but are not necessary to establish varied decisions within this scope."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Affine slopes and intercepts",
+      "eligible_variation": "Any signed or zero value in a conservative bounded hard domain, derived coherently through equations, correct option and solution.",
+      "observed": "Fresh samples contain both signs and zero in all four slots; independent exact RREF checks pass. Source example values outside the authored bounded domain are available in replay for 15 profiles."
+    },
+    {
+      "role": "Correct choice and candidate distractors",
+      "eligible_variation": "Any of five candidates can qualify while the same affine/row reduction rule remains fixed.",
+      "observed": "Code chooses target index before five distinct exchangeable tuples. Both response templates pass a controlled change of target with bank held fixed; native grader accepts the new key and rejects the old."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "fresh_raw",
+      "sample_refs": [
+        "coverage-results.json",
+        "independent-samples.json"
+      ],
+      "result": "{'count': 45, 'family_counts': {'matrix': 21, 'vector': 24}, 'positions': {4: 11, 0: 7, 1: 7, 3: 11, 2: 9}, 'semantic_rrefs': 44, 'profile_counts': {'q-74525': 3, 'q-74532': 3, 'q-131632': 3, 'q-131635': 3, 'q-74617': 3, 'q-74627': 3, 'q-74629': 3, 'q-131631': 3, 'q-131633': 3, 'q-74626': 3, 'q-74628': 3, 'q-74618': 3, 'q-131636': 3, 'q-74621': 3, 'q-131630': 3}, 'values': {'sx': {3: 8, 2: 3, 0: 10, 1: 6, -3: 7, -2: 5, -1: 6}, 'sy': {-3: 6, 2: 7, 0: 10, 1: 3, 3: 10, -2: 5, -1: 4}, 'bx': {-1: 7, 2: 6, -3: 9, -2: 4, 3: 6, -4: 2, 0: 6, 4: 4, 1: 1}, 'by': {2: 5, 4: 6, -1: 8, 3: 4, -4: 8, -2: 4, 1: 4, 0: 2, -3: 4}}}"
+    },
+    {
+      "case": "fresh_delivered",
+      "sample_refs": [
+        "coverage-results.json",
+        "independent-samples.json"
+      ],
+      "result": "{'count': 45, 'family_counts': {'matrix': 21, 'vector': 24}, 'positions': {4: 11, 0: 7, 1: 7, 3: 11, 2: 9}, 'semantic_rrefs': 44, 'profile_counts': {'q-74525': 3, 'q-74532': 3, 'q-131632': 3, 'q-131635': 3, 'q-74617': 3, 'q-74627': 3, 'q-74629': 3, 'q-131631': 3, 'q-131633': 3, 'q-74626': 3, 'q-74628': 3, 'q-74618': 3, 'q-131636': 3, 'q-74621': 3, 'q-131630': 3}, 'values': {'sx': {3: 8, 2: 3, 0: 10, 1: 6, -3: 7, -2: 5, -1: 6}, 'sy': {-3: 6, 2: 7, 0: 10, 1: 3, 3: 10, -2: 5, -1: 4}, 'bx': {-1: 7, 2: 6, -3: 9, -2: 4, 3: 6, -4: 2, 0: 6, 4: 4, 1: 1}, 'by': {2: 5, 4: 6, -1: 8, 3: 4, -4: 8, -2: 4, 1: 4, 0: 2, -3: 4}}}"
+    },
+    {
+      "case": "batch_raw",
+      "sample_refs": [
+        "coverage-results.json",
+        "runner-batch.json"
+      ],
+      "result": "{'count': 5, 'family_counts': {'matrix': 4, 'vector': 1}, 'positions': {2: 1, 0: 3, 4: 1}, 'semantic_rrefs': 5, 'profile_counts': {'q-74621': 1, 'q-131630': 1, 'q-74617': 1, 'q-74626': 1, 'q-131632': 1}, 'values': {'sx': {-3: 2, 2: 1, -1: 1, 0: 1}, 'sy': {-3: 1, -2: 1, 1: 2, 3: 1}, 'bx': {1: 1, -3: 2, 3: 1, 4: 1}, 'by': {-4: 1, 4: 1, -1: 1, -3: 1, 2: 1}}}"
+    },
+    {
+      "case": "batch_delivered",
+      "sample_refs": [
+        "coverage-results.json",
+        "runner-batch.json"
+      ],
+      "result": "{'count': 5, 'family_counts': {'matrix': 4, 'vector': 1}, 'positions': {2: 1, 0: 3, 4: 1}, 'semantic_rrefs': 5, 'profile_counts': {'q-74621': 1, 'q-131630': 1, 'q-74617': 1, 'q-74626': 1, 'q-131632': 1}, 'values': {'sx': {-3: 2, 2: 1, -1: 1, 0: 1}, 'sy': {-3: 1, -2: 1, 1: 2, 3: 1}, 'bx': {1: 1, -3: 2, 3: 1, 4: 1}, 'by': {-4: 1, 4: 1, -1: 1, -3: 1, 2: 1}}}"
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "For q-74525 and q-74532, keep profile, complete candidate bank and row presentation fixed; change correct_index from 0 to 1, changing coefficients/RHS to realize that target.",
+      "expected": "Prompt equations, RREF/solution, worked explanation and accepted answer must change coherently; old target rejected.",
+      "observed": "Independent matrix reconstruction confirms changed response; all choices checked by native engine; full pair prompts/solutions rendered. See counterfactual-results and rendered-choice-results.",
+      "status": "passed",
+      "justification": "The source asks for RREF or the solution of the given equations; different affine targets are legitimate answer-bearing assignments under that operation.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-all-results.json",
+        "render/rendering.json",
+        "rendered-choice-results.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "For both families keep candidates and chosen solution fixed, permute equations [2,0,1] and multiply presented equations by signs [-1,1,-1].",
+      "expected": "Different prompt and reduction trace, identical RREF, solution and accepted mathematical option.",
+      "observed": "Both pairs have equal independently computed RREFs and same correct values; native grader rejects alternatives and accepts the preserved target; rendered prompts and worked traces follow the changed equations.",
+      "status": "passed",
+      "justification": "Nonzero scaling/reordering equations preserves the same system solution, as in source row operations.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-all-results.json",
+        "render/rendering.json",
+        "rendered-choice-results.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "first authored option",
+      "subgroup": "fresh_delivered:all",
+      "scope": "overall",
+      "strategy": "Choose first authored option; break ties by authored order.",
+      "correct": 7,
+      "total": 45,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest TeX",
+      "subgroup": "fresh_delivered:all",
+      "scope": "overall",
+      "strategy": "Choose shortest TeX; break ties by authored order.",
+      "correct": 10,
+      "total": 45,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "most minus signs",
+      "subgroup": "fresh_delivered:all",
+      "scope": "overall",
+      "strategy": "Choose most minus signs; break ties by authored order.",
+      "correct": 5,
+      "total": 45,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "most zeros",
+      "subgroup": "fresh_delivered:all",
+      "scope": "overall",
+      "strategy": "Choose most zeros; break ties by authored order.",
+      "correct": 6,
+      "total": 45,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "first authored option",
+      "subgroup": "fresh_delivered:matrix",
+      "scope": "within_template",
+      "strategy": "Choose first authored option; break ties by authored order.",
+      "correct": 4,
+      "total": 21,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest TeX",
+      "subgroup": "fresh_delivered:matrix",
+      "scope": "within_template",
+      "strategy": "Choose shortest TeX; break ties by authored order.",
+      "correct": 2,
+      "total": 21,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "most minus signs",
+      "subgroup": "fresh_delivered:matrix",
+      "scope": "within_template",
+      "strategy": "Choose most minus signs; break ties by authored order.",
+      "correct": 3,
+      "total": 21,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "most zeros",
+      "subgroup": "fresh_delivered:matrix",
+      "scope": "within_template",
+      "strategy": "Choose most zeros; break ties by authored order.",
+      "correct": 2,
+      "total": 21,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "first authored option",
+      "subgroup": "fresh_delivered:vector",
+      "scope": "within_template",
+      "strategy": "Choose first authored option; break ties by authored order.",
+      "correct": 3,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest TeX",
+      "subgroup": "fresh_delivered:vector",
+      "scope": "within_template",
+      "strategy": "Choose shortest TeX; break ties by authored order.",
+      "correct": 8,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "most minus signs",
+      "subgroup": "fresh_delivered:vector",
+      "scope": "within_template",
+      "strategy": "Choose most minus signs; break ties by authored order.",
+      "correct": 2,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "most zeros",
+      "subgroup": "fresh_delivered:vector",
+      "scope": "within_template",
+      "strategy": "Choose most zeros; break ties by authored order.",
+      "correct": 4,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "first authored option",
+      "subgroup": "fresh_delivered:q-131630",
+      "scope": "within_template",
+      "strategy": "Choose first authored option; break ties by authored order.",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest TeX",
+      "subgroup": "fresh_delivered:q-131630",
+      "scope": "within_template",
+      "strategy": "Choose shortest TeX; break ties by authored order.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "most minus signs",
+      "subgroup": "fresh_delivered:q-131630",
+      "scope": "within_template",
+      "strategy": "Choose most minus signs; break ties by authored order.",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "most zeros",
+      "subgroup": "fresh_delivered:q-131630",
+      "scope": "within_template",
+      "strategy": "Choose most zeros; break ties by authored order.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "first authored option",
+      "subgroup": "fresh_delivered:q-131631",
+      "scope": "within_template",
+      "strategy": "Choose first authored option; break ties by authored order.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest TeX",
+      "subgroup": "fresh_delivered:q-131631",
+      "scope": "within_template",
+      "strategy": "Choose shortest TeX; break ties by authored order.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "most minus signs",
+      "subgroup": "fresh_delivered:q-131631",
+      "scope": "within_template",
+      "strategy": "Choose most minus signs; break ties by authored order.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "most zeros",
+      "subgroup": "fresh_delivered:q-131631",
+      "scope": "within_template",
+      "strategy": "Choose most zeros; break ties by authored order.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "first authored option",
+      "subgroup": "fresh_delivered:q-131632",
+      "scope": "within_template",
+      "strategy": "Choose first authored option; break ties by authored order.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest TeX",
+      "subgroup": "fresh_delivered:q-131632",
+      "scope": "within_template",
+      "strategy": "Choose shortest TeX; break ties by authored order.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "most minus signs",
+      "subgroup": "fresh_delivered:q-131632",
+      "scope": "within_template",
+      "strategy": "Choose most minus signs; break ties by authored order.",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "most zeros",
+      "subgroup": "fresh_delivered:q-131632",
+      "scope": "within_template",
+      "strategy": "Choose most zeros; break ties by authored order.",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "first authored option",
+      "subgroup": "fresh_delivered:q-131633",
+      "scope": "within_template",
+      "strategy": "Choose first authored option; break ties by authored order.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest TeX",
+      "subgroup": "fresh_delivered:q-131633",
+      "scope": "within_template",
+      "strategy": "Choose shortest TeX; break ties by authored order.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "most minus signs",
+      "subgroup": "fresh_delivered:q-131633",
+      "scope": "within_template",
+      "strategy": "Choose most minus signs; break ties by authored order.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "most zeros",
+      "subgroup": "fresh_delivered:q-131633",
+      "scope": "within_template",
+      "strategy": "Choose most zeros; break ties by authored order.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "first authored option",
+      "subgroup": "fresh_delivered:q-131635",
+      "scope": "within_template",
+      "strategy": "Choose first authored option; break ties by authored order.",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest TeX",
+      "subgroup": "fresh_delivered:q-131635",
+      "scope": "within_template",
+      "strategy": "Choose shortest TeX; break ties by authored order.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "most minus signs",
+      "subgroup": "fresh_delivered:q-131635",
+      "scope": "within_template",
+      "strategy": "Choose most minus signs; break ties by authored order.",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "most zeros",
+      "subgroup": "fresh_delivered:q-131635",
+      "scope": "within_template",
+      "strategy": "Choose most zeros; break ties by authored order.",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "first authored option",
+      "subgroup": "fresh_delivered:q-131636",
+      "scope": "within_template",
+      "strategy": "Choose first authored option; break ties by authored order.",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest TeX",
+      "subgroup": "fresh_delivered:q-131636",
+      "scope": "within_template",
+      "strategy": "Choose shortest TeX; break ties by authored order.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "most minus signs",
+      "subgroup": "fresh_delivered:q-131636",
+      "scope": "within_template",
+      "strategy": "Choose most minus signs; break ties by authored order.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "most zeros",
+      "subgroup": "fresh_delivered:q-131636",
+      "scope": "within_template",
+      "strategy": "Choose most zeros; break ties by authored order.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "first authored option",
+      "subgroup": "fresh_delivered:q-74525",
+      "scope": "within_template",
+      "strategy": "Choose first authored option; break ties by authored order.",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest TeX",
+      "subgroup": "fresh_delivered:q-74525",
+      "scope": "within_template",
+      "strategy": "Choose shortest TeX; break ties by authored order.",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "most minus signs",
+      "subgroup": "fresh_delivered:q-74525",
+      "scope": "within_template",
+      "strategy": "Choose most minus signs; break ties by authored order.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "most zeros",
+      "subgroup": "fresh_delivered:q-74525",
+      "scope": "within_template",
+      "strategy": "Choose most zeros; break ties by authored order.",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "first authored option",
+      "subgroup": "fresh_delivered:q-74532",
+      "scope": "within_template",
+      "strategy": "Choose first authored option; break ties by authored order.",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest TeX",
+      "subgroup": "fresh_delivered:q-74532",
+      "scope": "within_template",
+      "strategy": "Choose shortest TeX; break ties by authored order.",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "most minus signs",
+      "subgroup": "fresh_delivered:q-74532",
+      "scope": "within_template",
+      "strategy": "Choose most minus signs; break ties by authored order.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "most zeros",
+      "subgroup": "fresh_delivered:q-74532",
+      "scope": "within_template",
+      "strategy": "Choose most zeros; break ties by authored order.",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "first authored option",
+      "subgroup": "fresh_delivered:q-74617",
+      "scope": "within_template",
+      "strategy": "Choose first authored option; break ties by authored order.",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest TeX",
+      "subgroup": "fresh_delivered:q-74617",
+      "scope": "within_template",
+      "strategy": "Choose shortest TeX; break ties by authored order.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "most minus signs",
+      "subgroup": "fresh_delivered:q-74617",
+      "scope": "within_template",
+      "strategy": "Choose most minus signs; break ties by authored order.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "most zeros",
+      "subgroup": "fresh_delivered:q-74617",
+      "scope": "within_template",
+      "strategy": "Choose most zeros; break ties by authored order.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "first authored option",
+      "subgroup": "fresh_delivered:q-74618",
+      "scope": "within_template",
+      "strategy": "Choose first authored option; break ties by authored order.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest TeX",
+      "subgroup": "fresh_delivered:q-74618",
+      "scope": "within_template",
+      "strategy": "Choose shortest TeX; break ties by authored order.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "most minus signs",
+      "subgroup": "fresh_delivered:q-74618",
+      "scope": "within_template",
+      "strategy": "Choose most minus signs; break ties by authored order.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "most zeros",
+      "subgroup": "fresh_delivered:q-74618",
+      "scope": "within_template",
+      "strategy": "Choose most zeros; break ties by authored order.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "first authored option",
+      "subgroup": "fresh_delivered:q-74621",
+      "scope": "within_template",
+      "strategy": "Choose first authored option; break ties by authored order.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest TeX",
+      "subgroup": "fresh_delivered:q-74621",
+      "scope": "within_template",
+      "strategy": "Choose shortest TeX; break ties by authored order.",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "most minus signs",
+      "subgroup": "fresh_delivered:q-74621",
+      "scope": "within_template",
+      "strategy": "Choose most minus signs; break ties by authored order.",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "most zeros",
+      "subgroup": "fresh_delivered:q-74621",
+      "scope": "within_template",
+      "strategy": "Choose most zeros; break ties by authored order.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "first authored option",
+      "subgroup": "fresh_delivered:q-74626",
+      "scope": "within_template",
+      "strategy": "Choose first authored option; break ties by authored order.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest TeX",
+      "subgroup": "fresh_delivered:q-74626",
+      "scope": "within_template",
+      "strategy": "Choose shortest TeX; break ties by authored order.",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "most minus signs",
+      "subgroup": "fresh_delivered:q-74626",
+      "scope": "within_template",
+      "strategy": "Choose most minus signs; break ties by authored order.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "most zeros",
+      "subgroup": "fresh_delivered:q-74626",
+      "scope": "within_template",
+      "strategy": "Choose most zeros; break ties by authored order.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "first authored option",
+      "subgroup": "fresh_delivered:q-74627",
+      "scope": "within_template",
+      "strategy": "Choose first authored option; break ties by authored order.",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest TeX",
+      "subgroup": "fresh_delivered:q-74627",
+      "scope": "within_template",
+      "strategy": "Choose shortest TeX; break ties by authored order.",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "most minus signs",
+      "subgroup": "fresh_delivered:q-74627",
+      "scope": "within_template",
+      "strategy": "Choose most minus signs; break ties by authored order.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "most zeros",
+      "subgroup": "fresh_delivered:q-74627",
+      "scope": "within_template",
+      "strategy": "Choose most zeros; break ties by authored order.",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "first authored option",
+      "subgroup": "fresh_delivered:q-74628",
+      "scope": "within_template",
+      "strategy": "Choose first authored option; break ties by authored order.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest TeX",
+      "subgroup": "fresh_delivered:q-74628",
+      "scope": "within_template",
+      "strategy": "Choose shortest TeX; break ties by authored order.",
+      "correct": 3,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "most minus signs",
+      "subgroup": "fresh_delivered:q-74628",
+      "scope": "within_template",
+      "strategy": "Choose most minus signs; break ties by authored order.",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "most zeros",
+      "subgroup": "fresh_delivered:q-74628",
+      "scope": "within_template",
+      "strategy": "Choose most zeros; break ties by authored order.",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "first authored option",
+      "subgroup": "fresh_delivered:q-74629",
+      "scope": "within_template",
+      "strategy": "Choose first authored option; break ties by authored order.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest TeX",
+      "subgroup": "fresh_delivered:q-74629",
+      "scope": "within_template",
+      "strategy": "Choose shortest TeX; break ties by authored order.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "most minus signs",
+      "subgroup": "fresh_delivered:q-74629",
+      "scope": "within_template",
+      "strategy": "Choose most minus signs; break ties by authored order.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "most zeros",
+      "subgroup": "fresh_delivered:q-74629",
+      "scope": "within_template",
+      "strategy": "Choose most zeros; break ties by authored order.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "first authored option",
+      "subgroup": "batch_delivered:all",
+      "scope": "overall",
+      "strategy": "Choose first authored option; break ties by authored order.",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest TeX",
+      "subgroup": "batch_delivered:all",
+      "scope": "overall",
+      "strategy": "Choose shortest TeX; break ties by authored order.",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "most minus signs",
+      "subgroup": "batch_delivered:all",
+      "scope": "overall",
+      "strategy": "Choose most minus signs; break ties by authored order.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "most zeros",
+      "subgroup": "batch_delivered:all",
+      "scope": "overall",
+      "strategy": "Choose most zeros; break ties by authored order.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "first authored option",
+      "subgroup": "batch_delivered:matrix",
+      "scope": "within_template",
+      "strategy": "Choose first authored option; break ties by authored order.",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest TeX",
+      "subgroup": "batch_delivered:matrix",
+      "scope": "within_template",
+      "strategy": "Choose shortest TeX; break ties by authored order.",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "most minus signs",
+      "subgroup": "batch_delivered:matrix",
+      "scope": "within_template",
+      "strategy": "Choose most minus signs; break ties by authored order.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "most zeros",
+      "subgroup": "batch_delivered:matrix",
+      "scope": "within_template",
+      "strategy": "Choose most zeros; break ties by authored order.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "first authored option",
+      "subgroup": "batch_delivered:vector",
+      "scope": "within_template",
+      "strategy": "Choose first authored option; break ties by authored order.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest TeX",
+      "subgroup": "batch_delivered:vector",
+      "scope": "within_template",
+      "strategy": "Choose shortest TeX; break ties by authored order.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "most minus signs",
+      "subgroup": "batch_delivered:vector",
+      "scope": "within_template",
+      "strategy": "Choose most minus signs; break ties by authored order.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "most zeros",
+      "subgroup": "batch_delivered:vector",
+      "scope": "within_template",
+      "strategy": "Choose most zeros; break ties by authored order.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with 1/5 uniform guessing. Finite sample rates do not prove independence; the one apparent 3/3 predictor q-74628 shortest-option was challenged on 10 fresh seeds (shortcut-control-results.json). Single-record subgroups cannot establish fixed-role prediction. Code inspection confirms correct slot chosen before exchangeable candidate values. Authored order is additionally shuffled in UI.",
+      "sample_refs": [
+        "decision-probe-results.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "first displayed radio option",
+      "subgroup": "exact runner batch matrix",
+      "scope": "within_template",
+      "strategy": "Click first choice after actual UI shuffle.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five. A single vector record places its key first; the four matrix records have different rendered key positions. No first-position strategy answers the complete five-record batch; single-record conditional success is not evidence of a reproducible construction rule. Review screenshots reveal green feedback because the fixture submits the key; feedback is absent before a learner answers.",
+      "sample_refs": [
+        "rendered-choice-results.json",
+        "runner-batch.json"
+      ]
+    },
+    {
+      "cue": "first displayed radio option",
+      "subgroup": "exact runner batch vector",
+      "scope": "within_template",
+      "strategy": "Click first choice after actual UI shuffle.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five. A single vector record places its key first; the four matrix records have different rendered key positions. No first-position strategy answers the complete five-record batch; single-record conditional success is not evidence of a reproducible construction rule. Review screenshots reveal green feedback because the fixture submits the key; feedback is absent before a learner answers.",
+      "sample_refs": [
+        "rendered-choice-results.json",
+        "runner-batch.json"
+      ]
+    },
+    {
+      "cue": "shortest TeX",
+      "subgroup": "q-74628 fresh control",
+      "scope": "within_template",
+      "strategy": "Choose shortest option, break ties by authored order.",
+      "correct": 2,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Initial 3/3 probe challenged using independently chosen fresh seeds. Initial 3/3 success does not persist on independent seeds; code samples correct slot before exchangeable candidate values.",
+      "sample_refs": [
+        "shortcut-controls.json",
+        "shortcut-control-results.json",
+        "delivery-controls/accepted.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "generator tuple rejection",
+      "generator batch RREF resampling",
+      "requested hard difficulty",
+      "publisher normalization/validation",
+      "captured inventory and within-batch deduplication",
+      "learner freshness and difficulty-first selection code",
+      "actual UI answer shuffling"
+    ],
+    "sample_refs": [
+      "generator-rejection.json",
+      "packaging-results.json",
+      "delivery-independent/delivery.json",
+      "delivery-batch/delivery.json",
+      "learner-selection-results.json",
+      "rendered-choice-results.json",
+      "delivery-controls/delivery.json"
+    ],
+    "result": "All 45 fresh and 5 exact batch records survive actual delivery filtering. Two response families remain; no demonstrated label/layout shortcut. Uniform hard-band selection preserves support in read-only simulation. Active policy, live learner history and future entity IDs unavailable, so no claim about a particular later task."
+  },
+  "limitations": [
+    "Not an exhaustive shortcut proof; 3 independently seeded records per packaged source profile and the exact batch were examined.",
+    "Two supplied source profiles cannot be replayed or sampled: q-74625 and q-131634. This is a separate demonstrated source-fidelity defect.",
+    "The one vector question in the exact batch is too small a subgroup to infer statistical balance; its displayed first choice is correct, and construction does not fix its answer position.",
+    "Canonical example has no captured answer field; used for scope, not invented as a graded replay.",
+    "Captured inventory basis 5370; no later database changes examined."
+  ]
+}

@@ -1,0 +1,760 @@
+{
+  "learner_operation": "Translate an already upper-triangular 3x3 system into an augmented matrix, eliminate entries above the third pivot using row 3, then above the second pivot using row 2, and identify the unique RREF or solution among five radio choices.",
+  "fixed_features": [
+    {
+      "feature": "Already-echelon nonsingular 3x3 system in x,y,z order",
+      "justification": "Target KP and tutorial f74e6075-9c2a-5495-ab21-470711559f2a prescribe backward elimination of three pivots."
+    },
+    {
+      "feature": "Unit pivots and two/three integer elimination steps in practice",
+      "justification": "All captured practice questions have unit pivots. q-131586 and q-131588 demonstrate skipped zero entries; restricting workload to the observed easy practice is defensible. Broader introduction includes pivot scaling."
+    },
+    {
+      "feature": "Five-choice radio, observed RREF/vector/text forms",
+      "justification": "All 14 source question banks use this response contract. Canonical e-4709 is fieldless and replay-only."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Which candidate triple is the solution",
+      "eligible_variation": "Each of the five distinct source bank triples may solve the system when RHS changes. Original key/role is incidental.",
+      "observed": "Each restored profile covers all five roles under every coefficient mask; all survive delivery."
+    },
+    {
+      "role": "Which above-pivot entries require elimination",
+      "eligible_variation": "a12,a13,a23 signs/magnitudes vary independently, including supported single-zero masks.",
+      "observed": "All four masks and \u00b15 coefficient/translation boundaries and scales 1/2 exercised on restored profiles."
+    },
+    {
+      "role": "Visible correct position",
+      "eligible_variation": "No mathematically fixed answer position; actual UI reorders choices using task/field/choice IDs.",
+      "observed": "Raw random arrays favor late positions due seed correlation, but actual UI has counterexamples. Conditional normalized-vector preview coincidence was explicitly challenged with changed item IDs."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "Restored q-20589 and q-20598 role/mask cross product",
+      "sample_refs": [
+        "controlled-records.json",
+        "delivery-controlled/accepted.json",
+        "variation-coverage.json"
+      ],
+      "result": "2 profiles \u00d7 5 roles \u00d7 4 masks; all 40 unique records survive. Twelve unchanged-profile regression items also survive."
+    },
+    {
+      "case": "Fresh sampler and exact runner batch",
+      "sample_refs": [
+        "random-records.json",
+        "runner-batch.json",
+        "delivery-sample/accepted.json",
+        "delivery-batch/accepted.json",
+        "variation-coverage.json"
+      ],
+      "result": "28/28 random and 5/5 runner records survive. Batch roles 0/1/3; masks [1,1,0] and [0,1,1]; four profiles and distinct non-sign-only systems. Small pool need not exhaust all eligible cases."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "For text/RREF/vector, hold A, complete bank, seed, shift and scale fixed; switch solution role 0 to 1 and derive RHS.",
+      "expected": "Displayed RHS, final result and accepted candidate change; old answer rejected.",
+      "observed": "All three pairs satisfy exact visible-equation math and every displayed operation; native grader rejects old answer and accepts new answer; screenshots inspected.",
+      "status": "passed",
+      "justification": "RHS is relevant evidence determining the unique solution, while the source correct candidate is incidental.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-results.json",
+        "render/rendering.json",
+        "render-rest/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Preserve solution and bank; negate off-diagonal coefficients [2,-3,1] and recompute RHS.",
+      "expected": "Equations and elimination operations change while accepted solution triple remains unchanged.",
+      "observed": "All three shapes preserve mathematical response and native acceptance, with changed prompts, row operations, matrices and rendered explanations. UUIDs and positions may change.",
+      "status": "passed",
+      "justification": "Different upper triangular systems can encode the same solution; the particular coefficient representation is irrelevant to which bank triple is correct.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-results.json",
+        "render-rest/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Change only task-item ID from 4 to 1 for the same normalized vector question.",
+      "expected": "Answer and explanation preserved; visible ordering may change.",
+      "observed": "Actual UI moves correct choice from first to third, defeating the apparent choose-first vector subgroup cue without changing content or grader key.",
+      "status": "passed",
+      "justification": "Task identity has no mathematical role; actual UI includes it in choice ordering.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "render-id-counterfactual-2.json",
+        "ui-id-probe.json",
+        "ui-dom-verification.json",
+        "render-id-counterfactual-2/rendering.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "Candidate extrema/coordinate frequency",
+      "subgroup": "controlled:q-20589",
+      "scope": "within_template",
+      "strategy": "lex_min",
+      "correct": 4,
+      "total": 20,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Blind five-choice baseline is 0.2. All five eligible solution roles occur four times; bank-only rule has counterexamples within this restored profile.",
+      "sample_refs": [
+        "controlled-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Candidate extrema/coordinate frequency",
+      "subgroup": "controlled:q-20589",
+      "scope": "within_template",
+      "strategy": "lex_max",
+      "correct": 4,
+      "total": 20,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Blind five-choice baseline is 0.2. All five eligible solution roles occur four times; bank-only rule has counterexamples within this restored profile.",
+      "sample_refs": [
+        "controlled-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Candidate extrema/coordinate frequency",
+      "subgroup": "controlled:q-20589",
+      "scope": "within_template",
+      "strategy": "majority_coordinates",
+      "correct": 4,
+      "total": 20,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Blind five-choice baseline is 0.2. All five eligible solution roles occur four times; bank-only rule has counterexamples within this restored profile.",
+      "sample_refs": [
+        "controlled-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Candidate extrema/coordinate frequency",
+      "subgroup": "controlled:q-20598",
+      "scope": "within_template",
+      "strategy": "lex_min",
+      "correct": 4,
+      "total": 20,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Blind five-choice baseline is 0.2. All five eligible solution roles occur four times; bank-only rule has counterexamples within this restored profile.",
+      "sample_refs": [
+        "controlled-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Candidate extrema/coordinate frequency",
+      "subgroup": "controlled:q-20598",
+      "scope": "within_template",
+      "strategy": "lex_max",
+      "correct": 4,
+      "total": 20,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Blind five-choice baseline is 0.2. All five eligible solution roles occur four times; bank-only rule has counterexamples within this restored profile.",
+      "sample_refs": [
+        "controlled-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Candidate extrema/coordinate frequency",
+      "subgroup": "controlled:q-20598",
+      "scope": "within_template",
+      "strategy": "majority_coordinates",
+      "correct": 4,
+      "total": 20,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Blind five-choice baseline is 0.2. All five eligible solution roles occur four times; bank-only rule has counterexamples within this restored profile.",
+      "sample_refs": [
+        "controlled-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Candidate extrema/coordinate frequency",
+      "subgroup": "controlled_delivered:q-20589",
+      "scope": "within_template",
+      "strategy": "lex_min",
+      "correct": 4,
+      "total": 20,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Blind five-choice baseline is 0.2. All five eligible solution roles occur four times; bank-only rule has counterexamples within this restored profile.",
+      "sample_refs": [
+        "delivery-controlled/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Candidate extrema/coordinate frequency",
+      "subgroup": "controlled_delivered:q-20589",
+      "scope": "within_template",
+      "strategy": "lex_max",
+      "correct": 4,
+      "total": 20,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Blind five-choice baseline is 0.2. All five eligible solution roles occur four times; bank-only rule has counterexamples within this restored profile.",
+      "sample_refs": [
+        "delivery-controlled/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Candidate extrema/coordinate frequency",
+      "subgroup": "controlled_delivered:q-20589",
+      "scope": "within_template",
+      "strategy": "majority_coordinates",
+      "correct": 4,
+      "total": 20,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Blind five-choice baseline is 0.2. All five eligible solution roles occur four times; bank-only rule has counterexamples within this restored profile.",
+      "sample_refs": [
+        "delivery-controlled/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Candidate extrema/coordinate frequency",
+      "subgroup": "controlled_delivered:q-20598",
+      "scope": "within_template",
+      "strategy": "lex_min",
+      "correct": 4,
+      "total": 20,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Blind five-choice baseline is 0.2. All five eligible solution roles occur four times; bank-only rule has counterexamples within this restored profile.",
+      "sample_refs": [
+        "delivery-controlled/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Candidate extrema/coordinate frequency",
+      "subgroup": "controlled_delivered:q-20598",
+      "scope": "within_template",
+      "strategy": "lex_max",
+      "correct": 4,
+      "total": 20,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Blind five-choice baseline is 0.2. All five eligible solution roles occur four times; bank-only rule has counterexamples within this restored profile.",
+      "sample_refs": [
+        "delivery-controlled/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Candidate extrema/coordinate frequency",
+      "subgroup": "controlled_delivered:q-20598",
+      "scope": "within_template",
+      "strategy": "majority_coordinates",
+      "correct": 4,
+      "total": 20,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Blind five-choice baseline is 0.2. All five eligible solution roles occur four times; bank-only rule has counterexamples within this restored profile.",
+      "sample_refs": [
+        "delivery-controlled/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Bank coordinate frequency",
+      "subgroup": "profile:q-131586 (unchanged profile, reused evidence)",
+      "scope": "within_template",
+      "strategy": "majority_coordinates",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Blind five-choice baseline is 0.2. Previous independent controlled sample covers each role. All twelve profile objects and the bank_points construction are unchanged; fresh regression records check current rendering/math. This is reused evidence, not a new exhaustive audit.",
+      "sample_refs": [
+        "prior-controlled-records.json",
+        "prior-shortcut-results.json",
+        "provenance.json"
+      ]
+    },
+    {
+      "cue": "Bank coordinate frequency",
+      "subgroup": "profile:q-131588 (unchanged profile, reused evidence)",
+      "scope": "within_template",
+      "strategy": "majority_coordinates",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Blind five-choice baseline is 0.2. Previous independent controlled sample covers each role. All twelve profile objects and the bank_points construction are unchanged; fresh regression records check current rendering/math. This is reused evidence, not a new exhaustive audit.",
+      "sample_refs": [
+        "prior-controlled-records.json",
+        "prior-shortcut-results.json",
+        "provenance.json"
+      ]
+    },
+    {
+      "cue": "Bank coordinate frequency",
+      "subgroup": "profile:q-131590 (unchanged profile, reused evidence)",
+      "scope": "within_template",
+      "strategy": "majority_coordinates",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Blind five-choice baseline is 0.2. Previous independent controlled sample covers each role. All twelve profile objects and the bank_points construction are unchanged; fresh regression records check current rendering/math. This is reused evidence, not a new exhaustive audit.",
+      "sample_refs": [
+        "prior-controlled-records.json",
+        "prior-shortcut-results.json",
+        "provenance.json"
+      ]
+    },
+    {
+      "cue": "Bank coordinate frequency",
+      "subgroup": "profile:q-20268 (unchanged profile, reused evidence)",
+      "scope": "within_template",
+      "strategy": "majority_coordinates",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Blind five-choice baseline is 0.2. Previous independent controlled sample covers each role. All twelve profile objects and the bank_points construction are unchanged; fresh regression records check current rendering/math. This is reused evidence, not a new exhaustive audit.",
+      "sample_refs": [
+        "prior-controlled-records.json",
+        "prior-shortcut-results.json",
+        "provenance.json"
+      ]
+    },
+    {
+      "cue": "Bank coordinate frequency",
+      "subgroup": "profile:q-20590 (unchanged profile, reused evidence)",
+      "scope": "within_template",
+      "strategy": "majority_coordinates",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Blind five-choice baseline is 0.2. Previous independent controlled sample covers each role. All twelve profile objects and the bank_points construction are unchanged; fresh regression records check current rendering/math. This is reused evidence, not a new exhaustive audit.",
+      "sample_refs": [
+        "prior-controlled-records.json",
+        "prior-shortcut-results.json",
+        "provenance.json"
+      ]
+    },
+    {
+      "cue": "Bank coordinate frequency",
+      "subgroup": "profile:q-20591 (unchanged profile, reused evidence)",
+      "scope": "within_template",
+      "strategy": "majority_coordinates",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Blind five-choice baseline is 0.2. Previous independent controlled sample covers each role. All twelve profile objects and the bank_points construction are unchanged; fresh regression records check current rendering/math. This is reused evidence, not a new exhaustive audit.",
+      "sample_refs": [
+        "prior-controlled-records.json",
+        "prior-shortcut-results.json",
+        "provenance.json"
+      ]
+    },
+    {
+      "cue": "Bank coordinate frequency",
+      "subgroup": "profile:q-20593 (unchanged profile, reused evidence)",
+      "scope": "within_template",
+      "strategy": "majority_coordinates",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Blind five-choice baseline is 0.2. Previous independent controlled sample covers each role. All twelve profile objects and the bank_points construction are unchanged; fresh regression records check current rendering/math. This is reused evidence, not a new exhaustive audit.",
+      "sample_refs": [
+        "prior-controlled-records.json",
+        "prior-shortcut-results.json",
+        "provenance.json"
+      ]
+    },
+    {
+      "cue": "Bank coordinate frequency",
+      "subgroup": "profile:q-20594 (unchanged profile, reused evidence)",
+      "scope": "within_template",
+      "strategy": "majority_coordinates",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Blind five-choice baseline is 0.2. Previous independent controlled sample covers each role. All twelve profile objects and the bank_points construction are unchanged; fresh regression records check current rendering/math. This is reused evidence, not a new exhaustive audit.",
+      "sample_refs": [
+        "prior-controlled-records.json",
+        "prior-shortcut-results.json",
+        "provenance.json"
+      ]
+    },
+    {
+      "cue": "Bank coordinate frequency",
+      "subgroup": "profile:q-20595 (unchanged profile, reused evidence)",
+      "scope": "within_template",
+      "strategy": "majority_coordinates",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Blind five-choice baseline is 0.2. Previous independent controlled sample covers each role. All twelve profile objects and the bank_points construction are unchanged; fresh regression records check current rendering/math. This is reused evidence, not a new exhaustive audit.",
+      "sample_refs": [
+        "prior-controlled-records.json",
+        "prior-shortcut-results.json",
+        "provenance.json"
+      ]
+    },
+    {
+      "cue": "Bank coordinate frequency",
+      "subgroup": "profile:q-20597 (unchanged profile, reused evidence)",
+      "scope": "within_template",
+      "strategy": "majority_coordinates",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Blind five-choice baseline is 0.2. Previous independent controlled sample covers each role. All twelve profile objects and the bank_points construction are unchanged; fresh regression records check current rendering/math. This is reused evidence, not a new exhaustive audit.",
+      "sample_refs": [
+        "prior-controlled-records.json",
+        "prior-shortcut-results.json",
+        "provenance.json"
+      ]
+    },
+    {
+      "cue": "Bank coordinate frequency",
+      "subgroup": "profile:q-20599 (unchanged profile, reused evidence)",
+      "scope": "within_template",
+      "strategy": "majority_coordinates",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Blind five-choice baseline is 0.2. Previous independent controlled sample covers each role. All twelve profile objects and the bank_points construction are unchanged; fresh regression records check current rendering/math. This is reused evidence, not a new exhaustive audit.",
+      "sample_refs": [
+        "prior-controlled-records.json",
+        "prior-shortcut-results.json",
+        "provenance.json"
+      ]
+    },
+    {
+      "cue": "Bank coordinate frequency",
+      "subgroup": "profile:q-20600 (unchanged profile, reused evidence)",
+      "scope": "within_template",
+      "strategy": "majority_coordinates",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Blind five-choice baseline is 0.2. Previous independent controlled sample covers each role. All twelve profile objects and the bank_points construction are unchanged; fresh regression records check current rendering/math. This is reused evidence, not a new exhaustive audit.",
+      "sample_refs": [
+        "prior-controlled-records.json",
+        "prior-shortcut-results.json",
+        "provenance.json"
+      ]
+    },
+    {
+      "cue": "Bank arrangement",
+      "subgroup": "batch",
+      "scope": "overall",
+      "strategy": "lex_min",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Blind five-choice baseline is 0.2. No tested bank-only strategy answers every member of the exact five-item pool.",
+      "sample_refs": [
+        "runner-batch.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Bank arrangement",
+      "subgroup": "batch",
+      "scope": "overall",
+      "strategy": "lex_max",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Blind five-choice baseline is 0.2. No tested bank-only strategy answers every member of the exact five-item pool.",
+      "sample_refs": [
+        "runner-batch.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Bank arrangement",
+      "subgroup": "batch",
+      "scope": "overall",
+      "strategy": "majority_coordinates",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Blind five-choice baseline is 0.2. No tested bank-only strategy answers every member of the exact five-item pool.",
+      "sample_refs": [
+        "runner-batch.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Bank arrangement",
+      "subgroup": "batch_delivered",
+      "scope": "overall",
+      "strategy": "lex_min",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Blind five-choice baseline is 0.2. No tested bank-only strategy answers every member of the exact five-item pool.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Bank arrangement",
+      "subgroup": "batch_delivered",
+      "scope": "overall",
+      "strategy": "lex_max",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Blind five-choice baseline is 0.2. No tested bank-only strategy answers every member of the exact five-item pool.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Bank arrangement",
+      "subgroup": "batch_delivered",
+      "scope": "overall",
+      "strategy": "majority_coordinates",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Blind five-choice baseline is 0.2. No tested bank-only strategy answers every member of the exact five-item pool.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Visible answer position",
+      "subgroup": "batch:all",
+      "scope": "overall",
+      "strategy": "always position 2",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Blind five-choice baseline is 0.2. Actual UI order; different positions occur in this group.",
+      "sample_refs": [
+        "ui-order-results.json",
+        "ui-id-probe.json",
+        "ui-dom-verification.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "Visible answer position",
+      "subgroup": "batch:rref",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always position 2",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Blind five-choice baseline is 0.2. Actual UI order; different positions occur in this group.",
+      "sample_refs": [
+        "ui-order-results.json",
+        "ui-id-probe.json",
+        "ui-dom-verification.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "Visible answer position",
+      "subgroup": "batch:vector",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always position 2",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Blind five-choice baseline is 0.2. Actual UI order; different positions occur in this group.",
+      "sample_refs": [
+        "ui-order-results.json",
+        "ui-id-probe.json",
+        "ui-dom-verification.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "Visible answer position",
+      "subgroup": "batch_delivered:all",
+      "scope": "overall",
+      "strategy": "always position 1",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Blind five-choice baseline is 0.2. Actual UI order; different positions occur in this group.",
+      "sample_refs": [
+        "ui-order-results.json",
+        "ui-id-probe.json",
+        "ui-dom-verification.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "Visible answer position",
+      "subgroup": "batch_delivered:rref",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always position 2",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Blind five-choice baseline is 0.2. Actual UI order; different positions occur in this group.",
+      "sample_refs": [
+        "ui-order-results.json",
+        "ui-id-probe.json",
+        "ui-dom-verification.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "Visible answer position",
+      "subgroup": "batch_delivered:vector",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always position 1",
+      "correct": 3,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Blind five-choice baseline is 0.2. All three normalized vectors happen to be first at preview item IDs 3/4/5. This is a fixture-ID effect: each fixed record occupies all five positions across IDs 1..20, and the actual renderer moves the fourth record from first to third when its item ID becomes 1. It does not establish a stable delivered-batch cue; production IDs are unallocated.",
+      "sample_refs": [
+        "ui-order-results.json",
+        "ui-id-probe.json",
+        "ui-dom-verification.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "Visible answer position",
+      "subgroup": "delivered:all",
+      "scope": "overall",
+      "strategy": "always position 4",
+      "correct": 7,
+      "total": 28,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Blind five-choice baseline is 0.2. Actual UI order; different positions occur in this group.",
+      "sample_refs": [
+        "ui-order-results.json",
+        "ui-id-probe.json",
+        "ui-dom-verification.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "Visible answer position",
+      "subgroup": "delivered:rref",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always position 1",
+      "correct": 3,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Blind five-choice baseline is 0.2. Actual UI order; different positions occur in this group.",
+      "sample_refs": [
+        "ui-order-results.json",
+        "ui-id-probe.json",
+        "ui-dom-verification.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "Visible answer position",
+      "subgroup": "delivered:vector",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always position 3",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Blind five-choice baseline is 0.2. Actual UI order; different positions occur in this group.",
+      "sample_refs": [
+        "ui-order-results.json",
+        "ui-id-probe.json",
+        "ui-dom-verification.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "Unique candidate matching displayed z",
+      "subgroup": "restored q-20598 subset",
+      "scope": "within_template",
+      "strategy": "read z and select sole candidate with that z",
+      "correct": 4,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "intended_skill",
+      "conclusion": "Blind five-choice baseline is 0.2. Reading z from the last triangular equation is valid mathematical evidence and legitimate partial elimination. Other answer roles need more coordinates; this is not a label/layout cue.",
+      "sample_refs": [
+        "controlled-records.json",
+        "shortcut-results.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "generator parameter rejection and batch duplicate resampling",
+      "actual publication prepare_records, captured inventory deduplication and normalization",
+      "requested easy filtering",
+      "actual UI choice ordering",
+      "question_selection.rs positive/zero easy weight, unconfigured policy and history exclusion branches"
+    ],
+    "sample_refs": [
+      "controlled-records.json",
+      "random-records.json",
+      "runner-batch.json",
+      "delivery-controlled/delivery.json",
+      "delivery-sample/delivery.json",
+      "delivery-batch/delivery.json",
+      "selection-analysis.json",
+      "ui-id-probe.json"
+    ],
+    "result": "52/52 controlled, 28/28 random and 5/5 batch survive captured basis 5370; no decision-case suppression. All are easy. Conditional positive easy selection is uniform over fresh easy members, independent of answer roles. Zero easy weight excludes the band; unconfigured policy chooses first entity; history removes seen IDs. No live policy/history or future allocated IDs supplied, so exact future order is not asserted."
+  },
+  "limitations": [
+    "Finite tests do not prove absence of all shortcuts.",
+    "Selection analyzed from actual code; future policy, history, allocated IDs and changing inventory cannot be predicted from this offline capture.",
+    "Five unattributed inventory records were not reproduced; empty affected_questions means no demonstrated generated-instance defect.",
+    "Unchanged profile coverage partly reuses prior independently bound evidence, with explicit provenance."
+  ]
+}

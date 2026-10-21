@@ -1,0 +1,111 @@
+{
+  "verdict": "accepted",
+  "summary": "No concrete rejection reason demonstrated. All eight checks pass, including the exact five-record batch. Package files remain unchanged; no database writes or publication occurred.",
+  "source_analysis": {
+    "skill": "Apply Gauss-Jordan elimination to a nonsingular, non-echelon 3\u00d73 system and select its RREF or ordered solution vector.",
+    "reasoning_steps": [
+      "Form the augmented matrix, including omitted zero coefficients.",
+      "Normalize pivots and eliminate entries below and above them.",
+      "Read the unique solution and select the matching mathematical choice."
+    ],
+    "invariants": [
+      "Three variables, three pivots and a unique solution.",
+      "Moderate arithmetic and legal row operations.",
+      "Five-choice radio response with one correct matrix or vector."
+    ],
+    "permitted_variations": [
+      "Change coefficients and constants while preserving scope and workload.",
+      "Vary signed and zero solution components.",
+      "Vary which bank member is correct and its displayed position."
+    ],
+    "source_refs": [
+      "239a008b-4c67-5334-8285-3c46b773fead: canonical forward and backward elimination",
+      "87544463-5473-5ef9-a06a-44f8742be901: RREF response family",
+      "cb5d2e37-01c6-52dc-86a3-0e3d22b79684: solution-vector response family",
+      "Tutorial f74e6075-9c2a-5495-ab21-470711559f2a: three-pivot algorithm and uniqueness of RREF"
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay-results.json",
+        "replays.json",
+        "scope-results.json"
+      ],
+      "details": "All 14 practice sources reproduce complete banks and mathematical content. Two source row-operation label errors are correctly repaired. The canonical example has no captured response bank."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "role-control-math.json",
+        "inventory-results.json"
+      ],
+      "details": "Exact arithmetic verifies prompts, keys, intermediate matrices and row-operation labels. All five runner records and all 19 stored keys are correct."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "role-controls.json",
+        "delivery-coverage.json",
+        "selection-results.json",
+        "rejection-results.json"
+      ],
+      "details": "All five answer roles exercised within every profile. Independent samples and all five runner records survive delivery. Duplicate rejection and learner-selection rules were examined."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "scope-results.json"
+      ],
+      "details": "Preserves the taught method, workload and response families. Fixed coefficient profiles still permit different correct bank members. Unsupported levels and singular systems are explicit."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-results.json"
+      ],
+      "details": "Native grader accepted 206 correct selections and rejected 824 distractors, with zero unresolved cases. Includes controlled pairs and normalized runner records."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-vector-pair/rendering.json",
+        "render-delivered/rendering.json",
+        "visual-inspection.json"
+      ],
+      "details": "Actual UI rendered 14 cases, including every delivered record. Screenshots were inspected; no rendering errors were found."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "package-before.json",
+        "package-after.json",
+        "commands.md"
+      ],
+      "details": "Exact dependency versions, deterministic replay, relocation, external output and boundary rejection pass. Package hashes remain unchanged."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "evidence-validation.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "ui-position-results.json",
+        "inventory-reproduction-results.json",
+        "affected-inventory.json"
+      ],
+      "details": "Relevant and irrelevant counterfactuals pass. Conditional shortcut probes reveal no demonstrated incidental bypass. The normalized batch was assessed separately. Five stored generated records reproduce; captured-inventory and live-selection limits are documented."
+    }
+  },
+  "findings": []
+}

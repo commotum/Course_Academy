@@ -1,0 +1,144 @@
+{
+  "verdict": "accepted",
+  "summary": "The retained source-coverage failure is repaired. All eight checks pass within documented offline limits; no remaining defect demonstrated. Package unchanged.",
+  "source_analysis": {
+    "skill": "Finding the Reduced Row Echelon Form of a 3x3 System That Is Already in Row Echelon Form",
+    "reasoning_steps": [
+      "Construct augmented matrix preserving coefficients, signs and RHS.",
+      "Where needed normalize pivots (lesson introduction); observed question bank has unit pivots.",
+      "R2 <- R2-c R3 and R1 <- R1-b R3 when coefficients nonzero.",
+      "R1 <- R1-a R2 when coefficient nonzero.",
+      "Read the RHS of [I|s] as ordered solution; select the requested matrix, vector or textual assignment."
+    ],
+    "invariants": [
+      "3 variables in order x,y,z; nonsingular upper triangular coefficient matrix.",
+      "RREF unique, [I|x,y,z].",
+      "Worked solutions show actual elimination stages and skip operations on zero entries.",
+      "Single correct choice with distinct distractors; exact complete observed banks required on replay."
+    ],
+    "permitted_variations": [
+      "Change a12,a13,a23 signs and magnitudes independently, including zero where source supports skipped elimination.",
+      "Change all RHS values and solution coordinates, including zero and negative values.",
+      "Vary which incorrect candidate nearly matches, which coordinate is wrong, sign/error structure and correct choice position; none are mandated by the mathematical method.",
+      "Vary matrix/vector/text response profiles as observed; keep the requested representation synchronized.",
+      "Change coefficients while preserving solution by recomputing RHS (irrelevant to final answer, relevant to row operations); change RHS holding coefficients fixed to require a new solution."
+    ],
+    "source_refs": [
+      "5eba1f2e-9d1f-5a78-8bbb-878c7c8cae0e (q-20589)",
+      "0720c1cb-6bc8-5840-aab5-dff758a698c1 (q-20594)",
+      "d7b3be78-be72-5c06-b946-2b341bd10d4f (q-20591)",
+      "6ac2a620-9315-547d-9117-d89b74e4df68 (q-20593)",
+      "48801177-e8c6-5bca-9e03-aca1bcc31c35 (q-20597)",
+      "3bcd4c0d-b211-54d2-a80b-8b2463d68018 (q-20599)",
+      "9adbe300-0203-5f18-bbeb-37ed2cd5a032 (q-20600)",
+      "929402c5-e1d8-5682-aeee-3c491cae95bf (q-131590)",
+      "9f45c2e0-9678-5cdd-b7f1-5fd5cc96fa80 (q-20590)",
+      "2ad315bd-aaaa-532d-a173-690fb5924119 (q-131586)",
+      "1690aa32-4c90-59e4-b655-12843bcad3c8 (q-20268)",
+      "a2679569-9eeb-58e9-a41c-09bb2cda7e3a (q-20595)",
+      "ac6e6886-fead-5724-bbb6-81fa541bb8f8 (q-131588)",
+      "af324f37-b688-5363-a6a2-fc8d79b31ad4 (q-20598)",
+      "de738faf-e020-5058-b6a5-48020212fbc4 (e-4709)",
+      "tutorial ce056e74-9707-52d3-b172-483ca14e1f8f: all pivot entries equal to 1 and all entries below and above a pivot equal to 0",
+      "tutorial f74e6075-9c2a-5495-ab21-470711559f2a: if a23 != 0 use R2:=R2+(-a23)R3; if a13 != 0 use R1:=R1+(-a13)R3; if a12 != 0 use R1:=R1+(-a12)R2; RREF is unique"
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "source-extract.json",
+      "source-key-context.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay.json",
+        "source-replay-records.json",
+        "repair-regression-results.json",
+        "review.py",
+        "reproduce_missing.py"
+      ],
+      "details": "All 15 source cases replay; 70 choices and captured operative stages match. q-20589 inferred key/explanation documented; canonical remains fieldless. Retained KeyErrors reproduced on old package and absent currently."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "delivered-math.json",
+        "review.py",
+        "post_delivery.py"
+      ],
+      "details": "Independent Fraction elimination checks 109 raw/replay/pair records and 85 normalized survivors, including every displayed row operation and unique correct choice; no failures."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "variation-coverage.json",
+        "controlled-records.json",
+        "random-records.json",
+        "runner-batch.json",
+        "delivery-controlled/delivery.json",
+        "delivery-sample/delivery.json",
+        "delivery-batch/delivery.json",
+        "selection-analysis.json"
+      ],
+      "details": "Restored profiles cover every role/mask combination. All 52 controlled, 28 random and 5 runner records survive actual filtering; conditional learner selection examined with recorded limits."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "scope.json",
+        "math-results.json"
+      ],
+      "details": "Restored practice stays within observed easy integer backward elimination and radio representations; canonical is replay-only."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-results.json",
+        "counterfactual-results.json"
+      ],
+      "details": "Native grader: 196 expected acceptances and 775 expected rejections, zero unresolved. Includes normalized survivors and explicit prior-answer counterfactual responses. All practice fields are radio; free-entry equivalence is inapplicable."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "visual-inspection.json",
+        "render/rendering.json",
+        "render-rest/rendering.json",
+        "render-delivered/rendering.json",
+        "render-id-counterfactual-2/rendering.json"
+      ],
+      "details": "Unmodified UI renders representatives, all counterfactual pairs, all five raw and normalized batch members and fieldless canonical example. Screenshots inspected; no math/control/solution defects."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging.json",
+        "package-hashes-before.json",
+        "package-hashes-after.json",
+        "provenance.json",
+        "commands.md"
+      ],
+      "details": "Exact Python/SymPy versions match nested manifest dependencies; deterministic replay, relocation and rejection checks pass. Package byte hashes unchanged; no publication or database writes."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "shortcut-results.json",
+        "ui-order-results.json",
+        "ui-id-probe.json",
+        "ui-dom-verification.json",
+        "counterfactual-results.json",
+        "affected-inventory.json",
+        "inventory-assessment.json",
+        "evidence-contract.json"
+      ],
+      "details": "Relevant/irrelevant pairs pass math, actual grading and rendering. Conditional restored-profile and exact-batch probes challenge bank geometry and visible position. Apparent normalized-vector position cue depends on fixture task IDs; no stable incidental shortcut demonstrated."
+    }
+  },
+  "findings": []
+}

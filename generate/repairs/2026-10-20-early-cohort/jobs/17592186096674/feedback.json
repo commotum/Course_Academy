@@ -1,0 +1,131 @@
+{
+  "verdict": "revise",
+  "summary": "Source replay is incomplete: q-20598, q-20589 and e-4709 raise KeyError. Other tested checks pass within documented limits. Package files are unchanged. Full report: review-result.json.",
+  "source_analysis": {
+    "skill": "Reduce an already-echelon nonsingular 3x3 system to RREF and identify its solution.",
+    "reasoning_steps": [
+      "Construct the augmented matrix from the displayed equations.",
+      "Eliminate entries above the third pivot, then above the second pivot.",
+      "Select the resulting RREF, vector or textual solution."
+    ],
+    "invariants": [
+      "Already-echelon full-rank 3x3 system with variables ordered x, y, z.",
+      "Unique RREF and exactly one correct radio choice.",
+      "Prompt, intermediate matrices, explanation and answer must agree."
+    ],
+    "permitted_variations": [
+      "Change coefficients, signs, right-hand sides and solution coordinates within the easy workload.",
+      "Vary which bank member is correct and which entries require elimination.",
+      "Vary observed matrix, vector and text response profiles."
+    ],
+    "source_refs": [
+      "af324f37-b688-5363-a6a2-fc8d79b31ad4 (q-20598)",
+      "5eba1f2e-9d1f-5a78-8bbb-878c7c8cae0e (q-20589)",
+      "de738faf-e020-5058-b6a5-48020212fbc4 (e-4709)",
+      "tutorial f74e6075-9c2a-5495-ab21-470711559f2a: eliminate entries above the third and second pivots; RREF is unique"
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "source-extract.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "failed",
+      "evidence_paths": [
+        "source-replay.json",
+        "source-replay-records.json",
+        "missing-reproduction.json",
+        "reproduce_missing.py"
+      ],
+      "details": "Twelve complete source banks replay successfully. Three supplied source cases are unavailable. The captured incorrect key reference for q-131590 is correctly repaired."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "delivered-math.json",
+        "audit.py"
+      ],
+      "details": "Independently checked 146 records and 65 normalized survivors, including displayed equations, choices and every row-operation matrix. No failures."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "variation-coverage.json",
+        "controlled-records.json",
+        "random-records.json",
+        "selection-analysis.json",
+        "delivery-sample/delivery.json",
+        "delivery-batch/delivery.json"
+      ],
+      "details": "Within implemented profiles, exercised all five answer roles and four coefficient masks. All 60 fresh samples and five runner items survive delivery filtering. Selection branches were examined analytically; live policy, history and allocated IDs were unavailable."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "scope.json",
+        "source-analysis.json",
+        "math-results.json"
+      ],
+      "details": "Tested practice preserves easy integer arithmetic, already-echelon full-rank systems and observed radio representations."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-results.json",
+        "counterfactual-results.json"
+      ],
+      "details": "Native learner grader accepted 146 independently verified correct choices and rejected 584 distractors. All fields are radio."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "visual-inspection.json",
+        "render/rendering.json",
+        "render-pairs/rendering.json",
+        "render-delivered/rendering.json"
+      ],
+      "details": "Actual UI rendered representative records, all counterfactual pairs and all normalized batch survivors. Screenshots inspected across matrix, vector and text representations."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging.json",
+        "package-hashes-before.json",
+        "package-hashes-after.json"
+      ],
+      "details": "Exact dependency versions, deterministic replay, relocation and rejection checks pass. Package hashes are unchanged; no database writes or publication."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "evidence-contract.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "ui-order-results.json",
+        "inventory-assessment.json",
+        "affected-inventory.json"
+      ],
+      "details": "Relevant and irrelevant counterfactuals pass independent math, native grading and rendering checks. Conditional shortcut probes have counterexamples. Raw choice-position bias is removed by actual UI ordering. No universal incidental cue demonstrated in the five-item batch. Inventory limitations are recorded."
+    }
+  },
+  "findings": [
+    {
+      "kind": "source_fidelity",
+      "description": "The registry contains 12 source profiles and cannot replay fully evidenced easy question q-20598. Supplied q-20589 and canonical e-4709 are also absent. This is a source-coverage failure, separate from generated-item correctness.",
+      "source_refs": [
+        "af324f37-b688-5363-a6a2-fc8d79b31ad4 (q-20598)",
+        "5eba1f2e-9d1f-5a78-8bbb-878c7c8cae0e (q-20589)",
+        "de738faf-e020-5058-b6a5-48020212fbc4 (e-4709)",
+        "generate/principles.md: reproduce observed prompts, complete answer banks and worked solutions before extending"
+      ],
+      "reproduction": "Run `/home/jake/Developer/Course_Academy/.venv/bin/python -B reproduce_missing.py --workspace ../workspace` from evidence_root; it exits 1. Minimal case: generator.generate(difficulty=\"easy\", seed=731, template=\"q-20598\", replay=True) raises KeyError('q-20598'). Its captured system has solution (0,1,-3), included in its complete five-choice RREF bank.",
+      "requested_change": "Update the family-wide source registry and add a completeness check against captured target-KP cases. Restore q-20598 with its complete bank; document q-20589's inferred key and capture gaps; support canonical replay without inventing an uncaptured original bank. Preserve working role/mask variation and rerun the retained reproduction."
+    }
+  ],
+  "repair_history_file": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186096674/repair-history.json",
+  "instruction": "Fix the root cause, retain every earlier counterexample, and declare executable checks in repair-regressions.json. A failed check is another repair task, not permission to abandon the generator."
+}

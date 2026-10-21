@@ -1,0 +1,155 @@
+{
+  "verdict": "revise",
+  "summary": "Two of 17 supplied source profiles are absent: q-74625 and q-131634 fail replay with KeyError and are excluded from sampling. The tested mathematics, grading, rendering, packaging and decision variation passed. Package unchanged; no database writes.",
+  "source_analysis": {
+    "skill": "Use Gauss-Jordan row operations on a consistent singular 3x3 system with two pivots to obtain its unique 3x4 augmented RREF; in the solve family express x and y as affine functions of the free variable z and select the corresponding vector.",
+    "reasoning_steps": [
+      "Translate three equations in x,y,z into a 3x4 augmented matrix.",
+      "Swap rows if useful; eliminate the first column and find/normalize the second pivot; move the zero row to the bottom.",
+      "Clear the entry above the second pivot.",
+      "For solve prompts read x=a+bz and y=c+dz with z arbitrary real; select one of five radio choices."
+    ],
+    "invariants": [
+      "Three equations / three real variables; augmented matrix has coefficient rank and augmented rank two.",
+      "RREF has two unit pivots, pivot-column zeros, and a bottom zero row.",
+      "Keep the two observed response families and their five-choice single-selection contract.",
+      "No new nonlinear algebra, determinants, or free-entry construction required."
+    ],
+    "permitted_variations": [
+      "Independently vary signed coefficients, constants, and resulting free-column slopes/intercepts while retaining rank two and comparable arithmetic.",
+      "Vary which row is dependent, duplicate versus nontrivial dependence, row order and required swaps/scales.",
+      "Vary whether x or y has zero free-variable coefficient, and positive/negative/zero constants; zero a12 legitimately skips a backward operation.",
+      "Correct option position and distractor error roles can change; they are incidental assignments. Preserve one correct option, not its label or its unique layout signature.",
+      "Change right-hand sides coherently to obtain a different affine solution with the same coefficient matrix; scale/reorder equations to preserve the solution."
+    ],
+    "source_refs": [
+      "6e3014ad-e528-5fe5-be7c-06e6f01c2356",
+      "7c642737-66e9-5a4d-a96b-0b69aaf732dd",
+      "8898e291-a92c-543d-b53f-901f8c5bb06e",
+      "db4ec426-5bc2-57fa-bb98-af98efb63875",
+      "6b30e629-112f-508e-9e77-096b0e33781a",
+      "088ddf76-b8ab-5fdd-9fea-d3099bd8dbb5",
+      "920a4776-0058-5c9a-a43b-cd0f1925df4a",
+      "4d7555ca-db2c-52bc-b443-fc91fca13d67",
+      "04a13144-a35f-5f80-8432-ba421a4a583d",
+      "23bca3c5-322d-5c3f-a423-fb871cdd59a3",
+      "75dbc97d-95b7-5046-a4b7-609e3df9b396",
+      "6ba94d2c-82a9-5b70-84fa-d478e1834095",
+      "751f8e53-b86d-5abb-abe8-9ed7db35005a",
+      "df6c8a6d-153a-5484-848d-1043ee95c582",
+      "f4d9e7f7-49ef-5deb-a765-86f4061f3e86",
+      "8e9b3735-f721-557c-bd19-98de1fb72ed8",
+      "c0791632-977c-5714-8eb6-2845fc127f35",
+      "canonical 283e9a4a-443f-579f-b272-248446d3a49f (e-6233)",
+      "tutorial 3949 (baed23fb-560e-56ad-aea3-46f3728ebfff): First, reduce the matrix to row echelon form ... making all pivot entries equal to 1; if a12 != 0 use R1:=R1+(-a12)R2.",
+      "tutorial 3161: reduced row echelon form ... is unique."
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "source-extract.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "failed",
+      "evidence_paths": [
+        "source-replay-results.json",
+        "replays.json",
+        "captured-source-comparison.json",
+        "missing-profile.py",
+        "missing-profile.stderr"
+      ],
+      "details": "15/17 assessed source profiles replay with complete five-choice banks and correct keys. q-74625 and q-131634 are absent from source-data.json / PROFILES and raise KeyError. Canonical example has no captured answer bank and is used for scope. q-74627 source row-label correction is preserved; q-74629 differs only in scalable parentheses."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "shortcut-controls-math.json",
+        "audit.py",
+        "review_math.py"
+      ],
+      "details": "Independent exact reconstruction verifies 81 complete generated records: rank/pivots, exactly one valid option, keyed RREF or full affine vector, solution matrices and generated row-operation labels. No mathematical failures."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "coverage-results.json",
+        "independent-samples.json",
+        "runner-batch.json",
+        "generator-rejection.json",
+        "delivery-independent/delivery.json",
+        "delivery-batch/delivery.json"
+      ],
+      "details": "45 fresh records use 15 packaged profiles, both response families, all five target slots, signed/zero values in each affine slot and 44 distinct RREFs. Exact batch has five distinct RREFs, four matrix and one vector item. Actual filtering retains all 45 and all five. Missing source profiles are separately failed under source_replay."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "scope-results.json",
+        "math-results.json"
+      ],
+      "details": "Tested extensions preserve consistent singular 3x3 rank-two Gauss-Jordan reduction, source-shaped workload and five-choice radio responses. Fixed x/y pivots and free z are justified by tutorial 3949 and assessed source scope."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-all-input.json",
+        "grader-all-results.json"
+      ],
+      "details": "Actual native grade_field accepts 81 independently verified correct choices and rejects 324 alternatives, including changed-target and invariant-response pairs. All source response fields are radio; free-entry equivalence is inapplicable."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "visual-inspection.json",
+        "render-input.json",
+        "render/question-001.png",
+        "render/question-004.png",
+        "render/question-007.png",
+        "render/question-010.png",
+        "render/question-013.png"
+      ],
+      "details": "Actual UI renders 13 records including every runner-batch record, all six controlled-pair records and two source replays. All automated rendering checks pass; representative screenshots inspected."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "relocation-samples.json",
+        "package-hashes-before.json",
+        "package-hashes-after.json",
+        "generator-rejection.json"
+      ],
+      "details": "Declared nested exact dependencies match Python 3.13.5 and SymPy 1.14.0. CLI replay is deterministic, relocation is identical, invalid difficulty/domain/presentation parameters reject, stdout is JSON, and package file hashes are unchanged."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "decision-probe-results.json",
+        "shortcut-control-results.json",
+        "learner-selection-results.json",
+        "rendered-choice-results.json",
+        "delivery-controls/delivery.json"
+      ],
+      "details": "Both response families pass relevant and irrelevant controlled changes in prompt, worked solution and real grader; actual UI choice order checked. Position/length/sign/zero cues examined overall, within response family and within each packaged source profile. Apparent q-74628 shortest-option cue scores 2/10 on fresh controls. Delivery preserves tested support; fresh positive-hard-weight selection simulated from native rules. Captured data omit active policy, history and future entity IDs, so no specific live-learner outcome is certified."
+    }
+  },
+  "findings": [
+    {
+      "kind": "source_fidelity",
+      "description": "The source registry contains only 15 of the 17 supplied assessed questions. q-74625 and q-131634 cannot be replayed and cannot be selected by the default sampler. This is a demonstrated generator capability omission, not a wrong stored question instance.",
+      "source_refs": [
+        "8e9b3735-f721-557c-bd19-98de1fb72ed8 (q-74625)",
+        "c0791632-977c-5714-8eb6-2845fc127f35 (q-131634)"
+      ],
+      "reproduction": "From evidence_root run PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python missing-profile.py --template q-74625 (exit 1, KeyError). Repeat --template q-131634. Full attempts and source IDs are in source-replay-results.json.",
+      "requested_change": "Build the source/profile registry from all supplied assessed source cases, including these two complete answer banks and worked solutions. Add an exact source-ID coverage check so additions cannot silently disappear; verify replay and same-method sampled generation for every registered profile. Preserve the existing valid families and variation rules."
+    }
+  ]
+}

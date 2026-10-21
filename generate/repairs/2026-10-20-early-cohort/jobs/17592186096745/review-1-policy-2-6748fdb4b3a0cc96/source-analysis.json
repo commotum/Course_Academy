@@ -1,0 +1,85 @@
+{
+  "skill": "Use Gauss-Jordan row operations on a consistent singular 3x3 system with two pivots to obtain its unique 3x4 augmented RREF; in the solve family express x and y as affine functions of the free variable z and select the corresponding vector.",
+  "learner_operation": "Read all coefficients and right-hand sides, identify independent rows, normalize pivots and eliminate below/above them, then distinguish the resulting matrix or full solution set from plausible erroneous alternatives.",
+  "reasoning_steps": [
+    "Translate three equations in x,y,z into a 3x4 augmented matrix.",
+    "Swap rows if useful; eliminate the first column and find/normalize the second pivot; move the zero row to the bottom.",
+    "Clear the entry above the second pivot.",
+    "For solve prompts read x=a+bz and y=c+dz with z arbitrary real; select one of five radio choices."
+  ],
+  "response_contract": "Every captured assessed question has one selection radio field with five choices, one correct. Matrix family asks RREF only; solve family asks RREF and general solution but responds with a parameterized column vector.",
+  "difficulty": "All 17 source questions hard; small signed integer input, sometimes rational row scaling, about 2\u20136 forward operations plus one backward elimination. Finite real one-parameter solutions.",
+  "invariants": [
+    "Three equations / three real variables; augmented matrix has coefficient rank and augmented rank two.",
+    "RREF has two unit pivots, pivot-column zeros, and a bottom zero row.",
+    "Keep the two observed response families and their five-choice single-selection contract.",
+    "No new nonlinear algebra, determinants, or free-entry construction required."
+  ],
+  "fixed_features": [
+    {
+      "feature": "Consistent rank two",
+      "justification": "Target KP specifically two pivots; all 17 source keys are matrix rank two or one-parameter solutions. A No solution choice is a distractor, not grounds to introduce an inconsistent family."
+    },
+    {
+      "feature": "Pivots in x,y and free z for conservative reproduction",
+      "justification": "Tutorial 3949 specifically clears a12 using row 2; every assessed example uses this arrangement. Other pivot pairs may be same-method extensions but are not necessary to establish varied decisions within this scope."
+    }
+  ],
+  "permitted_variations": [
+    "Independently vary signed coefficients, constants, and resulting free-column slopes/intercepts while retaining rank two and comparable arithmetic.",
+    "Vary which row is dependent, duplicate versus nontrivial dependence, row order and required swaps/scales.",
+    "Vary whether x or y has zero free-variable coefficient, and positive/negative/zero constants; zero a12 legitimately skips a backward operation.",
+    "Correct option position and distractor error roles can change; they are incidental assignments. Preserve one correct option, not its label or its unique layout signature.",
+    "Change right-hand sides coherently to obtain a different affine solution with the same coefficient matrix; scale/reorder equations to preserve the solution."
+  ],
+  "answer_roles": [
+    {
+      "role": "RREF free-column entries and RHS / solution slopes and intercepts",
+      "eligible_variation": "Answer-bearing, must follow coefficients and RHS; not fixed to source values."
+    },
+    {
+      "role": "Correct option location / distractor pattern",
+      "eligible_variation": "Any of five locations and suitable error alternatives; cannot permit a layout cue to identify the correct choice."
+    }
+  ],
+  "source_refs": [
+    "6e3014ad-e528-5fe5-be7c-06e6f01c2356",
+    "7c642737-66e9-5a4d-a96b-0b69aaf732dd",
+    "8898e291-a92c-543d-b53f-901f8c5bb06e",
+    "db4ec426-5bc2-57fa-bb98-af98efb63875",
+    "6b30e629-112f-508e-9e77-096b0e33781a",
+    "088ddf76-b8ab-5fdd-9fea-d3099bd8dbb5",
+    "920a4776-0058-5c9a-a43b-cd0f1925df4a",
+    "4d7555ca-db2c-52bc-b443-fc91fca13d67",
+    "04a13144-a35f-5f80-8432-ba421a4a583d",
+    "23bca3c5-322d-5c3f-a423-fb871cdd59a3",
+    "75dbc97d-95b7-5046-a4b7-609e3df9b396",
+    "6ba94d2c-82a9-5b70-84fa-d478e1834095",
+    "751f8e53-b86d-5abb-abe8-9ed7db35005a",
+    "df6c8a6d-153a-5484-848d-1043ee95c582",
+    "f4d9e7f7-49ef-5deb-a765-86f4061f3e86",
+    "8e9b3735-f721-557c-bd19-98de1fb72ed8",
+    "c0791632-977c-5714-8eb6-2845fc127f35",
+    "canonical 283e9a4a-443f-579f-b272-248446d3a49f (e-6233)",
+    "tutorial 3949 (baed23fb-560e-56ad-aea3-46f3728ebfff): First, reduce the matrix to row echelon form ... making all pivot entries equal to 1; if a12 != 0 use R1:=R1+(-a12)R2.",
+    "tutorial 3161: reduced row echelon form ... is unique."
+  ],
+  "source_corrections": [
+    {
+      "source": "088ddf76-b8ab-5fdd-9fea-d3099bd8dbb5",
+      "issue": "After swapping rows 2 and 3, source labels scaling R3:=1/5 R3 while displayed matrix scales R2. Mathematical matrices and final answer agree; operation label should be corrected."
+    }
+  ],
+  "evidence_gaps": [
+    "No source images; no absent image evidence inferred. Canonical example is explanatory and lacks a captured answer field."
+  ],
+  "provenance": {
+    "reused_from": "../review-0-policy-2-5c66a489da337c4d/source-analysis.json",
+    "source_binding": "a01855f60dce86df1a79af3fa8438b7082f187d0b36e82fb096c2a2a301db539",
+    "confirmation": "All 17 IDs and two-pivot tutorial passage checked against current original source before reading package. Original source account retained."
+  },
+  "evidence_paths": [
+    "source-analysis.json",
+    "source-extract.json"
+  ]
+}

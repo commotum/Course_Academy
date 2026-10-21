@@ -1,0 +1,1698 @@
+[
+  {
+    "knowledge_point": {
+      "db/id": 17592186096746,
+      "id": "aa91091b-5368-5d80-b87d-08b3524177f3",
+      "title": "Finding the Reduced Row Echelon Form of a Singular 3x3 System With One Pivot"
+    },
+    "question": {
+      ":question/id": "a48bd413-cb0c-5530-807d-770c1c18d93f",
+      ":question/problem": "Consider the following system of linear equations:\n\n$$\n\\left\\{\\begin{aligned}-3x+6y-9z &=18 \\\\ -9x+18y-27z &=54 \\\\ -6x+12y-18z &=36\\end{aligned}\\right.\n$$\n\nUse the standard Gauss-Jordan method to reduce the augmented matrix $M$ of the system to reduced row echelon form, and then solve the linear system.",
+      ":question/worked-solution": "The augmented matrix for this system is\n\n$$\nM=\\left[\\begin{array}{ccc|c}-3 & 6 & -9 & 18 \\\\ -9 & 18 & -27 & 54 \\\\ -6 & 12 & -18 & 36\\end{array}\\right].\n$$\n\nTransforming $M$ to reduced row echelon form, we have\n\n$$\nR_1:=(-\\frac{1}{3})R_1\n$$\n\n\n\n$$\nM\\sim \\left[\\begin{array}{ccc|c}1 & -2 & 3 & -6 \\\\ -9 & 18 & -27 & 54 \\\\ -6 & 12 & -18 & 36\\end{array}\\right].\n$$\n\n\n\n$$\nR_2:=R_2+(9)R_1\n$$\n\n\n\n$$\nM\\sim \\left[\\begin{array}{ccc|c}1 & -2 & 3 & -6 \\\\ 0 & 0 & 0 & 0 \\\\ -6 & 12 & -18 & 36\\end{array}\\right].\n$$\n\n\n\n$$\nR_3:=R_3+(6)R_1\n$$\n\n\n\n$$\nM\\sim \\left[\\begin{array}{ccc|c}1 & -2 & 3 & -6 \\\\ 0 & 0 & 0 & 0 \\\\ 0 & 0 & 0 & 0\\end{array}\\right].\n$$\n\nThe corresponding system is now\n\n$$\n\\left\\{\\begin{aligned}x-2y+3z &=-6 \\\\ 0x+0y+0z &=0 \\\\ 0x+0y+0z &=0\\end{aligned}\\right..\n$$\n\nSince any numbers $x,y,z$ form a solution of the final two equations, we can remove these equations from the system.\n\nThe basic variables are the variables whose coefficients are pivots. In this case, the basic variable is $x$, and we have two free variables, $y$ and $z$. That means we need to find $x$ in terms of $y$ and $z$.\n\nTherefore, the general solution is\n\n$$\n\\left\\{\\begin{aligned}x &=-6+2y-3z \\\\ y &=y \\\\ z &=z\\end{aligned}\\right.,\n$$\n\nwhere $y$ and $z$ (the free variables) are arbitrary numbers.\n\nIn vector form, the solution can be written as\n\n$$\n\\begin{bmatrix}x \\\\ y \\\\ z\\end{bmatrix}=\\begin{bmatrix}-6+2y-3z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty).\n$$\n\n",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "4f019692-a1db-5e47-8251-47a629f3a899",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "927e2da2-0c15-5bc4-a358-c4bd2b137c28",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-1+6y-7z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            },
+            {
+              ":answer/id": "7deeca1f-d0c2-5810-b668-9b6edce38b43",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-6+2y-3z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            },
+            {
+              ":answer/id": "610608a1-5796-59d0-8eeb-872de6b42c5e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-4+8y-9z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            },
+            {
+              ":answer/id": "9dcf427a-80fd-53bf-98a9-552fe462f003",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-17+7y-z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            },
+            {
+              ":answer/id": "d8d71e86-852e-5211-b0af-4b783cffd3c6",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-15+10y-8z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "7deeca1f-d0c2-5810-b668-9b6edce38b43"
+          ]
+        }
+      ],
+      ":question/difficulty": ":question.difficulty/moderate"
+    },
+    "generation": {
+      "generator_version": "1.1.0",
+      "template": "solve",
+      "profile": "normalize-all",
+      "parameters": {
+        "profile": "normalize-all",
+        "difficulty": "moderate",
+        "plan": "normalize",
+        "scales": [
+          -3,
+          -9,
+          -6
+        ],
+        "b": -2,
+        "c": 3,
+        "d": -6
+      },
+      "source_replay": false,
+      "source_references": [
+        "8de46974-719c-5ac2-a43c-83d1c67c57b6",
+        "a5bda611-2864-532a-b9d9-e426378f7835"
+      ],
+      "math_format": "course-academy-tex-v1",
+      "seed": 2026102173,
+      "draw": 1,
+      "rejections": 0,
+      "numerical_bank": [
+        [
+          -6,
+          7,
+          -1
+        ],
+        [
+          -2,
+          3,
+          -6
+        ],
+        [
+          -8,
+          9,
+          -4
+        ],
+        [
+          -7,
+          1,
+          -17
+        ],
+        [
+          -10,
+          8,
+          -15
+        ]
+      ],
+      "correct_index": 1
+    }
+  },
+  {
+    "knowledge_point": {
+      "db/id": 17592186096746,
+      "id": "aa91091b-5368-5d80-b87d-08b3524177f3",
+      "title": "Finding the Reduced Row Echelon Form of a Singular 3x3 System With One Pivot"
+    },
+    "question": {
+      ":question/id": "a115b74f-d239-563c-ae4a-9d0a1ae582dd",
+      ":question/problem": "Consider the following system of linear equations:\n\n$$\n\\left\\{\\begin{aligned}6x+24y+30z &=84 \\\\ x+4y+5z &=14 \\\\ 9x+36y+45z &=126\\end{aligned}\\right.\n$$\n\nUse the standard Gauss-Jordan method to reduce the augmented matrix $M$ of the system to reduced row echelon form, and then solve the linear system.",
+      ":question/worked-solution": "The augmented matrix for this system is\n\n$$\nM=\\left[\\begin{array}{ccc|c}6 & 24 & 30 & 84 \\\\ 1 & 4 & 5 & 14 \\\\ 9 & 36 & 45 & 126\\end{array}\\right].\n$$\n\nTransforming $M$ to reduced row echelon form, we have\n\n$$\nR_1\\leftrightarrow R_2\n$$\n\n\n\n$$\nM\\sim \\left[\\begin{array}{ccc|c}1 & 4 & 5 & 14 \\\\ 6 & 24 & 30 & 84 \\\\ 9 & 36 & 45 & 126\\end{array}\\right].\n$$\n\n\n\n$$\nR_2:=R_2+(-6)R_1\n$$\n\n\n\n$$\nM\\sim \\left[\\begin{array}{ccc|c}1 & 4 & 5 & 14 \\\\ 0 & 0 & 0 & 0 \\\\ 9 & 36 & 45 & 126\\end{array}\\right].\n$$\n\n\n\n$$\nR_3:=R_3+(-9)R_1\n$$\n\n\n\n$$\nM\\sim \\left[\\begin{array}{ccc|c}1 & 4 & 5 & 14 \\\\ 0 & 0 & 0 & 0 \\\\ 0 & 0 & 0 & 0\\end{array}\\right].\n$$\n\nThe corresponding system is now\n\n$$\n\\left\\{\\begin{aligned}x+4y+5z &=14 \\\\ 0x+0y+0z &=0 \\\\ 0x+0y+0z &=0\\end{aligned}\\right..\n$$\n\nSince any numbers $x,y,z$ form a solution of the final two equations, we can remove these equations from the system.\n\nThe basic variables are the variables whose coefficients are pivots. In this case, the basic variable is $x$, and we have two free variables, $y$ and $z$. That means we need to find $x$ in terms of $y$ and $z$.\n\nTherefore, the general solution is\n\n$$\n\\left\\{\\begin{aligned}x &=14-4y-5z \\\\ y &=y \\\\ z &=z\\end{aligned}\\right.,\n$$\n\nwhere $y$ and $z$ (the free variables) are arbitrary numbers.\n\nIn vector form, the solution can be written as\n\n$$\n\\begin{bmatrix}x \\\\ y \\\\ z\\end{bmatrix}=\\begin{bmatrix}14-4y-5z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty).\n$$\n\n",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "564f1e69-a03e-5d07-bcb9-311237cf964f",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "d0bdb276-d5d2-5730-a666-c8c7437291ef",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}7-5y-6z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            },
+            {
+              ":answer/id": "0998bc45-296a-518b-8b8a-243afa25b414",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}12-y-z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            },
+            {
+              ":answer/id": "27370d20-cfd4-501a-89eb-914eb0b7094c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}16-9y-8z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            },
+            {
+              ":answer/id": "1b69c5e8-101e-55ab-9ef7-b56129f29151",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}15-7y-9z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            },
+            {
+              ":answer/id": "cc1e4b5e-994e-5af0-b7dd-74a072c0bdca",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}14-4y-5z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "cc1e4b5e-994e-5af0-b7dd-74a072c0bdca"
+          ]
+        }
+      ],
+      ":question/difficulty": ":question.difficulty/moderate"
+    },
+    "generation": {
+      "generator_version": "1.1.0",
+      "template": "solve",
+      "profile": "normalize-all",
+      "parameters": {
+        "profile": "normalize-all",
+        "difficulty": "moderate",
+        "plan": "swap2",
+        "scales": [
+          6,
+          1,
+          9
+        ],
+        "b": 4,
+        "c": 5,
+        "d": 14
+      },
+      "source_replay": false,
+      "source_references": [
+        "8de46974-719c-5ac2-a43c-83d1c67c57b6",
+        "a5bda611-2864-532a-b9d9-e426378f7835"
+      ],
+      "math_format": "course-academy-tex-v1",
+      "seed": 2026102173,
+      "draw": 2,
+      "rejections": 0,
+      "numerical_bank": [
+        [
+          5,
+          6,
+          7
+        ],
+        [
+          1,
+          1,
+          12
+        ],
+        [
+          9,
+          8,
+          16
+        ],
+        [
+          7,
+          9,
+          15
+        ],
+        [
+          4,
+          5,
+          14
+        ]
+      ],
+      "correct_index": 4
+    }
+  },
+  {
+    "knowledge_point": {
+      "db/id": 17592186096746,
+      "id": "aa91091b-5368-5d80-b87d-08b3524177f3",
+      "title": "Finding the Reduced Row Echelon Form of a Singular 3x3 System With One Pivot"
+    },
+    "question": {
+      ":question/id": "9951f280-3c4e-5e4a-9a5d-9e099805c341",
+      ":question/problem": "Consider the following system of linear equations:\n\n$$\n\\left\\{\\begin{aligned}-8x+56y-32z &=144 \\\\ 9x-63y+36z &=-162 \\\\ -2x+14y-8z &=36\\end{aligned}\\right.\n$$\n\nUse the standard Gauss-Jordan method to reduce the augmented matrix $M$ of the system to reduced row echelon form, and then solve the linear system.",
+      ":question/worked-solution": "The augmented matrix for this system is\n\n$$\nM=\\left[\\begin{array}{ccc|c}-8 & 56 & -32 & 144 \\\\ 9 & -63 & 36 & -162 \\\\ -2 & 14 & -8 & 36\\end{array}\\right].\n$$\n\nTransforming $M$ to reduced row echelon form, we have\n\n$$\nR_1:=(-\\frac{1}{8})R_1\n$$\n\n\n\n$$\nM\\sim \\left[\\begin{array}{ccc|c}1 & -7 & 4 & -18 \\\\ 9 & -63 & 36 & -162 \\\\ -2 & 14 & -8 & 36\\end{array}\\right].\n$$\n\n\n\n$$\nR_2:=R_2+(-9)R_1\n$$\n\n\n\n$$\nM\\sim \\left[\\begin{array}{ccc|c}1 & -7 & 4 & -18 \\\\ 0 & 0 & 0 & 0 \\\\ -2 & 14 & -8 & 36\\end{array}\\right].\n$$\n\n\n\n$$\nR_3:=R_3+(2)R_1\n$$\n\n\n\n$$\nM\\sim \\left[\\begin{array}{ccc|c}1 & -7 & 4 & -18 \\\\ 0 & 0 & 0 & 0 \\\\ 0 & 0 & 0 & 0\\end{array}\\right].\n$$\n\nThe corresponding system is now\n\n$$\n\\left\\{\\begin{aligned}x-7y+4z &=-18 \\\\ 0x+0y+0z &=0 \\\\ 0x+0y+0z &=0\\end{aligned}\\right..\n$$\n\nSince any numbers $x,y,z$ form a solution of the final two equations, we can remove these equations from the system.\n\nThe basic variables are the variables whose coefficients are pivots. In this case, the basic variable is $x$, and we have two free variables, $y$ and $z$. That means we need to find $x$ in terms of $y$ and $z$.\n\nTherefore, the general solution is\n\n$$\n\\left\\{\\begin{aligned}x &=-18+7y-4z \\\\ y &=y \\\\ z &=z\\end{aligned}\\right.,\n$$\n\nwhere $y$ and $z$ (the free variables) are arbitrary numbers.\n\nIn vector form, the solution can be written as\n\n$$\n\\begin{bmatrix}x \\\\ y \\\\ z\\end{bmatrix}=\\begin{bmatrix}-18+7y-4z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty).\n$$\n\n",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "959d17fa-acef-5de4-8b14-5642bd16e5b7",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "44f6d7d2-71d4-54d4-9dc3-db1422ac017b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-13+3y-8z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            },
+            {
+              ":answer/id": "0334d18f-1a58-5ea4-95b1-ddf55da51204",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-18+7y-4z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            },
+            {
+              ":answer/id": "9da96803-e940-5471-b0b3-164b884c0685",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-7+8y-z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            },
+            {
+              ":answer/id": "5ce2fdd5-7230-5cf5-8bd1-ac776ed05067",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-2+y-10z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            },
+            {
+              ":answer/id": "b2685950-1ac1-549e-9b28-591ee819f1e8",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-16+4y-6z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "0334d18f-1a58-5ea4-95b1-ddf55da51204"
+          ]
+        }
+      ],
+      ":question/difficulty": ":question.difficulty/moderate"
+    },
+    "generation": {
+      "generator_version": "1.1.0",
+      "template": "solve",
+      "profile": "normalize-all",
+      "parameters": {
+        "profile": "normalize-all",
+        "difficulty": "moderate",
+        "plan": "normalize",
+        "scales": [
+          -8,
+          9,
+          -2
+        ],
+        "b": -7,
+        "c": 4,
+        "d": -18
+      },
+      "source_replay": false,
+      "source_references": [
+        "8de46974-719c-5ac2-a43c-83d1c67c57b6",
+        "a5bda611-2864-532a-b9d9-e426378f7835"
+      ],
+      "math_format": "course-academy-tex-v1",
+      "seed": 2026102173,
+      "draw": 3,
+      "rejections": 0,
+      "numerical_bank": [
+        [
+          -3,
+          8,
+          -13
+        ],
+        [
+          -7,
+          4,
+          -18
+        ],
+        [
+          -8,
+          1,
+          -7
+        ],
+        [
+          -1,
+          10,
+          -2
+        ],
+        [
+          -4,
+          6,
+          -16
+        ]
+      ],
+      "correct_index": 1
+    }
+  },
+  {
+    "knowledge_point": {
+      "db/id": 17592186096746,
+      "id": "aa91091b-5368-5d80-b87d-08b3524177f3",
+      "title": "Finding the Reduced Row Echelon Form of a Singular 3x3 System With One Pivot"
+    },
+    "question": {
+      ":question/id": "70ca6c76-50b7-57db-8ea3-367bebae9d0d",
+      ":question/problem": "Consider the following system of linear equations:\n\n$$\n\\left\\{\\begin{aligned}-7x-56y+21z &=56 \\\\ 4x+32y-12z &=-32 \\\\ x+8y-3z &=-8\\end{aligned}\\right.\n$$\n\nUse the standard Gauss-Jordan method to reduce the augmented matrix $M$ of the system to reduced row echelon form, and then solve the linear system.",
+      ":question/worked-solution": "The augmented matrix for this system is\n\n$$\nM=\\left[\\begin{array}{ccc|c}-7 & -56 & 21 & 56 \\\\ 4 & 32 & -12 & -32 \\\\ 1 & 8 & -3 & -8\\end{array}\\right].\n$$\n\nTransforming $M$ to reduced row echelon form, we have\n\n$$\nR_1\\leftrightarrow R_3\n$$\n\n\n\n$$\nM\\sim \\left[\\begin{array}{ccc|c}1 & 8 & -3 & -8 \\\\ 4 & 32 & -12 & -32 \\\\ -7 & -56 & 21 & 56\\end{array}\\right].\n$$\n\n\n\n$$\nR_2:=R_2+(-4)R_1\n$$\n\n\n\n$$\nM\\sim \\left[\\begin{array}{ccc|c}1 & 8 & -3 & -8 \\\\ 0 & 0 & 0 & 0 \\\\ -7 & -56 & 21 & 56\\end{array}\\right].\n$$\n\n\n\n$$\nR_3:=R_3+(7)R_1\n$$\n\n\n\n$$\nM\\sim \\left[\\begin{array}{ccc|c}1 & 8 & -3 & -8 \\\\ 0 & 0 & 0 & 0 \\\\ 0 & 0 & 0 & 0\\end{array}\\right].\n$$\n\nThe corresponding system is now\n\n$$\n\\left\\{\\begin{aligned}x+8y-3z &=-8 \\\\ 0x+0y+0z &=0 \\\\ 0x+0y+0z &=0\\end{aligned}\\right..\n$$\n\nSince any numbers $x,y,z$ form a solution of the final two equations, we can remove these equations from the system.\n\nThe basic variables are the variables whose coefficients are pivots. In this case, the basic variable is $x$, and we have two free variables, $y$ and $z$. That means we need to find $x$ in terms of $y$ and $z$.\n\nTherefore, the general solution is\n\n$$\n\\left\\{\\begin{aligned}x &=-8-8y+3z \\\\ y &=y \\\\ z &=z\\end{aligned}\\right.,\n$$\n\nwhere $y$ and $z$ (the free variables) are arbitrary numbers.\n\nIn vector form, the solution can be written as\n\n$$\n\\begin{bmatrix}x \\\\ y \\\\ z\\end{bmatrix}=\\begin{bmatrix}-8-8y+3z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty).\n$$\n\n",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "4a50988b-e552-5024-bc91-72ab93d12aec",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "a115014e-7492-5b8d-b1cd-da0ba352b58b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-15-5y+2z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            },
+            {
+              ":answer/id": "adb6f073-a7b7-5972-bf60-c5a109011728",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-4-3y+7z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            },
+            {
+              ":answer/id": "7bd5b91d-fc8d-5973-b8d3-eb9630feaca5",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-8-8y+3z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            },
+            {
+              ":answer/id": "815a1b2b-f89f-5330-828d-99fc677962a8",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-9-10y+10z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            },
+            {
+              ":answer/id": "f31bf316-359c-5202-b1f4-5c4c26d3f296",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-5-y+8z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "7bd5b91d-fc8d-5973-b8d3-eb9630feaca5"
+          ]
+        }
+      ],
+      ":question/difficulty": ":question.difficulty/moderate"
+    },
+    "generation": {
+      "generator_version": "1.1.0",
+      "template": "solve",
+      "profile": "normalize-all",
+      "parameters": {
+        "profile": "normalize-all",
+        "difficulty": "moderate",
+        "plan": "swap3",
+        "scales": [
+          -7,
+          4,
+          1
+        ],
+        "b": 8,
+        "c": -3,
+        "d": -8
+      },
+      "source_replay": false,
+      "source_references": [
+        "8de46974-719c-5ac2-a43c-83d1c67c57b6",
+        "a5bda611-2864-532a-b9d9-e426378f7835"
+      ],
+      "math_format": "course-academy-tex-v1",
+      "seed": 2026102173,
+      "draw": 4,
+      "rejections": 0,
+      "numerical_bank": [
+        [
+          5,
+          -2,
+          -15
+        ],
+        [
+          3,
+          -7,
+          -4
+        ],
+        [
+          8,
+          -3,
+          -8
+        ],
+        [
+          10,
+          -10,
+          -9
+        ],
+        [
+          1,
+          -8,
+          -5
+        ]
+      ],
+      "correct_index": 2
+    }
+  },
+  {
+    "knowledge_point": {
+      "db/id": 17592186096746,
+      "id": "aa91091b-5368-5d80-b87d-08b3524177f3",
+      "title": "Finding the Reduced Row Echelon Form of a Singular 3x3 System With One Pivot"
+    },
+    "question": {
+      ":question/id": "fe45c459-ba02-51ff-a37a-64f428cba1ba",
+      ":question/problem": "Consider the following system of linear equations:\n\n$$\n\\left\\{\\begin{aligned}-4x+24y+28z &=4 \\\\ x-6y-7z &=-1 \\\\ 2x-12y-14z &=-2\\end{aligned}\\right.\n$$\n\nUse the standard Gauss-Jordan method to reduce the augmented matrix $M$ of the system to reduced row echelon form, and then solve the linear system.",
+      ":question/worked-solution": "The augmented matrix for this system is\n\n$$\nM=\\left[\\begin{array}{ccc|c}-4 & 24 & 28 & 4 \\\\ 1 & -6 & -7 & -1 \\\\ 2 & -12 & -14 & -2\\end{array}\\right].\n$$\n\nTransforming $M$ to reduced row echelon form, we have\n\n$$\nR_1\\leftrightarrow R_2\n$$\n\n\n\n$$\nM\\sim \\left[\\begin{array}{ccc|c}1 & -6 & -7 & -1 \\\\ -4 & 24 & 28 & 4 \\\\ 2 & -12 & -14 & -2\\end{array}\\right].\n$$\n\n\n\n$$\nR_2:=R_2+(4)R_1\n$$\n\n\n\n$$\nM\\sim \\left[\\begin{array}{ccc|c}1 & -6 & -7 & -1 \\\\ 0 & 0 & 0 & 0 \\\\ 2 & -12 & -14 & -2\\end{array}\\right].\n$$\n\n\n\n$$\nR_3:=R_3+(-2)R_1\n$$\n\n\n\n$$\nM\\sim \\left[\\begin{array}{ccc|c}1 & -6 & -7 & -1 \\\\ 0 & 0 & 0 & 0 \\\\ 0 & 0 & 0 & 0\\end{array}\\right].\n$$\n\nThe corresponding system is now\n\n$$\n\\left\\{\\begin{aligned}x-6y-7z &=-1 \\\\ 0x+0y+0z &=0 \\\\ 0x+0y+0z &=0\\end{aligned}\\right..\n$$\n\nSince any numbers $x,y,z$ form a solution of the final two equations, we can remove these equations from the system.\n\nThe basic variables are the variables whose coefficients are pivots. In this case, the basic variable is $x$, and we have two free variables, $y$ and $z$. That means we need to find $x$ in terms of $y$ and $z$.\n\nTherefore, the general solution is\n\n$$\n\\left\\{\\begin{aligned}x &=-1+6y+7z \\\\ y &=y \\\\ z &=z\\end{aligned}\\right.,\n$$\n\nwhere $y$ and $z$ (the free variables) are arbitrary numbers.\n\nIn vector form, the solution can be written as\n\n$$\n\\begin{bmatrix}x \\\\ y \\\\ z\\end{bmatrix}=\\begin{bmatrix}-1+6y+7z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty).\n$$\n\n",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "3b80cdfd-75a9-51a9-911c-6e6e80212059",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "65640610-5d92-5efb-a02e-b0ade4fb0651",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-9+6y+7z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            },
+            {
+              ":answer/id": "58cfdbb8-e17a-585d-b936-60d014a32ec1",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-15+6y+7z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            },
+            {
+              ":answer/id": "89829674-6bf1-53b1-b6b0-e6dd825444ba",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-1+6y+7z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            },
+            {
+              ":answer/id": "3bc91564-835c-50f9-9e63-33088771f374",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-11+6y+7z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            },
+            {
+              ":answer/id": "4b91c5f1-70f9-5a6b-b003-6f3b8e431d51",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-13+6y+7z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "89829674-6bf1-53b1-b6b0-e6dd825444ba"
+          ]
+        }
+      ],
+      ":question/difficulty": ":question.difficulty/moderate"
+    },
+    "generation": {
+      "generator_version": "1.1.0",
+      "template": "solve",
+      "profile": "normalize-d",
+      "parameters": {
+        "profile": "normalize-d",
+        "difficulty": "moderate",
+        "plan": "swap2",
+        "scales": [
+          -4,
+          1,
+          2
+        ],
+        "b": -6,
+        "c": -7,
+        "d": -1
+      },
+      "source_replay": false,
+      "source_references": [
+        "8de46974-719c-5ac2-a43c-83d1c67c57b6",
+        "a5bda611-2864-532a-b9d9-e426378f7835"
+      ],
+      "math_format": "course-academy-tex-v1",
+      "seed": 2026102173,
+      "draw": 5,
+      "rejections": 0,
+      "numerical_bank": [
+        [
+          -6,
+          -7,
+          -9
+        ],
+        [
+          -6,
+          -7,
+          -15
+        ],
+        [
+          -6,
+          -7,
+          -1
+        ],
+        [
+          -6,
+          -7,
+          -11
+        ],
+        [
+          -6,
+          -7,
+          -13
+        ]
+      ],
+      "correct_index": 2
+    }
+  },
+  {
+    "knowledge_point": {
+      "db/id": 17592186096746,
+      "id": "aa91091b-5368-5d80-b87d-08b3524177f3",
+      "title": "Finding the Reduced Row Echelon Form of a Singular 3x3 System With One Pivot"
+    },
+    "question": {
+      ":question/id": "aebc3474-9fc6-55b0-8b85-8061c2e642d0",
+      ":question/problem": "Consider the following system of linear equations:\n\n$$\n\\left\\{\\begin{aligned}-5x+30y+5z &=65 \\\\ 2x-12y-2z &=-26 \\\\ -7x+42y+7z &=91\\end{aligned}\\right.\n$$\n\nUse the standard Gauss-Jordan method to reduce the augmented matrix $M$ of the system to reduced row echelon form, and then solve the linear system.",
+      ":question/worked-solution": "The augmented matrix for this system is\n\n$$\nM=\\left[\\begin{array}{ccc|c}-5 & 30 & 5 & 65 \\\\ 2 & -12 & -2 & -26 \\\\ -7 & 42 & 7 & 91\\end{array}\\right].\n$$\n\nTransforming $M$ to reduced row echelon form, we have\n\n$$\nR_1:=(-\\frac{1}{5})R_1\n$$\n\n\n\n$$\nM\\sim \\left[\\begin{array}{ccc|c}1 & -6 & -1 & -13 \\\\ 2 & -12 & -2 & -26 \\\\ -7 & 42 & 7 & 91\\end{array}\\right].\n$$\n\n\n\n$$\nR_2:=R_2+(-2)R_1\n$$\n\n\n\n$$\nM\\sim \\left[\\begin{array}{ccc|c}1 & -6 & -1 & -13 \\\\ 0 & 0 & 0 & 0 \\\\ -7 & 42 & 7 & 91\\end{array}\\right].\n$$\n\n\n\n$$\nR_3:=R_3+(7)R_1\n$$\n\n\n\n$$\nM\\sim \\left[\\begin{array}{ccc|c}1 & -6 & -1 & -13 \\\\ 0 & 0 & 0 & 0 \\\\ 0 & 0 & 0 & 0\\end{array}\\right].\n$$\n\nThe corresponding system is now\n\n$$\n\\left\\{\\begin{aligned}x-6y-z &=-13 \\\\ 0x+0y+0z &=0 \\\\ 0x+0y+0z &=0\\end{aligned}\\right..\n$$\n\nSince any numbers $x,y,z$ form a solution of the final two equations, we can remove these equations from the system.\n\nThe basic variables are the variables whose coefficients are pivots. In this case, the basic variable is $x$, and we have two free variables, $y$ and $z$. That means we need to find $x$ in terms of $y$ and $z$.\n\nTherefore, the general solution is\n\n$$\n\\left\\{\\begin{aligned}x &=-13+6y+z \\\\ y &=y \\\\ z &=z\\end{aligned}\\right.,\n$$\n\nwhere $y$ and $z$ (the free variables) are arbitrary numbers.\n\nIn vector form, the solution can be written as\n\n$$\n\\begin{bmatrix}x \\\\ y \\\\ z\\end{bmatrix}=\\begin{bmatrix}-13+6y+z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty).\n$$\n\n",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "73f1e3b9-a519-58af-bc46-cc82cf456b41",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "18a30a58-852d-535f-80ec-8f12467b1a06",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-13+6y+3z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            },
+            {
+              ":answer/id": "c85990fd-945e-5c61-831c-49dbd38b329f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-13+6y+4z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            },
+            {
+              ":answer/id": "63010907-5a27-5241-943d-82fbfec12a24",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-13+6y+8z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            },
+            {
+              ":answer/id": "882bf45f-a93d-521e-ba8d-3e569ab526d6",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-13+6y+z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            },
+            {
+              ":answer/id": "fbc40066-c210-5896-b853-25e73b935569",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-13+6y+10z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "882bf45f-a93d-521e-ba8d-3e569ab526d6"
+          ]
+        }
+      ],
+      ":question/difficulty": ":question.difficulty/moderate"
+    },
+    "generation": {
+      "generator_version": "1.1.0",
+      "template": "solve",
+      "profile": "normalize-c",
+      "parameters": {
+        "profile": "normalize-c",
+        "difficulty": "moderate",
+        "plan": "normalize",
+        "scales": [
+          -5,
+          2,
+          -7
+        ],
+        "b": -6,
+        "c": -1,
+        "d": -13
+      },
+      "source_replay": false,
+      "source_references": [
+        "8de46974-719c-5ac2-a43c-83d1c67c57b6",
+        "a5bda611-2864-532a-b9d9-e426378f7835"
+      ],
+      "math_format": "course-academy-tex-v1",
+      "seed": 2026102173,
+      "draw": 6,
+      "rejections": 0,
+      "numerical_bank": [
+        [
+          -6,
+          -3,
+          -13
+        ],
+        [
+          -6,
+          -4,
+          -13
+        ],
+        [
+          -6,
+          -8,
+          -13
+        ],
+        [
+          -6,
+          -1,
+          -13
+        ],
+        [
+          -6,
+          -10,
+          -13
+        ]
+      ],
+      "correct_index": 3
+    }
+  },
+  {
+    "knowledge_point": {
+      "db/id": 17592186096746,
+      "id": "aa91091b-5368-5d80-b87d-08b3524177f3",
+      "title": "Finding the Reduced Row Echelon Form of a Singular 3x3 System With One Pivot"
+    },
+    "question": {
+      ":question/id": "0a8c71ac-182b-588a-8e36-24dfd9d3d324",
+      ":question/problem": "Consider the following system of linear equations:\n\n$$\n\\left\\{\\begin{aligned}-2x-2y-8z &=14 \\\\ x+y+4z &=-7 \\\\ -5x-5y-20z &=35\\end{aligned}\\right.\n$$\n\nUse the standard Gauss-Jordan method to reduce the augmented matrix $M$ of the system to reduced row echelon form, and then solve the linear system.",
+      ":question/worked-solution": "The augmented matrix for this system is\n\n$$\nM=\\left[\\begin{array}{ccc|c}-2 & -2 & -8 & 14 \\\\ 1 & 1 & 4 & -7 \\\\ -5 & -5 & -20 & 35\\end{array}\\right].\n$$\n\nTransforming $M$ to reduced row echelon form, we have\n\n$$\nR_1\\leftrightarrow R_2\n$$\n\n\n\n$$\nM\\sim \\left[\\begin{array}{ccc|c}1 & 1 & 4 & -7 \\\\ -2 & -2 & -8 & 14 \\\\ -5 & -5 & -20 & 35\\end{array}\\right].\n$$\n\n\n\n$$\nR_2:=R_2+(2)R_1\n$$\n\n\n\n$$\nM\\sim \\left[\\begin{array}{ccc|c}1 & 1 & 4 & -7 \\\\ 0 & 0 & 0 & 0 \\\\ -5 & -5 & -20 & 35\\end{array}\\right].\n$$\n\n\n\n$$\nR_3:=R_3+(5)R_1\n$$\n\n\n\n$$\nM\\sim \\left[\\begin{array}{ccc|c}1 & 1 & 4 & -7 \\\\ 0 & 0 & 0 & 0 \\\\ 0 & 0 & 0 & 0\\end{array}\\right].\n$$\n\nThe corresponding system is now\n\n$$\n\\left\\{\\begin{aligned}x+y+4z &=-7 \\\\ 0x+0y+0z &=0 \\\\ 0x+0y+0z &=0\\end{aligned}\\right..\n$$\n\nSince any numbers $x,y,z$ form a solution of the final two equations, we can remove these equations from the system.\n\nThe basic variables are the variables whose coefficients are pivots. In this case, the basic variable is $x$, and we have two free variables, $y$ and $z$. That means we need to find $x$ in terms of $y$ and $z$.\n\nTherefore, the general solution is\n\n$$\n\\left\\{\\begin{aligned}x &=-7-y-4z \\\\ y &=y \\\\ z &=z\\end{aligned}\\right.,\n$$\n\nwhere $y$ and $z$ (the free variables) are arbitrary numbers.\n\nIn vector form, the solution can be written as\n\n$$\n\\begin{bmatrix}x \\\\ y \\\\ z\\end{bmatrix}=\\begin{bmatrix}-7-y-4z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty).\n$$\n\n",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "678c575f-0daa-5d0d-b742-4f8002b15b34",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "d70db52a-a5a3-5784-9ee9-d5b1fe491596",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-7-3y-4z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            },
+            {
+              ":answer/id": "d76f8832-b0e2-57cf-a0cc-82bc7ebc2a09",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-7-10y-4z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            },
+            {
+              ":answer/id": "a8889b67-3a9a-5505-8a97-f244a306acb3",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-7-2y-4z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            },
+            {
+              ":answer/id": "9c247579-1897-58d9-9e4a-c74bffa8d831",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-7-y-4z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            },
+            {
+              ":answer/id": "c91ccfb3-fbcd-5b04-86c6-48f2ae77ad5a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-7-4y-4z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "9c247579-1897-58d9-9e4a-c74bffa8d831"
+          ]
+        }
+      ],
+      ":question/difficulty": ":question.difficulty/moderate"
+    },
+    "generation": {
+      "generator_version": "1.1.0",
+      "template": "solve",
+      "profile": "normalize-b",
+      "parameters": {
+        "profile": "normalize-b",
+        "difficulty": "moderate",
+        "plan": "swap2",
+        "scales": [
+          -2,
+          1,
+          -5
+        ],
+        "b": 1,
+        "c": 4,
+        "d": -7
+      },
+      "source_replay": false,
+      "source_references": [
+        "8de46974-719c-5ac2-a43c-83d1c67c57b6",
+        "a5bda611-2864-532a-b9d9-e426378f7835"
+      ],
+      "math_format": "course-academy-tex-v1",
+      "seed": 2026102173,
+      "draw": 7,
+      "rejections": 0,
+      "numerical_bank": [
+        [
+          3,
+          4,
+          -7
+        ],
+        [
+          10,
+          4,
+          -7
+        ],
+        [
+          2,
+          4,
+          -7
+        ],
+        [
+          1,
+          4,
+          -7
+        ],
+        [
+          4,
+          4,
+          -7
+        ]
+      ],
+      "correct_index": 3
+    }
+  },
+  {
+    "knowledge_point": {
+      "db/id": 17592186096746,
+      "id": "aa91091b-5368-5d80-b87d-08b3524177f3",
+      "title": "Finding the Reduced Row Echelon Form of a Singular 3x3 System With One Pivot"
+    },
+    "question": {
+      ":question/id": "b5299fb0-111f-5b90-bc81-ace608a08b00",
+      ":question/problem": "Consider the following system of linear equations:\n\n$$\n\\left\\{\\begin{aligned}-2x-8y-20z &=-28 \\\\ x+4y+10z &=14 \\\\ -8x-32y-80z &=-112\\end{aligned}\\right.\n$$\n\nUse the standard Gauss-Jordan method to reduce the augmented matrix $M$ of the system to reduced row echelon form, and then solve the linear system.",
+      ":question/worked-solution": "The augmented matrix for this system is\n\n$$\nM=\\left[\\begin{array}{ccc|c}-2 & -8 & -20 & -28 \\\\ 1 & 4 & 10 & 14 \\\\ -8 & -32 & -80 & -112\\end{array}\\right].\n$$\n\nTransforming $M$ to reduced row echelon form, we have\n\n$$\nR_1\\leftrightarrow R_2\n$$\n\n\n\n$$\nM\\sim \\left[\\begin{array}{ccc|c}1 & 4 & 10 & 14 \\\\ -2 & -8 & -20 & -28 \\\\ -8 & -32 & -80 & -112\\end{array}\\right].\n$$\n\n\n\n$$\nR_2:=R_2+(2)R_1\n$$\n\n\n\n$$\nM\\sim \\left[\\begin{array}{ccc|c}1 & 4 & 10 & 14 \\\\ 0 & 0 & 0 & 0 \\\\ -8 & -32 & -80 & -112\\end{array}\\right].\n$$\n\n\n\n$$\nR_3:=R_3+(8)R_1\n$$\n\n\n\n$$\nM\\sim \\left[\\begin{array}{ccc|c}1 & 4 & 10 & 14 \\\\ 0 & 0 & 0 & 0 \\\\ 0 & 0 & 0 & 0\\end{array}\\right].\n$$\n\nThe corresponding system is now\n\n$$\n\\left\\{\\begin{aligned}x+4y+10z &=14 \\\\ 0x+0y+0z &=0 \\\\ 0x+0y+0z &=0\\end{aligned}\\right..\n$$\n\nSince any numbers $x,y,z$ form a solution of the final two equations, we can remove these equations from the system.\n\nThe basic variables are the variables whose coefficients are pivots. In this case, the basic variable is $x$, and we have two free variables, $y$ and $z$. That means we need to find $x$ in terms of $y$ and $z$.\n\nTherefore, the general solution is\n\n$$\n\\left\\{\\begin{aligned}x &=14-4y-10z \\\\ y &=y \\\\ z &=z\\end{aligned}\\right.,\n$$\n\nwhere $y$ and $z$ (the free variables) are arbitrary numbers.\n\nIn vector form, the solution can be written as\n\n$$\n\\begin{bmatrix}x \\\\ y \\\\ z\\end{bmatrix}=\\begin{bmatrix}14-4y-10z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty).\n$$\n\n",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "fb29f5fe-f473-5ad3-8b03-cd6b54486f2f",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "e2a5e803-92ba-5456-805d-6e664bf2381c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}10-4y-10z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            },
+            {
+              ":answer/id": "d1748351-883a-5cb8-8b8e-7b89c1e34154",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1-4y-10z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            },
+            {
+              ":answer/id": "f93450f6-784f-52a7-ab18-6cedc4163452",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}5-4y-10z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            },
+            {
+              ":answer/id": "d13737ca-185f-5fa0-a9f7-cca0c008ae2c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}14-4y-10z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            },
+            {
+              ":answer/id": "b6ca601f-c54c-577f-b06a-d4f046690e8d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}2-4y-10z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "d13737ca-185f-5fa0-a9f7-cca0c008ae2c"
+          ]
+        }
+      ],
+      ":question/difficulty": ":question.difficulty/moderate"
+    },
+    "generation": {
+      "generator_version": "1.1.0",
+      "template": "solve",
+      "profile": "normalize-d",
+      "parameters": {
+        "profile": "normalize-d",
+        "difficulty": "moderate",
+        "plan": "swap2",
+        "scales": [
+          -2,
+          1,
+          -8
+        ],
+        "b": 4,
+        "c": 10,
+        "d": 14
+      },
+      "source_replay": false,
+      "source_references": [
+        "8de46974-719c-5ac2-a43c-83d1c67c57b6",
+        "a5bda611-2864-532a-b9d9-e426378f7835"
+      ],
+      "math_format": "course-academy-tex-v1",
+      "seed": 2026102173,
+      "draw": 8,
+      "rejections": 0,
+      "numerical_bank": [
+        [
+          4,
+          10,
+          10
+        ],
+        [
+          4,
+          10,
+          1
+        ],
+        [
+          4,
+          10,
+          5
+        ],
+        [
+          4,
+          10,
+          14
+        ],
+        [
+          4,
+          10,
+          2
+        ]
+      ],
+      "correct_index": 3
+    }
+  },
+  {
+    "knowledge_point": {
+      "db/id": 17592186096746,
+      "id": "aa91091b-5368-5d80-b87d-08b3524177f3",
+      "title": "Finding the Reduced Row Echelon Form of a Singular 3x3 System With One Pivot"
+    },
+    "question": {
+      ":question/id": "59d3eabc-52b4-5034-88c9-b7d10ddad8bf",
+      ":question/problem": "Consider the following system of linear equations:\n\n$$\n\\left\\{\\begin{aligned}-5x-25y+20z &=60 \\\\ x+5y-4z &=-12 \\\\ -10x-50y+40z &=120\\end{aligned}\\right.\n$$\n\nUse the standard Gauss-Jordan method to reduce the augmented matrix $M$ of the system to reduced row echelon form, and then solve the linear system.",
+      ":question/worked-solution": "The augmented matrix for this system is\n\n$$\nM=\\left[\\begin{array}{ccc|c}-5 & -25 & 20 & 60 \\\\ 1 & 5 & -4 & -12 \\\\ -10 & -50 & 40 & 120\\end{array}\\right].\n$$\n\nTransforming $M$ to reduced row echelon form, we have\n\n$$\nR_1\\leftrightarrow R_2\n$$\n\n\n\n$$\nM\\sim \\left[\\begin{array}{ccc|c}1 & 5 & -4 & -12 \\\\ -5 & -25 & 20 & 60 \\\\ -10 & -50 & 40 & 120\\end{array}\\right].\n$$\n\n\n\n$$\nR_2:=R_2+(5)R_1\n$$\n\n\n\n$$\nM\\sim \\left[\\begin{array}{ccc|c}1 & 5 & -4 & -12 \\\\ 0 & 0 & 0 & 0 \\\\ -10 & -50 & 40 & 120\\end{array}\\right].\n$$\n\n\n\n$$\nR_3:=R_3+(10)R_1\n$$\n\n\n\n$$\nM\\sim \\left[\\begin{array}{ccc|c}1 & 5 & -4 & -12 \\\\ 0 & 0 & 0 & 0 \\\\ 0 & 0 & 0 & 0\\end{array}\\right].\n$$\n\nThe corresponding system is now\n\n$$\n\\left\\{\\begin{aligned}x+5y-4z &=-12 \\\\ 0x+0y+0z &=0 \\\\ 0x+0y+0z &=0\\end{aligned}\\right..\n$$\n\nSince any numbers $x,y,z$ form a solution of the final two equations, we can remove these equations from the system.\n\nThe basic variables are the variables whose coefficients are pivots. In this case, the basic variable is $x$, and we have two free variables, $y$ and $z$. That means we need to find $x$ in terms of $y$ and $z$.\n\nTherefore, the general solution is\n\n$$\n\\left\\{\\begin{aligned}x &=-12-5y+4z \\\\ y &=y \\\\ z &=z\\end{aligned}\\right.,\n$$\n\nwhere $y$ and $z$ (the free variables) are arbitrary numbers.\n\nIn vector form, the solution can be written as\n\n$$\n\\begin{bmatrix}x \\\\ y \\\\ z\\end{bmatrix}=\\begin{bmatrix}-12-5y+4z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty).\n$$\n\n",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "fe874d73-290f-573c-af12-1b6e7e26036c",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "e3c01922-4e83-5583-a14a-69749b8ecd2f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-12-y+4z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            },
+            {
+              ":answer/id": "733a1620-6253-54f9-8517-7175e255be56",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-12-9y+4z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            },
+            {
+              ":answer/id": "4897f6f7-385a-5e1c-87dc-3a2cd28927a5",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-12-7y+4z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            },
+            {
+              ":answer/id": "c1928cfc-73be-5109-a30c-43b5bc868fea",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-12-5y+4z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            },
+            {
+              ":answer/id": "fcf3a69b-68c1-5c90-8f27-c62ab364438b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-12-10y+4z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "c1928cfc-73be-5109-a30c-43b5bc868fea"
+          ]
+        }
+      ],
+      ":question/difficulty": ":question.difficulty/moderate"
+    },
+    "generation": {
+      "generator_version": "1.1.0",
+      "template": "solve",
+      "profile": "normalize-b",
+      "parameters": {
+        "profile": "normalize-b",
+        "difficulty": "moderate",
+        "plan": "swap2",
+        "scales": [
+          -5,
+          1,
+          -10
+        ],
+        "b": 5,
+        "c": -4,
+        "d": -12
+      },
+      "source_replay": false,
+      "source_references": [
+        "8de46974-719c-5ac2-a43c-83d1c67c57b6",
+        "a5bda611-2864-532a-b9d9-e426378f7835"
+      ],
+      "math_format": "course-academy-tex-v1",
+      "seed": 2026102173,
+      "draw": 9,
+      "rejections": 0,
+      "numerical_bank": [
+        [
+          1,
+          -4,
+          -12
+        ],
+        [
+          9,
+          -4,
+          -12
+        ],
+        [
+          7,
+          -4,
+          -12
+        ],
+        [
+          5,
+          -4,
+          -12
+        ],
+        [
+          10,
+          -4,
+          -12
+        ]
+      ],
+      "correct_index": 3
+    }
+  },
+  {
+    "knowledge_point": {
+      "db/id": 17592186096746,
+      "id": "aa91091b-5368-5d80-b87d-08b3524177f3",
+      "title": "Finding the Reduced Row Echelon Form of a Singular 3x3 System With One Pivot"
+    },
+    "question": {
+      ":question/id": "90266bc2-a52a-5d81-ad11-bce8843cbccb",
+      ":question/problem": "Consider the following system of linear equations:\n\n$$\n\\left\\{\\begin{aligned}10x-30y-70z &=-80 \\\\ -10x+30y+70z &=80 \\\\ x-3y-7z &=-8\\end{aligned}\\right.\n$$\n\nUse the standard Gauss-Jordan method to reduce the augmented matrix $M$ of the system to reduced row echelon form, and then solve the linear system.",
+      ":question/worked-solution": "The augmented matrix for this system is\n\n$$\nM=\\left[\\begin{array}{ccc|c}10 & -30 & -70 & -80 \\\\ -10 & 30 & 70 & 80 \\\\ 1 & -3 & -7 & -8\\end{array}\\right].\n$$\n\nTransforming $M$ to reduced row echelon form, we have\n\n$$\nR_1\\leftrightarrow R_3\n$$\n\n\n\n$$\nM\\sim \\left[\\begin{array}{ccc|c}1 & -3 & -7 & -8 \\\\ -10 & 30 & 70 & 80 \\\\ 10 & -30 & -70 & -80\\end{array}\\right].\n$$\n\n\n\n$$\nR_2:=R_2+(10)R_1\n$$\n\n\n\n$$\nM\\sim \\left[\\begin{array}{ccc|c}1 & -3 & -7 & -8 \\\\ 0 & 0 & 0 & 0 \\\\ 10 & -30 & -70 & -80\\end{array}\\right].\n$$\n\n\n\n$$\nR_3:=R_3+(-10)R_1\n$$\n\n\n\n$$\nM\\sim \\left[\\begin{array}{ccc|c}1 & -3 & -7 & -8 \\\\ 0 & 0 & 0 & 0 \\\\ 0 & 0 & 0 & 0\\end{array}\\right].\n$$\n\nThe corresponding system is now\n\n$$\n\\left\\{\\begin{aligned}x-3y-7z &=-8 \\\\ 0x+0y+0z &=0 \\\\ 0x+0y+0z &=0\\end{aligned}\\right..\n$$\n\nSince any numbers $x,y,z$ form a solution of the final two equations, we can remove these equations from the system.\n\nThe basic variables are the variables whose coefficients are pivots. In this case, the basic variable is $x$, and we have two free variables, $y$ and $z$. That means we need to find $x$ in terms of $y$ and $z$.\n\nTherefore, the general solution is\n\n$$\n\\left\\{\\begin{aligned}x &=-8+3y+7z \\\\ y &=y \\\\ z &=z\\end{aligned}\\right.,\n$$\n\nwhere $y$ and $z$ (the free variables) are arbitrary numbers.\n\nIn vector form, the solution can be written as\n\n$$\n\\begin{bmatrix}x \\\\ y \\\\ z\\end{bmatrix}=\\begin{bmatrix}-8+3y+7z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty).\n$$\n\n",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "0e00c383-7c96-50b1-b149-fc1c5052b0bc",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "96a330b0-7a46-57b0-a0ca-4fa8758c2ee9",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-8+3y+z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            },
+            {
+              ":answer/id": "4e27ccd0-d11d-5b37-a349-cacd9d720741",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-8+3y+10z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            },
+            {
+              ":answer/id": "8089cae5-36be-5e47-93b8-3faf7ad73554",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-8+3y+7z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            },
+            {
+              ":answer/id": "27913f05-9a22-5239-bb1c-309369729402",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-8+3y+9z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            },
+            {
+              ":answer/id": "9d4a5e99-416f-5dfe-8750-0572f73c2ba8",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-8+3y+3z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "8089cae5-36be-5e47-93b8-3faf7ad73554"
+          ]
+        }
+      ],
+      ":question/difficulty": ":question.difficulty/moderate"
+    },
+    "generation": {
+      "generator_version": "1.1.0",
+      "template": "solve",
+      "profile": "normalize-c",
+      "parameters": {
+        "profile": "normalize-c",
+        "difficulty": "moderate",
+        "plan": "swap3",
+        "scales": [
+          10,
+          -10,
+          1
+        ],
+        "b": -3,
+        "c": -7,
+        "d": -8
+      },
+      "source_replay": false,
+      "source_references": [
+        "8de46974-719c-5ac2-a43c-83d1c67c57b6",
+        "a5bda611-2864-532a-b9d9-e426378f7835"
+      ],
+      "math_format": "course-academy-tex-v1",
+      "seed": 2026102173,
+      "draw": 10,
+      "rejections": 0,
+      "numerical_bank": [
+        [
+          -3,
+          -1,
+          -8
+        ],
+        [
+          -3,
+          -10,
+          -8
+        ],
+        [
+          -3,
+          -7,
+          -8
+        ],
+        [
+          -3,
+          -9,
+          -8
+        ],
+        [
+          -3,
+          -3,
+          -8
+        ]
+      ],
+      "correct_index": 2
+    }
+  },
+  {
+    "knowledge_point": {
+      "db/id": 17592186096746,
+      "id": "aa91091b-5368-5d80-b87d-08b3524177f3",
+      "title": "Finding the Reduced Row Echelon Form of a Singular 3x3 System With One Pivot"
+    },
+    "question": {
+      ":question/id": "1e19f510-388c-53a3-b8d9-41e97e5967e9",
+      ":question/problem": "Consider the following system of linear equations:\n\n$$\n\\left\\{\\begin{aligned}6x-24y-54z &=42 \\\\ 9x-36y-81z &=63 \\\\ 10x-40y-90z &=70\\end{aligned}\\right.\n$$\n\nUse the standard Gauss-Jordan method to reduce the augmented matrix $M$ of the system to reduced row echelon form, and then solve the linear system.",
+      ":question/worked-solution": "The augmented matrix for this system is\n\n$$\nM=\\left[\\begin{array}{ccc|c}6 & -24 & -54 & 42 \\\\ 9 & -36 & -81 & 63 \\\\ 10 & -40 & -90 & 70\\end{array}\\right].\n$$\n\nTransforming $M$ to reduced row echelon form, we have\n\n$$\nR_1:=(\\frac{1}{6})R_1\n$$\n\n\n\n$$\nM\\sim \\left[\\begin{array}{ccc|c}1 & -4 & -9 & 7 \\\\ 9 & -36 & -81 & 63 \\\\ 10 & -40 & -90 & 70\\end{array}\\right].\n$$\n\n\n\n$$\nR_2:=R_2+(-9)R_1\n$$\n\n\n\n$$\nM\\sim \\left[\\begin{array}{ccc|c}1 & -4 & -9 & 7 \\\\ 0 & 0 & 0 & 0 \\\\ 10 & -40 & -90 & 70\\end{array}\\right].\n$$\n\n\n\n$$\nR_3:=R_3+(-10)R_1\n$$\n\n\n\n$$\nM\\sim \\left[\\begin{array}{ccc|c}1 & -4 & -9 & 7 \\\\ 0 & 0 & 0 & 0 \\\\ 0 & 0 & 0 & 0\\end{array}\\right].\n$$\n\nThe corresponding system is now\n\n$$\n\\left\\{\\begin{aligned}x-4y-9z &=7 \\\\ 0x+0y+0z &=0 \\\\ 0x+0y+0z &=0\\end{aligned}\\right..\n$$\n\nSince any numbers $x,y,z$ form a solution of the final two equations, we can remove these equations from the system.\n\nThe basic variables are the variables whose coefficients are pivots. In this case, the basic variable is $x$, and we have two free variables, $y$ and $z$. That means we need to find $x$ in terms of $y$ and $z$.\n\nTherefore, the general solution is\n\n$$\n\\left\\{\\begin{aligned}x &=7+4y+9z \\\\ y &=y \\\\ z &=z\\end{aligned}\\right.,\n$$\n\nwhere $y$ and $z$ (the free variables) are arbitrary numbers.\n\nIn vector form, the solution can be written as\n\n$$\n\\begin{bmatrix}x \\\\ y \\\\ z\\end{bmatrix}=\\begin{bmatrix}7+4y+9z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty).\n$$\n\n",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "ca27dae0-60d0-5b25-a7c9-b602e4ce9343",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "15c228c1-06b2-5200-83ea-4245c18ff99d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}10+9y+4z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            },
+            {
+              ":answer/id": "ca9042bc-c336-5afa-bc54-f59667a29366",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}17+y+6z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            },
+            {
+              ":answer/id": "e05e6ec3-267f-576b-b1fa-ee0cd11aed8f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}18+7y+7z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            },
+            {
+              ":answer/id": "bcde1728-21c6-52c0-9079-551acda6f08e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}1+10y+8z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            },
+            {
+              ":answer/id": "1d52d113-c838-5af6-ae63-bfa2da311600",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}7+4y+9z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "1d52d113-c838-5af6-ae63-bfa2da311600"
+          ]
+        }
+      ],
+      ":question/difficulty": ":question.difficulty/moderate"
+    },
+    "generation": {
+      "generator_version": "1.1.0",
+      "template": "solve",
+      "profile": "normalize-all",
+      "parameters": {
+        "profile": "normalize-all",
+        "difficulty": "moderate",
+        "plan": "normalize",
+        "scales": [
+          6,
+          9,
+          10
+        ],
+        "b": -4,
+        "c": -9,
+        "d": 7
+      },
+      "source_replay": false,
+      "source_references": [
+        "8de46974-719c-5ac2-a43c-83d1c67c57b6",
+        "a5bda611-2864-532a-b9d9-e426378f7835"
+      ],
+      "math_format": "course-academy-tex-v1",
+      "seed": 2026102173,
+      "draw": 11,
+      "rejections": 0,
+      "numerical_bank": [
+        [
+          -9,
+          -4,
+          10
+        ],
+        [
+          -1,
+          -6,
+          17
+        ],
+        [
+          -7,
+          -7,
+          18
+        ],
+        [
+          -10,
+          -8,
+          1
+        ],
+        [
+          -4,
+          -9,
+          7
+        ]
+      ],
+      "correct_index": 4
+    }
+  },
+  {
+    "knowledge_point": {
+      "db/id": 17592186096746,
+      "id": "aa91091b-5368-5d80-b87d-08b3524177f3",
+      "title": "Finding the Reduced Row Echelon Form of a Singular 3x3 System With One Pivot"
+    },
+    "question": {
+      ":question/id": "1afc4e4e-8fec-597a-8948-e47b8e9fa891",
+      ":question/problem": "Consider the following system of linear equations:\n\n$$\n\\left\\{\\begin{aligned}3x+9y+6z &=-3 \\\\ -4x-12y-8z &=4 \\\\ x+3y+2z &=-1\\end{aligned}\\right.\n$$\n\nUse the standard Gauss-Jordan method to reduce the augmented matrix $M$ of the system to reduced row echelon form, and then solve the linear system.",
+      ":question/worked-solution": "The augmented matrix for this system is\n\n$$\nM=\\left[\\begin{array}{ccc|c}3 & 9 & 6 & -3 \\\\ -4 & -12 & -8 & 4 \\\\ 1 & 3 & 2 & -1\\end{array}\\right].\n$$\n\nTransforming $M$ to reduced row echelon form, we have\n\n$$\nR_1\\leftrightarrow R_3\n$$\n\n\n\n$$\nM\\sim \\left[\\begin{array}{ccc|c}1 & 3 & 2 & -1 \\\\ -4 & -12 & -8 & 4 \\\\ 3 & 9 & 6 & -3\\end{array}\\right].\n$$\n\n\n\n$$\nR_2:=R_2+(4)R_1\n$$\n\n\n\n$$\nM\\sim \\left[\\begin{array}{ccc|c}1 & 3 & 2 & -1 \\\\ 0 & 0 & 0 & 0 \\\\ 3 & 9 & 6 & -3\\end{array}\\right].\n$$\n\n\n\n$$\nR_3:=R_3+(-3)R_1\n$$\n\n\n\n$$\nM\\sim \\left[\\begin{array}{ccc|c}1 & 3 & 2 & -1 \\\\ 0 & 0 & 0 & 0 \\\\ 0 & 0 & 0 & 0\\end{array}\\right].\n$$\n\nThe corresponding system is now\n\n$$\n\\left\\{\\begin{aligned}x+3y+2z &=-1 \\\\ 0x+0y+0z &=0 \\\\ 0x+0y+0z &=0\\end{aligned}\\right..\n$$\n\nSince any numbers $x,y,z$ form a solution of the final two equations, we can remove these equations from the system.\n\nThe basic variables are the variables whose coefficients are pivots. In this case, the basic variable is $x$, and we have two free variables, $y$ and $z$. That means we need to find $x$ in terms of $y$ and $z$.\n\nTherefore, the general solution is\n\n$$\n\\left\\{\\begin{aligned}x &=-1-3y-2z \\\\ y &=y \\\\ z &=z\\end{aligned}\\right.,\n$$\n\nwhere $y$ and $z$ (the free variables) are arbitrary numbers.\n\nIn vector form, the solution can be written as\n\n$$\n\\begin{bmatrix}x \\\\ y \\\\ z\\end{bmatrix}=\\begin{bmatrix}-1-3y-2z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty).\n$$\n\n",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "b4e71669-aa05-5d5f-b87d-365a0e2655ca",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "c17d3d08-4650-5e0c-b67e-b68e31f9b5f6",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-4-6y-3z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            },
+            {
+              ":answer/id": "3660d4f5-924a-5b49-8ea1-3664b143bee5",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-13-10y-10z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            },
+            {
+              ":answer/id": "6c02db1f-d787-5639-864b-e8996d37e40e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-3-5y-7z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            },
+            {
+              ":answer/id": "ef228f7f-a745-53d5-940f-0bac84f4c1e2",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-12-9y-4z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            },
+            {
+              ":answer/id": "1e97cd2d-baa2-5050-94bc-0684bda63942",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-1-3y-2z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "1e97cd2d-baa2-5050-94bc-0684bda63942"
+          ]
+        }
+      ],
+      ":question/difficulty": ":question.difficulty/moderate"
+    },
+    "generation": {
+      "generator_version": "1.1.0",
+      "template": "solve",
+      "profile": "normalize-all",
+      "parameters": {
+        "profile": "normalize-all",
+        "difficulty": "moderate",
+        "plan": "swap3",
+        "scales": [
+          3,
+          -4,
+          1
+        ],
+        "b": 3,
+        "c": 2,
+        "d": -1
+      },
+      "source_replay": false,
+      "source_references": [
+        "8de46974-719c-5ac2-a43c-83d1c67c57b6",
+        "a5bda611-2864-532a-b9d9-e426378f7835"
+      ],
+      "math_format": "course-academy-tex-v1",
+      "seed": 2026102173,
+      "draw": 12,
+      "rejections": 0,
+      "numerical_bank": [
+        [
+          6,
+          3,
+          -4
+        ],
+        [
+          10,
+          10,
+          -13
+        ],
+        [
+          5,
+          7,
+          -3
+        ],
+        [
+          9,
+          4,
+          -12
+        ],
+        [
+          3,
+          2,
+          -1
+        ]
+      ],
+      "correct_index": 4
+    }
+  },
+  {
+    "knowledge_point": {
+      "db/id": 17592186096746,
+      "id": "aa91091b-5368-5d80-b87d-08b3524177f3",
+      "title": "Finding the Reduced Row Echelon Form of a Singular 3x3 System With One Pivot"
+    },
+    "question": {
+      ":question/id": "59ae5541-74cc-535c-9ceb-e4aeadbb21a4",
+      ":question/problem": "Consider the following system of linear equations:\n\n$$\n\\left\\{\\begin{aligned}7x+35y-35z &=-126 \\\\ x+5y-5z &=-18 \\\\ 7x+35y-35z &=-126\\end{aligned}\\right.\n$$\n\nUse the standard Gauss-Jordan method to reduce the augmented matrix $M$ of the system to reduced row echelon form, and then solve the linear system.",
+      ":question/worked-solution": "The augmented matrix for this system is\n\n$$\nM=\\left[\\begin{array}{ccc|c}7 & 35 & -35 & -126 \\\\ 1 & 5 & -5 & -18 \\\\ 7 & 35 & -35 & -126\\end{array}\\right].\n$$\n\nTransforming $M$ to reduced row echelon form, we have\n\n$$\nR_1\\leftrightarrow R_2\n$$\n\n\n\n$$\nM\\sim \\left[\\begin{array}{ccc|c}1 & 5 & -5 & -18 \\\\ 7 & 35 & -35 & -126 \\\\ 7 & 35 & -35 & -126\\end{array}\\right].\n$$\n\n\n\n$$\nR_2:=R_2+(-7)R_1\n$$\n\n\n\n$$\nM\\sim \\left[\\begin{array}{ccc|c}1 & 5 & -5 & -18 \\\\ 0 & 0 & 0 & 0 \\\\ 7 & 35 & -35 & -126\\end{array}\\right].\n$$\n\n\n\n$$\nR_3:=R_3+(-7)R_1\n$$\n\n\n\n$$\nM\\sim \\left[\\begin{array}{ccc|c}1 & 5 & -5 & -18 \\\\ 0 & 0 & 0 & 0 \\\\ 0 & 0 & 0 & 0\\end{array}\\right].\n$$\n\nThe corresponding system is now\n\n$$\n\\left\\{\\begin{aligned}x+5y-5z &=-18 \\\\ 0x+0y+0z &=0 \\\\ 0x+0y+0z &=0\\end{aligned}\\right..\n$$\n\nSince any numbers $x,y,z$ form a solution of the final two equations, we can remove these equations from the system.\n\nThe basic variables are the variables whose coefficients are pivots. In this case, the basic variable is $x$, and we have two free variables, $y$ and $z$. That means we need to find $x$ in terms of $y$ and $z$.\n\nTherefore, the general solution is\n\n$$\n\\left\\{\\begin{aligned}x &=-18-5y+5z \\\\ y &=y \\\\ z &=z\\end{aligned}\\right.,\n$$\n\nwhere $y$ and $z$ (the free variables) are arbitrary numbers.\n\nIn vector form, the solution can be written as\n\n$$\n\\begin{bmatrix}x \\\\ y \\\\ z\\end{bmatrix}=\\begin{bmatrix}-18-5y+5z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty).\n$$\n\n",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "2bb4466c-3805-5ff0-91ce-35081d46783a",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "2059c9ff-eece-5240-93ee-2704501c098e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-18-5y+5z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            },
+            {
+              ":answer/id": "8a74a664-f89d-5396-9197-ee4f37623bf5",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-18-5y+6z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            },
+            {
+              ":answer/id": "26690e7a-a571-5e42-90d8-c433815cf111",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-18-5y+8z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            },
+            {
+              ":answer/id": "fb81a552-aeb2-56a7-8e50-9c20a4a2804e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-18-5y+3z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            },
+            {
+              ":answer/id": "aa1736af-5e07-5842-8fb2-c4e9fbd6058d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-18-5y+4z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "2059c9ff-eece-5240-93ee-2704501c098e"
+          ]
+        }
+      ],
+      ":question/difficulty": ":question.difficulty/moderate"
+    },
+    "generation": {
+      "generator_version": "1.1.0",
+      "template": "solve",
+      "profile": "normalize-c",
+      "parameters": {
+        "profile": "normalize-c",
+        "difficulty": "moderate",
+        "plan": "swap2",
+        "scales": [
+          7,
+          1,
+          7
+        ],
+        "b": 5,
+        "c": -5,
+        "d": -18
+      },
+      "source_replay": false,
+      "source_references": [
+        "8de46974-719c-5ac2-a43c-83d1c67c57b6",
+        "a5bda611-2864-532a-b9d9-e426378f7835"
+      ],
+      "math_format": "course-academy-tex-v1",
+      "seed": 2026102173,
+      "draw": 13,
+      "rejections": 0,
+      "numerical_bank": [
+        [
+          5,
+          -5,
+          -18
+        ],
+        [
+          5,
+          -6,
+          -18
+        ],
+        [
+          5,
+          -8,
+          -18
+        ],
+        [
+          5,
+          -3,
+          -18
+        ],
+        [
+          5,
+          -4,
+          -18
+        ]
+      ],
+      "correct_index": 0
+    }
+  },
+  {
+    "knowledge_point": {
+      "db/id": 17592186096746,
+      "id": "aa91091b-5368-5d80-b87d-08b3524177f3",
+      "title": "Finding the Reduced Row Echelon Form of a Singular 3x3 System With One Pivot"
+    },
+    "question": {
+      ":question/id": "28872ed3-554a-509d-bf1a-d98ae6f57c39",
+      ":question/problem": "Consider the following system of linear equations:\n\n$$\n\\left\\{\\begin{aligned}-2x-8y+6z &=-32 \\\\ x+4y-3z &=16 \\\\ -8x-32y+24z &=-128\\end{aligned}\\right.\n$$\n\nUse the standard Gauss-Jordan method to reduce the augmented matrix $M$ of the system to reduced row echelon form, and then solve the linear system.",
+      ":question/worked-solution": "The augmented matrix for this system is\n\n$$\nM=\\left[\\begin{array}{ccc|c}-2 & -8 & 6 & -32 \\\\ 1 & 4 & -3 & 16 \\\\ -8 & -32 & 24 & -128\\end{array}\\right].\n$$\n\nTransforming $M$ to reduced row echelon form, we have\n\n$$\nR_1\\leftrightarrow R_2\n$$\n\n\n\n$$\nM\\sim \\left[\\begin{array}{ccc|c}1 & 4 & -3 & 16 \\\\ -2 & -8 & 6 & -32 \\\\ -8 & -32 & 24 & -128\\end{array}\\right].\n$$\n\n\n\n$$\nR_2:=R_2+(2)R_1\n$$\n\n\n\n$$\nM\\sim \\left[\\begin{array}{ccc|c}1 & 4 & -3 & 16 \\\\ 0 & 0 & 0 & 0 \\\\ -8 & -32 & 24 & -128\\end{array}\\right].\n$$\n\n\n\n$$\nR_3:=R_3+(8)R_1\n$$\n\n\n\n$$\nM\\sim \\left[\\begin{array}{ccc|c}1 & 4 & -3 & 16 \\\\ 0 & 0 & 0 & 0 \\\\ 0 & 0 & 0 & 0\\end{array}\\right].\n$$\n\nThe corresponding system is now\n\n$$\n\\left\\{\\begin{aligned}x+4y-3z &=16 \\\\ 0x+0y+0z &=0 \\\\ 0x+0y+0z &=0\\end{aligned}\\right..\n$$\n\nSince any numbers $x,y,z$ form a solution of the final two equations, we can remove these equations from the system.\n\nThe basic variables are the variables whose coefficients are pivots. In this case, the basic variable is $x$, and we have two free variables, $y$ and $z$. That means we need to find $x$ in terms of $y$ and $z$.\n\nTherefore, the general solution is\n\n$$\n\\left\\{\\begin{aligned}x &=16-4y+3z \\\\ y &=y \\\\ z &=z\\end{aligned}\\right.,\n$$\n\nwhere $y$ and $z$ (the free variables) are arbitrary numbers.\n\nIn vector form, the solution can be written as\n\n$$\n\\begin{bmatrix}x \\\\ y \\\\ z\\end{bmatrix}=\\begin{bmatrix}16-4y+3z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty).\n$$\n\n",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "5c4f33a7-5d3b-5f75-b650-7cf028a17fe7",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "bdda532f-1670-56b3-8858-45ed2ed4fd4e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}11-4y+3z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            },
+            {
+              ":answer/id": "b2472a3c-59f4-5262-98e5-a3ba2b2ffe23",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}17-4y+3z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            },
+            {
+              ":answer/id": "7196d885-e2c3-5df1-bf8e-dc88964d08db",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}16-4y+3z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            },
+            {
+              ":answer/id": "91e8033a-3c08-5de5-910a-0d7d93eef18b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}4-4y+3z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            },
+            {
+              ":answer/id": "6d5eaac0-f944-5aca-8b91-9d86edcad6c1",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}7-4y+3z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "7196d885-e2c3-5df1-bf8e-dc88964d08db"
+          ]
+        }
+      ],
+      ":question/difficulty": ":question.difficulty/moderate"
+    },
+    "generation": {
+      "generator_version": "1.1.0",
+      "template": "solve",
+      "profile": "normalize-d",
+      "parameters": {
+        "profile": "normalize-d",
+        "difficulty": "moderate",
+        "plan": "swap2",
+        "scales": [
+          -2,
+          1,
+          -8
+        ],
+        "b": 4,
+        "c": -3,
+        "d": 16
+      },
+      "source_replay": false,
+      "source_references": [
+        "8de46974-719c-5ac2-a43c-83d1c67c57b6",
+        "a5bda611-2864-532a-b9d9-e426378f7835"
+      ],
+      "math_format": "course-academy-tex-v1",
+      "seed": 2026102173,
+      "draw": 14,
+      "rejections": 0,
+      "numerical_bank": [
+        [
+          4,
+          -3,
+          11
+        ],
+        [
+          4,
+          -3,
+          17
+        ],
+        [
+          4,
+          -3,
+          16
+        ],
+        [
+          4,
+          -3,
+          4
+        ],
+        [
+          4,
+          -3,
+          7
+        ]
+      ],
+      "correct_index": 2
+    }
+  },
+  {
+    "knowledge_point": {
+      "db/id": 17592186096746,
+      "id": "aa91091b-5368-5d80-b87d-08b3524177f3",
+      "title": "Finding the Reduced Row Echelon Form of a Singular 3x3 System With One Pivot"
+    },
+    "question": {
+      ":question/id": "4ef1ed49-e0dd-5ef3-8677-00c293f3059a",
+      ":question/problem": "Consider the following system of linear equations:\n\n$$\n\\left\\{\\begin{aligned}9x-54y+27z &=126 \\\\ 9x-54y+27z &=126 \\\\ 3x-18y+9z &=42\\end{aligned}\\right.\n$$\n\nUse the standard Gauss-Jordan method to reduce the augmented matrix $M$ of the system to reduced row echelon form, and then solve the linear system.",
+      ":question/worked-solution": "The augmented matrix for this system is\n\n$$\nM=\\left[\\begin{array}{ccc|c}9 & -54 & 27 & 126 \\\\ 9 & -54 & 27 & 126 \\\\ 3 & -18 & 9 & 42\\end{array}\\right].\n$$\n\nTransforming $M$ to reduced row echelon form, we have\n\n$$\nR_1:=(\\frac{1}{9})R_1\n$$\n\n\n\n$$\nM\\sim \\left[\\begin{array}{ccc|c}1 & -6 & 3 & 14 \\\\ 9 & -54 & 27 & 126 \\\\ 3 & -18 & 9 & 42\\end{array}\\right].\n$$\n\n\n\n$$\nR_2:=R_2+(-9)R_1\n$$\n\n\n\n$$\nM\\sim \\left[\\begin{array}{ccc|c}1 & -6 & 3 & 14 \\\\ 0 & 0 & 0 & 0 \\\\ 3 & -18 & 9 & 42\\end{array}\\right].\n$$\n\n\n\n$$\nR_3:=R_3+(-3)R_1\n$$\n\n\n\n$$\nM\\sim \\left[\\begin{array}{ccc|c}1 & -6 & 3 & 14 \\\\ 0 & 0 & 0 & 0 \\\\ 0 & 0 & 0 & 0\\end{array}\\right].\n$$\n\nThe corresponding system is now\n\n$$\n\\left\\{\\begin{aligned}x-6y+3z &=14 \\\\ 0x+0y+0z &=0 \\\\ 0x+0y+0z &=0\\end{aligned}\\right..\n$$\n\nSince any numbers $x,y,z$ form a solution of the final two equations, we can remove these equations from the system.\n\nThe basic variables are the variables whose coefficients are pivots. In this case, the basic variable is $x$, and we have two free variables, $y$ and $z$. That means we need to find $x$ in terms of $y$ and $z$.\n\nTherefore, the general solution is\n\n$$\n\\left\\{\\begin{aligned}x &=14+6y-3z \\\\ y &=y \\\\ z &=z\\end{aligned}\\right.,\n$$\n\nwhere $y$ and $z$ (the free variables) are arbitrary numbers.\n\nIn vector form, the solution can be written as\n\n$$\n\\begin{bmatrix}x \\\\ y \\\\ z\\end{bmatrix}=\\begin{bmatrix}14+6y-3z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty).\n$$\n\n",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "654e0874-526c-51ca-b0d9-8d8d87f3414d",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "c8b01bcf-8fe9-5a8a-a900-077299939300",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}14+y-3z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            },
+            {
+              ":answer/id": "c3bcd898-521a-5fe3-8b38-dd91cc99e931",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}14+9y-3z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            },
+            {
+              ":answer/id": "062a62fe-61e2-5e13-aa11-8c9a91ddfafc",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}14+10y-3z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            },
+            {
+              ":answer/id": "d36c8a4f-7f6f-5445-bbd7-16dea6806cef",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}14+5y-3z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            },
+            {
+              ":answer/id": "b23c021d-dca7-5aa6-9234-b8004bcae4c8",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}14+6y-3z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "b23c021d-dca7-5aa6-9234-b8004bcae4c8"
+          ]
+        }
+      ],
+      ":question/difficulty": ":question.difficulty/moderate"
+    },
+    "generation": {
+      "generator_version": "1.1.0",
+      "template": "solve",
+      "profile": "normalize-b",
+      "parameters": {
+        "profile": "normalize-b",
+        "difficulty": "moderate",
+        "plan": "normalize",
+        "scales": [
+          9,
+          9,
+          3
+        ],
+        "b": -6,
+        "c": 3,
+        "d": 14
+      },
+      "source_replay": false,
+      "source_references": [
+        "8de46974-719c-5ac2-a43c-83d1c67c57b6",
+        "a5bda611-2864-532a-b9d9-e426378f7835"
+      ],
+      "math_format": "course-academy-tex-v1",
+      "seed": 2026102173,
+      "draw": 15,
+      "rejections": 0,
+      "numerical_bank": [
+        [
+          -1,
+          3,
+          14
+        ],
+        [
+          -9,
+          3,
+          14
+        ],
+        [
+          -10,
+          3,
+          14
+        ],
+        [
+          -5,
+          3,
+          14
+        ],
+        [
+          -6,
+          3,
+          14
+        ]
+      ],
+      "correct_index": 4
+    }
+  },
+  {
+    "knowledge_point": {
+      "db/id": 17592186096746,
+      "id": "aa91091b-5368-5d80-b87d-08b3524177f3",
+      "title": "Finding the Reduced Row Echelon Form of a Singular 3x3 System With One Pivot"
+    },
+    "question": {
+      ":question/id": "19d0da39-e280-5e69-ae22-cc0f3322cc42",
+      ":question/problem": "Consider the following system of linear equations:\n\n$$\n\\left\\{\\begin{aligned}-9x+90y+54z &=27 \\\\ -8x+80y+48z &=24 \\\\ x-10y-6z &=-3\\end{aligned}\\right.\n$$\n\nUse the standard Gauss-Jordan method to reduce the augmented matrix $M$ of the system to reduced row echelon form, and then solve the linear system.",
+      ":question/worked-solution": "The augmented matrix for this system is\n\n$$\nM=\\left[\\begin{array}{ccc|c}-9 & 90 & 54 & 27 \\\\ -8 & 80 & 48 & 24 \\\\ 1 & -10 & -6 & -3\\end{array}\\right].\n$$\n\nTransforming $M$ to reduced row echelon form, we have\n\n$$\nR_1\\leftrightarrow R_3\n$$\n\n\n\n$$\nM\\sim \\left[\\begin{array}{ccc|c}1 & -10 & -6 & -3 \\\\ -8 & 80 & 48 & 24 \\\\ -9 & 90 & 54 & 27\\end{array}\\right].\n$$\n\n\n\n$$\nR_2:=R_2+(8)R_1\n$$\n\n\n\n$$\nM\\sim \\left[\\begin{array}{ccc|c}1 & -10 & -6 & -3 \\\\ 0 & 0 & 0 & 0 \\\\ -9 & 90 & 54 & 27\\end{array}\\right].\n$$\n\n\n\n$$\nR_3:=R_3+(9)R_1\n$$\n\n\n\n$$\nM\\sim \\left[\\begin{array}{ccc|c}1 & -10 & -6 & -3 \\\\ 0 & 0 & 0 & 0 \\\\ 0 & 0 & 0 & 0\\end{array}\\right].\n$$\n\nThe corresponding system is now\n\n$$\n\\left\\{\\begin{aligned}x-10y-6z &=-3 \\\\ 0x+0y+0z &=0 \\\\ 0x+0y+0z &=0\\end{aligned}\\right..\n$$\n\nSince any numbers $x,y,z$ form a solution of the final two equations, we can remove these equations from the system.\n\nThe basic variables are the variables whose coefficients are pivots. In this case, the basic variable is $x$, and we have two free variables, $y$ and $z$. That means we need to find $x$ in terms of $y$ and $z$.\n\nTherefore, the general solution is\n\n$$\n\\left\\{\\begin{aligned}x &=-3+10y+6z \\\\ y &=y \\\\ z &=z\\end{aligned}\\right.,\n$$\n\nwhere $y$ and $z$ (the free variables) are arbitrary numbers.\n\nIn vector form, the solution can be written as\n\n$$\n\\begin{bmatrix}x \\\\ y \\\\ z\\end{bmatrix}=\\begin{bmatrix}-3+10y+6z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty).\n$$\n\n",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "4951e932-94b0-55ca-923e-d19d93ec12ea",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "2504d75d-83a2-5adb-9f11-c6d45534135b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-3+10y+4z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            },
+            {
+              ":answer/id": "2f5c9d55-63c5-5acc-8ecc-686e3593316f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-3+10y+z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            },
+            {
+              ":answer/id": "224065db-3fda-59c8-b0e7-c5e72d55e734",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-3+10y+6z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            },
+            {
+              ":answer/id": "f5abef53-3218-5bb7-91bc-e0b5699e2005",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-3+10y+9z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            },
+            {
+              ":answer/id": "70d33764-4229-557d-8ab5-223dedb3064f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-3+10y+5z \\\\ y \\\\ z\\end{bmatrix},\\,y,z\\in(-\\infty,\\infty)"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "224065db-3fda-59c8-b0e7-c5e72d55e734"
+          ]
+        }
+      ],
+      ":question/difficulty": ":question.difficulty/moderate"
+    },
+    "generation": {
+      "generator_version": "1.1.0",
+      "template": "solve",
+      "profile": "normalize-c",
+      "parameters": {
+        "profile": "normalize-c",
+        "difficulty": "moderate",
+        "plan": "swap3",
+        "scales": [
+          -9,
+          -8,
+          1
+        ],
+        "b": -10,
+        "c": -6,
+        "d": -3
+      },
+      "source_replay": false,
+      "source_references": [
+        "8de46974-719c-5ac2-a43c-83d1c67c57b6",
+        "a5bda611-2864-532a-b9d9-e426378f7835"
+      ],
+      "math_format": "course-academy-tex-v1",
+      "seed": 2026102173,
+      "draw": 16,
+      "rejections": 0,
+      "numerical_bank": [
+        [
+          -10,
+          -4,
+          -3
+        ],
+        [
+          -10,
+          -1,
+          -3
+        ],
+        [
+          -10,
+          -6,
+          -3
+        ],
+        [
+          -10,
+          -9,
+          -3
+        ],
+        [
+          -10,
+          -5,
+          -3
+        ]
+      ],
+      "correct_index": 2
+    }
+  }
+]

@@ -1,0 +1,5 @@
+Completed targeted repair for finding 6f947ef9d75ceb3ab20e. Restored q-20598/q-20589 complete banks; e-4709 replays as fieldless evidence-only example, excluded from practice. Original twelve profile objects remain equal to the reviewed package, including q-131590 correction. Generator 2.1.0; package manifest unchanged.
+
+Validation complete: latest exact reproduction passes; checks/source_regression.py passes 15 source cases, 14 banks and 70 choices. Independent Fraction checks cover 54 visible records. Native grader: 53 accepted / 212 rejected / 0 unexpected. Shared delivery: 39/39; all 25 controlled role/mask records survive and tested incidental strategies have counterexamples within each profile. Determinism and runtime-only relocation pass. Eight actual UI screenshots inspected; renderer passes and exact UI ordering matches five DOM fixtures. Inventory/selection limitations recorded. No publication or database changes.
+
+Commands: evidence/commands.md. Summary: evidence/repair-summary.json. No unfinished implementation or verification steps. Ready for independent review, with source capture gaps and live-selection limits stated.

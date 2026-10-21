@@ -1,0 +1,160 @@
+{
+  "request": {
+    "kp": 17592186096745,
+    "difficulty": "unclassified",
+    "count": 5,
+    "existing_entrypoint": null,
+    "job_kind": "build"
+  },
+  "stage": "validate",
+  "attempt": 1,
+  "seed": 2475162438,
+  "created": 1792608263.9507933,
+  "updated": 1792609380.2989123,
+  "source_hash": "a01855f60dce86df1a79af3fa8438b7082f187d0b36e82fb096c2a2a301db539",
+  "inventory_hash": "2cfc595642d94e4f3b03657e6cc267101125cad88344415a79648b7008e3f59e",
+  "manifest": "package.json",
+  "package_hash": "efd26d2bc2a7ec47782275b5ff299b0861808ba1274bc17b483ee76d3e32c300",
+  "adopted_default_difficulty": "hard",
+  "effective_difficulty": "hard",
+  "batch_hash": "9a8c8bd00e509aef17ff88180eaf2885bc7b89345a91ba295ed9a79ea52f60db",
+  "runtime": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186096745/runtime-1",
+  "engine_hash": "068e04ae69feec8bf48b25d41459cceb97bea9bdf34eac0d8efa255194293eea",
+  "assets": {},
+  "previous_review": {
+    "directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186096745/review-0-policy-2-5c66a489da337c4d",
+    "binding": {
+      "policy_version": 2,
+      "package_hash": "793f45d3a19b13f984c05a81aade22b5163bfe98b5004163e4bfd18aa6117213",
+      "batch_hash": "9fab3e279b12b449d387024588b0fc0b5c901569570478a1a4e4194525a60f68",
+      "source_hash": "a01855f60dce86df1a79af3fa8438b7082f187d0b36e82fb096c2a2a301db539",
+      "inventory_hash": "2cfc595642d94e4f3b03657e6cc267101125cad88344415a79648b7008e3f59e",
+      "assets": {},
+      "effective_difficulty": "hard",
+      "engine_hash": "068e04ae69feec8bf48b25d41459cceb97bea9bdf34eac0d8efa255194293eea"
+    }
+  },
+  "needs_repair": true,
+  "error": {
+    "verdict": "revise",
+    "summary": "Two supplied source profiles are missing: q-74625 and q-131634 fail replay with KeyError and cannot be sampled. Other tested checks passed. Package unchanged; no publication or database writes.",
+    "source_analysis": {
+      "skill": "Reduce a consistent singular 3x3 system with two pivots to RREF, then select its matrix or general solution vector.",
+      "reasoning_steps": [
+        "Construct the augmented matrix.",
+        "Find and normalize two pivots using row operations.",
+        "Clear entries above the pivots.",
+        "When requested, express x and y in terms of free variable z."
+      ],
+      "invariants": [
+        "Consistent rank-two linear system.",
+        "Source-supported matrix and solution-vector response families.",
+        "Five radio choices with exactly one correct answer."
+      ],
+      "permitted_variations": [
+        "Signed coefficients, slopes, intercepts and row dependencies.",
+        "Equation ordering and nonzero row scaling.",
+        "Correct-option position and distractor assignments."
+      ],
+      "source_refs": [
+        "Tutorial 3949: Using the Gauss-Jordan Method on a 3x3 System With Two Pivots",
+        "8e9b3735-f721-557c-bd19-98de1fb72ed8 (q-74625)",
+        "c0791632-977c-5714-8eb6-2845fc127f35 (q-131634)"
+      ],
+      "evidence_paths": [
+        "source-analysis.json",
+        "source-extract.json"
+      ]
+    },
+    "checks": {
+      "source_replay": {
+        "status": "failed",
+        "evidence_paths": [
+          "source-replay-results.json",
+          "replays.json",
+          "missing-profile.py",
+          "missing-profile.stderr"
+        ],
+        "details": "15 of 17 assessed source profiles replay successfully. The other two are absent from the registry."
+      },
+      "math": {
+        "status": "passed",
+        "evidence_paths": [
+          "math-results.json",
+          "shortcut-controls-math.json"
+        ],
+        "details": "81 generated records pass independent exact checks of answers, alternatives and worked reductions."
+      },
+      "variety": {
+        "status": "passed",
+        "evidence_paths": [
+          "coverage-results.json",
+          "delivery-independent/delivery.json",
+          "delivery-batch/delivery.json"
+        ],
+        "details": "Fresh samples cover both response families and all five correct slots. All 45 fresh samples and five exact batch records survive delivery filtering."
+      },
+      "scope": {
+        "status": "passed",
+        "evidence_paths": [
+          "scope-results.json",
+          "source-analysis.json"
+        ],
+        "details": "Tested variations retain the source skill, response requirements and comparable workload."
+      },
+      "grading": {
+        "status": "passed",
+        "evidence_paths": [
+          "grader-all-input.json",
+          "grader-all-results.json"
+        ],
+        "details": "Native grader accepts 81 independently verified correct choices and rejects 324 alternatives."
+      },
+      "rendering": {
+        "status": "passed",
+        "evidence_paths": [
+          "render/rendering.json",
+          "visual-inspection.json"
+        ],
+        "details": "Actual UI renders 13 records successfully; representative screenshots were inspected."
+      },
+      "packaging": {
+        "status": "passed",
+        "evidence_paths": [
+          "packaging-results.json",
+          "generator-rejection.json",
+          "package-hashes-before.json",
+          "package-hashes-after.json"
+        ],
+        "details": "Dependency versions match. Deterministic replay, relocation and rejection checks pass. Package hashes remain unchanged."
+      },
+      "decision_variation": {
+        "status": "passed",
+        "evidence_paths": [
+          "pedagogical-variation.json",
+          "counterfactual-results.json",
+          "decision-probe-results.json",
+          "shortcut-control-results.json",
+          "learner-selection-results.json"
+        ],
+        "details": "Both families pass relevant and irrelevant counterfactuals. Conditional shortcut probes found no reproducible defect; the apparent shortest-option cue scored 2/10 on fresh controls. Selection conclusions are limited to captured inputs and documented policy assumptions."
+      }
+    },
+    "findings": [
+      {
+        "kind": "source_fidelity",
+        "description": "The registry omits two supplied source profiles, preventing their replay and sampling. No affected generated inventory instance was demonstrated; both profiles remain original source questions.",
+        "source_refs": [
+          "8e9b3735-f721-557c-bd19-98de1fb72ed8 (q-74625)",
+          "c0791632-977c-5714-8eb6-2845fc127f35 (q-131634)"
+        ],
+        "reproduction": "From evidence_root run: PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python missing-profile.py --template q-74625. It exits with KeyError('q-74625'). Repeat with --template q-131634.",
+        "requested_change": "Build the registry from all 17 supplied assessed source cases, retaining complete banks and worked solutions. Add exact source-ID coverage checks and verify replay plus sampled generation for every profile."
+      }
+    ]
+  },
+  "last_rejected_package": "793f45d3a19b13f984c05a81aade22b5163bfe98b5004163e4bfd18aa6117213",
+  "last_rejected_source": "a01855f60dce86df1a79af3fa8438b7082f187d0b36e82fb096c2a2a301db539",
+  "last_rejected_engine": "068e04ae69feec8bf48b25d41459cceb97bea9bdf34eac0d8efa255194293eea",
+  "author_running": false
+}

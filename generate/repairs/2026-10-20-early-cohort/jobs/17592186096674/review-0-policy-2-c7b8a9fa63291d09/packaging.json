@@ -1,0 +1,97 @@
+{
+  "versions": {
+    "python": "3.13.5",
+    "sympy": "1.14.0"
+  },
+  "manifest": {
+    "entrypoint": "generator.py",
+    "files": [
+      "generator.py",
+      "math_format.py",
+      "requirements.txt",
+      "source-data.json"
+    ],
+    "dependencies": {
+      "packages": {
+        "sympy": "1.14.0"
+      },
+      "python": "3.13.5"
+    },
+    "default_difficulty": "easy"
+  },
+  "rejections": [
+    {
+      "kwargs": {
+        "difficulty": "hard"
+      },
+      "rejected": true,
+      "error": "Only easy has supported source evidence"
+    },
+    {
+      "kwargs": {
+        "parameters": {
+          "role": 5
+        }
+      },
+      "rejected": true,
+      "error": "Unsupported role/mask"
+    },
+    {
+      "kwargs": {
+        "parameters": {
+          "mask": [
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "rejected": true,
+      "error": "Unsupported role/mask"
+    },
+    {
+      "kwargs": {
+        "parameters": {
+          "coefficients": [
+            0,
+            0,
+            0
+          ],
+          "mask": [
+            1,
+            1,
+            1
+          ]
+        }
+      },
+      "rejected": true,
+      "error": "Invalid coefficients"
+    },
+    {
+      "kwargs": {
+        "parameters": {
+          "translation": [
+            6,
+            0,
+            0
+          ]
+        }
+      },
+      "rejected": true,
+      "error": "Invalid bank parameters"
+    },
+    {
+      "kwargs": {
+        "parameters": {
+          "scale": 0
+        }
+      },
+      "rejected": true,
+      "error": "Invalid bank parameters"
+    }
+  ],
+  "deterministic": true,
+  "relocation_equal": true,
+  "external_outputs": "CLI emits JSON on stdout; no assets or external output paths; disabled bytecode writes.",
+  "unchanged": true
+}

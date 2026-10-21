@@ -1,0 +1,214 @@
+{
+  "learner_operation": "Translate three linear equations into a 3x4 augmented matrix, identify the single independent row, normalize its pivot and eliminate its multiples; select the resulting RREF. At moderate difficulty also express the pivot variable using two free variables.",
+  "fixed_features": [
+    {
+      "feature": "one pivot / two zero rows",
+      "justification": "Knowledge point and tutorial 3950 explicitly concern one-pivot systems; adding rank or inconsistency would change the family."
+    },
+    {
+      "feature": "five-choice radio",
+      "justification": "Every supplied question uses this response contract."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Which of five matrices is row-equivalent and in RREF",
+      "eligible_variation": "Correct option position, signs, numerical ratios and nonzero constants; plausible same-sign distractors may require normalization arithmetic. Rank one remains essential.",
+      "observed": "Positions and all eight normalized sign triples vary; all 96 fresh banks have identical entrywise absolute values. No magnitude decision can affect choice selection."
+    },
+    {
+      "role": "Pivot normalization versus row swap",
+      "eligible_variation": "Existing unit row, negative pivot, non-unit positive pivot, and row order.",
+      "observed": "normalize, swap2 and swap3 present; source row-operation patterns preserved."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "Exact runner batch before/after publication preparation",
+      "sample_refs": [
+        "batch.json",
+        "delivery-batch/accepted.json",
+        "shortcut-results.json"
+      ],
+      "result": "5/5 accepted; 5/5 sign-only strategy correct; conditional negative-first-pivot 3/3, positive-first-pivot 2/2."
+    },
+    {
+      "case": "Fresh easy sample seed 913771, count96",
+      "sample_refs": [
+        "fresh-easy.json",
+        "delivery-fresh/accepted.json",
+        "shortcut-results.json"
+      ],
+      "result": "96/96 accepted and sign-only correct; negative pivot50/50 and positive46/46. Correct positions0..4 all occur."
+    },
+    {
+      "case": "Source complete answer banks versus sampled bank profiles",
+      "sample_refs": [
+        "source-replay.json",
+        "source-replay-results.json",
+        "fresh-easy.json"
+      ],
+      "result": "15 source banks replayed, source693512da omitted. Normal generation only emits authored-sign-comparison, so source numeric/rank/free-variable distractor profiles are absent."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Keep magnitudes, row multipliers and answer bank fixed; switch the qualifying sign triple to another existing bank member.",
+      "expected": "Correct mathematical matrix must change, with matching prompt, solution and grading.",
+      "observed": "Response changes",
+      "status": "passed",
+      "justification": "Rank-one row equivalence fixes normalized ratios; nonzero whole-row scaling leaves them invariant. Native all-choice tests confirm corresponding responses; actual UI images show each change. Magnitude change updates every option together, exposing continued sign-only selection.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "counterfactual-results.json",
+        "counterfactual-math.json",
+        "grader-cases.json",
+        "grader-results.json",
+        "render-records.json",
+        "render-inspection.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Multiply all three displayed equations by2, preserving their common normalized row.",
+      "expected": "Correct mathematical matrix preserved; prompt and operation trace adjust.",
+      "observed": "Response preserved",
+      "status": "passed",
+      "justification": "Rank-one row equivalence fixes normalized ratios; nonzero whole-row scaling leaves them invariant. Native all-choice tests confirm corresponding responses; actual UI images show each change. Magnitude change updates every option together, exposing continued sign-only selection.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "counterfactual-results.json",
+        "counterfactual-math.json",
+        "grader-cases.json",
+        "grader-results.json",
+        "render-records.json",
+        "render-inspection.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "Keep signs, scales and answer assignment fixed; increase |b| from10 to11.",
+      "expected": "Correct mathematical matrix must change, with matching prompt, solution and grading.",
+      "observed": "Response changes",
+      "status": "passed",
+      "justification": "Rank-one row equivalence fixes normalized ratios; nonzero whole-row scaling leaves them invariant. Native all-choice tests confirm corresponding responses; actual UI images show each change. Magnitude change updates every option together, exposing continued sign-only selection.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "counterfactual-results.json",
+        "counterfactual-math.json",
+        "grader-cases.json",
+        "grader-results.json",
+        "render-records.json",
+        "render-inspection.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "Only signs distinguish the five normalized top rows",
+      "subgroup": "exact delivered batch",
+      "scope": "within_template",
+      "strategy": "Read signs of coefficients and RHS of first equation; multiply each sign by sign of x coefficient; select the unique matching top-row sign triple. Ignore all magnitudes and remaining equations.",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Random selection among five choices succeeds0.2. Sign arithmetic is part of the skill, but universal identical option magnitudes disclose every numerical ratio and remove normalization arithmetic from the entire delivered practice family; source banks include magnitude errors. This is a restricted family/batch, not a claim that sign reasoning itself is invalid.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "Only signs distinguish the five normalized top rows",
+      "subgroup": "fresh delivered easy",
+      "scope": "overall",
+      "strategy": "Read signs of coefficients and RHS of first equation; multiply each sign by sign of x coefficient; select the unique matching top-row sign triple. Ignore all magnitudes and remaining equations.",
+      "correct": 96,
+      "total": 96,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Random selection among five choices succeeds0.2. Sign arithmetic is part of the skill, but universal identical option magnitudes disclose every numerical ratio and remove normalization arithmetic from the entire delivered practice family; source banks include magnitude errors. This is a restricted family/batch, not a claim that sign reasoning itself is invalid.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "fresh-easy.json",
+        "delivery-fresh/accepted.json"
+      ]
+    },
+    {
+      "cue": "Only signs distinguish the five normalized top rows",
+      "subgroup": "negative first pivot",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Read signs of coefficients and RHS of first equation; multiply each sign by sign of x coefficient; select the unique matching top-row sign triple. Ignore all magnitudes and remaining equations.",
+      "correct": 50,
+      "total": 50,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Random selection among five choices succeeds0.2. Sign arithmetic is part of the skill, but universal identical option magnitudes disclose every numerical ratio and remove normalization arithmetic from the entire delivered practice family; source banks include magnitude errors. This is a restricted family/batch, not a claim that sign reasoning itself is invalid.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "fresh-easy.json",
+        "delivery-fresh/accepted.json"
+      ]
+    },
+    {
+      "cue": "Only signs distinguish the five normalized top rows",
+      "subgroup": "positive first pivot",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Read signs of coefficients and RHS of first equation; multiply each sign by sign of x coefficient; select the unique matching top-row sign triple. Ignore all magnitudes and remaining equations.",
+      "correct": 46,
+      "total": 46,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Random selection among five choices succeeds0.2. Sign arithmetic is part of the skill, but universal identical option magnitudes disclose every numerical ratio and remove normalization arithmetic from the entire delivered practice family; source banks include magnitude errors. This is a restricted family/batch, not a claim that sign reasoning itself is invalid.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "fresh-easy.json",
+        "delivery-fresh/accepted.json"
+      ]
+    },
+    {
+      "cue": "First raw answer position",
+      "subgroup": "authored-sign-comparison easy",
+      "scope": "within_template",
+      "strategy": "Always choose first authored answer",
+      "correct": 19,
+      "total": 96,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "19/96 versus0.2 random baseline; raw positions are approximately balanced. UI can reorder choices; sign strategy is invariant under such permutations.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "fresh-easy.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "generator prompt rejection/resampling",
+      "requested easy difficulty",
+      "shared prepare_records normalization and stable identities",
+      "captured-inventory and within-batch deduplication",
+      "learner difficulty-band weights, freshness exclusions and uniform within-band draw",
+      "actual UI answer display and native learner grading"
+    ],
+    "sample_refs": [
+      "resampling-results.json",
+      "delivery-batch/delivery.json",
+      "delivery-fresh/delivery.json",
+      "selection-analysis.json",
+      "shortcut-results.json",
+      "grader-results.json",
+      "render-inspection.json"
+    ],
+    "result": "No filtering removes the demonstrated sign-only weakness. All five exact batch members survive. Every nonempty fresh subset of these delivered members retains100% shortcut success. Actual learner policy/history unavailable; conclusion is conditional on selection from this pool."
+  },
+  "limitations": [
+    "Finite audit does not prove absence of all shortcuts.",
+    "Live inventory and learner policy/history can change; read-only basis5370 used.",
+    "Historical inventory omits seed/draw generation metadata. Explicit reconstructed parameters match stable IDs, prompts, banks and keys of five stored non-source items; no original seed invented.",
+    "First pivot column remains x in normal sampling. Eligibility of other pivot columns is noted independently but not made a separate demonstrated failure."
+  ]
+}

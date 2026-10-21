@@ -1,0 +1,103 @@
+{
+  "manifest": {
+    "entrypoint": "generator.py",
+    "files": [
+      "generator.py",
+      "math_format.py",
+      "requirements.txt",
+      "source-data.json"
+    ],
+    "dependencies": {
+      "packages": {
+        "sympy": "1.14.0"
+      },
+      "python": "3.13.5"
+    },
+    "default_difficulty": "easy"
+  },
+  "runtime": {
+    "python": "3.13.5",
+    "sympy": "1.14.0"
+  },
+  "deterministic": true,
+  "relocation_equal": true,
+  "invalid_inputs": [
+    {
+      "input": {
+        "difficulty": "hard"
+      },
+      "rejected": true,
+      "error": "ValueError('Only easy has supported source evidence')"
+    },
+    {
+      "input": {
+        "template": "e-4709"
+      },
+      "rejected": true,
+      "error": "KeyError('e-4709')"
+    },
+    {
+      "input": {
+        "parameters": {
+          "role": 5
+        }
+      },
+      "rejected": true,
+      "error": "ValueError('Unsupported role/mask')"
+    },
+    {
+      "input": {
+        "parameters": {
+          "mask": [
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "rejected": true,
+      "error": "ValueError('Unsupported role/mask')"
+    },
+    {
+      "input": {
+        "parameters": {
+          "mask": [
+            1,
+            1,
+            1
+          ],
+          "coefficients": [
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "rejected": true,
+      "error": "ValueError('Invalid coefficients')"
+    },
+    {
+      "input": {
+        "parameters": {
+          "translation": [
+            6,
+            0,
+            0
+          ]
+        }
+      },
+      "rejected": true,
+      "error": "ValueError('Invalid bank parameters')"
+    },
+    {
+      "input": {
+        "parameters": {
+          "scale": 0
+        }
+      },
+      "rejected": true,
+      "error": "ValueError('Invalid bank parameters')"
+    }
+  ],
+  "outputs": "JSON stdout; no generated assets or external paths. All Python invoked with -B."
+}

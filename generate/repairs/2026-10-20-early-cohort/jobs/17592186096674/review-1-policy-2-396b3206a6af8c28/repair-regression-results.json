@@ -1,0 +1,63 @@
+[
+  {
+    "stage": "regression-old",
+    "command": [
+      "/home/jake/Developer/Course_Academy/.venv/bin/python",
+      "-B",
+      "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186096674/review-1-policy-2-396b3206a6af8c28/regression-old/checks/source_regression.py"
+    ],
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": "Traceback (most recent call last):\n  File \"/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186096674/review-1-policy-2-396b3206a6af8c28/regression-old/checks/source_regression.py\", line 82, in <module>\n    if __name__=='__main__':source_regression()\n                            ~~~~~~~~~~~~~~~~~^^\n  File \"/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186096674/review-1-policy-2-396b3206a6af8c28/regression-old/checks/source_regression.py\", line 61, in source_regression\n    assert set(g.SOURCE_CASES)=={q[':question/math-academy-id'] for q in cases}, 'Registry must account for every captured case'\n               ^^^^^^^^^^^^^^\nAttributeError: module 'generator' has no attribute 'SOURCE_CASES'\n"
+  },
+  {
+    "stage": "relocated",
+    "command": [
+      "/home/jake/Developer/Course_Academy/.venv/bin/python",
+      "-B",
+      "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186096674/review-1-policy-2-396b3206a6af8c28/relocated/checks/source_regression.py"
+    ],
+    "exit_code": 0,
+    "stdout": "{\"source_cases\": 15, \"complete_banks\": 14, \"choices_matched\": 70, \"failures\": []}\n",
+    "stderr": ""
+  },
+  {
+    "stage": "old",
+    "command": [
+      "/home/jake/Developer/Course_Academy/.venv/bin/python",
+      "-B",
+      "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186096674/review-1-policy-2-396b3206a6af8c28/reproduce_missing.py",
+      "--workspace",
+      "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186096674/review-1-policy-2-396b3206a6af8c28/regression-old"
+    ],
+    "exit_code": 1,
+    "stdout": "{\n  \"expected\": \"all supplied source cases replay, with documented corrections or inferred missing source keys\",\n  \"failures\": [\n    {\n      \"profile\": \"q-20598\",\n      \"error\": \"KeyError('q-20598')\"\n    },\n    {\n      \"profile\": \"q-20589\",\n      \"error\": \"KeyError('q-20589')\"\n    },\n    {\n      \"profile\": \"e-4709\",\n      \"error\": \"KeyError('e-4709')\"\n    }\n  ]\n}\n",
+    "stderr": ""
+  },
+  {
+    "stage": "current",
+    "command": [
+      "/home/jake/Developer/Course_Academy/.venv/bin/python",
+      "-B",
+      "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186096674/review-1-policy-2-396b3206a6af8c28/reproduce_missing.py",
+      "--workspace",
+      "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186096674/workspace"
+    ],
+    "exit_code": 0,
+    "stdout": "{\n  \"expected\": \"all supplied source cases replay, with documented corrections or inferred missing source keys\",\n  \"failures\": []\n}\n",
+    "stderr": ""
+  },
+  {
+    "stage": "old-with-SOURCE_CASES-compatibility-alias",
+    "note": "Only rename the old registry in memory so the new test reaches its substantive completeness assertion. No package or script changes. Independent retained reproduction separately gets the exact three KeyErrors.",
+    "command": [
+      "/home/jake/Developer/Course_Academy/.venv/bin/python",
+      "-B",
+      "-c",
+      "import sys,runpy;sys.dont_write_bytecode=True;sys.path.insert(0,'regression-old');import generator;generator.SOURCE_CASES=generator.PROFILES;runpy.run_path('regression-old/checks/source_regression.py',run_name='__main__')"
+    ],
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n    import sys,runpy;sys.dont_write_bytecode=True;sys.path.insert(0,'regression-old');import generator;generator.SOURCE_CASES=generator.PROFILES;runpy.run_path('regression-old/checks/source_regression.py',run_name='__main__')\n                                                                                                                                                 ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<frozen runpy>\", line 287, in run_path\n  File \"<frozen runpy>\", line 98, in _run_module_code\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"regression-old/checks/source_regression.py\", line 82, in <module>\n    if __name__=='__main__':source_regression()\n                            ~~~~~~~~~~~~~~~~~^^\n  File \"regression-old/checks/source_regression.py\", line 61, in source_regression\n    assert set(g.SOURCE_CASES)=={q[':question/math-academy-id'] for q in cases}, 'Registry must account for every captured case'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: Registry must account for every captured case\n"
+  }
+]

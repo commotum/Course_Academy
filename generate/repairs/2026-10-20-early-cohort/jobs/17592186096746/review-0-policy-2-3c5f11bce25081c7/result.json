@@ -1,0 +1,139 @@
+{
+  "verdict": "revise",
+  "summary": "Two demonstrated failures: source replay omits one supplied question, and sign-only choices let learners bypass numerical normalization throughout the exact five-question delivered batch. Package files remained unchanged.",
+  "source_analysis": {
+    "skill": "Reduce a consistent singular 3\u00d73 system with one pivot to RREF; at moderate difficulty, express its general solution.",
+    "reasoning_steps": [
+      "Form the augmented matrix.",
+      "Normalize the pivot and eliminate proportional rows.",
+      "Select the RREF or corresponding parametric solution."
+    ],
+    "invariants": [
+      "Coefficient and augmented matrices have rank one.",
+      "RREF contains one normalized pivot and two zero rows.",
+      "Exactly one radio choice is correct."
+    ],
+    "permitted_variations": [
+      "Vary coefficients, constants, row multipliers, signs and row order.",
+      "Vary correct-choice position and plausible numerical distractors.",
+      "Preserve rank and instructional workload without fixing incidental answer-bearing assignments."
+    ],
+    "source_refs": [
+      "8de46974-719c-5ac2-a43c-83d1c67c57b6",
+      "192e5819-2578-5d5d-bbaf-226710263b1b",
+      "693512da-f45c-5aae-999f-b43069296756",
+      "Tutorial 3160: normalize pivots and eliminate entries above and below them.",
+      "Tutorial 3950: singular 3\u00d73 systems with one pivot."
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "failed",
+      "evidence_paths": [
+        "source-replay-results.json",
+        "source-replay.json",
+        "canonical-replay-results.json",
+        "strict-acceptance-results.json"
+      ],
+      "details": "Fifteen complete question banks match; supplied source 693512da is omitted. Canonical example reproduced separately."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "row-operation-results.json",
+        "counterfactual-math.json"
+      ],
+      "details": "Independent exact arithmetic found unique correct choices in 148 records. Displayed row operations passed across 152 records."
+    },
+    "variety": {
+      "status": "failed",
+      "evidence_paths": [
+        "fresh-easy.json",
+        "shortcut-results.json",
+        "pedagogical-variation.json"
+      ],
+      "details": "Normal sampling exclusively produces sign-comparison banks; source numerical distractor profiles never occur."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "scope-results.json",
+        "source-analysis.json"
+      ],
+      "details": "Tested questions preserve rank-one systems, response formats and easy/moderate workload."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-cases.json",
+        "grader-results.json",
+        "counterfactual-results.json"
+      ],
+      "details": "Native learner grader matched all 200 expected outcomes: 40 accepted and 160 rejected. All fields are radio."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render-all/rendering.json",
+        "render-inspection.json",
+        "render-all/question-001.png",
+        "render-all/question-006.png",
+        "render-all/question-010.png"
+      ],
+      "details": "Actual UI rendered ten examples without reported errors; representative prompts, controls, counterfactuals and solutions were visually inspected."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging.json",
+        "resampling-results.json",
+        "runtime-imports.json",
+        "package-before.json",
+        "package-after.json"
+      ],
+      "details": "Runtime matches declared Python 3.13.5. Relocation, determinism, invalid-input rejection and duplicate resampling passed. Package hashes are unchanged."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "shortcut-results.json",
+        "counterfactual-results.json",
+        "delivery-batch/delivery.json",
+        "delivery-fresh/delivery.json",
+        "selection-analysis.json",
+        "affected-inventory.json",
+        "generated-records.json",
+        "inventory-reproduction-results.json"
+      ],
+      "details": "Sign-only selection succeeds on 5/5 batch survivors and 96/96 fresh survivors, including both first-pivot-sign subgroups. Filtering preserves the weakness. Five stored non-source items were reconstructed with matching publication IDs, prompts, banks and keys; original seed metadata was not captured."
+    }
+  },
+  "findings": [
+    {
+      "kind": "source_fidelity",
+      "description": "Replay omits supplied source 693512da-f45c-5aae-999f-b43069296756 and its complete five-choice solution bank.",
+      "source_refs": [
+        "693512da-f45c-5aae-999f-b43069296756"
+      ],
+      "reproduction": "Run the context Python executable on strict_acceptance.py. Source coverage fails: 15 of 16 cases. Missing parameters are b=-1, c=2, d=1, scales=[8,-8,16].",
+      "requested_change": "Restore this source parameter/bank profile and require complete source coverage. Correct its erroneous final row-operation annotation from adding 16R1 to subtracting 16R1."
+    },
+    {
+      "kind": "decision_shortcut",
+      "description": "Every sampled easy bank gives all five choices identical absolute entries. Signs from the first equation alone identify the correct choice without calculating normalized magnitudes. This answers every exact delivered batch member.",
+      "source_refs": [
+        "8de46974-719c-5ac2-a43c-83d1c67c57b6",
+        "192e5819-2578-5d5d-bbaf-226710263b1b",
+        "168e4ba5-9b50-5bd7-90ae-2a4a3b3835af",
+        "Tutorial 3160"
+      ],
+      "reproduction": "Run generator.py --difficulty easy --count 1 --seed 913771. The first instance has b=-10, c=-3, d=-14 and scales=[-8,7,4]; every option has top-row magnitudes (1,10,3,14). Run probes.py and strict_acceptance.py for executable demonstrations. Runner batch seed 4221100018 also gives 5/5 shortcut success.",
+      "requested_change": "Revise the family-wide bank construction to include justified same-sign alternatives with different normalized magnitudes, while varying which alternative is correct. Retain source numerical distractor profiles and replace the five-item sign-only batch. Preserve exact-math, native-grader and conditional shortcut regressions."
+    }
+  ]
+}
