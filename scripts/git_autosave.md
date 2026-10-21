@@ -26,10 +26,26 @@ Tracked files remain eligible even when they match an ignore rule.
 
 The October 21 inventory found 1,121,682 worktree paths (134.84 GiB), plus the
 stranded staged batch. This included 38 untracked capture manifests totaling
-4.27 GiB that exceeded the ordinary Git blob limit. At the user's request,
-those exact paths are now ignored in the root `.gitignore` and remain local.
-No files were deleted or converted to LFS. Capture workers can change these
-counts while recovery runs.
+4.27 GiB that exceeded the ordinary Git blob limit. Those paths were initially
+ignored individually. The user subsequently chose to keep the raw capture
+archive local, excluding the bulk of this backlog from Git entirely.
+
+## Capture data stays local
+
+The root `.gitignore` excludes these generated data folders under
+`reference/mathacademy/`: `capture/`, `capture-database/`,
+`diagnostic-capture/`, `question-capture/`, and `question-capture-workers/`.
+Previously tracked entries in these folders are removed from the current
+Git tree while all local files remain available to capture/import workers.
+Past commits retain their capture data; no history rewrite is performed.
+The pipeline source under `capture/` and the separate capture audit folders
+remain tracked.
+
+The tracking change is committed as one deletion-only archive update, plus
+these ignore rules and this documentation. Deleting tracked paths does not
+upload their old blob contents again. A backup of the original index is kept
+under `.git/autosave/` before updating tracking. Normal autosave then continues
+with bounded chunks for the remaining source changes and reference files.
 
 ## Automatic operation
 
