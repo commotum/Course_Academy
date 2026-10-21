@@ -105,6 +105,18 @@ class AutosaveTests(unittest.TestCase):
         self.assertFalse((self.repo / '.git/index.lock').exists())
         self.run_script(expected=1)
 
+    def test_tracked_changes_are_saved_even_when_ignore_rules_match(self):
+        (self.repo / '.gitignore').write_text('original\n')
+        (self.repo / 'original').write_text('updated tracked file\n')
+        (self.repo / 'new').write_text('new file\n')
+        env = self.git_wrapper(
+            'if "check-ignore" in args:\n'
+            ' assert "--no-index" in args, "expensive index checks must be disabled"\n')
+        self.run_script(env=env)
+        self.assertEqual(self.git('show', 'HEAD:original'), 'updated tracked file')
+        self.assertEqual(self.git('show', 'HEAD:new'), 'new file')
+        self.assertEqual(self.git('status', '--porcelain'), '')
+
     def test_dry_run_does_not_mutate_index_or_head_or_recover_lock(self):
         (self.repo / 'new').write_text('new')
         self.git('add', 'new')

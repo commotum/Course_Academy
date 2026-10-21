@@ -18,6 +18,12 @@ replaces the index. Failed staging leaves the real index untouched. An
 interruption after publication leaves a batch the next run can recognize.
 Unexpected manual staging still stops autosave for review.
 
+Ignore checks run only for untracked candidates with `git check-ignore
+--no-index`. A live probe of 200 paths completed in 5 ms with that option;
+the default index-aware check exceeded the three-second probe timeout and
+the service's first such check had already spent over a minute on CPU.
+Tracked files remain eligible even when they match an ignore rule.
+
 The October 21 inventory found 1,121,682 worktree paths (134.84 GiB), plus the
 stranded staged batch. This included 38 untracked capture manifests totaling
 4.27 GiB that exceeded the ordinary Git blob limit. At the user's request,

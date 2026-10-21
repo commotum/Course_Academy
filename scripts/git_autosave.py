@@ -416,11 +416,16 @@ def main():
             def surviving(candidates):
                 # Ignore rules can change after inventory, including rules for
                 # embedded repositories. Never force-add an ignored path.
-                result = git('check-ignore', '-z', '--stdin', capture=True, check=False,
-                             input=b'\0'.join(candidates) + b'\0')
-                if result.returncode not in (0, 1):
-                    raise RuntimeError('Cannot inspect ignore rules; retry on the next run')
-                ignored = set(result.stdout.split(b'\0'))
+                untracked = [p for p in candidates if p not in tracked_paths]
+                ignored = set()
+                if untracked:
+                    # We already know which candidates are tracked. Avoid Git's
+                    # index check, which is very costly with a million entries.
+                    result = git('check-ignore', '--no-index', '-z', '--stdin', capture=True, check=False,
+                                 input=b'\0'.join(untracked) + b'\0')
+                    if result.returncode not in (0, 1):
+                        raise RuntimeError('Cannot inspect ignore rules; retry on the next run')
+                    ignored = set(result.stdout.split(b'\0'))
                 return [p for p in candidates if p not in ignored
                         and (p in tracked_paths or os.path.lexists(repo / os.fsdecode(p)))]
 
