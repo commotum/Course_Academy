@@ -1,0 +1,122 @@
+{
+  "verdict": "accepted",
+  "summary": "No concrete failure demonstrated in the revised generator. All eight checks pass. Package files remain unchanged.",
+  "source_analysis": {
+    "skill": "Convert a reducible first-order linear ODE into dy/dx + P(x)y = Q(x), selecting the algebraically equivalent standard-form equation.",
+    "reasoning_steps": [
+      "Collect dependent-variable and forcing terms.",
+      "Cancel permitted factors and normalize the derivative coefficient.",
+      "Simplify supported rational, exponential or trigonometric coefficients.",
+      "Select the unique equivalent standard-form equation."
+    ],
+    "invariants": [
+      "First derivative only; no integration or solving.",
+      "P and Q depend only on x.",
+      "Preserve equation domains and cancellation assumptions.",
+      "One correct answer in a five-choice radio bank."
+    ],
+    "permitted_variations": [
+      "Vary supported coefficients, signs and frequencies.",
+      "Vary answer-bearing P and Q assignments consistently.",
+      "Reassign the correct mathematical candidate and shuffle positions.",
+      "Keep square expansion in the hard difficulty."
+    ],
+    "source_refs": [
+      "dc93ac2d-3588-5dc4-9cf8-3df1f17c353d",
+      "e5c269fd-ead8-50e4-b16e-9d9e9b4a244c",
+      "9fbd67f9-88e1-5554-8625-84ac1e940645",
+      "ee14253e-e208-56bc-9e49-57c918963c64",
+      "3b89344e-126d-544e-88e0-0303a3eae594",
+      "157e16d4-eb84-5272-a4e6-39b4e7ee7766",
+      "5ce4583e-c99f-532c-8f96-a07269c60d3f",
+      "f284d9d4-47c8-54c3-aa2b-11e7ba22d40f",
+      "5a5eea4d-3d1c-5658-8171-517491bf7c77",
+      "ef24453f-f045-5d0a-8ed3-0ca5b930bc74",
+      "Tutorial d0517ea0-b60e-5c34-bfbc-41fd6c61af75: P=b/a, Q=f/a.",
+      "Tutorial cc4983db-1d7c-5573-a6d1-9e5e4a09207e: coefficient functions depend only on x."
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay-results.json",
+        "source-replays.json",
+        "observed-profile-results.json"
+      ],
+      "details": "All nine source cases reproduce complete banks and worked solutions after documented notation normalization. Computed observed-profile banks also match mathematically."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "solution-prose-results.json",
+        "boundary-tests.json"
+      ],
+      "details": "131 records pass independent exact checks of every option, worked equality and stated P/Q, including the runner batch."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "independent-records.json",
+        "fixed-bank-tests.json",
+        "resampling-results.json",
+        "selection-results.json"
+      ],
+      "details": "All eight easy families survive delivery. Five-way key reassignment succeeds within every template; coefficient and sign variation remains available."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "scope-results.json",
+        "generator-rejection-results.json",
+        "source-analysis.json"
+      ],
+      "details": "Variations preserve the source algebra and response contract. Moderate and hard operations remain outside easy delivery; domain assumptions are retained."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-results.json"
+      ],
+      "details": "The native learner grader accepts 131 independently verified correct radio submissions and rejects 524 wrong choices."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render-all/rendering.json",
+        "render-extra/rendering.json",
+        "render-inspection.json"
+      ],
+      "details": "48 actual-UI renders pass. Representative screenshots cover every family, boundaries, controlled changes and runner records; no display defect observed."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "runtime.json",
+        "relocation-results.json",
+        "package-integrity.json",
+        "commands.txt"
+      ],
+      "details": "Declared Python and SymPy versions match exactly. Relocation and deterministic replay pass. All 231 package files retain their hashes."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "counterfactual-pairs.json",
+        "shortcut-results.json",
+        "selection-results.json",
+        "inventory-review.json",
+        "affected-inventory.json",
+        "contract-validation.json"
+      ],
+      "details": "56 relevant and 10 irrelevant comparisons pass. Conditional probes find no demonstrated bypass; the prior side-frequency cue succeeds on 0/96 surviving independent records. Inventory conclusions are rule-specific, and future learner draws remain conditional on policy and history."
+    }
+  },
+  "findings": []
+}

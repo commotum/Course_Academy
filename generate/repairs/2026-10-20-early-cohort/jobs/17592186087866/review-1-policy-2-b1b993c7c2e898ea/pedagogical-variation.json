@@ -1,0 +1,2459 @@
+{
+  "learner_operation": "Inspect the given equation and each option; identify an algebraically equivalent equation with unit derivative coefficient, all y terms on the left, and y-independent right side. Standard-form recognition alone is insufficient when several options share that form.",
+  "fixed_features": [
+    {
+      "feature": "Target dy/dx + P(x)y = Q(x)",
+      "justification": "Tutorial d0517ea0-b60e-5c34-bfbc-41fd6c61af75 defines the assessed form; its target is essential."
+    },
+    {
+      "feature": "First derivative, x-only P/Q, no integration, one of five radio choices",
+      "justification": "All nine captured questions ask the same conversion and use five-option radio banks. Changes to operator order or response type would assess other skills."
+    },
+    {
+      "feature": "Supported function shapes and short algebraic stage sequences",
+      "justification": "Preserve the source rearrangement, cancellation and normalization workloads; hard square expansion remains isolated. These constraints do not require source-example signs, magnitudes or key positions."
+    },
+    {
+      "feature": "Nonzero divisor assumptions",
+      "justification": "Preserve original equation domains; in particular y != 0 is essential when canceling y."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "P(x) coefficient and sign",
+      "eligible_variation": "Vary eligible coefficient magnitudes and signs while deriving the prompt and all solution steps consistently.",
+      "observed": "All eight easy families vary this role. P-only sign counterfactuals and five-way fixed-bank reassignment passed exact math and native grading."
+    },
+    {
+      "role": "Q(x) forcing coefficient and sign",
+      "eligible_variation": "Vary independently of P in easy families without requiring new algebra.",
+      "observed": "Independent forcing signs and coefficients tested. In hard square expansion Q=a^2 is necessarily positive for this family; varying a changes Q."
+    },
+    {
+      "role": "Correct mathematical candidate and display position",
+      "eligible_variation": "Any of five candidates may satisfy the conversion; display order may vary without changing the mathematical answer.",
+      "observed": "All five mathematical key assignments exercised in each of ten templates; no constant first/last or value cue. Ten shuffle controls preserve the answer."
+    },
+    {
+      "role": "Derivative normalizer and incidental frequency",
+      "eligible_variation": "Vary supported nonzero constants, reciprocal powers, exponential rates and trigonometric frequencies while retaining the same conversion.",
+      "observed": "Original and boundary values tested, including a=5 and n=8 easy cases; moderate a=8 and hard a=6,n=6. No sampled family lost to generator rejection."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "raw distribution",
+      "sample_refs": [
+        "independent-easy.json",
+        "selection-results.json"
+      ],
+      "result": "104 records; families {'q-16400': 13, 'q-8359': 13, 'q-103349': 13, 'q-103354': 13, 'q-16396': 13, 'q-79697': 13, 'q-79699': 13, 'q-8360': 13}; sign pairs {'(1, 1)': 33, '(1, -1)': 8, '(-1, 1)': 55, '(-1, -1)': 8}"
+    },
+    {
+      "case": "delivered distribution",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "selection-results.json"
+      ],
+      "result": "96 records; families {'q-16400': 12, 'q-8359': 12, 'q-103349': 12, 'q-103354': 12, 'q-16396': 12, 'q-79697': 12, 'q-79699': 12, 'q-8360': 12}; sign pairs {'(1, 1)': 33, '(1, -1)': 8, '(-1, 1)': 47, '(-1, -1)': 8}"
+    },
+    {
+      "case": "batch distribution",
+      "sample_refs": [
+        "runner-batch.json",
+        "selection-results.json"
+      ],
+      "result": "5 records; families {'q-16396': 1, 'q-16400': 1, 'q-103354': 1, 'q-79697': 1, 'q-103349': 1}; sign pairs {'(-1, 1)': 2, '(1, -1)': 1, '(-1, -1)': 2}"
+    },
+    {
+      "case": "batch_delivered distribution",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "selection-results.json"
+      ],
+      "result": "5 records; families {'q-16396': 1, 'q-16400': 1, 'q-103354': 1, 'q-79697': 1, 'q-103349': 1}; sign pairs {'(-1, 1)': 2, '(1, -1)': 1, '(-1, -1)': 2}"
+    },
+    {
+      "case": "Five-way reassignment within every easy, moderate and hard template",
+      "sample_refs": [
+        "fixed-bank-tests.json",
+        "grader-results.json",
+        "render-records.json"
+      ],
+      "result": "10 banks held fixed; each of 5 candidates made correct by changing prompt evidence; 50 independently correct cases. Relevant controls also independently perturb P or Q sign in each easy family."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Keep bank, template, seed and incidental coefficients fixed; reassign each of five candidate coefficient pairs to the prompt. Also flip only P or only Q sign in easy controls.",
+      "expected": "Recompute the standard-form equation; prompt and explanation must reflect new evidence and native grading must accept the new equation and reject the old one.",
+      "observed": "56 relevant comparisons change prompt, solution and mathematical answer. Independent math validates all rows/keys; native grader exercises all five options for all 131 records. Renderer includes before/after fixed-bank cases in all templates plus P-only/Q-only sign pairs.",
+      "status": "passed",
+      "justification": "Lesson explicitly defines P=b/a and Q=f/a: changing either answer-bearing role must change the equivalent standard form.",
+      "sample_refs": [
+        "counterfactual-pairs.json",
+        "fixed-bank-tests.json",
+        "math-results.json",
+        "grader-results.json",
+        "render-records.json",
+        "render-extra-records.json",
+        "render-inspection.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Change only the shuffle seed with explicit coefficients and complete candidate catalog held fixed.",
+      "expected": "Prompt, standard-form equation and worked solution preserved; choice display order may change.",
+      "observed": "10/10 comparisons preserve prompt, mathematical answer and solution. Native grader checks all choices. q-16400 rendered prompt and full solution text match exactly across the shuffle control.",
+      "status": "passed",
+      "justification": "Option position is incidental to algebraic equivalence and the source standard-form criterion.",
+      "sample_refs": [
+        "counterfactual-pairs.json",
+        "grader-results.json",
+        "render-records.json",
+        "render-extra-records.json",
+        "render-inspection.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "first",
+      "subgroup": "delivered:q-103349",
+      "scope": "within_template",
+      "strategy": "first rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 5,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "delivered:q-103349",
+      "scope": "within_template",
+      "strategy": "last rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "side-frequency",
+      "subgroup": "delivered:q-103349",
+      "scope": "within_template",
+      "strategy": "side-frequency rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 0,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "delivered:q-103349",
+      "scope": "within_template",
+      "strategy": "shortest rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "delivered:q-103349",
+      "scope": "within_template",
+      "strategy": "longest rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 0,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "lexical-min",
+      "subgroup": "delivered:q-103349",
+      "scope": "within_template",
+      "strategy": "lexical-min rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 5,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "lexical-max",
+      "subgroup": "delivered:q-103349",
+      "scope": "within_template",
+      "strategy": "lexical-max rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "only-standard",
+      "subgroup": "delivered:q-103349",
+      "scope": "within_template",
+      "strategy": "only-standard rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 0,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "delivered:q-103354",
+      "scope": "within_template",
+      "strategy": "first rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 6,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "delivered:q-103354",
+      "scope": "within_template",
+      "strategy": "last rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 1,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "side-frequency",
+      "subgroup": "delivered:q-103354",
+      "scope": "within_template",
+      "strategy": "side-frequency rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 0,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "delivered:q-103354",
+      "scope": "within_template",
+      "strategy": "shortest rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 5,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "delivered:q-103354",
+      "scope": "within_template",
+      "strategy": "longest rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 0,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "lexical-min",
+      "subgroup": "delivered:q-103354",
+      "scope": "within_template",
+      "strategy": "lexical-min rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "lexical-max",
+      "subgroup": "delivered:q-103354",
+      "scope": "within_template",
+      "strategy": "lexical-max rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 5,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "only-standard",
+      "subgroup": "delivered:q-103354",
+      "scope": "within_template",
+      "strategy": "only-standard rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 0,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "delivered:q-16396",
+      "scope": "within_template",
+      "strategy": "first rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "delivered:q-16396",
+      "scope": "within_template",
+      "strategy": "last rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "side-frequency",
+      "subgroup": "delivered:q-16396",
+      "scope": "within_template",
+      "strategy": "side-frequency rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 0,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "delivered:q-16396",
+      "scope": "within_template",
+      "strategy": "shortest rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 4,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "delivered:q-16396",
+      "scope": "within_template",
+      "strategy": "longest rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 0,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "lexical-min",
+      "subgroup": "delivered:q-16396",
+      "scope": "within_template",
+      "strategy": "lexical-min rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "lexical-max",
+      "subgroup": "delivered:q-16396",
+      "scope": "within_template",
+      "strategy": "lexical-max rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 4,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "only-standard",
+      "subgroup": "delivered:q-16396",
+      "scope": "within_template",
+      "strategy": "only-standard rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 0,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "delivered:q-16400",
+      "scope": "within_template",
+      "strategy": "first rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 1,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "delivered:q-16400",
+      "scope": "within_template",
+      "strategy": "last rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 4,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "side-frequency",
+      "subgroup": "delivered:q-16400",
+      "scope": "within_template",
+      "strategy": "side-frequency rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 0,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "delivered:q-16400",
+      "scope": "within_template",
+      "strategy": "shortest rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 1,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "delivered:q-16400",
+      "scope": "within_template",
+      "strategy": "longest rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "lexical-min",
+      "subgroup": "delivered:q-16400",
+      "scope": "within_template",
+      "strategy": "lexical-min rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 2,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "lexical-max",
+      "subgroup": "delivered:q-16400",
+      "scope": "within_template",
+      "strategy": "lexical-max rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "only-standard",
+      "subgroup": "delivered:q-16400",
+      "scope": "within_template",
+      "strategy": "only-standard rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 0,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "delivered:q-79697",
+      "scope": "within_template",
+      "strategy": "first rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 2,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "delivered:q-79697",
+      "scope": "within_template",
+      "strategy": "last rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 0,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "side-frequency",
+      "subgroup": "delivered:q-79697",
+      "scope": "within_template",
+      "strategy": "side-frequency rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 0,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "delivered:q-79697",
+      "scope": "within_template",
+      "strategy": "shortest rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 4,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "delivered:q-79697",
+      "scope": "within_template",
+      "strategy": "longest rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 0,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "lexical-min",
+      "subgroup": "delivered:q-79697",
+      "scope": "within_template",
+      "strategy": "lexical-min rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "lexical-max",
+      "subgroup": "delivered:q-79697",
+      "scope": "within_template",
+      "strategy": "lexical-max rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 4,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "only-standard",
+      "subgroup": "delivered:q-79697",
+      "scope": "within_template",
+      "strategy": "only-standard rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 0,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "delivered:q-79699",
+      "scope": "within_template",
+      "strategy": "first rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 1,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "delivered:q-79699",
+      "scope": "within_template",
+      "strategy": "last rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 1,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "side-frequency",
+      "subgroup": "delivered:q-79699",
+      "scope": "within_template",
+      "strategy": "side-frequency rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 0,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "delivered:q-79699",
+      "scope": "within_template",
+      "strategy": "shortest rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 6,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "delivered:q-79699",
+      "scope": "within_template",
+      "strategy": "longest rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 0,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "lexical-min",
+      "subgroup": "delivered:q-79699",
+      "scope": "within_template",
+      "strategy": "lexical-min rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 4,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "lexical-max",
+      "subgroup": "delivered:q-79699",
+      "scope": "within_template",
+      "strategy": "lexical-max rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "only-standard",
+      "subgroup": "delivered:q-79699",
+      "scope": "within_template",
+      "strategy": "only-standard rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 0,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "delivered:q-8359",
+      "scope": "within_template",
+      "strategy": "first rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 0,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "delivered:q-8359",
+      "scope": "within_template",
+      "strategy": "last rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 4,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "side-frequency",
+      "subgroup": "delivered:q-8359",
+      "scope": "within_template",
+      "strategy": "side-frequency rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 0,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "delivered:q-8359",
+      "scope": "within_template",
+      "strategy": "shortest rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 4,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "delivered:q-8359",
+      "scope": "within_template",
+      "strategy": "longest rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 0,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "lexical-min",
+      "subgroup": "delivered:q-8359",
+      "scope": "within_template",
+      "strategy": "lexical-min rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "lexical-max",
+      "subgroup": "delivered:q-8359",
+      "scope": "within_template",
+      "strategy": "lexical-max rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 4,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "only-standard",
+      "subgroup": "delivered:q-8359",
+      "scope": "within_template",
+      "strategy": "only-standard rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 0,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "delivered:q-8360",
+      "scope": "within_template",
+      "strategy": "first rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "delivered:q-8360",
+      "scope": "within_template",
+      "strategy": "last rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 0,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "side-frequency",
+      "subgroup": "delivered:q-8360",
+      "scope": "within_template",
+      "strategy": "side-frequency rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 0,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "delivered:q-8360",
+      "scope": "within_template",
+      "strategy": "shortest rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 4,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "delivered:q-8360",
+      "scope": "within_template",
+      "strategy": "longest rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 0,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "lexical-min",
+      "subgroup": "delivered:q-8360",
+      "scope": "within_template",
+      "strategy": "lexical-min rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "lexical-max",
+      "subgroup": "delivered:q-8360",
+      "scope": "within_template",
+      "strategy": "lexical-max rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 4,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "only-standard",
+      "subgroup": "delivered:q-8360",
+      "scope": "within_template",
+      "strategy": "only-standard rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 0,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "batch_delivered:q-103349",
+      "scope": "within_template",
+      "strategy": "first rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "batch_delivered:q-103349",
+      "scope": "within_template",
+      "strategy": "last rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "side-frequency",
+      "subgroup": "batch_delivered:q-103349",
+      "scope": "within_template",
+      "strategy": "side-frequency rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "batch_delivered:q-103349",
+      "scope": "within_template",
+      "strategy": "shortest rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "batch_delivered:q-103349",
+      "scope": "within_template",
+      "strategy": "longest rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "lexical-min",
+      "subgroup": "batch_delivered:q-103349",
+      "scope": "within_template",
+      "strategy": "lexical-min rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "lexical-max",
+      "subgroup": "batch_delivered:q-103349",
+      "scope": "within_template",
+      "strategy": "lexical-max rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "only-standard",
+      "subgroup": "batch_delivered:q-103349",
+      "scope": "within_template",
+      "strategy": "only-standard rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "batch_delivered:q-103354",
+      "scope": "within_template",
+      "strategy": "first rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "batch_delivered:q-103354",
+      "scope": "within_template",
+      "strategy": "last rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "side-frequency",
+      "subgroup": "batch_delivered:q-103354",
+      "scope": "within_template",
+      "strategy": "side-frequency rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "batch_delivered:q-103354",
+      "scope": "within_template",
+      "strategy": "shortest rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "batch_delivered:q-103354",
+      "scope": "within_template",
+      "strategy": "longest rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "lexical-min",
+      "subgroup": "batch_delivered:q-103354",
+      "scope": "within_template",
+      "strategy": "lexical-min rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "lexical-max",
+      "subgroup": "batch_delivered:q-103354",
+      "scope": "within_template",
+      "strategy": "lexical-max rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "only-standard",
+      "subgroup": "batch_delivered:q-103354",
+      "scope": "within_template",
+      "strategy": "only-standard rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "batch_delivered:q-16396",
+      "scope": "within_template",
+      "strategy": "first rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "batch_delivered:q-16396",
+      "scope": "within_template",
+      "strategy": "last rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "side-frequency",
+      "subgroup": "batch_delivered:q-16396",
+      "scope": "within_template",
+      "strategy": "side-frequency rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "batch_delivered:q-16396",
+      "scope": "within_template",
+      "strategy": "shortest rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "batch_delivered:q-16396",
+      "scope": "within_template",
+      "strategy": "longest rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "lexical-min",
+      "subgroup": "batch_delivered:q-16396",
+      "scope": "within_template",
+      "strategy": "lexical-min rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "lexical-max",
+      "subgroup": "batch_delivered:q-16396",
+      "scope": "within_template",
+      "strategy": "lexical-max rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "only-standard",
+      "subgroup": "batch_delivered:q-16396",
+      "scope": "within_template",
+      "strategy": "only-standard rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "batch_delivered:q-16400",
+      "scope": "within_template",
+      "strategy": "first rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "batch_delivered:q-16400",
+      "scope": "within_template",
+      "strategy": "last rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "side-frequency",
+      "subgroup": "batch_delivered:q-16400",
+      "scope": "within_template",
+      "strategy": "side-frequency rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "batch_delivered:q-16400",
+      "scope": "within_template",
+      "strategy": "shortest rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "batch_delivered:q-16400",
+      "scope": "within_template",
+      "strategy": "longest rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "lexical-min",
+      "subgroup": "batch_delivered:q-16400",
+      "scope": "within_template",
+      "strategy": "lexical-min rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "lexical-max",
+      "subgroup": "batch_delivered:q-16400",
+      "scope": "within_template",
+      "strategy": "lexical-max rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "only-standard",
+      "subgroup": "batch_delivered:q-16400",
+      "scope": "within_template",
+      "strategy": "only-standard rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "batch_delivered:q-79697",
+      "scope": "within_template",
+      "strategy": "first rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "batch_delivered:q-79697",
+      "scope": "within_template",
+      "strategy": "last rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "side-frequency",
+      "subgroup": "batch_delivered:q-79697",
+      "scope": "within_template",
+      "strategy": "side-frequency rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "batch_delivered:q-79697",
+      "scope": "within_template",
+      "strategy": "shortest rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "batch_delivered:q-79697",
+      "scope": "within_template",
+      "strategy": "longest rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "lexical-min",
+      "subgroup": "batch_delivered:q-79697",
+      "scope": "within_template",
+      "strategy": "lexical-min rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "lexical-max",
+      "subgroup": "batch_delivered:q-79697",
+      "scope": "within_template",
+      "strategy": "lexical-max rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "only-standard",
+      "subgroup": "batch_delivered:q-79697",
+      "scope": "within_template",
+      "strategy": "only-standard rule, as implemented reproducibly in stage_checks.py; ties abstain",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. Counts are descriptive for these deliberately boundary-heavy samples. Fixed-bank controls and code inspection distinguish chance imbalances from a fixed cue; no tested rule is a demonstrated bypass.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "side-frequency",
+      "subgroup": "fixed-bank:q-16400",
+      "scope": "within_template",
+      "strategy": "side-frequency value-only rule across the same five-option bank while each candidate is keyed in turn",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline 0.2. The identical unordered bank has five different correct equations across controls. A fixed value-based rule can select at most one of them; side-frequency never identifies a unique winner.",
+      "sample_refs": [
+        "fixed-bank-tests.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "fixed-bank:q-16400",
+      "scope": "within_template",
+      "strategy": "shortest value-only rule across the same five-option bank while each candidate is keyed in turn",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline 0.2. The identical unordered bank has five different correct equations across controls. A fixed value-based rule can select at most one of them; side-frequency never identifies a unique winner.",
+      "sample_refs": [
+        "fixed-bank-tests.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "fixed-bank:q-16400",
+      "scope": "within_template",
+      "strategy": "longest value-only rule across the same five-option bank while each candidate is keyed in turn",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline 0.2. The identical unordered bank has five different correct equations across controls. A fixed value-based rule can select at most one of them; side-frequency never identifies a unique winner.",
+      "sample_refs": [
+        "fixed-bank-tests.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lexical-min",
+      "subgroup": "fixed-bank:q-16400",
+      "scope": "within_template",
+      "strategy": "lexical-min value-only rule across the same five-option bank while each candidate is keyed in turn",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline 0.2. The identical unordered bank has five different correct equations across controls. A fixed value-based rule can select at most one of them; side-frequency never identifies a unique winner.",
+      "sample_refs": [
+        "fixed-bank-tests.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lexical-max",
+      "subgroup": "fixed-bank:q-16400",
+      "scope": "within_template",
+      "strategy": "lexical-max value-only rule across the same five-option bank while each candidate is keyed in turn",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline 0.2. The identical unordered bank has five different correct equations across controls. A fixed value-based rule can select at most one of them; side-frequency never identifies a unique winner.",
+      "sample_refs": [
+        "fixed-bank-tests.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "side-frequency",
+      "subgroup": "fixed-bank:q-8359",
+      "scope": "within_template",
+      "strategy": "side-frequency value-only rule across the same five-option bank while each candidate is keyed in turn",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline 0.2. The identical unordered bank has five different correct equations across controls. A fixed value-based rule can select at most one of them; side-frequency never identifies a unique winner.",
+      "sample_refs": [
+        "fixed-bank-tests.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "fixed-bank:q-8359",
+      "scope": "within_template",
+      "strategy": "shortest value-only rule across the same five-option bank while each candidate is keyed in turn",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline 0.2. The identical unordered bank has five different correct equations across controls. A fixed value-based rule can select at most one of them; side-frequency never identifies a unique winner.",
+      "sample_refs": [
+        "fixed-bank-tests.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "fixed-bank:q-8359",
+      "scope": "within_template",
+      "strategy": "longest value-only rule across the same five-option bank while each candidate is keyed in turn",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline 0.2. The identical unordered bank has five different correct equations across controls. A fixed value-based rule can select at most one of them; side-frequency never identifies a unique winner.",
+      "sample_refs": [
+        "fixed-bank-tests.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lexical-min",
+      "subgroup": "fixed-bank:q-8359",
+      "scope": "within_template",
+      "strategy": "lexical-min value-only rule across the same five-option bank while each candidate is keyed in turn",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline 0.2. The identical unordered bank has five different correct equations across controls. A fixed value-based rule can select at most one of them; side-frequency never identifies a unique winner.",
+      "sample_refs": [
+        "fixed-bank-tests.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lexical-max",
+      "subgroup": "fixed-bank:q-8359",
+      "scope": "within_template",
+      "strategy": "lexical-max value-only rule across the same five-option bank while each candidate is keyed in turn",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline 0.2. The identical unordered bank has five different correct equations across controls. A fixed value-based rule can select at most one of them; side-frequency never identifies a unique winner.",
+      "sample_refs": [
+        "fixed-bank-tests.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "side-frequency",
+      "subgroup": "fixed-bank:q-103349",
+      "scope": "within_template",
+      "strategy": "side-frequency value-only rule across the same five-option bank while each candidate is keyed in turn",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline 0.2. The identical unordered bank has five different correct equations across controls. A fixed value-based rule can select at most one of them; side-frequency never identifies a unique winner.",
+      "sample_refs": [
+        "fixed-bank-tests.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "fixed-bank:q-103349",
+      "scope": "within_template",
+      "strategy": "shortest value-only rule across the same five-option bank while each candidate is keyed in turn",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline 0.2. The identical unordered bank has five different correct equations across controls. A fixed value-based rule can select at most one of them; side-frequency never identifies a unique winner.",
+      "sample_refs": [
+        "fixed-bank-tests.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "fixed-bank:q-103349",
+      "scope": "within_template",
+      "strategy": "longest value-only rule across the same five-option bank while each candidate is keyed in turn",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline 0.2. The identical unordered bank has five different correct equations across controls. A fixed value-based rule can select at most one of them; side-frequency never identifies a unique winner.",
+      "sample_refs": [
+        "fixed-bank-tests.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lexical-min",
+      "subgroup": "fixed-bank:q-103349",
+      "scope": "within_template",
+      "strategy": "lexical-min value-only rule across the same five-option bank while each candidate is keyed in turn",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline 0.2. The identical unordered bank has five different correct equations across controls. A fixed value-based rule can select at most one of them; side-frequency never identifies a unique winner.",
+      "sample_refs": [
+        "fixed-bank-tests.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lexical-max",
+      "subgroup": "fixed-bank:q-103349",
+      "scope": "within_template",
+      "strategy": "lexical-max value-only rule across the same five-option bank while each candidate is keyed in turn",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline 0.2. The identical unordered bank has five different correct equations across controls. A fixed value-based rule can select at most one of them; side-frequency never identifies a unique winner.",
+      "sample_refs": [
+        "fixed-bank-tests.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "side-frequency",
+      "subgroup": "fixed-bank:q-103354",
+      "scope": "within_template",
+      "strategy": "side-frequency value-only rule across the same five-option bank while each candidate is keyed in turn",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline 0.2. The identical unordered bank has five different correct equations across controls. A fixed value-based rule can select at most one of them; side-frequency never identifies a unique winner.",
+      "sample_refs": [
+        "fixed-bank-tests.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "fixed-bank:q-103354",
+      "scope": "within_template",
+      "strategy": "shortest value-only rule across the same five-option bank while each candidate is keyed in turn",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline 0.2. The identical unordered bank has five different correct equations across controls. A fixed value-based rule can select at most one of them; side-frequency never identifies a unique winner.",
+      "sample_refs": [
+        "fixed-bank-tests.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "fixed-bank:q-103354",
+      "scope": "within_template",
+      "strategy": "longest value-only rule across the same five-option bank while each candidate is keyed in turn",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline 0.2. The identical unordered bank has five different correct equations across controls. A fixed value-based rule can select at most one of them; side-frequency never identifies a unique winner.",
+      "sample_refs": [
+        "fixed-bank-tests.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lexical-min",
+      "subgroup": "fixed-bank:q-103354",
+      "scope": "within_template",
+      "strategy": "lexical-min value-only rule across the same five-option bank while each candidate is keyed in turn",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline 0.2. The identical unordered bank has five different correct equations across controls. A fixed value-based rule can select at most one of them; side-frequency never identifies a unique winner.",
+      "sample_refs": [
+        "fixed-bank-tests.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lexical-max",
+      "subgroup": "fixed-bank:q-103354",
+      "scope": "within_template",
+      "strategy": "lexical-max value-only rule across the same five-option bank while each candidate is keyed in turn",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline 0.2. The identical unordered bank has five different correct equations across controls. A fixed value-based rule can select at most one of them; side-frequency never identifies a unique winner.",
+      "sample_refs": [
+        "fixed-bank-tests.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "side-frequency",
+      "subgroup": "fixed-bank:q-16396",
+      "scope": "within_template",
+      "strategy": "side-frequency value-only rule across the same five-option bank while each candidate is keyed in turn",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline 0.2. The identical unordered bank has five different correct equations across controls. A fixed value-based rule can select at most one of them; side-frequency never identifies a unique winner.",
+      "sample_refs": [
+        "fixed-bank-tests.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "fixed-bank:q-16396",
+      "scope": "within_template",
+      "strategy": "shortest value-only rule across the same five-option bank while each candidate is keyed in turn",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline 0.2. The identical unordered bank has five different correct equations across controls. A fixed value-based rule can select at most one of them; side-frequency never identifies a unique winner.",
+      "sample_refs": [
+        "fixed-bank-tests.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "fixed-bank:q-16396",
+      "scope": "within_template",
+      "strategy": "longest value-only rule across the same five-option bank while each candidate is keyed in turn",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline 0.2. The identical unordered bank has five different correct equations across controls. A fixed value-based rule can select at most one of them; side-frequency never identifies a unique winner.",
+      "sample_refs": [
+        "fixed-bank-tests.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lexical-min",
+      "subgroup": "fixed-bank:q-16396",
+      "scope": "within_template",
+      "strategy": "lexical-min value-only rule across the same five-option bank while each candidate is keyed in turn",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline 0.2. The identical unordered bank has five different correct equations across controls. A fixed value-based rule can select at most one of them; side-frequency never identifies a unique winner.",
+      "sample_refs": [
+        "fixed-bank-tests.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lexical-max",
+      "subgroup": "fixed-bank:q-16396",
+      "scope": "within_template",
+      "strategy": "lexical-max value-only rule across the same five-option bank while each candidate is keyed in turn",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline 0.2. The identical unordered bank has five different correct equations across controls. A fixed value-based rule can select at most one of them; side-frequency never identifies a unique winner.",
+      "sample_refs": [
+        "fixed-bank-tests.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "side-frequency",
+      "subgroup": "fixed-bank:q-79697",
+      "scope": "within_template",
+      "strategy": "side-frequency value-only rule across the same five-option bank while each candidate is keyed in turn",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline 0.2. The identical unordered bank has five different correct equations across controls. A fixed value-based rule can select at most one of them; side-frequency never identifies a unique winner.",
+      "sample_refs": [
+        "fixed-bank-tests.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "fixed-bank:q-79697",
+      "scope": "within_template",
+      "strategy": "shortest value-only rule across the same five-option bank while each candidate is keyed in turn",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline 0.2. The identical unordered bank has five different correct equations across controls. A fixed value-based rule can select at most one of them; side-frequency never identifies a unique winner.",
+      "sample_refs": [
+        "fixed-bank-tests.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "fixed-bank:q-79697",
+      "scope": "within_template",
+      "strategy": "longest value-only rule across the same five-option bank while each candidate is keyed in turn",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline 0.2. The identical unordered bank has five different correct equations across controls. A fixed value-based rule can select at most one of them; side-frequency never identifies a unique winner.",
+      "sample_refs": [
+        "fixed-bank-tests.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lexical-min",
+      "subgroup": "fixed-bank:q-79697",
+      "scope": "within_template",
+      "strategy": "lexical-min value-only rule across the same five-option bank while each candidate is keyed in turn",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline 0.2. The identical unordered bank has five different correct equations across controls. A fixed value-based rule can select at most one of them; side-frequency never identifies a unique winner.",
+      "sample_refs": [
+        "fixed-bank-tests.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lexical-max",
+      "subgroup": "fixed-bank:q-79697",
+      "scope": "within_template",
+      "strategy": "lexical-max value-only rule across the same five-option bank while each candidate is keyed in turn",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline 0.2. The identical unordered bank has five different correct equations across controls. A fixed value-based rule can select at most one of them; side-frequency never identifies a unique winner.",
+      "sample_refs": [
+        "fixed-bank-tests.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "side-frequency",
+      "subgroup": "fixed-bank:q-79699",
+      "scope": "within_template",
+      "strategy": "side-frequency value-only rule across the same five-option bank while each candidate is keyed in turn",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline 0.2. The identical unordered bank has five different correct equations across controls. A fixed value-based rule can select at most one of them; side-frequency never identifies a unique winner.",
+      "sample_refs": [
+        "fixed-bank-tests.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "fixed-bank:q-79699",
+      "scope": "within_template",
+      "strategy": "shortest value-only rule across the same five-option bank while each candidate is keyed in turn",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline 0.2. The identical unordered bank has five different correct equations across controls. A fixed value-based rule can select at most one of them; side-frequency never identifies a unique winner.",
+      "sample_refs": [
+        "fixed-bank-tests.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "fixed-bank:q-79699",
+      "scope": "within_template",
+      "strategy": "longest value-only rule across the same five-option bank while each candidate is keyed in turn",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline 0.2. The identical unordered bank has five different correct equations across controls. A fixed value-based rule can select at most one of them; side-frequency never identifies a unique winner.",
+      "sample_refs": [
+        "fixed-bank-tests.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lexical-min",
+      "subgroup": "fixed-bank:q-79699",
+      "scope": "within_template",
+      "strategy": "lexical-min value-only rule across the same five-option bank while each candidate is keyed in turn",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline 0.2. The identical unordered bank has five different correct equations across controls. A fixed value-based rule can select at most one of them; side-frequency never identifies a unique winner.",
+      "sample_refs": [
+        "fixed-bank-tests.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lexical-max",
+      "subgroup": "fixed-bank:q-79699",
+      "scope": "within_template",
+      "strategy": "lexical-max value-only rule across the same five-option bank while each candidate is keyed in turn",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline 0.2. The identical unordered bank has five different correct equations across controls. A fixed value-based rule can select at most one of them; side-frequency never identifies a unique winner.",
+      "sample_refs": [
+        "fixed-bank-tests.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "side-frequency",
+      "subgroup": "fixed-bank:q-8360",
+      "scope": "within_template",
+      "strategy": "side-frequency value-only rule across the same five-option bank while each candidate is keyed in turn",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline 0.2. The identical unordered bank has five different correct equations across controls. A fixed value-based rule can select at most one of them; side-frequency never identifies a unique winner.",
+      "sample_refs": [
+        "fixed-bank-tests.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "fixed-bank:q-8360",
+      "scope": "within_template",
+      "strategy": "shortest value-only rule across the same five-option bank while each candidate is keyed in turn",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline 0.2. The identical unordered bank has five different correct equations across controls. A fixed value-based rule can select at most one of them; side-frequency never identifies a unique winner.",
+      "sample_refs": [
+        "fixed-bank-tests.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "fixed-bank:q-8360",
+      "scope": "within_template",
+      "strategy": "longest value-only rule across the same five-option bank while each candidate is keyed in turn",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline 0.2. The identical unordered bank has five different correct equations across controls. A fixed value-based rule can select at most one of them; side-frequency never identifies a unique winner.",
+      "sample_refs": [
+        "fixed-bank-tests.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lexical-min",
+      "subgroup": "fixed-bank:q-8360",
+      "scope": "within_template",
+      "strategy": "lexical-min value-only rule across the same five-option bank while each candidate is keyed in turn",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline 0.2. The identical unordered bank has five different correct equations across controls. A fixed value-based rule can select at most one of them; side-frequency never identifies a unique winner.",
+      "sample_refs": [
+        "fixed-bank-tests.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lexical-max",
+      "subgroup": "fixed-bank:q-8360",
+      "scope": "within_template",
+      "strategy": "lexical-max value-only rule across the same five-option bank while each candidate is keyed in turn",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline 0.2. The identical unordered bank has five different correct equations across controls. A fixed value-based rule can select at most one of them; side-frequency never identifies a unique winner.",
+      "sample_refs": [
+        "fixed-bank-tests.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "side-frequency",
+      "subgroup": "fixed-bank:rational-collect",
+      "scope": "within_template",
+      "strategy": "side-frequency value-only rule across the same five-option bank while each candidate is keyed in turn",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline 0.2. The identical unordered bank has five different correct equations across controls. A fixed value-based rule can select at most one of them; side-frequency never identifies a unique winner.",
+      "sample_refs": [
+        "fixed-bank-tests.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "fixed-bank:rational-collect",
+      "scope": "within_template",
+      "strategy": "shortest value-only rule across the same five-option bank while each candidate is keyed in turn",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline 0.2. The identical unordered bank has five different correct equations across controls. A fixed value-based rule can select at most one of them; side-frequency never identifies a unique winner.",
+      "sample_refs": [
+        "fixed-bank-tests.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "fixed-bank:rational-collect",
+      "scope": "within_template",
+      "strategy": "longest value-only rule across the same five-option bank while each candidate is keyed in turn",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline 0.2. The identical unordered bank has five different correct equations across controls. A fixed value-based rule can select at most one of them; side-frequency never identifies a unique winner.",
+      "sample_refs": [
+        "fixed-bank-tests.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lexical-min",
+      "subgroup": "fixed-bank:rational-collect",
+      "scope": "within_template",
+      "strategy": "lexical-min value-only rule across the same five-option bank while each candidate is keyed in turn",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline 0.2. The identical unordered bank has five different correct equations across controls. A fixed value-based rule can select at most one of them; side-frequency never identifies a unique winner.",
+      "sample_refs": [
+        "fixed-bank-tests.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lexical-max",
+      "subgroup": "fixed-bank:rational-collect",
+      "scope": "within_template",
+      "strategy": "lexical-max value-only rule across the same five-option bank while each candidate is keyed in turn",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline 0.2. The identical unordered bank has five different correct equations across controls. A fixed value-based rule can select at most one of them; side-frequency never identifies a unique winner.",
+      "sample_refs": [
+        "fixed-bank-tests.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "side-frequency",
+      "subgroup": "fixed-bank:q-16401",
+      "scope": "within_template",
+      "strategy": "side-frequency value-only rule across the same five-option bank while each candidate is keyed in turn",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline 0.2. The identical unordered bank has five different correct equations across controls. A fixed value-based rule can select at most one of them; side-frequency never identifies a unique winner.",
+      "sample_refs": [
+        "fixed-bank-tests.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "fixed-bank:q-16401",
+      "scope": "within_template",
+      "strategy": "shortest value-only rule across the same five-option bank while each candidate is keyed in turn",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline 0.2. The identical unordered bank has five different correct equations across controls. A fixed value-based rule can select at most one of them; side-frequency never identifies a unique winner.",
+      "sample_refs": [
+        "fixed-bank-tests.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "fixed-bank:q-16401",
+      "scope": "within_template",
+      "strategy": "longest value-only rule across the same five-option bank while each candidate is keyed in turn",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline 0.2. The identical unordered bank has five different correct equations across controls. A fixed value-based rule can select at most one of them; side-frequency never identifies a unique winner.",
+      "sample_refs": [
+        "fixed-bank-tests.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lexical-min",
+      "subgroup": "fixed-bank:q-16401",
+      "scope": "within_template",
+      "strategy": "lexical-min value-only rule across the same five-option bank while each candidate is keyed in turn",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline 0.2. The identical unordered bank has five different correct equations across controls. A fixed value-based rule can select at most one of them; side-frequency never identifies a unique winner.",
+      "sample_refs": [
+        "fixed-bank-tests.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lexical-max",
+      "subgroup": "fixed-bank:q-16401",
+      "scope": "within_template",
+      "strategy": "lexical-max value-only rule across the same five-option bank while each candidate is keyed in turn",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline 0.2. The identical unordered bank has five different correct equations across controls. A fixed value-based rule can select at most one of them; side-frequency never identifies a unique winner.",
+      "sample_refs": [
+        "fixed-bank-tests.json",
+        "shortcut-results.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "Generator family selection and validation/rejection loop",
+      "CLI mathematical-fingerprint rejection and resampling",
+      "Publisher prepare_records normalization and inventory/within-batch deduplication",
+      "Requested easy difficulty filter",
+      "Difficulty-first inventory selection, seen-history exclusions and within-band hash draw"
+    ],
+    "sample_refs": [
+      "resampling-results.json",
+      "relocated-stdout.json",
+      "delivery-independent/accepted.json",
+      "delivery-independent/delivery.json",
+      "delivery-batch/accepted.json",
+      "delivery-batch/delivery.json",
+      "selection-results.json",
+      "shortcut-results.json",
+      "inventory-review.json"
+    ],
+    "result": "104 independent easy records become 96 after 8 deliberate shuffle duplicates; all eight families and all four sign pairs survive. Runner batch remains 5/5. Prior side-frequency cue succeeds 0/96 and 0/5 after filtering; all eligible members checked, so learner history cannot revive that unique-maximum cue. Selection rules examined analytically plus 128 conditional SHA256 draws."
+  },
+  "limitations": [
+    "Finite audit tests specific cues; it does not prove absence of every shortcut.",
+    "Inventory is captured at basis 5230. No preparation file exists; check_delivery reproduces actual publisher preparation read-only. Later inventory changes are outside this evidence.",
+    "No live policy weights, future assigned entity IDs or learner histories are supplied. Selection draws use stated fresh easy-band conditions and synthetic UUID order; uniform-within-band and subset properties are independent of that order.",
+    "Four captured generated records are historical hard items; all content matches the retained prior records and none demonstrates the earlier unique-maximum frequency cue. This is a rule-specific verified absence; original source records are not classified as generated."
+  ]
+}

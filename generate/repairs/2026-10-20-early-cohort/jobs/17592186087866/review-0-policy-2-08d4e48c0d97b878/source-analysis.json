@@ -1,0 +1,139 @@
+{
+  "skill": "Rewrite a reducible first-order linear ODE in the syntactic standard form dy/dx + P(x)y = Q(x), by collecting terms, canceling permitted factors, and normalizing the derivative coefficient.",
+  "learner_operation": "Inspect the given equation and each option; identify an algebraically equivalent equation with unit derivative coefficient, all y terms on the left, and y-independent right side. Standard-form recognition alone is insufficient when several options share that form.",
+  "reasoning_steps": [
+    "Expand a square only in the hard family; cancel a common y factor only under y != 0.",
+    "Move y terms to the left and independent terms to the right.",
+    "Divide all terms by the derivative coefficient on intervals where it is nonzero.",
+    "Simplify rational, exponential or trigonometric coefficients and identify P and Q.",
+    "Select the unique equivalent standard-form equation from a five-option radio bank."
+  ],
+  "response_contract": "One radio selection from five math choices; canonical example is worked only. The first source has two captured banks, one missing a correct pointer; both encode the same correct equation. Preserve complete banks, allowing UI notation normalization.",
+  "difficulty": "Eight easy questions cover collection, division, trig simplification and cancellation under y != 0. The square-expansion family is explicitly hard and should not enter an easy delivery.",
+  "invariants": [
+    "First derivative only; no solving or integration.",
+    "Unit derivative coefficient in the answer, P and Q depend on x only.",
+    "Algebraic equivalence on the stated/original equation domain.",
+    "Exactly one keyed standard-form answer; algebraically equivalent nonstandard forms remain distractors.",
+    "Retain y != 0 for cancellation families."
+  ],
+  "permitted_variations": [
+    "Change small signed coefficients, preserving valid distinct distractors and comparable algebra.",
+    "Change forcing-term signs or sides and coefficient roles so normalization must be recomputed.",
+    "Vary sin/cos within justified same-identity families; vary modest exponential rates and rational coefficients.",
+    "Shuffle answer positions; do not fix the correct structural signature when several standard-form options should demand algebra.",
+    "Keep target standard form fixed because it defines the knowledge point; this does not justify fixed signs or numerical answers."
+  ],
+  "answer_roles": [
+    {
+      "role": "P(x)",
+      "eligible_variation": "coefficient, sign and supported function assignments"
+    },
+    {
+      "role": "Q(x)",
+      "eligible_variation": "coefficient and sign independent of P where method permits"
+    },
+    {
+      "role": "correct option position",
+      "eligible_variation": "any of five positions"
+    },
+    {
+      "role": "derivative normalizer",
+      "eligible_variation": "nonzero constants or supported functions"
+    }
+  ],
+  "source_refs": [
+    "e5c269fd-ead8-50e4-b16e-9d9e9b4a244c",
+    "9fbd67f9-88e1-5554-8625-84ac1e940645",
+    "ee14253e-e208-56bc-9e49-57c918963c64",
+    "3b89344e-126d-544e-88e0-0303a3eae594",
+    "157e16d4-eb84-5272-a4e6-39b4e7ee7766",
+    "5ce4583e-c99f-532c-8f96-a07269c60d3f",
+    "f284d9d4-47c8-54c3-aa2b-11e7ba22d40f",
+    "5a5eea4d-3d1c-5658-8171-517491bf7c77",
+    "ef24453f-f045-5d0a-8ed3-0ca5b930bc74",
+    "dc93ac2d-3588-5dc4-9cf8-3df1f17c353d",
+    "tutorial d0517ea0-b60e-5c34-bfbc-41fd6c61af75: P(x)=b(x)/a(x), Q(x)=f(x)/a(x); standard form y'+P(x)y=Q(x)",
+    "tutorial cc4983db-1d7c-5573-a6d1-9e5e4a09207e: a,b,f functions of x only; a not identically zero",
+    "generate/principles.md sections 1-3"
+  ],
+  "source_gaps": [
+    "Canonical example has no answer fields. First question has a redundant unkeyed legacy bank. No image evidence is required: images array is empty.",
+    "Lesson states nonidentically-zero a suffices for division; mathematically restrict to intervals where a != 0."
+  ],
+  "source_case_summary": [
+    {
+      "id": "e5c269fd-ead8-50e4-b16e-9d9e9b4a244c",
+      "difficulty": ":question.difficulty/easy",
+      "prompt": "Write the following first-order linear ODE in standard form.\n\n$$\n2\\frac{\\text{d}y}{\\text{d}x}-3\\operatorname{cos}\u2061x=1-4y\\operatorname{sin}\u2061x\n$$",
+      "bank_sizes": [
+        5,
+        5
+      ]
+    },
+    {
+      "id": "9fbd67f9-88e1-5554-8625-84ac1e940645",
+      "difficulty": ":question.difficulty/easy",
+      "prompt": "Write the following first-order linear ODE in standard form.\n\n$$\n\\frac{\\text{d}y}{\\text{d}x}=\\frac{2x-y}{x}\\,.\n$$",
+      "bank_sizes": [
+        5
+      ]
+    },
+    {
+      "id": "ee14253e-e208-56bc-9e49-57c918963c64",
+      "difficulty": ":question.difficulty/easy",
+      "prompt": "Write the following first-order linear ODE in standard form.\n\n$$\n{e}^{2x}\\frac{\\text{d}y}{\\text{d}x}+2{e}^{x}y-x=0\n$$",
+      "bank_sizes": [
+        5
+      ]
+    },
+    {
+      "id": "3b89344e-126d-544e-88e0-0303a3eae594",
+      "difficulty": ":question.difficulty/easy",
+      "prompt": "Write the following first-order linear ODE in standard form.\n\n$$\n(\\operatorname{cos}\u2061x)\\frac{\\text{d}y}{\\text{d}x}+\\operatorname{sin}\u20612x-(\\operatorname{sin}\u2061x)\\,y=0\n$$",
+      "bank_sizes": [
+        5
+      ]
+    },
+    {
+      "id": "157e16d4-eb84-5272-a4e6-39b4e7ee7766",
+      "difficulty": ":question.difficulty/easy",
+      "prompt": "Write the following first-order linear ODE in standard form.\n\n$$\ny\\frac{dy}{dx}+{x}^{2}y={y}^{2}x\\,,\\,y\\ne 0\\,.\n$$",
+      "bank_sizes": [
+        5
+      ]
+    },
+    {
+      "id": "5ce4583e-c99f-532c-8f96-a07269c60d3f",
+      "difficulty": ":question.difficulty/hard",
+      "prompt": "Write the following first-order linear ODE in standard form.\n\n$$\n\\frac{dy}{dx}+{y}^{2}{(\\operatorname{cos}\u2061x)}^{2}={(1-y\\operatorname{cos}\u2061x)}^{2}\\,.\n$$",
+      "bank_sizes": [
+        5
+      ]
+    },
+    {
+      "id": "f284d9d4-47c8-54c3-aa2b-11e7ba22d40f",
+      "difficulty": ":question.difficulty/easy",
+      "prompt": "Write the following first-order linear ODE in standard form.\n\n$$\n\\left(\\frac{1}{{x}^{2}}\\right)\\frac{\\text{d}y}{\\text{d}x}=\\frac{x+y}{x}\\,.\n$$",
+      "bank_sizes": [
+        5
+      ]
+    },
+    {
+      "id": "5a5eea4d-3d1c-5658-8171-517491bf7c77",
+      "difficulty": ":question.difficulty/easy",
+      "prompt": "Write the following first-order linear ODE in standard form.\n\n$$\n5{y}^{2}-y{e}^{-x}\\frac{\\text{d}y}{\\text{d}x}=y,\\,y\\ne 0.\n$$",
+      "bank_sizes": [
+        5
+      ]
+    },
+    {
+      "id": "ef24453f-f045-5d0a-8ed3-0ca5b930bc74",
+      "difficulty": ":question.difficulty/easy",
+      "prompt": "Write the following first-order linear ODE in standard form.\n\n$$\n\\frac{\\text{d}y}{\\text{d}x}+2y\\operatorname{cot}\u2061x+\\operatorname{sin}\u20612x=0\\,.\n$$",
+      "bank_sizes": [
+        5
+      ]
+    }
+  ]
+}

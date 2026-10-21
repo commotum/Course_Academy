@@ -1,0 +1,399 @@
+{
+  "learner_operation": "Inspect the given equation and each option; identify an algebraically equivalent equation with unit derivative coefficient, all y terms on the left, and y-independent right side. Standard-form recognition alone is insufficient when several options share that form.",
+  "fixed_features": [
+    {
+      "feature": "Target standard form dy/dx + P(x)y = Q(x)",
+      "justification": "This defines the knowledge point; tutorial d0517ea0-b60e-5c34-bfbc-41fd6c61af75 explicitly names it."
+    },
+    {
+      "feature": "Single five-option radio bank",
+      "justification": "All nine practice source cases use this response structure; one duplicated unkeyed legacy field is evidence-only."
+    },
+    {
+      "feature": "First derivative, algebraic conversion only, supported function families",
+      "justification": "Source solutions perform collection, division, supported simplification and explicitly justified cancellation; no solving is required."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "P(x)",
+      "eligible_variation": "Small coefficient, sign, and supported function assignments consistent with the same operations.",
+      "observed": "All easy slot bounds are positive. Several families change only k or n, holding signs and the Q role fixed."
+    },
+    {
+      "role": "Q(x)",
+      "eligible_variation": "Forcing coefficient/sign independent of P where the same collection/division method permits.",
+      "observed": "q-8359 fixes Q=2; q-16396 fixes Q=-x^2; q-79697 fixes Q=x^2; q-79699 fixes Q=-e^x. This is not itself a size-based failure, but does not justify a perfect bank-frequency key."
+    },
+    {
+      "role": "Correct answer location",
+      "eligible_variation": "Any of the five radio positions.",
+      "observed": "Seed-controlled shuffle varies positions; first-position probe is not perfect within any tested family."
+    },
+    {
+      "role": "Which complete answer combines the most repeated sides",
+      "eligible_variation": "No mathematical or instructional reason fixes this role to the key.",
+      "observed": "The key is the unique maximum of literal side repetition in five easy families and tested moderate cases. Source replay and option shuffling do not remove this cue."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "q-16400",
+      "sample_refs": [
+        "independent-records.json",
+        "all-template-probes.json",
+        "generation-boundaries.json"
+      ],
+      "result": "5 observations; frequency shortcut 5/5. All seven one-parameter easy families exhaust their allowed 1..8 or 2..8 domain, with additional seeded/boundary repeats. q-16400 uses five seeded/boundary cases; no arbitrary diversity quota applied."
+    },
+    {
+      "case": "q-8359",
+      "sample_refs": [
+        "independent-records.json",
+        "all-template-probes.json",
+        "generation-boundaries.json"
+      ],
+      "result": "13 observations; frequency shortcut 0/13. All seven one-parameter easy families exhaust their allowed 1..8 or 2..8 domain, with additional seeded/boundary repeats. q-16400 uses five seeded/boundary cases; no arbitrary diversity quota applied."
+    },
+    {
+      "case": "q-103349",
+      "sample_refs": [
+        "independent-records.json",
+        "all-template-probes.json",
+        "generation-boundaries.json"
+      ],
+      "result": "13 observations; frequency shortcut 0/13. All seven one-parameter easy families exhaust their allowed 1..8 or 2..8 domain, with additional seeded/boundary repeats. q-16400 uses five seeded/boundary cases; no arbitrary diversity quota applied."
+    },
+    {
+      "case": "q-103354",
+      "sample_refs": [
+        "independent-records.json",
+        "all-template-probes.json",
+        "generation-boundaries.json"
+      ],
+      "result": "13 observations; frequency shortcut 13/13. All seven one-parameter easy families exhaust their allowed 1..8 or 2..8 domain, with additional seeded/boundary repeats. q-16400 uses five seeded/boundary cases; no arbitrary diversity quota applied."
+    },
+    {
+      "case": "q-16396",
+      "sample_refs": [
+        "independent-records.json",
+        "all-template-probes.json",
+        "generation-boundaries.json"
+      ],
+      "result": "13 observations; frequency shortcut 13/13. All seven one-parameter easy families exhaust their allowed 1..8 or 2..8 domain, with additional seeded/boundary repeats. q-16400 uses five seeded/boundary cases; no arbitrary diversity quota applied."
+    },
+    {
+      "case": "q-79697",
+      "sample_refs": [
+        "independent-records.json",
+        "all-template-probes.json",
+        "generation-boundaries.json"
+      ],
+      "result": "13 observations; frequency shortcut 13/13. All seven one-parameter easy families exhaust their allowed 1..8 or 2..8 domain, with additional seeded/boundary repeats. q-16400 uses five seeded/boundary cases; no arbitrary diversity quota applied."
+    },
+    {
+      "case": "q-79699",
+      "sample_refs": [
+        "independent-records.json",
+        "all-template-probes.json",
+        "generation-boundaries.json"
+      ],
+      "result": "12 observations; frequency shortcut 12/12. All seven one-parameter easy families exhaust their allowed 1..8 or 2..8 domain, with additional seeded/boundary repeats. q-16400 uses five seeded/boundary cases; no arbitrary diversity quota applied."
+    },
+    {
+      "case": "q-8360",
+      "sample_refs": [
+        "independent-records.json",
+        "all-template-probes.json",
+        "generation-boundaries.json"
+      ],
+      "result": "13 observations; frequency shortcut 0/13. All seven one-parameter easy families exhaust their allowed 1..8 or 2..8 domain, with additional seeded/boundary repeats. q-16400 uses five seeded/boundary cases; no arbitrary diversity quota applied."
+    },
+    {
+      "case": "rational-collect",
+      "sample_refs": [
+        "independent-records.json",
+        "all-template-probes.json",
+        "generation-boundaries.json"
+      ],
+      "result": "5 observations; frequency shortcut 5/5. All seven one-parameter easy families exhaust their allowed 1..8 or 2..8 domain, with additional seeded/boundary repeats. q-16400 uses five seeded/boundary cases; no arbitrary diversity quota applied."
+    },
+    {
+      "case": "q-16401",
+      "sample_refs": [
+        "independent-records.json",
+        "all-template-probes.json",
+        "generation-boundaries.json"
+      ],
+      "result": "5 observations; frequency shortcut 0/5. All seven one-parameter easy families exhaust their allowed 1..8 or 2..8 domain, with additional seeded/boundary repeats. q-16400 uses five seeded/boundary cases; no arbitrary diversity quota applied."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Hold seed/template fixed; change c:1->2 in q-16400, k:1->2 in q-8359, n:1->2 in q-103349.",
+      "expected": "Prompt, keyed equation, and worked solution must change together; native grader must accept new correct choice and reject every wrong choice.",
+      "observed": "All three pairs satisfy the expected dependencies; every displayed option and row checked exactly, all native outcomes match. Actual UI renders inspected for representative before/after prompts and solutions.",
+      "status": "passed",
+      "justification": "Lesson d0517ea0-b60e-5c34-bfbc-41fd6c61af75 defines P=b/a and Q=f/a, so changing these coefficients changes the normalized equation; display order has no mathematical role.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-final-input.json",
+        "grader-final-results.json",
+        "rendered-input-final.json",
+        "render-final/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Hold all mathematical data fixed; change seed 9401->9402 to shuffle options.",
+      "expected": "Prompt, mathematical answer, and solution must remain unchanged while option order changes; grading must follow choice identities.",
+      "observed": "All three answer-order pairs preserve prompt, mathematical key and solution, change option order, and retain correct native outcomes.",
+      "status": "passed",
+      "justification": "Lesson d0517ea0-b60e-5c34-bfbc-41fd6c61af75 defines P=b/a and Q=f/a, so changing these coefficients changes the normalized equation; display order has no mathematical role.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-final-input.json",
+        "grader-final-results.json",
+        "rendered-input-final.json",
+        "render-final/rendering.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "Repeated literal left and right sides of answer equations",
+      "subgroup": "q-16400 method-derived, after delivery filtering",
+      "scope": "within_template",
+      "strategy": "Split each option at =; score count(left)+count(right); select the unique maximum; abstain on ties. Never inspect prompt or parse coefficients.",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "5/5 versus uniform guessing 1/5. A perfect conditional predictor of the key is unrelated to algebraic equivalence or standard form.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "Repeated literal left and right sides of answer equations",
+      "subgroup": "q-8359 method-derived, after delivery filtering",
+      "scope": "within_template",
+      "strategy": "Split each option at =; score count(left)+count(right); select the unique maximum; abstain on ties. Never inspect prompt or parse coefficients.",
+      "correct": 0,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/8 versus uniform guessing 1/5. This particular rule ties/abstains; no absence of other shortcuts is claimed.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "Repeated literal left and right sides of answer equations",
+      "subgroup": "q-103349 method-derived, after delivery filtering",
+      "scope": "within_template",
+      "strategy": "Split each option at =; score count(left)+count(right); select the unique maximum; abstain on ties. Never inspect prompt or parse coefficients.",
+      "correct": 0,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/8 versus uniform guessing 1/5. This particular rule ties/abstains; no absence of other shortcuts is claimed.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "Repeated literal left and right sides of answer equations",
+      "subgroup": "q-103354 method-derived, after delivery filtering",
+      "scope": "within_template",
+      "strategy": "Split each option at =; score count(left)+count(right); select the unique maximum; abstain on ties. Never inspect prompt or parse coefficients.",
+      "correct": 8,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "8/8 versus uniform guessing 1/5. A perfect conditional predictor of the key is unrelated to algebraic equivalence or standard form.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "Repeated literal left and right sides of answer equations",
+      "subgroup": "q-16396 method-derived, after delivery filtering",
+      "scope": "within_template",
+      "strategy": "Split each option at =; score count(left)+count(right); select the unique maximum; abstain on ties. Never inspect prompt or parse coefficients.",
+      "correct": 8,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "8/8 versus uniform guessing 1/5. A perfect conditional predictor of the key is unrelated to algebraic equivalence or standard form.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "Repeated literal left and right sides of answer equations",
+      "subgroup": "q-79697 method-derived, after delivery filtering",
+      "scope": "within_template",
+      "strategy": "Split each option at =; score count(left)+count(right); select the unique maximum; abstain on ties. Never inspect prompt or parse coefficients.",
+      "correct": 8,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "8/8 versus uniform guessing 1/5. A perfect conditional predictor of the key is unrelated to algebraic equivalence or standard form.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "Repeated literal left and right sides of answer equations",
+      "subgroup": "q-79699 method-derived, after delivery filtering",
+      "scope": "within_template",
+      "strategy": "Split each option at =; score count(left)+count(right); select the unique maximum; abstain on ties. Never inspect prompt or parse coefficients.",
+      "correct": 7,
+      "total": 7,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "7/7 versus uniform guessing 1/5. A perfect conditional predictor of the key is unrelated to algebraic equivalence or standard form.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "Repeated literal left and right sides of answer equations",
+      "subgroup": "q-8360 method-derived, after delivery filtering",
+      "scope": "within_template",
+      "strategy": "Split each option at =; score count(left)+count(right); select the unique maximum; abstain on ties. Never inspect prompt or parse coefficients.",
+      "correct": 0,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/8 versus uniform guessing 1/5. This particular rule ties/abstains; no absence of other shortcuts is claimed.",
+      "sample_refs": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "Repeated equation sides",
+      "subgroup": "all delivered easy cases",
+      "scope": "overall",
+      "strategy": "Same unique-maximum literal frequency rule, with abstention counted incorrect.",
+      "correct": 36,
+      "total": 60,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "36/60 overall versus uniform 1/5; aggregate rate hides 100% within five templates. Actual runner batch: 4/5.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "Unique standard-form equation",
+      "subgroup": "q-8359",
+      "scope": "within_template",
+      "strategy": "Select the only equation with unit derivative coefficient, all y terms on left, and y-independent right side.",
+      "correct": 13,
+      "total": 13,
+      "baseline": 0.2,
+      "disposition": "intended_skill",
+      "conclusion": "Perfect here, but this is the explicit standard-form recognition task in the source bank, not an incidental cue; baseline is uniform choice among five options.",
+      "sample_refs": [
+        "all-template-probes.json",
+        "independent-records.json"
+      ]
+    },
+    {
+      "cue": "Unique standard-form equation",
+      "subgroup": "q-8360",
+      "scope": "within_template",
+      "strategy": "Select the only equation with unit derivative coefficient, all y terms on left, and y-independent right side.",
+      "correct": 13,
+      "total": 13,
+      "baseline": 0.2,
+      "disposition": "intended_skill",
+      "conclusion": "Perfect here, but this is the explicit standard-form recognition task in the source bank, not an incidental cue; baseline is uniform choice among five options.",
+      "sample_refs": [
+        "all-template-probes.json",
+        "independent-records.json"
+      ]
+    },
+    {
+      "cue": "Repeated equation sides",
+      "subgroup": "rational-collect public non-easy branch",
+      "scope": "within_template",
+      "strategy": "Same unique-maximum literal frequency rule.",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Uniform guessing is 1/5. Moderate also has a perfect string-frequency predictor in the five tested samples; hard ties. These branches were not included in easy delivery.",
+      "sample_refs": [
+        "all-template-probes.json",
+        "independent-records.json"
+      ]
+    },
+    {
+      "cue": "Repeated equation sides",
+      "subgroup": "q-16401 public non-easy branch",
+      "scope": "within_template",
+      "strategy": "Same unique-maximum literal frequency rule.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing is 1/5. Moderate also has a perfect string-frequency predictor in the five tested samples; hard ties. These branches were not included in easy delivery.",
+      "sample_refs": [
+        "all-template-probes.json",
+        "independent-records.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "Generator parameter bounds, complete-bank validation and whole-instance resampling loop; fixed family chosen before resampling",
+      "CLI semantic-fingerprint uniqueness",
+      "Actual shared prepare_records through check_delivery.py on independent and runner records",
+      "Requested easy difficulty, source KP validation, normalization and content identities",
+      "Captured inventory and within-batch deduplication at basis 5230",
+      "Learner selection: actual Rust difficulty-first rule and read-only conditional fresh-easy reproduction"
+    ],
+    "sample_refs": [
+      "generation-boundaries.json",
+      "runtime.json",
+      "relocated-stdout.json",
+      "delivery-independent/delivery.json",
+      "delivery-independent/accepted.json",
+      "delivery-batch/delivery.json",
+      "shortcut-results.json",
+      "selection-results.json"
+    ],
+    "result": "Independent 95 easy inputs -> 60 accepted, 35 duplicates; runner 5 -> 5. Shortcut remains perfect in five affected template subgroups (36/36 delivered, 56/56 raw observations), and succeeds 4/5 runner records. Conditional easy selection gives 299/500 successes; candidate ordering is synthetic because no new database entities were published. Positive easy weights and history removal do not change the defect inside surviving records."
+  },
+  "limitations": [
+    "Captured inventory basis 5230 may differ from later live state. No database writes or publication performed.",
+    "Live learner history, configured policy weights and future entity IDs were not supplied; selection conclusions are conditional on an easy draw from the accepted fresh pool.",
+    "The literal-frequency strategy was tested across all public templates but a finite review cannot prove absence of every other shortcut.",
+    "The canonical worked example has no answer fields or public replay template; all nine supplied practice families were replayed.",
+    "Seven finite one-parameter easy domains were exhausted; q-16400 multidimensional space was sampled with independently chosen seeds and both boundaries."
+  ]
+}

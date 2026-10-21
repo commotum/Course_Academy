@@ -1,0 +1,12 @@
+# Run from /home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186087866/review-1-policy-2-b1b993c7c2e898ea
+PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python review.py > review-log.txt 2>&1
+PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python -c 'import review; review.replay()' > replay-log.txt 2>&1
+PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python packaging.py > packaging-log.txt 2>&1
+PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py --input independent-easy.json --source /home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186087866/source/source.json --inventory /home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186087866/source/inventory.json --difficulty easy --output delivery-independent --math-root /media/jake/SSD/EDB/math
+PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py --input runner-batch.json --source /home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186087866/source/source.json --inventory /home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186087866/source/inventory.json --difficulty easy --output delivery-batch --math-root /media/jake/SSD/EDB/math
+/home/jake/Developer/Course_Academy/generate/runs/current/check-engine grader-input.json grader-results.json
+PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python stage_checks.py > stages-log.txt 2>&1
+PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python final_checks.py > final-checks-log.txt 2>&1
+PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/render_preview.py --input render-records.json --output render-all --limit 40 --math-root /media/jake/SSD/EDB/math
+PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/render_preview.py --input render-extra-records.json --output render-extra --limit 8 --math-root /media/jake/SSD/EDB/math
+PYTHONDONTWRITEBYTECODE=1 python3 report.py > report-log.txt 2>&1

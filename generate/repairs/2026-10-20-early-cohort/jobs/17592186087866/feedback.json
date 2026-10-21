@@ -1,0 +1,130 @@
+{
+  "verdict": "revise",
+  "summary": "A prompt-independent string-frequency shortcut solves 36/36 delivered cases across five easy templates and 4/5 runner questions. Source replay, mathematics, grading, rendering, and packaging pass. Package unchanged; no database writes.",
+  "source_analysis": {
+    "skill": "Convert a first-order linear ODE to dy/dx + P(x)y = Q(x), preserving algebraic equivalence.",
+    "reasoning_steps": [
+      "Collect dependent-variable terms and forcing terms.",
+      "Cancel permitted factors and normalize the derivative coefficient.",
+      "Simplify coefficients and select the equivalent standard-form equation."
+    ],
+    "invariants": [
+      "First derivative only; no integration or solving.",
+      "P and Q depend only on x.",
+      "Preserve domain restrictions and a unique correct radio choice."
+    ],
+    "permitted_variations": [
+      "Change supported coefficients, signs, and function parameters while preserving workload.",
+      "Vary eligible answer-bearing assignments and option positions."
+    ],
+    "source_refs": [
+      "e5c269fd-ead8-50e4-b16e-9d9e9b4a244c",
+      "3b89344e-126d-544e-88e0-0303a3eae594",
+      "157e16d4-eb84-5272-a4e6-39b4e7ee7766",
+      "f284d9d4-47c8-54c3-aa2b-11e7ba22d40f",
+      "5a5eea4d-3d1c-5658-8171-517491bf7c77",
+      "Tutorial d0517ea0-b60e-5c34-bfbc-41fd6c61af75: P=b/a, Q=f/a"
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "source-replay-normalized-results.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replays.json",
+        "source-replay-normalized-results.json",
+        "audit-corrections.json"
+      ],
+      "details": "All nine practice cases retain complete banks, keys, prompts, and solution templates after documented presentation normalization."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "fast_math.py",
+        "independent-math-results.json",
+        "audit-corrections.json"
+      ],
+      "details": "119 displayed records pass independent exact checks of every choice and worked-solution row."
+    },
+    "variety": {
+      "status": "failed",
+      "evidence_paths": [
+        "independent-records.json",
+        "shortcut-results.json",
+        "all-template-probes.json",
+        "delivery-independent/delivery.json"
+      ],
+      "details": "Parameter and position variation preserve a perfect answer-bank frequency cue within five easy templates."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "scope-results.json",
+        "generation-boundaries.json"
+      ],
+      "details": "Tested operations remain within algebraic standard-form conversion; hard expansion does not enter easy delivery."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-final-input.json",
+        "grader-final-results.json",
+        "counterfactual-results.json"
+      ],
+      "details": "Native grader matches all 370 expected outcomes: 74 accepted and 296 rejected radio responses."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "rendered-input-final.json",
+        "render-final/rendering.json",
+        "render-inspection.json",
+        "render-final/question-011.png",
+        "render-final/question-012.png"
+      ],
+      "details": "20 actual UI renders cover all templates and controlled pairs; representative screenshots inspected."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "runtime.json",
+        "generation-boundaries.json",
+        "relocation-results.json",
+        "package-integrity.json"
+      ],
+      "details": "Exact dependency versions, deterministic replay, rejection boundaries, and relocation pass. All 88 package files remain unchanged."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "shortcut-results.json",
+        "counterfactual-results.json",
+        "selection-results.json",
+        "inventory-review.json",
+        "affected-inventory.json"
+      ],
+      "details": "Controlled dependencies pass, but literal side repetition predicts every key in five delivered template groups. The defect survives filtering. None of the four captured generated inventory records demonstrates this specific weakness."
+    }
+  },
+  "findings": [
+    {
+      "kind": "decision_shortcut",
+      "description": "Split each option at '=' and score it by frequency(left side) + frequency(right side). Selecting the unique maximum requires no prompt reading or algebra, yet succeeds on 56/56 raw and 36/36 delivered observations within q-16400, q-103354, q-16396, q-79697, and q-79699. It solves 4/5 runner questions. Tested moderate samples also exhibit this cue.",
+      "source_refs": [
+        "e5c269fd-ead8-50e4-b16e-9d9e9b4a244c",
+        "3b89344e-126d-544e-88e0-0303a3eae594",
+        "157e16d4-eb84-5272-a4e6-39b4e7ee7766",
+        "f284d9d4-47c8-54c3-aa2b-11e7ba22d40f",
+        "5a5eea4d-3d1c-5658-8171-517491bf7c77",
+        "generate/principles.md section 2"
+      ],
+      "reproduction": "From evidence_root run PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python probes.py. Concrete runner case: seed 2735275605, template q-16396, k=1, question 9f70840b-d50e-5b8d-9bb6-0bd0ad9bcccc. Results are saved in shortcut-results.json.",
+      "requested_change": "Redesign complete distractor banks so repeated equation sides do not identify the key. Preserve source families and mathematical validity, vary eligible coefficient/sign assignments where appropriate, and retain this shortcut probe as a regression test before and after delivery filtering. Shuffling choices alone will not fix it."
+    }
+  ]
+}
