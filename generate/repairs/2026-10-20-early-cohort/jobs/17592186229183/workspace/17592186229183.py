@@ -46,6 +46,8 @@ def data(p):
 
 def guard(p,level,evidence=False):
  if set(p)!=set(('H','v','q','c','rin','rout')):raise ValueError('Exactly H,v,q,c,rin,rout are required.')
+ H,v,q,c,rin,rout=(s.Rational(str(p[k])) for k in ('H','v','q','c','rin','rout'))
+ if not (0<v<H<=800 and 0<q<c*v and 0<rout<rin<=60 and 0<c<=2):raise ValueError('Physical/arithmetic bounds violated.')
  x=data(p)
  if not (0<x['v']<x['H']<=800 and 0<x['q']<x['cv'] and 0<x['rout']<x['rin']<=60 and 0<x['c']<=2):raise ValueError('Physical/arithmetic bounds violated.')
  if evidence:

@@ -1,0 +1,11 @@
+Implemented targeted repair in existing generator. Before repair, `python regression_checks.py --package . --source ../source/source.json` reproduced six failures (median-bank shortcut, extra field, four missing profiles). See evidence/before-regressions.json.
+
+Source masks refreshed from supplied snapshot using the repaired local extraction script. All 11 source banks / 55 choices, prompt/solution text and omissions replay exactly. Normal banks now choose eligible numerical rank before physical sampling and use complete authored numerical-perturbation banks. Existing solution/math code and difficulty policies retained; invalid zero-growth inputs now reject before division.
+
+Completed: job Python `repair_checks.py` passes: 88 normal records, controlled all-five-rank banks in every template, 31 exact ODE/displayed-solution checks, relevant and irrelevant counterfactuals, boundaries, moderate/hard smoke. `inventory_check.py` reproduces all ten historical generated records and matches captured inventory; affected-inventory.json retains their IDs. `check_delivery.py` accepted all 88 sample records, no duplicates. Runtime manifest reduced to actual runtime files and pinned sympy requirement.
+
+Next: deliver five replacement samples through shared filter, grade actual choices and controlled pairs with native harness, render representative records and inspect screenshots, verify relocation and post-filter shortcuts, save final commands/results.
+
+Completed final validation: native grader passed 185 checks (41 acceptances / 144 rejections). Eight actual UI records rendered and representative screenshots inspected; no errors or clipping observed. Delivery probes pass before and after filtering. Five replacement samples and exact historical affected IDs are saved. Relocated package emits identical output. Final retained reviewer regression passes with zero failures. Canonical physical parameters additionally produce 342.1 lb and pass exact displayed-solution checks.
+
+Ready for fresh independent review. Reproduce with evidence/commands.json. No publication, image publication, database writes, engine edits, or outside-workspace writes occurred. Remaining limits are in evidence/author-summary.json.

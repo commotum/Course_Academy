@@ -1,3 +1,7 @@
+# Current workspace repair
+
+The targeted October 21 repair supersedes the historical seven-case freeze below. See ../instructional-account.md, ../repair-regressions.json, ../repair_checks.py and ../evidence/author-summary.json. Source replay now covers all eleven supplied practice cases. Normal five-choice banks use authored numerical perturbations with incidental numerical rank. Historical reports and helpers are retained as evidence and are excluded from the runtime manifest.
+
 # Overflow-onset scratch generator
 
 Frozen at step 7 for independent root QA. Owns only this evidence folder and ../17592186229183.py. No database operations or plots.
