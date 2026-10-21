@@ -31,7 +31,8 @@ capacity is stated as the equilibrium; every linear target is eligible. For norm
 sampling choose a two- or three-digit range, five candidates, and the selected
 target's capacity. For explicit capacity calls, insert that capacity and sample
 the other candidates without historical-ratio restrictions. All constants use the
-same digit width to prevent notation length from identifying the answer. This is
+same digit width in automatic sampling to prevent notation length from identifying the answer. Explicit
+candidate banks can preserve the source's differing digit widths. This is
 a presentation safeguard, not a mathematical constraint. Explicit calls may provide
 five distinct candidate capacities and target rank for controlled same-bank changes.
 Initial stocks, where present, remain positive and below equilibrium, independently

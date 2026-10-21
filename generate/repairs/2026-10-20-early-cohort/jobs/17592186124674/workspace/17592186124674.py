@@ -4,7 +4,7 @@
 Read-only math basis 1356. Source masks and complete banks are extracted in the
 private evidence directory; no literal-question replay branch or answer lookup.
 Observed scalar ratios are opaque evidence profiles, NOT inferred misconceptions.
-Normal easy uses the observed sign/population-factor bank; moderate and hard are
+Normal easy uses competing capacities and mixed operation/capacity banks; moderate and hard are
 authored coefficient-placement banks. All levels ask only to construct an ODE.
 The rational hard catalog is finite, reduced, positive and bounded, including on
 explicit calls. Stable content identities include the full displayed bank, fixed
@@ -22,6 +22,8 @@ TITLE='Modeling Inhibited Growth'
 VERSION='inhibited-growth-model-1'
 BASE=Path(__file__).with_suffix('')
 RECIPES=json.loads((BASE/'extracted-recipes.json').read_text())
+CURRENT_SOURCES=json.loads((BASE/'current-source-recipes.json').read_text())['sources']
+LEARNING_SOURCES={'source_'+str(v['db_id']):v for v in CURRENT_SOURCES.values()}
 SOURCE={'database':'math','basis':1356,'lineage':'01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1'}
 RATIONAL_CATALOG=(sp.Rational(1,2),sp.Rational(1,3),sp.Rational(2,3),sp.Rational(1,4),sp.Rational(3,4),sp.Rational(1,5),sp.Rational(2,5),sp.Rational(3,5))
 CONTEXTS={
@@ -32,6 +34,7 @@ CONTEXTS={
  'computers':('C','computers','data center','months'),
 }
 TEMPLATES={**{k:{'level':'easy','origin':'observed','plot':'none'} for k in RECIPES},
+ **{k:{'level':'easy','origin':'observed-context','plot':'none'} for k in LEARNING_SOURCES},
  'direct_model':{'level':'easy','origin':'authored-context','plot':'none'},
  'known_integer_rate':{'level':'moderate','origin':'authored-missing-level','plot':'none'},
  'known_fractional_rate':{'level':'hard','origin':'authored-missing-level','plot':'none'}}
@@ -40,6 +43,7 @@ BANK_PROFILES={**{'observed_'+k.removeprefix('source_'):{'template':k,'origin':'
  'model_operations':{'template':'direct_model','origin':'observed-method/authored-context'},
  'integer_placement':{'template':'known_integer_rate','origin':'authored'},
  'fractional_placement':{'template':'known_fractional_rate','origin':'authored'}}
+BANK_PROFILES.update({'repaired_'+k.removeprefix('source_'):{'template':k,'origin':'source-context/competing-capacity-extension'} for k in LEARNING_SOURCES})
 
 def digest(value):
  return hashlib.sha256(json.dumps(value,sort_keys=True,separators=(',',':'),ensure_ascii=False).encode()).hexdigest()
@@ -82,11 +86,13 @@ def assemble(level,seed,template,profile,p,prompt,solution,values,correct_index,
  if solution is not None:q[':question/worked-solution']=solution
  # The response is a whole ODE; initial quantity only supplies irrelevant context.
  fingerprint=digest({'model':'growth_gap','capacity':p['capacity'],'rate':str(rate)})
- evidence_only=raw or profile.startswith('repaired_') and any(r['operation']=='opaque_capacity_ratio' for r in (recipe_info or []))
+ evidence_only=raw
  return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':q,'generation':{'version':VERSION,'seed':seed,'template':template,'profile':profile,'parameters':p,'source':SOURCE,'source_id':source_id,'raw_evidence':raw,'evidence_only':evidence_only,'eligible_for_learning':not evidence_only,'origin':BANK_PROFILES[profile]['origin'],'content_sha256':h,'mathematical_fingerprint':fingerprint,'symbol':symbol,'domains':{'capacity':'positive integer; current stock below capacity','k':'positive','time':'t>=0'},'recipes':recipe_info or [],'plots':[]}}
 
 
 def source_instance(level,seed,template,profile,parameters):
+ if not profile.startswith('observed_'):
+  return learning_easy(seed,template,profile,parameters)
  spec=RECIPES[template]; raw=profile.startswith('observed_')
  allowed={'capacity'}|({'initial'} if spec['initial'] is not None else set())
  if set(parameters)!=allowed:raise ValueError(f'explicit source parameters must be exactly {allowed}')
@@ -112,6 +118,7 @@ def source_instance(level,seed,template,profile,parameters):
 
 
 def authored_instance(level,seed,template,profile,p):
+ if level=='easy':return learning_easy(seed,template,profile,p)
  expected={'context','capacity'} if level=='easy' else {'context','capacity','initial','numerator','denominator'}
  if set(p)!=expected:raise ValueError(f'explicit {level} parameters must be exactly {expected}')
  if p['context'] not in CONTEXTS:raise ValueError('context outside finite catalog')
@@ -137,6 +144,100 @@ def authored_instance(level,seed,template,profile,p):
  return assemble(level,seed,template,profile,p,prompt,solution,[equation(s,x) for x in rhs],0,recipe_info=recipes,symbol=s,rate=r)
 
 
+def learning_easy(seed,template,profile,parameters=None):
+ """Select a candidate role before values/context; derive all content from it.
+
+ Source replay deliberately remains separate from normal bank construction.
+ No observed numerical distractor ratio restricts a new equilibrium.
+ """
+ rng=random.Random(f'{seed}:easy-bank')
+ spec=LEARNING_SOURCES.get(template)
+ structural=spec is None or any('^{2}' in c['mask'] for c in spec['choices'])
+ kind=('mixed' if structural else 'capacities') if spec else rng.choice(('mixed','capacities'))
+ linear_count=3 if kind=='mixed' else 5
+ linear_indices=sorted(rng.sample(range(5),linear_count))
+ target=rng.choice(linear_indices)
+ p=dict(parameters) if parameters is not None else {}
+ allowed={'capacity','candidates','target_rank','linear_indices'} | ({'initial'} if spec and spec['initial'] is not None else {'context'} if spec is None else set())
+ if set(p)-allowed:raise ValueError('unknown easy parameter')
+ if parameters is not None:
+  required={'capacity'} | ({'initial'} if spec and spec['initial'] is not None else {'context'} if spec is None else set())
+  if not required<=set(p):raise ValueError('missing explicit easy parameter')
+ if 'linear_indices' in p:
+  linear_indices=p['linear_indices']
+  if not isinstance(linear_indices,list) or len(linear_indices)!=linear_count or len(set(linear_indices))!=linear_count:raise ValueError('distinct eligible linear indices required')
+  for i in linear_indices:integer(i,'linear index',0,4)
+  linear_indices=sorted(linear_indices)
+  target=rng.choice(linear_indices)
+ if 'target_rank' in p:
+  target=integer(p['target_rank'],'target_rank',0,4)
+  if target not in linear_indices:raise ValueError('target must be an eligible linear candidate')
+ if 'capacity' in p:
+  A=integer(p['capacity'],'capacity',10 if spec else 20,5000 if spec else 500)
+  if 'candidates' in p:
+   candidates=p['candidates']
+   if not isinstance(candidates,list) or len(candidates)!=5:raise ValueError('five candidate capacities required')
+   for n in candidates:integer(n,'candidate',1,20000)
+   if len(set(candidates))!=5:raise ValueError('candidate capacities must be distinct')
+   candidates=sorted(candidates)
+   if A not in [candidates[i] for i in linear_indices]:raise ValueError('capacity must be an eligible linear candidate')
+   if 'target_rank' in p and candidates[target]!=A:raise ValueError('target rank disagrees with equilibrium')
+   target=candidates.index(A)
+  else:
+   low,high=10**(len(str(A))-1),10**len(str(A))-1
+   # Rank is sampled from its feasible domain, never silently forced to a source rank.
+   feasible=[i for i in linear_indices if A-low>=i and high-A>=4-i]
+   if not feasible:
+    # Explicit boundary: choose eligible linear positions among feasible ranks.
+    feasible=[i for i in range(5) if A-low>=i and high-A>=4-i]
+    target=rng.choice(feasible)
+    linear_indices=sorted([target]+rng.sample([i for i in range(5) if i!=target],linear_count-1))
+   if 'target_rank' not in p:target=rng.choice(feasible)
+   if target not in feasible:raise ValueError('target rank infeasible at this boundary')
+   candidates=sorted(rng.sample(range(low,A),target)+[A]+rng.sample(range(A+1,high+1),4-target))
+ else:
+  # First choose the eligible target, then draw compatible values. Two/three digits
+  # are presentation strata, not answer roles or different mathematical methods.
+  low,high=rng.choice(((20,99),(100,500)))
+  candidates=sorted(rng.sample(range(low,high+1),5));A=candidates[target]
+  p['capacity']=A
+ p['candidates']=candidates;p['target_rank']=target;p['linear_indices']=linear_indices
+ if spec:
+  s=spec['symbol']
+  if spec['initial'] is not None:
+   if parameters is None:p['initial']=rng.randint(1,A-1)
+   integer(p['initial'],'initial',1,A-1)
+  prompt=slot(spec['problem_mask'],p)
+  solution=slot(spec['solution_mask'],p) if spec['solution_mask'] else None
+  if spec['db_id']==17592186124766:
+   prompt=prompt.replace(r'\text{units/day}',r'\text{units}').replace('$units/day$','$units$')
+   if solution:solution=solution.replace('units/day','units')
+  source_id=next(k for k,v in CURRENT_SOURCES.items() if v is spec)
+ else:
+  if parameters is None:p['context']=rng.choice(tuple(CONTEXTS))
+  if p['context'] not in CONTEXTS:raise ValueError('context outside finite catalog')
+  s,units,place,time=CONTEXTS[p['context']]
+  prompt=f'The growth of the number of {units} in a {place} is directly proportional to the difference between its maximum capacity and its current population. Let ${s}(t)$ be the number of {units}, and let $t\\ge 0$ be the time in {time}. If the maximum capacity is ${A}$ {units}, which differential equation models this population? Assume that $k>0$ is a constant of proportionality.'
+  solution=None;source_id=None
+ if solution is None:
+  solution='The rate of change is proportional to the difference between the maximum capacity and the current quantity. Therefore,\n\n$$\n'+equation(s,'k(a-'+s+')')+',\n$$\n\nwhere $a$ is the maximum capacity and $k>0$.\n\n'+f'Here $a={A}$, so\n\n$$\n'+equation(s,'k('+str(A)+'-'+s+')')+'.\n$$'
+ # Normalize captured doubled slashes only in served content; replay stays exact.
+ clean=lambda text:re.sub(r'\\{2,}(?=[A-Za-z])',lambda m:'\\',text)
+ prompt=clean(prompt);solution=clean(solution)
+ operations=random.Random(f'{seed}:easy-operations').sample(('reverse_gap','population_factor','quadratic_factor','negative_sum'),2) if kind=='mixed' else []
+ rhs=[];info=[];operation_iter=iter(operations)
+ for i,n in enumerate(candidates):
+  if i in linear_indices:
+   rhs.append('k('+str(n)+'-'+s+')');info.append('linear_gap');continue
+  operation=next(operation_iter)
+  gap='('+str(n)+'-'+s+')'
+  rhs.append({'reverse_gap':'-k'+gap,'population_factor':'k'+s+gap,'quadratic_factor':'k{'+s+'}^{2}'+gap,'negative_sum':'-k('+str(n)+'+'+s+')'}[operation])
+  info.append(operation)
+ rec=assemble('easy',seed,template,profile,p,prompt,solution,[equation(s,x) for x in rhs],target,recipe_info=info,symbol=s,source_id=source_id)
+ rec['generation'].update(bank_kind=kind,target_rank=target,version='inhibited-growth-easy-repair-2')
+ return rec
+
+
 def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
  if level not in ('easy','moderate','hard'):raise ValueError('unknown difficulty')
  if field_type not in (None,'radio',':answer-field.type/radio'):raise ValueError('only radio field layout is supported')
@@ -145,11 +246,13 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
   inferred=BANK_PROFILES[profile]['template']
   if template is not None and template!=inferred:raise ValueError('profile does not belong to template')
   template=inferred
- template=template or {'easy':'direct_model','moderate':'known_integer_rate','hard':'known_fractional_rate'}[level]
+ template=template or (random.Random(seed).choice(('direct_model',*LEARNING_SOURCES)) if level=='easy' and parameters is None else {'easy':'direct_model','moderate':'known_integer_rate','hard':'known_fractional_rate'}[level])
  if template not in TEMPLATES or TEMPLATES[template]['level']!=level:raise ValueError('template does not belong to level')
- source=template in RECIPES
+ source=template in LEARNING_SOURCES
  if not profile:profile='repaired_'+template.removeprefix('source_') if source else {'easy':'model_operations','moderate':'integer_placement','hard':'fractional_placement'}[level]
  rng=random.Random(seed)
+ if level=='easy' and not profile.startswith('observed_'):
+  return learning_easy(seed,template,profile,parameters)
  if parameters is not None:
   p=dict(parameters)
   return source_instance(level,seed,template,profile,p) if source else authored_instance(level,seed,template,profile,p)
@@ -183,7 +286,6 @@ def markdown(rec):
  return '\n'.join(lines)
 
 # Current-source replay is evidence only; it never expands normal learner sampling.
-CURRENT_SOURCES=json.loads((BASE/'current-source-recipes.json').read_text())['sources']
 BANK_PROFILES.update({'current_'+mid:{'template':'current_'+mid,'origin':'observed-current-evidence'} for mid in CURRENT_SOURCES})
 
 def replay_current_source(source_id,capacity=None,initial=None,seed=0):

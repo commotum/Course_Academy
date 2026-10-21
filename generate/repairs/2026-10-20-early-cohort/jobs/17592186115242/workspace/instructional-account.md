@@ -106,3 +106,60 @@ question and entity identities for the separate remediation workflow, and keep
 a strict failing regression while they remain selectable. New batch variety
 cannot waive that failure. This limits the final delivery claim even if all
 current-generator checks pass; no runtime filter will hide those stored records.
+
+
+Second-repair validation: three CLI requests (5,4,5) retain these contrasts after
+shared delivery filtering. Native grading accepts 7 correct and rejects 28 wrong
+choices across the five replacement instances and two controlled variants.
+Negating b changes the answer, while changing only the nonzero residual constant
+preserves it. Three actual-UI screenshots were visually inspected. The package
+runs from a relocated directory with the same seeded output. These are claims
+about the candidate and its tested batch, not the historical selectable pool.
+All five non-source inventory records are reproduced; all remain affected and
+the strict historical regression exits 1. Final status is unsupported pending
+separate inventory remediation; earlier completion language applies only to
+the first implementation pass. See evidence/repair-2/pedagogical-variation.json.
+
+## Third pass: prepare the historical-item repair for independent review
+
+The latest strict reproduction still fails on all five captured v2 records.
+This is not a missing mathematical family in the current generator: the stored
+records contain immutable old banks and the native selector reads those banks,
+not this package. Changing this generator cannot change their selectable content.
+The source and inventory hashes have not changed, so the counterexample still
+applies. Keep the strict captured-pool failure; do not substitute a hypothetical
+pool or relabel historical records as passing.
+
+Prepare five complete replacement records and a one-to-one proposed mapping
+from the five affected generated identities. Reuse the current generator's
+already-tested seed 1475864943/count 5 batch and its whole-window selection rule.
+These are new identities, not edits to existing questions or learner responses.
+The replacement systems need not retain historical numerical parameters: as in
+canonical f2c7cfd3-da43-5208-bd0e-21692357fabe, each requires one integer row
+elimination, a singular k calculation, and a nonzero residual contradiction.
+Source 534e2a93-e71a-5475-894e-dfd5ca99a3a6 supplies the source control against
+extreme-option inference; tutorial e0c85152-daea-5a87-a3ba-81870558c7a2 supplies
+the no-solutions criterion. Every replacement stays easy and uses five radio
+choices. Both sign groups must retain different roots, interior/extreme ranks,
+and positions after shared delivery filtering. Validate all five complete
+records independently and grade every offered response using the native engine.
+
+Save a proposed reconciliation artifact, with captured basis and hashes, exact
+old/new identities and complete evidence. It is input for separate review only;
+no transaction is executed, no source identity is retired, and historical
+answers are not remapped. A hypothetical replacement-pool check demonstrates
+the proposal's effect, not a repair of the captured or live database. Final
+status must still reflect the strict stored-pool failure until an authorized
+external stage applies and recaptures that state.
+
+Third-pass validation: all four current-generator finding checks pass, including
+all source replays; the strict historical check still fails on five reproduced
+records. Five proposed replacements pass independent printed-system, matrix,
+solution and bank checks plus shared delivery (5 accepted, 0 duplicates). Both
+sign groups preserve root, numeric-rank and display-position contrasts. Native
+grading accepts 5 correct responses and rejects 20 wrong choices. Two complete
+actual UI screenshots were inspected, including positive and negative singular
+values. Relocated CLI replay passes with exact dependency versions. The proposal
+maps both raw generator and normalized delivery identities because the publisher
+assigns stable content IDs. Runtime and captured source files remain unchanged.
+See evidence/repair-3/proposal-results.json and the strict regression report.

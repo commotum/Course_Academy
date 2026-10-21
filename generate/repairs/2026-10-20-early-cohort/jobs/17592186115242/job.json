@@ -7,10 +7,10 @@
     "job_kind": "build"
   },
   "stage": "generate",
-  "attempt": 2,
+  "attempt": 3,
   "seed": 1475864943,
   "created": 1792611876.1365135,
-  "updated": 1792613620.3199975,
+  "updated": 1792614046.7101243,
   "source_hash": "0b657374d0168c544d903e077b6832e89078d1c0622d3ad4ca4b411a79979b36",
   "inventory_hash": "8b6bed8f8386714d048705b03adcc751dad1add22f101563fb39967bc450d8fc",
   "manifest": "package.json",
@@ -36,149 +36,27 @@
   },
   "needs_repair": true,
   "error": {
-    "verdict": "revise",
-    "summary": "Corrected the decision-variation verdict. The delivered opposite-sign subgroup has a 2/2 minimum-choice shortcut, and five selectable historical items retain a 5/5 sign-only shortcut. The other seven checks remain supported. Package files were unchanged.",
-    "source_analysis": {
-      "skill": "Determine the parameter value making a two-equation linear system inconsistent or consistent dependent.",
-      "reasoning_steps": [
-        "Eliminate one variable.",
-        "Set the remaining affine coefficient to zero.",
-        "Interpret the residual equation as a contradiction or redundancy.",
-        "Select the corresponding parameter value."
-      ],
-      "invariants": [
-        "One unique parameter answer.",
-        "Prompt, elimination, answer bank, key and solution agree.",
-        "Practice questions use five-choice radio fields."
-      ],
-      "permitted_variations": [
-        "Coefficients, signs, constants and affine parameter offsets within comparable workload.",
-        "Integer, fractional and valid zero parameter answers.",
-        "Correct answer position and numeric rank."
-      ],
-      "source_refs": [
-        "f2c7cfd3-da43-5208-bd0e-21692357fabe",
-        "84cf8820-fa64-5d50-9d9c-d3a9404788a4",
-        "113efc76-e9d2-549d-b33e-b8de028f7ba5",
-        "Tutorial e0c85152-daea-5a87-a3ba-81870558c7a2: consistency and dependence definitions",
-        "generate/principles.md section 2"
-      ],
+    "code": "author_reported_limitation",
+    "error": {
+      "status": "unsupported",
+      "manifest": "package.json",
+      "summary": "Repaired finite-batch selection and preserved earlier repairs. Delivery, source replay, native grading, relocation, and visual checks pass. Historical inventory remediation remains blocked by this job\u2019s scope.",
       "evidence_paths": [
-        "source-analysis.json",
-        "contract-repair/source-analysis.json",
-        "source-cases.json",
-        "solution-fidelity.json"
+        "repair-regressions.json",
+        "evidence/repair-2/commands.json",
+        "evidence/repair-2/batch.json",
+        "evidence/repair-2/batch-results.json",
+        "evidence/repair-2/grader-report.json",
+        "evidence/repair-2/visual-inspection.json",
+        "evidence/repair-2/inventory-results.json",
+        "affected-inventory.json",
+        "evidence/generated-records.json"
+      ],
+      "limitations": [
+        "Five stored questions remain selectable with the demonstrated shortcut. Their strict regression fails; resolving them requires the separate inventory-remediation workflow. No database content was changed."
       ]
     },
-    "checks": {
-      "source_replay": {
-        "status": "passed",
-        "evidence_paths": [
-          "source-replay-report.json",
-          "source-replays.json",
-          "solution-fidelity.json"
-        ],
-        "details": "Retained matched evidence: all 18 source systems and 17 complete practice banks replay."
-      },
-      "math": {
-        "status": "passed",
-        "evidence_paths": [
-          "math-results.json",
-          "supplement-math-results.json",
-          "counterfactual-results.json"
-        ],
-        "details": "Retained exact checks of printed systems, roots, ranks, banks, matrices and conclusions."
-      },
-      "variety": {
-        "status": "passed",
-        "evidence_paths": [
-          "samples.json",
-          "boundary-records.json",
-          "resampling-results.json",
-          "acceptance-old-results.json",
-          "acceptance-results.json"
-        ],
-        "details": "Prior construction failures reproduce on old code and pass current code. Finite delivered-pool shortcuts are separately failed under decision_variation."
-      },
-      "scope": {
-        "status": "passed",
-        "evidence_paths": [
-          "source-analysis.json",
-          "scope-review.json",
-          "boundary-records.json"
-        ],
-        "details": "Retained evidence supports the source operation, response contract and workload."
-      },
-      "grading": {
-        "status": "passed",
-        "evidence_paths": [
-          "grader-input.json",
-          "grader-report.json"
-        ],
-        "details": "Native grader evidence retains 43 correct acceptances and 172 wrong-choice rejections."
-      },
-      "rendering": {
-        "status": "passed",
-        "evidence_paths": [
-          "render/rendering.json",
-          "render-review.json",
-          "render/question-006.png",
-          "render/question-007.png",
-          "render/question-010.png"
-        ],
-        "details": "Retained actual-UI rendering evidence covers 11 records and seven visually inspected screenshots."
-      },
-      "packaging": {
-        "status": "passed",
-        "evidence_paths": [
-          "packaging.json",
-          "package-unchanged.json",
-          "rejections.json",
-          "commands.json",
-          "contract-repair/shortcut-correction-results.json"
-        ],
-        "details": "Dependency, replay, relocation and rejection checks retained. This correction rechecked all 166 package-file hashes unchanged."
-      },
-      "decision_variation": {
-        "status": "failed",
-        "evidence_paths": [
-          "contract-repair/pedagogical-variation.json",
-          "contract-repair/shortcut-correction.py",
-          "contract-repair/shortcut-correction-results.json",
-          "contract-repair/batch-counterexamples.json",
-          "shortcut-results.json",
-          "counterfactual-results.json",
-          "delivery-batch/delivery.json",
-          "delivery-sample/delivery.json",
-          "selection-results.json",
-          "affected-inventory.json",
-          "generated-records.json"
-        ],
-        "details": "The exact delivered opposite-sign subgroup repeats b=4,d=-2,k=-8 with minimum correct rank (2/2). Five historical easy records remain selectable and retain the sign-extremum action (5/5). Larger controls cannot waive these finite-pool failures; no universal v3 construction shortcut is claimed."
-      }
-    },
-    "findings": [
-      {
-        "kind": "decision_shortcut",
-        "description": "Finite batch-selection failure: both opposite-sign items repeat one coefficient decision and make the smallest option correct. Changed RHS values and bank spacing preserve the shortcut throughout this recognizable subgroup.",
-        "source_refs": [
-          "f2c7cfd3-da43-5208-bd0e-21692357fabe",
-          "generate/principles.md section 2"
-        ],
-        "reproduction": "From evidence_root run /home/jake/Developer/Course_Academy/.venv/bin/python -B contract-repair/shortcut-correction.py --strict (expected exit 1). Seeds 1475864945 and 1475864946 replay exactly: x+4y=1, -2x+ky=-3 with bank {-8,-7,-6,-5,-4}; x+4y=-1, -2x+ky=0 with bank {-8,-6,-4,-2,0}. Choosing minimum answers both.",
-        "requested_change": "Revise finite batch selection to avoid repeated coefficient decisions preserving a perfect bank-role cue within a recognizable sign subgroup. Reselect using the repaired v3 domain and rerun delivery and conditional shortcut checks. No additional universal generator defect is established."
-      },
-      {
-        "kind": "decision_shortcut",
-        "description": "Five captured historical v2 easy records retain the sign-only extremum shortcut and remain learner-selection candidates. Their unresolved presence prevents a passing delivered-distribution claim.",
-        "source_refs": [
-          "f2c7cfd3-da43-5208-bd0e-21692357fabe",
-          "generate/principles.md section 2"
-        ],
-        "reproduction": "The same strict command verifies all five reproduced records against captured inventory prompts, solutions, complete banks and keys. Minimal case f4f00ddd-faa4-5195-9569-dbec2d0e2e6c, entity 17592186557444, seed 2712914515: x+2y=-5, -2x+ky=0, bank {-4,-2,0,2,4}; opposite signs identify minimum -4. The retained new_seen selection scenario gives 64/64 shortcut successes.",
-        "requested_change": "Resolve the five records listed in affected-inventory.json through the separate inventory-remediation workflow, then recheck the selectable easy pool. Preserve original source questions and the demonstrated current-generator construction repairs."
-      }
-    ]
+    "instruction": "The source supports this skill. Diagnose and repair the limitation; do not drop source families or valid responses."
   },
   "last_rejected_package": "c34ed7012f9f259698a0bc72505c4a3696157cfaf42a36a71100e6cf0b2c8a6b",
   "last_rejected_source": "0b657374d0168c544d903e077b6832e89078d1c0622d3ad4ca4b411a79979b36",

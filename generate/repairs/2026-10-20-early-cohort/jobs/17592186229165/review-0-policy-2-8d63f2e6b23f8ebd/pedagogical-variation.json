@@ -1,0 +1,241 @@
+{
+  "learner_operation": "For each forcing exponential compare its rate to the complementary exponent; use an ordinary or x-multiplied exponential trial accordingly, solve coefficient equations, and apply y(0) to determine the complementary coefficient. Enter the full explicit RHS.",
+  "fixed_features": [
+    {
+      "feature": "One math blank, supplied complementary solution and initial location 0",
+      "justification": "All source practice questions and canonical d2382def-85b2-5002-9614-692f272355c8 use this response and initial-value workload."
+    },
+    {
+      "feature": "Easy nonresonance and moderate resonance",
+      "justification": "All six rated easy source cases are nonresonant; all seven moderate source cases are resonant. Fixing that branch at each observed level is supported instructional scope."
+    },
+    {
+      "feature": "Hard has two distinct forcing rates",
+      "justification": "Authored extension uses the preceding same-lesson two-exponential examples 5e56989a-feb1-590a-8684-9442dee1b1cb and 1ea06d66-de30-514a-817f-8749abb4ab25, then the canonical IVP initial-value step. This allows a hard workload without a new method."
+    },
+    {
+      "feature": "Hard second component is always nonresonant",
+      "justification": "No independent instructional justification. This is the rejected fixed assignment: the resonance lesson e6655774-c9ab-58c6-bfec-5013b08b7918 defines the trial by exponent overlap, not position."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Complementary coefficient A",
+      "eligible_variation": "Can be positive, zero, negative or fractional as v and forcing change.",
+      "observed": "{'total': 24, 'nonresonant': 24, 'h_positive': 14, 'forcing_positive': 14, 'k_below_h': 12, 'A_positive': 9, 'h_negative': 10, 'forcing_negative': 10, 'k_above_h': 12, 'A_negative': 15}; controlled v=4 cancels A."
+    },
+    {
+      "role": "Forcing coefficient alpha",
+      "eligible_variation": "Sign and rational magnitude follow f/(k-h), or f under resonance.",
+      "observed": "Easy samples cover both exponent orderings and forcing signs; the exact runner batch has positive forcing in 5/5, but varying rates and coefficient magnitudes still require solving."
+    },
+    {
+      "role": "Which hard forcing component needs multiplication by x",
+      "eligible_variation": "For the mixed family, either displayed forcing term may carry the rate equal to h. Reordering leaves the IVP and arithmetic unchanged.",
+      "observed": "All 24 fresh hard instances and all five stored generated hard instances have nonresonant second terms. All 10 sampled mixed instances and all four stored mixed instances put resonance first. Swapped explicit parameters are rejected."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "Exact easy runner batch, before and after delivery",
+      "sample_refs": [
+        "runner-batch.json",
+        "delivery-batch/accepted.json",
+        "coverage-results.json"
+      ],
+      "result": "{'total': 5, 'nonresonant': 5, 'h_positive': 2, 'forcing_positive': 5, 'k_below_h': 2, 'A_positive': 2, 'h_negative': 3, 'k_above_h': 3, 'A_negative': 3}; all five survive, not merely sign variants; no demonstrated answer/action shortcut for this batch."
+    },
+    {
+      "case": "Independent requested-level samples",
+      "sample_refs": [
+        "independent-easy.json",
+        "delivery-independent/accepted.json",
+        "coverage-results.json"
+      ],
+      "result": "{'total': 24, 'nonresonant': 24, 'h_positive': 14, 'forcing_positive': 14, 'k_below_h': 12, 'A_positive': 9, 'h_negative': 10, 'forcing_negative': 10, 'k_above_h': 12, 'A_negative': 15}; 24/24 survive."
+    },
+    {
+      "case": "Hard mixed role assignment",
+      "sample_refs": [
+        "independent-hard.json",
+        "delivery-hard/accepted.json",
+        "minimal-role-counterexample.json"
+      ],
+      "result": "24/24 hard records survive; mixed=10, two_nonresonant=14. Second-position resonance=0. Both 1+1-forcing orders are mathematically identical, but the reversed mixed order is disallowed."
+    },
+    {
+      "case": "Captured already stored cohort and learner selection",
+      "sample_refs": [
+        "generated-records.json",
+        "inventory-reproduction-results.json",
+        "selection-results.json",
+        "affected-inventory.json"
+      ],
+      "result": "All five stored generated records exactly reproduced; four mixed instances affected. Selection from this cohort cannot restore a missing role placement. Original source questions are not marked generated."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Keep h=2,k=3,f=4 and change v=1 to v=4.",
+      "expected": "A changes from -3 to 0; full solution changes from -3e^(2x)+4e^(3x) to 4e^(3x).",
+      "observed": "Prompt, initial substitution, final key, rendered solution, and real grader follow cancellation; old answer rejected.",
+      "status": "passed",
+      "justification": "Canonical IVP and edaf01e0-f315-5b89-a42e-b20571efeafe explicitly assess computing A, including A=0.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "controlled-results.json",
+        "grader-input.json",
+        "grader-report.json",
+        "render-pairs/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "Hold h=2,f=4,v=1, change k=3 to k=1; also test k=h=2 at the supported moderate level.",
+      "expected": "Nonresonant coefficient changes sign when k goes below h; resonance requires x multiplication and the product-rule solution.",
+      "observed": "Keys and worked stages change appropriately; stale base key is rejected and independently derived new expressions accepted. Rendered prompts and explanations track k.",
+      "status": "passed",
+      "justification": "Tutorial 7a60ff4f-cb9d-522a-a94a-d16f43b6a04a and resonance tutorial e6655774-c9ab-58c6-bfec-5013b08b7918 distinguish these trial rules.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "controlled-results.json",
+        "grader-report.json",
+        "render-pairs/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Change only seed, then only the source-supported compact solution presentation profile, retaining h=2,k=3,f=4,v=1.",
+      "expected": "Mathematical answer and learner acceptance are preserved. Seed leaves learner text unchanged; compactness changes only intermediate layout.",
+      "observed": "Same response accepted for base, compact and seed records. All render; compact profile preserves the same equations and coefficient solve.",
+      "status": "passed",
+      "justification": "Source q-332906 has a compact substitution sequence while q-332903 has grouped substitution; presentation does not change the IVP.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "controlled-results.json",
+        "grader-report.json",
+        "render-pairs/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Reverse the two forcing-component positions for h=1, f=f2=1, v=0: (k,k2)=(1,2) to (2,1), keeping mixed family and IVP.",
+      "expected": "Both prompts admitted; same unique answer (x-1)e^x+e^(2x), with the x-multiplied trial following the resonant term to second position.",
+      "observed": "Before record generated and its independent factorized answer accepted by native grader; after call raises Mixed requires first component resonant, second nonresonant. No after prompt/explanation exists to render or grade. Strict acceptance test exits 1.",
+      "status": "failed",
+      "justification": "Addition is commutative; exponent overlap in lesson tutorial e6655774-c9ab-58c6-bfec-5013b08b7918 determines the trial. The first position in example 1ea06d66-de30-514a-817f-8749abb4ab25 is incidental.",
+      "sample_refs": [
+        "minimal-role-counterexample.json",
+        "minimal-role-record.json",
+        "test_role_exchange.py",
+        "role-exchange-test.log",
+        "grader-role-input.json",
+        "grader-role-report.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "Single-forcing easy prompt",
+      "subgroup": "Exact runner batch",
+      "scope": "within_template",
+      "strategy": "Always use an ordinary exponential trial, then actually solve its coefficient and the initial condition.",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.5,
+      "disposition": "intended_skill",
+      "conclusion": "Binary uninformed ordinary/x trial baseline is 0.5. Easy fixes nonresonance in all rated sources; this branch simplification is justified. It supplies no coefficient or final answer, so it does not establish a batch defect.",
+      "sample_refs": [
+        "runner-batch.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "Hard two-forcing prompt; last displayed component",
+      "subgroup": "All independently sampled hard outputs",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Assign an ordinary exponential trial to the second forcing term without comparing its exponent to h.",
+      "correct": 24,
+      "total": 24,
+      "baseline": 0.5,
+      "disposition": "defect",
+      "conclusion": "For the binary trial-form action, an uninformed random ordinary/x guess succeeds at rate 0.5. Position gives 24/24; generator rules make this universal. This bypasses the overlap comparison for that slot, though coefficients and initial value still require work. The two-component prompt is learner-visible.",
+      "sample_refs": [
+        "independent-hard.json",
+        "coverage-results.json",
+        "minimal-role-counterexample.json"
+      ]
+    },
+    {
+      "cue": "Last forcing position after delivery normalization and deduplication",
+      "subgroup": "Delivered fresh mixed hard template",
+      "scope": "within_template",
+      "strategy": "Use no x multiplier for the second trial term, irrespective of exponent signs or coefficients.",
+      "correct": 10,
+      "total": 10,
+      "baseline": 0.5,
+      "disposition": "defect",
+      "conclusion": "Binary guess baseline 0.5, observed 10/10. The same position rule already works in the entire visible hard subgroup; this conditional measurement shows deduplication did not rescue the mixed template. Internal template metadata is not needed by the learner strategy.",
+      "sample_refs": [
+        "delivery-hard/accepted.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "Last forcing position in existing generated hard pool",
+      "subgroup": "Five stored hard questions at basis 5382",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always use ordinary exponential trial for the second component.",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.5,
+      "disposition": "defect",
+      "conclusion": "Binary guess baseline 0.5; 5/5 stored hard records preserve the same cue. Four are mixed and listed as affected; the separate both-nonresonant family is retained as legitimate. Weighted/history selection can remove records but cannot create the missing role case.",
+      "sample_refs": [
+        "generated-records.json",
+        "selection-results.json",
+        "affected-inventory.json"
+      ]
+    },
+    {
+      "cue": "Easy prompt and supplied initial value",
+      "subgroup": "Exact runner batch",
+      "scope": "overall",
+      "strategy": "Copy v*e^(h*x) as the entire answer, skipping forcing.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0,
+      "disposition": "not_predictive",
+      "conclusion": "The exact-solution baseline for this heuristic is 0 because all forcing coefficients are nonzero. It succeeds on 0/5. Unlike the hard position action, no inspected easy label/layout supplies a full answer.",
+      "sample_refs": [
+        "runner-batch.json",
+        "math-results.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "Generator direct valid sampling and explicit guards; no rejection/resampling loop",
+      "Requested difficulty, KP identity, normalization, validation and content IDs through actual prepare_records",
+      "Captured-inventory and within-batch deduplication",
+      "Faithful read-only difficulty-first learner selection with stable hash, specified policies and history exclusions"
+    ],
+    "sample_refs": [
+      "runtime-results.json",
+      "delivery-batch/delivery.json",
+      "delivery-independent/delivery.json",
+      "delivery-hard/delivery.json",
+      "delivery-stored/delivery.json",
+      "coverage-results.json",
+      "selection-results.json"
+    ],
+    "result": "Easy batch 5 -> 5; independent easy 24 -> 24; hard 24 -> 24, retaining second-slot shortcut. Reproduced stored records 5 -> 0 if submitted again, correctly deduplicated; they remain in the captured selectable hard bank. Selection scenarios cannot recover absent second-slot resonance."
+  },
+  "limitations": [
+    "Finite source and fresh samples do not prove absence of all shortcuts.",
+    "Live policy weights and learner histories are not in the captured inventory; selection evidence is conditional and read-only.",
+    "Two incomplete original source records have no captured solution/key/difficulty, so replaying missing data does not certify those unknown source answers.",
+    "The reported failure concerns the authored hard family. The requested five-record easy batch has no demonstrated defect."
+  ]
+}
