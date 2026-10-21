@@ -1,0 +1,11 @@
+# Session state — repair 3 complete
+
+Feedback ../feedback.json was read first; existing candidate and earlier evidence were preserved. Instructional account updated before implementation. generator.py 1.2.0 separates square-practice eligibility from original source-bank degeneracies, admits targets 2 and 4, and uses reversible neighboring eligible base pairs. Both orientations of every integer/decimal pair are supported; outward boundary foils and decimal-gap never-targets are removed. Original source replay banks remain exact. Manifest unchanged: standard-library-only Python 3.13.5, three declared runtime files.
+
+Completed commands: `bash run-repair-checks.sh > evidence/repair-3/checks.log 2>&1`; visually inspected all nine screenshots; `python finalize_repair.py`. Exact commands and results: evidence/repair-3/commands.md; separate claims: evidence/repair-3/summary.json.
+
+Fidelity: 3 banks, 15 choices, 12 distractors; both supplied worked solutions exact after normalization. Independent arithmetic: 336 square configurations / 23 numerical conversion tasks, 45 ordinary records and source/controlled cases. Review seed 92718 retained; seed 25 closes ordinary target-4 reachability. All 168 same-bank pairs support both targets with changed prompts/keys/solutions and native rejection of the former response in both directions. Eight irrelevant bank changes preserve key and solution.
+
+Shared delivery: 381 -> 362 accepted, 19 duplicates; all 336 square configurations survive inventory basis 3777. Every displayed square base qualifies in its same-bank counterpart. Avoid-4 feedback rule: preserved prior delivered evidence 16/16; repaired delivered evidence 16/32. Native suites: 404 accepted/1617 rejected; delivered 474/1755; original delivered controls 9/36; zero unresolved. Full 126-instance sampler capacity, excess-count rejection, practice/source boundary distinction, unsupported bands and deterministic relocation passed. UI renderer 9/9 passed and all nine full screenshots visually inspected; no layout or notation defect observed.
+
+No remaining author implementation or validation step. Limits: easy only; q-69158 lacks captured key/solution/difficulty; unknown learner history/weights, future IDs and publication not tested. No database or published-image changes. Final artifact: package.json. Independent runner review is next.

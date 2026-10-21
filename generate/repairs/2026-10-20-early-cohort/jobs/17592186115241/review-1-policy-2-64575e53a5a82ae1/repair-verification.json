@@ -1,0 +1,33 @@
+{
+  "retained_finding_ids": [
+    "a0ba0c580b33c19ce55e",
+    "f8615c3acf9f556b90e2",
+    "280b607a474fd7c5b8aa"
+  ],
+  "preflight_claim": {
+    "passed": true,
+    "finding_ids": [
+      "a0ba0c580b33c19ce55e",
+      "f8615c3acf9f556b90e2",
+      "280b607a474fd7c5b8aa"
+    ],
+    "checks": [
+      {
+        "script": "checks/validate_repair.py",
+        "args": [],
+        "sha256": "e871b86fda21aaad3e5ec8be530f71177dad8f7d10ca55714731975a30dd4b88",
+        "exit_code": 0,
+        "stdout": "{\"source_banks\": 14, \"math_records\": 123, \"fresh\": 60, \"decision_cases\": [\"constant_coordinate\", \"equal_coordinates\", \"free_y\", \"general\", \"rank_one\", \"zero_intercept\"], \"grader_checks\": 617}\n",
+        "stderr": ""
+      }
+    ]
+  },
+  "author_executable_check": {
+    "copied_script": "validate_repair_copy.py",
+    "input_and_output_root": "author-check",
+    "stdout": "{\"source_banks\": 14, \"math_records\": 123, \"fresh\": 60, \"decision_cases\": [\"constant_coordinate\", \"equal_coordinates\", \"free_y\", \"general\", \"rank_one\", \"zero_intercept\"], \"grader_checks\": 617}",
+    "result": "passes current package; package ROOT retained read-only and E redirected under evidence_root"
+  },
+  "independent_original_failure_verification": "strict-regressions.json reproduces every retained original failing example on original executable whose SHA256 matches the previous reviewed package; the same four checks pass on current package.",
+  "remaining_new_failure": "strict-new-regression.json; the author check did not include ordinary rational source-profile candidates. Passing that check does not certify this broader numeric-support case."
+}
