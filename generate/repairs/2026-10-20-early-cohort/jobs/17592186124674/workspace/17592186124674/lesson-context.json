@@ -1,0 +1,98 @@
+{
+  "database": "math",
+  "basis": 1356,
+  "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+  "record": [
+    {
+      ":activity/first-step": {
+        ":db/id": 17592186125687
+      },
+      ":activity/id": "05a41e7f-1bb0-564c-965f-28e61f0c9c67",
+      ":activity/steps": [
+        {
+          ":db/id": 17592186125687,
+          ":step/content": {
+            ":db/id": 17592186125811,
+            ":tutorial/content": "In many real situations, a quantity increases quickly at first, but then the increase slows down and the quantity levels off near some fixed value.\n\nFor example, suppose a cold drink is taken out of a refrigerator and placed in a warm room. At first, its temperature rises rapidly because the difference between the drink's temperature and the room temperature is large. As the drink warms up, this difference decreases, and the warming slows down. Eventually, the temperature levels off and approaches the room temperature.\n\nThis type of behavior is described by an **inhibited growth model**.\n\nAn *inhibited growth equation* models situations where the rate at which a quantity $P$ increases depends on how far it is from a target value $a$, called the **equilibrium value**. This equilibrium value represents the level that the quantity approaches over time.\n\nAn inhibited growth equation has the form\n\n$$\n\\dfrac{\\textrm{d}P}{\\textrm{d}t} = r(a-P),\n$$\n\nand an inhibited growth initial value problem has the form\n\n$$\n\\dfrac{\\textrm{d}P}{\\textrm{d}t} = r(a-P), \\qquad P(0) = P_0\n$$\n\nwhere $r > 0$ is a constant of proportionality, and $P < a$ for all $t > 0.$\n\nIn this model, the equilibrium value $a$ acts as an upper bound. The solution increases over time but never rises above $a$, instead approaching it more and more slowly. The figure below illustrates this behavior.\n\n![](images/81/815441d6991917ade1594f1c60a90e9505577917b1088cae3b10c637b4486c15.png)\n\n**Note:** Inhibited growth and inhibited decay use the same basic idea: the rate of change is proportional to the difference between $P$ and the equilibrium value $a$. The only difference is whether the solution approaches $a$ from below (growth) or from above (decay).\n\nInhibited growth models can be written in expanded form. To identify an expanded equation as inhibited growth, we factorise out the *positive* coefficient of $P.$ For example, the equation\n\n$$\n\\dfrac{\\textrm{d}P}{\\textrm{d}t} = 60-12P,\n$$\n\n*is* an inhibited growth equation for $P < 5$ and $t \\geq 0,$ since it can be expressed with $r=12$ and $a=5$ as\n\n$$\n\\dfrac{\\textrm{d}P}{\\textrm{d}t} = 12(5-P).\n$$\n\nNow let's work through a few examples to get some practice identifying inhibited growth models.",
+            ":tutorial/title": "Introduction"
+          },
+          ":step/next": {
+            ":db/id": 17592186125688
+          }
+        },
+        {
+          ":db/id": 17592186125688,
+          ":step/content": {
+            ":db/id": 17592186124673,
+            ":knowledge-point/canonical-example": {
+              ":db/id": 17592186124373,
+              ":question/id": "d178c83a-b8af-5d6a-bf40-fcfb7506feeb",
+              ":question/math-academy-id": "e-6686",
+              ":question/problem": "Given that $y \\lt 60$ and $t \\ge 0,$ which of the following is an inhibited growth equation?\n\n- $\\dfrac{\\mathrm{d} y}{\\mathrm{d} t} = 240 - 4y$\n\n- $\\dfrac{\\mathrm{d} y}{\\mathrm{d} t} = 4y - 240$\n\n- $\\dfrac{\\mathrm{d} y}{\\mathrm{d} t} = 4y^2 - 240$\n\n- $\\dfrac{\\mathrm{d} y}{\\mathrm{d} t} = 4 - 240y$",
+              ":question/worked-solution": "An inhibited growth equation has the form\n\n$$\n\\dfrac{\\mathrm{d} y}{\\mathrm{d} t} = k(a-y),\n$$\n\nwhere $k > 0$ is a constant of proportionality, and $a > y$ for all $t \\ge 0.$\n\nFrom the given options, the only inhibited growth equation is\n\n$$\n\\dfrac{\\mathrm{d} y}{\\mathrm{d} t} = 240 - 4y.\n$$\n\nTo see this, let's factor the right-hand side of the equation. This gives,\n\n$$\n\\dfrac{\\mathrm{d} y}{\\mathrm{d} t} = 4(60-y).\n$$\n\nIn this case, the constant of proportionality is $k=4,$ and $a=60.$ Note that for inhibited growth, we must have $y \\lt 60$ for all $t \\ge 0.$"
+            },
+            ":knowledge-point/title": "Identifying Inhibited Growth Equations and Initial Value Problems"
+          },
+          ":step/next": {
+            ":db/id": 17592186125689
+          }
+        },
+        {
+          ":db/id": 17592186125689,
+          ":step/content": {
+            ":db/id": 17592186125810,
+            ":tutorial/content": "Now that we’ve practiced identifying inhibited growth models, let’s work through an example to see how they are used in practice.\n\nSuppose a wildlife reserve is tracking the population of a reintroduced wolf pack. The environment can support a maximum population of $450$ wolves, but the current population is still below this limit. Since monitoring began, the population reached $392$ wolves after $6$ months and $420$ wolves after $12$ months.\n\nLet's construct an inhibited growth model to describe the wolf population in terms of the month $t.$\n\nThe rate at which the population $P(t)$ changes is proportional to the difference between the maximum population and its current population. Therefore, we have the inhibited growth equation\n\n$$\n\\dfrac{\\mathrm{d}P}{\\mathrm{d}t}=k(a-P),\n$$\n\nwhere $a$ is the maximum population the reserve can sustain, and $k > 0$ is a constant of proportionality.\n\nIn our case, $a=450,$ and we have\n\n$$\n\\dfrac{\\mathrm{d}P}{\\mathrm{d}t}=k(450-P).\n$$\n\nFirst, we integrate our differential equation by separating the variables:\n\n$$\n\\begin{aligned}\\frac{dP}{450-P} & =k\\,dt \\\\ \\int \\frac{dP}{450-P} & =\\int k\\,\\text{d}t \\\\ -\\operatorname{ln}|450-P| & =kt+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited growth equation, we have $450 - P > 0$ for all $t \\geq 0.$ Next, we solve for $P(t),$ as follows:\n\n$$\n\\begin{aligned}450-P & ={e}^{-kt-C} \\\\ 450-P & ={e}^{-C}{e}^{-kt} \\\\ 450-P & =K{e}^{-kt} \\\\ P & =450-K{e}^{-kt}\\end{aligned}\n$$\n\nNote that $K=e^{-C}$ is a constant of integration.\n\nThis is the general solution. On the next slide, we will use the population data to find the specific values for the constants $K$ and $k.$",
+            ":tutorial/title": "Modeling Inhibited Growth"
+          },
+          ":step/next": {
+            ":db/id": 17592186125697
+          }
+        },
+        {
+          ":db/id": 17592186125690,
+          ":step/content": {
+            ":db/id": 17592186124674,
+            ":knowledge-point/canonical-example": {
+              ":db/id": 17592186124370,
+              ":question/id": "a568fc63-e81c-5210-93f0-bcbd429a9e40",
+              ":question/math-academy-id": "e-6678",
+              ":question/problem": "A biologist observed that the growth of the number of fish in a lake is directly proportional to the difference between the lake’s maximum fish population and the current population. Let $P(t)$ be the fish population, measured in number of fish, and let $t \\ge 0$ be the time in years. If the maximum fish population that the lake can support is $200$ fish, which differential equation could be used to model the lake’s fish population? Assume that $k > 0$ is a constant of proportionality.",
+              ":question/worked-solution": "The rate at which the fish population $P(t)$ of the lake changes is proportional to the difference between the maximum fish population the lake can support and the current fish population. Therefore, we have the differential equation\n\n$$\n\\dfrac{\\textrm d P}{\\textrm d t} = k(a - P),\n$$\n\nwhere $a$ is the maximum fish population the lake can support, and $k > 0$ is a constant of proportionality.\n\nIn our case, $a = 200 \\textrm{ fish},$ and we have\n\n$$\n\\dfrac{\\textrm d P}{\\textrm d t} = k(200 - P).\n$$"
+            },
+            ":knowledge-point/title": "Modeling Inhibited Growth"
+          },
+          ":step/next": {
+            ":db/id": 17592186125691
+          }
+        },
+        {
+          ":db/id": 17592186125691,
+          ":step/content": {
+            ":db/id": 17592186124675,
+            ":knowledge-point/canonical-example": {
+              ":db/id": 17592186124371,
+              ":question/id": "d603efdd-6e27-5e14-a106-f9fc4a182403",
+              ":question/math-academy-id": "e-6679",
+              ":question/problem": "In an aquarium, there are initially $20$ fish. After $30$ weeks, the number of fish is $50.$ Assuming inhibited growth, calculate the number of fish after $100$ weeks if the maximum capacity of the aquarium is $90$ fish.",
+              ":question/worked-solution": "The rate at which the number of fish $N(t)$ changes is proportional to the difference between the total number of fish and the current number of fish. Therefore, we have the inhibited growth equation\n\n$$\n\\dfrac{\\mathrm{d}N}{\\mathrm{d}t}=k\\left(a-N\\right),\n$$\n\nwhere $a$ is the maximum capacity of the aquarium, and $k > 0$ is a constant of proportionality.\n\nIn our case, $a = 90$ fish, and we have\n\n$$\n\\frac{\\mathrm{d} N}{\\mathrm{d} t} = k(90-N).\n$$\n\nFirst, we integrate our differential equation by separating the variables:\n\n$$\n\\begin{aligned}\\frac{dN}{90-N} & =k\\,dt \\\\ \\int \\frac{dN}{90-N} & =\\int k\\,dt \\\\ -\\operatorname{ln}⁡|90-N| & =kt+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited growth equation, we have $90 - N > 0$ for all $t \\ge 0.$\nNext, we solve for $N(t),$ as follows:\n\n$$\n\\begin{aligned}90-N & ={e}^{-kt-C} \\\\ 90-N & ={e}^{-C}{e}^{-kt} \\\\ 90-N & =K{e}^{-kt} \\\\ N & =90-K{e}^{-kt}\\end{aligned}\n$$\n\nNote that $K=e^{-C}$ is a constant of integration. \n\nWe're told that the initial number of fish was $20.$ So, we apply the initial condition $N(0)=20,$ and solve for $K{:}$\n\n$$\n\\begin{aligned}N(0) & =20 \\\\ 90-K{e}^{0} & =20 \\\\ 90-K & =20 \\\\ K & =70\\end{aligned}\n$$\n\nTherefore, we have the following expression for $N(t)\\mathbin{:}$\n\n$$\nN(t)=90 - 70 e^{-kt}\n$$\n\nWe're also told that, after $30$ weeks, the number of fish is $50.$ So, applying the condition $N(30)=50,$ we can solve for $k{:}$\n\n$$\n\\begin{aligned}N(30) & =50 \\\\ 90-70{e}^{-30k} & =50 \\\\ 40 & =70{e}^{-30k} \\\\ {e}^{-30k} & =\\frac{4}{7} \\\\ -30k & =\\operatorname{ln}⁡(\\frac{4}{7}) \\\\ k & =-\\frac{1}{30}\\operatorname{ln}⁡(\\frac{4}{7})\\end{aligned}\n$$\n\nTherefore, the solution to our initial value problem is\n\n$$\nN(t)=90-70e^{(t/30)\\,\\ln\\left(4/7\\right)}.\n$$\n\nFinally,  the number of fish after $t=100$ weeks is\n\n$$\n\\begin{aligned}N(100) & =90-70{e}^{(100/30)\\,\\operatorname{ln}⁡(4/7)} \\\\  & =79.161… \\\\  & ≈79\\,\\text{fish},\\end{aligned}\n$$\n\nrounded to the nearest integer."
+            },
+            ":knowledge-point/title": "Solving an Inhibited Growth Model"
+          }
+        },
+        {
+          ":db/id": 17592186125697,
+          ":step/content": {
+            ":db/id": 17592186125711,
+            ":tutorial/content": "Our general solution for the wolf population in month $t$ is $P(t) = 450 - Ke^{-kt}.$ Now, let's find the specific values of our constants.\n\nWe're told that, in month $6,$ the population was $392.$ So, applying the condition $P(6) = 392,$ we have\n\n$$\n\\begin{aligned}P(6) & =392 \\\\ 450-K{e}^{-6k} & =392 \\\\ K{e}^{-6k} & =58.\\end{aligned}\n$$\n\nWe're also told that, in month $12,$ the population was $420.$ So, applying the condition $P(12) = 420,$ we get\n\n$$\n\\begin{aligned}P(12) & =420 \\\\ 450-K{e}^{-12k} & =420 \\\\ K{e}^{-12k} & =30.\\end{aligned}\n$$\n\nThen, by dividing the result of the first condition by the result of the second, we can solve for $k{:}$\n\n$$\n\\begin{aligned}\\frac{K{e}^{-6k}}{K{e}^{-12k}} & =\\frac{58}{30} \\\\ {e}^{6k} & =\\frac{29}{15} \\\\ 6k & =\\operatorname{ln}(\\frac{29}{15}) \\\\ k & =\\frac{1}{6}\\operatorname{ln}(\\frac{29}{15}).\\end{aligned}\n$$\n\nNow, substituting back into the result of the first condition, we solve for $K{:}$\n\n$$\n\\begin{aligned}K & =58{e}^{6k} \\\\  & =58(\\frac{29}{15}) \\\\  & =\\frac{1682}{15}.\\end{aligned}\n$$\n\nTherefore, the wolf population in month $t$ is\n\n$$\nP(t) = 450 - \\frac{1682}{15}e^{-(t/6)\\ln(29/15)}.\n$$\n\nFinally, let [math]m[/math] be the month when the population reaches [math]435[/math] wolves. Then, we have\n\n\\begin{align*}\n435 &= 450 - \\frac{1682}{15}e^{-km} \\\\[5pt]\n15 &= \\frac{1682}{15}e^{-km} \\\\[5pt]\ne^{-km} &= \\frac{225}{1682} \\\\[5pt]\n-km &= \\ln \\left(\\frac{225}{1682}\\right) \\\\[5pt]\nm &= -\\frac{1}{k}\\ln \\left(\\frac{225}{1682}\\right).\n\\end{align*}\n\nSubstituting in our value for [math]k,[/math] we conclude that the population will be [math]435[/math] wolves after approximately\n\\[\nm = \\dfrac{-\\ln\\left(\\dfrac{225}{1682}\\right)}{\\dfrac{1}{6}\\ln\\left(\\dfrac{29}{15}\\right)}\n=18.3\\ldots\n\\approx 18\n\\]\nmonths, rounded to the nearest month.",
+            ":tutorial/title": "Modeling Inhibited Growth (Continued)"
+          },
+          ":step/next": {
+            ":db/id": 17592186125690
+          }
+        }
+      ],
+      ":activity/title": "Inhibited Growth Models With First-Order ODEs",
+      ":db/id": 17592186124718
+    }
+  ]
+}

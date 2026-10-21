@@ -2,12 +2,12 @@
   "learner_operation": "Eliminate x (possibly swap rows); set the remaining affine y coefficient to zero; inspect the residual constant to distinguish contradiction from a redundant equation, then choose the resulting k.",
   "fixed_features": [
     {
-      "feature": "One unique k and two variables",
-      "justification": "All 18 source cases solve this finite parameter-identification task, not inequality/set entry or general classification."
+      "feature": "Two variables and one unique parameter answer",
+      "justification": "The observed elimination leaves one affine coefficient. A unique singular parameter fits the five-choice assignment response. Asking for independent systems would generally require all other k values and a different response contract."
     },
     {
-      "feature": "Inconsistency for simpler band; dependence in hard source band",
-      "justification": "All labelled moderate sources are inconsistency and all hard sources are dependence; easy has no directly captured question."
+      "feature": "Inconsistency in the simpler band, dependence in the hard band",
+      "justification": "The authored easy simplification isolates a contradiction after one integer elimination. Hard source solutions additionally interpret a redundant equation and free variable, often with swaps/fractional arithmetic. Keeping these reasoning workloads within their source bands is an instructional constraint; it does not fix the numerical root, answer rank or position."
     }
   ],
   "answer_roles": [
@@ -1268,7 +1268,7 @@
       "total": 2,
       "baseline": 0.2,
       "disposition": "not_predictive",
-      "conclusion": "Previously perfect rule is no longer invariant. The comparison is blind five-choice success .2; small subgroups may coincide by chance. Numeric-rank and display-position counts also retained.",
+      "conclusion": "Exact finite subgroup: both items have b=4,d=-2 and k=-8; choose-min succeeds 2/2. This repeats one coefficient decision with changed RHS. Fresh opposite-sign controls cover all ranks and give 3/15 sign-extremum success. Whole batch rule succeeds 3/5, not every item. These two repetitions alone do not establish a family-fixed cue; the five-item batch is limited evidence of varied decisions. Blind five-choice comparison .2.",
       "sample_refs": [
         "runner-batch.json",
         "shortcut-results.json"
@@ -1283,7 +1283,7 @@
       "total": 2,
       "baseline": 0.2,
       "disposition": "not_predictive",
-      "conclusion": "Comparison .2 is blind choice; histogram documents all outcomes. A best predictor on a tiny subgroup alone does not demonstrate a structural cue; generation assigns bank rank before coefficients and UI independently shuffles display order.",
+      "conclusion": "Exact finite subgroup: both items have b=4,d=-2 and k=-8; choose-min succeeds 2/2. This repeats one coefficient decision with changed RHS. Fresh opposite-sign controls cover all ranks and give 3/15 sign-extremum success. Whole batch rule succeeds 3/5, not every item. These two repetitions alone do not establish a family-fixed cue; the five-item batch is limited evidence of varied decisions. Blind five-choice comparison .2.",
       "sample_refs": [
         "runner-batch.json",
         "shortcut-results.json"
@@ -1298,7 +1298,7 @@
       "total": 2,
       "baseline": 0.2,
       "disposition": "not_predictive",
-      "conclusion": "Comparison .2 is blind choice; histogram documents all outcomes. A best predictor on a tiny subgroup alone does not demonstrate a structural cue; generation assigns bank rank before coefficients and UI independently shuffles display order.",
+      "conclusion": "Exact finite subgroup: both items have b=4,d=-2 and k=-8; choose-min succeeds 2/2. This repeats one coefficient decision with changed RHS. Fresh opposite-sign controls cover all ranks and give 3/15 sign-extremum success. Whole batch rule succeeds 3/5, not every item. These two repetitions alone do not establish a family-fixed cue; the five-item batch is limited evidence of varied decisions. Blind five-choice comparison .2.",
       "sample_refs": [
         "runner-batch.json",
         "shortcut-results.json"
@@ -1538,7 +1538,7 @@
       "total": 2,
       "baseline": 0.2,
       "disposition": "not_predictive",
-      "conclusion": "Previously perfect rule is no longer invariant. The comparison is blind five-choice success .2; small subgroups may coincide by chance. Numeric-rank and display-position counts also retained.",
+      "conclusion": "Exact finite subgroup: both items have b=4,d=-2 and k=-8; choose-min succeeds 2/2. This repeats one coefficient decision with changed RHS. Fresh opposite-sign controls cover all ranks and give 3/15 sign-extremum success. Whole batch rule succeeds 3/5, not every item. These two repetitions alone do not establish a family-fixed cue; the five-item batch is limited evidence of varied decisions. Blind five-choice comparison .2.",
       "sample_refs": [
         "delivery-batch/accepted.json",
         "shortcut-results.json"
@@ -1553,7 +1553,7 @@
       "total": 2,
       "baseline": 0.2,
       "disposition": "not_predictive",
-      "conclusion": "Comparison .2 is blind choice; histogram documents all outcomes. A best predictor on a tiny subgroup alone does not demonstrate a structural cue; generation assigns bank rank before coefficients and UI independently shuffles display order.",
+      "conclusion": "Exact finite subgroup: both items have b=4,d=-2 and k=-8; choose-min succeeds 2/2. This repeats one coefficient decision with changed RHS. Fresh opposite-sign controls cover all ranks and give 3/15 sign-extremum success. Whole batch rule succeeds 3/5, not every item. These two repetitions alone do not establish a family-fixed cue; the five-item batch is limited evidence of varied decisions. Blind five-choice comparison .2.",
       "sample_refs": [
         "delivery-batch/accepted.json",
         "shortcut-results.json"
@@ -1568,7 +1568,7 @@
       "total": 2,
       "baseline": 0.2,
       "disposition": "not_predictive",
-      "conclusion": "Comparison .2 is blind choice; histogram documents all outcomes. A best predictor on a tiny subgroup alone does not demonstrate a structural cue; generation assigns bank rank before coefficients and UI independently shuffles display order.",
+      "conclusion": "Exact finite subgroup: both items have b=4,d=-2 and k=-8; choose-min succeeds 2/2. This repeats one coefficient decision with changed RHS. Fresh opposite-sign controls cover all ranks and give 3/15 sign-extremum success. Whole batch rule succeeds 3/5, not every item. These two repetitions alone do not establish a family-fixed cue; the five-item batch is limited evidence of varied decisions. Blind five-choice comparison .2.",
       "sample_refs": [
         "delivery-batch/accepted.json",
         "shortcut-results.json"
@@ -1707,6 +1707,36 @@
       "sample_refs": [
         "generated-records.json",
         "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Numeric coefficients in the displayed equations",
+      "subgroup": "batch:inconsistent_easy",
+      "scope": "within_template",
+      "strategy": "Multiply the first y coefficient by the second x coefficient (unit first pivot and bare k).",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "intended_skill",
+      "conclusion": "At a=u=1,v=0 the elimination equation is (k-db)y=e-dc, so k=db is the target computation. Requiring written row reduction rather than this valid simplification would impose an unsupported extra response requirement. Comparison .2 is blind choice.",
+      "sample_refs": [
+        "runner-batch.json",
+        "math-results.json"
+      ]
+    },
+    {
+      "cue": "Numeric coefficients in the displayed equations",
+      "subgroup": "fresh_easy:inconsistent_easy",
+      "scope": "within_template",
+      "strategy": "Multiply the first y coefficient by the second x coefficient (unit first pivot and bare k).",
+      "correct": 24,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "intended_skill",
+      "conclusion": "At a=u=1,v=0 the elimination equation is (k-db)y=e-dc, so k=db is the target computation. Requiring written row reduction rather than this valid simplification would impose an unsupported extra response requirement. Comparison .2 is blind choice.",
+      "sample_refs": [
+        "easy-samples.json",
+        "math-results.json"
       ]
     }
   ],

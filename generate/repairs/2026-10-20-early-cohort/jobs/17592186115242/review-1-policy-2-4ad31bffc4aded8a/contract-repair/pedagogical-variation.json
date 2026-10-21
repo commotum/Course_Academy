@@ -1,0 +1,1795 @@
+{
+  "learner_operation": "Eliminate x (possibly swap rows); set the remaining affine y coefficient to zero; inspect the residual constant to distinguish contradiction from a redundant equation, then choose the resulting k.",
+  "fixed_features": [
+    {
+      "feature": "Two variables and one unique parameter answer",
+      "justification": "The observed elimination leaves one affine coefficient. A unique singular parameter fits the five-choice assignment response. Asking for independent systems would generally require all other k values and a different response contract."
+    },
+    {
+      "feature": "Inconsistency in the simpler band, dependence in the hard band",
+      "justification": "The authored easy simplification isolates a contradiction after one integer elimination. Hard source solutions additionally interpret a redundant equation and free variable, often with swaps/fractional arithmetic. Keeping these reasoning workloads within their source bands is an instructional constraint; it does not fix the numerical root, answer rank or position."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Singular k value and sign",
+      "eligible_variation": "Coefficients and affine offsets determine signed integer/rational roots; shifted families admit zero.",
+      "observed": "Exact boundary records now retain zero across all four affected authored and observed families; ordinary signed roots vary."
+    },
+    {
+      "role": "Correct answer numeric rank and displayed position",
+      "eligible_variation": "Any of five ranks/positions; correctness must follow the equations.",
+      "observed": "Current construction varies numeric ranks. Exact batch opposite-sign subgroup fixes both answers at minimum k=-8 (2/2); historical selectable easy pool preserves sign-extremum roles (5/5)."
+    },
+    {
+      "role": "Target classification / parameter location",
+      "eligible_variation": "Preserve observed y-affine parameter with inconsistency for simpler band, dependence for hard source band.",
+      "observed": "All observed families replay, including fractional elimination with bare k. Classification fixed per source-supported difficulty; constants follow target."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "Original source and complete banks",
+      "sample_refs": [
+        "source-replay-report.json",
+        "source-replays.json",
+        "solution-fidelity.json"
+      ],
+      "result": "18/18 replay; all 17 captured five-choice banks preserved. Canonical solution uses equivalent +(-2) instead of -2 notation."
+    },
+    {
+      "case": "Changed bank roles through delivery",
+      "sample_refs": [
+        "shortcut-results.json",
+        "runner-batch.json",
+        "delivery-batch/accepted.json",
+        "samples.json"
+      ],
+      "result": "Current v3 construction varies bank ranks, but exact delivered opposite-sign subgroup remains 2/2 vulnerable and repeats the same coefficient decision. This finite-batch failure cannot be waived by larger controls."
+    },
+    {
+      "case": "Zero-root / fractional-bare repairs and resampling",
+      "sample_refs": [
+        "boundary-records.json",
+        "resampling-results.json",
+        "acceptance-old-results.json",
+        "acceptance-results.json"
+      ],
+      "result": "Strict old failures reproduced; current package passes explicit zero roots in four affected families and source q-74691."
+    },
+    {
+      "case": "Captured existing pool unresolved shortcut",
+      "sample_refs": [
+        "generated-records.json",
+        "affected-inventory.json",
+        "selection-results.json",
+        "contract-repair/shortcut-correction-results.json"
+      ],
+      "result": "Five historical v2 records match captured inventory prompts, solutions, complete banks and correct answers; sign-only extremum action solves 5/5. The new_seen conditional history selects only this vulnerable pool (64/64 prior draws)."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "At seed 681704 keep a=1,b=2,c=1,d=2,u=1,e=3 fixed; v 3 -> 1 and 4.",
+      "expected": "Roots 1 -> 3 and 0; elimination, final answer and native grading update together.",
+      "observed": "Exact printed prompts/matrices/conclusions give 1,3,0. Actual native grader tests all five choices including old k=1 in new-root bank. UI renders each.",
+      "status": "passed",
+      "justification": "Elimination root is (db/a-v)/u, so changing v requires reconsidering k.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-report.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "At same seed and coefficients change second RHS 3 -> 4.",
+      "expected": "Root stays 1; nonzero residual changes 1 -> 2.",
+      "observed": "Printed system and solution update residual, preserve k=1; all actual grader choices tested and pair rendered.",
+      "status": "passed",
+      "justification": "Both residual constants remain nonzero, so their magnitudes do not affect singular parameter.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-report.json",
+        "render/rendering.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "Signs of numeric coefficients and numeric order of bank",
+      "subgroup": "fresh:inconsistent_easy",
+      "scope": "within_template",
+      "strategy": "Choose maximum option if numeric y coefficient times elimination multiplier is positive, otherwise minimum; ignore magnitudes.",
+      "correct": 5,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Previously perfect rule is no longer invariant. The comparison is blind five-choice success .2; small subgroups may coincide by chance. Numeric-rank and display-position counts also retained.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed displayed option position",
+      "subgroup": "fresh:inconsistent_easy",
+      "scope": "within_template",
+      "strategy": "Always choose 1 (zero based); best observed constant predictor.",
+      "correct": 7,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison .2 is blind choice; histogram documents all outcomes. A best predictor on a tiny subgroup alone does not demonstrate a structural cue; generation assigns bank rank before coefficients and UI independently shuffles display order.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed numeric rank",
+      "subgroup": "fresh:inconsistent_easy",
+      "scope": "within_template",
+      "strategy": "Always choose 0 (zero based); best observed constant predictor.",
+      "correct": 8,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison .2 is blind choice; histogram documents all outcomes. A best predictor on a tiny subgroup alone does not demonstrate a structural cue; generation assigns bank rank before coefficients and UI independently shuffles display order.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Signs of numeric coefficients and numeric order of bank",
+      "subgroup": "fresh:inconsistent_easy:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose maximum option if numeric y coefficient times elimination multiplier is positive, otherwise minimum; ignore magnitudes.",
+      "correct": 3,
+      "total": 15,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Previously perfect rule is no longer invariant. The comparison is blind five-choice success .2; small subgroups may coincide by chance. Numeric-rank and display-position counts also retained.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed displayed option position",
+      "subgroup": "fresh:inconsistent_easy:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose 1 (zero based); best observed constant predictor.",
+      "correct": 4,
+      "total": 15,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison .2 is blind choice; histogram documents all outcomes. A best predictor on a tiny subgroup alone does not demonstrate a structural cue; generation assigns bank rank before coefficients and UI independently shuffles display order.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed numeric rank",
+      "subgroup": "fresh:inconsistent_easy:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose 2 (zero based); best observed constant predictor.",
+      "correct": 5,
+      "total": 15,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison .2 is blind choice; histogram documents all outcomes. A best predictor on a tiny subgroup alone does not demonstrate a structural cue; generation assigns bank rank before coefficients and UI independently shuffles display order.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Signs of numeric coefficients and numeric order of bank",
+      "subgroup": "fresh:inconsistent_easy:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose maximum option if numeric y coefficient times elimination multiplier is positive, otherwise minimum; ignore magnitudes.",
+      "correct": 2,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Previously perfect rule is no longer invariant. The comparison is blind five-choice success .2; small subgroups may coincide by chance. Numeric-rank and display-position counts also retained.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed displayed option position",
+      "subgroup": "fresh:inconsistent_easy:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose 1 (zero based); best observed constant predictor.",
+      "correct": 3,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison .2 is blind choice; histogram documents all outcomes. A best predictor on a tiny subgroup alone does not demonstrate a structural cue; generation assigns bank rank before coefficients and UI independently shuffles display order.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed numeric rank",
+      "subgroup": "fresh:inconsistent_easy:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose 0 (zero based); best observed constant predictor.",
+      "correct": 5,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison .2 is blind choice; histogram documents all outcomes. A best predictor on a tiny subgroup alone does not demonstrate a structural cue; generation assigns bank rank before coefficients and UI independently shuffles display order.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Signs of numeric coefficients and numeric order of bank",
+      "subgroup": "fresh:inconsistent_bare",
+      "scope": "within_template",
+      "strategy": "Choose maximum option if numeric y coefficient times elimination multiplier is positive, otherwise minimum; ignore magnitudes.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Previously perfect rule is no longer invariant. The comparison is blind five-choice success .2; small subgroups may coincide by chance. Numeric-rank and display-position counts also retained.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed displayed option position",
+      "subgroup": "fresh:inconsistent_bare",
+      "scope": "within_template",
+      "strategy": "Always choose 2 (zero based); best observed constant predictor.",
+      "correct": 3,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison .2 is blind choice; histogram documents all outcomes. A best predictor on a tiny subgroup alone does not demonstrate a structural cue; generation assigns bank rank before coefficients and UI independently shuffles display order.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed numeric rank",
+      "subgroup": "fresh:inconsistent_bare",
+      "scope": "within_template",
+      "strategy": "Always choose 0 (zero based); best observed constant predictor.",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison .2 is blind choice; histogram documents all outcomes. A best predictor on a tiny subgroup alone does not demonstrate a structural cue; generation assigns bank rank before coefficients and UI independently shuffles display order.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Signs of numeric coefficients and numeric order of bank",
+      "subgroup": "fresh:inconsistent_bare:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose maximum option if numeric y coefficient times elimination multiplier is positive, otherwise minimum; ignore magnitudes.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Previously perfect rule is no longer invariant. The comparison is blind five-choice success .2; small subgroups may coincide by chance. Numeric-rank and display-position counts also retained.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed displayed option position",
+      "subgroup": "fresh:inconsistent_bare:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose 4 (zero based); best observed constant predictor.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison .2 is blind choice; histogram documents all outcomes. A best predictor on a tiny subgroup alone does not demonstrate a structural cue; generation assigns bank rank before coefficients and UI independently shuffles display order.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed numeric rank",
+      "subgroup": "fresh:inconsistent_bare:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose 0 (zero based); best observed constant predictor.",
+      "correct": 2,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison .2 is blind choice; histogram documents all outcomes. A best predictor on a tiny subgroup alone does not demonstrate a structural cue; generation assigns bank rank before coefficients and UI independently shuffles display order.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Signs of numeric coefficients and numeric order of bank",
+      "subgroup": "fresh:inconsistent_bare:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose maximum option if numeric y coefficient times elimination multiplier is positive, otherwise minimum; ignore magnitudes.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Previously perfect rule is no longer invariant. The comparison is blind five-choice success .2; small subgroups may coincide by chance. Numeric-rank and display-position counts also retained.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed displayed option position",
+      "subgroup": "fresh:inconsistent_bare:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose 2 (zero based); best observed constant predictor.",
+      "correct": 2,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison .2 is blind choice; histogram documents all outcomes. A best predictor on a tiny subgroup alone does not demonstrate a structural cue; generation assigns bank rank before coefficients and UI independently shuffles display order.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed numeric rank",
+      "subgroup": "fresh:inconsistent_bare:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose 4 (zero based); best observed constant predictor.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison .2 is blind choice; histogram documents all outcomes. A best predictor on a tiny subgroup alone does not demonstrate a structural cue; generation assigns bank rank before coefficients and UI independently shuffles display order.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Signs of numeric coefficients and numeric order of bank",
+      "subgroup": "fresh:inconsistent_shift",
+      "scope": "within_template",
+      "strategy": "Choose maximum option if numeric y coefficient times elimination multiplier is positive, otherwise minimum; ignore magnitudes.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Previously perfect rule is no longer invariant. The comparison is blind five-choice success .2; small subgroups may coincide by chance. Numeric-rank and display-position counts also retained.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed displayed option position",
+      "subgroup": "fresh:inconsistent_shift",
+      "scope": "within_template",
+      "strategy": "Always choose 3 (zero based); best observed constant predictor.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison .2 is blind choice; histogram documents all outcomes. A best predictor on a tiny subgroup alone does not demonstrate a structural cue; generation assigns bank rank before coefficients and UI independently shuffles display order.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed numeric rank",
+      "subgroup": "fresh:inconsistent_shift",
+      "scope": "within_template",
+      "strategy": "Always choose 0 (zero based); best observed constant predictor.",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison .2 is blind choice; histogram documents all outcomes. A best predictor on a tiny subgroup alone does not demonstrate a structural cue; generation assigns bank rank before coefficients and UI independently shuffles display order.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Signs of numeric coefficients and numeric order of bank",
+      "subgroup": "fresh:inconsistent_shift:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose maximum option if numeric y coefficient times elimination multiplier is positive, otherwise minimum; ignore magnitudes.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Previously perfect rule is no longer invariant. The comparison is blind five-choice success .2; small subgroups may coincide by chance. Numeric-rank and display-position counts also retained.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed displayed option position",
+      "subgroup": "fresh:inconsistent_shift:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose 3 (zero based); best observed constant predictor.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison .2 is blind choice; histogram documents all outcomes. A best predictor on a tiny subgroup alone does not demonstrate a structural cue; generation assigns bank rank before coefficients and UI independently shuffles display order.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed numeric rank",
+      "subgroup": "fresh:inconsistent_shift:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose 0 (zero based); best observed constant predictor.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison .2 is blind choice; histogram documents all outcomes. A best predictor on a tiny subgroup alone does not demonstrate a structural cue; generation assigns bank rank before coefficients and UI independently shuffles display order.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Signs of numeric coefficients and numeric order of bank",
+      "subgroup": "fresh:inconsistent_shift:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose maximum option if numeric y coefficient times elimination multiplier is positive, otherwise minimum; ignore magnitudes.",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Previously perfect rule is no longer invariant. The comparison is blind five-choice success .2; small subgroups may coincide by chance. Numeric-rank and display-position counts also retained.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed displayed option position",
+      "subgroup": "fresh:inconsistent_shift:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose 1 (zero based); best observed constant predictor.",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison .2 is blind choice; histogram documents all outcomes. A best predictor on a tiny subgroup alone does not demonstrate a structural cue; generation assigns bank rank before coefficients and UI independently shuffles display order.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed numeric rank",
+      "subgroup": "fresh:inconsistent_shift:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose 4 (zero based); best observed constant predictor.",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison .2 is blind choice; histogram documents all outcomes. A best predictor on a tiny subgroup alone does not demonstrate a structural cue; generation assigns bank rank before coefficients and UI independently shuffles display order.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Signs of numeric coefficients and numeric order of bank",
+      "subgroup": "fresh:inconsistent_scaled",
+      "scope": "within_template",
+      "strategy": "Choose maximum option if numeric y coefficient times elimination multiplier is positive, otherwise minimum; ignore magnitudes.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Previously perfect rule is no longer invariant. The comparison is blind five-choice success .2; small subgroups may coincide by chance. Numeric-rank and display-position counts also retained.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed displayed option position",
+      "subgroup": "fresh:inconsistent_scaled",
+      "scope": "within_template",
+      "strategy": "Always choose 3 (zero based); best observed constant predictor.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison .2 is blind choice; histogram documents all outcomes. A best predictor on a tiny subgroup alone does not demonstrate a structural cue; generation assigns bank rank before coefficients and UI independently shuffles display order.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed numeric rank",
+      "subgroup": "fresh:inconsistent_scaled",
+      "scope": "within_template",
+      "strategy": "Always choose 0 (zero based); best observed constant predictor.",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison .2 is blind choice; histogram documents all outcomes. A best predictor on a tiny subgroup alone does not demonstrate a structural cue; generation assigns bank rank before coefficients and UI independently shuffles display order.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Signs of numeric coefficients and numeric order of bank",
+      "subgroup": "fresh:inconsistent_scaled:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose maximum option if numeric y coefficient times elimination multiplier is positive, otherwise minimum; ignore magnitudes.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Previously perfect rule is no longer invariant. The comparison is blind five-choice success .2; small subgroups may coincide by chance. Numeric-rank and display-position counts also retained.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed displayed option position",
+      "subgroup": "fresh:inconsistent_scaled:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose 3 (zero based); best observed constant predictor.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison .2 is blind choice; histogram documents all outcomes. A best predictor on a tiny subgroup alone does not demonstrate a structural cue; generation assigns bank rank before coefficients and UI independently shuffles display order.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed numeric rank",
+      "subgroup": "fresh:inconsistent_scaled:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose 0 (zero based); best observed constant predictor.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison .2 is blind choice; histogram documents all outcomes. A best predictor on a tiny subgroup alone does not demonstrate a structural cue; generation assigns bank rank before coefficients and UI independently shuffles display order.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Signs of numeric coefficients and numeric order of bank",
+      "subgroup": "fresh:inconsistent_scaled:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose maximum option if numeric y coefficient times elimination multiplier is positive, otherwise minimum; ignore magnitudes.",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Previously perfect rule is no longer invariant. The comparison is blind five-choice success .2; small subgroups may coincide by chance. Numeric-rank and display-position counts also retained.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed displayed option position",
+      "subgroup": "fresh:inconsistent_scaled:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose 1 (zero based); best observed constant predictor.",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison .2 is blind choice; histogram documents all outcomes. A best predictor on a tiny subgroup alone does not demonstrate a structural cue; generation assigns bank rank before coefficients and UI independently shuffles display order.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed numeric rank",
+      "subgroup": "fresh:inconsistent_scaled:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose 4 (zero based); best observed constant predictor.",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison .2 is blind choice; histogram documents all outcomes. A best predictor on a tiny subgroup alone does not demonstrate a structural cue; generation assigns bank rank before coefficients and UI independently shuffles display order.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Signs of numeric coefficients and numeric order of bank",
+      "subgroup": "fresh:inconsistent_scaled_shift",
+      "scope": "within_template",
+      "strategy": "Choose maximum option if numeric y coefficient times elimination multiplier is positive, otherwise minimum; ignore magnitudes.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Previously perfect rule is no longer invariant. The comparison is blind five-choice success .2; small subgroups may coincide by chance. Numeric-rank and display-position counts also retained.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed displayed option position",
+      "subgroup": "fresh:inconsistent_scaled_shift",
+      "scope": "within_template",
+      "strategy": "Always choose 4 (zero based); best observed constant predictor.",
+      "correct": 3,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison .2 is blind choice; histogram documents all outcomes. A best predictor on a tiny subgroup alone does not demonstrate a structural cue; generation assigns bank rank before coefficients and UI independently shuffles display order.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed numeric rank",
+      "subgroup": "fresh:inconsistent_scaled_shift",
+      "scope": "within_template",
+      "strategy": "Always choose 0 (zero based); best observed constant predictor.",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison .2 is blind choice; histogram documents all outcomes. A best predictor on a tiny subgroup alone does not demonstrate a structural cue; generation assigns bank rank before coefficients and UI independently shuffles display order.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Signs of numeric coefficients and numeric order of bank",
+      "subgroup": "fresh:inconsistent_scaled_shift:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose maximum option if numeric y coefficient times elimination multiplier is positive, otherwise minimum; ignore magnitudes.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Previously perfect rule is no longer invariant. The comparison is blind five-choice success .2; small subgroups may coincide by chance. Numeric-rank and display-position counts also retained.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed displayed option position",
+      "subgroup": "fresh:inconsistent_scaled_shift:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose 4 (zero based); best observed constant predictor.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison .2 is blind choice; histogram documents all outcomes. A best predictor on a tiny subgroup alone does not demonstrate a structural cue; generation assigns bank rank before coefficients and UI independently shuffles display order.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed numeric rank",
+      "subgroup": "fresh:inconsistent_scaled_shift:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose 0 (zero based); best observed constant predictor.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison .2 is blind choice; histogram documents all outcomes. A best predictor on a tiny subgroup alone does not demonstrate a structural cue; generation assigns bank rank before coefficients and UI independently shuffles display order.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Signs of numeric coefficients and numeric order of bank",
+      "subgroup": "fresh:inconsistent_scaled_shift:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose maximum option if numeric y coefficient times elimination multiplier is positive, otherwise minimum; ignore magnitudes.",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Previously perfect rule is no longer invariant. The comparison is blind five-choice success .2; small subgroups may coincide by chance. Numeric-rank and display-position counts also retained.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed displayed option position",
+      "subgroup": "fresh:inconsistent_scaled_shift:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose 4 (zero based); best observed constant predictor.",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison .2 is blind choice; histogram documents all outcomes. A best predictor on a tiny subgroup alone does not demonstrate a structural cue; generation assigns bank rank before coefficients and UI independently shuffles display order.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed numeric rank",
+      "subgroup": "fresh:inconsistent_scaled_shift:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose 4 (zero based); best observed constant predictor.",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison .2 is blind choice; histogram documents all outcomes. A best predictor on a tiny subgroup alone does not demonstrate a structural cue; generation assigns bank rank before coefficients and UI independently shuffles display order.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Signs of numeric coefficients and numeric order of bank",
+      "subgroup": "fresh:dependent_swap",
+      "scope": "within_template",
+      "strategy": "Choose maximum option if numeric y coefficient times elimination multiplier is positive, otherwise minimum; ignore magnitudes.",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Previously perfect rule is no longer invariant. The comparison is blind five-choice success .2; small subgroups may coincide by chance. Numeric-rank and display-position counts also retained.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed displayed option position",
+      "subgroup": "fresh:dependent_swap",
+      "scope": "within_template",
+      "strategy": "Always choose 2 (zero based); best observed constant predictor.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison .2 is blind choice; histogram documents all outcomes. A best predictor on a tiny subgroup alone does not demonstrate a structural cue; generation assigns bank rank before coefficients and UI independently shuffles display order.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed numeric rank",
+      "subgroup": "fresh:dependent_swap",
+      "scope": "within_template",
+      "strategy": "Always choose 0 (zero based); best observed constant predictor.",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison .2 is blind choice; histogram documents all outcomes. A best predictor on a tiny subgroup alone does not demonstrate a structural cue; generation assigns bank rank before coefficients and UI independently shuffles display order.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Signs of numeric coefficients and numeric order of bank",
+      "subgroup": "fresh:dependent_swap:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose maximum option if numeric y coefficient times elimination multiplier is positive, otherwise minimum; ignore magnitudes.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Previously perfect rule is no longer invariant. The comparison is blind five-choice success .2; small subgroups may coincide by chance. Numeric-rank and display-position counts also retained.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed displayed option position",
+      "subgroup": "fresh:dependent_swap:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose 2 (zero based); best observed constant predictor.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison .2 is blind choice; histogram documents all outcomes. A best predictor on a tiny subgroup alone does not demonstrate a structural cue; generation assigns bank rank before coefficients and UI independently shuffles display order.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed numeric rank",
+      "subgroup": "fresh:dependent_swap:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose 0 (zero based); best observed constant predictor.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison .2 is blind choice; histogram documents all outcomes. A best predictor on a tiny subgroup alone does not demonstrate a structural cue; generation assigns bank rank before coefficients and UI independently shuffles display order.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Signs of numeric coefficients and numeric order of bank",
+      "subgroup": "fresh:dependent_swap:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose maximum option if numeric y coefficient times elimination multiplier is positive, otherwise minimum; ignore magnitudes.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Previously perfect rule is no longer invariant. The comparison is blind five-choice success .2; small subgroups may coincide by chance. Numeric-rank and display-position counts also retained.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed displayed option position",
+      "subgroup": "fresh:dependent_swap:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose 3 (zero based); best observed constant predictor.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison .2 is blind choice; histogram documents all outcomes. A best predictor on a tiny subgroup alone does not demonstrate a structural cue; generation assigns bank rank before coefficients and UI independently shuffles display order.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed numeric rank",
+      "subgroup": "fresh:dependent_swap:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose 4 (zero based); best observed constant predictor.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison .2 is blind choice; histogram documents all outcomes. A best predictor on a tiny subgroup alone does not demonstrate a structural cue; generation assigns bank rank before coefficients and UI independently shuffles display order.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Signs of numeric coefficients and numeric order of bank",
+      "subgroup": "fresh:dependent_fractional",
+      "scope": "within_template",
+      "strategy": "Choose maximum option if numeric y coefficient times elimination multiplier is positive, otherwise minimum; ignore magnitudes.",
+      "correct": 3,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Previously perfect rule is no longer invariant. The comparison is blind five-choice success .2; small subgroups may coincide by chance. Numeric-rank and display-position counts also retained.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed displayed option position",
+      "subgroup": "fresh:dependent_fractional",
+      "scope": "within_template",
+      "strategy": "Always choose 1 (zero based); best observed constant predictor.",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison .2 is blind choice; histogram documents all outcomes. A best predictor on a tiny subgroup alone does not demonstrate a structural cue; generation assigns bank rank before coefficients and UI independently shuffles display order.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed numeric rank",
+      "subgroup": "fresh:dependent_fractional",
+      "scope": "within_template",
+      "strategy": "Always choose 0 (zero based); best observed constant predictor.",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison .2 is blind choice; histogram documents all outcomes. A best predictor on a tiny subgroup alone does not demonstrate a structural cue; generation assigns bank rank before coefficients and UI independently shuffles display order.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Signs of numeric coefficients and numeric order of bank",
+      "subgroup": "fresh:dependent_fractional:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose maximum option if numeric y coefficient times elimination multiplier is positive, otherwise minimum; ignore magnitudes.",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Previously perfect rule is no longer invariant. The comparison is blind five-choice success .2; small subgroups may coincide by chance. Numeric-rank and display-position counts also retained.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed displayed option position",
+      "subgroup": "fresh:dependent_fractional:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose 1 (zero based); best observed constant predictor.",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison .2 is blind choice; histogram documents all outcomes. A best predictor on a tiny subgroup alone does not demonstrate a structural cue; generation assigns bank rank before coefficients and UI independently shuffles display order.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed numeric rank",
+      "subgroup": "fresh:dependent_fractional:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose 0 (zero based); best observed constant predictor.",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison .2 is blind choice; histogram documents all outcomes. A best predictor on a tiny subgroup alone does not demonstrate a structural cue; generation assigns bank rank before coefficients and UI independently shuffles display order.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Signs of numeric coefficients and numeric order of bank",
+      "subgroup": "fresh:dependent_fractional:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose maximum option if numeric y coefficient times elimination multiplier is positive, otherwise minimum; ignore magnitudes.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Previously perfect rule is no longer invariant. The comparison is blind five-choice success .2; small subgroups may coincide by chance. Numeric-rank and display-position counts also retained.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed displayed option position",
+      "subgroup": "fresh:dependent_fractional:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose 2 (zero based); best observed constant predictor.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison .2 is blind choice; histogram documents all outcomes. A best predictor on a tiny subgroup alone does not demonstrate a structural cue; generation assigns bank rank before coefficients and UI independently shuffles display order.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed numeric rank",
+      "subgroup": "fresh:dependent_fractional:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose 4 (zero based); best observed constant predictor.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison .2 is blind choice; histogram documents all outcomes. A best predictor on a tiny subgroup alone does not demonstrate a structural cue; generation assigns bank rank before coefficients and UI independently shuffles display order.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Signs of numeric coefficients and numeric order of bank",
+      "subgroup": "fresh:dependent_negative",
+      "scope": "within_template",
+      "strategy": "Choose maximum option if numeric y coefficient times elimination multiplier is positive, otherwise minimum; ignore magnitudes.",
+      "correct": 3,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Previously perfect rule is no longer invariant. The comparison is blind five-choice success .2; small subgroups may coincide by chance. Numeric-rank and display-position counts also retained.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed displayed option position",
+      "subgroup": "fresh:dependent_negative",
+      "scope": "within_template",
+      "strategy": "Always choose 1 (zero based); best observed constant predictor.",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison .2 is blind choice; histogram documents all outcomes. A best predictor on a tiny subgroup alone does not demonstrate a structural cue; generation assigns bank rank before coefficients and UI independently shuffles display order.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed numeric rank",
+      "subgroup": "fresh:dependent_negative",
+      "scope": "within_template",
+      "strategy": "Always choose 0 (zero based); best observed constant predictor.",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison .2 is blind choice; histogram documents all outcomes. A best predictor on a tiny subgroup alone does not demonstrate a structural cue; generation assigns bank rank before coefficients and UI independently shuffles display order.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Signs of numeric coefficients and numeric order of bank",
+      "subgroup": "fresh:dependent_negative:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose maximum option if numeric y coefficient times elimination multiplier is positive, otherwise minimum; ignore magnitudes.",
+      "correct": 2,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Previously perfect rule is no longer invariant. The comparison is blind five-choice success .2; small subgroups may coincide by chance. Numeric-rank and display-position counts also retained.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed displayed option position",
+      "subgroup": "fresh:dependent_negative:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose 3 (zero based); best observed constant predictor.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison .2 is blind choice; histogram documents all outcomes. A best predictor on a tiny subgroup alone does not demonstrate a structural cue; generation assigns bank rank before coefficients and UI independently shuffles display order.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed numeric rank",
+      "subgroup": "fresh:dependent_negative:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose 0 (zero based); best observed constant predictor.",
+      "correct": 2,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison .2 is blind choice; histogram documents all outcomes. A best predictor on a tiny subgroup alone does not demonstrate a structural cue; generation assigns bank rank before coefficients and UI independently shuffles display order.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Signs of numeric coefficients and numeric order of bank",
+      "subgroup": "fresh:dependent_negative:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose maximum option if numeric y coefficient times elimination multiplier is positive, otherwise minimum; ignore magnitudes.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Previously perfect rule is no longer invariant. The comparison is blind five-choice success .2; small subgroups may coincide by chance. Numeric-rank and display-position counts also retained.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed displayed option position",
+      "subgroup": "fresh:dependent_negative:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose 2 (zero based); best observed constant predictor.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison .2 is blind choice; histogram documents all outcomes. A best predictor on a tiny subgroup alone does not demonstrate a structural cue; generation assigns bank rank before coefficients and UI independently shuffles display order.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed numeric rank",
+      "subgroup": "fresh:dependent_negative:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose 4 (zero based); best observed constant predictor.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison .2 is blind choice; histogram documents all outcomes. A best predictor on a tiny subgroup alone does not demonstrate a structural cue; generation assigns bank rank before coefficients and UI independently shuffles display order.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Signs of numeric coefficients and numeric order of bank",
+      "subgroup": "batch:inconsistent_easy",
+      "scope": "within_template",
+      "strategy": "Choose maximum option if numeric y coefficient times elimination multiplier is positive, otherwise minimum; ignore magnitudes.",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Previously perfect rule is no longer invariant. The comparison is blind five-choice success .2; small subgroups may coincide by chance. Numeric-rank and display-position counts also retained.",
+      "sample_refs": [
+        "runner-batch.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed displayed option position",
+      "subgroup": "batch:inconsistent_easy",
+      "scope": "within_template",
+      "strategy": "Always choose 2 (zero based); best observed constant predictor.",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison .2 is blind choice; histogram documents all outcomes. A best predictor on a tiny subgroup alone does not demonstrate a structural cue; generation assigns bank rank before coefficients and UI independently shuffles display order.",
+      "sample_refs": [
+        "runner-batch.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed numeric rank",
+      "subgroup": "batch:inconsistent_easy",
+      "scope": "within_template",
+      "strategy": "Always choose 0 (zero based); best observed constant predictor.",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison .2 is blind choice; histogram documents all outcomes. A best predictor on a tiny subgroup alone does not demonstrate a structural cue; generation assigns bank rank before coefficients and UI independently shuffles display order.",
+      "sample_refs": [
+        "runner-batch.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Signs of numeric coefficients and numeric order of bank",
+      "subgroup": "batch:inconsistent_easy:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose maximum option if numeric y coefficient times elimination multiplier is positive, otherwise minimum; ignore magnitudes.",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Previously perfect rule is no longer invariant. The comparison is blind five-choice success .2; small subgroups may coincide by chance. Numeric-rank and display-position counts also retained.",
+      "sample_refs": [
+        "runner-batch.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed displayed option position",
+      "subgroup": "batch:inconsistent_easy:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose 2 (zero based); best observed constant predictor.",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison .2 is blind choice; histogram documents all outcomes. A best predictor on a tiny subgroup alone does not demonstrate a structural cue; generation assigns bank rank before coefficients and UI independently shuffles display order.",
+      "sample_refs": [
+        "runner-batch.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed numeric rank",
+      "subgroup": "batch:inconsistent_easy:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose 0 (zero based); best observed constant predictor.",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison .2 is blind choice; histogram documents all outcomes. A best predictor on a tiny subgroup alone does not demonstrate a structural cue; generation assigns bank rank before coefficients and UI independently shuffles display order.",
+      "sample_refs": [
+        "runner-batch.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Signs of numeric coefficients and numeric order of bank",
+      "subgroup": "batch:inconsistent_easy:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose maximum option if numeric y coefficient times elimination multiplier is positive, otherwise minimum; ignore magnitudes.",
+      "correct": 2,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Finite batch-selection failure: choose the minimum option succeeds 2/2 in this recognizable sign subgroup, compared with blind five-choice success 0.2. Both records repeat b=4,d=-2 and k=-8 while RHS values change. This does not establish a universal v3 generator defect. Fresh control successes of 3/15 cannot waive the finite delivered pool.",
+      "sample_refs": [
+        "runner-batch.json",
+        "shortcut-results.json",
+        "contract-repair/shortcut-correction-results.json",
+        "contract-repair/batch-counterexamples.json"
+      ]
+    },
+    {
+      "cue": "Fixed displayed option position",
+      "subgroup": "batch:inconsistent_easy:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose 2 (zero based); best observed constant predictor.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Fixed displayed position succeeds only 1/2 (blind comparison 0.2); no position invariant demonstrated. The separate numeric-minimum action solves both members.",
+      "sample_refs": [
+        "runner-batch.json",
+        "shortcut-results.json",
+        "contract-repair/shortcut-correction-results.json",
+        "contract-repair/batch-counterexamples.json"
+      ]
+    },
+    {
+      "cue": "Fixed numeric rank",
+      "subgroup": "batch:inconsistent_easy:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose 0 (zero based); best observed constant predictor.",
+      "correct": 2,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Finite batch-selection failure: choose the minimum option succeeds 2/2 in this recognizable sign subgroup, compared with blind five-choice success 0.2. Both records repeat b=4,d=-2 and k=-8 while RHS values change. This does not establish a universal v3 generator defect. Fresh control successes of 3/15 cannot waive the finite delivered pool.",
+      "sample_refs": [
+        "runner-batch.json",
+        "shortcut-results.json",
+        "contract-repair/shortcut-correction-results.json",
+        "contract-repair/batch-counterexamples.json"
+      ]
+    },
+    {
+      "cue": "Signs of numeric coefficients and numeric order of bank",
+      "subgroup": "delivered_fresh:inconsistent_easy",
+      "scope": "within_template",
+      "strategy": "Choose maximum option if numeric y coefficient times elimination multiplier is positive, otherwise minimum; ignore magnitudes.",
+      "correct": 5,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Previously perfect rule is no longer invariant. The comparison is blind five-choice success .2; small subgroups may coincide by chance. Numeric-rank and display-position counts also retained.",
+      "sample_refs": [
+        "delivery-sample/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed displayed option position",
+      "subgroup": "delivered_fresh:inconsistent_easy",
+      "scope": "within_template",
+      "strategy": "Always choose 1 (zero based); best observed constant predictor.",
+      "correct": 7,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison .2 is blind choice; histogram documents all outcomes. A best predictor on a tiny subgroup alone does not demonstrate a structural cue; generation assigns bank rank before coefficients and UI independently shuffles display order.",
+      "sample_refs": [
+        "delivery-sample/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed numeric rank",
+      "subgroup": "delivered_fresh:inconsistent_easy",
+      "scope": "within_template",
+      "strategy": "Always choose 0 (zero based); best observed constant predictor.",
+      "correct": 8,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison .2 is blind choice; histogram documents all outcomes. A best predictor on a tiny subgroup alone does not demonstrate a structural cue; generation assigns bank rank before coefficients and UI independently shuffles display order.",
+      "sample_refs": [
+        "delivery-sample/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Signs of numeric coefficients and numeric order of bank",
+      "subgroup": "delivered_fresh:inconsistent_easy:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose maximum option if numeric y coefficient times elimination multiplier is positive, otherwise minimum; ignore magnitudes.",
+      "correct": 3,
+      "total": 15,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Previously perfect rule is no longer invariant. The comparison is blind five-choice success .2; small subgroups may coincide by chance. Numeric-rank and display-position counts also retained.",
+      "sample_refs": [
+        "delivery-sample/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed displayed option position",
+      "subgroup": "delivered_fresh:inconsistent_easy:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose 1 (zero based); best observed constant predictor.",
+      "correct": 4,
+      "total": 15,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison .2 is blind choice; histogram documents all outcomes. A best predictor on a tiny subgroup alone does not demonstrate a structural cue; generation assigns bank rank before coefficients and UI independently shuffles display order.",
+      "sample_refs": [
+        "delivery-sample/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed numeric rank",
+      "subgroup": "delivered_fresh:inconsistent_easy:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose 2 (zero based); best observed constant predictor.",
+      "correct": 5,
+      "total": 15,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison .2 is blind choice; histogram documents all outcomes. A best predictor on a tiny subgroup alone does not demonstrate a structural cue; generation assigns bank rank before coefficients and UI independently shuffles display order.",
+      "sample_refs": [
+        "delivery-sample/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Signs of numeric coefficients and numeric order of bank",
+      "subgroup": "delivered_fresh:inconsistent_easy:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose maximum option if numeric y coefficient times elimination multiplier is positive, otherwise minimum; ignore magnitudes.",
+      "correct": 2,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Previously perfect rule is no longer invariant. The comparison is blind five-choice success .2; small subgroups may coincide by chance. Numeric-rank and display-position counts also retained.",
+      "sample_refs": [
+        "delivery-sample/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed displayed option position",
+      "subgroup": "delivered_fresh:inconsistent_easy:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose 1 (zero based); best observed constant predictor.",
+      "correct": 3,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison .2 is blind choice; histogram documents all outcomes. A best predictor on a tiny subgroup alone does not demonstrate a structural cue; generation assigns bank rank before coefficients and UI independently shuffles display order.",
+      "sample_refs": [
+        "delivery-sample/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed numeric rank",
+      "subgroup": "delivered_fresh:inconsistent_easy:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose 0 (zero based); best observed constant predictor.",
+      "correct": 5,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison .2 is blind choice; histogram documents all outcomes. A best predictor on a tiny subgroup alone does not demonstrate a structural cue; generation assigns bank rank before coefficients and UI independently shuffles display order.",
+      "sample_refs": [
+        "delivery-sample/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Signs of numeric coefficients and numeric order of bank",
+      "subgroup": "delivered_batch:inconsistent_easy",
+      "scope": "within_template",
+      "strategy": "Choose maximum option if numeric y coefficient times elimination multiplier is positive, otherwise minimum; ignore magnitudes.",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Previously perfect rule is no longer invariant. The comparison is blind five-choice success .2; small subgroups may coincide by chance. Numeric-rank and display-position counts also retained.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed displayed option position",
+      "subgroup": "delivered_batch:inconsistent_easy",
+      "scope": "within_template",
+      "strategy": "Always choose 2 (zero based); best observed constant predictor.",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison .2 is blind choice; histogram documents all outcomes. A best predictor on a tiny subgroup alone does not demonstrate a structural cue; generation assigns bank rank before coefficients and UI independently shuffles display order.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed numeric rank",
+      "subgroup": "delivered_batch:inconsistent_easy",
+      "scope": "within_template",
+      "strategy": "Always choose 0 (zero based); best observed constant predictor.",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison .2 is blind choice; histogram documents all outcomes. A best predictor on a tiny subgroup alone does not demonstrate a structural cue; generation assigns bank rank before coefficients and UI independently shuffles display order.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Signs of numeric coefficients and numeric order of bank",
+      "subgroup": "delivered_batch:inconsistent_easy:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose maximum option if numeric y coefficient times elimination multiplier is positive, otherwise minimum; ignore magnitudes.",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Previously perfect rule is no longer invariant. The comparison is blind five-choice success .2; small subgroups may coincide by chance. Numeric-rank and display-position counts also retained.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed displayed option position",
+      "subgroup": "delivered_batch:inconsistent_easy:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose 2 (zero based); best observed constant predictor.",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison .2 is blind choice; histogram documents all outcomes. A best predictor on a tiny subgroup alone does not demonstrate a structural cue; generation assigns bank rank before coefficients and UI independently shuffles display order.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed numeric rank",
+      "subgroup": "delivered_batch:inconsistent_easy:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose 0 (zero based); best observed constant predictor.",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison .2 is blind choice; histogram documents all outcomes. A best predictor on a tiny subgroup alone does not demonstrate a structural cue; generation assigns bank rank before coefficients and UI independently shuffles display order.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Signs of numeric coefficients and numeric order of bank",
+      "subgroup": "delivered_batch:inconsistent_easy:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose maximum option if numeric y coefficient times elimination multiplier is positive, otherwise minimum; ignore magnitudes.",
+      "correct": 2,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Finite batch-selection failure: choose the minimum option succeeds 2/2 in this recognizable sign subgroup, compared with blind five-choice success 0.2. Both records repeat b=4,d=-2 and k=-8 while RHS values change. This does not establish a universal v3 generator defect. Fresh control successes of 3/15 cannot waive the finite delivered pool.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "shortcut-results.json",
+        "contract-repair/shortcut-correction-results.json",
+        "contract-repair/batch-counterexamples.json"
+      ]
+    },
+    {
+      "cue": "Fixed displayed option position",
+      "subgroup": "delivered_batch:inconsistent_easy:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose 2 (zero based); best observed constant predictor.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Fixed displayed position succeeds only 1/2 (blind comparison 0.2); no position invariant demonstrated. The separate numeric-minimum action solves both members.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "shortcut-results.json",
+        "contract-repair/shortcut-correction-results.json",
+        "contract-repair/batch-counterexamples.json"
+      ]
+    },
+    {
+      "cue": "Fixed numeric rank",
+      "subgroup": "delivered_batch:inconsistent_easy:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose 0 (zero based); best observed constant predictor.",
+      "correct": 2,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Finite batch-selection failure: choose the minimum option succeeds 2/2 in this recognizable sign subgroup, compared with blind five-choice success 0.2. Both records repeat b=4,d=-2 and k=-8 while RHS values change. This does not establish a universal v3 generator defect. Fresh control successes of 3/15 cannot waive the finite delivered pool.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "shortcut-results.json",
+        "contract-repair/shortcut-correction-results.json",
+        "contract-repair/batch-counterexamples.json"
+      ]
+    },
+    {
+      "cue": "Signs of numeric coefficients and numeric order of bank",
+      "subgroup": "historical_inventory:inconsistent_easy",
+      "scope": "within_template",
+      "strategy": "Choose maximum option if numeric y coefficient times elimination multiplier is positive, otherwise minimum; ignore magnitudes.",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Unresolved captured-pool defect: sign-only extremum action solves 5/5 historical easy items overall and remains eligible after learner history excludes new items. Blind choice comparison 0.2. These v2 records require separate inventory remediation; no current v3 construction defect is inferred.",
+      "sample_refs": [
+        "generated-records.json",
+        "shortcut-results.json",
+        "contract-repair/shortcut-correction-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed displayed option position",
+      "subgroup": "historical_inventory:inconsistent_easy",
+      "scope": "within_template",
+      "strategy": "Always choose 2 (zero based); best observed constant predictor.",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison .2 is blind choice; histogram documents all outcomes. A best predictor on a tiny subgroup alone does not demonstrate a structural cue; generation assigns bank rank before coefficients and UI independently shuffles display order.",
+      "sample_refs": [
+        "generated-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed numeric rank",
+      "subgroup": "historical_inventory:inconsistent_easy",
+      "scope": "within_template",
+      "strategy": "Always choose 0 (zero based); best observed constant predictor.",
+      "correct": 4,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison .2 is blind choice; histogram documents all outcomes. A best predictor on a tiny subgroup alone does not demonstrate a structural cue; generation assigns bank rank before coefficients and UI independently shuffles display order.",
+      "sample_refs": [
+        "generated-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Signs of numeric coefficients and numeric order of bank",
+      "subgroup": "historical_inventory:inconsistent_easy:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose maximum option if numeric y coefficient times elimination multiplier is positive, otherwise minimum; ignore magnitudes.",
+      "correct": 4,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Unresolved captured-pool defect: sign-only extremum action solves 5/5 historical easy items overall and remains eligible after learner history excludes new items. Blind choice comparison 0.2. These v2 records require separate inventory remediation; no current v3 construction defect is inferred.",
+      "sample_refs": [
+        "generated-records.json",
+        "shortcut-results.json",
+        "contract-repair/shortcut-correction-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed displayed option position",
+      "subgroup": "historical_inventory:inconsistent_easy:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose 2 (zero based); best observed constant predictor.",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison .2 is blind choice; histogram documents all outcomes. A best predictor on a tiny subgroup alone does not demonstrate a structural cue; generation assigns bank rank before coefficients and UI independently shuffles display order.",
+      "sample_refs": [
+        "generated-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed numeric rank",
+      "subgroup": "historical_inventory:inconsistent_easy:opposite_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose 0 (zero based); best observed constant predictor.",
+      "correct": 4,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Unresolved captured-pool defect: sign-only extremum action solves 5/5 historical easy items overall and remains eligible after learner history excludes new items. Blind choice comparison 0.2. These v2 records require separate inventory remediation; no current v3 construction defect is inferred.",
+      "sample_refs": [
+        "generated-records.json",
+        "shortcut-results.json",
+        "contract-repair/shortcut-correction-results.json"
+      ]
+    },
+    {
+      "cue": "Signs of numeric coefficients and numeric order of bank",
+      "subgroup": "historical_inventory:inconsistent_easy:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose maximum option if numeric y coefficient times elimination multiplier is positive, otherwise minimum; ignore magnitudes.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Unresolved captured-pool defect: sign-only extremum action solves 5/5 historical easy items overall and remains eligible after learner history excludes new items. Blind choice comparison 0.2. These v2 records require separate inventory remediation; no current v3 construction defect is inferred.",
+      "sample_refs": [
+        "generated-records.json",
+        "shortcut-results.json",
+        "contract-repair/shortcut-correction-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed displayed option position",
+      "subgroup": "historical_inventory:inconsistent_easy:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose 3 (zero based); best observed constant predictor.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison .2 is blind choice; histogram documents all outcomes. A best predictor on a tiny subgroup alone does not demonstrate a structural cue; generation assigns bank rank before coefficients and UI independently shuffles display order.",
+      "sample_refs": [
+        "generated-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed numeric rank",
+      "subgroup": "historical_inventory:inconsistent_easy:same_sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose 4 (zero based); best observed constant predictor.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Unresolved captured-pool defect: sign-only extremum action solves 5/5 historical easy items overall and remains eligible after learner history excludes new items. Blind choice comparison 0.2. These v2 records require separate inventory remediation; no current v3 construction defect is inferred.",
+      "sample_refs": [
+        "generated-records.json",
+        "shortcut-results.json",
+        "contract-repair/shortcut-correction-results.json"
+      ]
+    },
+    {
+      "cue": "Numeric coefficients in the displayed equations",
+      "subgroup": "batch:inconsistent_easy",
+      "scope": "within_template",
+      "strategy": "Multiply the first y coefficient by the second x coefficient (unit first pivot and bare k).",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "intended_skill",
+      "conclusion": "At a=u=1,v=0 the elimination equation is (k-db)y=e-dc, so k=db is the target computation. Requiring written row reduction rather than this valid simplification would impose an unsupported extra response requirement. Comparison .2 is blind choice.",
+      "sample_refs": [
+        "runner-batch.json",
+        "math-results.json"
+      ]
+    },
+    {
+      "cue": "Numeric coefficients in the displayed equations",
+      "subgroup": "fresh_easy:inconsistent_easy",
+      "scope": "within_template",
+      "strategy": "Multiply the first y coefficient by the second x coefficient (unit first pivot and bare k).",
+      "correct": 24,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "intended_skill",
+      "conclusion": "At a=u=1,v=0 the elimination equation is (k-db)y=e-dc, so k=db is the target computation. Requiring written row reduction rather than this valid simplification would impose an unsupported extra response requirement. Comparison .2 is blind choice.",
+      "sample_refs": [
+        "easy-samples.json",
+        "math-results.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "generator parameter validation / bounded rejection-resampling",
+      "bank construction and observed-profile collision fallback",
+      "requested easy filtering",
+      "actual publisher normalization and content identity validation",
+      "captured basis 5379 inventory and within-batch deduplication",
+      "difficulty-first learner band draw and history/candidate depletion; conditional easy simulation"
+    ],
+    "sample_refs": [
+      "resampling-results.json",
+      "delivery-batch/delivery.json",
+      "delivery-sample/delivery.json",
+      "shortcut-results.json",
+      "selection-results.json",
+      "inventory-audit.json",
+      "contract-repair/shortcut-correction-results.json"
+    ],
+    "result": "All 5 batch and 24 fresh easy records survive shared filtering. Exact delivered opposite-sign subgroup has a 2/2 minimum-choice shortcut. Captured historical easy pool retains a 5/5 sign-extremum shortcut and can remain after new items are seen. Decision variation fails for those finite pools; the v3 construction fix remains supported."
+  },
+  "limitations": [
+    "Finite probes do not exclude every shortcut. Ordinary fresh sampling covers each of eight templates; targeted repair focus retained unchanged source/profile evidence.",
+    "No future inventory or actual learner policy/history is supplied; selection conclusions are conditional and use hypothetical append IDs for new records.",
+    "Historical records are outside current v3 output but inside the captured selectable pool; therefore they remain an unresolved decision-variation failure, not an acceptance carve-out. No live database was inspected or changed."
+  ]
+}

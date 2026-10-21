@@ -1,0 +1,99 @@
+{
+  "retained_finding_count": 5,
+  "preflight": {
+    "passed": true,
+    "finding_ids": [
+      "a0ba0c580b33c19ce55e",
+      "f8615c3acf9f556b90e2",
+      "280b607a474fd7c5b8aa",
+      "f2894c10a350a693c720",
+      "39bfd541747d529b888a"
+    ],
+    "checks": [
+      {
+        "script": "checks/validate_repair.py",
+        "args": [],
+        "sha256": "8b693cf648c9db0bb56b95b2276429c0622b9346088a2a6c7bf23c436311f1a7",
+        "exit_code": 0,
+        "stdout": "{\"source_banks\": 14, \"math_records\": 124, \"fresh\": 60, \"decision_cases\": [\"constant_coordinate\", \"equal_coordinates\", \"free_y\", \"general\", \"rank_one\", \"zero_intercept\"], \"grader_checks\": 622}\n",
+        "stderr": ""
+      },
+      {
+        "script": "checks/rational_support.py",
+        "args": [],
+        "sha256": "f00c3900c9b531ef27cfbc5e2704ac0a5104932b00e84eee815d724f0c4914dc",
+        "exit_code": 0,
+        "stdout": "{\"records\": 82, \"rational_records\": 24, \"fraction_shortcut_successes\": 0, \"source_profiles\": 14, \"grader_checks\": 412}\n",
+        "stderr": ""
+      },
+      {
+        "script": "checks/unit_support.py",
+        "args": [],
+        "sha256": "a5eb90b43d51fad37e32b008545052ab6e788c92fde082bd333b2d6c80032e1d",
+        "exit_code": 0,
+        "stdout": "{\"records\": 79, \"source_profiles\": 14, \"successful_unit_shortcuts\": 0, \"exact_system_retained\": true}\n",
+        "stderr": ""
+      }
+    ]
+  },
+  "predicate_tests": [
+    {
+      "predicate": "unit",
+      "historical_rejection": "(71383, {'candidate_positions': [3], 'applicable': True, 'shortcut_correct': True, 'baseline': 0.2})"
+    },
+    {
+      "predicate": "fraction",
+      "historical_rejection": "(71381, 'sole fraction')"
+    }
+  ],
+  "current_author_predicates": "same inspect calls pass on the current exact seeds",
+  "strict_before_after": [
+    {
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "-B",
+        "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186115241/review-3-policy-2-07f91f86583d2ea7/strict_prior_unit.py"
+      ],
+      "exit": 1,
+      "stdout": "{\"strategy\": \"Among two-coordinate choices, select the only first entry with unmultiplied y or -y. Ignore equations, constants and signs.\", \"candidate_positions\": [3], \"applicable\": true, \"selected_answer_id\": \"aaffcd8b-e9b1-5607-b342-2162d18212ca\", \"shortcut_correct\": true, \"baseline\": 0.2}\n",
+      "stderr": "Traceback (most recent call last):\n  File \"/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186115241/review-3-policy-2-07f91f86583d2ea7/strict_prior_unit.py\", line 22, in <module>\n    assert not out['probe']['shortcut_correct'],'INCIDENTAL SHORTCUT: the sole unmultiplied parameter choice is correct'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: INCIDENTAL SHORTCUT: the sole unmultiplied parameter choice is correct\n"
+    },
+    {
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "-B",
+        "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186115241/review-3-policy-2-07f91f86583d2ea7/reproduce_unit_shortcut.py"
+      ],
+      "exit": 0,
+      "stdout": "{\"strategy\": \"Among two-coordinate choices, select the only first entry with unmultiplied y or -y. Ignore equations, constants and signs.\", \"candidate_positions\": [1, 2, 3, 4, 5], \"applicable\": false, \"selected_answer_id\": null, \"shortcut_correct\": false, \"baseline\": 0.2}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "-B",
+        "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186115241/review-3-policy-2-07f91f86583d2ea7/strict_prior_fraction.py"
+      ],
+      "exit": 1,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186115241/review-3-policy-2-07f91f86583d2ea7/strict_prior_fraction.py\", line 11, in <module>\n    assert not result['shortcut_correct'], 'INCIDENTAL SHORTCUT: the only fractional answer is the correct answer'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: INCIDENTAL SHORTCUT: the only fractional answer is the correct answer\n"
+    },
+    {
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "-B",
+        "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186115241/review-3-policy-2-07f91f86583d2ea7/reproduce_shortcut.py"
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "earlier_failures": "strict-regressions.json",
+  "current_author_suites": {
+    "validate": "{\"source_banks\": 14, \"math_records\": 124, \"fresh\": 60, \"decision_cases\": [\"constant_coordinate\", \"equal_coordinates\", \"free_y\", \"general\", \"rank_one\", \"zero_intercept\"], \"grader_checks\": 622}\n",
+    "rational": "{\"records\": 82, \"rational_records\": 24, \"fraction_shortcut_successes\": 0, \"source_profiles\": 14, \"grader_checks\": 412}\n",
+    "unit": "{\"records\": 79, \"source_profiles\": 14, \"successful_unit_shortcuts\": 0, \"exact_system_retained\": true}\n"
+  },
+  "author_script_changes": "Only copied filesystem/output paths changed; originals not executed with package output directories."
+}

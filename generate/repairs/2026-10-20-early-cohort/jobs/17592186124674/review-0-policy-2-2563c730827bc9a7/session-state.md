@@ -1,0 +1,1 @@
+Independent replay, math, controlled pairs, packaging and inventory scripts executed. Required next: native grader, shared delivery on fresh and exact batch, actual UI preview and screenshot inspection, decision variation evidence/report. Concrete default-easy shortest-option cue and omitted scalar-capacity family identified.
