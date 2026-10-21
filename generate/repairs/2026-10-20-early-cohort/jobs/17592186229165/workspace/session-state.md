@@ -1,11 +1,15 @@
-# Current state — author 88
+# Current state — author 93
 
-Read latest feedback, all two retained findings and the 88-event history; reused completed source analysis and validation. Outstanding finding 645672a4cd3f9bf609ca explicitly requires installation of corrected review evidence outside this workspace and requests no generator authoring. No runtime, manifest, source-scope, grading, database or publication change was made.
+Read feedback and both retained findings; history has 93 events. No new generator defect or changed source evidence is demonstrated. Preserve the repaired runtime, instructional account, package and strict regression declarations.
 
-Reproduced the latest failure first: `/home/jake/Developer/Course_Academy/.venv/bin/python -E -s -B checks/check_report_installation.py` exited 1 after validating the staged correction and replaying 26 complete current records. The required external report still fails `decision_variation has an unresolved decision shortcut`. Log: `evidence/report-repair/author-88-reproduction.log`.
+Reproduced the latest failure first:
+`/home/jake/Developer/Course_Academy/.venv/bin/python -E -s -B checks/check_report_installation.py`
+exits 1 because the required external prior-review report still fails `decision_variation has an unresolved decision shortcut`. Log: `evidence/report-repair/author-93-reproduction.log`. Its staged correction validates with the real contract and schema, and 26 complete records replay against current code. This does not close the required external installation finding.
 
-Retained role regression: `/home/jake/Developer/Course_Academy/.venv/bin/python -E -s -B checks/test_role_exchange.py` exited 0. Controlled reorder/transfer, visible mathematics, shortcut probes, actual delivery filtering and native grading passed. Delivery retains 19 first-position and 17 second-position resonant records, plus five both-nonresonant cases. Log: `evidence/author-88-role-regression.log`.
+Retained generator regression:
+`/home/jake/Developer/Course_Academy/.venv/bin/python -E -s -B checks/test_role_exchange.py`
+exits 0. Controlled role reorder/transfer, within-template cue probes, shared delivery and 30 native-grader expectations pass. Delivery retains 19 first-position and 17 second-position resonance records, plus five both-nonresonant records. Log: `evidence/author-93-role-regression.log`.
 
-Verified all 55 staged handoff artifact hashes, unchanged runtime/manifest/source hashes and eight complete unaffected-family records using independent visible mathematics. Results and exact regression commands: `evidence/author-88-validation.json`. Retained source replay and actual-UI render evidence remains applicable to the unchanged runtime. Historical four affected inventory records and both strict regression declarations remain preserved.
+Reused `evidence/author-87-check.py` with the output prefix changed to author-93. Verified 55 handoff artifact hashes, unchanged source/runtime/manifest, and eight small independent mathematical cases. Exact command and results: `evidence/author-93-validation.json`. Existing replay and inspected UI rendering evidence remains applicable to unchanged runtime. Both executable finding regressions and the four reproduced historical inventory defects are preserved.
 
-Next required state change: the runner installs the checksummed artifacts listed in `evidence/review-installation-handoff.json` into `../review-1-policy-2-48d685555902faba`, reruns the unchanged strict regression and obtains fresh independent review. This destination is outside workspace-only write authorization. Status remains unsupported; another unchanged author retry cannot perform that write. Do not weaken the external-destination check or reinterpret the staged candidate as independent approval.
+Next unfinished step: the runner installs the checksummed artifacts in `evidence/review-installation-handoff.json` at the required prior-review destination, reruns the strict default regression, and obtains fresh independent review. That destination is outside workspace-only authorization. No external report, database, engine, image publication or runtime was changed. Do not weaken the check or schedule another identical author retry before the installation state changes.
