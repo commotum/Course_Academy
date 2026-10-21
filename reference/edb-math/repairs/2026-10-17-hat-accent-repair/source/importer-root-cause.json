@@ -1,0 +1,29 @@
+[
+  {
+    "path": "capture/scripts/browser/extract.js",
+    "commit": "e970b7e9018a31e6f9e6de3d08e78ec40d94a004",
+    "sha256": "b39cbb04a4761968a0f81316d7b4138b148be3189ad2c0a866bd899ee4d8b843",
+    "line": 198,
+    "excerpt": "      case 'msubsup': return scriptBase + '_{' + cs[1] + '}^{' + cs[2] + '}';\n      case 'munder': return '{' + cs[0] + '}_{' + cs[1] + '}';\n      case 'mover': return '\\\\overset{' + cs[1] + '}{' + cs[0] + '}';\n      case 'munderover': return '{' + cs[0] + '}_{' + cs[1] + '}^{' + cs[2] + '}';\n      case 'msqrt': return '\\\\sqrt{' + cs.join('') + '}';\n      case 'mroot': return '\\\\sqrt[' + cs[1] + ']{' + cs[0] + '}';\n      case 'mspace': return '\\\\,';"
+  },
+  {
+    "path": "scripts/import_historical_question_content.py",
+    "commit": "e970b7e9018a31e6f9e6de3d08e78ec40d94a004",
+    "sha256": "607d86873e4da2893b7104a72725e661b34919994b4e5aa68c5806ec0a06acef",
+    "line": 31,
+    "excerpt": "        if t=='msubsup':return base+'_{'+cs[1]+'}^{'+cs[2]+'}'\n        if t=='munder':return base+'_{'+cs[1]+'}'\n        if t=='mover':return '\\\\overset{'+cs[1]+'}{'+cs[0]+'}'\n        if t=='munderover':return base+'_{'+cs[1]+'}^{'+cs[2]+'}'\n        if t=='msqrt':return '\\\\sqrt{'+''.join(cs)+'}'\n        if t=='mroot':return '\\\\sqrt['+cs[1]+']{'+cs[0]+'}'\n        if t=='mspace':return '\\\\,'"
+  },
+  {
+    "path": "scripts/question_capture/dom.js",
+    "commit": "e970b7e9018a31e6f9e6de3d08e78ec40d94a004",
+    "sha256": "c8886126b38fb61cfb118a579b8ab8130bc1b2a03a6b2b9880b52fb781e9d5b3",
+    "line": 206,
+    "excerpt": "      case 'msubsup': return scriptBase + '_{' + cs[1] + '}^{' + cs[2] + '}';\n      case 'munder': return '{' + cs[0] + '}_{' + cs[1] + '}';\n      case 'mover': return ['^', '\u02c6'].includes(n.children[1]?.textContent) ?\n        '\\\\hat{' + cs[0] + '}' : '\\\\overset{' + cs[1] + '}{' + cs[0] + '}';\n      case 'munderover': return '{' + cs[0] + '}_{' + cs[1] + '}^{' + cs[2] + '}';\n      case 'msqrt': return '\\\\sqrt{' + cs.join('') + '}';\n      case 'mroot': return '\\\\sqrt[' + cs[1] + ']{' + cs[0] + '}';"
+  },
+  {
+    "path": "/home/jake/Developer/MA/PIPELINE/Math-Academy/3-Capture/1-Source/3-JSON/lesson-json.py",
+    "sha256": "69731132e905dfe774ac3f51bc2898fa6c9a828c3e14920e6b448f186bd3ce79",
+    "line": 494,
+    "excerpt": "    if name == \"mover\":\n        children = [child for child in node.children if isinstance(child, Tag)]\n        if len(children) >= 2:\n            base = mathml_to_text(children[0])\n            over = mathml_to_text(children[1])\n            if node.get(\"accent\") == \"true\" and over in {\"\u00af\", \"\u203e\", \"\u2015\"}:\n                return clean_math_text(f\"overline({base})\")\n            return clean_math_text(f\"{base}^({over})\")\n        return clean_math_text(node.get_text(\" \", strip=True))"
+  }
+]

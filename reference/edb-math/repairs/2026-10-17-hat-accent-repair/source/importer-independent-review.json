@@ -1,0 +1,37 @@
+{
+  "passed": true,
+  "review_type": "Independent focused source and test review; no production edits or additional broad tests.",
+  "reviewed_files": [
+    {
+      "path": "capture/scripts/browser/extract.js",
+      "sha256": "6a4f081b26f3f102258ae724d3052edf29adcbc907f785dc17ee6d070f9a5c6d"
+    },
+    {
+      "path": "scripts/question_capture/dom.js",
+      "sha256": "c8204b3d30aaa3fb4ab28300c7b993f4fd98063cd44f74d93c7af3d95b506fba"
+    },
+    {
+      "path": "scripts/import_historical_question_content.py",
+      "sha256": "a77fae162abc583c68f6c7ec2ad475b32f26e71031e1347de2d9684b3aaddb01"
+    },
+    {
+      "path": "tests/test_mathml_hat_import.py",
+      "sha256": "1710f43f6ffa18a66002730f028d95778390f172f780eb85f4f0221b62ad3023"
+    },
+    {
+      "path": "tests/fixtures/mathml-hats.json",
+      "sha256": "b761d10a6d1c362d1aae7c13fa1a50dbf402b0625a5ede266144849230ee2048"
+    }
+  ],
+  "findings": [],
+  "checks": [
+    "Only mo containing ASCII caret in mover enters new semantic hat branch; other mover operators retain prior logic, including older dom Unicode-hat fallback.",
+    "Source stretchy=false selects hat; absent/true selects widehat. Exact source bases and surrounding script scope are retained.",
+    "Full-base explicit font variants survive transparent source wrappers; unsupported partial styles/operator-only styling are surfaced as errors rather than silently dropped.",
+    "Ordinary under/over labels, limits, superscripts and subscripts retain existing branches.",
+    "Focused tests cover authentic saved wide/narrow/bold source MathML, compound and nested bases, neighboring scripts, ordinary movers/limits, unsupported cues and MathJax round-trip geometry/fonts."
+  ],
+  "tests_reviewed": 7,
+  "tests_rerun": false,
+  "rationale_no_rerun": "Implementation agent is executing the focused suite; this independent review avoids duplicate browser execution."
+}
