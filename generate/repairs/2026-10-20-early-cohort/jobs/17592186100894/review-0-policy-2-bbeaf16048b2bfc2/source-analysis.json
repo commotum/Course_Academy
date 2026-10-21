@@ -1,0 +1,514 @@
+{
+  "skill": "Rearrange a first-order ODE to separate x and y; integrate; use an initial condition to determine the integration constant and, where necessary, the solution branch.",
+  "reasoning_steps": [
+    "Algebraically rearrange/factor the displayed equation into f(y)dy=g(x)dx.",
+    "Integrate using elementary power, logarithmic, exponential or trigonometric antiderivatives.",
+    "Substitute the initial x and y to determine the integration constant.",
+    "Return the particular explicit or implicit relation, or the requested expression in its scaffold; choose sign from the initial condition when applicable."
+  ],
+  "response_contract": "Observed radio fields have complete five-choice banks; blank fields request whole expressions, a denominator, a logarithm argument, or a sine argument. Preserve each response scaffold and derive its key.",
+  "difficulty": "Easy source includes rearranged reciprocal-square, polynomial, exponential, trigonometric and logarithmic families. Moderate source adds substitutions, radicals and other algebra; difficulty must follow the source family, not simply the final expression.",
+  "invariants": [
+    "First-order separable ODE and elementary integration at the observed workload.",
+    "Initial point lies in the equation domain; an implicit formal antiderivative must actually define a differentiable local IVP solution.",
+    "Exactly one mathematically valid radio answer; key satisfies original ODE and initial condition.",
+    "Prompt, answer bank, scaffold and worked solution use a single consistent instance."
+  ],
+  "permitted_variations": [
+    "Small signed coefficients, powers within the observed integration workload, admissible initial x and y values, and integration constants.",
+    "Positive/negative solution branch where source allows both by initial condition; denominator or logarithm argument must follow the initial condition.",
+    "Radio ordering and which candidate satisfies both the ODE and initial condition; particular source correct position is incidental.",
+    "Zero and nonzero integration constants are both eligible when valid.",
+    "Changes to ODE coefficients should change dependent antiderivatives, banks and solutions; answer order or equivalent formatting should not change mathematical correctness."
+  ],
+  "essential_vs_incidental": "Separation, integration, the IVP, and requested response shape are essential. Specific signs, numbers, zero constants, initial locations and correct option positions are incidental unless needed for validity or comparable workload.",
+  "source_refs": [
+    "891e9004-961b-539a-ab93-0752347fd077: cos(3y)y' + sin(2x)=0; separate, integrate, then apply y(pi/4)=0.",
+    "tutorial 974 / e2c4c33d-a1bd-537e-9daa-1960f765953d: \"1\\. separating the variables, 2\\. integrating the equation, and then 3\\. substituting the condition into the solution to solve for the constant of integration.\"",
+    "06632100-a7a1-5d47-9549-7f654f194e12: \"Since y(0)=1>0, we choose the solution with the positive sign.\"",
+    "04d08db5-75c0-5a9e-a376-151cc06be633: y'=3y\u00b2x\u00b2-4y\u00b2x\u00b3, y(2)=1/8; C=0 is an example assignment."
+  ],
+  "source_cases": [
+    {
+      "id": "e844aafc-6198-5e85-8b96-36f86924e412",
+      "ma_id": "q-20071",
+      "difficulty": ":question.difficulty/moderate",
+      "prompt": "Find the particular solution to the differential equation $\\frac{\\text{d}y}{\\text{d}x}={e}^{4x-y}$ that satisfies $y(0)=5.$",
+      "fields": [
+        {
+          "type": ":answer-field.type/radio",
+          "key": "selection",
+          "bank": [
+            "y=\\operatorname{ln}\u2061({e}^{4x}-\\frac{1}{4})",
+            "y=\\operatorname{ln}\u2061({e}^{4x}+5)",
+            "y=\\operatorname{ln}\u2061(\\frac{{e}^{4x}}{4}+C)",
+            "y=\\operatorname{ln}\u2061\\left(\\frac{{e}^{4x}+4{e}^{5}-1}{4}\\right)",
+            "y=\\operatorname{ln}\u2061(\\frac{{e}^{4x}}{4}+{e}^{5}+\\frac{1}{4})"
+          ],
+          "correct": "y=\\operatorname{ln}\u2061\\left(\\frac{{e}^{4x}+4{e}^{5}-1}{4}\\right)"
+        }
+      ]
+    },
+    {
+      "id": "167e1aa1-119e-56a2-b6bf-0adbf44240f8",
+      "ma_id": "q-79372",
+      "difficulty": ":question.difficulty/moderate",
+      "prompt": "Find the particular solution to the differential equation $(\\frac{1}{xy}+\\frac{1}{y})\\frac{\\text{d}y}{\\text{d}x}=1$ that satisfies $y(1)=e.$",
+      "fields": [
+        {
+          "type": ":answer-field.type/radio",
+          "key": "selection",
+          "bank": [
+            "y=\\frac{4{e}^{x}}{x+2}",
+            "y=\\frac{{e}^{x+1}}{x+1}",
+            "y=\\frac{2{e}^{x}}{x+1}",
+            "y=\\frac{2{e}^{-x}}{{x}^{2}+1}",
+            "y=\\frac{4{e}^{-x}}{{x}^{2}+2}"
+          ],
+          "correct": "y=\\frac{2{e}^{x}}{x+1}"
+        }
+      ]
+    },
+    {
+      "id": "93ff4d9b-f05d-54cb-bfec-91c45b5200dc",
+      "ma_id": "q-128192",
+      "difficulty": ":question.difficulty/moderate",
+      "prompt": "Find the solution to the initial value problem \n\n$$\n{y}^{\u2032}=x{y}^{2},\\,y(1)=2.\n$$\n\n                            \n                                    \n                                        \n                                            \n\n                                                \n\n                                        \n                                        \n                                        \n\n                                    \n                                \n                                    \n                                        \n                                        $y(x)=\\,\\,$ \n\n                                    \n                                \n                                    \n                            \n                                        {{field-1}}",
+      "fields": [
+        {
+          "type": ":answer-field.type/blank",
+          "key": "field-1",
+          "bank": [
+            "-2/({x}^{2}-2)"
+          ],
+          "correct": "-2/({x}^{2}-2)"
+        }
+      ]
+    },
+    {
+      "id": "cf490795-4587-5d21-a17e-b28b1511e0a5",
+      "ma_id": "q-104058",
+      "difficulty": ":question.difficulty/easy",
+      "prompt": "Find the particular solution to the differential equation $(\\frac{1}{xy}-\\frac{1}{x})\\frac{\\text{d}y}{\\text{d}x}=2$ that satisfies $y(1)=1.$",
+      "fields": [
+        {
+          "type": ":answer-field.type/radio",
+          "key": "selection",
+          "bank": [
+            "\\operatorname{ln}\u2061|y|-y=2{x}^{2}-2",
+            "\\operatorname{ln}\u2061|y|={x}^{2}",
+            "\\operatorname{ln}\u2061|y|+y=2{x}^{2}+2",
+            "\\operatorname{ln}\u2061|y|-y={x}^{2}-2",
+            "\\operatorname{ln}\u2061|y|+y={x}^{2}+2"
+          ],
+          "correct": "\\operatorname{ln}\u2061|y|-y={x}^{2}-2"
+        }
+      ]
+    },
+    {
+      "id": "5f5fc67b-8b37-59a0-97e4-36b78ca0108f",
+      "ma_id": "q-104059",
+      "difficulty": ":question.difficulty/easy",
+      "prompt": "Find the particular solution to the differential equation $\\frac{\\text{d}y}{\\text{d}x}=\\frac{{y}^{2}}{{x}^{2}}+{y}^{2}$ that satisfies $y(-1)=1.$",
+      "fields": [
+        {
+          "type": ":answer-field.type/radio",
+          "key": "selection",
+          "bank": [
+            "y=\\frac{x}{1+x-{x}^{2}}",
+            "y=\\frac{x}{2+2x-{x}^{2}}",
+            "y=\\frac{x}{2x+{x}^{2}}",
+            "y=\\frac{x}{{x}^{2}-2x}",
+            "y=-\\frac{x}{1+x+{x}^{2}}"
+          ],
+          "correct": "y=\\frac{x}{1+x-{x}^{2}}"
+        }
+      ]
+    },
+    {
+      "id": "04d08db5-75c0-5a9e-a376-151cc06be633",
+      "ma_id": "q-104064",
+      "difficulty": ":question.difficulty/easy",
+      "prompt": "Find the particular solution to the differential equation $\\frac{\\text{d}y}{\\text{d}x}=3{y}^{2}{x}^{2}-4{y}^{2}{x}^{3}$ that satisfies $y(2)=\\frac{1}{8}.$",
+      "fields": [
+        {
+          "type": ":answer-field.type/radio",
+          "key": "selection",
+          "bank": [
+            "y=\\frac{1}{{x}^{3}-{x}^{4}+16}",
+            "y=\\frac{1}{{x}^{4}+{x}^{3}-16}",
+            "y=\\frac{1}{2{x}^{3}+2{x}^{2}}",
+            "y=\\frac{1}{{x}^{3}-{x}^{2}+4}",
+            "y=\\frac{1}{{x}^{4}-{x}^{3}}"
+          ],
+          "correct": "y=\\frac{1}{{x}^{4}-{x}^{3}}"
+        }
+      ]
+    },
+    {
+      "id": "cdddaa9b-4174-550d-a7b6-1b8e1a3f2b29",
+      "ma_id": "q-104065",
+      "difficulty": ":question.difficulty/easy",
+      "prompt": "Find the particular solution to the differential equation $\\operatorname{sin}\u2061x\\frac{\\text{d}y}{\\text{d}x}-8x\\operatorname{sin}\u2061x=\\operatorname{cos}\u2061x$ that satisfies $y\\left(\\frac{\\pi }{2}\\right)={\\pi }^{2}.$ Assume that $0<x<\\pi .$",
+      "fields": [
+        {
+          "type": ":answer-field.type/radio",
+          "key": "selection",
+          "bank": [
+            "y=\\operatorname{ln}\u2061(\\operatorname{sin}\u2061x)+4{x}^{2}",
+            "y=\\operatorname{sin}\u2061x+4{x}^{2}-1",
+            "y=\\operatorname{cos}\u2061x+8{x}^{2}-{\\pi }^{2}",
+            "y=\\operatorname{ln}\u2061(\\operatorname{sin}\u2061x)+8{x}^{2}-{\\pi }^{2}",
+            "y=\\operatorname{cos}\u2061x+4{x}^{2}"
+          ],
+          "correct": "y=\\operatorname{ln}\u2061(\\operatorname{sin}\u2061x)+4{x}^{2}"
+        }
+      ]
+    },
+    {
+      "id": "4a8c132a-a85d-5f19-bf08-0d6e90b34efd",
+      "ma_id": "q-14267",
+      "difficulty": ":question.difficulty/moderate",
+      "prompt": "Find the specific solution to the differential equation $\\frac{\\text{d}y}{\\text{d}x}={e}^{x+y}$ given that  $\\,y(0)=-\\operatorname{ln}\u20612.$",
+      "fields": [
+        {
+          "type": ":answer-field.type/radio",
+          "key": "selection",
+          "bank": [
+            "y=-\\operatorname{ln}\u2061(1+{e}^{x})",
+            "y=-\\operatorname{ln}\u2061(1+x+{e}^{x})",
+            "y=-\\operatorname{ln}\u2061(x+{e}^{x})",
+            "y=-\\operatorname{ln}\u2061(3-2x-{e}^{x})",
+            "y=-\\operatorname{ln}\u2061(3-{e}^{x})"
+          ],
+          "correct": "y=-\\operatorname{ln}\u2061(3-{e}^{x})"
+        }
+      ]
+    },
+    {
+      "id": "1e6d2e79-6130-55ee-82e5-9a200a11282e",
+      "ma_id": "q-350957",
+      "difficulty": ":question.difficulty/moderate",
+      "prompt": "Find the particular solution to the differential equation $\\frac{\\text{d}y}{\\text{d}x}+{e}^{-y}=6{x}^{2}{e}^{-y}$ that satisfies $y(1)=0.$\n\n$y(x)=$\n{{field-1}}",
+      "fields": [
+        {
+          "type": ":answer-field.type/blank",
+          "key": "field-1",
+          "bank": [
+            "\\operatorname{ln}(2{x}^{3}-x)"
+          ],
+          "correct": "\\operatorname{ln}(2{x}^{3}-x)"
+        }
+      ]
+    },
+    {
+      "id": "6e98fc5d-ad7f-574e-b282-efe5e38c1e1b",
+      "ma_id": "q-355546",
+      "difficulty": ":question.difficulty/easy",
+      "prompt": "Find the particular solution to the differential equation ${x}^{2}\\frac{\\text{d}y}{\\text{d}x}-8{x}^{3}=5$ that satisfies $y(1)=6.$\n\n$y(x)=$\n{{field-1}}",
+      "fields": [
+        {
+          "type": ":answer-field.type/blank",
+          "key": "field-1",
+          "bank": [
+            "-\\frac{5}{x}+4{x}^{2}+7"
+          ],
+          "correct": "-\\frac{5}{x}+4{x}^{2}+7"
+        }
+      ]
+    },
+    {
+      "id": "75023361-eb11-537e-8a6b-dbd0dee1ad40",
+      "ma_id": "q-355547",
+      "difficulty": ":question.difficulty/easy",
+      "prompt": "Find the particular solution to the differential equation $\\sqrt{x}\\frac{\\text{d}y}{\\text{d}x}-4x\\sqrt{x}=3$ that satisfies $y(1)=11.$\n\n$y(x)=$\n{{field-1}}",
+      "fields": [
+        {
+          "type": ":answer-field.type/blank",
+          "key": "field-1",
+          "bank": [
+            "6\\sqrt{x}+2{x}^{2}+3"
+          ],
+          "correct": "6\\sqrt{x}+2{x}^{2}+3"
+        }
+      ]
+    },
+    {
+      "id": "af7393d2-efb0-5146-b448-33e99ed4412d",
+      "ma_id": "q-355559",
+      "difficulty": ":question.difficulty/moderate",
+      "prompt": "Find the particular solution to the differential equation $2y\\frac{\\text{d}y}{\\text{d}x}-4x{y}^{2}=4x$ that satisfies $y(0)=1.$ Assume that $y>0.$\n\n$y(x)=$\n{{field-1}}",
+      "fields": [
+        {
+          "type": ":answer-field.type/blank",
+          "key": "field-1",
+          "bank": [
+            "\\sqrt{2{e}^{2{x}^{2}}-1}"
+          ],
+          "correct": "\\sqrt{2{e}^{2{x}^{2}}-1}"
+        }
+      ]
+    },
+    {
+      "id": "aabfb888-4d5b-5ee3-a31d-caf8a930a357",
+      "ma_id": "q-355564",
+      "difficulty": ":question.difficulty/moderate",
+      "prompt": "Find the particular solution to the differential equation $(-\\frac{1}{xy}+\\frac{2}{y})\\frac{\\text{d}y}{\\text{d}x}=4$ that satisfies $y(1)={e}^{2}.$\n\n$y(x)=$\n{{field-1}}",
+      "fields": [
+        {
+          "type": ":answer-field.type/blank",
+          "key": "field-1",
+          "bank": [
+            "(2x-1){e}^{2x}"
+          ],
+          "correct": "(2x-1){e}^{2x}"
+        }
+      ]
+    },
+    {
+      "id": "805542c0-bca8-5f60-bf27-701c39eb6996",
+      "ma_id": "q-355576",
+      "difficulty": ":question.difficulty/easy",
+      "prompt": "Find the specific solution to the differential equation $\\frac{\\text{d}y}{\\text{d}x}={e}^{-2x-y}$ given that  $\\,y(0)=2.$\n\n$y(x)=\\operatorname{ln}\u2061($\n{{field-1}} $)$",
+      "fields": [
+        {
+          "type": ":answer-field.type/blank",
+          "key": "field-1",
+          "bank": [
+            "\\frac{-{e}^{-2x}+2{e}^{2}+1}{2}"
+          ],
+          "correct": "\\frac{-{e}^{-2x}+2{e}^{2}+1}{2}"
+        }
+      ]
+    },
+    {
+      "id": "a6ea94de-6671-5cd2-9382-54cb9545def9",
+      "ma_id": "q-355577",
+      "difficulty": ":question.difficulty/easy",
+      "prompt": "Find the specific solution to the differential equation $\\frac{\\text{d}y}{\\text{d}x}={e}^{-x-y}$ given that $\\,y(0)=-\\operatorname{ln}\u20614.$\n\n$y(x)=$\n{{field-1}}",
+      "fields": [
+        {
+          "type": ":answer-field.type/blank",
+          "key": "field-1",
+          "bank": [
+            "\\operatorname{ln}(\\frac{5}{4}-{e}^{-x})"
+          ],
+          "correct": "\\operatorname{ln}(\\frac{5}{4}-{e}^{-x})"
+        }
+      ]
+    },
+    {
+      "id": "b704df68-ffc0-57d3-acee-bb78600fdc0b",
+      "ma_id": "q-355582",
+      "difficulty": ":question.difficulty/easy",
+      "prompt": "Find the specific solution to the differential equation $\\frac{\\text{d}y}{\\text{d}x}={e}^{-x-y}$ given that  $\\,y(0)=0.$\n\n$y(x)=$\n{{field-1}}",
+      "fields": [
+        {
+          "type": ":answer-field.type/blank",
+          "key": "field-1",
+          "bank": [
+            "\\operatorname{ln}(2-{e}^{-x})"
+          ],
+          "correct": "\\operatorname{ln}(2-{e}^{-x})"
+        }
+      ]
+    },
+    {
+      "id": "45459917-ee60-5543-8543-ded7c1f55344",
+      "ma_id": "q-4016",
+      "difficulty": ":question.difficulty/moderate",
+      "prompt": "Find the particular solution to the differential equation $\\frac{\\text{d}y}{\\text{d}x}={e}^{x-2y}$ that satisfies $y(0)=0.$",
+      "fields": [
+        {
+          "type": ":answer-field.type/radio",
+          "key": "selection",
+          "bank": [
+            "y=\\frac{1}{2}\\operatorname{ln}\u2061(2{e}^{x}-1)",
+            "y=\\operatorname{ln}\u2061(2-{e}^{x})",
+            "y=\\frac{1}{2}\\operatorname{ln}\u2061(x+1)",
+            "y=\\operatorname{ln}\u2061\\left(\\frac{{e}^{x}+1}{2}\\right)",
+            "y=\\frac{1}{4}\\operatorname{ln}\u2061(4{e}^{x}-3)"
+          ],
+          "correct": "y=\\frac{1}{2}\\operatorname{ln}\u2061(2{e}^{x}-1)"
+        }
+      ]
+    },
+    {
+      "id": "d0357fe4-4d50-5037-a26c-ebfd87a1a2f3",
+      "ma_id": "q-79371",
+      "difficulty": ":question.difficulty/moderate",
+      "prompt": "Find the particular solution to the differential equation ${e}^{x}\\frac{\\text{d}y}{\\text{d}x}-2x{e}^{x}=3$ that satisfies $y(0)=-3.$",
+      "fields": [
+        {
+          "type": ":answer-field.type/radio",
+          "key": "selection",
+          "bank": [
+            "y=x+{e}^{-3x}-4",
+            "y={x}^{2}-3{e}^{-x}",
+            "y={x}^{2}-3{e}^{-x}+2",
+            "y=4x+{e}^{-3x}-4",
+            "y=-2{e}^{-x}-1"
+          ],
+          "correct": "y={x}^{2}-3{e}^{-x}"
+        }
+      ]
+    },
+    {
+      "id": "49fb438b-3c89-5f2d-ad22-0703828a1cf7",
+      "ma_id": "q-79373",
+      "difficulty": ":question.difficulty/moderate",
+      "prompt": "Find the particular solution to the differential equation $\\frac{\\text{d}y}{\\text{d}x}+{e}^{-y}=4{x}^{3}{e}^{-y}$ that satisfies $y(1)=0.$",
+      "fields": [
+        {
+          "type": ":answer-field.type/radio",
+          "key": "selection",
+          "bank": [
+            "y=\\operatorname{ln}\u2061\\left(\\frac{{x}^{4}-x+2}{2}\\right)",
+            "y=\\operatorname{ln}\u2061\\left(\\frac{{x}^{2}+1}{2}\\right)",
+            "y=\\operatorname{ln}\u2061({x}^{2}+2x-2)",
+            "y=\\operatorname{ln}\u2061({x}^{4}-x+1)",
+            "y=\\operatorname{ln}\u2061({x}^{4}-x)"
+          ],
+          "correct": "y=\\operatorname{ln}\u2061({x}^{4}-x+1)"
+        }
+      ]
+    },
+    {
+      "id": "64550cf0-ae14-5b89-b54c-860d29b3d527",
+      "ma_id": "q-79425",
+      "difficulty": ":question.difficulty/moderate",
+      "prompt": "Find the particular solution to the differential equation $3{y}^{2}\\frac{\\text{d}y}{\\text{d}x}-2x{y}^{3}=4x$ that satisfies $y(0)=1.$  Assume that $y>0.$",
+      "fields": [
+        {
+          "type": ":answer-field.type/radio",
+          "key": "selection",
+          "bank": [
+            "{y}^{2}=3{e}^{x}-2",
+            "{y}^{2}=2{e}^{{x}^{2}}-1",
+            "y=2{e}^{x}-1",
+            "{y}^{3}={e}^{{x}^{2}}",
+            "{y}^{3}=3{e}^{{x}^{2}}-2"
+          ],
+          "correct": "{y}^{3}=3{e}^{{x}^{2}}-2"
+        }
+      ]
+    },
+    {
+      "id": "c1491d28-f486-5d5a-8bd7-310f4893ab88",
+      "ma_id": "q-355560",
+      "difficulty": ":question.difficulty/moderate",
+      "prompt": "Find the particular solution to the differential equation $\\frac{\\text{d}y}{\\text{d}x}=\\frac{4{y}^{2}}{{x}^{2}}+{y}^{2}$ that satisfies $y(2)=-1.$\n\n|  | $y(x)=$ | $x$ |\n| --- | --- | --- |\n|  |  | {{field-1}} |",
+      "fields": [
+        {
+          "type": ":answer-field.type/blank",
+          "key": "field-1",
+          "bank": [
+            "4-x-{x}^{2}"
+          ],
+          "correct": "4-x-{x}^{2}"
+        }
+      ]
+    },
+    {
+      "id": "8fdc31d5-5a66-5e44-b1bd-e6668f2e6e14",
+      "ma_id": "q-104056",
+      "difficulty": ":question.difficulty/easy",
+      "prompt": "Find the particular solution to the differential equation ${e}^{x}\\frac{\\text{d}y}{\\text{d}x}+4x{e}^{x}=1$ that satisfies $y(0)=7.$",
+      "fields": [
+        {
+          "type": ":answer-field.type/radio",
+          "key": "selection",
+          "bank": [
+            "y={e}^{-x}-2{x}^{2}+6",
+            "y={e}^{x}-4{x}^{2}+6",
+            "y={e}^{x}-2{x}^{2}+6",
+            "y=-{e}^{-x}-4x+8",
+            "y=-{e}^{-x}-2{x}^{2}+8"
+          ],
+          "correct": "y=-{e}^{-x}-2{x}^{2}+8"
+        }
+      ]
+    },
+    {
+      "id": "52066178-466b-57ba-8963-0e5e66a7bec7",
+      "ma_id": "q-104057",
+      "difficulty": ":question.difficulty/easy",
+      "prompt": "Find the particular solution to the differential equation $\\frac{\\text{d}y}{\\text{d}x}+2x{e}^{-y}=3{x}^{2}{e}^{-y}$ that satisfies $y(1)=1.$",
+      "fields": [
+        {
+          "type": ":answer-field.type/radio",
+          "key": "selection",
+          "bank": [
+            "y=\\operatorname{ln}\u2061({x}^{3}-{x}^{2})",
+            "y=\\operatorname{ln}\u2061\\left(\\frac{e{x}^{2}+e}{2}\\right)",
+            "y=\\operatorname{ln}\u2061({x}^{2}+2x-3+e)",
+            "y=\\operatorname{ln}\u2061({x}^{3}-{x}^{2}+e)",
+            "y=\\operatorname{ln}\u2061\\left(\\frac{{x}^{3}-{x}^{2}+2e}{2}\\right)"
+          ],
+          "correct": "y=\\operatorname{ln}\u2061({x}^{3}-{x}^{2}+e)"
+        }
+      ]
+    },
+    {
+      "id": "177e97c5-b0fe-5fdf-abe1-80b42d3faf53",
+      "ma_id": "q-8306",
+      "difficulty": ":question.difficulty/moderate",
+      "prompt": "Find the particular solution to the differential equation $\\frac{\\text{d}y}{\\text{d}x}=2yx+y{x}^{2}$ that satisfies $y(1)=1.$",
+      "fields": [
+        {
+          "type": ":answer-field.type/radio",
+          "key": "selection",
+          "bank": [
+            "y={e}^{({x}^{3}+{x}^{2}-2)/3}",
+            "y={e}^{({x}^{3}+3{x}^{2}-4)/3}",
+            "y={e}^{{x}^{3}+4{x}^{2}-5}",
+            "y={e}^{3{x}^{3}+{x}^{2}-1}",
+            "y={e}^{(2{x}^{3}+{x}^{2}-1)/3}"
+          ],
+          "correct": "y={e}^{({x}^{3}+3{x}^{2}-4)/3}"
+        }
+      ]
+    },
+    {
+      "id": "1bc80b6f-e02e-58f0-97b4-8ea651af23ac",
+      "ma_id": "q-126765",
+      "difficulty": ":question.difficulty/easy",
+      "prompt": "Find the general solution to the differential equation. Express your answer in the form $y=y(x).$\n\n$y\\,\\,=\\,\\,\\operatorname{sin}\u2061(\\,$\n{{field-1}}\n$+\\,C),\\,\\,$where $C$ is an arbitrary constant.",
+      "fields": [
+        {
+          "type": ":answer-field.type/blank",
+          "key": "field-1",
+          "bank": [
+            "x^2"
+          ],
+          "correct": "x^2"
+        }
+      ]
+    },
+    {
+      "id": "06632100-a7a1-5d47-9549-7f654f194e12",
+      "ma_id": "q-128199",
+      "difficulty": ":question.difficulty/moderate",
+      "prompt": "Find the solution to the initial value problem \n\n$$\n{y}^{\u2032}=\\frac{x}{y},\\,y(0)=1.\n$$\n\n$y(x)=\\,\\,$ \n{{field-1}}",
+      "fields": [
+        {
+          "type": ":answer-field.type/blank",
+          "key": "field-1",
+          "bank": [
+            "\\sqrt{x^2+1}"
+          ],
+          "correct": "\\sqrt{x^2+1}"
+        }
+      ]
+    }
+  ],
+  "gaps_and_source_errors": [
+    "cf490795-4587-5d21-a17e-b28b1511e0a5: at (x,y)=(1,1), (1/(xy)-1/x)y'=2 becomes 0=2, so the stated IVP has no differentiable solution despite the formal implicit answer. Correct the source initial condition with documentation.",
+    "1bc80b6f-e02e-58f0-97b4-8ea651af23ac: captured prompt omits the ODE; worked solution supplies y'=2x sqrt(1-y\u00b2). Explicit sine solution requires a local branch interval with nonnegative cosine.",
+    "c1491d28-f486-5d5a-8bd7-310f4893ab88: captured table is a broken fraction layout; solution establishes x/(4-x-x\u00b2), so blank is denominator.",
+    "No images present; canonical example lacks a captured answer field."
+  ],
+  "evidence_paths": [
+    "source-analysis.json"
+  ]
+}

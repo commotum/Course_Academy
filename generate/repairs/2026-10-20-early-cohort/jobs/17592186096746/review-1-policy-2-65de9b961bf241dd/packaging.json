@@ -1,0 +1,41 @@
+{
+  "passed": true,
+  "python": "3.13.5",
+  "manifest": {
+    "entrypoint": "generator.py",
+    "files": [
+      "generator.py",
+      "math_format.py",
+      "source_parameters.json"
+    ],
+    "dependencies": {
+      "packages": {},
+      "python": "3.13.5"
+    },
+    "default_difficulty": "easy"
+  },
+  "relocation_deterministic": true,
+  "fresh_deterministic": true,
+  "runner_batch_replayed": true,
+  "invalid_inputs": {
+    "negative": {
+      "returncode": 2,
+      "stderr": "usage: generator.py [-h] [--difficulty {easy,moderate,hard,unclassified}]\n                    [--count COUNT] [--seed SEED] [--format {json}]\n                    [--replay-sources]\ngenerator.py: error: count must be nonnegative\n"
+    },
+    "hard": {
+      "returncode": 2,
+      "stderr": "usage: generator.py [-h] [--difficulty {easy,moderate,hard,unclassified}]\n                    [--count COUNT] [--seed SEED] [--format {json}]\n                    [--replay-sources]\ngenerator.py: error: Supported bands: easy, moderate; hard has no source evidence\n"
+    }
+  },
+  "zero_count": true,
+  "duplicates_resampled": true,
+  "bounded_duplicate_failure": true,
+  "relocated_files": [
+    "source_parameters.json",
+    "math_format.py",
+    "generator.py"
+  ],
+  "external_asset_count": 0,
+  "fresh_rejections": 0,
+  "runtime_imports": "ast inspection: standard library + declared math_format.py only; packages empty"
+}

@@ -1,0 +1,163 @@
+{
+  "verdict": "revise",
+  "summary": "Bank-only shortcuts answer all 3 surviving runner items (5/5 before filtering); four source cases are unsupported. Independent math, native grading, rendering, scope and packaging checks pass. No package edits or database writes.",
+  "source_analysis": {
+    "skill": "Reduce a rank-one consistent augmented 2x2 matrix to normalized REF, or read an already reduced matrix, then where requested express its general solution using one free variable.",
+    "reasoning_steps": [
+      "Interpret the two coefficient columns and constant column.",
+      "For unreduced input normalize the first pivot and eliminate the dependent second row.",
+      "Recognize 0=0 as redundant; for general-solution items isolate x as c/a-(b/a)y with y arbitrary.",
+      "Select one of five mathematical radio choices matching the requested REF or complete solution set."
+    ],
+    "invariants": [
+      "2 equations, 2 unknowns, augmented 2x3 matrix",
+      "Captured target examples all rank-one consistent, with nonzero first pivot and x basic/y free; consistency and pivot position are defensible focused family constraints, not grounds for demanding unrelated inconsistent-system assessment.",
+      "Preserve requested operation and comparable arithmetic workload, correct unique response and worked derivation."
+    ],
+    "permitted_variations": [
+      "Change signed small coefficients, constants, row multiples and first pivot including fractional normalized coefficients.",
+      "Change the correct expression, its sign pattern, and its bank position; all five positions are eligible.",
+      "Change distractor roles and construction while retaining plausible misconception banks and uniqueness.",
+      "For REF-only questions, vary distractors so zero-row or formatting cues alone do not determine the normalized row; recognizing rank/zero-row is mathematical but must not be confused with completing normalization.",
+      "Hold solution fixed under nonzero row scaling; change solution under independent first-row coefficient/constant changes."
+    ],
+    "source_refs": [
+      "d6118a9d-772a-5b19-befb-3156e01fd7c2 (q-42155)",
+      "0407db63-d38b-50cb-b37f-dfd7ce1a8b10 (q-42156)",
+      "527da09a-4044-5c93-b906-dff9203cb12d (q-130922)",
+      "64e30738-40d0-5a54-8cdd-1cc83ec4b628 (q-20782)",
+      "25615c72-6956-5e2b-84cd-a6850d4c806d (q-20958)",
+      "99972d7b-41c2-573c-8100-907314a5a411 (q-73524)",
+      "f00ce7fb-f804-52bb-ae27-0431b21c7460 (q-73738)",
+      "9dd0d4fd-091a-5d63-898d-8efe81821dbb (q-73742)",
+      "f7492471-0301-5306-8f40-5431247eb08f (q-73743)",
+      "f0787607-5bca-5e97-b7f4-40db59c2425f (q-20963)",
+      "d49a7f92-7486-5a6e-9890-b6f6940d9011 (q-42160)",
+      "41fb9598-c5d7-5a4e-b94b-50dacda69952 (q-42158)",
+      "28d32302-16b0-5cdc-a69e-754fd94318a8 (q-73740)",
+      "66e690c7-cd96-576d-8320-9b08eb6ce160 (q-73741)",
+      "125421bb-697b-5db0-9420-c14f51cbf8ed (q-20959)",
+      "d9337e87-8282-59d9-8385-d5158f849042 (q-20962)",
+      "canonical 7bfabbd2-9988-5c0e-9c17-3d430b3e7a0f",
+      "lesson 0c91df0b-40c7-5a65-9fda-5d2d6438dfa3 Introduction: “Solving for the basic variable $(x)$ in terms of the free variable $(y)$” and row reduction to zero second row",
+      "lesson 20c281f5-a455-581a-a7f7-fec6cfaa114e: “The final equation, $0x+0y=10,$ has no solution.” This is contextual neighboring capability, not an observed target question family."
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "source-excerpts.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "failed",
+      "evidence_paths": [
+        "source-replay.json",
+        "source-replay-records.json",
+        "minimal-source-results.json",
+        "source-excerpts.json"
+      ],
+      "details": "12 exact complete source-bank replays pass; four supplied source cases fail generation: q-42156, q-73524, q-20959, q-20962. Canonical worked example has no source answer bank; none invented."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "review_tests.py",
+        "sampled-records.json",
+        "math-results.json",
+        "counterfactual-results.json"
+      ],
+      "details": "Independent exact SymPy checks on 60 sampled records plus all 5 runner records: unique correct option, normalized REF or complete affine solution, solution matrices and extracted scalar equations. All pass; controlled dependency pairs also pass."
+    },
+    "variety": {
+      "status": "failed",
+      "evidence_paths": [
+        "sampler-stage-results.json",
+        "shortcut-results.json",
+        "delivery-batch/delivery.json",
+        "delivery-easy/delivery.json",
+        "selection-results.json"
+      ],
+      "details": "RHS-only scaling preserves answer-bank cues. Bank-only strategy solves 25/25 sampled easy items, 20/20 surviving sample items and all 3 surviving runner items (raw batch 5/5). Difficulty filtering, internal/publisher deduplication, fresh-item selection and actual UI ordering examined; none cures the demonstrated defect."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "scope-results.json",
+        "sampled-records.json"
+      ],
+      "details": "Observed variations preserve the three source operation families, rank-one consistent 2x2 arithmetic, five-option radio contract and source-level workload. Coverage exclusions are separately failed under source_replay."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-results.json",
+        "counterfactual-grader-input.json",
+        "counterfactual-grader-results.json"
+      ],
+      "details": "Native course_academy_engine::learning::grade_field: 438 checks (129 accepted,309 rejected), plus 4 controlled cross-response checks (2 accepted,2 rejected). Every bank option independently classified. All source fields are radio; no free-entry equivalence capability is claimed."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/input.json",
+        "render/rendering.json",
+        "render-irrelevant/rendering.json",
+        "visual-inspection.json"
+      ],
+      "details": "15 actual unmodified-UI renders pass, including exact runner batch, relevant RHS pairs and redundant-row pair. Seven screenshots inspected for notation, controls and worked derivations."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging.json",
+        "boundaries.json",
+        "package-hashes-before.json",
+        "package-hashes-after-tests.json",
+        "review-context.json"
+      ],
+      "details": "Relocated CLI runs reproducibly, matches original batch function, exact Python 3.13.5 and SymPy 1.14.0 match nested manifest dependencies. Boundary rejection tested; no generated assets or undeclared dependencies observed. Package file bytes unchanged."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "shortcut-results.json",
+        "minimal-shortcut-records.json",
+        "ui-shortcut-results.json",
+        "counterfactual-grader-results.json"
+      ],
+      "details": "Dependency counterfactuals pass, but distractor frequency assigns the correct numerical row or affine sign pattern. Conditional probes pass for the shortcut in all five supported easy profiles; the actual renderer shuffle preserves it. Correct mathematics and shuffled positions do not prevent this bypass."
+    }
+  },
+  "findings": [
+    {
+      "kind": "decision_shortcut",
+      "description": "A prompt-independent answer-bank rule solves every tested easy item, including all three records surviving actual runner-batch deduplication. REF banks assign the correct normalized top row to the modal top row, then uniquely pair it with a zero bottom row. Easy affine banks assign the correct answer to majority intercept/slope signs and modal coefficient magnitudes. Actual UI shuffling preserves these cues.",
+      "source_refs": [
+        "f7492471-0301-5306-8f40-5431247eb08f (q-73743)",
+        "9dd0d4fd-091a-5d63-898d-8efe81821dbb (q-73742)",
+        "66e690c7-cd96-576d-8320-9b08eb6ce160 (q-73741)",
+        "41fb9598-c5d7-5a4e-b94b-50dacda69952 (q-42158)",
+        "f00ce7fb-f804-52bb-ae27-0431b21c7460 (q-73738)",
+        "Introduction 0c91df0b-40c7-5a65-9fda-5d2d6438dfa3; generate/principles.md §2"
+      ],
+      "reproduction": "From evidence_root run /home/jake/Developer/Course_Academy/.venv/bin/python reproduce_failure.py --case shortcut (assertion fails). Minimal survivor: generate(easy, seed=71923, template=q-73743, parameters={rhs_scale:-1}) gives [[3,-2,-1],[6,-4,-2]]. Without inspecting that matrix, choose the bank matrix whose modal top row is [1,-2/3,-1/3] and whose bottom row is zero. The actual native grader accepts it; the same rule answers the rhs_scale:+1 control. Complete pair: minimal-shortcut-records.json; all subgroup/stage counts: shortcut-results.json.",
+      "requested_change": "Change the family-wide answer-bank construction so distractor row repetition, sign majorities and coefficient frequencies do not determine the key. Derive all options and explanations from each instance, vary eligible answer-bearing assignments within source-level arithmetic, and retain bank-only conditional regression probes through filtering and UI ordering. Regenerate the exact five-item batch and test its surviving pool separately; option shuffling or adding scale values alone cannot fix this."
+    },
+    {
+      "kind": "source_fidelity",
+      "description": "Four supplied source cases cannot be generated at their original parameters. q-42156 and q-73524 are explicitly excluded; q-20959 and q-20962 are absent from the packaged older source bank. Duplicate capture fields in q-42156 can be resolved from its keyed complete bank; equivalent incorrect distractors in q-73524 do not make its correct answer ambiguous and do not justify deleting that source practice.",
+      "source_refs": [
+        "0407db63-d38b-50cb-b37f-dfd7ce1a8b10 (q-42156)",
+        "99972d7b-41c2-573c-8100-907314a5a411 (q-73524)",
+        "125421bb-697b-5db0-9420-c14f51cbf8ed (q-20959)",
+        "d9337e87-8282-59d9-8385-d5158f849042 (q-20962)",
+        "generate/principles.md §1"
+      ],
+      "reproduction": "Run /home/jake/Developer/Course_Academy/.venv/bin/python reproduce_failure.py --case source-replay (assertion fails). Minimal example: generate(easy, seed=71923, template=q-20959, parameters={rhs_scale:1}) raises ValueError: Template difficulty mismatch, despite the supplied source [[1,-3,2],[0,0,0]] with correct family <2+3y,y>. All four exact failing invocations saved in minimal-source-results.json.",
+      "requested_change": "Build the supported profile set from the supplied current source cases. Resolve q-42156 duplicate fields explicitly using its keyed bank, preserve or document a justified bank correction for q-73524, and include q-20959/q-20962. Replay each complete source bank and worked solution, documenting source corrections instead of silently suppressing families."
+    }
+  ]
+}

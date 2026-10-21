@@ -1,0 +1,110 @@
+{
+  "verdict": "accepted",
+  "summary": "Both retained defects are fixed. All eight checks pass for the revised generator and exact batch. Five historical inventory defects remain documented. Package unchanged.",
+  "source_analysis": {
+    "skill": "Reduce a consistent singular 3\u00d73 system with one pivot to RREF; at moderate difficulty, express its general solution.",
+    "reasoning_steps": [
+      "Form the augmented matrix.",
+      "Normalize the pivot and eliminate proportional rows.",
+      "Select the RREF or corresponding parametric solution."
+    ],
+    "invariants": [
+      "Coefficient and augmented matrices have rank one.",
+      "RREF contains one normalized pivot and two zero rows.",
+      "Exactly one radio choice is correct."
+    ],
+    "permitted_variations": [
+      "Vary coefficients, constants, signs, row multipliers and row order.",
+      "Vary numerical alternatives and which candidate is correct.",
+      "Preserve the normalization method, response contract and workload."
+    ],
+    "source_refs": [
+      "8de46974-719c-5ac2-a43c-83d1c67c57b6",
+      "192e5819-2578-5d5d-bbaf-226710263b1b",
+      "693512da-f45c-5aae-999f-b43069296756",
+      "Tutorial 3160: normalized pivots and elimination",
+      "Tutorial 3950: one-pivot singular systems"
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "provenance.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay-results.json",
+        "source-replay.json",
+        "canonical-replay.json"
+      ],
+      "details": "All 16 source banks and 80 choices match. Missing source restored and erroneous row-operation annotation corrected. Uncaptured key/solution explicitly identified as inference."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "solution-vector-results.json"
+      ],
+      "details": "Exact arithmetic verifies 127 records, unique correct choices and displayed row operations; 48 final affine solution vectors separately verified."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "coverage.json",
+        "counterfactual-results.json",
+        "shortcut-results.json"
+      ],
+      "details": "Four numerical profiles exercised. Fixed-bank tests make every candidate correct across both difficulty bands."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "scope-results.json"
+      ],
+      "details": "Preserves rank-one systems, radio responses and the observed normalization/elimination workload."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-cases.json",
+        "grader-results.json"
+      ],
+      "details": "Native grader matches all 635 expectations: 127 accepted and 508 rejected. All fields are radio."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-extra/rendering.json",
+        "render-inspection.json"
+      ],
+      "details": "Twelve actual-UI renders pass; eight screenshots visually inspected, including restored source and controlled counterfactuals."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging.json",
+        "strict-regression-results.json",
+        "integrity-results.json",
+        "evidence-contract-results.json"
+      ],
+      "details": "Runtime declaration, relocation, determinism, invalid-input rejection and bounded resampling pass. Strict regressions fail the preserved old runtime and pass current. Package hashes unchanged."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "shortcut-results.json",
+        "delivery-comparison.json",
+        "selection-analysis.json",
+        "selection-decision-coverage.json",
+        "affected-inventory.json",
+        "inventory-assessment.json"
+      ],
+      "details": "Relevant changes update prompts, solutions and grading; irrelevant row scaling preserves responses. All five batch records survive delivery. Conditional shortcut probes pass. Selection rules examined with disclosed offline limits. Five historical sign-only inventory defects reproduced separately."
+    }
+  },
+  "findings": []
+}

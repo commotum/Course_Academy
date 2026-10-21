@@ -1,0 +1,180 @@
+{
+  "format": 1,
+  "findings": [
+    {
+      "id": "ee08a01c0929d36f7388",
+      "finding": {
+        "kind": "decision_shortcut",
+        "description": "Distractor frequencies reveal the answer without inspecting the supplied matrix. REF banks pair the modal top row with a zero bottom row; easy solution banks expose the correct signs and coefficient magnitudes through bank majorities. These rules solve all five runner inputs and all three surviving records.",
+        "source_refs": [
+          "f7492471-0301-5306-8f40-5431247eb08f: q-73743",
+          "41fb9598-c5d7-5a4e-b94b-50dacda69952: q-42158",
+          "generate/principles.md \u00a72"
+        ],
+        "reproduction": "Run /home/jake/Developer/Course_Academy/.venv/bin/python reproduce_failure.py --case shortcut from evidence_root; it exits 1. Minimal case: template q-73743, seed 71923, rhs_scale=-1 produces [[3,-2,-1],[6,-4,-2]]. Choosing the zero-bottom-row option with the modal top row answers correctly without reading that matrix. The same rule answers the +1 control.",
+        "requested_change": "Change answer-bank construction across the affected families so row repetition, sign majorities and coefficient frequencies cannot determine the key. Retain conditional bank-only regression probes and regenerate the runner batch. Shuffling options or adding RHS scales alone will not fix this."
+      },
+      "source_hash": "6e3a1a26dd354115ef16fe43db99bbecfa897540c0a124a8709514ea7bf66afc",
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186105745/review-0-policy-2-359ba6ae464e8b78",
+      "attempt": 0
+    },
+    {
+      "id": "3392d22208f08f04111e",
+      "finding": {
+        "kind": "source_fidelity",
+        "description": "The generator excludes q-42156 and q-73524 and omits q-20959 and q-20962. Capture duplication and equivalent incorrect distractors do not justify suppressing the underlying source practice.",
+        "source_refs": [
+          "0407db63-d38b-50cb-b37f-dfd7ce1a8b10: q-42156",
+          "99972d7b-41c2-573c-8100-907314a5a411: q-73524",
+          "125421bb-697b-5db0-9420-c14f51cbf8ed: q-20959",
+          "d9337e87-8282-59d9-8385-d5158f849042: q-20962"
+        ],
+        "reproduction": "Run /home/jake/Developer/Course_Academy/.venv/bin/python reproduce_failure.py --case source-replay; it exits 1. Minimal case: generate('easy',71923,'q-20959',{'rhs_scale':1}) raises ValueError despite a supplied complete source bank.",
+        "requested_change": "Include the current supplied source profiles, explicitly resolve q-42156's duplicated fields using its keyed bank, document any justified bank correction, and replay complete banks and worked solutions for all supported cases."
+      },
+      "source_hash": "6e3a1a26dd354115ef16fe43db99bbecfa897540c0a124a8709514ea7bf66afc",
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186105745/review-0-policy-2-359ba6ae464e8b78",
+      "attempt": 0
+    }
+  ],
+  "events": [
+    {
+      "attempt": 0,
+      "package_hash": "ffe967e610d014b67f822aacc1f154063c1eae9da662cf96ab620970ea4fa32b",
+      "reason": {
+        "verdict": "revise",
+        "summary": "Answer-bank shortcuts solve all three surviving runner items; four supplied source cases are unsupported. Math, grading, scope, rendering and packaging checks pass. Package unchanged; no database writes.",
+        "source_analysis": {
+          "skill": "Reduce a singular consistent 2x2 augmented matrix to REF and, when requested, express its general solution.",
+          "reasoning_steps": [
+            "Normalize the first pivot and eliminate the dependent second row.",
+            "Interpret the redundant equation and identify the free variable.",
+            "Derive the requested normalized matrix or affine solution and select its radio option."
+          ],
+          "invariants": [
+            "Preserve the source operation family and comparable arithmetic workload.",
+            "Retain a uniquely correct five-choice mathematical radio response.",
+            "Keep prompts, answers and worked solutions mathematically consistent."
+          ],
+          "permitted_variations": [
+            "Vary small signed coefficients, constants and dependent-row multiples.",
+            "Vary eligible correct expressions and distractor assignments.",
+            "Preserve solutions under redundant-row scaling and change them when relevant constants change."
+          ],
+          "source_refs": [
+            "7bfabbd2-9988-5c0e-9c17-3d430b3e7a0f: canonical example",
+            "f7492471-0301-5306-8f40-5431247eb08f: q-73743",
+            "41fb9598-c5d7-5a4e-b94b-50dacda69952: q-42158",
+            "0c91df0b-40c7-5a65-9fda-5d2d6438dfa3: Introduction, basic/free variables and general solution"
+          ],
+          "evidence_paths": [
+            "source-analysis.json",
+            "source-excerpts.json"
+          ]
+        },
+        "checks": {
+          "source_replay": {
+            "status": "failed",
+            "evidence_paths": [
+              "source-replay.json",
+              "source-replay-records.json",
+              "minimal-source-results.json"
+            ],
+            "details": "Twelve complete source banks replay exactly. Four supplied cases cannot be generated."
+          },
+          "math": {
+            "status": "passed",
+            "evidence_paths": [
+              "math-results.json",
+              "counterfactual-results.json",
+              "review_tests.py"
+            ],
+            "details": "Independent exact checks pass for 60 sampled records, all five runner records and controlled dependency pairs."
+          },
+          "variety": {
+            "status": "failed",
+            "evidence_paths": [
+              "shortcut-results.json",
+              "sampler-stage-results.json",
+              "delivery-batch/delivery.json",
+              "selection-results.json",
+              "inventory-audit.json"
+            ],
+            "details": "Bank-only rules answer 25/25 sampled easy items, 20/20 surviving sample items and 3/3 surviving runner items. Captured inventory contains only original source questions; no stored generated matches were demonstrated."
+          },
+          "scope": {
+            "status": "passed",
+            "evidence_paths": [
+              "scope-results.json",
+              "sampled-records.json"
+            ],
+            "details": "Sampled variations preserve source operations, prerequisites, response format and workload."
+          },
+          "grading": {
+            "status": "passed",
+            "evidence_paths": [
+              "grader-input.json",
+              "grader-results.json",
+              "counterfactual-grader-results.json"
+            ],
+            "details": "442 native grading checks pass, including every option classification and rejection of stale counterfactual answers. Fields are radio-only."
+          },
+          "rendering": {
+            "status": "passed",
+            "evidence_paths": [
+              "render/rendering.json",
+              "render-irrelevant/rendering.json",
+              "visual-inspection.json"
+            ],
+            "details": "Fifteen actual-UI renders pass; seven screenshots were inspected."
+          },
+          "packaging": {
+            "status": "passed",
+            "evidence_paths": [
+              "packaging.json",
+              "boundaries.json",
+              "evidence-validation.json"
+            ],
+            "details": "Relocation, deterministic replay, boundary rejection and exact dependency versions pass. Package bytes remain unchanged."
+          },
+          "decision_variation": {
+            "status": "failed",
+            "evidence_paths": [
+              "pedagogical-variation.json",
+              "minimal-shortcut-records.json",
+              "shortcut-results.json",
+              "ui-shortcut-results.json"
+            ],
+            "details": "Relevant and irrelevant counterfactuals behave correctly, but conditional answer-bank cues bypass the intended reasoning in every tested easy profile and survive UI shuffling."
+          }
+        },
+        "findings": [
+          {
+            "kind": "decision_shortcut",
+            "description": "Distractor frequencies reveal the answer without inspecting the supplied matrix. REF banks pair the modal top row with a zero bottom row; easy solution banks expose the correct signs and coefficient magnitudes through bank majorities. These rules solve all five runner inputs and all three surviving records.",
+            "source_refs": [
+              "f7492471-0301-5306-8f40-5431247eb08f: q-73743",
+              "41fb9598-c5d7-5a4e-b94b-50dacda69952: q-42158",
+              "generate/principles.md \u00a72"
+            ],
+            "reproduction": "Run /home/jake/Developer/Course_Academy/.venv/bin/python reproduce_failure.py --case shortcut from evidence_root; it exits 1. Minimal case: template q-73743, seed 71923, rhs_scale=-1 produces [[3,-2,-1],[6,-4,-2]]. Choosing the zero-bottom-row option with the modal top row answers correctly without reading that matrix. The same rule answers the +1 control.",
+            "requested_change": "Change answer-bank construction across the affected families so row repetition, sign majorities and coefficient frequencies cannot determine the key. Retain conditional bank-only regression probes and regenerate the runner batch. Shuffling options or adding RHS scales alone will not fix this."
+          },
+          {
+            "kind": "source_fidelity",
+            "description": "The generator excludes q-42156 and q-73524 and omits q-20959 and q-20962. Capture duplication and equivalent incorrect distractors do not justify suppressing the underlying source practice.",
+            "source_refs": [
+              "0407db63-d38b-50cb-b37f-dfd7ce1a8b10: q-42156",
+              "99972d7b-41c2-573c-8100-907314a5a411: q-73524",
+              "125421bb-697b-5db0-9420-c14f51cbf8ed: q-20959",
+              "d9337e87-8282-59d9-8385-d5158f849042: q-20962"
+            ],
+            "reproduction": "Run /home/jake/Developer/Course_Academy/.venv/bin/python reproduce_failure.py --case source-replay; it exits 1. Minimal case: generate('easy',71923,'q-20959',{'rhs_scale':1}) raises ValueError despite a supplied complete source bank.",
+            "requested_change": "Include the current supplied source profiles, explicitly resolve q-42156's duplicated fields using its keyed bank, document any justified bank correction, and replay complete banks and worked solutions for all supported cases."
+          }
+        ]
+      },
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186105745/review-0-policy-2-359ba6ae464e8b78"
+    }
+  ]
+}

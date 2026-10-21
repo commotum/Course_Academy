@@ -1,0 +1,810 @@
+{
+  "learner_operation": "Identify the augmented matrix of three proportional equations, normalize a nonzero pivot row and eliminate multiples; choose the row-equivalent RREF. Moderate additionally isolates x as an affine expression in free y,z. Numerical normalization, not a label/sign template, must determine correctness.",
+  "fixed_features": [
+    {
+      "feature": "Consistent rank-one three-equation system, one normalized pivot, two zero rows",
+      "justification": "Tutorial 3950 explicitly teaches one-pivot 3x3 systems; inconsistent or higher-rank systems change the mathematical task."
+    },
+    {
+      "feature": "Five-choice radio, one mathematically correct candidate",
+      "justification": "All 16 practice fields use this contract. A unique RREF is a theorem (Tutorial 3161), and each represented affine solution plane has one complete valid choice."
+    },
+    {
+      "feature": "x is the normalized pivot, y and z remain free",
+      "justification": "This specialization isolates pivot normalization and removal of proportional rows. Leading-zero columns would add pivot-location/free-variable case selection to the intended short workload. This conservative x-pivot subskill is supported by all target practice questions; no claim is made to cover arbitrary pivot-column detection."
+    },
+    {
+      "feature": "All ordinary options share signs, rank and one-pivot shape",
+      "justification": "This is an authored numerical-comparison exercise: these common features prevent shape/sign elimination from replacing quotient calculation. Candidate membership is independently varied; source replay still retains complete observed error banks."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Which numerical candidate is row-equivalent",
+      "eligible_variation": "Each of five candidates can be correct without altering the RREF rule. b, c, d or all coordinates may supply decisive numerical evidence.",
+      "observed": "Every candidate became correct with a fixed visible bank for all four profiles and both bands (48 records including irrelevant pairs)."
+    },
+    {
+      "role": "Correct choice position and magnitude rank",
+      "eligible_variation": "Any position and any eligible smallest/middle/largest normalized magnitude can qualify.",
+      "observed": "Sampler chooses correct_index before random magnitudes; fresh easy positions 10,6,8,11,5. Batch positions 2,1,1,1,0. Actual UI reorders choices and first rendered position succeeds 2/5."
+    },
+    {
+      "role": "Row carrying convenient pivot / signs of inputs",
+      "eligible_variation": "Positive/negative pivot normalization or swapping a unit second/third row; signs and row multipliers may vary while preserving rank.",
+      "observed": "Fresh sample covers normalize/swap2/swap3; both pivot signs. Equivalent row-sign flips preserve the mathematical answer but change displayed operations."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "Complete observed source profiles",
+      "sample_refs": [
+        "source-replay.json",
+        "source-replay-results.json",
+        "canonical-replay.json"
+      ],
+      "result": "16 of 16 practice banks, 80 choices matched; canonical mathematical example reproduced. Missing 693512da restored and +16 annotation corrected to -16; unclassified key/solution explicitly inferred."
+    },
+    {
+      "case": "Fresh decision profiles and boundaries",
+      "sample_refs": [
+        "fresh-easy.json",
+        "fresh-moderate.json",
+        "coverage.json",
+        "counterfactual-records.json"
+      ],
+      "result": "{\"easy\": {\"normalize-d\": 13, \"normalize-all\": 10, \"normalize-b\": 10, \"normalize-c\": 7}, \"moderate\": {\"normalize-all\": 6, \"normalize-d\": 3, \"normalize-c\": 4, \"normalize-b\": 3}, \"batch\": {\"normalize-d\": 2, \"normalize-all\": 2, \"normalize-b\": 1}}; fixed-bank witnesses include magnitudes1,10,18 and row pivot +/-10. No requirement for every profile in a five-item batch."
+    },
+    {
+      "case": "Exact runner batch",
+      "sample_refs": [
+        "batch.json",
+        "delivery-batch/accepted.json",
+        "shortcut-results.json"
+      ],
+      "result": "5/5 accepted unchanged in content. Unique sign strategy0/5; raw constant-position strategies max2/5, magnitude-rank strategies max2/5; all candidate signs/ranks equal."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Keep option values, row multipliers, target profile and difficulty fixed; make each of five bank members define the displayed input equations.",
+      "expected": "Input coefficients and explanation change; all five corresponding responses must become uniquely valid, with previous correct response rejected when no longer row-equivalent.",
+      "observed": "Eight profile/band groups each yield five distinct prompts, worked solutions and correct mathematical responses with identical option banks. Independent exact arithmetic, displayed operation execution and all-choice native grading agree. Rendered easy and moderate pairs visibly change from b=-2 to b=-10.",
+      "status": "passed",
+      "justification": "Pivot normalization is the defining operation in Tutorial3160 and canonical8de46974. The quotient, not source-assigned object/position, determines correctness.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "math-results.json",
+        "grader-cases.json",
+        "grader-results.json",
+        "render/question-006.html",
+        "render-extra/question-001.html",
+        "render-extra/question-004.html",
+        "render-extra/question-005.html"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Multiply every displayed equation by -1 while retaining the same fixed bank and candidate member.",
+      "expected": "Equivalent system preserves the correct mathematical response; prompt, row-operation signs and worked intermediate matrices follow changed input.",
+      "observed": "All eight scale-sign pairs preserve correct values and reject the other four options; visible prompt/solution changes are verified by exact row operations, native grading and representative easy/moderate UI screenshots.",
+      "status": "passed",
+      "justification": "Multiplying equations by a nonzero constant is elementary row equivalence, so canonical normalization/elimination must lead to the same unique RREF.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-results.json",
+        "render/question-006.html",
+        "render-extra/question-002.html",
+        "render-extra/question-004.html",
+        "render-extra/question-006.html"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "position-1",
+      "subgroup": "fresh-easy/overall",
+      "scope": "overall",
+      "strategy": "position-1",
+      "correct": 10,
+      "total": 40,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "10/40 vs random single-choice baseline 1/5. No universal shortcut was observed. Correct bank member is eligible at all five positions independently of candidate values; full fixed-bank counterfactuals supply direct witnesses.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "fresh-easy.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "unique-signs",
+      "subgroup": "fresh-easy/overall",
+      "scope": "overall",
+      "strategy": "unique-signs",
+      "correct": 0,
+      "total": 40,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/40 vs random single-choice baseline 1/5. All five current choices share the normalized sign pattern; signs alone do not distinguish any member. Abstention is counted as failure.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "fresh-easy.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "magnitude-rank-1",
+      "subgroup": "fresh-easy/overall",
+      "scope": "overall",
+      "strategy": "magnitude-rank-1",
+      "correct": 9,
+      "total": 40,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "9/40 vs random single-choice baseline 1/5. No universal shortcut was observed. Correct bank member is eligible at all five positions independently of candidate values; full fixed-bank counterfactuals supply direct witnesses.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "fresh-easy.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "magnitude-rank-5",
+      "subgroup": "fresh-easy/overall",
+      "scope": "overall",
+      "strategy": "magnitude-rank-5",
+      "correct": 10,
+      "total": 40,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "10/40 vs random single-choice baseline 1/5. No universal shortcut was observed. Correct bank member is eligible at all five positions independently of candidate values; full fixed-bank counterfactuals supply direct witnesses.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "fresh-easy.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "position-1",
+      "subgroup": "fresh-easy/profile/easy/d",
+      "scope": "within_template",
+      "strategy": "position-1",
+      "correct": 4,
+      "total": 13,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "4/13 vs random single-choice baseline 1/5. No universal shortcut was observed. Correct bank member is eligible at all five positions independently of candidate values; full fixed-bank counterfactuals supply direct witnesses.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "fresh-easy.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "unique-signs",
+      "subgroup": "fresh-easy/profile/easy/d",
+      "scope": "within_template",
+      "strategy": "unique-signs",
+      "correct": 0,
+      "total": 13,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/13 vs random single-choice baseline 1/5. All five current choices share the normalized sign pattern; signs alone do not distinguish any member. Abstention is counted as failure.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "fresh-easy.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "magnitude-rank-1",
+      "subgroup": "fresh-easy/profile/easy/d",
+      "scope": "within_template",
+      "strategy": "magnitude-rank-1",
+      "correct": 5,
+      "total": 13,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "5/13 vs random single-choice baseline 1/5. No universal shortcut was observed. Correct bank member is eligible at all five positions independently of candidate values; full fixed-bank counterfactuals supply direct witnesses.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "fresh-easy.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "magnitude-rank-5",
+      "subgroup": "fresh-easy/profile/easy/d",
+      "scope": "within_template",
+      "strategy": "magnitude-rank-5",
+      "correct": 1,
+      "total": 13,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/13 vs random single-choice baseline 1/5. No universal shortcut was observed. Correct bank member is eligible at all five positions independently of candidate values; full fixed-bank counterfactuals supply direct witnesses.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "fresh-easy.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "unique-signs",
+      "subgroup": "fresh-easy/profile-pivot/easy/d/1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "unique-signs",
+      "correct": 0,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/8 vs random single-choice baseline 1/5. All five current choices share the normalized sign pattern; signs alone do not distinguish any member. Abstention is counted as failure.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "fresh-easy.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "position-1",
+      "subgroup": "fresh-easy/profile/easy/all",
+      "scope": "within_template",
+      "strategy": "position-1",
+      "correct": 2,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/10 vs random single-choice baseline 1/5. No universal shortcut was observed. Correct bank member is eligible at all five positions independently of candidate values; full fixed-bank counterfactuals supply direct witnesses.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "fresh-easy.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "unique-signs",
+      "subgroup": "fresh-easy/profile/easy/all",
+      "scope": "within_template",
+      "strategy": "unique-signs",
+      "correct": 0,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/10 vs random single-choice baseline 1/5. All five current choices share the normalized sign pattern; signs alone do not distinguish any member. Abstention is counted as failure.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "fresh-easy.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "magnitude-rank-1",
+      "subgroup": "fresh-easy/profile/easy/all",
+      "scope": "within_template",
+      "strategy": "magnitude-rank-1",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/10 vs random single-choice baseline 1/5. No universal shortcut was observed. Correct bank member is eligible at all five positions independently of candidate values; full fixed-bank counterfactuals supply direct witnesses.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "fresh-easy.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "magnitude-rank-5",
+      "subgroup": "fresh-easy/profile/easy/all",
+      "scope": "within_template",
+      "strategy": "magnitude-rank-5",
+      "correct": 4,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "4/10 vs random single-choice baseline 1/5. No universal shortcut was observed. Correct bank member is eligible at all five positions independently of candidate values; full fixed-bank counterfactuals supply direct witnesses.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "fresh-easy.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "unique-signs",
+      "subgroup": "fresh-easy/profile-pivot/easy/all/-1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "unique-signs",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/4 vs random single-choice baseline 1/5. All five current choices share the normalized sign pattern; signs alone do not distinguish any member. Abstention is counted as failure.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "fresh-easy.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "unique-signs",
+      "subgroup": "fresh-easy/profile-pivot/easy/d/-1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "unique-signs",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/5 vs random single-choice baseline 1/5. All five current choices share the normalized sign pattern; signs alone do not distinguish any member. Abstention is counted as failure.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "fresh-easy.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "position-1",
+      "subgroup": "fresh-easy/profile/easy/b",
+      "scope": "within_template",
+      "strategy": "position-1",
+      "correct": 2,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/10 vs random single-choice baseline 1/5. No universal shortcut was observed. Correct bank member is eligible at all five positions independently of candidate values; full fixed-bank counterfactuals supply direct witnesses.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "fresh-easy.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "unique-signs",
+      "subgroup": "fresh-easy/profile/easy/b",
+      "scope": "within_template",
+      "strategy": "unique-signs",
+      "correct": 0,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/10 vs random single-choice baseline 1/5. All five current choices share the normalized sign pattern; signs alone do not distinguish any member. Abstention is counted as failure.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "fresh-easy.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "magnitude-rank-1",
+      "subgroup": "fresh-easy/profile/easy/b",
+      "scope": "within_template",
+      "strategy": "magnitude-rank-1",
+      "correct": 2,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/10 vs random single-choice baseline 1/5. No universal shortcut was observed. Correct bank member is eligible at all five positions independently of candidate values; full fixed-bank counterfactuals supply direct witnesses.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "fresh-easy.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "magnitude-rank-5",
+      "subgroup": "fresh-easy/profile/easy/b",
+      "scope": "within_template",
+      "strategy": "magnitude-rank-5",
+      "correct": 5,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "5/10 vs random single-choice baseline 1/5. No universal shortcut was observed. Correct bank member is eligible at all five positions independently of candidate values; full fixed-bank counterfactuals supply direct witnesses.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "fresh-easy.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "unique-signs",
+      "subgroup": "fresh-easy/profile-pivot/easy/b/-1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "unique-signs",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 vs random single-choice baseline 1/5. All five current choices share the normalized sign pattern; signs alone do not distinguish any member. Abstention is counted as failure.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "fresh-easy.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "position-1",
+      "subgroup": "fresh-easy/profile/easy/c",
+      "scope": "within_template",
+      "strategy": "position-1",
+      "correct": 2,
+      "total": 7,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/7 vs random single-choice baseline 1/5. No universal shortcut was observed. Correct bank member is eligible at all five positions independently of candidate values; full fixed-bank counterfactuals supply direct witnesses.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "fresh-easy.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "unique-signs",
+      "subgroup": "fresh-easy/profile/easy/c",
+      "scope": "within_template",
+      "strategy": "unique-signs",
+      "correct": 0,
+      "total": 7,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/7 vs random single-choice baseline 1/5. All five current choices share the normalized sign pattern; signs alone do not distinguish any member. Abstention is counted as failure.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "fresh-easy.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "magnitude-rank-1",
+      "subgroup": "fresh-easy/profile/easy/c",
+      "scope": "within_template",
+      "strategy": "magnitude-rank-1",
+      "correct": 1,
+      "total": 7,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/7 vs random single-choice baseline 1/5. No universal shortcut was observed. Correct bank member is eligible at all five positions independently of candidate values; full fixed-bank counterfactuals supply direct witnesses.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "fresh-easy.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "magnitude-rank-5",
+      "subgroup": "fresh-easy/profile/easy/c",
+      "scope": "within_template",
+      "strategy": "magnitude-rank-5",
+      "correct": 0,
+      "total": 7,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/7 vs random single-choice baseline 1/5. No universal shortcut was observed. Correct bank member is eligible at all five positions independently of candidate values; full fixed-bank counterfactuals supply direct witnesses.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "fresh-easy.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "unique-signs",
+      "subgroup": "fresh-easy/profile-pivot/easy/c/1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "unique-signs",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/5 vs random single-choice baseline 1/5. All five current choices share the normalized sign pattern; signs alone do not distinguish any member. Abstention is counted as failure.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "fresh-easy.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "unique-signs",
+      "subgroup": "fresh-easy/profile-pivot/easy/all/1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "unique-signs",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 vs random single-choice baseline 1/5. All five current choices share the normalized sign pattern; signs alone do not distinguish any member. Abstention is counted as failure.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "fresh-easy.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "unique-signs",
+      "subgroup": "fresh-easy/profile-pivot/easy/b/1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "unique-signs",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/4 vs random single-choice baseline 1/5. All five current choices share the normalized sign pattern; signs alone do not distinguish any member. Abstention is counted as failure.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "fresh-easy.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "unique-signs",
+      "subgroup": "fresh-easy/profile-pivot/easy/c/-1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "unique-signs",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/2 vs random single-choice baseline 1/5. All five current choices share the normalized sign pattern; signs alone do not distinguish any member. Abstention is counted as failure.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "fresh-easy.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "position-1",
+      "subgroup": "delivered-batch/overall",
+      "scope": "overall",
+      "strategy": "position-1",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/5 vs random single-choice baseline 1/5. No universal shortcut was observed. Correct bank member is eligible at all five positions independently of candidate values; full fixed-bank counterfactuals supply direct witnesses.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "position-2",
+      "subgroup": "delivered-batch/overall",
+      "scope": "overall",
+      "strategy": "position-2",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/5 vs random single-choice baseline 1/5. No universal shortcut was observed. Correct bank member is eligible at all five positions independently of candidate values; full fixed-bank counterfactuals supply direct witnesses.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "position-3",
+      "subgroup": "delivered-batch/overall",
+      "scope": "overall",
+      "strategy": "position-3",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/5 vs random single-choice baseline 1/5. No universal shortcut was observed. Correct bank member is eligible at all five positions independently of candidate values; full fixed-bank counterfactuals supply direct witnesses.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "position-4",
+      "subgroup": "delivered-batch/overall",
+      "scope": "overall",
+      "strategy": "position-4",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/5 vs random single-choice baseline 1/5. No universal shortcut was observed. Correct bank member is eligible at all five positions independently of candidate values; full fixed-bank counterfactuals supply direct witnesses.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "position-5",
+      "subgroup": "delivered-batch/overall",
+      "scope": "overall",
+      "strategy": "position-5",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/5 vs random single-choice baseline 1/5. No universal shortcut was observed. Correct bank member is eligible at all five positions independently of candidate values; full fixed-bank counterfactuals supply direct witnesses.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "unique-signs",
+      "subgroup": "delivered-batch/overall",
+      "scope": "overall",
+      "strategy": "unique-signs",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/5 vs random single-choice baseline 1/5. All five current choices share the normalized sign pattern; signs alone do not distinguish any member. Abstention is counted as failure.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "signs-first-tie",
+      "subgroup": "delivered-batch/overall",
+      "scope": "overall",
+      "strategy": "signs-first-tie",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/5 vs random single-choice baseline 1/5. No universal shortcut was observed. Correct bank member is eligible at all five positions independently of candidate values; full fixed-bank counterfactuals supply direct witnesses.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "magnitude-rank-1",
+      "subgroup": "delivered-batch/overall",
+      "scope": "overall",
+      "strategy": "magnitude-rank-1",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/5 vs random single-choice baseline 1/5. No universal shortcut was observed. Correct bank member is eligible at all five positions independently of candidate values; full fixed-bank counterfactuals supply direct witnesses.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "magnitude-rank-2",
+      "subgroup": "delivered-batch/overall",
+      "scope": "overall",
+      "strategy": "magnitude-rank-2",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/5 vs random single-choice baseline 1/5. No universal shortcut was observed. Correct bank member is eligible at all five positions independently of candidate values; full fixed-bank counterfactuals supply direct witnesses.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "magnitude-rank-3",
+      "subgroup": "delivered-batch/overall",
+      "scope": "overall",
+      "strategy": "magnitude-rank-3",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/5 vs random single-choice baseline 1/5. No universal shortcut was observed. Correct bank member is eligible at all five positions independently of candidate values; full fixed-bank counterfactuals supply direct witnesses.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "magnitude-rank-4",
+      "subgroup": "delivered-batch/overall",
+      "scope": "overall",
+      "strategy": "magnitude-rank-4",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/5 vs random single-choice baseline 1/5. No universal shortcut was observed. Correct bank member is eligible at all five positions independently of candidate values; full fixed-bank counterfactuals supply direct witnesses.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "magnitude-rank-5",
+      "subgroup": "delivered-batch/overall",
+      "scope": "overall",
+      "strategy": "magnitude-rank-5",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/5 vs random single-choice baseline 1/5. No universal shortcut was observed. Correct bank member is eligible at all five positions independently of candidate values; full fixed-bank counterfactuals supply direct witnesses.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "copy-first-raw-row",
+      "subgroup": "delivered-batch/overall",
+      "scope": "overall",
+      "strategy": "copy-first-raw-row",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/5 vs random single-choice baseline 1/5. Ordinary first pivot has magnitude at least 2. Using another already normalized unit row, when present, is intended mathematical simplification supported by source swap examples.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json",
+        "counterfactual-records.json"
+      ]
+    },
+    {
+      "cue": "first rendered choice",
+      "subgroup": "actual UI five batch fixtures",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose first after application choiceOrder hashing",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/5 compared with 1/5 random choice. It does not answer the finite delivered batch; live task IDs can change UI ordering.",
+      "sample_refs": [
+        "ui-position-probes.json",
+        "render-records.json",
+        "render/question-001.html"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "generator uniqueness rejection and bounded resampling",
+      "requested easy difficulty",
+      "actual publisher identity/validation/normalization",
+      "captured inventory and within-batch deduplication",
+      "learner history/current-prefix exclusion and weighted band selection rules",
+      "actual UI choice ordering"
+    ],
+    "sample_refs": [
+      "packaging.json",
+      "resampling-records.json",
+      "delivery-batch/delivery.json",
+      "delivery-fresh/delivery.json",
+      "delivery-boundaries/delivery.json",
+      "delivery-comparison.json",
+      "selection-analysis.json",
+      "selection-decision-coverage.json",
+      "ui-position-probes.json"
+    ],
+    "result": "Batch5/5 and fresh40/40 survive actual captured-inventory filtering with decision cases preserved; injected duplicate and captured historical duplicate are both excluded (3in,1accepted). Read-only selection reconstruction and rule inspection preserve equal eligibility within the easy band for positive easy weight. Representative policy/history simulations retain all batch decision profiles among new selections; zero easy weight excludes the batch. Historical inventory has five separately reproduced sign-only items and is not certified clean."
+  },
+  "limitations": [
+    "Finite probes do not prove absence of all shortcuts. Conditional singleton successes are not population evidence.",
+    "Captured inventory basis5370 only; later publication can change deduplication. No publication or database writes were performed.",
+    "Actual configured learner weights, live histories and unassigned future entity IDs unavailable; representative selection uses disclosed synthetic new IDs and source-rule analysis, not a live-policy assertion.",
+    "Five historical non-source questions have reproduced sign-only defects. They are retained in affected-inventory.json; acceptance concerns the repaired generator and new batch, not automatic historical bank remediation.",
+    "Historical original generation seed/draw metadata was not captured. Inferred explicit parameters reproduce stored stable IDs, prompts, full banks and keys; original provenance is not invented.",
+    "Source aefb230a lacks correct link/difficulty/worked solution; its unique mathematical answer is inferred. Neighboring multi-pivot lesson examples are context, outside this KP."
+  ]
+}

@@ -1,0 +1,150 @@
+{
+  "learner_operation": "Rearrange an ODE, integrate, and use its initial condition to determine a particular solution, including the integration constant and any branch; select or enter the requested expression.",
+  "fixed_features": [
+    {
+      "feature": "Separable first-order ODE and elementary integrals",
+      "justification": "Lesson tutorial 974 explicitly prescribes separation, integration, and substitution of initial data."
+    },
+    {
+      "feature": "Per-family response scaffold",
+      "justification": "Observed blank fields request whole RHS, denominator, or log argument. These are instructional contracts."
+    },
+    {
+      "feature": "Only coordinate translation; all initial ordinates/constants fixed",
+      "justification": "Observed implementation policy, not an instructional necessity. The source lesson solves the constant from initial data; this restriction fails review."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Integration constant selected by IC",
+      "eligible_variation": "Admissible initial ordinate can change while holding the ODE and x0 fixed; zero/nonzero constants are legitimate.",
+      "observed": "Only h varies; q-104065 always C=0, q-355546 always C=7. Independent y0=6/7 pair changes C=7/8 correctly but generator rejects y0."
+    },
+    {
+      "role": "Radio candidate meeting ODE and IC",
+      "eligible_variation": "Derive banks with varied admissible constants and mathematical relationships so shape/symbol cues do not fix the winner.",
+      "observed": "q-104065 always the unique logarithm choice without pi; UI order shuffling does not affect this cue."
+    },
+    {
+      "role": "Sign branch",
+      "eligible_variation": "Source q-128199 uses initial sign to choose a radical branch.",
+      "observed": "That supplied valid source profile is absent; generator rejects template q-128199."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "Boundary translations -4,1,4 across 19 served profiles",
+      "sample_refs": [
+        "samples.json",
+        "math-results.json"
+      ],
+      "result": "57 controls; correct ODE/IC and unique keys; all constants/ordinate assignments fixed."
+    },
+    {
+      "case": "Exact easy batch after delivery",
+      "sample_refs": [
+        "batch.json",
+        "delivery-batch/accepted.json",
+        "shortcut-results.json"
+      ],
+      "result": "5 accepted, 0 duplicates. Trig symbol cue succeeds 1/1 conditional batch member. Two of five share q-355576 with different shifts."
+    },
+    {
+      "case": "All eight nonzero translations of trig bank",
+      "sample_refs": [
+        "shortcut-family-records.json",
+        "shortcut-results.json"
+      ],
+      "result": "Cue succeeds 8/8 against random choice baseline 1/5."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Hold q-355546 ODE, h=1 and initial x=2 fixed; change initial y from 6 to 7 in an independent review fixture.",
+      "expected": "Constant must change from 7 to 8; each key accepted on its own IVP and rejected on the other. Prompt and solution must track IC.",
+      "observed": "Exact ODE/IC checks pass, native grader accepts both correct keys and rejects cross answers, and actual UI renders both changed IC/solutions. Generator accepts only h and rejects y0, demonstrating unavailable eligible variation.",
+      "status": "passed",
+      "justification": "Lesson tutorial 974 says to substitute the initial condition to solve the constant; initial y is mathematically answer-bearing. Pair validates the dependency, not generator coverage.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-math.json",
+        "grader-observed-report.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Change Find to Determine on the same blank IVP; reverse all radio options while preserving UUIDs and correct key.",
+      "expected": "Same mathematical answer and learner grading; only displayed order may change.",
+      "observed": "Native blank key/wrong-entry outcomes remain correct; all five options retain correctness before/after permutation. Rendered wording and bank are readable.",
+      "status": "passed",
+      "justification": "Prose verb and source option order do not enter the ODE or initial condition. Actual UI shuffles positions by identity.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "grader-observed-report.json",
+        "render/rendering.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "Logarithm option without printed pi",
+      "subgroup": "q-104065 sine/cosine ODE family, all nonzero shifts",
+      "scope": "within_template",
+      "strategy": "Select the unique log option containing no pi, ignoring ODE integration and initial data.",
+      "correct": 8,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "8/8 versus uniform random 1/5. Correctness depends on a fixed C=0 assignment; pi is a distractor-only standalone constant in the alternative logarithm. This is an incidental bank cue rather than the required calculus.",
+      "sample_refs": [
+        "shortcut-family-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Logarithm option without printed pi",
+      "subgroup": "Actual delivered batch trig member",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Apply the same symbol-only choice strategy after shared filtering and UI order shuffling.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "1/1 conditional batch item versus random 1/5; not generalized to the other four batch questions. The actual screenshot displays this cue.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "shortcut-results.json",
+        "render/rendering.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "Generator template/difficulty exclusions and finite-domain rejection",
+      "Shared prepare_records: normalization, stable IDs, validation and inventory/batch dedup",
+      "Requested easy/moderate filtering on separate controls",
+      "Exact runner easy batch",
+      "Actual UI choice hashing/shuffling",
+      "Captured inventory and conditional faithful learner-selection reproduction"
+    ],
+    "sample_refs": [
+      "runtime-results.json",
+      "delivery-easy/delivery.json",
+      "delivery-moderate/delivery.json",
+      "delivery-batch/delivery.json",
+      "shortcut-results.json",
+      "selection.json",
+      "inventory-audit.json"
+    ],
+    "result": "All controls (24 easy,33 moderate) and five batch items survive. Symbol cue survives each stage. Inventory basis 5372 has 26 original sources and no generated records. Exact live histories/weights and future publication IDs absent; conditioned selection support examined, no future publication asserted."
+  },
+  "limitations": [
+    "No finite audit proves absence of every shortcut.",
+    "Counterfactual IC and permutation records are independent review fixtures, not claimed package outputs.",
+    "The source bank has an invalid singular IVP, a general-solution prompt missing its equation, and a fraction-layout capture defect; independent source account distinguishes these.",
+    "Selection simulation uses proxy entity IDs for unpublished items; actual task histories and configured band weights are absent.",
+    "No publication or database writes performed."
+  ]
+}

@@ -1,0 +1,309 @@
+{
+  "learner_operation": "Reduce a rank-one consistent augmented 2x2 matrix to normalized REF, or read an already reduced matrix, then where requested express its general solution using one free variable. The learner must derive the normalized row or affine solution from the supplied matrix, not from distractor frequencies.",
+  "fixed_features": [
+    {
+      "feature": "Rank-one consistent 2x2 augmented systems with nonzero first pivot",
+      "justification": "Target source questions and canonical example consistently practice eliminating a dependent row; neighboring no-solution exposition does not require making these target banks inconsistent."
+    },
+    {
+      "feature": "x basic, y free when expressing solutions",
+      "justification": "Introduction 0c91df0b-40c7-5a65-9fda-5d2d6438dfa3 explicitly introduces these roles; retaining this focused representation preserves workload."
+    },
+    {
+      "feature": "Five-choice mathematical radio fields and the three source operation families",
+      "justification": "These are observed response contracts; easy separates REF and solution, moderate combines them."
+    },
+    {
+      "feature": "Coefficient matrix, answer-bank composition and correct structural slot fixed within each template",
+      "justification": "Author permits only RHS scaling and cites validation bounds, not an instructional necessity. This is not accepted as essential: the saved bank-only probes demonstrate that the resulting fixed composition predicts the answer."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Correct normalized first row",
+      "eligible_variation": "Small signed coefficients and first pivots, fractional normalized entries; which bank object gives the actual row may vary.",
+      "observed": "Three easy REF profiles preserve their coefficient pattern and majority-bank top-row cue under every tested scale."
+    },
+    {
+      "role": "Correct intercept and slope in the affine solution",
+      "eligible_variation": "Signs and magnitudes can vary independently within comparable source arithmetic; bank statistics must not assign the correct signs.",
+      "observed": "RHS scale changes intercepts; slope remains fixed within a profile. Majority affine signs and modal magnitudes identify the answer in both easy solution profiles."
+    },
+    {
+      "role": "Correct choice label/position",
+      "eligible_variation": "Any position is eligible; no source position is essential.",
+      "observed": "Stored positions fixed within profiles, but actual UI shuffles them. The demonstrated defect is invariant under that shuffle."
+    },
+    {
+      "role": "Source bank profile",
+      "eligible_variation": "All supplied target source cases should be represented, resolving capture defects explicitly.",
+      "observed": "12 exact replay profiles; q-42156 and q-73524 excluded and newer q-20959/q-20962 absent."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "Source-family coverage",
+      "sample_refs": [
+        "source-replay-records.json",
+        "source-replay.json"
+      ],
+      "result": "12 source cases replay prompt, solution and complete keyed bank exactly; four supplied cases are unsupported."
+    },
+    {
+      "case": "Signed RHS boundary and interior cases",
+      "sample_refs": [
+        "sampled-records.json",
+        "math-results.json"
+      ],
+      "result": "60 independent records: five values (-4,-1,1,3,4) per supported profile; plus exact runner batch. Unique correct choices and checked solution mathematics pass in all 65."
+    },
+    {
+      "case": "Delivered exact runner batch",
+      "sample_refs": [
+        "runner-batch.json",
+        "delivery-batch/accepted.json",
+        "shortcut-results.json"
+      ],
+      "result": "5 inputs, 2 inventory duplicates, 3 accepted. The bank-only rule answers 5/5 input and 3/3 accepted items. All three accepted are REF-only; one source profile appears twice with sign reversal in the raw batch."
+    },
+    {
+      "case": "Generator enumeration and internal mathematical deduplication",
+      "sample_refs": [
+        "sampler-stage-results.json",
+        "sampler-stage-easy-records.json",
+        "sampler-stage-moderate-records.json"
+      ],
+      "result": "Actual batch function enumerated with seed 71923, independently recording per-profile retention before publication. No hidden rejection/resampling loop."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Hold template and coefficient columns fixed; rhs_scale 1 to -1 for q-42158 and q-73743.",
+      "expected": "Prompt constants, correct expression and explanatory constants must change consistently; old affine solution must be rejected for the changed prompt.",
+      "observed": "Both mathematical answers and solutions change correctly. q-42158 cross-submissions: new answer accepted and old answer rejected in both directions. Actual UI displays the corresponding changed matrices, options and solutions. Bank-only cue remains predictive.",
+      "status": "passed",
+      "justification": "Changing constants of a nontrivial consistent rank-one equation translates its solution line and changes its normalized augmented row.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "counterfactual-grader-input.json",
+        "counterfactual-grader-results.json",
+        "render/input.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Hold first row [1,2,-1] fixed, change redundant second row from 8 times it to -5 times it using q-20963 and q-73740 at rhs_scale 1.",
+      "expected": "Same complete solution set; elimination annotation should reflect the changed multiple.",
+      "observed": "Both answers are [x,y]^T=[-1-2y,y]^T with y arbitrary. Exact math and all five native radio classifications pass for each; the actual UI shows R2-8R1 versus R2+5R1 and the same resulting solution.",
+      "status": "passed",
+      "justification": "Multiplying a redundant equation by a nonzero scalar does not change its solutions. This changes mathematical evidence in the prompt, beyond merely changing a seed.",
+      "sample_refs": [
+        "irrelevant-row-pair.json",
+        "counterfactual-results.json",
+        "grader-input.json",
+        "grader-results.json",
+        "render-irrelevant/input.json",
+        "render-irrelevant/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Seed 71923 to 88031 at explicit template and scale",
+      "expected": "Question content and response preserved",
+      "observed": "Exact question objects equal for both tested easy profiles.",
+      "status": "passed",
+      "justification": "Random seed is irrelevant when all constructive parameters are explicitly fixed.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "Answer-bank frequency and shape",
+      "subgroup": "easy-records.json",
+      "scope": "overall",
+      "strategy": "Matrix bank: modal top row plus zero bottom row. Affine bank: majority constant/slope signs and modal coefficient magnitudes among affine choices.",
+      "correct": 25,
+      "total": 25,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Uniform random selection from five options succeeds at rate 0.2. This rule uses no prompt, generator metadata, UUID, stored key, or option position. All tested easy items are answered. Rank-one reasoning can justify looking for a zero row, but distractor frequency supplies the missing numerical row without normalization; that frequency is incidental.",
+      "sample_refs": [
+        "easy-records.json",
+        "shortcut-results.json",
+        "review_tests.py"
+      ]
+    },
+    {
+      "cue": "Answer-bank frequency and shape",
+      "subgroup": "runner-batch.json",
+      "scope": "overall",
+      "strategy": "Matrix bank: modal top row plus zero bottom row. Affine bank: majority constant/slope signs and modal coefficient magnitudes among affine choices.",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Uniform random selection from five options succeeds at rate 0.2. This rule uses no prompt, generator metadata, UUID, stored key, or option position. All tested easy items are answered. Rank-one reasoning can justify looking for a zero row, but distractor frequency supplies the missing numerical row without normalization; that frequency is incidental.",
+      "sample_refs": [
+        "runner-batch.json",
+        "shortcut-results.json",
+        "review_tests.py"
+      ]
+    },
+    {
+      "cue": "Answer-bank frequency and shape",
+      "subgroup": "delivery-easy/accepted.json",
+      "scope": "overall",
+      "strategy": "Matrix bank: modal top row plus zero bottom row. Affine bank: majority constant/slope signs and modal coefficient magnitudes among affine choices.",
+      "correct": 20,
+      "total": 20,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Uniform random selection from five options succeeds at rate 0.2. This rule uses no prompt, generator metadata, UUID, stored key, or option position. All tested easy items are answered. Rank-one reasoning can justify looking for a zero row, but distractor frequency supplies the missing numerical row without normalization; that frequency is incidental.",
+      "sample_refs": [
+        "delivery-easy/accepted.json",
+        "shortcut-results.json",
+        "review_tests.py"
+      ]
+    },
+    {
+      "cue": "Answer-bank frequency and shape",
+      "subgroup": "delivery-batch/accepted.json",
+      "scope": "overall",
+      "strategy": "Matrix bank: modal top row plus zero bottom row. Affine bank: majority constant/slope signs and modal coefficient magnitudes among affine choices.",
+      "correct": 3,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Uniform random selection from five options succeeds at rate 0.2. This rule uses no prompt, generator metadata, UUID, stored key, or option position. All tested easy items are answered. Rank-one reasoning can justify looking for a zero row, but distractor frequency supplies the missing numerical row without normalization; that frequency is incidental.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "shortcut-results.json",
+        "review_tests.py"
+      ]
+    },
+    {
+      "cue": "majority signs with modal coefficient magnitudes among affine options",
+      "subgroup": "q-42158",
+      "scope": "within_template",
+      "strategy": "majority signs with modal coefficient magnitudes among affine options",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Conditional test within this recognizable bank family, using five independently selected RHS scales. Comparison is 1/5 random choice; repeated coefficients and sign counts determine the answer independently of the supplied matrix.",
+      "sample_refs": [
+        "easy-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "majority signs with modal coefficient magnitudes among affine options",
+      "subgroup": "q-73738",
+      "scope": "within_template",
+      "strategy": "majority signs with modal coefficient magnitudes among affine options",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Conditional test within this recognizable bank family, using five independently selected RHS scales. Comparison is 1/5 random choice; repeated coefficients and sign counts determine the answer independently of the supplied matrix.",
+      "sample_refs": [
+        "easy-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "modal top row plus all-zero bottom row",
+      "subgroup": "q-73741",
+      "scope": "within_template",
+      "strategy": "modal top row plus all-zero bottom row",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Conditional test within this recognizable bank family, using five independently selected RHS scales. Comparison is 1/5 random choice; repeated coefficients and sign counts determine the answer independently of the supplied matrix.",
+      "sample_refs": [
+        "easy-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "modal top row plus all-zero bottom row",
+      "subgroup": "q-73742",
+      "scope": "within_template",
+      "strategy": "modal top row plus all-zero bottom row",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Conditional test within this recognizable bank family, using five independently selected RHS scales. Comparison is 1/5 random choice; repeated coefficients and sign counts determine the answer independently of the supplied matrix.",
+      "sample_refs": [
+        "easy-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "modal top row plus all-zero bottom row",
+      "subgroup": "q-73743",
+      "scope": "within_template",
+      "strategy": "modal top row plus all-zero bottom row",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Conditional test within this recognizable bank family, using five independently selected RHS scales. Comparison is 1/5 random choice; repeated coefficients and sign counts determine the answer independently of the supplied matrix.",
+      "sample_refs": [
+        "easy-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "First rendered answer position",
+      "subgroup": "Exact runner batch after actual UI shuffling",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose the first rendered radio option",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Observed 2/5 versus 1/5 uniform random baseline; no deterministic first-position shortcut demonstrated. Actual UI changes authored order. The bank-only defect survives all five rendered orderings.",
+      "sample_refs": [
+        "runner-batch.json",
+        "ui-shortcut-results.json",
+        "render/input.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "Generator eligibility and finite scale enumeration",
+      "Generator fingerprint deduplication, shuffle, truncation",
+      "Requested difficulty",
+      "Publisher actual normalization, validation, stable identity and captured-inventory/batch deduplication",
+      "Learner freshness and weighted selection rule inspection plus faithful read-only reproduction",
+      "Actual UI option ordering and native learner grading"
+    ],
+    "sample_refs": [
+      "sampler-stage-results.json",
+      "delivery-easy/delivery.json",
+      "delivery-batch/delivery.json",
+      "delivery-moderate/delivery.json",
+      "selection-results.json",
+      "ui-shortcut-results.json",
+      "grader-results.json"
+    ],
+    "result": "Captured basis 5363: easy sample 25→20, moderate sample 35→28, runner batch 5→3. Bank-only cue succeeds on all tested easy input and accepted items and survives actual UI ordering; selection from these surviving easy pools cannot remove the item-local defect."
+  },
+  "limitations": [
+    "Finite independent tests do not prove absence of every possible shortcut. Only the reported easy-bank strategies are demonstrated as defects; no universal moderate-bank shortcut claim is made.",
+    "No publication/preparation.json, repair-history.json or repair-preflight.json exists for this initial review. Filtering is reproduced read-only against captured inventory.",
+    "No learner history or policy snapshot supplied. Selection uses the actual inspected rule reproduced with explicit seeds, easy-positive weights and stand-in new entity IDs; exact production future probabilities are unknown.",
+    "Captured inventory consists of original source IDs; no stored generated instance of the demonstrated defect was found. affected-inventory.json is empty on that verified basis.",
+    "Only five of eight scale values per profile receive independent math checks; complete generator enumeration is recorded for internal-deduplication analysis."
+  ]
+}

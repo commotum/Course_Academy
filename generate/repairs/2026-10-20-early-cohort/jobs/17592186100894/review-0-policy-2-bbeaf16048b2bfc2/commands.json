@@ -1,0 +1,21 @@
+{
+  "cwd": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186100894/review-0-policy-2-bbeaf16048b2bfc2",
+  "commands": [
+    "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python audit.py",
+    "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python followup.py",
+    "/home/jake/Developer/Course_Academy/generate/runs/current/check-engine grader-input.json grader-report.json  # expected strict failure; see grading-summary.json",
+    "/home/jake/Developer/Course_Academy/generate/runs/current/check-engine grader-observed-input.json grader-observed-report.json  # observations retain unresolved outcomes",
+    "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python variation.py",
+    "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python package_checks.py",
+    "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/render_preview.py --input render-records.json --output render --limit 11 --asset-root /home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186100894/workspace --math-root /media/jake/SSD/EDB/math",
+    "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py --input batch.json --source /home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186100894/source/source.json --inventory /home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186100894/source/inventory.json --difficulty easy --output delivery-batch --asset-root /home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186100894/workspace --math-root /media/jake/SSD/EDB/math",
+    "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py --input samples-easy.json --source /home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186100894/source/source.json --inventory /home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186100894/source/inventory.json --difficulty easy --output delivery-easy --asset-root /home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186100894/workspace --math-root /media/jake/SSD/EDB/math",
+    "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py --input samples-moderate.json --source /home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186100894/source/source.json --inventory /home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186100894/source/inventory.json --difficulty moderate --output delivery-moderate --asset-root /home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186100894/workspace --math-root /media/jake/SSD/EDB/math"
+  ],
+  "read_only_database": true,
+  "notes": [
+    "Run strict grader command expecting failure; observational report documents six unresolved outcomes rather than accepting them.",
+    "To regenerate samples-easy.json and samples-moderate.json split samples.json by :question/difficulty (already retained).",
+    "No author replenishment, publication, or database scripts were run."
+  ]
+}
