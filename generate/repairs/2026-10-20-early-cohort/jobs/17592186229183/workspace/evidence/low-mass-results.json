@@ -1,0 +1,468 @@
+{
+  "passed": true,
+  "command": [
+    "bank_boundary_checks.py"
+  ],
+  "parameters": {
+    "H": "12",
+    "v": "10",
+    "q": "1",
+    "c": "0.2",
+    "rin": "6",
+    "rout": "4"
+  },
+  "independent_mass": "0.2*12-(10/12)^2 = 1.70555... -> 1.7",
+  "low_mass_cases": [
+    {
+      "seed": 2,
+      "rank": 1,
+      "question": {
+        "knowledge_point": {
+          "db_id": 17592186229183,
+          "id": "c652164a-2e94-5e16-a410-5143037af134",
+          "title": "Determining an Amount at an Overflow Point"
+        },
+        "question": {
+          ":question/id": "523b7fd3-b4fb-5fb9-8232-bf1e012fdfe1",
+          ":question/problem": "A coolant reservoir in a manufacturing plant can hold up to $12\\,\\text{gal}$ of liquid. Initially, it contains $10\\,\\text{gal}$ of coolant solution with $1\\,\\text{lb}$ of dissolved corrosion inhibitor. A more concentrated coolant solution with concentration $0.2\\,\\text{lb/gal}$ flows into the reservoir at a rate of $6\\,\\text{gal/min},$ while the completely mixed solution drains out at a rate of $4\\,\\text{gal/min}.$ Rounded to one decimal place, find the amount of inhibitor in the reservoir at the moment it begins to overflow.",
+          ":question/answer-fields": [
+            {
+              ":answer-field/id": "d87f4553-5d65-56db-a812-d70589be240b",
+              ":answer-field/key": "selection",
+              ":answer-field/type": ":answer-field.type/radio",
+              ":answer-field/choices": [
+                {
+                  ":answer/id": "13765b0e-bdaa-50a0-a6a6-64f04803cec0",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "2.0\\,\\text{lb}"
+                },
+                {
+                  ":answer/id": "26fdd2ee-557e-5e02-9db1-4be4c4cc4261",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "1.7\\,\\text{lb}"
+                },
+                {
+                  ":answer/id": "56c54255-ead7-5eaa-9de1-6b751fea4f3f",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "3.5\\,\\text{lb}"
+                },
+                {
+                  ":answer/id": "dc904932-c964-5c23-a235-8d338c499659",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "4.1\\,\\text{lb}"
+                },
+                {
+                  ":answer/id": "cd794cb8-026f-5700-b6ff-05655edca5c9",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "2.3\\,\\text{lb}"
+                }
+              ],
+              ":answer-field/correct": [
+                ":answer/id",
+                "26fdd2ee-557e-5e02-9db1-4be4c4cc4261"
+              ]
+            }
+          ],
+          ":question/difficulty": ":question.difficulty/easy",
+          ":question/worked-solution": "Since $Q$ is the amount of inhibitor in the reservoir at time $t,$ the derivative \n\n$$\n\\frac{dQ}{dt}\n$$\n\ndescribes how this amount changes with respect to time $t,$ in minutes. This is equal to the rate at which inhibitor enters the reservoir minus the rate at which inhibitor leaves the reservoir.\n\n$$\n\\frac{dQ}{dt}={Q}_{\\text{in}}^{\u2032}-{Q}_{\\text{out}}^{\u2032}\n$$\n\nNote that the units of $\\frac{dQ}{dt},{Q}_{\\text{in}}^{\u2032}$ and ${Q}_{\\text{out}}^{\u2032}$ are $\\text{lb}/\\text{min}.$ Now, let's compute the required rates of change in steps.\n\n**Step 1**: Calculating the rate at which inhibitor enters the reservoir.\n\nFirst, note that a solution containing $0.2\\,\\text{lb/gal}$ of inhibitor enters the reservoir at a rate of $6\\,\\text{gal/min}.$ So, the rate at which the *inhibitor* enters the reservoir is \n\n$$\n\\begin{aligned}{Q}_{\\text{in}}^{\u2032} & =(0.2\\,\\frac{\\text{lb}}{\\text{gal}})\\cdot (6\\,\\frac{\\text{gal}}{\\text{min}}) \\\\  & =(0.2\\,\\frac{\\text{lb}}{\\cancel{\\text{gal}}})\\cdot (6\\,\\frac{\\cancel{\\text{gal}}}{\\text{min}}) \\\\  & =1.2\\,\\frac{\\text{lb}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 2**: Calculating the rate at which inhibitor exits the reservoir.\n\nTo find the rate at which inhibitor leaves the reservoir, we must first determine the volume of solution in the reservoir at time $t.$\n\nThe reservoir initially contains $10\\,\\text{gal}$ of solution; solution enters at $6\\,\\text{gal/min}$ and mixed solution leaves at $4\\,\\text{gal/min}.$\nAs a result, the amount of solution in the reservoir after $t$ minutes is \n\n$$\nV(t)=10+6t-4t=2(5+t)\\,\\text{gal}.\n$$\n\nNote that $V(t)$ is an increasing function, so the reservoir is filling.\n\nSince $Q$ is the amount of inhibitor in the reservoir, the concentration of the solution at time $t$ is\n\n$$\n\\frac{Q}{2(5+t)}\\,\\text{lb/gal}.\n$$\n\nTherefore, as the completely mixed solution leaves at a rate of $4\\,\\text{gal/min},$ *inhibitor* leaves at a rate of\n\n$$\n\\begin{aligned}{Q}_{\\text{out}}^{\u2032} & =(4\\,\\frac{\\text{gal}}{\\text{min}})\\cdot (\\frac{Q}{2(5+t)}\\,\\frac{\\text{lb}}{\\text{gal}}) \\\\  & =(4\\,\\frac{\\cancel{\\text{gal}}}{\\text{min}})\\cdot (\\frac{Q}{2(5+t)}\\,\\frac{\\text{lb}}{\\cancel{\\text{gal}}}) \\\\  & =\\frac{4Q}{2(5+t)}\\,\\frac{\\text{lb}}{\\text{min}} \\\\  & =\\frac{2Q}{5+t}\\,\\frac{\\text{lb}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 3**: Calculate the overall rate of change.\n\nThe rate of change equals the rate of entry minus the rate of exit. Therefore, \n\n$$\n\\begin{aligned}\\frac{dQ}{dt} & ={Q}_{\\text{in}}^{\u2032}-{Q}_{\\text{out}}^{\u2032} \\\\  & =1.2-\\frac{2Q}{5+t}\\end{aligned}\n$$\n\nwhich gives the equation\n\n$$\n\\frac{dQ}{dt}+\\frac{2}{5+t}\\,Q=1.2.\n$$\n\n**Step 4**: Integrate the equation.\n\nThis is a first-order linear equation with variable coefficients. So we find the general solution using an integrating factor:\n\n$$\n\\begin{aligned}I(t) & ={e}^{\\int 2/(5+t)\\,dt} \\\\  & ={e}^{2\\operatorname{ln}\u2061|5+t|} \\\\  & ={e}^{\\operatorname{ln}\u2061(5+t)^{2}} \\\\  & =(5+t)^{2}.\\end{aligned}\n$$\n\nMultiplying both sides of the differential equation by $I(t)=(5+t)^{2}$ yields\n\n$$\n\\begin{aligned}(5+t)^{2}\\cdot (\\frac{dQ}{dt}+\\frac{2}{5+t}\\,Q) & =(5+t)^{2}\\cdot 1.2 \\\\ (5+t)^{2}\\frac{dQ}{dt}+2(5+t)Q & =1.2(5+t)^{2} \\\\ \\frac{d}{dt}(Q(5+t)^{2}) & =1.2(5+t)^{2}.\\end{aligned}\n$$\n\nNow, we integrate with respect to $t:$\n\n$$\n\\begin{aligned}\\int \\frac{d}{dt}(Q(5+t)^{2})\\,dt & =\\int 1.2(5+t)^{2}\\,dt \\\\ Q(5+t)^{2} & =1.2\\cdot \\frac{1}{3}(5+t)^{3}+C \\\\ Q(t) & =0.4(5+t)+\\frac{C}{(5+t)^{2}}.\\end{aligned}\n$$\n\nWe're told that the reservoir initially contains $1\\,\\text{lb}$ of inhibitor. So, we can apply the initial condition $Q(0)=1,$ and solve for $C:$\n\n$$\n\\begin{aligned}Q(0) & =1 \\\\ 0.4(5+0)+\\frac{C}{(5+0)^{2}} & =1 \\\\ 2+\\frac{C}{(5)^{2}} & =1 \\\\ \\frac{C}{{5}^{2}} & =-1 \\\\ C & =-1(5)^{2}.\\end{aligned}\n$$\n\nTherefore, we obtain the following expression for $Q(t):$\n\n$$\n\\begin{aligned}Q(t) & =0.4(5+t)-\\frac{1(5)^{2}}{(5+t)^{2}} \\\\  & =0.4(5+t)-1{\\left(\\frac{5}{5+t}\\right)}^{2}.\\end{aligned}\n$$\n\nNow, let ${t}_{o}$ be the time when the reservoir begins to overflow. The reservoir has a capacity of $12\\,\\text{gal},$ so we can use the condition $V({t}_{o})=12$ to solve for ${t}_{o}:$\n\n$$\n\\begin{aligned}V({t}_{o}) & =12 \\\\ 10+6{t}_{o}-4{t}_{o} & =12 \\\\ 10+2{t}_{o} & =12 \\\\ 2{t}_{o} & =2 \\\\ {t}_{o} & =1\\,\\text{min}.\\end{aligned}\n$$\n\nFinally, rounded to one decimal place, the amount of inhibitor in the reservoir at the moment it begins to overflow is\n\n$$\n\\begin{aligned}Q(1) & =0.4(5+1)-1{\\left(\\frac{5}{5+1}\\right)}^{2} \\\\  & =2.4-1{\\left(\\frac{5}{6}\\right)}^{2} \\\\  & \u22481.7\\,\\text{lb}.\\end{aligned}\n$$"
+        },
+        "generation": {
+          "version": "overflow-onset-3",
+          "level": "easy",
+          "difficulty_provenance": "authored workload policy",
+          "template": "q-336506",
+          "profile": "method",
+          "seed": 2,
+          "parameters": {
+            "H": "12",
+            "v": "10",
+            "q": "1",
+            "c": "0.2",
+            "rin": "6",
+            "rout": "4"
+          },
+          "source": {
+            "database": "math",
+            "basis": 5395,
+            "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+          },
+          "origin": "generated variant",
+          "evidence_only": false,
+          "eligible_for_learning": true,
+          "mathematical_fingerprint": "a2c15c42dede5e2c65cb119a38548a59a3ee821dce6e8ff6a535a1b1431c720d",
+          "content_fingerprint": "d7f26d36cedcb07e0fd9f7ddf659187b3ccb3675c487fccd20418516e0a4480d",
+          "dependencies": {
+            "python": "3.13.5",
+            "sympy": "1.14.0"
+          },
+          "domain": "0 <= t <= overflow onset; capacity > initial volume, inflow > outflow, incoming concentration > initial concentration",
+          "bank_recipes": [
+            "correct",
+            "four exchangeable adjacent tenth-pound gaps; whole-bank shape translated to independently selected correct rank"
+          ]
+        }
+      }
+    },
+    {
+      "seed": 1,
+      "rank": 2,
+      "question": {
+        "knowledge_point": {
+          "db_id": 17592186229183,
+          "id": "c652164a-2e94-5e16-a410-5143037af134",
+          "title": "Determining an Amount at an Overflow Point"
+        },
+        "question": {
+          ":question/id": "9f0d762a-b2ce-5356-95e3-d19ec78f4313",
+          ":question/problem": "A coolant reservoir in a manufacturing plant can hold up to $12\\,\\text{gal}$ of liquid. Initially, it contains $10\\,\\text{gal}$ of coolant solution with $1\\,\\text{lb}$ of dissolved corrosion inhibitor. A more concentrated coolant solution with concentration $0.2\\,\\text{lb/gal}$ flows into the reservoir at a rate of $6\\,\\text{gal/min},$ while the completely mixed solution drains out at a rate of $4\\,\\text{gal/min}.$ Rounded to one decimal place, find the amount of inhibitor in the reservoir at the moment it begins to overflow.",
+          ":question/answer-fields": [
+            {
+              ":answer-field/id": "c685acb8-203a-520d-8aa7-898d72c86777",
+              ":answer-field/key": "selection",
+              ":answer-field/type": ":answer-field.type/radio",
+              ":answer-field/choices": [
+                {
+                  ":answer/id": "6a06b182-3860-5ff7-8814-84a180375f04",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "3.2\\,\\text{lb}"
+                },
+                {
+                  ":answer/id": "bbdcf2d1-dad0-5c9f-8116-0d1a7cd701ac",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "4.8\\,\\text{lb}"
+                },
+                {
+                  ":answer/id": "445bc0df-5c79-55df-b04d-bac8c6801e0c",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "6.1\\,\\text{lb}"
+                },
+                {
+                  ":answer/id": "b9fc1de8-01c9-54ec-aa3e-0b6126cdb7a1",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "0.1\\,\\text{lb}"
+                },
+                {
+                  ":answer/id": "49fa2258-b58e-5ae5-9f76-0e3bf9365e59",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "1.7\\,\\text{lb}"
+                }
+              ],
+              ":answer-field/correct": [
+                ":answer/id",
+                "49fa2258-b58e-5ae5-9f76-0e3bf9365e59"
+              ]
+            }
+          ],
+          ":question/difficulty": ":question.difficulty/easy",
+          ":question/worked-solution": "Since $Q$ is the amount of inhibitor in the reservoir at time $t,$ the derivative \n\n$$\n\\frac{dQ}{dt}\n$$\n\ndescribes how this amount changes with respect to time $t,$ in minutes. This is equal to the rate at which inhibitor enters the reservoir minus the rate at which inhibitor leaves the reservoir.\n\n$$\n\\frac{dQ}{dt}={Q}_{\\text{in}}^{\u2032}-{Q}_{\\text{out}}^{\u2032}\n$$\n\nNote that the units of $\\frac{dQ}{dt},{Q}_{\\text{in}}^{\u2032}$ and ${Q}_{\\text{out}}^{\u2032}$ are $\\text{lb}/\\text{min}.$ Now, let's compute the required rates of change in steps.\n\n**Step 1**: Calculating the rate at which inhibitor enters the reservoir.\n\nFirst, note that a solution containing $0.2\\,\\text{lb/gal}$ of inhibitor enters the reservoir at a rate of $6\\,\\text{gal/min}.$ So, the rate at which the *inhibitor* enters the reservoir is \n\n$$\n\\begin{aligned}{Q}_{\\text{in}}^{\u2032} & =(0.2\\,\\frac{\\text{lb}}{\\text{gal}})\\cdot (6\\,\\frac{\\text{gal}}{\\text{min}}) \\\\  & =(0.2\\,\\frac{\\text{lb}}{\\cancel{\\text{gal}}})\\cdot (6\\,\\frac{\\cancel{\\text{gal}}}{\\text{min}}) \\\\  & =1.2\\,\\frac{\\text{lb}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 2**: Calculating the rate at which inhibitor exits the reservoir.\n\nTo find the rate at which inhibitor leaves the reservoir, we must first determine the volume of solution in the reservoir at time $t.$\n\nThe reservoir initially contains $10\\,\\text{gal}$ of solution; solution enters at $6\\,\\text{gal/min}$ and mixed solution leaves at $4\\,\\text{gal/min}.$\nAs a result, the amount of solution in the reservoir after $t$ minutes is \n\n$$\nV(t)=10+6t-4t=2(5+t)\\,\\text{gal}.\n$$\n\nNote that $V(t)$ is an increasing function, so the reservoir is filling.\n\nSince $Q$ is the amount of inhibitor in the reservoir, the concentration of the solution at time $t$ is\n\n$$\n\\frac{Q}{2(5+t)}\\,\\text{lb/gal}.\n$$\n\nTherefore, as the completely mixed solution leaves at a rate of $4\\,\\text{gal/min},$ *inhibitor* leaves at a rate of\n\n$$\n\\begin{aligned}{Q}_{\\text{out}}^{\u2032} & =(4\\,\\frac{\\text{gal}}{\\text{min}})\\cdot (\\frac{Q}{2(5+t)}\\,\\frac{\\text{lb}}{\\text{gal}}) \\\\  & =(4\\,\\frac{\\cancel{\\text{gal}}}{\\text{min}})\\cdot (\\frac{Q}{2(5+t)}\\,\\frac{\\text{lb}}{\\cancel{\\text{gal}}}) \\\\  & =\\frac{4Q}{2(5+t)}\\,\\frac{\\text{lb}}{\\text{min}} \\\\  & =\\frac{2Q}{5+t}\\,\\frac{\\text{lb}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 3**: Calculate the overall rate of change.\n\nThe rate of change equals the rate of entry minus the rate of exit. Therefore, \n\n$$\n\\begin{aligned}\\frac{dQ}{dt} & ={Q}_{\\text{in}}^{\u2032}-{Q}_{\\text{out}}^{\u2032} \\\\  & =1.2-\\frac{2Q}{5+t}\\end{aligned}\n$$\n\nwhich gives the equation\n\n$$\n\\frac{dQ}{dt}+\\frac{2}{5+t}\\,Q=1.2.\n$$\n\n**Step 4**: Integrate the equation.\n\nThis is a first-order linear equation with variable coefficients. So we find the general solution using an integrating factor:\n\n$$\n\\begin{aligned}I(t) & ={e}^{\\int 2/(5+t)\\,dt} \\\\  & ={e}^{2\\operatorname{ln}\u2061|5+t|} \\\\  & ={e}^{\\operatorname{ln}\u2061(5+t)^{2}} \\\\  & =(5+t)^{2}.\\end{aligned}\n$$\n\nMultiplying both sides of the differential equation by $I(t)=(5+t)^{2}$ yields\n\n$$\n\\begin{aligned}(5+t)^{2}\\cdot (\\frac{dQ}{dt}+\\frac{2}{5+t}\\,Q) & =(5+t)^{2}\\cdot 1.2 \\\\ (5+t)^{2}\\frac{dQ}{dt}+2(5+t)Q & =1.2(5+t)^{2} \\\\ \\frac{d}{dt}(Q(5+t)^{2}) & =1.2(5+t)^{2}.\\end{aligned}\n$$\n\nNow, we integrate with respect to $t:$\n\n$$\n\\begin{aligned}\\int \\frac{d}{dt}(Q(5+t)^{2})\\,dt & =\\int 1.2(5+t)^{2}\\,dt \\\\ Q(5+t)^{2} & =1.2\\cdot \\frac{1}{3}(5+t)^{3}+C \\\\ Q(t) & =0.4(5+t)+\\frac{C}{(5+t)^{2}}.\\end{aligned}\n$$\n\nWe're told that the reservoir initially contains $1\\,\\text{lb}$ of inhibitor. So, we can apply the initial condition $Q(0)=1,$ and solve for $C:$\n\n$$\n\\begin{aligned}Q(0) & =1 \\\\ 0.4(5+0)+\\frac{C}{(5+0)^{2}} & =1 \\\\ 2+\\frac{C}{(5)^{2}} & =1 \\\\ \\frac{C}{{5}^{2}} & =-1 \\\\ C & =-1(5)^{2}.\\end{aligned}\n$$\n\nTherefore, we obtain the following expression for $Q(t):$\n\n$$\n\\begin{aligned}Q(t) & =0.4(5+t)-\\frac{1(5)^{2}}{(5+t)^{2}} \\\\  & =0.4(5+t)-1{\\left(\\frac{5}{5+t}\\right)}^{2}.\\end{aligned}\n$$\n\nNow, let ${t}_{o}$ be the time when the reservoir begins to overflow. The reservoir has a capacity of $12\\,\\text{gal},$ so we can use the condition $V({t}_{o})=12$ to solve for ${t}_{o}:$\n\n$$\n\\begin{aligned}V({t}_{o}) & =12 \\\\ 10+6{t}_{o}-4{t}_{o} & =12 \\\\ 10+2{t}_{o} & =12 \\\\ 2{t}_{o} & =2 \\\\ {t}_{o} & =1\\,\\text{min}.\\end{aligned}\n$$\n\nFinally, rounded to one decimal place, the amount of inhibitor in the reservoir at the moment it begins to overflow is\n\n$$\n\\begin{aligned}Q(1) & =0.4(5+1)-1{\\left(\\frac{5}{5+1}\\right)}^{2} \\\\  & =2.4-1{\\left(\\frac{5}{6}\\right)}^{2} \\\\  & \u22481.7\\,\\text{lb}.\\end{aligned}\n$$"
+        },
+        "generation": {
+          "version": "overflow-onset-3",
+          "level": "easy",
+          "difficulty_provenance": "authored workload policy",
+          "template": "q-336506",
+          "profile": "method",
+          "seed": 1,
+          "parameters": {
+            "H": "12",
+            "v": "10",
+            "q": "1",
+            "c": "0.2",
+            "rin": "6",
+            "rout": "4"
+          },
+          "source": {
+            "database": "math",
+            "basis": 5395,
+            "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+          },
+          "origin": "generated variant",
+          "evidence_only": false,
+          "eligible_for_learning": true,
+          "mathematical_fingerprint": "a2c15c42dede5e2c65cb119a38548a59a3ee821dce6e8ff6a535a1b1431c720d",
+          "content_fingerprint": "11c3653034ca12857590cfc165c5c2160d34761323adac78b542fba36580e2aa",
+          "dependencies": {
+            "python": "3.13.5",
+            "sympy": "1.14.0"
+          },
+          "domain": "0 <= t <= overflow onset; capacity > initial volume, inflow > outflow, incoming concentration > initial concentration",
+          "bank_recipes": [
+            "correct",
+            "four exchangeable adjacent tenth-pound gaps; whole-bank shape translated to independently selected correct rank"
+          ]
+        }
+      }
+    },
+    {
+      "seed": 7,
+      "rank": 3,
+      "question": {
+        "knowledge_point": {
+          "db_id": 17592186229183,
+          "id": "c652164a-2e94-5e16-a410-5143037af134",
+          "title": "Determining an Amount at an Overflow Point"
+        },
+        "question": {
+          ":question/id": "dd532462-2cc5-5f62-bd3e-6bcfdba8b323",
+          ":question/problem": "A coolant reservoir in a manufacturing plant can hold up to $12\\,\\text{gal}$ of liquid. Initially, it contains $10\\,\\text{gal}$ of coolant solution with $1\\,\\text{lb}$ of dissolved corrosion inhibitor. A more concentrated coolant solution with concentration $0.2\\,\\text{lb/gal}$ flows into the reservoir at a rate of $6\\,\\text{gal/min},$ while the completely mixed solution drains out at a rate of $4\\,\\text{gal/min}.$ Rounded to one decimal place, find the amount of inhibitor in the reservoir at the moment it begins to overflow.",
+          ":question/answer-fields": [
+            {
+              ":answer-field/id": "437750c2-0184-5af2-a7cc-6d8c1469298d",
+              ":answer-field/key": "selection",
+              ":answer-field/type": ":answer-field.type/radio",
+              ":answer-field/choices": [
+                {
+                  ":answer/id": "97deae4b-45a5-5e66-8c5d-fd04f802de18",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "1.4\\,\\text{lb}"
+                },
+                {
+                  ":answer/id": "487db1e9-e8c9-58ee-b5bb-6c3ece02bf62",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "1.7\\,\\text{lb}"
+                },
+                {
+                  ":answer/id": "b0ced58d-ee89-5c0e-bc41-cdffee897e8b",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "3.5\\,\\text{lb}"
+                },
+                {
+                  ":answer/id": "b701ef5e-a317-593f-9b09-4cf4566ad3ac",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "4.9\\,\\text{lb}"
+                },
+                {
+                  ":answer/id": "573931f6-90d3-5139-94de-6b72ff10e396",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "0.6\\,\\text{lb}"
+                }
+              ],
+              ":answer-field/correct": [
+                ":answer/id",
+                "487db1e9-e8c9-58ee-b5bb-6c3ece02bf62"
+              ]
+            }
+          ],
+          ":question/difficulty": ":question.difficulty/easy",
+          ":question/worked-solution": "Since $Q$ is the amount of inhibitor in the reservoir at time $t,$ the derivative \n\n$$\n\\frac{dQ}{dt}\n$$\n\ndescribes how this amount changes with respect to time $t,$ in minutes. This is equal to the rate at which inhibitor enters the reservoir minus the rate at which inhibitor leaves the reservoir.\n\n$$\n\\frac{dQ}{dt}={Q}_{\\text{in}}^{\u2032}-{Q}_{\\text{out}}^{\u2032}\n$$\n\nNote that the units of $\\frac{dQ}{dt},{Q}_{\\text{in}}^{\u2032}$ and ${Q}_{\\text{out}}^{\u2032}$ are $\\text{lb}/\\text{min}.$ Now, let's compute the required rates of change in steps.\n\n**Step 1**: Calculating the rate at which inhibitor enters the reservoir.\n\nFirst, note that a solution containing $0.2\\,\\text{lb/gal}$ of inhibitor enters the reservoir at a rate of $6\\,\\text{gal/min}.$ So, the rate at which the *inhibitor* enters the reservoir is \n\n$$\n\\begin{aligned}{Q}_{\\text{in}}^{\u2032} & =(0.2\\,\\frac{\\text{lb}}{\\text{gal}})\\cdot (6\\,\\frac{\\text{gal}}{\\text{min}}) \\\\  & =(0.2\\,\\frac{\\text{lb}}{\\cancel{\\text{gal}}})\\cdot (6\\,\\frac{\\cancel{\\text{gal}}}{\\text{min}}) \\\\  & =1.2\\,\\frac{\\text{lb}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 2**: Calculating the rate at which inhibitor exits the reservoir.\n\nTo find the rate at which inhibitor leaves the reservoir, we must first determine the volume of solution in the reservoir at time $t.$\n\nThe reservoir initially contains $10\\,\\text{gal}$ of solution; solution enters at $6\\,\\text{gal/min}$ and mixed solution leaves at $4\\,\\text{gal/min}.$\nAs a result, the amount of solution in the reservoir after $t$ minutes is \n\n$$\nV(t)=10+6t-4t=2(5+t)\\,\\text{gal}.\n$$\n\nNote that $V(t)$ is an increasing function, so the reservoir is filling.\n\nSince $Q$ is the amount of inhibitor in the reservoir, the concentration of the solution at time $t$ is\n\n$$\n\\frac{Q}{2(5+t)}\\,\\text{lb/gal}.\n$$\n\nTherefore, as the completely mixed solution leaves at a rate of $4\\,\\text{gal/min},$ *inhibitor* leaves at a rate of\n\n$$\n\\begin{aligned}{Q}_{\\text{out}}^{\u2032} & =(4\\,\\frac{\\text{gal}}{\\text{min}})\\cdot (\\frac{Q}{2(5+t)}\\,\\frac{\\text{lb}}{\\text{gal}}) \\\\  & =(4\\,\\frac{\\cancel{\\text{gal}}}{\\text{min}})\\cdot (\\frac{Q}{2(5+t)}\\,\\frac{\\text{lb}}{\\cancel{\\text{gal}}}) \\\\  & =\\frac{4Q}{2(5+t)}\\,\\frac{\\text{lb}}{\\text{min}} \\\\  & =\\frac{2Q}{5+t}\\,\\frac{\\text{lb}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 3**: Calculate the overall rate of change.\n\nThe rate of change equals the rate of entry minus the rate of exit. Therefore, \n\n$$\n\\begin{aligned}\\frac{dQ}{dt} & ={Q}_{\\text{in}}^{\u2032}-{Q}_{\\text{out}}^{\u2032} \\\\  & =1.2-\\frac{2Q}{5+t}\\end{aligned}\n$$\n\nwhich gives the equation\n\n$$\n\\frac{dQ}{dt}+\\frac{2}{5+t}\\,Q=1.2.\n$$\n\n**Step 4**: Integrate the equation.\n\nThis is a first-order linear equation with variable coefficients. So we find the general solution using an integrating factor:\n\n$$\n\\begin{aligned}I(t) & ={e}^{\\int 2/(5+t)\\,dt} \\\\  & ={e}^{2\\operatorname{ln}\u2061|5+t|} \\\\  & ={e}^{\\operatorname{ln}\u2061(5+t)^{2}} \\\\  & =(5+t)^{2}.\\end{aligned}\n$$\n\nMultiplying both sides of the differential equation by $I(t)=(5+t)^{2}$ yields\n\n$$\n\\begin{aligned}(5+t)^{2}\\cdot (\\frac{dQ}{dt}+\\frac{2}{5+t}\\,Q) & =(5+t)^{2}\\cdot 1.2 \\\\ (5+t)^{2}\\frac{dQ}{dt}+2(5+t)Q & =1.2(5+t)^{2} \\\\ \\frac{d}{dt}(Q(5+t)^{2}) & =1.2(5+t)^{2}.\\end{aligned}\n$$\n\nNow, we integrate with respect to $t:$\n\n$$\n\\begin{aligned}\\int \\frac{d}{dt}(Q(5+t)^{2})\\,dt & =\\int 1.2(5+t)^{2}\\,dt \\\\ Q(5+t)^{2} & =1.2\\cdot \\frac{1}{3}(5+t)^{3}+C \\\\ Q(t) & =0.4(5+t)+\\frac{C}{(5+t)^{2}}.\\end{aligned}\n$$\n\nWe're told that the reservoir initially contains $1\\,\\text{lb}$ of inhibitor. So, we can apply the initial condition $Q(0)=1,$ and solve for $C:$\n\n$$\n\\begin{aligned}Q(0) & =1 \\\\ 0.4(5+0)+\\frac{C}{(5+0)^{2}} & =1 \\\\ 2+\\frac{C}{(5)^{2}} & =1 \\\\ \\frac{C}{{5}^{2}} & =-1 \\\\ C & =-1(5)^{2}.\\end{aligned}\n$$\n\nTherefore, we obtain the following expression for $Q(t):$\n\n$$\n\\begin{aligned}Q(t) & =0.4(5+t)-\\frac{1(5)^{2}}{(5+t)^{2}} \\\\  & =0.4(5+t)-1{\\left(\\frac{5}{5+t}\\right)}^{2}.\\end{aligned}\n$$\n\nNow, let ${t}_{o}$ be the time when the reservoir begins to overflow. The reservoir has a capacity of $12\\,\\text{gal},$ so we can use the condition $V({t}_{o})=12$ to solve for ${t}_{o}:$\n\n$$\n\\begin{aligned}V({t}_{o}) & =12 \\\\ 10+6{t}_{o}-4{t}_{o} & =12 \\\\ 10+2{t}_{o} & =12 \\\\ 2{t}_{o} & =2 \\\\ {t}_{o} & =1\\,\\text{min}.\\end{aligned}\n$$\n\nFinally, rounded to one decimal place, the amount of inhibitor in the reservoir at the moment it begins to overflow is\n\n$$\n\\begin{aligned}Q(1) & =0.4(5+1)-1{\\left(\\frac{5}{5+1}\\right)}^{2} \\\\  & =2.4-1{\\left(\\frac{5}{6}\\right)}^{2} \\\\  & \u22481.7\\,\\text{lb}.\\end{aligned}\n$$"
+        },
+        "generation": {
+          "version": "overflow-onset-3",
+          "level": "easy",
+          "difficulty_provenance": "authored workload policy",
+          "template": "q-336506",
+          "profile": "method",
+          "seed": 7,
+          "parameters": {
+            "H": "12",
+            "v": "10",
+            "q": "1",
+            "c": "0.2",
+            "rin": "6",
+            "rout": "4"
+          },
+          "source": {
+            "database": "math",
+            "basis": 5395,
+            "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+          },
+          "origin": "generated variant",
+          "evidence_only": false,
+          "eligible_for_learning": true,
+          "mathematical_fingerprint": "a2c15c42dede5e2c65cb119a38548a59a3ee821dce6e8ff6a535a1b1431c720d",
+          "content_fingerprint": "b37e4681fa442556227cc17657c6b216618399e60d5b2cbc882d812e41760c7c",
+          "dependencies": {
+            "python": "3.13.5",
+            "sympy": "1.14.0"
+          },
+          "domain": "0 <= t <= overflow onset; capacity > initial volume, inflow > outflow, incoming concentration > initial concentration",
+          "bank_recipes": [
+            "correct",
+            "four exchangeable adjacent tenth-pound gaps; whole-bank shape translated to independently selected correct rank"
+          ]
+        }
+      }
+    },
+    {
+      "seed": 0,
+      "rank": 4,
+      "question": {
+        "knowledge_point": {
+          "db_id": 17592186229183,
+          "id": "c652164a-2e94-5e16-a410-5143037af134",
+          "title": "Determining an Amount at an Overflow Point"
+        },
+        "question": {
+          ":question/id": "3ddc2712-c2a7-52c3-869e-45275ede3a45",
+          ":question/problem": "A coolant reservoir in a manufacturing plant can hold up to $12\\,\\text{gal}$ of liquid. Initially, it contains $10\\,\\text{gal}$ of coolant solution with $1\\,\\text{lb}$ of dissolved corrosion inhibitor. A more concentrated coolant solution with concentration $0.2\\,\\text{lb/gal}$ flows into the reservoir at a rate of $6\\,\\text{gal/min},$ while the completely mixed solution drains out at a rate of $4\\,\\text{gal/min}.$ Rounded to one decimal place, find the amount of inhibitor in the reservoir at the moment it begins to overflow.",
+          ":question/answer-fields": [
+            {
+              ":answer-field/id": "d4205e82-6684-5846-b401-8b0d2bd40ebd",
+              ":answer-field/key": "selection",
+              ":answer-field/type": ":answer-field.type/radio",
+              ":answer-field/choices": [
+                {
+                  ":answer/id": "b5b374a1-9179-568f-8efb-2d7d9a5b90af",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "0.9\\,\\text{lb}"
+                },
+                {
+                  ":answer/id": "2f91be2b-ac3c-58be-bb85-461e32893b87",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "3.7\\,\\text{lb}"
+                },
+                {
+                  ":answer/id": "a46c042d-0fd5-55c9-9c81-b296559810a7",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "0.2\\,\\text{lb}"
+                },
+                {
+                  ":answer/id": "aaf7cad6-9e2a-5053-8d51-0931bb96aab3",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "1.7\\,\\text{lb}"
+                },
+                {
+                  ":answer/id": "7456c53b-5bc4-5926-8946-48e95706d276",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "1.5\\,\\text{lb}"
+                }
+              ],
+              ":answer-field/correct": [
+                ":answer/id",
+                "aaf7cad6-9e2a-5053-8d51-0931bb96aab3"
+              ]
+            }
+          ],
+          ":question/difficulty": ":question.difficulty/easy",
+          ":question/worked-solution": "Since $Q$ is the amount of inhibitor in the reservoir at time $t,$ the derivative \n\n$$\n\\frac{dQ}{dt}\n$$\n\ndescribes how this amount changes with respect to time $t,$ in minutes. This is equal to the rate at which inhibitor enters the reservoir minus the rate at which inhibitor leaves the reservoir.\n\n$$\n\\frac{dQ}{dt}={Q}_{\\text{in}}^{\u2032}-{Q}_{\\text{out}}^{\u2032}\n$$\n\nNote that the units of $\\frac{dQ}{dt},{Q}_{\\text{in}}^{\u2032}$ and ${Q}_{\\text{out}}^{\u2032}$ are $\\text{lb}/\\text{min}.$ Now, let's compute the required rates of change in steps.\n\n**Step 1**: Calculating the rate at which inhibitor enters the reservoir.\n\nFirst, note that a solution containing $0.2\\,\\text{lb/gal}$ of inhibitor enters the reservoir at a rate of $6\\,\\text{gal/min}.$ So, the rate at which the *inhibitor* enters the reservoir is \n\n$$\n\\begin{aligned}{Q}_{\\text{in}}^{\u2032} & =(0.2\\,\\frac{\\text{lb}}{\\text{gal}})\\cdot (6\\,\\frac{\\text{gal}}{\\text{min}}) \\\\  & =(0.2\\,\\frac{\\text{lb}}{\\cancel{\\text{gal}}})\\cdot (6\\,\\frac{\\cancel{\\text{gal}}}{\\text{min}}) \\\\  & =1.2\\,\\frac{\\text{lb}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 2**: Calculating the rate at which inhibitor exits the reservoir.\n\nTo find the rate at which inhibitor leaves the reservoir, we must first determine the volume of solution in the reservoir at time $t.$\n\nThe reservoir initially contains $10\\,\\text{gal}$ of solution; solution enters at $6\\,\\text{gal/min}$ and mixed solution leaves at $4\\,\\text{gal/min}.$\nAs a result, the amount of solution in the reservoir after $t$ minutes is \n\n$$\nV(t)=10+6t-4t=2(5+t)\\,\\text{gal}.\n$$\n\nNote that $V(t)$ is an increasing function, so the reservoir is filling.\n\nSince $Q$ is the amount of inhibitor in the reservoir, the concentration of the solution at time $t$ is\n\n$$\n\\frac{Q}{2(5+t)}\\,\\text{lb/gal}.\n$$\n\nTherefore, as the completely mixed solution leaves at a rate of $4\\,\\text{gal/min},$ *inhibitor* leaves at a rate of\n\n$$\n\\begin{aligned}{Q}_{\\text{out}}^{\u2032} & =(4\\,\\frac{\\text{gal}}{\\text{min}})\\cdot (\\frac{Q}{2(5+t)}\\,\\frac{\\text{lb}}{\\text{gal}}) \\\\  & =(4\\,\\frac{\\cancel{\\text{gal}}}{\\text{min}})\\cdot (\\frac{Q}{2(5+t)}\\,\\frac{\\text{lb}}{\\cancel{\\text{gal}}}) \\\\  & =\\frac{4Q}{2(5+t)}\\,\\frac{\\text{lb}}{\\text{min}} \\\\  & =\\frac{2Q}{5+t}\\,\\frac{\\text{lb}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 3**: Calculate the overall rate of change.\n\nThe rate of change equals the rate of entry minus the rate of exit. Therefore, \n\n$$\n\\begin{aligned}\\frac{dQ}{dt} & ={Q}_{\\text{in}}^{\u2032}-{Q}_{\\text{out}}^{\u2032} \\\\  & =1.2-\\frac{2Q}{5+t}\\end{aligned}\n$$\n\nwhich gives the equation\n\n$$\n\\frac{dQ}{dt}+\\frac{2}{5+t}\\,Q=1.2.\n$$\n\n**Step 4**: Integrate the equation.\n\nThis is a first-order linear equation with variable coefficients. So we find the general solution using an integrating factor:\n\n$$\n\\begin{aligned}I(t) & ={e}^{\\int 2/(5+t)\\,dt} \\\\  & ={e}^{2\\operatorname{ln}\u2061|5+t|} \\\\  & ={e}^{\\operatorname{ln}\u2061(5+t)^{2}} \\\\  & =(5+t)^{2}.\\end{aligned}\n$$\n\nMultiplying both sides of the differential equation by $I(t)=(5+t)^{2}$ yields\n\n$$\n\\begin{aligned}(5+t)^{2}\\cdot (\\frac{dQ}{dt}+\\frac{2}{5+t}\\,Q) & =(5+t)^{2}\\cdot 1.2 \\\\ (5+t)^{2}\\frac{dQ}{dt}+2(5+t)Q & =1.2(5+t)^{2} \\\\ \\frac{d}{dt}(Q(5+t)^{2}) & =1.2(5+t)^{2}.\\end{aligned}\n$$\n\nNow, we integrate with respect to $t:$\n\n$$\n\\begin{aligned}\\int \\frac{d}{dt}(Q(5+t)^{2})\\,dt & =\\int 1.2(5+t)^{2}\\,dt \\\\ Q(5+t)^{2} & =1.2\\cdot \\frac{1}{3}(5+t)^{3}+C \\\\ Q(t) & =0.4(5+t)+\\frac{C}{(5+t)^{2}}.\\end{aligned}\n$$\n\nWe're told that the reservoir initially contains $1\\,\\text{lb}$ of inhibitor. So, we can apply the initial condition $Q(0)=1,$ and solve for $C:$\n\n$$\n\\begin{aligned}Q(0) & =1 \\\\ 0.4(5+0)+\\frac{C}{(5+0)^{2}} & =1 \\\\ 2+\\frac{C}{(5)^{2}} & =1 \\\\ \\frac{C}{{5}^{2}} & =-1 \\\\ C & =-1(5)^{2}.\\end{aligned}\n$$\n\nTherefore, we obtain the following expression for $Q(t):$\n\n$$\n\\begin{aligned}Q(t) & =0.4(5+t)-\\frac{1(5)^{2}}{(5+t)^{2}} \\\\  & =0.4(5+t)-1{\\left(\\frac{5}{5+t}\\right)}^{2}.\\end{aligned}\n$$\n\nNow, let ${t}_{o}$ be the time when the reservoir begins to overflow. The reservoir has a capacity of $12\\,\\text{gal},$ so we can use the condition $V({t}_{o})=12$ to solve for ${t}_{o}:$\n\n$$\n\\begin{aligned}V({t}_{o}) & =12 \\\\ 10+6{t}_{o}-4{t}_{o} & =12 \\\\ 10+2{t}_{o} & =12 \\\\ 2{t}_{o} & =2 \\\\ {t}_{o} & =1\\,\\text{min}.\\end{aligned}\n$$\n\nFinally, rounded to one decimal place, the amount of inhibitor in the reservoir at the moment it begins to overflow is\n\n$$\n\\begin{aligned}Q(1) & =0.4(5+1)-1{\\left(\\frac{5}{5+1}\\right)}^{2} \\\\  & =2.4-1{\\left(\\frac{5}{6}\\right)}^{2} \\\\  & \u22481.7\\,\\text{lb}.\\end{aligned}\n$$"
+        },
+        "generation": {
+          "version": "overflow-onset-3",
+          "level": "easy",
+          "difficulty_provenance": "authored workload policy",
+          "template": "q-336506",
+          "profile": "method",
+          "seed": 0,
+          "parameters": {
+            "H": "12",
+            "v": "10",
+            "q": "1",
+            "c": "0.2",
+            "rin": "6",
+            "rout": "4"
+          },
+          "source": {
+            "database": "math",
+            "basis": 5395,
+            "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+          },
+          "origin": "generated variant",
+          "evidence_only": false,
+          "eligible_for_learning": true,
+          "mathematical_fingerprint": "a2c15c42dede5e2c65cb119a38548a59a3ee821dce6e8ff6a535a1b1431c720d",
+          "content_fingerprint": "559ab412055e8de933ebe0aae6a05ccc6106c89945761a0e9a0e615d44971381",
+          "dependencies": {
+            "python": "3.13.5",
+            "sympy": "1.14.0"
+          },
+          "domain": "0 <= t <= overflow onset; capacity > initial volume, inflow > outflow, incoming concentration > initial concentration",
+          "bank_recipes": [
+            "correct",
+            "four exchangeable adjacent tenth-pound gaps; whole-bank shape translated to independently selected correct rank"
+          ]
+        }
+      }
+    },
+    {
+      "seed": 5,
+      "rank": 5,
+      "question": {
+        "knowledge_point": {
+          "db_id": 17592186229183,
+          "id": "c652164a-2e94-5e16-a410-5143037af134",
+          "title": "Determining an Amount at an Overflow Point"
+        },
+        "question": {
+          ":question/id": "2bdd78ac-523c-57a4-a78e-6adf5f2baa69",
+          ":question/problem": "A coolant reservoir in a manufacturing plant can hold up to $12\\,\\text{gal}$ of liquid. Initially, it contains $10\\,\\text{gal}$ of coolant solution with $1\\,\\text{lb}$ of dissolved corrosion inhibitor. A more concentrated coolant solution with concentration $0.2\\,\\text{lb/gal}$ flows into the reservoir at a rate of $6\\,\\text{gal/min},$ while the completely mixed solution drains out at a rate of $4\\,\\text{gal/min}.$ Rounded to one decimal place, find the amount of inhibitor in the reservoir at the moment it begins to overflow.",
+          ":question/answer-fields": [
+            {
+              ":answer-field/id": "a52bfe63-b1c9-563a-a6da-2ee007495347",
+              ":answer-field/key": "selection",
+              ":answer-field/type": ":answer-field.type/radio",
+              ":answer-field/choices": [
+                {
+                  ":answer/id": "8053f68c-8603-5bc6-8b03-b76076fe81dd",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "0.9\\,\\text{lb}"
+                },
+                {
+                  ":answer/id": "f7ddb3f4-6944-5f28-a93f-75a1e93149a7",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "1.1\\,\\text{lb}"
+                },
+                {
+                  ":answer/id": "f85491af-5df8-502a-9b95-e58158ff48b3",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "0.3\\,\\text{lb}"
+                },
+                {
+                  ":answer/id": "7ee91336-b785-503d-a79d-0eb898f926b7",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "1.7\\,\\text{lb}"
+                },
+                {
+                  ":answer/id": "45a8cad3-a849-5faf-a876-f7e8586f05cc",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "0.7\\,\\text{lb}"
+                }
+              ],
+              ":answer-field/correct": [
+                ":answer/id",
+                "7ee91336-b785-503d-a79d-0eb898f926b7"
+              ]
+            }
+          ],
+          ":question/difficulty": ":question.difficulty/easy",
+          ":question/worked-solution": "Since $Q$ is the amount of inhibitor in the reservoir at time $t,$ the derivative \n\n$$\n\\frac{dQ}{dt}\n$$\n\ndescribes how this amount changes with respect to time $t,$ in minutes. This is equal to the rate at which inhibitor enters the reservoir minus the rate at which inhibitor leaves the reservoir.\n\n$$\n\\frac{dQ}{dt}={Q}_{\\text{in}}^{\u2032}-{Q}_{\\text{out}}^{\u2032}\n$$\n\nNote that the units of $\\frac{dQ}{dt},{Q}_{\\text{in}}^{\u2032}$ and ${Q}_{\\text{out}}^{\u2032}$ are $\\text{lb}/\\text{min}.$ Now, let's compute the required rates of change in steps.\n\n**Step 1**: Calculating the rate at which inhibitor enters the reservoir.\n\nFirst, note that a solution containing $0.2\\,\\text{lb/gal}$ of inhibitor enters the reservoir at a rate of $6\\,\\text{gal/min}.$ So, the rate at which the *inhibitor* enters the reservoir is \n\n$$\n\\begin{aligned}{Q}_{\\text{in}}^{\u2032} & =(0.2\\,\\frac{\\text{lb}}{\\text{gal}})\\cdot (6\\,\\frac{\\text{gal}}{\\text{min}}) \\\\  & =(0.2\\,\\frac{\\text{lb}}{\\cancel{\\text{gal}}})\\cdot (6\\,\\frac{\\cancel{\\text{gal}}}{\\text{min}}) \\\\  & =1.2\\,\\frac{\\text{lb}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 2**: Calculating the rate at which inhibitor exits the reservoir.\n\nTo find the rate at which inhibitor leaves the reservoir, we must first determine the volume of solution in the reservoir at time $t.$\n\nThe reservoir initially contains $10\\,\\text{gal}$ of solution; solution enters at $6\\,\\text{gal/min}$ and mixed solution leaves at $4\\,\\text{gal/min}.$\nAs a result, the amount of solution in the reservoir after $t$ minutes is \n\n$$\nV(t)=10+6t-4t=2(5+t)\\,\\text{gal}.\n$$\n\nNote that $V(t)$ is an increasing function, so the reservoir is filling.\n\nSince $Q$ is the amount of inhibitor in the reservoir, the concentration of the solution at time $t$ is\n\n$$\n\\frac{Q}{2(5+t)}\\,\\text{lb/gal}.\n$$\n\nTherefore, as the completely mixed solution leaves at a rate of $4\\,\\text{gal/min},$ *inhibitor* leaves at a rate of\n\n$$\n\\begin{aligned}{Q}_{\\text{out}}^{\u2032} & =(4\\,\\frac{\\text{gal}}{\\text{min}})\\cdot (\\frac{Q}{2(5+t)}\\,\\frac{\\text{lb}}{\\text{gal}}) \\\\  & =(4\\,\\frac{\\cancel{\\text{gal}}}{\\text{min}})\\cdot (\\frac{Q}{2(5+t)}\\,\\frac{\\text{lb}}{\\cancel{\\text{gal}}}) \\\\  & =\\frac{4Q}{2(5+t)}\\,\\frac{\\text{lb}}{\\text{min}} \\\\  & =\\frac{2Q}{5+t}\\,\\frac{\\text{lb}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 3**: Calculate the overall rate of change.\n\nThe rate of change equals the rate of entry minus the rate of exit. Therefore, \n\n$$\n\\begin{aligned}\\frac{dQ}{dt} & ={Q}_{\\text{in}}^{\u2032}-{Q}_{\\text{out}}^{\u2032} \\\\  & =1.2-\\frac{2Q}{5+t}\\end{aligned}\n$$\n\nwhich gives the equation\n\n$$\n\\frac{dQ}{dt}+\\frac{2}{5+t}\\,Q=1.2.\n$$\n\n**Step 4**: Integrate the equation.\n\nThis is a first-order linear equation with variable coefficients. So we find the general solution using an integrating factor:\n\n$$\n\\begin{aligned}I(t) & ={e}^{\\int 2/(5+t)\\,dt} \\\\  & ={e}^{2\\operatorname{ln}\u2061|5+t|} \\\\  & ={e}^{\\operatorname{ln}\u2061(5+t)^{2}} \\\\  & =(5+t)^{2}.\\end{aligned}\n$$\n\nMultiplying both sides of the differential equation by $I(t)=(5+t)^{2}$ yields\n\n$$\n\\begin{aligned}(5+t)^{2}\\cdot (\\frac{dQ}{dt}+\\frac{2}{5+t}\\,Q) & =(5+t)^{2}\\cdot 1.2 \\\\ (5+t)^{2}\\frac{dQ}{dt}+2(5+t)Q & =1.2(5+t)^{2} \\\\ \\frac{d}{dt}(Q(5+t)^{2}) & =1.2(5+t)^{2}.\\end{aligned}\n$$\n\nNow, we integrate with respect to $t:$\n\n$$\n\\begin{aligned}\\int \\frac{d}{dt}(Q(5+t)^{2})\\,dt & =\\int 1.2(5+t)^{2}\\,dt \\\\ Q(5+t)^{2} & =1.2\\cdot \\frac{1}{3}(5+t)^{3}+C \\\\ Q(t) & =0.4(5+t)+\\frac{C}{(5+t)^{2}}.\\end{aligned}\n$$\n\nWe're told that the reservoir initially contains $1\\,\\text{lb}$ of inhibitor. So, we can apply the initial condition $Q(0)=1,$ and solve for $C:$\n\n$$\n\\begin{aligned}Q(0) & =1 \\\\ 0.4(5+0)+\\frac{C}{(5+0)^{2}} & =1 \\\\ 2+\\frac{C}{(5)^{2}} & =1 \\\\ \\frac{C}{{5}^{2}} & =-1 \\\\ C & =-1(5)^{2}.\\end{aligned}\n$$\n\nTherefore, we obtain the following expression for $Q(t):$\n\n$$\n\\begin{aligned}Q(t) & =0.4(5+t)-\\frac{1(5)^{2}}{(5+t)^{2}} \\\\  & =0.4(5+t)-1{\\left(\\frac{5}{5+t}\\right)}^{2}.\\end{aligned}\n$$\n\nNow, let ${t}_{o}$ be the time when the reservoir begins to overflow. The reservoir has a capacity of $12\\,\\text{gal},$ so we can use the condition $V({t}_{o})=12$ to solve for ${t}_{o}:$\n\n$$\n\\begin{aligned}V({t}_{o}) & =12 \\\\ 10+6{t}_{o}-4{t}_{o} & =12 \\\\ 10+2{t}_{o} & =12 \\\\ 2{t}_{o} & =2 \\\\ {t}_{o} & =1\\,\\text{min}.\\end{aligned}\n$$\n\nFinally, rounded to one decimal place, the amount of inhibitor in the reservoir at the moment it begins to overflow is\n\n$$\n\\begin{aligned}Q(1) & =0.4(5+1)-1{\\left(\\frac{5}{5+1}\\right)}^{2} \\\\  & =2.4-1{\\left(\\frac{5}{6}\\right)}^{2} \\\\  & \u22481.7\\,\\text{lb}.\\end{aligned}\n$$"
+        },
+        "generation": {
+          "version": "overflow-onset-3",
+          "level": "easy",
+          "difficulty_provenance": "authored workload policy",
+          "template": "q-336506",
+          "profile": "method",
+          "seed": 5,
+          "parameters": {
+            "H": "12",
+            "v": "10",
+            "q": "1",
+            "c": "0.2",
+            "rin": "6",
+            "rout": "4"
+          },
+          "source": {
+            "database": "math",
+            "basis": 5395,
+            "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+          },
+          "origin": "generated variant",
+          "evidence_only": false,
+          "eligible_for_learning": true,
+          "mathematical_fingerprint": "a2c15c42dede5e2c65cb119a38548a59a3ee821dce6e8ff6a535a1b1431c720d",
+          "content_fingerprint": "39c0b4e1e376ee74512f0ff6a25df1fa2dd5864b3c3c17a4d697ec2aef9af744",
+          "dependencies": {
+            "python": "3.13.5",
+            "sympy": "1.14.0"
+          },
+          "domain": "0 <= t <= overflow onset; capacity > initial volume, inflow > outflow, incoming concentration > initial concentration",
+          "bank_recipes": [
+            "correct",
+            "four exchangeable adjacent tenth-pound gaps; whole-bank shape translated to independently selected correct rank"
+          ]
+        }
+      }
+    }
+  ],
+  "same_bank_full_displayed_equations_checked": 5
+}

@@ -15,7 +15,7 @@ import sympy as s
 KP_ID=17592186229183
 KP_UUID='c652164a-2e94-5e16-a410-5143037af134'
 TITLE='Determining an Amount at an Overflow Point'
-VERSION='overflow-onset-2'
+VERSION='overflow-onset-3'
 D=Path(__file__).with_suffix('')
 MASKS=json.loads((D/'masks.json').read_text())
 SOURCE=json.loads((D/'source.json').read_text())
@@ -71,19 +71,22 @@ def fill(mask,x,p):
  return re.sub(r'<<([a-zA-Z_]+)>>',lambda m:values[m[1]],mask)
 
 def method_bank(x,rng,rank):
- """Authored complete near-value bank; numerical rank is incidental.
+ """Sample a whole ordered shape independently of which member is correct.
 
- Rank is selected before physical sampling. Independently sampled offsets do
- not force equal spacing, a median, or a characteristic central position.
- Historical source banks are replayed separately, without this extension.
+ The four adjacent gaps have the same sampling law. Reject only when
+ translating the selected rank would produce a nonpositive mass choice.
+ Any visible positive shape is eligible with any of its members as key;
+ there is no key-centered radius or extra span-to-key inequality.
  """
  ticks=int(Decimal(x['rounded'])*10)
- width=max(4,min(20,ticks-1))
  if ticks<5:raise ValueError('Mass too small for five positive rounded choices.')
- below=rng.sample(range(1,min(width,ticks-1)+1),rank-1)
- above=rng.sample(range(1,width+1),5-rank)
- values=[ticks]+[ticks-k for k in below]+[ticks+k for k in above]
- return [(f'{Decimal(v)/10:.1f}'+r'\,\text{lb}',i==0) for i,v in enumerate(values)]
+ while True:
+  gaps=[rng.randint(1,20) for _ in range(4)]
+  if sum(gaps[:rank-1])<ticks:break
+ offsets=[0]
+ for gap in gaps:offsets.append(offsets[-1]+gap)
+ values=[ticks+v-offsets[rank-1] for v in offsets]
+ return [(f'{Decimal(v)/10:.1f}'+r'\,\text{lb}',i==rank-1) for i,v in enumerate(values)]
 
 def sample(level,rng):
  for _ in range(1000):
@@ -152,7 +155,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
  if not raw or mask['has_difficulty']:question[':question/difficulty']=':question.difficulty/'+level
  if solution is not None:question[':question/worked-solution']=solution
  task=stable([str(x[k]) for k in ('H','v','q','c','rin','rout')])
- return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':question,'generation':{'version':VERSION,'level':level,'difficulty_provenance':'observed' if raw and mask['has_difficulty'] else 'omitted in raw source' if raw else 'authored workload policy','template':template,'profile':profile or 'method','seed':seed,'parameters':{k:str(v) for k,v in p.items()},'source':{k:SOURCE[k] for k in ('database','basis','lineage')},'origin':'source replay' if raw or repaired else 'generated variant','evidence_only':raw or repaired,'eligible_for_learning':not(raw or repaired),'mathematical_fingerprint':task,'content_fingerprint':digest,'dependencies':{'python':sys.version.split()[0],'sympy':s.__version__},'domain':'0 <= t <= overflow onset; capacity > initial volume, inflow > outflow, incoming concentration > initial concentration','bank_recipes':['correct','four independently sampled nonzero tenth-pound offsets; authored near-value bank'] if not(raw or repaired) else ['opaque historical offsets; not recovered error intent']}}
+ return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':question,'generation':{'version':VERSION,'level':level,'difficulty_provenance':'observed' if raw and mask['has_difficulty'] else 'omitted in raw source' if raw else 'authored workload policy','template':template,'profile':profile or 'method','seed':seed,'parameters':{k:str(v) for k,v in p.items()},'source':{k:SOURCE[k] for k in ('database','basis','lineage')},'origin':'source replay' if raw or repaired else 'generated variant','evidence_only':raw or repaired,'eligible_for_learning':not(raw or repaired),'mathematical_fingerprint':task,'content_fingerprint':digest,'dependencies':{'python':sys.version.split()[0],'sympy':s.__version__},'domain':'0 <= t <= overflow onset; capacity > initial volume, inflow > outflow, incoming concentration > initial concentration','bank_recipes':['correct','four exchangeable adjacent tenth-pound gaps; whole-bank shape translated to independently selected correct rank'] if not(raw or repaired) else ['opaque historical offsets; not recovered error intent']}}
 
 # EASY: observed exponent 2, integral offset/time; source-shared full method.
 def generate_easy(seed=0,**kwargs):return generate('easy',seed,**kwargs)

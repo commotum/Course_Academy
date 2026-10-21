@@ -24,13 +24,13 @@ for i in range(32):
 assert len({m['rank'] for m in draws})>1
 save('delivery-selection-results.json',{'before':pre,'after':post,'batch':[measure(r) for r in batch],
  'conditional_easy_only_selection':{'draws':32,'ranks':sorted({m['rank'] for m in draws}),'positions':sorted({m['position'] for m in draws})},
- 'generator_rejection':'Physical/arithmetic rejection occurs before bank construction, after rank draw. Bank offsets require no collision rejection for admitted positive mass. Bounded explicit low mass tested.',
+ 'generator_rejection':'Physical/arithmetic rejection occurs before bank construction, after rank draw. Adjacent positive gaps cannot collide. Whole shapes reject only nonpositive translated options while retaining selected rank; earlier key-radius rule removed.',
  'selection_limits':'Read-only native select math, all-easy fresh-candidate assumption and hypothetical sorted IDs. No actual live learner history, policy weights, publication IDs or database collisions are available. Historical stored affected questions remain unchanged and are listed separately.'})
-cf=load(E/'counterfactual-records.json');mini=load(E/'minimal-records.json');smoke=load(E/'band-smoke-records.json')
+cf=load(E/'counterfactual-records.json');mini=load(E/'radius-minimal-records.json');smoke=load(E/'band-smoke-records.json');same=load(E/'delivery-controls/accepted.json')[:5]
 # Every normal template and all delivered batch choices; source key omissions not graded.
 representatives=samples[::8]
 raw=[r for r in load(E/'source-replay-records.json') if ':answer-field/correct' in r['question'][':question/answer-fields'][0]]
-records=batch+cf+mini+representatives+smoke+raw
+records=batch+cf+mini+representatives+smoke+raw+same
 cases=[]
 for i,r in enumerate(records):
  f=r['question'][':question/answer-fields'][0];key=f[':answer-field/correct'][1]
@@ -42,8 +42,9 @@ for i,r in enumerate(cf):
  f=r['question'][':question/answer-fields'][0];correct=f[':answer-field/correct'][1]
  cases.append({'label':'controlled physical/context pair '+str(i),'record':r,
  'checks':[{'submitted_answer_id':correct,'expected':'accepted','purpose':'capacity/initial mass change recomputes answer; common flow scaling/context preserve mass'}]})
+cases+=load(E/'shortcut-grader-input.json')
 save('grader-input.json',cases)
-save('render-records.json',batch+mini+[cf[1],representatives[-1]])
+save('render-records.json',batch+mini+[same[0],same[-1]])
 manifest=load(R/'package.json');dest=E/'relocated-package';dest.mkdir(exist_ok=True)
 assert manifest['dependencies']=={'python':'3.13.5','packages':{'sympy':'1.14.0'}}
 for f in manifest['files']+['package.json']:

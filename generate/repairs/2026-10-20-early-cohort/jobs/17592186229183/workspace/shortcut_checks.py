@@ -38,6 +38,8 @@ def independent(r):
  from decimal import Decimal,ROUND_HALF_UP
  expected=(Decimal(z.numerator)/Decimal(z.denominator)).quantize(Decimal('.1'),rounding=ROUND_HALF_UP)
  assert Fraction(probe(r)['key'])==Fraction(expected)
+ endpoint=re.findall(r'[≈=]([\d.]+)\\,',r['question'][':question/worked-solution'])
+ assert endpoint and Fraction(endpoint[-1])==Fraction(expected),'visible explanation endpoint stale'
  return str(expected)
 p={'H':'20','v':'10','q':'1','c':'0.4','rin':'6','rout':'4'}
 minimal=g.generate('easy',seed=41072,template='q-336506',parameters=p)
@@ -64,6 +66,7 @@ for t in g.MASKS:
  for rank,seed in by_rank.items():
   params={'H':'100','v':'50','q':str(1+4*(rank-1)),'c':'0.4','rin':'6','rout':'4'}
   with patch.object(g.random,'Random',FixedShapeRandom):r=g.generate('easy',seed=seed,template=t,parameters=params)
+  r['generation']['validation_control']={'gap_randint_draws':[10,10,10,10],'reproduction':'shortcut_checks.py::FixedShapeRandom; seed controls original rank and option shuffle'}
   independent(r);controls.append(r)
 # Same visible bank 35.3..39.3, unique radius center 37.3. Changed initial
 # mass independently changes the computed key; all five roles are exercised.
@@ -100,6 +103,10 @@ for name,path in [('sample before','sample-records.json'),('sample after','deliv
   for t in g.MASKS:
    zs=[probe(r) for r in rs if r['generation']['template']==t]
    assert len(zs)==5 and sum(z['success'] for z in zs)==1
+for before,after in [('sample before','sample after'),('batch before','batch after')]:
+ if before in stages and after in stages:
+  def visible(rows):return [{k:v for k,v in z.items() if k not in ('question_id','selected_id')} for z in rows]
+  assert visible(stages[before]['rows'])==visible(stages[after]['rows'])
 save('shortcut-results.json',{'passed':not failures,'command':sys.argv,'minimal':m,'by_template':groups,'delivery_stages':stages,
  'same_bank':{'records':len(controls),'correct_ranks':[1,2,3,4,5],'radius_successes_per_template':1,'radius_rejections_per_template':4,'gap_draw_control':'Current entrypoint with legal deterministic randint gap draws 10,10,10,10; actual initial mass changes q=1,5,9,13,17.'},
  'limits':'Finite probes plus an all-rank same-shape witness remove the demonstrated structural implication; no claim of exhaustive adversarial shortcut absence. Random shape/position changes are not counted as distinct physical tasks.', 'failures':failures})

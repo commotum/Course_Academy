@@ -1,0 +1,82 @@
+{
+  "command": [
+    "verify_repairs.py"
+  ],
+  "preflight": {
+    "passed": true,
+    "finding_ids": [
+      "74a9fcca07a8526db5eb",
+      "430695a16af4478adc1f",
+      "219d9ed5dd1ef5f67f52"
+    ],
+    "checks": [
+      {
+        "script": "repair_checks.py",
+        "args": [],
+        "sha256": "c10aa0d0225a1bfa3c4de94fbfa63b45227c273aaa276e3ae959e39ac57fa9d8",
+        "exit_code": 0,
+        "stdout": "{\"passed\": true, \"normal_records\": 88, \"source_cases\": 11, \"ode_and_solution_checks\": 31, \"batch\": 5}\n",
+        "stderr": ""
+      },
+      {
+        "script": "shortcut_checks.py",
+        "args": [],
+        "sha256": "17e3473aa7c6679d5019ed5b962b5fd24481285776b368ed7162b567bbb9e444",
+        "exit_code": 0,
+        "stdout": "{\"passed\": true, \"minimal\": {\"question_id\": \"844a6b8f-31ef-5895-b46a-b56186dd4d03\", \"template\": \"q-336506\", \"seed\": 41072, \"sorted_choices\": [\"27/5\", \"73/10\", \"83/10\", \"93/10\", \"10\"], \"key\": \"73/10\", \"rank\": 2, \"position\": 4, \"singleton\": false, \"success\": false, \"selected_id\": null, \"radius_key_eligible\": false, \"selector_success\": {\"median\": false, \"lowest\": false, \"highest\": false, \"nearest_mean\": false, \"smallest_neighbor_gap\": false, \"largest_neighbor_gap\": false}}, \"normal_records\": 88, \"same_bank_records\": 55, \"failures\": []}\n",
+        "stderr": ""
+      }
+    ]
+  },
+  "executed_checks": [
+    {
+      "fixture": "current",
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186229183/review-2-policy-2-d4b97cd32a6a5f56/author-check/current/workspace/repair_checks.py"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"passed\": true, \"normal_records\": 88, \"source_cases\": 11, \"ode_and_solution_checks\": 31, \"batch\": 5}\n",
+      "stderr": "",
+      "expected_exit": 0,
+      "passed": true
+    },
+    {
+      "fixture": "old-source",
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186229183/review-2-policy-2-d4b97cd32a6a5f56/author-check/old-source/workspace/repair_checks.py"
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186229183/review-2-policy-2-d4b97cd32a6a5f56/author-check/old-source/workspace/repair_checks.py\", line 112, in <module>\n    if __name__=='__main__':main()\n                            ~~~~^^\n  File \"/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186229183/review-2-policy-2-d4b97cd32a6a5f56/author-check/old-source/workspace/repair_checks.py\", line 57, in main\n    assert rq.get(key)==q.get(key),(sid,key)\n           ^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: ('q-336451', ':question/worked-solution')\n",
+      "expected_exit": 1,
+      "passed": true
+    },
+    {
+      "fixture": "old-bank",
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186229183/review-2-policy-2-d4b97cd32a6a5f56/author-check/old-bank/workspace/shortcut_checks.py"
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186229183/review-2-policy-2-d4b97cd32a6a5f56/author-check/old-bank/workspace/shortcut_checks.py\", line 75, in <module>\n    assert len({tuple(z['sorted_choices']) for z in zs})==1\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n",
+      "expected_exit": 1,
+      "passed": true
+    },
+    {
+      "fixture": "current",
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186229183/review-2-policy-2-d4b97cd32a6a5f56/author-check/current/workspace/shortcut_checks.py"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"passed\": true, \"minimal\": {\"question_id\": \"844a6b8f-31ef-5895-b46a-b56186dd4d03\", \"template\": \"q-336506\", \"seed\": 41072, \"sorted_choices\": [\"27/5\", \"73/10\", \"83/10\", \"93/10\", \"10\"], \"key\": \"73/10\", \"rank\": 2, \"position\": 4, \"singleton\": false, \"success\": false, \"selected_id\": null, \"radius_key_eligible\": false, \"selector_success\": {\"median\": false, \"lowest\": false, \"highest\": false, \"nearest_mean\": false, \"smallest_neighbor_gap\": false, \"largest_neighbor_gap\": false}}, \"normal_records\": 88, \"same_bank_records\": 55, \"failures\": []}\n",
+      "stderr": "",
+      "expected_exit": 0,
+      "passed": true
+    }
+  ],
+  "all_pass": true
+}

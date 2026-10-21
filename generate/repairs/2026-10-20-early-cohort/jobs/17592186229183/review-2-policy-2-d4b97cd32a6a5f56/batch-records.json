@@ -1,0 +1,432 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186229183,
+      "id": "c652164a-2e94-5e16-a410-5143037af134",
+      "title": "Determining an Amount at an Overflow Point"
+    },
+    "question": {
+      ":question/id": "cede97c5-fd02-5be3-bdfe-9364cbf6453d",
+      ":question/problem": "A fertilizer tank for an irrigation system can hold up to $352\\,\\text{gal}$ of solution. Initially, it contains $176\\,\\text{gal}$ of fertilizer solution with $132\\,\\text{lb}$ of dissolved fertilizer. A more concentrated solution with concentration $1.5\\,\\text{lb/gal}$ flows into the tank at a rate of $24\\,\\text{gal/min},$ while the completely mixed solution drains out at a rate of $16\\,\\text{gal/min}.$ Rounded to one decimal place, find the amount of fertilizer in the tank at the moment it begins to overflow.",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "4739379e-d815-52f0-87c7-85c7d6530aff",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "82c21632-1f96-5cab-a041-125cf570f4e9",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "493.3\\,\\text{lb}"
+            },
+            {
+              ":answer/id": "b2c2b5a2-8143-574f-8b3a-a5d6454ef4b8",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "497.9\\,\\text{lb}"
+            },
+            {
+              ":answer/id": "a488f64e-c9b6-5424-9f33-e1c5da8550b9",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "495.0\\,\\text{lb}"
+            },
+            {
+              ":answer/id": "fd262aeb-e9b7-5764-9651-474cb5c537a7",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "496.6\\,\\text{lb}"
+            },
+            {
+              ":answer/id": "2a1fbe36-1141-5896-9c35-8e7c59361e92",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "495.9\\,\\text{lb}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "a488f64e-c9b6-5424-9f33-e1c5da8550b9"
+          ]
+        }
+      ],
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/worked-solution": "Since $Q$ is the amount of fertilizer in the tank at time $t,$ the derivative \n\n$$\n\\frac{dQ}{dt}\n$$\n\ndescribes how this amount changes with respect to time $t,$ in minutes. This is equal to the rate at which fertilizer enters the tank minus the rate at which fertilizer leaves the tank.\n\n$$\n\\frac{dQ}{dt}={Q}_{\\text{in}}^{\u2032}-{Q}_{\\text{out}}^{\u2032}\n$$\n\nNote that the units of $\\frac{dQ}{dt},{Q}_{\\text{in}}^{\u2032}$ and ${Q}_{\\text{out}}^{\u2032}$ are $\\text{lb}/\\text{min}.$ Now, let's compute the required rates of change in steps.\n\n**Step 1**: Calculating the rate at which fertilizer enters the tank.\n\nFirst, note that a solution containing $1.5\\,\\text{lb/gal}$ of fertilizer enters the tank at a rate of $24\\,\\text{gal/min}.$ So, the rate at which the *fertilizer* enters the tank is \n\n$$\n\\begin{aligned}{Q}_{\\text{in}}^{\u2032} & =(1.5\\,\\frac{\\text{lb}}{\\text{gal}})\\cdot (24\\,\\frac{\\text{gal}}{\\text{min}}) \\\\  & =(1.5\\,\\frac{\\text{lb}}{\\cancel{\\text{gal}}})\\cdot (24\\,\\frac{\\cancel{\\text{gal}}}{\\text{min}}) \\\\  & =36\\,\\frac{\\text{lb}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 2**: Calculating the rate at which fertilizer exits the tank.\n\nTo find the rate at which fertilizer leaves the tank, we must first determine the volume of solution in the tank at time $t.$\n\nThe tank initially contains $176\\,\\text{gal}$ of solution; solution enters at $24\\,\\text{gal/min}$ and mixed solution leaves at $16\\,\\text{gal/min}.$\nAs a result, the amount of solution in the tank after $t$ minutes is \n\n$$\nV(t)=176+24t-16t=8(22+t)\\,\\text{gal}.\n$$\n\nNote that $V(t)$ is an increasing function, so the tank is filling.\n\nSince $Q$ is the amount of fertilizer in the tank, the concentration of the solution at time $t$ is\n\n$$\n\\frac{Q}{8(22+t)}\\,\\text{lb/gal}.\n$$\n\nTherefore, as the completely mixed solution leaves at a rate of $16\\,\\text{gal/min},$ *fertilizer* leaves at a rate of\n\n$$\n\\begin{aligned}{Q}_{\\text{out}}^{\u2032} & =(16\\,\\frac{\\text{gal}}{\\text{min}})\\cdot (\\frac{Q}{8(22+t)}\\,\\frac{\\text{lb}}{\\text{gal}}) \\\\  & =(16\\,\\frac{\\cancel{\\text{gal}}}{\\text{min}})\\cdot (\\frac{Q}{8(22+t)}\\,\\frac{\\text{lb}}{\\cancel{\\text{gal}}}) \\\\  & =\\frac{16Q}{8(22+t)}\\,\\frac{\\text{lb}}{\\text{min}} \\\\  & =\\frac{2Q}{22+t}\\,\\frac{\\text{lb}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 3**: Calculate the overall rate of change.\n\nThe rate of change equals the rate of entry minus the rate of exit. Therefore, \n\n$$\n\\begin{aligned}\\frac{dQ}{dt} & ={Q}_{\\text{in}}^{\u2032}-{Q}_{\\text{out}}^{\u2032} \\\\  & =36-\\frac{2Q}{22+t}\\end{aligned}\n$$\n\nwhich gives the equation\n\n$$\n\\frac{dQ}{dt}+\\frac{2}{22+t}\\,Q=36.\n$$\n\n**Step 4**: Integrate the equation.\n\nThis is a first-order linear equation with variable coefficients. So we find the general solution using an integrating factor:\n\n$$\n\\begin{aligned}I(t) & ={e}^{\\int 2/(22+t)\\,dt} \\\\  & ={e}^{2\\operatorname{ln}\u2061|22+t|} \\\\  & ={e}^{\\operatorname{ln}\u2061(22+t)^{2}} \\\\  & =(22+t)^{2}.\\end{aligned}\n$$\n\nMultiplying both sides of the differential equation by $I(t)=(22+t)^{2}$ yields\n\n$$\n\\begin{aligned}(22+t)^{2}\\cdot (\\frac{dQ}{dt}+\\frac{2}{22+t}\\,Q) & =(22+t)^{2}\\cdot 36 \\\\ (22+t)^{2}\\frac{dQ}{dt}+2(22+t)Q & =36(22+t)^{2} \\\\ \\frac{d}{dt}(Q(22+t)^{2}) & =36(22+t)^{2}.\\end{aligned}\n$$\n\nNow, we integrate with respect to $t:$\n\n$$\n\\begin{aligned}\\int \\frac{d}{dt}(Q(22+t)^{2})\\,dt & =\\int 36(22+t)^{2}\\,dt \\\\ Q(22+t)^{2} & =36\\cdot \\frac{1}{3}(22+t)^{3}+C \\\\ Q(t) & =12(22+t)+\\frac{C}{(22+t)^{2}}.\\end{aligned}\n$$\n\nWe're told that the tank initially contains $132\\,\\text{lb}$ of fertilizer. So, we can apply the initial condition $Q(0)=132,$ and solve for $C:$\n\n$$\n\\begin{aligned}Q(0) & =132 \\\\ 12(22+0)+\\frac{C}{(22+0)^{2}} & =132 \\\\ 264+\\frac{C}{(22)^{2}} & =132 \\\\ \\frac{C}{{22}^{2}} & =-132 \\\\ C & =-132(22)^{2}.\\end{aligned}\n$$\n\nTherefore, we obtain the following expression for $Q(t):$\n\n$$\n\\begin{aligned}Q(t) & =12(22+t)-\\frac{132(22)^{2}}{(22+t)^{2}} \\\\  & =12(22+t)-132{\\left(\\frac{22}{22+t}\\right)}^{2}.\\end{aligned}\n$$\n\nNow, let ${t}_{o}$ be the time when the tank begins to overflow. The tank has a capacity of $352\\,\\text{gal},$ so we can use the condition $V({t}_{o})=352$ to solve for ${t}_{o}:$\n\n$$\n\\begin{aligned}V({t}_{o}) & =352 \\\\ 176+24{t}_{o}-16{t}_{o} & =352 \\\\ 176+8{t}_{o} & =352 \\\\ 8{t}_{o} & =176 \\\\ {t}_{o} & =22\\,\\text{min}.\\end{aligned}\n$$\n\nFinally, rounded to one decimal place, the amount of fertilizer in the tank at the moment it begins to overflow is\n\n$$\n\\begin{aligned}Q(22) & =12(22+22)-132{\\left(\\frac{22}{22+22}\\right)}^{2} \\\\  & =528-132{\\left(\\frac{22}{44}\\right)}^{2} \\\\  & \u2248495.0\\,\\text{lb}.\\end{aligned}\n$$"
+    },
+    "generation": {
+      "version": "overflow-onset-3",
+      "level": "easy",
+      "difficulty_provenance": "authored workload policy",
+      "template": "q-336503",
+      "profile": "method",
+      "seed": 3697613342,
+      "parameters": {
+        "H": "352",
+        "v": "176",
+        "q": "132",
+        "c": "1.5",
+        "rin": "24",
+        "rout": "16"
+      },
+      "source": {
+        "database": "math",
+        "basis": 5395,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "origin": "generated variant",
+      "evidence_only": false,
+      "eligible_for_learning": true,
+      "mathematical_fingerprint": "dea596d7bcf06d7b366eb6d2ecf332848705f2afc0f77aabe52870a09a26cbf7",
+      "content_fingerprint": "f5b54ad18e10293fcc36e28e70edba33580711af6df9d7839357ae0d64e02bed",
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      },
+      "domain": "0 <= t <= overflow onset; capacity > initial volume, inflow > outflow, incoming concentration > initial concentration",
+      "bank_recipes": [
+        "correct",
+        "four exchangeable adjacent tenth-pound gaps; whole-bank shape translated to independently selected correct rank"
+      ]
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186229183,
+      "id": "c652164a-2e94-5e16-a410-5143037af134",
+      "title": "Determining an Amount at an Overflow Point"
+    },
+    "question": {
+      ":question/id": "79a77e41-a142-5f9a-97d0-fdc7d222c3c5",
+      ":question/problem": "A dye mixing tank at a textile factory can hold up to $420\\,\\text{gal}$ of liquid. Initially, it contains $300\\,\\text{gal}$ of solution with $120\\,\\text{lb}$ of dissolved dye. A more concentrated dye solution with concentration $1.2\\,\\text{lb/gal}$ flows into the tank at a rate of $30\\,\\text{gal/min},$ while the completely mixed solution drains out at a rate of $20\\,\\text{gal/min}.$ Rounded to one decimal place, find the amount of dye in the tank at the moment it begins to overflow.",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "7329d6e3-a0b0-5f4c-994e-7449ee832a6f",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "13517df2-37df-5f64-850b-10605c7371e7",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "383.2\\,\\text{lb}"
+            },
+            {
+              ":answer/id": "db814147-fdc6-519d-8c1a-9897628f4d2a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "378.8\\,\\text{lb}"
+            },
+            {
+              ":answer/id": "461fff1b-49c8-5d67-b05d-655fe161da41",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "381.6\\,\\text{lb}"
+            },
+            {
+              ":answer/id": "0b3a9e75-0788-5645-86dc-7c01c75fbc5e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "382.7\\,\\text{lb}"
+            },
+            {
+              ":answer/id": "41ee2dc1-29e5-5d0c-b462-3965e0c55bdf",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "379.9\\,\\text{lb}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "461fff1b-49c8-5d67-b05d-655fe161da41"
+          ]
+        }
+      ],
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/worked-solution": "Since $Q$ is the amount of dye in the tank at time $t,$ the derivative \n\n$$\n\\frac{dQ}{dt}\n$$\n\ndescribes how this amount changes with respect to time $t,$ in minutes. This is equal to the rate at which dye enters the tank minus the rate at which dye leaves the tank.\n\n$$\n\\frac{dQ}{dt}={Q}_{\\text{in}}^{\u2032}-{Q}_{\\text{out}}^{\u2032}\n$$\n\nNote that the units of $\\frac{dQ}{dt},{Q}_{\\text{in}}^{\u2032}$ and ${Q}_{\\text{out}}^{\u2032}$ are $\\text{lb}/\\text{min}.$ Now, let's compute the required rates of change in steps.\n\n**Step 1**: Calculating the rate at which dye enters the tank.\n\nFirst, note that a solution containing $1.2\\,\\text{lb/gal}$ of dye enters the tank at a rate of $30\\,\\text{gal/min}.$ So, the rate at which the *dye* enters the tank is \n\n$$\n\\begin{aligned}{Q}_{\\text{in}}^{\u2032} & =(1.2\\,\\frac{\\text{lb}}{\\text{gal}})\\cdot (30\\,\\frac{\\text{gal}}{\\text{min}}) \\\\  & =(1.2\\,\\frac{\\text{lb}}{\\cancel{\\text{gal}}})\\cdot (30\\,\\frac{\\cancel{\\text{gal}}}{\\text{min}}) \\\\  & =36\\,\\frac{\\text{lb}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 2**: Calculating the rate at which dye exits the tank.\n\nTo find the rate at which dye leaves the tank, we must first determine the volume of liquid in the tank at time $t.$\n\nThe tank initially contains $300\\,\\text{gal}$ of liquid; solution enters at $30\\,\\text{gal/min}$ and mixed solution leaves at $20\\,\\text{gal/min}.$\nAs a result, the amount of liquid in the tank after $t$ minutes is \n\n$$\nV(t)=300+30t-20t=10(30+t)\\,\\text{gal}.\n$$\n\nNote that $V(t)$ is an increasing function, so the tank is filling.\n\nSince $Q$ is the amount of dye in the tank, the concentration of the solution at time $t$ is\n\n$$\n\\frac{Q}{10(30+t)}\\,\\text{lb/gal}.\n$$\n\nTherefore, as the completely mixed solution leaves at a rate of $20\\,\\text{gal/min},$ *dye* leaves at a rate of\n\n$$\n\\begin{aligned}{Q}_{\\text{out}}^{\u2032} & =(20\\,\\frac{\\text{gal}}{\\text{min}})\\cdot (\\frac{Q}{10(30+t)}\\,\\frac{\\text{lb}}{\\text{gal}}) \\\\  & =(20\\,\\frac{\\cancel{\\text{gal}}}{\\text{min}})\\cdot (\\frac{Q}{10(30+t)}\\,\\frac{\\text{lb}}{\\cancel{\\text{gal}}}) \\\\  & =\\frac{20Q}{10(30+t)}\\,\\frac{\\text{lb}}{\\text{min}} \\\\  & =\\frac{2Q}{30+t}\\,\\frac{\\text{lb}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 3**: Calculate the overall rate of change.\n\nThe rate of change equals the rate of entry minus the rate of exit. Therefore, \n\n$$\n\\begin{aligned}\\frac{dQ}{dt} & ={Q}_{\\text{in}}^{\u2032}-{Q}_{\\text{out}}^{\u2032} \\\\  & =36-\\frac{2Q}{30+t}\\end{aligned}\n$$\n\nwhich gives the equation\n\n$$\n\\frac{dQ}{dt}+\\frac{2}{30+t}\\,Q=36.\n$$\n\n**Step 4**: Integrate the equation.\n\nThis is a first-order linear equation with variable coefficients. So we find the general solution using an integrating factor:\n\n$$\n\\begin{aligned}I(t) & ={e}^{\\int 2/(30+t)\\,dt} \\\\  & ={e}^{2\\operatorname{ln}\u2061|30+t|} \\\\  & ={e}^{\\operatorname{ln}\u2061(30+t)^{2}} \\\\  & =(30+t)^{2}.\\end{aligned}\n$$\n\nMultiplying both sides of the differential equation by $I(t)=(30+t)^{2}$ yields\n\n$$\n\\begin{aligned}(30+t)^{2}\\cdot (\\frac{dQ}{dt}+\\frac{2}{30+t}\\,Q) & =(30+t)^{2}\\cdot 36 \\\\ (30+t)^{2}\\frac{dQ}{dt}+2(30+t)Q & =36(30+t)^{2} \\\\ \\frac{d}{dt}(Q(30+t)^{2}) & =36(30+t)^{2}.\\end{aligned}\n$$\n\nNow, we integrate with respect to $t:$\n\n$$\n\\begin{aligned}\\int \\frac{d}{dt}(Q(30+t)^{2})\\,dt & =\\int 36(30+t)^{2}\\,dt \\\\ Q(30+t)^{2} & =36\\cdot \\frac{1}{3}(30+t)^{3}+C \\\\ Q(t) & =12(30+t)+\\frac{C}{(30+t)^{2}}.\\end{aligned}\n$$\n\nWe're told that the tank initially contains $120\\,\\text{lb}$ of dye. So, we can apply the initial condition $Q(0)=120,$ and solve for $C:$\n\n$$\n\\begin{aligned}Q(0) & =120 \\\\ 12(30+0)+\\frac{C}{(30+0)^{2}} & =120 \\\\ 360+\\frac{C}{(30)^{2}} & =120 \\\\ \\frac{C}{(30)^{2}} & =-240 \\\\ C & =-240(30)^{2}.\\end{aligned}\n$$\n\nTherefore, we obtain the following expression for $Q(t):$\n\n$$\n\\begin{aligned}Q(t) & =12(30+t)-\\frac{240(30)^{2}}{(30+t)^{2}} \\\\  & =12(30+t)-240{\\left(\\frac{30}{30+t}\\right)}^{2}.\\end{aligned}\n$$\n\nNow, let ${t}_{o}$ be the time when the tank begins to overflow. The tank has a capacity of $420\\,\\text{gal},$ so we can use the condition $V({t}_{o})=420$ to solve for ${t}_{o}:$\n\n$$\n\\begin{aligned}V({t}_{o}) & =420 \\\\ 300+30{t}_{o}-20{t}_{o} & =420 \\\\ 300+10{t}_{o} & =420 \\\\ 10{t}_{o} & =120 \\\\ {t}_{o} & =12\\,\\text{min}.\\end{aligned}\n$$\n\nFinally, rounded to one decimal place, the amount of dye in the tank at the moment it begins to overflow is\n\n$$\n\\begin{aligned}Q(12) & =12(30+12)-240{\\left(\\frac{30}{30+12}\\right)}^{2} \\\\  & =504-240{\\left(\\frac{30}{42}\\right)}^{2} \\\\  & \u2248381.6\\,\\text{lb}.\\end{aligned}\n$$"
+    },
+    "generation": {
+      "version": "overflow-onset-3",
+      "level": "easy",
+      "difficulty_provenance": "authored workload policy",
+      "template": "q-336501",
+      "profile": "method",
+      "seed": 3697613343,
+      "parameters": {
+        "H": "420",
+        "v": "300",
+        "q": "120",
+        "c": "1.2",
+        "rin": "30",
+        "rout": "20"
+      },
+      "source": {
+        "database": "math",
+        "basis": 5395,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "origin": "generated variant",
+      "evidence_only": false,
+      "eligible_for_learning": true,
+      "mathematical_fingerprint": "df7fd4dc55d6d58cc36f9017bcf9514ed17533428f1cffcf6e46ffffa519fc49",
+      "content_fingerprint": "6ca5c1595fdf1959dccd131dc42a976c243ef8f4a489eb41904cebd42b43d7f6",
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      },
+      "domain": "0 <= t <= overflow onset; capacity > initial volume, inflow > outflow, incoming concentration > initial concentration",
+      "bank_recipes": [
+        "correct",
+        "four exchangeable adjacent tenth-pound gaps; whole-bank shape translated to independently selected correct rank"
+      ]
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186229183,
+      "id": "c652164a-2e94-5e16-a410-5143037af134",
+      "title": "Determining an Amount at an Overflow Point"
+    },
+    "question": {
+      ":question/id": "6c73e61d-df30-5225-b9ab-61794aeb4da4",
+      ":question/problem": "A coolant reservoir in a manufacturing plant can hold up to $184\\,\\text{gal}$ of liquid. Initially, it contains $120\\,\\text{gal}$ of coolant solution with $15\\,\\text{lb}$ of dissolved corrosion inhibitor. A more concentrated coolant solution with concentration $0.5\\,\\text{lb/gal}$ flows into the reservoir at a rate of $12\\,\\text{gal/min},$ while the completely mixed solution drains out at a rate of $8\\,\\text{gal/min}.$ Rounded to one decimal place, find the amount of inhibitor in the reservoir at the moment it begins to overflow.",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "685764cc-6757-5d34-8179-700ed823009c",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "10628c91-6524-56fd-bedd-fe43a7a49b69",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "71.0\\,\\text{lb}"
+            },
+            {
+              ":answer/id": "73892358-14ab-5fe9-a599-c662a42fb00a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "73.2\\,\\text{lb}"
+            },
+            {
+              ":answer/id": "6b24d502-d87b-5700-8ae9-4316c57b2aa5",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "72.9\\,\\text{lb}"
+            },
+            {
+              ":answer/id": "5b505341-9cef-595d-a51f-33afd031336a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "77.0\\,\\text{lb}"
+            },
+            {
+              ":answer/id": "fda55269-e4d3-514e-9396-b28f23f4c4c6",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "75.1\\,\\text{lb}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "6b24d502-d87b-5700-8ae9-4316c57b2aa5"
+          ]
+        }
+      ],
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/worked-solution": "Since $Q$ is the amount of inhibitor in the reservoir at time $t,$ the derivative \n\n$$\n\\frac{dQ}{dt}\n$$\n\ndescribes how this amount changes with respect to time $t,$ in minutes. This is equal to the rate at which inhibitor enters the reservoir minus the rate at which inhibitor leaves the reservoir.\n\n$$\n\\frac{dQ}{dt}={Q}_{\\text{in}}^{\u2032}-{Q}_{\\text{out}}^{\u2032}\n$$\n\nNote that the units of $\\frac{dQ}{dt},{Q}_{\\text{in}}^{\u2032}$ and ${Q}_{\\text{out}}^{\u2032}$ are $\\text{lb}/\\text{min}.$ Now, let's compute the required rates of change in steps.\n\n**Step 1**: Calculating the rate at which inhibitor enters the reservoir.\n\nFirst, note that a solution containing $0.5\\,\\text{lb/gal}$ of inhibitor enters the reservoir at a rate of $12\\,\\text{gal/min}.$ So, the rate at which the *inhibitor* enters the reservoir is \n\n$$\n\\begin{aligned}{Q}_{\\text{in}}^{\u2032} & =(0.5\\,\\frac{\\text{lb}}{\\text{gal}})\\cdot (12\\,\\frac{\\text{gal}}{\\text{min}}) \\\\  & =(0.5\\,\\frac{\\text{lb}}{\\cancel{\\text{gal}}})\\cdot (12\\,\\frac{\\cancel{\\text{gal}}}{\\text{min}}) \\\\  & =6\\,\\frac{\\text{lb}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 2**: Calculating the rate at which inhibitor exits the reservoir.\n\nTo find the rate at which inhibitor leaves the reservoir, we must first determine the volume of solution in the reservoir at time $t.$\n\nThe reservoir initially contains $120\\,\\text{gal}$ of solution; solution enters at $12\\,\\text{gal/min}$ and mixed solution leaves at $8\\,\\text{gal/min}.$\nAs a result, the amount of solution in the reservoir after $t$ minutes is \n\n$$\nV(t)=120+12t-8t=4(30+t)\\,\\text{gal}.\n$$\n\nNote that $V(t)$ is an increasing function, so the reservoir is filling.\n\nSince $Q$ is the amount of inhibitor in the reservoir, the concentration of the solution at time $t$ is\n\n$$\n\\frac{Q}{4(30+t)}\\,\\text{lb/gal}.\n$$\n\nTherefore, as the completely mixed solution leaves at a rate of $8\\,\\text{gal/min},$ *inhibitor* leaves at a rate of\n\n$$\n\\begin{aligned}{Q}_{\\text{out}}^{\u2032} & =(8\\,\\frac{\\text{gal}}{\\text{min}})\\cdot (\\frac{Q}{4(30+t)}\\,\\frac{\\text{lb}}{\\text{gal}}) \\\\  & =(8\\,\\frac{\\cancel{\\text{gal}}}{\\text{min}})\\cdot (\\frac{Q}{4(30+t)}\\,\\frac{\\text{lb}}{\\cancel{\\text{gal}}}) \\\\  & =\\frac{8Q}{4(30+t)}\\,\\frac{\\text{lb}}{\\text{min}} \\\\  & =\\frac{2Q}{30+t}\\,\\frac{\\text{lb}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 3**: Calculate the overall rate of change.\n\nThe rate of change equals the rate of entry minus the rate of exit. Therefore, \n\n$$\n\\begin{aligned}\\frac{dQ}{dt} & ={Q}_{\\text{in}}^{\u2032}-{Q}_{\\text{out}}^{\u2032} \\\\  & =6-\\frac{2Q}{30+t}\\end{aligned}\n$$\n\nwhich gives the equation\n\n$$\n\\frac{dQ}{dt}+\\frac{2}{30+t}\\,Q=6.\n$$\n\n**Step 4**: Integrate the equation.\n\nThis is a first-order linear equation with variable coefficients. So we find the general solution using an integrating factor:\n\n$$\n\\begin{aligned}I(t) & ={e}^{\\int 2/(30+t)\\,dt} \\\\  & ={e}^{2\\operatorname{ln}\u2061|30+t|} \\\\  & ={e}^{\\operatorname{ln}\u2061(30+t)^{2}} \\\\  & =(30+t)^{2}.\\end{aligned}\n$$\n\nMultiplying both sides of the differential equation by $I(t)=(30+t)^{2}$ yields\n\n$$\n\\begin{aligned}(30+t)^{2}\\cdot (\\frac{dQ}{dt}+\\frac{2}{30+t}\\,Q) & =(30+t)^{2}\\cdot 6 \\\\ (30+t)^{2}\\frac{dQ}{dt}+2(30+t)Q & =6(30+t)^{2} \\\\ \\frac{d}{dt}(Q(30+t)^{2}) & =6(30+t)^{2}.\\end{aligned}\n$$\n\nNow, we integrate with respect to $t:$\n\n$$\n\\begin{aligned}\\int \\frac{d}{dt}(Q(30+t)^{2})\\,dt & =\\int 6(30+t)^{2}\\,dt \\\\ Q(30+t)^{2} & =6\\cdot \\frac{1}{3}(30+t)^{3}+C \\\\ Q(t) & =2(30+t)+\\frac{C}{(30+t)^{2}}.\\end{aligned}\n$$\n\nWe're told that the reservoir initially contains $15\\,\\text{lb}$ of inhibitor. So, we can apply the initial condition $Q(0)=15,$ and solve for $C:$\n\n$$\n\\begin{aligned}Q(0) & =15 \\\\ 2(30+0)+\\frac{C}{(30+0)^{2}} & =15 \\\\ 60+\\frac{C}{(30)^{2}} & =15 \\\\ \\frac{C}{{30}^{2}} & =-45 \\\\ C & =-45(30)^{2}.\\end{aligned}\n$$\n\nTherefore, we obtain the following expression for $Q(t):$\n\n$$\n\\begin{aligned}Q(t) & =2(30+t)-\\frac{45(30)^{2}}{(30+t)^{2}} \\\\  & =2(30+t)-45{\\left(\\frac{30}{30+t}\\right)}^{2}.\\end{aligned}\n$$\n\nNow, let ${t}_{o}$ be the time when the reservoir begins to overflow. The reservoir has a capacity of $184\\,\\text{gal},$ so we can use the condition $V({t}_{o})=184$ to solve for ${t}_{o}:$\n\n$$\n\\begin{aligned}V({t}_{o}) & =184 \\\\ 120+12{t}_{o}-8{t}_{o} & =184 \\\\ 120+4{t}_{o} & =184 \\\\ 4{t}_{o} & =64 \\\\ {t}_{o} & =16\\,\\text{min}.\\end{aligned}\n$$\n\nFinally, rounded to one decimal place, the amount of inhibitor in the reservoir at the moment it begins to overflow is\n\n$$\n\\begin{aligned}Q(16) & =2(30+16)-45{\\left(\\frac{30}{30+16}\\right)}^{2} \\\\  & =92-45{\\left(\\frac{30}{46}\\right)}^{2} \\\\  & \u224872.9\\,\\text{lb}.\\end{aligned}\n$$"
+    },
+    "generation": {
+      "version": "overflow-onset-3",
+      "level": "easy",
+      "difficulty_provenance": "authored workload policy",
+      "template": "q-336506",
+      "profile": "method",
+      "seed": 3697613344,
+      "parameters": {
+        "H": "184",
+        "v": "120",
+        "q": "15",
+        "c": "0.5",
+        "rin": "12",
+        "rout": "8"
+      },
+      "source": {
+        "database": "math",
+        "basis": 5395,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "origin": "generated variant",
+      "evidence_only": false,
+      "eligible_for_learning": true,
+      "mathematical_fingerprint": "241851b64e7e6d4149aeeda5b01d42be7d505479516b97b7889537c11146a323",
+      "content_fingerprint": "9d4e1b36b40fa05479ba366edb3ca127d915e85cb8a5c90ded15ca7d38730c91",
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      },
+      "domain": "0 <= t <= overflow onset; capacity > initial volume, inflow > outflow, incoming concentration > initial concentration",
+      "bank_recipes": [
+        "correct",
+        "four exchangeable adjacent tenth-pound gaps; whole-bank shape translated to independently selected correct rank"
+      ]
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186229183,
+      "id": "c652164a-2e94-5e16-a410-5143037af134",
+      "title": "Determining an Amount at an Overflow Point"
+    },
+    "question": {
+      ":question/id": "b6b0630c-ef8d-565e-8190-81990b40d768",
+      ":question/problem": "An ink reservoir for an industrial printer can hold up to $249\\,\\text{gal}$ of liquid. Initially, it contains $120\\,\\text{gal}$ of ink solution with $80\\,\\text{lb}$ of dissolved ink dye. A more concentrated ink solution with concentration $1.0\\,\\text{lb/gal}$ flows into the reservoir at a rate of $9\\,\\text{gal/min},$ while the completely mixed solution drains out at a rate of $6\\,\\text{gal/min}.$ Rounded to one decimal place, find the amount of ink dye in the reservoir at the moment it begins to overflow.",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "53e27f00-9ae8-5661-bbbc-00bcc276e509",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "8089c39f-9ad9-58c0-8d8e-469c5994e139",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "241.4\\,\\text{lb}"
+            },
+            {
+              ":answer/id": "3ededf56-c1cb-5337-b7dc-b387a985330f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "239.7\\,\\text{lb}"
+            },
+            {
+              ":answer/id": "a2df1bc0-b1aa-5688-9353-085bca396a7c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "242.6\\,\\text{lb}"
+            },
+            {
+              ":answer/id": "71767425-42f2-5774-a430-a029d59f7093",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "240.5\\,\\text{lb}"
+            },
+            {
+              ":answer/id": "0f8ce743-29c6-5a24-9716-61eecf926df1",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "238.8\\,\\text{lb}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "3ededf56-c1cb-5337-b7dc-b387a985330f"
+          ]
+        }
+      ],
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/worked-solution": "Since $Q$ is the amount of ink dye in the reservoir at time $t,$ the derivative \n\n$$\n\\frac{dQ}{dt}\n$$\n\ndescribes how this amount changes with respect to time $t,$ in minutes. This is equal to the rate at which ink dye enters the reservoir minus the rate at which ink dye leaves the reservoir.\n\n$$\n\\frac{dQ}{dt}={Q}_{\\text{in}}^{\u2032}-{Q}_{\\text{out}}^{\u2032}\n$$\n\nNote that the units of $\\frac{dQ}{dt},{Q}_{\\text{in}}^{\u2032}$ and ${Q}_{\\text{out}}^{\u2032}$ are $\\text{lb}/\\text{min}.$ Now, let's compute the required rates of change in steps.\n\n**Step 1**: Calculating the rate at which ink dye enters the reservoir.\n\nFirst, note that a solution containing $1.0\\,\\text{lb/gal}$ of ink dye enters the reservoir at a rate of $9\\,\\text{gal/min}.$ So, the rate at which the *ink dye* enters the reservoir is \n\n$$\n\\begin{aligned}{Q}_{\\text{in}}^{\u2032} & =(1.0\\,\\frac{\\text{lb}}{\\text{gal}})\\cdot (9\\,\\frac{\\text{gal}}{\\text{min}}) \\\\  & =(1.0\\,\\frac{\\text{lb}}{\\cancel{\\text{gal}}})\\cdot (9\\,\\frac{\\cancel{\\text{gal}}}{\\text{min}}) \\\\  & =9\\,\\frac{\\text{lb}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 2**: Calculating the rate at which ink dye exits the reservoir.\n\nTo find the rate at which ink dye leaves the reservoir, we must first determine the volume of solution in the reservoir at time $t.$\n\nThe reservoir initially contains $120\\,\\text{gal}$ of solution; solution enters at $9\\,\\text{gal/min}$ and mixed solution leaves at $6\\,\\text{gal/min}.$\nAs a result, the amount of solution in the reservoir after $t$ minutes is \n\n$$\nV(t)=120+9t-6t=3(40+t)\\,\\text{gal}.\n$$\n\nNote that $V(t)$ is an increasing function, so the reservoir is filling.\n\nSince $Q$ is the amount of ink dye in the reservoir, the concentration of the solution at time $t$ is\n\n$$\n\\frac{Q}{3(40+t)}\\,\\text{lb/gal}.\n$$\n\nTherefore, as the completely mixed solution leaves at a rate of $6\\,\\text{gal/min},$ *ink dye* leaves at a rate of\n\n$$\n\\begin{aligned}{Q}_{\\text{out}}^{\u2032} & =(6\\,\\frac{\\text{gal}}{\\text{min}})\\cdot (\\frac{Q}{3(40+t)}\\,\\frac{\\text{lb}}{\\text{gal}}) \\\\  & =(6\\,\\frac{\\cancel{\\text{gal}}}{\\text{min}})\\cdot (\\frac{Q}{3(40+t)}\\,\\frac{\\text{lb}}{\\cancel{\\text{gal}}}) \\\\  & =\\frac{6Q}{3(40+t)}\\,\\frac{\\text{lb}}{\\text{min}} \\\\  & =\\frac{2Q}{40+t}\\,\\frac{\\text{lb}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 3**: Calculate the overall rate of change.\n\nThe rate of change equals the rate of entry minus the rate of exit. Therefore, \n\n$$\n\\begin{aligned}\\frac{dQ}{dt} & ={Q}_{\\text{in}}^{\u2032}-{Q}_{\\text{out}}^{\u2032} \\\\  & =9-\\frac{2Q}{40+t}\\end{aligned}\n$$\n\nwhich gives the equation\n\n$$\n\\frac{dQ}{dt}+\\frac{2}{40+t}\\,Q=9.\n$$\n\n**Step 4**: Integrate the equation.\n\nThis is a first-order linear equation with variable coefficients. So we find the general solution using an integrating factor:\n\n$$\n\\begin{aligned}I(t) & ={e}^{\\int 2/(40+t)\\,dt} \\\\  & ={e}^{2\\operatorname{ln}\u2061|40+t|} \\\\  & ={e}^{\\operatorname{ln}\u2061(40+t)^{2}} \\\\  & =(40+t)^{2}.\\end{aligned}\n$$\n\nMultiplying both sides of the differential equation by $I(t)=(40+t)^{2}$ yields\n\n$$\n\\begin{aligned}(40+t)^{2}\\cdot (\\frac{dQ}{dt}+\\frac{2}{40+t}\\,Q) & =(40+t)^{2}\\cdot 9 \\\\ (40+t)^{2}\\frac{dQ}{dt}+2(40+t)Q & =9(40+t)^{2} \\\\ \\frac{d}{dt}(Q(40+t)^{2}) & =9(40+t)^{2}.\\end{aligned}\n$$\n\nNow, we integrate with respect to $t:$\n\n$$\n\\begin{aligned}\\int \\frac{d}{dt}(Q(40+t)^{2})\\,dt & =\\int 9(40+t)^{2}\\,dt \\\\ Q(40+t)^{2} & =9\\cdot \\frac{1}{3}(40+t)^{3}+C \\\\ Q(t) & =3(40+t)+\\frac{C}{(40+t)^{2}}.\\end{aligned}\n$$\n\nWe're told that the reservoir initially contains $80\\,\\text{lb}$ of ink dye. So, we can apply the initial condition $Q(0)=80,$ and solve for $C:$\n\n$$\n\\begin{aligned}Q(0) & =80 \\\\ 3(40+0)+\\frac{C}{(40+0)^{2}} & =80 \\\\ 120+\\frac{C}{(40)^{2}} & =80 \\\\ \\frac{C}{{40}^{2}} & =-40 \\\\ C & =-40(40)^{2}.\\end{aligned}\n$$\n\nTherefore, we obtain the following expression for $Q(t):$\n\n$$\n\\begin{aligned}Q(t) & =3(40+t)-\\frac{40(40)^{2}}{(40+t)^{2}} \\\\  & =3(40+t)-40{\\left(\\frac{40}{40+t}\\right)}^{2}.\\end{aligned}\n$$\n\nNow, let ${t}_{o}$ be the time when the reservoir begins to overflow. The reservoir has a capacity of $249\\,\\text{gal},$ so we can use the condition $V({t}_{o})=249$ to solve for ${t}_{o}:$\n\n$$\n\\begin{aligned}V({t}_{o}) & =249 \\\\ 120+9{t}_{o}-6{t}_{o} & =249 \\\\ 120+3{t}_{o} & =249 \\\\ 3{t}_{o} & =129 \\\\ {t}_{o} & =43\\,\\text{min}.\\end{aligned}\n$$\n\nFinally, rounded to one decimal place, the amount of ink dye in the reservoir at the moment it begins to overflow is\n\n$$\n\\begin{aligned}Q(43) & =3(40+43)-40{\\left(\\frac{40}{40+43}\\right)}^{2} \\\\  & =249-40{\\left(\\frac{40}{83}\\right)}^{2} \\\\  & \u2248239.7\\,\\text{lb}.\\end{aligned}\n$$"
+    },
+    "generation": {
+      "version": "overflow-onset-3",
+      "level": "easy",
+      "difficulty_provenance": "authored workload policy",
+      "template": "q-336519",
+      "profile": "method",
+      "seed": 3697613345,
+      "parameters": {
+        "H": "249",
+        "v": "120",
+        "q": "80",
+        "c": "1.0",
+        "rin": "9",
+        "rout": "6"
+      },
+      "source": {
+        "database": "math",
+        "basis": 5395,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "origin": "generated variant",
+      "evidence_only": false,
+      "eligible_for_learning": true,
+      "mathematical_fingerprint": "e9f4525d94578e568f2da779d12db21c43ce81fa378e148309389fc04f34d58f",
+      "content_fingerprint": "244bb17a790b0d544258887c1f4e2cc59254accd0077bbbe72eca65cd6493a8e",
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      },
+      "domain": "0 <= t <= overflow onset; capacity > initial volume, inflow > outflow, incoming concentration > initial concentration",
+      "bank_recipes": [
+        "correct",
+        "four exchangeable adjacent tenth-pound gaps; whole-bank shape translated to independently selected correct rank"
+      ]
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186229183,
+      "id": "c652164a-2e94-5e16-a410-5143037af134",
+      "title": "Determining an Amount at an Overflow Point"
+    },
+    "question": {
+      ":question/id": "fbfab510-e0e4-52b3-ab12-444a7b87c1dd",
+      ":question/problem": "A saline reservoir for a medical research lab can hold up to $190\\,\\text{gal}$ of solution. Initially, it contains $50\\,\\text{gal}$ of saline solution with $20\\,\\text{lb}$ of dissolved salt. A more concentrated saline solution with concentration $1.2\\,\\text{lb/gal}$ flows into the reservoir at a rate of $15\\,\\text{gal/min},$ while the completely mixed solution drains out at a rate of $10\\,\\text{gal/min}.$ Rounded to one decimal place, find the amount of salt in the reservoir at the moment it begins to overflow.",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "4ad04cd1-6086-54d7-b84a-fbdcb5ac5d2e",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "515e8b6e-3534-546c-8d2d-4cf698529105",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "226.5\\,\\text{lb}"
+            },
+            {
+              ":answer/id": "a110eb70-2ac6-5ff0-8403-05b76de4c5a1",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "223.6\\,\\text{lb}"
+            },
+            {
+              ":answer/id": "56de29d8-b741-57c0-9d5c-424c12029755",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "225.2\\,\\text{lb}"
+            },
+            {
+              ":answer/id": "0a0ed9ce-228f-5d30-9132-a164ce328a24",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "228.5\\,\\text{lb}"
+            },
+            {
+              ":answer/id": "e520549e-a9b5-5089-9266-f1d52ced8dd2",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "224.1\\,\\text{lb}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "56de29d8-b741-57c0-9d5c-424c12029755"
+          ]
+        }
+      ],
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/worked-solution": "Since $Q$ is the amount of salt in the reservoir at time $t,$ the derivative \n\n$$\n\\frac{dQ}{dt}\n$$\n\ndescribes how this amount changes with respect to time $t,$ in minutes. This is equal to the rate at which salt enters the reservoir minus the rate at which salt leaves the reservoir.\n\n$$\n\\frac{dQ}{dt}={Q}_{\\text{in}}^{\u2032}-{Q}_{\\text{out}}^{\u2032}\n$$\n\nNote that the units of $\\frac{dQ}{dt},{Q}_{\\text{in}}^{\u2032}$ and ${Q}_{\\text{out}}^{\u2032}$ are $\\text{lb}/\\text{min}.$ Now, let's compute the required rates of change in steps.\n\n**Step 1**: Calculating the rate at which salt enters the reservoir.\n\nFirst, note that a solution containing $1.2\\,\\text{lb/gal}$ of salt enters the reservoir at a rate of $15\\,\\text{gal/min}.$ So, the rate at which the *salt* enters the reservoir is \n\n$$\n\\begin{aligned}{Q}_{\\text{in}}^{\u2032} & =(1.2\\,\\frac{\\text{lb}}{\\text{gal}})\\cdot (15\\,\\frac{\\text{gal}}{\\text{min}}) \\\\  & =(1.2\\,\\frac{\\text{lb}}{\\cancel{\\text{gal}}})\\cdot (15\\,\\frac{\\cancel{\\text{gal}}}{\\text{min}}) \\\\  & =18\\,\\frac{\\text{lb}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 2**: Calculating the rate at which salt exits the reservoir.\n\nTo find the rate at which salt leaves the reservoir, we must first determine the volume of solution in the reservoir at time $t.$\n\nThe reservoir initially contains $50\\,\\text{gal}$ of solution; solution enters at $15\\,\\text{gal/min}$ and mixed solution leaves at $10\\,\\text{gal/min}.$\nAs a result, the amount of solution in the reservoir after $t$ minutes is \n\n$$\nV(t)=50+15t-10t=5(10+t)\\,\\text{gal}.\n$$\n\nNote that $V(t)$ is an increasing function, so the reservoir is filling.\n\nSince $Q$ is the amount of salt in the reservoir, the concentration of the solution at time $t$ is\n\n$$\n\\frac{Q}{5(10+t)}\\,\\text{lb/gal}.\n$$\n\nTherefore, as the completely mixed solution leaves at a rate of $10\\,\\text{gal/min},$ *salt* leaves at a rate of\n\n$$\n\\begin{aligned}{Q}_{\\text{out}}^{\u2032} & =(10\\,\\frac{\\text{gal}}{\\text{min}})\\cdot (\\frac{Q}{5(10+t)}\\,\\frac{\\text{lb}}{\\text{gal}}) \\\\  & =(10\\,\\frac{\\cancel{\\text{gal}}}{\\text{min}})\\cdot (\\frac{Q}{5(10+t)}\\,\\frac{\\text{lb}}{\\cancel{\\text{gal}}}) \\\\  & =\\frac{10Q}{5(10+t)}\\,\\frac{\\text{lb}}{\\text{min}} \\\\  & =\\frac{2Q}{10+t}\\,\\frac{\\text{lb}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 3**: Calculate the overall rate of change.\n\nThe rate of change equals the rate of entry minus the rate of exit. Therefore, \n\n$$\n\\begin{aligned}\\frac{dQ}{dt} & ={Q}_{\\text{in}}^{\u2032}-{Q}_{\\text{out}}^{\u2032} \\\\  & =18-\\frac{2Q}{10+t}\\end{aligned}\n$$\n\nwhich gives the equation\n\n$$\n\\frac{dQ}{dt}+\\frac{2}{10+t}\\,Q=18.\n$$\n\n**Step 4**: Integrate the equation.\n\nThis is a first-order linear equation with variable coefficients. So we find the general solution using an integrating factor:\n\n$$\n\\begin{aligned}I(t) & ={e}^{\\int 2/(10+t)\\,dt} \\\\  & ={e}^{2\\operatorname{ln}\u2061|10+t|} \\\\  & ={e}^{\\operatorname{ln}\u2061(10+t)^{2}} \\\\  & =(10+t)^{2}.\\end{aligned}\n$$\n\nMultiplying both sides of the differential equation by $I(t)=(10+t)^{2}$ yields\n\n$$\n\\begin{aligned}(10+t)^{2}\\cdot (\\frac{dQ}{dt}+\\frac{2}{10+t}\\,Q) & =(10+t)^{2}\\cdot 18 \\\\ (10+t)^{2}\\frac{dQ}{dt}+2(10+t)Q & =18(10+t)^{2} \\\\ \\frac{d}{dt}(Q(10+t)^{2}) & =18(10+t)^{2}.\\end{aligned}\n$$\n\nNow, we integrate with respect to $t:$\n\n$$\n\\begin{aligned}\\int \\frac{d}{dt}(Q(10+t)^{2})\\,dt & =\\int 18(10+t)^{2}\\,dt \\\\ Q(10+t)^{2} & =18\\cdot \\frac{1}{3}(10+t)^{3}+C \\\\ Q(t) & =6(10+t)+\\frac{C}{(10+t)^{2}}.\\end{aligned}\n$$\n\nWe're told that the reservoir initially contains $20\\,\\text{lb}$ of salt. So, we can apply the initial condition $Q(0)=20,$ and solve for $C:$\n\n$$\n\\begin{aligned}Q(0) & =20 \\\\ 6(10+0)+\\frac{C}{(10+0)^{2}} & =20 \\\\ 60+\\frac{C}{(10)^{2}} & =20 \\\\ \\frac{C}{(10)^{2}} & =-40 \\\\ C & =-40(10)^{2}.\\end{aligned}\n$$\n\nTherefore, we obtain the following expression for $Q(t):$\n\n$$\n\\begin{aligned}Q(t) & =6(10+t)-\\frac{40(10)^{2}}{(10+t)^{2}} \\\\  & =6(10+t)-40{\\left(\\frac{10}{10+t}\\right)}^{2}.\\end{aligned}\n$$\n\nNow, let ${t}_{o}$ be the time when the reservoir begins to overflow. The reservoir has a capacity of $190\\,\\text{gal},$ so we can use the condition $V({t}_{o})=190$ to solve for ${t}_{o}:$\n\n$$\n\\begin{aligned}V({t}_{o}) & =190 \\\\ 50+15{t}_{o}-10{t}_{o} & =190 \\\\ 50+5{t}_{o} & =190 \\\\ 5{t}_{o} & =140 \\\\ {t}_{o} & =28\\,\\text{min}.\\end{aligned}\n$$\n\nFinally, rounded to one decimal place, the amount of salt in the reservoir at the moment it begins to overflow is\n\n$$\n\\begin{aligned}Q(28) & =6(10+28)-40{\\left(\\frac{10}{10+28}\\right)}^{2} \\\\  & =228-40{\\left(\\frac{10}{38}\\right)}^{2} \\\\  & \u2248225.2\\,\\text{lb}.\\end{aligned}\n$$"
+    },
+    "generation": {
+      "version": "overflow-onset-3",
+      "level": "easy",
+      "difficulty_provenance": "authored workload policy",
+      "template": "q-336502",
+      "profile": "method",
+      "seed": 3697613346,
+      "parameters": {
+        "H": "190",
+        "v": "50",
+        "q": "20",
+        "c": "1.2",
+        "rin": "15",
+        "rout": "10"
+      },
+      "source": {
+        "database": "math",
+        "basis": 5395,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "origin": "generated variant",
+      "evidence_only": false,
+      "eligible_for_learning": true,
+      "mathematical_fingerprint": "43c2b64b4cb32e93316f6880fc2deac9495ef5a6058a96e6e6b75d4723e5642a",
+      "content_fingerprint": "0eb4de03b08d77efb28ee171f6c75794f0a27ed3cf04c905c2f7f5a2539aa142",
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      },
+      "domain": "0 <= t <= overflow onset; capacity > initial volume, inflow > outflow, incoming concentration > initial concentration",
+      "bank_recipes": [
+        "correct",
+        "four exchangeable adjacent tenth-pound gaps; whole-bank shape translated to independently selected correct rank"
+      ]
+    }
+  }
+]
