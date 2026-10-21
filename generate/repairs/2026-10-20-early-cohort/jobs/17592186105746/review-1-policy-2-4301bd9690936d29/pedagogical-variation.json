@@ -1,0 +1,688 @@
+{
+  "learner_operation": "Construct the augmented matrix, eliminate the second x coefficient, decide whether the last RHS is zero or nonzero, then select No solution or solve x in terms of free y. The consistency decision must depend on both equations, not on a source coefficient signature.",
+  "fixed_features": [
+    {
+      "feature": "Singular rank-one 2x2 coefficients with nonzero first x pivot",
+      "justification": "The knowledge point and tutorial 3154 concern singular 2x2 systems; retaining a pivot avoids adding row-swap stages."
+    },
+    {
+      "feature": "x basic, y free; easy first x coefficient 1",
+      "justification": "Matches all easy sources and tutorial 3153; one elimination and interpretation preserve easy workload."
+    },
+    {
+      "feature": "Five radio options with full vector families and No solution",
+      "justification": "Every captured practice question uses this contract; none requests free-entry notation."
+    },
+    {
+      "feature": "Source coefficient/bank profiles retained",
+      "justification": "Conservative same-method extension. Each profile supports both residual decisions and signed/zero intercepts; profile no longer fixes which answer is correct."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Contradictory versus redundant final row",
+      "eligible_variation": "With all coefficients and first RHS fixed, second RHS may equal or differ from its consistent value.",
+      "observed": "51 controlled opposite-outcome pairs across all 17 profiles; fresh seed decisions 34/34 across 68 records. Both outcomes survive publication filtering within each easy profile."
+    },
+    {
+      "role": "Surviving affine solution intercept and signs",
+      "eligible_variation": "Positive, negative and zero first-row intercepts; derive vector family and distractors together.",
+      "observed": "Independent grid uses intercepts -7,0,7; exact old counterexample uses 2; ordinary constructor varies -8..8; explicit boundary overrides -32,32 validated."
+    },
+    {
+      "role": "Correct option identity and position",
+      "eligible_variation": "Residual determines No solution versus the first-row vector; choice order is incidental.",
+      "observed": "Ordered complete bank unchanged across paired residual changes, preventing option shapes from revealing consistency; actual UI positions measured separately."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "All observed source practice cases, including q-20964 zero first RHS",
+      "sample_refs": [
+        "source-replay-records.json",
+        "source-replay.json"
+      ],
+      "result": "17/17 reproduce normalized prompts, complete mathematical banks, keys and corrected worked solutions."
+    },
+    {
+      "case": "Signed/zero intercepts and opposite decisions per source profile",
+      "sample_refs": [
+        "controlled-records.json",
+        "counterfactual-results.json"
+      ],
+      "result": "51 pairs: exactly the second RHS changes while coefficients, first RHS, seed and whole ordered bank are fixed."
+    },
+    {
+      "case": "Ordinary sampling, rejection, internal deduplication and publication",
+      "sample_refs": [
+        "constructor-prefix.json",
+        "constructor-records.json",
+        "delivery-input.json",
+        "delivery-domain/accepted.json",
+        "shortcut-results.json"
+      ],
+      "result": "80 candidates -> 72 unique; 126 easy delivery inputs ->119 accepted (54 infinite,65 none). Each delivered recognizable profile has both decisions."
+    },
+    {
+      "case": "Exact runner five-question practice pool",
+      "sample_refs": [
+        "batch-records.json",
+        "delivery-batch/accepted.json",
+        "shortcut-results.json"
+      ],
+      "result": "5/5 survive, comprising three infinite and two no-solution questions. Prior coefficient lookup action succeeds only 2/5, always No solution 2/5, always first-row vector 3/5."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "q-42157 seed7331, intercept2: second RHS -10 -> -8, with all coefficients, first equation and full ordered bank fixed.",
+      "expected": "No solution -> x=2+6y with y free; prompt, echelon row, explanation and native correct selection must all follow.",
+      "observed": "Independent equations and full bank math verify the change; native grader accepts each new correct choice and rejects all four alternatives; actual UI screenshots show both different prompts and solutions.",
+      "status": "passed",
+      "justification": "Tutorials 3901 and3154 make the eliminated RHS decisive; fixing its outcome by profile would bypass the learner operation.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-final-input.json",
+        "grader-final-results.json",
+        "render/rendering.json",
+        "visual-review.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "q-42157 seed7331, intercept2: second RHS -10 -> -5, so nonzero residual -2 becomes +3.",
+      "expected": "Both systems have No solution; prompt and elimination must update but response semantics remain the same.",
+      "observed": "Independent exact checks and native grader confirm No solution in both; screenshots001 and003 show updated RHS/residual and the same contradiction interpretation.",
+      "status": "passed",
+      "justification": "The sign or magnitude of a nonzero contradictory final RHS is irrelevant to solvability, by tutorial3901.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-final-results.json",
+        "render/rendering.json",
+        "visual-review.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "source coefficient signature / bank profile",
+      "subgroup": "q-42157",
+      "scope": "within_template",
+      "strategy": "Predict consistency from source coefficient signature / bank profile; choose No solution when predicted inconsistent, otherwise solve only the first row and choose its vector.",
+      "correct": 3,
+      "total": 6,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "3/6. Baseline 0.5 is a blind binary consistency decision after finding the first-row vector; uniform five-choice guessing is 0.2. The same visible coefficients and complete bank occur with opposite keys; the earlier fixed outcome is broken.",
+      "sample_refs": [
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "source coefficient signature / bank profile",
+      "subgroup": "q-42167",
+      "scope": "within_template",
+      "strategy": "Predict consistency from source coefficient signature / bank profile; choose No solution when predicted inconsistent, otherwise solve only the first row and choose its vector.",
+      "correct": 3,
+      "total": 6,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "3/6. Baseline 0.5 is a blind binary consistency decision after finding the first-row vector; uniform five-choice guessing is 0.2. The same visible coefficients and complete bank occur with opposite keys; the earlier fixed outcome is broken.",
+      "sample_refs": [
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "source coefficient signature / bank profile",
+      "subgroup": "q-130923",
+      "scope": "within_template",
+      "strategy": "Predict consistency from source coefficient signature / bank profile; choose No solution when predicted inconsistent, otherwise solve only the first row and choose its vector.",
+      "correct": 3,
+      "total": 6,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "3/6. Baseline 0.5 is a blind binary consistency decision after finding the first-row vector; uniform five-choice guessing is 0.2. The same visible coefficients and complete bank occur with opposite keys; the earlier fixed outcome is broken.",
+      "sample_refs": [
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "source coefficient signature / bank profile",
+      "subgroup": "q-130924",
+      "scope": "within_template",
+      "strategy": "Predict consistency from source coefficient signature / bank profile; choose No solution when predicted inconsistent, otherwise solve only the first row and choose its vector.",
+      "correct": 3,
+      "total": 6,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "3/6. Baseline 0.5 is a blind binary consistency decision after finding the first-row vector; uniform five-choice guessing is 0.2. The same visible coefficients and complete bank occur with opposite keys; the earlier fixed outcome is broken.",
+      "sample_refs": [
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "source coefficient signature / bank profile",
+      "subgroup": "q-20783",
+      "scope": "within_template",
+      "strategy": "Predict consistency from source coefficient signature / bank profile; choose No solution when predicted inconsistent, otherwise solve only the first row and choose its vector.",
+      "correct": 3,
+      "total": 6,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "3/6. Baseline 0.5 is a blind binary consistency decision after finding the first-row vector; uniform five-choice guessing is 0.2. The same visible coefficients and complete bank occur with opposite keys; the earlier fixed outcome is broken.",
+      "sample_refs": [
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "source coefficient signature / bank profile",
+      "subgroup": "q-20960",
+      "scope": "within_template",
+      "strategy": "Predict consistency from source coefficient signature / bank profile; choose No solution when predicted inconsistent, otherwise solve only the first row and choose its vector.",
+      "correct": 3,
+      "total": 6,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "3/6. Baseline 0.5 is a blind binary consistency decision after finding the first-row vector; uniform five-choice guessing is 0.2. The same visible coefficients and complete bank occur with opposite keys; the earlier fixed outcome is broken.",
+      "sample_refs": [
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "source coefficient signature / bank profile",
+      "subgroup": "q-42159",
+      "scope": "within_template",
+      "strategy": "Predict consistency from source coefficient signature / bank profile; choose No solution when predicted inconsistent, otherwise solve only the first row and choose its vector.",
+      "correct": 3,
+      "total": 6,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "3/6. Baseline 0.5 is a blind binary consistency decision after finding the first-row vector; uniform five-choice guessing is 0.2. The same visible coefficients and complete bank occur with opposite keys; the earlier fixed outcome is broken.",
+      "sample_refs": [
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "source coefficient signature / bank profile",
+      "subgroup": "q-73751",
+      "scope": "within_template",
+      "strategy": "Predict consistency from source coefficient signature / bank profile; choose No solution when predicted inconsistent, otherwise solve only the first row and choose its vector.",
+      "correct": 3,
+      "total": 6,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "3/6. Baseline 0.5 is a blind binary consistency decision after finding the first-row vector; uniform five-choice guessing is 0.2. The same visible coefficients and complete bank occur with opposite keys; the earlier fixed outcome is broken.",
+      "sample_refs": [
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "source coefficient signature / bank profile",
+      "subgroup": "q-73752",
+      "scope": "within_template",
+      "strategy": "Predict consistency from source coefficient signature / bank profile; choose No solution when predicted inconsistent, otherwise solve only the first row and choose its vector.",
+      "correct": 3,
+      "total": 6,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "3/6. Baseline 0.5 is a blind binary consistency decision after finding the first-row vector; uniform five-choice guessing is 0.2. The same visible coefficients and complete bank occur with opposite keys; the earlier fixed outcome is broken.",
+      "sample_refs": [
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "source coefficient signature / bank profile",
+      "subgroup": "q-73749",
+      "scope": "within_template",
+      "strategy": "Predict consistency from source coefficient signature / bank profile; choose No solution when predicted inconsistent, otherwise solve only the first row and choose its vector.",
+      "correct": 3,
+      "total": 6,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "3/6. Baseline 0.5 is a blind binary consistency decision after finding the first-row vector; uniform five-choice guessing is 0.2. The same visible coefficients and complete bank occur with opposite keys; the earlier fixed outcome is broken.",
+      "sample_refs": [
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "source coefficient signature / bank profile",
+      "subgroup": "q-20965",
+      "scope": "within_template",
+      "strategy": "Predict consistency from source coefficient signature / bank profile; choose No solution when predicted inconsistent, otherwise solve only the first row and choose its vector.",
+      "correct": 3,
+      "total": 6,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "3/6. Baseline 0.5 is a blind binary consistency decision after finding the first-row vector; uniform five-choice guessing is 0.2. The same visible coefficients and complete bank occur with opposite keys; the earlier fixed outcome is broken.",
+      "sample_refs": [
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "source coefficient signature / bank profile",
+      "subgroup": "q-42153",
+      "scope": "within_template",
+      "strategy": "Predict consistency from source coefficient signature / bank profile; choose No solution when predicted inconsistent, otherwise solve only the first row and choose its vector.",
+      "correct": 3,
+      "total": 6,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "3/6. Baseline 0.5 is a blind binary consistency decision after finding the first-row vector; uniform five-choice guessing is 0.2. The same visible coefficients and complete bank occur with opposite keys; the earlier fixed outcome is broken.",
+      "sample_refs": [
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "source coefficient signature / bank profile",
+      "subgroup": "q-73750",
+      "scope": "within_template",
+      "strategy": "Predict consistency from source coefficient signature / bank profile; choose No solution when predicted inconsistent, otherwise solve only the first row and choose its vector.",
+      "correct": 3,
+      "total": 6,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "3/6. Baseline 0.5 is a blind binary consistency decision after finding the first-row vector; uniform five-choice guessing is 0.2. The same visible coefficients and complete bank occur with opposite keys; the earlier fixed outcome is broken.",
+      "sample_refs": [
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "source coefficient signature / bank profile",
+      "subgroup": "q-20961",
+      "scope": "within_template",
+      "strategy": "Predict consistency from source coefficient signature / bank profile; choose No solution when predicted inconsistent, otherwise solve only the first row and choose its vector.",
+      "correct": 3,
+      "total": 6,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "3/6. Baseline 0.5 is a blind binary consistency decision after finding the first-row vector; uniform five-choice guessing is 0.2. The same visible coefficients and complete bank occur with opposite keys; the earlier fixed outcome is broken.",
+      "sample_refs": [
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "source coefficient signature / bank profile",
+      "subgroup": "q-42163",
+      "scope": "within_template",
+      "strategy": "Predict consistency from source coefficient signature / bank profile; choose No solution when predicted inconsistent, otherwise solve only the first row and choose its vector.",
+      "correct": 3,
+      "total": 6,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "3/6. Baseline 0.5 is a blind binary consistency decision after finding the first-row vector; uniform five-choice guessing is 0.2. The same visible coefficients and complete bank occur with opposite keys; the earlier fixed outcome is broken.",
+      "sample_refs": [
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "source coefficient signature / bank profile",
+      "subgroup": "q-42154",
+      "scope": "within_template",
+      "strategy": "Predict consistency from source coefficient signature / bank profile; choose No solution when predicted inconsistent, otherwise solve only the first row and choose its vector.",
+      "correct": 3,
+      "total": 6,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "3/6. Baseline 0.5 is a blind binary consistency decision after finding the first-row vector; uniform five-choice guessing is 0.2. The same visible coefficients and complete bank occur with opposite keys; the earlier fixed outcome is broken.",
+      "sample_refs": [
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "source coefficient signature / bank profile",
+      "subgroup": "q-20964",
+      "scope": "within_template",
+      "strategy": "Predict consistency from source coefficient signature / bank profile; choose No solution when predicted inconsistent, otherwise solve only the first row and choose its vector.",
+      "correct": 3,
+      "total": 6,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "3/6. Baseline 0.5 is a blind binary consistency decision after finding the first-row vector; uniform five-choice guessing is 0.2. The same visible coefficients and complete bank occur with opposite keys; the earlier fixed outcome is broken.",
+      "sample_refs": [
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "source coefficient signature",
+      "subgroup": "fresh random",
+      "scope": "overall",
+      "strategy": "Predict consistency from source coefficient signature; choose No solution when predicted inconsistent, otherwise solve only the first row and choose its vector.",
+      "correct": 34,
+      "total": 68,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "34/68. Baseline 0.5 is a blind binary consistency decision after finding the first-row vector; uniform five-choice guessing is 0.2. ",
+      "sample_refs": [
+        "random-records.json"
+      ]
+    },
+    {
+      "cue": "negative first-row normalized intercept",
+      "subgroup": "fresh random",
+      "scope": "overall",
+      "strategy": "Predict consistency from negative first-row normalized intercept; choose No solution when predicted inconsistent, otherwise solve only the first row and choose its vector.",
+      "correct": 34,
+      "total": 68,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "34/68. Baseline 0.5 is a blind binary consistency decision after finding the first-row vector; uniform five-choice guessing is 0.2. ",
+      "sample_refs": [
+        "random-records.json"
+      ]
+    },
+    {
+      "cue": "five-option count / always choose No solution",
+      "subgroup": "fresh random",
+      "scope": "overall",
+      "strategy": "Predict consistency from five-option count / always choose No solution; choose No solution when predicted inconsistent, otherwise solve only the first row and choose its vector.",
+      "correct": 34,
+      "total": 68,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "34/68. Baseline 0.5 is a blind binary consistency decision after finding the first-row vector; uniform five-choice guessing is 0.2. ",
+      "sample_refs": [
+        "random-records.json"
+      ]
+    },
+    {
+      "cue": "ignore second equation / always choose first-row vector",
+      "subgroup": "fresh random",
+      "scope": "overall",
+      "strategy": "Predict consistency from ignore second equation / always choose first-row vector; choose No solution when predicted inconsistent, otherwise solve only the first row and choose its vector.",
+      "correct": 34,
+      "total": 68,
+      "baseline": 0.5,
+      "disposition": "intended_skill",
+      "conclusion": "34/68. Baseline 0.5 is a blind binary consistency decision after finding the first-row vector; uniform five-choice guessing is 0.2. Solving the first row is legitimate partial mathematics but does not decide consistency and fails on contradictory records.",
+      "sample_refs": [
+        "random-records.json"
+      ]
+    },
+    {
+      "cue": "source coefficient signature",
+      "subgroup": "after publication filters",
+      "scope": "overall",
+      "strategy": "Predict consistency from source coefficient signature; choose No solution when predicted inconsistent, otherwise solve only the first row and choose its vector.",
+      "correct": 70,
+      "total": 119,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "70/119. Baseline 0.5 is a blind binary consistency decision after finding the first-row vector; uniform five-choice guessing is 0.2. ",
+      "sample_refs": [
+        "delivery-domain/accepted.json"
+      ]
+    },
+    {
+      "cue": "negative first-row normalized intercept",
+      "subgroup": "after publication filters",
+      "scope": "overall",
+      "strategy": "Predict consistency from negative first-row normalized intercept; choose No solution when predicted inconsistent, otherwise solve only the first row and choose its vector.",
+      "correct": 60,
+      "total": 119,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "60/119. Baseline 0.5 is a blind binary consistency decision after finding the first-row vector; uniform five-choice guessing is 0.2. ",
+      "sample_refs": [
+        "delivery-domain/accepted.json"
+      ]
+    },
+    {
+      "cue": "five-option count / always choose No solution",
+      "subgroup": "after publication filters",
+      "scope": "overall",
+      "strategy": "Predict consistency from five-option count / always choose No solution; choose No solution when predicted inconsistent, otherwise solve only the first row and choose its vector.",
+      "correct": 65,
+      "total": 119,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "65/119. Baseline 0.5 is a blind binary consistency decision after finding the first-row vector; uniform five-choice guessing is 0.2. ",
+      "sample_refs": [
+        "delivery-domain/accepted.json"
+      ]
+    },
+    {
+      "cue": "ignore second equation / always choose first-row vector",
+      "subgroup": "after publication filters",
+      "scope": "overall",
+      "strategy": "Predict consistency from ignore second equation / always choose first-row vector; choose No solution when predicted inconsistent, otherwise solve only the first row and choose its vector.",
+      "correct": 54,
+      "total": 119,
+      "baseline": 0.5,
+      "disposition": "intended_skill",
+      "conclusion": "54/119. Baseline 0.5 is a blind binary consistency decision after finding the first-row vector; uniform five-choice guessing is 0.2. Solving the first row is legitimate partial mathematics but does not decide consistency and fails on contradictory records.",
+      "sample_refs": [
+        "delivery-domain/accepted.json"
+      ]
+    },
+    {
+      "cue": "source coefficient signature",
+      "subgroup": "exact runner batch",
+      "scope": "overall",
+      "strategy": "Predict consistency from source coefficient signature; choose No solution when predicted inconsistent, otherwise solve only the first row and choose its vector.",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "2/5. Baseline 0.5 is a blind binary consistency decision after finding the first-row vector; uniform five-choice guessing is 0.2. ",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "negative first-row normalized intercept",
+      "subgroup": "exact runner batch",
+      "scope": "overall",
+      "strategy": "Predict consistency from negative first-row normalized intercept; choose No solution when predicted inconsistent, otherwise solve only the first row and choose its vector.",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "3/5. Baseline 0.5 is a blind binary consistency decision after finding the first-row vector; uniform five-choice guessing is 0.2. ",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "five-option count / always choose No solution",
+      "subgroup": "exact runner batch",
+      "scope": "overall",
+      "strategy": "Predict consistency from five-option count / always choose No solution; choose No solution when predicted inconsistent, otherwise solve only the first row and choose its vector.",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "2/5. Baseline 0.5 is a blind binary consistency decision after finding the first-row vector; uniform five-choice guessing is 0.2. ",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "ignore second equation / always choose first-row vector",
+      "subgroup": "exact runner batch",
+      "scope": "overall",
+      "strategy": "Predict consistency from ignore second equation / always choose first-row vector; choose No solution when predicted inconsistent, otherwise solve only the first row and choose its vector.",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.5,
+      "disposition": "intended_skill",
+      "conclusion": "3/5. Baseline 0.5 is a blind binary consistency decision after finding the first-row vector; uniform five-choice guessing is 0.2. Solving the first row is legitimate partial mathematics but does not decide consistency and fails on contradictory records.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "source coefficient signature",
+      "subgroup": "q-130923 after filtering",
+      "scope": "within_template",
+      "strategy": "Predict consistency from source coefficient signature; choose No solution when predicted inconsistent, otherwise solve only the first row and choose its vector.",
+      "correct": 5,
+      "total": 9,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "5/9. Baseline 0.5 is a blind binary consistency decision after finding the first-row vector; uniform five-choice guessing is 0.2. ",
+      "sample_refs": [
+        "delivery-domain/accepted.json"
+      ]
+    },
+    {
+      "cue": "source coefficient signature",
+      "subgroup": "q-20783 after filtering",
+      "scope": "within_template",
+      "strategy": "Predict consistency from source coefficient signature; choose No solution when predicted inconsistent, otherwise solve only the first row and choose its vector.",
+      "correct": 6,
+      "total": 11,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "6/11. Baseline 0.5 is a blind binary consistency decision after finding the first-row vector; uniform five-choice guessing is 0.2. ",
+      "sample_refs": [
+        "delivery-domain/accepted.json"
+      ]
+    },
+    {
+      "cue": "source coefficient signature",
+      "subgroup": "q-20964 after filtering",
+      "scope": "within_template",
+      "strategy": "Predict consistency from source coefficient signature; choose No solution when predicted inconsistent, otherwise solve only the first row and choose its vector.",
+      "correct": 13,
+      "total": 18,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "13/18. Baseline 0.5 is a blind binary consistency decision after finding the first-row vector; uniform five-choice guessing is 0.2. ",
+      "sample_refs": [
+        "delivery-domain/accepted.json"
+      ]
+    },
+    {
+      "cue": "source coefficient signature",
+      "subgroup": "q-42153 after filtering",
+      "scope": "within_template",
+      "strategy": "Predict consistency from source coefficient signature; choose No solution when predicted inconsistent, otherwise solve only the first row and choose its vector.",
+      "correct": 8,
+      "total": 12,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "8/12. Baseline 0.5 is a blind binary consistency decision after finding the first-row vector; uniform five-choice guessing is 0.2. ",
+      "sample_refs": [
+        "delivery-domain/accepted.json"
+      ]
+    },
+    {
+      "cue": "source coefficient signature",
+      "subgroup": "q-42157 after filtering",
+      "scope": "within_template",
+      "strategy": "Predict consistency from source coefficient signature; choose No solution when predicted inconsistent, otherwise solve only the first row and choose its vector.",
+      "correct": 5,
+      "total": 9,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "5/9. Baseline 0.5 is a blind binary consistency decision after finding the first-row vector; uniform five-choice guessing is 0.2. ",
+      "sample_refs": [
+        "delivery-domain/accepted.json"
+      ]
+    },
+    {
+      "cue": "source coefficient signature",
+      "subgroup": "q-42159 after filtering",
+      "scope": "within_template",
+      "strategy": "Predict consistency from source coefficient signature; choose No solution when predicted inconsistent, otherwise solve only the first row and choose its vector.",
+      "correct": 9,
+      "total": 15,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "9/15. Baseline 0.5 is a blind binary consistency decision after finding the first-row vector; uniform five-choice guessing is 0.2. ",
+      "sample_refs": [
+        "delivery-domain/accepted.json"
+      ]
+    },
+    {
+      "cue": "source coefficient signature",
+      "subgroup": "q-42163 after filtering",
+      "scope": "within_template",
+      "strategy": "Predict consistency from source coefficient signature; choose No solution when predicted inconsistent, otherwise solve only the first row and choose its vector.",
+      "correct": 11,
+      "total": 20,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "11/20. Baseline 0.5 is a blind binary consistency decision after finding the first-row vector; uniform five-choice guessing is 0.2. ",
+      "sample_refs": [
+        "delivery-domain/accepted.json"
+      ]
+    },
+    {
+      "cue": "source coefficient signature",
+      "subgroup": "q-73749 after filtering",
+      "scope": "within_template",
+      "strategy": "Predict consistency from source coefficient signature; choose No solution when predicted inconsistent, otherwise solve only the first row and choose its vector.",
+      "correct": 9,
+      "total": 14,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "9/14. Baseline 0.5 is a blind binary consistency decision after finding the first-row vector; uniform five-choice guessing is 0.2. ",
+      "sample_refs": [
+        "delivery-domain/accepted.json"
+      ]
+    },
+    {
+      "cue": "source coefficient signature",
+      "subgroup": "q-73750 after filtering",
+      "scope": "within_template",
+      "strategy": "Predict consistency from source coefficient signature; choose No solution when predicted inconsistent, otherwise solve only the first row and choose its vector.",
+      "correct": 4,
+      "total": 11,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "4/11. Baseline 0.5 is a blind binary consistency decision after finding the first-row vector; uniform five-choice guessing is 0.2. ",
+      "sample_refs": [
+        "delivery-domain/accepted.json"
+      ]
+    },
+    {
+      "cue": "displayed option position",
+      "subgroup": "all 11 actual UI renders",
+      "scope": "overall",
+      "strategy": "Always choose zero-based displayed position 4.",
+      "correct": 4,
+      "total": 11,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed display position selected after inspection scores 4/11; 0.2 is uniform five-option guessing. Post-hoc best position is optimistic and does not predict every record. UI hash order, not stored list order, was examined.",
+      "sample_refs": [
+        "ui-order-results.json",
+        "render/rendering.json",
+        "render-batch/rendering.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "source-based construction domain and independent residual sampler",
+      "invalid-parameter rejection",
+      "batch fingerprint deduplication/resampling",
+      "actual publisher prepare_records normalization and inventory/within-batch deduplication",
+      "requested easy-difficulty enforcement",
+      "freshness and policy-weighted learner selection via inspected implementation and faithful read-only fixtures",
+      "actual UI option permutation and native learner grader"
+    ],
+    "sample_refs": [
+      "constructor-prefix.json",
+      "constructor-records.json",
+      "delivery-domain/delivery.json",
+      "delivery-batch/delivery.json",
+      "selection-results.json",
+      "inventory-audit.json",
+      "grader-final-results.json",
+      "ui-order-results.json"
+    ],
+    "result": "Opposite decision cases survive the applicable offline stages; exact runner batch remains three infinite/two none with former source-signature strategy2/5. All 17 inventory records are original sources; verified no stored generated instances affected. Live selection limits are explicit."
+  },
+  "limitations": [
+    "Finite targeted revision audit; no claim that all possible shortcuts are absent.",
+    "Original source hash and policy matched prior review; independent source account confirmed before author inspection.",
+    "Publication preparation does not yet exist. Delivery uses actual shared publisher filtering against captured inventory basis 5364; later inventory may differ.",
+    "Learner-selection implementation was inspected and reproduced with explicit fixture IDs, policy-weight and history scenarios. Live learner histories, actual policy weights and future assigned IDs are unavailable.",
+    "Canonical example has no captured answer bank; 17 practice sources have complete banks. No new question image assets exist."
+  ]
+}

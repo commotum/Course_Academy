@@ -1,0 +1,1377 @@
+{
+  "learner_operation": "Reduce a rank-one consistent augmented 2x2 matrix to normalized REF, or read an already reduced matrix, then where requested express its general solution using one free variable.",
+  "fixed_features": [
+    {
+      "feature": "Rank-one consistent 2x2 system, first variable basic and second free.",
+      "justification": "Target source questions and Introduction tutorial 0c91df0b-40c7-5a65-9fda-5d2d6438dfa3 focus on this fragment. Neighboring inconsistency is a separate KP; changing rank or pivot column would broaden scope."
+    },
+    {
+      "feature": "Five mathematical radio choices and original requested operation family.",
+      "justification": "All 16 target banks use five mathematical choices: REF-only, solution from REF, or reduction then solution. Duplicate unkeyed q-42156 field is captured duplication, not a second learner task."
+    },
+    {
+      "feature": "Small captured coefficient magnitudes and row multipliers; finite signed-column/RHS domain.",
+      "justification": "Keeps normalization/elimination arithmetic and workload comparable. Numeric magnitude is incidental, so this is a conservative bounded practice domain, not a claim to cover arbitrary singular systems. Independent signs, constants and matching candidate assignments do vary."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Normalized constant and slope sign",
+      "eligible_variation": "Changing RHS changes intercept; changing second coefficient column changes slope without new prerequisites.",
+      "observed": "Fresh ±4 and interior scales, both column signs; explicit isolated-slope pairs pass math, native stale-answer rejection and actual rendering."
+    },
+    {
+      "role": "Which of five candidate matrices or solution families matches the prompt",
+      "eligible_variation": "Any candidate may qualify while the visible bank stays fixed; position and bank frequency have no instructional meaning.",
+      "observed": "16 independently tested profiles each produce all five targets for the same bank. Previous modal-row/sign strategy no longer solves original minimal pair or runner batch."
+    },
+    {
+      "role": "Dependent second row",
+      "eligible_variation": "Nonzero redundant-row rescaling must preserve the requested general solution.",
+      "observed": "q-20963 versus q-73740 changes multiplier 8 to -5; normalized first row and solution agree, and both actual renderings/native classifications are correct."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "Complete source banks and supported operations",
+      "sample_refs": [
+        "source-replay-records.json",
+        "source-replay.json"
+      ],
+      "result": "16/16 complete keyed banks, prompts, solutions and correct values replay; q-42156 duplicated unkeyed field resolved explicitly."
+    },
+    {
+      "case": "Fresh signs, boundaries, restored profiles and five eligible targets",
+      "sample_refs": [
+        "sampled-records.json",
+        "fresh-records.json",
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "math-results.json"
+      ],
+      "result": "48 explicit boundary/interior records, 24 fresh random batch records and 80 controlled targets. All three operation families covered; 181 total records pass independent math."
+    },
+    {
+      "case": "Exact runner batch separately from controls",
+      "sample_refs": [
+        "runner-batch.json",
+        "delivery-batch/accepted.json",
+        "shortcut-results.json",
+        "ui-results.json"
+      ],
+      "result": "All 5 survive delivery. Four recognizable profiles, both RHS signs and column signs, 3 authored target positions. Prior bank-only rule solves 0/5; no tested surface strategy solves all 5."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Hold bank, RHS and first column fixed; reverse second coefficient-column sign in q-42156, q-73743 and q-20962. Also test every target of a fixed bank in all profiles.",
+      "expected": "Normalized coefficient/affine slope, correct choice and all dependent explanations change coherently. Old matching candidate becomes wrong.",
+      "observed": "Exact math correct; before/after true responses accepted and stale alternatives rejected by native grader. Actual UI renders show changed coefficient and solution signs; every profile has five distinct prompt/solution/key triples for an identical bank.",
+      "status": "passed",
+      "justification": "The lesson derives the basic variable from the given equation; coefficients must determine the response rather than bank statistics.",
+      "sample_refs": [
+        "slope-counterfactual-records.json",
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "counterfactual-native-ui-results.json",
+        "grader-input.json",
+        "grader-results.json",
+        "render-remaining/input.json",
+        "ui-results.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Keep first row and solution fixed while changing dependent second-row multiplier from 8 to -5 (q-20963 to q-73740), using same sign/RHS transformations and bank seed.",
+      "expected": "Prompt second row and elimination operation change, but normalized equation and general solution remain equivalent.",
+      "observed": "Both matrices have identical RREF and independently equivalent correct families. Actual UI screenshots show the different redundant rows and row operations with the same final solution; native grader accepts those solutions and rejects each wrong candidate in both banks.",
+      "status": "passed",
+      "justification": "Introduction tutorial removes the redundant zero equation; a nonzero scaling of a dependent equation cannot change the solution set.",
+      "sample_refs": [
+        "irrelevant-records.json",
+        "irrelevant-results.json",
+        "grader-input.json",
+        "grader-results.json",
+        "ui-results.json",
+        "visual-inspection.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "retained modal bank rule",
+      "subgroup": "q-130922 identical-bank counterfactuals",
+      "scope": "within_template",
+      "strategy": "retained modal bank rule; choose only if exactly one candidate qualifies",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. Identical visible bank supports each of five different correct answers; any fixed bank-only single pick succeeds at most once. Ties are not credited as an answer-producing action. Source fidelity banks are separately replayed and never chosen by ordinary sampling.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "delivery_revision.py"
+      ]
+    },
+    {
+      "cue": "first authored position",
+      "subgroup": "q-130922 identical-bank counterfactuals",
+      "scope": "within_template",
+      "strategy": "first authored position; choose only if exactly one candidate qualifies",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. Identical visible bank supports each of five different correct answers; any fixed bank-only single pick succeeds at most once. Ties are not credited as an answer-producing action. Source fidelity banks are separately replayed and never chosen by ordinary sampling.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "delivery_revision.py"
+      ]
+    },
+    {
+      "cue": "largest constant magnitude",
+      "subgroup": "q-130922 identical-bank counterfactuals",
+      "scope": "within_template",
+      "strategy": "largest constant magnitude; choose only if exactly one candidate qualifies",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. Identical visible bank supports each of five different correct answers; any fixed bank-only single pick succeeds at most once. Ties are not credited as an answer-producing action. Source fidelity banks are separately replayed and never chosen by ordinary sampling.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "delivery_revision.py"
+      ]
+    },
+    {
+      "cue": "shortest expression",
+      "subgroup": "q-130922 identical-bank counterfactuals",
+      "scope": "within_template",
+      "strategy": "shortest expression; choose only if exactly one candidate qualifies",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. Identical visible bank supports each of five different correct answers; any fixed bank-only single pick succeeds at most once. Ties are not credited as an answer-producing action. Source fidelity banks are separately replayed and never chosen by ordinary sampling.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "delivery_revision.py"
+      ]
+    },
+    {
+      "cue": "retained modal bank rule",
+      "subgroup": "q-20782 identical-bank counterfactuals",
+      "scope": "within_template",
+      "strategy": "retained modal bank rule; choose only if exactly one candidate qualifies",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. Identical visible bank supports each of five different correct answers; any fixed bank-only single pick succeeds at most once. Ties are not credited as an answer-producing action. Source fidelity banks are separately replayed and never chosen by ordinary sampling.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "delivery_revision.py"
+      ]
+    },
+    {
+      "cue": "first authored position",
+      "subgroup": "q-20782 identical-bank counterfactuals",
+      "scope": "within_template",
+      "strategy": "first authored position; choose only if exactly one candidate qualifies",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. Identical visible bank supports each of five different correct answers; any fixed bank-only single pick succeeds at most once. Ties are not credited as an answer-producing action. Source fidelity banks are separately replayed and never chosen by ordinary sampling.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "delivery_revision.py"
+      ]
+    },
+    {
+      "cue": "largest constant magnitude",
+      "subgroup": "q-20782 identical-bank counterfactuals",
+      "scope": "within_template",
+      "strategy": "largest constant magnitude; choose only if exactly one candidate qualifies",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. Identical visible bank supports each of five different correct answers; any fixed bank-only single pick succeeds at most once. Ties are not credited as an answer-producing action. Source fidelity banks are separately replayed and never chosen by ordinary sampling.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "delivery_revision.py"
+      ]
+    },
+    {
+      "cue": "shortest expression",
+      "subgroup": "q-20782 identical-bank counterfactuals",
+      "scope": "within_template",
+      "strategy": "shortest expression; choose only if exactly one candidate qualifies",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. Identical visible bank supports each of five different correct answers; any fixed bank-only single pick succeeds at most once. Ties are not credited as an answer-producing action. Source fidelity banks are separately replayed and never chosen by ordinary sampling.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "delivery_revision.py"
+      ]
+    },
+    {
+      "cue": "retained modal bank rule",
+      "subgroup": "q-20958 identical-bank counterfactuals",
+      "scope": "within_template",
+      "strategy": "retained modal bank rule; choose only if exactly one candidate qualifies",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. Identical visible bank supports each of five different correct answers; any fixed bank-only single pick succeeds at most once. Ties are not credited as an answer-producing action. Source fidelity banks are separately replayed and never chosen by ordinary sampling.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "delivery_revision.py"
+      ]
+    },
+    {
+      "cue": "first authored position",
+      "subgroup": "q-20958 identical-bank counterfactuals",
+      "scope": "within_template",
+      "strategy": "first authored position; choose only if exactly one candidate qualifies",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. Identical visible bank supports each of five different correct answers; any fixed bank-only single pick succeeds at most once. Ties are not credited as an answer-producing action. Source fidelity banks are separately replayed and never chosen by ordinary sampling.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "delivery_revision.py"
+      ]
+    },
+    {
+      "cue": "largest constant magnitude",
+      "subgroup": "q-20958 identical-bank counterfactuals",
+      "scope": "within_template",
+      "strategy": "largest constant magnitude; choose only if exactly one candidate qualifies",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. Identical visible bank supports each of five different correct answers; any fixed bank-only single pick succeeds at most once. Ties are not credited as an answer-producing action. Source fidelity banks are separately replayed and never chosen by ordinary sampling.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "delivery_revision.py"
+      ]
+    },
+    {
+      "cue": "shortest expression",
+      "subgroup": "q-20958 identical-bank counterfactuals",
+      "scope": "within_template",
+      "strategy": "shortest expression; choose only if exactly one candidate qualifies",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. Identical visible bank supports each of five different correct answers; any fixed bank-only single pick succeeds at most once. Ties are not credited as an answer-producing action. Source fidelity banks are separately replayed and never chosen by ordinary sampling.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "delivery_revision.py"
+      ]
+    },
+    {
+      "cue": "retained modal bank rule",
+      "subgroup": "q-20959 identical-bank counterfactuals",
+      "scope": "within_template",
+      "strategy": "retained modal bank rule; choose only if exactly one candidate qualifies",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. Identical visible bank supports each of five different correct answers; any fixed bank-only single pick succeeds at most once. Ties are not credited as an answer-producing action. Source fidelity banks are separately replayed and never chosen by ordinary sampling.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "delivery_revision.py"
+      ]
+    },
+    {
+      "cue": "first authored position",
+      "subgroup": "q-20959 identical-bank counterfactuals",
+      "scope": "within_template",
+      "strategy": "first authored position; choose only if exactly one candidate qualifies",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. Identical visible bank supports each of five different correct answers; any fixed bank-only single pick succeeds at most once. Ties are not credited as an answer-producing action. Source fidelity banks are separately replayed and never chosen by ordinary sampling.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "delivery_revision.py"
+      ]
+    },
+    {
+      "cue": "largest constant magnitude",
+      "subgroup": "q-20959 identical-bank counterfactuals",
+      "scope": "within_template",
+      "strategy": "largest constant magnitude; choose only if exactly one candidate qualifies",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. Identical visible bank supports each of five different correct answers; any fixed bank-only single pick succeeds at most once. Ties are not credited as an answer-producing action. Source fidelity banks are separately replayed and never chosen by ordinary sampling.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "delivery_revision.py"
+      ]
+    },
+    {
+      "cue": "shortest expression",
+      "subgroup": "q-20959 identical-bank counterfactuals",
+      "scope": "within_template",
+      "strategy": "shortest expression; choose only if exactly one candidate qualifies",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. Identical visible bank supports each of five different correct answers; any fixed bank-only single pick succeeds at most once. Ties are not credited as an answer-producing action. Source fidelity banks are separately replayed and never chosen by ordinary sampling.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "delivery_revision.py"
+      ]
+    },
+    {
+      "cue": "retained modal bank rule",
+      "subgroup": "q-20962 identical-bank counterfactuals",
+      "scope": "within_template",
+      "strategy": "retained modal bank rule; choose only if exactly one candidate qualifies",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. Identical visible bank supports each of five different correct answers; any fixed bank-only single pick succeeds at most once. Ties are not credited as an answer-producing action. Source fidelity banks are separately replayed and never chosen by ordinary sampling.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "delivery_revision.py"
+      ]
+    },
+    {
+      "cue": "first authored position",
+      "subgroup": "q-20962 identical-bank counterfactuals",
+      "scope": "within_template",
+      "strategy": "first authored position; choose only if exactly one candidate qualifies",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. Identical visible bank supports each of five different correct answers; any fixed bank-only single pick succeeds at most once. Ties are not credited as an answer-producing action. Source fidelity banks are separately replayed and never chosen by ordinary sampling.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "delivery_revision.py"
+      ]
+    },
+    {
+      "cue": "largest constant magnitude",
+      "subgroup": "q-20962 identical-bank counterfactuals",
+      "scope": "within_template",
+      "strategy": "largest constant magnitude; choose only if exactly one candidate qualifies",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. Identical visible bank supports each of five different correct answers; any fixed bank-only single pick succeeds at most once. Ties are not credited as an answer-producing action. Source fidelity banks are separately replayed and never chosen by ordinary sampling.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "delivery_revision.py"
+      ]
+    },
+    {
+      "cue": "shortest expression",
+      "subgroup": "q-20962 identical-bank counterfactuals",
+      "scope": "within_template",
+      "strategy": "shortest expression; choose only if exactly one candidate qualifies",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. Identical visible bank supports each of five different correct answers; any fixed bank-only single pick succeeds at most once. Ties are not credited as an answer-producing action. Source fidelity banks are separately replayed and never chosen by ordinary sampling.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "delivery_revision.py"
+      ]
+    },
+    {
+      "cue": "retained modal bank rule",
+      "subgroup": "q-20963 identical-bank counterfactuals",
+      "scope": "within_template",
+      "strategy": "retained modal bank rule; choose only if exactly one candidate qualifies",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. Identical visible bank supports each of five different correct answers; any fixed bank-only single pick succeeds at most once. Ties are not credited as an answer-producing action. Source fidelity banks are separately replayed and never chosen by ordinary sampling.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "delivery_revision.py"
+      ]
+    },
+    {
+      "cue": "first authored position",
+      "subgroup": "q-20963 identical-bank counterfactuals",
+      "scope": "within_template",
+      "strategy": "first authored position; choose only if exactly one candidate qualifies",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. Identical visible bank supports each of five different correct answers; any fixed bank-only single pick succeeds at most once. Ties are not credited as an answer-producing action. Source fidelity banks are separately replayed and never chosen by ordinary sampling.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "delivery_revision.py"
+      ]
+    },
+    {
+      "cue": "largest constant magnitude",
+      "subgroup": "q-20963 identical-bank counterfactuals",
+      "scope": "within_template",
+      "strategy": "largest constant magnitude; choose only if exactly one candidate qualifies",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. Identical visible bank supports each of five different correct answers; any fixed bank-only single pick succeeds at most once. Ties are not credited as an answer-producing action. Source fidelity banks are separately replayed and never chosen by ordinary sampling.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "delivery_revision.py"
+      ]
+    },
+    {
+      "cue": "shortest expression",
+      "subgroup": "q-20963 identical-bank counterfactuals",
+      "scope": "within_template",
+      "strategy": "shortest expression; choose only if exactly one candidate qualifies",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. Identical visible bank supports each of five different correct answers; any fixed bank-only single pick succeeds at most once. Ties are not credited as an answer-producing action. Source fidelity banks are separately replayed and never chosen by ordinary sampling.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "delivery_revision.py"
+      ]
+    },
+    {
+      "cue": "retained modal bank rule",
+      "subgroup": "q-42155 identical-bank counterfactuals",
+      "scope": "within_template",
+      "strategy": "retained modal bank rule; choose only if exactly one candidate qualifies",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. Identical visible bank supports each of five different correct answers; any fixed bank-only single pick succeeds at most once. Ties are not credited as an answer-producing action. Source fidelity banks are separately replayed and never chosen by ordinary sampling.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "delivery_revision.py"
+      ]
+    },
+    {
+      "cue": "first authored position",
+      "subgroup": "q-42155 identical-bank counterfactuals",
+      "scope": "within_template",
+      "strategy": "first authored position; choose only if exactly one candidate qualifies",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. Identical visible bank supports each of five different correct answers; any fixed bank-only single pick succeeds at most once. Ties are not credited as an answer-producing action. Source fidelity banks are separately replayed and never chosen by ordinary sampling.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "delivery_revision.py"
+      ]
+    },
+    {
+      "cue": "largest constant magnitude",
+      "subgroup": "q-42155 identical-bank counterfactuals",
+      "scope": "within_template",
+      "strategy": "largest constant magnitude; choose only if exactly one candidate qualifies",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. Identical visible bank supports each of five different correct answers; any fixed bank-only single pick succeeds at most once. Ties are not credited as an answer-producing action. Source fidelity banks are separately replayed and never chosen by ordinary sampling.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "delivery_revision.py"
+      ]
+    },
+    {
+      "cue": "shortest expression",
+      "subgroup": "q-42155 identical-bank counterfactuals",
+      "scope": "within_template",
+      "strategy": "shortest expression; choose only if exactly one candidate qualifies",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. Identical visible bank supports each of five different correct answers; any fixed bank-only single pick succeeds at most once. Ties are not credited as an answer-producing action. Source fidelity banks are separately replayed and never chosen by ordinary sampling.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "delivery_revision.py"
+      ]
+    },
+    {
+      "cue": "retained modal bank rule",
+      "subgroup": "q-42156 identical-bank counterfactuals",
+      "scope": "within_template",
+      "strategy": "retained modal bank rule; choose only if exactly one candidate qualifies",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. Identical visible bank supports each of five different correct answers; any fixed bank-only single pick succeeds at most once. Ties are not credited as an answer-producing action. Source fidelity banks are separately replayed and never chosen by ordinary sampling.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "delivery_revision.py"
+      ]
+    },
+    {
+      "cue": "first authored position",
+      "subgroup": "q-42156 identical-bank counterfactuals",
+      "scope": "within_template",
+      "strategy": "first authored position; choose only if exactly one candidate qualifies",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. Identical visible bank supports each of five different correct answers; any fixed bank-only single pick succeeds at most once. Ties are not credited as an answer-producing action. Source fidelity banks are separately replayed and never chosen by ordinary sampling.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "delivery_revision.py"
+      ]
+    },
+    {
+      "cue": "largest constant magnitude",
+      "subgroup": "q-42156 identical-bank counterfactuals",
+      "scope": "within_template",
+      "strategy": "largest constant magnitude; choose only if exactly one candidate qualifies",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. Identical visible bank supports each of five different correct answers; any fixed bank-only single pick succeeds at most once. Ties are not credited as an answer-producing action. Source fidelity banks are separately replayed and never chosen by ordinary sampling.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "delivery_revision.py"
+      ]
+    },
+    {
+      "cue": "shortest expression",
+      "subgroup": "q-42156 identical-bank counterfactuals",
+      "scope": "within_template",
+      "strategy": "shortest expression; choose only if exactly one candidate qualifies",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. Identical visible bank supports each of five different correct answers; any fixed bank-only single pick succeeds at most once. Ties are not credited as an answer-producing action. Source fidelity banks are separately replayed and never chosen by ordinary sampling.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "delivery_revision.py"
+      ]
+    },
+    {
+      "cue": "retained modal bank rule",
+      "subgroup": "q-42158 identical-bank counterfactuals",
+      "scope": "within_template",
+      "strategy": "retained modal bank rule; choose only if exactly one candidate qualifies",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. Identical visible bank supports each of five different correct answers; any fixed bank-only single pick succeeds at most once. Ties are not credited as an answer-producing action. Source fidelity banks are separately replayed and never chosen by ordinary sampling.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "delivery_revision.py"
+      ]
+    },
+    {
+      "cue": "first authored position",
+      "subgroup": "q-42158 identical-bank counterfactuals",
+      "scope": "within_template",
+      "strategy": "first authored position; choose only if exactly one candidate qualifies",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. Identical visible bank supports each of five different correct answers; any fixed bank-only single pick succeeds at most once. Ties are not credited as an answer-producing action. Source fidelity banks are separately replayed and never chosen by ordinary sampling.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "delivery_revision.py"
+      ]
+    },
+    {
+      "cue": "largest constant magnitude",
+      "subgroup": "q-42158 identical-bank counterfactuals",
+      "scope": "within_template",
+      "strategy": "largest constant magnitude; choose only if exactly one candidate qualifies",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. Identical visible bank supports each of five different correct answers; any fixed bank-only single pick succeeds at most once. Ties are not credited as an answer-producing action. Source fidelity banks are separately replayed and never chosen by ordinary sampling.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "delivery_revision.py"
+      ]
+    },
+    {
+      "cue": "shortest expression",
+      "subgroup": "q-42158 identical-bank counterfactuals",
+      "scope": "within_template",
+      "strategy": "shortest expression; choose only if exactly one candidate qualifies",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. Identical visible bank supports each of five different correct answers; any fixed bank-only single pick succeeds at most once. Ties are not credited as an answer-producing action. Source fidelity banks are separately replayed and never chosen by ordinary sampling.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "delivery_revision.py"
+      ]
+    },
+    {
+      "cue": "retained modal bank rule",
+      "subgroup": "q-42160 identical-bank counterfactuals",
+      "scope": "within_template",
+      "strategy": "retained modal bank rule; choose only if exactly one candidate qualifies",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. Identical visible bank supports each of five different correct answers; any fixed bank-only single pick succeeds at most once. Ties are not credited as an answer-producing action. Source fidelity banks are separately replayed and never chosen by ordinary sampling.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "delivery_revision.py"
+      ]
+    },
+    {
+      "cue": "first authored position",
+      "subgroup": "q-42160 identical-bank counterfactuals",
+      "scope": "within_template",
+      "strategy": "first authored position; choose only if exactly one candidate qualifies",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. Identical visible bank supports each of five different correct answers; any fixed bank-only single pick succeeds at most once. Ties are not credited as an answer-producing action. Source fidelity banks are separately replayed and never chosen by ordinary sampling.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "delivery_revision.py"
+      ]
+    },
+    {
+      "cue": "largest constant magnitude",
+      "subgroup": "q-42160 identical-bank counterfactuals",
+      "scope": "within_template",
+      "strategy": "largest constant magnitude; choose only if exactly one candidate qualifies",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. Identical visible bank supports each of five different correct answers; any fixed bank-only single pick succeeds at most once. Ties are not credited as an answer-producing action. Source fidelity banks are separately replayed and never chosen by ordinary sampling.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "delivery_revision.py"
+      ]
+    },
+    {
+      "cue": "shortest expression",
+      "subgroup": "q-42160 identical-bank counterfactuals",
+      "scope": "within_template",
+      "strategy": "shortest expression; choose only if exactly one candidate qualifies",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. Identical visible bank supports each of five different correct answers; any fixed bank-only single pick succeeds at most once. Ties are not credited as an answer-producing action. Source fidelity banks are separately replayed and never chosen by ordinary sampling.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "delivery_revision.py"
+      ]
+    },
+    {
+      "cue": "retained modal bank rule",
+      "subgroup": "q-73524 identical-bank counterfactuals",
+      "scope": "within_template",
+      "strategy": "retained modal bank rule; choose only if exactly one candidate qualifies",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. Identical visible bank supports each of five different correct answers; any fixed bank-only single pick succeeds at most once. Ties are not credited as an answer-producing action. Source fidelity banks are separately replayed and never chosen by ordinary sampling.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "delivery_revision.py"
+      ]
+    },
+    {
+      "cue": "first authored position",
+      "subgroup": "q-73524 identical-bank counterfactuals",
+      "scope": "within_template",
+      "strategy": "first authored position; choose only if exactly one candidate qualifies",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. Identical visible bank supports each of five different correct answers; any fixed bank-only single pick succeeds at most once. Ties are not credited as an answer-producing action. Source fidelity banks are separately replayed and never chosen by ordinary sampling.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "delivery_revision.py"
+      ]
+    },
+    {
+      "cue": "largest constant magnitude",
+      "subgroup": "q-73524 identical-bank counterfactuals",
+      "scope": "within_template",
+      "strategy": "largest constant magnitude; choose only if exactly one candidate qualifies",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. Identical visible bank supports each of five different correct answers; any fixed bank-only single pick succeeds at most once. Ties are not credited as an answer-producing action. Source fidelity banks are separately replayed and never chosen by ordinary sampling.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "delivery_revision.py"
+      ]
+    },
+    {
+      "cue": "shortest expression",
+      "subgroup": "q-73524 identical-bank counterfactuals",
+      "scope": "within_template",
+      "strategy": "shortest expression; choose only if exactly one candidate qualifies",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. Identical visible bank supports each of five different correct answers; any fixed bank-only single pick succeeds at most once. Ties are not credited as an answer-producing action. Source fidelity banks are separately replayed and never chosen by ordinary sampling.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "delivery_revision.py"
+      ]
+    },
+    {
+      "cue": "retained modal bank rule",
+      "subgroup": "q-73738 identical-bank counterfactuals",
+      "scope": "within_template",
+      "strategy": "retained modal bank rule; choose only if exactly one candidate qualifies",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. Identical visible bank supports each of five different correct answers; any fixed bank-only single pick succeeds at most once. Ties are not credited as an answer-producing action. Source fidelity banks are separately replayed and never chosen by ordinary sampling.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "delivery_revision.py"
+      ]
+    },
+    {
+      "cue": "first authored position",
+      "subgroup": "q-73738 identical-bank counterfactuals",
+      "scope": "within_template",
+      "strategy": "first authored position; choose only if exactly one candidate qualifies",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. Identical visible bank supports each of five different correct answers; any fixed bank-only single pick succeeds at most once. Ties are not credited as an answer-producing action. Source fidelity banks are separately replayed and never chosen by ordinary sampling.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "delivery_revision.py"
+      ]
+    },
+    {
+      "cue": "largest constant magnitude",
+      "subgroup": "q-73738 identical-bank counterfactuals",
+      "scope": "within_template",
+      "strategy": "largest constant magnitude; choose only if exactly one candidate qualifies",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. Identical visible bank supports each of five different correct answers; any fixed bank-only single pick succeeds at most once. Ties are not credited as an answer-producing action. Source fidelity banks are separately replayed and never chosen by ordinary sampling.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "delivery_revision.py"
+      ]
+    },
+    {
+      "cue": "shortest expression",
+      "subgroup": "q-73738 identical-bank counterfactuals",
+      "scope": "within_template",
+      "strategy": "shortest expression; choose only if exactly one candidate qualifies",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. Identical visible bank supports each of five different correct answers; any fixed bank-only single pick succeeds at most once. Ties are not credited as an answer-producing action. Source fidelity banks are separately replayed and never chosen by ordinary sampling.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "delivery_revision.py"
+      ]
+    },
+    {
+      "cue": "retained modal bank rule",
+      "subgroup": "q-73740 identical-bank counterfactuals",
+      "scope": "within_template",
+      "strategy": "retained modal bank rule; choose only if exactly one candidate qualifies",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. Identical visible bank supports each of five different correct answers; any fixed bank-only single pick succeeds at most once. Ties are not credited as an answer-producing action. Source fidelity banks are separately replayed and never chosen by ordinary sampling.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "delivery_revision.py"
+      ]
+    },
+    {
+      "cue": "first authored position",
+      "subgroup": "q-73740 identical-bank counterfactuals",
+      "scope": "within_template",
+      "strategy": "first authored position; choose only if exactly one candidate qualifies",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. Identical visible bank supports each of five different correct answers; any fixed bank-only single pick succeeds at most once. Ties are not credited as an answer-producing action. Source fidelity banks are separately replayed and never chosen by ordinary sampling.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "delivery_revision.py"
+      ]
+    },
+    {
+      "cue": "largest constant magnitude",
+      "subgroup": "q-73740 identical-bank counterfactuals",
+      "scope": "within_template",
+      "strategy": "largest constant magnitude; choose only if exactly one candidate qualifies",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. Identical visible bank supports each of five different correct answers; any fixed bank-only single pick succeeds at most once. Ties are not credited as an answer-producing action. Source fidelity banks are separately replayed and never chosen by ordinary sampling.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "delivery_revision.py"
+      ]
+    },
+    {
+      "cue": "shortest expression",
+      "subgroup": "q-73740 identical-bank counterfactuals",
+      "scope": "within_template",
+      "strategy": "shortest expression; choose only if exactly one candidate qualifies",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. Identical visible bank supports each of five different correct answers; any fixed bank-only single pick succeeds at most once. Ties are not credited as an answer-producing action. Source fidelity banks are separately replayed and never chosen by ordinary sampling.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "delivery_revision.py"
+      ]
+    },
+    {
+      "cue": "retained modal bank rule",
+      "subgroup": "q-73741 identical-bank counterfactuals",
+      "scope": "within_template",
+      "strategy": "retained modal bank rule; choose only if exactly one candidate qualifies",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. Identical visible bank supports each of five different correct answers; any fixed bank-only single pick succeeds at most once. Ties are not credited as an answer-producing action. Source fidelity banks are separately replayed and never chosen by ordinary sampling.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "delivery_revision.py"
+      ]
+    },
+    {
+      "cue": "first authored position",
+      "subgroup": "q-73741 identical-bank counterfactuals",
+      "scope": "within_template",
+      "strategy": "first authored position; choose only if exactly one candidate qualifies",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. Identical visible bank supports each of five different correct answers; any fixed bank-only single pick succeeds at most once. Ties are not credited as an answer-producing action. Source fidelity banks are separately replayed and never chosen by ordinary sampling.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "delivery_revision.py"
+      ]
+    },
+    {
+      "cue": "largest constant magnitude",
+      "subgroup": "q-73741 identical-bank counterfactuals",
+      "scope": "within_template",
+      "strategy": "largest constant magnitude; choose only if exactly one candidate qualifies",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. Identical visible bank supports each of five different correct answers; any fixed bank-only single pick succeeds at most once. Ties are not credited as an answer-producing action. Source fidelity banks are separately replayed and never chosen by ordinary sampling.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "delivery_revision.py"
+      ]
+    },
+    {
+      "cue": "shortest expression",
+      "subgroup": "q-73741 identical-bank counterfactuals",
+      "scope": "within_template",
+      "strategy": "shortest expression; choose only if exactly one candidate qualifies",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. Identical visible bank supports each of five different correct answers; any fixed bank-only single pick succeeds at most once. Ties are not credited as an answer-producing action. Source fidelity banks are separately replayed and never chosen by ordinary sampling.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "delivery_revision.py"
+      ]
+    },
+    {
+      "cue": "retained modal bank rule",
+      "subgroup": "q-73742 identical-bank counterfactuals",
+      "scope": "within_template",
+      "strategy": "retained modal bank rule; choose only if exactly one candidate qualifies",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. Identical visible bank supports each of five different correct answers; any fixed bank-only single pick succeeds at most once. Ties are not credited as an answer-producing action. Source fidelity banks are separately replayed and never chosen by ordinary sampling.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "delivery_revision.py"
+      ]
+    },
+    {
+      "cue": "first authored position",
+      "subgroup": "q-73742 identical-bank counterfactuals",
+      "scope": "within_template",
+      "strategy": "first authored position; choose only if exactly one candidate qualifies",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. Identical visible bank supports each of five different correct answers; any fixed bank-only single pick succeeds at most once. Ties are not credited as an answer-producing action. Source fidelity banks are separately replayed and never chosen by ordinary sampling.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "delivery_revision.py"
+      ]
+    },
+    {
+      "cue": "largest constant magnitude",
+      "subgroup": "q-73742 identical-bank counterfactuals",
+      "scope": "within_template",
+      "strategy": "largest constant magnitude; choose only if exactly one candidate qualifies",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. Identical visible bank supports each of five different correct answers; any fixed bank-only single pick succeeds at most once. Ties are not credited as an answer-producing action. Source fidelity banks are separately replayed and never chosen by ordinary sampling.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "delivery_revision.py"
+      ]
+    },
+    {
+      "cue": "shortest expression",
+      "subgroup": "q-73742 identical-bank counterfactuals",
+      "scope": "within_template",
+      "strategy": "shortest expression; choose only if exactly one candidate qualifies",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. Identical visible bank supports each of five different correct answers; any fixed bank-only single pick succeeds at most once. Ties are not credited as an answer-producing action. Source fidelity banks are separately replayed and never chosen by ordinary sampling.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "delivery_revision.py"
+      ]
+    },
+    {
+      "cue": "retained modal bank rule",
+      "subgroup": "q-73743 identical-bank counterfactuals",
+      "scope": "within_template",
+      "strategy": "retained modal bank rule; choose only if exactly one candidate qualifies",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. Identical visible bank supports each of five different correct answers; any fixed bank-only single pick succeeds at most once. Ties are not credited as an answer-producing action. Source fidelity banks are separately replayed and never chosen by ordinary sampling.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "delivery_revision.py"
+      ]
+    },
+    {
+      "cue": "first authored position",
+      "subgroup": "q-73743 identical-bank counterfactuals",
+      "scope": "within_template",
+      "strategy": "first authored position; choose only if exactly one candidate qualifies",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. Identical visible bank supports each of five different correct answers; any fixed bank-only single pick succeeds at most once. Ties are not credited as an answer-producing action. Source fidelity banks are separately replayed and never chosen by ordinary sampling.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "delivery_revision.py"
+      ]
+    },
+    {
+      "cue": "largest constant magnitude",
+      "subgroup": "q-73743 identical-bank counterfactuals",
+      "scope": "within_template",
+      "strategy": "largest constant magnitude; choose only if exactly one candidate qualifies",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. Identical visible bank supports each of five different correct answers; any fixed bank-only single pick succeeds at most once. Ties are not credited as an answer-producing action. Source fidelity banks are separately replayed and never chosen by ordinary sampling.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "delivery_revision.py"
+      ]
+    },
+    {
+      "cue": "shortest expression",
+      "subgroup": "q-73743 identical-bank counterfactuals",
+      "scope": "within_template",
+      "strategy": "shortest expression; choose only if exactly one candidate qualifies",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. Identical visible bank supports each of five different correct answers; any fixed bank-only single pick succeeds at most once. Ties are not credited as an answer-producing action. Source fidelity banks are separately replayed and never chosen by ordinary sampling.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "delivery_revision.py"
+      ]
+    },
+    {
+      "cue": "retained modal bank rule",
+      "subgroup": "exact five delivered runner records",
+      "scope": "overall",
+      "strategy": "retained modal bank rule; no prompt or correct-key access",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-choice random baseline is 0.2. None of these rules answers every published candidate. Authored position is not stable in the actual UI, which shuffles options. These five observations do not establish general absence of shortcuts; controlled identical-bank tests address the repaired structural claim.",
+      "sample_refs": [
+        "runner-batch.json",
+        "delivery-batch/accepted.json",
+        "shortcut-results.json",
+        "ui-results.json"
+      ]
+    },
+    {
+      "cue": "first authored position",
+      "subgroup": "exact five delivered runner records",
+      "scope": "overall",
+      "strategy": "first authored position; no prompt or correct-key access",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-choice random baseline is 0.2. None of these rules answers every published candidate. Authored position is not stable in the actual UI, which shuffles options. These five observations do not establish general absence of shortcuts; controlled identical-bank tests address the repaired structural claim.",
+      "sample_refs": [
+        "runner-batch.json",
+        "delivery-batch/accepted.json",
+        "shortcut-results.json",
+        "ui-results.json"
+      ]
+    },
+    {
+      "cue": "last authored position",
+      "subgroup": "exact five delivered runner records",
+      "scope": "overall",
+      "strategy": "last authored position; no prompt or correct-key access",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-choice random baseline is 0.2. None of these rules answers every published candidate. Authored position is not stable in the actual UI, which shuffles options. These five observations do not establish general absence of shortcuts; controlled identical-bank tests address the repaired structural claim.",
+      "sample_refs": [
+        "runner-batch.json",
+        "delivery-batch/accepted.json",
+        "shortcut-results.json",
+        "ui-results.json"
+      ]
+    },
+    {
+      "cue": "largest constant magnitude",
+      "subgroup": "exact five delivered runner records",
+      "scope": "overall",
+      "strategy": "largest constant magnitude; no prompt or correct-key access",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-choice random baseline is 0.2. None of these rules answers every published candidate. Authored position is not stable in the actual UI, which shuffles options. These five observations do not establish general absence of shortcuts; controlled identical-bank tests address the repaired structural claim.",
+      "sample_refs": [
+        "runner-batch.json",
+        "delivery-batch/accepted.json",
+        "shortcut-results.json",
+        "ui-results.json"
+      ]
+    },
+    {
+      "cue": "smallest constant magnitude",
+      "subgroup": "exact five delivered runner records",
+      "scope": "overall",
+      "strategy": "smallest constant magnitude; no prompt or correct-key access",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-choice random baseline is 0.2. None of these rules answers every published candidate. Authored position is not stable in the actual UI, which shuffles options. These five observations do not establish general absence of shortcuts; controlled identical-bank tests address the repaired structural claim.",
+      "sample_refs": [
+        "runner-batch.json",
+        "delivery-batch/accepted.json",
+        "shortcut-results.json",
+        "ui-results.json"
+      ]
+    },
+    {
+      "cue": "majority coefficient sign",
+      "subgroup": "exact five delivered runner records",
+      "scope": "overall",
+      "strategy": "majority coefficient sign; no prompt or correct-key access",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-choice random baseline is 0.2. None of these rules answers every published candidate. Authored position is not stable in the actual UI, which shuffles options. These five observations do not establish general absence of shortcuts; controlled identical-bank tests address the repaired structural claim.",
+      "sample_refs": [
+        "runner-batch.json",
+        "delivery-batch/accepted.json",
+        "shortcut-results.json",
+        "ui-results.json"
+      ]
+    },
+    {
+      "cue": "minority coefficient sign",
+      "subgroup": "exact five delivered runner records",
+      "scope": "overall",
+      "strategy": "minority coefficient sign; no prompt or correct-key access",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-choice random baseline is 0.2. None of these rules answers every published candidate. Authored position is not stable in the actual UI, which shuffles options. These five observations do not establish general absence of shortcuts; controlled identical-bank tests address the repaired structural claim.",
+      "sample_refs": [
+        "runner-batch.json",
+        "delivery-batch/accepted.json",
+        "shortcut-results.json",
+        "ui-results.json"
+      ]
+    },
+    {
+      "cue": "shortest expression",
+      "subgroup": "exact five delivered runner records",
+      "scope": "overall",
+      "strategy": "shortest expression; no prompt or correct-key access",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-choice random baseline is 0.2. None of these rules answers every published candidate. Authored position is not stable in the actual UI, which shuffles options. These five observations do not establish general absence of shortcuts; controlled identical-bank tests address the repaired structural claim.",
+      "sample_refs": [
+        "runner-batch.json",
+        "delivery-batch/accepted.json",
+        "shortcut-results.json",
+        "ui-results.json"
+      ]
+    },
+    {
+      "cue": "first visible radio choice",
+      "subgroup": "actual rendered UI after choice shuffling",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select first rendered radio without inspecting supplied matrix or solution.",
+      "correct": 1,
+      "total": 21,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 0.2. DOM order was read from actual UI HTML and differs from authored order in tested records; fixed visible position does not answer all records. Feedback markers were excluded from probing.",
+      "sample_refs": [
+        "ui-results.json",
+        "render/input.json",
+        "render-remaining/input.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "actual generator proposal/retry and normalized-equation deduplication",
+      "requested difficulty",
+      "actual shared publisher prepare_records normalization, validation and captured-inventory/within-batch deduplication",
+      "read-only question_selection.rs weighted band and within-band selection",
+      "freshness filtering/no-repeat sequence",
+      "actual UI option shuffle and native learner grading"
+    ],
+    "sample_refs": [
+      "sampler-proposals-easy.json",
+      "sampler-accepted-easy.json",
+      "sampler-proposals-moderate.json",
+      "sampler-accepted-moderate.json",
+      "sampler-stage-results.json",
+      "delivery-easy/delivery.json",
+      "delivery-easy/accepted.json",
+      "delivery-moderate/delivery.json",
+      "delivery-moderate/accepted.json",
+      "delivery-batch/delivery.json",
+      "delivery-batch/accepted.json",
+      "selection-results.json",
+      "shortcut-results.json",
+      "ui-results.json",
+      "delivered-grader-results.json"
+    ],
+    "result": "Actual proposal traces reject one repeated mathematical fingerprint in each small sampler run. Delivery retains 78/78 easy, 74/74 moderate controls and 5/5 exact batch records at captured basis 5363. All controlled banks retain all five keys through delivery; selection can reach all surviving new items and no-repeat runs retain the whole pool. Original inventory plus proposed batch also examined with explicit stand-in new entity IDs."
+  },
+  "limitations": [
+    "Finite fresh tests and structural bank counterfactuals do not prove absence of every conceivable shortcut.",
+    "Publication absent; shared read-only filtering was used. Captured inventory basis 5363 may change later. No database or assets were published.",
+    "No actual learner history or active policy snapshot supplied. Selection algorithm inspected and faithfully reproduced for explicit band weights and no-repeat histories; new IDs are stand-ins. These limitations affect exact production frequencies, not observed item-local variation.",
+    "Captured inventory contains only original source questions. Historical source-bank cues are retained in explicit replay mode and original questions; neither is sampled as newly generated practice. No affected stored generated instance was demonstrated."
+  ]
+}

@@ -1,0 +1,111 @@
+{
+  "verdict": "accepted",
+  "summary": "Both retained defects are repaired. All eight checks pass for the reviewed revision and exact five-question batch. Package files remain unchanged.",
+  "source_analysis": {
+    "skill": "Use Gaussian elimination on a singular 2\u00d72 system, distinguish contradiction from redundancy, and select the general solution.",
+    "reasoning_steps": [
+      "Construct the augmented matrix.",
+      "Normalize the first pivot when necessary and eliminate the second x entry.",
+      "Interpret the eliminated RHS.",
+      "Select No solution or express x in terms of free y."
+    ],
+    "invariants": [
+      "Singular rank-one coefficients with a nonzero first x pivot.",
+      "Easy questions require one elimination operation.",
+      "Both consistency outcomes are instructional cases.",
+      "Practice uses five-choice radio fields."
+    ],
+    "permitted_variations": [
+      "Vary signed and zero first-row intercepts.",
+      "Vary the second RHS independently of coefficient profile.",
+      "Derive prompts, matrices, solutions, banks and keys together."
+    ],
+    "source_refs": [
+      "dac18246-6beb-5775-aa0f-4306e1eefeac (q-42157)",
+      "897c434c-2b3e-570b-8210-f27b51719e55 (q-20964)",
+      "79d64547-fc54-5cd3-a6ec-b00c0e085729 (q-73750)",
+      "Tutorials 3153, 3901 and 3154"
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "source-image-review.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay.json",
+        "source-replay-records.json"
+      ],
+      "details": "All 17 practice sources reproduce complete banks, keys and corrected solutions, including q-20964."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "audit.py",
+        "math-results.json"
+      ],
+      "details": "Independent exact checks passed on 278 records, including the runner batch."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "shortcut-results.json",
+        "delivery-domain/delivery.json",
+        "delivery-batch/delivery.json",
+        "selection-results.json",
+        "inventory-audit.json",
+        "affected-inventory.json"
+      ],
+      "details": "Both decisions survive filtering within every tested easy profile. All five batch records survive: three infinite-solution and two no-solution cases. Captured inventory contains only original sources; live selection limits are documented."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "scope-results.json"
+      ],
+      "details": "Variations preserve the singular-system method, response contract and elimination workload."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-final-input.json",
+        "grader-final-results.json"
+      ],
+      "details": "Native grader accepted 283 correct choices and rejected 1,132 alternatives; none unresolved."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-batch/rendering.json",
+        "visual-review.json"
+      ],
+      "details": "Eleven records rendered through the actual UI; nine screenshots inspected without observed defects."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "package-before.json",
+        "package-after.json",
+        "packaging-results.json"
+      ],
+      "details": "Exact dependency versions, deterministic replay, relocation and boundary rejection passed. Package hashes are unchanged."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "old-targeted-regressions.json",
+        "targeted-regressions.json",
+        "preflight-verification.json"
+      ],
+      "details": "Retained tests fail on the old package and pass now. Controlled changes update prompts, solutions and grading correctly. The former coefficient-signature shortcut scores 2/5 on the delivered batch."
+    }
+  },
+  "findings": []
+}

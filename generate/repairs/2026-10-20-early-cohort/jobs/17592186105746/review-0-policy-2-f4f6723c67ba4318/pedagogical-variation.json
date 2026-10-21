@@ -1,0 +1,437 @@
+{
+  "learner_operation": "Use Gaussian elimination on a singular two-equation, two-variable system; distinguish a contradictory final row from a redundant row and select the complete general solution.",
+  "fixed_features": [
+    {
+      "feature": "Two equations in x,y with singular rank-one coefficient matrix and an x-first pivot",
+      "justification": "Target KP title, canonical example 681fce57-6be7-5907-b575-8c34b4819ae5, and lesson 3153 teach this elimination and free-variable structure."
+    },
+    {
+      "feature": "Easy first x coefficient equals 1; one elimination operation",
+      "justification": "Every easy practice source has this workload; moderate sources additionally normalize the pivot."
+    },
+    {
+      "feature": "One five-option radio field, including No solution and four complete vector forms",
+      "justification": "All 17 captured practice questions use this response contract. Canonical example lacks a bank and is not assigned an invented one."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Consistency determined by eliminated RHS",
+      "eligible_variation": "Hold coefficients and first RHS fixed; choose second RHS either proportional or nonproportional. Derive final row, classification, explanation, and key.",
+      "observed": "Unjustifiably fixed per source profile. A common nonzero scaling cannot change consistency. Every recognizable coefficient signature preserves one classification."
+    },
+    {
+      "role": "Surviving affine intercept and y slope",
+      "eligible_variation": "Vary first RHS independently including zero; vary coefficient slope within same easy elimination method.",
+      "observed": "Only signed nonzero multiples of original nonzero intercepts occur. Slopes are fixed; zero-intercept source q-20964 is absent."
+    },
+    {
+      "role": "Correct bank member and displayed position",
+      "eligible_variation": "Recompute correct vector/text answer from the actual system. UI position may vary without changing semantics.",
+      "observed": "Correct member fixed within stored profile; actual UI shuffles display order. The finding concerns coefficient-to-action dependency, not stored-index repetition."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "Easy consistent and inconsistent",
+      "sample_refs": [
+        "easy-records.json",
+        "delivery-domain/accepted.json",
+        "shortcut-results.json"
+      ],
+      "result": "Raw easy domain has 32 dependent-consistent and 32 inconsistent records. Shared delivery removes one source replay per profile, leaving 28 of each; all 8 profiles remain outcome-fixed."
+    },
+    {
+      "case": "Exact runner batch",
+      "sample_refs": [
+        "batch-records.json",
+        "delivery-batch/accepted.json",
+        "shortcut-results.json"
+      ],
+      "result": "5/5 survive: 3 consistent, 2 inconsistent; only four profiles, with q-20783 represented by opposite-sign RHS scales. The shortcut succeeds on every delivered member."
+    },
+    {
+      "case": "Zero-intercept source boundary",
+      "sample_refs": [
+        "source-replay.json",
+        "targeted-regressions.json"
+      ],
+      "result": "q-20964 (897c434c-2b3e-570b-8210-f27b51719e55), x-5y=0; 2x-10y=3, cannot replay. 16 other complete banks and corrected solution sequences replay."
+    },
+    {
+      "case": "Construction and learner selection",
+      "sample_refs": [
+        "constructor-records.json",
+        "selection-results.json",
+        "shortcut-results.json"
+      ],
+      "result": "Internal mathematical-fingerprint dedup retains 64 easy records; delivery retains 56. Selection only chooses a fresh candidate in a weighted band, so it cannot break the per-record shortcut. 192 concrete easy-only fixture draws preserve it."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "q-73750: hold coefficients fixed, scale both RHS values from t=1 to t=2.",
+      "expected": "General solution intercept changes from 4 to 8; y slope remains +2. Prompt, matrices, solved x, vector bank/key and grading must agree.",
+      "observed": "Both instances independently solve to x=4+2y and x=8+2y; actual grader accepts each own correct choice and rejects all alternatives; actual UI shows the changed constants and solution.",
+      "status": "passed",
+      "justification": "Lesson 3153 derives the basic-variable intercept from the remaining first equation.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-complete-results.json",
+        "render-all/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "Hold x-6y=2 and second coefficients -4x+24y fixed; change only second RHS from -10 to -8.",
+      "expected": "No solution changes to x=2+6y, y free; the zero final row replaces a contradiction, and No solution must be rejected.",
+      "observed": "Independently authored expected fixture passes exact math, actual native grading, and actual UI rendering. Current generator cannot produce the changed role: all eight allowed q-42157 scales are inconsistent. Strict regression exits 1. Expected fixture is not claimed as current generator output.",
+      "status": "failed",
+      "justification": "Tutorials 3901 and 3154 explicitly base inconsistency on a nonzero eliminated RHS, not on coefficient labels or template membership.",
+      "sample_refs": [
+        "expected-counterfactual-records.json",
+        "expected-counterfactual-results.json",
+        "grader-complete-results.json",
+        "render-expected/rendering.json",
+        "targeted-regressions.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Within inconsistent q-42157, double both RHS values using t=1 -> t=2, retaining a nonzero contradiction.",
+      "expected": "Eliminated RHS changes -2 -> -4 but response remains No solution; explanation and matrices must reflect the new residual.",
+      "observed": "Independently checked echelon rows are [0,0,-2] and [0,0,-4]. Both actual native keys accept No solution and reject every vector; rendered prompts and explanations show the corresponding constants.",
+      "status": "passed",
+      "justification": "Tutorial 3901 explains that any nonzero RHS in 0=d is false. Residual magnitude within the nonzero branch does not affect the requested solution.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-complete-results.json",
+        "render-all/rendering.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "Visible coefficient signature; ignore RHS for consistency",
+      "subgroup": "scale=1-trained lookup tested on all other scales",
+      "scope": "overall",
+      "strategy": "For known inconsistent coefficient signatures select No solution; for consistent signatures choose the vector satisfying only the first equation, ignoring the second.",
+      "correct": 112,
+      "total": 112,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Baseline is uniform selection among five radio options. Coefficients alone cannot determine consistency mathematically; learned signatures nevertheless predict the answer-producing action on every held-out scale. Solving the first row on the consistent branch is legitimate partial work but bypasses the essential consistency check.",
+      "sample_refs": [
+        "domain-records.json",
+        "shortcut-results.json",
+        "grader-complete-results.json"
+      ]
+    },
+    {
+      "cue": "Coefficient-signature lookup",
+      "subgroup": "exact runner batch after delivery",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Visible coefficient signature predicts No solution for q-73749 and q-42163. For q-73750 and q-20783, ignore second equation and select the vector satisfying the first equation. All five native correct choices found; independent of UI choice order.",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Baseline is 1/5 random radio selection. Two records select No solution by signature; three solve only the first equation after using the signature to assume consistency. All five survive the actual filter; larger controls cannot waive this batch failure.",
+      "sample_refs": [
+        "batch-records.json",
+        "delivery-batch/accepted.json",
+        "shortcut-results.json",
+        "grader-complete-results.json"
+      ]
+    },
+    {
+      "cue": "Stored correct-choice index",
+      "subgroup": "actual UI rendered records",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the displayed option at the stored correct index",
+      "correct": 3,
+      "total": 11,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is 1/5 random selection. Actual learning.js hashes item/field/choice IDs to reorder choices; fixed stored position is rejected as an independent learner-facing finding.",
+      "sample_refs": [
+        "ui-order-results.json",
+        "render-records.json",
+        "render-all/rendering.json"
+      ]
+    },
+    {
+      "cue": "Visible coefficients [['1', '-2'], ['-4', '8']]",
+      "subgroup": "q-130923",
+      "scope": "within_template",
+      "strategy": "Choose No solution without reading either RHS",
+      "correct": 8,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Baseline is uniform choice among five answers. Coefficient signature fixes consistency and the associated action on all eight scales, including seven held-out scales. For this rank-one family a different second RHS can require the opposite classification with the same coefficients; source-example membership does not justify fixing that role.",
+      "sample_refs": [
+        "domain-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Visible coefficients [['-2', '8'], ['-3', '12']]",
+      "subgroup": "q-130924",
+      "scope": "within_template",
+      "strategy": "Ignore second equation; choose the bank vector satisfying the first equation",
+      "correct": 8,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Baseline is uniform choice among five answers. Coefficient signature fixes consistency and the associated action on all eight scales, including seven held-out scales. For this rank-one family a different second RHS can require the opposite classification with the same coefficients; source-example membership does not justify fixing that role.",
+      "sample_refs": [
+        "domain-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Visible coefficients [['1', '4'], ['2', '8']]",
+      "subgroup": "q-20783",
+      "scope": "within_template",
+      "strategy": "Ignore second equation; choose the bank vector satisfying the first equation",
+      "correct": 8,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Baseline is uniform choice among five answers. Coefficient signature fixes consistency and the associated action on all eight scales, including seven held-out scales. For this rank-one family a different second RHS can require the opposite classification with the same coefficients; source-example membership does not justify fixing that role.",
+      "sample_refs": [
+        "domain-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Visible coefficients [['8', '32'], ['5', '20']]",
+      "subgroup": "q-20960",
+      "scope": "within_template",
+      "strategy": "Ignore second equation; choose the bank vector satisfying the first equation",
+      "correct": 8,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Baseline is uniform choice among five answers. Coefficient signature fixes consistency and the associated action on all eight scales, including seven held-out scales. For this rank-one family a different second RHS can require the opposite classification with the same coefficients; source-example membership does not justify fixing that role.",
+      "sample_refs": [
+        "domain-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Visible coefficients [['2', '6'], ['3', '9']]",
+      "subgroup": "q-20961",
+      "scope": "within_template",
+      "strategy": "Choose No solution without reading either RHS",
+      "correct": 8,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Baseline is uniform choice among five answers. Coefficient signature fixes consistency and the associated action on all eight scales, including seven held-out scales. For this rank-one family a different second RHS can require the opposite classification with the same coefficients; source-example membership does not justify fixing that role.",
+      "sample_refs": [
+        "domain-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Visible coefficients [['5', '15'], ['2', '6']]",
+      "subgroup": "q-20965",
+      "scope": "within_template",
+      "strategy": "Ignore second equation; choose the bank vector satisfying the first equation",
+      "correct": 8,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Baseline is uniform choice among five answers. Coefficient signature fixes consistency and the associated action on all eight scales, including seven held-out scales. For this rank-one family a different second RHS can require the opposite classification with the same coefficients; source-example membership does not justify fixing that role.",
+      "sample_refs": [
+        "domain-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Visible coefficients [['1', '3'], ['3', '9']]",
+      "subgroup": "q-42153",
+      "scope": "within_template",
+      "strategy": "Ignore second equation; choose the bank vector satisfying the first equation",
+      "correct": 8,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Baseline is uniform choice among five answers. Coefficient signature fixes consistency and the associated action on all eight scales, including seven held-out scales. For this rank-one family a different second RHS can require the opposite classification with the same coefficients; source-example membership does not justify fixing that role.",
+      "sample_refs": [
+        "domain-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Visible coefficients [['3', '9'], ['4', '12']]",
+      "subgroup": "q-42154",
+      "scope": "within_template",
+      "strategy": "Choose No solution without reading either RHS",
+      "correct": 8,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Baseline is uniform choice among five answers. Coefficient signature fixes consistency and the associated action on all eight scales, including seven held-out scales. For this rank-one family a different second RHS can require the opposite classification with the same coefficients; source-example membership does not justify fixing that role.",
+      "sample_refs": [
+        "domain-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Visible coefficients [['1', '-6'], ['-4', '24']]",
+      "subgroup": "q-42157",
+      "scope": "within_template",
+      "strategy": "Choose No solution without reading either RHS",
+      "correct": 8,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Baseline is uniform choice among five answers. Coefficient signature fixes consistency and the associated action on all eight scales, including seven held-out scales. For this rank-one family a different second RHS can require the opposite classification with the same coefficients; source-example membership does not justify fixing that role.",
+      "sample_refs": [
+        "domain-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Visible coefficients [['1', '7'], ['6', '42']]",
+      "subgroup": "q-42159",
+      "scope": "within_template",
+      "strategy": "Ignore second equation; choose the bank vector satisfying the first equation",
+      "correct": 8,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Baseline is uniform choice among five answers. Coefficient signature fixes consistency and the associated action on all eight scales, including seven held-out scales. For this rank-one family a different second RHS can require the opposite classification with the same coefficients; source-example membership does not justify fixing that role.",
+      "sample_refs": [
+        "domain-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Visible coefficients [['1', '-3'], ['-12', '36']]",
+      "subgroup": "q-42163",
+      "scope": "within_template",
+      "strategy": "Choose No solution without reading either RHS",
+      "correct": 8,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Baseline is uniform choice among five answers. Coefficient signature fixes consistency and the associated action on all eight scales, including seven held-out scales. For this rank-one family a different second RHS can require the opposite classification with the same coefficients; source-example membership does not justify fixing that role.",
+      "sample_refs": [
+        "domain-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Visible coefficients [['7', '14'], ['3', '6']]",
+      "subgroup": "q-42167",
+      "scope": "within_template",
+      "strategy": "Ignore second equation; choose the bank vector satisfying the first equation",
+      "correct": 8,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Baseline is uniform choice among five answers. Coefficient signature fixes consistency and the associated action on all eight scales, including seven held-out scales. For this rank-one family a different second RHS can require the opposite classification with the same coefficients; source-example membership does not justify fixing that role.",
+      "sample_refs": [
+        "domain-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Visible coefficients [['1', '3'], ['2', '6']]",
+      "subgroup": "q-73749",
+      "scope": "within_template",
+      "strategy": "Choose No solution without reading either RHS",
+      "correct": 8,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Baseline is uniform choice among five answers. Coefficient signature fixes consistency and the associated action on all eight scales, including seven held-out scales. For this rank-one family a different second RHS can require the opposite classification with the same coefficients; source-example membership does not justify fixing that role.",
+      "sample_refs": [
+        "domain-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Visible coefficients [['1', '-2'], ['-3', '6']]",
+      "subgroup": "q-73750",
+      "scope": "within_template",
+      "strategy": "Ignore second equation; choose the bank vector satisfying the first equation",
+      "correct": 8,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Baseline is uniform choice among five answers. Coefficient signature fixes consistency and the associated action on all eight scales, including seven held-out scales. For this rank-one family a different second RHS can require the opposite classification with the same coefficients; source-example membership does not justify fixing that role.",
+      "sample_refs": [
+        "domain-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Visible coefficients [['5', '-10'], ['2', '-4']]",
+      "subgroup": "q-73751",
+      "scope": "within_template",
+      "strategy": "Choose No solution without reading either RHS",
+      "correct": 8,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Baseline is uniform choice among five answers. Coefficient signature fixes consistency and the associated action on all eight scales, including seven held-out scales. For this rank-one family a different second RHS can require the opposite classification with the same coefficients; source-example membership does not justify fixing that role.",
+      "sample_refs": [
+        "domain-records.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Visible coefficients [['2', '-6'], ['-1', '3']]",
+      "subgroup": "q-73752",
+      "scope": "within_template",
+      "strategy": "Ignore second equation; choose the bank vector satisfying the first equation",
+      "correct": 8,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Baseline is uniform choice among five answers. Coefficient signature fixes consistency and the associated action on all eight scales, including seven held-out scales. For this rank-one family a different second RHS can require the opposite classification with the same coefficients; source-example membership does not justify fixing that role.",
+      "sample_refs": [
+        "domain-records.json",
+        "shortcut-results.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "generator difficulty selection and finite enumeration",
+      "generator nonzero-scale rejection",
+      "internal mathematical-fingerprint deduplication",
+      "requested easy difficulty",
+      "actual publisher normalization, validation and stable identities",
+      "captured-inventory and within-batch deduplication",
+      "fresh-candidate and difficulty-first learner selection rules",
+      "actual UI choice ordering"
+    ],
+    "sample_refs": [
+      "constructor-records.json",
+      "delivery-domain/delivery.json",
+      "delivery-domain/accepted.json",
+      "delivery-batch/delivery.json",
+      "delivery-batch/accepted.json",
+      "selection-results.json",
+      "ui-order-results.json",
+      "shortcut-results.json"
+    ],
+    "result": "Shortcuts survive every examined stage. Easy domain 64 -> 56; exact batch 5 -> 5. For coefficient -6, choose No solution remains correct for 7/7 delivered variants. Selection is a subset operation, so no unknown learner history or weights can repair the dependency within the generated pool. All 17 captured inventory records are original sources; no stored generated instances were found."
+  },
+  "limitations": [
+    "Captured inventory is math basis 5364; later concurrent changes are not examined.",
+    "Live policy weights, learner histories, and future database entity IDs are absent. Selection fixture draws use explicit easy-only weights and fixture IDs, while the dependency conclusion holds for all nonempty fresh subsets. No live selection frequency is claimed.",
+    "The canonical example has no answer fields; no canonical bank is invented.",
+    "The expected consistency-changing pair is independently authored review evidence, not current generator output.",
+    "Finite-domain checks and simple cue probes do not establish absence of every possible shortcut."
+  ]
+}

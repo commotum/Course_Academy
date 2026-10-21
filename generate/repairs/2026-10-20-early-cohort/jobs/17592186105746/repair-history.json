@@ -1,0 +1,183 @@
+{
+  "format": 1,
+  "findings": [
+    {
+      "id": "5bda1794e02541c06117",
+      "finding": {
+        "kind": "source_fidelity",
+        "description": "The generator omits q-20964: x-5y=0; 2x-10y=3. Its nonzero scaling of nonzero source intercepts also excludes this captured boundary.",
+        "source_refs": [
+          "897c434c-2b3e-570b-8210-f27b51719e55 (q-20964)"
+        ],
+        "reproduction": "Run targeted-regressions.py with the context Python; it exits 1. Minimal call: generate('easy',7331,'q-20964',{'rhs_scale':1}) raises ValueError('Template difficulty mismatch').",
+        "requested_change": "Include this source family and its complete bank. Support zero first-row intercepts independently and derive distinct distractors and the eliminated RHS from the instance."
+      },
+      "source_hash": "a781ed46b13c9d05f62e2a5a7317b25745aeb76dd1d8da37d08b0ab311ddc5aa",
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186105746/review-0-policy-2-f4f6723c67ba4318",
+      "attempt": 0
+    },
+    {
+      "id": "a8a813a755862016dfa8",
+      "finding": {
+        "kind": "decision_shortcut",
+        "description": "Fixed coefficient patterns determine consistency because both RHS values always scale together. For q-42157, recognizing coefficient -6 and choosing No solution succeeds on 8/8 raw variants and 7/7 delivered variants. A coefficient-signature strategy also answers the exact delivered batch 5/5, solving only the first equation on consistent templates.",
+        "source_refs": [
+          "dac18246-6beb-5775-aa0f-4306e1eefeac (q-42157)",
+          "a9a9e509-4293-5590-b2bf-432eea2f6134 (q-73749)",
+          "e2f37bf7-c408-5d68-a145-8a36082b4969 (q-42163)",
+          "Tutorials 3901 and 3154: consistency depends on the eliminated RHS."
+        ],
+        "reproduction": "Run targeted-regressions.py and finish_review.py; see commands.md. Minimal generated case: q-42157, seed 7331, rhs_scale=2 gives x-6y=4; -4x+24y=-20. The coefficient cue predicts No solution at every allowed scale. Holding x-6y=2 fixed and changing the second RHS from -10 to -8 must instead produce x=2+6y, but that decision change is unavailable.",
+        "requested_change": "Make the second RHS or eliminated residual independent of template identity. Derive prompts, echelon rows, explanations, and keys together so recognizable coefficient signatures support both consistency outcomes. Regenerate the batch and retain the controlled-pair and conditional-shortcut regressions."
+      },
+      "source_hash": "a781ed46b13c9d05f62e2a5a7317b25745aeb76dd1d8da37d08b0ab311ddc5aa",
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186105746/review-0-policy-2-f4f6723c67ba4318",
+      "attempt": 0
+    }
+  ],
+  "events": [
+    {
+      "attempt": 0,
+      "package_hash": "a2ce0722d05263ce6d3bfe1fcf52744abbae1afca013384fae2b185c3615ba5e",
+      "reason": {
+        "verdict": "revise",
+        "summary": "Two demonstrated failures: an omitted zero-intercept source case and coefficient patterns that predict consistency without elimination. The shortcut also answers the delivered five-question batch. Package unchanged.",
+        "source_analysis": {
+          "skill": "Use Gaussian elimination on a singular 2x2 system, distinguish a contradictory row from a redundant row, and select the general solution.",
+          "reasoning_steps": [
+            "Construct the augmented matrix.",
+            "Normalize the first pivot when necessary and eliminate the second x entry.",
+            "Interpret the final row as a contradiction or redundancy.",
+            "Select No solution or the correct vector family."
+          ],
+          "invariants": [
+            "Two variables, singular rank-one coefficient matrix, and an x-first pivot.",
+            "Easy cases require one elimination operation.",
+            "Both consistent and inconsistent outcomes belong to the skill.",
+            "Practice responses use five-choice radio fields."
+          ],
+          "permitted_variations": [
+            "Vary coefficients and first-row constants, including zero.",
+            "Vary the second RHS independently so fixed coefficients can yield either consistency outcome.",
+            "Derive matrices, explanations, answer banks, and keys from the same instance."
+          ],
+          "source_refs": [
+            "dac18246-6beb-5775-aa0f-4306e1eefeac (q-42157)",
+            "897c434c-2b3e-570b-8210-f27b51719e55 (q-20964)",
+            "79d64547-fc54-5cd3-a6ec-b00c0e085729 (q-73750)",
+            "Tutorial 3153: solve the basic variable in terms of the free variable.",
+            "Tutorial 3901: a final equation 0=10 is false.",
+            "Tutorial 3154: the eliminated RHS distinguishes infinitely many solutions from no solution."
+          ],
+          "evidence_paths": [
+            "source-analysis.json"
+          ]
+        },
+        "checks": {
+          "source_replay": {
+            "status": "failed",
+            "evidence_paths": [
+              "source-replay.json",
+              "source-replay-records.json",
+              "targeted-regressions.json"
+            ],
+            "details": "16/17 practice cases replay their prompts, complete mathematical banks, correct values, and corrected solutions. Zero-intercept source q-20964 is missing."
+          },
+          "math": {
+            "status": "passed",
+            "evidence_paths": [
+              "review.py",
+              "math-results.json",
+              "domain-records.json",
+              "batch-records.json"
+            ],
+            "details": "Exact independent checks passed for all 128 supported variants and the actual five-question batch, including matrices, reduced systems, and unique correct bank answers."
+          },
+          "variety": {
+            "status": "failed",
+            "evidence_paths": [
+              "shortcut-results.json",
+              "delivery-domain/delivery.json",
+              "delivery-batch/delivery.json",
+              "selection-results.json",
+              "inventory-audit.json",
+              "affected-inventory.json"
+            ],
+            "details": "Common nonzero RHS scaling fixes consistency within every coefficient signature. Delivery retains 56/64 easy variants and 5/5 batch records without breaking the shortcut. Captured inventory contains 17 original sources and no stored generated instances."
+          },
+          "scope": {
+            "status": "passed",
+            "evidence_paths": [
+              "source-analysis.json",
+              "scope-results.json",
+              "domain-records.json"
+            ],
+            "details": "Supported outputs preserve the singular 2x2 method, response contract, and easy/moderate elimination workload."
+          },
+          "grading": {
+            "status": "passed",
+            "evidence_paths": [
+              "grader-complete-input.json",
+              "grader-complete-results.json"
+            ],
+            "details": "Actual native grader: 200 correct choices accepted and 800 alternatives rejected, with no unresolved checks or database operations."
+          },
+          "rendering": {
+            "status": "passed",
+            "evidence_paths": [
+              "render-all/rendering.json",
+              "render-expected/rendering.json",
+              "visual-review.json",
+              "ui-order-results.json"
+            ],
+            "details": "Actual UI rendering passed for 11 generated records and a separate two-record expected counterfactual pair. Representative screenshots were inspected. UI shuffling invalidates a stored-position shortcut claim."
+          },
+          "packaging": {
+            "status": "passed",
+            "evidence_paths": [
+              "package-before.json",
+              "packaging-results.json",
+              "relocated-records.json"
+            ],
+            "details": "Exact dependency versions match. Deterministic replay, boundary rejection, relocation, and CLI output passed. Original package hashes remain unchanged."
+          },
+          "decision_variation": {
+            "status": "failed",
+            "evidence_paths": [
+              "pedagogical-variation.json",
+              "shortcut-results.json",
+              "counterfactual-results.json",
+              "expected-counterfactual-results.json",
+              "targeted-regressions.json"
+            ],
+            "details": "Coefficient signatures predict consistency on all held-out scales. Conditional cue probes and the exact delivered batch demonstrate bypasses. A consistency-changing controlled pair is mathematically valid but unavailable from the generator."
+          }
+        },
+        "findings": [
+          {
+            "kind": "source_fidelity",
+            "description": "The generator omits q-20964: x-5y=0; 2x-10y=3. Its nonzero scaling of nonzero source intercepts also excludes this captured boundary.",
+            "source_refs": [
+              "897c434c-2b3e-570b-8210-f27b51719e55 (q-20964)"
+            ],
+            "reproduction": "Run targeted-regressions.py with the context Python; it exits 1. Minimal call: generate('easy',7331,'q-20964',{'rhs_scale':1}) raises ValueError('Template difficulty mismatch').",
+            "requested_change": "Include this source family and its complete bank. Support zero first-row intercepts independently and derive distinct distractors and the eliminated RHS from the instance."
+          },
+          {
+            "kind": "decision_shortcut",
+            "description": "Fixed coefficient patterns determine consistency because both RHS values always scale together. For q-42157, recognizing coefficient -6 and choosing No solution succeeds on 8/8 raw variants and 7/7 delivered variants. A coefficient-signature strategy also answers the exact delivered batch 5/5, solving only the first equation on consistent templates.",
+            "source_refs": [
+              "dac18246-6beb-5775-aa0f-4306e1eefeac (q-42157)",
+              "a9a9e509-4293-5590-b2bf-432eea2f6134 (q-73749)",
+              "e2f37bf7-c408-5d68-a145-8a36082b4969 (q-42163)",
+              "Tutorials 3901 and 3154: consistency depends on the eliminated RHS."
+            ],
+            "reproduction": "Run targeted-regressions.py and finish_review.py; see commands.md. Minimal generated case: q-42157, seed 7331, rhs_scale=2 gives x-6y=4; -4x+24y=-20. The coefficient cue predicts No solution at every allowed scale. Holding x-6y=2 fixed and changing the second RHS from -10 to -8 must instead produce x=2+6y, but that decision change is unavailable.",
+            "requested_change": "Make the second RHS or eliminated residual independent of template identity. Derive prompts, echelon rows, explanations, and keys together so recognizable coefficient signatures support both consistency outcomes. Regenerate the batch and retain the controlled-pair and conditional-shortcut regressions."
+          }
+        ]
+      },
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186105746/review-0-policy-2-f4f6723c67ba4318"
+    }
+  ]
+}

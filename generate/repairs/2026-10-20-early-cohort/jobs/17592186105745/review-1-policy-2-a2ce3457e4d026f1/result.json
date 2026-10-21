@@ -1,0 +1,117 @@
+{
+  "verdict": "accepted",
+  "summary": "Both retained defects are resolved. All 16 source banks replay; 181 records pass independent math checks, 1,690 native grading checks pass, and 21 UI renders pass. All five runner items survive delivery without a demonstrated shortcut. Package unchanged; no database writes.",
+  "source_analysis": {
+    "skill": "Reduce a consistent singular 2x2 augmented matrix to REF and, when requested, express its general solution.",
+    "reasoning_steps": [
+      "Normalize the first pivot and eliminate the dependent second row.",
+      "Recognize the redundant equation and identify the free variable.",
+      "Derive the requested matrix or solution family and select its matching choice."
+    ],
+    "invariants": [
+      "Preserve the source operation, difficulty and comparable arithmetic workload.",
+      "Retain a uniquely correct five-choice mathematical radio response.",
+      "Keep prompts, answers and worked solutions consistent."
+    ],
+    "permitted_variations": [
+      "Vary signed coefficients, constants and eligible matching candidates.",
+      "Change relevant coefficients while updating every dependent representation.",
+      "Preserve the solution under redundant-row scaling."
+    ],
+    "source_refs": [
+      "7bfabbd2-9988-5c0e-9c17-3d430b3e7a0f: canonical example",
+      "f7492471-0301-5306-8f40-5431247eb08f: q-73743",
+      "0407db63-d38b-50cb-b37f-dfd7ce1a8b10: q-42156",
+      "0c91df0b-40c7-5a65-9fda-5d2d6438dfa3: Introduction, basic/free variables and removal of the redundant equation"
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "source-excerpts.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay.json",
+        "source-replay-records.json",
+        "preflight-verification.json",
+        "retained-findings.json"
+      ],
+      "details": "All 16 complete keyed banks, prompts, solutions and correct values replay. Both retained checks fail on the previous package and pass on the revision."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "audit_revision.py",
+        "review_tests.py"
+      ],
+      "details": "Independent exact checks pass for 181 records, including all runner items and controlled counterfactuals."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "sampler-stage-results.json",
+        "selection-results.json",
+        "inventory-audit.json"
+      ],
+      "details": "Every profile supports five different correct targets with its visible bank fixed. Delivery and selection preserve tested variation. No affected stored generated instance was demonstrated."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "scope-results.json",
+        "sampled-records.json",
+        "source-replay.json"
+      ],
+      "details": "The three source operation families, difficulty bands, response contract and arithmetic workload are preserved."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-results.json",
+        "delivered-grader-results.json",
+        "counterfactual-native-ui-results.json"
+      ],
+      "details": "All 1,690 native checks pass, including wrong choices and stale counterfactual answers. The source contract is radio-only."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-remaining/rendering.json",
+        "visual-inspection.json",
+        "ui-results.json"
+      ],
+      "details": "All 21 actual-UI renders pass; nine screenshots were inspected."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging.json",
+        "boundaries.json",
+        "resampling-boundary.json",
+        "replay-results.json",
+        "package-hashes-final.json",
+        "evidence-validation.json",
+        "commands.md"
+      ],
+      "details": "Relocation, deterministic replay, exact dependencies, parameter rejection and bounded resampling pass. Package hashes remain unchanged."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "counterfactual-native-ui-results.json",
+        "shortcut-results.json",
+        "delivery-batch/delivery.json",
+        "selection-results.json"
+      ],
+      "details": "Relevant and irrelevant controls behave correctly. The prior shortcut solves 0/5 runner items; no tested surface strategy solves the whole batch. Finite-audit and captured-inventory limits are documented."
+    }
+  },
+  "findings": []
+}
