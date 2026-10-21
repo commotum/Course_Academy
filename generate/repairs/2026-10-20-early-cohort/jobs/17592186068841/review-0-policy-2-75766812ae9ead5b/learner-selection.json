@@ -1,0 +1,44 @@
+{
+  "implementation": "engine/rust/question_selection.rs select(): candidates already fresh/usable, deduplicate/sort, select weighted nonempty difficulty then uniformly within band via second SHA256 word. This reproduction uses UUID ordering rather than unknown future numeric entity IDs; thus counts are illustrative, reachability and cue preservation do not depend on ordering.",
+  "scenario": "Fresh learner, requested difficulty has positive weight; all accepted records are eligible; 256 deterministic task seeds. Actual policy weights and learner history absent from captured inventory. Zero weight suppresses entire band; history can only remove members.",
+  "seed_prefix": "independent-review-730091-",
+  "results": {
+    "delivery-easy/accepted.json": {
+      "draws": 256,
+      "templates": {
+        "easy_constant": 117,
+        "easy_linear": 139
+      },
+      "interval_leak_draws": 0,
+      "pool_size": 43
+    },
+    "delivery-batch/accepted.json": {
+      "draws": 256,
+      "templates": {
+        "easy_linear": 256
+      },
+      "interval_leak_draws": 0,
+      "pool_size": 5
+    },
+    "delivery-moderate/accepted.json": {
+      "draws": 256,
+      "templates": {
+        "q-79660": 28,
+        "q-79666": 29,
+        "q-79665": 43,
+        "q-8304": 52,
+        "q-128191": 22,
+        "q-14253": 26,
+        "q-8303": 36,
+        "q-79664": 20
+      },
+      "interval_leak_draws": 131,
+      "pool_size": 22
+    }
+  },
+  "structural_result": "Every accepted member has positive selection probability in a positive-weight band. All 5 batch members are easy_linear with both exponent signs; selection cannot introduce easy_constant. Interval copying succeeds on every tested surviving member of each affected template, so difficulty weighting/history cannot cure the within-template leak.",
+  "limitations": [
+    "No live policy or learner history captured; no claim of exact future frequencies or IDs.",
+    "Inventory basis 5369 may change."
+  ]
+}

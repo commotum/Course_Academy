@@ -1,0 +1,48 @@
+--- engine/rust/symbolic.rs (before this job)
++++ engine/rust/symbolic.rs
+@@ -897,6 +897,14 @@
+                 }
+             }
+             "exp" => {
++                // exp(-u) is the reciprocal of exp(u) for every supported real
++                // argument, including rational coefficients. Orient by the
++                // leading term so opaque exponential atoms share this identity.
++                // Conditions introduced while evaluating u remain in force.
++                if x.num.0.first_key_value().is_some_and(|(_, c)| c.is_negative()) {
++                    let positive = self.function("exp", &x.neg())?;
++                    return self.div(&Value::integer(1), &positive);
++                }
+                 if let Some(c) = x.constant().filter(Q::is_integer) {
+                     let n = c.to_integer().to_i32().ok_or("exponential exceeds range")?;
+                     return self.integer_power(&Value::atom(Atom::E), n);
+@@ -1707,6 +1715,30 @@
+ #[cfg(test)]
+ mod tests {
+     #[test]
++    fn reciprocal_exponentials_preserve_arguments_and_domains() {
++        for (a, b) in [
++            ("1/e^{0.03t}", "e^{-0.03t}"),
++            ("1/exp(3t/100)", "exp(-3t/100)"),
++            ("exp(-x/7-2/3)", "1/exp(x/7+2/3)"),
++            ("exp(-sin(x)/3)", "1/exp(sin(x)/3)"),
++            ("exp(-1/x)", "1/exp(1/x)"),
++            ("exp(-2x)", "1/exp(2x)"),
++        ] {
++            eq(a, b);
++            eq(b, a);
++        }
++        for (a, b) in [
++            ("1/e^{0.03t}", "e^{0.03t}"),
++            ("1/e^{0.03t}", "e^{-0.04t}"),
++            ("2/e^{0.03t}", "e^{-0.03t}"),
++            ("exp(-x/7-2/3)", "1/exp(x/7)"),
++        ] {
++            assert_eq!(compare(a, b, Context::default()), Ok(false), "{a} vs {b}");
++        }
++        assert!(compare("exp(-x/x)", "exp(-1)", Context::default()).is_err());
++        assert!(!supports("exp(-1/0)", Context::default()));
++    }
++    #[test]
+     fn antiderivative_families_preserve_domain_and_nonconstant_terms() {
+         use super::{compare, compare_up_to_constant, Context};
+         let canonical = "t^7/7+5*t";

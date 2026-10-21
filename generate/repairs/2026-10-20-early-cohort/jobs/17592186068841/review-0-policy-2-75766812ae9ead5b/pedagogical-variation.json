@@ -1,0 +1,285 @@
+{
+  "learner_operation": "Infer h(x) and g(y), separate dy/g(y)=h(x)dx, integrate with an arbitrary constant, then invert to obtain the requested explicit solution or missing expression and distinguish plausible incorrect integrals/forms.",
+  "fixed_features": [
+    {
+      "feature": "Elementary first-order separable ODEs and explicit general solutions",
+      "justification": "Tutorial 6767 explicitly separates dy/g(y)=h(x)dx; canonical e-10833 then integrates and solves for y."
+    },
+    {
+      "feature": "A single radio selection from five options or a missing expression in an explicit solution scaffold",
+      "justification": "The fifteen captured source exercises use these two response forms. q-128198 must not disappear because the old snapshot had fourteen exercises."
+    },
+    {
+      "feature": "Nonzero/domain assumptions and local branches",
+      "justification": "Division by g(y) requires g(y) nonzero. Real root branches must be valid, but necessary assumptions do not justify printing the integrated answer in the question."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Coefficient signs and resulting primitive/exponent",
+      "eligible_variation": "Signed small coefficients and constant/linear polynomial h(x), with all solutions and keys following the change.",
+      "observed": "Both easy templates cover a=-12..-1,1..12. The actual batch uses easy_linear a=3,12,-4,-1,1 and requires both exponent signs."
+    },
+    {
+      "role": "Which complete bank expression is correct",
+      "eligible_variation": "Vary coefficients/primitive terms and option order without preserving a cue that bypasses integration.",
+      "observed": "Fresh seeds change positions. Normal q-79665 and q-8304 put the entire correct inner expression in the interval restriction; the same copy-and-power action stays correct across coefficient changes."
+    },
+    {
+      "role": "Blank scaffold and missing power",
+      "eligible_variation": "Both y=-2(blank+K)^(-1) and y=±(blank+K)^(1/2) source routes; vary missing expression coherently.",
+      "observed": "Only q-128191 is supported, with powers 2..5. q-128198 is rejected. New normal wording bans constant shifts even though original arbitrary-K families admit them."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "Independent easy sign/boundary grid and natural sampler control",
+      "sample_refs": [
+        "easy-grid.json",
+        "fresh-seed-samples.json",
+        "coverage-results.json",
+        "fresh-seed-coverage.json"
+      ],
+      "result": "48/48 easy parameter cases generated; 43 survive inventory dedup. Sixteen fresh ordinary seeds produce both easy templates and signs; thirteen survive. Fixed-seed grid permutation is an audit control, not evidence of an inherent positional shortcut."
+    },
+    {
+      "case": "Exact runner batch",
+      "sample_refs": [
+        "batch.json",
+        "delivery-batch/accepted.json",
+        "coverage-results.json"
+      ],
+      "result": "All five survive; all are easy_linear, three positive a and two negative a. No interval leak in this batch. This narrow five-item pool does not represent the missing blank family or the affected moderate families."
+    },
+    {
+      "case": "Source family coverage",
+      "sample_refs": [
+        "source-replay-results.json",
+        "source-bank-comparison.json",
+        "normal-cases.json"
+      ],
+      "result": "Fourteen full banks and correct designations replay; the fifteenth source q-128198 fails. Two normal coefficient settings per supported observed family were inspected."
+    },
+    {
+      "case": "Interval cue before and after delivery",
+      "sample_refs": [
+        "leak-cases.json",
+        "delivery-moderate/accepted.json",
+        "coverage-results.json"
+      ],
+      "result": "Copy-and-power strategies succeed for all four tested coefficients of each affected template, before and after delivery (12/12). Four samples each for q-8303, q-79665 and q-8304 remain selectable."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "easy_linear a=2 to -2, same seed.",
+      "expected": "Reconsider printed ODE; update primitive, keyed answer and solution together. All other template structure is held fixed.",
+      "observed": "y=K e^{- x^{2}} -> y=K e^{x^{2}}; printed solution final rows match both keys. Native grader accepts the correct choice and rejects every alternative in each member. Actual UI renders both members. Answer changes; interval-copy action nevertheless stays successful in the root families.",
+      "status": "passed",
+      "justification": "23d66cc8-8e5a-5a33-a7a1-c43f5facdcbc / e-10833 and 56fc1c96-3599-5022-8d83-60d4188ccf07 / tutorial 6767 make signed h(x) relevant, while random seed and choice ordering do not affect the ODE solution.",
+      "sample_refs": [
+        "pairs.json",
+        "counterfactual-results.json",
+        "grader-input.json",
+        "grader-report.json",
+        "render-all/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "q-79665 a=1 to 2, same seed.",
+      "expected": "Reconsider printed ODE; update primitive, keyed answer and solution together. All other template structure is held fixed.",
+      "observed": "y=\\left(K + \\frac{x^{\\frac{3}{2}}}{3}\\right)^{2} -> y=\\left(K + \\frac{2 x^{\\frac{3}{2}}}{3}\\right)^{2}; printed solution final rows match both keys. Native grader accepts the correct choice and rejects every alternative in each member. Actual UI renders both members. Answer changes; interval-copy action nevertheless stays successful in the root families.",
+      "status": "passed",
+      "justification": "23d66cc8-8e5a-5a33-a7a1-c43f5facdcbc / e-10833 and 56fc1c96-3599-5022-8d83-60d4188ccf07 / tutorial 6767 make signed h(x) relevant, while random seed and choice ordering do not affect the ODE solution.",
+      "sample_refs": [
+        "pairs.json",
+        "counterfactual-results.json",
+        "grader-input.json",
+        "grader-report.json",
+        "render-all/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "q-8303 a=1 to 2, same seed.",
+      "expected": "Reconsider printed ODE; update primitive, keyed answer and solution together. All other template structure is held fixed.",
+      "observed": "y=\\left(\\frac{C}{2} + \\frac{x^{2}}{2} + \\frac{x}{2}\\right)^{2} -> y=\\left(\\frac{C}{2} + \\frac{x^{2}}{2} + x\\right)^{2}; printed solution final rows match both keys. Native grader accepts the correct choice and rejects every alternative in each member. Actual UI renders both members. Answer changes; interval-copy action nevertheless stays successful in the root families.",
+      "status": "passed",
+      "justification": "23d66cc8-8e5a-5a33-a7a1-c43f5facdcbc / e-10833 and 56fc1c96-3599-5022-8d83-60d4188ccf07 / tutorial 6767 make signed h(x) relevant, while random seed and choice ordering do not affect the ODE solution.",
+      "sample_refs": [
+        "pairs.json",
+        "counterfactual-results.json",
+        "grader-input.json",
+        "grader-report.json",
+        "render-all/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "q-8304 a=1 to 2, same seed.",
+      "expected": "Reconsider printed ODE; update primitive, keyed answer and solution together. All other template structure is held fixed.",
+      "observed": "y=\\left(K + 3 \\sqrt{x}\\right)^{\\frac{2}{3}} -> y=\\left(K + 6 \\sqrt{x}\\right)^{\\frac{2}{3}}; printed solution final rows match both keys. Native grader accepts the correct choice and rejects every alternative in each member. Actual UI renders both members. Answer changes; interval-copy action nevertheless stays successful in the root families.",
+      "status": "passed",
+      "justification": "23d66cc8-8e5a-5a33-a7a1-c43f5facdcbc / e-10833 and 56fc1c96-3599-5022-8d83-60d4188ccf07 / tutorial 6767 make signed h(x) relevant, while random seed and choice ordering do not affect the ODE solution.",
+      "sample_refs": [
+        "pairs.json",
+        "counterfactual-results.json",
+        "grader-input.json",
+        "grader-report.json",
+        "render-all/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Change only shuffle seed 730061 to 730067, holding easy_linear a=2 fixed.",
+      "expected": "Same mathematical answer and explanation with changed option order.",
+      "observed": "y=K e^{- x^{2}} -> y=K e^{- x^{2}}; printed solution final rows match both keys. Native grader accepts the correct choice and rejects every alternative in each member. Actual UI renders both members. Answer preserved.",
+      "status": "passed",
+      "justification": "23d66cc8-8e5a-5a33-a7a1-c43f5facdcbc / e-10833 and 56fc1c96-3599-5022-8d83-60d4188ccf07 / tutorial 6767 make signed h(x) relevant, while random seed and choice ordering do not affect the ODE solution.",
+      "sample_refs": [
+        "pairs.json",
+        "counterfactual-results.json",
+        "grader-input.json",
+        "grader-report.json",
+        "render-all/rendering.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "Printed “Use an interval where ... >0” expression",
+      "subgroup": "q-79665 normal default bank; a=1,2,7,8",
+      "scope": "within_template",
+      "strategy": "Square the interval expression, ignoring the ODE.",
+      "correct": 4,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Four of four versus 1/5 uniformly guessing among five options. The prompt supplies the x-antiderivative; this bypasses the intended integration, rather than expressing a useful simplification of it. All four also survive delivery. q-79665 and q-8304 reveal the complete correct inner expression.",
+      "sample_refs": [
+        "leak-cases.json",
+        "coverage-results.json",
+        "delivery-moderate/accepted.json",
+        "minimal-failures.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Printed “Use an interval where ... >0” expression",
+      "subgroup": "q-8304 normal default bank; a=1,2,7,8",
+      "scope": "within_template",
+      "strategy": "Raise the interval expression to power 2/3, ignoring the ODE.",
+      "correct": 4,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Four of four versus 1/5 uniformly guessing among five options. The prompt supplies the x-antiderivative; this bypasses the intended integration, rather than expressing a useful simplification of it. All four also survive delivery. q-79665 and q-8304 reveal the complete correct inner expression.",
+      "sample_refs": [
+        "leak-cases.json",
+        "coverage-results.json",
+        "delivery-moderate/accepted.json",
+        "minimal-failures.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Printed “Use an interval where ... >0” expression",
+      "subgroup": "q-8303 normal default bank; a=1,2,7,8",
+      "scope": "within_template",
+      "strategy": "Square half the interval expression, ignoring the ODE.",
+      "correct": 4,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Four of four versus 1/5 uniformly guessing among five options. The prompt supplies the x-antiderivative; this bypasses the intended integration, rather than expressing a useful simplification of it. All four also survive delivery. q-79665 and q-8304 reveal the complete correct inner expression.",
+      "sample_refs": [
+        "leak-cases.json",
+        "coverage-results.json",
+        "delivery-moderate/accepted.json",
+        "minimal-failures.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "First radio position",
+      "subgroup": "Exact runner batch and its five survivors",
+      "scope": "overall",
+      "strategy": "Always choose the first option.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/5 versus 1/5 random-choice baseline. Correct positions are 2,4,3,3,3. No universal positional rule is demonstrated for this exact batch. This does not establish absence of all shortcuts.",
+      "sample_refs": [
+        "batch.json",
+        "delivery-batch/accepted.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "Template signature plus first position",
+      "subgroup": "easy_linear under ordinary fresh-seed sampling",
+      "scope": "within_template",
+      "strategy": "Recognize the template and choose the first option.",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/5 against 1/5 random-choice baseline; no fixed correct position in this subgroup. Unlike the grid, seeds vary. Sign reversal changes the correct exponent as required; using the elementary power rule here is intended knowledge.",
+      "sample_refs": [
+        "fresh-seed-samples.json",
+        "fresh-seed-coverage.json",
+        "delivery-fresh/accepted.json",
+        "pairs.json"
+      ]
+    },
+    {
+      "cue": "Template signature plus first position",
+      "subgroup": "easy_constant under ordinary fresh-seed sampling",
+      "scope": "within_template",
+      "strategy": "Recognize the template and choose the first option.",
+      "correct": 2,
+      "total": 11,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/11 against 1/5 random-choice baseline; no fixed correct position in this subgroup. Unlike the grid, seeds vary. Sign reversal changes the correct exponent as required; using the elementary power rule here is intended knowledge.",
+      "sample_refs": [
+        "fresh-seed-samples.json",
+        "fresh-seed-coverage.json",
+        "delivery-fresh/accepted.json",
+        "pairs.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "generator parameter validation and absence of rejection/resampling for easy grid",
+      "requested difficulty",
+      "KP and question validation",
+      "normalization/stable identities",
+      "captured-inventory and within-batch deduplication",
+      "learner select() weighted-band/uniform-member logic; illustrative fresh-history scenarios"
+    ],
+    "sample_refs": [
+      "runtime.json",
+      "delivery-commands.json",
+      "delivery-batch/delivery.json",
+      "delivery-easy/delivery.json",
+      "delivery-moderate/delivery.json",
+      "delivery-hard/delivery.json",
+      "fresh-seed-delivery-command.json",
+      "coverage-results.json",
+      "learner-selection.json"
+    ],
+    "result": "Captured inventory basis 5369. Batch 5->5, grid 48->43, fresh seeds 16->13, moderate regression/leak input 28->22, hard 12->11. Interval shortcut remains perfect conditionally in affected survivors. Fresh-learner selection reproduction reaches affected moderate templates; weights/history can remove members but cannot cure their cue. No live policy/history was supplied, so exact future learner frequencies are not asserted."
+  },
+  "limitations": [
+    "No exhaustive audit of every coefficient at moderate/hard; tested source defaults, upper boundaries and targeted leak values.",
+    "No finite audit rules out all shortcuts.",
+    "The controlled grid deliberately holds the shuffle seed fixed; its all-fifth-position pattern is not an inherent generator finding. Ordinary-seed and exact-batch probes are reported separately.",
+    "Live inventory, numeric entity ordering, policy weights and learner histories may differ from captured assumptions. Selection code was examined; exact live selection was not available.",
+    "Affected inventory absence is verified for the six captured generated records only, which were reproduced completely; original source questions remain original."
+  ]
+}

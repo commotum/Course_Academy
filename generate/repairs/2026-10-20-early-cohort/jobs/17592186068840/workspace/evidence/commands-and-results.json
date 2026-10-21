@@ -1,0 +1,38 @@
+{
+  "cwd": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186068840/workspace",
+  "python": "/home/jake/Developer/Course_Academy/.venv/bin/python",
+  "baseline": "baseline-reproduction.json",
+  "retained_regressions": ".venv/bin/python -B checks/regressions.py (run from repo with full workspace script path; same script supports --finding source|shortcut|grading|inventory)",
+  "package": ".venv/bin/python -B checks/package_checks.py",
+  "engine_build": "checks/rebuild_native.py; exact commands and hashes in native-build.json",
+  "engine_unit_tests": [
+    "cargo test --lib symbolic::tests::reciprocal_exponentials_preserve_arguments_and_domains",
+    "cargo test --lib symbolic::tests"
+  ],
+  "native_grading": "grader-execution.json contains exact shared harness command and one batched input file. Final run includes all source records, controlled pairs, easy coverage, five-record batch, retained counterexample and small moderate/hard sample.",
+  "delivery_commands": [
+    "delivery-grid-execution.json",
+    "delivery-batch-execution.json"
+  ],
+  "render_commands": [
+    ".venv/bin/python generate/pipeline/render_preview.py --input generate/repairs/2026-10-20-early-cohort/jobs/17592186068840/workspace/evidence/render-records.json --output generate/repairs/2026-10-20-early-cohort/jobs/17592186068840/workspace/evidence/render --asset-root generate/repairs/2026-10-20-early-cohort/jobs/17592186068840/workspace/evidence/assets --math-root /media/jake/SSD/EDB/math",
+    ".venv/bin/python generate/pipeline/render_preview.py --input generate/repairs/2026-10-20-early-cohort/jobs/17592186068840/workspace/evidence/render-remaining.json --output generate/repairs/2026-10-20-early-cohort/jobs/17592186068840/workspace/evidence/render-remaining --asset-root generate/repairs/2026-10-20-early-cohort/jobs/17592186068840/workspace/evidence/assets --math-root /media/jake/SSD/EDB/math"
+  ],
+  "results": {
+    "source_banks": 14,
+    "source_answer_values": 58,
+    "independent_math_records": 50,
+    "independent_math_choices": 250,
+    "native_accepted": 105,
+    "native_rejected": 346,
+    "native_unresolved": 0,
+    "engine_symbolic_unit_tests": 15,
+    "rendered_and_visually_inspected": 8,
+    "delivered_grid": 43,
+    "delivered_batch": 5,
+    "old_shape_shortcut_batch_successes": 0,
+    "stored_generated_records_reproduced": 6,
+    "demonstrated_affected_stored_easy_items": 1
+  },
+  "evidence_location_note": "All author evidence is inside workspace/evidence to honor workspace-only writes. affected-inventory.json uses ../workspace/evidence/generated-records.json relative to the supplied author-1 evidence_root."
+}

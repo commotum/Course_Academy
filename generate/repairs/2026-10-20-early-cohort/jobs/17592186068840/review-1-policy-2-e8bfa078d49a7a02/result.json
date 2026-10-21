@@ -1,0 +1,117 @@
+{
+  "verdict": "accepted",
+  "summary": "The revised generator and exact batch pass all eight checks. Retained defects are fixed. One historical affected inventory item is documented separately. Package unchanged; no database writes.",
+  "source_analysis": {
+    "skill": "Solve separable first-order ODEs and express their general solutions explicitly.",
+    "reasoning_steps": [
+      "Separate variables on a valid domain.",
+      "Integrate both sides with an arbitrary constant.",
+      "Invert while preserving required branches.",
+      "Select the correct solution family or enter the requested fragment."
+    ],
+    "invariants": [
+      "Elementary separation, integration and explicit inversion.",
+      "Consistent equations, solutions, answer banks and keys.",
+      "Preserved source response contracts."
+    ],
+    "permitted_variations": [
+      "Small signed coefficients and bounded affine translations.",
+      "Eligible primitive coefficients and correct candidate identities.",
+      "Choice ordering and source-supported inverse families."
+    ],
+    "source_refs": [
+      "Tutorials 6766 and 6767",
+      "q-158012 / 088db977-5f34-5d61-a165-97cdc5e6df38",
+      "q-3850 / 12b9ca6b-0ddb-5ee4-aeb2-e1fcfdc8bcb6",
+      "q-51256 / a67e182b-8e5b-5502-83c8-9d36e701587d",
+      "q-14251 / 9faaedf3-7c41-5002-95a6-335a2235c1fc",
+      "q-168077 / 39cc2ed4-7534-5355-9c68-129ad8345d1f"
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay.json",
+        "source-replay-records.json",
+        "canonical-check.json",
+        "retained-findings.json"
+      ],
+      "details": "All 14 captured practice questions replay complete banks, keys, prompts, solutions and response types. Canonical mathematics also checked."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "review_checks.py",
+        "math-results.json",
+        "blank-math.json"
+      ],
+      "details": "66 easy cases pass independent visible-expression checks covering 330 options, primitives and final solutions. Restored blank solutions satisfy their displayed ODEs."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "sampling.json",
+        "shortcut-results.json",
+        "delivery-independent/delivery.json",
+        "delivery-batch/delivery.json"
+      ],
+      "details": "All controlled coefficient roles survive filtering. Delivery retains 45/46 independent samples and all five batch records."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "scope-results.json",
+        "moderate-current.json"
+      ],
+      "details": "Tested variations preserve elementary integration workload and response contracts. Valid learner notation is retained."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-final-input.json",
+        "grader-final-results.json",
+        "grader-final-execution.json",
+        "reciprocal-recheck.json"
+      ],
+      "details": "732 native checks pass: 171 accepted, 561 rejected, zero unresolved. Includes equivalent blank entries, stale counterfactual answers and normalized delivery records."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-pairs/rendering.json",
+        "render-delivered/rendering.json",
+        "render-inspection.json"
+      ],
+      "details": "36 actual-UI previews pass automated checks; representative screenshots confirm readable mathematics, controls and worked solutions."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging.json",
+        "relocation-execution.json",
+        "package-integrity.json"
+      ],
+      "details": "Exact runtime dependencies, deterministic replay, boundary rejection and relocation pass. All 188 package files remain unchanged."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "selection-analysis.json",
+        "ui-position-results.json",
+        "affected-inventory.json",
+        "generated-records.json",
+        "evidence-contract.json"
+      ],
+      "details": "Controlled relevant and irrelevant changes propagate correctly through mathematics, rendering and native grading. The retained shape shortcut no longer determines current answers. Captured delivery and selection rules were examined; live-history limitations are recorded. One legacy affected inventory question was fully reproduced."
+    }
+  },
+  "findings": []
+}

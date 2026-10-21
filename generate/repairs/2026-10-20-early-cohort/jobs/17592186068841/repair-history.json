@@ -1,0 +1,223 @@
+{
+  "format": 1,
+  "findings": [
+    {
+      "id": "a61d522153b57223a632",
+      "finding": {
+        "kind": "source_fidelity",
+        "description": "The captured q-128198 blank family is missing from the package.",
+        "source_refs": [
+          "8363d7a8-d552-504e-a21c-ebf886d548c2 / q-128198"
+        ],
+        "reproduction": "generate_moderate(seed=730033, template=\"q-128198\", parameters={\"a\":1}, profile=\"observed\") raises ValueError(\"Template/level/field mismatch\"). Run reproduce_failures.py.",
+        "requested_change": "Implement the complete source family, including its scaffold, answer, worked solution, replay checks, and coherent variations."
+      },
+      "source_hash": "6bb5049e550d2f159ce463dacfff33d35112a586e169ddc01167b9221fee8ed2",
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186068841/review-0-policy-2-75766812ae9ead5b",
+      "attempt": 0
+    },
+    {
+      "id": "3080d470db4ba7bd29c6",
+      "finding": {
+        "kind": "decision_shortcut",
+        "description": "Normal interval restrictions reveal integrated answer expressions, allowing copy-and-power actions to bypass integration.",
+        "source_refs": [
+          "5a2bae15-170e-5e1c-8377-f10d9fc5ad9d / q-79665",
+          "d4faf034-eb8a-55d3-93d9-79b525a402a1 / q-8304",
+          "679701a5-b0c3-5865-adfd-e49e046da668 / q-8303"
+        ],
+        "reproduction": "generate_moderate(730061, template=\"q-79665\", parameters={\"a\":1}) prints x^(3/2)/3+K>0; squaring that printed expression selects the correct answer without integrating. See minimal-failures.json and leak-cases.json.",
+        "requested_change": "Change the family-wide domain wording to preserve valid branch assumptions without supplying computed antiderivatives. Retest conditional shortcuts after delivery filtering."
+      },
+      "source_hash": "6bb5049e550d2f159ce463dacfff33d35112a586e169ddc01167b9221fee8ed2",
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186068841/review-0-policy-2-75766812ae9ead5b",
+      "attempt": 0
+    },
+    {
+      "id": "d91e38ed271d285d2b70",
+      "finding": {
+        "kind": "grading",
+        "description": "The native grader rejects a valid source solution family, while added normal wording excludes that response.",
+        "source_refs": [
+          "778dd5ee-c1ff-5286-be7b-93fe7ada6aaf / q-128191"
+        ],
+        "reproduction": "From evidence_root run /home/jake/Developer/Course_Academy/generate/runs/current/check-engine grader-family-strict-input.json grader-family-strict-report.json. Submission x^2+5 should be accepted because K absorbs +5; actual outcome is rejected, exit 1.",
+        "requested_change": "Retain the strict failing test and identify the missing context-aware solution-family equivalence capability. Do not remove the family or narrow valid source responses to hide it; engine repair is outside this job."
+      },
+      "source_hash": "6bb5049e550d2f159ce463dacfff33d35112a586e169ddc01167b9221fee8ed2",
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186068841/review-0-policy-2-75766812ae9ead5b",
+      "attempt": 0
+    },
+    {
+      "id": "73a544c3a9a291c8699a",
+      "finding": {
+        "kind": "rendering",
+        "description": "Indented captured whitespace renders the blank scaffold as literal code rather than mathematics.",
+        "source_refs": [
+          "778dd5ee-c1ff-5286-be7b-93fe7ada6aaf / q-128191"
+        ],
+        "reproduction": "Run reproduce_failures.py. Default q-128191 with a=1 displays literal $y=-2($ and $+K)^{-1}$ code blocks. See minimal-render/question-001.png and render-all/question-013.png.",
+        "requested_change": "Normalize the served scaffold layout throughout the family while preserving its placeholder and mathematics. Verify screenshots and reject literal mathematical code blocks."
+      },
+      "source_hash": "6bb5049e550d2f159ce463dacfff33d35112a586e169ddc01167b9221fee8ed2",
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186068841/review-0-policy-2-75766812ae9ead5b",
+      "attempt": 0
+    }
+  ],
+  "events": [
+    {
+      "attempt": 0,
+      "package_hash": "de4a5f4e5c0be8ce24cf2c41624ce21b6612ef6eda5273d052efd93e2e1fe877",
+      "reason": {
+        "verdict": "revise",
+        "summary": "Four demonstrated failures: a missing source family, answer leakage, rejected equivalent blank responses, and broken blank rendering. Package files remained unchanged.",
+        "source_analysis": {
+          "skill": "Solve elementary separable ODEs by rearranging, separating variables, integrating, and solving explicitly for y.",
+          "reasoning_steps": [
+            "Rearrange and separate variables under valid domain assumptions.",
+            "Integrate both sides with an arbitrary constant.",
+            "Solve for y and select valid branches.",
+            "Choose the complete solution or enter the missing expression."
+          ],
+          "invariants": [
+            "Preserve elementary separation and integration workload.",
+            "Preserve source response forms and complete answer banks.",
+            "Respect nonzero and branch restrictions without revealing the computed solution."
+          ],
+          "permitted_variations": [
+            "Change small coefficients and signs while updating every dependent expression.",
+            "Vary missing polynomial expressions and supported solution scaffolds.",
+            "Shuffle choices without preserving incidental answer cues."
+          ],
+          "source_refs": [
+            "23d66cc8-8e5a-5a33-a7a1-c43f5facdcbc / e-10833",
+            "56fc1c96-3599-5022-8d83-60d4188ccf07 / tutorial 6767",
+            "dfb65111-b319-54c6-84cc-f60506595a69 / tutorial 6766"
+          ],
+          "evidence_paths": [
+            "source-analysis.json"
+          ]
+        },
+        "checks": {
+          "source_replay": {
+            "status": "failed",
+            "evidence_paths": [
+              "source-replay-results.json",
+              "source-bank-comparison.json"
+            ],
+            "details": "Fourteen complete source banks replay successfully; the fifteenth family, q-128198, is rejected."
+          },
+          "math": {
+            "status": "passed",
+            "evidence_paths": [
+              "math-results.json",
+              "exact-algebra.json",
+              "independent_math.py"
+            ],
+            "details": "All 93 tested option banks pass independent differentiation checks. Eighty-one keyed solutions also simplify exactly to zero residual on valid local branches."
+          },
+          "variety": {
+            "status": "failed",
+            "evidence_paths": [
+              "coverage-results.json",
+              "fresh-seed-coverage.json",
+              "source-replay-results.json"
+            ],
+            "details": "Easy coefficients and signs vary, but the supported source family y=\u00b1sqrt(blank+K) is entirely missing."
+          },
+          "scope": {
+            "status": "failed",
+            "evidence_paths": [
+              "source-replay.json",
+              "normal-cases.json",
+              "grader-commands.json"
+            ],
+            "details": "Normal blank prompts add a nonconstant-only restriction that narrows the source response contract to conceal an engine limitation."
+          },
+          "grading": {
+            "status": "failed",
+            "evidence_paths": [
+              "grader-input.json",
+              "grader-report.json",
+              "grader-family-strict-input.json",
+              "grader-commands.json"
+            ],
+            "details": "Native grading passes 17 ordinary valid and 66 wrong submissions. It rejects x^2+5 in the original arbitrary-K scaffold despite solution-family equivalence."
+          },
+          "rendering": {
+            "status": "failed",
+            "evidence_paths": [
+              "rendering-inspection.json",
+              "render-all/question-012.html",
+              "render-all/question-013.png",
+              "minimal-failures.json"
+            ],
+            "details": "Blank scaffold fragments render as literal Markdown code blocks. Automated MathJax checks missed the visible failure."
+          },
+          "packaging": {
+            "status": "passed",
+            "evidence_paths": [
+              "runtime.json",
+              "packaging-results.json",
+              "review-integrity.json"
+            ],
+            "details": "Exact dependency versions match; relocation and deterministic replay pass. Declared files exist, and package hashes are unchanged."
+          },
+          "decision_variation": {
+            "status": "failed",
+            "evidence_paths": [
+              "pedagogical-variation.json",
+              "counterfactual-results.json",
+              "coverage-results.json",
+              "learner-selection.json",
+              "inventory-reproduction.json",
+              "affected-inventory.json"
+            ],
+            "details": "Interval-copy shortcuts succeed on all 12 targeted cases and their delivered survivors. The exact easy batch survives 5/5 without that cue. All six captured generated inventory records reproduce; none belongs to the demonstrated defective families. Exact future learner frequencies remain unavailable."
+          }
+        },
+        "findings": [
+          {
+            "kind": "source_fidelity",
+            "description": "The captured q-128198 blank family is missing from the package.",
+            "source_refs": [
+              "8363d7a8-d552-504e-a21c-ebf886d548c2 / q-128198"
+            ],
+            "reproduction": "generate_moderate(seed=730033, template=\"q-128198\", parameters={\"a\":1}, profile=\"observed\") raises ValueError(\"Template/level/field mismatch\"). Run reproduce_failures.py.",
+            "requested_change": "Implement the complete source family, including its scaffold, answer, worked solution, replay checks, and coherent variations."
+          },
+          {
+            "kind": "decision_shortcut",
+            "description": "Normal interval restrictions reveal integrated answer expressions, allowing copy-and-power actions to bypass integration.",
+            "source_refs": [
+              "5a2bae15-170e-5e1c-8377-f10d9fc5ad9d / q-79665",
+              "d4faf034-eb8a-55d3-93d9-79b525a402a1 / q-8304",
+              "679701a5-b0c3-5865-adfd-e49e046da668 / q-8303"
+            ],
+            "reproduction": "generate_moderate(730061, template=\"q-79665\", parameters={\"a\":1}) prints x^(3/2)/3+K>0; squaring that printed expression selects the correct answer without integrating. See minimal-failures.json and leak-cases.json.",
+            "requested_change": "Change the family-wide domain wording to preserve valid branch assumptions without supplying computed antiderivatives. Retest conditional shortcuts after delivery filtering."
+          },
+          {
+            "kind": "grading",
+            "description": "The native grader rejects a valid source solution family, while added normal wording excludes that response.",
+            "source_refs": [
+              "778dd5ee-c1ff-5286-be7b-93fe7ada6aaf / q-128191"
+            ],
+            "reproduction": "From evidence_root run /home/jake/Developer/Course_Academy/generate/runs/current/check-engine grader-family-strict-input.json grader-family-strict-report.json. Submission x^2+5 should be accepted because K absorbs +5; actual outcome is rejected, exit 1.",
+            "requested_change": "Retain the strict failing test and identify the missing context-aware solution-family equivalence capability. Do not remove the family or narrow valid source responses to hide it; engine repair is outside this job."
+          },
+          {
+            "kind": "rendering",
+            "description": "Indented captured whitespace renders the blank scaffold as literal code rather than mathematics.",
+            "source_refs": [
+              "778dd5ee-c1ff-5286-be7b-93fe7ada6aaf / q-128191"
+            ],
+            "reproduction": "Run reproduce_failures.py. Default q-128191 with a=1 displays literal $y=-2($ and $+K)^{-1}$ code blocks. See minimal-render/question-001.png and render-all/question-013.png.",
+            "requested_change": "Normalize the served scaffold layout throughout the family while preserving its placeholder and mathematics. Verify screenshots and reject literal mathematical code blocks."
+          }
+        ]
+      },
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186068841/review-0-policy-2-75766812ae9ead5b"
+    }
+  ]
+}

@@ -1,0 +1,164 @@
+{
+  "verdict": "revise",
+  "summary": "Four demonstrated failures: missing source family, interval-based answer leakage, narrowed blank grading, and broken blank rendering. The exact easy batch survives filtering; tested algebra and packaging pass.",
+  "source_analysis": {
+    "skill": "Finding explicit general solutions of first-order separable ODEs by algebraic rearrangement, separation, integration and solving for y.",
+    "reasoning_steps": [
+      "Rearrange/factor the ODE and honor its nonzero and interval restrictions.",
+      "Separate x and y and integrate each side.",
+      "Solve for y, absorb nonzero scales into arbitrary constants, select branches from the domain.",
+      "Select one of five complete expressions, or enter the missing expression in the given explicit solution scaffold."
+    ],
+    "invariants": [
+      "First-order separable equations with elementary antiderivatives; no initial-value fitting, integrating factors or nonseparable equations.",
+      "Preserve source radio versus blank response contract and complete distractor families at replay.",
+      "Preserve nonzero/domain/branch assumptions. Nonzero exponential solutions require nonzero K.",
+      "Requested easy difficulty has no captured easy exercise: canonical polynomial example is the nearest conservative difficulty anchor; do not relabel inverse-trigonometric/involved power forms easy."
+    ],
+    "permitted_variations": [
+      "Change signed small coefficients, linear/quadratic monomial powers and additive terms while retaining the same integration method and workload.",
+      "Change the coefficient sign so the antiderivative/exponent/denominator must change, rather than preserving a sign pattern as an incidental answer cue.",
+      "For supported trigonometric families vary supported sine/cosine roles and signs with dependent antiderivatives; for shifted y family vary the shift coherently.",
+      "Vary which bank member is correct and its position; do not fix a uniquely recognizable expression shape unless it follows from the intended mathematics.",
+      "Vary the missing polynomial term/coefficient in source blank scaffolds; x^2 is an example assignment, not an invariant.",
+      "The positive branch in q-79666 follows y>0; changing a valid branch assumption must change the explicit answer."
+    ],
+    "source_refs": [
+      "canonical e-10833 / 23d66cc8-8e5a-5a33-a7a1-c43f5facdcbc: y′+2xy=0, ln|y|=-x^2+C, y=Ke^{-x^2}",
+      "tutorial 6767 / 56fc1c96-3599-5022-8d83-60d4188ccf07: dy/dx=h(x)g(y); separated (1/g(y))dy/dx=h(x); require g(y) != 0",
+      "tutorial 6766 / dfb65111-b319-54c6-84cc-f60506595a69: separate e^{x-y}, integrate e^y=e^x+C, explicit y=ln(e^x+C)"
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "failed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "source-replay-results.json",
+        "source-bank-comparison.json",
+        "minimal-failures.json"
+      ],
+      "details": "14/15 complete captured exercise families replay, including all 66 bank values and correct designations for supported exercises. q-128198 is absent and rejected."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "independent_math.py",
+        "math-results.json",
+        "exact-algebra.json",
+        "exact-algebra-command.log"
+      ],
+      "details": "93 option-bank checks use independent printed-TeX reading and differentiation, rejecting singleton particular solutions as general answers. All tested keys pass; 81 keyed solutions also simplify exactly to zero ODE residual on a valid positive local branch. Source domain omissions are recorded separately; no global real-domain completeness claim."
+    },
+    "variety": {
+      "status": "failed",
+      "evidence_paths": [
+        "source-replay-results.json",
+        "coverage-results.json",
+        "fresh-seed-coverage.json",
+        "delivery-batch/delivery.json"
+      ],
+      "details": "Easy signs and coefficients vary, and actual batch 5/5 survives with both exponent signs. The independent y=±sqrt(blank+K) source family is suppressed entirely; old fourteen-source declarations do not cover the current fifteen-source evidence."
+    },
+    "scope": {
+      "status": "failed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "source-replay.json",
+        "normal-cases.json",
+        "grader-commands.json"
+      ],
+      "details": "Normal q-128191 adds a nonconstant-polynomial-only restriction to avoid the source arbitrary-K family-equivalence grading limitation. This narrows the original valid response contract. Other tested variations retain elementary separation/integration workload."
+    },
+    "grading": {
+      "status": "failed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-report.json",
+        "grader-family-strict-input.json",
+        "grader-commands.json",
+        "minimal-failures.json"
+      ],
+      "details": "17 ordinary equivalent/correct submissions accepted and 66 wrong submissions rejected by native learning::grade_field. Strict source-family test x^2+5 is wrongly rejected although K absorbs +5. The missing engine capability remains a failing acceptance test."
+    },
+    "rendering": {
+      "status": "failed",
+      "evidence_paths": [
+        "rendering-inspection.json",
+        "render-all/rendering.json",
+        "render-all/question-012.html",
+        "render-all/question-013.png",
+        "minimal-failures.json"
+      ],
+      "details": "Actual UI inspection reveals blank scaffold math rendered literally inside Markdown code blocks at a=1 and a=4. Automated renderer passed because MathJax never processed those code blocks; screenshot and HTML override that automated claim."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "runtime.json",
+        "packaging-results.json",
+        "relocation-samples.json",
+        "review-integrity.json"
+      ],
+      "details": "Exact installed Python 3.13.5 and SymPy 1.14.0 match nested manifest dependencies. Declared files exist; complete package relocation preserves deterministic output. Parameter rejections tested; package hashes unchanged; no DB or publication operations."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "coverage-results.json",
+        "counterfactual-results.json",
+        "learner-selection.json",
+        "inventory-reproduction.json",
+        "affected-inventory.json"
+      ],
+      "details": "Relevant and irrelevant paired updates are coherent, but default interval wording leaks integrated expressions. Copy-and-power rules succeed 4/4 within each of three affected templates and 12/12 after delivery. Exact easy batch has no such leak. All six captured generated inventory entries reproduce; none belongs to the demonstrated defective families."
+    }
+  },
+  "findings": [
+    {
+      "kind": "source_fidelity",
+      "description": "Captured source q-128198 is unsupported: the second blank family y=±(blank+K)^(1/2) is missing from the older package snapshot and dispatch.",
+      "source_refs": [
+        "8363d7a8-d552-504e-a21c-ebf886d548c2 / q-128198",
+        "56fc1c96-3599-5022-8d83-60d4188ccf07 / tutorial 6767"
+      ],
+      "reproduction": "Run reproduce_failures.py. Minimal call: generate_moderate(seed=730033, template=\"q-128198\", parameters={\"a\":1}, profile=\"observed\") raises ValueError(\"Template/level/field mismatch\"). See source-replay-results.json and minimal-failures.json.",
+      "requested_change": "Add the complete captured q-128198 blank family, source replay, dependent scaffold/primitive/solution construction and normal same-method variations. Update all source-count and capability claims."
+    },
+    {
+      "kind": "decision_shortcut",
+      "description": "Normal interval restrictions print the integrated answer-bearing expression. In q-79665, choose the square of the printed expression; in q-8304 choose its power 2/3. These actions bypass integration across changed coefficients and survive delivery. q-8303 similarly prints F+C.",
+      "source_refs": [
+        "5a2bae15-170e-5e1c-8377-f10d9fc5ad9d / q-79665",
+        "d4faf034-eb8a-55d3-93d9-79b525a402a1 / q-8304",
+        "679701a5-b0c3-5865-adfd-e49e046da668 / q-8303",
+        "56fc1c96-3599-5022-8d83-60d4188ccf07 / tutorial 6767"
+      ],
+      "reproduction": "Run reproduce_failures.py. Minimal q-79665: generate_moderate(730061, template=\"q-79665\", parameters={\"a\":1}) prints x^(3/2)/3+K>0; the correct choice is exactly its square. See minimal-failures.json, leak-cases.json, coverage-results.json and render/question-004.png.",
+      "requested_change": "Change the family-wide domain-presentation rule so it states valid local/domain assumptions without giving the computed antiderivative or solved answer expression. Keep branch correctness, then rerun conditional copy-action probes on raw and delivered records."
+    },
+    {
+      "kind": "grading",
+      "description": "The native blank grader rejects a valid source general-solution family: x^2+5 yields -2/(x^2+5+K), identical to -2/(x^2+K) after relabeling arbitrary K. Adding a nonconstant-only instruction in normal output conceals this engine limitation by narrowing the source contract.",
+      "source_refs": [
+        "778dd5ee-c1ff-5286-be7b-93fe7ada6aaf / q-128191",
+        "56fc1c96-3599-5022-8d83-60d4188ccf07 / tutorial 6767"
+      ],
+      "reproduction": "/home/jake/Developer/Course_Academy/generate/runs/current/check-engine grader-family-strict-input.json grader-family-strict-report.json (run from evidence_root). Expected accepted for x^2+5; actual rejected (Ok(false)), exit 1. Exact command and stderr are retained in grader-commands.json and minimal-failures.json.",
+      "requested_change": "Retain the strict failing test and identify the missing context-aware solution-family equivalence capability. Do not drop the blank family or restrict valid source notation as a workaround. Engine repair is outside this job; report that dependency explicitly."
+    },
+    {
+      "kind": "rendering",
+      "description": "The q-128191 prompt preserves deeply indented captured whitespace, so the actual UI turns both surrounding math fragments into literal code blocks. The learner sees $y=-2($ and $+K)^{-1}$ instead of a coherent mathematical scaffold.",
+      "source_refs": [
+        "778dd5ee-c1ff-5286-be7b-93fe7ada6aaf / q-128191"
+      ],
+      "reproduction": "Run reproduce_failures.py, which invokes the shared actual-UI renderer on default q-128191 a=1. See minimal-render/question-001.html and minimal-render/question-001.png; also render-all/question-012.html and question-013.png reproduce it at powers 2 and 5.",
+      "requested_change": "Normalize the served blank-scaffold layout for the whole family, preserving the placeholder and source mathematics while removing Markdown code indentation. Keep raw observed replay as evidence; verify screenshots and assert no literal math code blocks, rather than trusting MathJax error counts alone."
+    }
+  ]
+}

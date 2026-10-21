@@ -1,0 +1,133 @@
+{
+  "verdict": "accepted",
+  "summary": "Current generator and exact batch pass all eight checks. Retained defects are fixed; 732 native responses pass. One historical affected inventory item is documented separately. Package unchanged.",
+  "source_analysis": {
+    "skill": "Solve a first-order separable ODE and isolate its dependent variable in explicit form; select the general solution or fill its designated mathematical factor.",
+    "reasoning_steps": [
+      "Separate h(x)g(y) as dy/g(y)=h(x)dx on a nonzero domain.",
+      "Integrate both sides, retaining one arbitrary constant.",
+      "Invert the dependent-variable antiderivative, rescale or rename the arbitrary constant, and retain both square-root branches where appropriate.",
+      "Compare complete candidate solution families, or provide only the expression requested by a blank."
+    ],
+    "invariants": [
+      "Separation, elementary integration, and explicit inversion are the assessed operations.",
+      "The correct option must represent the full general family on valid local domains, not one particular solution.",
+      "One correct radio option with four mathematically distinct distractors.",
+      "Prompt, answer, bank, and worked solution must refer to the same differential equation and parameters."
+    ],
+    "permitted_variations": [
+      "Small nonzero signed coefficients, low polynomial powers and affine numerators, preserving integration workload.",
+      "Eligible placement and magnitude of coefficients inside and outside inverse functions; derive every option from the resulting equation.",
+      "Shuffle correct answer position and vary distractor mistakes rather than preserving a unique superficial signature.",
+      "Vary easy source family and relevant antiderivative, with constant names or option ordering as irrelevant counterfactuals.",
+      "Moderate-only elementary trig factors and self-contained contextual blank coefficients, retaining their response contracts."
+    ],
+    "source_refs": [
+      "e-10832 / d1de6657-82b1-5bcb-b8cc-fd2629d31faa: y'=x^2/y -> y=+-sqrt(2x^3/3+K)",
+      "q-14257 / c17c4aa5-1ffc-5c4e-9267-85cce391b502: y'=y^2+1 -> tan(x+C), complete five-choice bank",
+      "q-158012 / 088db977-5f34-5d61-a165-97cdc5e6df38: y'=2x/(3y^2) -> cbrt(x^2+C)",
+      "q-3850 / 12b9ca6b-0ddb-5ee4-aeb2-e1fcfdc8bcb6: y'=xe^-y -> ln(x^2/2+C)",
+      "q-51256 / a67e182b-8e5b-5502-83c8-9d36e701587d: y'=6x cbrt(y^2) -> (x^2+C)^3",
+      "q-14251 / 9faaedf3-7c41-5002-95a6-335a2235c1fc: y'=(2x+3)/y -> +-sqrt(2x^2+6x+K)",
+      "q-168077 / 39cc2ed4-7534-5355-9c68-129ad8345d1f: T'= -.03(T-25), blank e^(-.03t)",
+      "q-168070 / b5785d45-e79c-5188-8c0a-65a380b832ea: s'=2s^2, blank -2t",
+      "q-168084 / b071164a-d7dc-50ad-9600-bbe303de9fa0: p'=3e^-p, blank 3t",
+      "tutorial 6766 / dfb65111-b319-54c6-84cc-f60506595a69: 'We can write our general solution in explicit form ... by ... apply the natural logarithm'",
+      "tutorial 6767 / 56fc1c96-3599-5022-8d83-60d4188ccf07: 'Once the variables are separated, we can integrate both sides ... require g(y) != 0.'",
+      "q-14244 / 432fe98f-ffaf-5033-958e-d3cb37de9f8b: Find the general solution to the differential equation ${y}^{′}=y\\operatorname{sin}⁡x$ for $y\\ne 0.$",
+      "q-158013 / 253f761f-d9dd-516e-a877-3691e4e75b8a: Find the general solution to the differential equation ${y}^{′}=\\frac{y}{{cos}^{2}⁡x}$ for $y\\ne 0$ and $-\\frac{\\pi }{2}<x<\\frac{\\pi }{2}.$",
+      "q-158014 / 2c6ab8c9-fca1-56b1-82a8-98c4fa9f8c2c: Find the general solution to the differential equation ${y}^{′}=y\\operatorname{cos}⁡x$ for $y\\ne 0.$",
+      "q-158015 / 4256446e-61ea-5cf5-ad92-3c95c9cc3119: Find the general solution to the differential equation ${y}^{′}={x}^{2}y$ for $y\\ne 0.$",
+      "q-158016 / ec2b6cd2-ba6d-52f7-9530-1a245bad9c0a: Find the general solution to the differential equation ${y}^{′}=\\frac{y}{\\sqrt{1-{x}^{2}}}$ for $y\\ne 0$ and $|x|<1.$",
+      "q-158017 / 594ba672-eefa-575c-8c38-2d0804124171: Find the general solution to the differential equation ${y}^{′}=y\\operatorname{sec}⁡x\\operatorname{tan}⁡x$ for $y\\ne 0$ and $-\\frac{\\pi }{2}<x<\\frac{\\pi }{2}.$"
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay.json",
+        "source-replay-records.json",
+        "canonical-check.json",
+        "retained-findings.json"
+      ],
+      "details": "All 14 captured practice questions replay full banks, keys, prompts, solutions and response types. Canonical mathematics rechecked; no missing source families remain. Canonical hard extension is explicitly not exact prose replay."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "review_checks.py",
+        "math-results.json",
+        "blank-math.json",
+        "batch-records.json"
+      ],
+      "details": "66 easy visible-math cases (330 options), including actual batch and controlled changes, pass exact derivative/primitive/final-solution checks. New blank full solutions independently satisfy their displayed ODEs."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "sampling.json",
+        "shortcut-results.json",
+        "delivery-independent/delivery.json",
+        "delivery-batch/delivery.json"
+      ],
+      "details": "Five easy families and all five signed coefficient roles exercised. Controlled identical banks retain all candidate targets after filtering; 45/46 independent and 5/5 batch records survive."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "scope-results.json",
+        "moderate-current.json"
+      ],
+      "details": "Requested easy samples preserve elementary separation/integration/inversion and source radio contract. Restored blanks preserve their contracts and valid notation; no engine workaround instruction remains."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-final-input.json",
+        "grader-final-results.json",
+        "grader-final-execution.json",
+        "grade_delivery.py",
+        "reciprocal-recheck.json"
+      ],
+      "details": "732 real native checks: 171 accepted, 561 rejected, zero unresolved. Includes source-valid reciprocal/rational exponent forms, wrong entries, stale counterfactual responses and normalized delivered banks."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-pairs/rendering.json",
+        "render-delivered/rendering.json",
+        "render-inspection.json"
+      ],
+      "details": "36 actual-UI previews pass automated checks; representative screenshots inspected for notation, radios, restored blanks, worked solutions and controlled changes."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging.json",
+        "relocation-execution.json",
+        "package-integrity.json"
+      ],
+      "details": "Exact Python 3.13.5 and SymPy 1.14.0 dependency contract, deterministic replay, supported bounds/invalid rejection and relocation pass. All package files remain byte-identical."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "shortcut-results.json",
+        "counterfactual-results.json",
+        "selection-analysis.json",
+        "ui-position-results.json",
+        "affected-inventory.json",
+        "generated-records.json"
+      ],
+      "details": "Relevant/irrelevant changes propagate through math, rendering and native grading. Old shape cue fails on current batch and samples; all candidate identities can become correct under fixed-bank controls. Captured filtering/selection rules examined. One legacy affected stored entry reported separately."
+    }
+  },
+  "findings": []
+}
