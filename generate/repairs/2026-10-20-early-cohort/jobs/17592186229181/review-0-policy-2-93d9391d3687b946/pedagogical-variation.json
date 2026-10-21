@@ -1,0 +1,325 @@
+{
+  "learner_operation": "Infer nutrient entry cr and mixed outflow rQ/V, form and solve Q′=cr-rQ/V with Q(0)=Q0, then select the matching expression; moderate cases also evaluate at t and round.",
+  "fixed_features": [
+    {
+      "feature": "Equal positive inflow/outflow and homogeneous mixing; constant volume",
+      "justification": "Target title specifies Inflow Equals Outflow; tutorial Step 2 keeps volume constant and uses Q/V as exit concentration."
+    },
+    {
+      "feature": "Five-choice single-answer mathematical radio field",
+      "justification": "All ten captured practice records use exactly this response contract; one correct selection is essential to radio, not a freely variable answer-role count."
+    },
+    {
+      "feature": "Positive feed concentration and complementary-plus-constant-particular method",
+      "justification": "Tutorial contrasts this lesson with zero-input dilution; canonical Step 4 derives the inhomogeneous linear solution."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Equilibrium cV and removal coefficient r/V",
+      "eligible_variation": "Vary volume, concentration and equal flow consistently; incorrect choices must not expose the correct coefficient from a fixed bank pattern.",
+      "observed": "Values vary, but exactly two options share equilibrium E; exactly four options share the same t=0 amount. Their unique intersection is always correct."
+    },
+    {
+      "role": "Sign of transient Q0-cV",
+      "eligible_variation": "Both signs preserve the method; decreasing numerical source 8f9ca797-1282-5c7a-958a-6e7a8b023c5c establishes the decreasing case.",
+      "observed": "Fresh easy sample: 47 increasing and 13 decreasing. Delivered runner batch: 4 increasing and 1 decreasing. Cue succeeds in both subgroups."
+    },
+    {
+      "role": "Which visible choice is correct",
+      "eligible_variation": "Position, coefficients and incorrect-bank relationships may vary while exactly one function solves the IVP.",
+      "observed": "Position is shuffled, but the same complete method_bank fingerprint always identifies the correct choice without the prompt."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "Current-source expression-bank profiles",
+      "sample_refs": [
+        "source-original-records.json",
+        "source-replay.json",
+        "source-replay-detail.json"
+      ],
+      "result": "Captured source banks require rate and/or equilibrium distinctions; one current profile loses solution/key/difficulty, and three captured profiles are unavailable. Raw bank typography is not treated as mathematical mismatch."
+    },
+    {
+      "case": "Increasing and decreasing transient",
+      "sample_refs": [
+        "easy-samples.json",
+        "math-results.json",
+        "shortcut-results.json"
+      ],
+      "result": "Both cases occur, but prompt-free strategy answers 60/60; 47/47 increasing and 13/13 decreasing."
+    },
+    {
+      "case": "Exact runner batch after real shared filtering",
+      "sample_refs": [
+        "batch.json",
+        "delivery-batch/accepted.json",
+        "delivery-analysis.json"
+      ],
+      "result": "5 input, 0 duplicates, 5 accepted; bank-only shortcut answers all five, not merely a defect in a larger auxiliary sample."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Hold V=500, c=.02, r=25 and context fixed; change Q0 from 7 to 13.",
+      "expected": "Swap 10-3e^{-t/20} and 10+3e^{-t/20} between correct and wrong roles. Prompt and explanation must reflect changed initial amount.",
+      "observed": "Both expressions occur in both banks and swap roles; native grader rejects the old visible expression and accepts the new one. Rendered initial-value calculation changes from A=-3 to A=3.",
+      "status": "passed",
+      "justification": "Canonical initial condition determines the complementary constant; this change must reverse its sign.",
+      "sample_refs": [
+        "counterfactual-inputs.json",
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-report.json",
+        "render-counterfactual/rendering.json",
+        "render-inspection.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "Hold V=500, c=.02, Q0=7 and context fixed; change both equal flows from 25 to 20.",
+      "expected": "Equilibrium remains 10, but time constant changes from 20 to 25.",
+      "observed": "Prompt, rate-in/out derivation, final expression and selected answer change consistently; native grader accepts 10-3e^{-t/25} and rejects all four distractors. Actual UI screenshot inspected.",
+      "status": "passed",
+      "justification": "Rate r/V controls the exponential independently of equilibrium cV.",
+      "sample_refs": [
+        "counterfactual-inputs.json",
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "math-results.json",
+        "grader-report.json",
+        "render-inspection.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Hold all numeric inputs fixed; replace coolant tank/additive with dye vat/dye.",
+      "expected": "Preserve Q(t), while changing context words in prompt and explanation.",
+      "observed": "Correct visible expression stays 10-3e^{-t/20}; native grader accepts it for both records. Context changes display in prompt and worked solution.",
+      "status": "passed",
+      "justification": "Canonical mass balance depends on quantities, concentration and flow; substance/container names do not alter it.",
+      "sample_refs": [
+        "counterfactual-inputs.json",
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-report.json",
+        "render-inspection.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "Repeated leading constant and modal sum of constant plus signed exponential coefficient",
+      "subgroup": "raw easy",
+      "scope": "overall",
+      "strategy": "Ignore prompt. Find the constant repeated in exactly two options; find t=0 value repeated in four options; select their unique intersection.",
+      "correct": 60,
+      "total": 60,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "60/60 correct versus .20 random-choice baseline. This bank fingerprint needs no volume, flow, feed concentration or initial condition from the prompt, and bypasses constructing/solving the mixture model.",
+      "sample_refs": [
+        "easy-samples.json",
+        "shortcut-results.json",
+        "minimal-failure.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Repeated leading constant and modal sum of constant plus signed exponential coefficient",
+      "subgroup": "exact runner batch",
+      "scope": "overall",
+      "strategy": "Ignore prompt. Find the constant repeated in exactly two options; find t=0 value repeated in four options; select their unique intersection.",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "5/5 correct versus .20 random-choice baseline. This bank fingerprint needs no volume, flow, feed concentration or initial condition from the prompt, and bypasses constructing/solving the mixture model.",
+      "sample_refs": [
+        "batch.json",
+        "shortcut-results.json",
+        "minimal-failure.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Repeated leading constant and modal sum of constant plus signed exponential coefficient",
+      "subgroup": "increasing",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Ignore prompt. Find the constant repeated in exactly two options; find t=0 value repeated in four options; select their unique intersection.",
+      "correct": 47,
+      "total": 47,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "47/47 correct versus .20 random-choice baseline. This bank fingerprint needs no volume, flow, feed concentration or initial condition from the prompt, and bypasses constructing/solving the mixture model.",
+      "sample_refs": [
+        "easy-samples.json",
+        "shortcut-results.json",
+        "minimal-failure.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Repeated leading constant and modal sum of constant plus signed exponential coefficient",
+      "subgroup": "decreasing",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Ignore prompt. Find the constant repeated in exactly two options; find t=0 value repeated in four options; select their unique intersection.",
+      "correct": 13,
+      "total": 13,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "13/13 correct versus .20 random-choice baseline. This bank fingerprint needs no volume, flow, feed concentration or initial condition from the prompt, and bypasses constructing/solving the mixture model.",
+      "sample_refs": [
+        "easy-samples.json",
+        "shortcut-results.json",
+        "minimal-failure.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Repeated leading constant and modal sum of constant plus signed exponential coefficient",
+      "subgroup": "coolant",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Ignore prompt. Find the constant repeated in exactly two options; find t=0 value repeated in four options; select their unique intersection.",
+      "correct": 16,
+      "total": 16,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "16/16 correct versus .20 random-choice baseline. This bank fingerprint needs no volume, flow, feed concentration or initial condition from the prompt, and bypasses constructing/solving the mixture model.",
+      "sample_refs": [
+        "easy-samples.json",
+        "shortcut-results.json",
+        "minimal-failure.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Repeated leading constant and modal sum of constant plus signed exponential coefficient",
+      "subgroup": "disinfectant",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Ignore prompt. Find the constant repeated in exactly two options; find t=0 value repeated in four options; select their unique intersection.",
+      "correct": 8,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "8/8 correct versus .20 random-choice baseline. This bank fingerprint needs no volume, flow, feed concentration or initial condition from the prompt, and bypasses constructing/solving the mixture model.",
+      "sample_refs": [
+        "easy-samples.json",
+        "shortcut-results.json",
+        "minimal-failure.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Repeated leading constant and modal sum of constant plus signed exponential coefficient",
+      "subgroup": "dye",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Ignore prompt. Find the constant repeated in exactly two options; find t=0 value repeated in four options; select their unique intersection.",
+      "correct": 6,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "6/6 correct versus .20 random-choice baseline. This bank fingerprint needs no volume, flow, feed concentration or initial condition from the prompt, and bypasses constructing/solving the mixture model.",
+      "sample_refs": [
+        "easy-samples.json",
+        "shortcut-results.json",
+        "minimal-failure.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Repeated leading constant and modal sum of constant plus signed exponential coefficient",
+      "subgroup": "pollutant",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Ignore prompt. Find the constant repeated in exactly two options; find t=0 value repeated in four options; select their unique intersection.",
+      "correct": 9,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "9/9 correct versus .20 random-choice baseline. This bank fingerprint needs no volume, flow, feed concentration or initial condition from the prompt, and bypasses constructing/solving the mixture model.",
+      "sample_refs": [
+        "easy-samples.json",
+        "shortcut-results.json",
+        "minimal-failure.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Repeated leading constant and modal sum of constant plus signed exponential coefficient",
+      "subgroup": "salt",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Ignore prompt. Find the constant repeated in exactly two options; find t=0 value repeated in four options; select their unique intersection.",
+      "correct": 9,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "9/9 correct versus .20 random-choice baseline. This bank fingerprint needs no volume, flow, feed concentration or initial condition from the prompt, and bypasses constructing/solving the mixture model.",
+      "sample_refs": [
+        "easy-samples.json",
+        "shortcut-results.json",
+        "minimal-failure.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Repeated leading constant and modal sum of constant plus signed exponential coefficient",
+      "subgroup": "sugar",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Ignore prompt. Find the constant repeated in exactly two options; find t=0 value repeated in four options; select their unique intersection.",
+      "correct": 6,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "6/6 correct versus .20 random-choice baseline. This bank fingerprint needs no volume, flow, feed concentration or initial condition from the prompt, and bypasses constructing/solving the mixture model.",
+      "sample_refs": [
+        "easy-samples.json",
+        "shortcut-results.json",
+        "minimal-failure.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "cue": "Repeated leading constant and modal sum of constant plus signed exponential coefficient",
+      "subgroup": "supplement",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Ignore prompt. Find the constant repeated in exactly two options; find t=0 value repeated in four options; select their unique intersection.",
+      "correct": 6,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "6/6 correct versus .20 random-choice baseline. This bank fingerprint needs no volume, flow, feed concentration or initial condition from the prompt, and bypasses constructing/solving the mixture model.",
+      "sample_refs": [
+        "easy-samples.json",
+        "shortcut-results.json",
+        "minimal-failure.json",
+        "grader-report.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "whole-instance rejection/resampling in sample/check_params/generate",
+      "actual requested-difficulty and validation filter",
+      "actual normalization and captured-inventory/within-batch deduplication",
+      "difficulty-first selection and history exclusion, with explicit read-only local selection fixtures"
+    ],
+    "sample_refs": [
+      "delivery-sample/delivery.json",
+      "delivery-sample/accepted.json",
+      "delivery-batch/delivery.json",
+      "delivery-batch/accepted.json",
+      "delivery-analysis.json",
+      "grader-delivery-report.json"
+    ],
+    "result": "All 60 sampled and all 5 runner easy records survive filtering and retain the shortcut. Selection cannot remove the cue from any selected member or nonempty subset of this generated pool. Existing original easy banks are a distinct subgroup; do not claim the entire merged inventory is vulnerable."
+  },
+  "limitations": [
+    "Captured inventory basis 5397; live concurrent changes can alter future deduplication.",
+    "No publication/preparation.json exists; the publisher shared prepare_records path was exercised read-only.",
+    "Actual policy weights, histories and future assigned IDs are unavailable; selection fixtures condition on easy and explicitly use local IDs.",
+    "Finite testing does not exclude other shortcuts. The easy bank-only defect is algebraically universal for the inspected construction rule.",
+    "Captured hard-difficulty calibration is absent; requested-easy decision claims do not rely on the auxiliary hard samples."
+  ]
+}

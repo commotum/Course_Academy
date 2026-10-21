@@ -1,0 +1,177 @@
+{
+  "format": 1,
+  "findings": [
+    {
+      "id": "74aa801dd2f129f96a94",
+      "finding": {
+        "kind": "decision_shortcut",
+        "description": "Ignore the prompt: exactly two options share a leading constant, and exactly four share their value at t=0. Their unique intersection is always correct. This bypasses constructing or solving the dilution model and answers every delivered batch member.",
+        "source_refs": [
+          "6b62d830-be21-5734-8a12-115b6a5136bf: Steps 1\u20134",
+          "tutorial fc8b0fc6-c25c-50f5-adbd-028adf7c6698",
+          "55a40904-7261-506e-bb45-5a9e0fad5627"
+        ],
+        "reproduction": "Run the context Python on acceptance_regressions.py; it exits 1. Minimal case: generate_easy(seed=81031), with V=700, r=20, c=1/100, q0=3. Only constant 7 appears twice; four options evaluate to 3 at t=0, identifying 7-4e^{-t/35} without reading the prompt. Complete record and proof: minimal-failure.json.",
+        "requested_change": "Change the family-wide bank construction so shared equilibrium, initial-value and rate relationships do not consistently isolate the key. Preserve source-supported five-choice practice, retain the strict regression, and regenerate the five-question batch."
+      },
+      "source_hash": "ad1f38de8941a2ebd50cb9df452cbcbd2a32d2f2b576c7cd45ae8ea5f9715072",
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186229181/review-0-policy-2-93d9391d3687b946",
+      "attempt": 0
+    },
+    {
+      "id": "7886ce4ab282d3d4cd61",
+      "finding": {
+        "kind": "source_fidelity",
+        "description": "Public replay retains stale seven-profile masks. One current source loses its present solution, correct link and difficulty; three additional captured profiles are unavailable.",
+        "source_refs": [
+          "872cac41-3a52-503a-bac8-64cc582ee5f1",
+          "23f15773-7029-5dc4-9ea6-d17c6a8daaa9",
+          "554f59f6-c41f-55e2-8f84-8c2aab7670ec",
+          "63623e2d-9a1a-53b1-a242-66f71be1ef8a"
+        ],
+        "reproduction": "generate('easy',61829,template='source_17592186229724') omits current attributes. generate('easy',61829,template='source_17592186502108') raises ValueError('unknown source template'). The same occurs for source_17592186502082 at easy and source_17592186502104 at moderate. See source-replay.json.",
+        "requested_change": "Refresh public replay against all ten current captured practice records, including complete banks and present attributes. Preserve genuinely missing source attributes rather than inventing them."
+      },
+      "source_hash": "ad1f38de8941a2ebd50cb9df452cbcbd2a32d2f2b576c7cd45ae8ea5f9715072",
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186229181/review-0-policy-2-93d9391d3687b946",
+      "attempt": 0
+    }
+  ],
+  "events": [
+    {
+      "attempt": 0,
+      "package_hash": "3acd6c96f5d3171255887738180a312055340022fc9bec11f67c65cfd77505ca",
+      "reason": {
+        "verdict": "revise",
+        "summary": "Two demonstrated failures: a prompt-free choice-bank shortcut answers all 60 fresh easy samples and all five delivered batch questions; current source replay is stale and incomplete. Package files remain unchanged.",
+        "source_analysis": {
+          "skill": "Constructing and solving a constant-volume dilution model with equal inflow and outflow.",
+          "reasoning_steps": [
+            "Calculate incoming mass rate cr and outgoing mass rate rQ/V.",
+            "Solve Q\u2032+(r/V)Q=cr.",
+            "Apply Q(0)=Q0 to obtain Q(t)=cV+(Q0-cV)e^(-rt/V).",
+            "Select the matching expression; numerical cases additionally evaluate and round."
+          ],
+          "invariants": [
+            "Equal positive flows, constant volume and complete mixing.",
+            "Positive incoming concentration.",
+            "Five-choice mathematical radio response.",
+            "Correct function satisfies both the differential equation and initial condition."
+          ],
+          "permitted_variations": [
+            "Vary volume, flow, concentration, initial mass and context consistently.",
+            "Vary transient sign, correct-choice position and distractor relationships without introducing answer-bearing bank cues."
+          ],
+          "source_refs": [
+            "6b62d830-be21-5734-8a12-115b6a5136bf: Steps 1\u20134 and initial condition",
+            "tutorial fc8b0fc6-c25c-50f5-adbd-028adf7c6698: concentration-times-flow, constant volume and initial-value model",
+            "55a40904-7261-506e-bb45-5a9e0fad5627",
+            "e940f8bd-b1c9-5052-8127-7c721b39ac69",
+            "8f9ca797-1282-5c7a-958a-6e7a8b023c5c"
+          ],
+          "evidence_paths": [
+            "source-analysis.json"
+          ]
+        },
+        "checks": {
+          "source_replay": {
+            "status": "failed",
+            "evidence_paths": [
+              "source-replay.json",
+              "source-replay-detail.json",
+              "acceptance-regressions.json"
+            ],
+            "details": "Six of ten current practice profiles replay. One loses present solution/key/difficulty attributes; three throw unknown source template."
+          },
+          "math": {
+            "status": "passed",
+            "evidence_paths": [
+              "math-results.json",
+              "source-math.json",
+              "counterfactual-results.json"
+            ],
+            "details": "Independent checks passed for 84 generated, batch and controlled records. All ten captured source banks have a unique mathematically valid answer."
+          },
+          "variety": {
+            "status": "failed",
+            "evidence_paths": [
+              "shortcut-results.json",
+              "delivery-analysis.json"
+            ],
+            "details": "Numbers, contexts, positions and transient signs vary, but every default easy bank preserves the same prompt-free answer-producing pattern."
+          },
+          "scope": {
+            "status": "passed",
+            "evidence_paths": [
+              "scope-analysis.json",
+              "samples.json"
+            ],
+            "details": "Requested easy output retains the source method, workload and response format. Higher-difficulty calibration limitations are recorded."
+          },
+          "grading": {
+            "status": "passed",
+            "evidence_paths": [
+              "grader-report.json",
+              "grader-delivery-report.json",
+              "counterfactual-results.json"
+            ],
+            "details": "The native grader produced all expected outcomes across 924 checks, including wrong choices, delivered records and controlled role swaps; none unresolved."
+          },
+          "rendering": {
+            "status": "passed",
+            "evidence_paths": [
+              "render/rendering.json",
+              "render-counterfactual/rendering.json",
+              "render-inspection.json"
+            ],
+            "details": "Actual UI rendering passed. Representative screenshots of prompts, radio controls and worked solutions were inspected."
+          },
+          "packaging": {
+            "status": "passed",
+            "evidence_paths": [
+              "packaging.json",
+              "package-integrity.json"
+            ],
+            "details": "Exact dependency versions, deterministic replay, relocation and invalid-parameter rejection passed. Package hashes are unchanged."
+          },
+          "decision_variation": {
+            "status": "failed",
+            "evidence_paths": [
+              "pedagogical-variation.json",
+              "minimal-failure.json",
+              "acceptance_regressions.py",
+              "delivery-analysis.json"
+            ],
+            "details": "The bank-only strategy succeeds 60/60 before and after filtering and 5/5 on the exact delivered batch, including every tested context and both transient-sign subgroups."
+          }
+        },
+        "findings": [
+          {
+            "kind": "decision_shortcut",
+            "description": "Ignore the prompt: exactly two options share a leading constant, and exactly four share their value at t=0. Their unique intersection is always correct. This bypasses constructing or solving the dilution model and answers every delivered batch member.",
+            "source_refs": [
+              "6b62d830-be21-5734-8a12-115b6a5136bf: Steps 1\u20134",
+              "tutorial fc8b0fc6-c25c-50f5-adbd-028adf7c6698",
+              "55a40904-7261-506e-bb45-5a9e0fad5627"
+            ],
+            "reproduction": "Run the context Python on acceptance_regressions.py; it exits 1. Minimal case: generate_easy(seed=81031), with V=700, r=20, c=1/100, q0=3. Only constant 7 appears twice; four options evaluate to 3 at t=0, identifying 7-4e^{-t/35} without reading the prompt. Complete record and proof: minimal-failure.json.",
+            "requested_change": "Change the family-wide bank construction so shared equilibrium, initial-value and rate relationships do not consistently isolate the key. Preserve source-supported five-choice practice, retain the strict regression, and regenerate the five-question batch."
+          },
+          {
+            "kind": "source_fidelity",
+            "description": "Public replay retains stale seven-profile masks. One current source loses its present solution, correct link and difficulty; three additional captured profiles are unavailable.",
+            "source_refs": [
+              "872cac41-3a52-503a-bac8-64cc582ee5f1",
+              "23f15773-7029-5dc4-9ea6-d17c6a8daaa9",
+              "554f59f6-c41f-55e2-8f84-8c2aab7670ec",
+              "63623e2d-9a1a-53b1-a242-66f71be1ef8a"
+            ],
+            "reproduction": "generate('easy',61829,template='source_17592186229724') omits current attributes. generate('easy',61829,template='source_17592186502108') raises ValueError('unknown source template'). The same occurs for source_17592186502082 at easy and source_17592186502104 at moderate. See source-replay.json.",
+            "requested_change": "Refresh public replay against all ten current captured practice records, including complete banks and present attributes. Preserve genuinely missing source attributes rather than inventing them."
+          }
+        ]
+      },
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186229181/review-0-policy-2-93d9391d3687b946"
+    }
+  ]
+}

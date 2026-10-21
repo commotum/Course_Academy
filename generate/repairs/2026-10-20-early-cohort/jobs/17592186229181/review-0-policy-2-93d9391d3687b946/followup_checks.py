@@ -39,7 +39,7 @@ for orig in s['material']['kp'][':knowledge-point/questions']:
  if key(q) is None:continue
  field=q[':question/answer-fields'][0];field[':answer-field/type']=field[':answer-field/type'][':db/ident'];field[':answer-field/correct']=[':answer/id',key(q)]
  for a in field[':answer-field/choices']:a[':answer/type']=a[':answer/type'][':db/ident']
- rec={'knowledge_point':{'title':s['material']['kp'][':knowledge-point/title']},'question':q,'generation':{'template':'captured-source-interface-normalization','source_id':q[':question/id']}}
+ rec={'knowledge_point':{'title':s['material']['kp'][':knowledge-point/title']},'question':q,'provenance':{'kind':'captured_original','interface_conversion':'enum and correct lookup only','source_id':q[':question/id']}}
  source_records.append(rec)
  grade.append({'label':'current-source-'+q[':question/id'],'record':rec,'checks':[{'submitted_answer_id':a[':answer/id'],'expected':'accepted' if a[':answer/id'] in truths else 'rejected','purpose':'independent math oracle for captured original; enum and lookup interface conversion only'} for a in field[':answer-field/choices']]})
 write('source-math.json',{'cases':source_cases,'note':'No original is classified as generated. One missing source key is retained as missing, not supplied to native harness.'});write('source-original-records.json',source_records)

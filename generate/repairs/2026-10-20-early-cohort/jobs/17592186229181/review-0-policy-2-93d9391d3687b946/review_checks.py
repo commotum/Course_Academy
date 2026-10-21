@@ -76,12 +76,13 @@ for q in source['material']['kp'][':knowledge-point/questions']:
  sid=str(q[':db/id']);level='moderate' if 'rounded' in q[':question/problem'] else 'easy'
  try:
   rec=m.generate(level,61829,template='source_'+sid);replays.append(rec);rq=rec['question']
-  bank=lambda x:sorted(a[':answer/value'] for a in x[':question/answer-fields'][0][':answer-field/choices'])
-  fields=[':question/problem',':question/worked-solution',':question/difficulty']
+  norm=lambda x:re.sub(r'\s+','',x).replace('{e}','e')
+  bank=lambda x:sorted(norm(a[':answer/value']) for a in x[':question/answer-fields'][0][':answer-field/choices'])
+  fields=[':question/worked-solution',':question/difficulty']
   differences=[f for f in fields if rq.get(f)!=q.get(f) and not (f==':question/difficulty' and rq.get(f)==q.get(f,{}).get(':db/ident'))]
   if bank(rq)!=bank(q):differences.append('complete bank')
   if bool(key(rq))!=bool(key(q)):differences.append('correct-link presence')
-  source_results.append({'source_id':q[':question/id'],'entity_id':sid,'level':level,'replay_id':rq[':question/id'],'differences':differences,'passed':not differences})
+  source_results.append({'source_id':q[':question/id'],'entity_id':sid,'level':level,'replay_id':rq[':question/id'],'differences':differences,'prompt_bytes_match':rq[':question/problem']==q[':question/problem'],'passed':not differences})
  except ValueError as e:source_results.append({'source_id':q[':question/id'],'entity_id':sid,'level':level,'error':str(e),'passed':False})
 write('source-replay-records.json',replays);write('source-replay.json',{'cases':source_results,'canonical':'No canonical bank captured; canonical math independently derived in source-analysis.json.','passed':all(x['passed'] for x in source_results)})
 # Source-independent shortcut measurements, separated by signs, contextual subgroup and delivered batch.
