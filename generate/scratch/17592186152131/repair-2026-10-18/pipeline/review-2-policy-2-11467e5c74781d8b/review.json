@@ -1,0 +1,124 @@
+{
+  "verdict": "accepted",
+  "summary": "All eight checks passed. No reproducible generator defect found. Exact arithmetic, real grading, actual UI, controlled target changes, conditional shortcuts and read-only delivery were checked; package unchanged. Conclusions use captured inventory basis4319 and stated learner-selection limits.",
+  "source_analysis": {
+    "skill": "Convert a positive numerical radical to the same radicand raised to the unit fractional exponent reciprocal to its root index.",
+    "reasoning_steps": [
+      "Identify x and n in sqrt[n]{x}.",
+      "Treat an unindexed square root as n=2.",
+      "Form x^(1/n), select its equivalent choice, and explain using the radical/exponent identity."
+    ],
+    "invariants": [
+      "Radical to unit fractional exponent direction.",
+      "One numerical radical; no added algebra or multi-step simplification.",
+      "Correct expression preserves radicand and uses reciprocal root index.",
+      "Five radio math options with exactly one correct answer for captured question profiles."
+    ],
+    "permitted_variations": [
+      "Vary positive radicand and index while avoiding duplicate/equivalent distractors.",
+      "Include implicit square-root and explicit indexed-root cases.",
+      "Vary which numeral is radicand versus index; the source examples do not justify fixing their magnitude ordering.",
+      "Permute correct choice position and distractor presentation; alternative same-skill distractor profiles require checking for structural cues.",
+      "Vary the three observed prompt wordings without changing required reasoning."
+    ],
+    "source_refs": [
+      "e-4959 / 87e686a5-7b8a-529b-a8fa-17445c52e012: Express sqrt[5]{4} using a fractional exponent; solution identifies x=4,n=5 and 4^(1/5).",
+      "q-69158 / a6a09e66-f069-5046-85e4-002d5b3571d6: What is sqrt[7]{2}? Complete bank: 2^(1/7),1^(2/7),2^(7/1),7^(2/1),7^(1/2). No captured key/solution; first entry correct by tutorial identity.",
+      "q-69219 / 5ecc3edc-ec35-5d73-a402-e0e102dfec06: sqrt{10}=; bank 2^(10/1),2^(1/10),10^(2/1),10^(1/2),5; key 10^(1/2).",
+      "q-69218 / fe9954e2-d8b5-5670-b2ae-c502beed2e2e: sqrt[3]{5}=; bank 1^(5/3),5^(3/1),3^(5/1),3^(1/5),5^(1/3); key 5^(1/3).",
+      "Tutorial 3293 / ace9adb3-54cf-5410-b2e4-d0e8ae4fb000, Introduction: Given a radical sqrt[n]{x}, we can write an equivalent expression using the fractional exponent x^(1/n). Example sqrt[7]{3}=3^(1/7). Note: square root corresponds to n=2; sqrt{3}=3^(1/2).",
+      "Lesson step 17989 / 5a64cf15-703f-5617-8fd4-5055abf5ad57 embeds e-4959; neighboring steps 17817/17818 cover other conversion directions and non-unit powers, excluded here."
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "source-replay.json"
+      ],
+      "details": "All three captured question prompts, complete five-choice banks and available solutions replay. Missing q-69158 fields explicitly inferred; canonical operation verified without inventing its absent bank."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "profile-results.json",
+        "profile-records.json",
+        "scope-results.json"
+      ],
+      "details": "Independent served-text parser and exact prime-exponent arithmetic verify unique banks, one correct choice, substitutions and final equalities across10,310 record checks including7396 profile records and2560 fresh trial records; no failures."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "coverage-results.json",
+        "profile-results.json",
+        "sample-runs.json",
+        "boundary-results.json",
+        "delivery/delivery.json",
+        "profile-delivery/delivery.json",
+        "batch-delivery/delivery.json"
+      ],
+      "details": "All126 supported semantic targets,1765 indexed banks,21 square pairs, both role orderings, all5 answer positions and authored foil slots exercised. Filtering retains complete target groups and all5 runner items."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "scope-results.json",
+        "source-replay.json",
+        "profile-records.json"
+      ],
+      "details": "Only direct radical-to-unit-fraction mapping and five-choice radio response. Positive decimals are copied tokens under tutorial identity, requiring no decimal evaluation; easy workload preserved. Conservative numeric exclusions documented."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-results.json",
+        "grading-summary.json",
+        "counterfactual-results.json"
+      ],
+      "details": "Actual native grade_field:7801 accepted correct selections,31204 rejected distractors,0 unresolved; all5 choices tested per case, including source, controls, delivered profiles and actual batch. Source contract has no free-entry fields."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render-records.json",
+        "render-all/rendering.json",
+        "render-inspection.json",
+        "render-all/question-001.png",
+        "render-all/question-007.png",
+        "render-all/question-009.png"
+      ],
+      "details": "18 unmodified-UI previews pass MathJax/font/image/JS checks.11 representative screenshots inspected, including relevant and irrelevant pairs, decimal radicands, source bank and runner sample; no layout or notation defects."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "package-before.json",
+        "packaging-results.json",
+        "relocation-sample.json",
+        "boundary-results.json",
+        "commands.json"
+      ],
+      "details": "Declared runtime files relocate and replay deterministically. Exact Python3.13.5 matches manifest; packages={} matches standard-library imports. Invalid difficulty/count/parameters rejected. No generated assets/external outputs; package hashes unchanged."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "counterfactual-results.json",
+        "conditional-shortcuts.json",
+        "shortcut-results.json",
+        "postdelivery-bank-results.json"
+      ],
+      "details": "Eligible answer-bearing assignments were tested independently of author slots. Fixed-bank controls change accepted answers correctly; irrelevant reordering preserves value. Old square-bank cue15/29 versus1/2 baseline; indexed foil cue near1/4. Conditional profile probes equal appropriate chance baselines. Distribution checked after normalization/deduplication and modeled learner selection with explicit policy/history limits."
+    }
+  },
+  "findings": []
+}
