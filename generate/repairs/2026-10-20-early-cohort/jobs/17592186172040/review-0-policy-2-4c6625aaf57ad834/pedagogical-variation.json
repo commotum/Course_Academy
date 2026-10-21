@@ -1,0 +1,280 @@
+{
+  "learner_operation": "Determine the variables on which the RHS depends; inspect constancy or variation of segment slopes along fixed-x and fixed-y lines; select the unique field satisfying (or violating) the specified dependence. Explicit-equation questions must also depict that equation rather than merely an arbitrary two-variable field.",
+  "fixed_features": [
+    {
+      "feature": "One uniquely qualifying image in each radio bank",
+      "justification": "Single radio answer, as in all captured practice fields; uniqueness is essential, position and shape are not."
+    },
+    {
+      "feature": "Moderate explicit RHS depends on both x and y",
+      "justification": "The target tutorial 17592186172978 and all three complete moderate sources assess the contrast with one-variable dependence. The only-both rule is explicitly taught, so it is not an incidental shortcut."
+    },
+    {
+      "feature": "Could in moderate, cannot in hard",
+      "justification": "Matches the observed difficulty split; source q-96477 is unrated and its hard assignment is explicitly authored."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Selected image and choice position",
+      "eligible_variation": "Permute positions and change target image consistently with the equation.",
+      "observed": "Fresh samples vary selected position; sign counterfactual changes the correct plotted field, served formula and solution references."
+    },
+    {
+      "role": "Impossible outlier direction",
+      "eligible_variation": "Either x-only or y-only as witnessed by source q-98229 versus q-98231.",
+      "observed": "Both hard templates sampled; controlled change preserves four alternatives while replacing outlier and changing directional explanation."
+    },
+    {
+      "role": "Appearance and distractors",
+      "eligible_variation": "Coefficients, signs, product exponents, mixed orientation, one-variable shapes; retain the dependence reasoning and comparable styling.",
+      "observed": "30 fresh records cover six templates; six boundary records add exponential hard outliers and scaled empirical banks. Canonical exact bank replay is separately failed, not counted as variety."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "Moderate explicit product, mixed and exponential",
+      "sample_refs": [
+        "fresh-moderate.json",
+        "math-results.json",
+        "prompt-math.json",
+        "delivery-moderate/accepted.json"
+      ],
+      "result": "Five independently chosen seeds per template; all 15 retained, keys agree with actual serialized plotted slopes and served equations."
+    },
+    {
+      "case": "Hard x-only versus y-only outlier",
+      "sample_refs": [
+        "fresh-hard.json",
+        "counterfactual-records.json",
+        "boundary-records.json",
+        "boundary-results.json"
+      ],
+      "result": "Five fresh examples per direction plus exponential boundary outliers and scaled replay profiles; directional roles vary correctly."
+    },
+    {
+      "case": "Exact runner batch",
+      "sample_refs": [
+        "batch-records.json",
+        "delivery-batch/accepted.json",
+        "shortcut-results.json"
+      ],
+      "result": "Five of five retained: exponential 2, product 2, mixed 1. Correct displayed indices (zero based) 3,1,0,0,2. No single fixed position answers the batch."
+    },
+    {
+      "case": "Delivery and selection mapping",
+      "sample_refs": [
+        "delivery-moderate/delivery.json",
+        "delivery-hard/delivery.json",
+        "selection-results.json"
+      ],
+      "result": "All sampled default cases survive difficulty/dedup. Actual selection rules are uniform within the chosen eligible rated band; fresh-pool synthetic draws retain all moderate templates and both hard directions. History and live policy weights are not supplied; their exclusions cannot be claimed balanced."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Product a=1 to a=-1 with seed 8723 and other parameters fixed.",
+      "expected": "Prompt becomes -xy; correct plot and solution-image references must change; correct image accepts and each alternative rejects.",
+      "observed": "Prompt, target plot and references change together; all five choices were tested by native grader in each case and both UI instances rendered.",
+      "status": "passed",
+      "justification": "The explicit RHS determines the slopes, not merely a dependence label.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-input.json",
+        "grader-report.json",
+        "render-controls/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "Hard impossible_x to impossible_y, parameters and seed 8723 fixed.",
+      "expected": "Four both-variable alternatives remain; outlier changes its dependence, correct image and explanation switch vertical/horizontal constancy.",
+      "observed": "Four images preserved; key image changes; generic prompt correctly stays the same; solution switches missing y to missing x, guide changes, native outcomes all agree.",
+      "status": "passed",
+      "justification": "Either missing-coordinate assignment is eligible per q-98229 and q-98231.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-report.json",
+        "render-controls/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Change single=linear to single=exp in moderate product, retaining other parameters and seed.",
+      "expected": "This hard-only slot must not affect the moderate question, image key, solution or grader.",
+      "observed": "Question objects and key image are identical; native outcomes identical; separate UI captures passed.",
+      "status": "passed",
+      "justification": "The source moderate operation concerns its displayed product and dependence; unused hard-outlier metadata is irrelevant.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-report.json",
+        "render-controls/rendering.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "Answer position",
+      "subgroup": "fresh/overall",
+      "scope": "overall",
+      "strategy": "Always choose the first displayed option",
+      "correct": 7,
+      "total": 30,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. First-choice strategy succeeds 7/30; even the post-hoc best constant position succeeds only 10/30. These finite counts do not establish a reliable incidental rule.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "fresh-records.json"
+      ]
+    },
+    {
+      "cue": "Answer position",
+      "subgroup": "fresh/possible_exp",
+      "scope": "within_template",
+      "strategy": "Always choose the first displayed option",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. First-choice strategy succeeds 0/5; even the post-hoc best constant position succeeds only 2/5. These finite counts do not establish a reliable incidental rule.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "fresh-records.json"
+      ]
+    },
+    {
+      "cue": "Answer position",
+      "subgroup": "fresh/possible_mixed",
+      "scope": "within_template",
+      "strategy": "Always choose the first displayed option",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. First-choice strategy succeeds 0/5; even the post-hoc best constant position succeeds only 2/5. These finite counts do not establish a reliable incidental rule.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "fresh-records.json"
+      ]
+    },
+    {
+      "cue": "Answer position",
+      "subgroup": "fresh/impossible_x",
+      "scope": "within_template",
+      "strategy": "Always choose the first displayed option",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. First-choice strategy succeeds 3/5; even the post-hoc best constant position succeeds only 3/5. These finite counts do not establish a reliable incidental rule.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "fresh-records.json"
+      ]
+    },
+    {
+      "cue": "Answer position",
+      "subgroup": "fresh/impossible_y",
+      "scope": "within_template",
+      "strategy": "Always choose the first displayed option",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. First-choice strategy succeeds 3/5; even the post-hoc best constant position succeeds only 3/5. These finite counts do not establish a reliable incidental rule.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "fresh-records.json"
+      ]
+    },
+    {
+      "cue": "Answer position",
+      "subgroup": "runner_batch/overall",
+      "scope": "overall",
+      "strategy": "Always choose the first displayed option",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. First-choice strategy succeeds 2/5; even the post-hoc best constant position succeeds only 2/5. These finite counts do not establish a reliable incidental rule.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "batch-records.json"
+      ]
+    },
+    {
+      "cue": "Answer position",
+      "subgroup": "runner_batch/possible_exp",
+      "scope": "within_template",
+      "strategy": "Always choose the first displayed option",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. First-choice strategy succeeds 1/2; even the post-hoc best constant position succeeds only 1/2. These finite counts do not establish a reliable incidental rule.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "batch-records.json"
+      ]
+    },
+    {
+      "cue": "Answer position",
+      "subgroup": "runner_batch/possible_product",
+      "scope": "within_template",
+      "strategy": "Always choose the first displayed option",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice guessing baseline is 0.2. First-choice strategy succeeds 1/2; even the post-hoc best constant position succeeds only 1/2. These finite counts do not establish a reliable incidental rule.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "batch-records.json"
+      ]
+    },
+    {
+      "cue": "Only field varying along both horizontal and vertical lines",
+      "subgroup": "default moderate",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the sole field whose slopes depend on both coordinates",
+      "correct": 15,
+      "total": 15,
+      "baseline": 0.2,
+      "disposition": "intended_skill",
+      "conclusion": "Five-choice random baseline is 0.2. This succeeds 15/15 because it is precisely the source-taught operation (q-96476 and tutorial 17592186172978), not an incidental cue. Equivalent field simplifications are permitted.",
+      "sample_refs": [
+        "fresh-moderate.json",
+        "math-results.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "Generator complete-bank validation and explicit invalid-input rejection; no retry/resampling loop exists",
+      "Requested difficulty filtering",
+      "Shared publisher normalization, image localization, inventory and within-batch deduplication",
+      "Learner eligibility/history exclusion and difficulty-first/within-band selection rules from question_selection.rs"
+    ],
+    "sample_refs": [
+      "sampling-results.json",
+      "delivery-batch/delivery.json",
+      "delivery-batch/accepted.json",
+      "delivery-moderate/delivery.json",
+      "delivery-hard/delivery.json",
+      "selection-results.json",
+      "inventory-review.json"
+    ],
+    "result": "Five runner records, 30 fresh defaults and six boundary samples retained. No filtering-induced fixed answer position observed. Fresh no-history within-band analysis is conditional on eligibility; a future learner history can remove cases. Cold generation can fail before delivery because of the separately demonstrated packaging defect."
+  },
+  "limitations": [
+    "Finite independent samples cannot prove absence of all shortcuts.",
+    "Live learner history, policy weights and future entity IDs were not supplied; source rules and captured eligible pools were examined, rather than claiming a live learner sequence.",
+    "Canonical four-panel bank cannot be replayed; that source-fidelity failure is not waived by default-family variation.",
+    "Captured inventory basis 5386 has only eight original source questions and no generated instances; later changing inventory is outside this evidence."
+  ]
+}

@@ -8,24 +8,25 @@ Matplotlib styling, bounds and sampling. No differential equation is solved.
 The categorical assessed task domain is finite: possible/both (1), impossible
 x-invariant or y-invariant (2). Coefficients and source aliases do not inflate it.
 
-Use .venv/bin/python; the plot subprocess uses frozen read-only cached MPL.
+The plot subprocess uses the current interpreter and declared dependencies.
 API generate(level, seed=0, template=None, field_type=None, parameters=None,
 profile=None), plus generate_easy/moderate/hard. Explicit inputs never resample.
 """
 from __future__ import annotations
-import argparse,hashlib,json,random,re,subprocess,tempfile,uuid,os,math
+import argparse,hashlib,json,random,re,subprocess,tempfile,uuid,os,math,sys
 from pathlib import Path
 import sympy as sp
 KP_ID=17592186172040
 KP_UUID='a2334101-5266-5853-aedf-04c85746b5cc'
 TITLE='Identifying a Possible Slope Field Based on the Type of Equation'
-VERSION='whole-field-type-v1'
+VERSION='whole-field-type-v2'
 HERE=Path(__file__).resolve().parent/str(KP_ID)
 X,Y=sp.symbols('x y',real=True)
 SOURCE=json.loads((HERE/'source.json').read_text())
 QS={q[':question/math-academy-id']:q for q in SOURCE['record'][':knowledge-point/questions']}
 GEOMETRY=json.loads((HERE/'source-geometry.json').read_text())
-RENDERER='/home/jake/.local/share/uv/python/cpython-3.10.13-linux-x86_64-gnu/bin/python3.10'
+RENDERER=sys.executable
+CANONICAL=json.loads((HERE/'canonical-source.json').read_text())
 PROVENANCE=json.loads((HERE/'render-provenance.json').read_text())
 FREEZE=json.loads((HERE/'renderer-freeze.json').read_text())
 for name,key in [('render.py','renderer_sha256'),('render-provenance.json','provenance_sha256'),('source-geometry.json','source_geometry_sha256')]:
@@ -73,13 +74,15 @@ def points(expr,bounds=(-2,2,-2,2)):
 
 def render_plots(objects):
  """Exact-instance input, unique temp file and atomic PNG/JSON sidecars."""
- out=HERE/'plots';out.mkdir(exist_ok=True);todo=[];result=[]
+ root=os.environ.get('COURSE_ACADEMY_GENERATOR_OUTPUT_DIR')
+ if not root:raise ValueError('COURSE_ACADEMY_GENERATOR_OUTPUT_DIR is required for generated assets')
+ out=Path(root).resolve()/str(KP_ID)/'plots';out.mkdir(parents=True,exist_ok=True);todo=[];result=[]
  for o in objects:
   key=digest({'renderer':PROVENANCE,'version':VERSION,**o});path=out/(key+'.png');result.append(str(path.resolve()))
   if not path.exists() or not path.with_suffix('.json').exists():todo.append({'path':str(path.resolve()),**o})
  if todo:
-  with tempfile.NamedTemporaryFile(mode='w',suffix='.json',prefix='render-input-',dir=HERE,delete=False) as f:json.dump(todo,f);tmp=Path(f.name)
-  try:subprocess.run([RENDERER,str(HERE/'render.py'),str(tmp)],check=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+  with tempfile.NamedTemporaryFile(mode='w',suffix='.json',prefix='render-input-',dir=out,delete=False) as f:json.dump(todo,f);tmp=Path(f.name)
+  try:subprocess.run([RENDERER,str(HERE/'render.py'),str(tmp)],check=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE,env={**os.environ,'MPLCONFIGDIR':str(out.parent/'.mplconfig')})
   finally:tmp.unlink(missing_ok=True)
   for o in todo:
    path=Path(o['path']).with_suffix('.json')
@@ -148,11 +151,35 @@ def solution(template,correct_image,guide_image,source_profile=None):
  whitespace='  ' if source_profile in ('q-119369','q-119372') else ' '
  return 'Notice that we are given an equation of the form\n\n$$\n'+r'\frac{\text{d}y}{\text{d}x}=f(x,y).'+ '\n$$\n\n'+text+'\n\n'+selection+'\n\n![]('+correct_image+')\n\n'+whitespace+'\n\n'+last+'\n\n![]('+guide_image+')'
 
+def canonical_replay(level,seed,template,parameters):
+ """Exact historical composite; captured fields/rating are absent.
+
+ A text radio adapter refers to the four visibly labeled source panels.
+ Panel III is independently supported by the worked selected-field image.
+ This profile is explicit-only; authored affine sampling stays separate.
+ """
+ if level!='easy' or template not in (None,'possible_linear'):
+  raise ValueError('Canonical linear replay uses the authored easy band')
+ if parameters not in (None,{}, {'scale':1}, {'a':1,'b':1,'c':0,'px':1,'py':1,'orientation':'y','single':'linear'}):
+  raise ValueError('Canonical composite replay is fixed at x+y')
+ prompt=CANONICAL[':question/problem'];worked=CANONICAL[':question/worked-solution']
+ identity=digest({'version':VERSION,'profile':'e-8507','prompt':prompt,'solution':worked,'panels':['I','II','III','IV']})
+ fid=uid(identity+'/selection')
+ answers=[{':answer/id':uid(fid+'/'+label),':answer/type':':answer.type/text',':answer/value':label} for label in ('I','II','III','IV')]
+ return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},
+  'question':{':question/id':uid(identity),':question/difficulty':':question.difficulty/easy',':question/problem':prompt,':question/worked-solution':worked,
+   ':question/answer-fields':[{':answer-field/id':fid,':answer-field/key':'selection',':answer-field/type':':answer-field.type/radio',':answer-field/choices':answers,':answer-field/correct':[':answer/id',answers[2][':answer/id']]}]},
+  'generation':{'version':VERSION,'seed':seed,'template':'possible_linear','parameters':{'a':1,'b':1,'c':0},'bank_profile':'e-8507',
+   'source_id':'e-8507','source_question_id':CANONICAL[':question/id'],'authored':False,'authored_level_assignment':True,
+   'source_difficulty':None,'authored_response_adapter':True,'response_evidence':'Four source panel labels; worked selected field is panel III',
+   'equation':'x + y','content_identity':identity,'source':{k:SOURCE[k] for k in ('database','basis','lineage')}}}
+
 # Easy: authored canonical linear instance. Moderate: observed nonlinear
 # operators. Hard: observed inverse classification with four both-variable fields.
 def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
  if level not in TEMPLATES:raise ValueError('Invalid level')
  if field_type not in (None,'radio',':answer-field.type/radio'):raise ValueError('Only radio')
+ if profile=='e-8507':return canonical_replay(level,seed,template,parameters)
  rng=random.Random(seed);observed=profile in SPECS
  if profile is not None and not observed and profile!='authored_method':raise ValueError('Unknown bank profile')
  if observed:
@@ -204,7 +231,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
  identity=digest({'version':VERSION,'prompt':prompt,'solution':worked,'bank':sorted(values)})
  qid=uid(identity);fid=uid(identity+'/selection');answers=[{':answer/id':uid(fid+'/'+v),':answer/type':':answer.type/image',':answer/value':v} for v in values]
  correct_id=answers[correct][':answer/id'];rng.shuffle(answers)
- return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':{':question/id':qid,':question/difficulty':':question.difficulty/'+level,':question/problem':prompt,':question/worked-solution':worked,':question/answer-fields':[{':answer-field/id':fid,':answer-field/key':'selection',':answer-field/type':':answer-field.type/radio',':answer-field/choices':answers,':answer-field/correct':[':answer/id',correct_id]}]},'generation':{'version':VERSION,'asset_root':str(HERE.resolve()),'seed':seed,'template':template,'parameters':p,'bank_profile':bank_profile,'source':{k:SOURCE[k] for k in ('database','basis','lineage')},'source_id':profile if observed else None,'authored':not observed,'authored_level_assignment':profile=='q-96477' or level=='easy','mathematical_fingerprint':mathematical,'content_identity':identity,'equation':str(expr) if expr is not None else None,'plot_objects':objects,'renderer':PROVENANCE,'renderer_freeze':FREEZE,'domain':'whole plane; shown window [-2,2]² for authored plots','categorical_task_domain':{'possible_both':1,'impossible_invariance':2}}}
+ return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':{':question/id':qid,':question/difficulty':':question.difficulty/'+level,':question/problem':prompt,':question/worked-solution':worked,':question/answer-fields':[{':answer-field/id':fid,':answer-field/key':'selection',':answer-field/type':':answer-field.type/radio',':answer-field/choices':answers,':answer-field/correct':[':answer/id',correct_id]}]},'generation':{'version':VERSION,'asset_root':os.environ.get('COURSE_ACADEMY_GENERATOR_OUTPUT_DIR'),'seed':seed,'template':template,'parameters':p,'bank_profile':bank_profile,'source':{k:SOURCE[k] for k in ('database','basis','lineage')},'source_id':profile if observed else None,'authored':not observed,'authored_level_assignment':profile=='q-96477' or level=='easy','mathematical_fingerprint':mathematical,'content_identity':identity,'equation':str(expr) if expr is not None else None,'plot_objects':objects,'renderer':PROVENANCE,'renderer_freeze':FREEZE,'domain':'whole plane; shown window [-2,2]² for authored plots','categorical_task_domain':{'possible_both':1,'impossible_invariance':2}}}
 
 def generate_easy(seed=0,**kwargs):return generate('easy',seed,**kwargs)
 def generate_moderate(seed=0,**kwargs):return generate('moderate',seed,**kwargs)

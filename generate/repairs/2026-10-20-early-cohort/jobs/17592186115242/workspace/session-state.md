@@ -1,37 +1,33 @@
-# Current repair state — pass 37
+# Current repair state — pass 41
 
-Read feedback, full retained history, source lesson/context and complete question
-banks. Preserved all runtime repairs and executable finding declarations.
-
-First test:
+Read latest feedback and all five retained findings. First executed test:
 `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory`
-Exit 1: all five historical banks still admit the sign-extremum shortcut;
-the possible-history witness succeeds 64/64 times.
+Exit 1: five historical v2 records retain the sign-only extremum shortcut;
+64/64 draws in the retained possible-history witness succeed.
 
-Validation:
-`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/repair-37`
-Exit 1 solely for finding 591f580cadb749294588. Four generator findings pass:
-17 complete source practice banks plus canonical replay, zero-root boundaries,
-independent printed math, shortcut probes and relevant/irrelevant counterfactuals,
-three batches through shared delivery (14 accepted). Native grading accepts 7
-correct and rejects 28 incorrect choices. Exact dependency versions and relocated
-seeded replay pass. Runtime/source/inventory/manifest hashes match retained evidence.
-The five staged replacements and old/new identity mapping remain verified.
-Retained actual-UI screenshot question-001.png was visually inspected; no new
-render was needed because runtime and replacement records are unchanged.
+Ran `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/repair-41`.
+Exit 1 solely for finding 591f580cadb749294588. All four current-generator
+regressions pass. Replayed 17 complete source banks and the canonical example;
+three shared-delivery batches retain 14 records with sign-subgroup contrasts.
+Native grader accepts 7 correct and rejects 28 wrong responses. Exact dependency
+and relocated seeded replay checks pass. Five staged replacement records and
+their one-to-one mapping remain verified and unapplied.
 
-Current commands/results: evidence/repair-37/commands.json and results.json.
-Current inventory diagnosis: evidence/repair-37/inventory-results.json,
-inventory-audit.json and scope-diagnosis.json. All five generated inventory
-records were tested; no verified absence is claimed. affected-inventory.json
-resolves from author-37 to workspace/evidence/generated-records.json.
+Reinspected retained actual-UI screenshot evidence/repair-3/render/question-001.png
+and the source classification flowchart. No runtime change or new rendering
+is justified by the unchanged evidence. All five generated inventory records
+were audited; affected-inventory.json paths resolve relative to author-41 to
+complete records in workspace/evidence/generated-records.json. Strict executable
+regressions remain unchanged. No database, publication, engine or other-job edits.
 
-The selector chooses stored question entities independently of this generator.
-No workspace generator change can repair their stored banks. The outstanding
-finding explicitly requires separate inventory remediation. Database changes,
-publication and engine repairs are forbidden here; none were performed.
-No runtime changes or weakened regressions were introduced. Status unsupported.
+Evidence: evidence/repair-41/commands.json, results.json, inventory-results.json,
+inventory-audit.json, grader-report.json and scope-diagnosis.json.
 
-Next unfinished step: the separately authorized inventory workflow must review
-and apply evidence/repair-3/inventory-repair-proposal.json, recapture inventory,
-and rerun the strict historical regression. The current proposal is not applied.
+Next unfinished step is the separately authorized inventory-remediation workflow
+explicitly requested by the retained reviewer: review/apply
+`evidence/repair-3/inventory-repair-proposal.json`, recapture inventory, then rerun
+the strict historical check. This task prohibits performing that state change.
+Do not substitute replacements into captured inventory, weaken its regression,
+or redo unchanged author passes as a substitute for remediation. The source skill
+and current generator are supported; the overall ready gate remains unmet because
+of the historical selectable pool.

@@ -1,0 +1,144 @@
+{
+  "verdict": "revise",
+  "summary": "Two demonstrated failures: undeclared cold-render dependencies and missing canonical source-bank replay. Tested mathematics, grading, batch variation, and UI rendering passed. The package remained unchanged.",
+  "source_analysis": {
+    "skill": "Identify possible or impossible slope fields by inspecting dependence on x and y.",
+    "reasoning_steps": [
+      "Determine the equation\u2019s dependence on each coordinate.",
+      "Inspect slope variation along horizontal and vertical lines.",
+      "Apply could/cannot polarity and select the qualifying image."
+    ],
+    "invariants": [
+      "One correct image selection.",
+      "Coordinate-dependence reasoning remains central.",
+      "Practice sources have five choices; the canonical composite has four panels.",
+      "No differential-equation solving is required."
+    ],
+    "permitted_variations": [
+      "Coefficients, signs, and supported field shapes.",
+      "Correct-image position.",
+      "Either x-only or y-only impossible outlier.",
+      "Consistent changes to equations, diagrams, keys, and explanations."
+    ],
+    "source_refs": [
+      "3602a14d-6bd7-5586-a6e8-51d069dc8641: canonical x+y example",
+      "8e4e2c73-61a2-51eb-9aeb-b173fc18ef10: xy",
+      "a04c1b90-953c-573f-89ab-d961bb6587e1: y-x^2",
+      "5ca31a32-1c1a-5bad-882d-872d4b1f5188: exp(xy)",
+      "b2eadfcb-db6a-5800-9cd9-5adcd903a84a: x-only impossible field",
+      "6e290eb2-4c30-594d-9303-2ef73ece0ff6: y-only impossible field",
+      "Lesson step 17592186172978: horizontal and vertical slope-field symmetry"
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "canonical-source-bank.png",
+      "source-banks.png"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "failed",
+      "evidence_paths": [
+        "source-replay-results.json",
+        "source-replay-records.json",
+        "canonical-replay-case.json",
+        "canonical-replay-command.json"
+      ],
+      "details": "Seven complete practice sources replay exactly. The incomplete eighth source is distinguished from authored completion. Canonical e-8507\u2019s four-panel bank has no replay profile."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "prompt-math.json",
+        "boundary-results.json",
+        "source-assets.json"
+      ],
+      "details": "No demonstrated equation, serialized-slope, or key errors across tested records and boundaries. All 40 practice-source choice images match canonical bytes."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "fresh-records.json",
+        "sampling-results.json",
+        "boundary-records.json",
+        "shortcut-results.json"
+      ],
+      "details": "Thirty fresh records cover all six default templates; six boundary records cover additional outlier shapes and empirical scalings. No default-family restriction was demonstrated."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "scope-report.json"
+      ],
+      "details": "Tested variations preserve dependence recognition, response format, and comparable workload."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-report.json",
+        "boundary-grader-input.json",
+        "boundary-grader-report.json"
+      ],
+      "details": "Native grader accepted 55 correct selections and rejected 220 alternatives, including controlled pairs; zero unresolved outcomes."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render-batch/rendering.json",
+        "render-controls/rendering.json",
+        "render-rest/rendering.json",
+        "visual-inspection.json"
+      ],
+      "details": "Actual UI rendered 17 records successfully. Representative screenshots, notation, image controls, and directional guides were inspected."
+    },
+    "packaging": {
+      "status": "failed",
+      "evidence_paths": [
+        "dependencies.json",
+        "cold-declared-only-result.json",
+        "cold-external-control-result.json",
+        "relocation-results.json",
+        "package-integrity.json"
+      ],
+      "details": "Cold rendering requires an undeclared absolute Python 3.10 executable and cached plotting libraries. Removing access to that executable causes failure; the external-enabled control succeeds. Publication-normalized relocation succeeds. Original package hashes are unchanged."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "selection-results.json",
+        "delivery-batch/delivery.json",
+        "affected-inventory.json"
+      ],
+      "details": "Relevant changes propagate through diagrams, explanations, and native grading; irrelevant changes preserve responses. All five batch records survive delivery without a demonstrated fixed-position shortcut. Selection rules were examined with captured-inventory and live-history limits recorded."
+    }
+  },
+  "findings": [
+    {
+      "kind": "packaging",
+      "description": "Uncached generation depends on machine-specific runtime components absent from the manifest.",
+      "source_refs": [
+        "workspace/package.json: dependencies",
+        "workspace/17592186172040.py: RENDERER and render_plots",
+        "workspace/17592186172040/render.py: cached dependency paths"
+      ],
+      "reproduction": "Run `/home/jake/Developer/Course_Academy/.venv/bin/python cold_dependency_probe.py` from evidence_root. Moderate seed 801239 with an empty plot cache fails when only the undeclared Python 3.10 executable is hidden. The identical `--allow-external` control succeeds. Complete commands and outputs are retained.",
+      "requested_change": "Use relocatable, declared runtime dependencies for every cold-render path; remove absolute interpreter/cache requirements and retain the strict cold-cache test."
+    },
+    {
+      "kind": "source_fidelity",
+      "description": "Canonical e-8507\u2019s four-panel bank is unavailable for replay; the authored x+y instance substitutes five different choices.",
+      "source_refs": [
+        "3602a14d-6bd7-5586-a6e8-51d069dc8641 (e-8507)",
+        "generate/principles.md: reproduce complete source answer banks"
+      ],
+      "reproduction": "Run `/home/jake/Developer/Course_Academy/.venv/bin/python canonical_replay_probe.py`. Profile e-8507 raises `Unknown bank profile`. The supported linear instance with seed 991 and a=b=1, c=0 instead produces the five-field authored bank. Complete source and generated records are in canonical-replay-case.json.",
+      "requested_change": "Provide faithful canonical replay preserving the original four-panel bank and worked content. Keep authored linear practice identified as an extension."
+    }
+  ]
+}
