@@ -85,6 +85,10 @@ def main():
  # Independently read math supports exactly the reported boundary cases.
  assert vec(next(c[':answer/value'] for c in field(special[1])[':answer-field/choices'] if c[':answer/id']==correct(special[1])))==(sp.Integer(1),4+3*v[2],v[2])
  assert vec(next(c[':answer/value'] for c in field(special[2])[':answer-field/choices'] if c[':answer/id']==correct(special[2])))==(1-2*v[2],1-2*v[2],v[2])
+ zero_constant=g.generate_easy(seed=90217,parameters={**p,'free_coefficients':[0,-3],'constants':[0,4]})
+ check(zero_constant)
+ assert all(vec(c[':answer/value'])[0]==0 for c in field(zero_constant)[':answer-field/choices'])
+ special.append(zero_constant)
  fresh=[g.generate_easy(seed=seed) for seed in range(100,160)]
  for r in fresh:check(r)
  assert {r['generation']['decision_case'] for r in fresh}==set(g.EASY_CASES)

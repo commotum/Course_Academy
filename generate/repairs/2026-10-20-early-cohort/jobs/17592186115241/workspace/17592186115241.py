@@ -16,7 +16,7 @@ import sympy as sp
 from sympy.parsing.sympy_parser import parse_expr, standard_transformations, implicit_multiplication_application
 KP=17592186115241
 HERE=Path(__file__).resolve().with_suffix('')
-VERSION='1.1.0'
+VERSION='1.1.1'
 FAMILIES={'q-32234':'unrated_constant_x','q-42040':'unrated_sign_coupled','q-131715':'two_additions_subscript','q-131717':'two_additions_subscript','q-32247':'two_additions_subscript','q-32244':'rank_one_three_operations','q-131712':'rank_one_three_operations','q-32517':'scale_then_eliminate_constant_pivot','q-42041':'scale_then_eliminate_full_vector','q-42019':'one_addition_constant_pivot','q-32220':'one_addition_latter_prose'}
 RAW=json.loads((HERE/'source.json').read_text())
 RECORD=RAW['record']
@@ -157,6 +157,12 @@ def equation_tex(row,sub=False):
  return linear_tex(row[:-1],sub)+'='+tex(row[-1])
 def system_tex(M,sub=False):
  rows=[equation_tex(row,sub) for row in M.tolist() if any(row)]
+ # An entirely absent column still denotes an unknown (e.g. x=y=0,
+ # z arbitrary). Retain a zero coefficient so the problem declares its space.
+ absent=[j for j in range(M.cols-1) if all(M[i,j]==0 for i in range(M.rows))]
+ if absent:
+  left,right=rows[0].split('=')
+  rows[0]=left+''.join('+0'+tex(VARS[j],sub) for j in absent)+'='+right
  rows[-1]+='.'
  return format_system(rows)
 
@@ -213,21 +219,34 @@ def candidate_bank(n,freecol,case,rng,vec=None):
  """
  fv=VARS[freecol];piv=[j for j in range(n) if j!=freecol]
  role=rng.randrange(5)
+ fixed_zero=[j for j in piv if vec is not None and vec[j]==0]
+ if len(fixed_zero)==len(piv):fixed_zero=[]
+ piv=[j for j in piv if j not in fixed_zero]
  equal=(case=='equal_coordinates' or (vec is not None and len(piv)==2 and sp.expand(vec[piv[0]]-vec[piv[1]])==0))
  constant_col=rng.choice(piv) if case=='constant_coordinate' else (2 if case=='free_y' else None)
  zero_col=rng.choice(piv) if case=='zero_intercept' else None
  def pool(count,j,index):
   actual=vec[j] if vec is not None else None
   const=(actual is not None and not actual.has(fv)) or (actual is None and j==constant_col)
-  zero=(actual is not None and actual.subs(fv,0)==0) or (actual is None and j==zero_col)
+  zero=not const and ((actual is not None and actual.subs(fv,0)==0) or (actual is None and j==zero_col))
+  def coefficients(bound,value):
+   # Inserting a rational answer into an integer-only pool exposes the key.
+   # All members use the supplied coefficient's reduced denominator. Extend
+   # the numerical range when needed; the answer must not be its sole outlier.
+   denominator=1 if value is None else int(value.q)
+   if value is not None and abs(value)>=bound:bound=int(sp.ceiling(abs(value)))+2
+   return [sp.Rational(k,denominator) for k in range(-bound*denominator,bound*denominator+1)
+           if sp.Rational(k,denominator).q==denominator]
+  intercepts=coefficients(6,None if actual is None else actual.subs(fv,0))
+  slopes=coefficients(5,None if actual is None else sp.diff(actual,fv))
   choices=[]
-  for c in range(-6,7):
-   for a in range(-5,6):
+  for c in intercepts:
+   for a in slopes:
     if const and a!=0:continue
     if not const and a==0:continue
     if zero and c!=0:continue
     if not zero and c==0:continue
-    choices.append(sp.Integer(c)+a*fv)
+    choices.append(c+a*fv)
   if actual is not None:choices=[v for v in choices if v!=actual]
   values=rng.sample(choices,count-(actual is not None))
   if actual is not None:values.insert(index,actual)
@@ -236,6 +255,7 @@ def candidate_bank(n,freecol,case,rng,vec=None):
   values=pool(5,piv[0],role);vectors=[]
   for value in values:
    v=list(VARS[:n])
+   for j in fixed_zero:v[j]=sp.Integer(0)
    for j in piv:v[j]=value
    vectors.append(v)
  else:
@@ -243,6 +263,7 @@ def candidate_bank(n,freecol,case,rng,vec=None):
   vectors=[]
   for k,edge in enumerate(EDGES):
    v=list(VARS[:n])
+   for j in fixed_zero:v[j]=sp.Integer(0)
    for i,j in enumerate(piv):v[j]=pools[i][edge[i] if i<2 else k]
    vectors.append(v)
  return [(vector_tex(v,fv),v) for v in vectors],role

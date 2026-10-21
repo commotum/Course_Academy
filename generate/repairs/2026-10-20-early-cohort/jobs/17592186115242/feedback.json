@@ -1,0 +1,150 @@
+{
+  "verdict": "revise",
+  "summary": "Three demonstrated failures: a sign-only shortcut answers every easy batch item, source q-74691 is unsupported, and valid zero-root systems are rejected. Package files remained unchanged.",
+  "source_analysis": {
+    "skill": "Determine the parameter value making a two-equation linear system inconsistent or consistent dependent.",
+    "reasoning_steps": [
+      "Eliminate one variable.",
+      "Set the remaining affine coefficient to zero.",
+      "Check whether the resulting constant gives a contradiction or redundant equation.",
+      "Select the corresponding parameter value."
+    ],
+    "invariants": [
+      "Two linear equations, one affine parameter, and a unique parameter answer.",
+      "Prompt, elimination, answer bank, key, and explanation must agree.",
+      "Practice questions use five-choice radio fields."
+    ],
+    "permitted_variations": [
+      "Coefficients, signs, row multipliers, constants, and affine parameter offsets within comparable arithmetic workload.",
+      "Correct parameter value, answer position, and relative magnitude among distractors.",
+      "Zero parameter answers where shifted coefficients permit them."
+    ],
+    "source_refs": [
+      "f2c7cfd3-da43-5208-bd0e-21692357fabe",
+      "534e2a93-e71a-5475-894e-dfd5ca99a3a6",
+      "113efc76-e9d2-549d-b33e-b8de028f7ba5",
+      "Tutorial e0c85152-daea-5a87-a3ba-81870558c7a2: consistency and dependence definitions",
+      "generate/principles.md sections 1\u20133"
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "source-cases.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "failed",
+      "evidence_paths": [
+        "source-replay-report.json",
+        "source-replays.json",
+        "acceptance-results.json"
+      ],
+      "details": "17 of 18 canonical/practice cases replayed. Source q-74691 has neither a replay profile nor a compatible template."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "counterfactual-results.json",
+        "review.py"
+      ],
+      "details": "126 records passed independent printed-system parsing, exact root and rank checks, choice/key checks, matrix checks, and final-answer checks."
+    },
+    "variety": {
+      "status": "failed",
+      "evidence_paths": [
+        "resampling-results.json",
+        "rejections.json",
+        "shortcut-results.json",
+        "affected-inventory.json"
+      ],
+      "details": "Distractor collisions suppress valid zero answers. Easy banks preserve an answer-producing extremum rule despite coefficient variation."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "scope-review.json",
+        "source-analysis.json",
+        "samples.json"
+      ],
+      "details": "Tested emitted questions preserve the source operation, response format, and arithmetic workload. Easy is a conservative authored simplification."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-report.json"
+      ],
+      "details": "The actual native grader accepted 38 correct radio submissions and rejected 152 incorrect submissions, including batch, counterfactual, source-replay, and stored-instance cases."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-review.json",
+        "render/question-001.png",
+        "render/question-011.png",
+        "render/question-012.png",
+        "render/question-013.png"
+      ],
+      "details": "The actual UI rendered 13 records without reported errors. Six screenshots were visually inspected, including both counterfactual pairs."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging.json",
+        "package-unchanged.json",
+        "commands.json"
+      ],
+      "details": "Exact dependency versions match. Deterministic replay and relocated CLI output pass. Saved package hashes remain unchanged."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "shortcut-results.json",
+        "source-shortcut-control.json",
+        "counterfactual-results.json",
+        "delivery-batch/delivery.json",
+        "delivery-sample/delivery.json",
+        "selection-results.json",
+        "generated-records.json"
+      ],
+      "details": "A sign-only extremal-choice strategy succeeds on 48/48 fresh easy samples, 5/5 batch records, and 5/5 reproduced stored records. It survives delivery filtering, option shuffling, and any nonempty easy selection pool."
+    }
+  },
+  "findings": [
+    {
+      "kind": "decision_shortcut",
+      "description": "Easy banks always contain {t,-t,b,-b,0}, with |t|>|b|. If the numeric coefficient signs agree, choose the largest positive option; otherwise choose the most negative option. This skips the required magnitude calculation and answers every delivered batch item. Five stored generated questions have the same defect.",
+      "source_refs": [
+        "f2c7cfd3-da43-5208-bd0e-21692357fabe",
+        "534e2a93-e71a-5475-894e-dfd5ca99a3a6",
+        "generate/principles.md section 2"
+      ],
+      "reproduction": "Run `/home/jake/Developer/Course_Academy/.venv/bin/python -B acceptance-tests.py`. Batch seed 1475864943 gives x-2y=-3 and -2x+ky=7, with choices {-4,2,0,-2,4}. Matching negative coefficient signs identify the largest positive option, 4. See shortcut-results.json and affected-inventory.json.",
+      "requested_change": "Change the family-wide distractor construction so correct answers occupy both interior and extreme numeric roles within each sign subgroup. Regenerate the batch and assess the five affected stored records separately."
+    },
+    {
+      "kind": "source_fidelity",
+      "description": "Source q-74691 requires fractional elimination with a bare parameter coefficient. Its profile is missing, and existing hard-template constraints exclude its parameters.",
+      "source_refs": [
+        "113efc76-e9d2-549d-b33e-b8de028f7ba5"
+      ],
+      "reproduction": "At seed 932455, generate('hard', profile='q-74691', parameters={'a':2,'b':-2,'c':4,'d':-3,'u':1,'v':0,'e':-6}) raises 'Unknown profile'. Explicit dependent_fractional generation rejects v=0. The source answer is k=3 with bank {-3,3,4,-1,5}.",
+      "requested_change": "Support the observed fractional-elimination family with bare k, reproduce its complete source bank, and correct the source solution\u2019s surviving-equation sign typo."
+    },
+    {
+      "kind": "restriction",
+      "description": "Default banks contain both t and -t, so every valid t=0 case collides and is rejected or resampled away.",
+      "source_refs": [
+        "84cf8820-fa64-5d50-9d9c-d3a9404788a4",
+        "generate/principles.md section 2"
+      ],
+      "reproduction": "At seed 932455, generate('moderate', template='inconsistent_shift', parameters={'a':1,'b':2,'c':1,'d':2,'u':1,'v':4,'e':3}) raises 'Complete bank collision'. The system reduces to ky=1, making k=0 the unique correct answer. acceptance-tests.py retains this failing case.",
+      "requested_change": "Use distinct fallback distractors when recipe values coincide. Preserve valid zero-root systems across affected families instead of excluding their mathematical parameters."
+    }
+  ],
+  "repair_history_file": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186115242/repair-history.json",
+  "instruction": "Fix the root cause, retain every earlier counterexample, and declare executable checks in repair-regressions.json. A failed check is another repair task, not permission to abandon the generator."
+}

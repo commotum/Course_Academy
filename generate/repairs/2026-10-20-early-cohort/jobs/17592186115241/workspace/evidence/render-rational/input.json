@@ -1,0 +1,388 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186115241,
+      "id": "2d81e3f1-d930-59ee-b439-2a3645aebb6c",
+      "title": "Solving a Consistent System of Equations Using Gauss-Jordan Elimination"
+    },
+    "question": {
+      ":question/id": "d03f1810-44f4-5ed6-82aa-d9b0fea0f527",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/problem": "Consider the system of linear equations\n\n$$\n\\left\\{\\begin{aligned}2x+2y &=5 \\\\  -10x-10y &=-25 \\\\  8x+8y &=20.\\end{aligned}\\right.\n$$\n\nUse the standard Gauss-Jordan method to reduce the augmented matrix $M$ of the system to reduced row echelon form, and then solve the linear system.",
+      ":question/worked-solution": "The augmented matrix for this system is\n\n$$\nM=\\left[\\begin{array}{cc|c}2 & 2 & 5 \\\\ -10 & -10 & -25 \\\\ 8 & 8 & 20\\end{array}\\right].\n$$\n\nUsing the standard Gauss-Jordan method, we can reduce this matrix to reduced row echelon form as follows:\n\n$$\n\\begin{aligned}M & =\\left[\\begin{array}{cc|c}2 & 2 & 5 \\\\ -10 & -10 & -25 \\\\ 8 & 8 & 20\\end{array}\\right] & {R}_{1} & :=\\frac{1}{2}{R}_{1} \\\\  & \u223c\\left[\\begin{array}{cc|c}1 & 1 & \\frac{5}{2} \\\\ -10 & -10 & -25 \\\\ 8 & 8 & 20\\end{array}\\right] & {R}_{2} & :={R}_{2}+10{R}_{1} \\\\  & \u223c\\left[\\begin{array}{cc|c}1 & 1 & \\frac{5}{2} \\\\ 0 & 0 & 0 \\\\ 8 & 8 & 20\\end{array}\\right] & {R}_{3} & :={R}_{3}+(-8){R}_{1} \\\\  & \u223c\\left[\\begin{array}{cc|c}1 & 1 & \\frac{5}{2} \\\\ 0 & 0 & 0 \\\\ 0 & 0 & 0\\end{array}\\right]\\end{aligned}\n$$\n\nThe corresponding system is now  \n\n$$\n\\left\\{\\begin{aligned}x+y &=\\frac{5}{2}\\end{aligned}\\right.\n$$\n\nThe basic variables are the variables whose coefficients are pivots. In this case, the basic variable is $x$ and we have one free variable, $y.$ That means we need to find $x$  in terms of $y.$ \n\nTherefore, the general solution is\n\n$$\n\\left\\{\\begin{aligned}x &=-y+\\frac{5}{2} \\\\  y &=y,\\end{aligned}\\right.\n$$\n\nwhere $y$ (the free variable) is an arbitrary number.\n\nIn vector form, the solution can be written as\n\n$$\n\\begin{aligned}\\begin{bmatrix}x \\\\ y\\end{bmatrix}=\\begin{bmatrix}-y+\\frac{5}{2} \\\\ y\\end{bmatrix},\\,y\\in (-\\infty ,\\infty ).\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "c1dfc082-5ec4-56df-9169-ac7a3fc3bc8e",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "f4cc102c-cd6b-558b-9982-4fd1ae3eab40",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}5y+\\frac{7}{2} \\\\ y\\end{bmatrix},\\,y\\in (-\\infty ,\\infty )"
+            },
+            {
+              ":answer/id": "c6304aa4-0cb4-5785-9bad-5d63813fe340",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-y+\\frac{5}{2} \\\\ y\\end{bmatrix},\\,y\\in (-\\infty ,\\infty )"
+            },
+            {
+              ":answer/id": "ad1ddfb6-8bd5-57b8-a70f-55b05d779aef",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}4y-\\frac{1}{2} \\\\ y\\end{bmatrix},\\,y\\in (-\\infty ,\\infty )"
+            },
+            {
+              ":answer/id": "fb09a13a-210c-55c7-aca4-df075e0db3a5",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}y+\\frac{7}{2} \\\\ y\\end{bmatrix},\\,y\\in (-\\infty ,\\infty )"
+            },
+            {
+              ":answer/id": "728d7009-f75a-5ee6-9e4c-96e7d3afaa35",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}y+\\frac{9}{2} \\\\ y\\end{bmatrix},\\,y\\in (-\\infty ,\\infty )"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "c6304aa4-0cb4-5785-9bad-5d63813fe340"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "generator_version": "1.1.1",
+      "seed": 71381,
+      "template": "rank_one_three_operations",
+      "bank_profile": "q-32244",
+      "parameters": {
+        "scale": 1,
+        "offsets": [
+          -4,
+          4
+        ]
+      },
+      "mathematical_fingerprint": "c476292412f638ea373e754cb12478ad414bd01bc38b2bab4702b7a5a3898850",
+      "content_fingerprint": "801a55c2abc148c968325ec11f1ee0cae412fbfd593572bb81c72dbe5de898b8",
+      "matrix": [
+        [
+          "2",
+          "2",
+          "5"
+        ],
+        [
+          "-10",
+          "-10",
+          "-25"
+        ],
+        [
+          "8",
+          "8",
+          "20"
+        ]
+      ],
+      "source_basis": 5373,
+      "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+      "source_sha256": "877620ae93e3f953c46694139e803c9c5cde5d86fb7a8b12430b72412a134ddf",
+      "sympy_version": "1.14.0",
+      "plots": "none",
+      "source_id": "q-32244",
+      "authored_solution": false,
+      "presentation_repair": true,
+      "profile_interpretation": "invertible affine transport; original distractor intent underdetermined",
+      "bank_role": 2,
+      "authored_bank": "exchangeable coordinate pools",
+      "math_format": "course-academy-tex-v1"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186115241,
+      "id": "2d81e3f1-d930-59ee-b439-2a3645aebb6c",
+      "title": "Solving a Consistent System of Equations Using Gauss-Jordan Elimination"
+    },
+    "question": {
+      ":question/id": "29ad473c-31b6-51d2-9199-cd386a1cbf20",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/problem": "Consider the system of linear equations\n\n$$\n\\left\\{\\begin{aligned}2x+8y &=18 \\\\  -4x-16y &=-36 \\\\  6x+24y &=54.\\end{aligned}\\right.\n$$\n\nUse the standard Gauss-Jordan method to reduce the augmented matrix $M$ of the system to reduced row echelon form, and then solve the linear system.",
+      ":question/worked-solution": "The augmented matrix for this system is\n\n$$\nM=\\left[\\begin{array}{cc|c}2 & 8 & 18 \\\\ -4 & -16 & -36 \\\\ 6 & 24 & 54\\end{array}\\right].\n$$\n\nUsing the standard Gauss-Jordan method, we can reduce this matrix to reduced row echelon form as follows:\n\n$$\n\\begin{aligned}M & =\\left[\\begin{array}{cc|c}2 & 8 & 18 \\\\ -4 & -16 & -36 \\\\ 6 & 24 & 54\\end{array}\\right] & {R}_{1} & :=\\frac{1}{2}{R}_{1} \\\\  & \u223c\\left[\\begin{array}{cc|c}1 & 4 & 9 \\\\ -4 & -16 & -36 \\\\ 6 & 24 & 54\\end{array}\\right] & {R}_{2} & :={R}_{2}+4{R}_{1} \\\\  & \u223c\\left[\\begin{array}{cc|c}1 & 4 & 9 \\\\ 0 & 0 & 0 \\\\ 6 & 24 & 54\\end{array}\\right] & {R}_{3} & :={R}_{3}-6{R}_{1} \\\\  & \u223c\\left[\\begin{array}{cc|c}1 & 4 & 9 \\\\ 0 & 0 & 0 \\\\ 0 & 0 & 0\\end{array}\\right]\\end{aligned}\n$$\n\nThe corresponding system is now  \n\n$$\n\\left\\{\\begin{aligned}x+4y &=9\\end{aligned}\\right.\n$$\n\nThe basic variables are the variables whose coefficients are pivots. In this case, the basic variable is $x$ and we have one free variable, $y.$ That means we need to find $x$  in terms of $y.$ \n\nTherefore, the general solution is\n\n$$\n\\left\\{\\begin{aligned}x &=-4y+9 \\\\  y &=y,\\end{aligned}\\right.\n$$\n\nwhere $y$ (the free variable) is an arbitrary number.\n\nIn vector form, the solution can be written as\n\n$$\n\\begin{aligned}\\begin{bmatrix}x \\\\ y\\end{bmatrix}=\\begin{bmatrix}-4y+9 \\\\ y\\end{bmatrix},\\,y\\in (-\\infty ,\\infty ).\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "d07156bb-8772-5f6c-a429-a5b5ed273b5d",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "3a43b4e1-1190-55fe-88f3-4ed63a0ce6fc",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}4y+9 \\\\ y\\end{bmatrix},\\,y\\in (-\\infty ,\\infty )"
+            },
+            {
+              ":answer/id": "b5c35ae4-4b6d-5d2d-9fa8-5a1cc463307d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-4y+9 \\\\ y\\end{bmatrix},\\,y\\in (-\\infty ,\\infty )"
+            },
+            {
+              ":answer/id": "6ec3e2b6-096e-56e6-b4da-00771c041109",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}2y+1 \\\\ y\\end{bmatrix},\\,y\\in (-\\infty ,\\infty )"
+            },
+            {
+              ":answer/id": "32e32376-3b1b-583b-8a89-29a69e258823",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}5y+8 \\\\ y\\end{bmatrix},\\,y\\in (-\\infty ,\\infty )"
+            },
+            {
+              ":answer/id": "eda5b103-26ea-594e-8ce0-a4457395fd0e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}5y+10 \\\\ y\\end{bmatrix},\\,y\\in (-\\infty ,\\infty )"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "b5c35ae4-4b6d-5d2d-9fa8-5a1cc463307d"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "generator_version": "1.1.1",
+      "seed": 71381,
+      "template": "rank_one_three_operations",
+      "bank_profile": "q-131712",
+      "parameters": {
+        "scale": 1,
+        "offsets": [
+          -4,
+          4
+        ]
+      },
+      "mathematical_fingerprint": "225d013272b300c57215792498105ee9872d979bca0c7bf4d10b01dcff349e02",
+      "content_fingerprint": "71feac43b2343c853f0fd414188a601c3f779fac5c89aaf41a0f8c6136bed75c",
+      "matrix": [
+        [
+          "2",
+          "8",
+          "18"
+        ],
+        [
+          "-4",
+          "-16",
+          "-36"
+        ],
+        [
+          "6",
+          "24",
+          "54"
+        ]
+      ],
+      "source_basis": 5373,
+      "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+      "source_sha256": "877620ae93e3f953c46694139e803c9c5cde5d86fb7a8b12430b72412a134ddf",
+      "sympy_version": "1.14.0",
+      "plots": "none",
+      "source_id": "q-131712",
+      "authored_solution": false,
+      "presentation_repair": true,
+      "profile_interpretation": "invertible affine transport; original distractor intent underdetermined",
+      "bank_role": 2,
+      "authored_bank": "exchangeable coordinate pools",
+      "math_format": "course-academy-tex-v1"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186115241,
+      "id": "2d81e3f1-d930-59ee-b439-2a3645aebb6c",
+      "title": "Solving a Consistent System of Equations Using Gauss-Jordan Elimination"
+    },
+    "question": {
+      ":question/id": "d8fb8f8f-bc82-5d27-9b06-77674eb2cb0c",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/problem": "Consider the system of linear equations\n\n$$\n\\left\\{\\begin{aligned}x+y+z &=1 \\\\ x+2y+\\frac{3}{2}z &=\\frac{3}{2}.\\end{aligned}\\right.\n$$\n\nUse the standard Gauss-Jordan method to reduce the augmented matrix $M$ of the system to reduced row echelon form, and then solve the linear system.",
+      ":question/worked-solution": "The augmented matrix for this system is\n\n$$\nM=\\left[\\begin{array}{ccc|c}1 & 1 & 1 & 1 \\\\ 1 & 2 & \\frac{3}{2} & \\frac{3}{2}\\end{array}\\right].\n$$\n\nUsing the standard Gauss-Jordan method, we can reduce this matrix to reduced row echelon form as follows:\n\n$$\n\\begin{aligned}M & =\\left[\\begin{array}{ccc|c}1 & 1 & 1 & 1 \\\\ 1 & 2 & \\frac{3}{2} & \\frac{3}{2}\\end{array}\\right] \\\\ & {R}_{2}:={R}_{2}+(-1){R}_{1} \\\\  & \u223c\\left[\\begin{array}{ccc|c}1 & 1 & 1 & 1 \\\\ 0 & 1 & \\frac{1}{2} & \\frac{1}{2}\\end{array}\\right] \\\\ & {R}_{1}:={R}_{1}+(-1){R}_{2} \\\\  & \u223c\\left[\\begin{array}{ccc|c}1 & 0 & \\frac{1}{2} & \\frac{1}{2} \\\\ 0 & 1 & \\frac{1}{2} & \\frac{1}{2}\\end{array}\\right]\\end{aligned}\n$$\n\nThe corresponding system is now\n\n$$\n\\left\\{\\begin{aligned}x+\\frac{1}{2}z &=\\frac{1}{2} \\\\ y+\\frac{1}{2}z &=\\frac{1}{2}.\\end{aligned}\\right.\n$$\n\nThe basic variables are the variables whose coefficients are pivots. In this case, the basic variables are $x$ and $y$, and we have one free variable, $z$. That means we need to find $x$ and $y$ in terms of $z$.\n\nTherefore, the general solution is\n\n$$\n\\left\\{\\begin{aligned}x &=-\\frac{z}{2}+\\frac{1}{2} \\\\ y &=-\\frac{z}{2}+\\frac{1}{2} \\\\ z &=z,\\end{aligned}\\right.\n$$\n\nwhere $z$ (the free variable) is an arbitrary number.\n\nIn vector form, the solution can be written as\n\n$$\n\\begin{bmatrix}x \\\\ y \\\\ z\\end{bmatrix}=\\begin{bmatrix}-\\frac{z}{2}+\\frac{1}{2} \\\\ -\\frac{z}{2}+\\frac{1}{2} \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty ).\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "e2424438-aae8-540e-bb49-0adb334d377d",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "7015dbc9-c0ac-59de-8489-7b9936ef49a4",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-\\frac{9z}{2}+\\frac{5}{2} \\\\ -\\frac{9z}{2}+\\frac{5}{2} \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+            },
+            {
+              ":answer/id": "7435f1a2-ee1d-58af-b7fc-3b7f1497e946",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-\\frac{z}{2}-\\frac{3}{2} \\\\ -\\frac{z}{2}-\\frac{3}{2} \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+            },
+            {
+              ":answer/id": "b8f3189c-6c4a-51cb-a070-2369b1b16e86",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}\\frac{z}{2}+\\frac{7}{2} \\\\ \\frac{z}{2}+\\frac{7}{2} \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+            },
+            {
+              ":answer/id": "e8aa3162-83bd-534d-828c-7b5a0078180b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}\\frac{7z}{2}-\\frac{11}{2} \\\\ \\frac{7z}{2}-\\frac{11}{2} \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+            },
+            {
+              ":answer/id": "378de877-03ed-5be5-94af-3e1f3638bf55",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-\\frac{z}{2}+\\frac{1}{2} \\\\ -\\frac{z}{2}+\\frac{1}{2} \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "378de877-03ed-5be5-94af-3e1f3638bf55"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "generator_version": "1.1.1",
+      "seed": 71381,
+      "template": "authored_easy",
+      "bank_profile": "authored_operations",
+      "parameters": {
+        "free_coefficients": [
+          "1/2",
+          "1/2"
+        ],
+        "constants": [
+          "1/2",
+          "1/2"
+        ],
+        "mix": [
+          1,
+          1
+        ]
+      },
+      "mathematical_fingerprint": "2ce0807c17dd1fc26a2a33a63d2d58898de66b44fa71bc833984308ec2b41be2",
+      "content_fingerprint": "7e6cf0d4537dd23fd24580229eb5339b300dd2540e86a7d36ee0179488684b55",
+      "matrix": [
+        [
+          "1",
+          "1",
+          "1",
+          "1"
+        ],
+        [
+          "1",
+          "2",
+          "3/2",
+          "3/2"
+        ]
+      ],
+      "source_basis": 5373,
+      "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+      "source_sha256": "877620ae93e3f953c46694139e803c9c5cde5d86fb7a8b12430b72412a134ddf",
+      "sympy_version": "1.14.0",
+      "plots": "none",
+      "authored": true,
+      "operations": 2,
+      "authored_bank": "exchangeable coordinate pools",
+      "bank_role": 3,
+      "decision_case": "explicit",
+      "math_format": "course-academy-tex-v1"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186115241,
+      "id": "2d81e3f1-d930-59ee-b439-2a3645aebb6c",
+      "title": "Solving a Consistent System of Equations Using Gauss-Jordan Elimination"
+    },
+    "question": {
+      ":question/id": "dc0eff9c-c190-547b-bd74-4694a3a19c2d",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/problem": "Consider the system of linear equations\n\n$$\n\\left\\{\\begin{aligned}x+y-\\frac{5}{2}z &=-\\frac{1}{2} \\\\ x+2y-\\frac{11}{2}z &=-1.\\end{aligned}\\right.\n$$\n\nUse the standard Gauss-Jordan method to reduce the augmented matrix $M$ of the system to reduced row echelon form, and then solve the linear system.",
+      ":question/worked-solution": "The augmented matrix for this system is\n\n$$\nM=\\left[\\begin{array}{ccc|c}1 & 1 & -\\frac{5}{2} & -\\frac{1}{2} \\\\ 1 & 2 & -\\frac{11}{2} & -1\\end{array}\\right].\n$$\n\nUsing the standard Gauss-Jordan method, we can reduce this matrix to reduced row echelon form as follows:\n\n$$\n\\begin{aligned}M & =\\left[\\begin{array}{ccc|c}1 & 1 & -\\frac{5}{2} & -\\frac{1}{2} \\\\ 1 & 2 & -\\frac{11}{2} & -1\\end{array}\\right] \\\\ & {R}_{2}:={R}_{2}+(-1){R}_{1} \\\\  & \u223c\\left[\\begin{array}{ccc|c}1 & 1 & -\\frac{5}{2} & -\\frac{1}{2} \\\\ 0 & 1 & -3 & -\\frac{1}{2}\\end{array}\\right] \\\\ & {R}_{1}:={R}_{1}+(-1){R}_{2} \\\\  & \u223c\\left[\\begin{array}{ccc|c}1 & 0 & \\frac{1}{2} & 0 \\\\ 0 & 1 & -3 & -\\frac{1}{2}\\end{array}\\right]\\end{aligned}\n$$\n\nThe corresponding system is now\n\n$$\n\\left\\{\\begin{aligned}x+\\frac{1}{2}z &=0 \\\\ y-3z &=-\\frac{1}{2}.\\end{aligned}\\right.\n$$\n\nThe basic variables are the variables whose coefficients are pivots. In this case, the basic variables are $x$ and $y$, and we have one free variable, $z$. That means we need to find $x$ and $y$ in terms of $z$.\n\nTherefore, the general solution is\n\n$$\n\\left\\{\\begin{aligned}x &=-\\frac{z}{2} \\\\ y &=3z-\\frac{1}{2} \\\\ z &=z,\\end{aligned}\\right.\n$$\n\nwhere $z$ (the free variable) is an arbitrary number.\n\nIn vector form, the solution can be written as\n\n$$\n\\begin{bmatrix}x \\\\ y \\\\ z\\end{bmatrix}=\\begin{bmatrix}-\\frac{z}{2} \\\\ 3z-\\frac{1}{2} \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty ).\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "f84947aa-e3f2-5c39-9542-e01a176bf87c",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "436c6105-6b92-5794-93ed-795bf02e6ec0",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-\\frac{7z}{2} \\\\ 5z+\\frac{7}{2} \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+            },
+            {
+              ":answer/id": "d999d81b-c087-598f-96b1-7201fc067c64",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-\\frac{z}{2} \\\\ 5z+\\frac{7}{2} \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+            },
+            {
+              ":answer/id": "f391f903-40da-5088-a84f-9b47b69bc776",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}\\frac{3z}{2} \\\\ z+\\frac{7}{2} \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+            },
+            {
+              ":answer/id": "c2e7238a-1a87-5610-b825-13b57f803a10",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-\\frac{7z}{2} \\\\ z+\\frac{7}{2} \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+            },
+            {
+              ":answer/id": "6b805249-464b-5b51-b713-b9c729b25f2c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\begin{bmatrix}-\\frac{z}{2} \\\\ 3z-\\frac{1}{2} \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "6b805249-464b-5b51-b713-b9c729b25f2c"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "generator_version": "1.1.1",
+      "seed": 71381,
+      "template": "authored_easy",
+      "bank_profile": "authored_operations",
+      "parameters": {
+        "free_coefficients": [
+          "1/2",
+          -3
+        ],
+        "constants": [
+          0,
+          "-1/2"
+        ],
+        "mix": [
+          1,
+          1
+        ]
+      },
+      "mathematical_fingerprint": "80bfcec2d0e98d443bb34ac91e6be1432cabb60c99d9379ff345aef1d77335f2",
+      "content_fingerprint": "b3428fd3003ff6db49a0b9383f83b7a87226555797d28b4345ff7862c17aebaa",
+      "matrix": [
+        [
+          "1",
+          "1",
+          "-5/2",
+          "-1/2"
+        ],
+        [
+          "1",
+          "2",
+          "-11/2",
+          "-1"
+        ]
+      ],
+      "source_basis": 5373,
+      "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+      "source_sha256": "877620ae93e3f953c46694139e803c9c5cde5d86fb7a8b12430b72412a134ddf",
+      "sympy_version": "1.14.0",
+      "plots": "none",
+      "authored": true,
+      "operations": 2,
+      "authored_bank": "exchangeable coordinate pools",
+      "bank_role": 3,
+      "decision_case": "explicit",
+      "math_format": "course-academy-tex-v1"
+    }
+  }
+]

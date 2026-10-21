@@ -52,6 +52,23 @@
       "source_hash": "4473eec4393e8b7ebdf098db69dd0802b1a543394a1f35ee1150d496fbf75c16",
       "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186115241/review-0-policy-2-f2f2030a3b2989f3",
       "attempt": 0
+    },
+    {
+      "id": "f2894c10a350a693c720",
+      "finding": {
+        "kind": "decision_shortcut",
+        "description": "The candidate-bank pool constructs integer distractors but inserts the actual rational source expression. For q-32244 seed 71381, the correct vector (-y+5/2,y) is the only fractional choice. Its formatting identifies the key without examining the equations.",
+        "source_refs": [
+          "cbdb5209-5ae6-5fea-a525-87f604e2410b (q-32244)",
+          "tutorial 3eff050b-e4ba-52e5-aa10-7bba2feef2fc",
+          "generate/principles.md: meaningful variety"
+        ],
+        "reproduction": "From evidence_root run `/home/jake/Developer/Course_Academy/.venv/bin/python -B reproduce_shortcut.py`; the strict acceptance assertion fails. It calls generate_easy(seed=71381, profile=\"q-32244\") without explicit parameters. The printed system is 2x+2y=5, -10x-10y=-25, 8x+8y=20. Complete evidence: minimal-fraction-shortcut.json and render-shortcut/question-001.png.",
+        "requested_change": "Change candidate_bank's family-wide numerical support so rational formatting is not reserved for the correct choice. Retain valid rational source cases. Test ordinary source-profile sampling, rather than only explicit source-bank replay, using the retained strict regression and conditional probes before and after delivery filtering."
+      },
+      "source_hash": "4473eec4393e8b7ebdf098db69dd0802b1a543394a1f35ee1150d496fbf75c16",
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186115241/review-1-policy-2-64575e53a5a82ae1",
+      "attempt": 1
     }
   ],
   "events": [
@@ -203,6 +220,137 @@
         ]
       },
       "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186115241/review-0-policy-2-f2f2030a3b2989f3"
+    },
+    {
+      "attempt": 1,
+      "package_hash": "88f8e004aec0258b99a46635c01a49f6a0d6a23ce6470a62b47397679ab0afa2",
+      "reason": {
+        "verdict": "revise",
+        "summary": "Ordinary q-32244 source-profile sampling exposes the correct answer as the only fractional choice: 15/15 applicable cases, including after delivery filtering. The exact five-question batch lacks this defect. Package unchanged.",
+        "source_analysis": {
+          "skill": "Use Gauss-Jordan elimination to identify basic and free variables and select the complete parametric solution.",
+          "reasoning_steps": [
+            "Construct the augmented matrix.",
+            "Reduce it to RREF.",
+            "Identify pivot and free variables.",
+            "Express basic variables using the free parameter and select the complete solution set."
+          ],
+          "invariants": [
+            "Small consistent real linear systems with one free variable.",
+            "Elementary row operations and comparable easy-level workload.",
+            "Five-choice radio response with exactly one complete solution set."
+          ],
+          "permitted_variations": [
+            "Coefficients, constants, signs and simple fractions.",
+            "Source-supported pivot and free-variable assignments.",
+            "Constant coordinates, zero intercepts and equal-coordinate relationships.",
+            "Correct-choice position and distractor arrangement."
+          ],
+          "source_refs": [
+            "cbdb5209-5ae6-5fea-a525-87f604e2410b (q-32244)",
+            "dc6dd9b4-de7f-52d0-8ff9-a7a7f7a9abd7",
+            "tutorial 3eff050b-e4ba-52e5-aa10-7bba2feef2fc"
+          ],
+          "evidence_paths": [
+            "source-analysis.json",
+            "source-confirmation.json"
+          ]
+        },
+        "checks": {
+          "source_replay": {
+            "status": "passed",
+            "evidence_paths": [
+              "source-replay.json",
+              "source-replay-records.json",
+              "counterfactual-results.json"
+            ],
+            "details": "All 14 complete source banks replay; the canonical free-y system is reached. Missing source evidence remains documented."
+          },
+          "math": {
+            "status": "passed",
+            "evidence_paths": [
+              "math-results.json",
+              "source-shortcut-results.json",
+              "solution-results.json"
+            ],
+            "details": "115 current records pass independent exact system, complete-solution-set, key and worked-solution checks."
+          },
+          "variety": {
+            "status": "passed",
+            "evidence_paths": [
+              "resampling-stages.json",
+              "delivery-shortcuts.json",
+              "strict-regressions.json",
+              "rejection-tests.json"
+            ],
+            "details": "All six justified mathematical cases occur. Prior zero-slope and equal-coordinate restrictions are repaired; coverage survives filtering."
+          },
+          "scope": {
+            "status": "passed",
+            "evidence_paths": [
+              "scope-review.json",
+              "source-analysis.json"
+            ],
+            "details": "Tested easy outputs preserve the source method, response contract and comparable workload."
+          },
+          "grading": {
+            "status": "passed",
+            "evidence_paths": [
+              "grader-input.json",
+              "grader-results.json",
+              "controlled-validation.json"
+            ],
+            "details": "Native grading returns 211 expected acceptances and 841 rejections, with zero unresolved cases. Controlled relevant and irrelevant changes behave correctly."
+          },
+          "rendering": {
+            "status": "passed",
+            "evidence_paths": [
+              "render-inspection.json",
+              "render-all/rendering.json",
+              "render-shortcut/rendering.json",
+              "render-shortcut/question-001.png"
+            ],
+            "details": "Actual UI rendered 20 records. Representative screenshots were inspected, including the visible fraction shortcut."
+          },
+          "packaging": {
+            "status": "passed",
+            "evidence_paths": [
+              "packaging.json",
+              "package-integrity.json",
+              "repair-verification.json"
+            ],
+            "details": "Exact dependencies, deterministic replay and declared-file relocation pass. Package files remain unchanged; no publication or database writes occurred."
+          },
+          "decision_variation": {
+            "status": "failed",
+            "evidence_paths": [
+              "pedagogical-variation.json",
+              "minimal-fraction-shortcut.json",
+              "strict-new-regression.json",
+              "source-shortcut-results.json",
+              "delivery-source-shortcut/delivery.json",
+              "delivery-shortcuts.json",
+              "inventory-new-cue.json",
+              "affected-inventory.json"
+            ],
+            "details": "Selecting the sole fractional vector succeeds in all 15 applicable q-32244 samples among 20, before and after filtering. The exact five-question batch lacks this cue. Ten historical inventory component-frequency defects were separately reproduced."
+          }
+        },
+        "findings": [
+          {
+            "kind": "decision_shortcut",
+            "description": "The candidate-bank pool constructs integer distractors but inserts the actual rational source expression. For q-32244 seed 71381, the correct vector (-y+5/2,y) is the only fractional choice. Its formatting identifies the key without examining the equations.",
+            "source_refs": [
+              "cbdb5209-5ae6-5fea-a525-87f604e2410b (q-32244)",
+              "tutorial 3eff050b-e4ba-52e5-aa10-7bba2feef2fc",
+              "generate/principles.md: meaningful variety"
+            ],
+            "reproduction": "From evidence_root run `/home/jake/Developer/Course_Academy/.venv/bin/python -B reproduce_shortcut.py`; the strict acceptance assertion fails. It calls generate_easy(seed=71381, profile=\"q-32244\") without explicit parameters. The printed system is 2x+2y=5, -10x-10y=-25, 8x+8y=20. Complete evidence: minimal-fraction-shortcut.json and render-shortcut/question-001.png.",
+            "requested_change": "Change candidate_bank's family-wide numerical support so rational formatting is not reserved for the correct choice. Retain valid rational source cases. Test ordinary source-profile sampling, rather than only explicit source-bank replay, using the retained strict regression and conditional probes before and after delivery filtering."
+          }
+        ]
+      },
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186115241/review-1-policy-2-64575e53a5a82ae1"
     }
   ]
 }

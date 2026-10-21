@@ -1,0 +1,68 @@
+--- evidence-author-2/generator-before.py	2026-10-21 12:32:11.898413399 -0700
++++ 17592186100894.py	2026-10-21 12:36:45.317682221 -0700
+@@ -19,7 +19,7 @@
+ X,Y=pm.X,pm.Y
+ SOURCE=json.loads((HERE/'source.json').read_text());KP=SOURCE['record'];ID=17592186100894
+ QS={q[':question/math-academy-id']:q for q in KP[':knowledge-point/questions']}
+-VERSION='rearrange-separate-ivp-2026-10-21-v2';SUPPORTED=('easy','moderate');SHIFTS=tuple(range(-4,5))
++VERSION='rearrange-separate-ivp-2026-10-21-v3';SUPPORTED=('easy','moderate');SHIFTS=tuple(range(-4,5))
+ EXCLUDED={'q-104058':'At x=1,y=1 the supplied equation has left side 0 for every finite derivative, but right side 2; no classical solution satisfies the initial condition.'}
+ # Exact ODE RHS, initial abscissa, initial ordinate, and particular solution.
+ MODELS={
+@@ -118,7 +118,7 @@
+  if mid not in choices:raise ValueError('template/level mismatch or excluded source')
+  h=0 if replay else parameters['h'] if parameters is not None else rng.choice([z for z in SHIFTS if z])
+  if type(h) is not int or h not in SHIFTS:raise ValueError('declared finite h domain required')
+- allowed={'h','a','c'} if mid=='q-104065' else {'h','b'} if mid=='q-128199' else {'h'}
++ allowed={'h','a','c','bank'} if mid=='q-104065' else {'h','b'} if mid=='q-128199' else {'h'}
+  if parameters is not None and not set(parameters)<=allowed:raise ValueError('unknown parameter')
+  original=QS[mid];prompt,sol=question_text(mid,h)
+  f=original[':question/answer-fields'][0];kind=f[':answer-field/type'][':db/ident'];key=f[':answer-field/key']
+@@ -126,24 +126,23 @@
+  profile='observed-'+mid if kind.endswith('/radio') else 'blank-'+mid
+  params={'h':h};correct_index=next(i for i,a in enumerate(f[':answer-field/choices']) if a[':answer/id']==f[':answer-field/correct'][':answer/id'])
+  if mid=='q-104065' and not replay:
+-  # Choose decision-bearing coefficient/constant before building the bank.
+-  a=(parameters or {}).get('a',rng.choice((2,4,6)))
+-  c=(parameters or {}).get('c',rng.choice(('-pi^2','-1','0','1','pi^2')))
+-  if a not in (2,4,6) or str(c) not in ('-pi^2','-1','0','1','pi^2'):raise ValueError('invalid trig parameter')
+-  c=s.sympify(str(c).replace('^','**'),locals={'pi':s.pi});u=X-h;y0=a*s.pi**2/4+c;z=s.log(s.sin(u))+a*u**2+c
++  # Whole profiles precede the winning role. Each role yields its ODE and IC.
++  constants=tuple(s.sympify(v,locals={'pi':s.pi}) for v in ('-pi**2','-1','0','1','pi**2'))
++  catalogs=[[(b,d),(b,d+s.pi**2/2),(b+2,d-s.pi**2/2),(b+2,d),(b+1,d-s.pi**2/4)] for b in (2,4,6) for d in constants]
++  supplied=parameters or {};eligible={}
++  for bank_id,bank in enumerate(catalogs):
++   if 'bank' in supplied and supplied['bank']!=bank_id:continue
++   roles=[i for i,(v,d) in enumerate(bank) if ('a' not in supplied or supplied['a']==v) and ('c' not in supplied or s.simplify(s.sympify(str(supplied['c']).replace('^','**'),locals={'pi':s.pi})-d)==0)]
++   if roles:eligible[bank_id]=roles
++  if not eligible:raise ValueError('invalid trig parameters or bank')
++  bank_id=rng.choice(list(eligible));bank=list(catalogs[bank_id]);role=rng.choice(eligible[bank_id]);a,c=bank[role]
++  u=X-h;y0=a*s.pi**2/4+c;z=s.log(s.sin(u))+a*u**2+c
+   prompt=normalize_prose(f"Find the particular solution to $\\sin({tex(u)})\\frac{{\\mathrm{{d}}y}}{{\\mathrm{{d}}x}}-\\left({tex(2*a*u)}\\right)\\sin({tex(u)})=\\cos({tex(u)})$ that satisfies $y({tex(h+s.pi/2)})={tex(y0)}$. Assume that ${h}<x<{tex(h+s.pi)}$.")
+   sol=normalize_prose(f"We first rearrange and separate, then integrate and apply the initial condition.\n\n$$y'=\\frac{{\\cos({tex(u)})}}{{\\sin({tex(u)})}}+{tex(2*a*u)}.$$\n\nUse $v=\\sin({tex(u)})$, so $\\mathrm{{d}}v=\\cos({tex(u)})\\mathrm{{d}}x$. On the given interval, sine is positive. Thus\n\n$$\\int\\mathrm{{d}}y=\\int\\frac{{\\mathrm{{d}}v}}{{v}}+\\int \\left({tex(2*a*u)}\\right)\\mathrm{{d}}x.$$\n\n$$y=\\ln(\\sin({tex(u)}))+{tex(a*u**2)}+C.$$\n\nAt $x={tex(h+s.pi/2)}$, $\\sin({tex(u)})=1$ and hence\n\n$${tex(y0)}={tex(a*s.pi**2/4)}+C,\\qquad C={tex(c)}.$$\n\nTherefore $y={tex(z)}$.")
+-  # Two necessary decisions: same derivative but wrong IC; correct IC but wrong derivative.
+-  delta=rng.choice((-3,-2,-1,1,2,3));other=rng.choice([v for v in (1,2,3,4,5,6,7,8) if v!=a])
+-  bank=[(a,c),(a,c+delta),(other,s.simplify(y0-other*s.pi**2/4))]
+-  pool=[(v,s.simplify(y0-v*s.pi**2/4+d)) for v in (1,2,3,4,5,6,7,8) for d in (-3,-1,0,1,2)]
+-  rng.shuffle(pool)
+-  for pair in pool:
+-   if pair not in bank:bank.append(pair)
+-   if len(bank)==5:break
+-  rng.shuffle(bank);correct_index=bank.index((a,c))
++  # A separate seeded permutation holds order fixed across winning-role controls.
++  random.Random(seed).shuffle(bank);correct_index=bank.index((a,c))
+   values=['y='+tex(s.log(s.sin(u))+v*u**2+d) for v,d in bank]
+-  params.update(a=a,c=str(c).replace('**','^'));profile='authored-coefficient-and-constant-v2'
++  params.update(a=a,c=str(c).replace('**','^'),bank=bank_id);profile='authored-role-complete-bank-v3-'+str(bank_id)
+  if mid=='q-128199' and not replay:
+   b=(parameters or {}).get('b',rng.choice((-2,-1,1,2)))
+   if type(b) is not int or b not in (-2,-1,1,2):raise ValueError('invalid radical ordinate')
+@@ -157,7 +156,7 @@
+  answers=[{':answer/id':uid('answer:'+fid+v),':answer/type':':answer.type/math',':answer/value':v} for v in values]
+  cid=answers[correct_index][':answer/id']
+  q={':question/id':qid,':question/problem':prompt,':question/worked-solution':sol,':question/difficulty':':question.difficulty/'+difficulty,':question/answer-fields':[{':answer-field/id':fid,':answer-field/key':key,':answer-field/type':kind,':answer-field/choices':answers,':answer-field/correct':[':answer/id',cid]}]}
+- return {'knowledge_point':{'db_id':ID,'id':KP[':knowledge-point/id'],'title':KP[':knowledge-point/title']},'question':q,'generation':{'version':VERSION,'seed':seed,'template':mid,'bank_profile':profile,'parameters':params,'source_ids':[mid],'source_basis':SOURCE['basis'],'source_lineage':SOURCE['lineage'],'eligible_for_learning':mid not in UNGRADABLE,'grading_exclusion':UNGRADABLE.get(mid),'math_fingerprint':digest([mid,prompt]),'domain':'connected real interval through translated initial point where the original ODE and solution are defined; positive branch when specified','plot_rating':'none','recipe':('coefficient and IC-derived constant bank; same-derivative and same-IC distractors' if mid=='q-104065' and not replay else 'signed branch from initial ordinate' if mid=='q-128199' and not replay else 'complete source bank under simultaneous x -> x-h; corrected source scaffolds'),'python_version':sys.version.split()[0],'sympy_version':s.__version__}}
++ return {'knowledge_point':{'db_id':ID,'id':KP[':knowledge-point/id'],'title':KP[':knowledge-point/title']},'question':q,'generation':{'version':VERSION,'seed':seed,'template':mid,'bank_profile':profile,'parameters':params,'source_ids':[mid],'source_basis':SOURCE['basis'],'source_lineage':SOURCE['lineage'],'eligible_for_learning':mid not in UNGRADABLE,'grading_exclusion':UNGRADABLE.get(mid),'math_fingerprint':digest([mid,prompt]),'domain':'connected real interval through translated initial point where the original ODE and solution are defined; positive branch when specified','plot_rating':'none','recipe':('whole role-complete coefficient/constant bank; ODE and IC from selected role' if mid=='q-104065' and not replay else 'signed branch from initial ordinate' if mid=='q-128199' and not replay else 'complete source bank under simultaneous x -> x-h; corrected source scaffolds'),'python_version':sys.version.split()[0],'sympy_version':s.__version__}}
+ 
+ def markdown(r):
+  q=r['question'];return q[':question/problem']+'\n\n'+'\n'.join(a[':answer/value'] for f in q[':question/answer-fields'] for a in f[':answer-field/choices'])+'\n\n'+q[':question/worked-solution']

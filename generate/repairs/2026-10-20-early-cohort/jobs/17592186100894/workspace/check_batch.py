@@ -1,4 +1,5 @@
 from audit_support import *
+from check_minimal import probe
 import collections
 rs=json.loads((E/'batch.json').read_text());checks=[];cases=[]
 for r in rs:
@@ -22,7 +23,8 @@ for name,items in [('raw',rs),('accepted',accepted)]:
   cand=[a for a in field(r)[':answer-field/choices'] if ('\\ln' in a[':answer/value'] or '\\operatorname{ln}' in a[':answer/value']) and '\\pi' not in a[':answer/value']]
   success+=int(len(cand)==1 and cand[0][':answer/id']==field(r)[':answer-field/correct'][1])
  assert success==0
- ms[name]={'records':len(items),'trig':len(trig),'old_symbol_cue_successes':success}
+ latest=[probe(r) for r in trig];assert not any(q['shortcut_success'] for q in latest)
+ ms[name]={'records':len(items),'trig':len(trig),'old_symbol_cue_successes':success,'latest_conditional_cue_qualifying':sum(q['qualifies'] for q in latest),'latest_conditional_cue_successes':sum(q['shortcut_success'] for q in latest)}
 save('batch-shortcut-results.json',ms)
 # Reproduce the configured selection's conditional uniform-within-easy draw.
 # Publication IDs are unknown, so proxy IDs demonstrate support, not live draws.

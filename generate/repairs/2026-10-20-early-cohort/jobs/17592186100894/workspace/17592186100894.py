@@ -118,7 +118,7 @@ def generate(difficulty='easy',seed=0,template=None,parameters=None,replay=False
  if mid not in choices:raise ValueError('template/level mismatch or excluded source')
  h=0 if replay else parameters['h'] if parameters is not None else rng.choice([z for z in SHIFTS if z])
  if type(h) is not int or h not in SHIFTS:raise ValueError('declared finite h domain required')
- allowed={'h','a','c'} if mid=='q-104065' else {'h','b'} if mid=='q-128199' else {'h'}
+ allowed={'h','a','c','bank'} if mid=='q-104065' else {'h','b'} if mid=='q-128199' else {'h'}
  if parameters is not None and not set(parameters)<=allowed:raise ValueError('unknown parameter')
  original=QS[mid];prompt,sol=question_text(mid,h)
  f=original[':question/answer-fields'][0];kind=f[':answer-field/type'][':db/ident'];key=f[':answer-field/key']
@@ -126,25 +126,23 @@ def generate(difficulty='easy',seed=0,template=None,parameters=None,replay=False
  profile='observed-'+mid if kind.endswith('/radio') else 'blank-'+mid
  params={'h':h};correct_index=next(i for i,a in enumerate(f[':answer-field/choices']) if a[':answer/id']==f[':answer-field/correct'][':answer/id'])
  if mid=='q-104065' and not replay:
-  # Choose decision-bearing coefficient/constant before building the bank.
-  # A whole bank and an eligible winning role precede numerical construction.
-  coefficients=(2,4,6);constants=('-pi^2','-1','0','1','pi^2')
-  catalog=rng.randrange(3);role=rng.randrange(5)
-  a=(parameters or {}).get('a',coefficients[(catalog+role)%3])
-  c=(parameters or {}).get('c',constants[role])
-  if a not in (2,4,6) or str(c) not in ('-pi^2','-1','0','1','pi^2'):raise ValueError('invalid trig parameter')
-  c=s.sympify(str(c).replace('^','**'),locals={'pi':s.pi});u=X-h;y0=a*s.pi**2/4+c;z=s.log(s.sin(u))+a*u**2+c
+  # Whole profiles precede the winning role. Each role yields its ODE and IC.
+  constants=tuple(s.sympify(v,locals={'pi':s.pi}) for v in ('-pi**2','-1','0','1','pi**2'))
+  catalogs=[[(b,d),(b,d+s.pi**2/2),(b+2,d-s.pi**2/2),(b+2,d),(b+1,d-s.pi**2/4)] for b in (2,4,6) for d in constants]
+  supplied=parameters or {};eligible={}
+  for bank_id,bank in enumerate(catalogs):
+   if 'bank' in supplied and supplied['bank']!=bank_id:continue
+   roles=[i for i,(v,d) in enumerate(bank) if ('a' not in supplied or supplied['a']==v) and ('c' not in supplied or s.simplify(s.sympify(str(supplied['c']).replace('^','**'),locals={'pi':s.pi})-d)==0)]
+   if roles:eligible[bank_id]=roles
+  if not eligible:raise ValueError('invalid trig parameters or bank')
+  bank_id=rng.choice(list(eligible));bank=list(catalogs[bank_id]);role=rng.choice(eligible[bank_id]);a,c=bank[role]
+  u=X-h;y0=a*s.pi**2/4+c;z=s.log(s.sin(u))+a*u**2+c
   prompt=normalize_prose(f"Find the particular solution to $\\sin({tex(u)})\\frac{{\\mathrm{{d}}y}}{{\\mathrm{{d}}x}}-\\left({tex(2*a*u)}\\right)\\sin({tex(u)})=\\cos({tex(u)})$ that satisfies $y({tex(h+s.pi/2)})={tex(y0)}$. Assume that ${h}<x<{tex(h+s.pi)}$.")
   sol=normalize_prose(f"We first rearrange and separate, then integrate and apply the initial condition.\n\n$$y'=\\frac{{\\cos({tex(u)})}}{{\\sin({tex(u)})}}+{tex(2*a*u)}.$$\n\nUse $v=\\sin({tex(u)})$, so $\\mathrm{{d}}v=\\cos({tex(u)})\\mathrm{{d}}x$. On the given interval, sine is positive. Thus\n\n$$\\int\\mathrm{{d}}y=\\int\\frac{{\\mathrm{{d}}v}}{{v}}+\\int \\left({tex(2*a*u)}\\right)\\mathrm{{d}}x.$$\n\n$$y=\\ln(\\sin({tex(u)}))+{tex(a*u**2)}+C.$$\n\nAt $x={tex(h+s.pi/2)}$, $\\sin({tex(u)})=1$ and hence\n\n$${tex(y0)}={tex(a*s.pi**2/4)}+C,\\qquad C={tex(c)}.$$\n\nTherefore $y={tex(z)}$.")
-  # Every candidate in this bank is a possible key for another supported IVP.
-  # No key-first insertion or bank-only role can reveal which one was chosen.
-  role=constants.index(str(c).replace('**','^'))
-  catalog=(coefficients.index(a)-role)%3
-  bank=[(coefficients[(catalog+j)%3],s.sympify(v.replace('^','**'),locals={'pi':s.pi})) for j,v in enumerate(constants)]
-  # A separate seeded permutation holds presentation fixed across role controls.
+  # A separate seeded permutation holds order fixed across winning-role controls.
   random.Random(seed).shuffle(bank);correct_index=bank.index((a,c))
   values=['y='+tex(s.log(s.sin(u))+v*u**2+d) for v,d in bank]
-  params.update(a=a,c=str(c).replace('**','^'));profile='authored-role-complete-bank-v3-'+str(catalog)
+  params.update(a=a,c=str(c).replace('**','^'),bank=bank_id);profile='authored-role-complete-bank-v3-'+str(bank_id)
  if mid=='q-128199' and not replay:
   b=(parameters or {}).get('b',rng.choice((-2,-1,1,2)))
   if type(b) is not int or b not in (-2,-1,1,2):raise ValueError('invalid radical ordinate')

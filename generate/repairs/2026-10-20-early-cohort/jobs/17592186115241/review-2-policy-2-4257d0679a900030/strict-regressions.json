@@ -1,0 +1,638 @@
+{
+  "command": "python -B regression_checks.py",
+  "original_entrypoint_sha256": "3f1ce5e87297f5a065c1546547f632ae01dcf86a3d168bcedac94ec9c16bb3c3",
+  "tests": [
+    {
+      "case": "shortcut",
+      "version": "original",
+      "acceptance_check_passed": false,
+      "record": {
+        "knowledge_point": {
+          "db_id": 17592186115241,
+          "id": "2d81e3f1-d930-59ee-b439-2a3645aebb6c",
+          "title": "Solving a Consistent System of Equations Using Gauss-Jordan Elimination"
+        },
+        "question": {
+          ":question/id": "c699130e-ff10-5425-a487-e8ee77427113",
+          ":question/difficulty": ":question.difficulty/easy",
+          ":question/problem": "Consider the system of linear equations\n\n$$\n\\left\\{\\begin{aligned}x+y-z &=5 \\\\ x+2y-4z &=9.\\end{aligned}\\right.\n$$\n\nUse the standard Gauss-Jordan method to reduce the augmented matrix $M$ of the system to reduced row echelon form, and then solve the linear system.",
+          ":question/worked-solution": "The augmented matrix for this system is\n\n$$\nM=\\left[\\begin{array}{ccc|c}1 & 1 & -1 & 5 \\\\ 1 & 2 & -4 & 9\\end{array}\\right].\n$$\n\nUsing the standard Gauss-Jordan method, we can reduce this matrix to reduced row echelon form as follows:\n\n$$\n\\begin{aligned}M & =\\left[\\begin{array}{ccc|c}1 & 1 & -1 & 5 \\\\ 1 & 2 & -4 & 9\\end{array}\\right] & {R}_{2}:={R}_{2}+(-1){R}_{1} \\\\  & \u223c\\left[\\begin{array}{ccc|c}1 & 1 & -1 & 5 \\\\ 0 & 1 & -3 & 4\\end{array}\\right] & {R}_{1}:={R}_{1}+(-1){R}_{2} \\\\  & \u223c\\left[\\begin{array}{ccc|c}1 & 0 & 2 & 1 \\\\ 0 & 1 & -3 & 4\\end{array}\\right]\\end{aligned}\n$$\n\nThe corresponding system is now\n\n$$\n\\left\\{\\begin{aligned}x+2z &=1 \\\\ y-3z &=4.\\end{aligned}\\right.\n$$\n\nThe basic variables are the variables whose coefficients are pivots. In this case, the basic variables are $x$ and $y$, and we have one free variable, $z$. That means we need to find $x$ and $y$ in terms of $z$.\n\nTherefore, the general solution is\n\n$$\n\\left\\{\\begin{aligned}x &=-2z+1 \\\\ y &=3z+4 \\\\ z &=z,\\end{aligned}\\right.\n$$\n\nwhere $z$ (the free variable) is an arbitrary number.\n\nIn vector form, the solution can be written as\n\n$$\n\\begin{bmatrix}x \\\\ y \\\\ z\\end{bmatrix}=\\begin{bmatrix}-2z+1 \\\\ 3z+4 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty ).\n$$",
+          ":question/answer-fields": [
+            {
+              ":answer-field/id": "1efe2d0c-742a-5415-86b5-f03fd55ffde6",
+              ":answer-field/key": "selection",
+              ":answer-field/type": ":answer-field.type/radio",
+              ":answer-field/choices": [
+                {
+                  ":answer/id": "e77bab66-1748-5174-88c5-6018f5137585",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\begin{bmatrix}-2z-1 \\\\ 3z+4 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+                },
+                {
+                  ":answer/id": "271bca1f-900c-567f-ba74-7efe3ed09ff6",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\begin{bmatrix}3z+4 \\\\ -2z+1 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+                },
+                {
+                  ":answer/id": "1c665e7e-2755-5eb8-bfd9-8c1d607e49fc",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\begin{bmatrix}-2z+1 \\\\ 3z+4 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+                },
+                {
+                  ":answer/id": "a35bc046-6e8e-52fb-b799-db118259be43",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\begin{bmatrix}-2z+1 \\\\ 4 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+                },
+                {
+                  ":answer/id": "b19ca4ec-fd6f-5aca-a597-9195121572b2",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\begin{bmatrix}2z+1 \\\\ 3z+4 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+                }
+              ],
+              ":answer-field/correct": [
+                ":answer/id",
+                "1c665e7e-2755-5eb8-bfd9-8c1d607e49fc"
+              ]
+            }
+          ]
+        },
+        "generation": {
+          "generator_version": "1.0.0",
+          "seed": 90217,
+          "template": "authored_easy",
+          "bank_profile": "authored_operations",
+          "parameters": {
+            "free_coefficients": [
+              2,
+              -3
+            ],
+            "constants": [
+              1,
+              4
+            ],
+            "mix": [
+              1,
+              1
+            ]
+          },
+          "mathematical_fingerprint": "d879a1d2d5b83076e2a16ae46c8ea1322c6e004eda5f09e6a93bd81866363646",
+          "content_fingerprint": "f3313613fab452c60e944c88b92edaaecf2d9f861a5e0fa2856fd1da790db473",
+          "matrix": [
+            [
+              "1",
+              "1",
+              "-1",
+              "5"
+            ],
+            [
+              "1",
+              "2",
+              "-4",
+              "9"
+            ]
+          ],
+          "source_basis": 1356,
+          "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+          "sympy_version": "1.14.0",
+          "plots": "none",
+          "authored": true,
+          "operations": 2,
+          "authored_bank": "free-term sign, constant sign, omitted free term, coordinate exchange",
+          "math_format": "course-academy-tex-v1"
+        }
+      },
+      "probe": {
+        "id": "c699130e-ff10-5425-a487-e8ee77427113",
+        "applicable": true,
+        "unique_modes": true,
+        "component_counts": [
+          {
+            "-2z-1": 1,
+            "3z+4": 1,
+            "-2z+1": 2,
+            "2z+1": 1
+          },
+          {
+            "3z+4": 3,
+            "-2z+1": 1,
+            "4": 1
+          }
+        ],
+        "candidate_positions": [
+          3
+        ],
+        "selected_answer_id": "1c665e7e-2755-5eb8-bfd9-8c1d607e49fc",
+        "correct": true,
+        "correct_position": 3
+      }
+    },
+    {
+      "case": "shortcut",
+      "version": "current",
+      "acceptance_check_passed": true,
+      "record": {
+        "knowledge_point": {
+          "db_id": 17592186115241,
+          "id": "2d81e3f1-d930-59ee-b439-2a3645aebb6c",
+          "title": "Solving a Consistent System of Equations Using Gauss-Jordan Elimination"
+        },
+        "question": {
+          ":question/id": "4fb093c9-78d0-5ab5-9a68-5632fd6b3133",
+          ":question/difficulty": ":question.difficulty/easy",
+          ":question/problem": "Consider the system of linear equations\n\n$$\n\\left\\{\\begin{aligned}x+y-z &=5 \\\\ x+2y-4z &=9.\\end{aligned}\\right.\n$$\n\nUse the standard Gauss-Jordan method to reduce the augmented matrix $M$ of the system to reduced row echelon form, and then solve the linear system.",
+          ":question/worked-solution": "The augmented matrix for this system is\n\n$$\nM=\\left[\\begin{array}{ccc|c}1 & 1 & -1 & 5 \\\\ 1 & 2 & -4 & 9\\end{array}\\right].\n$$\n\nUsing the standard Gauss-Jordan method, we can reduce this matrix to reduced row echelon form as follows:\n\n$$\n\\begin{aligned}M & =\\left[\\begin{array}{ccc|c}1 & 1 & -1 & 5 \\\\ 1 & 2 & -4 & 9\\end{array}\\right] \\\\ & {R}_{2}:={R}_{2}+(-1){R}_{1} \\\\  & \u223c\\left[\\begin{array}{ccc|c}1 & 1 & -1 & 5 \\\\ 0 & 1 & -3 & 4\\end{array}\\right] \\\\ & {R}_{1}:={R}_{1}+(-1){R}_{2} \\\\  & \u223c\\left[\\begin{array}{ccc|c}1 & 0 & 2 & 1 \\\\ 0 & 1 & -3 & 4\\end{array}\\right]\\end{aligned}\n$$\n\nThe corresponding system is now\n\n$$\n\\left\\{\\begin{aligned}x+2z &=1 \\\\ y-3z &=4.\\end{aligned}\\right.\n$$\n\nThe basic variables are the variables whose coefficients are pivots. In this case, the basic variables are $x$ and $y$, and we have one free variable, $z$. That means we need to find $x$ and $y$ in terms of $z$.\n\nTherefore, the general solution is\n\n$$\n\\left\\{\\begin{aligned}x &=-2z+1 \\\\ y &=3z+4 \\\\ z &=z,\\end{aligned}\\right.\n$$\n\nwhere $z$ (the free variable) is an arbitrary number.\n\nIn vector form, the solution can be written as\n\n$$\n\\begin{bmatrix}x \\\\ y \\\\ z\\end{bmatrix}=\\begin{bmatrix}-2z+1 \\\\ 3z+4 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty ).\n$$",
+          ":question/answer-fields": [
+            {
+              ":answer-field/id": "fe59a2e8-92e0-5968-9722-7799b4727f39",
+              ":answer-field/key": "selection",
+              ":answer-field/type": ":answer-field.type/radio",
+              ":answer-field/choices": [
+                {
+                  ":answer/id": "623dceaf-9654-5f88-aa6b-3be9ccf0e2e8",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\begin{bmatrix}-2z+1 \\\\ 3z+4 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+                },
+                {
+                  ":answer/id": "59561832-846b-5293-8b21-a7fb1f0be8bd",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\begin{bmatrix}-5z+6 \\\\ 4z-5 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+                },
+                {
+                  ":answer/id": "b708ef06-4585-5717-a944-bb1a9e402953",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\begin{bmatrix}-5z+6 \\\\ z+5 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+                },
+                {
+                  ":answer/id": "23059431-4463-540f-a5a5-360f975dd387",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\begin{bmatrix}z-3 \\\\ 3z+4 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+                },
+                {
+                  ":answer/id": "adb62424-4a3d-5da3-963e-fd76cf384f7d",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\begin{bmatrix}-2z+1 \\\\ 4z-5 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+                }
+              ],
+              ":answer-field/correct": [
+                ":answer/id",
+                "623dceaf-9654-5f88-aa6b-3be9ccf0e2e8"
+              ]
+            }
+          ]
+        },
+        "generation": {
+          "generator_version": "1.1.1",
+          "seed": 90217,
+          "template": "authored_easy",
+          "bank_profile": "authored_operations",
+          "parameters": {
+            "free_coefficients": [
+              2,
+              -3
+            ],
+            "constants": [
+              1,
+              4
+            ],
+            "mix": [
+              1,
+              1
+            ]
+          },
+          "mathematical_fingerprint": "d879a1d2d5b83076e2a16ae46c8ea1322c6e004eda5f09e6a93bd81866363646",
+          "content_fingerprint": "60d62b15bab274a9f2f57925b4cc80dba306c7317b1c6597e800cbc9313c60e9",
+          "matrix": [
+            [
+              "1",
+              "1",
+              "-1",
+              "5"
+            ],
+            [
+              "1",
+              "2",
+              "-4",
+              "9"
+            ]
+          ],
+          "source_basis": 5373,
+          "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+          "source_sha256": "877620ae93e3f953c46694139e803c9c5cde5d86fb7a8b12430b72412a134ddf",
+          "sympy_version": "1.14.0",
+          "plots": "none",
+          "authored": true,
+          "operations": 2,
+          "authored_bank": "exchangeable coordinate pools",
+          "bank_role": 0,
+          "decision_case": "explicit",
+          "math_format": "course-academy-tex-v1"
+        }
+      },
+      "probe": {
+        "id": "4fb093c9-78d0-5ab5-9a68-5632fd6b3133",
+        "applicable": true,
+        "unique_modes": false,
+        "component_counts": [
+          {
+            "-2z+1": 2,
+            "-5z+6": 2,
+            "z-3": 1
+          },
+          {
+            "3z+4": 2,
+            "4z-5": 2,
+            "z+5": 1
+          }
+        ],
+        "candidate_positions": [
+          1,
+          2,
+          5
+        ],
+        "selected_answer_id": null,
+        "correct": false,
+        "correct_position": 1
+      }
+    },
+    {
+      "case": "zero-slope",
+      "version": "original",
+      "acceptance_check_passed": false,
+      "error": "coefficient/constant bounds"
+    },
+    {
+      "case": "zero-slope",
+      "version": "current",
+      "acceptance_check_passed": true,
+      "record": {
+        "knowledge_point": {
+          "db_id": 17592186115241,
+          "id": "2d81e3f1-d930-59ee-b439-2a3645aebb6c",
+          "title": "Solving a Consistent System of Equations Using Gauss-Jordan Elimination"
+        },
+        "question": {
+          ":question/id": "e44e1f6e-3bb8-5d49-8ebe-e90678e2c1c4",
+          ":question/difficulty": ":question.difficulty/easy",
+          ":question/problem": "Consider the system of linear equations\n\n$$\n\\left\\{\\begin{aligned}x+y-3z &=5 \\\\ x+2y-6z &=9.\\end{aligned}\\right.\n$$\n\nUse the standard Gauss-Jordan method to reduce the augmented matrix $M$ of the system to reduced row echelon form, and then solve the linear system.",
+          ":question/worked-solution": "The augmented matrix for this system is\n\n$$\nM=\\left[\\begin{array}{ccc|c}1 & 1 & -3 & 5 \\\\ 1 & 2 & -6 & 9\\end{array}\\right].\n$$\n\nUsing the standard Gauss-Jordan method, we can reduce this matrix to reduced row echelon form as follows:\n\n$$\n\\begin{aligned}M & =\\left[\\begin{array}{ccc|c}1 & 1 & -3 & 5 \\\\ 1 & 2 & -6 & 9\\end{array}\\right] \\\\ & {R}_{2}:={R}_{2}+(-1){R}_{1} \\\\  & \u223c\\left[\\begin{array}{ccc|c}1 & 1 & -3 & 5 \\\\ 0 & 1 & -3 & 4\\end{array}\\right] \\\\ & {R}_{1}:={R}_{1}+(-1){R}_{2} \\\\  & \u223c\\left[\\begin{array}{ccc|c}1 & 0 & 0 & 1 \\\\ 0 & 1 & -3 & 4\\end{array}\\right]\\end{aligned}\n$$\n\nThe corresponding system is now\n\n$$\n\\left\\{\\begin{aligned}x &=1 \\\\ y-3z &=4.\\end{aligned}\\right.\n$$\n\nThe basic variables are the variables whose coefficients are pivots. In this case, the basic variables are $x$ and $y$, and we have one free variable, $z$. That means we need to find $x$ and $y$ in terms of $z$.\n\nTherefore, the general solution is\n\n$$\n\\left\\{\\begin{aligned}x &=1 \\\\ y &=3z+4 \\\\ z &=z,\\end{aligned}\\right.\n$$\n\nwhere $z$ (the free variable) is an arbitrary number.\n\nIn vector form, the solution can be written as\n\n$$\n\\begin{bmatrix}x \\\\ y \\\\ z\\end{bmatrix}=\\begin{bmatrix}1 \\\\ 3z+4 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty ).\n$$",
+          ":question/answer-fields": [
+            {
+              ":answer-field/id": "64d42a4b-da2a-58f4-b695-07bd619568a1",
+              ":answer-field/key": "selection",
+              ":answer-field/type": ":answer-field.type/radio",
+              ":answer-field/choices": [
+                {
+                  ":answer/id": "cd3c8558-75c9-551a-be2e-c0a3b9afed26",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\begin{bmatrix}1 \\\\ 3z+4 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+                },
+                {
+                  ":answer/id": "a5c7d4d0-3964-548c-844a-63f96df23b27",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\begin{bmatrix}-2 \\\\ z+5 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+                },
+                {
+                  ":answer/id": "4e0ccffb-2584-5d84-860b-9757ac864a42",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\begin{bmatrix}-2 \\\\ -3z+5 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+                },
+                {
+                  ":answer/id": "f33fce3c-e0f7-5a7c-81a0-fa1b7265a958",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\begin{bmatrix}-4 \\\\ 3z+4 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+                },
+                {
+                  ":answer/id": "0f16e22a-7503-5d3e-913a-a30338965b5f",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\begin{bmatrix}1 \\\\ z+5 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+                }
+              ],
+              ":answer-field/correct": [
+                ":answer/id",
+                "cd3c8558-75c9-551a-be2e-c0a3b9afed26"
+              ]
+            }
+          ]
+        },
+        "generation": {
+          "generator_version": "1.1.1",
+          "seed": 90217,
+          "template": "authored_easy",
+          "bank_profile": "authored_operations",
+          "parameters": {
+            "free_coefficients": [
+              0,
+              -3
+            ],
+            "constants": [
+              1,
+              4
+            ],
+            "mix": [
+              1,
+              1
+            ]
+          },
+          "mathematical_fingerprint": "33e85c0a231c92bc290dc6697efdb2c0516f5f02b09285f3fa2b6b582d780879",
+          "content_fingerprint": "ec2f5ba04ea5584c60d5a255d9da216c8f6f064fb0e0c9c0c5f390f9975a5fc3",
+          "matrix": [
+            [
+              "1",
+              "1",
+              "-3",
+              "5"
+            ],
+            [
+              "1",
+              "2",
+              "-6",
+              "9"
+            ]
+          ],
+          "source_basis": 5373,
+          "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+          "source_sha256": "877620ae93e3f953c46694139e803c9c5cde5d86fb7a8b12430b72412a134ddf",
+          "sympy_version": "1.14.0",
+          "plots": "none",
+          "authored": true,
+          "operations": 2,
+          "authored_bank": "exchangeable coordinate pools",
+          "bank_role": 0,
+          "decision_case": "explicit",
+          "math_format": "course-academy-tex-v1"
+        }
+      },
+      "probe": {
+        "id": "e44e1f6e-3bb8-5d49-8ebe-e90678e2c1c4",
+        "applicable": true,
+        "unique_modes": false,
+        "component_counts": [
+          {
+            "1": 2,
+            "-2": 2,
+            "-4": 1
+          },
+          {
+            "3z+4": 2,
+            "z+5": 2,
+            "-3z+5": 1
+          }
+        ],
+        "candidate_positions": [
+          1,
+          2,
+          5
+        ],
+        "selected_answer_id": null,
+        "correct": false,
+        "correct_position": 1
+      }
+    },
+    {
+      "case": "equal-coordinates",
+      "version": "original",
+      "acceptance_check_passed": false,
+      "error": "invalid complete bank"
+    },
+    {
+      "case": "equal-coordinates",
+      "version": "current",
+      "acceptance_check_passed": true,
+      "record": {
+        "knowledge_point": {
+          "db_id": 17592186115241,
+          "id": "2d81e3f1-d930-59ee-b439-2a3645aebb6c",
+          "title": "Solving a Consistent System of Equations Using Gauss-Jordan Elimination"
+        },
+        "question": {
+          ":question/id": "7fc48786-61af-54a8-93a2-69af8a1dc972",
+          ":question/difficulty": ":question.difficulty/easy",
+          ":question/problem": "Consider the system of linear equations\n\n$$\n\\left\\{\\begin{aligned}x+y+4z &=2 \\\\ x+2y+6z &=3.\\end{aligned}\\right.\n$$\n\nUse the standard Gauss-Jordan method to reduce the augmented matrix $M$ of the system to reduced row echelon form, and then solve the linear system.",
+          ":question/worked-solution": "The augmented matrix for this system is\n\n$$\nM=\\left[\\begin{array}{ccc|c}1 & 1 & 4 & 2 \\\\ 1 & 2 & 6 & 3\\end{array}\\right].\n$$\n\nUsing the standard Gauss-Jordan method, we can reduce this matrix to reduced row echelon form as follows:\n\n$$\n\\begin{aligned}M & =\\left[\\begin{array}{ccc|c}1 & 1 & 4 & 2 \\\\ 1 & 2 & 6 & 3\\end{array}\\right] \\\\ & {R}_{2}:={R}_{2}+(-1){R}_{1} \\\\  & \u223c\\left[\\begin{array}{ccc|c}1 & 1 & 4 & 2 \\\\ 0 & 1 & 2 & 1\\end{array}\\right] \\\\ & {R}_{1}:={R}_{1}+(-1){R}_{2} \\\\  & \u223c\\left[\\begin{array}{ccc|c}1 & 0 & 2 & 1 \\\\ 0 & 1 & 2 & 1\\end{array}\\right]\\end{aligned}\n$$\n\nThe corresponding system is now\n\n$$\n\\left\\{\\begin{aligned}x+2z &=1 \\\\ y+2z &=1.\\end{aligned}\\right.\n$$\n\nThe basic variables are the variables whose coefficients are pivots. In this case, the basic variables are $x$ and $y$, and we have one free variable, $z$. That means we need to find $x$ and $y$ in terms of $z$.\n\nTherefore, the general solution is\n\n$$\n\\left\\{\\begin{aligned}x &=-2z+1 \\\\ y &=-2z+1 \\\\ z &=z,\\end{aligned}\\right.\n$$\n\nwhere $z$ (the free variable) is an arbitrary number.\n\nIn vector form, the solution can be written as\n\n$$\n\\begin{bmatrix}x \\\\ y \\\\ z\\end{bmatrix}=\\begin{bmatrix}-2z+1 \\\\ -2z+1 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty ).\n$$",
+          ":question/answer-fields": [
+            {
+              ":answer-field/id": "a8b871c7-2069-560f-9308-cbfe51df46a3",
+              ":answer-field/key": "selection",
+              ":answer-field/type": ":answer-field.type/radio",
+              ":answer-field/choices": [
+                {
+                  ":answer/id": "34da85b8-0e9a-5dd7-a435-54439d1b32d3",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\begin{bmatrix}-2z+1 \\\\ -2z+1 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+                },
+                {
+                  ":answer/id": "220ae845-ae58-539f-a972-28ea1f2a1c4d",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\begin{bmatrix}z-3 \\\\ z-3 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+                },
+                {
+                  ":answer/id": "dbb5d56d-063a-5cdc-a64f-818321404c06",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\begin{bmatrix}4z-5 \\\\ 4z-5 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+                },
+                {
+                  ":answer/id": "6ff09b94-1f2f-53c3-a842-41fcfd57e7d5",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\begin{bmatrix}z+5 \\\\ z+5 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+                },
+                {
+                  ":answer/id": "69537ab4-fae9-5ccc-8ded-b2792f304139",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\begin{bmatrix}-5z+6 \\\\ -5z+6 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+                }
+              ],
+              ":answer-field/correct": [
+                ":answer/id",
+                "34da85b8-0e9a-5dd7-a435-54439d1b32d3"
+              ]
+            }
+          ]
+        },
+        "generation": {
+          "generator_version": "1.1.1",
+          "seed": 90217,
+          "template": "authored_easy",
+          "bank_profile": "authored_operations",
+          "parameters": {
+            "free_coefficients": [
+              2,
+              2
+            ],
+            "constants": [
+              1,
+              1
+            ],
+            "mix": [
+              1,
+              1
+            ]
+          },
+          "mathematical_fingerprint": "3f0b124d68b13bbad5997bf1519f98e39b9b0abbd98a9387940928ba9e4684db",
+          "content_fingerprint": "4491629c6411b40a081a4de3ff104702c1e85f8fb2de7d5941e2b345225bf1bd",
+          "matrix": [
+            [
+              "1",
+              "1",
+              "4",
+              "2"
+            ],
+            [
+              "1",
+              "2",
+              "6",
+              "3"
+            ]
+          ],
+          "source_basis": 5373,
+          "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+          "source_sha256": "877620ae93e3f953c46694139e803c9c5cde5d86fb7a8b12430b72412a134ddf",
+          "sympy_version": "1.14.0",
+          "plots": "none",
+          "authored": true,
+          "operations": 2,
+          "authored_bank": "exchangeable coordinate pools",
+          "bank_role": 0,
+          "decision_case": "explicit",
+          "math_format": "course-academy-tex-v1"
+        }
+      },
+      "probe": {
+        "id": "7fc48786-61af-54a8-93a2-69af8a1dc972",
+        "applicable": true,
+        "unique_modes": false,
+        "component_counts": [
+          {
+            "-2z+1": 1,
+            "z-3": 1,
+            "4z-5": 1,
+            "z+5": 1,
+            "-5z+6": 1
+          },
+          {
+            "-2z+1": 1,
+            "z-3": 1,
+            "4z-5": 1,
+            "z+5": 1,
+            "-5z+6": 1
+          }
+        ],
+        "candidate_positions": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "selected_answer_id": null,
+        "correct": false,
+        "correct_position": 1
+      }
+    },
+    {
+      "case": "source",
+      "version": "original",
+      "acceptance_check_passed": false,
+      "error": "unknown profile"
+    },
+    {
+      "case": "source",
+      "version": "current",
+      "acceptance_check_passed": true,
+      "record": {
+        "knowledge_point": {
+          "db_id": 17592186115241,
+          "id": "2d81e3f1-d930-59ee-b439-2a3645aebb6c",
+          "title": "Solving a Consistent System of Equations Using Gauss-Jordan Elimination"
+        },
+        "question": {
+          ":question/id": "3afe083d-0c21-5f1c-a265-49d3602f3b81",
+          ":question/difficulty": ":question.difficulty/easy",
+          ":question/problem": "Consider the system of linear equations\n\n$$\n\\left\\{\\begin{aligned}x-2y+z &=4 \\\\  y-3z &=-1.\\end{aligned}\\right.\n$$\n\nUse the standard Gauss-Jordan method to reduce the augmented matrix $M$ of the system to reduced row echelon form, and then solve the linear system.",
+          ":question/worked-solution": "The augmented matrix for this system is\n\n$$\nM=\\left[\\begin{array}{ccc|c}1 & -2 & 1 & 4 \\\\ 0 & 1 & -3 & -1\\end{array}\\right].\n$$\n\nUsing the standard Gauss-Jordan method, we can reduce this matrix to reduced row echelon form as follows:\n\n$$\n\\begin{aligned}M & =\\left[\\begin{array}{ccc|c}1 & -2 & 1 & 4 \\\\ 0 & 1 & -3 & -1\\end{array}\\right] & {R}_{1} & :={R}_{1}+2{R}_{2} \\\\  & \u223c\\left[\\begin{array}{ccc|c}1 & 0 & -5 & 2 \\\\ 0 & 1 & -3 & -1\\end{array}\\right]\\end{aligned}\n$$\n\nThe corresponding system is now  \n\n$$\n\\left\\{\\begin{aligned}x-5z &=2 \\\\  y-3z &=-1.\\end{aligned}\\right.\n$$\n\nThe basic variables are the variables whose coefficients are pivots. In this case, the basic variables are $x$ and $y,$ and we have one free variable, $z.$ That means we need to find $x$ and $y$ in terms of $z.$ \n\nTherefore, the general solution is\n\n$$\n\\left\\{\\begin{aligned}x &=5z+2 \\\\  y &=3z-1 \\\\  z &=z,\\end{aligned}\\right.\n$$\n\nwhere $z$ (the free variable) is an arbitrary number.\n\nIn vector form, the solution can be written as\n\n$$\n\\begin{aligned}\\begin{bmatrix}x \\\\ y \\\\ z\\end{bmatrix}=\\begin{bmatrix}5z+2 \\\\ 3z-1 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty ).\\end{aligned}\n$$",
+          ":question/answer-fields": [
+            {
+              ":answer-field/id": "27ab0a7d-a19c-551c-9ed2-ea3b4878972d",
+              ":answer-field/key": "selection",
+              ":answer-field/type": ":answer-field.type/radio",
+              ":answer-field/choices": [
+                {
+                  ":answer/id": "d607f4f5-7b36-5520-adb9-de5e37ae3706",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\begin{bmatrix}5z-2 \\\\ -3z+1 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+                },
+                {
+                  ":answer/id": "cff66401-f8dd-55f1-a147-f60339d920e3",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\begin{bmatrix}5z+2 \\\\ 3z+1 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+                },
+                {
+                  ":answer/id": "41a75dac-b690-563b-a05b-60e1e610b5ad",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\begin{bmatrix}2z+5 \\\\ z-3 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+                },
+                {
+                  ":answer/id": "9db8a2ee-0f62-53d2-b173-f4b63ebacc92",
+                  ":answer/type": ":answer.type/math",
+                  ":answer/value": "\\begin{bmatrix}5z+2 \\\\ 3z-1 \\\\ z\\end{bmatrix},\\,z\\in (-\\infty ,\\infty )"
+                },
+                {
+                  ":answer/id": "77537dea-fa87-5ae8-b944-dedfe3934b9c",
+                  ":answer/type": ":answer.type/text",
+                  ":answer/value": "No solution"
+                }
+              ],
+              ":answer-field/correct": [
+                ":answer/id",
+                "9db8a2ee-0f62-53d2-b173-f4b63ebacc92"
+              ]
+            }
+          ]
+        },
+        "generation": {
+          "generator_version": "1.1.1",
+          "seed": 90217,
+          "template": "one_addition_full_vector",
+          "bank_profile": "q-131714",
+          "parameters": {
+            "scale": 1,
+            "offsets": [
+              0,
+              0,
+              0
+            ]
+          },
+          "mathematical_fingerprint": "49db1181ef7eed36546824b13c29427659705f39ff0de70c3d92a5d58a9a6cc9",
+          "content_fingerprint": "c03c5ae2055398ad1116da3cd298d0fb253df2944f5717adc8771886419f4d4d",
+          "matrix": [
+            [
+              "1",
+              "-2",
+              "1",
+              "4"
+            ],
+            [
+              "0",
+              "1",
+              "-3",
+              "-1"
+            ]
+          ],
+          "source_basis": 5373,
+          "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+          "source_sha256": "877620ae93e3f953c46694139e803c9c5cde5d86fb7a8b12430b72412a134ddf",
+          "sympy_version": "1.14.0",
+          "plots": "none",
+          "source_id": "q-131714",
+          "authored_solution": false,
+          "presentation_repair": true,
+          "profile_interpretation": "invertible affine transport; original distractor intent underdetermined",
+          "math_format": "course-academy-tex-v1"
+        }
+      },
+      "probe": {
+        "applicable": false,
+        "id": "3afe083d-0c21-5f1c-a265-49d3602f3b81"
+      }
+    }
+  ]
+}
