@@ -1,0 +1,2559 @@
+{
+  "skill": "Identify every non-pivot column of a supplied row echelon form matrix.",
+  "reasoning_steps": [
+    "Scan each nonzero row for its first nonzero entry.",
+    "Collect the column indices of those pivots; ignore zero rows.",
+    "Take the complement among all displayed columns, and check exactly those column-vector options."
+  ],
+  "response_contract": "One checkbox per column, each with complete true/false answer bank; select all non-pivot columns. All 17 supplied questions are easy.",
+  "invariants": [
+    "Matrix already in row echelon form: increasing leading positions, zero rows last.",
+    "No elimination or rank computation required.",
+    "Prompts, vectors, checkbox keys and explanation must describe the same matrix.",
+    "Source shapes range from 3 to 5 rows and 3 to 5 columns; one or two non-pivot columns."
+  ],
+  "permitted_variations": [
+    "Change signs and magnitudes of nonzero pivots and entries to their right; preserve REF.",
+    "Change eligible pivot-column assignments within a fixed shape/rank, including leading zero columns and final non-pivot columns. Derive complement anew.",
+    "Vary one versus two selected columns where supported by shape/rank and source workload.",
+    "Matrix letter, option order and values are incidental; they must not identify a fixed correct subset.",
+    "Change irrelevant right-of-pivot entries without changing selected columns. Change leading positions while retaining REF to change selected columns."
+  ],
+  "source_refs": [
+    "bfb0514f-33ea-5674-8071-994ec564a12b (q-35391)",
+    "cdcc6acf-5383-5b11-9305-2a2d610ba1ad (q-35730)",
+    "c7dfd4e6-f98f-5d70-9672-fbeae076cac0 (q-130948)",
+    "aa0e8a0d-dec0-575e-8d45-de71528bdbeb (q-130949)",
+    "7a34ccaa-757d-5d88-96dd-45a700a4b334 (q-130951)",
+    "c414ba19-302f-5c4a-8143-83f236032134 (q-130953)",
+    "e03feb67-8ac8-51d5-afab-95257716f3c5 (q-73614)",
+    "2e4d037d-222f-5741-a696-abfc442768e9 (q-73618)",
+    "e5f1860a-14f7-5dde-8785-3643838d3e4f (q-73620)",
+    "5149a8bf-4216-5b0c-825e-8103ee48f823 (q-73621)",
+    "882ebb4d-35c9-5b5b-8139-3566e490f853 (q-73616)",
+    "02830b84-264a-5296-8703-bbcf95ce7d55 (q-130954)",
+    "cff88abe-cb9f-5f2b-aa6a-898f213ad5e3 (q-130955)",
+    "701f0d82-dd3a-58b3-b64b-6042ce1e752a (q-73612)",
+    "bcd1cb26-1c44-5d74-aa8e-2093ab435f98 (q-130950)",
+    "ef768962-c254-565f-ad90-7c7187cd37b0 (q-73613)",
+    "75f69126-c110-5545-9efd-4ceeba235a0c (q-73615)",
+    "22a77802-4114-516f-a0e0-4cda2e069361 (e-4704)",
+    "tutorial feec6418-f447-5ee0-8c62-7d6b690f9228, Introduction, step 17200"
+  ],
+  "lesson_passages": [
+    {
+      "ref": "tutorial feec6418-f447-5ee0-8c62-7d6b690f9228",
+      "quote": "The **pivots** of a matrix in row echelon form are the first non-zero entries in each row of the matrix."
+    },
+    {
+      "ref": "same tutorial, concluding paragraph",
+      "quote": "The non-pivot columns are the columns that do not contain a pivot."
+    }
+  ],
+  "source_cases": [
+    {
+      "id": "bfb0514f-33ea-5674-8071-994ec564a12b",
+      "problem": "The row echelon form matrix $B$ is given below. What are its **non**-pivot columns?\n\n$$\nB=\\begin{bmatrix}3 & 4 & 3 & 0 & -5 \\\\ 0 & 2 & 0 & -4 & 1 \\\\ 0 & 0 & 0 & 3 & 0 \\\\ 0 & 0 & 0 & 0 & 1\\end{bmatrix}\n$$\n\nSelect all that apply.",
+      "solution": "Remember that the pivots of a matrix in row echelon form are the first non-zero entries in each row of the matrix.\n\nWe can see that $B$ has $4$ pivots in the $1$st, $2$nd, $4$th, and $5$th columns:\n\n$$\nB=\\begin{bmatrix}3 & 4 & 3 & 0 & -5 \\\\ 0 & 2 & 0 & -4 & 1 \\\\ 0 & 0 & 0 & 3 & 0 \\\\ 0 & 0 & 0 & 0 & 1\\end{bmatrix}\n$$\n\nTherefore, the only non-pivot column is the $3$rd column.",
+      "answer_fields": [
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "0263444f-30b8-5e92-8c02-aab67598506a",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "true",
+              ":db/id": 17592186574356
+            },
+            {
+              ":answer/id": "e8755a4b-d000-5571-9d36-36fbaec82f04",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "false",
+              ":db/id": 17592186574355
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "e8755a4b-d000-5571-9d36-36fbaec82f04",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "false",
+            ":db/id": 17592186574355
+          },
+          ":answer-field/id": "5986c8a6-2634-554c-bd46-5c6f718f41a3",
+          ":answer-field/key": "Column 4: $\\begin{bmatrix}0 \\\\ -4 \\\\ 3 \\\\ 0\\end{bmatrix}$",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/checkbox"
+          },
+          ":db/id": 17592186574660
+        },
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "12aada8e-09b2-57e6-9ea4-8c616d0cdbe3",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "false",
+              ":db/id": 17592186574353
+            },
+            {
+              ":answer/id": "85beac64-266c-5153-9446-ada19b2897c9",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "true",
+              ":db/id": 17592186574354
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "85beac64-266c-5153-9446-ada19b2897c9",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "true",
+            ":db/id": 17592186574354
+          },
+          ":answer-field/id": "19821f44-7d7e-58e0-86f7-1ed578ab447f",
+          ":answer-field/key": "Column 3: $\\begin{bmatrix}3 \\\\ 0 \\\\ 0 \\\\ 0\\end{bmatrix}$",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/checkbox"
+          },
+          ":db/id": 17592186574659
+        },
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "530276a6-e403-5961-9ae6-d6981d600683",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "true",
+              ":db/id": 17592186574352
+            },
+            {
+              ":answer/id": "53f41b57-4f9f-516e-bd2c-2ecf22bc60cd",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "false",
+              ":db/id": 17592186574351
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "53f41b57-4f9f-516e-bd2c-2ecf22bc60cd",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "false",
+            ":db/id": 17592186574351
+          },
+          ":answer-field/id": "26384055-28c0-5d19-8fc2-aeccb648af0b",
+          ":answer-field/key": "Column 2: $\\begin{bmatrix}4 \\\\ 2 \\\\ 0 \\\\ 0\\end{bmatrix}$",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/checkbox"
+          },
+          ":db/id": 17592186574658
+        },
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "65255442-2320-5c93-8e6a-cfb6ce46e3e3",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "true",
+              ":db/id": 17592186574350
+            },
+            {
+              ":answer/id": "b787c6f6-5351-5e11-97e1-60d594c3bcbf",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "false",
+              ":db/id": 17592186574349
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "b787c6f6-5351-5e11-97e1-60d594c3bcbf",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "false",
+            ":db/id": 17592186574349
+          },
+          ":answer-field/id": "1ed99ac0-e5b7-560b-99f7-88135ed6262b",
+          ":answer-field/key": "Column 1: $\\begin{bmatrix}3 \\\\ 0 \\\\ 0 \\\\ 0\\end{bmatrix}$",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/checkbox"
+          },
+          ":db/id": 17592186574657
+        },
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "7109fde4-44de-5fb1-a272-53341b6484b3",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "false",
+              ":db/id": 17592186574357
+            },
+            {
+              ":answer/id": "b2f3eed5-da35-5fae-8077-c3ffebba72a9",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "true",
+              ":db/id": 17592186574358
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "7109fde4-44de-5fb1-a272-53341b6484b3",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "false",
+            ":db/id": 17592186574357
+          },
+          ":answer-field/id": "750e5596-8cc4-5cb0-bba0-0744d296137c",
+          ":answer-field/key": "Column 5: $\\begin{bmatrix}-5 \\\\ 1 \\\\ 0 \\\\ 1\\end{bmatrix}$",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/checkbox"
+          },
+          ":db/id": 17592186574661
+        }
+      ]
+    },
+    {
+      "id": "cdcc6acf-5383-5b11-9305-2a2d610ba1ad",
+      "problem": "The row echelon form matrix $P$ is given below. What are its **non**-pivot columns?\n\n$$\nP=\\begin{bmatrix}1 & 1 & 2 \\\\ 0 & 0 & -1 \\\\ 0 & 0 & 0\\end{bmatrix}\n$$\n\nSelect all that apply.",
+      "solution": "Remember that the pivots of a matrix in row echelon form are the first non-zero entries in each row of the matrix.\n\nWe can see that $P$ has $2$ pivots in the $1$st and $3$rd columns:\n\n$$\nP=\\begin{bmatrix}1 & 1 & 2 \\\\ 0 & 0 & -1 \\\\ 0 & 0 & 0\\end{bmatrix}\n$$\n\nTherefore, the only non-pivot column is the $2$nd column.",
+      "answer_fields": [
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "8db37803-7aca-5349-8943-6715ba9abd30",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "true",
+              ":db/id": 17592186574380
+            },
+            {
+              ":answer/id": "f761a820-0e1e-5849-bf2f-82ad222aad6b",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "false",
+              ":db/id": 17592186574379
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "8db37803-7aca-5349-8943-6715ba9abd30",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "true",
+            ":db/id": 17592186574380
+          },
+          ":answer-field/id": "7ff8bf6a-9677-5e18-8679-964ee9b10458",
+          ":answer-field/key": "Column 2: $\\begin{bmatrix}1 \\\\ 0 \\\\ 0\\end{bmatrix}$",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/checkbox"
+          },
+          ":db/id": 17592186574672
+        },
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "a05c5578-e0cc-5280-a69d-52a81942f01c",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "false",
+              ":db/id": 17592186574381
+            },
+            {
+              ":answer/id": "fa35c2d0-fd76-5fce-a430-477117dbd172",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "true",
+              ":db/id": 17592186574382
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "a05c5578-e0cc-5280-a69d-52a81942f01c",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "false",
+            ":db/id": 17592186574381
+          },
+          ":answer-field/id": "273a293c-414a-5c09-9485-53afe2fa824b",
+          ":answer-field/key": "Column 3: $\\begin{bmatrix}2 \\\\ -1 \\\\ 0\\end{bmatrix}$",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/checkbox"
+          },
+          ":db/id": 17592186574673
+        },
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "e1320eca-8c5a-5003-a487-9e12b4c1f252",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "false",
+              ":db/id": 17592186574377
+            },
+            {
+              ":answer/id": "eb71d540-aa99-5438-a1f6-0c25c3603fbf",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "true",
+              ":db/id": 17592186574378
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "e1320eca-8c5a-5003-a487-9e12b4c1f252",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "false",
+            ":db/id": 17592186574377
+          },
+          ":answer-field/id": "e5701476-038d-5dde-960b-b4ce619935a1",
+          ":answer-field/key": "Column 1: $\\begin{bmatrix}1 \\\\ 0 \\\\ 0\\end{bmatrix}$",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/checkbox"
+          },
+          ":db/id": 17592186574671
+        }
+      ]
+    },
+    {
+      "id": "c7dfd4e6-f98f-5d70-9672-fbeae076cac0",
+      "problem": "The row echelon form matrix $B$ is given below. What are its **non**-pivot columns?\n\n$$\nB=\\begin{bmatrix}0 & 2 & 0 \\\\ 0 & 0 & -1 \\\\ 0 & 0 & 0\\end{bmatrix}\n$$\n\nSelect all that apply.",
+      "solution": "Remember that the pivots of a matrix in row echelon form are the first non-zero entries in each row of the matrix.\n\nWe can see that $B$ has $2$ pivots in the $2$nd and $3$rd columns:\n\n$$\nB=\\begin{bmatrix}0 & 2 & 0 \\\\ 0 & 0 & -1 \\\\ 0 & 0 & 0\\end{bmatrix}\n$$\n\nTherefore, the only non-pivot column is the $1$st column.",
+      "answer_fields": [
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "4440f596-12e1-548a-89fb-01340569360a",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "false",
+              ":db/id": 17592186574237
+            },
+            {
+              ":answer/id": "9f32372b-9089-5ecf-90da-32ae7a7fb41e",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "true",
+              ":db/id": 17592186574238
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "9f32372b-9089-5ecf-90da-32ae7a7fb41e",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "true",
+            ":db/id": 17592186574238
+          },
+          ":answer-field/id": "7462f0a8-7266-581a-9dee-3caf8e67950e",
+          ":answer-field/key": "Column 1: $\\begin{bmatrix}0 \\\\ 0 \\\\ 0\\end{bmatrix}$",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/checkbox"
+          },
+          ":db/id": 17592186574601
+        },
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "4a002cab-efdf-5050-9f01-3f3a638b0993",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "false",
+              ":db/id": 17592186574239
+            },
+            {
+              ":answer/id": "f25e8492-9967-51f5-a95b-f50b250e09ab",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "true",
+              ":db/id": 17592186574240
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "4a002cab-efdf-5050-9f01-3f3a638b0993",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "false",
+            ":db/id": 17592186574239
+          },
+          ":answer-field/id": "a77e0b0c-64dd-57ae-be48-2563267f1d2f",
+          ":answer-field/key": "Column 2: $\\begin{bmatrix}2 \\\\ 0 \\\\ 0\\end{bmatrix}$",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/checkbox"
+          },
+          ":db/id": 17592186574602
+        },
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "68cbac39-b0c6-527a-8c2e-2cfc4eb8fd8a",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "false",
+              ":db/id": 17592186574241
+            },
+            {
+              ":answer/id": "ffea35f5-e11e-5ce1-bd19-b11d30f88c2b",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "true",
+              ":db/id": 17592186574242
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "68cbac39-b0c6-527a-8c2e-2cfc4eb8fd8a",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "false",
+            ":db/id": 17592186574241
+          },
+          ":answer-field/id": "075172ed-38a9-566b-a554-707aac6556c9",
+          ":answer-field/key": "Column 3: $\\begin{bmatrix}0 \\\\ -1 \\\\ 0\\end{bmatrix}$",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/checkbox"
+          },
+          ":db/id": 17592186574603
+        }
+      ]
+    },
+    {
+      "id": "aa0e8a0d-dec0-575e-8d45-de71528bdbeb",
+      "problem": "The row echelon form matrix $P$ is given below. What are its **non**-pivot columns?\n\n$$\nP=\\begin{bmatrix}5 & -7 & 9 & 5 \\\\ 0 & 0 & -2 & 4 \\\\ 0 & 0 & 0 & -1\\end{bmatrix}\n$$\n\nSelect all that apply.",
+      "solution": "Remember that the pivots of a matrix in row echelon form are the first non-zero entries in each row of the matrix.\n\nWe can see that $P$ has $3$ pivots in the $1$st, $3$rd, and $4$th columns:\n\n$$\nP=\\begin{bmatrix}5 & -7 & 9 & 5 \\\\ 0 & 0 & -2 & 4 \\\\ 0 & 0 & 0 & -1\\end{bmatrix}\n$$\n\nTherefore, the only non-pivot column is the $2$nd column.",
+      "answer_fields": [
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "2d592ecc-a666-5d06-8fb8-e82b12f76c13",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "true",
+              ":db/id": 17592186574244
+            },
+            {
+              ":answer/id": "c9ea9e24-b070-5cbe-93f1-45642d47d857",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "false",
+              ":db/id": 17592186574243
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "c9ea9e24-b070-5cbe-93f1-45642d47d857",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "false",
+            ":db/id": 17592186574243
+          },
+          ":answer-field/id": "737a70b8-60f6-5721-abbf-8f3fd052a287",
+          ":answer-field/key": "Column 1: $\\begin{bmatrix}5 \\\\ 0 \\\\ 0\\end{bmatrix}$",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/checkbox"
+          },
+          ":db/id": 17592186574604
+        },
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "4e2bbbf5-3d0c-5d94-b707-f67c218402aa",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "true",
+              ":db/id": 17592186574246
+            },
+            {
+              ":answer/id": "e7926caa-fc19-5ec5-86a5-504b21835924",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "false",
+              ":db/id": 17592186574245
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "4e2bbbf5-3d0c-5d94-b707-f67c218402aa",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "true",
+            ":db/id": 17592186574246
+          },
+          ":answer-field/id": "1015e037-8ddc-5caa-8b75-e14a05a564e9",
+          ":answer-field/key": "Column 2: $\\begin{bmatrix}-7 \\\\ 0 \\\\ 0\\end{bmatrix}$",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/checkbox"
+          },
+          ":db/id": 17592186574605
+        },
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "5ef40afa-2a33-5086-ab6f-37f7c914d5bb",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "true",
+              ":db/id": 17592186574248
+            },
+            {
+              ":answer/id": "b661c5e4-837d-5bc6-8894-d1086d5ce120",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "false",
+              ":db/id": 17592186574247
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "b661c5e4-837d-5bc6-8894-d1086d5ce120",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "false",
+            ":db/id": 17592186574247
+          },
+          ":answer-field/id": "e8b448ff-270e-5c5c-8f9b-f98940dd1770",
+          ":answer-field/key": "Column 3: $\\begin{bmatrix}9 \\\\ -2 \\\\ 0\\end{bmatrix}$",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/checkbox"
+          },
+          ":db/id": 17592186574606
+        },
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "7cd9c11e-de93-5bde-916d-e92417bfd276",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "true",
+              ":db/id": 17592186574250
+            },
+            {
+              ":answer/id": "a95461a8-27c8-5d4b-8b6a-4413a38fd064",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "false",
+              ":db/id": 17592186574249
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "a95461a8-27c8-5d4b-8b6a-4413a38fd064",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "false",
+            ":db/id": 17592186574249
+          },
+          ":answer-field/id": "246f6eb9-434f-597a-b57b-8610f1e88d2b",
+          ":answer-field/key": "Column 4: $\\begin{bmatrix}5 \\\\ 4 \\\\ -1\\end{bmatrix}$",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/checkbox"
+          },
+          ":db/id": 17592186574607
+        }
+      ]
+    },
+    {
+      "id": "7a34ccaa-757d-5d88-96dd-45a700a4b334",
+      "problem": "The row echelon form matrix $R$ is given below. What are its **non**-pivot columns?\n\n$$\nR=\\begin{bmatrix}-2 & 9 & -8 & 6 \\\\ 0 & 3 & 0 & -8 \\\\ 0 & 0 & -5 & 0 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}\n$$\n\nSelect all that apply.",
+      "solution": "Remember that the pivots of a matrix in row echelon form are the first non-zero entries in each row of the matrix.\n\nWe can see that $R$ has $3$ pivots in the $1$st, $2$nd, and $3$rd columns:\n\n$$\nR=\\begin{bmatrix}-2 & 9 & -8 & 6 \\\\ 0 & 3 & 0 & -8 \\\\ 0 & 0 & -5 & 0 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}\n$$\n\nTherefore, the only non-pivot column is the $4$th column.",
+      "answer_fields": [
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "01b6501b-51c5-57d4-9b1b-f2361507c512",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "true",
+              ":db/id": 17592186574262
+            },
+            {
+              ":answer/id": "308b698a-df5c-5e17-903c-3cba434b3c69",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "false",
+              ":db/id": 17592186574261
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "308b698a-df5c-5e17-903c-3cba434b3c69",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "false",
+            ":db/id": 17592186574261
+          },
+          ":answer-field/id": "ce115da5-afe9-5508-b8b9-570372c44959",
+          ":answer-field/key": "Column 1: $\\begin{bmatrix}-2 \\\\ 0 \\\\ 0 \\\\ 0\\end{bmatrix}$",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/checkbox"
+          },
+          ":db/id": 17592186574613
+        },
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "2fd58452-89b3-5171-8ace-71f0a269f44d",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "false",
+              ":db/id": 17592186574267
+            },
+            {
+              ":answer/id": "7193274e-f71e-5417-a2c0-0332a8ae8be2",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "true",
+              ":db/id": 17592186574268
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "7193274e-f71e-5417-a2c0-0332a8ae8be2",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "true",
+            ":db/id": 17592186574268
+          },
+          ":answer-field/id": "e21596fb-e8ca-5852-b4ba-31893e97f5bf",
+          ":answer-field/key": "Column 4: $\\begin{bmatrix}6 \\\\ -8 \\\\ 0 \\\\ 0\\end{bmatrix}$",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/checkbox"
+          },
+          ":db/id": 17592186574616
+        },
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "334492bd-a24a-5dc6-b022-f66038053355",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "false",
+              ":db/id": 17592186574265
+            },
+            {
+              ":answer/id": "b73dd3b2-845f-5cbd-a27b-6b40715410d7",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "true",
+              ":db/id": 17592186574266
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "334492bd-a24a-5dc6-b022-f66038053355",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "false",
+            ":db/id": 17592186574265
+          },
+          ":answer-field/id": "82e4e182-32c2-5a29-a306-2f1a8cbbeaf2",
+          ":answer-field/key": "Column 3: $\\begin{bmatrix}-8 \\\\ 0 \\\\ -5 \\\\ 0\\end{bmatrix}$",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/checkbox"
+          },
+          ":db/id": 17592186574615
+        },
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "3e10d2f4-8ff3-59c8-8f54-16ec4f0b0ea3",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "false",
+              ":db/id": 17592186574263
+            },
+            {
+              ":answer/id": "fd073b18-020b-55fe-92af-11fe0a20f85d",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "true",
+              ":db/id": 17592186574264
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "3e10d2f4-8ff3-59c8-8f54-16ec4f0b0ea3",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "false",
+            ":db/id": 17592186574263
+          },
+          ":answer-field/id": "382f0cfc-fe43-51a1-bbd6-48850a3bbcf1",
+          ":answer-field/key": "Column 2: $\\begin{bmatrix}9 \\\\ 3 \\\\ 0 \\\\ 0\\end{bmatrix}$",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/checkbox"
+          },
+          ":db/id": 17592186574614
+        }
+      ]
+    },
+    {
+      "id": "c414ba19-302f-5c4a-8143-83f236032134",
+      "problem": "The row echelon form matrix $B$ is given below. What are its **non**-pivot columns?\n\n$$\nB=\\begin{bmatrix}3 & -8 & 0 & 4 & -2 \\\\ 0 & 0 & -1 & 4 & 0 \\\\ 0 & 0 & 0 & 7 & 8 \\\\ 0 & 0 & 0 & 0 & 0\\end{bmatrix}\n$$\n\nSelect all that apply.",
+      "solution": "Remember that the pivots of a matrix in row echelon form are the first non-zero entries in each row of the matrix.\n\nWe can see that $B$ has $3$ pivots in the $1$st, $3$rd, and $4$th columns:\n\n$$\nB=\\begin{bmatrix}3 & -8 & 0 & 4 & -2 \\\\ 0 & 0 & -1 & 4 & 0 \\\\ 0 & 0 & 0 & 7 & 8 \\\\ 0 & 0 & 0 & 0 & 0\\end{bmatrix}\n$$\n\nTherefore, the only non-pivot columns are the $2$nd and $5$th columns.",
+      "answer_fields": [
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "2313f2ff-e884-566b-9b4f-84c43445ecb4",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "false",
+              ":db/id": 17592186574273
+            },
+            {
+              ":answer/id": "2b65d847-f2fb-5389-89e5-c6d683b476a7",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "true",
+              ":db/id": 17592186574274
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "2313f2ff-e884-566b-9b4f-84c43445ecb4",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "false",
+            ":db/id": 17592186574273
+          },
+          ":answer-field/id": "cd93ea9e-e11f-5fdf-8dd6-faa35ac5dbf3",
+          ":answer-field/key": "Column 3: $\\begin{bmatrix}0 \\\\ -1 \\\\ 0 \\\\ 0\\end{bmatrix}$",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/checkbox"
+          },
+          ":db/id": 17592186574619
+        },
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "3de490bc-fbc9-5ce8-a5e3-d79133463cc9",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "true",
+              ":db/id": 17592186574276
+            },
+            {
+              ":answer/id": "ade9ea89-abce-5604-b4cf-1483009cef73",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "false",
+              ":db/id": 17592186574275
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "ade9ea89-abce-5604-b4cf-1483009cef73",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "false",
+            ":db/id": 17592186574275
+          },
+          ":answer-field/id": "8a757f91-b75a-5efc-b395-c5fabeb4f4d6",
+          ":answer-field/key": "Column 4: $\\begin{bmatrix}4 \\\\ 4 \\\\ 7 \\\\ 0\\end{bmatrix}$",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/checkbox"
+          },
+          ":db/id": 17592186574620
+        },
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "4be30bd0-18bb-5024-bd06-b2d7a91d8d41",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "false",
+              ":db/id": 17592186574269
+            },
+            {
+              ":answer/id": "7303e21d-630c-585e-a9ab-3a22e6c486f7",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "true",
+              ":db/id": 17592186574270
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "4be30bd0-18bb-5024-bd06-b2d7a91d8d41",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "false",
+            ":db/id": 17592186574269
+          },
+          ":answer-field/id": "9a2c9b13-fd16-5329-8613-af9d022bd739",
+          ":answer-field/key": "Column 1: $\\begin{bmatrix}3 \\\\ 0 \\\\ 0 \\\\ 0\\end{bmatrix}$",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/checkbox"
+          },
+          ":db/id": 17592186574617
+        },
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "616e6fcd-9ea8-58a3-8b7c-207be09e224b",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "true",
+              ":db/id": 17592186574278
+            },
+            {
+              ":answer/id": "f666c666-ec31-52c9-aa81-0dfb71bf0067",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "false",
+              ":db/id": 17592186574277
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "616e6fcd-9ea8-58a3-8b7c-207be09e224b",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "true",
+            ":db/id": 17592186574278
+          },
+          ":answer-field/id": "58e9e22b-c7c8-5d3b-8d68-33c373e784d4",
+          ":answer-field/key": "Column 5: $\\begin{bmatrix}-2 \\\\ 0 \\\\ 8 \\\\ 0\\end{bmatrix}$",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/checkbox"
+          },
+          ":db/id": 17592186574621
+        },
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "6679fcaf-6b03-5495-9392-b48c27debead",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "true",
+              ":db/id": 17592186574272
+            },
+            {
+              ":answer/id": "abf22953-3c0b-59f7-b30f-d409f6f0cf19",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "false",
+              ":db/id": 17592186574271
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "6679fcaf-6b03-5495-9392-b48c27debead",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "true",
+            ":db/id": 17592186574272
+          },
+          ":answer-field/id": "653f80e4-e1fc-51b1-9ee4-64cab45be9c1",
+          ":answer-field/key": "Column 2: $\\begin{bmatrix}-8 \\\\ 0 \\\\ 0 \\\\ 0\\end{bmatrix}$",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/checkbox"
+          },
+          ":db/id": 17592186574618
+        }
+      ]
+    },
+    {
+      "id": "e03feb67-8ac8-51d5-afab-95257716f3c5",
+      "problem": "The row echelon form matrix $A$ is given below. What are its **non**-pivot columns?\n\n$$\nA=\\begin{bmatrix}0 & 3 & 4 \\\\ 0 & 0 & 1 \\\\ 0 & 0 & 0\\end{bmatrix}\n$$\n\nSelect all that apply.",
+      "solution": "Remember that the pivots of a matrix in row echelon form are the first non-zero entries in each row of the matrix.\n\nWe can see that $A$ has $2$ pivots in the $2$nd and $3$rd columns:\n\n$$\nA=\\begin{bmatrix}0 & 3 & 4 \\\\ 0 & 0 & 1 \\\\ 0 & 0 & 0\\end{bmatrix}\n$$\n\nTherefore, the only non-pivot column is the $1$st column.",
+      "answer_fields": [
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "1306693e-47d3-59cf-9ff2-baba11fd8992",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "true",
+              ":db/id": 17592186574494
+            },
+            {
+              ":answer/id": "ad1eb065-222d-5ac5-9f00-619b869ef7ee",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "false",
+              ":db/id": 17592186574493
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "ad1eb065-222d-5ac5-9f00-619b869ef7ee",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "false",
+            ":db/id": 17592186574493
+          },
+          ":answer-field/id": "ca763237-6794-5181-8cf9-95a3f6e84c39",
+          ":answer-field/key": "Column 3: $\\begin{bmatrix}4 \\\\ 1 \\\\ 0\\end{bmatrix}$",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/checkbox"
+          },
+          ":db/id": 17592186574729
+        },
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "498c2b16-0edc-5d45-b9ab-e225cf9c8cf1",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "true",
+              ":db/id": 17592186574492
+            },
+            {
+              ":answer/id": "6d383b69-9a87-59d7-9cb7-113dff641770",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "false",
+              ":db/id": 17592186574491
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "6d383b69-9a87-59d7-9cb7-113dff641770",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "false",
+            ":db/id": 17592186574491
+          },
+          ":answer-field/id": "03f83929-6343-56b4-b200-5d4d1105044d",
+          ":answer-field/key": "Column 2: $\\begin{bmatrix}3 \\\\ 0 \\\\ 0\\end{bmatrix}$",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/checkbox"
+          },
+          ":db/id": 17592186574728
+        },
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "8797689c-c476-5b15-8dfa-dcdcd36d5020",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "true",
+              ":db/id": 17592186574490
+            },
+            {
+              ":answer/id": "d2b67042-c846-5ec0-97b1-bc5ee96aab0b",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "false",
+              ":db/id": 17592186574489
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "8797689c-c476-5b15-8dfa-dcdcd36d5020",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "true",
+            ":db/id": 17592186574490
+          },
+          ":answer-field/id": "4881e0c2-fde8-5005-963a-bcb450f0055f",
+          ":answer-field/key": "Column 1: $\\begin{bmatrix}0 \\\\ 0 \\\\ 0\\end{bmatrix}$",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/checkbox"
+          },
+          ":db/id": 17592186574727
+        }
+      ]
+    },
+    {
+      "id": "2e4d037d-222f-5741-a696-abfc442768e9",
+      "problem": "The row echelon form matrix $P$ is given below. What are its **non**-pivot columns?\n\n$$\nP=\\begin{bmatrix}0 & 6 & -1 & 1 & 8 \\\\ 0 & 0 & 0 & 2 & 4 \\\\ 0 & 0 & 0 & 0 & -3 \\\\ 0 & 0 & 0 & 0 & 0\\end{bmatrix}\n$$\n\nSelect all that apply.",
+      "solution": "Remember that the pivots of a matrix in row echelon form are the first non-zero entries in each row of the matrix.\n\nWe can see that $P$ has $3$ pivots in the $2$nd, $4$th and $5$th columns:\n\n$$\nP=\\begin{bmatrix}0 & 6 & -1 & 1 & 8 \\\\ 0 & 0 & 0 & 2 & 4 \\\\ 0 & 0 & 0 & 0 & -3 \\\\ 0 & 0 & 0 & 0 & 0\\end{bmatrix}\n$$\n\nTherefore, the only non-pivot columns are the $1$st and $3$rd columns.",
+      "answer_fields": [
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "04de6b41-99fb-5a18-bc4b-51e4ebdbbc1c",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "false",
+              ":db/id": 17592186574517
+            },
+            {
+              ":answer/id": "908b16fa-5b03-5f0d-925f-a792f12a904f",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "true",
+              ":db/id": 17592186574518
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "04de6b41-99fb-5a18-bc4b-51e4ebdbbc1c",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "false",
+            ":db/id": 17592186574517
+          },
+          ":answer-field/id": "aa424051-dd78-5b0f-a1e3-564f514c1a9e",
+          ":answer-field/key": "Column 5: $\\begin{bmatrix}8 \\\\ 4 \\\\ -3 \\\\ 0\\end{bmatrix}$",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/checkbox"
+          },
+          ":db/id": 17592186574741
+        },
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "14fda55b-efe5-5ad0-9684-55536d5fdee6",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "false",
+              ":db/id": 17592186574509
+            },
+            {
+              ":answer/id": "57a6e873-5c21-5d40-8da8-47c3cc6dd461",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "true",
+              ":db/id": 17592186574510
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "57a6e873-5c21-5d40-8da8-47c3cc6dd461",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "true",
+            ":db/id": 17592186574510
+          },
+          ":answer-field/id": "602cc181-a8d6-5e6f-95f8-5d6a19735669",
+          ":answer-field/key": "Column 1: $\\begin{bmatrix}0 \\\\ 0 \\\\ 0 \\\\ 0\\end{bmatrix}$",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/checkbox"
+          },
+          ":db/id": 17592186574737
+        },
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "44614284-6abe-5330-bd04-bdba6c823ee8",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "false",
+              ":db/id": 17592186574515
+            },
+            {
+              ":answer/id": "60f577f9-5756-5290-865d-e9784fd096ac",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "true",
+              ":db/id": 17592186574516
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "44614284-6abe-5330-bd04-bdba6c823ee8",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "false",
+            ":db/id": 17592186574515
+          },
+          ":answer-field/id": "21deb5e2-dc26-5844-a777-f5fb8364606f",
+          ":answer-field/key": "Column 4: $\\begin{bmatrix}1 \\\\ 2 \\\\ 0 \\\\ 0\\end{bmatrix}$",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/checkbox"
+          },
+          ":db/id": 17592186574740
+        },
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "62604bf2-0d63-59b1-bcb1-1c085326cc75",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "false",
+              ":db/id": 17592186574513
+            },
+            {
+              ":answer/id": "a129e537-e0a1-5119-9200-c44566e56c48",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "true",
+              ":db/id": 17592186574514
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "a129e537-e0a1-5119-9200-c44566e56c48",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "true",
+            ":db/id": 17592186574514
+          },
+          ":answer-field/id": "be89f0f0-6a80-5953-a43e-29fe8806665a",
+          ":answer-field/key": "Column 3: $\\begin{bmatrix}-1 \\\\ 0 \\\\ 0 \\\\ 0\\end{bmatrix}$",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/checkbox"
+          },
+          ":db/id": 17592186574739
+        },
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "7f09e0c3-1203-59f6-bcc0-71fc7e3c7236",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "false",
+              ":db/id": 17592186574511
+            },
+            {
+              ":answer/id": "a908ee44-abad-55e0-a5e5-575d2dd1a417",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "true",
+              ":db/id": 17592186574512
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "7f09e0c3-1203-59f6-bcc0-71fc7e3c7236",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "false",
+            ":db/id": 17592186574511
+          },
+          ":answer-field/id": "5f0bc8ab-3b38-59b3-b47f-f8860adc828a",
+          ":answer-field/key": "Column 2: $\\begin{bmatrix}6 \\\\ 0 \\\\ 0 \\\\ 0\\end{bmatrix}$",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/checkbox"
+          },
+          ":db/id": 17592186574738
+        }
+      ]
+    },
+    {
+      "id": "e5f1860a-14f7-5dde-8785-3643838d3e4f",
+      "problem": "The row echelon form matrix $A$ is given below. What are its **non**-pivot columns?\n\n$$\nA=\\begin{bmatrix}1 & 0 & 3 & 0 & 5 \\\\ 0 & -3 & 0 & 1 & 0 \\\\ 0 & 0 & 0 & -1 & -8 \\\\ 0 & 0 & 0 & 0 & 0\\end{bmatrix}\n$$\n\nSelect all that apply.",
+      "solution": "Remember that the pivots of a matrix in row echelon form are the first non-zero entries in each row of the matrix.\n\nWe can see that $A$ has $3$ pivots in the $1$st, $2$nd and $4$th columns:\n\n$$\nA=\\begin{bmatrix}1 & 0 & 3 & 0 & 5 \\\\ 0 & -3 & 0 & 1 & 0 \\\\ 0 & 0 & 0 & -1 & -8 \\\\ 0 & 0 & 0 & 0 & 0\\end{bmatrix}\n$$\n\nTherefore, the only non-pivot columns are the $3$rd and $5$th columns.",
+      "answer_fields": [
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "04a16e72-2fa7-540a-a47c-167bb8c1b02b",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "false",
+              ":db/id": 17592186574525
+            },
+            {
+              ":answer/id": "fe2e59e1-f044-5348-af44-f59588498991",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "true",
+              ":db/id": 17592186574526
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "04a16e72-2fa7-540a-a47c-167bb8c1b02b",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "false",
+            ":db/id": 17592186574525
+          },
+          ":answer-field/id": "99cb45ad-d872-5873-90c2-8ee896e3511d",
+          ":answer-field/key": "Column 4: $\\begin{bmatrix}0 \\\\ 1 \\\\ -1 \\\\ 0\\end{bmatrix}$",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/checkbox"
+          },
+          ":db/id": 17592186574745
+        },
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "11a9b7ba-2495-53a4-91bc-98d4d18ae422",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "true",
+              ":db/id": 17592186574520
+            },
+            {
+              ":answer/id": "aa7c4e56-6bb8-5168-9b66-41a030b85693",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "false",
+              ":db/id": 17592186574519
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "aa7c4e56-6bb8-5168-9b66-41a030b85693",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "false",
+            ":db/id": 17592186574519
+          },
+          ":answer-field/id": "587d687d-d214-5b3c-979e-b02b8593e0ac",
+          ":answer-field/key": "Column 1: $\\begin{bmatrix}1 \\\\ 0 \\\\ 0 \\\\ 0\\end{bmatrix}$",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/checkbox"
+          },
+          ":db/id": 17592186574742
+        },
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "6aa280bc-335a-5dc8-87b7-cfc12f98c2ca",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "false",
+              ":db/id": 17592186574523
+            },
+            {
+              ":answer/id": "9e29300b-289d-5ef2-ad9c-998a82aad2ad",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "true",
+              ":db/id": 17592186574524
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "9e29300b-289d-5ef2-ad9c-998a82aad2ad",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "true",
+            ":db/id": 17592186574524
+          },
+          ":answer-field/id": "6b112b7d-e3f3-5571-9660-595dce9504ec",
+          ":answer-field/key": "Column 3: $\\begin{bmatrix}3 \\\\ 0 \\\\ 0 \\\\ 0\\end{bmatrix}$",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/checkbox"
+          },
+          ":db/id": 17592186574744
+        },
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "73c3c3d3-835a-52db-9db6-0868d07927e6",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "false",
+              ":db/id": 17592186574527
+            },
+            {
+              ":answer/id": "c26975de-8a62-523a-bc48-337101f5abd8",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "true",
+              ":db/id": 17592186574528
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "c26975de-8a62-523a-bc48-337101f5abd8",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "true",
+            ":db/id": 17592186574528
+          },
+          ":answer-field/id": "04d133e0-ca92-5f16-b4eb-41e5d4ab0b64",
+          ":answer-field/key": "Column 5: $\\begin{bmatrix}5 \\\\ 0 \\\\ -8 \\\\ 0\\end{bmatrix}$",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/checkbox"
+          },
+          ":db/id": 17592186574746
+        },
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "801657e4-7d44-5075-a98b-cbb1a36a98a8",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "true",
+              ":db/id": 17592186574522
+            },
+            {
+              ":answer/id": "ec1b8c11-1ce8-5b3a-9694-089ca672de56",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "false",
+              ":db/id": 17592186574521
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "ec1b8c11-1ce8-5b3a-9694-089ca672de56",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "false",
+            ":db/id": 17592186574521
+          },
+          ":answer-field/id": "b383e6c5-ceb5-54e5-8d66-57547c057ea5",
+          ":answer-field/key": "Column 2: $\\begin{bmatrix}0 \\\\ -3 \\\\ 0 \\\\ 0\\end{bmatrix}$",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/checkbox"
+          },
+          ":db/id": 17592186574743
+        }
+      ]
+    },
+    {
+      "id": "5149a8bf-4216-5b0c-825e-8103ee48f823",
+      "problem": "The row echelon form matrix $R$ is given below. What are its **non**-pivot columns?\n\n$$\nR=\\begin{bmatrix}1 & -1 & 2 & 0 \\\\ 0 & -4 & 3 & 1 \\\\ 0 & 0 & 0 & 7 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}\n$$\n\nSelect all that apply.",
+      "solution": "Remember that the pivots of a matrix in row echelon form are the first non-zero entries in each row of the matrix.\n\nWe can see that $R$ has $3$ pivots in the $1$st, $2$nd and $4$th columns:\n\n$$\nR=\\begin{bmatrix}1 & -1 & 2 & 0 \\\\ 0 & -4 & 3 & 1 \\\\ 0 & 0 & 0 & 7 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}\n$$\n\nTherefore, the only non-pivot column is the $3$rd column.",
+      "answer_fields": [
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "05b1bacd-225d-5252-b0c7-3bc575b87f3d",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "false",
+              ":db/id": 17592186574535
+            },
+            {
+              ":answer/id": "c8aa4f44-f064-5ef7-8cd7-b782dc4aff92",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "true",
+              ":db/id": 17592186574536
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "05b1bacd-225d-5252-b0c7-3bc575b87f3d",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "false",
+            ":db/id": 17592186574535
+          },
+          ":answer-field/id": "6dfee52c-e9e8-5fe9-91f9-c2bbff64a284",
+          ":answer-field/key": "Column 4: $\\begin{bmatrix}0 \\\\ 1 \\\\ 7 \\\\ 0\\end{bmatrix}$",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/checkbox"
+          },
+          ":db/id": 17592186574750
+        },
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "19aec9f4-1be6-57e6-acd8-0eb7a0bced1d",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "true",
+              ":db/id": 17592186574530
+            },
+            {
+              ":answer/id": "26bd6f4b-2b75-5c2f-af4a-69dc991cef5f",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "false",
+              ":db/id": 17592186574529
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "26bd6f4b-2b75-5c2f-af4a-69dc991cef5f",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "false",
+            ":db/id": 17592186574529
+          },
+          ":answer-field/id": "fca21163-dca5-5a67-95c2-b5c65a7a79d6",
+          ":answer-field/key": "Column 1: $\\begin{bmatrix}1 \\\\ 0 \\\\ 0 \\\\ 0\\end{bmatrix}$",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/checkbox"
+          },
+          ":db/id": 17592186574747
+        },
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "63d24914-88dc-51e2-81f3-dd8fa6d63228",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "false",
+              ":db/id": 17592186574531
+            },
+            {
+              ":answer/id": "a4969d2e-b3bc-58f8-a692-40817c328144",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "true",
+              ":db/id": 17592186574532
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "63d24914-88dc-51e2-81f3-dd8fa6d63228",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "false",
+            ":db/id": 17592186574531
+          },
+          ":answer-field/id": "576de36d-7da0-5474-bf94-4879338dda25",
+          ":answer-field/key": "Column 2: $\\begin{bmatrix}-1 \\\\ -4 \\\\ 0 \\\\ 0\\end{bmatrix}$",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/checkbox"
+          },
+          ":db/id": 17592186574748
+        },
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "6c399d0b-63f0-570a-b733-9ba3a1cb7a01",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "true",
+              ":db/id": 17592186574534
+            },
+            {
+              ":answer/id": "e9d93eca-6b3e-5248-b23c-b4860f340f87",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "false",
+              ":db/id": 17592186574533
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "6c399d0b-63f0-570a-b733-9ba3a1cb7a01",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "true",
+            ":db/id": 17592186574534
+          },
+          ":answer-field/id": "3b60e5e0-8c33-5e92-9773-9494b4cbfdf7",
+          ":answer-field/key": "Column 3: $\\begin{bmatrix}2 \\\\ 3 \\\\ 0 \\\\ 0\\end{bmatrix}$",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/checkbox"
+          },
+          ":db/id": 17592186574749
+        }
+      ]
+    },
+    {
+      "id": "882ebb4d-35c9-5b5b-8139-3566e490f853",
+      "problem": "The row echelon form matrix $P$ is given below. What are its **non**-pivot columns?\n\n$$\nP=\\begin{bmatrix}-3 & 1 & -1 \\\\ 0 & 1 & 6 \\\\ 0 & 0 & 0\\end{bmatrix}\n$$\n\nSelect all that apply.",
+      "solution": "Remember that the pivots of a matrix in row echelon form are the first non-zero entries in each row of the matrix.\n\nWe can see that $P$ has $2$ pivots in the $1$st and $2$nd columns:\n\n$$\nP=\\begin{bmatrix}-3 & 1 & -1 \\\\ 0 & 1 & 6 \\\\ 0 & 0 & 0\\end{bmatrix}\n$$\n\nTherefore, the only non-pivot column is the $3$rd column.",
+      "answer_fields": [
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "2971a61e-b264-5233-9243-32d908007c71",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "false",
+              ":db/id": 17592186574505
+            },
+            {
+              ":answer/id": "c288b555-1bb1-5084-8f5d-6631940b3d71",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "true",
+              ":db/id": 17592186574506
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "2971a61e-b264-5233-9243-32d908007c71",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "false",
+            ":db/id": 17592186574505
+          },
+          ":answer-field/id": "d872e85c-47b0-5295-bead-af3322a16780",
+          ":answer-field/key": "Column 2: $\\begin{bmatrix}1 \\\\ 1 \\\\ 0\\end{bmatrix}$",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/checkbox"
+          },
+          ":db/id": 17592186574735
+        },
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "6432bdff-20f3-5ea5-8a84-1f85f1a5b433",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "true",
+              ":db/id": 17592186574508
+            },
+            {
+              ":answer/id": "be7e5596-eaa9-5760-92fe-6969a2c30957",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "false",
+              ":db/id": 17592186574507
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "6432bdff-20f3-5ea5-8a84-1f85f1a5b433",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "true",
+            ":db/id": 17592186574508
+          },
+          ":answer-field/id": "e156cf8b-65ed-5270-8734-8988651cee6e",
+          ":answer-field/key": "Column 3: $\\begin{bmatrix}-1 \\\\ 6 \\\\ 0\\end{bmatrix}$",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/checkbox"
+          },
+          ":db/id": 17592186574736
+        },
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "696a6ad3-0dd7-5244-9263-a107168d0fea",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "false",
+              ":db/id": 17592186574503
+            },
+            {
+              ":answer/id": "7b0badc2-e495-5fb4-b79b-5ec71ede016d",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "true",
+              ":db/id": 17592186574504
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "696a6ad3-0dd7-5244-9263-a107168d0fea",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "false",
+            ":db/id": 17592186574503
+          },
+          ":answer-field/id": "364b7a02-86ec-5b9f-9fe9-851b3ef8bdf4",
+          ":answer-field/key": "Column 1: $\\begin{bmatrix}-3 \\\\ 0 \\\\ 0\\end{bmatrix}$",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/checkbox"
+          },
+          ":db/id": 17592186574734
+        }
+      ]
+    },
+    {
+      "id": "02830b84-264a-5296-8703-bbcf95ce7d55",
+      "problem": "The row echelon form matrix $P$ is given below. What are its **non**-pivot columns?\n\n$$\nP=\\begin{bmatrix}0 & 1 & 7 & -4 \\\\ 0 & 0 & -3 & 7 \\\\ 0 & 0 & 0 & -4 \\\\ 0 & 0 & 0 & 0 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}\n$$\n\nSelect all that apply.",
+      "solution": "Remember that the pivots of a matrix in row echelon form are the first non-zero entries in each row of the matrix.\n\nWe can see that $P$ has $3$ pivots in the $2$nd, $3$rd, and $4$th columns:\n\n$$\nP=\\begin{bmatrix}0 & 1 & 7 & -4 \\\\ 0 & 0 & -3 & 7 \\\\ 0 & 0 & 0 & -4 \\\\ 0 & 0 & 0 & 0 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}\n$$\n\nTherefore, the only non-pivot column is the $1$st column.",
+      "answer_fields": [
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "182fb941-8820-5ae9-a73b-d1c5430524f3",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "false",
+              ":db/id": 17592186574279
+            },
+            {
+              ":answer/id": "f8f594f0-607c-5d7c-b952-5ae51a37bee2",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "true",
+              ":db/id": 17592186574280
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "f8f594f0-607c-5d7c-b952-5ae51a37bee2",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "true",
+            ":db/id": 17592186574280
+          },
+          ":answer-field/id": "fde6ac12-cf7d-5007-9d78-b5aa20affa7e",
+          ":answer-field/key": "Column 1: $\\begin{bmatrix}0 \\\\ 0 \\\\ 0 \\\\ 0 \\\\ 0\\end{bmatrix}$",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/checkbox"
+          },
+          ":db/id": 17592186574622
+        },
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "2d5f157f-ea4d-52ca-8a30-2741c3361551",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "true",
+              ":db/id": 17592186574286
+            },
+            {
+              ":answer/id": "9032e477-d6c2-5b25-814f-bcce822cd850",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "false",
+              ":db/id": 17592186574285
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "9032e477-d6c2-5b25-814f-bcce822cd850",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "false",
+            ":db/id": 17592186574285
+          },
+          ":answer-field/id": "0aa9b422-9e9a-5c10-bf45-c2d9d1dc46c0",
+          ":answer-field/key": "Column 4: $\\begin{bmatrix}-4 \\\\ 7 \\\\ -4 \\\\ 0 \\\\ 0\\end{bmatrix}$",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/checkbox"
+          },
+          ":db/id": 17592186574625
+        },
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "441da38d-64ea-5bed-a5c1-6655488470c2",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "true",
+              ":db/id": 17592186574282
+            },
+            {
+              ":answer/id": "b89aaa91-dc2a-578f-a09c-365732bec1f7",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "false",
+              ":db/id": 17592186574281
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "b89aaa91-dc2a-578f-a09c-365732bec1f7",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "false",
+            ":db/id": 17592186574281
+          },
+          ":answer-field/id": "f7bf6a02-f471-532d-895b-dac47e7ef112",
+          ":answer-field/key": "Column 2: $\\begin{bmatrix}1 \\\\ 0 \\\\ 0 \\\\ 0 \\\\ 0\\end{bmatrix}$",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/checkbox"
+          },
+          ":db/id": 17592186574623
+        },
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "d3730acc-8a31-5a9c-b9b9-3794e4882261",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "false",
+              ":db/id": 17592186574283
+            },
+            {
+              ":answer/id": "edc4bec4-6a50-5c7e-9141-b6f0e842f66a",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "true",
+              ":db/id": 17592186574284
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "d3730acc-8a31-5a9c-b9b9-3794e4882261",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "false",
+            ":db/id": 17592186574283
+          },
+          ":answer-field/id": "c10a2b78-45b6-5965-a815-08a1b73c3766",
+          ":answer-field/key": "Column 3: $\\begin{bmatrix}7 \\\\ -3 \\\\ 0 \\\\ 0 \\\\ 0\\end{bmatrix}$",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/checkbox"
+          },
+          ":db/id": 17592186574624
+        }
+      ]
+    },
+    {
+      "id": "cff88abe-cb9f-5f2b-aa6a-898f213ad5e3",
+      "problem": "The row echelon form matrix $A$ is given below. What are its **non**-pivot columns?\n\n$$\nA=\\begin{bmatrix}-1 & 9 & -5 & 5 \\\\ 0 & 6 & -5 & 4 \\\\ 0 & 0 & 0 & 1 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}\n$$\n\nSelect all that apply.",
+      "solution": "Remember that the pivots of a matrix in row echelon form are the first non-zero entries in each row of the matrix.\n\nWe can see that $A$ has $3$ pivots in the $1$st, $2$nd and $4$th columns:\n\n$$\nA=\\begin{bmatrix}-1 & 9 & -5 & 5 \\\\ 0 & 6 & -5 & 4 \\\\ 0 & 0 & 0 & 1 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}\n$$\n\nTherefore, the only non-pivot column is the $3$rd column.",
+      "answer_fields": [
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "07f2e7f0-229b-522a-b8a0-5a12a1479abe",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "true",
+              ":db/id": 17592186574292
+            },
+            {
+              ":answer/id": "bf1a11da-4f38-5461-af0c-d96dfc6685d0",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "false",
+              ":db/id": 17592186574291
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "07f2e7f0-229b-522a-b8a0-5a12a1479abe",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "true",
+            ":db/id": 17592186574292
+          },
+          ":answer-field/id": "a59e53f3-eca8-518f-b441-c53054f278e4",
+          ":answer-field/key": "Column 3: $\\begin{bmatrix}-5 \\\\ -5 \\\\ 0 \\\\ 0\\end{bmatrix}$",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/checkbox"
+          },
+          ":db/id": 17592186574628
+        },
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "1da83479-ace4-526a-9dfe-ac703e754e4a",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "true",
+              ":db/id": 17592186574294
+            },
+            {
+              ":answer/id": "e2bb3e58-9463-5a79-91bb-0eeb90f3c827",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "false",
+              ":db/id": 17592186574293
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "e2bb3e58-9463-5a79-91bb-0eeb90f3c827",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "false",
+            ":db/id": 17592186574293
+          },
+          ":answer-field/id": "241b7902-d3d5-5c11-b443-289f19fd2cd7",
+          ":answer-field/key": "Column 4: $\\begin{bmatrix}5 \\\\ 4 \\\\ 1 \\\\ 0\\end{bmatrix}$",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/checkbox"
+          },
+          ":db/id": 17592186574629
+        },
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "2da7be3b-5fcb-5cd0-869b-616a1df77245",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "false",
+              ":db/id": 17592186574287
+            },
+            {
+              ":answer/id": "fc858619-a5d6-5523-9e2c-42c2508fef11",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "true",
+              ":db/id": 17592186574288
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "2da7be3b-5fcb-5cd0-869b-616a1df77245",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "false",
+            ":db/id": 17592186574287
+          },
+          ":answer-field/id": "32463b45-338a-5801-bf61-ce305602ea58",
+          ":answer-field/key": "Column 1: $\\begin{bmatrix}-1 \\\\ 0 \\\\ 0 \\\\ 0\\end{bmatrix}$",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/checkbox"
+          },
+          ":db/id": 17592186574626
+        },
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "4f7323f4-8725-5564-bae4-3570b4ea0676",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "true",
+              ":db/id": 17592186574290
+            },
+            {
+              ":answer/id": "8f3ea40d-6428-50a7-b4cb-3fb75fbc9e79",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "false",
+              ":db/id": 17592186574289
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "8f3ea40d-6428-50a7-b4cb-3fb75fbc9e79",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "false",
+            ":db/id": 17592186574289
+          },
+          ":answer-field/id": "5144d5ca-86c4-542b-b54d-492a7672e62a",
+          ":answer-field/key": "Column 2: $\\begin{bmatrix}9 \\\\ 6 \\\\ 0 \\\\ 0\\end{bmatrix}$",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/checkbox"
+          },
+          ":db/id": 17592186574627
+        }
+      ]
+    },
+    {
+      "id": "701f0d82-dd3a-58b3-b64b-6042ce1e752a",
+      "problem": "The row echelon form matrix $B$ is given below. What are its **non**-pivot columns?\n\n$$\nB=\\begin{bmatrix}-6 & 2 & 1 & 0 & 4 \\\\ 0 & 0 & -4 & 1 & 1 \\\\ 0 & 0 & 0 & 0 & 3\\end{bmatrix}\n$$\n\nSelect all that apply.",
+      "solution": "Remember that the pivots of a matrix in row echelon form are the first non-zero entries in each row of the matrix.\n\nWe can see that $B$ has $3$ pivots in the $1$st, $3$rd and $5$th columns:\n\n$$\nB=\\begin{bmatrix}-6 & 2 & 1 & 0 & 4 \\\\ 0 & 0 & -4 & 1 & 1 \\\\ 0 & 0 & 0 & 0 & 3\\end{bmatrix}\n$$\n\nTherefore, the only non-pivot columns are the $2$nd and $4$th columns.",
+      "answer_fields": [
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "44cff5df-5ee1-5983-b10c-6bc444801c42",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "true",
+              ":db/id": 17592186574480
+            },
+            {
+              ":answer/id": "ef8035d5-cc67-51fc-a6fa-003a1c47dcc2",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "false",
+              ":db/id": 17592186574479
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "ef8035d5-cc67-51fc-a6fa-003a1c47dcc2",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "false",
+            ":db/id": 17592186574479
+          },
+          ":answer-field/id": "84d37da6-508d-5755-a8b0-1eda2924ec3a",
+          ":answer-field/key": "Column 5: $\\begin{bmatrix}4 \\\\ 1 \\\\ 3\\end{bmatrix}$",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/checkbox"
+          },
+          ":db/id": 17592186574722
+        },
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "6530d332-b5b8-5acb-9d5e-44bdb09678e4",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "true",
+              ":db/id": 17592186574476
+            },
+            {
+              ":answer/id": "be23835d-346e-5a98-8869-cc1ca9a7f85a",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "false",
+              ":db/id": 17592186574475
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "be23835d-346e-5a98-8869-cc1ca9a7f85a",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "false",
+            ":db/id": 17592186574475
+          },
+          ":answer-field/id": "30507d00-578d-54b5-8abb-5514f7e9b070",
+          ":answer-field/key": "Column 3: $\\begin{bmatrix}1 \\\\ -4 \\\\ 0\\end{bmatrix}$",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/checkbox"
+          },
+          ":db/id": 17592186574720
+        },
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "9210045f-b525-518d-87de-bbf6aff3ff82",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "false",
+              ":db/id": 17592186574473
+            },
+            {
+              ":answer/id": "ed109d7b-fd44-5929-8f16-4989c4a98eb7",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "true",
+              ":db/id": 17592186574474
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "ed109d7b-fd44-5929-8f16-4989c4a98eb7",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "true",
+            ":db/id": 17592186574474
+          },
+          ":answer-field/id": "f0748d21-3488-57dc-8cce-fc102d456cbe",
+          ":answer-field/key": "Column 2: $\\begin{bmatrix}2 \\\\ 0 \\\\ 0\\end{bmatrix}$",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/checkbox"
+          },
+          ":db/id": 17592186574719
+        },
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "cd74c541-1c9b-5adf-ad62-e188ef35325c",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "false",
+              ":db/id": 17592186574477
+            },
+            {
+              ":answer/id": "f5365c73-7b33-517a-b065-044e58b642ff",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "true",
+              ":db/id": 17592186574478
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "f5365c73-7b33-517a-b065-044e58b642ff",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "true",
+            ":db/id": 17592186574478
+          },
+          ":answer-field/id": "9154de50-490e-5cfa-a33c-4849b3bb5c65",
+          ":answer-field/key": "Column 4: $\\begin{bmatrix}0 \\\\ 1 \\\\ 0\\end{bmatrix}$",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/checkbox"
+          },
+          ":db/id": 17592186574721
+        },
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "e946b723-08f5-581e-9484-b34ed2528e2e",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "false",
+              ":db/id": 17592186574471
+            },
+            {
+              ":answer/id": "ed97673a-37dd-5981-9acc-aa50feeeeab9",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "true",
+              ":db/id": 17592186574472
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "e946b723-08f5-581e-9484-b34ed2528e2e",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "false",
+            ":db/id": 17592186574471
+          },
+          ":answer-field/id": "cabc66e8-6145-52ef-9ce9-5e6d49fc2ff0",
+          ":answer-field/key": "Column 1: $\\begin{bmatrix}-6 \\\\ 0 \\\\ 0\\end{bmatrix}$",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/checkbox"
+          },
+          ":db/id": 17592186574718
+        }
+      ]
+    },
+    {
+      "id": "bcd1cb26-1c44-5d74-aa8e-2093ab435f98",
+      "problem": "The row echelon form matrix $A$ is given below. What are its **non**-pivot columns?\n\n$$\nA=\\begin{bmatrix}0 & -4 & 3 & -3 & 5 \\\\ 0 & 0 & 0 & 2 & -6 \\\\ 0 & 0 & 0 & 0 & -3\\end{bmatrix}\n$$\n\nSelect all that apply.",
+      "solution": "Remember that the pivots of a matrix in row echelon form are the first non-zero entries in each row of the matrix.\n\nWe can see that $A$ has $3$ pivots in the $2$nd, $4$th and $5$th columns:\n\n$$\nA=\\begin{bmatrix}0 & -4 & 3 & -3 & 5 \\\\ 0 & 0 & 0 & 2 & -6 \\\\ 0 & 0 & 0 & 0 & -3\\end{bmatrix}\n$$\n\nTherefore, the only non-pivot columns are the $1$st and $3$rd columns.",
+      "answer_fields": [
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "247bb068-cfea-56a1-aa73-1a29a0c03c4d",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "true",
+              ":db/id": 17592186574260
+            },
+            {
+              ":answer/id": "b3d9c034-c1fd-5d1f-ba8a-08e4030e4374",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "false",
+              ":db/id": 17592186574259
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "b3d9c034-c1fd-5d1f-ba8a-08e4030e4374",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "false",
+            ":db/id": 17592186574259
+          },
+          ":answer-field/id": "6554548e-d8d0-5d0f-8f34-11d92408528a",
+          ":answer-field/key": "Column 5: $\\begin{bmatrix}5 \\\\ -6 \\\\ -3\\end{bmatrix}$",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/checkbox"
+          },
+          ":db/id": 17592186574612
+        },
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "44484f86-44cc-5ca4-b353-49fe22035670",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "false",
+              ":db/id": 17592186574257
+            },
+            {
+              ":answer/id": "a398fb50-c2b0-566b-9878-f0c485e6acb2",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "true",
+              ":db/id": 17592186574258
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "44484f86-44cc-5ca4-b353-49fe22035670",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "false",
+            ":db/id": 17592186574257
+          },
+          ":answer-field/id": "6d198864-f355-5d42-a05c-159a0f321f91",
+          ":answer-field/key": "Column 4: $\\begin{bmatrix}-3 \\\\ 2 \\\\ 0\\end{bmatrix}$",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/checkbox"
+          },
+          ":db/id": 17592186574611
+        },
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "61e8a57e-ceb9-5ce6-8180-cfe115af5908",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "true",
+              ":db/id": 17592186574256
+            },
+            {
+              ":answer/id": "6fb9a50c-0b87-5d0c-b0b3-724f38d1efbc",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "false",
+              ":db/id": 17592186574255
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "61e8a57e-ceb9-5ce6-8180-cfe115af5908",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "true",
+            ":db/id": 17592186574256
+          },
+          ":answer-field/id": "a3ddf72d-cb78-5ce2-8dd5-b3ce6e9ec7ac",
+          ":answer-field/key": "Column 3: $\\begin{bmatrix}3 \\\\ 0 \\\\ 0\\end{bmatrix}$",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/checkbox"
+          },
+          ":db/id": 17592186574610
+        },
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "8dd5f958-fb28-56c4-ab99-9c5f4aeb0df3",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "true",
+              ":db/id": 17592186574254
+            },
+            {
+              ":answer/id": "96f34365-9234-50f0-8104-124cf2b5ed96",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "false",
+              ":db/id": 17592186574253
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "96f34365-9234-50f0-8104-124cf2b5ed96",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "false",
+            ":db/id": 17592186574253
+          },
+          ":answer-field/id": "6acaa54d-4634-56a8-8c17-4855374d71f7",
+          ":answer-field/key": "Column 2: $\\begin{bmatrix}-4 \\\\ 0 \\\\ 0\\end{bmatrix}$",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/checkbox"
+          },
+          ":db/id": 17592186574609
+        },
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "9c3fbcf3-b021-5e3b-a8b7-2522323e0024",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "false",
+              ":db/id": 17592186574251
+            },
+            {
+              ":answer/id": "f66f0582-d02f-5062-ba40-45eee5610cd6",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "true",
+              ":db/id": 17592186574252
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "f66f0582-d02f-5062-ba40-45eee5610cd6",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "true",
+            ":db/id": 17592186574252
+          },
+          ":answer-field/id": "4f2e64d8-97e6-58dd-97a2-16b6a551fd1d",
+          ":answer-field/key": "Column 1: $\\begin{bmatrix}0 \\\\ 0 \\\\ 0\\end{bmatrix}$",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/checkbox"
+          },
+          ":db/id": 17592186574608
+        }
+      ]
+    },
+    {
+      "id": "ef768962-c254-565f-ad90-7c7187cd37b0",
+      "problem": "The row echelon form matrix $B$ is given below. What are its **non**-pivot columns?\n\n$$\nB=\\begin{bmatrix}2 & -2 & 8 & 1 \\\\ 0 & 0 & -6 & 1 \\\\ 0 & 0 & 0 & 3 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}\n$$\n\nSelect all that apply.",
+      "solution": "Remember that the pivots of a matrix in row echelon form are the first non-zero entries in each row of the matrix.\n\nWe can see that $B$ has $3$ pivots in the $1$st, $3$rd and $4$th columns:\n\n$$\nB=\\begin{bmatrix}2 & -2 & 8 & 1 \\\\ 0 & 0 & -6 & 1 \\\\ 0 & 0 & 0 & 3 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}\n$$\n\nTherefore, the only non-pivot column is the $2$nd column.",
+      "answer_fields": [
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "07dd3a62-9196-5860-8cf0-54167b0a8664",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "false",
+              ":db/id": 17592186574481
+            },
+            {
+              ":answer/id": "971c999a-f052-5d3d-bc2e-f0cc0810c6a5",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "true",
+              ":db/id": 17592186574482
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "07dd3a62-9196-5860-8cf0-54167b0a8664",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "false",
+            ":db/id": 17592186574481
+          },
+          ":answer-field/id": "dfe3c1ce-ae95-5cb3-ba19-bab84c5de187",
+          ":answer-field/key": "Column 1: $\\begin{bmatrix}2 \\\\ 0 \\\\ 0 \\\\ 0\\end{bmatrix}$",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/checkbox"
+          },
+          ":db/id": 17592186574723
+        },
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "52fa0fec-0895-51ab-b8e5-1d6277447bc5",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "true",
+              ":db/id": 17592186574486
+            },
+            {
+              ":answer/id": "fb638359-5c89-5d36-81ac-4c070d3f5081",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "false",
+              ":db/id": 17592186574485
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "fb638359-5c89-5d36-81ac-4c070d3f5081",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "false",
+            ":db/id": 17592186574485
+          },
+          ":answer-field/id": "19f37c32-b147-587f-8847-2baec5a29401",
+          ":answer-field/key": "Column 3: $\\begin{bmatrix}8 \\\\ -6 \\\\ 0 \\\\ 0\\end{bmatrix}$",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/checkbox"
+          },
+          ":db/id": 17592186574725
+        },
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "76f77941-c6ff-593b-891c-62f43fdf219c",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "false",
+              ":db/id": 17592186574487
+            },
+            {
+              ":answer/id": "9ff493b7-a13f-5f41-9df1-e9ba5e688283",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "true",
+              ":db/id": 17592186574488
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "76f77941-c6ff-593b-891c-62f43fdf219c",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "false",
+            ":db/id": 17592186574487
+          },
+          ":answer-field/id": "36122477-3b36-52c8-9e0e-342500a14c0a",
+          ":answer-field/key": "Column 4: $\\begin{bmatrix}1 \\\\ 1 \\\\ 3 \\\\ 0\\end{bmatrix}$",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/checkbox"
+          },
+          ":db/id": 17592186574726
+        },
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "8c7bca81-a7c3-57cd-99dd-b5286cc40d82",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "true",
+              ":db/id": 17592186574484
+            },
+            {
+              ":answer/id": "b11b51d5-3db6-57e9-85a4-988c612c72ae",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "false",
+              ":db/id": 17592186574483
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "8c7bca81-a7c3-57cd-99dd-b5286cc40d82",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "true",
+            ":db/id": 17592186574484
+          },
+          ":answer-field/id": "754d7d89-62a8-5d92-a2a5-9901f0afe2e3",
+          ":answer-field/key": "Column 2: $\\begin{bmatrix}-2 \\\\ 0 \\\\ 0 \\\\ 0\\end{bmatrix}$",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/checkbox"
+          },
+          ":db/id": 17592186574724
+        }
+      ]
+    },
+    {
+      "id": "75f69126-c110-5545-9efd-4ceeba235a0c",
+      "problem": "The row echelon form matrix $A$ is given below. What are its **non**-pivot columns?\n\n$$\nA=\\begin{bmatrix}1 & 3 & 5 & 0 \\\\ 0 & 2 & 1 & -2 \\\\ 0 & 0 & 0 & -1\\end{bmatrix}\n$$\n\nSelect all that apply.",
+      "solution": "Remember that the pivots of a matrix in row echelon form are the first non-zero entries in each row of the matrix.\n\nWe can see that $A$ has $3$ pivots in the $1$st, $2$nd and $4$th columns:\n\n$$\nA=\\begin{bmatrix}1 & 3 & 5 & 0 \\\\ 0 & 2 & 1 & -2 \\\\ 0 & 0 & 0 & -1\\end{bmatrix}\n$$\n\nTherefore, the only non-pivot column is the $3$rd column.",
+      "answer_fields": [
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "10359013-8fde-5571-ac4d-f1fd53b7d80b",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "false",
+              ":db/id": 17592186574497
+            },
+            {
+              ":answer/id": "346850c4-5a40-52ad-97a4-7cfa02edc82e",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "true",
+              ":db/id": 17592186574498
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "10359013-8fde-5571-ac4d-f1fd53b7d80b",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "false",
+            ":db/id": 17592186574497
+          },
+          ":answer-field/id": "2b9bc12f-9e14-5f60-a9a0-7ab8f9aecdf9",
+          ":answer-field/key": "Column 2: $\\begin{bmatrix}3 \\\\ 2 \\\\ 0\\end{bmatrix}$",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/checkbox"
+          },
+          ":db/id": 17592186574731
+        },
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "550422ad-c23c-5b7e-a490-22b91a643f17",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "false",
+              ":db/id": 17592186574495
+            },
+            {
+              ":answer/id": "da0ea095-5e3c-5408-a66b-f3f677e99e9b",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "true",
+              ":db/id": 17592186574496
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "550422ad-c23c-5b7e-a490-22b91a643f17",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "false",
+            ":db/id": 17592186574495
+          },
+          ":answer-field/id": "1407862a-8e5d-5e7f-a64c-f87d942cb233",
+          ":answer-field/key": "Column 1: $\\begin{bmatrix}1 \\\\ 0 \\\\ 0\\end{bmatrix}$",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/checkbox"
+          },
+          ":db/id": 17592186574730
+        },
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "76b5361d-21e4-542c-89fe-29c0ee7762fc",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "false",
+              ":db/id": 17592186574499
+            },
+            {
+              ":answer/id": "ae015e0b-de17-51c0-ae79-d8b1457dac2e",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "true",
+              ":db/id": 17592186574500
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "ae015e0b-de17-51c0-ae79-d8b1457dac2e",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "true",
+            ":db/id": 17592186574500
+          },
+          ":answer-field/id": "4d6369f2-166b-5895-9841-6d511a7346f9",
+          ":answer-field/key": "Column 3: $\\begin{bmatrix}5 \\\\ 1 \\\\ 0\\end{bmatrix}$",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/checkbox"
+          },
+          ":db/id": 17592186574732
+        },
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "94bfc7b8-7bbc-52f1-8758-8747f7c74440",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "true",
+              ":db/id": 17592186574502
+            },
+            {
+              ":answer/id": "e35e3cca-eb6a-59e2-a706-0880fd12b623",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "false",
+              ":db/id": 17592186574501
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "e35e3cca-eb6a-59e2-a706-0880fd12b623",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "false",
+            ":db/id": 17592186574501
+          },
+          ":answer-field/id": "ad80d039-ef1e-5826-a431-b1e64b704efb",
+          ":answer-field/key": "Column 4: $\\begin{bmatrix}0 \\\\ -2 \\\\ -1\\end{bmatrix}$",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/checkbox"
+          },
+          ":db/id": 17592186574733
+        }
+      ]
+    }
+  ],
+  "essential_vs_incidental": "REF and complement classification are essential. Particular matrix names, non-pivot positions, rank/shape pairing and option order in an individual example are not essential. Both leading-zero-column and interior/trailing non-pivot cases appear in the source. Conservative changes retain the observed workload rather than requiring arbitrary zero/full rank matrices.",
+  "gaps": [],
+  "evidence_paths": [
+    "source-analysis.json"
+  ]
+}

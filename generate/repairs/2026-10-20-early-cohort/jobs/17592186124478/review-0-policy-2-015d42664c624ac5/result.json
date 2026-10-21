@@ -1,0 +1,106 @@
+{
+  "verdict": "accepted",
+  "summary": "No demonstrated defect in the bounded independent review. All eight checks passed. Package files remained unchanged; no publication or database writes occurred.",
+  "source_analysis": {
+    "skill": "Identify non-pivot columns by finding each nonzero row\u2019s first nonzero entry, then selecting the complementary columns.",
+    "reasoning_steps": [
+      "Find row-leading nonzero entries.",
+      "Identify their pivot columns.",
+      "Select every remaining column."
+    ],
+    "invariants": [
+      "Matrices are already in row echelon form.",
+      "Each column has a Boolean checkbox.",
+      "Prompts, column vectors, answers and solutions describe the same matrix."
+    ],
+    "permitted_variations": [
+      "Change eligible pivot positions while preserving echelon form.",
+      "Vary one or two selected columns within the supported workload.",
+      "Change coefficients, matrix letters and incidental presentation."
+    ],
+    "source_refs": [
+      "22a77802-4114-516f-a0e0-4cda2e069361",
+      "c7dfd4e6-f98f-5d70-9672-fbeae076cac0",
+      "c414ba19-302f-5c4a-8143-83f236032134",
+      "Tutorial feec6418-f447-5ee0-8c62-7d6b690f9228, Introduction"
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay-results.json",
+        "source-replays.json"
+      ],
+      "details": "All 17 source learner questions reproduce their prompts, solutions and complete labelled answer banks."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "inventory-inspection.json"
+      ],
+      "details": "Independent checks found no errors in 120 fresh samples, 58 structural cases, five batch records, controlled pairs or 22 captured inventory questions."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "resampling-results.json",
+        "shortcut-results.json",
+        "delivery-batch/delivery.json",
+        "delivery-fresh/delivery.json"
+      ],
+      "details": "All 58 eligible structures are reachable. Delivery retains all tested records; the exact five-question batch has five distinct correct subsets."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "structural-samples.json",
+        "rejection-results.json"
+      ],
+      "details": "Variations preserve easy echelon scanning and complement selection. Invalid matrices and unsupported workloads reject."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-results.json"
+      ],
+      "details": "The native learner grader accepted 356 independently correct checkbox actions and rejected 356 incorrect actions."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-pairs/rendering.json",
+        "render-inspection.json"
+      ],
+      "details": "Actual UI rendering passed for the batch and controlled pairs. Inspected screenshots show readable matrices, checkbox states and solutions."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "package-hashes-before.json",
+        "package-hashes-after.json",
+        "commands.md"
+      ],
+      "details": "Exact dependencies match runtime. Deterministic replay, relocation and boundary checks pass. Package hashes remain unchanged."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "selection-results.json"
+      ],
+      "details": "Relevant changes update rendered and graded selections; irrelevant changes preserve them. Conditional label and shape probes found no demonstrated bypass. Selection conclusions use captured inventory basis 5362 and representative histories; no live learner policy was supplied."
+    }
+  },
+  "findings": []
+}

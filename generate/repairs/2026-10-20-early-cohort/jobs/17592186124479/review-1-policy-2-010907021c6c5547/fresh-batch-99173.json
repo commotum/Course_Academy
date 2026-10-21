@@ -1,0 +1,1137 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186124479,
+      "id": "1073953e-7e0a-5237-8533-8882b7772741",
+      "title": "Finding the Number of Pivot Columns of a Matrix"
+    },
+    "question": {
+      ":question/id": "78ddbb39-92a2-505c-9748-ce8332d32af4",
+      ":question/problem": "Determine the number of pivot columns of the matrix $Q,$ given by\n\n$$\nQ=\\begin{bmatrix}1 & 3 & -2 & -1 & -2 \\\\ 3 & 9 & -4 & -3 & -3 \\\\ 3 & 9 & -6 & 0 & -3\\end{bmatrix}.\n$$",
+      ":question/worked-solution": "First, we need to convert $Q$ to row echelon form:\n\n$$\n\\begin{aligned}Q & =\\begin{bmatrix}1 & 3 & -2 & -1 & -2 \\\\ 3 & 9 & -4 & -3 & -3 \\\\ 3 & 9 & -6 & 0 & -3\\end{bmatrix} \\\\  & \\quad {R}_{2} :={R}_{2}+(-3){R}_{1} \\\\  & ∼\\begin{bmatrix}1 & 3 & -2 & -1 & -2 \\\\ 0 & 0 & 2 & 0 & 3 \\\\ 3 & 9 & -6 & 0 & -3\\end{bmatrix} \\\\  & \\quad {R}_{3} :={R}_{3}+(-3){R}_{1} \\\\  & ∼\\begin{bmatrix}1 & 3 & -2 & -1 & -2 \\\\ 0 & 0 & 2 & 0 & 3 \\\\ 0 & 0 & 0 & 3 & 3\\end{bmatrix}\\end{aligned}\n$$\n\nLooking at the row echelon form, we see that $Q$ has $3$ pivots, and therefore the number of pivot columns is $3.$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "defd1fbc-f5d8-5c7d-a0e5-8a490d26f98f",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "ae0e92fc-efdb-54bb-9a88-ae55097c9999",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3"
+            },
+            {
+              ":answer/id": "ac4d682b-a32b-56a3-aa42-ee2fff411972",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "4"
+            },
+            {
+              ":answer/id": "1d0d013f-a599-5193-8b58-0bf5981d897c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "1"
+            },
+            {
+              ":answer/id": "dcbd1e04-d252-5e7e-9594-188293a18ed6",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "5"
+            },
+            {
+              ":answer/id": "592998ce-0756-5712-9205-c3b5697e4f80",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "ae0e92fc-efdb-54bb-9a88-ae55097c9999"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "pivot-columns-2",
+      "template": "q-130957",
+      "profile": "counts-1,2,3,4,5",
+      "seed": 99174,
+      "parameters": {
+        "mode": "normal",
+        "active_rows": 3,
+        "name": "Q",
+        "echelon": [
+          [
+            "1",
+            "3",
+            "-2",
+            "-1",
+            "-2"
+          ],
+          [
+            "0",
+            "0",
+            "2",
+            "0",
+            "3"
+          ],
+          [
+            "0",
+            "0",
+            "0",
+            "3",
+            "3"
+          ]
+        ],
+        "operations": [
+          [
+            1,
+            0,
+            "-3"
+          ],
+          [
+            2,
+            0,
+            "-3"
+          ]
+        ],
+        "surviving_rows": 3,
+        "pivot_columns": [
+          1,
+          3,
+          4
+        ]
+      },
+      "states": [
+        [
+          [
+            "1",
+            "3",
+            "-2",
+            "-1",
+            "-2"
+          ],
+          [
+            "3",
+            "9",
+            "-4",
+            "-3",
+            "-3"
+          ],
+          [
+            "3",
+            "9",
+            "-6",
+            "0",
+            "-3"
+          ]
+        ],
+        [
+          [
+            "1",
+            "3",
+            "-2",
+            "-1",
+            "-2"
+          ],
+          [
+            "0",
+            "0",
+            "2",
+            "0",
+            "3"
+          ],
+          [
+            "3",
+            "9",
+            "-6",
+            "0",
+            "-3"
+          ]
+        ],
+        [
+          [
+            "1",
+            "3",
+            "-2",
+            "-1",
+            "-2"
+          ],
+          [
+            "0",
+            "0",
+            "2",
+            "0",
+            "3"
+          ],
+          [
+            "0",
+            "0",
+            "0",
+            "3",
+            "3"
+          ]
+        ]
+      ],
+      "operations": [
+        [
+          1,
+          0,
+          "-3"
+        ],
+        [
+          2,
+          0,
+          "-3"
+        ]
+      ],
+      "mathematical_fingerprint": "46d7f54fcc360dd0cefdbf1920dc927fc687abfb18636f50d406fe33c22f3249",
+      "eligible_for_learning": true,
+      "source": {
+        "database": "math",
+        "basis": 4656,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_question_id": "02683bf4-c015-5b9c-845b-c5f836ec3faf",
+      "python": "3.13.5",
+      "sympy": "1.14.0",
+      "math_format": "course-academy-tex-v1"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186124479,
+      "id": "1073953e-7e0a-5237-8533-8882b7772741",
+      "title": "Finding the Number of Pivot Columns of a Matrix"
+    },
+    "question": {
+      ":question/id": "936d671b-79a3-5f78-8178-7a8387fc82a7",
+      ":question/problem": "Determine the number of pivot columns of the matrix $D,$ given by\n\n$$\nD=\\begin{bmatrix}-3 & -1 & -3 & -3 & 1 \\\\ 0 & -2 & -1 & 1 & 1 \\\\ 0 & 0 & 0 & -4 & 3 \\\\ 0 & 0 & 0 & -8 & 8\\end{bmatrix}.\n$$",
+      ":question/worked-solution": "First, we need to convert $D$ to row echelon form:\n\n$$\n\\begin{aligned}D & =\\begin{bmatrix}-3 & -1 & -3 & -3 & 1 \\\\ 0 & -2 & -1 & 1 & 1 \\\\ 0 & 0 & 0 & -4 & 3 \\\\ 0 & 0 & 0 & -8 & 8\\end{bmatrix} \\\\  & \\quad {R}_{4} :={R}_{4}+(-2){R}_{3} \\\\  & ∼\\begin{bmatrix}-3 & -1 & -3 & -3 & 1 \\\\ 0 & -2 & -1 & 1 & 1 \\\\ 0 & 0 & 0 & -4 & 3 \\\\ 0 & 0 & 0 & 0 & 2\\end{bmatrix}\\end{aligned}\n$$\n\nLooking at the row echelon form, we see that $D$ has $4$ pivots, and therefore the number of pivot columns is $4.$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "fc0e156f-35e4-59ef-9ad2-67c1e38f574e",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "c8a81818-44ed-50bd-afe8-f7c931cd74a4",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2"
+            },
+            {
+              ":answer/id": "6b72a29b-b057-5edb-b2de-2e5c6f09ca8c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "1"
+            },
+            {
+              ":answer/id": "77ba4985-8dbd-5449-b42b-0e0b9dc85a23",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "0"
+            },
+            {
+              ":answer/id": "6fe264d8-de3e-551e-a049-581e1b485cf7",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "4"
+            },
+            {
+              ":answer/id": "f7a27926-2d73-54c4-bbac-42ca0d561966",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "6fe264d8-de3e-551e-a049-581e1b485cf7"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "pivot-columns-2",
+      "template": "q-35394",
+      "profile": "counts-0,1,2,3,4",
+      "seed": 99178,
+      "parameters": {
+        "mode": "normal",
+        "active_rows": 4,
+        "name": "D",
+        "echelon": [
+          [
+            "-3",
+            "-1",
+            "-3",
+            "-3",
+            "1"
+          ],
+          [
+            "0",
+            "-2",
+            "-1",
+            "1",
+            "1"
+          ],
+          [
+            "0",
+            "0",
+            "0",
+            "-4",
+            "3"
+          ],
+          [
+            "0",
+            "0",
+            "0",
+            "0",
+            "2"
+          ]
+        ],
+        "operations": [
+          [
+            3,
+            2,
+            "-2"
+          ]
+        ],
+        "surviving_rows": 4,
+        "pivot_columns": [
+          1,
+          2,
+          4,
+          5
+        ]
+      },
+      "states": [
+        [
+          [
+            "-3",
+            "-1",
+            "-3",
+            "-3",
+            "1"
+          ],
+          [
+            "0",
+            "-2",
+            "-1",
+            "1",
+            "1"
+          ],
+          [
+            "0",
+            "0",
+            "0",
+            "-4",
+            "3"
+          ],
+          [
+            "0",
+            "0",
+            "0",
+            "-8",
+            "8"
+          ]
+        ],
+        [
+          [
+            "-3",
+            "-1",
+            "-3",
+            "-3",
+            "1"
+          ],
+          [
+            "0",
+            "-2",
+            "-1",
+            "1",
+            "1"
+          ],
+          [
+            "0",
+            "0",
+            "0",
+            "-4",
+            "3"
+          ],
+          [
+            "0",
+            "0",
+            "0",
+            "0",
+            "2"
+          ]
+        ]
+      ],
+      "operations": [
+        [
+          3,
+          2,
+          "-2"
+        ]
+      ],
+      "mathematical_fingerprint": "a9fc5266d941d5f593ce3a94ee89e907c34c998b93cdac813371ccb5739c68b6",
+      "eligible_for_learning": true,
+      "source": {
+        "database": "math",
+        "basis": 4656,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_question_id": "ac5797f3-9c5f-5fa4-9757-c3f4e800eeb1",
+      "python": "3.13.5",
+      "sympy": "1.14.0",
+      "math_format": "course-academy-tex-v1"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186124479,
+      "id": "1073953e-7e0a-5237-8533-8882b7772741",
+      "title": "Finding the Number of Pivot Columns of a Matrix"
+    },
+    "question": {
+      ":question/id": "a444001e-6ee4-57b9-a404-16b32332b06a",
+      ":question/problem": "Determine the number of pivot columns of the matrix $Q,$ given by\n\n$$\nQ=\\begin{bmatrix}-3 & -1 & 2 & -1 & 1 \\\\ 0 & -4 & -1 & -2 & 1 \\\\ 0 & 0 & 2 & 3 & -2 \\\\ 0 & 0 & -2 & -2 & 5\\end{bmatrix}.\n$$",
+      ":question/worked-solution": "First, we need to convert $Q$ to row echelon form:\n\n$$\n\\begin{aligned}Q & =\\begin{bmatrix}-3 & -1 & 2 & -1 & 1 \\\\ 0 & -4 & -1 & -2 & 1 \\\\ 0 & 0 & 2 & 3 & -2 \\\\ 0 & 0 & -2 & -2 & 5\\end{bmatrix} \\\\  & \\quad {R}_{4} :={R}_{4}+(1){R}_{3} \\\\  & ∼\\begin{bmatrix}-3 & -1 & 2 & -1 & 1 \\\\ 0 & -4 & -1 & -2 & 1 \\\\ 0 & 0 & 2 & 3 & -2 \\\\ 0 & 0 & 0 & 1 & 3\\end{bmatrix}\\end{aligned}\n$$\n\nLooking at the row echelon form, we see that $Q$ has $4$ pivots, and therefore the number of pivot columns is $4.$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "46b32c90-2672-5901-ade0-0ddd03c1d397",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "5663d3c1-dfbf-50ef-8af7-39f8fca40b46",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "5"
+            },
+            {
+              ":answer/id": "d598dd4f-c646-5c18-b2fc-d135231c5548",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "1"
+            },
+            {
+              ":answer/id": "7fcaf838-457c-5d96-a8e6-baf46fc5fd98",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2"
+            },
+            {
+              ":answer/id": "9761a0a6-5f34-5e51-b81c-b4d1e67b417a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3"
+            },
+            {
+              ":answer/id": "abe06835-7e98-5cab-bf65-b23255738cde",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "4"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "abe06835-7e98-5cab-bf65-b23255738cde"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "pivot-columns-2",
+      "template": "q-73633",
+      "profile": "counts-1,2,3,4,5",
+      "seed": 99175,
+      "parameters": {
+        "mode": "normal",
+        "active_rows": 4,
+        "name": "Q",
+        "echelon": [
+          [
+            "-3",
+            "-1",
+            "2",
+            "-1",
+            "1"
+          ],
+          [
+            "0",
+            "-4",
+            "-1",
+            "-2",
+            "1"
+          ],
+          [
+            "0",
+            "0",
+            "2",
+            "3",
+            "-2"
+          ],
+          [
+            "0",
+            "0",
+            "0",
+            "1",
+            "3"
+          ]
+        ],
+        "operations": [
+          [
+            3,
+            2,
+            "1"
+          ]
+        ],
+        "surviving_rows": 4,
+        "pivot_columns": [
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "states": [
+        [
+          [
+            "-3",
+            "-1",
+            "2",
+            "-1",
+            "1"
+          ],
+          [
+            "0",
+            "-4",
+            "-1",
+            "-2",
+            "1"
+          ],
+          [
+            "0",
+            "0",
+            "2",
+            "3",
+            "-2"
+          ],
+          [
+            "0",
+            "0",
+            "-2",
+            "-2",
+            "5"
+          ]
+        ],
+        [
+          [
+            "-3",
+            "-1",
+            "2",
+            "-1",
+            "1"
+          ],
+          [
+            "0",
+            "-4",
+            "-1",
+            "-2",
+            "1"
+          ],
+          [
+            "0",
+            "0",
+            "2",
+            "3",
+            "-2"
+          ],
+          [
+            "0",
+            "0",
+            "0",
+            "1",
+            "3"
+          ]
+        ]
+      ],
+      "operations": [
+        [
+          3,
+          2,
+          "1"
+        ]
+      ],
+      "mathematical_fingerprint": "88d1e248a1bda42256d4ee8e060c36ec0cff44bfc8b222bdc26826354ed22307",
+      "eligible_for_learning": true,
+      "source": {
+        "database": "math",
+        "basis": 4656,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_question_id": "7ddee6b4-1b01-50b9-84af-b697c22f2675",
+      "python": "3.13.5",
+      "sympy": "1.14.0",
+      "math_format": "course-academy-tex-v1"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186124479,
+      "id": "1073953e-7e0a-5237-8533-8882b7772741",
+      "title": "Finding the Number of Pivot Columns of a Matrix"
+    },
+    "question": {
+      ":question/id": "12489b14-6510-5e29-8057-462b75ef1bc4",
+      ":question/problem": "Determine the number of pivot columns of the matrix $A,$ given by\n\n$$\nA=\\begin{bmatrix}0 & 1 & -2 & 2 & 1 \\\\ 0 & -3 & 4 & -3 & 0 \\\\ 0 & -2 & 4 & -4 & -2\\end{bmatrix}.\n$$",
+      ":question/worked-solution": "First, we need to convert $A$ to row echelon form:\n\n$$\n\\begin{aligned}A & =\\begin{bmatrix}0 & 1 & -2 & 2 & 1 \\\\ 0 & -3 & 4 & -3 & 0 \\\\ 0 & -2 & 4 & -4 & -2\\end{bmatrix} \\\\  & \\quad {R}_{2} :={R}_{2}+(3){R}_{1} \\\\  & ∼\\begin{bmatrix}0 & 1 & -2 & 2 & 1 \\\\ 0 & 0 & -2 & 3 & 3 \\\\ 0 & -2 & 4 & -4 & -2\\end{bmatrix} \\\\  & \\quad {R}_{3} :={R}_{3}+(2){R}_{1} \\\\  & ∼\\begin{bmatrix}0 & 1 & -2 & 2 & 1 \\\\ 0 & 0 & -2 & 3 & 3 \\\\ 0 & 0 & 0 & 0 & 0\\end{bmatrix}\\end{aligned}\n$$\n\nLooking at the row echelon form, we see that $A$ has $2$ pivots, and therefore the number of pivot columns is $2.$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "e4b40c83-d0b9-5cc7-af72-4d35ed4b3f47",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "74fa8a11-321e-58f9-a520-0914e600ee77",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "1"
+            },
+            {
+              ":answer/id": "cc233028-f1bc-5357-aba2-e00b5018f3cb",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "4"
+            },
+            {
+              ":answer/id": "df42d57d-5893-5d35-ac28-ccc23cc53ce3",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3"
+            },
+            {
+              ":answer/id": "2461d411-f441-53e3-a762-c2d188007055",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "5"
+            },
+            {
+              ":answer/id": "7051839c-fcc6-5e90-8efc-273c36000e79",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "7051839c-fcc6-5e90-8efc-273c36000e79"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "pivot-columns-2",
+      "template": "q-130957",
+      "profile": "counts-1,2,3,4,5",
+      "seed": 99173,
+      "parameters": {
+        "mode": "normal",
+        "active_rows": 3,
+        "name": "A",
+        "echelon": [
+          [
+            "0",
+            "1",
+            "-2",
+            "2",
+            "1"
+          ],
+          [
+            "0",
+            "0",
+            "-2",
+            "3",
+            "3"
+          ],
+          [
+            "0",
+            "0",
+            "0",
+            "0",
+            "0"
+          ]
+        ],
+        "operations": [
+          [
+            1,
+            0,
+            "3"
+          ],
+          [
+            2,
+            0,
+            "2"
+          ]
+        ],
+        "surviving_rows": 2,
+        "pivot_columns": [
+          2,
+          3
+        ]
+      },
+      "states": [
+        [
+          [
+            "0",
+            "1",
+            "-2",
+            "2",
+            "1"
+          ],
+          [
+            "0",
+            "-3",
+            "4",
+            "-3",
+            "0"
+          ],
+          [
+            "0",
+            "-2",
+            "4",
+            "-4",
+            "-2"
+          ]
+        ],
+        [
+          [
+            "0",
+            "1",
+            "-2",
+            "2",
+            "1"
+          ],
+          [
+            "0",
+            "0",
+            "-2",
+            "3",
+            "3"
+          ],
+          [
+            "0",
+            "-2",
+            "4",
+            "-4",
+            "-2"
+          ]
+        ],
+        [
+          [
+            "0",
+            "1",
+            "-2",
+            "2",
+            "1"
+          ],
+          [
+            "0",
+            "0",
+            "-2",
+            "3",
+            "3"
+          ],
+          [
+            "0",
+            "0",
+            "0",
+            "0",
+            "0"
+          ]
+        ]
+      ],
+      "operations": [
+        [
+          1,
+          0,
+          "3"
+        ],
+        [
+          2,
+          0,
+          "2"
+        ]
+      ],
+      "mathematical_fingerprint": "cac2fda545d94d4730f7cc9f180acda550de058d9415d582003bc61e9a8a75b3",
+      "eligible_for_learning": true,
+      "source": {
+        "database": "math",
+        "basis": 4656,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_question_id": "02683bf4-c015-5b9c-845b-c5f836ec3faf",
+      "python": "3.13.5",
+      "sympy": "1.14.0",
+      "math_format": "course-academy-tex-v1"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186124479,
+      "id": "1073953e-7e0a-5237-8533-8882b7772741",
+      "title": "Finding the Number of Pivot Columns of a Matrix"
+    },
+    "question": {
+      ":question/id": "c45925bf-5bb0-5820-80f7-3e342cb20c09",
+      ":question/problem": "Determine the number of pivot columns of the matrix $A,$ given by\n\n$$\nA=\\begin{bmatrix}2 & 2 & 0 & -1 & -2 \\\\ 0 & 0 & 4 & -3 & 3 \\\\ 0 & 0 & 0 & 0 & 3 \\\\ 0 & 0 & 0 & 0 & -3\\end{bmatrix}.\n$$",
+      ":question/worked-solution": "First, we need to convert $A$ to row echelon form:\n\n$$\n\\begin{aligned}A & =\\begin{bmatrix}2 & 2 & 0 & -1 & -2 \\\\ 0 & 0 & 4 & -3 & 3 \\\\ 0 & 0 & 0 & 0 & 3 \\\\ 0 & 0 & 0 & 0 & -3\\end{bmatrix} \\\\  & \\quad {R}_{4} :={R}_{4}+(1){R}_{3} \\\\  & ∼\\begin{bmatrix}2 & 2 & 0 & -1 & -2 \\\\ 0 & 0 & 4 & -3 & 3 \\\\ 0 & 0 & 0 & 0 & 3 \\\\ 0 & 0 & 0 & 0 & 0\\end{bmatrix}\\end{aligned}\n$$\n\nLooking at the row echelon form, we see that $A$ has $3$ pivots, and therefore the number of pivot columns is $3.$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "5f4a1af5-b197-5d16-a864-f0be7964d300",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "47c89802-9779-5174-851b-8b87f9e3f793",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2"
+            },
+            {
+              ":answer/id": "3095e758-ee7e-5abe-ad77-d59623ce11d4",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "4"
+            },
+            {
+              ":answer/id": "a5387eb6-b2e5-5725-97f8-4217e5e2741b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "0"
+            },
+            {
+              ":answer/id": "f80eb465-39af-5e3b-aaa1-9352738c4915",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "1"
+            },
+            {
+              ":answer/id": "77dfb219-82ce-5721-a918-2578897b9e9d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "77dfb219-82ce-5721-a918-2578897b9e9d"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "pivot-columns-2",
+      "template": "q-35394",
+      "profile": "counts-0,1,2,3,4",
+      "seed": 99177,
+      "parameters": {
+        "mode": "normal",
+        "active_rows": 4,
+        "name": "A",
+        "echelon": [
+          [
+            "2",
+            "2",
+            "0",
+            "-1",
+            "-2"
+          ],
+          [
+            "0",
+            "0",
+            "4",
+            "-3",
+            "3"
+          ],
+          [
+            "0",
+            "0",
+            "0",
+            "0",
+            "3"
+          ],
+          [
+            "0",
+            "0",
+            "0",
+            "0",
+            "0"
+          ]
+        ],
+        "operations": [
+          [
+            3,
+            2,
+            "1"
+          ]
+        ],
+        "surviving_rows": 3,
+        "pivot_columns": [
+          1,
+          3,
+          5
+        ]
+      },
+      "states": [
+        [
+          [
+            "2",
+            "2",
+            "0",
+            "-1",
+            "-2"
+          ],
+          [
+            "0",
+            "0",
+            "4",
+            "-3",
+            "3"
+          ],
+          [
+            "0",
+            "0",
+            "0",
+            "0",
+            "3"
+          ],
+          [
+            "0",
+            "0",
+            "0",
+            "0",
+            "-3"
+          ]
+        ],
+        [
+          [
+            "2",
+            "2",
+            "0",
+            "-1",
+            "-2"
+          ],
+          [
+            "0",
+            "0",
+            "4",
+            "-3",
+            "3"
+          ],
+          [
+            "0",
+            "0",
+            "0",
+            "0",
+            "3"
+          ],
+          [
+            "0",
+            "0",
+            "0",
+            "0",
+            "0"
+          ]
+        ]
+      ],
+      "operations": [
+        [
+          3,
+          2,
+          "1"
+        ]
+      ],
+      "mathematical_fingerprint": "94d637252fe689fe80e31fae0b4bcddc458220eae1291daecba40fd5decf7caa",
+      "eligible_for_learning": true,
+      "source": {
+        "database": "math",
+        "basis": 4656,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_question_id": "ac5797f3-9c5f-5fa4-9757-c3f4e800eeb1",
+      "python": "3.13.5",
+      "sympy": "1.14.0",
+      "math_format": "course-academy-tex-v1"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186124479,
+      "id": "1073953e-7e0a-5237-8533-8882b7772741",
+      "title": "Finding the Number of Pivot Columns of a Matrix"
+    },
+    "question": {
+      ":question/id": "d14fef69-44ea-575c-9da2-7301c8d8e2d7",
+      ":question/problem": "Determine the number of pivot columns of the matrix $B,$ given by\n\n$$\nB=\\begin{bmatrix}0 & 0 & -2 & 1 & 1 \\\\ 0 & 0 & 0 & -2 & -2 \\\\ 0 & 0 & 0 & 0 & -1 \\\\ 0 & 0 & 0 & 2 & 2\\end{bmatrix}.\n$$",
+      ":question/worked-solution": "First, we need to convert $B$ to row echelon form:\n\n$$\n\\begin{aligned}B & =\\begin{bmatrix}0 & 0 & -2 & 1 & 1 \\\\ 0 & 0 & 0 & -2 & -2 \\\\ 0 & 0 & 0 & 0 & -1 \\\\ 0 & 0 & 0 & 2 & 2\\end{bmatrix} \\\\  & \\quad {R}_{4} :={R}_{4}+(1){R}_{2} \\\\  & ∼\\begin{bmatrix}0 & 0 & -2 & 1 & 1 \\\\ 0 & 0 & 0 & -2 & -2 \\\\ 0 & 0 & 0 & 0 & -1 \\\\ 0 & 0 & 0 & 0 & 0\\end{bmatrix}\\end{aligned}\n$$\n\nLooking at the row echelon form, we see that $B$ has $3$ pivots, and therefore the number of pivot columns is $3.$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "00a5922b-c4d8-5af4-9590-656e989c4d55",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "33e7d71e-f12f-59b9-8bd7-ccfeeb252a61",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2"
+            },
+            {
+              ":answer/id": "f32e737a-d485-54b1-9fe0-0dbccfc1e1ed",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "5"
+            },
+            {
+              ":answer/id": "b82d6584-a724-5fce-9ea3-2b01cd98e527",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "4"
+            },
+            {
+              ":answer/id": "9283aaae-eff9-56d6-8091-abffaa4a9daf",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3"
+            },
+            {
+              ":answer/id": "d5459320-913e-5e78-90c0-8a719c19ad87",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "1"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "9283aaae-eff9-56d6-8091-abffaa4a9daf"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "pivot-columns-2",
+      "template": "q-73633",
+      "profile": "counts-1,2,3,4,5",
+      "seed": 99176,
+      "parameters": {
+        "mode": "normal",
+        "active_rows": 4,
+        "name": "B",
+        "echelon": [
+          [
+            "0",
+            "0",
+            "-2",
+            "1",
+            "1"
+          ],
+          [
+            "0",
+            "0",
+            "0",
+            "-2",
+            "-2"
+          ],
+          [
+            "0",
+            "0",
+            "0",
+            "0",
+            "-1"
+          ],
+          [
+            "0",
+            "0",
+            "0",
+            "0",
+            "0"
+          ]
+        ],
+        "operations": [
+          [
+            3,
+            1,
+            "1"
+          ]
+        ],
+        "surviving_rows": 3,
+        "pivot_columns": [
+          3,
+          4,
+          5
+        ]
+      },
+      "states": [
+        [
+          [
+            "0",
+            "0",
+            "-2",
+            "1",
+            "1"
+          ],
+          [
+            "0",
+            "0",
+            "0",
+            "-2",
+            "-2"
+          ],
+          [
+            "0",
+            "0",
+            "0",
+            "0",
+            "-1"
+          ],
+          [
+            "0",
+            "0",
+            "0",
+            "2",
+            "2"
+          ]
+        ],
+        [
+          [
+            "0",
+            "0",
+            "-2",
+            "1",
+            "1"
+          ],
+          [
+            "0",
+            "0",
+            "0",
+            "-2",
+            "-2"
+          ],
+          [
+            "0",
+            "0",
+            "0",
+            "0",
+            "-1"
+          ],
+          [
+            "0",
+            "0",
+            "0",
+            "0",
+            "0"
+          ]
+        ]
+      ],
+      "operations": [
+        [
+          3,
+          1,
+          "1"
+        ]
+      ],
+      "mathematical_fingerprint": "be0cff3e037874c6eb67de63abf3a9cef2c22fd5d7cab7da5eecfca607663d62",
+      "eligible_for_learning": true,
+      "source": {
+        "database": "math",
+        "basis": 4656,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_question_id": "7ddee6b4-1b01-50b9-84af-b697c22f2675",
+      "python": "3.13.5",
+      "sympy": "1.14.0",
+      "math_format": "course-academy-tex-v1"
+    }
+  }
+]

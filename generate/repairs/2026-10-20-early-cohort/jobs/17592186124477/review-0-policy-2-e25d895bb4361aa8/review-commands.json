@@ -1,0 +1,16 @@
+{
+  "cwd": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186124477/review-0-policy-2-e25d895bb4361aa8",
+  "commands": [
+    "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python audit.py",
+    "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py --input runner-batch.json --source /home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186124477/source/source.json --inventory /home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186124477/source/inventory.json --difficulty easy --output delivery-batch --asset-root /home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186124477/workspace",
+    "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py --input independent-samples.json --source /home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186124477/source/source.json --inventory /home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186124477/source/inventory.json --difficulty easy --output delivery-independent --asset-root /home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186124477/workspace",
+    "python3 delivery-verification.py",
+    "/home/jake/Developer/Course_Academy/generate/runs/current/check-engine grader-input.json grader-results.json",
+    "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/render_preview.py --input render-records.json --output render --limit 6 --asset-root /home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186124477/workspace",
+    "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/render_preview.py --input render-dependency-records.json --output render-dependencies --limit 10 --asset-root /home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186124477/workspace",
+    "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python variation-audit.py",
+    "python3 finalize-review.py"
+  ],
+  "derive_dependency_input": "render-dependency-records.json is render-records.json[5:]",
+  "notes": "No publication or database commands. All output beneath evidence_root. audit.py disables bytecode writes before importing package files."
+}

@@ -1,0 +1,107 @@
+{
+  "verdict": "accepted",
+  "summary": "The retained batch shortcut is repaired. All eight checks pass; no current defect was demonstrated. Package files remain unchanged.",
+  "source_analysis": {
+    "skill": "Reduce a matrix to row echelon form and count pivot columns.",
+    "reasoning_steps": [
+      "Identify entries requiring elimination.",
+      "Apply elementary row replacements and determine which residual rows vanish.",
+      "Count pivots and select the corresponding integer."
+    ],
+    "invariants": [
+      "Numeric pivot-count question with five radio choices.",
+      "Comparable short elimination workload.",
+      "Answer determined by actual row dependence."
+    ],
+    "permitted_variations": [
+      "Vary residual survival and rank within a fixed shape.",
+      "Vary pivot locations, coefficients, matrix labels and option order."
+    ],
+    "source_refs": [
+      "f1ae8763-ab2d-5aee-9b53-3f6da8520aee",
+      "8a6c1395-93b3-574c-b784-2d33009b00c0",
+      "02683bf4-c015-5b9c-845b-c5f836ec3faf",
+      "Tutorial d45a4eba-96ce-5bef-92b7-b8f0d4cd8b72: convert a general matrix to REF.",
+      "generate/principles.md \u00a72"
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replays.json",
+        "source-replay-results.json"
+      ],
+      "details": "All 17 assessed sources reproduce matrices, stages, complete banks and keys. Missing canonical answer-control evidence is documented."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "delivered-content-comparison.json"
+      ],
+      "details": "Exact rank, displayed operations, REF and conclusions pass for 77 records and five normalized delivered records."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "coverage.json",
+        "stage-analysis.json",
+        "shortcut-regression-runs.json"
+      ],
+      "details": "The delivered batch contains contrasting ranks within each selected shape/active-row group. Retained and fresh batch regressions pass."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "pedagogical-variation.json",
+        "unchanged-runtime-evidence.json"
+      ],
+      "details": "The revision preserves the task, response contract and short elementary-elimination workload."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-results.json"
+      ],
+      "details": "Native grading accepts 26 correct selections and rejects 104 distractors, including controlled pairs and delivered records."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-rest/rendering.json",
+        "render-inspection.json"
+      ],
+      "details": "Twelve records render through the actual UI. Inspected screenshots show readable matrices, controls and solutions."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "revision-boundaries.json",
+        "batch-replay.json",
+        "package-tree-before.json",
+        "package-tree-after.json"
+      ],
+      "details": "Exact dependencies, relocation, deterministic replay, external output and boundary checks pass. The complete package tree is unchanged."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "stage-analysis.json",
+        "shortcut-regression-runs.json",
+        "affected-inventory.json",
+        "inventory-assessment.json"
+      ],
+      "details": "The strict test rejects the old batch. Rows-minus-one succeeds on only 2/5 current delivered records. Controlled changes pass grading and rendering. Captured inventory shows no demonstrated affected records; live histories and future inventory remain outside the captured evidence."
+    }
+  },
+  "findings": []
+}

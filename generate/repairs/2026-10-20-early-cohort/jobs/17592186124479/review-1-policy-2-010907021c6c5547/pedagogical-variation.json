@@ -1,0 +1,1309 @@
+{
+  "learner_operation": "Find the number of pivot columns of a general matrix by elementary row reduction to REF and counting its nonzero rows/pivots.",
+  "fixed_features": [
+    {
+      "feature": "Count pivot columns, with five numeric radio choices.",
+      "justification": "All 17 assessed source questions use this task and response contract; the canonical example also asks the count."
+    },
+    {
+      "feature": "Sparse numeric matrices, short elementary row replacement reduction to REF.",
+      "justification": "Tutorial d45a4eba requires REF before identifying pivots; captured assessed sources use one or two row replacements. This preserves moderate workload."
+    },
+    {
+      "feature": "Source shapes and full bank profiles.",
+      "justification": "These bound the observed workload and response domain; fixing the count within them is not justified."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Residual rows that vanish or survive after elimination",
+      "eligible_variation": "Change zero residual to a later nonzero pivot within fixed shape and workload.",
+      "observed": "Controlled rank 2→3 pair; delivered same 3x5 active-three group has ranks 3,3,2, and 4x5 active-four group ranks 4,3."
+    },
+    {
+      "role": "Pivot locations and dependent row assignment",
+      "eligible_variation": "Vary ordered pivot columns, prefix sources and active rows while preserving a short valid elimination.",
+      "observed": "Fresh normal samples cover every retained template; current branch uses explicit compatible rank/active assignments without changing elimination validity."
+    },
+    {
+      "role": "Matrix labels and correct choice positions",
+      "eligible_variation": "Rename matrices and shuffle the full bank independently.",
+      "observed": "Name counterfactual preserves matrix/rank; label, first-choice and bank-extreme probes have counterexamples. Small finite subgroup coincidences are documented."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "Exact runner batch after preparation",
+      "sample_refs": [
+        "batch.json",
+        "delivery-batch/accepted.json",
+        "stage-analysis.json"
+      ],
+      "result": "5/5 survive; ranks 2,3,4; both selected shape/active-row groups contain contrasting outcomes."
+    },
+    {
+      "case": "All 17 source workload/bank profiles and fresh normal samples",
+      "sample_refs": [
+        "source-replays.json",
+        "coverage.json",
+        "samples.json",
+        "author-check/regression-controls.json",
+        "author-check/regression-results.json"
+      ],
+      "result": "17 complete source replays and 51 fresh normal samples pass independent exact checks. Author checker rerun supplies two contrasting ranks for every source workload; fresh independent batch seeds and counts also pass."
+    },
+    {
+      "case": "Retained defect is real and current revision changes its result",
+      "sample_refs": [
+        "prior-failing-batch.json",
+        "shortcut-regression-runs.json",
+        "fresh-batch-69137.json"
+      ],
+      "result": "Strict original shortcut test exits 1 on old 5/5 failing pool and 0 on current batch. Relocated author assertion also fails on the old pool, then passes against current code."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "At fixed q-130957 parameters and seed 74109, change final residual row entry (3,5) from 0 to 1; exactly one input matrix cell changes.",
+      "expected": "Rank, selected numeric key and solution conclusion change from 2 to 3; prompt retains all other matrix entries. Native grader swaps acceptance of choices 2 and 3.",
+      "observed": "Independent exact ranks 2 and 3; prompt/solution stages agree; both rendered prompts show the one-cell difference. Native grader accepts 2 only before and 3 only after, rejecting the opposite choice.",
+      "status": "passed",
+      "justification": "The necessary operation is deciding whether elimination leaves a nonzero row; source f1ae8763 and 8a6c1395 demonstrate both outcomes.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-input.json",
+        "grader-results.json",
+        "render/rendering.json",
+        "render-rest/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Rename matrix A to D with all matrix data fixed; separately rescale a nonzero echelon prefix row before reversing the fixed operations.",
+      "expected": "Rank remains 3; names update throughout prompt and explanation; keys still select 3, native grading preserves numerical choice acceptance.",
+      "observed": "Matrices identical under rename, names updated in rendered prompt/solution; rank unchanged under both irrelevant changes. Native grader accepts 3 and rejects all four alternatives for each.",
+      "status": "passed",
+      "justification": "Matrix names and invertible row rescaling do not alter pivot count; labels are incidental in all captured questions.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-input.json",
+        "grader-results.json",
+        "render-rest/rendering.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "rows minus one",
+      "subgroup": "exact delivered batch",
+      "scope": "overall",
+      "strategy": "rows minus one",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/5 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "count nonzero rows",
+      "subgroup": "exact delivered batch",
+      "scope": "overall",
+      "strategy": "count nonzero rows",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/5 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "first choice",
+      "subgroup": "exact delivered batch",
+      "scope": "overall",
+      "strategy": "first choice",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/5 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "maximum bank",
+      "subgroup": "exact delivered batch",
+      "scope": "overall",
+      "strategy": "maximum bank",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/5 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "minimum bank",
+      "subgroup": "exact delivered batch",
+      "scope": "overall",
+      "strategy": "minimum bank",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/5 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "always three",
+      "subgroup": "exact delivered batch",
+      "scope": "overall",
+      "strategy": "always three",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/5 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "rows",
+      "subgroup": "exact delivered batch: 3",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "rows minus one",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/3 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "rows",
+      "subgroup": "exact delivered batch: 3",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always three",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/3 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "rows",
+      "subgroup": "exact delivered batch: 4",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "rows minus one",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/2 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "rows",
+      "subgroup": "exact delivered batch: 4",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always three",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/2 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "template",
+      "subgroup": "exact delivered batch: q-130957",
+      "scope": "within_template",
+      "strategy": "rows minus one",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/3 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "template",
+      "subgroup": "exact delivered batch: q-130957",
+      "scope": "within_template",
+      "strategy": "always three",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/3 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "template",
+      "subgroup": "exact delivered batch: q-73628",
+      "scope": "within_template",
+      "strategy": "rows minus one",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/2 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "template",
+      "subgroup": "exact delivered batch: q-73628",
+      "scope": "within_template",
+      "strategy": "always three",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/2 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "active",
+      "subgroup": "exact delivered batch: 3",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "rows minus one",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/3 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "active",
+      "subgroup": "exact delivered batch: 3",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always three",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/3 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "active",
+      "subgroup": "exact delivered batch: 4",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "rows minus one",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/2 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "active",
+      "subgroup": "exact delivered batch: 4",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always three",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/2 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "name",
+      "subgroup": "exact delivered batch: B",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "rows minus one",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/2 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "name",
+      "subgroup": "exact delivered batch: B",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always three",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/2 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "rows minus one",
+      "subgroup": "fresh delivered controls",
+      "scope": "overall",
+      "strategy": "rows minus one",
+      "correct": 19,
+      "total": 51,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "19/51 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "count nonzero rows",
+      "subgroup": "fresh delivered controls",
+      "scope": "overall",
+      "strategy": "count nonzero rows",
+      "correct": 31,
+      "total": 51,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "31/51 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "first choice",
+      "subgroup": "fresh delivered controls",
+      "scope": "overall",
+      "strategy": "first choice",
+      "correct": 11,
+      "total": 51,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "11/51 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "maximum bank",
+      "subgroup": "fresh delivered controls",
+      "scope": "overall",
+      "strategy": "maximum bank",
+      "correct": 6,
+      "total": 51,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "6/51 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "minimum bank",
+      "subgroup": "fresh delivered controls",
+      "scope": "overall",
+      "strategy": "minimum bank",
+      "correct": 0,
+      "total": 51,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/51 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "always three",
+      "subgroup": "fresh delivered controls",
+      "scope": "overall",
+      "strategy": "always three",
+      "correct": 20,
+      "total": 51,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "20/51 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "rows",
+      "subgroup": "fresh delivered controls: 4",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "rows minus one",
+      "correct": 10,
+      "total": 27,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "10/27 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "rows",
+      "subgroup": "fresh delivered controls: 4",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always three",
+      "correct": 10,
+      "total": 27,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "10/27 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "rows",
+      "subgroup": "fresh delivered controls: 5",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "rows minus one",
+      "correct": 2,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/9 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "rows",
+      "subgroup": "fresh delivered controls: 5",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always three",
+      "correct": 2,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/9 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "rows",
+      "subgroup": "fresh delivered controls: 3",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "rows minus one",
+      "correct": 7,
+      "total": 15,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "7/15 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "rows",
+      "subgroup": "fresh delivered controls: 3",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always three",
+      "correct": 8,
+      "total": 15,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "8/15 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template",
+      "subgroup": "fresh delivered controls: q-35457",
+      "scope": "within_template",
+      "strategy": "rows minus one",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/3 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template",
+      "subgroup": "fresh delivered controls: q-35457",
+      "scope": "within_template",
+      "strategy": "always three",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/3 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template",
+      "subgroup": "fresh delivered controls: q-35459",
+      "scope": "within_template",
+      "strategy": "rows minus one",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/3 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template",
+      "subgroup": "fresh delivered controls: q-35459",
+      "scope": "within_template",
+      "strategy": "always three",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/3 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template",
+      "subgroup": "fresh delivered controls: q-130957",
+      "scope": "within_template",
+      "strategy": "rows minus one",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/3 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template",
+      "subgroup": "fresh delivered controls: q-130957",
+      "scope": "within_template",
+      "strategy": "always three",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/3 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template",
+      "subgroup": "fresh delivered controls: q-130958",
+      "scope": "within_template",
+      "strategy": "rows minus one",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/3 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template",
+      "subgroup": "fresh delivered controls: q-130958",
+      "scope": "within_template",
+      "strategy": "always three",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/3 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template",
+      "subgroup": "fresh delivered controls: q-130959",
+      "scope": "within_template",
+      "strategy": "rows minus one",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/3 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template",
+      "subgroup": "fresh delivered controls: q-130959",
+      "scope": "within_template",
+      "strategy": "always three",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/3 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template",
+      "subgroup": "fresh delivered controls: q-130962",
+      "scope": "within_template",
+      "strategy": "rows minus one",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/3 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template",
+      "subgroup": "fresh delivered controls: q-130962",
+      "scope": "within_template",
+      "strategy": "always three",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/3 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template",
+      "subgroup": "fresh delivered controls: q-130963",
+      "scope": "within_template",
+      "strategy": "rows minus one",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/3 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template",
+      "subgroup": "fresh delivered controls: q-130963",
+      "scope": "within_template",
+      "strategy": "always three",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/3 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template",
+      "subgroup": "fresh delivered controls: q-35452",
+      "scope": "within_template",
+      "strategy": "rows minus one",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/3 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template",
+      "subgroup": "fresh delivered controls: q-35452",
+      "scope": "within_template",
+      "strategy": "always three",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/3 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template",
+      "subgroup": "fresh delivered controls: q-35453",
+      "scope": "within_template",
+      "strategy": "rows minus one",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/3 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template",
+      "subgroup": "fresh delivered controls: q-35453",
+      "scope": "within_template",
+      "strategy": "always three",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/3 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template",
+      "subgroup": "fresh delivered controls: q-73625",
+      "scope": "within_template",
+      "strategy": "rows minus one",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/3 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template",
+      "subgroup": "fresh delivered controls: q-73625",
+      "scope": "within_template",
+      "strategy": "always three",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/3 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template",
+      "subgroup": "fresh delivered controls: q-73628",
+      "scope": "within_template",
+      "strategy": "rows minus one",
+      "correct": 3,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/3 versus uniform random five-choice baseline 0.2. Singleton or small subgroup observation; eligible contrasts inspected in larger same-template controls; no generalized cue rule demonstrated. Current reruns of independent earlier seeds yield ranks 2,3,4 for this same template; this 3/3 coincidence is not a construction invariant. Current reruns of independent earlier seeds yield ranks 2,3,4 for this same template; this 3/3 coincidence is not a construction invariant.",
+      "sample_refs": [
+        "delivery-samples/accepted.json",
+        "conditional-control-records.json",
+        "revision-boundaries.json",
+        "conditional-control-records.json",
+        "revision-boundaries.json"
+      ]
+    },
+    {
+      "cue": "template",
+      "subgroup": "fresh delivered controls: q-73628",
+      "scope": "within_template",
+      "strategy": "always three",
+      "correct": 3,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/3 versus uniform random five-choice baseline 0.2. Singleton or small subgroup observation; eligible contrasts inspected in larger same-template controls; no generalized cue rule demonstrated. Current reruns of independent earlier seeds yield ranks 2,3,4 for this same template; this 3/3 coincidence is not a construction invariant. Current reruns of independent earlier seeds yield ranks 2,3,4 for this same template; this 3/3 coincidence is not a construction invariant.",
+      "sample_refs": [
+        "delivery-samples/accepted.json",
+        "conditional-control-records.json",
+        "revision-boundaries.json",
+        "conditional-control-records.json",
+        "revision-boundaries.json"
+      ]
+    },
+    {
+      "cue": "template",
+      "subgroup": "fresh delivered controls: q-73630",
+      "scope": "within_template",
+      "strategy": "rows minus one",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/3 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template",
+      "subgroup": "fresh delivered controls: q-73630",
+      "scope": "within_template",
+      "strategy": "always three",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/3 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template",
+      "subgroup": "fresh delivered controls: q-73633",
+      "scope": "within_template",
+      "strategy": "rows minus one",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/3 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template",
+      "subgroup": "fresh delivered controls: q-73633",
+      "scope": "within_template",
+      "strategy": "always three",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/3 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template",
+      "subgroup": "fresh delivered controls: q-73635",
+      "scope": "within_template",
+      "strategy": "rows minus one",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/3 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template",
+      "subgroup": "fresh delivered controls: q-73635",
+      "scope": "within_template",
+      "strategy": "always three",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/3 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template",
+      "subgroup": "fresh delivered controls: q-130964",
+      "scope": "within_template",
+      "strategy": "rows minus one",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/3 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template",
+      "subgroup": "fresh delivered controls: q-130964",
+      "scope": "within_template",
+      "strategy": "always three",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/3 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template",
+      "subgroup": "fresh delivered controls: q-35394",
+      "scope": "within_template",
+      "strategy": "rows minus one",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/3 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template",
+      "subgroup": "fresh delivered controls: q-35394",
+      "scope": "within_template",
+      "strategy": "always three",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/3 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template",
+      "subgroup": "fresh delivered controls: q-130961",
+      "scope": "within_template",
+      "strategy": "rows minus one",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/3 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template",
+      "subgroup": "fresh delivered controls: q-130961",
+      "scope": "within_template",
+      "strategy": "always three",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/3 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "active",
+      "subgroup": "fresh delivered controls: 3",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "rows minus one",
+      "correct": 10,
+      "total": 22,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "10/22 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "active",
+      "subgroup": "fresh delivered controls: 3",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always three",
+      "correct": 11,
+      "total": 22,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "11/22 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "active",
+      "subgroup": "fresh delivered controls: 4",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "rows minus one",
+      "correct": 9,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "9/24 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "active",
+      "subgroup": "fresh delivered controls: 4",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always three",
+      "correct": 9,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "9/24 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "active",
+      "subgroup": "fresh delivered controls: 5",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "rows minus one",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/5 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "active",
+      "subgroup": "fresh delivered controls: 5",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always three",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/5 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "name",
+      "subgroup": "fresh delivered controls: A",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "rows minus one",
+      "correct": 1,
+      "total": 7,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/7 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "name",
+      "subgroup": "fresh delivered controls: A",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always three",
+      "correct": 1,
+      "total": 7,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/7 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "name",
+      "subgroup": "fresh delivered controls: B",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "rows minus one",
+      "correct": 6,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "6/10 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "name",
+      "subgroup": "fresh delivered controls: B",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always three",
+      "correct": 4,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "4/10 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "name",
+      "subgroup": "fresh delivered controls: P",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "rows minus one",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/3 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "name",
+      "subgroup": "fresh delivered controls: P",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always three",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/3 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "name",
+      "subgroup": "fresh delivered controls: Q",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "rows minus one",
+      "correct": 4,
+      "total": 16,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "4/16 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "name",
+      "subgroup": "fresh delivered controls: Q",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always three",
+      "correct": 8,
+      "total": 16,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "8/16 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "name",
+      "subgroup": "fresh delivered controls: D",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "rows minus one",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/5 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "name",
+      "subgroup": "fresh delivered controls: D",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always three",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/5 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "name",
+      "subgroup": "fresh delivered controls: C",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "rows minus one",
+      "correct": 6,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "6/10 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "name",
+      "subgroup": "fresh delivered controls: C",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always three",
+      "correct": 4,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "4/10 versus uniform random five-choice baseline 0.2. Not a perfect predictor in this subgroup.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "normal construction validity and new forced-decision branch",
+      "batch rank/active assignment and semantic dedup retry",
+      "actual shared publication normalization and inventory/within-batch deduplication",
+      "requested moderate difficulty filter",
+      "captured inventory and read-only learner weighted selection scenarios"
+    ],
+    "sample_refs": [
+      "delivery-batch/delivery.json",
+      "delivery-batch/accepted.json",
+      "delivery-samples/delivery.json",
+      "stage-analysis.json",
+      "shortcut-regression-runs.json",
+      "batch-replay.json"
+    ],
+    "result": "At captured basis 5362, batch survives 5/5 and normal controls 51/51 with identical ranks and choice semantics. No preparation file exists; shared tool runs actual prepare_records. Weighted moderate selection retains eligible contrasts; explicit history-subset scenarios are recorded, not asserted to be live histories."
+  },
+  "limitations": [
+    "No finite review proves absence of every incidental shortcut.",
+    "Source canonical example has no captured answer-control evidence; all 17 assessed source cases replayed, canonical mathematics confirmed.",
+    "Live selection policy, actual learner histories and future inventory/entity IDs are not captured. Hypothetical scenarios use explicitly synthetic IDs. Exhausted subsets can lose contrasts.",
+    "A three-sample q-73628 coincidence was challenged using independent prior seeds rerun on current code; ranks 2,3,4 remain available.",
+    "Captured inventory lacks generated metadata; no affected stored defect demonstrated and no generated identity invented."
+  ]
+}

@@ -1,0 +1,3 @@
+# Plot extraction: none
+
+Three canonical SVGs contain math typesetting only: x+5y+z=2 / x+5y+2z=5, the corresponding augmented matrix with a right-hand-side separator, and x+5y=−1 / z=3. Raster inspection copies source-asset-0.png, source-asset-1.png, source-asset-2.png were created by the system GdkPixbuf SVG decoder and composited on white. This inspects existing assets and does not generate a plot. No prompt/answer/solution has geometric graphics; changed instances use LaTeX matrix/system/vector components directly. Steps 5 and 7 therefore require no plot renderer or Matplotlib/TikZ dependency.

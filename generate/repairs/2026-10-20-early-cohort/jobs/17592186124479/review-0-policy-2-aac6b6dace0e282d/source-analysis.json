@@ -1,0 +1,242 @@
+{
+  "skill": "Find the number of pivot columns of a general matrix by elementary row reduction to REF and counting its nonzero rows/pivots.",
+  "reasoning_steps": [
+    "Inspect the given sparse integer matrix, locating repeated leading-column entries.",
+    "Apply one or two elementary row replacements to eliminate those entries; recognize whether the resulting row vanishes or retains a later pivot.",
+    "Count REF pivots and select the corresponding integer from the complete five-option radio bank."
+  ],
+  "response_contract": "All 17 assessed questions use one radio field keyed selection, five numeric choices. Canonical example has no captured answer field. Preserve source banks including unusual 0 and 6 distractors.",
+  "difficulty": "Moderate: source matrices have 3\u20135 rows and 4\u20136 columns, typically one or two row replacements, sometimes fractional multipliers. No determinant calculation or symbolic parameter case split is required.",
+  "invariants": [
+    "Ask for the number, not identities, of pivot columns.",
+    "Keep elementary row operations and visible REF justification.",
+    "Count zero rows only after elimination, not directly from input.",
+    "Preserve comparable sparsity and one/two-operation workload, bounded integer arithmetic and radio response."
+  ],
+  "permitted_variations": [
+    "Matrix name, signs, nonzero magnitudes and distractor ordering are incidental.",
+    "Within the same matrix shape and reduction workload, dependence versus independence of the last row can change; the rank is an answer-bearing result, not an essential fixed assignment.",
+    "Eligible pivot columns, leading zero columns and dependent-row location may vary if the short REF method is preserved.",
+    "Rank can vary conservatively within source-observed 3\u20135; rank 2 may be a same-method extension but requires workload justification.",
+    "Matrix labels, answer position and shape must not become sufficient incidental predictors."
+  ],
+  "decision_analysis": "Necessary operation is evaluating dependence after elimination. Essential constraints do not force source matrix names, a fixed rank by template, all rows independent, or the maximum feasible option. Relevant controlled pairs should modify one residual entry from zero to nonzero. Irrelevant pairs can rename the matrix or rescale a nonzero row, preserving rank.",
+  "source_refs": [
+    "f1ae8763-ab2d-5aee-9b53-3f6da8520aee",
+    "8a6c1395-93b3-574c-b784-2d33009b00c0",
+    "02683bf4-c015-5b9c-845b-c5f836ec3faf",
+    "06c2ebc8-9d9b-5ee7-87a8-a42672daac19",
+    "14755573-7651-5c03-a2f3-60c3f9d3eee0",
+    "5aa034af-993c-5e1e-820e-381374e69de3",
+    "f1da223e-cf33-5119-871d-5d62bfe3b1a0",
+    "b0d60236-44f8-5ff8-95cf-eb01e33fc186",
+    "9f943d34-2384-5dae-913e-74d32b4a024f",
+    "949042b7-80c8-5584-b86a-21848d3ca6ef",
+    "420559bf-600d-5c66-bd70-411e67d4681b",
+    "c248b6df-e245-5470-ac61-18cc33dd18eb",
+    "7ddee6b4-1b01-50b9-84af-b697c22f2675",
+    "d2b8524b-7ecd-587d-9654-16754c1816e2",
+    "a3f1bbcf-348c-5bc5-9ab4-ce8f6b02c910",
+    "ac5797f3-9c5f-5fa4-9757-c3f4e800eeb1",
+    "7b4a741d-30d4-5d2c-9fde-2ae106aac7d2",
+    "6e4b2e85-86a8-5050-a60a-ae8d40453ad0",
+    "tutorial feec6418-f447-5ee0-8c62-7d6b690f9228: The pivots of a matrix in row echelon form are the first non-zero entries in each row of the matrix.",
+    "tutorial d45a4eba-96ce-5bef-92b7-b8f0d4cd8b72: To find the pivots and pivot columns of a general matrix, we first need to convert the matrix to row echelon form (REF).",
+    "generate/principles.md \u00a7\u00a71\u20133"
+  ],
+  "source_cases": [
+    {
+      "id": "f1ae8763-ab2d-5aee-9b53-3f6da8520aee",
+      "bank": [
+        "2",
+        "1",
+        "5",
+        "3",
+        "4"
+      ],
+      "answer": "3"
+    },
+    {
+      "id": "8a6c1395-93b3-574c-b784-2d33009b00c0",
+      "bank": [
+        "2",
+        "1",
+        "4",
+        "5",
+        "3"
+      ],
+      "answer": "5"
+    },
+    {
+      "id": "02683bf4-c015-5b9c-845b-c5f836ec3faf",
+      "bank": [
+        "3",
+        "2",
+        "5",
+        "4",
+        "1"
+      ],
+      "answer": "3"
+    },
+    {
+      "id": "06c2ebc8-9d9b-5ee7-87a8-a42672daac19",
+      "bank": [
+        "2",
+        "3",
+        "5",
+        "4",
+        "1"
+      ],
+      "answer": "3"
+    },
+    {
+      "id": "14755573-7651-5c03-a2f3-60c3f9d3eee0",
+      "bank": [
+        "3",
+        "5",
+        "2",
+        "4",
+        "1"
+      ],
+      "answer": "3"
+    },
+    {
+      "id": "5aa034af-993c-5e1e-820e-381374e69de3",
+      "bank": [
+        "4",
+        "3",
+        "1",
+        "6",
+        "5"
+      ],
+      "answer": "4"
+    },
+    {
+      "id": "f1da223e-cf33-5119-871d-5d62bfe3b1a0",
+      "bank": [
+        "2",
+        "4",
+        "3",
+        "6",
+        "5"
+      ],
+      "answer": "4"
+    },
+    {
+      "id": "b0d60236-44f8-5ff8-95cf-eb01e33fc186",
+      "bank": [
+        "1",
+        "5",
+        "4",
+        "2",
+        "3"
+      ],
+      "answer": "3"
+    },
+    {
+      "id": "9f943d34-2384-5dae-913e-74d32b4a024f",
+      "bank": [
+        "1",
+        "3",
+        "5",
+        "2",
+        "4"
+      ],
+      "answer": "3"
+    },
+    {
+      "id": "949042b7-80c8-5584-b86a-21848d3ca6ef",
+      "bank": [
+        "5",
+        "1",
+        "3",
+        "4",
+        "2"
+      ],
+      "answer": "3"
+    },
+    {
+      "id": "420559bf-600d-5c66-bd70-411e67d4681b",
+      "bank": [
+        "3",
+        "1",
+        "5",
+        "2",
+        "4"
+      ],
+      "answer": "4"
+    },
+    {
+      "id": "c248b6df-e245-5470-ac61-18cc33dd18eb",
+      "bank": [
+        "1",
+        "4",
+        "3",
+        "2",
+        "5"
+      ],
+      "answer": "4"
+    },
+    {
+      "id": "7ddee6b4-1b01-50b9-84af-b697c22f2675",
+      "bank": [
+        "4",
+        "3",
+        "5",
+        "2",
+        "1"
+      ],
+      "answer": "3"
+    },
+    {
+      "id": "d2b8524b-7ecd-587d-9654-16754c1816e2",
+      "bank": [
+        "5",
+        "3",
+        "2",
+        "1",
+        "4"
+      ],
+      "answer": "4"
+    },
+    {
+      "id": "a3f1bbcf-348c-5bc5-9ab4-ce8f6b02c910",
+      "bank": [
+        "5",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "answer": "3"
+    },
+    {
+      "id": "ac5797f3-9c5f-5fa4-9757-c3f4e800eeb1",
+      "bank": [
+        "3",
+        "0",
+        "1",
+        "2",
+        "4"
+      ],
+      "answer": "4"
+    },
+    {
+      "id": "7b4a741d-30d4-5d2c-9fde-2ae106aac7d2",
+      "bank": [
+        "1",
+        "3",
+        "4",
+        "5",
+        "2"
+      ],
+      "answer": "4"
+    }
+  ],
+  "gaps": [
+    "Canonical example answer control not captured; no source images are present or needed."
+  ],
+  "evidence_paths": [
+    "source-analysis.json"
+  ]
+}

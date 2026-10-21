@@ -1,0 +1,110 @@
+{
+  "verdict": "accepted",
+  "summary": "No demonstrated defect. All eight checks pass within the recorded limits. Package unchanged; no publication or database writes.",
+  "source_analysis": {
+    "skill": "Identify pivot columns by locating the first nonzero entry in each nonzero row of an already row-echelon-form matrix.",
+    "reasoning_steps": [
+      "Locate each nonzero row's leading entry.",
+      "Collect its column index.",
+      "Select exactly those columns using the supplied checkbox or radio bank."
+    ],
+    "invariants": [
+      "Matrices are already in row echelon form.",
+      "No row reduction is required.",
+      "Answers and solutions must follow the displayed leading entries.",
+      "Preserve the captured response formats and easy visual workload."
+    ],
+    "permitted_variations": [
+      "Vary eligible pivot positions, rank and zero-row count.",
+      "Vary nonzero pivot values and trailing entries.",
+      "Vary qualifying column subsets and radio answer positions."
+    ],
+    "source_refs": [
+      "ccfdc303-534f-530e-810b-f475a997f5d8",
+      "0850a089-ef4a-51a0-8740-c0d4fd203890",
+      "3178fc01-22a7-5d4f-800e-ca109923b512",
+      "Tutorial feec6418-f447-5ee0-8c62-7d6b690f9228: Introduction"
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay-results.json",
+        "source-replays.json",
+        "canonical-matrix.json"
+      ],
+      "details": "All 16 captured practice cases reproduce prompts, solutions, complete banks and keys. Canonical matrix checked separately; its original answer controls were not captured."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "delivery-math-results.json",
+        "inventory-results.json"
+      ],
+      "details": "Independent displayed-matrix checks pass, including all 226 delivered records and all 21 captured inventory keys."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "coverage-results.json",
+        "independent-samples.json",
+        "shortcut-results.json"
+      ],
+      "details": "All 16 profiles exercised. Delivery preserves all 96 tested shape-and-pivot cases. The exact five-record batch contains both response formats and ranks 1\u20133."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "pedagogical-variation.json"
+      ],
+      "details": "Variations preserve leading-entry recognition, small integer matrices and existing response contracts without introducing elimination."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-results.json"
+      ],
+      "details": "Native grader passes 175 acceptance and 203 rejection checks, including distractors, controlled-response transfers and the normalized batch. Zero unresolved checks."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-dependencies/rendering.json",
+        "render-inspection.json"
+      ],
+      "details": "Actual UI rendered 15 distinct records, including the entire batch and controlled pairs. Representative screenshots show readable matrices, controls and solutions."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "review-commands.json",
+        "final-integrity.json"
+      ],
+      "details": "Exact runtime matches the manifest. Rejection boundaries, deterministic batch replay and relocation pass. All package file hashes remain unchanged."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "counterfactuals.json",
+        "shortcut-results.json",
+        "selection-results.json",
+        "delivery-batch/delivery.json",
+        "delivery-independent/delivery.json",
+        "affected-inventory.json",
+        "contract-validation.json"
+      ],
+      "details": "Relevant changes move answers and grading; irrelevant changes preserve them. Conditional shortcut probes reveal no demonstrated defect. Delivery and selection rules were examined read-only; future learner history, policy configuration and entity IDs remain explicit limits."
+    }
+  },
+  "findings": []
+}

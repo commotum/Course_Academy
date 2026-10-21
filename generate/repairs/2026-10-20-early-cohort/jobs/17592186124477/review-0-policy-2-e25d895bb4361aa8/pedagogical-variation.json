@@ -1,0 +1,806 @@
+{
+  "learner_operation": "Identify pivot columns of an already row-echelon-form integer matrix by locating the first nonzero entry in each nonzero row.",
+  "fixed_features": [
+    {
+      "feature": "Already REF integer matrices of the observed small shapes",
+      "justification": "The target KP and tutorial define pivots as leading nonzero entries; eliminating a general matrix belongs to later lesson steps. Shape profiles preserve visual workload."
+    },
+    {
+      "feature": "Nonempty pivot set in learner-facing checkbox practice",
+      "justification": "All supplied checkbox sources contain pivots and require selecting columns. Excluding the zero matrix keeps this observed response contract; no observed source family is removed."
+    },
+    {
+      "feature": "Complete per-column checkbox bank or five-choice radio bank",
+      "justification": "These are the two captured response contracts. Radio ranks 2 and 3 with equally sized candidate subsets give conservative same-method practice; not every mathematically possible rank is needed."
+    },
+    {
+      "feature": "Matrix names tied to source profiles",
+      "justification": "A name is irrelevant to pivot membership. Controlled target changes and all visible shape/name cue groups contain differing answers, so no fixed name-to-answer assignment is supported."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Columns qualifying as pivots",
+      "eligible_variation": "Move leading positions while preserving increasing pivots and REF; each column may qualify or fail.",
+      "observed": "248 raw samples and 221 delivered samples retain 96 distinct shape/target cases. Leading, trailing, all-column and intermediate decisions occur; all 16 source profiles exercised. One metadata profile collapses to one record after content deduplication because another profile has identical visible wording/shape; the merged visible group remains varied."
+    },
+    {
+      "role": "Number of selected columns",
+      "eligible_variation": "Vary nonzero-row count at comparable easy workload.",
+      "observed": "Ranks 1,2,3,4 observed in checkbox practice; radio ranks 2 and 3. Exact batch ranks 1,2,3 with five distinct shape/target cases."
+    },
+    {
+      "role": "Radio correct subset and choice position",
+      "eligible_variation": "Derive bank and key from current leading positions, vary subset and position independently of matrix coefficients.",
+      "observed": "Delivered radio controls have stored correct positions 1..5 with counts 13,7,9,12,16. Actual UI order is separately hashed by item and field IDs; tested hypothetical placements do not fix the correct position."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "Original source profiles and both response contracts",
+      "sample_refs": [
+        "source-replays.json",
+        "source-replay-results.json"
+      ],
+      "result": "16/16 supported practice-source cases replay complete banks, keys, prompts and solutions. Canonical example has no captured answer controls; its displayed matrix is checked separately without claiming a missing bank was captured."
+    },
+    {
+      "case": "Relevant decisions before and after delivery",
+      "sample_refs": [
+        "independent-samples.json",
+        "delivery-independent/accepted.json",
+        "coverage-results.json"
+      ],
+      "result": "248 -> 221 after 27 content duplicates; all 96 tested shape/target cases remain. Visible shape/name cue groups have multiple targets."
+    },
+    {
+      "case": "Exact runner batch independently assessed",
+      "sample_refs": [
+        "runner-batch.json",
+        "delivery-batch/accepted.json",
+        "coverage-results.json",
+        "shortcut-results.json"
+      ],
+      "result": "All 5 survive, including 3 checkbox and 2 radio records; ranks 1:2, 2:2, 3:1. Constant column 2 answers 2/3 checkbox records, nonzero-column heuristic 0/3, stored positions 3 and 5 answer one radio each. Tiny singleton cue lookups are not claimed to prove a generator-wide rule."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Checkbox: set first row column 1 from 2 to 0; radio: set second row column 2 from 4 to 0. Keep other entries, seed, profile, response format and radio bank fixed.",
+      "expected": "Checkbox pivots change (1,3)->(2,3); radio pivots change (1,2,4)->(1,3,4). Before-response must fail the changed membership while the new response passes.",
+      "observed": "Prompts, column vectors, correct keys, named solution columns, solution matrices and rendered summaries change together. Native transferred old checkbox response is rejected on the two changed memberships; old radio subset is rejected. All newly correct choices pass.",
+      "status": "passed",
+      "justification": "The tutorial defines the first nonzero entry of each nonzero row as its pivot; moving it must move the qualifying column.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "grader-input.json",
+        "grader-results.json",
+        "render-dependencies/input.json",
+        "render-dependencies/rendering.json",
+        "render-inspection.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Change a trailing entry: checkbox row1 col3 -1->8; radio row2 col5 3->-8. Preserve leading entries and bank.",
+      "expected": "Same pivot subsets and same accepted learner response, while prompt, vectors and worked-solution matrices show the changed entry.",
+      "observed": "Correct subsets preserved; all transferred before-responses accepted by native grader. Rendered summaries retain the same named columns and rendered matrices contain changed entries.",
+      "status": "passed",
+      "justification": "Entries to the right of a leading nonzero cannot change its position.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "grader-input.json",
+        "grader-results.json",
+        "render-dependencies/input.json",
+        "render-dependencies/rendering.json",
+        "render-inspection.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "template/shape/name only",
+      "subgroup": "delivered: all checkbox",
+      "scope": "within_template",
+      "strategy": "Always select columns (1,)",
+      "correct": 22,
+      "total": 164,
+      "baseline": 0.06979094076655051,
+      "disposition": "not_predictive",
+      "conclusion": "Best constant subset chosen after seeing data, so frequency is an upper bound for a prespecified fixed-label guess; baseline is uniform over nonempty structurally eligible subsets for each shape.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "template/shape/name only",
+      "subgroup": "delivered: shape/name (3, 3)/A",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select columns (1,)",
+      "correct": 2,
+      "total": 10,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best constant subset chosen after seeing data, so frequency is an upper bound for a prespecified fixed-label guess; baseline is uniform over nonempty structurally eligible subsets for each shape.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "template/shape/name only",
+      "subgroup": "delivered: shape/name (3, 4)/M",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select columns (3,)",
+      "correct": 2,
+      "total": 11,
+      "baseline": 0.07142857142857142,
+      "disposition": "not_predictive",
+      "conclusion": "Best constant subset chosen after seeing data, so frequency is an upper bound for a prespecified fixed-label guess; baseline is uniform over nonempty structurally eligible subsets for each shape.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "template/shape/name only",
+      "subgroup": "delivered: shape/name (3, 5)/B",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select columns (1, 2, 3)",
+      "correct": 3,
+      "total": 13,
+      "baseline": 0.04,
+      "disposition": "not_predictive",
+      "conclusion": "Best constant subset chosen after seeing data, so frequency is an upper bound for a prespecified fixed-label guess; baseline is uniform over nonempty structurally eligible subsets for each shape.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "template/shape/name only",
+      "subgroup": "delivered: shape/name (4, 4)/A",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select columns (1, 2, 3, 4)",
+      "correct": 2,
+      "total": 13,
+      "baseline": 0.06666666666666667,
+      "disposition": "not_predictive",
+      "conclusion": "Best constant subset chosen after seeing data, so frequency is an upper bound for a prespecified fixed-label guess; baseline is uniform over nonempty structurally eligible subsets for each shape.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "template/shape/name only",
+      "subgroup": "delivered: shape/name (4, 5)/M",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select columns (2, 3, 5)",
+      "correct": 2,
+      "total": 22,
+      "baseline": 0.03333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Best constant subset chosen after seeing data, so frequency is an upper bound for a prespecified fixed-label guess; baseline is uniform over nonempty structurally eligible subsets for each shape.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "template/shape/name only",
+      "subgroup": "delivered: shape/name (4, 5)/A",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select columns (1, 2)",
+      "correct": 2,
+      "total": 16,
+      "baseline": 0.03333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Best constant subset chosen after seeing data, so frequency is an upper bound for a prespecified fixed-label guess; baseline is uniform over nonempty structurally eligible subsets for each shape.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "template/shape/name only",
+      "subgroup": "delivered: shape/name (3, 5)/A",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select columns (1, 3, 4)",
+      "correct": 2,
+      "total": 16,
+      "baseline": 0.04,
+      "disposition": "not_predictive",
+      "conclusion": "Best constant subset chosen after seeing data, so frequency is an upper bound for a prespecified fixed-label guess; baseline is uniform over nonempty structurally eligible subsets for each shape.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "template/shape/name only",
+      "subgroup": "delivered: shape/name (5, 4)/A",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select columns (1, 2, 3, 4)",
+      "correct": 2,
+      "total": 17,
+      "baseline": 0.06666666666666667,
+      "disposition": "not_predictive",
+      "conclusion": "Best constant subset chosen after seeing data, so frequency is an upper bound for a prespecified fixed-label guess; baseline is uniform over nonempty structurally eligible subsets for each shape.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "template/shape/name only",
+      "subgroup": "delivered: shape/name (3, 3)/M",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select columns (2,)",
+      "correct": 2,
+      "total": 10,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best constant subset chosen after seeing data, so frequency is an upper bound for a prespecified fixed-label guess; baseline is uniform over nonempty structurally eligible subsets for each shape.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "template/shape/name only",
+      "subgroup": "delivered: shape/name (3, 4)/B",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select columns (1,)",
+      "correct": 2,
+      "total": 13,
+      "baseline": 0.07142857142857142,
+      "disposition": "not_predictive",
+      "conclusion": "Best constant subset chosen after seeing data, so frequency is an upper bound for a prespecified fixed-label guess; baseline is uniform over nonempty structurally eligible subsets for each shape.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "template/shape/name only",
+      "subgroup": "delivered: shape/name (3, 3)/B",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select columns (1,)",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best constant subset chosen after seeing data, so frequency is an upper bound for a prespecified fixed-label guess; baseline is uniform over nonempty structurally eligible subsets for each shape.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "template/shape/name only",
+      "subgroup": "delivered: shape/name (4, 4)/M",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select columns (3,)",
+      "correct": 2,
+      "total": 11,
+      "baseline": 0.06666666666666667,
+      "disposition": "not_predictive",
+      "conclusion": "Best constant subset chosen after seeing data, so frequency is an upper bound for a prespecified fixed-label guess; baseline is uniform over nonempty structurally eligible subsets for each shape.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "stored answer position",
+      "subgroup": "delivered: all radio",
+      "scope": "within_template",
+      "strategy": "Choose stored option 1",
+      "correct": 13,
+      "total": 57,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. The actual UI additionally hashes choices using task-item and field IDs.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "stored answer position",
+      "subgroup": "delivered: all radio",
+      "scope": "within_template",
+      "strategy": "Choose stored option 2",
+      "correct": 7,
+      "total": 57,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. The actual UI additionally hashes choices using task-item and field IDs.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "stored answer position",
+      "subgroup": "delivered: all radio",
+      "scope": "within_template",
+      "strategy": "Choose stored option 3",
+      "correct": 9,
+      "total": 57,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. The actual UI additionally hashes choices using task-item and field IDs.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "stored answer position",
+      "subgroup": "delivered: all radio",
+      "scope": "within_template",
+      "strategy": "Choose stored option 4",
+      "correct": 12,
+      "total": 57,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. The actual UI additionally hashes choices using task-item and field IDs.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "stored answer position",
+      "subgroup": "delivered: all radio",
+      "scope": "within_template",
+      "strategy": "Choose stored option 5",
+      "correct": 16,
+      "total": 57,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. The actual UI additionally hashes choices using task-item and field IDs.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "bank wording/column labels only",
+      "subgroup": "delivered: radio options all have cardinality 2",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "lexicographically smallest set",
+      "correct": 4,
+      "total": 32,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five equal-cardinality subsets: counting entries in an option cannot identify a unique choice. Baseline is uniform choice among five.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "bank wording/column labels only",
+      "subgroup": "delivered: radio options all have cardinality 2",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "lexicographically largest set",
+      "correct": 8,
+      "total": 32,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five equal-cardinality subsets: counting entries in an option cannot identify a unique choice. Baseline is uniform choice among five.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "bank wording/column labels only",
+      "subgroup": "delivered: radio options all have cardinality 3",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "lexicographically smallest set",
+      "correct": 4,
+      "total": 25,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five equal-cardinality subsets: counting entries in an option cannot identify a unique choice. Baseline is uniform choice among five.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "bank wording/column labels only",
+      "subgroup": "delivered: radio options all have cardinality 3",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "lexicographically largest set",
+      "correct": 7,
+      "total": 25,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five equal-cardinality subsets: counting entries in an option cannot identify a unique choice. Baseline is uniform choice among five.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "column has any nonzero entry",
+      "subgroup": "delivered: all checkbox",
+      "scope": "within_template",
+      "strategy": "Select every nonzero column",
+      "correct": 40,
+      "total": 164,
+      "baseline": 0.06979094076655051,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform over eligible nonempty subsets. This plausible wrong heuristic is contradicted by nonzero nonpivot columns; full-rank/all-column successes express legitimate simplifications.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "UI displayed answer position",
+      "subgroup": "delivered: radio, 128 task-item placements each",
+      "scope": "within_template",
+      "strategy": "Choose displayed option 1",
+      "correct": 1485,
+      "total": 7296,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is 1/5. Mirrors ui/learning.js choiceOrder with current field UUIDs and hypothetical item IDs 1..128; no actual future DB/task IDs are asserted.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "UI displayed answer position",
+      "subgroup": "delivered: radio, 128 task-item placements each",
+      "scope": "within_template",
+      "strategy": "Choose displayed option 2",
+      "correct": 1464,
+      "total": 7296,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is 1/5. Mirrors ui/learning.js choiceOrder with current field UUIDs and hypothetical item IDs 1..128; no actual future DB/task IDs are asserted.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "UI displayed answer position",
+      "subgroup": "delivered: radio, 128 task-item placements each",
+      "scope": "within_template",
+      "strategy": "Choose displayed option 3",
+      "correct": 1405,
+      "total": 7296,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is 1/5. Mirrors ui/learning.js choiceOrder with current field UUIDs and hypothetical item IDs 1..128; no actual future DB/task IDs are asserted.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "UI displayed answer position",
+      "subgroup": "delivered: radio, 128 task-item placements each",
+      "scope": "within_template",
+      "strategy": "Choose displayed option 4",
+      "correct": 1468,
+      "total": 7296,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is 1/5. Mirrors ui/learning.js choiceOrder with current field UUIDs and hypothetical item IDs 1..128; no actual future DB/task IDs are asserted.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "UI displayed answer position",
+      "subgroup": "delivered: radio, 128 task-item placements each",
+      "scope": "within_template",
+      "strategy": "Choose displayed option 5",
+      "correct": 1474,
+      "total": 7296,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is 1/5. Mirrors ui/learning.js choiceOrder with current field UUIDs and hypothetical item IDs 1..128; no actual future DB/task IDs are asserted.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "template/shape/name only",
+      "subgroup": "batch_delivered: all checkbox",
+      "scope": "within_template",
+      "strategy": "Always select columns (2,)",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.05714285714285714,
+      "disposition": "not_predictive",
+      "conclusion": "Best constant subset chosen after seeing data, so frequency is an upper bound for a prespecified fixed-label guess; baseline is uniform over nonempty structurally eligible subsets for each shape.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "template/shape/name only",
+      "subgroup": "batch_delivered: shape/name (4, 5)/M",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select columns (2,)",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.03333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Best constant subset chosen after seeing data, so frequency is an upper bound for a prespecified fixed-label guess; baseline is uniform over nonempty structurally eligible subsets for each shape. This tiny batch subgroup has fewer than three examples; memorizing a singleton is not evidence of a construction rule. Larger same-profile controls are assessed separately.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "template/shape/name only",
+      "subgroup": "batch_delivered: shape/name (3, 4)/B",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select columns (1, 3)",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.07142857142857142,
+      "disposition": "not_predictive",
+      "conclusion": "Best constant subset chosen after seeing data, so frequency is an upper bound for a prespecified fixed-label guess; baseline is uniform over nonempty structurally eligible subsets for each shape. This tiny batch subgroup has fewer than three examples; memorizing a singleton is not evidence of a construction rule. Larger same-profile controls are assessed separately.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "template/shape/name only",
+      "subgroup": "batch_delivered: shape/name (5, 4)/A",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select columns (2,)",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.06666666666666667,
+      "disposition": "not_predictive",
+      "conclusion": "Best constant subset chosen after seeing data, so frequency is an upper bound for a prespecified fixed-label guess; baseline is uniform over nonempty structurally eligible subsets for each shape. This tiny batch subgroup has fewer than three examples; memorizing a singleton is not evidence of a construction rule. Larger same-profile controls are assessed separately.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "stored answer position",
+      "subgroup": "batch_delivered: all radio",
+      "scope": "within_template",
+      "strategy": "Choose stored option 1",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. The actual UI additionally hashes choices using task-item and field IDs.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "stored answer position",
+      "subgroup": "batch_delivered: all radio",
+      "scope": "within_template",
+      "strategy": "Choose stored option 2",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. The actual UI additionally hashes choices using task-item and field IDs.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "stored answer position",
+      "subgroup": "batch_delivered: all radio",
+      "scope": "within_template",
+      "strategy": "Choose stored option 3",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. The actual UI additionally hashes choices using task-item and field IDs.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "stored answer position",
+      "subgroup": "batch_delivered: all radio",
+      "scope": "within_template",
+      "strategy": "Choose stored option 4",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. The actual UI additionally hashes choices using task-item and field IDs.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "stored answer position",
+      "subgroup": "batch_delivered: all radio",
+      "scope": "within_template",
+      "strategy": "Choose stored option 5",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. The actual UI additionally hashes choices using task-item and field IDs.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "bank wording/column labels only",
+      "subgroup": "batch_delivered: radio options all have cardinality 2",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "lexicographically smallest set",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five equal-cardinality subsets: counting entries in an option cannot identify a unique choice. Baseline is uniform choice among five.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "bank wording/column labels only",
+      "subgroup": "batch_delivered: radio options all have cardinality 2",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "lexicographically largest set",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five equal-cardinality subsets: counting entries in an option cannot identify a unique choice. Baseline is uniform choice among five.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "bank wording/column labels only",
+      "subgroup": "batch_delivered: radio options all have cardinality 3",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "lexicographically smallest set",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five equal-cardinality subsets: counting entries in an option cannot identify a unique choice. Baseline is uniform choice among five.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "bank wording/column labels only",
+      "subgroup": "batch_delivered: radio options all have cardinality 3",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "lexicographically largest set",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five equal-cardinality subsets: counting entries in an option cannot identify a unique choice. Baseline is uniform choice among five.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "column has any nonzero entry",
+      "subgroup": "batch_delivered: all checkbox",
+      "scope": "within_template",
+      "strategy": "Select every nonzero column",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.05714285714285714,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform over eligible nonempty subsets. This plausible wrong heuristic is contradicted by nonzero nonpivot columns; full-rank/all-column successes express legitimate simplifications.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "UI displayed answer position",
+      "subgroup": "batch_delivered: radio, 128 task-item placements each",
+      "scope": "within_template",
+      "strategy": "Choose displayed option 1",
+      "correct": 46,
+      "total": 256,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is 1/5. Mirrors ui/learning.js choiceOrder with current field UUIDs and hypothetical item IDs 1..128; no actual future DB/task IDs are asserted.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "UI displayed answer position",
+      "subgroup": "batch_delivered: radio, 128 task-item placements each",
+      "scope": "within_template",
+      "strategy": "Choose displayed option 2",
+      "correct": 42,
+      "total": 256,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is 1/5. Mirrors ui/learning.js choiceOrder with current field UUIDs and hypothetical item IDs 1..128; no actual future DB/task IDs are asserted.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "UI displayed answer position",
+      "subgroup": "batch_delivered: radio, 128 task-item placements each",
+      "scope": "within_template",
+      "strategy": "Choose displayed option 3",
+      "correct": 53,
+      "total": 256,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is 1/5. Mirrors ui/learning.js choiceOrder with current field UUIDs and hypothetical item IDs 1..128; no actual future DB/task IDs are asserted.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "UI displayed answer position",
+      "subgroup": "batch_delivered: radio, 128 task-item placements each",
+      "scope": "within_template",
+      "strategy": "Choose displayed option 4",
+      "correct": 64,
+      "total": 256,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is 1/5. Mirrors ui/learning.js choiceOrder with current field UUIDs and hypothetical item IDs 1..128; no actual future DB/task IDs are asserted.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "UI displayed answer position",
+      "subgroup": "batch_delivered: radio, 128 task-item placements each",
+      "scope": "within_template",
+      "strategy": "Choose displayed option 5",
+      "correct": 51,
+      "total": 256,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is 1/5. Mirrors ui/learning.js choiceOrder with current field UUIDs and hypothetical item IDs 1..128; no actual future DB/task IDs are asserted.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "first displayed radio option in completed offline preview",
+      "subgroup": "exact five-record batch: two radio preview fixtures",
+      "scope": "within_template",
+      "strategy": "Choose first displayed option",
+      "correct": 2,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Both preview fixtures show the correct option first. This is specific to fixture contentIds 3 and 4 with prepublication UUID field IDs; the actual UI hashes task-item and field entity IDs. On accepted records over item IDs 1..128, this strategy succeeds 46/256 versus the 1/5 baseline. The preview coincidence does not demonstrate a delivered fixed-position rule. Future actual DB/task IDs are unavailable.",
+      "sample_refs": [
+        "render/input.json",
+        "render/rendering.json",
+        "delivery-batch/accepted.json",
+        "shortcut-results.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "generator explicit rejection and nonempty selection construction",
+      "finite structural batch shuffle without replacement",
+      "requested difficulty",
+      "actual publisher normalization and stable identities",
+      "captured inventory and within-batch content deduplication",
+      "learner freshness, band weighting, uniform deterministic selection and unconfigured fallback rules",
+      "actual UI choice hashing"
+    ],
+    "sample_refs": [
+      "packaging-results.json",
+      "many-64.json",
+      "delivery-batch/delivery.json",
+      "delivery-independent/delivery.json",
+      "delivery-math-results.json",
+      "selection-results.json",
+      "shortcut-results.json"
+    ],
+    "result": "No construction rejection removes a valid sampled target: nonempty REF is constructed directly and the policy wrapper preserves valid calls. Delivery retains all five batch records and all 96 tested independent shape/target cases. Read-only selection reproduction reaches every captured or projected candidate with positive easy weight; zero easy weight and no-policy fallback tested explicitly."
+  },
+  "limitations": [
+    "Finite samples and prespecified simple strategies cannot certify the absence of all shortcuts.",
+    "Captured inventory basis 5362; concurrent publication may change duplicates. No future entity IDs, active policy snapshot or learner history supplied. Selection conclusions are conditional on examined branches; no live learner delivery is claimed.",
+    "Canonical source lacks answer-field evidence; its matrix and solution are supported, its missing original control bank cannot be reproduced.",
+    "The five stored generated questions have no captured historical generation metadata. Current content was reproduced through published stable identities with controlled seed 0; that seed is not asserted as historical.",
+    "The exact batch has singleton visible cue cells. Memorizing an item or post-hoc lookup table is possible in any finite pool; it is not treated as independent evidence of a repeated construction shortcut."
+  ]
+}

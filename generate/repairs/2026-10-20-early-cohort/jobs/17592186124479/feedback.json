@@ -1,0 +1,119 @@
+{
+  "verdict": "revise",
+  "summary": "All five delivered questions can be answered by counting matrix rows and subtracting one. This is a batch-selection failure; the broader sampler contains counterexamples. Package files remain unchanged.",
+  "source_analysis": {
+    "skill": "Reduce a matrix to row echelon form, determine which residual rows vanish, and count pivots.",
+    "reasoning_steps": [
+      "Identify entries requiring elimination.",
+      "Apply elementary row replacements.",
+      "Count pivots and select the corresponding integer."
+    ],
+    "invariants": [
+      "Numeric pivot-count question with five radio choices.",
+      "Comparable one- or two-operation reduction workload.",
+      "The answer follows actual dependence after elimination."
+    ],
+    "permitted_variations": [
+      "Vary residual survival and rank within the same matrix shape.",
+      "Vary pivot locations, coefficients, matrix labels, and option order."
+    ],
+    "source_refs": [
+      "f1ae8763-ab2d-5aee-9b53-3f6da8520aee",
+      "8a6c1395-93b3-574c-b784-2d33009b00c0",
+      "02683bf4-c015-5b9c-845b-c5f836ec3faf",
+      "Tutorial d45a4eba-96ce-5bef-92b7-b8f0d4cd8b72: first convert the matrix to row echelon form.",
+      "generate/principles.md \u00a72"
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replays.json",
+        "source-replay-results.json"
+      ],
+      "details": "All 17 assessed source cases reproduce complete banks, keys, and matrix stages. The canonical example lacks captured answer-control evidence; this limitation is recorded."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "delivered-content-comparison.json"
+      ],
+      "details": "Exact rank and row-operation checks pass for 230 records and five normalized delivered records."
+    },
+    "variety": {
+      "status": "failed",
+      "evidence_paths": [
+        "coverage.json",
+        "batch-shortcut-results.json",
+        "stage-analysis.json"
+      ],
+      "details": "The 204-record control varies rank within every template, but the delivered batch fixes rank at row count minus one."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "pedagogical-variation.json"
+      ],
+      "details": "Sampled questions preserve the response contract and comparable elementary-elimination workload."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-results.json"
+      ],
+      "details": "Native grader accepts 31 correct selections and rejects 124 distractors, including controlled pairs and normalized delivered records."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-rest/rendering.json",
+        "render-inspection.json"
+      ],
+      "details": "Twelve records render through the actual UI. Representative screenshot inspection confirms readable matrices, controls, and solutions."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "package-hashes-before.json",
+        "package-hashes-after.json"
+      ],
+      "details": "Exact dependencies, relocation, deterministic replay, external output, and boundary checks pass. Package files are unchanged."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "shortcut-regression-runs.json",
+        "stage-analysis.json",
+        "affected-inventory.json",
+        "inventory-assessment.json"
+      ],
+      "details": "Row-count-minus-one succeeds on 5/5 delivered records, including every conditional row-count group, versus 81/204 controls. Controlled relevant and irrelevant changes pass. No corresponding stored pool-wide defect was demonstrated."
+    }
+  },
+  "findings": [
+    {
+      "kind": "decision_shortcut",
+      "description": "The exact surviving batch permits a shape-only answer strategy: count rows and subtract one. It bypasses deciding dependence after elimination. This is specific to batch selection, not a demonstrated universal generator defect.",
+      "source_refs": [
+        "f1ae8763-ab2d-5aee-9b53-3f6da8520aee",
+        "8a6c1395-93b3-574c-b784-2d33009b00c0",
+        "02683bf4-c015-5b9c-845b-c5f836ec3faf",
+        "generate/principles.md \u00a72"
+      ],
+      "reproduction": "Run `/home/jake/Developer/Course_Academy/.venv/bin/python check_batch_shortcut.py --input delivery-batch/accepted.json` from evidence_root. It exits 1. Seeds 315106964\u2013315106968 yield row/rank pairs (4,3), (4,3), (3,2), (3,2), (5,4). Complete records and parameters are retained. The same test passes on counterfactual-records.json.",
+      "requested_change": "Revise batch assembly to include supported same-shape cases with different residual survival outcomes. Retain the strict post-delivery shortcut regression and conditional checks. Preserve valid generator families; this finding does not justify engine changes or sampler restrictions."
+    }
+  ],
+  "repair_history_file": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186124479/repair-history.json",
+  "instruction": "Fix the root cause, retain every earlier counterexample, and declare executable checks in repair-regressions.json. A failed check is another repair task, not permission to abandon the generator."
+}

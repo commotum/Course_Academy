@@ -1,0 +1,150 @@
+{
+  "verdict": "revise",
+  "summary": "Revise the five-question batch: “count matrix rows and subtract one” answers all five surviving records without elimination. The sampler control, mathematics, native grading, rendering and packaging pass their tested checks; no generator-wide construction defect demonstrated.",
+  "source_analysis": {
+    "skill": "Find the number of pivot columns of a general matrix by elementary row reduction to REF and counting its nonzero rows/pivots.",
+    "reasoning_steps": [
+      "Inspect the given sparse integer matrix, locating repeated leading-column entries.",
+      "Apply one or two elementary row replacements to eliminate those entries; recognize whether the resulting row vanishes or retains a later pivot.",
+      "Count REF pivots and select the corresponding integer from the complete five-option radio bank."
+    ],
+    "invariants": [
+      "Ask for the number, not identities, of pivot columns.",
+      "Keep elementary row operations and visible REF justification.",
+      "Count zero rows only after elimination, not directly from input.",
+      "Preserve comparable sparsity and one/two-operation workload, bounded integer arithmetic and radio response."
+    ],
+    "permitted_variations": [
+      "Matrix name, signs, nonzero magnitudes and distractor ordering are incidental.",
+      "Within the same matrix shape and reduction workload, dependence versus independence of the last row can change; the rank is an answer-bearing result, not an essential fixed assignment.",
+      "Eligible pivot columns, leading zero columns and dependent-row location may vary if the short REF method is preserved.",
+      "Rank can vary conservatively within source-observed 3–5; rank 2 may be a same-method extension but requires workload justification.",
+      "Matrix labels, answer position and shape must not become sufficient incidental predictors."
+    ],
+    "source_refs": [
+      "f1ae8763-ab2d-5aee-9b53-3f6da8520aee",
+      "8a6c1395-93b3-574c-b784-2d33009b00c0",
+      "02683bf4-c015-5b9c-845b-c5f836ec3faf",
+      "06c2ebc8-9d9b-5ee7-87a8-a42672daac19",
+      "14755573-7651-5c03-a2f3-60c3f9d3eee0",
+      "5aa034af-993c-5e1e-820e-381374e69de3",
+      "f1da223e-cf33-5119-871d-5d62bfe3b1a0",
+      "b0d60236-44f8-5ff8-95cf-eb01e33fc186",
+      "9f943d34-2384-5dae-913e-74d32b4a024f",
+      "949042b7-80c8-5584-b86a-21848d3ca6ef",
+      "420559bf-600d-5c66-bd70-411e67d4681b",
+      "c248b6df-e245-5470-ac61-18cc33dd18eb",
+      "7ddee6b4-1b01-50b9-84af-b697c22f2675",
+      "d2b8524b-7ecd-587d-9654-16754c1816e2",
+      "a3f1bbcf-348c-5bc5-9ab4-ce8f6b02c910",
+      "ac5797f3-9c5f-5fa4-9757-c3f4e800eeb1",
+      "7b4a741d-30d4-5d2c-9fde-2ae106aac7d2",
+      "6e4b2e85-86a8-5050-a60a-ae8d40453ad0",
+      "tutorial feec6418-f447-5ee0-8c62-7d6b690f9228: The pivots of a matrix in row echelon form are the first non-zero entries in each row of the matrix.",
+      "tutorial d45a4eba-96ce-5bef-92b7-b8f0d4cd8b72: To find the pivots and pivot columns of a general matrix, we first need to convert the matrix to row echelon form (REF).",
+      "generate/principles.md §§1–3"
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "source-replays.json",
+        "source-replay-results.json"
+      ],
+      "details": "All 17 assessed moderate source cases replay with exact matrices at every stage, complete five-option banks and correct keys. Canonical example rank independently checked; it has no captured answer control and is not a replay template."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "audit.py",
+        "math-results.json",
+        "delivered-content-comparison.json"
+      ],
+      "details": "230 records independently checked from visible prompt/solution matrices using exact SymPy rational rank and row replacements; no failures. Five normalized delivered records also pass."
+    },
+    "variety": {
+      "status": "failed",
+      "evidence_paths": [
+        "coverage.json",
+        "samples.json",
+        "batch-shortcut-results.json",
+        "stage-analysis.json"
+      ],
+      "details": "Normal control varies ranks in all 17 templates, but the exact delivered batch fixes corank one: [4,4,3,3,5] rows and [3,3,2,2,4] answers. This finite practice pool fails meaningful decision variety."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "coverage.json",
+        "math-results.json",
+        "pedagogical-variation.json"
+      ],
+      "details": "Sampled tasks remain numeric pivot counts after one/two elementary row replacements with comparable sparse matrix sizes. Rank-2 variants use the same zero-residual reasoning. No new operators or response requirements observed."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-results.json"
+      ],
+      "details": "Production native grade_field: 31 correct choices accepted and 124 distractors rejected across 17 source replays, exact raw batch, controlled pairs and normalized delivered batch. All fields are radio; free-entry equivalence is inapplicable."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-rest/rendering.json",
+        "render-inspection.json",
+        "render/question-001.png",
+        "render/question-006.png",
+        "render-rest/question-001.png",
+        "render-rest/question-005.png",
+        "render-rest/question-006.png"
+      ],
+      "details": "Actual unmodified learning UI rendered 12 records, including entire raw batch, controlled pairs and source cases with fractional coefficients and six columns. Automated checks and representative screenshot inspection pass. Shared delivery preserves their visible batch content."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "package-hashes-before.json",
+        "package-hashes-after.json",
+        "external-output.json"
+      ],
+      "details": "Exact installed Python 3.13.5 and SymPy 1.14.0 match nested manifest dependencies. Relocation, deterministic CLI replay, explicit parameter replay, external output and valid/invalid boundaries pass. Package files unchanged."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "shortcut-regression-runs.json",
+        "batch-shortcut-results.json",
+        "stage-analysis.json",
+        "affected-inventory.json",
+        "inventory-assessment.json"
+      ],
+      "details": "Relevant/irrelevant controlled pairs pass, but selecting the numeric row count minus one succeeds on all 5 delivered records and all conditional row-count groups. Control success is only 81/204. Current captured stored pool is 5/22 (non-source subset 1/5), so finding is batch-specific."
+    }
+  },
+  "findings": [
+    {
+      "kind": "decision_shortcut",
+      "description": "The exact proposed finite practice pool is entirely corank one. Row-count-minus-one predicts every answer across 3-, 4-, and 5-row matrices, after all shared delivery filters. The source skill requires deciding dependence after elimination; source cases include full row rank and different deficits. This is a demonstrated batch-selection defect, not a universal generator defect.",
+      "source_refs": [
+        "f1ae8763-ab2d-5aee-9b53-3f6da8520aee",
+        "8a6c1395-93b3-574c-b784-2d33009b00c0",
+        "02683bf4-c015-5b9c-845b-c5f836ec3faf",
+        "tutorial d45a4eba-96ce-5bef-92b7-b8f0d4cd8b72: first convert to row echelon form",
+        "generate/principles.md §2"
+      ],
+      "reproduction": "/home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186124479/review-0-policy-2-aac6b6dace0e282d/check_batch_shortcut.py --input /home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186124479/review-0-policy-2-aac6b6dace0e282d/delivery-batch/accepted.json exits 1. Raw seeds 315106964..315106968, templates q-35394,q-73633,q-130957,q-130959,q-130964, produce row/rank pairs (4,3),(4,3),(3,2),(3,2),(5,4). First raw question 55fca203-3fb5-53e2-a6ba-d348030d6b89 normalizes to 78641dac-e06b-5931-a04b-b1bf5b32e8e0. The full five-record failing fixture is retained in batch.json and delivery-batch/accepted.json; explicit parameters are present. Counterfactual-records.json is a passing control for the strict test.",
+      "requested_change": "Revise batch assembly/acceptance to prevent a whole delivered pool from fixing the same incidental row-count-to-answer relationship. Use existing supported same-shape instances with different residual survival/rank outcomes, then rerun this strict post-delivery regression and conditional cue checks. Preserve valid sampler families and source replay; no engine repair or generator restriction is justified by this finding. Do not mark individual stored corank-one questions defective solely for satisfying this relation."
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "python": "/home/jake/Developer/Course_Academy/.venv/bin/python",
+  "cwd": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186124479/review-1-policy-2-010907021c6c5547",
+  "commands": [
+    "python -B audit.py",
+    "python -B retained_repair_checks.py",
+    "python -B inspect_revision.py",
+    "python -B check_batch_shortcut.py --input prior-failing-batch.json # expected exit 1",
+    "python -B check_batch_shortcut.py --input batch.json # expected exit 0",
+    "python -B /home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py --input batch.json --source ../source/source.json --inventory ../source/inventory.json --difficulty moderate --output delivery-batch --asset-root ../workspace --math-root /media/jake/SSD/EDB/math",
+    "python -B /home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py --input samples.json --source ../source/source.json --inventory ../source/inventory.json --difficulty moderate --output delivery-samples --asset-root ../workspace --math-root /media/jake/SSD/EDB/math",
+    "/home/jake/Developer/Course_Academy/generate/runs/current/check-engine grader-input.json grader-results.json",
+    "python -B /home/jake/Developer/Course_Academy/generate/pipeline/render_preview.py --input render-input.json --output render --asset-root ../workspace --math-root /media/jake/SSD/EDB/math",
+    "python -B /home/jake/Developer/Course_Academy/generate/pipeline/render_preview.py --input render-rest-input.json --output render-rest --asset-root ../workspace --math-root /media/jake/SSD/EDB/math",
+    "python -B finalize_review.py"
+  ]
+}

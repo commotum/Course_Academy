@@ -1,0 +1,14 @@
+{
+  "python": "/home/jake/Developer/Course_Academy/.venv/bin/python",
+  "commands": [
+    "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python audit.py",
+    "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py --input samples.json --source ../source/source.json --inventory ../source/inventory.json --difficulty moderate --output delivery-samples --asset-root ../workspace --math-root /media/jake/SSD/EDB/math",
+    "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py --input batch.json --source ../source/source.json --inventory ../source/inventory.json --difficulty moderate --output delivery-batch --asset-root ../workspace --math-root /media/jake/SSD/EDB/math",
+    "/home/jake/Developer/Course_Academy/generate/runs/current/check-engine grader-input.json grader-results.json",
+    "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/render_preview.py --input render-input.json --output render --asset-root ../workspace --math-root /media/jake/SSD/EDB/math",
+    "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/render_preview.py --input render-rest-input.json --output render-rest --asset-root ../workspace --math-root /media/jake/SSD/EDB/math --limit 6",
+    "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python analyze_variation.py",
+    "PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python finalize_review.py"
+  ],
+  "notes": "All paths are relative to this evidence directory unless absolute. audit.py creates original inputs; grader-input.json was extended to include five actual shared-normalized delivered records. Render default limit is six; rest input contains remaining six records. Reproduction scripts are database-free."
+}

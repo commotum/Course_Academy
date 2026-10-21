@@ -1,0 +1,811 @@
+{
+  "learner_operation": "Identify every non-pivot column of a supplied row echelon form matrix. Scan the first nonzero entry of each nonzero row and take the complement of their column indices.",
+  "fixed_features": [
+    {
+      "feature": "Matrix already in row echelon form; small integer entries and observed shapes.",
+      "justification": "Tutorial Introduction defines pivots as first nonzero entries; source KP precedes the separate general-matrix elimination KP. Keep scanning workload comparable."
+    },
+    {
+      "feature": "One checkbox per column, complete true/false bank, one or two selected columns.",
+      "justification": "All 17 source questions use this contract. One or two non-pivots supports complement classification without expanding workload to zero matrices/full rank cases."
+    },
+    {
+      "feature": "Displayed columns are in natural numeric order.",
+      "justification": "Column numbering identifies matrix positions. Position is not held correct; every eligible non-pivot assignment for each shape/rank is covered."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Columns containing row-leading nonzero entries.",
+      "eligible_variation": "Move leading entries while preserving increasing pivot positions and zero rows last; choose eligible rank/shape.",
+      "observed": "58 explicit structures, all retained in the maximal generated batch; fresh samples and delivered batch cover different leading positions."
+    },
+    {
+      "role": "Columns selected as the complement.",
+      "eligible_variation": "Every eligible column index can be non-pivot; one and two selections, leading/interior/trailing and nonzero non-pivot vectors.",
+      "observed": "Five delivered batch subsets are {1,5}, {4,5}, {1}, {1,2}, {2}; full structural controls cover each eligible subset."
+    },
+    {
+      "role": "Matrix name and right-of-pivot coefficients.",
+      "eligible_variation": "Change A/B/P/R and signs/magnitudes without changing membership unless a first-nonzero position changes.",
+      "observed": "Conditional label/shape probes retained; controlled irrelevant coefficient edit preserves membership and grader outcomes."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "All supplied source cases, including complete Boolean banks.",
+      "sample_refs": [
+        "source-replays.json",
+        "source-replay-results.json"
+      ],
+      "result": "17/17 match source prompts, solutions and complete labelled banks after whitespace normalization."
+    },
+    {
+      "case": "Eligible shape/rank/pivot-position cases and coefficient boundaries.",
+      "sample_refs": [
+        "structural-samples.json",
+        "maximal-batch.json",
+        "resampling-results.json"
+      ],
+      "result": "58 cases with entries at -9,0,9; all REF and correct complements; batch of 58 reaches all structures after 304 proposals."
+    },
+    {
+      "case": "Fresh generation and exact delivered runner batch.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "runner-batch.json",
+        "delivery-fresh/accepted.json",
+        "delivery-batch/accepted.json",
+        "shortcut-results.json"
+      ],
+      "result": "120/120 fresh and 5/5 exact batch records survive shared delivery; tested decision distributions unchanged. Batch has five distinct correct subsets."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "In the same 3x4 matrix change a22 from 3 to 0, shifting row 2 pivot from column 2 to 3.",
+      "expected": "Selected columns change from {3,4} to {2,4}. Prompt, vectors, explanation and native checkbox grading must follow.",
+      "observed": "Both matrices and explanations agree; native grader accepts new membership and rejects the old column-2/3 actions; actual UI screenshots show changed row 2 and selected fields.",
+      "status": "passed",
+      "justification": "First nonzero position determines pivot membership by the lesson definition.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-results.json",
+        "render-pairs/rendering.json",
+        "render-pairs/question-001.png",
+        "render-pairs/question-002.png"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Hold pivots fixed; change a12 from 4 to -9.",
+      "expected": "Selected columns stay {3,4}; prompt, vector and solution matrix reflect the changed coefficient.",
+      "observed": "Membership is unchanged; both native Boolean actions per field give the same acceptance pattern, and rendered changed vector/matrix retain the same selection and conclusion.",
+      "status": "passed",
+      "justification": "An entry to the right of an existing leading entry does not alter first-nonzero columns.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-results.json",
+        "render-pairs/rendering.json",
+        "render-pairs/question-001.png",
+        "render-pairs/question-003.png"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "matrix dimensions or letter; no entries",
+      "subgroup": "structural: all",
+      "scope": "overall",
+      "strategy": "Always select columns (3,)",
+      "correct": 5,
+      "total": 58,
+      "baseline": 0.1724137931034483,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform guessing among subsets of the true rank-complement size (generously giving the guesser the rank). Best fitted fixed subset is reported; singleton subgroups cannot establish a systematic cue. No subgroup with repeated cases is perfectly predicted by this fixed action.",
+      "sample_refs": [
+        "structural-samples.json"
+      ]
+    },
+    {
+      "cue": "matrix dimensions or letter; no entries",
+      "subgroup": "structural: shape [3, 3]",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select columns (3,)",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform guessing among subsets of the true rank-complement size (generously giving the guesser the rank). Best fitted fixed subset is reported; singleton subgroups cannot establish a systematic cue. No subgroup with repeated cases is perfectly predicted by this fixed action.",
+      "sample_refs": [
+        "structural-samples.json"
+      ]
+    },
+    {
+      "cue": "matrix dimensions or letter; no entries",
+      "subgroup": "structural: shape [3, 4]",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select columns (3, 4)",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform guessing among subsets of the true rank-complement size (generously giving the guesser the rank). Best fitted fixed subset is reported; singleton subgroups cannot establish a systematic cue. No subgroup with repeated cases is perfectly predicted by this fixed action.",
+      "sample_refs": [
+        "structural-samples.json"
+      ]
+    },
+    {
+      "cue": "matrix dimensions or letter; no entries",
+      "subgroup": "structural: shape [3, 5]",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select columns (4, 5)",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.1,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform guessing among subsets of the true rank-complement size (generously giving the guesser the rank). Best fitted fixed subset is reported; singleton subgroups cannot establish a systematic cue. No subgroup with repeated cases is perfectly predicted by this fixed action.",
+      "sample_refs": [
+        "structural-samples.json"
+      ]
+    },
+    {
+      "cue": "matrix dimensions or letter; no entries",
+      "subgroup": "structural: shape [4, 4]",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select columns (3, 4)",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform guessing among subsets of the true rank-complement size (generously giving the guesser the rank). Best fitted fixed subset is reported; singleton subgroups cannot establish a systematic cue. No subgroup with repeated cases is perfectly predicted by this fixed action.",
+      "sample_refs": [
+        "structural-samples.json"
+      ]
+    },
+    {
+      "cue": "matrix dimensions or letter; no entries",
+      "subgroup": "structural: shape [4, 5]",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select columns (4, 5)",
+      "correct": 1,
+      "total": 15,
+      "baseline": 0.13333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform guessing among subsets of the true rank-complement size (generously giving the guesser the rank). Best fitted fixed subset is reported; singleton subgroups cannot establish a systematic cue. No subgroup with repeated cases is perfectly predicted by this fixed action.",
+      "sample_refs": [
+        "structural-samples.json"
+      ]
+    },
+    {
+      "cue": "matrix dimensions or letter; no entries",
+      "subgroup": "structural: shape [5, 4]",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select columns (3, 4)",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform guessing among subsets of the true rank-complement size (generously giving the guesser the rank). Best fitted fixed subset is reported; singleton subgroups cannot establish a systematic cue. No subgroup with repeated cases is perfectly predicted by this fixed action.",
+      "sample_refs": [
+        "structural-samples.json"
+      ]
+    },
+    {
+      "cue": "matrix dimensions or letter; no entries",
+      "subgroup": "structural: label A",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select columns (3,)",
+      "correct": 5,
+      "total": 58,
+      "baseline": 0.1724137931034483,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform guessing among subsets of the true rank-complement size (generously giving the guesser the rank). Best fitted fixed subset is reported; singleton subgroups cannot establish a systematic cue. No subgroup with repeated cases is perfectly predicted by this fixed action.",
+      "sample_refs": [
+        "structural-samples.json"
+      ]
+    },
+    {
+      "cue": "all-zero column vectors",
+      "subgroup": "structural",
+      "scope": "within_template",
+      "strategy": "Select exactly the all-zero columns",
+      "correct": 15,
+      "total": 58,
+      "baseline": 0.1724137931034483,
+      "disposition": "intended_skill",
+      "conclusion": "Zero columns cannot contain a pivot; identifying them is a valid simplification of this skill, explicitly represented by source q-130948. This action fails on nonzero non-pivot columns in the controls and batch. Baseline is uniform guessing at true complement size.",
+      "sample_refs": [
+        "structural-samples.json"
+      ]
+    },
+    {
+      "cue": "matrix dimensions or letter; no entries",
+      "subgroup": "fresh_raw: all",
+      "scope": "overall",
+      "strategy": "Always select columns (1,)",
+      "correct": 20,
+      "total": 120,
+      "baseline": 0.21069444444444443,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform guessing among subsets of the true rank-complement size (generously giving the guesser the rank). Best fitted fixed subset is reported; singleton subgroups cannot establish a systematic cue. No subgroup with repeated cases is perfectly predicted by this fixed action.",
+      "sample_refs": [
+        "fresh-samples.json"
+      ]
+    },
+    {
+      "cue": "matrix dimensions or letter; no entries",
+      "subgroup": "fresh_raw: shape [3, 3]",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select columns (2,)",
+      "correct": 9,
+      "total": 25,
+      "baseline": 0.33333333333333326,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform guessing among subsets of the true rank-complement size (generously giving the guesser the rank). Best fitted fixed subset is reported; singleton subgroups cannot establish a systematic cue. No subgroup with repeated cases is perfectly predicted by this fixed action.",
+      "sample_refs": [
+        "fresh-samples.json"
+      ]
+    },
+    {
+      "cue": "matrix dimensions or letter; no entries",
+      "subgroup": "fresh_raw: shape [3, 4]",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select columns (4,)",
+      "correct": 5,
+      "total": 19,
+      "baseline": 0.2192982456140351,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform guessing among subsets of the true rank-complement size (generously giving the guesser the rank). Best fitted fixed subset is reported; singleton subgroups cannot establish a systematic cue. No subgroup with repeated cases is perfectly predicted by this fixed action.",
+      "sample_refs": [
+        "fresh-samples.json"
+      ]
+    },
+    {
+      "cue": "matrix dimensions or letter; no entries",
+      "subgroup": "fresh_raw: shape [3, 5]",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select columns (1, 5)",
+      "correct": 4,
+      "total": 15,
+      "baseline": 0.1,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform guessing among subsets of the true rank-complement size (generously giving the guesser the rank). Best fitted fixed subset is reported; singleton subgroups cannot establish a systematic cue. No subgroup with repeated cases is perfectly predicted by this fixed action.",
+      "sample_refs": [
+        "fresh-samples.json"
+      ]
+    },
+    {
+      "cue": "matrix dimensions or letter; no entries",
+      "subgroup": "fresh_raw: shape [4, 4]",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select columns (2, 4)",
+      "correct": 4,
+      "total": 22,
+      "baseline": 0.20075757575757577,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform guessing among subsets of the true rank-complement size (generously giving the guesser the rank). Best fitted fixed subset is reported; singleton subgroups cannot establish a systematic cue. No subgroup with repeated cases is perfectly predicted by this fixed action.",
+      "sample_refs": [
+        "fresh-samples.json"
+      ]
+    },
+    {
+      "cue": "matrix dimensions or letter; no entries",
+      "subgroup": "fresh_raw: shape [4, 5]",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select columns (4,)",
+      "correct": 3,
+      "total": 22,
+      "baseline": 0.14545454545454548,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform guessing among subsets of the true rank-complement size (generously giving the guesser the rank). Best fitted fixed subset is reported; singleton subgroups cannot establish a systematic cue. No subgroup with repeated cases is perfectly predicted by this fixed action.",
+      "sample_refs": [
+        "fresh-samples.json"
+      ]
+    },
+    {
+      "cue": "matrix dimensions or letter; no entries",
+      "subgroup": "fresh_raw: shape [5, 4]",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select columns (3,)",
+      "correct": 4,
+      "total": 17,
+      "baseline": 0.2156862745098039,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform guessing among subsets of the true rank-complement size (generously giving the guesser the rank). Best fitted fixed subset is reported; singleton subgroups cannot establish a systematic cue. No subgroup with repeated cases is perfectly predicted by this fixed action.",
+      "sample_refs": [
+        "fresh-samples.json"
+      ]
+    },
+    {
+      "cue": "matrix dimensions or letter; no entries",
+      "subgroup": "fresh_raw: label A",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select columns (3,)",
+      "correct": 7,
+      "total": 41,
+      "baseline": 0.19999999999999998,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform guessing among subsets of the true rank-complement size (generously giving the guesser the rank). Best fitted fixed subset is reported; singleton subgroups cannot establish a systematic cue. No subgroup with repeated cases is perfectly predicted by this fixed action.",
+      "sample_refs": [
+        "fresh-samples.json"
+      ]
+    },
+    {
+      "cue": "matrix dimensions or letter; no entries",
+      "subgroup": "fresh_raw: label B",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select columns (3,)",
+      "correct": 6,
+      "total": 28,
+      "baseline": 0.22142857142857145,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform guessing among subsets of the true rank-complement size (generously giving the guesser the rank). Best fitted fixed subset is reported; singleton subgroups cannot establish a systematic cue. No subgroup with repeated cases is perfectly predicted by this fixed action.",
+      "sample_refs": [
+        "fresh-samples.json"
+      ]
+    },
+    {
+      "cue": "matrix dimensions or letter; no entries",
+      "subgroup": "fresh_raw: label P",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select columns (3,)",
+      "correct": 4,
+      "total": 28,
+      "baseline": 0.20773809523809522,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform guessing among subsets of the true rank-complement size (generously giving the guesser the rank). Best fitted fixed subset is reported; singleton subgroups cannot establish a systematic cue. No subgroup with repeated cases is perfectly predicted by this fixed action.",
+      "sample_refs": [
+        "fresh-samples.json"
+      ]
+    },
+    {
+      "cue": "matrix dimensions or letter; no entries",
+      "subgroup": "fresh_raw: label R",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select columns (1,)",
+      "correct": 5,
+      "total": 23,
+      "baseline": 0.22028985507246376,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform guessing among subsets of the true rank-complement size (generously giving the guesser the rank). Best fitted fixed subset is reported; singleton subgroups cannot establish a systematic cue. No subgroup with repeated cases is perfectly predicted by this fixed action.",
+      "sample_refs": [
+        "fresh-samples.json"
+      ]
+    },
+    {
+      "cue": "all-zero column vectors",
+      "subgroup": "fresh_raw",
+      "scope": "within_template",
+      "strategy": "Select exactly the all-zero columns",
+      "correct": 27,
+      "total": 120,
+      "baseline": 0.21069444444444443,
+      "disposition": "intended_skill",
+      "conclusion": "Zero columns cannot contain a pivot; identifying them is a valid simplification of this skill, explicitly represented by source q-130948. This action fails on nonzero non-pivot columns in the controls and batch. Baseline is uniform guessing at true complement size.",
+      "sample_refs": [
+        "fresh-samples.json"
+      ]
+    },
+    {
+      "cue": "matrix dimensions or letter; no entries",
+      "subgroup": "fresh_delivered: all",
+      "scope": "overall",
+      "strategy": "Always select columns (1,)",
+      "correct": 20,
+      "total": 120,
+      "baseline": 0.21069444444444443,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform guessing among subsets of the true rank-complement size (generously giving the guesser the rank). Best fitted fixed subset is reported; singleton subgroups cannot establish a systematic cue. No subgroup with repeated cases is perfectly predicted by this fixed action.",
+      "sample_refs": [
+        "delivery-fresh/accepted.json"
+      ]
+    },
+    {
+      "cue": "matrix dimensions or letter; no entries",
+      "subgroup": "fresh_delivered: shape [3, 3]",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select columns (2,)",
+      "correct": 9,
+      "total": 25,
+      "baseline": 0.33333333333333326,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform guessing among subsets of the true rank-complement size (generously giving the guesser the rank). Best fitted fixed subset is reported; singleton subgroups cannot establish a systematic cue. No subgroup with repeated cases is perfectly predicted by this fixed action.",
+      "sample_refs": [
+        "delivery-fresh/accepted.json"
+      ]
+    },
+    {
+      "cue": "matrix dimensions or letter; no entries",
+      "subgroup": "fresh_delivered: shape [3, 4]",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select columns (4,)",
+      "correct": 5,
+      "total": 19,
+      "baseline": 0.2192982456140351,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform guessing among subsets of the true rank-complement size (generously giving the guesser the rank). Best fitted fixed subset is reported; singleton subgroups cannot establish a systematic cue. No subgroup with repeated cases is perfectly predicted by this fixed action.",
+      "sample_refs": [
+        "delivery-fresh/accepted.json"
+      ]
+    },
+    {
+      "cue": "matrix dimensions or letter; no entries",
+      "subgroup": "fresh_delivered: shape [3, 5]",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select columns (1, 5)",
+      "correct": 4,
+      "total": 15,
+      "baseline": 0.1,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform guessing among subsets of the true rank-complement size (generously giving the guesser the rank). Best fitted fixed subset is reported; singleton subgroups cannot establish a systematic cue. No subgroup with repeated cases is perfectly predicted by this fixed action.",
+      "sample_refs": [
+        "delivery-fresh/accepted.json"
+      ]
+    },
+    {
+      "cue": "matrix dimensions or letter; no entries",
+      "subgroup": "fresh_delivered: shape [4, 4]",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select columns (2, 4)",
+      "correct": 4,
+      "total": 22,
+      "baseline": 0.20075757575757577,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform guessing among subsets of the true rank-complement size (generously giving the guesser the rank). Best fitted fixed subset is reported; singleton subgroups cannot establish a systematic cue. No subgroup with repeated cases is perfectly predicted by this fixed action.",
+      "sample_refs": [
+        "delivery-fresh/accepted.json"
+      ]
+    },
+    {
+      "cue": "matrix dimensions or letter; no entries",
+      "subgroup": "fresh_delivered: shape [4, 5]",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select columns (4,)",
+      "correct": 3,
+      "total": 22,
+      "baseline": 0.14545454545454548,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform guessing among subsets of the true rank-complement size (generously giving the guesser the rank). Best fitted fixed subset is reported; singleton subgroups cannot establish a systematic cue. No subgroup with repeated cases is perfectly predicted by this fixed action.",
+      "sample_refs": [
+        "delivery-fresh/accepted.json"
+      ]
+    },
+    {
+      "cue": "matrix dimensions or letter; no entries",
+      "subgroup": "fresh_delivered: shape [5, 4]",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select columns (3,)",
+      "correct": 4,
+      "total": 17,
+      "baseline": 0.2156862745098039,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform guessing among subsets of the true rank-complement size (generously giving the guesser the rank). Best fitted fixed subset is reported; singleton subgroups cannot establish a systematic cue. No subgroup with repeated cases is perfectly predicted by this fixed action.",
+      "sample_refs": [
+        "delivery-fresh/accepted.json"
+      ]
+    },
+    {
+      "cue": "matrix dimensions or letter; no entries",
+      "subgroup": "fresh_delivered: label A",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select columns (3,)",
+      "correct": 7,
+      "total": 41,
+      "baseline": 0.19999999999999998,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform guessing among subsets of the true rank-complement size (generously giving the guesser the rank). Best fitted fixed subset is reported; singleton subgroups cannot establish a systematic cue. No subgroup with repeated cases is perfectly predicted by this fixed action.",
+      "sample_refs": [
+        "delivery-fresh/accepted.json"
+      ]
+    },
+    {
+      "cue": "matrix dimensions or letter; no entries",
+      "subgroup": "fresh_delivered: label B",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select columns (3,)",
+      "correct": 6,
+      "total": 28,
+      "baseline": 0.22142857142857145,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform guessing among subsets of the true rank-complement size (generously giving the guesser the rank). Best fitted fixed subset is reported; singleton subgroups cannot establish a systematic cue. No subgroup with repeated cases is perfectly predicted by this fixed action.",
+      "sample_refs": [
+        "delivery-fresh/accepted.json"
+      ]
+    },
+    {
+      "cue": "matrix dimensions or letter; no entries",
+      "subgroup": "fresh_delivered: label P",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select columns (3,)",
+      "correct": 4,
+      "total": 28,
+      "baseline": 0.20773809523809522,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform guessing among subsets of the true rank-complement size (generously giving the guesser the rank). Best fitted fixed subset is reported; singleton subgroups cannot establish a systematic cue. No subgroup with repeated cases is perfectly predicted by this fixed action.",
+      "sample_refs": [
+        "delivery-fresh/accepted.json"
+      ]
+    },
+    {
+      "cue": "matrix dimensions or letter; no entries",
+      "subgroup": "fresh_delivered: label R",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select columns (1,)",
+      "correct": 5,
+      "total": 23,
+      "baseline": 0.22028985507246376,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform guessing among subsets of the true rank-complement size (generously giving the guesser the rank). Best fitted fixed subset is reported; singleton subgroups cannot establish a systematic cue. No subgroup with repeated cases is perfectly predicted by this fixed action.",
+      "sample_refs": [
+        "delivery-fresh/accepted.json"
+      ]
+    },
+    {
+      "cue": "all-zero column vectors",
+      "subgroup": "fresh_delivered",
+      "scope": "within_template",
+      "strategy": "Select exactly the all-zero columns",
+      "correct": 27,
+      "total": 120,
+      "baseline": 0.21069444444444443,
+      "disposition": "intended_skill",
+      "conclusion": "Zero columns cannot contain a pivot; identifying them is a valid simplification of this skill, explicitly represented by source q-130948. This action fails on nonzero non-pivot columns in the controls and batch. Baseline is uniform guessing at true complement size.",
+      "sample_refs": [
+        "delivery-fresh/accepted.json"
+      ]
+    },
+    {
+      "cue": "matrix dimensions or letter; no entries",
+      "subgroup": "batch_raw: all",
+      "scope": "overall",
+      "strategy": "Always select columns (1, 5)",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.20666666666666664,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform guessing among subsets of the true rank-complement size (generously giving the guesser the rank). Best fitted fixed subset is reported; singleton subgroups cannot establish a systematic cue. No subgroup with repeated cases is perfectly predicted by this fixed action.",
+      "sample_refs": [
+        "runner-batch.json"
+      ]
+    },
+    {
+      "cue": "matrix dimensions or letter; no entries",
+      "subgroup": "batch_raw: shape [3, 3]",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select columns (1,)",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform guessing among subsets of the true rank-complement size (generously giving the guesser the rank). Best fitted fixed subset is reported; singleton subgroups cannot establish a systematic cue. No subgroup with repeated cases is perfectly predicted by this fixed action.",
+      "sample_refs": [
+        "runner-batch.json"
+      ]
+    },
+    {
+      "cue": "matrix dimensions or letter; no entries",
+      "subgroup": "batch_raw: shape [3, 4]",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select columns (1, 2)",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.16666666666666666,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform guessing among subsets of the true rank-complement size (generously giving the guesser the rank). Best fitted fixed subset is reported; singleton subgroups cannot establish a systematic cue. No subgroup with repeated cases is perfectly predicted by this fixed action.",
+      "sample_refs": [
+        "runner-batch.json"
+      ]
+    },
+    {
+      "cue": "matrix dimensions or letter; no entries",
+      "subgroup": "batch_raw: shape [3, 5]",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select columns (1, 5)",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.1,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform guessing among subsets of the true rank-complement size (generously giving the guesser the rank). Best fitted fixed subset is reported; singleton subgroups cannot establish a systematic cue. No subgroup with repeated cases is perfectly predicted by this fixed action.",
+      "sample_refs": [
+        "runner-batch.json"
+      ]
+    },
+    {
+      "cue": "matrix dimensions or letter; no entries",
+      "subgroup": "batch_raw: label A",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select columns (4, 5)",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.21666666666666667,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform guessing among subsets of the true rank-complement size (generously giving the guesser the rank). Best fitted fixed subset is reported; singleton subgroups cannot establish a systematic cue. No subgroup with repeated cases is perfectly predicted by this fixed action.",
+      "sample_refs": [
+        "runner-batch.json"
+      ]
+    },
+    {
+      "cue": "matrix dimensions or letter; no entries",
+      "subgroup": "batch_raw: label B",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select columns (1,)",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform guessing among subsets of the true rank-complement size (generously giving the guesser the rank). Best fitted fixed subset is reported; singleton subgroups cannot establish a systematic cue. No subgroup with repeated cases is perfectly predicted by this fixed action.",
+      "sample_refs": [
+        "runner-batch.json"
+      ]
+    },
+    {
+      "cue": "matrix dimensions or letter; no entries",
+      "subgroup": "batch_raw: label P",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select columns (1, 5)",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.1,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform guessing among subsets of the true rank-complement size (generously giving the guesser the rank). Best fitted fixed subset is reported; singleton subgroups cannot establish a systematic cue. No subgroup with repeated cases is perfectly predicted by this fixed action.",
+      "sample_refs": [
+        "runner-batch.json"
+      ]
+    },
+    {
+      "cue": "all-zero column vectors",
+      "subgroup": "batch_raw",
+      "scope": "within_template",
+      "strategy": "Select exactly the all-zero columns",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.20666666666666664,
+      "disposition": "intended_skill",
+      "conclusion": "Zero columns cannot contain a pivot; identifying them is a valid simplification of this skill, explicitly represented by source q-130948. This action fails on nonzero non-pivot columns in the controls and batch. Baseline is uniform guessing at true complement size.",
+      "sample_refs": [
+        "runner-batch.json"
+      ]
+    },
+    {
+      "cue": "matrix dimensions or letter; no entries",
+      "subgroup": "batch_delivered: all",
+      "scope": "overall",
+      "strategy": "Always select columns (1, 5)",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.20666666666666664,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform guessing among subsets of the true rank-complement size (generously giving the guesser the rank). Best fitted fixed subset is reported; singleton subgroups cannot establish a systematic cue. No subgroup with repeated cases is perfectly predicted by this fixed action.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "matrix dimensions or letter; no entries",
+      "subgroup": "batch_delivered: shape [3, 3]",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select columns (1,)",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform guessing among subsets of the true rank-complement size (generously giving the guesser the rank). Best fitted fixed subset is reported; singleton subgroups cannot establish a systematic cue. No subgroup with repeated cases is perfectly predicted by this fixed action.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "matrix dimensions or letter; no entries",
+      "subgroup": "batch_delivered: shape [3, 4]",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select columns (1, 2)",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.16666666666666666,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform guessing among subsets of the true rank-complement size (generously giving the guesser the rank). Best fitted fixed subset is reported; singleton subgroups cannot establish a systematic cue. No subgroup with repeated cases is perfectly predicted by this fixed action.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "matrix dimensions or letter; no entries",
+      "subgroup": "batch_delivered: shape [3, 5]",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select columns (1, 5)",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.1,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform guessing among subsets of the true rank-complement size (generously giving the guesser the rank). Best fitted fixed subset is reported; singleton subgroups cannot establish a systematic cue. No subgroup with repeated cases is perfectly predicted by this fixed action.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "matrix dimensions or letter; no entries",
+      "subgroup": "batch_delivered: label A",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select columns (4, 5)",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.21666666666666667,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform guessing among subsets of the true rank-complement size (generously giving the guesser the rank). Best fitted fixed subset is reported; singleton subgroups cannot establish a systematic cue. No subgroup with repeated cases is perfectly predicted by this fixed action.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "matrix dimensions or letter; no entries",
+      "subgroup": "batch_delivered: label B",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select columns (1,)",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform guessing among subsets of the true rank-complement size (generously giving the guesser the rank). Best fitted fixed subset is reported; singleton subgroups cannot establish a systematic cue. No subgroup with repeated cases is perfectly predicted by this fixed action.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "matrix dimensions or letter; no entries",
+      "subgroup": "batch_delivered: label P",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select columns (1, 5)",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.1,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform guessing among subsets of the true rank-complement size (generously giving the guesser the rank). Best fitted fixed subset is reported; singleton subgroups cannot establish a systematic cue. No subgroup with repeated cases is perfectly predicted by this fixed action.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "all-zero column vectors",
+      "subgroup": "batch_delivered",
+      "scope": "within_template",
+      "strategy": "Select exactly the all-zero columns",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.20666666666666664,
+      "disposition": "intended_skill",
+      "conclusion": "Zero columns cannot contain a pivot; identifying them is a valid simplification of this skill, explicitly represented by source q-130948. This action fails on nonzero non-pivot columns in the controls and batch. Baseline is uniform guessing at true complement size.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "generator explicit-parameter rejection",
+      "nonempty checkbox wrapper",
+      "internal structural rejection/resampling",
+      "requested easy difficulty",
+      "publisher normalization and inventory/within-batch deduplication",
+      "captured easy-only weighted learner selection and representative history exclusions"
+    ],
+    "sample_refs": [
+      "rejection-results.json",
+      "resampling-results.json",
+      "delivery-fresh/delivery.json",
+      "delivery-batch/delivery.json",
+      "selection-results.json",
+      "shortcut-results.json"
+    ],
+    "result": "Every tested structure is reachable. All 120 fresh and five runner records survive normalization and captured-inventory deduplication. Easy-positive within-band selection retains reachability under tested histories; unconfigured selection deterministically picks first eligible ID. No perfect repeated fixed-subset cue by label or shape was found. Zero-column simplification follows the taught definition and does not answer all batch records."
+  },
+  "limitations": [
+    "Finite tests do not prove absence of every shortcut. Small batch singleton cue groups cannot establish a systematic predictor.",
+    "Inventory and deduplication conclusions are based on captured basis 5362; concurrent inventory changes are outside this read-only review.",
+    "Active learner history/policy was not supplied; selection is a faithful conditional simulation with actual captured IDs, not a live session.",
+    "No diagrams or external assets occur. Free-entry equivalent-notation tests are inapplicable because every field is a Boolean checkbox; both real UI actions were tested."
+  ]
+}

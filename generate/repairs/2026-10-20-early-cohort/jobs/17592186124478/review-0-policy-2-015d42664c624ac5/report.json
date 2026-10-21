@@ -1,0 +1,134 @@
+{
+  "verdict": "accepted",
+  "summary": "No demonstrated failure in the bounded independent review. All eight checks pass; the package remained unchanged. Delivery conclusions use inventory basis 5362; learner-selection conclusions are conditional on the supplied rules and representative histories.",
+  "source_analysis": {
+    "skill": "Identify every non-pivot column of a supplied row echelon form matrix.",
+    "reasoning_steps": [
+      "Scan each nonzero row for its first nonzero entry.",
+      "Collect the column indices of those pivots; ignore zero rows.",
+      "Take the complement among all displayed columns, and check exactly those column-vector options."
+    ],
+    "invariants": [
+      "Matrix already in row echelon form: increasing leading positions, zero rows last.",
+      "No elimination or rank computation required.",
+      "Prompts, vectors, checkbox keys and explanation must describe the same matrix.",
+      "Source shapes range from 3 to 5 rows and 3 to 5 columns; one or two non-pivot columns."
+    ],
+    "permitted_variations": [
+      "Change signs and magnitudes of nonzero pivots and entries to their right; preserve REF.",
+      "Change eligible pivot-column assignments within a fixed shape/rank, including leading zero columns and final non-pivot columns. Derive complement anew.",
+      "Vary one versus two selected columns where supported by shape/rank and source workload.",
+      "Matrix letter, option order and values are incidental; they must not identify a fixed correct subset.",
+      "Change irrelevant right-of-pivot entries without changing selected columns. Change leading positions while retaining REF to change selected columns."
+    ],
+    "source_refs": [
+      "bfb0514f-33ea-5674-8071-994ec564a12b (q-35391)",
+      "cdcc6acf-5383-5b11-9305-2a2d610ba1ad (q-35730)",
+      "c7dfd4e6-f98f-5d70-9672-fbeae076cac0 (q-130948)",
+      "aa0e8a0d-dec0-575e-8d45-de71528bdbeb (q-130949)",
+      "7a34ccaa-757d-5d88-96dd-45a700a4b334 (q-130951)",
+      "c414ba19-302f-5c4a-8143-83f236032134 (q-130953)",
+      "e03feb67-8ac8-51d5-afab-95257716f3c5 (q-73614)",
+      "2e4d037d-222f-5741-a696-abfc442768e9 (q-73618)",
+      "e5f1860a-14f7-5dde-8785-3643838d3e4f (q-73620)",
+      "5149a8bf-4216-5b0c-825e-8103ee48f823 (q-73621)",
+      "882ebb4d-35c9-5b5b-8139-3566e490f853 (q-73616)",
+      "02830b84-264a-5296-8703-bbcf95ce7d55 (q-130954)",
+      "cff88abe-cb9f-5f2b-aa6a-898f213ad5e3 (q-130955)",
+      "701f0d82-dd3a-58b3-b64b-6042ce1e752a (q-73612)",
+      "bcd1cb26-1c44-5d74-aa8e-2093ab435f98 (q-130950)",
+      "ef768962-c254-565f-ad90-7c7187cd37b0 (q-73613)",
+      "75f69126-c110-5545-9efd-4ceeba235a0c (q-73615)",
+      "22a77802-4114-516f-a0e0-4cda2e069361 (e-4704)",
+      "tutorial feec6418-f447-5ee0-8c62-7d6b690f9228, Introduction, step 17200"
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "source-replays.json",
+        "source-replay-results.json"
+      ],
+      "details": "All 17 learner source questions match prompts, worked solutions and complete labelled Boolean banks after whitespace normalization. Canonical e-4704 provides lesson context, not a captured learner answer bank."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "inventory-inspection.json",
+        "audit.py"
+      ],
+      "details": "Independent integer parsing checks REF, first nonzero positions, complement keys, all column vectors and solution conclusions: 17 source replays, 120 fresh samples, 58 structural cases, five runner records, three controlled records and 22 captured inventory questions. No demonstrated error."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "structural-samples.json",
+        "fresh-samples.json",
+        "resampling-results.json",
+        "shortcut-results.json",
+        "delivery-fresh/delivery.json",
+        "delivery-batch/delivery.json"
+      ],
+      "details": "All 58 eligible shape/rank/pivot-position structures are reachable; the maximal batch preserves them after 304 proposals. Exact runner batch has five distinct subsets. Shared delivery retains 120/120 fresh and 5/5 batch records."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "structural-samples.json",
+        "rejection-results.json"
+      ],
+      "details": "Generated cases retain easy REF scanning and complement classification with one or two selected columns, observed shapes and small integer entries. No elimination or additional operator is introduced; invalid REF and out-of-family inputs reject."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-results.json",
+        "counterfactual-results.json"
+      ],
+      "details": "Actual database-free learner grade_field accepts 356 independently correct checkbox actions and rejects 356 incorrect actions. Both Boolean states are tested for every source, boundary structure, batch and controlled-pair field. Free-entry notation is inapplicable."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-pairs/rendering.json",
+        "render-inspection.json",
+        "render/question-001.png",
+        "render-pairs/question-002.png"
+      ],
+      "details": "Unmodified UI renders all five batch records and the controlled before/after records without MathJax, JavaScript, glyph or image errors. Screenshots inspected for matrices, vectors, checkbox states and worked solutions."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "package-hashes-before.json",
+        "package-hashes-after.json",
+        "commands.md",
+        "evidence-contract-results.json"
+      ],
+      "details": "Exact declared Python and dependency versions match runtime; deterministic seeded replay and relocated CLI output match. Count boundaries and invalid inputs tested. Package hashes unchanged; no assets or external runtime outputs required."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "selection-results.json",
+        "delivery-batch/accepted.json"
+      ],
+      "details": "Relevant pivot shift changes the rendered explanation and actual graded selection; irrelevant coefficient edit preserves it. Conditional fixed-subset probes by label and shape reveal no repeated perfect predictor. Batch subsets vary. Selection examined using actual captured easy-only IDs and inspected rules, conditional on easy-positive weights with representative history exclusions; no live learner policy/history was supplied."
+    }
+  },
+  "findings": []
+}

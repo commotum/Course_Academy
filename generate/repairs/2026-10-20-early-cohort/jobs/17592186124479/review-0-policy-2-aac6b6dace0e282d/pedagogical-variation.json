@@ -1,0 +1,607 @@
+{
+  "learner_operation": "Use elementary row elimination to decide which residual rows vanish, then count pivots in REF and select that integer. Matrix dimensions alone give a bound, not the answer.",
+  "fixed_features": [
+    {
+      "feature": "One five-option numeric radio field asking for number of pivot columns",
+      "justification": "All 17 assessed source questions use selection/radio, five integer choices. The task is a count rather than column identities."
+    },
+    {
+      "feature": "Sparse 3–5 row, 5–6 column matrices in normal sampling and one or two row replacements",
+      "justification": "Matches the assessed moderate source workload; the canonical 3x4 example has no captured radio control and is not a replay template."
+    },
+    {
+      "feature": "No row-swap branch or symbolic parameters",
+      "justification": "The supplied target KP cases use one/two row replacements; extending to extra cases is unnecessary for this review."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Survival of a residual row after elimination",
+      "eligible_variation": "Zero versus nonzero residual at the same dimensions and with the same elimination roles",
+      "observed": "Controlled 3x5 pair changes one entry and rank 2 -> 3. All 17 templates show multiple ranks in independent control. Exact batch fixes corank one in all five records."
+    },
+    {
+      "role": "Number and columns of pivots",
+      "eligible_variation": "Vary pivot count within comparable elimination workload and shift pivot locations; derive answer and explanation from actual matrix",
+      "observed": "Control sample covers ranks 2–5 and shifted pivot columns. No justified rule requires rows-minus-one."
+    },
+    {
+      "role": "Correct numeric choice and its presentation position",
+      "eligible_variation": "Derive numeric choice from rank; labels and shuffled order must not identify it",
+      "observed": "All 155 tested native grader submissions behave correctly. UI independently orders choices by field and item IDs; numeric rows-minus-one bypass is unaffected by this ordering."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "All captured assessed source templates and banks",
+      "sample_refs": [
+        "source-replays.json",
+        "source-replay-results.json"
+      ],
+      "result": "17 replayed, exact input/intermediate/final matrices and full banks/keys match; no excluded assessed cases."
+    },
+    {
+      "case": "Residual survival variation in independently chosen normal seeds",
+      "sample_refs": [
+        "samples.json",
+        "coverage.json",
+        "delivery-samples/accepted.json"
+      ],
+      "result": "204/204 survive shared filtering, no generation exceptions, every template has at least two observed ranks."
+    },
+    {
+      "case": "Exact proposed five-record batch",
+      "sample_refs": [
+        "batch.json",
+        "delivery-batch/accepted.json",
+        "batch-shortcut-results.json"
+      ],
+      "result": "All five survive delivery and all have rank equal to rows minus one: rows [4,4,3,3,5], answers [3,3,2,2,4]."
+    },
+    {
+      "case": "Learner selection and history exclusions",
+      "sample_refs": [
+        "stage-analysis.json"
+      ],
+      "result": "All are moderate. Any positive moderate weight selects uniformly among eligible moderate IDs; when only proposed items remain fresh, every draw retains shortcut (64/64). Explicit combined captured-bank scenario has counterexamples."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "For q-130957, seed 74109 with explicit parameters, change final residual entry (row 3, column 5) from 0 to 1, holding all other entries, name and operations fixed. Only one input cell changes.",
+      "expected": "Rank and accepted numeric choice change 2 -> 3; prompt shows new entry and solution retains third pivot. Old choice becomes wrong.",
+      "observed": "Exact matrix/solution check passes; both rendered screenshots show the change; native grader accepts 2 only before and 3 only after, rejecting each of the other four choices.",
+      "status": "passed",
+      "justification": "Dependence after elimination is the target operation; source f1ae8763-ab2d-5aee-9b53-3f6da8520aee loses a row, whereas 02683bf4-c015-5b9c-845b-c5f836ec3faf retains a later pivot.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-input.json",
+        "grader-results.json",
+        "render/input.json",
+        "render-rest/input.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Rename A to D, and separately rescale the first nonzero REF row by 2 with corresponding input reconstruction; hold residual survival fixed.",
+      "expected": "Rank and accepted numeric answer remain 3; labels/row values change consistently.",
+      "observed": "Both variants have exact rank 3, correct solution conclusion, no math errors, and native grader accepts only 3. Rendered name/scale variants pass the actual UI renderer.",
+      "status": "passed",
+      "justification": "Matrix labels are incidental and nonzero row scaling preserves row equivalence; elementary row operations are the source prerequisite.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-input.json",
+        "grader-results.json",
+        "render/input.json",
+        "render-rest/input.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "matrix row count",
+      "subgroup": "exact delivered batch",
+      "scope": "overall",
+      "strategy": "select row count minus one",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "5/5 successes versus uniform random choice among five options (0.2). Perfect across the exact proposed finite pool; shape alone substitutes for elimination. This is a batch-selection failure, not a universal generator predictor.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "matrix shape",
+      "subgroup": "exact delivered batch: 3 rows",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "select row count minus one",
+      "correct": 2,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "2/2 successes versus uniform random choice among five options (0.2). Perfect across the exact proposed finite pool; shape alone substitutes for elimination. This is a batch-selection failure, not a universal generator predictor.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "matrix shape",
+      "subgroup": "exact delivered batch: 4 rows",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "select row count minus one",
+      "correct": 2,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "2/2 successes versus uniform random choice among five options (0.2). Perfect across the exact proposed finite pool; shape alone substitutes for elimination. This is a batch-selection failure, not a universal generator predictor.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "matrix shape",
+      "subgroup": "exact delivered batch: 5 rows",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "select row count minus one",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "1/1 successes versus uniform random choice among five options (0.2). Perfect across the exact proposed finite pool; shape alone substitutes for elimination. This is a batch-selection failure, not a universal generator predictor.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "matrix row count",
+      "subgroup": "independent normal control",
+      "scope": "overall",
+      "strategy": "select row count minus one",
+      "correct": 81,
+      "total": 204,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "81/204 successes versus uniform random choice among five options (0.2). This strategy is not universally correct in this tested subgroup; finite testing does not prove all cues harmless.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template/shape signature",
+      "subgroup": "q-35457",
+      "scope": "within_template",
+      "strategy": "select row count minus one",
+      "correct": 2,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/12 successes versus uniform random choice among five options (0.2). This strategy is not universally correct in this tested subgroup; finite testing does not prove all cues harmless.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template/shape signature",
+      "subgroup": "q-35459",
+      "scope": "within_template",
+      "strategy": "select row count minus one",
+      "correct": 4,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "4/12 successes versus uniform random choice among five options (0.2). This strategy is not universally correct in this tested subgroup; finite testing does not prove all cues harmless.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template/shape signature",
+      "subgroup": "q-130957",
+      "scope": "within_template",
+      "strategy": "select row count minus one",
+      "correct": 7,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "7/12 successes versus uniform random choice among five options (0.2). This strategy is not universally correct in this tested subgroup; finite testing does not prove all cues harmless.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template/shape signature",
+      "subgroup": "q-130958",
+      "scope": "within_template",
+      "strategy": "select row count minus one",
+      "correct": 9,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "9/12 successes versus uniform random choice among five options (0.2). This strategy is not universally correct in this tested subgroup; finite testing does not prove all cues harmless.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template/shape signature",
+      "subgroup": "q-130959",
+      "scope": "within_template",
+      "strategy": "select row count minus one",
+      "correct": 5,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "5/12 successes versus uniform random choice among five options (0.2). This strategy is not universally correct in this tested subgroup; finite testing does not prove all cues harmless.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template/shape signature",
+      "subgroup": "q-130962",
+      "scope": "within_template",
+      "strategy": "select row count minus one",
+      "correct": 9,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "9/12 successes versus uniform random choice among five options (0.2). This strategy is not universally correct in this tested subgroup; finite testing does not prove all cues harmless.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template/shape signature",
+      "subgroup": "q-130963",
+      "scope": "within_template",
+      "strategy": "select row count minus one",
+      "correct": 1,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/12 successes versus uniform random choice among five options (0.2). This strategy is not universally correct in this tested subgroup; finite testing does not prove all cues harmless.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template/shape signature",
+      "subgroup": "q-35452",
+      "scope": "within_template",
+      "strategy": "select row count minus one",
+      "correct": 6,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "6/12 successes versus uniform random choice among five options (0.2). This strategy is not universally correct in this tested subgroup; finite testing does not prove all cues harmless.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template/shape signature",
+      "subgroup": "q-35453",
+      "scope": "within_template",
+      "strategy": "select row count minus one",
+      "correct": 6,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "6/12 successes versus uniform random choice among five options (0.2). This strategy is not universally correct in this tested subgroup; finite testing does not prove all cues harmless.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template/shape signature",
+      "subgroup": "q-73625",
+      "scope": "within_template",
+      "strategy": "select row count minus one",
+      "correct": 6,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "6/12 successes versus uniform random choice among five options (0.2). This strategy is not universally correct in this tested subgroup; finite testing does not prove all cues harmless.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template/shape signature",
+      "subgroup": "q-73628",
+      "scope": "within_template",
+      "strategy": "select row count minus one",
+      "correct": 5,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "5/12 successes versus uniform random choice among five options (0.2). This strategy is not universally correct in this tested subgroup; finite testing does not prove all cues harmless.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template/shape signature",
+      "subgroup": "q-73630",
+      "scope": "within_template",
+      "strategy": "select row count minus one",
+      "correct": 5,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "5/12 successes versus uniform random choice among five options (0.2). This strategy is not universally correct in this tested subgroup; finite testing does not prove all cues harmless.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template/shape signature",
+      "subgroup": "q-73633",
+      "scope": "within_template",
+      "strategy": "select row count minus one",
+      "correct": 2,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/12 successes versus uniform random choice among five options (0.2). This strategy is not universally correct in this tested subgroup; finite testing does not prove all cues harmless.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template/shape signature",
+      "subgroup": "q-73635",
+      "scope": "within_template",
+      "strategy": "select row count minus one",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/12 successes versus uniform random choice among five options (0.2). This strategy is not universally correct in this tested subgroup; finite testing does not prove all cues harmless.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template/shape signature",
+      "subgroup": "q-130964",
+      "scope": "within_template",
+      "strategy": "select row count minus one",
+      "correct": 6,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "6/12 successes versus uniform random choice among five options (0.2). This strategy is not universally correct in this tested subgroup; finite testing does not prove all cues harmless.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template/shape signature",
+      "subgroup": "q-35394",
+      "scope": "within_template",
+      "strategy": "select row count minus one",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/12 successes versus uniform random choice among five options (0.2). This strategy is not universally correct in this tested subgroup; finite testing does not prove all cues harmless.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template/shape signature",
+      "subgroup": "q-130961",
+      "scope": "within_template",
+      "strategy": "select row count minus one",
+      "correct": 2,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/12 successes versus uniform random choice among five options (0.2). This strategy is not universally correct in this tested subgroup; finite testing does not prove all cues harmless.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "matrix label",
+      "subgroup": "label A",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always select 3",
+      "correct": 9,
+      "total": 34,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "9/34 successes versus uniform random choice among five options (0.2). This strategy is not universally correct in this tested subgroup; finite testing does not prove all cues harmless.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "matrix label",
+      "subgroup": "label B",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always select 3",
+      "correct": 13,
+      "total": 34,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "13/34 successes versus uniform random choice among five options (0.2). This strategy is not universally correct in this tested subgroup; finite testing does not prove all cues harmless.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "matrix label",
+      "subgroup": "label C",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always select 3",
+      "correct": 5,
+      "total": 25,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "5/25 successes versus uniform random choice among five options (0.2). This strategy is not universally correct in this tested subgroup; finite testing does not prove all cues harmless.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "matrix label",
+      "subgroup": "label D",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always select 3",
+      "correct": 17,
+      "total": 37,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "17/37 successes versus uniform random choice among five options (0.2). This strategy is not universally correct in this tested subgroup; finite testing does not prove all cues harmless.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "matrix label",
+      "subgroup": "label P",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always select 3",
+      "correct": 16,
+      "total": 31,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "16/31 successes versus uniform random choice among five options (0.2). This strategy is not universally correct in this tested subgroup; finite testing does not prove all cues harmless.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "matrix label",
+      "subgroup": "label Q",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always select 3",
+      "correct": 15,
+      "total": 43,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "15/43 successes versus uniform random choice among five options (0.2). This strategy is not universally correct in this tested subgroup; finite testing does not prove all cues harmless.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "maximum bank value",
+      "subgroup": "independent normal control",
+      "scope": "overall",
+      "strategy": "maximum bank value",
+      "correct": 15,
+      "total": 204,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "15/204 successes versus uniform random choice among five options (0.2). This strategy is not universally correct in this tested subgroup; finite testing does not prove all cues harmless.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "minimum bank value",
+      "subgroup": "independent normal control",
+      "scope": "overall",
+      "strategy": "minimum bank value",
+      "correct": 3,
+      "total": 204,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/204 successes versus uniform random choice among five options (0.2). This strategy is not universally correct in this tested subgroup; finite testing does not prove all cues harmless.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "raw first option",
+      "subgroup": "independent normal control",
+      "scope": "overall",
+      "strategy": "raw first option",
+      "correct": 41,
+      "total": 204,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "41/204 successes versus uniform random choice among five options (0.2). This strategy is not universally correct in this tested subgroup; finite testing does not prove all cues harmless.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "count nonzero rows",
+      "subgroup": "independent normal control",
+      "scope": "overall",
+      "strategy": "count nonzero rows",
+      "correct": 97,
+      "total": 204,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "97/204 successes versus uniform random choice among five options (0.2). This strategy is not universally correct in this tested subgroup; finite testing does not prove all cues harmless.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "min(nonzero rows, nonzero columns)",
+      "subgroup": "independent normal control",
+      "scope": "overall",
+      "strategy": "min(nonzero rows, nonzero columns)",
+      "correct": 102,
+      "total": 204,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "102/204 successes versus uniform random choice among five options (0.2). This strategy is not universally correct in this tested subgroup; finite testing does not prove all cues harmless.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "matrix row count",
+      "subgroup": "captured full stored bank",
+      "scope": "overall",
+      "strategy": "select row count minus one",
+      "correct": 5,
+      "total": 22,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "5/22 successes versus uniform random choice among five options (0.2). This strategy is not universally correct in this tested subgroup; finite testing does not prove all cues harmless.",
+      "sample_refs": [
+        "inventory-records.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "generator construction and rejection conditions",
+      "CLI mathematical-fingerprint deduplication",
+      "requested difficulty",
+      "shared normalization and content identities",
+      "captured inventory and within-batch deduplication",
+      "learner history exclusions and difficulty-first weighted selection rules",
+      "actual UI choice ordering"
+    ],
+    "sample_refs": [
+      "stage-analysis.json",
+      "delivery-batch/delivery.json",
+      "delivery-batch/accepted.json",
+      "delivery-samples/delivery.json",
+      "delivered-content-comparison.json",
+      "packaging-results.json"
+    ],
+    "result": "Captured basis 5362: controls 204 -> 204, batch 5 -> 5. Normalization rewrites identities but preserves prompts, solutions, bank values and answers. Batch-only fresh pool remains 100% solvable by row count minus one under all within-pool orderings/exclusions. Combined bank is not uniformly vulnerable."
+  },
+  "limitations": [
+    "No finite sample proves absence of all shortcuts.",
+    "Actual active learner policy/history and new publication entity IDs are not captured. Selection scenarios explicitly use hypothetical fresh IDs and the inspected production rule; no database writes occur.",
+    "Canonical example lacks answer-field evidence and is not exposed as a source-replay template; its matrices and rank are independently confirmed, without inventing an answer control.",
+    "The demonstrated finding is finite-batch selection, not universal sampler failure. All 22 captured inventory questions were tested for that predicate; no affected stored pool-wide defect demonstrated."
+  ]
+}
