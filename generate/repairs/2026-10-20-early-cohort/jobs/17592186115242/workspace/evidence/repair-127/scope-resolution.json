@@ -1,0 +1,31 @@
+{
+  "status": "unsupported",
+  "finding_id": "591f580cadb749294588",
+  "root_cause": "Five previously stored v2 banks retain the sign-only extremum shortcut. The selector consumes stored questions independently of generator execution.",
+  "first_command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory",
+  "first_exit_code": 1,
+  "verification_command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/repair-127",
+  "verification_exit_code": 1,
+  "current_generator_findings_passed": 4,
+  "source_banks_replayed": 17,
+  "affected_generated_inventory": 5,
+  "untested_generated_inventory": 0,
+  "source_and_inventory_unchanged": true,
+  "runtime_unchanged": true,
+  "engine_repair_allowed": false,
+  "selector_evidence": "engine/rust/question_selection.rs:125-205",
+  "proposal": "evidence/repair-3/inventory-repair-proposal.json",
+  "proposal_verified": true,
+  "proposal_applied": false,
+  "rendering": {
+    "retained": "evidence/repair-3/render/rendering.json",
+    "visually_reinspected": "evidence/repair-3/render/question-001.png",
+    "observation": "Prompt, choices, matrices and elimination solution are legible without visible clipping or overlap."
+  },
+  "scope_conflict": "Retained finding explicitly requires separate inventory remediation; the task prohibits database changes and permits only workspace edits.",
+  "required_external_action": "Review and apply the staged inventory replacement mapping through the separate inventory-remediation workflow, then provide a fresh inventory capture.",
+  "database_writes": 0,
+  "publication_performed": false,
+  "runtime_change_justified": false,
+  "reason_no_additional_runtime_change": "The only retained failure reads captured stored banks; current-generator construction and finite delivery checks pass. Runtime changes cannot retire those independent stored identities."
+}
