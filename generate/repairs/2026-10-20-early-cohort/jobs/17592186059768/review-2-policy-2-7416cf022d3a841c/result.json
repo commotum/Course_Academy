@@ -1,0 +1,118 @@
+{
+  "verdict": "accepted",
+  "summary": "The current generator and exact five-question batch pass all eight checks. The unit-coefficient failure is repaired. Seven historical stored shortcut cases remain documented separately. Package unchanged.",
+  "source_analysis": {
+    "skill": "Translate a linear system into its augmented matrix.",
+    "reasoning_steps": [
+      "Collect variables on the left and constants on the right.",
+      "Identify implicit unit and missing zero coefficients.",
+      "Preserve equation order and natural variable order.",
+      "Append constants and select the matching matrix."
+    ],
+    "invariants": [
+      "Integer linear equations.",
+      "Five-choice radio response.",
+      "Two equations in x,y for easy difficulty.",
+      "No solving or row reduction."
+    ],
+    "permitted_variations": [
+      "Coefficient and constant signs and magnitudes, including units.",
+      "Missing-variable locations.",
+      "Equation and variable roles within source workload.",
+      "Distractor errors and choice positions."
+    ],
+    "source_refs": [
+      "dfed30ca-4b53-5a19-b938-cfe31a91deda",
+      "608e444e-fb7d-584c-a616-ea55f4a46535",
+      "64fc376d-990c-50f9-82bf-f8e85e2ed45f",
+      "tutorial 36b1a271-77b9-59ed-9f12-1b6675c26830",
+      "tutorial f6081e68-9014-5a0d-a6bf-084abe5fd28e"
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "reused-evidence-provenance.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay-results.json",
+        "source-replays.json",
+        "retained-regression-results.json"
+      ],
+      "details": "All ten assessed source profiles replay complete banks, keys, prompts and solution stages."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "unit-results.json",
+        "witness-mutation.json"
+      ],
+      "details": "Independent exact parsing verified 123 current records. A deliberately stale key was rejected."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "coverage-results.json",
+        "unit-results.json",
+        "construction-review.json",
+        "delivery-coverage-results.json",
+        "learner-selection-results.json"
+      ],
+      "details": "Fresh ordinary, repeated-unit and boundary cases pass. Delivery preserves decision coverage; learner-selection conclusions remain conditional on captured inputs."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "scope-results.json",
+        "source-analysis.json"
+      ],
+      "details": "The fallback preserves coefficient reading, augmentation, response format and source workload."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-results.json"
+      ],
+      "details": "Native grader accepted 123 correct selections and rejected 492 distractors; zero unresolved."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-remaining/rendering.json",
+        "visual-inspection.json",
+        "counterfactual-ui-results.json"
+      ],
+      "details": "All 14 actual-UI previews passed and screenshots were inspected, including every batch member and repaired unit cases."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "runtime.json",
+        "packaging-results.json",
+        "old-boundary-regression-command.json",
+        "boundary-regression-command.json",
+        "final-integrity.json"
+      ],
+      "details": "Dependencies, deterministic replay and manifest-only relocation pass. The strict unit witness fails the previous version and passes current. All 224 package files remain unchanged."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "shortcut-results.json",
+        "fallback-shortcut-results.json",
+        "counterfactual-ui-results.json",
+        "affected-inventory.json",
+        "inventory-reproduction-results.json",
+        "inventory-unit-results.json"
+      ],
+      "details": "Relevant and irrelevant counterfactuals behave correctly through rendering and native grading. No tested incidental cue answers the entire batch. All-unit recognition expresses the intended skill. Seven historical shortcut cases were separately reconstructed."
+    }
+  },
+  "findings": []
+}

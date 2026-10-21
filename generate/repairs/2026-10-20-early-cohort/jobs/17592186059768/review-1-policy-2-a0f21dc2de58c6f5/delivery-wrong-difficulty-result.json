@@ -1,0 +1,23 @@
+{
+  "command": [
+    "/home/jake/Developer/Course_Academy/.venv/bin/python",
+    "-B",
+    "/home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py",
+    "--input",
+    "delivery-duplicate-input.json",
+    "--source",
+    "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186059768/source/source.json",
+    "--inventory",
+    "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186059768/source/inventory.json",
+    "--difficulty",
+    "moderate",
+    "--output",
+    "delivery-wrong-difficulty",
+    "--math-root",
+    "/media/jake/SSD/EDB/math"
+  ],
+  "returncode": 1,
+  "stdout": "",
+  "stderr": "Traceback (most recent call last):\n  File \"/home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py\", line 95, in <module>\n    main()\n    ~~~~^^\n  File \"/home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py\", line 84, in main\n    report = audit(data['input'], data['inventory'], data['source'], args.difficulty,\n                   args.output, args.asset_root or args.input.resolve().parent, args.math_root)\n  File \"/home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py\", line 47, in audit\n    raise ValueError('Input contains a record outside the requested difficulty; the runner rejects this batch')\nValueError: Input contains a record outside the requested difficulty; the runner rejects this batch\n",
+  "expected": "rejected easy records requested as moderate"
+}

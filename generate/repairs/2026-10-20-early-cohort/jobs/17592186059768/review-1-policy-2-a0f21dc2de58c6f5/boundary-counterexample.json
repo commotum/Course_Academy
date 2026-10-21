@@ -1,0 +1,51 @@
+{
+  "seed": 941713401,
+  "profile": "q-71722",
+  "source_id": "dfed30ca-4b53-5a19-b938-cfe31a91deda",
+  "tests": [
+    {
+      "parameters": {
+        "2": 2,
+        "3": 4
+      },
+      "result": "returned correct complete record"
+    },
+    {
+      "parameters": {
+        "2": 1,
+        "3": 4
+      },
+      "result": "ValueError: Not enough distinct same-mask entry assignments"
+    },
+    {
+      "parameters": {
+        "2": -1,
+        "3": 4
+      },
+      "result": "ValueError: Not enough distinct same-mask entry assignments"
+    },
+    {
+      "parameters": {
+        "2": -2,
+        "3": 4
+      },
+      "result": "returned correct complete record"
+    }
+  ],
+  "valid_problem": "x-4=y; 1+y=-x",
+  "expected_matrix": [
+    [
+      1,
+      -1,
+      4
+    ],
+    [
+      1,
+      1,
+      -1
+    ]
+  ],
+  "expected_bank_capacity": "Four permutations preserving signs and zeros: move the sole positive 4 among four positive cells. Two identical negative -1 entries cannot vary. Fifth valid distractor must use another error construction.",
+  "reason": "Allowed parameter range includes +/-1, but bank_for_matrix requires five distinct same-sign permutations and raises instead of constructing a source-scope alternative bank.",
+  "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B variation.py"
+}

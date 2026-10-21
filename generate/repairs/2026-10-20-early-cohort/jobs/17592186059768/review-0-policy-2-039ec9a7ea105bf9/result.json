@@ -1,0 +1,133 @@
+{
+  "verdict": "revise",
+  "summary": "Fixed sign patterns predict all five delivered batch answers without the intended reasoning. Three supplied moderate source banks are also missing. Tested mathematics, grading, rendering and packaging pass. Package unchanged.",
+  "source_analysis": {
+    "skill": "Translate a linear system into its augmented matrix.",
+    "reasoning_steps": [
+      "Collect variables on the left and constants on the right.",
+      "Identify implicit unit and missing zero coefficients.",
+      "Preserve equation order and natural variable order.",
+      "Append the constants column and select the matching matrix."
+    ],
+    "invariants": [
+      "Integer linear equations.",
+      "Five-choice radio response.",
+      "Two-variable easy workload.",
+      "No equation solving or row reduction."
+    ],
+    "permitted_variations": [
+      "Coefficient and constant magnitudes and signs.",
+      "Missing-variable locations.",
+      "Term placement and order within the observed workload.",
+      "Distractor error locations and choice positions."
+    ],
+    "source_refs": [
+      "dfed30ca-4b53-5a19-b938-cfe31a91deda",
+      "51bc932c-31ca-5427-ac34-1e2bfeba299b",
+      "64fc376d-990c-50f9-82bf-f8e85e2ed45f",
+      "tutorial 36b1a271-77b9-59ed-9f12-1b6675c26830",
+      "tutorial f6081e68-9014-5a0d-a6bf-084abe5fd28e"
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "failed",
+      "evidence_paths": [
+        "source-replay-results.json",
+        "source-replays.json"
+      ],
+      "details": "Seven complete banks replay correctly. Three supplied moderate profiles are rejected."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "counterfactual-results.json"
+      ],
+      "details": "Independent integer parsing verified 110 records and three controlled fixtures, including keys, banks and solution matrices."
+    },
+    "variety": {
+      "status": "failed",
+      "evidence_paths": [
+        "shortcut-results.json",
+        "boundaries.json",
+        "delivery-batch/delivery.json",
+        "learner-selection-results.json"
+      ],
+      "details": "Fixed template sign patterns predict 98/98 independent records, 5/5 delivered batch members and 7/7 stored generated records. Actual learner-policy conclusions remain conditional on uncaptured history and weights."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "scope-results.json"
+      ],
+      "details": "Tested outputs preserve the source method, workload, response contract and solution stages."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-results.json"
+      ],
+      "details": "Native grader accepted 113 correct selections and rejected 452 distractor selections; zero unresolved checks."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-remaining/rendering.json",
+        "visual-inspection.json"
+      ],
+      "details": "Ten actual-UI previews passed. Representative screenshots across all seven profiles and controlled pairs were inspected."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "runtime.json",
+        "replay-results.json",
+        "relocation-command.json",
+        "final-integrity.json"
+      ],
+      "details": "Exact Python dependency matches; deterministic replay and relocation pass. All 102 package files remain unchanged."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "regression-results.json",
+        "minimal-failing-case.json",
+        "affected-inventory.json",
+        "inventory-reproduction-results.json",
+        "generated-records.json"
+      ],
+      "details": "Selecting the sole negative bottom-right matrix succeeds 28/28 within two recognizable templates. Sign-changing assignments are rejected. Seven historical generated records were exactly reconstructed and confirmed affected."
+    }
+  },
+  "findings": [
+    {
+      "kind": "decision_shortcut",
+      "description": "In q-71722 and q-1052, only the correct choice has a negative bottom-right entry. Positive magnitude substitutions preserve this cue throughout each family. A broader memorized template/sign-mask rule also answers every delivered batch member; UI choice shuffling does not remove it.",
+      "source_refs": [
+        "dfed30ca-4b53-5a19-b938-cfe31a91deda",
+        "51bc932c-31ca-5427-ac34-1e2bfeba299b",
+        "generate/principles.md \u00a72"
+      ],
+      "reproduction": "Run the context Python with -B variation_audit.py from evidence_root; it intentionally exits 1. Minimal representative: profile q-71722, seed 941713401, parameters {\"2\":2,\"3\":4}, displaying x-4=2y; 1+y=-2x. The correct matrix [[1,-2,4],[2,1,-1]] is the sole choice with a negative bottom-right entry. See minimal-failing-case.json.",
+      "requested_change": "Allow eligible signed coefficients, constants and answer-bearing placements to vary, deriving the prompt, bank, key and solution together. Preserve source replay while breaking universal corner/sign-mask prediction within recognizable templates. Regenerate the five-question batch."
+    },
+    {
+      "kind": "source_fidelity",
+      "description": "The package omits supplied moderate profiles q-1068, q-1053 and q-129128 despite declaring moderate support.",
+      "source_refs": [
+        "3760f817-76ad-5963-aefb-d389b1f60dfd",
+        "415575f6-a7fc-537e-9b84-fc64413cee34",
+        "ff919820-9ae8-5522-9a28-975841dc4965"
+      ],
+      "reproduction": "Run the entrypoint with --difficulty moderate --seed 941713201 --template q-1068 --count 1. It raises ValueError: Profile does not belong to requested difficulty. audit.py reproduces all three omissions in source-replay-results.json.",
+      "requested_change": "Refresh extraction to include all ten supplied assessed questions and reproduce each omitted complete bank, key and worked solution before extending it."
+    }
+  ]
+}
