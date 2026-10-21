@@ -1,0 +1,125 @@
+{
+  "verdict": "revise",
+  "summary": "The previous shortcut is repaired, but revised quotient banks expose another prompt-blind answer cue. It succeeds on 18/18 focused cases and the replacement batch\u2019s quotient item. Package files remain unchanged.",
+  "source_analysis": {
+    "skill": "Identify h(x) and g(y), then select the equivalent separated equation (1/g(y))dy/dx=h(x).",
+    "reasoning_steps": [
+      "Identify independent and dependent factors in the ODE.",
+      "Take the reciprocal of the complete dependent factor.",
+      "Distinguish a separated equation from incorrect or equivalent-but-unseparated alternatives."
+    ],
+    "invariants": [
+      "Stop at separation without integrating.",
+      "Preserve five-choice radio responses with one correct equation.",
+      "Respect the regular-domain restrictions."
+    ],
+    "permitted_variations": [
+      "Vary supported coefficients, powers, exponential factors and rational shifts.",
+      "Vary eligible factor placement and distractor roles.",
+      "Shuffle answer positions without making answer-bank structure reveal correctness."
+    ],
+    "source_refs": [
+      "31bffd11-cf10-5855-9455-e621eb1969bd",
+      "7037401f-27c0-588d-a952-7eb3ef7b14ef",
+      "Tutorial 6767 / 56fc1c96-3599-5022-8d83-60d4188ccf07"
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "source-extract.json",
+      "reuse-provenance.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay.json",
+        "source-replay-records.json"
+      ],
+      "details": "All ten complete captured source banks replay successfully. The canonical radical lacks a captured answer bank; that gap is explicitly recorded."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "independent_checks.py",
+        "math-results.json"
+      ],
+      "details": "Independent symbolic checks verified unique separated correctness and worked-solution stages on 81 records."
+    },
+    "variety": {
+      "status": "failed",
+      "evidence_paths": [
+        "revision-records.json",
+        "bank-shortcut-results.json",
+        "delivery-selection.json"
+      ],
+      "details": "Both quotient profiles preserve an answer-bank repetition signature that identifies the key despite numerical variation and shuffling."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "scope-results.json",
+        "runtime-changes.json",
+        "independent-records.json"
+      ],
+      "details": "Changed banks retain the source algebra, response contract and easy workload."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-report.json",
+        "revision-counterfactual-results.json"
+      ],
+      "details": "The native grader accepted 81 correct choices and rejected 324 alternatives. Relevant shared-choice truth flips and irrelevant shuffles passed."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render-all/rendering.json",
+        "visual-inspection.json",
+        "render-contact-sheet.png",
+        "render-all/question-003.png"
+      ],
+      "details": "The actual UI rendered 32 records. Inspected screenshots show readable equations, controls and explanations, including the batch shortcut."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging.json",
+        "package-integrity.json",
+        "retained-regression-verification.json",
+        "commands.md"
+      ],
+      "details": "Exact dependency versions, determinism, relocation and invalid-input rejection pass. The retained regression fails the previous implementation and passes current. Package hashes are unchanged."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "bank_shortcut.py",
+        "bank-shortcut-results.json",
+        "minimal_repro.py",
+        "minimal-reproduction-records.json",
+        "minimal-reproduction-results.json",
+        "delivery-selection.json",
+        "inventory-probe.json",
+        "affected-inventory.json"
+      ],
+      "details": "Modal-component selection succeeds on 18/18 focused quotient cases, 18/18 accepted quotient controls and the exact batch quotient. The power/sign profile also reveals the key as the shortest of three same-LHS rows. None of the six captured generated inventory entries is a revised quotient instance."
+    }
+  },
+  "findings": [
+    {
+      "kind": "decision_shortcut",
+      "description": "Both revised quotient profiles repeat the correct dependent power four times and its RHS three times, enabling prompt-blind modal-component selection. In quotient-power-sign, the correct answer is also always the shortest of three rows sharing one left side. Both cues affect batch question 4cc34a53-2d0e-5e5d-9f42-8f3c31da05f8.",
+      "source_refs": [
+        "31bffd11-cf10-5855-9455-e621eb1969bd",
+        "7037401f-27c0-588d-a952-7eb3ef7b14ef",
+        "Tutorial 6767 / 56fc1c96-3599-5022-8d83-60d4188ccf07"
+      ],
+      "reproduction": "From evidence_root run PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python minimal_repro.py; it exits 1. Minimal case: generate_easy(seed=17, template=\"simple_quotient\", parameters={\"n\":1}). Writing D=dy/dx, its choices are yD=1/x, yD=x, xD=y, yD=-x and y^2D=x. Hide the ODE and choose the shortest of the three yD rows: yD=x. The exact batch witness uses seed=2404317989, exp_quotient, base=4, a=4, n=4.",
+      "requested_change": "Change quotient_bank\u2019s family-wide distractor construction so modal component frequencies and the shortest RHS within a repeated-LHS subgroup cannot determine correctness. Retain both families, observed source replay and mathematical correctness. Preserve the old regression, adopt these new failing probes, and regenerate the affected batch member after repairing the rule."
+    }
+  ]
+}

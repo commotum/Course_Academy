@@ -1,0 +1,5 @@
+[:find ?q :in $ [?q ...] :where
+ (or-join [?q]
+  [?i :task-item/content ?q ?tx true]
+  (and [?q :question/answer-fields ?f] [?f :answer-field/choices ?a]
+       [?i :task-item/responses ?a ?tx true]))]

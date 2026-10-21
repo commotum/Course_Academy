@@ -1,0 +1,74 @@
+[
+  {
+    "target": "current",
+    "script": "repair_regression.py",
+    "command": [
+      "/home/jake/Developer/Course_Academy/.venv/bin/python",
+      "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186068842/review-2-policy-2-698d29690e8d18aa/preflight-current/checks/repair_regression.py"
+    ],
+    "script_sha256": "d2b8e61e41629a68d5356e6cd41283004c15eeb7662e5fbc7c72c4d8e39d49f5",
+    "exit": 0,
+    "stdout": "repair regression: 30 cases passed; exact minimal and batch parameters retained\n",
+    "stderr": ""
+  },
+  {
+    "target": "current",
+    "script": "bank_signature_regression.py",
+    "command": [
+      "/home/jake/Developer/Course_Academy/.venv/bin/python",
+      "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186068842/review-2-policy-2-698d29690e8d18aa/preflight-current/checks/bank_signature_regression.py"
+    ],
+    "script_sha256": "6fcca0b3f41dfbabf73c3bdb26d0af3ab4d5b9e1e6acd2f40156485607c6027f",
+    "exit": 0,
+    "stdout": "bank-signature regression: 6 same-bank groups; 26 independent math cases; both exact historical attacks fail\n",
+    "stderr": ""
+  },
+  {
+    "target": "current",
+    "script": "radical_regression.py",
+    "command": [
+      "/home/jake/Developer/Course_Academy/.venv/bin/python",
+      "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186068842/review-2-policy-2-698d29690e8d18aa/preflight-current/checks/radical_regression.py"
+    ],
+    "script_sha256": "d2e772d38493149790ef69099d69d0f7497a87da8efc53ef792d22973098e095",
+    "exit": 0,
+    "stdout": "radical regression: 4 passed\nradical same-bank modal regression: 2 groups passed\n",
+    "stderr": ""
+  },
+  {
+    "target": "failure0",
+    "script": "repair_regression.py",
+    "command": [
+      "/home/jake/Developer/Course_Academy/.venv/bin/python",
+      "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186068842/review-2-policy-2-698d29690e8d18aa/preflight-failure0/checks/repair_regression.py"
+    ],
+    "script_sha256": "d2b8e61e41629a68d5356e6cd41283004c15eeb7662e5fbc7c72c4d8e39d49f5",
+    "exit": 1,
+    "stdout": "",
+    "stderr": "Traceback (most recent call last):\n  File \"/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186068842/review-2-policy-2-698d29690e8d18aa/preflight-failure0/checks/repair_regression.py\", line 26, in <module>\n    assert not any(v['shortcut_success'] for v in out), 'unique fractionless shortcut persists'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: unique fractionless shortcut persists\n"
+  },
+  {
+    "target": "failure1",
+    "script": "bank_signature_regression.py",
+    "command": [
+      "/home/jake/Developer/Course_Academy/.venv/bin/python",
+      "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186068842/review-2-policy-2-698d29690e8d18aa/preflight-failure1/checks/bank_signature_regression.py"
+    ],
+    "script_sha256": "6fcca0b3f41dfbabf73c3bdb26d0af3ab4d5b9e1e6acd2f40156485607c6027f",
+    "exit": 1,
+    "stdout": "",
+    "stderr": "Traceback (most recent call last):\n  File \"/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186068842/review-2-policy-2-698d29690e8d18aa/preflight-failure1/checks/bank_signature_regression.py\", line 55, in <module>\n    if __name__=='__main__':main()\n                            ~~~~^^\n  File \"/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186068842/review-2-policy-2-698d29690e8d18aa/preflight-failure1/checks/bank_signature_regression.py\", line 45, in main\n    groups.append({'template':t,'seed':seed,'parameters_held_fixed':base,**check_group(rs)})\n                                                                           ~~~~~~~~~~~^^^^\n  File \"/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186068842/review-2-policy-2-698d29690e8d18aa/preflight-failure1/checks/bank_signature_regression.py\", line 26, in check_group\n    assert all(b==banks[0] for b in banks), 'correct power leaks into visible bank construction'\n           ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: correct power leaks into visible bank construction\n"
+  },
+  {
+    "target": "failure1",
+    "script": "radical_regression.py",
+    "command": [
+      "/home/jake/Developer/Course_Academy/.venv/bin/python",
+      "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186068842/review-2-policy-2-698d29690e8d18aa/preflight-failure1/checks/radical_regression.py"
+    ],
+    "script_sha256": "d2e772d38493149790ef69099d69d0f7497a87da8efc53ef792d22973098e095",
+    "exit": 1,
+    "stdout": "radical regression: 4 passed\n",
+    "stderr": "Traceback (most recent call last):\n  File \"/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186068842/review-2-policy-2-698d29690e8d18aa/preflight-failure1/checks/radical_regression.py\", line 29, in <module>\n    assert banks[0]==banks[1], 'target radical leaks into visible bank'\n           ^^^^^^^^^^^^^^^^^^\nAssertionError: target radical leaks into visible bank\n"
+  }
+]

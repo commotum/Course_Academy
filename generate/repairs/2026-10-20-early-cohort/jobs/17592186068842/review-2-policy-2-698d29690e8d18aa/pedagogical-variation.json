@@ -1,0 +1,3532 @@
+{
+  "learner_operation": "Identify h(x) and the complete g(y) in dy/dx=h(x)g(y), take 1/g(y), and select the equivalent separated equation A(y)dy/dx=B(x); do not integrate.",
+  "fixed_features": [
+    {
+      "feature": "One equation, one radio field and five equations with a unique correct selection.",
+      "justification": "All ten captured practice sources use this response contract; tutorial 6767 defines the target equation."
+    },
+    {
+      "feature": "Stop after factorization and reciprocal transfer.",
+      "justification": "KP source prompts ask to separate variables; general solutions belong to later tutorial/prerequisite content."
+    },
+    {
+      "feature": "Small positive scalar parameters, quotient powers 1–4 and positive even radical powers 2/4.",
+      "justification": "Conservative easy workload with the source factor types; even powers plus positive constants keep radical domain real. These bounds do not fix which candidate row is correct."
+    },
+    {
+      "feature": "A(y) beside dy/dx and B(x) on the right.",
+      "justification": "Essential instructional convention explicitly defined in tutorial 6767, not merely the arrangement of one example."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Complete dependent factor and its reciprocal",
+      "eligible_variation": "Change quotient denominator power or radical numerator power while holding independent factor and full bank fixed.",
+      "observed": "Every power 1–4 becomes correct in both quotient profiles/families; each radical power 2/4 becomes correct in an unchanged bank."
+    },
+    {
+      "role": "Independent factor",
+      "eligible_variation": "Vary exponential base/scale, rational shift or trig scale within captured factor classes.",
+      "observed": "Boundary/fresh checks include both exponential factor extremes; the answer and explanation follow independent evidence."
+    },
+    {
+      "role": "Direct versus reciprocal derivative multiplier",
+      "eligible_variation": "Numerator dependent factors require reciprocals; denominator dependent factors require direct multipliers.",
+      "observed": "Product/radical and quotient templates provide both directions. Recognizing this relation is intended algebra, not a layout cue."
+    },
+    {
+      "role": "Correct position and distractor roles",
+      "eligible_variation": "Positions have no mathematical status; banks may use plausible wrong powers and role exchange.",
+      "observed": "Controlled irrelevant shuffle preserves the prompt/key/solution; both quotient profiles survive delivery."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "Full observed source banks",
+      "sample_refs": [
+        "source-replay.json",
+        "source-replay-records.json"
+      ],
+      "result": "All ten complete captured banks match. Canonical radical lacks captured answer fields; no fabricated bank is claimed."
+    },
+    {
+      "case": "Changed quotient profiles and radical powers",
+      "sample_refs": [
+        "revision-records.json",
+        "same-bank-groups.json",
+        "profile-delta-records.json"
+      ],
+      "result": "All 1–4 quotient targets and 2/4 radical targets validated; identical-bank groups challenge the fixed-role specification."
+    },
+    {
+      "case": "Actual batch and accepted controls",
+      "sample_refs": [
+        "delivery-selection.json",
+        "stage-shortcut-results.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ],
+      "result": "5/5 exact batch records accepted, four templates; 40/65 independent controls accepted after 25 duplicates. All six easy templates, both quotient profiles and both radical powers survive. No tested prompt-blind strategy solves the batch."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "simple_quotient: change only dependent power {'n': 1} -> {'n': 2}",
+      "expected": "Prompt, explanation and correct equation must follow the new dependent factor; shared candidates must change acceptance.",
+      "observed": "Prompt/solution change, distinct key and shared-candidate truth flips verified by independent algebra, native grader and rendered actual UI.",
+      "status": "passed",
+      "justification": "Tutorial 6767 requires reciprocal of the complete g(y); the exponent is eligible answer-bearing evidence.",
+      "sample_refs": [
+        "revision-counterfactual-records.json",
+        "revision-counterfactual-results.json",
+        "math-results.json",
+        "grader-input.json",
+        "grader-report.json",
+        "render-full/input.json",
+        "render-full/rendering.json",
+        "render-delta/input.json",
+        "render-delta/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "exp_quotient: change only dependent power {'base': 2, 'a': 1, 'n': 1} -> {'base': 2, 'a': 1, 'n': 2}",
+      "expected": "Prompt, explanation and correct equation must follow the new dependent factor; shared candidates must change acceptance.",
+      "observed": "Prompt/solution change, distinct key and shared-candidate truth flips verified by independent algebra, native grader and rendered actual UI.",
+      "status": "passed",
+      "justification": "Tutorial 6767 requires reciprocal of the complete g(y); the exponent is eligible answer-bearing evidence.",
+      "sample_refs": [
+        "revision-counterfactual-records.json",
+        "revision-counterfactual-results.json",
+        "math-results.json",
+        "grader-input.json",
+        "grader-report.json",
+        "render-full/input.json",
+        "render-full/rendering.json",
+        "render-delta/input.json",
+        "render-delta/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "exp_quotient: change only dependent power {'base': 5, 'a': 5, 'n': 1} -> {'base': 5, 'a': 5, 'n': 2}",
+      "expected": "Prompt, explanation and correct equation must follow the new dependent factor; shared candidates must change acceptance.",
+      "observed": "Prompt/solution change, distinct key and shared-candidate truth flips verified by independent algebra, native grader and rendered actual UI.",
+      "status": "passed",
+      "justification": "Tutorial 6767 requires reciprocal of the complete g(y); the exponent is eligible answer-bearing evidence.",
+      "sample_refs": [
+        "revision-counterfactual-records.json",
+        "revision-counterfactual-results.json",
+        "math-results.json",
+        "grader-input.json",
+        "grader-report.json",
+        "render-full/input.json",
+        "render-full/rendering.json",
+        "render-delta/input.json",
+        "render-delta/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "sqrt_quotient: change only dependent power {'a': 1, 'n': 2} -> {'a': 1, 'n': 4}",
+      "expected": "Prompt, explanation and correct equation must follow the new dependent factor; shared candidates must change acceptance.",
+      "observed": "Prompt/solution change, distinct key and shared-candidate truth flips verified by independent algebra, native grader and rendered actual UI.",
+      "status": "passed",
+      "justification": "Tutorial 6767 requires reciprocal of the complete g(y); the exponent is eligible answer-bearing evidence.",
+      "sample_refs": [
+        "revision-counterfactual-records.json",
+        "revision-counterfactual-results.json",
+        "math-results.json",
+        "grader-input.json",
+        "grader-report.json",
+        "render-full/input.json",
+        "render-full/rendering.json",
+        "render-delta/input.json",
+        "render-delta/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "sqrt_quotient: change only dependent power {'a': 5, 'n': 2} -> {'a': 5, 'n': 4}",
+      "expected": "Prompt, explanation and correct equation must follow the new dependent factor; shared candidates must change acceptance.",
+      "observed": "Prompt/solution change, distinct key and shared-candidate truth flips verified by independent algebra, native grader and rendered actual UI.",
+      "status": "passed",
+      "justification": "Tutorial 6767 requires reciprocal of the complete g(y); the exponent is eligible answer-bearing evidence.",
+      "sample_refs": [
+        "revision-counterfactual-records.json",
+        "revision-counterfactual-results.json",
+        "math-results.json",
+        "grader-input.json",
+        "grader-report.json",
+        "render-full/input.json",
+        "render-full/rendering.json",
+        "render-delta/input.json",
+        "render-delta/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "simple_quotient: change only dependent power {'n': 1} -> {'n': 2}",
+      "expected": "Prompt, explanation and correct equation must follow the new dependent factor; shared candidates must change acceptance.",
+      "observed": "Prompt/solution change, distinct key and shared-candidate truth flips verified by independent algebra, native grader and rendered actual UI.",
+      "status": "passed",
+      "justification": "Tutorial 6767 requires reciprocal of the complete g(y); the exponent is eligible answer-bearing evidence.",
+      "sample_refs": [
+        "revision-counterfactual-records.json",
+        "revision-counterfactual-results.json",
+        "math-results.json",
+        "grader-input.json",
+        "grader-report.json",
+        "render-full/input.json",
+        "render-full/rendering.json",
+        "render-delta/input.json",
+        "render-delta/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "exp_quotient: change only dependent power {'base': 2, 'a': 1, 'n': 1} -> {'base': 2, 'a': 1, 'n': 2}",
+      "expected": "Prompt, explanation and correct equation must follow the new dependent factor; shared candidates must change acceptance.",
+      "observed": "Prompt/solution change, distinct key and shared-candidate truth flips verified by independent algebra, native grader and rendered actual UI.",
+      "status": "passed",
+      "justification": "Tutorial 6767 requires reciprocal of the complete g(y); the exponent is eligible answer-bearing evidence.",
+      "sample_refs": [
+        "revision-counterfactual-records.json",
+        "revision-counterfactual-results.json",
+        "math-results.json",
+        "grader-input.json",
+        "grader-report.json",
+        "render-full/input.json",
+        "render-full/rendering.json",
+        "render-delta/input.json",
+        "render-delta/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "exp_quotient: change only dependent power {'base': 5, 'a': 5, 'n': 1} -> {'base': 5, 'a': 5, 'n': 2}",
+      "expected": "Prompt, explanation and correct equation must follow the new dependent factor; shared candidates must change acceptance.",
+      "observed": "Prompt/solution change, distinct key and shared-candidate truth flips verified by independent algebra, native grader and rendered actual UI.",
+      "status": "passed",
+      "justification": "Tutorial 6767 requires reciprocal of the complete g(y); the exponent is eligible answer-bearing evidence.",
+      "sample_refs": [
+        "revision-counterfactual-records.json",
+        "revision-counterfactual-results.json",
+        "math-results.json",
+        "grader-input.json",
+        "grader-report.json",
+        "render-full/input.json",
+        "render-full/rendering.json",
+        "render-delta/input.json",
+        "render-delta/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "seed 6021 to 6023; fixed n=2 and quotient-power-ladder-independent bank",
+      "expected": "Preserve mathematical prompt, correct equation and explanation while changing choice order.",
+      "observed": "All preserved and choice order differs; both records pass native grading and UI rendering.",
+      "status": "passed",
+      "justification": "Position/order has no role in the lesson equation.",
+      "sample_refs": [
+        "revision-counterfactual-records.json",
+        "revision-counterfactual-results.json",
+        "grader-report.json",
+        "render-full/rendering.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "first",
+      "subgroup": "control_before/all",
+      "scope": "overall",
+      "strategy": "Select first stored choice.",
+      "correct": 13,
+      "total": 65,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "13/65 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "control_before/all",
+      "scope": "overall",
+      "strategy": "Select last stored choice.",
+      "correct": 12,
+      "total": 65,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "12/65 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "control_before/all",
+      "scope": "overall",
+      "strategy": "Select uniquely shortest equation, otherwise abstain.",
+      "correct": 0,
+      "total": 65,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/65 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "control_before/all",
+      "scope": "overall",
+      "strategy": "Select uniquely longest equation, otherwise abstain.",
+      "correct": 0,
+      "total": 65,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/65 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "unique_fractionless",
+      "subgroup": "control_before/all",
+      "scope": "overall",
+      "strategy": "Select sole equation without a fraction outside the derivative, otherwise abstain.",
+      "correct": 0,
+      "total": 65,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/65 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "modal_component",
+      "subgroup": "control_before/all",
+      "scope": "overall",
+      "strategy": "Prior independent attack: combine most frequent dependent power and most frequent RHS.",
+      "correct": 9,
+      "total": 65,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "9/65 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "three_lhs_shortest",
+      "subgroup": "control_before/all",
+      "scope": "overall",
+      "strategy": "Prior independent attack: shortest of exactly three rows sharing one LHS.",
+      "correct": 0,
+      "total": 65,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/65 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "modal_root",
+      "subgroup": "control_before/all",
+      "scope": "overall",
+      "strategy": "Choose reciprocal of most frequently printed radical.",
+      "correct": 5,
+      "total": 65,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "5/65 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "control_before/exp_product/observed",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select first stored choice.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/3 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "control_before/exp_product/observed",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select last stored choice.",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/3 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "control_before/exp_product/observed",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select uniquely shortest equation, otherwise abstain.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/3 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "control_before/exp_product/observed",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select uniquely longest equation, otherwise abstain.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/3 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "control_before/exp_quotient/quotient-power-ladder-exchange",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select first stored choice.",
+      "correct": 2,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/8 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "control_before/exp_quotient/quotient-power-ladder-exchange",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select last stored choice.",
+      "correct": 2,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/8 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "control_before/exp_quotient/quotient-power-ladder-exchange",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select uniquely shortest equation, otherwise abstain.",
+      "correct": 0,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/8 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "control_before/exp_quotient/quotient-power-ladder-exchange",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select uniquely longest equation, otherwise abstain.",
+      "correct": 0,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/8 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "unique_fractionless",
+      "subgroup": "control_before/exp_quotient/quotient-power-ladder-exchange",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select sole equation without a fraction outside the derivative, otherwise abstain.",
+      "correct": 0,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/8 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "modal_component",
+      "subgroup": "control_before/exp_quotient/quotient-power-ladder-exchange",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Prior independent attack: combine most frequent dependent power and most frequent RHS.",
+      "correct": 2,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/8 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "three_lhs_shortest",
+      "subgroup": "control_before/exp_quotient/quotient-power-ladder-exchange",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Prior independent attack: shortest of exactly three rows sharing one LHS.",
+      "correct": 0,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/8 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "control_before/exp_quotient/quotient-power-ladder-independent",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select first stored choice.",
+      "correct": 4,
+      "total": 21,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "4/21 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "control_before/exp_quotient/quotient-power-ladder-independent",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select last stored choice.",
+      "correct": 4,
+      "total": 21,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "4/21 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "control_before/exp_quotient/quotient-power-ladder-independent",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select uniquely shortest equation, otherwise abstain.",
+      "correct": 0,
+      "total": 21,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/21 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "control_before/exp_quotient/quotient-power-ladder-independent",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select uniquely longest equation, otherwise abstain.",
+      "correct": 0,
+      "total": 21,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/21 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "unique_fractionless",
+      "subgroup": "control_before/exp_quotient/quotient-power-ladder-independent",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select sole equation without a fraction outside the derivative, otherwise abstain.",
+      "correct": 0,
+      "total": 21,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/21 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "modal_component",
+      "subgroup": "control_before/exp_quotient/quotient-power-ladder-independent",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Prior independent attack: combine most frequent dependent power and most frequent RHS.",
+      "correct": 4,
+      "total": 21,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "4/21 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "three_lhs_shortest",
+      "subgroup": "control_before/exp_quotient/quotient-power-ladder-independent",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Prior independent attack: shortest of exactly three rows sharing one LHS.",
+      "correct": 0,
+      "total": 21,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/21 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "control_before/rational_product/observed",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select first stored choice.",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/3 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "control_before/rational_product/observed",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select last stored choice.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/3 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "control_before/rational_product/observed",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select uniquely shortest equation, otherwise abstain.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/3 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "control_before/rational_product/observed",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select uniquely longest equation, otherwise abstain.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/3 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "control_before/simple_quotient/quotient-power-ladder-exchange",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select first stored choice.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/4 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "control_before/simple_quotient/quotient-power-ladder-exchange",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select last stored choice.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/4 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "control_before/simple_quotient/quotient-power-ladder-exchange",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select uniquely shortest equation, otherwise abstain.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/4 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "control_before/simple_quotient/quotient-power-ladder-exchange",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select uniquely longest equation, otherwise abstain.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/4 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "unique_fractionless",
+      "subgroup": "control_before/simple_quotient/quotient-power-ladder-exchange",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select sole equation without a fraction outside the derivative, otherwise abstain.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/4 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "modal_component",
+      "subgroup": "control_before/simple_quotient/quotient-power-ladder-exchange",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Prior independent attack: combine most frequent dependent power and most frequent RHS.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/4 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "three_lhs_shortest",
+      "subgroup": "control_before/simple_quotient/quotient-power-ladder-exchange",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Prior independent attack: shortest of exactly three rows sharing one LHS.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/4 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "control_before/simple_quotient/quotient-power-ladder-independent",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select first stored choice.",
+      "correct": 2,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/12 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "control_before/simple_quotient/quotient-power-ladder-independent",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select last stored choice.",
+      "correct": 2,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/12 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "control_before/simple_quotient/quotient-power-ladder-independent",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select uniquely shortest equation, otherwise abstain.",
+      "correct": 0,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/12 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "control_before/simple_quotient/quotient-power-ladder-independent",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select uniquely longest equation, otherwise abstain.",
+      "correct": 0,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/12 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "unique_fractionless",
+      "subgroup": "control_before/simple_quotient/quotient-power-ladder-independent",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select sole equation without a fraction outside the derivative, otherwise abstain.",
+      "correct": 0,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/12 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "modal_component",
+      "subgroup": "control_before/simple_quotient/quotient-power-ladder-independent",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Prior independent attack: combine most frequent dependent power and most frequent RHS.",
+      "correct": 2,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/12 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "three_lhs_shortest",
+      "subgroup": "control_before/simple_quotient/quotient-power-ladder-independent",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Prior independent attack: shortest of exactly three rows sharing one LHS.",
+      "correct": 0,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/12 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "control_before/sqrt_quotient/radical-transfer",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select first stored choice.",
+      "correct": 2,
+      "total": 11,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/11 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "control_before/sqrt_quotient/radical-transfer",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select last stored choice.",
+      "correct": 2,
+      "total": 11,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/11 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "control_before/sqrt_quotient/radical-transfer",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select uniquely shortest equation, otherwise abstain.",
+      "correct": 0,
+      "total": 11,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/11 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "control_before/sqrt_quotient/radical-transfer",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select uniquely longest equation, otherwise abstain.",
+      "correct": 0,
+      "total": 11,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/11 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "modal_root",
+      "subgroup": "control_before/sqrt_quotient/radical-transfer",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose reciprocal of most frequently printed radical.",
+      "correct": 5,
+      "total": 11,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "5/11 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "control_before/trig_product/observed",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select first stored choice.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/3 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "control_before/trig_product/observed",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select last stored choice.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/3 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "control_before/trig_product/observed",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select uniquely shortest equation, otherwise abstain.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/3 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "control_before/trig_product/observed",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select uniquely longest equation, otherwise abstain.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/3 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "control_after/all",
+      "scope": "overall",
+      "strategy": "Select first stored choice.",
+      "correct": 7,
+      "total": 40,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "7/40 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "control_after/all",
+      "scope": "overall",
+      "strategy": "Select last stored choice.",
+      "correct": 8,
+      "total": 40,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "8/40 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "control_after/all",
+      "scope": "overall",
+      "strategy": "Select uniquely shortest equation, otherwise abstain.",
+      "correct": 0,
+      "total": 40,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/40 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "control_after/all",
+      "scope": "overall",
+      "strategy": "Select uniquely longest equation, otherwise abstain.",
+      "correct": 0,
+      "total": 40,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/40 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "unique_fractionless",
+      "subgroup": "control_after/all",
+      "scope": "overall",
+      "strategy": "Select sole equation without a fraction outside the derivative, otherwise abstain.",
+      "correct": 0,
+      "total": 40,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/40 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "modal_component",
+      "subgroup": "control_after/all",
+      "scope": "overall",
+      "strategy": "Prior independent attack: combine most frequent dependent power and most frequent RHS.",
+      "correct": 4,
+      "total": 40,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "4/40 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "three_lhs_shortest",
+      "subgroup": "control_after/all",
+      "scope": "overall",
+      "strategy": "Prior independent attack: shortest of exactly three rows sharing one LHS.",
+      "correct": 0,
+      "total": 40,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/40 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "modal_root",
+      "subgroup": "control_after/all",
+      "scope": "overall",
+      "strategy": "Choose reciprocal of most frequently printed radical.",
+      "correct": 2,
+      "total": 40,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/40 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "control_after/exp_product/observed",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select first stored choice.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/3 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "control_after/exp_product/observed",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select last stored choice.",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/3 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "control_after/exp_product/observed",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select uniquely shortest equation, otherwise abstain.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/3 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "control_after/exp_product/observed",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select uniquely longest equation, otherwise abstain.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/3 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "control_after/exp_quotient/quotient-power-ladder-exchange",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select first stored choice.",
+      "correct": 2,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/8 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "control_after/exp_quotient/quotient-power-ladder-exchange",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select last stored choice.",
+      "correct": 2,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/8 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "control_after/exp_quotient/quotient-power-ladder-exchange",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select uniquely shortest equation, otherwise abstain.",
+      "correct": 0,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/8 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "control_after/exp_quotient/quotient-power-ladder-exchange",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select uniquely longest equation, otherwise abstain.",
+      "correct": 0,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/8 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "unique_fractionless",
+      "subgroup": "control_after/exp_quotient/quotient-power-ladder-exchange",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select sole equation without a fraction outside the derivative, otherwise abstain.",
+      "correct": 0,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/8 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "modal_component",
+      "subgroup": "control_after/exp_quotient/quotient-power-ladder-exchange",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Prior independent attack: combine most frequent dependent power and most frequent RHS.",
+      "correct": 2,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/8 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "three_lhs_shortest",
+      "subgroup": "control_after/exp_quotient/quotient-power-ladder-exchange",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Prior independent attack: shortest of exactly three rows sharing one LHS.",
+      "correct": 0,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/8 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "control_after/exp_quotient/quotient-power-ladder-independent",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select first stored choice.",
+      "correct": 1,
+      "total": 11,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/11 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "control_after/exp_quotient/quotient-power-ladder-independent",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select last stored choice.",
+      "correct": 2,
+      "total": 11,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/11 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "control_after/exp_quotient/quotient-power-ladder-independent",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select uniquely shortest equation, otherwise abstain.",
+      "correct": 0,
+      "total": 11,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/11 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "control_after/exp_quotient/quotient-power-ladder-independent",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select uniquely longest equation, otherwise abstain.",
+      "correct": 0,
+      "total": 11,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/11 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "unique_fractionless",
+      "subgroup": "control_after/exp_quotient/quotient-power-ladder-independent",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select sole equation without a fraction outside the derivative, otherwise abstain.",
+      "correct": 0,
+      "total": 11,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/11 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "modal_component",
+      "subgroup": "control_after/exp_quotient/quotient-power-ladder-independent",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Prior independent attack: combine most frequent dependent power and most frequent RHS.",
+      "correct": 1,
+      "total": 11,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/11 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "three_lhs_shortest",
+      "subgroup": "control_after/exp_quotient/quotient-power-ladder-independent",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Prior independent attack: shortest of exactly three rows sharing one LHS.",
+      "correct": 0,
+      "total": 11,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/11 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "control_after/rational_product/observed",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select first stored choice.",
+      "correct": 2,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/2 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "control_after/rational_product/observed",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select last stored choice.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/2 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "control_after/rational_product/observed",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select uniquely shortest equation, otherwise abstain.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/2 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "control_after/rational_product/observed",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select uniquely longest equation, otherwise abstain.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/2 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "control_after/simple_quotient/quotient-power-ladder-exchange",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select first stored choice.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/4 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "control_after/simple_quotient/quotient-power-ladder-exchange",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select last stored choice.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/4 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "control_after/simple_quotient/quotient-power-ladder-exchange",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select uniquely shortest equation, otherwise abstain.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/4 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "control_after/simple_quotient/quotient-power-ladder-exchange",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select uniquely longest equation, otherwise abstain.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/4 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "unique_fractionless",
+      "subgroup": "control_after/simple_quotient/quotient-power-ladder-exchange",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select sole equation without a fraction outside the derivative, otherwise abstain.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/4 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "modal_component",
+      "subgroup": "control_after/simple_quotient/quotient-power-ladder-exchange",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Prior independent attack: combine most frequent dependent power and most frequent RHS.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/4 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "three_lhs_shortest",
+      "subgroup": "control_after/simple_quotient/quotient-power-ladder-exchange",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Prior independent attack: shortest of exactly three rows sharing one LHS.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/4 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "control_after/simple_quotient/quotient-power-ladder-independent",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select first stored choice.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/4 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "control_after/simple_quotient/quotient-power-ladder-independent",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select last stored choice.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/4 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "control_after/simple_quotient/quotient-power-ladder-independent",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select uniquely shortest equation, otherwise abstain.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/4 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "control_after/simple_quotient/quotient-power-ladder-independent",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select uniquely longest equation, otherwise abstain.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/4 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "unique_fractionless",
+      "subgroup": "control_after/simple_quotient/quotient-power-ladder-independent",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select sole equation without a fraction outside the derivative, otherwise abstain.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/4 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "modal_component",
+      "subgroup": "control_after/simple_quotient/quotient-power-ladder-independent",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Prior independent attack: combine most frequent dependent power and most frequent RHS.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/4 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "three_lhs_shortest",
+      "subgroup": "control_after/simple_quotient/quotient-power-ladder-independent",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Prior independent attack: shortest of exactly three rows sharing one LHS.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/4 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "control_after/sqrt_quotient/radical-transfer",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select first stored choice.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/5 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "control_after/sqrt_quotient/radical-transfer",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select last stored choice.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/5 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "control_after/sqrt_quotient/radical-transfer",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select uniquely shortest equation, otherwise abstain.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/5 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "control_after/sqrt_quotient/radical-transfer",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select uniquely longest equation, otherwise abstain.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/5 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "modal_root",
+      "subgroup": "control_after/sqrt_quotient/radical-transfer",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose reciprocal of most frequently printed radical.",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/5 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "control_after/trig_product/observed",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select first stored choice.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/3 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "control_after/trig_product/observed",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select last stored choice.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/3 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "control_after/trig_product/observed",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select uniquely shortest equation, otherwise abstain.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/3 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "control_after/trig_product/observed",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select uniquely longest equation, otherwise abstain.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/3 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "batch_before/all",
+      "scope": "overall",
+      "strategy": "Select first stored choice.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/5 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "batch_before/all",
+      "scope": "overall",
+      "strategy": "Select last stored choice.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/5 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "batch_before/all",
+      "scope": "overall",
+      "strategy": "Select uniquely shortest equation, otherwise abstain.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/5 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "batch_before/all",
+      "scope": "overall",
+      "strategy": "Select uniquely longest equation, otherwise abstain.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/5 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "unique_fractionless",
+      "subgroup": "batch_before/all",
+      "scope": "overall",
+      "strategy": "Select sole equation without a fraction outside the derivative, otherwise abstain.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/5 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "modal_component",
+      "subgroup": "batch_before/all",
+      "scope": "overall",
+      "strategy": "Prior independent attack: combine most frequent dependent power and most frequent RHS.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/5 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "three_lhs_shortest",
+      "subgroup": "batch_before/all",
+      "scope": "overall",
+      "strategy": "Prior independent attack: shortest of exactly three rows sharing one LHS.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/5 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "modal_root",
+      "subgroup": "batch_before/all",
+      "scope": "overall",
+      "strategy": "Choose reciprocal of most frequently printed radical.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/5 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "batch_before/exp_product/observed",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select first stored choice.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/1 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "batch_before/exp_product/observed",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select last stored choice.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "batch_before/exp_product/observed",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select uniquely shortest equation, otherwise abstain.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "batch_before/exp_product/observed",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select uniquely longest equation, otherwise abstain.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "batch_before/exp_quotient/quotient-power-ladder-independent",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select first stored choice.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "batch_before/exp_quotient/quotient-power-ladder-independent",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select last stored choice.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/1 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "batch_before/exp_quotient/quotient-power-ladder-independent",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select uniquely shortest equation, otherwise abstain.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "batch_before/exp_quotient/quotient-power-ladder-independent",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select uniquely longest equation, otherwise abstain.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "unique_fractionless",
+      "subgroup": "batch_before/exp_quotient/quotient-power-ladder-independent",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select sole equation without a fraction outside the derivative, otherwise abstain.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "modal_component",
+      "subgroup": "batch_before/exp_quotient/quotient-power-ladder-independent",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Prior independent attack: combine most frequent dependent power and most frequent RHS.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "three_lhs_shortest",
+      "subgroup": "batch_before/exp_quotient/quotient-power-ladder-independent",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Prior independent attack: shortest of exactly three rows sharing one LHS.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "batch_before/rational_product/observed",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select first stored choice.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/2 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "batch_before/rational_product/observed",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select last stored choice.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/2 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "batch_before/rational_product/observed",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select uniquely shortest equation, otherwise abstain.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/2 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "batch_before/rational_product/observed",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select uniquely longest equation, otherwise abstain.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/2 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "batch_before/trig_product/observed",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select first stored choice.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "batch_before/trig_product/observed",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select last stored choice.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "batch_before/trig_product/observed",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select uniquely shortest equation, otherwise abstain.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "batch_before/trig_product/observed",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select uniquely longest equation, otherwise abstain.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "batch_after/all",
+      "scope": "overall",
+      "strategy": "Select first stored choice.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/5 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "batch_after/all",
+      "scope": "overall",
+      "strategy": "Select last stored choice.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/5 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "batch_after/all",
+      "scope": "overall",
+      "strategy": "Select uniquely shortest equation, otherwise abstain.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/5 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "batch_after/all",
+      "scope": "overall",
+      "strategy": "Select uniquely longest equation, otherwise abstain.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/5 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "unique_fractionless",
+      "subgroup": "batch_after/all",
+      "scope": "overall",
+      "strategy": "Select sole equation without a fraction outside the derivative, otherwise abstain.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/5 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "modal_component",
+      "subgroup": "batch_after/all",
+      "scope": "overall",
+      "strategy": "Prior independent attack: combine most frequent dependent power and most frequent RHS.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/5 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "three_lhs_shortest",
+      "subgroup": "batch_after/all",
+      "scope": "overall",
+      "strategy": "Prior independent attack: shortest of exactly three rows sharing one LHS.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/5 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "modal_root",
+      "subgroup": "batch_after/all",
+      "scope": "overall",
+      "strategy": "Choose reciprocal of most frequently printed radical.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/5 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "batch_after/exp_product/observed",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select first stored choice.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/1 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "batch_after/exp_product/observed",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select last stored choice.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "batch_after/exp_product/observed",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select uniquely shortest equation, otherwise abstain.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "batch_after/exp_product/observed",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select uniquely longest equation, otherwise abstain.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "batch_after/exp_quotient/quotient-power-ladder-independent",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select first stored choice.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "batch_after/exp_quotient/quotient-power-ladder-independent",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select last stored choice.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/1 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "batch_after/exp_quotient/quotient-power-ladder-independent",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select uniquely shortest equation, otherwise abstain.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "batch_after/exp_quotient/quotient-power-ladder-independent",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select uniquely longest equation, otherwise abstain.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "unique_fractionless",
+      "subgroup": "batch_after/exp_quotient/quotient-power-ladder-independent",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select sole equation without a fraction outside the derivative, otherwise abstain.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "modal_component",
+      "subgroup": "batch_after/exp_quotient/quotient-power-ladder-independent",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Prior independent attack: combine most frequent dependent power and most frequent RHS.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "three_lhs_shortest",
+      "subgroup": "batch_after/exp_quotient/quotient-power-ladder-independent",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Prior independent attack: shortest of exactly three rows sharing one LHS.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "batch_after/rational_product/observed",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select first stored choice.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/2 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "batch_after/rational_product/observed",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select last stored choice.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/2 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "batch_after/rational_product/observed",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select uniquely shortest equation, otherwise abstain.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/2 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "batch_after/rational_product/observed",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select uniquely longest equation, otherwise abstain.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/2 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "batch_after/trig_product/observed",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select first stored choice.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "batch_after/trig_product/observed",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select last stored choice.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "batch_after/trig_product/observed",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select uniquely shortest equation, otherwise abstain.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "batch_after/trig_product/observed",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select uniquely longest equation, otherwise abstain.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1 successes; baseline 0.2 is blind five-choice guessing. Abstentions count as failures. No stable successful cue established; tiny delivered subgroups do not estimate a population rate. Balanced same-bank controls separately prevent interpreting chance hits or modal ties as a deterministic key.",
+      "sample_refs": [
+        "stage-shortcut-results.json",
+        "stage_checks.py",
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "modal_component",
+      "subgroup": "simple_quotient/quotient-power-ladder-independent/seed=6021/fixed={}",
+      "scope": "within_template",
+      "strategy": "Use only visible answer strings; choose modal root or modal dependent-power/RHS components.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Identical banks have 4 different correct equations. Observed 1/4; baseline 0.25 guesses among eligible same-bank target rows. Every eligible power becomes the correct target. The cue carries no target information.",
+      "sample_refs": [
+        "same-bank-groups.json",
+        "revision-records.json",
+        "stage_checks.py"
+      ]
+    },
+    {
+      "cue": "modal_component",
+      "subgroup": "simple_quotient/quotient-power-ladder-independent/seed=6022/fixed={}",
+      "scope": "within_template",
+      "strategy": "Use only visible answer strings; choose modal root or modal dependent-power/RHS components.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Identical banks have 4 different correct equations. Observed 1/4; baseline 0.25 guesses among eligible same-bank target rows. Every eligible power becomes the correct target. The cue carries no target information.",
+      "sample_refs": [
+        "same-bank-groups.json",
+        "revision-records.json",
+        "stage_checks.py"
+      ]
+    },
+    {
+      "cue": "modal_component",
+      "subgroup": "exp_quotient/quotient-power-ladder-independent/seed=6021/fixed={'base': 2, 'a': 1}",
+      "scope": "within_template",
+      "strategy": "Use only visible answer strings; choose modal root or modal dependent-power/RHS components.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Identical banks have 4 different correct equations. Observed 1/4; baseline 0.25 guesses among eligible same-bank target rows. Every eligible power becomes the correct target. The cue carries no target information.",
+      "sample_refs": [
+        "same-bank-groups.json",
+        "revision-records.json",
+        "stage_checks.py"
+      ]
+    },
+    {
+      "cue": "modal_component",
+      "subgroup": "exp_quotient/quotient-power-ladder-independent/seed=6022/fixed={'base': 2, 'a': 1}",
+      "scope": "within_template",
+      "strategy": "Use only visible answer strings; choose modal root or modal dependent-power/RHS components.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Identical banks have 4 different correct equations. Observed 1/4; baseline 0.25 guesses among eligible same-bank target rows. Every eligible power becomes the correct target. The cue carries no target information.",
+      "sample_refs": [
+        "same-bank-groups.json",
+        "revision-records.json",
+        "stage_checks.py"
+      ]
+    },
+    {
+      "cue": "modal_component",
+      "subgroup": "exp_quotient/quotient-power-ladder-independent/seed=6021/fixed={'base': 5, 'a': 5}",
+      "scope": "within_template",
+      "strategy": "Use only visible answer strings; choose modal root or modal dependent-power/RHS components.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Identical banks have 4 different correct equations. Observed 1/4; baseline 0.25 guesses among eligible same-bank target rows. Every eligible power becomes the correct target. The cue carries no target information.",
+      "sample_refs": [
+        "same-bank-groups.json",
+        "revision-records.json",
+        "stage_checks.py"
+      ]
+    },
+    {
+      "cue": "modal_component",
+      "subgroup": "exp_quotient/quotient-power-ladder-independent/seed=6022/fixed={'base': 5, 'a': 5}",
+      "scope": "within_template",
+      "strategy": "Use only visible answer strings; choose modal root or modal dependent-power/RHS components.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Identical banks have 4 different correct equations. Observed 1/4; baseline 0.25 guesses among eligible same-bank target rows. Every eligible power becomes the correct target. The cue carries no target information.",
+      "sample_refs": [
+        "same-bank-groups.json",
+        "revision-records.json",
+        "stage_checks.py"
+      ]
+    },
+    {
+      "cue": "modal_root",
+      "subgroup": "sqrt_quotient/radical-transfer/seed=6021/fixed={'a': 1}",
+      "scope": "within_template",
+      "strategy": "Use only visible answer strings; choose modal root or modal dependent-power/RHS components.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Identical banks have 2 different correct equations. Observed 1/2; baseline 0.5 guesses among eligible same-bank target rows. Every eligible power becomes the correct target. The cue carries no target information.",
+      "sample_refs": [
+        "same-bank-groups.json",
+        "revision-records.json",
+        "stage_checks.py"
+      ]
+    },
+    {
+      "cue": "modal_root",
+      "subgroup": "sqrt_quotient/radical-transfer/seed=6022/fixed={'a': 1}",
+      "scope": "within_template",
+      "strategy": "Use only visible answer strings; choose modal root or modal dependent-power/RHS components.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Identical banks have 2 different correct equations. Observed 1/2; baseline 0.5 guesses among eligible same-bank target rows. Every eligible power becomes the correct target. The cue carries no target information.",
+      "sample_refs": [
+        "same-bank-groups.json",
+        "revision-records.json",
+        "stage_checks.py"
+      ]
+    },
+    {
+      "cue": "modal_root",
+      "subgroup": "sqrt_quotient/radical-transfer/seed=6021/fixed={'a': 5}",
+      "scope": "within_template",
+      "strategy": "Use only visible answer strings; choose modal root or modal dependent-power/RHS components.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Identical banks have 2 different correct equations. Observed 1/2; baseline 0.5 guesses among eligible same-bank target rows. Every eligible power becomes the correct target. The cue carries no target information.",
+      "sample_refs": [
+        "same-bank-groups.json",
+        "revision-records.json",
+        "stage_checks.py"
+      ]
+    },
+    {
+      "cue": "modal_root",
+      "subgroup": "sqrt_quotient/radical-transfer/seed=6022/fixed={'a': 5}",
+      "scope": "within_template",
+      "strategy": "Use only visible answer strings; choose modal root or modal dependent-power/RHS components.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Identical banks have 2 different correct equations. Observed 1/2; baseline 0.5 guesses among eligible same-bank target rows. Every eligible power becomes the correct target. The cue carries no target information.",
+      "sample_refs": [
+        "same-bank-groups.json",
+        "revision-records.json",
+        "stage_checks.py"
+      ]
+    },
+    {
+      "cue": "modal_component",
+      "subgroup": "simple_quotient/quotient-power-ladder-exchange/seed=6020/fixed={}",
+      "scope": "within_template",
+      "strategy": "Use only visible answer strings; choose modal root or modal dependent-power/RHS components.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Identical banks have 4 different correct equations. Observed 1/4; baseline 0.25 guesses among eligible same-bank target rows. Every eligible power becomes the correct target. The cue carries no target information.",
+      "sample_refs": [
+        "same-bank-groups.json",
+        "revision-records.json",
+        "stage_checks.py"
+      ]
+    },
+    {
+      "cue": "modal_component",
+      "subgroup": "exp_quotient/quotient-power-ladder-exchange/seed=6020/fixed={'base': 2, 'a': 1}",
+      "scope": "within_template",
+      "strategy": "Use only visible answer strings; choose modal root or modal dependent-power/RHS components.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Identical banks have 4 different correct equations. Observed 1/4; baseline 0.25 guesses among eligible same-bank target rows. Every eligible power becomes the correct target. The cue carries no target information.",
+      "sample_refs": [
+        "same-bank-groups.json",
+        "revision-records.json",
+        "stage_checks.py"
+      ]
+    },
+    {
+      "cue": "modal_component",
+      "subgroup": "exp_quotient/quotient-power-ladder-exchange/seed=6020/fixed={'base': 5, 'a': 5}",
+      "scope": "within_template",
+      "strategy": "Use only visible answer strings; choose modal root or modal dependent-power/RHS components.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Identical banks have 4 different correct equations. Observed 1/4; baseline 0.25 guesses among eligible same-bank target rows. Every eligible power becomes the correct target. The cue carries no target information.",
+      "sample_refs": [
+        "same-bank-groups.json",
+        "revision-records.json",
+        "stage_checks.py"
+      ]
+    },
+    {
+      "cue": "Dependent-only derivative multiplier and independent-only RHS",
+      "subgroup": "independent regression records plus exact batch",
+      "scope": "overall",
+      "strategy": "Discard equations that do not have the separated form A(y)dy/dx=B(x).",
+      "correct": 0,
+      "total": 103,
+      "baseline": 0.2,
+      "disposition": "intended_skill",
+      "conclusion": "Form recognition uniquely selects a row in 0/103 cases. This uses the exact definition in tutorial 6767, rather than an incidental label, length or arrangement. Modified quotient/radical banks still require checking the displayed dependent power. Baseline is five-choice blind guessing.",
+      "sample_refs": [
+        "decision-cases.json",
+        "independent-records.json",
+        "batch.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "Generator template/profile/parameter selection and rejection (no retry loop)",
+      "Actual publisher normalization and inventory/within-input deduplication",
+      "Requested easy difficulty validation",
+      "Captured inventory inspection at basis 5365",
+      "History/prefix exclusions and weighted-band learner selection code; conditional positive-easy-weight simulation"
+    ],
+    "sample_refs": [
+      "easy-records.json",
+      "batch.json",
+      "delivery-control/delivery.json",
+      "delivery-control/accepted.json",
+      "delivery-batch/delivery.json",
+      "delivery-batch/accepted.json",
+      "delivery-selection.json",
+      "inventory-probe.json"
+    ],
+    "result": "Both quotient profiles and all dependent-power decisions survive filtering in controls. Exact five-item batch survives unchanged in content and has no demonstrated tested shortcut. Selection can choose every batch member and does not rewrite its mathematics."
+  },
+  "limitations": [
+    "Captured inventory only, not future database state. No live learner histories or configured weight distribution; selection is conditional with explicit future entity-ID surrogates.",
+    "Canonical radical has no captured answer bank; complete-bank fidelity is claimed only for ten supported practice sources.",
+    "No finite review proves absence of every possible heuristic. Small exact-batch subgroups do not establish population balance; all measured batch failures/successes retained.",
+    "No free-entry fields occur; valid-equivalent entry notation tests are inapplicable to the ID-based radio response."
+  ]
+}

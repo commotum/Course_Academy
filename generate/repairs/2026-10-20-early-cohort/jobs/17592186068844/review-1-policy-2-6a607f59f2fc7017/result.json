@@ -1,0 +1,117 @@
+{
+  "verdict": "accepted",
+  "summary": "The revised easy generator and exact five-item batch pass all eight checks. Ten affected legacy inventory records remain documented separately. Package files are unchanged.",
+  "source_analysis": {
+    "skill": "Separate a first-order separable ODE, integrate both factors, and recognize its general implicit solution.",
+    "reasoning_steps": [
+      "Separate the x and y factors.",
+      "Evaluate both elementary antiderivatives.",
+      "Account for relative coefficients, signs, domains, and the arbitrary constant.",
+      "Select the valid implicit equation from five choices."
+    ],
+    "invariants": [
+      "Elementary separable equations with comparable integration workload.",
+      "Five complete-equation radio choices with one correct answer.",
+      "Applicable domain restrictions and an arbitrary integration constant."
+    ],
+    "permitted_variations": [
+      "Bounded nonzero signed coefficients.",
+      "Coordinate translations and supported elementary factor families.",
+      "Correct coefficient roles, distractors, and option order."
+    ],
+    "source_refs": [
+      "d53c6172-978d-57c7-b1f0-e56e892e48a9",
+      "8653163f-c134-5fe5-8ca8-a073f08d08b4",
+      "bc5a6535-55d7-58bf-9da3-473b544214d4",
+      "tutorial 56fc1c96-3599-5022-8d83-60d4188ccf07: separate h(x)g(y), then integrate both sides",
+      "tutorial dfb65111-b319-54c6-84cc-f60506595a69: implicit exponential solution"
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "provenance.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay.json",
+        "observed-records.json",
+        "source-analysis.json"
+      ],
+      "details": "All eleven complete source prompts, solutions, banks, and correct designations replay exactly. The canonical example lacks captured answer-bank evidence; that limitation is recorded."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "independent-review.py",
+        "math-results.json",
+        "solution-stage-results.json",
+        "independent-summary.json"
+      ],
+      "details": "Independent checks passed for 117 records, 585 displayed choices, and 301 intermediate solution rows, including the exact batch."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "coefficient-coverage.json",
+        "shortcut-results.json",
+        "delivery-coverage.json",
+        "selection-results.json"
+      ],
+      "details": "All five coefficient roles occur within every easy family and survive delivery filtering. The exact batch was assessed separately. Live policy and learner history were unavailable; selection rules were inspected and reproduced read-only."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "scope-results.json",
+        "source-analysis.json"
+      ],
+      "details": "The revised scaling and translations preserve elementary separation, integration, implicit solutions, and the source radio response contract at easy difficulty."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-report.json",
+        "counterfactual-results.json"
+      ],
+      "details": "The native grader passed 629 checks: 139 accepted, 490 rejected, zero unresolved. Relevant coefficient changes reverse valid choices; irrelevant shuffles preserve acceptance."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-rest/rendering.json",
+        "render-inspection.json",
+        "ui-order-results.json"
+      ],
+      "details": "Nineteen actual-UI screenshots were rendered and visually inspected, covering every easy family, the exact batch, and controlled pairs. Rendered choice order matched the actual UI ordering function."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "package-integrity.json",
+        "execution-results.json",
+        "preflight-negative-control.json"
+      ],
+      "details": "Exact dependencies, relocation, deterministic replay, and parameter rejection passed. The retained preflight rejects the old implementation and passes the revision. Package bytes remain unchanged; no publication or database writes occurred."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "controlled-pairs.json",
+        "regression-sensitivity.json",
+        "shortcut-results.json",
+        "ui-order-results.json",
+        "delivery-coverage.json",
+        "affected-inventory.json",
+        "generated-records.json"
+      ],
+      "details": "Identical semantic banks support all five correct coefficient roles per family. The old shortcut no longer uniquely resolves answers, including all five surviving batch items. Conditional semantic and UI-position probes found no demonstrated current bypass. Ten legacy moderate/hard inventory questions retain the prior defect and have complete matching replays; acceptance concerns the revised generator and requested easy batch."
+    }
+  },
+  "findings": []
+}

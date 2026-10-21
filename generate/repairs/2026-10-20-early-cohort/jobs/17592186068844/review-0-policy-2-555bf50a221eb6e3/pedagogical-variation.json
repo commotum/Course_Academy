@@ -1,0 +1,466 @@
+{
+  "learner_operation": "Separate a first-order separable ODE, integrate both separated factors, and recognize its general implicit solution. The necessary work is to obtain or verify both separated antiderivatives and their relative coefficients, then recognize an equivalent implicit relation.",
+  "fixed_features": [
+    {
+      "feature": "First-order separable equation and elementary integration",
+      "justification": "Tutorial 56fc1c96-3599-5022-8d83-60d4188ccf07 explicitly separates h(x)g(y) and integrates dy/g(y)=h(x)dx."
+    },
+    {
+      "feature": "Five complete-equation choices with one correct radio response for easy questions",
+      "justification": "All eleven captured easy source questions use this response contract; option position is not essential."
+    },
+    {
+      "feature": "Arbitrary additive integration constant and applicable real domains",
+      "justification": "Canonical d53c6172-978d-57c7-b1f0-e56e892e48a9 absorbs 2K into C; tutorial requires g(y) nonzero."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Keyed equation among distractor equations",
+      "eligible_variation": "A signed coefficient or a modest exponent change can change which primitive/sign/factor is correct without changing the separation/integration method. Labels and positions are incidental.",
+      "observed": "Default bank always offers L=R+C, L=-R+C, L=2R+C for one shared L, and keys R. All 66 independent defaults, all 65 surviving independent records, and all five batch records reveal the key through this arrangement."
+    },
+    {
+      "role": "Separated primitive shapes and coefficients",
+      "eligible_variation": "The eleven supported elementary factor types can retain their method while changing bounded signed multipliers or source-supported powers; same h/k translation is useful but does not justify forced bank relationships.",
+      "observed": "Easy generation only varies integer h,k in -6..6; primitive forms, slopes and relative coefficient rules remain fixed within each template. Option shuffling changes position but preserves the demonstrated cue."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "independent arcsin_autonomous",
+      "sample_refs": [
+        "verified/independent-records.json",
+        "verified/shortcut-results.json"
+      ],
+      "result": "7/7 answered from choice structure alone"
+    },
+    {
+      "case": "independent exp_affine",
+      "sample_refs": [
+        "verified/independent-records.json",
+        "verified/shortcut-results.json"
+      ],
+      "result": "8/8 answered from choice structure alone"
+    },
+    {
+      "case": "independent exp_linear",
+      "sample_refs": [
+        "verified/independent-records.json",
+        "verified/shortcut-results.json"
+      ],
+      "result": "5/5 answered from choice structure alone"
+    },
+    {
+      "case": "independent log_exp",
+      "sample_refs": [
+        "verified/independent-records.json",
+        "verified/shortcut-results.json"
+      ],
+      "result": "8/8 answered from choice structure alone"
+    },
+    {
+      "case": "independent log_sin",
+      "sample_refs": [
+        "verified/independent-records.json",
+        "verified/shortcut-results.json"
+      ],
+      "result": "7/7 answered from choice structure alone"
+    },
+    {
+      "case": "independent power_cube",
+      "sample_refs": [
+        "verified/independent-records.json",
+        "verified/shortcut-results.json"
+      ],
+      "result": "7/7 answered from choice structure alone"
+    },
+    {
+      "case": "independent root_power",
+      "sample_refs": [
+        "verified/independent-records.json",
+        "verified/shortcut-results.json"
+      ],
+      "result": "6/6 answered from choice structure alone"
+    },
+    {
+      "case": "independent sec_log",
+      "sample_refs": [
+        "verified/independent-records.json",
+        "verified/shortcut-results.json"
+      ],
+      "result": "4/4 answered from choice structure alone"
+    },
+    {
+      "case": "independent sin_poly",
+      "sample_refs": [
+        "verified/independent-records.json",
+        "verified/shortcut-results.json"
+      ],
+      "result": "4/4 answered from choice structure alone"
+    },
+    {
+      "case": "independent tan_autonomous",
+      "sample_refs": [
+        "verified/independent-records.json",
+        "verified/shortcut-results.json"
+      ],
+      "result": "5/5 answered from choice structure alone"
+    },
+    {
+      "case": "independent tan_exp",
+      "sample_refs": [
+        "verified/independent-records.json",
+        "verified/shortcut-results.json"
+      ],
+      "result": "5/5 answered from choice structure alone"
+    },
+    {
+      "case": "batch arcsin_autonomous",
+      "sample_refs": [
+        "batch-records.json",
+        "verified/shortcut-results.json"
+      ],
+      "result": "1/1 answered from choice structure alone"
+    },
+    {
+      "case": "batch exp_linear",
+      "sample_refs": [
+        "batch-records.json",
+        "verified/shortcut-results.json"
+      ],
+      "result": "2/2 answered from choice structure alone"
+    },
+    {
+      "case": "batch root_power",
+      "sample_refs": [
+        "batch-records.json",
+        "verified/shortcut-results.json"
+      ],
+      "result": "1/1 answered from choice structure alone"
+    },
+    {
+      "case": "batch tan_autonomous",
+      "sample_refs": [
+        "batch-records.json",
+        "verified/shortcut-results.json"
+      ],
+      "result": "1/1 answered from choice structure alone"
+    },
+    {
+      "case": "post-filter independent coverage",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "delivery-coverage.json"
+      ],
+      "result": "65/65 surviving default-bank questions retain the shortcut; 12/77 raw records deduplicated."
+    },
+    {
+      "case": "captured non-source generated inventory",
+      "sample_refs": [
+        "generated-records.json",
+        "inventory-results.json"
+      ],
+      "result": "10/10 generated moderate/hard stored questions replayed with matching question IDs, prompts, solutions and full banks; all retain the shortcut."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "exp_linear seed=101 k=0; h changes from 0 to 1.",
+      "expected": "ODE numerator changes from 2x to 2(x+1); solution and keyed choice change from e^y=x^2+C to e^y=(x+1)^2+C; all wrong choices remain rejected.",
+      "observed": "Displayed prompt, all choices, final solution, and correct answer identity change coherently. Independent derivatives hold. Native grader accepts the new key and rejects all four distractors for both instances. Actual UI screenshots render both mathematical relationships.",
+      "status": "passed",
+      "justification": "Coordinate shift affects the x primitive and therefore requires the learner to reconsider the equation; same derivative/integration method. It does not cure the bank cue.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "verified/grader-input.json",
+        "grader-report.json",
+        "render-final-records.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "exp_linear h=k=0; seed changes from 101 to 102, shuffling option order.",
+      "expected": "Prompt, mathematical solution, and accepted equation remain fixed while displayed order may change.",
+      "observed": "Order changes; prompt and solution stay identical; stable correct-answer UUID survives; the native grader accepts the original owned answer on the shuffled record. Both actual UI views render the same equation.",
+      "status": "passed",
+      "justification": "Option order has no role in the source separation/integration criterion.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "verified/grader-input.json",
+        "grader-report.json",
+        "render-final-records.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "Three choices share L and have right sides R, -R, 2R.",
+      "subgroup": "independent: arcsin_autonomous",
+      "scope": "within_template",
+      "strategy": "Choose the relation whose right side has both its negative and double represented for the same left side; ignore the differential equation.",
+      "correct": 7,
+      "total": 7,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Random selection among five radio choices succeeds at 0.2. This option-pattern strategy succeeds on every tested member of this recognizable family; comparison uses only signs/scales already printed in the choices and requires no separation or integration.",
+      "sample_refs": [
+        "verified/independent-records.json",
+        "verified/shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Three choices share L and have right sides R, -R, 2R.",
+      "subgroup": "independent: exp_affine",
+      "scope": "within_template",
+      "strategy": "Choose the relation whose right side has both its negative and double represented for the same left side; ignore the differential equation.",
+      "correct": 8,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Random selection among five radio choices succeeds at 0.2. This option-pattern strategy succeeds on every tested member of this recognizable family; comparison uses only signs/scales already printed in the choices and requires no separation or integration.",
+      "sample_refs": [
+        "verified/independent-records.json",
+        "verified/shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Three choices share L and have right sides R, -R, 2R.",
+      "subgroup": "independent: exp_linear",
+      "scope": "within_template",
+      "strategy": "Choose the relation whose right side has both its negative and double represented for the same left side; ignore the differential equation.",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Random selection among five radio choices succeeds at 0.2. This option-pattern strategy succeeds on every tested member of this recognizable family; comparison uses only signs/scales already printed in the choices and requires no separation or integration.",
+      "sample_refs": [
+        "verified/independent-records.json",
+        "verified/shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Three choices share L and have right sides R, -R, 2R.",
+      "subgroup": "independent: log_exp",
+      "scope": "within_template",
+      "strategy": "Choose the relation whose right side has both its negative and double represented for the same left side; ignore the differential equation.",
+      "correct": 8,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Random selection among five radio choices succeeds at 0.2. This option-pattern strategy succeeds on every tested member of this recognizable family; comparison uses only signs/scales already printed in the choices and requires no separation or integration.",
+      "sample_refs": [
+        "verified/independent-records.json",
+        "verified/shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Three choices share L and have right sides R, -R, 2R.",
+      "subgroup": "independent: log_sin",
+      "scope": "within_template",
+      "strategy": "Choose the relation whose right side has both its negative and double represented for the same left side; ignore the differential equation.",
+      "correct": 7,
+      "total": 7,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Random selection among five radio choices succeeds at 0.2. This option-pattern strategy succeeds on every tested member of this recognizable family; comparison uses only signs/scales already printed in the choices and requires no separation or integration.",
+      "sample_refs": [
+        "verified/independent-records.json",
+        "verified/shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Three choices share L and have right sides R, -R, 2R.",
+      "subgroup": "independent: power_cube",
+      "scope": "within_template",
+      "strategy": "Choose the relation whose right side has both its negative and double represented for the same left side; ignore the differential equation.",
+      "correct": 7,
+      "total": 7,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Random selection among five radio choices succeeds at 0.2. This option-pattern strategy succeeds on every tested member of this recognizable family; comparison uses only signs/scales already printed in the choices and requires no separation or integration.",
+      "sample_refs": [
+        "verified/independent-records.json",
+        "verified/shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Three choices share L and have right sides R, -R, 2R.",
+      "subgroup": "independent: root_power",
+      "scope": "within_template",
+      "strategy": "Choose the relation whose right side has both its negative and double represented for the same left side; ignore the differential equation.",
+      "correct": 6,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Random selection among five radio choices succeeds at 0.2. This option-pattern strategy succeeds on every tested member of this recognizable family; comparison uses only signs/scales already printed in the choices and requires no separation or integration.",
+      "sample_refs": [
+        "verified/independent-records.json",
+        "verified/shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Three choices share L and have right sides R, -R, 2R.",
+      "subgroup": "independent: sec_log",
+      "scope": "within_template",
+      "strategy": "Choose the relation whose right side has both its negative and double represented for the same left side; ignore the differential equation.",
+      "correct": 4,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Random selection among five radio choices succeeds at 0.2. This option-pattern strategy succeeds on every tested member of this recognizable family; comparison uses only signs/scales already printed in the choices and requires no separation or integration.",
+      "sample_refs": [
+        "verified/independent-records.json",
+        "verified/shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Three choices share L and have right sides R, -R, 2R.",
+      "subgroup": "independent: sin_poly",
+      "scope": "within_template",
+      "strategy": "Choose the relation whose right side has both its negative and double represented for the same left side; ignore the differential equation.",
+      "correct": 4,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Random selection among five radio choices succeeds at 0.2. This option-pattern strategy succeeds on every tested member of this recognizable family; comparison uses only signs/scales already printed in the choices and requires no separation or integration.",
+      "sample_refs": [
+        "verified/independent-records.json",
+        "verified/shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Three choices share L and have right sides R, -R, 2R.",
+      "subgroup": "independent: tan_autonomous",
+      "scope": "within_template",
+      "strategy": "Choose the relation whose right side has both its negative and double represented for the same left side; ignore the differential equation.",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Random selection among five radio choices succeeds at 0.2. This option-pattern strategy succeeds on every tested member of this recognizable family; comparison uses only signs/scales already printed in the choices and requires no separation or integration.",
+      "sample_refs": [
+        "verified/independent-records.json",
+        "verified/shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Three choices share L and have right sides R, -R, 2R.",
+      "subgroup": "independent: tan_exp",
+      "scope": "within_template",
+      "strategy": "Choose the relation whose right side has both its negative and double represented for the same left side; ignore the differential equation.",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Random selection among five radio choices succeeds at 0.2. This option-pattern strategy succeeds on every tested member of this recognizable family; comparison uses only signs/scales already printed in the choices and requires no separation or integration.",
+      "sample_refs": [
+        "verified/independent-records.json",
+        "verified/shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Three choices share L and have right sides R, -R, 2R.",
+      "subgroup": "batch: arcsin_autonomous",
+      "scope": "within_template",
+      "strategy": "Choose the relation whose right side has both its negative and double represented for the same left side; ignore the differential equation.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Random selection among five radio choices succeeds at 0.2. This option-pattern strategy succeeds on every tested member of this recognizable family; comparison uses only signs/scales already printed in the choices and requires no separation or integration.",
+      "sample_refs": [
+        "batch-records.json",
+        "verified/shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Three choices share L and have right sides R, -R, 2R.",
+      "subgroup": "batch: exp_linear",
+      "scope": "within_template",
+      "strategy": "Choose the relation whose right side has both its negative and double represented for the same left side; ignore the differential equation.",
+      "correct": 2,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Random selection among five radio choices succeeds at 0.2. This option-pattern strategy succeeds on every tested member of this recognizable family; comparison uses only signs/scales already printed in the choices and requires no separation or integration.",
+      "sample_refs": [
+        "batch-records.json",
+        "verified/shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Three choices share L and have right sides R, -R, 2R.",
+      "subgroup": "batch: root_power",
+      "scope": "within_template",
+      "strategy": "Choose the relation whose right side has both its negative and double represented for the same left side; ignore the differential equation.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Random selection among five radio choices succeeds at 0.2. This option-pattern strategy succeeds on every tested member of this recognizable family; comparison uses only signs/scales already printed in the choices and requires no separation or integration.",
+      "sample_refs": [
+        "batch-records.json",
+        "verified/shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Three choices share L and have right sides R, -R, 2R.",
+      "subgroup": "batch: tan_autonomous",
+      "scope": "within_template",
+      "strategy": "Choose the relation whose right side has both its negative and double represented for the same left side; ignore the differential equation.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Random selection among five radio choices succeeds at 0.2. This option-pattern strategy succeeds on every tested member of this recognizable family; comparison uses only signs/scales already printed in the choices and requires no separation or integration.",
+      "sample_refs": [
+        "batch-records.json",
+        "verified/shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed R,-R,2R bank construction",
+      "subgroup": "actual runner batch after shared delivery",
+      "scope": "overall",
+      "strategy": "Same choice-only equation pattern, applied separately to every surviving item.",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "All five published candidates are answered; baseline is uniform one-of-five guessing (20%). Larger control sets do not waive this batch failure.",
+      "sample_refs": [
+        "batch-records.json",
+        "delivery-batch/accepted.json",
+        "delivery-coverage.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "generator parameter validation and whole-bank rejection",
+      "requested easy difficulty",
+      "publisher knowledge-point identity and validation",
+      "stable identities and captured-inventory/within-batch deduplication",
+      "learner selection code: history exclusions, difficulty bands, and uniform choice within selected band"
+    ],
+    "sample_refs": [
+      "verified/boundary-results.json",
+      "delivery-independent/accepted.json",
+      "delivery-batch/accepted.json",
+      "delivery-coverage.json",
+      "generated-records.json"
+    ],
+    "result": "Independent sample 77 -> 65 survivors; actual batch 5 -> 5 survivors. Choice-only cue survives every delivered default item. The selection code uses no answer-content balancing, so any selected default item remains vulnerable. A numerical live mixture with original source questions is not inferred without policy/history."
+  },
+  "limitations": [
+    "No finite sample proves the absence of additional shortcuts; this report demonstrates one concrete bypass.",
+    "No publication/preparation file exists; shared actual publisher filtering ran read-only against captured basis 5367.",
+    "Learner-specific policy weights/history and future database IDs are absent; no exact learner sequence or live mixture is certified. This limitation cannot rescue the per-record bypass.",
+    "Stored inventory has no generation metadata; replay seed 0 is explicitly reconstructed, not claimed as historical seed. Stable IDs and all stored mathematical content match.",
+    "Canonical example lacks a radio bank and is not an implemented exponent profile; its source mathematics informs the account, not a fabricated source replay."
+  ]
+}

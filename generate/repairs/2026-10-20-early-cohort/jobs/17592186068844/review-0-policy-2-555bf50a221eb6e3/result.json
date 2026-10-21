@@ -1,0 +1,118 @@
+{
+  "verdict": "revise",
+  "summary": "A choice-only pattern reveals every tested default-bank answer, including all five surviving batch questions and ten stored generated questions.",
+  "source_analysis": {
+    "skill": "Separate a first-order differential equation, integrate both factors, and recognize its general implicit solution.",
+    "reasoning_steps": [
+      "Identify the separated factors and domain restrictions.",
+      "Integrate the x and y factors.",
+      "Absorb constant factors into C and select the equivalent implicit equation."
+    ],
+    "invariants": [
+      "Elementary separable equations with comparable integration workload.",
+      "Five complete-equation radio choices with one correct response.",
+      "Applicable real-domain restrictions and an arbitrary integration constant."
+    ],
+    "permitted_variations": [
+      "Bounded signed coefficients and source-supported powers.",
+      "Supported elementary factor types and coordinate shifts.",
+      "Correct sign, coefficient relationships, distractors, and option order."
+    ],
+    "source_refs": [
+      "d53c6172-978d-57c7-b1f0-e56e892e48a9",
+      "8653163f-c134-5fe5-8ca8-a073f08d08b4",
+      "bc5a6535-55d7-58bf-9da3-473b544214d4",
+      "tutorial 56fc1c96-3599-5022-8d83-60d4188ccf07: separate h(x)g(y), integrate both sides, require g(y) nonzero"
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "verified/source-replay.json",
+        "verified/independent-records.json",
+        "source-analysis.json"
+      ],
+      "details": "All eleven complete source questions reproduce exact prompts, solutions, complete banks, and correct designations. The canonical example lacks a captured answer bank and an implemented exponent profile; this limitation is recorded."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "audit.py",
+        "verified/math-results.json",
+        "counterfactual-results.json"
+      ],
+      "details": "Independent differentiation checks passed for 410 displayed options and 82 final equations, including the exact batch."
+    },
+    "variety": {
+      "status": "failed",
+      "evidence_paths": [
+        "verified/shortcut-results.json",
+        "delivery-coverage.json",
+        "inventory-results.json"
+      ],
+      "details": "The same answer-bank cue succeeds on 66/66 independent defaults, 65/65 filtered survivors, 5/5 batch records, and 10/10 reproduced generated inventory records."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "scope-results.json",
+        "source-analysis.json"
+      ],
+      "details": "Sampled easy outputs preserve separation, elementary integration, implicit solutions, and the source response contract."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "verified/grader-input.json",
+        "grader-report.json",
+        "counterfactual-results.json"
+      ],
+      "details": "Native grader passed 426 valid-choice checks: 86 accepted, 340 rejected, zero unresolved. Relevant shifts and irrelevant option shuffles were included."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-final/rendering.json",
+        "render-inspection.json"
+      ],
+      "details": "Nineteen actual-UI screenshots were rendered and inspected, covering all source families, the complete batch, and controlled pairs."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "package-integrity.json",
+        "verified/boundary-results.json"
+      ],
+      "details": "Exact dependency versions, relocation, deterministic replay, parameter rejection, and declared files checked. Package snapshot unchanged."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "reproduce-shortcut.py",
+        "minimal-failure.json",
+        "delivery-coverage.json"
+      ],
+      "details": "Within every sampled easy family, the keyed equation is identifiable from the fixed R, -R, 2R choice structure without examining the ODE. Publication filtering preserves this bypass. Actual learner policy/history was unavailable; no exact live mixture is certified."
+    }
+  },
+  "findings": [
+    {
+      "kind": "decision_shortcut",
+      "description": "The default bank offers keyed L=R+C alongside L=-R+C and L=2R+C. Choose the equation whose right side has both its negative and double represented with the same left side. This answers every tested default question without separation or integration, including all five surviving batch items.",
+      "source_refs": [
+        "8653163f-c134-5fe5-8ca8-a073f08d08b4",
+        "d53c6172-978d-57c7-b1f0-e56e892e48a9",
+        "tutorial 56fc1c96-3599-5022-8d83-60d4188ccf07: separate then integrate"
+      ],
+      "reproduction": "From evidence_root run: PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python reproduce-shortcut.py. It exits 1 and saves minimal-failure.json. Minimal call: generate_easy(seed=101, template=\"exp_linear\", parameters={\"h\":0,\"k\":0}). The keyed e^y=x^2+C is exposed by the co-offered negative and doubled right sides.",
+      "requested_change": "Change the family-wide default bank construction so its sign/scale relationships do not reveal the key. Vary eligible correct coefficient/sign roles while preserving the source method, retain the strict reproduction test, and rebuild the five-item batch. affected-inventory.json identifies ten demonstrated stored generated instances with complete matching replays in generated-records.json; preserve original source questions."
+    }
+  ]
+}

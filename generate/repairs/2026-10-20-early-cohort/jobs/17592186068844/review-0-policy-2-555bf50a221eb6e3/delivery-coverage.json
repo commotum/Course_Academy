@@ -1,0 +1,86 @@
+{
+  "stages": [
+    {
+      "path": "verified/independent-records.json",
+      "total": 77,
+      "standard": 66,
+      "shortcut_correct": 66,
+      "by_template": {
+        "exp_linear": 5,
+        "arcsin_autonomous": 7,
+        "tan_exp": 5,
+        "log_exp": 8,
+        "tan_autonomous": 5,
+        "power_cube": 7,
+        "exp_affine": 8,
+        "root_power": 6,
+        "sin_poly": 4,
+        "sec_log": 4,
+        "log_sin": 7
+      }
+    },
+    {
+      "path": "delivery-independent/accepted.json",
+      "total": 65,
+      "standard": 65,
+      "shortcut_correct": 65,
+      "by_template": {
+        "exp_linear": 5,
+        "arcsin_autonomous": 7,
+        "tan_exp": 5,
+        "log_exp": 8,
+        "tan_autonomous": 4,
+        "power_cube": 7,
+        "exp_affine": 8,
+        "root_power": 6,
+        "sin_poly": 4,
+        "sec_log": 4,
+        "log_sin": 7
+      }
+    },
+    {
+      "path": "batch-records.json",
+      "total": 5,
+      "standard": 5,
+      "shortcut_correct": 5,
+      "by_template": {
+        "root_power": 1,
+        "exp_linear": 2,
+        "arcsin_autonomous": 1,
+        "tan_autonomous": 1
+      }
+    },
+    {
+      "path": "delivery-batch/accepted.json",
+      "total": 5,
+      "standard": 5,
+      "shortcut_correct": 5,
+      "by_template": {
+        "root_power": 1,
+        "exp_linear": 2,
+        "arcsin_autonomous": 1,
+        "tan_autonomous": 1
+      }
+    },
+    {
+      "path": "generated-records.json",
+      "total": 10,
+      "standard": 10,
+      "shortcut_correct": 10,
+      "by_template": {
+        "two_sided_terms": 5,
+        "two_x_terms": 5
+      }
+    }
+  ],
+  "inventory_basis": 5367,
+  "publication_preparation_present": false,
+  "rejection_resampling": "generate chooses template and bounded h/k once, then constructs full bank; equivalent-choice guard raises instead of internal resampling. All selected source/boundary/random tests returned without rejection.",
+  "difficulty": "All sampled/publication-accepted records easy; shared checker rejects any other requested band.",
+  "learner_selection": "Read question_selection.rs select(): fresh usable candidates partitioned by difficulty, bands chosen by positive weights, then uniform index from SHA-256 seed; no answer-role balancing or bank-content inspection. Removing seen candidates cannot defeat a cue that identifies every remaining default-bank record. Captured inventory has 11 source easy and 10 generated moderate/hard; all ten latter reproduced in generated-records.json. Actual learner policies/history and future DB IDs are absent; no claim about their numerical mix with source items.",
+  "selection_limitations": [
+    "No live policy or learner-history capture, so cannot certify any particular learner sequence or exact live mixture.",
+    "Captured basis 5367 only; later concurrent publication may change deduplication."
+  ],
+  "database_writes": 0
+}

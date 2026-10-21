@@ -1,0 +1,2589 @@
+{
+  "learner_operation": "Separate the x/y factors, evaluate elementary antiderivatives (or verify candidate derivatives), and determine the valid implicit equation, including relative sign/scale.",
+  "fixed_features": [
+    {
+      "feature": "First-order separable equation and implicit general solution",
+      "justification": "Canonical d53c6172-978d-57c7-b1f0-e56e892e48a9 and tutorial 56fc1c96-3599-5022-8d83-60d4188ccf07 separate then evaluate both integrals."
+    },
+    {
+      "feature": "Five complete-equation radio choices; one key",
+      "justification": "All eleven captured answer banks have this contract."
+    },
+    {
+      "feature": "Bounded nonzero scalar factors, elementary primitives, real domains",
+      "justification": "Preserve source prerequisites and easy workload. Exclude zero scalars since that would eliminate one side of the intended integration."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Relative coefficient and sign of the valid equation",
+      "eligible_variation": "Any offered d in {-2,-1,1,2,3} may be correct when ODE coefficient c changes. A particular source coefficient is incidental.",
+      "observed": "All five roles are uniquely correct in identical semantic banks for each of 11 easy families; all survive real filtering."
+    },
+    {
+      "role": "Coordinate shifts h,k and elementary source family",
+      "eligible_variation": "Shift variables within bounded integer domains and vary among all captured elementary families. Autonomous x shifts change only C, so h=0 is justified.",
+      "observed": "Controlled shifts -2,+3; boundaries ±6; 11 fresh seeds. All 11 source banks replay exactly."
+    },
+    {
+      "role": "Correct option position",
+      "eligible_variation": "Any of five positions; option-order/ID changes carry no mathematical evidence.",
+      "observed": "Raw generator shuffles; actual UI additionally hashes item and field/choice IDs. 19 rendered DOM orders verified; 33 conditional UI position probes saved. Production task/field IDs are not captured."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "arcsin_autonomous controlled coefficient decisions",
+      "sample_refs": [
+        "controlled-pairs.json",
+        "independent-records.json",
+        "coefficient-coverage.json",
+        "delivery-coverage.json"
+      ],
+      "result": "All five c choices tested with other data fixed; distinct keys, prompts and solutions; five mathematical choices remain after filtering."
+    },
+    {
+      "case": "exp_affine controlled coefficient decisions",
+      "sample_refs": [
+        "controlled-pairs.json",
+        "independent-records.json",
+        "coefficient-coverage.json",
+        "delivery-coverage.json"
+      ],
+      "result": "All five c choices tested with other data fixed; distinct keys, prompts and solutions; five mathematical choices remain after filtering."
+    },
+    {
+      "case": "exp_linear controlled coefficient decisions",
+      "sample_refs": [
+        "controlled-pairs.json",
+        "independent-records.json",
+        "coefficient-coverage.json",
+        "delivery-coverage.json"
+      ],
+      "result": "All five c choices tested with other data fixed; distinct keys, prompts and solutions; five mathematical choices remain after filtering."
+    },
+    {
+      "case": "log_exp controlled coefficient decisions",
+      "sample_refs": [
+        "controlled-pairs.json",
+        "independent-records.json",
+        "coefficient-coverage.json",
+        "delivery-coverage.json"
+      ],
+      "result": "All five c choices tested with other data fixed; distinct keys, prompts and solutions; five mathematical choices remain after filtering."
+    },
+    {
+      "case": "log_sin controlled coefficient decisions",
+      "sample_refs": [
+        "controlled-pairs.json",
+        "independent-records.json",
+        "coefficient-coverage.json",
+        "delivery-coverage.json"
+      ],
+      "result": "All five c choices tested with other data fixed; distinct keys, prompts and solutions; five mathematical choices remain after filtering."
+    },
+    {
+      "case": "power_cube controlled coefficient decisions",
+      "sample_refs": [
+        "controlled-pairs.json",
+        "independent-records.json",
+        "coefficient-coverage.json",
+        "delivery-coverage.json"
+      ],
+      "result": "All five c choices tested with other data fixed; distinct keys, prompts and solutions; five mathematical choices remain after filtering."
+    },
+    {
+      "case": "root_power controlled coefficient decisions",
+      "sample_refs": [
+        "controlled-pairs.json",
+        "independent-records.json",
+        "coefficient-coverage.json",
+        "delivery-coverage.json"
+      ],
+      "result": "All five c choices tested with other data fixed; distinct keys, prompts and solutions; five mathematical choices remain after filtering."
+    },
+    {
+      "case": "sec_log controlled coefficient decisions",
+      "sample_refs": [
+        "controlled-pairs.json",
+        "independent-records.json",
+        "coefficient-coverage.json",
+        "delivery-coverage.json"
+      ],
+      "result": "All five c choices tested with other data fixed; distinct keys, prompts and solutions; five mathematical choices remain after filtering."
+    },
+    {
+      "case": "sin_poly controlled coefficient decisions",
+      "sample_refs": [
+        "controlled-pairs.json",
+        "independent-records.json",
+        "coefficient-coverage.json",
+        "delivery-coverage.json"
+      ],
+      "result": "All five c choices tested with other data fixed; distinct keys, prompts and solutions; five mathematical choices remain after filtering."
+    },
+    {
+      "case": "tan_autonomous controlled coefficient decisions",
+      "sample_refs": [
+        "controlled-pairs.json",
+        "independent-records.json",
+        "coefficient-coverage.json",
+        "delivery-coverage.json"
+      ],
+      "result": "All five c choices tested with other data fixed; distinct keys, prompts and solutions; five mathematical choices remain after filtering."
+    },
+    {
+      "case": "tan_exp controlled coefficient decisions",
+      "sample_refs": [
+        "controlled-pairs.json",
+        "independent-records.json",
+        "coefficient-coverage.json",
+        "delivery-coverage.json"
+      ],
+      "result": "All five c choices tested with other data fixed; distinct keys, prompts and solutions; five mathematical choices remain after filtering."
+    },
+    {
+      "case": "Exact runner batch",
+      "sample_refs": [
+        "batch-records.json",
+        "delivery-batch/accepted.json",
+        "shortcut-results.json",
+        "ui-order-results.json"
+      ],
+      "result": "5/5 survive. c counts: 2 three times, 1 once, -2 once; four families. Raw fixed-position/length/lexical rules score at most 2/5; rendered correct positions 1,2,3,4,4. Old unique sign/double attack 0/5. Singleton template groups cannot establish a general predictor."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Hold family, h,k, seed and semantic bank fixed; c=1 -> c=3.",
+      "expected": "Former solution must be rejected for changed ODE; new scale accepted. Prompt and all derived solution steps change together.",
+      "observed": "All 11 pairs pass exact differentiation and native accept/reject checks. exp_linear before/after and other family representatives visually inspected in actual UI.",
+      "status": "passed",
+      "justification": "Scalar coefficient belongs to the separated x factor; its antiderivative coefficient must change. It is not a fixed source constraint.",
+      "sample_refs": [
+        "controlled-pairs.json",
+        "counterfactual-results.json",
+        "math-results.json",
+        "solution-stage-results.json",
+        "grader-input.json",
+        "grader-report.json",
+        "render-records.json",
+        "render-rest-records.json",
+        "render-inspection.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Change seed with explicit mathematical parameters held fixed, changing raw option order.",
+      "expected": "Preserve ODE, explanation and correct equation; prior correct choice remains accepted.",
+      "observed": "All eleven pairs preserve prompt/solution/key and pass native grading. Actual renderer displays one pair with the same mathematics. UI applies a further independent position shuffle, documented separately.",
+      "status": "passed",
+      "justification": "Option order is incidental to mathematical equivalence and the one-choice source contract.",
+      "sample_refs": [
+        "controlled-pairs.json",
+        "counterfactual-results.json",
+        "grader-report.json",
+        "render-inspection.json",
+        "ui-order-results.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "first",
+      "subgroup": "arcsin_autonomous matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose first equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "arcsin_autonomous matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose last equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "middle",
+      "subgroup": "arcsin_autonomous matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose middle equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "arcsin_autonomous matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose shortest equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "arcsin_autonomous matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose longest equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lexical_first",
+      "subgroup": "arcsin_autonomous matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose lexical_first equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lexical_last",
+      "subgroup": "arcsin_autonomous matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose lexical_last equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "exp_affine matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose first equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "exp_affine matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose last equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "middle",
+      "subgroup": "exp_affine matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose middle equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "exp_affine matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose shortest equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "exp_affine matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose longest equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lexical_first",
+      "subgroup": "exp_affine matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose lexical_first equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lexical_last",
+      "subgroup": "exp_affine matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose lexical_last equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "exp_linear matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose first equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "exp_linear matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose last equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "middle",
+      "subgroup": "exp_linear matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose middle equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "exp_linear matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose shortest equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "exp_linear matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose longest equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lexical_first",
+      "subgroup": "exp_linear matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose lexical_first equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lexical_last",
+      "subgroup": "exp_linear matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose lexical_last equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "log_exp matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose first equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "log_exp matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose last equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "middle",
+      "subgroup": "log_exp matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose middle equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "log_exp matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose shortest equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "log_exp matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose longest equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lexical_first",
+      "subgroup": "log_exp matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose lexical_first equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lexical_last",
+      "subgroup": "log_exp matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose lexical_last equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "log_sin matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose first equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "log_sin matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose last equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "middle",
+      "subgroup": "log_sin matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose middle equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "log_sin matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose shortest equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "log_sin matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose longest equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lexical_first",
+      "subgroup": "log_sin matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose lexical_first equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lexical_last",
+      "subgroup": "log_sin matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose lexical_last equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "power_cube matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose first equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "power_cube matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose last equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "middle",
+      "subgroup": "power_cube matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose middle equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "power_cube matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose shortest equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "power_cube matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose longest equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lexical_first",
+      "subgroup": "power_cube matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose lexical_first equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lexical_last",
+      "subgroup": "power_cube matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose lexical_last equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "root_power matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose first equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "root_power matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose last equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "middle",
+      "subgroup": "root_power matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose middle equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "root_power matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose shortest equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "root_power matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose longest equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lexical_first",
+      "subgroup": "root_power matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose lexical_first equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lexical_last",
+      "subgroup": "root_power matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose lexical_last equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "sec_log matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose first equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "sec_log matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose last equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "middle",
+      "subgroup": "sec_log matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose middle equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "sec_log matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose shortest equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "sec_log matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose longest equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lexical_first",
+      "subgroup": "sec_log matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose lexical_first equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lexical_last",
+      "subgroup": "sec_log matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose lexical_last equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "sin_poly matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose first equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "sin_poly matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose last equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "middle",
+      "subgroup": "sin_poly matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose middle equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "sin_poly matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose shortest equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "sin_poly matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose longest equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lexical_first",
+      "subgroup": "sin_poly matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose lexical_first equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lexical_last",
+      "subgroup": "sin_poly matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose lexical_last equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "tan_autonomous matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose first equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "tan_autonomous matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose last equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "middle",
+      "subgroup": "tan_autonomous matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose middle equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "tan_autonomous matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose shortest equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "tan_autonomous matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose longest equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lexical_first",
+      "subgroup": "tan_autonomous matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose lexical_first equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lexical_last",
+      "subgroup": "tan_autonomous matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose lexical_last equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "tan_exp matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose first equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "tan_exp matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose last equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "middle",
+      "subgroup": "tan_exp matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose middle equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "tan_exp matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose shortest equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "tan_exp matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose longest equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lexical_first",
+      "subgroup": "tan_exp matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose lexical_first equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lexical_last",
+      "subgroup": "tan_exp matched coefficients after publication filters",
+      "scope": "within_template",
+      "strategy": "Choose lexical_last equation using only the five visible bank expressions.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Semantic banks held fixed and each key occurs once: this policy gives 1/5, the five-way uniform guess baseline. This matches generator order; actual UI position probes are separate.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 1",
+      "subgroup": "exp_linear; controlled itemId=1",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 1 after executing actual UI choiceOrder.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform five-way guessing (0.2). Small deterministic hash samples need not equal baseline; no fixed-position strategy answers the whole matched group. Task and field IDs change live ordering; no stable mathematical role is assigned to position.",
+      "sample_refs": [
+        "ui-order-probes.js",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 5",
+      "subgroup": "exp_linear; controlled itemId=1",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 5 after executing actual UI choiceOrder.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform five-way guessing (0.2). Small deterministic hash samples need not equal baseline; no fixed-position strategy answers the whole matched group. Task and field IDs change live ordering; no stable mathematical role is assigned to position.",
+      "sample_refs": [
+        "ui-order-probes.js",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 1",
+      "subgroup": "exp_linear; controlled itemId=17",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 1 after executing actual UI choiceOrder.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform five-way guessing (0.2). Small deterministic hash samples need not equal baseline; no fixed-position strategy answers the whole matched group. Task and field IDs change live ordering; no stable mathematical role is assigned to position.",
+      "sample_refs": [
+        "ui-order-probes.js",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 5",
+      "subgroup": "exp_linear; controlled itemId=17",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 5 after executing actual UI choiceOrder.",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform five-way guessing (0.2). Small deterministic hash samples need not equal baseline; no fixed-position strategy answers the whole matched group. Task and field IDs change live ordering; no stable mathematical role is assigned to position.",
+      "sample_refs": [
+        "ui-order-probes.js",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 1",
+      "subgroup": "exp_linear; controlled itemId=17592186600123",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 1 after executing actual UI choiceOrder.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform five-way guessing (0.2). Small deterministic hash samples need not equal baseline; no fixed-position strategy answers the whole matched group. Task and field IDs change live ordering; no stable mathematical role is assigned to position.",
+      "sample_refs": [
+        "ui-order-probes.js",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 5",
+      "subgroup": "exp_linear; controlled itemId=17592186600123",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 5 after executing actual UI choiceOrder.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform five-way guessing (0.2). Small deterministic hash samples need not equal baseline; no fixed-position strategy answers the whole matched group. Task and field IDs change live ordering; no stable mathematical role is assigned to position.",
+      "sample_refs": [
+        "ui-order-probes.js",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 1",
+      "subgroup": "arcsin_autonomous; controlled itemId=1",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 1 after executing actual UI choiceOrder.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform five-way guessing (0.2). Small deterministic hash samples need not equal baseline; no fixed-position strategy answers the whole matched group. Task and field IDs change live ordering; no stable mathematical role is assigned to position.",
+      "sample_refs": [
+        "ui-order-probes.js",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 5",
+      "subgroup": "arcsin_autonomous; controlled itemId=1",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 5 after executing actual UI choiceOrder.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform five-way guessing (0.2). Small deterministic hash samples need not equal baseline; no fixed-position strategy answers the whole matched group. Task and field IDs change live ordering; no stable mathematical role is assigned to position.",
+      "sample_refs": [
+        "ui-order-probes.js",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 1",
+      "subgroup": "arcsin_autonomous; controlled itemId=17",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 1 after executing actual UI choiceOrder.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform five-way guessing (0.2). Small deterministic hash samples need not equal baseline; no fixed-position strategy answers the whole matched group. Task and field IDs change live ordering; no stable mathematical role is assigned to position.",
+      "sample_refs": [
+        "ui-order-probes.js",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 5",
+      "subgroup": "arcsin_autonomous; controlled itemId=17",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 5 after executing actual UI choiceOrder.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform five-way guessing (0.2). Small deterministic hash samples need not equal baseline; no fixed-position strategy answers the whole matched group. Task and field IDs change live ordering; no stable mathematical role is assigned to position.",
+      "sample_refs": [
+        "ui-order-probes.js",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 1",
+      "subgroup": "arcsin_autonomous; controlled itemId=17592186600123",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 1 after executing actual UI choiceOrder.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform five-way guessing (0.2). Small deterministic hash samples need not equal baseline; no fixed-position strategy answers the whole matched group. Task and field IDs change live ordering; no stable mathematical role is assigned to position.",
+      "sample_refs": [
+        "ui-order-probes.js",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 5",
+      "subgroup": "arcsin_autonomous; controlled itemId=17592186600123",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 5 after executing actual UI choiceOrder.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform five-way guessing (0.2). Small deterministic hash samples need not equal baseline; no fixed-position strategy answers the whole matched group. Task and field IDs change live ordering; no stable mathematical role is assigned to position.",
+      "sample_refs": [
+        "ui-order-probes.js",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 1",
+      "subgroup": "tan_exp; controlled itemId=1",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 1 after executing actual UI choiceOrder.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform five-way guessing (0.2). Small deterministic hash samples need not equal baseline; no fixed-position strategy answers the whole matched group. Task and field IDs change live ordering; no stable mathematical role is assigned to position.",
+      "sample_refs": [
+        "ui-order-probes.js",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 5",
+      "subgroup": "tan_exp; controlled itemId=1",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 5 after executing actual UI choiceOrder.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform five-way guessing (0.2). Small deterministic hash samples need not equal baseline; no fixed-position strategy answers the whole matched group. Task and field IDs change live ordering; no stable mathematical role is assigned to position.",
+      "sample_refs": [
+        "ui-order-probes.js",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 1",
+      "subgroup": "tan_exp; controlled itemId=17",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 1 after executing actual UI choiceOrder.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform five-way guessing (0.2). Small deterministic hash samples need not equal baseline; no fixed-position strategy answers the whole matched group. Task and field IDs change live ordering; no stable mathematical role is assigned to position.",
+      "sample_refs": [
+        "ui-order-probes.js",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 5",
+      "subgroup": "tan_exp; controlled itemId=17",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 5 after executing actual UI choiceOrder.",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform five-way guessing (0.2). Small deterministic hash samples need not equal baseline; no fixed-position strategy answers the whole matched group. Task and field IDs change live ordering; no stable mathematical role is assigned to position.",
+      "sample_refs": [
+        "ui-order-probes.js",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 1",
+      "subgroup": "tan_exp; controlled itemId=17592186600123",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 1 after executing actual UI choiceOrder.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform five-way guessing (0.2). Small deterministic hash samples need not equal baseline; no fixed-position strategy answers the whole matched group. Task and field IDs change live ordering; no stable mathematical role is assigned to position.",
+      "sample_refs": [
+        "ui-order-probes.js",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 5",
+      "subgroup": "tan_exp; controlled itemId=17592186600123",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 5 after executing actual UI choiceOrder.",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform five-way guessing (0.2). Small deterministic hash samples need not equal baseline; no fixed-position strategy answers the whole matched group. Task and field IDs change live ordering; no stable mathematical role is assigned to position.",
+      "sample_refs": [
+        "ui-order-probes.js",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 1",
+      "subgroup": "log_exp; controlled itemId=1",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 1 after executing actual UI choiceOrder.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform five-way guessing (0.2). Small deterministic hash samples need not equal baseline; no fixed-position strategy answers the whole matched group. Task and field IDs change live ordering; no stable mathematical role is assigned to position.",
+      "sample_refs": [
+        "ui-order-probes.js",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 5",
+      "subgroup": "log_exp; controlled itemId=1",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 5 after executing actual UI choiceOrder.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform five-way guessing (0.2). Small deterministic hash samples need not equal baseline; no fixed-position strategy answers the whole matched group. Task and field IDs change live ordering; no stable mathematical role is assigned to position.",
+      "sample_refs": [
+        "ui-order-probes.js",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 1",
+      "subgroup": "log_exp; controlled itemId=17",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 1 after executing actual UI choiceOrder.",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform five-way guessing (0.2). Small deterministic hash samples need not equal baseline; no fixed-position strategy answers the whole matched group. Task and field IDs change live ordering; no stable mathematical role is assigned to position.",
+      "sample_refs": [
+        "ui-order-probes.js",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 5",
+      "subgroup": "log_exp; controlled itemId=17",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 5 after executing actual UI choiceOrder.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform five-way guessing (0.2). Small deterministic hash samples need not equal baseline; no fixed-position strategy answers the whole matched group. Task and field IDs change live ordering; no stable mathematical role is assigned to position.",
+      "sample_refs": [
+        "ui-order-probes.js",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 1",
+      "subgroup": "log_exp; controlled itemId=17592186600123",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 1 after executing actual UI choiceOrder.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform five-way guessing (0.2). Small deterministic hash samples need not equal baseline; no fixed-position strategy answers the whole matched group. Task and field IDs change live ordering; no stable mathematical role is assigned to position.",
+      "sample_refs": [
+        "ui-order-probes.js",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 5",
+      "subgroup": "log_exp; controlled itemId=17592186600123",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 5 after executing actual UI choiceOrder.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform five-way guessing (0.2). Small deterministic hash samples need not equal baseline; no fixed-position strategy answers the whole matched group. Task and field IDs change live ordering; no stable mathematical role is assigned to position.",
+      "sample_refs": [
+        "ui-order-probes.js",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 1",
+      "subgroup": "tan_autonomous; controlled itemId=1",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 1 after executing actual UI choiceOrder.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform five-way guessing (0.2). Small deterministic hash samples need not equal baseline; no fixed-position strategy answers the whole matched group. Task and field IDs change live ordering; no stable mathematical role is assigned to position.",
+      "sample_refs": [
+        "ui-order-probes.js",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 5",
+      "subgroup": "tan_autonomous; controlled itemId=1",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 5 after executing actual UI choiceOrder.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform five-way guessing (0.2). Small deterministic hash samples need not equal baseline; no fixed-position strategy answers the whole matched group. Task and field IDs change live ordering; no stable mathematical role is assigned to position.",
+      "sample_refs": [
+        "ui-order-probes.js",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 1",
+      "subgroup": "tan_autonomous; controlled itemId=17",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 1 after executing actual UI choiceOrder.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform five-way guessing (0.2). Small deterministic hash samples need not equal baseline; no fixed-position strategy answers the whole matched group. Task and field IDs change live ordering; no stable mathematical role is assigned to position.",
+      "sample_refs": [
+        "ui-order-probes.js",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 5",
+      "subgroup": "tan_autonomous; controlled itemId=17",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 5 after executing actual UI choiceOrder.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform five-way guessing (0.2). Small deterministic hash samples need not equal baseline; no fixed-position strategy answers the whole matched group. Task and field IDs change live ordering; no stable mathematical role is assigned to position.",
+      "sample_refs": [
+        "ui-order-probes.js",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 1",
+      "subgroup": "tan_autonomous; controlled itemId=17592186600123",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 1 after executing actual UI choiceOrder.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform five-way guessing (0.2). Small deterministic hash samples need not equal baseline; no fixed-position strategy answers the whole matched group. Task and field IDs change live ordering; no stable mathematical role is assigned to position.",
+      "sample_refs": [
+        "ui-order-probes.js",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 5",
+      "subgroup": "tan_autonomous; controlled itemId=17592186600123",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 5 after executing actual UI choiceOrder.",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform five-way guessing (0.2). Small deterministic hash samples need not equal baseline; no fixed-position strategy answers the whole matched group. Task and field IDs change live ordering; no stable mathematical role is assigned to position.",
+      "sample_refs": [
+        "ui-order-probes.js",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 1",
+      "subgroup": "power_cube; controlled itemId=1",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 1 after executing actual UI choiceOrder.",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform five-way guessing (0.2). Small deterministic hash samples need not equal baseline; no fixed-position strategy answers the whole matched group. Task and field IDs change live ordering; no stable mathematical role is assigned to position.",
+      "sample_refs": [
+        "ui-order-probes.js",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 5",
+      "subgroup": "power_cube; controlled itemId=1",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 5 after executing actual UI choiceOrder.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform five-way guessing (0.2). Small deterministic hash samples need not equal baseline; no fixed-position strategy answers the whole matched group. Task and field IDs change live ordering; no stable mathematical role is assigned to position.",
+      "sample_refs": [
+        "ui-order-probes.js",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 1",
+      "subgroup": "power_cube; controlled itemId=17",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 1 after executing actual UI choiceOrder.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform five-way guessing (0.2). Small deterministic hash samples need not equal baseline; no fixed-position strategy answers the whole matched group. Task and field IDs change live ordering; no stable mathematical role is assigned to position.",
+      "sample_refs": [
+        "ui-order-probes.js",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 5",
+      "subgroup": "power_cube; controlled itemId=17",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 5 after executing actual UI choiceOrder.",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform five-way guessing (0.2). Small deterministic hash samples need not equal baseline; no fixed-position strategy answers the whole matched group. Task and field IDs change live ordering; no stable mathematical role is assigned to position.",
+      "sample_refs": [
+        "ui-order-probes.js",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 1",
+      "subgroup": "power_cube; controlled itemId=17592186600123",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 1 after executing actual UI choiceOrder.",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform five-way guessing (0.2). Small deterministic hash samples need not equal baseline; no fixed-position strategy answers the whole matched group. Task and field IDs change live ordering; no stable mathematical role is assigned to position.",
+      "sample_refs": [
+        "ui-order-probes.js",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 5",
+      "subgroup": "power_cube; controlled itemId=17592186600123",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 5 after executing actual UI choiceOrder.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform five-way guessing (0.2). Small deterministic hash samples need not equal baseline; no fixed-position strategy answers the whole matched group. Task and field IDs change live ordering; no stable mathematical role is assigned to position.",
+      "sample_refs": [
+        "ui-order-probes.js",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 1",
+      "subgroup": "exp_affine; controlled itemId=1",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 1 after executing actual UI choiceOrder.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform five-way guessing (0.2). Small deterministic hash samples need not equal baseline; no fixed-position strategy answers the whole matched group. Task and field IDs change live ordering; no stable mathematical role is assigned to position.",
+      "sample_refs": [
+        "ui-order-probes.js",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 5",
+      "subgroup": "exp_affine; controlled itemId=1",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 5 after executing actual UI choiceOrder.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform five-way guessing (0.2). Small deterministic hash samples need not equal baseline; no fixed-position strategy answers the whole matched group. Task and field IDs change live ordering; no stable mathematical role is assigned to position.",
+      "sample_refs": [
+        "ui-order-probes.js",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 1",
+      "subgroup": "exp_affine; controlled itemId=17",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 1 after executing actual UI choiceOrder.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform five-way guessing (0.2). Small deterministic hash samples need not equal baseline; no fixed-position strategy answers the whole matched group. Task and field IDs change live ordering; no stable mathematical role is assigned to position.",
+      "sample_refs": [
+        "ui-order-probes.js",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 5",
+      "subgroup": "exp_affine; controlled itemId=17",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 5 after executing actual UI choiceOrder.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform five-way guessing (0.2). Small deterministic hash samples need not equal baseline; no fixed-position strategy answers the whole matched group. Task and field IDs change live ordering; no stable mathematical role is assigned to position.",
+      "sample_refs": [
+        "ui-order-probes.js",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 1",
+      "subgroup": "exp_affine; controlled itemId=17592186600123",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 1 after executing actual UI choiceOrder.",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform five-way guessing (0.2). Small deterministic hash samples need not equal baseline; no fixed-position strategy answers the whole matched group. Task and field IDs change live ordering; no stable mathematical role is assigned to position.",
+      "sample_refs": [
+        "ui-order-probes.js",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 5",
+      "subgroup": "exp_affine; controlled itemId=17592186600123",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 5 after executing actual UI choiceOrder.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform five-way guessing (0.2). Small deterministic hash samples need not equal baseline; no fixed-position strategy answers the whole matched group. Task and field IDs change live ordering; no stable mathematical role is assigned to position.",
+      "sample_refs": [
+        "ui-order-probes.js",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 1",
+      "subgroup": "root_power; controlled itemId=1",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 1 after executing actual UI choiceOrder.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform five-way guessing (0.2). Small deterministic hash samples need not equal baseline; no fixed-position strategy answers the whole matched group. Task and field IDs change live ordering; no stable mathematical role is assigned to position.",
+      "sample_refs": [
+        "ui-order-probes.js",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 5",
+      "subgroup": "root_power; controlled itemId=1",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 5 after executing actual UI choiceOrder.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform five-way guessing (0.2). Small deterministic hash samples need not equal baseline; no fixed-position strategy answers the whole matched group. Task and field IDs change live ordering; no stable mathematical role is assigned to position.",
+      "sample_refs": [
+        "ui-order-probes.js",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 1",
+      "subgroup": "root_power; controlled itemId=17",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 1 after executing actual UI choiceOrder.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform five-way guessing (0.2). Small deterministic hash samples need not equal baseline; no fixed-position strategy answers the whole matched group. Task and field IDs change live ordering; no stable mathematical role is assigned to position.",
+      "sample_refs": [
+        "ui-order-probes.js",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 5",
+      "subgroup": "root_power; controlled itemId=17",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 5 after executing actual UI choiceOrder.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform five-way guessing (0.2). Small deterministic hash samples need not equal baseline; no fixed-position strategy answers the whole matched group. Task and field IDs change live ordering; no stable mathematical role is assigned to position.",
+      "sample_refs": [
+        "ui-order-probes.js",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 1",
+      "subgroup": "root_power; controlled itemId=17592186600123",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 1 after executing actual UI choiceOrder.",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform five-way guessing (0.2). Small deterministic hash samples need not equal baseline; no fixed-position strategy answers the whole matched group. Task and field IDs change live ordering; no stable mathematical role is assigned to position.",
+      "sample_refs": [
+        "ui-order-probes.js",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 5",
+      "subgroup": "root_power; controlled itemId=17592186600123",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 5 after executing actual UI choiceOrder.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform five-way guessing (0.2). Small deterministic hash samples need not equal baseline; no fixed-position strategy answers the whole matched group. Task and field IDs change live ordering; no stable mathematical role is assigned to position.",
+      "sample_refs": [
+        "ui-order-probes.js",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 1",
+      "subgroup": "sin_poly; controlled itemId=1",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 1 after executing actual UI choiceOrder.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform five-way guessing (0.2). Small deterministic hash samples need not equal baseline; no fixed-position strategy answers the whole matched group. Task and field IDs change live ordering; no stable mathematical role is assigned to position.",
+      "sample_refs": [
+        "ui-order-probes.js",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 5",
+      "subgroup": "sin_poly; controlled itemId=1",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 5 after executing actual UI choiceOrder.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform five-way guessing (0.2). Small deterministic hash samples need not equal baseline; no fixed-position strategy answers the whole matched group. Task and field IDs change live ordering; no stable mathematical role is assigned to position.",
+      "sample_refs": [
+        "ui-order-probes.js",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 1",
+      "subgroup": "sin_poly; controlled itemId=17",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 1 after executing actual UI choiceOrder.",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform five-way guessing (0.2). Small deterministic hash samples need not equal baseline; no fixed-position strategy answers the whole matched group. Task and field IDs change live ordering; no stable mathematical role is assigned to position.",
+      "sample_refs": [
+        "ui-order-probes.js",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 5",
+      "subgroup": "sin_poly; controlled itemId=17",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 5 after executing actual UI choiceOrder.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform five-way guessing (0.2). Small deterministic hash samples need not equal baseline; no fixed-position strategy answers the whole matched group. Task and field IDs change live ordering; no stable mathematical role is assigned to position.",
+      "sample_refs": [
+        "ui-order-probes.js",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 1",
+      "subgroup": "sin_poly; controlled itemId=17592186600123",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 1 after executing actual UI choiceOrder.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform five-way guessing (0.2). Small deterministic hash samples need not equal baseline; no fixed-position strategy answers the whole matched group. Task and field IDs change live ordering; no stable mathematical role is assigned to position.",
+      "sample_refs": [
+        "ui-order-probes.js",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 5",
+      "subgroup": "sin_poly; controlled itemId=17592186600123",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 5 after executing actual UI choiceOrder.",
+      "correct": 4,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform five-way guessing (0.2). Small deterministic hash samples need not equal baseline; no fixed-position strategy answers the whole matched group. Task and field IDs change live ordering; no stable mathematical role is assigned to position.",
+      "sample_refs": [
+        "ui-order-probes.js",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 1",
+      "subgroup": "sec_log; controlled itemId=1",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 1 after executing actual UI choiceOrder.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform five-way guessing (0.2). Small deterministic hash samples need not equal baseline; no fixed-position strategy answers the whole matched group. Task and field IDs change live ordering; no stable mathematical role is assigned to position.",
+      "sample_refs": [
+        "ui-order-probes.js",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 5",
+      "subgroup": "sec_log; controlled itemId=1",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 5 after executing actual UI choiceOrder.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform five-way guessing (0.2). Small deterministic hash samples need not equal baseline; no fixed-position strategy answers the whole matched group. Task and field IDs change live ordering; no stable mathematical role is assigned to position.",
+      "sample_refs": [
+        "ui-order-probes.js",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 1",
+      "subgroup": "sec_log; controlled itemId=17",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 1 after executing actual UI choiceOrder.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform five-way guessing (0.2). Small deterministic hash samples need not equal baseline; no fixed-position strategy answers the whole matched group. Task and field IDs change live ordering; no stable mathematical role is assigned to position.",
+      "sample_refs": [
+        "ui-order-probes.js",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 5",
+      "subgroup": "sec_log; controlled itemId=17",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 5 after executing actual UI choiceOrder.",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform five-way guessing (0.2). Small deterministic hash samples need not equal baseline; no fixed-position strategy answers the whole matched group. Task and field IDs change live ordering; no stable mathematical role is assigned to position.",
+      "sample_refs": [
+        "ui-order-probes.js",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 1",
+      "subgroup": "sec_log; controlled itemId=17592186600123",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 1 after executing actual UI choiceOrder.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform five-way guessing (0.2). Small deterministic hash samples need not equal baseline; no fixed-position strategy answers the whole matched group. Task and field IDs change live ordering; no stable mathematical role is assigned to position.",
+      "sample_refs": [
+        "ui-order-probes.js",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 5",
+      "subgroup": "sec_log; controlled itemId=17592186600123",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 5 after executing actual UI choiceOrder.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform five-way guessing (0.2). Small deterministic hash samples need not equal baseline; no fixed-position strategy answers the whole matched group. Task and field IDs change live ordering; no stable mathematical role is assigned to position.",
+      "sample_refs": [
+        "ui-order-probes.js",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 1",
+      "subgroup": "log_sin; controlled itemId=1",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 1 after executing actual UI choiceOrder.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform five-way guessing (0.2). Small deterministic hash samples need not equal baseline; no fixed-position strategy answers the whole matched group. Task and field IDs change live ordering; no stable mathematical role is assigned to position.",
+      "sample_refs": [
+        "ui-order-probes.js",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 5",
+      "subgroup": "log_sin; controlled itemId=1",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 5 after executing actual UI choiceOrder.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform five-way guessing (0.2). Small deterministic hash samples need not equal baseline; no fixed-position strategy answers the whole matched group. Task and field IDs change live ordering; no stable mathematical role is assigned to position.",
+      "sample_refs": [
+        "ui-order-probes.js",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 1",
+      "subgroup": "log_sin; controlled itemId=17",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 1 after executing actual UI choiceOrder.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform five-way guessing (0.2). Small deterministic hash samples need not equal baseline; no fixed-position strategy answers the whole matched group. Task and field IDs change live ordering; no stable mathematical role is assigned to position.",
+      "sample_refs": [
+        "ui-order-probes.js",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 5",
+      "subgroup": "log_sin; controlled itemId=17",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 5 after executing actual UI choiceOrder.",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform five-way guessing (0.2). Small deterministic hash samples need not equal baseline; no fixed-position strategy answers the whole matched group. Task and field IDs change live ordering; no stable mathematical role is assigned to position.",
+      "sample_refs": [
+        "ui-order-probes.js",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 1",
+      "subgroup": "log_sin; controlled itemId=17592186600123",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 1 after executing actual UI choiceOrder.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform five-way guessing (0.2). Small deterministic hash samples need not equal baseline; no fixed-position strategy answers the whole matched group. Task and field IDs change live ordering; no stable mathematical role is assigned to position.",
+      "sample_refs": [
+        "ui-order-probes.js",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Actual UI position 5",
+      "subgroup": "log_sin; controlled itemId=17592186600123",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 5 after executing actual UI choiceOrder.",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform five-way guessing (0.2). Small deterministic hash samples need not equal baseline; no fixed-position strategy answers the whole matched group. Task and field IDs change live ordering; no stable mathematical role is assigned to position.",
+      "sample_refs": [
+        "ui-order-probes.js",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Unique equation with co-offered negative and double RHS",
+      "subgroup": "Exact surviving batch",
+      "scope": "overall",
+      "strategy": "Use retained choice-only R,-R,2R attack; abstain unless uniquely resolved.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform single-choice comparison baseline is 0.2. New banks have multiple such candidates, so the old attack no longer resolves any batch key. This was confirmed to fail the old implementation before testing the current one.",
+      "sample_refs": [
+        "regression-sensitivity.json",
+        "minimal-failure.json",
+        "shortcut-results.json",
+        "batch-records.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "Exact surviving batch",
+      "scope": "overall",
+      "strategy": "Choose first equation using raw visible bank only.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform five-way guessing (0.2); no tested rule answers all five. Actual rendered position counts are separately checked in ui-order-results.json.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "batch-records.json",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "Exact surviving batch",
+      "scope": "overall",
+      "strategy": "Choose last equation using raw visible bank only.",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform five-way guessing (0.2); no tested rule answers all five. Actual rendered position counts are separately checked in ui-order-results.json.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "batch-records.json",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "middle",
+      "subgroup": "Exact surviving batch",
+      "scope": "overall",
+      "strategy": "Choose middle equation using raw visible bank only.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform five-way guessing (0.2); no tested rule answers all five. Actual rendered position counts are separately checked in ui-order-results.json.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "batch-records.json",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "Exact surviving batch",
+      "scope": "overall",
+      "strategy": "Choose shortest equation using raw visible bank only.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform five-way guessing (0.2); no tested rule answers all five. Actual rendered position counts are separately checked in ui-order-results.json.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "batch-records.json",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "Exact surviving batch",
+      "scope": "overall",
+      "strategy": "Choose longest equation using raw visible bank only.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform five-way guessing (0.2); no tested rule answers all five. Actual rendered position counts are separately checked in ui-order-results.json.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "batch-records.json",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "lexical_first",
+      "subgroup": "Exact surviving batch",
+      "scope": "overall",
+      "strategy": "Choose lexical_first equation using raw visible bank only.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform five-way guessing (0.2); no tested rule answers all five. Actual rendered position counts are separately checked in ui-order-results.json.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "batch-records.json",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "lexical_last",
+      "subgroup": "Exact surviving batch",
+      "scope": "overall",
+      "strategy": "Choose lexical_last equation using raw visible bank only.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform five-way guessing (0.2); no tested rule answers all five. Actual rendered position counts are separately checked in ui-order-results.json.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "batch-records.json",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "Derivative/relative coefficient in the ODE",
+      "subgroup": "Matched easy family decisions",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Separate and integrate, or differentiate the offered equations against the ODE.",
+      "correct": 55,
+      "total": 55,
+      "baseline": 0.2,
+      "disposition": "intended_skill",
+      "conclusion": "Five-way guessing baseline is 0.2. This succeeds because it uses the derivative/antiderivative relationship being taught; it is an acceptable mathematical simplification rather than an incidental cue.",
+      "sample_refs": [
+        "math-results.json",
+        "independent-records.json",
+        "source-analysis.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "Generator parameter validation; no valid-domain rejection/resampling",
+      "Actual publisher prepare_records: identity, validation, normalization, inventory/within-batch deduplication",
+      "Requested easy filtering",
+      "Captured inventory, freshness exclusions and configured difficulty-first uniform-within-band selection rules",
+      "Actual UI choiceOrder and rendered answer controls"
+    ],
+    "sample_refs": [
+      "packaging-results.json",
+      "delivery-independent/delivery.json",
+      "delivery-independent/accepted.json",
+      "delivery-batch/delivery.json",
+      "delivery-batch/accepted.json",
+      "delivery-coverage.json",
+      "selection-results.json",
+      "ui-order-results.json"
+    ],
+    "result": "93 inputs -> 91 accepted; two duplicate records removed. Every 11-by-5 controlled decision group remains; exact batch 5 -> 5. Selection rule adds no coefficient-dependent exclusion within easy. Actual rendered position permutations do not produce a tested fixed-position batch bypass."
+  },
+  "limitations": [
+    "No finite audit establishes absence of every shortcut.",
+    "No live policy, learner history, production task/field IDs, or future inventory changes captured. Selection rules examined and faithfully reproduced read-only; exact live mixture is not asserted.",
+    "The canonical example has no captured answer bank; no invented replay is claimed.",
+    "Ten stored legacy moderate/hard v1 questions retain the prior shortcut. They are exactly replayed in generated-records.json and listed in affected-inventory.json. Acceptance here concerns the revised v2 construction and exact requested easy batch, not cleanup of those bank records.",
+    "The five-item batch covers four families and three coefficients, not all source-family/role combinations. Independent controlled samples establish the generator capability separately."
+  ]
+}
