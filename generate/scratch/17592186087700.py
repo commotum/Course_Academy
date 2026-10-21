@@ -131,4 +131,13 @@ def main():
  else:
   for r in records:
    q=r['question'];print(q[':question/problem']+'\n\n'+q[':question/worked-solution']);print(json.dumps(q[':question/answer-fields'],indent=2))
+
+# Every learner-facing checkbox question has a nonempty correct selection.
+import sys as _policy_sys
+from pathlib import Path as _PolicyPath
+_policy_sys.path.insert(0, str(next(p for p in _PolicyPath(__file__).resolve().parents if (p / "scripts/generator_policy.py").is_file())))
+from scripts.generator_policy import nonempty_checkbox as _nonempty_checkbox
+for _policy_name in ['batch', 'generate', 'generate_easy', 'generate_hard', 'generate_moderate']:
+    globals()[_policy_name] = _nonempty_checkbox(globals()[_policy_name], none_label='None of the above')
+
 if __name__=='__main__':main()

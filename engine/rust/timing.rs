@@ -192,6 +192,12 @@ pub fn elapsed(snapshot: &EntitySnapshot, item: u64, at: DateTime<Utc>) -> Resul
                                         == Some("activity.type/assessment")
                                 })
                 }
+                // Regrading changes the recorded outcome without reopening
+                // the presentation or adding working time after submission.
+                "task-item.status/correct" | "task-item.status/incorrect" => matches!(
+                    current.as_str(),
+                    "task-item.status/correct" | "task-item.status/incorrect"
+                ),
                 _ => false,
             };
             if !valid {
@@ -414,6 +420,33 @@ mod tests {
             Some(100.0),
         );
         assert_eq!(elapsed(&snapshot, 1, at(23)).unwrap(), 8.0);
+    }
+
+    #[test]
+    fn regrading_preserves_closed_working_intervals_and_submission_cutoff() {
+        let mut native = captured(
+            "task-item/status",
+            &[("started",10),("paused",15),("started",20),
+              ("incorrect",35),("correct",100),("incorrect",150),("correct",200)],
+            Some(20.0),
+        );
+        assert_eq!(elapsed(&native,1,at(300)).unwrap(),20.0);
+        native.entities.get_mut(&1).unwrap().insert(
+            "task-item/working-ended-at".into(), instant_value(at(30)),
+        );
+        assert_eq!(elapsed(&native,1,at(300)).unwrap(),15.0);
+        let imported = captured(
+            "task-item/status", &[("incorrect",10),("correct",100)], Some(7.25),
+        );
+        assert_eq!(elapsed(&imported,1,at(300)).unwrap(),7.25);
+        for states in [
+            vec![("correct",10),("started",100)],
+            vec![("incorrect",10),("paused",100)],
+            vec![("skipped",10),("correct",100)],
+            vec![("completed",10),("correct",100)],
+        ] {
+            assert!(elapsed(&captured("task-item/status",&states,Some(7.25)),1,at(300)).is_err());
+        }
     }
 
     #[test]

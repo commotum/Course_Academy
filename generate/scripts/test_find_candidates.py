@@ -1,9 +1,12 @@
 import copy
+import json
 from pathlib import Path
+from types import SimpleNamespace
 import tempfile
 import unittest
+from unittest.mock import patch
 
-from find_candidates import check_generator_files, coverage, ranked_candidates
+from find_candidates import check_generator_files, coverage, discover, ranked_candidates
 from generator_priority import PRIORITY_POLICY, priority_key
 
 
@@ -29,13 +32,25 @@ def rank(*topics):
     return ranked_candidates({"basis": 123, "topics": list(topics)})
 
 
+def ranked_contexts(result):
+    """Inspect comparator behavior even when admission withholds a build."""
+    return sorted((kp for t in result["topics"] for kp in t["knowledge_points"]), key=priority_key)
+
+
+def approved(t):
+    for kp in t["knowledge_points"]:
+        kp.update(has_generator=True, generator_usable=True,
+                  generator_script="generators/ab/" + "ab" * 32 + "/generator.py")
+    return t
+
+
 class RankingTests(unittest.TestCase):
     def test_diagnostic_scores_remain_available(self):
         result = rank(topic(1, inventory(1)),
                       topic(2, inventory(4), groups=("target",)),
                       topic(3, stage="review", groups=("studied",)),
                       topic(4, stage="assessment", groups=("studied",)))
-        self.assertEqual([(kp["topic_entity"], kp["score"]) for kp in result["knowledge_points"]],
+        self.assertEqual([(kp["topic_entity"], kp["score"]) for kp in ranked_contexts(result)],
                          [(1, 64300), (2, 61400), (3, 55500), (4, 41500)])
 
     def test_five_total_is_sufficient_and_advance_build_is_still_listed(self):
@@ -62,7 +77,7 @@ class RankingTests(unittest.TestCase):
         review["knowledge_points"][0]["inventory"] = inventory()
         lesson = topic(2, inventory(5))
         lesson["knowledge_points"][0]["inventory"] = inventory()
-        rows = rank(review, lesson)["knowledge_points"]
+        rows = ranked_contexts(rank(review, lesson))
         self.assertEqual([(r["topic_entity"], r["score"]) for r in rows], [(2, 65300), (1, 500)])
         self.assertEqual(rows[1]["inventory_scope"], "topic")
         self.assertEqual(rows[1]["kp_available_total"], 0)
@@ -125,9 +140,49 @@ class RankingTests(unittest.TestCase):
     def test_selected_review_precedes_speculative_lesson_even_with_smaller_score(self):
         selected = topic(1, inventory(4), stage="review", groups=("queued",))
         future = topic(2, groups=("studied-or-queued-descendant",))
-        rows = rank(future, selected)["knowledge_points"]
+        rows = ranked_contexts(rank(future, selected))
         self.assertEqual([r["topic_entity"] for r in rows], [1, 2])
         self.assertLess(rows[0]["score"], rows[1]["score"])
+
+    def test_direct_selection_precedes_earlier_prerequisite_with_larger_shortage(self):
+        direct = topic(1, inventory(4))
+        direct.update(topic_layer=38, selected_support_count=1)
+        prerequisite = topic(2, groups=("selected-prerequisite",))
+        prerequisite.update(topic_layer=0, selected_support_count=100, engine_priority=1e12)
+        rows = ranked_contexts(rank(prerequisite, direct))
+        self.assertEqual([r["topic_entity"] for r in rows], [1, 2])
+        self.assertEqual([r["relevance_tier"] for r in rows], [1, 2])
+        self.assertEqual([r["shortage"] for r in rows], [1, 5])
+
+    def test_direct_review_precedes_prerequisite_lesson(self):
+        direct = topic(1, inventory(4), stage="review", groups=("target",))
+        prerequisite = topic(2, groups=("selected-prerequisite",))
+        rows = ranked_contexts(rank(prerequisite, direct))
+        self.assertEqual([(r["topic_entity"], r["purpose"]) for r in rows],
+                         [(1, "review-shortage"), (2, "lesson-shortage")])
+
+    def test_direct_advance_work_precedes_prerequisite_lesson(self):
+        direct = topic(1, inventory(5))
+        prerequisite = topic(2, groups=("selected-prerequisite",))
+        rows = ranked_contexts(rank(prerequisite, direct))
+        self.assertEqual([(r["topic_entity"], r["purpose"]) for r in rows],
+                         [(1, "advance-build"), (2, "lesson-shortage")])
+
+    def test_direct_membership_wins_when_topic_is_also_a_prerequisite(self):
+        for direct in ("queued", "target"):
+            with self.subTest(direct=direct):
+                t = topic(1, groups=("studied", "selected-prerequisite", direct))
+                row, = rank(t)["knowledge_points"]
+                self.assertEqual((row["relevance_tier"], row["baseline_relevance_tier"]), (1, 1))
+
+    def test_current_and_speculative_fallback_tiers_remain_distinct(self):
+        current = topic(1, stage="review", groups=("current-need",))
+        speculative = topic(2, groups=("studied-or-queued-descendant",))
+        speculative["activity_demands"] = [{"activity_type": "lesson"}]
+        rows = rank(speculative, current)["knowledge_points"]
+        self.assertEqual([r["relevance_tier"] for r in rows], [3, 4])
+        self.assertTrue(all(r["relevance_tier"] == 4 for r in rows[1]["priority_reasons"]))
+        self.assertEqual(priority_key(rows[1])[0], 4)
 
     def test_immediate_demand_does_not_promote_other_purposes_on_the_topic(self):
         selected = topic(1, stage="review")
@@ -143,10 +198,10 @@ class RankingTests(unittest.TestCase):
 
     def test_ready_active_bank_has_no_immediate_shortage_priority(self):
         ready = topic(1, inventory(5), stage="review", groups=("immediate",))
-        ready.update(relevance_tier=2, activity_demands=[
+        ready.update(relevance_tier=3, activity_demands=[
             {"activity_type": "review", "relevance_tier": 0}])
         row, = rank(ready)["knowledge_points"]
-        self.assertEqual((row["purpose"], row["relevance_tier"]), ("advance-build", 2))
+        self.assertEqual((row["purpose"], row["relevance_tier"]), ("advance-build", 3))
 
     def test_earlier_lesson_finishes_all_kps_before_larger_later_shortages(self):
         early = topic(1, inventory(4))
@@ -220,6 +275,121 @@ class RankingTests(unittest.TestCase):
                {"topic": 2, "knowledgePoint": 20, "score": 40000}]
         current, = rank(topic(3))["knowledge_points"]
         self.assertEqual(sorted([old[1], current, old[0]], key=priority_key), [current, *old])
+        self.assertEqual(priority_key(old[0])[0], 5)
+
+
+class SelectionGateTests(unittest.TestCase):
+    def test_closed_gate_withholds_every_nonselected_build_including_immediate(self):
+        direct = topic(1, inventory(4))
+        prerequisite = topic(2, groups=("selected-prerequisite",))
+        immediate = topic(3, groups=("immediate",))
+        immediate["activity_demands"] = [{"activity_type": "lesson", "relevance_tier": 0}]
+        result = rank(prerequisite, immediate, direct)
+        self.assertFalse(result["selection_gate"]["open"])
+        self.assertEqual([kp["db/id"] for kp in result["knowledge_points"]], [10])
+        outside = [kp for kp in ranked_contexts(result) if kp["db/id"] != 10]
+        self.assertTrue(all(not kp["build_required"] for kp in outside))
+        self.assertTrue(all(kp["build_exclusion_reason"] == "selected-inventory-incomplete" for kp in outside))
+
+    def test_a_single_missing_band_keeps_gate_closed_even_when_lesson_stock_is_ready(self):
+        t = approved(topic(1, inventory(5, 4, 5)))
+        gate = rank(t)["selection_gate"]
+        self.assertEqual(gate["selected_knowledge_points"], [10])
+        self.assertEqual(gate["missing_generators"], [])
+        self.assertEqual(gate["understocked_knowledge_points"], [10])
+        self.assertFalse(gate["open"])
+        self.assertEqual(gate["required_per_band"], 5)
+
+    def test_a_fully_stocked_bank_still_needs_an_approved_generator(self):
+        gate = rank(topic(1, inventory(5, 5, 5)))["selection_gate"]
+        self.assertEqual(gate["missing_generators"], [10])
+        self.assertEqual(gate["understocked_knowledge_points"], [])
+        self.assertFalse(gate["open"])
+
+    def test_usable_legacy_script_does_not_open_gate_before_migration(self):
+        t = topic(1, inventory(5, 5, 5), registered=True)
+        t["knowledge_points"][0].update(generator_usable=True, generator_script="generate/legacy.py")
+        gate = rank(t)["selection_gate"]
+        self.assertEqual(gate["missing_generators"], [10])
+        self.assertFalse(gate["open"])
+
+    def test_all_selected_kps_ready_opens_gate_and_deduplicates_shared_membership(self):
+        a = approved(topic(1, inventory(5, 5, 5), groups=("queued", "target")))
+        b = approved(topic(2, inventory(5, 5, 5), groups=("target",)))
+        b["knowledge_points"][0]["db/id"] = 10
+        prerequisite = topic(3, groups=("selected-prerequisite",))
+        result = rank(prerequisite, a, b)
+        gate = result["selection_gate"]
+        self.assertTrue(gate["open"])
+        self.assertEqual(gate["selected_knowledge_points"], [10])
+        self.assertEqual((gate["selected_topic_count"], gate["selected_knowledge_point_count"]), (2, 1))
+        self.assertEqual([kp["db/id"] for kp in result["knowledge_points"]], [30])
+
+    def test_shared_selected_kp_is_admitted_from_its_strongest_context(self):
+        a = topic(1)
+        b = topic(2, groups=("immediate",))
+        b["knowledge_points"][0]["db/id"] = 10
+        b["activity_demands"] = [{"activity_type": "review", "relevance_tier": 0}]
+        result = rank(a, b)
+        row, = result["knowledge_points"]
+        self.assertFalse(result["selection_gate"]["open"])
+        self.assertEqual((row["db/id"], row["topic_entity"], row["relevance_tier"]), (10, 2, 0))
+        self.assertEqual(result["selection_gate"]["selected_knowledge_points"], [10])
+
+    def test_no_direct_selection_opens_gate(self):
+        result = rank(topic(1, groups=("studied-or-queued-descendant",)))
+        self.assertTrue(result["selection_gate"]["open"])
+        self.assertEqual(result["selection_gate"]["selected_knowledge_points"], [])
+        self.assertEqual(len(result["knowledge_points"]), 1)
+
+    def discover_snapshots(self, *snapshots, include_registered=False):
+        responses = [SimpleNamespace(stdout=json.dumps(snapshot)) for snapshot in snapshots]
+        with patch("find_candidates.subprocess.run", side_effect=responses) as run, \
+                patch("find_candidates.check_generator_files"):
+            result = discover("math", "learner", {"EDB_MATH_ROOT": "/tmp/math"}, binary="finder",
+                              include_registered=include_registered)
+        return result, [json.loads(call.kwargs["input"]) for call in run.call_args_list]
+
+    def test_discovery_stops_after_selected_only_capture_when_gate_closed(self):
+        result, requests = self.discover_snapshots({"basis": 1, "topics": [topic(1)]})
+        self.assertFalse(result["selection_gate"]["open"])
+        self.assertEqual([request["selected_only"] for request in requests], [True])
+
+    def test_closed_discovery_preserves_outside_registered_refills_without_expansion(self):
+        from inventory_jobs import ranked_requests
+        selected = topic(1)
+        outside = approved(topic(2, inventory(4, 5, 5), groups=()))
+        result, requests = self.discover_snapshots(
+            {"basis": 1, "topics": [selected, outside]}, include_registered=True)
+        self.assertFalse(result["selection_gate"]["open"])
+        self.assertEqual(result["selection_gate"]["selected_knowledge_points"], [10])
+        self.assertEqual([request["selected_only"] for request in requests], [True])
+        self.assertTrue(requests[0]["include_registered"])
+        jobs = ranked_requests(result)
+        self.assertEqual([(job["knowledgePoint"], job["jobKind"], job["missing"])
+                          for job in jobs], [(10, "build", 5), (20, "refill", 1)])
+
+    def test_discovery_expands_only_after_all_selected_banks_are_ready(self):
+        selected = approved(topic(1, inventory(5, 5, 5)))
+        result, requests = self.discover_snapshots(
+            {"basis": 1, "topics": [selected]},
+            {"basis": 2, "topics": [selected, topic(2, groups=("selected-prerequisite",))]})
+        self.assertTrue(result["selection_gate"]["open"])
+        self.assertEqual([request["selected_only"] for request in requests], [True, False])
+        self.assertEqual([kp["db/id"] for kp in result["knowledge_points"]], [20])
+        self.assertEqual(result["basis"], 2)
+
+    def test_full_capture_recloses_gate_after_inventory_or_selection_changes(self):
+        selected = approved(topic(1, inventory(5, 5, 5)))
+        depleted = approved(topic(1, inventory(5, 5, 4)))
+        for changed in ([depleted], [selected, topic(3, groups=("target",))]):
+            with self.subTest(selected_topics=[t["db/id"] for t in changed]):
+                result, requests = self.discover_snapshots(
+                    {"basis": 1, "topics": [selected]},
+                    {"basis": 2, "topics": [*changed, topic(2, groups=("selected-prerequisite",))]})
+                self.assertFalse(result["selection_gate"]["open"])
+                self.assertEqual([request["selected_only"] for request in requests], [True, False])
+                self.assertNotIn(20, [kp["db/id"] for kp in result["knowledge_points"]])
 
 
 class VarietyTests(unittest.TestCase):

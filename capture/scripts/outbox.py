@@ -53,6 +53,42 @@ class DatabaseWorker:
                 items.append((path, item))
         return sorted(items, key=lambda pair: (pair[1]["created_ns"], pair[0].name))
 
+    def requeue_catalog_dependencies(self, verified):
+        """Retry older partial imports when a verified KP pool becomes available.
+
+        Caller holds the database lock. This re-prepares retained source only;
+        it never replays a lesson or changes a saved transaction request.
+        """
+        available = set()
+        for directory, outcome in verified.items():
+            if outcome.get('status') not in FINAL:
+                continue
+            omitted = {o.get('id') for o in outcome.get('omissions', [])}
+            content = read_json(Path(directory) / 'content.json', {}) or {}
+            available.update(q['math_academy_id'] for q in content.get('canonical_examples', [])
+                             if q.get('math_academy_id') and q['math_academy_id'] not in omitted)
+        if not available:
+            return []
+        queued = []
+        for path in self.config.spool_root.glob('*.json'):
+            item = read_json(path, {}) or {}
+            if (item.get('target_id') != target_id(self.config) or item.get('status') not in FINAL
+                    or item.get('capture_only')):
+                continue
+            dependencies = {o.get('id') for o in item.get('result', {}).get('omissions', [])
+                            if o.get('reason') == 'New KP lacks a complete example and practice pool'}
+            ready = (dependencies & available) - set(item.get('catalog_dependency_checks', []))
+            directory = Path(item['capture_directory'])
+            if not ready or (directory / 'database/request.json').exists():
+                continue
+            item.update(status='pending', next_attempt_at=0,
+                        catalog_dependency_checks=sorted(set(item.get('catalog_dependency_checks', [])) | ready),
+                        dependency_recovery={'examples': sorted(ready), 'queued_at': time.time()})
+            atomic_json(path, item)
+            atomic_json(directory / 'import-status.json', item)
+            queued.append(str(directory))
+        return queued
+
     @property
     def batch_root(self):
         return self.config.spool_root / 'batches' / target_id(self.config)
@@ -89,6 +125,7 @@ class DatabaseWorker:
             _sync_directory(self.batch_root)
             return result
         outcomes = result.get('activities', {})
+        verified = {}
         if not outcomes and result['status'] == 'pending':
             outcomes = {directories[0]: result}
         for path in active['spool_paths']:
@@ -110,10 +147,13 @@ class DatabaseWorker:
             item.pop('error', None)
             atomic_json(Path(path), item)
             atomic_json(Path(item['capture_directory']) / 'import-status.json', item)
+            if item['status'] in FINAL:
+                verified[item['capture_directory']] = outcome
         if result['status'] in FINAL:
             active_path.unlink()
             from .storage import _sync_directory
             _sync_directory(self.batch_root)
+            self.requeue_catalog_dependencies(verified)
             logging.info('Database batch %s: %s complete activities, %s questions (%s)',
                          Path(active['directory']).name, len(outcomes), result.get('questions'), result.get('boundary'))
         else:
@@ -163,6 +203,8 @@ class DatabaseWorker:
                 item["next_attempt_at"] = time.time() + backoff(item["attempts"], self.config.retry_delay, self.config.recovery_max_delay)
                 atomic_json(path, item)
                 atomic_json(directory / "import-status.json", item)
+                if item['status'] in FINAL:
+                    self.requeue_catalog_dependencies({str(directory): item['result']})
                 return item
         except BlockingIOError:
             return {"status": "another_worker"}

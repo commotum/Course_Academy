@@ -42,6 +42,20 @@ class RecoveryIdentityTests(unittest.TestCase):
         self.context.close()
         self.temp.cleanup()
 
+    def test_solution_only_reread_keeps_unread_prompt_image_binding(self):
+        asset = {'index':0, 'tag':'img', 'path':'/original/diagram.png',
+                 'source_url':'https://mathacademy.com/graphics/q-42', 'extraction_part':'problem'}
+        record = {'math_academy_id':'q-42', 'dom_id':'questionExplanation-42',
+            'problem':'![](/original/diagram.png) Find x.', 'assets':[asset],
+            'worked_solution':'Old explanation.', 'extraction_parts':['problem','solution'],
+            'html':'<div id="questionExplanation-42" class="questionExplanation"><p>The answer is 2.</p></div>'}
+        original = deepcopy(record)
+        recovered = reextract_record(record,self.page,self.repair,history=True)
+        self.assertEqual(recovered['problem'],original['problem'])
+        self.assertEqual(recovered['assets'],[asset])
+        self.assertIn('The answer is 2.',recovered['worked_solution'])
+        self.assertEqual(record,original)
+
     def test_actual_no_credit_history_retires_old_frame_errors_preserving_originals(self):
         fixture = json.loads(FIXTURE.read_text())
         record = fixture['record']

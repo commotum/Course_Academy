@@ -33,7 +33,11 @@
     return path.join(' > ');
   };
   const terminal = first('#finalScreen');
-  if (terminal || /\/diagnostics\/\d+\/analysis(?:[?#]|$)/.test(location.href))
+  // A failed stylesheet can expose the empty final-screen template while the
+  // first question is still unanswered. Its Continue button is not completion.
+  const terminalMessages = terminal && [...terminal.querySelectorAll('#finalScreen-completionMessage,#finalScreen-pointsMessage')];
+  const terminalReady = terminal && (!terminalMessages.length || terminalMessages.some(hasContent));
+  if (terminalReady || /\/diagnostics\/\d+\/analysis(?:[?#]|$)/.test(location.href))
     return {kind:'complete',selector:terminal ? identifier(terminal) : 'body',key:'complete',accepted:true};
   const start = first('#initialScreen-startButton, #startButton');
   if (start) return {kind:'instructions',selector:identifier(start.closest('#initialScreen, #screen')) || 'body',

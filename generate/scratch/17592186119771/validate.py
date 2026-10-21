@@ -1,4 +1,8 @@
-"""Displayed matrix/solution readback, complete raw fidelity, native grading.
+"""Historical v2 validation, retained with its original policy assertions.
+
+Do not use this main entry point for the current v3 generator. The current
+validator is dense-update-2026-10-17/validate.py. Shared readback/normalization
+helpers below remain useful to it; frozen v2 evidence is not rewritten.
 
 Runs under the existing project .venv. Never touches EDB or shared files.
 """

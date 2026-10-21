@@ -282,6 +282,15 @@ def markdown(r):
         if key is None:lines.append('Original correct designation absent; inferred value retained in author metadata only.')
     lines.append(q.get(':question/worked-solution','Original worked solution absent.'))
     return '\n\n'.join(lines)
+
+# Every learner-facing checkbox question has a nonempty correct selection.
+import sys as _policy_sys
+from pathlib import Path as _PolicyPath
+_policy_sys.path.insert(0, str(next(p for p in _PolicyPath(__file__).resolve().parents if (p / "scripts/generator_policy.py").is_file())))
+from scripts.generator_policy import nonempty_checkbox as _nonempty_checkbox
+for _policy_name in ['generate', 'generate_easy', 'generate_hard', 'generate_moderate']:
+    globals()[_policy_name] = _nonempty_checkbox(globals()[_policy_name])
+
 if __name__=='__main__':
     ap=argparse.ArgumentParser();ap.add_argument('--difficulty',choices=['easy','moderate','hard','all'],default='all');ap.add_argument('--seed',type=int,default=0);ap.add_argument('--count',type=int,default=2);ap.add_argument('--template');ap.add_argument('--profile');ap.add_argument('--format',choices=['markdown','json'],default='markdown');ap.add_argument('--parameters',type=json.loads)
     args=ap.parse_args();levels=['easy','moderate','hard'] if args.difficulty=='all' else [args.difficulty]

@@ -9,6 +9,15 @@ class UnsupportedContent(ValueError):
     """Required source evidence is absent; obtain a final capture judgment."""
 
 
+def math_spacing_identity(value):
+    """Ignore typography only; preserve every mathematical token and text label."""
+    value = re.sub(r'\\text\{[\s\u00a0]*\}', '', value)
+    # Nonempty text commands can contain meaningful spaces. Leave them exact.
+    if re.search(r'\\(?:text|textrm|operatorname)\b', value):
+        return value
+    return re.sub(r'\s+|\\[,;!: ]|\\(?:quad|qquad|enspace|thinspace|medspace|thickspace)\b', '', value)
+
+
 def image_answer(field: dict) -> str | None:
     """MA's -a-1 filename convention applies only to image-led radio choices.
 

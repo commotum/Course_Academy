@@ -148,6 +148,22 @@ pub(crate) fn validate_question(s: &EntitySnapshot, question: u64) -> Result<()>
 /// Do not use this for grading or replaying previously presented questions.
 pub fn validate_practice_question(s: &EntitySnapshot, question: u64) -> Result<()> {
     validate_question(s, question)?;
+    if s.entity(question)?.get("question/retired").and_then(Value::as_bool) == Some(true) {
+        return Err("Retired questions are unavailable for fresh practice".into());
+    }
+    let mut has_checkbox = false;
+    let mut has_correct_checkbox = false;
+    for field in s.refs(question, "question/answer-fields")? {
+        if ident(s, field, "answer-field/type")? == "answer-field.type/checkbox" {
+            has_checkbox = true;
+            let answer = s.reference(field, "answer-field/correct")?;
+            has_correct_checkbox |= s.entity(answer)?.get("answer/value").and_then(Value::as_str)
+                == Some("true");
+        }
+    }
+    if has_checkbox && !has_correct_checkbox {
+        return Err("Checkbox practice requires at least one correct selectable option".into());
+    }
     if s.is_multistep_question(question)? {
         return Err(
             "multistep questions belong to their full activity, not standalone practice".into(),
@@ -834,6 +850,7 @@ pub fn plan_candidates(
 #[derive(Clone, Copy, PartialEq, Eq)]
 enum StudyScope {
     Targets,
+    TargetPreparation,
     Course,
     Queue,
     Topic(u64),
@@ -890,6 +907,7 @@ pub fn topic_layers(s: &EntitySnapshot) -> Result<BTreeMap<u64, usize>> {
 
 /// Study has two independent sources. Explicit selections may cross courses
 /// and bypass the engine's mastery/prerequisite gates, but never content checks.
+/// Self-directed study also prepares targets up to historically known topics.
 /// Engine suggestions rotate eligible lessons across modules. Both modes keep
 /// ongoing work first; explicit requests then use global layer and priority.
 /// A cardinality-many queue is a set, not a user-defined ordering.
@@ -949,6 +967,16 @@ fn queue_candidates_in_scope(
     selection: StudyScope,
 ) -> Result<Vec<PlannedActivity>> {
     let mut plan = plan_candidates_in_scope(s, learner, course, at, 2, false, selection)?;
+    if selection == StudyScope::Queue {
+        let explicit: BTreeSet<_> = plan.iter().map(|candidate| candidate.activity).collect();
+        // Only learner/targets supplies roots for automatic preparation.
+        // Queue-only topics are direct lesson requests, not prerequisite roots.
+        plan.extend(
+            plan_candidates_in_scope(s, learner, course, at, 2, true, StudyScope::TargetPreparation)?
+                .into_iter()
+                .filter(|candidate| !explicit.contains(&candidate.activity)),
+        );
+    }
     if !plan.is_empty() {
         let layers = topic_layers(s)?;
         plan.sort_by(|a, b| {
@@ -961,7 +989,7 @@ fn queue_candidates_in_scope(
         });
     }
     for candidate in &mut plan {
-        if candidate.priority < 10000.0 {
+        if candidate.priority < 10000.0 && candidate.target_count == 0 {
             candidate.reason = "Selected for your queue".into();
         }
     }
@@ -1106,6 +1134,63 @@ struct TargetSupport {
     remaining: Option<usize>,
     distance: Option<usize>,
     due: Option<DateTime<Utc>>,
+}
+
+fn topic_prerequisites(s: &EntitySnapshot) -> Result<BTreeMap<u64, BTreeSet<u64>>> {
+    let mut prerequisites: BTreeMap<u64, BTreeSet<u64>> = BTreeMap::new();
+    for topic in s.entities.with_attribute("topic/id") {
+        for next in s.refs(topic, "topic/next")? {
+            prerequisites.entry(next).or_default().insert(topic);
+        }
+        for kp in s.refs(topic, "topic/knowledge-points")? {
+            prerequisites.entry(topic).or_default()
+                .extend(s.refs(kp, "knowledge-point/key-prerequisites")?);
+        }
+    }
+    Ok(prerequisites)
+}
+
+/// Historical study bounds target preparation independently of current FIRe
+/// retention. A known downstream topic also covers its prerequisite ancestry;
+/// this is a planning inference, never a write to the learner's mastery record.
+fn known_topic_ancestry(
+    s: &EntitySnapshot,
+    learner: u64,
+    prerequisites: &BTreeMap<u64, BTreeSet<u64>>,
+) -> Result<BTreeSet<u64>> {
+    let mut pending = vec![];
+    for progress in s.refs(learner, "learner/knowledge-profile")? {
+        let record = s.entity(progress)?;
+        let repetitions = record.get("progress/repetitions").and_then(Value::as_f64).unwrap_or(0.0);
+        if !repetitions.is_finite() || repetitions < 0.0 {
+            return Err("invalid imported repetition position".into());
+        }
+        if record.get("progress/learned") == Some(&json!(true))
+            || (!record.contains_key("progress/learned") && repetitions > 0.0)
+        {
+            pending.push(s.reference(progress, "progress/topic")?);
+        }
+    }
+    for task in s.refs(learner, "learner/activity")? {
+        if ident(s, task, "learner-task/status")? != "learner-task.status/completed" {
+            continue;
+        }
+        let activity = s.reference(task, "learner-task/activity")?;
+        if matches!(ident(s, activity, "activity/type")?.as_str(),
+            "activity.type/lesson" | "activity.type/review")
+        {
+            if let Some(topic) = s.optional_ref(activity, "activity/scope")? {
+                pending.push(topic);
+            }
+        }
+    }
+    let mut known = BTreeSet::new();
+    while let Some(topic) = pending.pop() {
+        if known.insert(topic) {
+            pending.extend(prerequisites.get(&topic).into_iter().flatten().copied());
+        }
+    }
+    Ok(known)
 }
 
 fn target_support(
@@ -1333,7 +1418,7 @@ fn plan_candidates_in_scope(
             }
             scope.insert(topic);
         }
-    } else {
+    } else if selection != StudyScope::TargetPreparation {
         for unit in s.refs(course, "course/units")? {
             for module in s.refs(unit, "unit/modules")? {
                 scope.extend(s.refs(module, "module/topics")?);
@@ -1369,7 +1454,7 @@ fn plan_candidates_in_scope(
             return Err("invalid imported repetition position".into());
         }
         repetitions.insert(topic, reps);
-        if selection.explicit() {
+        if selection.explicit() || selection == StudyScope::TargetPreparation {
             continue;
         }
         // A complete local state explicitly records whether learning has been
@@ -1385,19 +1470,12 @@ fn plan_candidates_in_scope(
             ready.insert(topic);
         }
     }
-    let mut prerequisites: BTreeMap<u64, BTreeSet<u64>> = BTreeMap::new();
-    for topic in s.entities.with_attribute("topic/id") {
-        for next in s.refs(topic, "topic/next")? {
-            prerequisites.entry(next).or_default().insert(topic);
-        }
-        for kp in s.refs(topic, "topic/knowledge-points")? {
-            prerequisites
-                .entry(topic)
-                .or_default()
-                .extend(s.refs(kp, "knowledge-point/key-prerequisites")?);
-        }
+    let prerequisites = topic_prerequisites(s)?;
+    if selection == StudyScope::TargetPreparation {
+        ready = known_topic_ancestry(s, learner, &prerequisites)?;
+        practiced = ready.clone();
     }
-    let support = if selection == StudyScope::Targets {
+    let support = if matches!(selection, StudyScope::Targets | StudyScope::TargetPreparation) {
         target_support(s, learner, &prerequisites, &ready)?
     } else {
         BTreeMap::new()
@@ -1698,7 +1776,15 @@ pub fn grade_field(s: &EntitySnapshot, question: u64, field: u64, submitted: &st
                     .and_then(|value| value.as_str())
                     .ok_or("Question needs a problem statement")?
                     .to_lowercase();
-                compare_math_in_context(submitted, canonical, &prompt, math_context(s, question)?)?
+                let context = math_context(s, question)?;
+                let key = s.entity(field)?.get("answer-field/key").and_then(Value::as_str).unwrap_or("");
+                if displayed_integration_constant(&prompt, key)
+                    || displayed_solution_family_constant(&prompt, key)
+                {
+                    symbolic::compare_up_to_constant(submitted, canonical, context)?
+                } else {
+                    compare_math_in_context(submitted, canonical, &prompt, context)?
+                }
             }
             "answer.type/text" => {
                 submitted
@@ -1871,6 +1957,60 @@ fn compare_math(a: &str, b: &str, context: symbolic::Context) -> Result<bool> {
         (Some(a), Some(b)) => Ok(a == b),
         _ => symbolic::compare(original_a, original_b, context),
     }
+}
+
+fn displayed_integration_constant(prompt: &str, key: &str) -> bool {
+    if key.is_empty() || requires_answer_form(prompt)
+        || !(prompt.contains("antiderivative") || prompt.contains("indefinite integral") || prompt.contains("\\int"))
+        || prompt.contains("\\int_") || prompt.contains("\\int^")
+        || ["zero constant term", "constant term is zero", "constant term is 0"]
+            .iter().any(|text| prompt.contains(text))
+    {
+        return false;
+    }
+    let marker = format!("{{{{{}}}}}", key.to_lowercase());
+    let Some((_, suffix)) = prompt.split_once(&marker) else { return false; };
+    let suffix = suffix.replace([ '$', '\n', '\r' ], " ")
+        .replace("\\(", " ").replace("\\)", " ")
+        .replace("\\,", " ").replace("\\!", " ").replace("\\;", " ")
+        .replace("\\quad", " ").replace("\\qquad", " ");
+    let Some(after_plus) = suffix.trim_start().strip_prefix('+') else { return false; };
+    let Some(after_c) = after_plus.trim_start().strip_prefix('c') else { return false; };
+    after_c.chars().next().is_none_or(|c| !c.is_alphanumeric() && !"_^({".contains(c))
+}
+
+/// A whole additive blank inside (blank + K) has the same constant freedom
+/// even when that group is subsequently inverted, rooted, or exponentiated.
+/// Require both an explicit general-ODE-solution contract and the arbitrary
+/// constant adjacent to this field. Merely mentioning K elsewhere is not enough.
+fn displayed_solution_family_constant(prompt: &str, key: &str) -> bool {
+    if key.is_empty() || requires_answer_form(prompt)
+        || !prompt.contains("general solution") || !prompt.contains("differential equation")
+        || ["zero constant term", "constant term is zero", "constant term is 0", "nonconstant polynomial term"]
+            .iter().any(|text| prompt.contains(text))
+    {
+        return false;
+    }
+    let compact = normalize_math(prompt).replace('$', "").to_lowercase();
+    let marker = format!("{{{{{}}}}}", key.to_lowercase());
+    let Some((prefix, suffix)) = compact.split_once(&marker) else { return false; };
+    if suffix.contains(&marker) { return false; }
+    // An immediately preceding group opener makes the field a whole additive
+    // term. This excludes x*blank+K and blank^2+K, whose shifts do not commute
+    // with addition of K. Outer transformations of the whole group are safe.
+    let close = match prefix.chars().last() {
+        Some('(') => ')',
+        Some('{') => '}',
+        _ => return false,
+    };
+    let Some((_, outer)) = prefix.rsplit_once('=') else { return false; };
+    ['c', 'k'].iter().any(|constant| {
+        // The same parameter elsewhere in the outer expression would couple
+        // its occurrences, so a shift of this one occurrence is not enough.
+        suffix.starts_with(&format!("+{constant}{close}"))
+            && !outer.contains(*constant) && !suffix[2..].contains(*constant)
+            && compact.contains(&format!("{constant}isanarbitraryconstant"))
+    })
 }
 
 /// Error-preserving comparison shared by grading and content reconciliation.
@@ -2504,6 +2644,32 @@ pub(crate) mod tests {
     }
 
     #[test]
+    fn retired_questions_leave_fresh_pools_but_keep_saved_grading_and_lesson_history() {
+        let mut s = fixture();
+        put(&mut s.entities, 1100, json!({"db/ident":"question.difficulty/easy"}));
+        for q in 100..105 {
+            s.entities.get_mut(&q).unwrap().insert("question/difficulty".into(), json!(1100));
+        }
+        for q in 100..104 {
+            s.entities.get_mut(&q).unwrap().insert("question/retired".into(), json!(true));
+        }
+        assert!(validate_response_question(&s, 100).is_ok());
+        assert!(grade(&s, 100, &BTreeMap::from([(200, "1/2".into())])).unwrap());
+        assert!(validate_practice_question(&s, 100).is_err());
+        assert_eq!(crate::inventory::practice_pool(&s, &[41], &BTreeSet::new()).unwrap(), [104]);
+        assert_eq!(crate::assessment_sampling::pool(&s, &[41], &BTreeSet::new()).unwrap(), [104]);
+        present(&mut s, 40, "completed");
+        present(&mut s, 42, "completed");
+        assert_eq!(next_content(&s, 20, &items(&s)).unwrap(), Some(104));
+        let saved = present(&mut s, 100, "started");
+        assert_eq!(next_content(&s, 20, &items(&s)).unwrap(), Some(100));
+        s.entities.get_mut(&saved).unwrap().insert("task-item/status".into(), json!("task-item.status/correct"));
+        assert_eq!(next_content(&s, 20, &items(&s)).unwrap(), Some(104));
+        s.entities.get_mut(&100).unwrap().insert("question/retired".into(), json!(false));
+        assert!(validate_practice_question(&s, 100).is_ok());
+    }
+
+    #[test]
     fn adaptive_practice_and_inventory_exclude_multistep_parts_but_grade_saved_answers() {
         let mut s = fixture();
         put(
@@ -2875,11 +3041,15 @@ pub(crate) mod tests {
     }
 
     #[test]
-    fn study_queue_is_explicit_cross_course_and_does_not_fall_back() {
+    fn study_queue_is_explicit_cross_course_and_does_not_fall_back_to_course_work() {
         let mut s = planning_fixture(&[90]);
         let queued = planning_lesson(&mut s, 80, &[]);
         planning_lesson(&mut s, 81, &[80]); // Unlearned prerequisite.
-        planning_lesson(&mut s, 90, &[]); // Long-term target is not queued.
+        planning_lesson(&mut s, 90, &[]);
+        // A known target adds no automatic lesson; explicit queue overrides
+        // still permit cross-course work with an unlearned prerequisite.
+        put(&mut s.entities, 600, json!({"progress/topic":90,"progress/repetitions":1.0}));
+        s.entities.get_mut(&1).unwrap().insert("learner/knowledge-profile".into(), json!([600]));
         s.entities
             .get_mut(&1)
             .unwrap()
@@ -2923,6 +3093,184 @@ pub(crate) mod tests {
             study_candidates(&s, 1, 5, planning_time()).unwrap()[0].reason,
             "Continue your lesson"
         );
+    }
+
+    #[test]
+    fn study_targets_prepare_unknown_frontier_and_stop_at_overdue_study() {
+        let at = planning_time();
+        let mut s = planning_fixture(&[90]);
+        let basic = planning_lesson(&mut s, 80, &[81]);
+        let studied = planning_lesson(&mut s, 81, &[82]);
+        let prerequisite = planning_lesson(&mut s, 82, &[90]);
+        let target = planning_lesson(&mut s, 90, &[]);
+        let queued = planning_lesson(&mut s, 83, &[]);
+        s.entities.get_mut(&1).unwrap().insert("learner/queue".into(), json!([83]));
+        put(&mut s.entities, 600, json!({"progress/topic":81,"progress/learned":true,
+            "progress/policy":2,"progress/repetitions":1.0,"progress/memory":0.01,
+            "progress/memory-at":at,"progress/interval-days":1.0,
+            "progress/assessment-accuracy":0.5,"progress/practice-accuracy":0.5,
+            "progress/assessment-mass":0.0,"progress/practice-mass":0.0}));
+        s.entities.get_mut(&1).unwrap().insert("learner/knowledge-profile".into(), json!([600]));
+        assert!(!progress_ready(&s.entities[&600], Some(0.5), at).unwrap());
+        let before = s.entities.clone();
+        let plan = study_candidates(&s, 1, 5, at).unwrap();
+        assert_eq!(plan.iter().map(|p|p.activity).collect::<Vec<_>>(), [queued, prerequisite]);
+        assert!(plan.iter().all(|p| ![basic, studied, target, 20].contains(&p.activity)));
+        assert_eq!(plan[1].target_topics, [90]);
+        assert_eq!(plan[1].reason, "Prerequisite for a study target");
+        assert_eq!(s.entities, before, "inferred knowledge must not be persisted");
+
+        put(&mut s.entities, 601, json!({"progress/topic":82,"progress/repetitions":1.0}));
+        s.entities.get_mut(&1).unwrap().insert("learner/knowledge-profile".into(), json!([600,601]));
+        let plan = study_candidates(&s, 1, 5, at).unwrap();
+        assert_eq!(plan.iter().map(|p|p.activity).collect::<Vec<_>>(), [queued, target]);
+        assert_eq!(plan[1].reason, "One of your study targets");
+    }
+
+    #[test]
+    fn study_targets_skip_basic_ancestors_proven_by_another_known_branch() {
+        let mut s = planning_fixture(&[90]);
+        let basic = planning_lesson(&mut s, 80, &[81]);
+        let known_downstream = planning_lesson(&mut s, 81, &[]);
+        let missing = planning_lesson(&mut s, 82, &[90]);
+        planning_lesson(&mut s, 90, &[]);
+        put(&mut s.entities, 900, json!({"knowledge-point/id":id(900),
+            "knowledge-point/key-prerequisites":[80]}));
+        s.entities.get_mut(&82).unwrap().insert("topic/knowledge-points".into(), json!([900]));
+        // This branch was completed locally even though its profile is absent.
+        put(&mut s.entities, 600, json!({"learner-task/activity":known_downstream,
+            "learner-task/status":"learner-task.status/completed"}));
+        s.entities.get_mut(&1).unwrap().insert("learner/activity".into(), json!([600]));
+        // Supply checks are covered separately; inspect the prerequisite frontier.
+        let plan = plan_candidates_in_scope(&s,1,5,planning_time(),0,true,StudyScope::TargetPreparation).unwrap();
+        assert_eq!(plan.iter().map(|p|p.activity).collect::<Vec<_>>(), [missing]);
+        assert!(plan.iter().all(|p|p.activity != basic));
+        let known = known_topic_ancestry(&s,1,&topic_prerequisites(&s).unwrap()).unwrap();
+        assert!(known.contains(&80));
+        assert!(known.contains(&81));
+        assert!(!known.contains(&82), "known prerequisites do not imply known descendants");
+    }
+
+    #[test]
+    fn study_queue_only_topics_do_not_expand_prerequisites_but_targets_still_do() {
+        let mut s = planning_fixture(&[90]);
+        let queue_prerequisite = planning_lesson(&mut s, 80, &[81]);
+        let queued = planning_lesson(&mut s, 81, &[]);
+        let target_prerequisite = planning_lesson(&mut s, 82, &[90]);
+        let target = planning_lesson(&mut s, 90, &[]);
+        s.entities
+            .get_mut(&1)
+            .unwrap()
+            .insert("learner/queue".into(), json!([81]));
+
+        let before = s.entities.clone();
+        let plan = study_candidates(&s, 1, 5, planning_time()).unwrap();
+        assert_eq!(
+            plan.iter().map(|p| p.activity).collect::<BTreeSet<_>>(),
+            BTreeSet::from([queued, target_prerequisite])
+        );
+        assert!(
+            plan.iter()
+                .all(|p| ![queue_prerequisite, target].contains(&p.activity))
+        );
+        assert!(
+            plan.iter()
+                .find(|p| p.activity == queued)
+                .unwrap()
+                .target_topics
+                .is_empty()
+        );
+        assert_eq!(
+            plan.iter()
+                .find(|p| p.activity == target_prerequisite)
+                .unwrap()
+                .target_topics,
+            [90]
+        );
+        let inventory = inventory_priorities(&s, 1, planning_time()).unwrap();
+        assert_eq!(inventory[&80].target_count, 0);
+        assert_eq!(inventory[&82].target_count, 1);
+        assert_eq!(s.entities, before);
+
+        // Removing a queued topic does not change the independent target path.
+        s.entities
+            .get_mut(&1)
+            .unwrap()
+            .insert("learner/queue".into(), json!([]));
+        assert_eq!(
+            study_candidates(&s, 1, 5, planning_time())
+                .unwrap()
+                .iter()
+                .map(|p| p.activity)
+                .collect::<Vec<_>>(),
+            [target_prerequisite]
+        );
+
+        // A prerequisite may be requested explicitly without expanding the
+        // downstream queued topic into another automatic prerequisite root.
+        s.entities
+            .get_mut(&1)
+            .unwrap()
+            .insert("learner/queue".into(), json!([80, 81]));
+        assert_eq!(
+            study_candidates(&s, 1, 5, planning_time())
+                .unwrap()
+                .iter()
+                .map(|p| p.activity)
+                .collect::<BTreeSet<_>>(),
+            BTreeSet::from([queue_prerequisite, queued, target_prerequisite])
+        );
+
+        // Membership in both lists still permits preparation through targets.
+        s.entities
+            .get_mut(&1)
+            .unwrap()
+            .insert("learner/queue".into(), json!([81]));
+        s.entities
+            .get_mut(&1)
+            .unwrap()
+            .insert("learner/targets".into(), json!([81, 90]));
+        let plan = study_candidates(&s, 1, 5, planning_time()).unwrap();
+        assert_eq!(
+            plan.iter()
+                .find(|p| p.activity == queue_prerequisite)
+                .unwrap()
+                .target_topics,
+            [81]
+        );
+    }
+
+    #[test]
+    fn study_targets_keep_manual_queue_and_direct_topic_overrides() {
+        let mut s = planning_fixture(&[81]);
+        let basic = planning_lesson(&mut s,80,&[81]);
+        let known = planning_lesson(&mut s,81,&[]);
+        put(&mut s.entities,600,json!({"progress/topic":81,"progress/repetitions":2.0}));
+        s.entities.get_mut(&1).unwrap().insert("learner/knowledge-profile".into(),json!([600]));
+        assert!(study_candidates(&s,1,5,planning_time()).unwrap().is_empty());
+        s.entities.get_mut(&1).unwrap().insert("learner/queue".into(),json!([80,81]));
+        let plan=study_candidates(&s,1,5,planning_time()).unwrap();
+        assert_eq!(plan.iter().map(|p|p.activity).collect::<Vec<_>>(),[basic,known]);
+        assert!(plan.iter().all(|p|p.reason=="Selected for your queue"));
+        assert_eq!(selected_topic_candidates(&s,1,5,81,planning_time()).unwrap()[0].activity,known);
+    }
+
+    #[test]
+    fn study_targets_keep_the_five_fresh_questions_per_kp_requirement() {
+        let mut s = planning_fixture(&[80]);
+        let target = planning_lesson(&mut s,80,&[]);
+        for q in 24000..24005 {
+            let mut question = s.entities[&100].clone();
+            question.insert("question/id".into(),json!(id(q)));
+            s.entities.insert(q,question);
+        }
+        put(&mut s.entities,900,json!({"knowledge-point/id":id(900),
+            "knowledge-point/questions":[24000,24001,24002,24003]}));
+        s.entities.get_mut(&80).unwrap().insert("topic/knowledge-points".into(),json!([900]));
+        assert!(study_candidates(&s,1,5,planning_time()).unwrap().is_empty());
+        s.entities.get_mut(&900).unwrap().insert("knowledge-point/questions".into(),
+            json!([24000,24001,24002,24003,24004]));
+        assert_eq!(study_candidates(&s,1,5,planning_time()).unwrap()[0].activity,target);
     }
 
     #[test]
@@ -3484,7 +3832,7 @@ pub(crate) mod tests {
             assert_eq!(next_content(&s, 20, &items(&s)).unwrap(), Some(q));
             s.entities.get_mut(&item).unwrap().insert(
                 "task-item/status".into(),
-                json!(if slot < 2 {
+                json!(if slot == 1 {
                     "task-item.status/incorrect"
                 } else {
                     "task-item.status/correct"
@@ -3495,11 +3843,11 @@ pub(crate) mod tests {
     }
 
     #[test]
-    fn adaptive_practice_fails_at_five_and_never_reuses_other_task_questions() {
+    fn adaptive_practice_fails_after_two_wrong_and_never_reuses_other_task_questions() {
         let mut s = fixture();
         present(&mut s, 40, "completed");
         present(&mut s, 42, "completed");
-        for q in 100..105 {
+        for q in 100..102 {
             present(&mut s, q, "incorrect");
         }
         assert_eq!(next_content(&s, 20, &items(&s)).unwrap(), None);
@@ -3544,6 +3892,37 @@ pub(crate) mod tests {
     }
 
     #[test]
+    fn lesson_advances_after_correct_streak_or_five_and_resets_at_the_next_kp() {
+        for outcomes in [vec![true, true], vec![true, false, true, false, true], vec![false, true, false, true, false]] {
+            let mut s = fixture();
+            s.entities.get_mut(&31).unwrap().insert("step/next".into(), json!(32));
+            s.entities.get_mut(&20).unwrap().insert("activity/steps".into(), json!([30, 31, 32]));
+            put(&mut s.entities, 32, json!({"step/id":id(32),"step/content":44}));
+            put(&mut s.entities, 44, json!({"knowledge-point/id":id(44),"knowledge-point/canonical-example":43,"knowledge-point/questions":[105,106]}));
+            put(&mut s.entities, 43, json!({"question/id":id(43),"question/problem":"Next example","question/worked-solution":"Explanation"}));
+            for q in [105, 106] {
+                put(&mut s.entities, q, json!({"question/id":id(q),"question/problem":"Next question","question/answer-fields":[200]}));
+            }
+            s = EntitySnapshot::new(s.entities.clone().into(), s.basis_t).unwrap();
+            present(&mut s, 40, "completed");
+            present(&mut s, 42, "completed");
+            for (n, correct) in outcomes.into_iter().enumerate() {
+                present(&mut s, 100 + n as u64, if correct { "correct" } else { "incorrect" });
+            }
+            let p = position(&s, 20, &items(&s)).unwrap();
+            assert_eq!(p.next, Some(43));
+            assert!(!p.failed);
+            assert!(p.deferred.is_empty());
+            present(&mut s, 43, "completed");
+            assert_eq!(next_content(&s, 20, &items(&s)).unwrap(), Some(105));
+            present(&mut s, 105, "correct");
+            assert_eq!(next_content(&s, 20, &items(&s)).unwrap(), Some(106));
+            present(&mut s, 106, "correct");
+            assert!(lesson_passed(&s, 20, &items(&s)).unwrap());
+        }
+    }
+
+    #[test]
     fn candidates_require_prerequisites_keys_and_freshness_but_resume_active_work() {
         let mut s = fixture();
         assert!(candidates(&s, 1, 5).unwrap().is_empty());
@@ -3571,6 +3950,72 @@ pub(crate) mod tests {
         present(&mut s, 40, "started");
         assert_eq!(candidates(&s, 1, 5).unwrap(), vec![20]);
         assert!(!s.entity(22).unwrap().contains_key("progress/learned"));
+    }
+
+    #[test]
+    fn general_ode_scaffolds_absorb_only_additive_constant_shifts() {
+        let mut s = fixture();
+        s.entities.get_mut(&300).unwrap().insert("answer/value".into(), json!("x^2"));
+        for scaffold in [
+            "$y=-2($\n{{x}}\n$+K)^{-1}$",
+            "$y=\\pm ($ {{x}} $+K)^{1/2}$",
+            "$y=\\sqrt{ $ {{x}} $+K}$",
+        ] {
+            s.entities.get_mut(&100).unwrap().insert("question/problem".into(),
+                json!(format!("Find the general solution to the differential equation y'=x/y. K is an arbitrary constant.\n\n{scaffold}")));
+            for value in ["x*x", "x^2+5", "x^2-2/3", "x^2+pi"] {
+                assert_eq!(grade_field(&s,100,200,value), Ok(true), "{scaffold}: {value}");
+            }
+            for value in ["2*x^2", "x^3+5", "x^2+x", "5"] {
+                assert_eq!(grade_field(&s,100,200,value), Ok(false), "{scaffold}: {value}");
+            }
+            assert!(grade_field(&s,100,200,"x^2+x/x").is_err());
+        }
+        for prompt in [
+            "Simplify. K is an arbitrary constant. $y=($ {{x}} $+K)^{-1}$",
+            "Find the general solution to the differential equation. $y=($ {{x}} $+K)^{-1}$",
+            "Find the general solution to the differential equation. K is an arbitrary constant. $y=(x*$ {{x}} $+K)^{-1}$",
+            "Find the general solution to the differential equation. K is an arbitrary constant. $y=($ {{x}} $^2+K)^{-1}$",
+            "Find the general solution to the differential equation. K is an arbitrary constant. $y=($ {{other}} $+K)^{-1}$ {{x}}",
+            "Find the general solution to the differential equation. K is an arbitrary constant. $y=($ {{x}} $+K*x)^{-1}$",
+            "Find the general solution to the differential equation. K is an arbitrary constant. $y=K($ {{x}} $+K)^{-1}$",
+            "Find the general solution to the differential equation. K is an arbitrary constant. $y=($ {{x}} $+K)^{-1}+K*x$",
+            "Find the general solution to the differential equation. K is an arbitrary constant. Give the zero constant term. $y=($ {{x}} $+K)^{-1}$",
+        ] {
+            s.entities.get_mut(&100).unwrap().insert("question/problem".into(), json!(prompt));
+            assert_eq!(grade_field(&s,100,200,"x^2+5"), Ok(false), "{prompt}");
+        }
+    }
+
+    #[test]
+    fn antiderivative_blanks_absorb_numeric_constants_only_when_displayed() {
+        let mut s = fixture();
+        s.entities.get_mut(&300).unwrap().insert("answer/value".into(), json!("t^7/7+5*t"));
+        s.entities.get_mut(&100).unwrap().insert("question/problem".into(),
+            json!("Find y(t), the antiderivative of y'(t)=5+t^6.\n$y(t)=$\n{{x}}\n$+\\,C$"));
+        for value in ["t^7/7+5*t+1", "5*t+t^7/7-2/3", "t^7/7+5*t+pi"] {
+            assert_eq!(grade_field(&s,100,200,value), Ok(true), "{value}");
+        }
+        for value in ["t^7/7+6*t+1", "t^7/6+5*t+1", "1"] {
+            assert_eq!(grade_field(&s,100,200,value), Ok(false), "{value}");
+        }
+        assert!(grade_field(&s,100,200,"t^7/7+5*t+t/t").is_err());
+        for prompt in [
+            "Simplify {{x}} + C.",
+            "Find the antiderivative. {{x}}", // no external arbitrary constant
+            "Find the antiderivative with zero constant term. {{x}} + C",
+            "Find the antiderivative. {{x}} + cos(t)",
+            "Find the antiderivative. {{other}} + C and {{x}}",
+            "Find the definite integral \\int_0^1 t^6 dt. {{x}} + C",
+        ] {
+            s.entities.get_mut(&100).unwrap().insert("question/problem".into(), json!(prompt));
+            assert_eq!(grade_field(&s,100,200,"t^7/7+5*t+1"),Ok(false),"{prompt}");
+        }
+        s.entities.get_mut(&100).unwrap().insert("question/problem".into(),
+            json!("For x != 0 calculate the integral. $\\int f(x)/x^3\\,dx=$ {{x}} $+C.$"));
+        s.entities.get_mut(&300).unwrap().insert("answer/value".into(),json!("3*x+6/x"));
+        assert_eq!(grade_field(&s,100,200,"3*x+6/x+1"),Ok(true));
+        assert_eq!(grade_field(&s,100,200,"0"),Ok(false));
     }
 
     #[test]
@@ -3672,6 +4117,18 @@ pub(crate) mod tests {
         assert!(!grade(&s, 100, &responses).unwrap());
         responses.remove(&403);
         assert!(grade(&s, 100, &responses).is_err());
+        // Empty subsets remain valid historical responses, but cannot be
+        // chosen for fresh lesson, review or assessment practice.
+        for n in 0..4 {
+            let field = 400 + n;
+            let no = 500 + 2 * n;
+            s.entities.get_mut(&field).unwrap()
+                .insert("answer-field/correct".into(), json!(no));
+            responses.insert(field, no.to_string());
+        }
+        assert!(validate_question(&s, 100).is_ok());
+        assert!(grade(&s, 100, &responses).unwrap());
+        assert!(validate_practice_question(&s, 100).is_err());
         s.entities
             .get_mut(&500)
             .unwrap()
@@ -3927,6 +4384,9 @@ pub(crate) mod tests {
         let mut s = fixture();
         for (canonical, submitted, expected) in [
             ("2\\sqrt{10}", "\\sqrt{40}", true),
+            (r"\frac{e^{\frac{3}{2}}}{3}", r"\frac{\sqrt{e^3}}{3}", true),
+            (r"\frac{e^{\frac{3}{2}}}{3}", r"-\frac{\sqrt{e^3}}{3}", false),
+            (r"-\frac{1}{\sqrt{(2x+7)^3}}", r"-\left(2x+7\right)^{-\frac32}", true),
             (
                 "2\\sqrt{1+\\frac{x^2}{9}}",
                 "\\sqrt{4+\\frac{4x^2}{9}}",
@@ -3968,8 +4428,8 @@ pub(crate) mod tests {
         for (outcomes, expected) in [
             (vec![true, true], 15),
             (vec![false, true, true], 8),
-            (vec![false, false, true, true], 5),
-            (vec![false; 5], -1),
+            (vec![true, false, false], -1),
+            (vec![false; 2], -1),
             (vec![true, false, true, false, true], 7),
         ] {
             let mut s = fixture();

@@ -338,6 +338,26 @@ pub(super) fn annotate(
     for t in topics.as_array_mut().unwrap() {
         let topic = eid(&t["db/id"])?;
         let priority = &priorities[&topic];
+        // Selected-only discovery deliberately skips the broader studied-topic
+        // eligibility pass. Recover history from the already captured learner
+        // facts so its selected topics retain the same demand metadata.
+        t["studied"] = json!(
+            t["studied"] == true
+                || learned_now.get(&topic) == Some(&true)
+                || completed_lessons.contains(&topic)
+        );
+        if t["studied"] == true
+            && !t["urgency_groups"]
+                .as_array()
+                .unwrap()
+                .contains(&json!("studied"))
+        {
+            t["urgency_groups"]
+                .as_array_mut()
+                .unwrap()
+                .push(json!("studied"));
+            t["urgency_value"] = json!(t["urgency_value"].as_u64().unwrap_or(0).max(5));
+        }
         let currently_learned = learned_now
             .get(&topic)
             .copied()
@@ -353,14 +373,15 @@ pub(super) fn annotate(
                 Some("learner/queue" | "learner/targets")
             )
         });
-        let relevance =
-            if queued.contains(&topic) || targeted.contains(&topic) || selected_prerequisite {
-                1u8
-            } else if current_need {
-                2
-            } else {
-                3
-            };
+        let relevance = if queued.contains(&topic) || targeted.contains(&topic) {
+            1u8
+        } else if selected_prerequisite {
+            2
+        } else if current_need {
+            3
+        } else {
+            4
+        };
         t["relevance_tier"] = json!(relevance);
         t["topic_layer"] = json!(layers[&topic]);
         t["selected_support_count"] = json!(support.get(&topic).copied().unwrap_or(0));
@@ -438,7 +459,7 @@ pub(super) fn annotate(
         demand(
             next_activity,
             if next_activity == "assessment" {
-                3
+                4
             } else {
                 relevance
             },
@@ -447,7 +468,7 @@ pub(super) fn annotate(
             || (targeted.contains(&topic) && !completed_lessons.contains(&topic))
             || (selected_prerequisite && !currently_learned)
         {
-            demand("lesson", 1);
+            demand("lesson", relevance);
         }
         for trigger in t["triggers"].as_array().unwrap() {
             let reason = trigger["reason"].as_str().unwrap();
@@ -472,7 +493,7 @@ pub(super) fn annotate(
             }
             demand(
                 trigger["activity_type"].as_str().unwrap(),
-                if immediate { 0 } else { relevance.min(2) },
+                if immediate { 0 } else { relevance.min(3) },
             );
         }
         t["activity_demands"] = json!(demands.into_iter().map(|(activity_type, relevance_tier)|

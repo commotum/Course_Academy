@@ -109,6 +109,15 @@ def generate(level,seed=0,parameters=None,profile=None,field_type='checkbox',out
   fid=uid([qid,key]);answers=[{':answer/id':uid([fid,val]),':answer/type':':answer.type/text',':answer/value':val} for val in bank];assert correct in bank
   fields.append({':answer-field/id':fid,':answer-field/key':key,':answer-field/type':':answer-field.type/'+field_type,':answer-field/choices':answers,':answer-field/correct':[':answer/id',uid([fid,correct])]})
  return {'question':{':question/id':qid,':question/problem':prompt,':question/worked-solution':solution,':question/difficulty':':question.difficulty/'+level,':question/answer-fields':fields},'knowledge_point':{'db_id':KP[':db/id'],'title':KP[':knowledge-point/title']},'generation':{'version':VERSION,'seed':seed,'template':LEVELS[level][0],'parameters':p,'profile':profile,'field_type':field_type,'mathematical_fingerprint':fingerprint(level,p),'field':list(map(str,d['field'])),'work':str(d['work']),'sign':d['sign'],'assets':assets,'source_ids':[m for m,c in SOURCE_CASES.items() if c[0]==LEVELS[level][0]],'evidence_only':False,'eligible_for_learning':True,'dependencies':{'sympy':sp.__version__,'matplotlib':matplotlib.__version__,'numpy':np.__version__}}}
+
+# Every learner-facing checkbox question has a nonempty correct selection.
+import sys as _policy_sys
+from pathlib import Path as _PolicyPath
+_policy_sys.path.insert(0, str(next(p for p in _PolicyPath(__file__).resolve().parents if (p / "scripts/generator_policy.py").is_file())))
+from scripts.generator_policy import nonempty_checkbox as _nonempty_checkbox
+for _policy_name in ['generate']:
+    globals()[_policy_name] = _nonempty_checkbox(globals()[_policy_name])
+
 if __name__=='__main__':
  ap=argparse.ArgumentParser();ap.add_argument('--difficulty',choices=(*LEVELS,'hard'),default='easy');ap.add_argument('--seed',type=int,default=0);ap.add_argument('--replay',choices=list(SOURCES));ap.add_argument('--output',type=Path);a=ap.parse_args();r=replay(a.replay) if a.replay else generate(a.difficulty,a.seed);text=json.dumps(r,indent=2)+'\n'
  if a.output:a.output.write_text(text)

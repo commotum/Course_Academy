@@ -2,7 +2,11 @@
 use crate::{Result, learning, retrieval, schema::EntitySnapshot};
 use chrono::{DateTime, Utc};
 use serde_json::Value;
-use std::collections::{BTreeMap, BTreeSet};
+use std::collections::{BTreeMap, BTreeSet, VecDeque};
+
+/// The Study page displays this many activities. Bound diversity traversals to
+/// its visible prefix, while allowing tied reviews anywhere in the backlog in.
+pub const STUDY_QUEUE_LIMIT: usize = 5;
 
 #[derive(Clone, Debug)]
 pub struct Finished {
@@ -364,5 +368,358 @@ pub fn filter_candidates(
         lesson.reason = "Optional lesson after three ordinary reviews".into();
         plan.insert(0, lesson);
     }
+    // Ready retakes must remain visible ahead of a backlog of unfinished
+    // lessons. Required repairs returned above; required assessments already
+    // narrowed the plan. Keep retakes optional by preserving their priorities.
+    let mut retake_activities = BTreeSet::new();
+    for task in s.refs(l, "learner/activity")? {
+        if s.optional_ref(task, "learner-task/retake-of")?.is_some()
+            && matches!(state(s, task)?.as_str(), "locked" | "unlocked" | "started" | "paused")
+        {
+            retake_activities.insert(s.reference(task, "learner-task/activity")?);
+        }
+    }
+    plan.sort_by_key(|candidate| !retake_activities.contains(&candidate.activity));
+    diversify_reviews(s, l, &mut plan)?;
     Ok(plan)
+}
+
+/// Select within equal-priority ordinary review slots only. Required work,
+/// resumable attempts, assessments, and the three-review lesson offer keep their
+/// positions. The first review is longest overdue; subsequent reviews maximize
+/// distance to the closest already selected review, then overdue age and task ID.
+fn diversify_reviews(
+    s: &EntitySnapshot,
+    learner: u64,
+    plan: &mut [learning::PlannedActivity],
+) -> Result<()> {
+    let activities: BTreeSet<_> = plan
+        .iter()
+        .filter(|p| {
+            p.priority < 10000.0 && retrieval::kind(s, p.activity).ok().as_deref() == Some("review")
+        })
+        .map(|p| p.activity)
+        .collect();
+    if activities.len() < 2 {
+        return Ok(());
+    }
+    let mut tasks = BTreeMap::new();
+    for task in s.refs(learner, "learner/activity")? {
+        let activity = s.reference(task, "learner-task/activity")?;
+        if activities.contains(&activity)
+            && matches!(state(s, task)?.as_str(), "locked" | "unlocked")
+            && s.refs(task, "learner-task/remediation-for")?.is_empty()
+            && s.optional_ref(task, "learner-task/retake-of")?.is_none()
+        {
+            tasks.insert(activity, task);
+        }
+    }
+    if tasks.len() < 2
+        || !plan
+            .iter()
+            .take(STUDY_QUEUE_LIMIT)
+            .any(|p| tasks.contains_key(&p.activity))
+    {
+        return Ok(());
+    }
+    let threshold = s
+        .entities
+        .with_attribute("policy/id")
+        .first()
+        .and_then(|p| s.entities[p].get("policy/review-threshold"))
+        .and_then(Value::as_f64);
+    let mut due_at = BTreeMap::new();
+    if let Some(threshold) = threshold.filter(|v| v.is_finite() && *v > 0.0) {
+        for progress in s.refs(learner, "learner/knowledge-profile")? {
+            let r = s.entity(progress)?;
+            if r.get("progress/learned").and_then(Value::as_bool) != Some(true) {
+                continue;
+            }
+            if let (Some(memory), Some(interval), Some(anchor)) = (
+                r.get("progress/memory").and_then(Value::as_f64),
+                r.get("progress/interval-days").and_then(Value::as_f64),
+                r.get("progress/memory-at"),
+            ) {
+                if memory.is_finite() && memory >= 0.0 && interval.is_finite() && interval > 0.0 {
+                    let anchor = crate::schema::instant_days(anchor)?;
+                    // Match TopicState::due_at: depleted memory is due at its
+                    // observation time, not infinitely far into the past.
+                    let due = if memory <= threshold {
+                        anchor
+                    } else {
+                        anchor + interval * (memory.log2() - threshold.log2())
+                    };
+                    due_at.insert(s.reference(progress, "progress/topic")?, due);
+                }
+            }
+        }
+    }
+    let graph = s.topic_neighbors()?;
+    // Every finite shortest path has fewer than V edges. Disconnected topics
+    // use V rather than infinity, and equal distances remain deterministic.
+    let far = graph.len().max(1);
+    let mut nearest: BTreeMap<_, _> = plan.iter().map(|p| (p.topic, far)).collect();
+    for slot in 0..plan.len().min(STUDY_QUEUE_LIMIT) {
+        if !tasks.contains_key(&plan[slot].activity) {
+            continue;
+        }
+        let best = (slot..plan.len())
+            .filter(|&i| {
+                tasks.contains_key(&plan[i].activity) && plan[i].priority == plan[slot].priority
+            })
+            .max_by(|&a, &b| {
+                nearest[&plan[a].topic]
+                    .cmp(&nearest[&plan[b].topic])
+                    .then_with(|| {
+                        due_at
+                            .get(&plan[b].topic)
+                            .unwrap_or(&f64::INFINITY)
+                            .total_cmp(due_at.get(&plan[a].topic).unwrap_or(&f64::INFINITY))
+                    })
+                    .then_with(|| tasks[&plan[b].activity].cmp(&tasks[&plan[a].activity]))
+            })
+            .unwrap();
+        plan.swap(slot, best);
+        if slot + 1 == plan.len().min(STUDY_QUEUE_LIMIT) {
+            break;
+        }
+        let mut distances = BTreeMap::from([(plan[slot].topic, 0)]);
+        let mut pending = VecDeque::from([plan[slot].topic]);
+        while let Some(topic) = pending.pop_front() {
+            let distance = distances[&topic];
+            if let Some(nearest) = nearest.get_mut(&topic) {
+                *nearest = (*nearest).min(distance);
+            }
+            for &neighbor in graph.get(&topic).into_iter().flatten() {
+                if let std::collections::btree_map::Entry::Vacant(entry) = distances.entry(neighbor)
+                {
+                    entry.insert(distance + 1);
+                    pending.push_back(neighbor);
+                }
+            }
+        }
+    }
+    Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use serde_json::json;
+
+    fn fixture() -> (EntitySnapshot, Vec<learning::PlannedActivity>) {
+        let mut records = BTreeMap::new();
+        for (id, ident) in [
+            (10, "activity.type/review"),
+            (11, "learner-task.status/unlocked"),
+            (12, "learner-task.status/paused"),
+            (13, "activity.type/lesson"),
+            (14, "activity.type/assessment"),
+        ] {
+            records.insert(id, json!({"db/ident":ident}).as_object().unwrap().clone());
+        }
+        records.insert(
+            1,
+            json!({"learner/id":"test", "learner/activity":(300..308).collect::<Vec<_>>(),
+            "learner/knowledge-profile":(400..408).collect::<Vec<_>>()})
+            .as_object()
+            .unwrap()
+            .clone(),
+        );
+        records.insert(
+            2,
+            json!({"policy/id":"test", "policy/review-threshold":0.5})
+                .as_object()
+                .unwrap()
+                .clone(),
+        );
+        let mut plan = vec![];
+        for i in 0..8 {
+            records.insert(
+                100 + i,
+                json!({"topic/id":format!("topic-{i}")})
+                    .as_object()
+                    .unwrap()
+                    .clone(),
+            );
+            records.insert(
+                200 + i,
+                json!({"activity/id":format!("review-{i}"),"activity/type":10,
+                "activity/scope":100+i})
+                .as_object()
+                .unwrap()
+                .clone(),
+            );
+            records.insert(
+                300 + i,
+                json!({"learner-task/activity":200+i,"learner-task/status":11})
+                    .as_object()
+                    .unwrap()
+                    .clone(),
+            );
+            records.insert(
+                400 + i,
+                json!({"progress/topic":100+i,"progress/learned":true,
+                "progress/memory":1.0,"progress/interval-days":1.0,
+                "progress/memory-at":{"$instant":if i==2 {0} else {86400000}}})
+                .as_object()
+                .unwrap()
+                .clone(),
+            );
+            plan.push(learning::PlannedActivity {
+                activity: 200 + i,
+                topic: 100 + i,
+                priority: 6000.0,
+                target_count: 0,
+                target_topics: vec![],
+                remaining_topics: 0,
+                nearest_target_steps: None,
+                due: None,
+                reason: "Spaced review is due".into(),
+            });
+        }
+        // Intermediate topics are not due candidates. Edges point only forward;
+        // diversity must still measure distance backward and across these nodes.
+        for (i, from, to) in [
+            (0, 100, 101),
+            (1, 101, 102),
+            (2, 102, 103),
+            (3, 103, 104),
+            (4, 104, 105),
+            (5, 106, 107),
+        ] {
+            records
+                .get_mut(&from)
+                .unwrap()
+                .insert("topic/next".into(), json!([900 + i]));
+            records.insert(
+                900 + i,
+                json!({"topic/id":format!("bridge-{i}"),"topic/next":[to]})
+                    .as_object()
+                    .unwrap()
+                    .clone(),
+            );
+        }
+        (EntitySnapshot::new(records, 1).unwrap(), plan)
+    }
+
+    #[test]
+    fn review_variety_uses_whole_undirected_graph_and_can_select_beyond_five() {
+        let (s, plan) = fixture();
+        let selected = filter_candidates(&s, 1, plan.clone()).unwrap();
+        assert_eq!(
+            selected.iter().take(5).map(|p| p.topic).collect::<Vec<_>>(),
+            [102, 106, 105, 100, 101]
+        );
+        assert_eq!(selected.len(), plan.len());
+        assert_eq!(
+            selected.iter().map(|p| p.activity).collect::<BTreeSet<_>>(),
+            plan.iter().map(|p| p.activity).collect()
+        );
+        // Deterministic even if equal-priority input order changes or a caller
+        // passes the already diversified plan a second time.
+        let mut reversed = plan;
+        reversed.reverse();
+        let again = filter_candidates(&s, 1, reversed).unwrap();
+        assert_eq!(
+            again.iter().take(5).map(|p| p.activity).collect::<Vec<_>>(),
+            selected
+                .iter()
+                .take(5)
+                .map(|p| p.activity)
+                .collect::<Vec<_>>()
+        );
+        let again = filter_candidates(&s, 1, selected.clone()).unwrap();
+        assert_eq!(
+            again.iter().take(5).map(|p| p.activity).collect::<Vec<_>>(),
+            selected
+                .iter()
+                .take(5)
+                .map(|p| p.activity)
+                .collect::<Vec<_>>()
+        );
+    }
+
+    #[test]
+    fn review_variety_preserves_priorities_and_fixed_activity_slots() {
+        let (mut s, mut plan) = fixture();
+        // A paused review, an optional lesson offer, and an assessment retain
+        // their positions. Different review priorities cannot trade places.
+        s.entities
+            .get_mut(&300)
+            .unwrap()
+            .insert("learner-task/status".into(), json!(12));
+        s.entities
+            .get_mut(&201)
+            .unwrap()
+            .insert("activity/type".into(), json!(13));
+        s.entities
+            .get_mut(&203)
+            .unwrap()
+            .insert("activity/type".into(), json!(14));
+        plan[0].priority = 10001.0;
+        plan[1].reason = "Optional lesson after three ordinary reviews".into();
+        plan[2].priority = 6500.0;
+        let original = plan.clone();
+        diversify_reviews(&s, 1, &mut plan).unwrap();
+        for index in [0, 1, 2, 3] {
+            assert_eq!(plan[index].activity, original[index].activity);
+        }
+        assert_eq!(plan[1].reason, original[1].reason);
+        assert_eq!(
+            plan.iter().map(|p| p.priority).collect::<Vec<_>>(),
+            original.iter().map(|p| p.priority).collect::<Vec<_>>()
+        );
+    }
+
+    #[test]
+    fn review_variety_leaves_repairs_and_retakes_in_place() {
+        let (mut s, mut plan) = fixture();
+        s.entities
+            .get_mut(&300)
+            .unwrap()
+            .insert("learner-task/remediation-for".into(), json!([301]));
+        s.entities
+            .get_mut(&301)
+            .unwrap()
+            .insert("learner-task/retake-of".into(), json!(300));
+        diversify_reviews(&s, 1, &mut plan).unwrap();
+        assert_eq!(plan[0].activity, 200);
+        assert_eq!(plan[1].activity, 201);
+        assert_eq!(plan[2].topic, 102);
+        assert_eq!(plan[3].topic, 106);
+    }
+
+    #[test]
+    fn review_variety_does_not_treat_zero_memory_as_infinitely_overdue() {
+        let (mut s, plan) = fixture();
+        // Topic 102 has an older observation. A recently depleted topic must
+        // not jump ahead of it just because log2(0) is negative infinity.
+        s.entities
+            .get_mut(&403)
+            .unwrap()
+            .insert("progress/memory".into(), json!(0.0));
+        let selected = filter_candidates(&s, 1, plan).unwrap();
+        assert_eq!(selected[0].topic, 102);
+    }
+
+    #[test]
+    fn review_variety_handles_missing_memory_and_isolated_topics_with_task_id_ties() {
+        let (mut s, mut plan) = fixture();
+        for id in 400..408 {
+            s.entities.get_mut(&id).unwrap().remove("progress/memory");
+        }
+        for id in 100..108 {
+            s.entities.get_mut(&id).unwrap().remove("topic/next");
+        }
+        for id in 900..906 {
+            s.entities.get_mut(&id).unwrap().remove("topic/next");
+        }
+        plan.reverse();
+        diversify_reviews(&s, 1, &mut plan).unwrap();
+        assert_eq!(
+            plan.iter().take(5).map(|p| p.activity).collect::<Vec<_>>(),
+            [200, 201, 202, 203, 204]
+        );
+    }
 }

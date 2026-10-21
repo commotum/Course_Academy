@@ -55,6 +55,15 @@ class ContextProvider:
         context.update(self._targets())
         return context
 
+    def source_dependencies(self, questions):
+        try:
+            return self.pipeline_factory().source_dependencies(questions)
+        except StopRequested:
+            raise
+        except Exception as error:
+            logging.warning('Source dependency lookup unavailable after %s', type(error).__name__)
+            return []
+
     def question_topic(self, question_id):
         if not question_id:
             return None

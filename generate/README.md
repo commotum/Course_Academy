@@ -18,13 +18,24 @@ band. An explicit band is never silently replaced. Inventory classification
 requests likewise produce a reviewed initial batch; existing source questions
 are preserved.
 
-The learner application runs two independent background workers. The build worker
-uses the [finder's relevance-first ordering](scripts/README.md), taking one KP at a time through
-authoring and independent review. The refill worker runs approved hashed packages
+The learner application runs three concurrent generator builders and one independent
+refill worker. Each builder uses the [finder's relevance-first ordering](scripts/README.md),
+claiming the highest-priority unlocked KP through authoring and independent review.
+The refill worker runs approved hashed packages
 without Codex sessions, aiming for five easy, five moderate and five hard questions
 per KP. It maintains existing packages even after their topics leave the urgency
 groups. Legacy scripts and approved drafts enter the build worker for packaging and
-review. A shared KP lock prevents the two workers from publishing competing versions.
+review. Shared KP locks prevent builders and refills from publishing competing versions.
+Builder slot locks also preserve the concurrency limit across service restarts.
+
+The build worker first finishes the current queue and targets: every selected KP
+needs a usable hashed generator and five available questions in each difficulty
+band. Creating, repairing, or reviewing generators for other topics waits until
+that supply is complete. New selections or deficits close this gate again.
+Approved refills run independently across all registered packages, including
+prerequisite and downstream topics. An outside refill that needs approval or repair
+waits for the build scope to open. Saved drafts are retained; uncertain publications
+are reconciled using their exact requests.
 
 The application refreshes the ranking at startup, after learner actions and completed
 generation jobs, and through the scheduler's 30-second refresh. Both workers wait for
@@ -35,7 +46,9 @@ and developer-mode switches control both generation workers.
 Approval is specific to the package, original instructional source, database lineage,
 KP, reviewed difficulty, and review-policy version. Missing or stale approval queues an independent review
 in the build worker. An unsupported band is recorded and other work continues.
-An unchanged rejected request is not repeatedly retried. Inventory is rechecked
+An unsupported difficulty with no source evidence is retained as unsupported.
+Repairable content failures remain pending at their existing priority and retain
+their exact workspace and publication recovery state. Inventory is rechecked
 after publication; existing jobs and pending commit requests survive restarts.
 
 Approval is the independent Codex reviewer's recorded acceptance, followed by
@@ -54,6 +67,35 @@ Their `pedagogical-variation.json` records decision coverage, shortcut results a
 filtering effects with reproducible sample evidence. Source replay, mathematics,
 grading and this distribution-level judgment remain separate acceptance checks.
 Legitimate mathematical simplifications and justified finite families are allowed.
+
+Revisions preserve the generator workspace. A prior independent review's source
+account and scripts are offered for reuse only when its source hash and review
+policy match; tests still run against the current candidate and all eight checks
+remain required. A malformed review report gets one correction by the reviewer
+using its saved evidence, without another author pass or resampling. If the report
+remains invalid, report correction stays pending without rebuilding the generator
+or resampling its batch. Completed structured
+agent results are reused on restart. Prompts direct interrupted sessions to saved
+progress, limit bulk output, and stop testing once the required evidence passes.
+
+Each unfinished author/reviewer session has a persistent limit of three Codex
+launches, including failed launches and timeouts. Exhaustion stops automatic
+retrying and records the session and original stage; it preserves the workspace,
+samples and evidence. Completed cached results remain reusable even at the limit.
+After fixing the cause, recovery must deliberately requeue that saved session;
+a service restart or ranking refresh does not reset the budget.
+
+[Shared offline validation tools](pipeline/validation-tools.md) centralize delivery
+filtering, grader invocation, and rendering. `check_delivery.py` calls the same
+record-preparation function as publication against saved inventory, with all image
+writes confined to local evidence. Agents still independently check mathematics,
+source fidelity, grading, rendering and variation before and after filtering.
+Publication also reuses its fresh KP read for the same-basis source check.
+
+The shared UI renderer automatically selects an installed Node >=20 runtime,
+preferring the runtime bundled alongside Playwright. It does not rely on the
+service's older system Node. Override with `--node` or
+`COURSE_ACADEMY_NODE_EXECUTABLE` when necessary.
 
 Old certificates do not satisfy policy 2. Fast refill sends them through the existing
 review queue; published questions are retained. Saved reviews are tied to the policy
@@ -74,7 +116,11 @@ not republish that batch. This change does not increase review scheduling priori
    rendering and package relocation. All eight checks require evidence. A read-only
    `source/inventory.json` provides the captured question bank and the publisher’s
    deduplication fingerprints for delivered-distribution checks.
-   Rejections return to the author, up to three authoring attempts by default.
+   Rejections return to the author with a cumulative finding history. Each finding
+   requires an executable regression before another independent review. An unchanged
+   rejected package is not reviewed again unless its source or grading engine changed.
+   Three author attempts bound one worker turn; unfinished work yields as `repair`
+   and resumes in a focused root-cause repair cycle, rather than being blacklisted.
 3. **Prepare:** Verify the approved code, records, source and images. Publish
    the immutable generator package and hash image bytes through the shared image
    library. Deduplicate content and construct typed EDB forms using the existing
@@ -145,15 +191,34 @@ contributor. Codex uses the user's existing login and model configuration.
 
 - `COURSE_ACADEMY_CODEX_EXECUTABLE`: explicit Codex CLI path.
 - `COURSE_ACADEMY_GENERATOR_PYTHON`: Python interpreter; defaults to `.venv/bin/python`.
+- `COURSE_ACADEMY_GENERATOR_BUILD_WORKERS`: simultaneous builder pipelines;
+  defaults to 3. Each pipeline alternates authoring and independent review. The
+  refill worker runs separately. Set to 1 for sequential builds; restart the
+  service after changing the setting.
 - `EDB_MATH_ROOT`, `EDB_POSTGRES_URL`, `EDB_ENDPOINT`, `EDB_BIN`,
   `LEARNING_REQUEST_DIR`: existing database and asset configuration.
-- `--max-attempts`: bounded author/repair attempts, default 3.
+- `--max-attempts`: author/repair attempts per worker turn, default 3; the durable
+  job continues across turns until accepted or an external blocker is identified.
 
 Author and reviewer sessions cannot publish through this workflow. They work in
 their own directories with noninteractive sandboxed Codex execution. The runner
-performs deterministic publication after acceptance. Unsupported or exhausted
-content jobs are recorded and other queued jobs continue; infrastructure failures
-remain resumable with background backoff.
+performs deterministic publication after acceptance. `repair-history.json` preserves
+every finding, `repair-regressions.json` maps findings to workspace Python checks,
+and `repair-preflight.json` records actual executions. Failed preflight checks go
+back to repair before another full review. A `sample` checkpoint resumes completed
+author work without launching another author. Source-supported engine limitations
+remain repair tasks; a grading finding permits a scoped engine fix with acceptance
+and rejection regressions. Infrastructure interruptions retain exact state and
+background backoff. Provider/session launch limits remain distinct from content
+repair and never cause uncertain publication requests to be replaced.
+
+Scoped campaigns use persistent user-service definitions installed by
+`scripts/generator_services.py`, with restart on unexpected process failure. The
+definition remains available after a clean boundary stop; resuming does not depend
+on a transient unit that systemd may have unloaded. The priority worker uses exit
+78 for capacity pauses and does not automatically restart against an exhausted
+provider quota. The cohort records its capacity error and stops before attempting
+the rest of the cohort.
 
 ## Verification
 

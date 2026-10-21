@@ -14,8 +14,11 @@ Retakes use the same activity triggers and inventory requirements. Topic selecti
 The running application coalesces refresh events after learner actions, scheduler
 passes and generator completion. It also refreshes at startup and on the scheduler's
 30-second cadence. The finder captures a consistent database snapshot and inspects
-the full eligible pool, because distinct-topic assessment coverage is a global
-calculation. The durable cursor records the accepted lineage and basis. This scan
+the directly selected pool and registered refill packages first. Agent authoring,
+repair, and review for prerequisite, downstream, and unrelated topics is eligible
+only after every selected KP has a usable hashed generator and five available
+questions in each difficulty band. Approved refills run across registered packages
+independently of this gate. The durable cursor records the accepted lineage and basis. This scan
 runs outside the learner API lock; starting a lesson does not await generator work.
 
 1. Pass the affected topics and activity types to Inventory.
@@ -25,13 +28,16 @@ runs outside the learner API lock; starting a lesson does not await generator wo
 Recheck availability before starting an unstarted activity. Preserve already started or paused work; existing required-work rules still apply while generation runs.
 
 The live worker and read-only `generate/scripts/find_candidates.py` share the
-`relevance-v2` comparator in `scripts/generator_priority.py`. They order work by
-relevance first: required or active activity needs, selected study (queue, targets,
-and their unmet necessary prerequisites), other current review/assessment needs,
-then speculative preparation. Within each group, lesson shortages precede review
+`relevance-v5` comparator in `scripts/generator_priority.py`. After applying the
+selection-completion gate to agent build and review work, they order eligible work by
+relevance first: required or active activity needs, directly selected study (queue
+and targets), prerequisite preparation, other current review/assessment needs,
+then speculative preparation. Direct membership wins when a topic is also a
+prerequisite. Within each group, lesson shortages precede review
 shortages, assessment shortages, hard/moderate/easy distinct-topic assessment
 coverage, and advance preparation or routine replenishment. A selected review
-shortage therefore precedes a speculative lesson shortage regardless of size.
+shortage therefore precedes a prerequisite lesson shortage regardless of size or
+graph layer.
 
 Lesson work orders topics by global prerequisite layer, distinct selected goals
 supported, engine priority, and age before comparing individual KP deficits.
@@ -50,8 +56,9 @@ demands, distinct-topic coverage and cursor behavior. The service calls
 it with `include_registered=true` so the independent refill worker also maintains
 existing hashed generators outside the urgency groups. Those extra topics remain
 ineligible for new generator creation. Refills run approved packages directly;
-missing or stale approval sends the affected difficulty to the build worker for
-review. See the [pipeline guide](../README.md) for recovery and storage details.
+missing or stale approval defers the affected difficulty to the build worker for
+review when its topic is eligible under the selection gate. See the
+[pipeline guide](../README.md) for recovery and storage details.
 Uncertain publication recovery precedes ordinary work to reconcile its exact saved
 request. Unfinished authoring and review drafts retain their workspace and resume
 at their current priority.

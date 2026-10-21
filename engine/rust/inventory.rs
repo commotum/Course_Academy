@@ -284,6 +284,8 @@ pub fn assessment_status(s: &EntitySnapshot, l: u64, at: DateTime<Utc>) -> Resul
     let aged = crate::retrieval::assessment_topics(s, l, at)?.len();
     let pools = crate::retrieval::assessment_pools(s, l, at)?;
     let eligible = pools.len();
+    let new_eligible = pools.keys().filter(|topic| !h.assessed.contains(topic)).count();
+    let minimum_new = crate::retrieval::ASSESSMENT_MIN_NEW_TOPICS;
     let ready = s.refs(l, "learner/activity")?.into_iter().any(|task| {
         s.optional_ref(task, "learner-task/retake-of")
             .ok()
@@ -301,18 +303,21 @@ pub fn assessment_status(s: &EntitySnapshot, l: u64, at: DateTime<Utc>) -> Resul
                         && (matches!(
                             scheduling::state(s, task).ok().as_deref(),
                             Some("started" | "paused")
-                        ) || crate::retrieval::fresh(s, l, a).unwrap_or(false))
+                        ) || crate::retrieval::ordinary_assessment_ready(s, l, a, at).unwrap_or(false))
                 })
     });
     Ok(
         json!({"practiceXp":h.xp,"eligibleTopics":eligible,"agedLearnedTopics":aged,
+            "newEligibleTopics":new_eligible,"minimumNewTopics":minimum_new,
             "availableQuestions":pools.values().map(Vec::len).sum::<usize>(),
             "ready":ready,"required":ready&&h.xp>=150.0,
             "unavailableReason":if h.xp>=120.0&&!ready {Some(if aged==0 {
-                "Waiting for learned topics at least 48 hours old"
+                "Waiting for learned topics at least 48 hours old".to_owned()
             }else if eligible==0 {
-                "Waiting for fresh rated questions for eligible topics"
-            }else {"Preparing an assessment from eligible questions"})}else{None}}),
+                "Waiting for fresh rated questions for eligible topics".to_owned()
+            }else if new_eligible<minimum_new {
+                format!("Waiting for five eligible topics not previously assessed ({new_eligible}/{minimum_new} ready)")
+            }else {"Preparing an assessment from eligible questions".to_owned()})}else{None}}),
     )
 }
 

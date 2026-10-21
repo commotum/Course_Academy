@@ -130,6 +130,13 @@ def reextract_record(record, page, repair, *, history=False, prior=None):
         recover_original_raster(parsed, asset)
         replacements['@asset-'+str(asset['index'])+'@'] = old['path']
     parsed = replace_markers(parsed, replacements)
+    # Re-reading an explanation does not re-read the prompt's diagrams. Keep
+    # those source bindings so matching the unchanged history remains possible.
+    covered = set(parsed.get('extraction_parts', []))
+    retained = [deepcopy(a) for a in record.get('assets', []) if a.get('extraction_part') not in covered]
+    parsed['assets'] = retained + parsed.get('assets', [])
+    for index, asset in enumerate(parsed['assets']):
+        asset['index'] = index  # All occurrence markers have already been bound.
     source_hash = hashlib.sha256(markup.encode()).hexdigest()
     evidence = repair/'source'/(source_hash+'.html')
     if not evidence.exists(): atomic_text(evidence, markup)
@@ -153,8 +160,78 @@ def reextract_record(record, page, repair, *, history=False, prior=None):
     return merge_question(record,parsed)
 
 
+def recover_source_graphics(history, task_id, recovery):
+    """Bind an original image through identical TeX in owned source metadata."""
+    from bs4 import BeautifulSoup
+    from PIL import Image
+    from .browser.history import task_answers
+    source = Path(recovery['task_answers_source'])
+    response = read_json(source.with_suffix('.response.json'), {})
+    if response.get('status') != 200 or response.get('url') != f'https://mathacademy.com/api/tasks/{task_id}/answers':
+        raise ValueError('Graphic recovery requires the owned task answer response')
+    answers = task_answers(read_json(source), task_id)
+    identity = recovery['question_id']
+    question = answers.get(identity, {}).get('question', {})
+    alias, original = recovery['alias'], recovery['file_id']
+    graphics = question.get('graphics', [])
+    named = lambda name: [g for g in graphics if g.get('fileId') == name]
+    aliases, originals = named(alias), named(original)
+    if (alias == original or not re.fullmatch(r'q-' + re.escape(identity.removeprefix('q-')) + r'-e-\d+', alias)
+            or len(aliases) != 1 or len(originals) != 1 or not aliases[0].get('tex', '').strip()
+            or aliases[0]['tex'] != originals[0].get('tex')):
+        raise ValueError('Graphic recovery requires unique, identical original TeX for this question alias')
+    alias_url = 'https://mathacademy.com/graphics/' + alias
+    original_url = 'https://mathacademy.com/graphics/' + original
+    source_images = BeautifulSoup(question.get('explanation', ''), 'html.parser').find_all('img')
+    if not any(urljoin('https://mathacademy.com/', n.get('src', '')) == alias_url for n in source_images):
+        raise ValueError('Question explanation does not reference the failed graphic alias')
+    path = Path(recovery['path'])
+    data = path.read_bytes()
+    digest = hashlib.sha256(data).hexdigest()
+    receipt = read_json(Path(recovery['response_file']), {})
+    if (receipt.get('url') != original_url or receipt.get('status') != 200
+            or receipt.get('sha256') != digest or receipt.get('bytes') != len(data)):
+        raise ValueError('Original graphic response bytes do not match their receipt')
+    with Image.open(path) as image:
+        image.verify()
+    with Image.open(path) as image:
+        image.load()
+        dimensions, image_format = list(image.size), image.format
+    if image_format not in ('PNG', 'JPEG', 'GIF', 'WEBP') or min(dimensions) <= 0:
+        raise ValueError('Original graphic is not a fully decoded raster')
+    result = deepcopy(history)
+    records = [q for q in result.get('questions', []) if q.get('math_academy_id') == identity]
+    if len(records) != 1:
+        raise ValueError('Graphic recovery requires one matching history question')
+    record = records[0]
+    evidence = Path(record['solution_evidence'])
+    root = BeautifulSoup(evidence.read_text(), 'html.parser').find(id='questionExplanation-' + identity.removeprefix('q-'))
+    if root is None or not any(urljoin('https://mathacademy.com/', n.get('src', '')) == alias_url for n in root.find_all('img')):
+        raise ValueError('Saved solution does not bind this question to the graphic alias')
+    assets = [a for a in record.get('assets', []) if a.get('source_url') == alias_url
+              and a.get('tag') == 'img' and a.get('extraction_part') == 'solution']
+    if len(assets) != 1 or (assets[0].get('path') and not any(assets[0].get(k) for k in ('unavailable', 'render_unavailable'))):
+        raise ValueError('Graphic recovery requires one unavailable solution image')
+    asset = assets[0]
+    previous = deepcopy(asset)
+    for key in ('unavailable', 'render_unavailable', 'render_ready'):
+        asset.pop(key, None)
+    asset.update(path=str(path.resolve()), sha256=digest, content_type=receipt.get('content_type'), representation='original',
+        recovered_from={'reason':'Identical original TeX in the same owned question graphics metadata',
+            'source_url':original_url, 'source_file':str(source.resolve()),
+            'source_sha256':hashlib.sha256(source.read_bytes()).hexdigest(),
+            'alias_graphic_id':aliases[0].get('id'), 'original_graphic_id':originals[0].get('id'),
+            'tex_sha256':hashlib.sha256(aliases[0]['tex'].encode()).hexdigest(),
+            'response_file':str(Path(recovery['response_file']).resolve()), 'previous_asset':previous},
+        original_image_validation={'source_url':original_url, 'original_path':str(path.resolve()),
+            'original_sha256':digest, 'dimensions':dimensions, 'format':image_format,
+            'binding':'Exact original TeX match in the same owned question; original source alias retained'})
+    return result
+
+
 def repair_saved_capture(config, directory, page, *, apply=True, task_answers_source=None,
-                         reextract_presentations=False, reextract_history=False):
+                         reextract_presentations=False, reextract_history=False, lesson_sources=None,
+                         graphic_recoveries=None, reference_questions=None):
     """Repair saved source structure; retain judgments and use the normal batch queue."""
     directory = Path(directory).resolve()
     if directory.parent != config.output_root or not (directory/'capture-complete.json').exists():
@@ -176,6 +253,62 @@ def repair_saved_capture(config, directory, page, *, apply=True, task_answers_so
     if not checkpoint or not original:
         raise ValueError('Completed source repair requires its original checkpoint and content')
     history = deepcopy(checkpoint['history'])
+    if reference_questions:
+        # Reference practice supplies catalog pools, never historical attempts,
+        # question order, or the original lesson's calibration sample.
+        for question in reference_questions:
+            evidence = question.get('reference_source') or {}
+            if evidence.get('kind') == 'reference_answer_metadata':
+                source = Path(evidence.get('source_file') or '')
+                response = read_json(source.with_suffix('.response.json'), {})
+                if (response.get('status') != 200 or response.get('url') !=
+                        'https://mathacademy.com/api/lessons/' + str(question.get('topic_id'))
+                        or response.get('sha256') != hashlib.sha256(source.read_bytes()).hexdigest()):
+                    raise ValueError('Reference answer metadata requires its original source response')
+                lesson = read_json(source, {}).get('lesson') or {}
+                matches = [step['question'] for step in lesson.get('steps', [])
+                    if 'question' in step and question.get('math_academy_id') == 'q-' + str(step['question'].get('id'))]
+                if len(matches) != 1 or str(lesson.get('topic', {}).get('id')) != str(question.get('topic_id')):
+                    raise ValueError('Reference answer metadata does not identify this source question and topic')
+                segments = [s['textbox'] for s in (matches[0].get('freeResponse') or {}).get('segments', []) if 'textbox' in s]
+                fields = question.get('answer_fields', question.get('fields', []))
+                if not segments or len(segments) != len(fields) or any(
+                        field.get('correct_value') != str(segment.get('answer'))
+                        or (field.get('evidence') or {}).get('source_file') != str(source.resolve())
+                        for field, segment in zip(fields, segments)):
+                    raise ValueError('Reference answers do not match the original source controls')
+            else:
+                if (evidence.get('kind') != 'graded_reference_practice'
+                        or not Path(evidence.get('grade_file') or '').is_file()):
+                    raise ValueError('Reference practice requires its retained source grade')
+                receipt = read_json(Path(evidence['grade_file']), {})
+                graded = receipt.get('question') or {}
+                if (question.get('math_academy_id') != 'q-' + str(graded.get('id'))
+                        or not graded.get('answer', {}).get('correct')):
+                    raise ValueError('Reference grade does not confirm this source question')
+            authoritative_question(question)
+        history = ActivityCapture._merge_content(history, {'reference_questions': reference_questions})
+    for recovery in graphic_recoveries or []:
+        history = recover_source_graphics(history, checkpoint['activity']['task_id'], recovery)
+    for source in lesson_sources or []:
+        definition = source.get('lesson_definition') or {}
+        tid = str(definition.get('topic_id') or '')
+        path = Path(definition.get('source_file') or '')
+        if not definition.get('complete') or not path.is_file():
+            raise ValueError('Supplementary lesson source must be complete and retain its original HTML')
+        from .browser.parsing import parse_lesson_structure
+        observed = parse_lesson_structure(path.read_text(), tid)
+        signature = lambda d: [(s.get('math_academy_id'), s.get('type'), s.get('content_id')) for s in d.get('steps', [])]
+        if not observed.get('complete') or signature(observed) != signature(definition):
+            raise ValueError('Supplementary lesson definition does not match its original HTML')
+        if checkpoint['activity']['kind'] == 'lesson' and tid == str(checkpoint['activity'].get('topic_id')):
+            history['lesson_definition'] = deepcopy(definition)
+        else:
+            history.setdefault('source_lesson_definitions', {})[tid] = deepcopy(definition)
+        supplement = source if checkpoint['activity']['kind'] == 'lesson' else ActivityCapture._dependency_content(
+            source, history.get('questions', []))
+        for bucket in ('canonical_examples', 'tutorials'):
+            history = ActivityCapture._merge_content(history, {bucket: supplement.get(bucket, [])})
     if reextract_presentations:
         for record in checkpoint['presentations'].values():
             record['question'] = reextract_record(record['question'],page,repair)
@@ -193,11 +326,13 @@ def repair_saved_capture(config, directory, page, *, apply=True, task_answers_so
         finally:
             renderer.close()
     records = list(checkpoint['presentations'].values())
-    for bucket in ('questions','canonical_examples','tutorials'):
+    for bucket in ('questions','reference_questions','canonical_examples','tutorials'):
         for index, question in enumerate(history.get(bucket,[])):
             if not question.get('errors'):
-                if reextract_history and bucket == 'questions':
-                    history[bucket][index] = reextract_record(question,page,repair,history=True)
+                if reextract_history:
+                    history[bucket][index] = reextract_record(question,page,repair,history=bucket == 'questions')
+                    if bucket == 'tutorials':
+                        history[bucket][index]['content'] = history[bucket][index]['problem']
                 continue
             if bucket == 'questions':
                 identity = question.get('math_academy_id')
@@ -210,7 +345,7 @@ def repair_saved_capture(config, directory, page, *, apply=True, task_answers_so
                     raise ValueError('No saved solution source for '+str(identity))
                 fragment = {**question, 'dom_id':'questionExplanation-'+identity.removeprefix('q-'),
                     'html':Path(source).read_text(), 'html_path':source,
-                    'assets':[a for a in question.get('assets',[]) if a.get('extraction_part')=='solution']}
+                    'assets':deepcopy(question.get('assets',[]))}
                 recovered = reextract_record(fragment,page,repair,history=True,prior=prior)
                 history[bucket][index] = merge_question(question,recovered)
             else:
@@ -239,14 +374,15 @@ def repair_saved_capture(config, directory, page, *, apply=True, task_answers_so
         if saved.parent == repair:
             continue
         earlier = read_json(saved,{}) or {}
-        for bucket in ('questions','canonical_examples'):
+        for bucket in ('questions','reference_questions','canonical_examples'):
             for question in earlier.get(bucket,[]):
                 judgment = question.get('answer_validation',{}).get('previous_judgment')
                 if judgment and judgment.get('question_id') == question.get('math_academy_id'):
                     judgments.append(judgment)
-    for bucket in ('questions','canonical_examples'):
+    for bucket in ('questions','reference_questions','canonical_examples'):
         finalized = []
         for question in content.get(bucket,[]):
+            capture._normalize_kp(question, example=bucket == 'canonical_examples')
             mid = question.get('math_academy_id')
             candidates = [j for j in judgments if j.get('record_kind',bucket)==bucket and
                 (str(j.get('question_id'))==str(mid) or j.get('capture_key')==question.get('source_id') or
@@ -283,8 +419,12 @@ def repair_saved_capture(config, directory, page, *, apply=True, task_answers_so
     result = {'status':'prepared','directory':str(directory),'repair':str(repair),'gaps':[]}
     if apply:
         with file_lock(config.database_lock):
-            if list(config.spool_root.glob('batches/*/active.json')) or (directory/'database/request.json').exists():
-                raise ValueError('Wait for the current database batch before queuing source repairs')
+            if (directory/'database/request.json').exists():
+                raise ValueError('Wait for this capture database request before queuing source repairs')
+            for pointer in config.spool_root.glob('batches/*/active.json'):
+                if any((read_json(Path(path), {}) or {}).get('capture_directory') == str(directory)
+                       for path in (read_json(pointer, {}) or {}).get('spool_paths', [])):
+                    raise ValueError('Wait for this capture database batch before queuing source repairs')
             atomic_json(directory/'content.json',content)
             atomic_json(directory/'history-content.json',history)
             spool = enqueue(config,directory)

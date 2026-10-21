@@ -23,17 +23,23 @@ impl PracticeDecision {
         self.status != "continue"
     }
     pub fn passed(&self) -> Option<bool> {
-        self.complete().then_some(self.status == "passed")
+        self.complete()
+            .then_some(matches!(self.status.as_str(), "passed" | "exhausted"))
     }
 }
 
-fn practice_prefix(outcomes: &[Outcome], required_streak: usize) -> Result<PracticeDecision> {
+fn practice_prefix(
+    outcomes: &[Outcome],
+    required_streak: usize,
+    lesson: bool,
+) -> Result<PracticeDecision> {
     let mut decision = PracticeDecision {
         status: "continue".into(),
         attempted: 0,
         correct: 0,
         streak: 0,
     };
+    let mut incorrect_streak = 0;
     for outcome in outcomes {
         if decision.complete() {
             return Err("outcomes continue beyond the first terminal prefix".into());
@@ -42,13 +48,17 @@ fn practice_prefix(outcomes: &[Outcome], required_streak: usize) -> Result<Pract
         if *outcome == Some(true) {
             decision.correct += 1;
             decision.streak += 1;
+            incorrect_streak = 0;
         } else {
             decision.streak = 0;
+            incorrect_streak += 1;
         }
         decision.status = if decision.streak >= required_streak {
             "passed"
-        } else if decision.attempted == 5 {
+        } else if lesson && incorrect_streak == 2 {
             "failed"
+        } else if decision.attempted == 5 {
+            if lesson { "exhausted" } else { "failed" }
         } else {
             "continue"
         }
@@ -57,10 +67,12 @@ fn practice_prefix(outcomes: &[Outcome], required_streak: usize) -> Result<Pract
     Ok(decision)
 }
 pub fn evaluate_kp_prefix(outcomes: &[Outcome]) -> Result<PracticeDecision> {
-    practice_prefix(outcomes, 2)
+    // A lesson stage advances on CC or at five presentations, and fails on
+    // two consecutive negative outcomes (incorrect answers or explicit skips).
+    practice_prefix(outcomes, 2, true)
 }
 pub fn evaluate_review_prefix(outcomes: &[Outcome]) -> Result<PracticeDecision> {
-    practice_prefix(outcomes, 3)
+    practice_prefix(outcomes, 3, false)
 }
 
 /// Convert numeric inputs to an exact rational. Floats use their decimal
@@ -383,6 +395,44 @@ impl DiagnosticBalance {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn lesson_stopping_checks_streaks_before_the_five_question_limit() {
+        // Check every C/W prefix, including all terminal prefixes at slot five.
+        for length in 0..=6 {
+            for mask in 0..(1 << length) {
+                let outcomes: Vec<_> = (0..length).map(|n| Some(mask & (1 << n) != 0)).collect();
+                let terminal = (1..=length).find_map(|n| {
+                    if n >= 2 && outcomes[n - 1] == outcomes[n - 2] {
+                        Some((
+                            n,
+                            if outcomes[n - 1] == Some(true) {
+                                "passed"
+                            } else {
+                                "failed"
+                            },
+                        ))
+                    } else if n == 5 {
+                        Some((n, "exhausted"))
+                    } else {
+                        None
+                    }
+                });
+                let result = evaluate_kp_prefix(&outcomes);
+                if terminal.is_some_and(|(n, _)| n < length) {
+                    assert!(result.is_err(), "{outcomes:?}");
+                } else {
+                    let result = result.unwrap();
+                    let expected = terminal.map_or("continue", |(_, status)| status);
+                    assert_eq!(result.status, expected, "{outcomes:?}");
+                    assert_eq!(
+                        result.passed(),
+                        (expected != "continue").then_some(expected != "failed")
+                    );
+                }
+            }
+        }
+    }
+
     #[test]
     fn stopping_and_skip_order() {
         assert_eq!(evaluate_kp_prefix(&[]).unwrap().passed(), None);

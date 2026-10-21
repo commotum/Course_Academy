@@ -2,7 +2,9 @@
 
 `course-academy-engine` is the library; `fire` is the command-line binary. Both
 implement FIRe and activity completion, including
-two correct answers in a row for lesson KPs, three for reviews, accepted earned-XP rules,
+lesson KPs that advance on two consecutive correct answers, fail the lesson on
+two consecutive incorrect answers or skips, and advance after five questions
+when neither streak occurs; three correct answers in a row for reviews; accepted earned-XP rules,
 and completed diagnostic retries replacing the original placement evidence.
 The study app uses `learning` for the current generic activity/step schema,
 lesson eligibility, response grading, lesson XP, and per-answer FIRe updates.
@@ -16,15 +18,28 @@ questions; the existing three-correct streak stops a review after at most five
 presentations. A bounded pool of 16 due topics is ranked by FIRe review coverage,
 and up to three new review definitions are prepared per refresh. Obsolete
 unstarted tasks are locked; started and paused work remains resumable in both
-modes. Self-directed mode schedules new lessons from the selected topic set;
-activity-history assessments and reviews for assessment misses remain available.
-Ordinary spaced reviews retain their existing course and engine-mode scope.
+modes. Self-directed mode combines explicit queued lessons with targets and their
+unfinished prerequisites. Target preparation stops at historically studied topics;
+their prerequisite ancestry also counts as covered, including when another studied
+branch establishes that knowledge. Evidence includes learned progress, positive
+legacy repetitions, and completed lessons or reviews. This planning inference does
+not write mastery or remove due reviews. Queue and Study-now requests retain their
+manual overrides. New target preparation requires its prerequisite frontier to be
+known and the same five fresh usable questions per KP as queued lessons. Ordinary
+spaced reviews and activity-history assessments remain available across courses
+in both modes.
 
 Assessments become available after 120 finalized practice XP since the
 last ordinary assessment completion or expiry and become required at 150 XP.
-They require enough distinct
-learned topics with recorded successful learning at least 48 hours ago, without
-a mandatory prior retrieval event. This provisional topic-age floor applies
+Creation also requires at least five distinct never-assessed topics, each
+explicitly learned, with recorded successful learning at least 48 hours ago and
+a fresh rated standalone question. Every new ordinary assessment includes at
+least five such topics; the remaining slots may sample previously assessed
+topics. If fewer than five are available, XP continues accumulating and study
+remains available even above 150 XP. The status reports the new-topic count and
+the waiting reason. Never-started quizzes are rechecked before offering or
+starting them; started routes and retakes retain their existing rules.
+There is no mandatory prior retrieval event. This provisional topic-age floor applies
 only to ordinary assessments; reviews do not restart the learning-age clock,
 and assessment-miss reviews have no age delay. Assessment selection considers
 the learner's whole learned activity history without a course restriction or
@@ -40,19 +55,50 @@ The 15-minute wall-clock limit continues while paused. Answers are graded and
 recorded immediately, but correctness, feedback, and solutions are hidden by
 the task API until completion. Explicit skips create remediation; expiry does
 not fabricate wrong-answer evidence for unanswered or unpresented questions.
-Failed reviews lead to relearning; observed assessment misses lead to immediate
-reviews even when their topics are outside the current course.
+Failed ordinary reviews lower repetition progress and retain their accuracy
+penalties, while completed review re-exposure refreshes current memory just
+above the due threshold. The next ordinary review follows memory decay instead
+of an activity counter. Failed remediation reviews still lead to their linked
+lessons; observed assessment misses still lead to immediate required reviews,
+including topics outside the current course.
 
-Question duration estimates are not yet available in the imported bank. The
-scheduler provisionally budgets 90 seconds per question, selecting up to ten
-questions. Difficulty distributions come from the active policy's owned
-question-weight records, shared with lessons and reviews. Ordinary assessments
-use the initial distribution throughout (seeded at 50/40/10 easy/moderate/hard).
-The assessment record also stores a provisional 45/40/15 remedial distribution;
-`question_selection::weights_for_phase` supports explicitly requesting it for
-future retakes/rechecks. Retake scheduling and adaptive difficulty are not yet
-implemented. A missing assessment record is a configuration error. New selections
-use synchronized database values; already assembled question sets remain fixed.
+The runtime policy's `failed_review_refresh_fraction` defaults to `0.01` and
+requires no new EDB attributes. It restores 1% of the log-memory headroom between
+the review threshold and normal restored memory. The resulting delay is
+`updated_interval * 0.01 * log2(restored_memory / threshold)`: with the seeded
+defaults, 0/1/2/3 remaining repetitions yield about 14/29/58/115 minutes.
+The existing failure severity and learning speed determine the repetition
+penalty and resulting interval. This is an initial approximation of captured
+return behavior, not a recovered private parameter. Queue priority can postpone
+the visible offer further. Only the directly reviewed learned topic gets this
+refresh; propagated penalties, answer-only events, failed lessons, and assessment
+misses do not. Accuracy-only question updates cannot refresh retention. Zero
+disables the refresh for comparative numerical replays; JSON engine snapshots
+include the parameter and policy fingerprint, and existing stored EDB policies
+use the runtime default. Historical states are not rewritten on load.
+
+Assessment assembly provisionally budgets one/two/three minutes for an
+easy/moderate/hard question, aiming for the longest feasible duration up to
+15 minutes after maximizing difficulty-band coverage. Question count varies.
+Difficulty distributions come from the active policy's owned question-weight
+records. First-time topics use the initial assessment distribution (currently
+50/40/10 easy/moderate/hard). Previously assessed topics multiply those weights
+by 0.4/1.25/3.0, giving 20/50/30 with the current policy. This is one fixed
+repeat preference, not an escalation on every subsequent assessment.
+
+Within a feasible difficulty band, ordinary quizzes choose a KP before choosing
+a fresh question uniformly from that KP. KP weights rise linearly from 1 to 2
+over the learner's latest successfully completed lesson's authored KP sequence.
+One-KP lessons have weight 1. Membership collections and entity IDs do not define
+sequence; missing or malformed legacy lesson routes receive neutral KP weights.
+Unavailable KPs/bands are omitted and the remaining weights are normalized, so
+later KPs remain a preference and large question banks do not dominate selection.
+Budget and band-coverage constraints can change a particular quiz's proportions.
+
+Retakes preserve the original topics and KPs and explicitly use the assessment
+remedial distribution (currently 45/40/15); ordinary repeat/KP preferences do not
+alter retakes. A missing assessment record is a configuration error. New
+selections use synchronized database values; already assembled routes remain fixed.
 Review XP uses a provisional 4.5-minute estimate.
 These estimates affect selection and base XP, not measured FIRe performance.
 All served questions and frozen active retrieval pools are excluded from other

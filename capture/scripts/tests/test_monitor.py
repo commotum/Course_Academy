@@ -58,6 +58,18 @@ class MonitorTests(unittest.TestCase):
         self.assertEqual(path.read_text(), '{broken')
         self.assertEqual(list(self.config.state_root.iterdir()), [path])
 
+    def test_orphan_capture_is_running_with_missing_supervisor_reported(self):
+        pid = os.getpid()
+        token = Path(f'/proc/{pid}/stat').read_text().rsplit(')', 1)[1].split()[19]
+        self.save('worker.json', {'pid': pid, 'process_token': 'expired',
+                                 'child_pid': pid, 'child_token': token})
+        row = snapshot(self.config)
+        self.assertTrue(row['running'])
+        self.assertIn('Supervisor exited; capture process is still running', row['errors'])
+        self.save('worker.json', {'pid': pid, 'process_token': 'expired',
+                                 'child_pid': pid, 'child_token': 'expired'})
+        self.assertFalse(snapshot(self.config)['running'])
+
     def test_original_course_code_stays_with_account_after_course_switch(self):
         self.save('current-course.json', {'course_id': '113', 'course_name': 'Mathematical Foundations I'})
         row = snapshot(self.config, running=True, details=False)

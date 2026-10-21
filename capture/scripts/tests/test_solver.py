@@ -73,6 +73,40 @@ class SolverTests(unittest.TestCase):
             self.assertEqual(client.request('solve_question', self.payload), self.result)
         self.assertEqual(invoke.call_count, 2)
 
+    def test_invented_worked_example_field_replaces_session(self):
+        client = SolverClient(self.config, self.root, self.stop)
+        example = {'question': {'problem': 'Worked example: one plus one is two.', 'fields': []}}
+        verified = {**self.result, 'answers': []}
+        envelopes = []
+        results = [(self.result, 'first'), (self.result, 'first'), (verified, 'replacement')]
+        def call(envelope, *args):
+            envelopes.append(envelope)
+            return results.pop(0)
+        with patch.object(client, '_call', side_effect=call):
+            client.request('solve_question', self.payload)
+            self.assertEqual(client.request('judge_question', example), verified)
+        self.assertEqual(envelopes[1]['session_id'], 'first')
+        self.assertIsNone(envelopes[2]['session_id'])
+        self.assertEqual(client.state['generation'], 1)
+
+    def test_rejected_remote_compaction_replaces_session_with_answer_context(self):
+        client = SolverClient(self.config, self.root, self.stop)
+        envelopes = []
+        results = [(self.result, 'broken'), SolverUnavailable(
+            'Error running remote compact task: {"detail":"Bad Request"}'), (self.result, 'fresh')]
+        def call(envelope, *args):
+            envelopes.append(envelope)
+            result = results.pop(0)
+            if isinstance(result, Exception):
+                raise result
+            return result
+        with patch.object(client, '_call', side_effect=call):
+            client.request('solve_question', self.payload)
+            client.request('judge_question', self.payload)
+        self.assertEqual(envelopes[1]['session_id'], 'broken')
+        self.assertIsNone(envelopes[2]['session_id'])
+        self.assertEqual(envelopes[2]['conversation'][0]['answers'][0]['correct_value'], '2')
+
     def test_topic_catalog_delivered_once_per_session_and_refreshed_when_changed(self):
         client = SolverClient(self.config, self.root, self.stop)
         envelopes = []

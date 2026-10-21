@@ -71,6 +71,28 @@ class EvidenceTests(unittest.TestCase):
         q['answer_fields'][0]['evidence']['solution_quote']='The tangent is $'+source+'$.'
         with self.assertRaises(UnsupportedContent):authoritative_question(q)
 
+    def test_solution_spacing_binds_unique_original_math_choice(self):
+        from scripts.activity.evidence import finalize_answers
+        q = question()
+        choice = r'\int_0^2 f(x)\text{'+ '\u00a0' + r'}dx'
+        value = r'\int_0^2 f(x)\,dx'
+        quote = 'The integral is $' + value + '$.'
+        q['worked_solution'] = quote
+        q['source_file'] = 'source.html'
+        q['answer_fields'] = [{'key': 'selection', 'type': 'radio', 'correct_type': 'math',
+            'choices': [{'option': 'a', 'type': 'math', 'value': choice},
+                        {'option': 'b', 'type': 'math', 'value': r'\int_2^0 f(x)dx'}]}]
+        judgment = {'status': 'confirmed', 'answers': [{'key': 'selection', 'correct_value': choice,
+            'correct_option': 'a', 'value_type': 'math', 'ma_basis': 'worked_solution',
+            'ma_value': value, 'ma_evidence': quote, 'disagrees': False}]}
+        accepted = authoritative_question(finalize_answers(q, [], judgment))
+        self.assertEqual(accepted['answer_fields'][0]['correct_value'], choice)
+        self.assertTrue(accepted['answer_fields'][0]['evidence']['source_choice_spacing'])
+        self.assertEqual(authoritative_question(accepted), accepted)
+        q['answer_fields'][0]['choices'][1]['value'] = r'\int_0^2 f(x)\quad dx'
+        with self.assertRaises(UnsupportedContent):
+            authoritative_question(finalize_answers(q, [], judgment))
+
     def test_plain_agent_evidence_is_not_a_structured_source_record(self):
         q=question();q['answer_fields'][0]['evidence']='The answer is 2.'
         with self.assertRaises(UnsupportedContent):authoritative_question(q)

@@ -345,6 +345,15 @@ def generate_hard(seed=0,**kwargs):return generate('hard',seed,**kwargs)
 def markdown(rec):
     q=rec['question'];f=q[':question/answer-fields'][0]
     return q[':question/problem']+'\n\n'+q.get(':question/worked-solution','[Source worked solution absent.]')
+
+# Every learner-facing checkbox question has a nonempty correct selection.
+import sys as _policy_sys
+from pathlib import Path as _PolicyPath
+_policy_sys.path.insert(0, str(next(p for p in _PolicyPath(__file__).resolve().parents if (p / "scripts/generator_policy.py").is_file())))
+from scripts.generator_policy import nonempty_checkbox as _nonempty_checkbox
+for _policy_name in ['generate', 'generate_easy', 'generate_hard', 'generate_legacy', 'generate_moderate']:
+    globals()[_policy_name] = _nonempty_checkbox(globals()[_policy_name])
+
 if __name__=='__main__':
     a=argparse.ArgumentParser();a.add_argument('--difficulty',choices=['easy','moderate','hard','all'],default='all');a.add_argument('--seed',type=int,default=0);a.add_argument('--count',type=int,default=1);a.add_argument('--format',choices=['markdown','json'],default='markdown');a.add_argument('--template');a.add_argument('--profile');args=a.parse_args()
     levels=['easy','moderate','hard'] if args.difficulty=='all' else [args.difficulty]

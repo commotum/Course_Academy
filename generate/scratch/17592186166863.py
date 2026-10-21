@@ -66,5 +66,14 @@ def generate(difficulty='moderate',seed=0,template=None,parameters=None,bank_pro
 def batch(difficulty,count,seed):return [generate(difficulty,seed+i,template=PROFILES[i%len(PROFILES)]) for i in range(count)]
 def markdown(r):
  q=r['question'];return q[':question/problem']+'\n\n'+q[':question/worked-solution']
+
+# Every learner-facing checkbox question has a nonempty correct selection.
+import sys as _policy_sys
+from pathlib import Path as _PolicyPath
+_policy_sys.path.insert(0, str(next(p for p in _PolicyPath(__file__).resolve().parents if (p / "scripts/generator_policy.py").is_file())))
+from scripts.generator_policy import nonempty_checkbox as _nonempty_checkbox
+for _policy_name in ['batch', 'generate']:
+    globals()[_policy_name] = _nonempty_checkbox(globals()[_policy_name], none_label='None of the above')
+
 if __name__=='__main__':
  ap=argparse.ArgumentParser();ap.add_argument('--difficulty',default='moderate');ap.add_argument('--count',type=int,default=5);ap.add_argument('--seed',type=int,default=0);ap.add_argument('--format',choices=['json','markdown'],default='json');a=ap.parse_args();rows=batch(a.difficulty,a.count,a.seed);print(json.dumps(rows,indent=2) if a.format=='json' else '\n\n---\n\n'.join(markdown(r) for r in rows))

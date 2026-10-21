@@ -107,15 +107,47 @@ def preview(record, index):
             "courseId": "review", "learner": {"id": 1, "name": "Offline review"}}
 
 
-def render(records, output, asset_roots, browser=None, playwright=None):
+def resolve_node(playwright, node=None, environment=None):
+    """Prefer Playwright's installed runtime over an incompatible system Node."""
+    environment = os.environ if environment is None else environment
+    explicit = node or environment.get('COURSE_ACADEMY_NODE_EXECUTABLE')
+    candidates = [explicit] if explicit else [
+        Path(playwright).parent.parent / 'bin/node',
+        Path.home() / '.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node',
+        shutil.which('node', path=environment.get('PATH')),
+    ]
+    checked, failures = set(), []
+    for candidate in candidates:
+        if not candidate:
+            continue
+        executable = shutil.which(str(candidate), path=environment.get('PATH'))
+        if not executable or executable in checked:
+            continue
+        checked.add(executable)
+        try:
+            result = subprocess.run([executable, '--version'], capture_output=True,
+                                    text=True, check=True, timeout=5)
+            version = re.fullmatch(r'v(\d+)\.\d+\.\d+\s*', result.stdout)
+            if version and int(version[1]) >= 20:
+                return executable
+            failures.append(f'{executable}: {result.stdout.strip()}')
+        except (OSError, subprocess.SubprocessError) as error:
+            failures.append(f'{executable}: {error}')
+    raise RuntimeError('Playwright requires Node >=20. Set --node or '
+                       'COURSE_ACADEMY_NODE_EXECUTABLE to an installed compatible runtime. '
+                       + '; '.join(failures))
+
+
+def render(records, output, asset_roots, browser=None, playwright=None, node=None):
     output = Path(output).resolve()
     output.mkdir(parents=True, exist_ok=True)
     ui = REPO / "ui"
     roots = [Path(root).resolve() for root in asset_roots]
     browser = browser or next(iter(sorted(Path.home().glob(".cache/ms-playwright/chromium_headless_shell-*/chrome-headless-shell-linux64/chrome-headless-shell"), reverse=True)), None)
     playwright = playwright or os.environ.get("COURSE_ACADEMY_PLAYWRIGHT_MODULE") or Path.home() / ".cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright"
-    if not browser or not Path(browser).is_file() or not Path(playwright).exists() or not shutil.which("node"):
+    if not browser or not Path(browser).is_file() or not Path(playwright).exists():
         raise RuntimeError("Installed Node Playwright, node, and Chromium headless shell are required; use --browser/--playwright for existing alternatives")
+    node = resolve_node(playwright, node)
 
     class Handler(http.server.BaseHTTPRequestHandler):
         def do_GET(self):
@@ -168,14 +200,14 @@ def render(records, output, asset_roots, browser=None, playwright=None):
             expected_math.append(bool(re.search(r"\$|\\\(|\\\[|\\begin\{", prose)) or any(
                 enum(answer[":answer/type"]) == "math" for field in question[":question/answer-fields"]
                 for answer in field[":answer-field/choices"]))
-        config = {"browser": str(browser), "playwright": str(playwright), "count": len(records), "expectedMath": expected_math,
+        config = {"browser": str(browser), "playwright": str(playwright), "node": node, "count": len(records), "expectedMath": expected_math,
                   "output": str(output), "origin": f"http://127.0.0.1:{server.server_port}"}
         (output / "browser-config.json").write_text(json.dumps(config))
         (output / "render-browser.cjs").write_text(BROWSER_SCRIPT)
         (output / "input.json").write_text(json.dumps(records, indent=2) + "\n")
         (output / "ui-hashes.json").write_text(json.dumps({name: hashlib.sha256((ui / name).read_bytes()).hexdigest()
             for name in ("Learning.html", "learning.js", "question-fields.js", "mathjax-config.js")}, indent=2) + "\n")
-        subprocess.run(["node", str(output / "render-browser.cjs"), str(output / "browser-config.json")],
+        subprocess.run([node, str(output / "render-browser.cjs"), str(output / "browser-config.json")],
                        check=True, timeout=max(90, 45 * len(records)))
     finally:
         server.shutdown()
@@ -191,6 +223,7 @@ def main():
     parser.add_argument("--limit", type=int, default=6)
     parser.add_argument("--browser")
     parser.add_argument("--playwright")
+    parser.add_argument("--node", help="Existing Node >=20 executable; otherwise prefer the bundled runtime")
     args = parser.parse_args()
     records = json.loads(args.input.read_text())
     if isinstance(records, dict):
@@ -198,7 +231,7 @@ def main():
     if not isinstance(records, list) or not records or args.limit < 1:
         parser.error("input must contain records and --limit must be positive")
     render(records[:args.limit], args.output, [args.math_root, args.input.resolve().parent, *args.asset_root],
-           args.browser, args.playwright)
+           args.browser, args.playwright, args.node)
 
 
 if __name__ == "__main__":

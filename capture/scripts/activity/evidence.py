@@ -6,7 +6,7 @@ import json
 import re
 
 from .policy import answer_fields
-from ..database.evidence import evidence_value, UnsupportedContent
+from ..database.evidence import evidence_value, UnsupportedContent, math_spacing_identity
 
 
 def question_key(question):
@@ -188,7 +188,8 @@ def _current_answer_evidence(field, question):
     if not isinstance(value, str):
         return False, False
     if value != field.get('correct_value'):
-        if not checked.get('evidence', {}).get('source_choice_quote'):
+        if not (checked.get('evidence', {}).get('source_choice_quote') or
+                checked.get('evidence', {}).get('source_choice_spacing')):
             return False, False
         # Reuse the validator's narrow exact-source-choice repair; never add
         # a mathematical equivalence or TeX normalization rule here.
@@ -261,6 +262,16 @@ def finalize_answers(question, presentations, judgment):
                 value = answer['ma_value']
                 choices = field.get('choices', [])
                 value_type = answer.get('value_type', field.get('value_type', 'math'))
+                spacing_binding = None
+                if value_type == 'math' and answer.get('disagrees') is False and answer.get('correct_option') is not None:
+                    spaced = [c for c in choices if c.get('type') == 'math'
+                              and math_spacing_identity(c['value']) == math_spacing_identity(value)]
+                    if (len(spaced) == 1 and spaced[0]['value'] == answer.get('correct_value')
+                            and str(spaced[0].get('option')) == str(answer['correct_option'])
+                            and spaced[0]['value'] != value):
+                        spacing_binding = {'solution_value': value, 'source_choice_spacing': True,
+                                           'source_choice_option': spaced[0]['option']}
+                        value = spaced[0]['value']
                 typed_choices = {(c.get('type'), c.get('value')) for c in choices
                                  if c.get('value') == value and c.get('type') == value_type}
                 # A quotation can be literally present yet describe a premise,
@@ -295,6 +306,8 @@ def finalize_answers(question, presentations, judgment):
                                      'source_file': source_file(question), 'solution_quote': quote,
                                      'matches_worked_solution': True,
                                      'choice_present': not choices or len(typed_choices) == 1}
+                if spacing_binding:
+                    field['evidence'].update(spacing_binding)
                 supported = True
                 field.pop('source_answer_status', None)
         if not supported:
@@ -344,7 +357,7 @@ def capture_gaps(content):
             missing.append('asset_references')
         return missing
 
-    for name in ('questions', 'canonical_examples'):
+    for name in ('questions', 'reference_questions', 'canonical_examples'):
         seen = {}
         for question in content.get(name, []):
             missing = source_gaps(question)
@@ -352,7 +365,7 @@ def capture_gaps(content):
                 missing.append('problem')
             fields = answer_fields(question)
             # Canonical worked examples need not contain interactive fields.
-            if name == 'questions' and not fields:
+            if name != 'canonical_examples' and not fields:
                 missing.append('answer_fields')
             if question.get('answer_fields_complete') is False:
                 missing.append('answer_fields_complete')
@@ -369,7 +382,10 @@ def capture_gaps(content):
             if any(f.get('type') in ('select', 'radio', 'checkbox', 'multi-select') and
                    (not f.get('choices') or f.get('choices_complete') is False) for f in fields):
                 missing.append('answer_choices')
-            if not str(question.get('worked_solution') or '').strip():
+            # Reference catalog questions can supply an explicit source answer
+            # without a revealed explanation. Encountered task questions still
+            # require their full history solution; canonical examples do too.
+            if name != 'reference_questions' and not str(question.get('worked_solution') or '').strip():
                 missing.append('worked_solution')
             identity = question.get('math_academy_id')
             if not identity:

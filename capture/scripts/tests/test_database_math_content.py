@@ -28,6 +28,24 @@ def matrix_question(mid='q-11'):
 
 
 class MathPreparationTests(unittest.TestCase):
+    def test_supplementary_definition_creates_missing_review_topic_and_kp(self):
+        q = question('q-99')
+        example = question('e-98')
+        for record in (q, example):
+            record.update(topic_id=2, knowledge_point_id='98', kp_id='98', knowledge_point='New skill')
+        content = {'kind': 'review', 'topic_id': 2, 'questions': [q], 'canonical_examples': [example],
+            'source_lesson_definitions': {'2': {'topic_id': 2, 'title': 'New topic', 'complete': True,
+                'steps': [{'math_academy_id': 20, 'type': 'example', 'content_id': 98}]}}}
+        prepared = Preparation(source_snapshot()).prepare(content)
+        self.assertEqual(prepared['omissions'], [])
+        assertions = [row for batch in prepared['batches'] for row in batch['assertions']]
+        self.assertTrue(any(str(attr) == ':topic/math-academy-id' and value == 2 for _, attr, value in assertions))
+        self.assertTrue(any(str(attr) == ':knowledge-point/questions' for _, attr, _ in assertions))
+
+    def test_less_than_variable_p_does_not_turn_markdown_into_html(self):
+        source = r'The inequality $q<p$ is necessary for $p>2$.'
+        self.assertEqual(prose(source), source)
+
     def test_question_example_choices_and_feedback_are_normalized_after_evidence(self):
         q, example = matrix_question(), matrix_question('e-10')
         snapshot = source_snapshot()

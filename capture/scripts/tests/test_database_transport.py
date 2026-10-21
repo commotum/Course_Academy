@@ -11,6 +11,19 @@ import subprocess
 
 
 class DatabaseTransportTests(unittest.TestCase):
+    def test_source_dependencies_include_missing_topics_and_new_kp_titles(self):
+        client = self.client()
+        rows = [[{':topic/math-academy-id': 1, ':topic/knowledge-points': [
+            {':knowledge-point/title': 'Known skill'}]}],
+            [{':topic/math-academy-id': 2, ':topic/knowledge-points': []}]]
+        questions = [{'topic_id': '1', 'knowledge_point': 'Known skill'},
+                     {'topic_id': '2', 'knowledge_point': 'New skill'},
+                     {'topic_id': '3', 'knowledge_point': 'Missing topic skill'}]
+        with patch.object(client, 'basis', return_value=42), patch.object(client, 'query', return_value=rows) as query:
+            self.assertEqual(client.source_dependencies(questions, Path('/tmp/read')), ['2', '3'])
+            self.assertEqual(query.call_args.args[-1], 42)
+            self.assertEqual(query.call_args.args[1], [[1, 2, 3]])
+
     def client(self, preview_bin=None):
         config = SimpleNamespace(edb_bin=Path('/edb'), preview_bin=preview_bin,
                                  database='math', postgres_url='', capture_only=False)

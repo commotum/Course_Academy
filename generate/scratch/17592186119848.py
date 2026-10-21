@@ -49,7 +49,7 @@ def subset(value):return tuple(sorted(set(re.findall(r'\$([A-E])\$',value))))
 def domain(sid):
     q=CASES[sid];typ=kind(sid);labels=eligible(sid)
     if typ=='five-matrix-radio':return [(label,) for label in labels]
-    if typ=='three-matrix-checkbox':return [original_matches(sid),()]
+    if typ=='three-matrix-checkbox':return sorted({original_matches(sid), ()})
     f=q[':question/answer-fields'][0]
     return sorted({subset(a[':answer/value']) for a in f[':answer-field/choices'] if set(subset(a[':answer/value']))<=set(labels)})
 def rank_adjust(matrix,desired):
@@ -153,6 +153,15 @@ def batch(level,count,seed=0):
     return records[:count]
 def markdown(rec):
     q=rec['question'];return q[':question/problem']+'\n\n'+'\n\n'.join(f[':answer-field/key']+': '+', '.join(a[':answer/value'] for a in f[':answer-field/choices']) for f in q[':question/answer-fields'])+'\n\n'+q[':question/worked-solution']
+
+# Every learner-facing checkbox question has a nonempty correct selection.
+import sys as _policy_sys
+from pathlib import Path as _PolicyPath
+_policy_sys.path.insert(0, str(next(p for p in _PolicyPath(__file__).resolve().parents if (p / "scripts/generator_policy.py").is_file())))
+from scripts.generator_policy import nonempty_checkbox as _nonempty_checkbox
+for _policy_name in ['batch', 'generate']:
+    globals()[_policy_name] = _nonempty_checkbox(globals()[_policy_name], none_label='None of the above')
+
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('--difficulty',default='easy');p.add_argument('--seed',type=int,default=0);p.add_argument('--count',type=int,default=5);p.add_argument('--format',choices=['json','markdown'],default='json');a=p.parse_args()
     recs=batch(a.difficulty,a.count,a.seed);print(json.dumps(recs,indent=2) if a.format=='json' else '\n\n'.join(map(markdown,recs)))

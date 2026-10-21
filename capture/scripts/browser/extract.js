@@ -33,13 +33,17 @@
     return title?.querySelector('math') && [...title.childNodes].some(child =>
       child.nodeType === 3 && child.textContent.trim());
   };
+  // Some archived source titles contain MA's internal currency placeholder,
+  // while the SVG visibly renders the dollar glyph correctly. Retain that
+  // original graphic rather than treating its broken title as usable TeX.
+  const currencyTitle = n => /\\\[\/?math\]/.test(n?.querySelector('title')?.textContent || '');
   const assets = [...element.querySelectorAll('img, canvas, svg')].filter(n => {
     if (emptyFormula(n)) return false;
     if (n.closest('.questionWidget-header, .questionWidget-result, .stepHeader, .spinnerFrame, .answer') ||
         n.parentElement?.closest('svg')) return false;
     const formula = n.closest('.mjpage, mjx-container, .MathJax');
     if (!formula) return true;
-    if (n.localName === 'svg' && mixedTitle(n)) return true;
+    if (n.localName === 'svg' && (mixedTitle(n) || currencyTitle(n))) return true;
     // Some server-rendered formulas have only SVG paths, with no local TeX or
     // assistive MathML. Preserve their visible rendering as a formula image.
     return n.localName === 'svg' && !formula.querySelector('mjx-assistive-mml math') &&
@@ -119,11 +123,16 @@
       const tokens = match?.[1].trim().split(/\s+/) || [];
       const widths = tokens.filter(t => /^\d+(?:pt|px|em|ex|in|cm|mm)$/i.test(t));
       const colors = tokens.filter(t => mathColor(t));
-      if (tokens.length !== 3 || widths.length !== 1 || colors.length !== 1 ||
+      if (![2,3].includes(tokens.length) || widths.length !== 1 || colors.length !== tokens.length-2 ||
           tokens.filter(t => t.toLowerCase()==='solid').length !== 1) return reject('border style');
-      border = 'border:' + widths[0] + ' solid ' + colors[0];
+      border = 'border:' + widths[0] + ' solid' + (colors.length ? ' ' + colors[0] : '');
     }
     const padded = n.children.length === 1 && n.children[0];
+    // A bbox with only a background has no padding node. Preserve its exact
+    // hidden width rather than requiring the separate padded-bbox form.
+    if (background !== null && style === null && padded?.localName === 'mrow' &&
+        [...padded.attributes].every(a => metadataAttribute(a.name)))
+      return '\\bbox[' + background + ']{' + [...padded.childNodes].map(child => m(child, true)).join('') + '}';
     if (!padded || padded.localName !== 'mpadded' || [...padded.attributes].some(a => !['height','depth','lspace','width'].includes(a.name) && !metadataAttribute(a.name)))
       return reject('padding container');
     // MathJax 3.2.2 bbox doubles padding with parseInt. Decimal padding would
@@ -135,6 +144,60 @@
     if (background !== null) options.push(background);
     if (style !== null) options.push(border);
     return '\\bbox[' + options.join(',') + ']{' + [...padded.childNodes].map(child => m(child, true)).join('') + '}';
+  }
+  // MathJax emits a brace as an ordinary munder/mover, often without an
+  // accent attribute, and wraps it in an mrow before adding its label.
+  const braceGlyph = (n, glyph) => n?.localName === 'mo' && n.textContent.trim() === glyph;
+  function braceBase(n, direction, glyph) {
+    if (!n) return 0;
+    if (['mrow', 'mstyle', 'mpadded', 'semantics'].includes(n.localName)) {
+      const children = [...n.children].filter(child => !['annotation', 'annotation-xml'].includes(child.localName));
+      return children.length === 1 ? braceBase(children[0], direction, glyph) : 0;
+    }
+    if (n.localName !== direction) return 0;
+    if (braceGlyph(n.children[1], glyph)) return 1;
+    return braceBase(n.children[0], direction, glyph) ? 2 : 0;
+  }
+  function braceLabel(n, cs, direction, glyph, command, script, stack) {
+    const base = braceBase(n.children[0], direction, glyph);
+    if (!base) return null;
+    // Grouping the brace before its script would put the label at the right.
+    // Stack instead if a style wrapper or another label needs its own scope.
+    return base === 1 && cs[0].startsWith(command + '{') ? cs[0] + script + '{' + cs[1] + '}' :
+      stack + '{' + cs[1] + '}{' + cs[0] + '}';
+  }
+  function hatAccent(n, cs) {
+    const accent = n.children[1];
+    if (accent?.localName !== 'mo' || accent.textContent.trim() !== '^') return null;
+    const unsupported = ['mathcolor', 'mathbackground', 'mathvariant', 'style', 'minsize', 'maxsize', 'lspace', 'rspace']
+      .filter(attribute => accent.hasAttribute(attribute) && !['', 'inherit', 'none', 'transparent'].includes(accent.getAttribute(attribute)));
+    if (n.getAttribute('accent') === 'false') unsupported.push('accent=false');
+    const stretchy = accent.getAttribute('stretchy');
+    if (stretchy !== null && !['true', 'false'].includes(stretchy)) unsupported.push('stretchy=' + stretchy);
+    const base = n.children[0], variants = [base, ...base.querySelectorAll('[mathvariant]')].filter(node => node.hasAttribute('mathvariant'));
+    const fullBase = new Set();
+    for (let node = base; node; ) {
+      fullBase.add(node);
+      node = ['mrow', 'mstyle', 'mpadded', 'semantics'].includes(node.localName) && node.children.length === 1 ? node.children[0] : null;
+    }
+    const variantCommands = {'bold-italic':'\\mathbfit', 'bold':'\\mathbf', 'normal':'\\mathrm', 'italic':'\\mathit'};
+    let body = cs[0];
+    if (variants.length) {
+      const variant = variants[0].getAttribute('mathvariant');
+      if (variants.length !== 1 || !fullBase.has(variants[0]) || !variantCommands[variant]) unsupported.push('base mathvariant');
+      else {
+        // Greek command macros fix their own font in MathJax. Keep the source
+        // glyph literal when applying its explicit bold/italic variant.
+        const glyph = variants[0].textContent, macro = greek[glyph];
+        body = variantCommands[variant] + '{' + (macro ? body.replace(macro, glyph) : body) + '}';
+      }
+    }
+    if (unsupported.length) {
+      fail('Unsupported MathML hat: ' + unsupported.join(', '));
+      return '\\overset{' + cs[1] + '}{' + cs[0] + '}';
+    }
+    // MathJax's hat sets stretchy=false; widehat uses the operator default.
+    return (stretchy === 'false' ? '\\hat{' : '\\widehat{') + body + '}';
   }
   function m(n, preservePhantom = false) {
     if (n.nodeType === 3) return greek[n.textContent] || literalDollar(n.textContent);
@@ -156,7 +219,7 @@
     if (t === 'mphantom' && !preservePhantom) return '';
     const cs = [...n.childNodes].map(child => m(child, preservePhantom || enclosure));
     if (preservePhantom && (n.closest('mphantom') || n.querySelector('mphantom'))) {
-      if (!['mphantom','mi','mstyle','mrow','mn','mo','msup','msub'].includes(t))
+      if (!['mphantom','mi','mstyle','mrow','mn','mo','msup','msub','msqrt'].includes(t))
         fail('Unsupported decorated MathML phantom: hidden node ' + t);
       const styled = ['mi','mstyle'].includes(t);
       // MathJax emits stretchy="false" for a fixed glyph inside \phantom.
@@ -194,8 +257,10 @@
       case 'msup': return scriptBase + '^{' + cs[1] + '}';
       case 'msub': return scriptBase + '_{' + cs[1] + '}';
       case 'msubsup': return scriptBase + '_{' + cs[1] + '}^{' + cs[2] + '}';
-      case 'munder': return '{' + cs[0] + '}_{' + cs[1] + '}';
-      case 'mover': return '\\overset{' + cs[1] + '}{' + cs[0] + '}';
+      case 'munder': return braceGlyph(n.children[1], '⏟') ? '\\underbrace{' + cs[0] + '}' :
+        braceLabel(n, cs, 'munder', '⏟', '\\underbrace', '_', '\\underset') ?? '{' + cs[0] + '}_{' + cs[1] + '}';
+      case 'mover': return braceGlyph(n.children[1], '⏞') ? '\\overbrace{' + cs[0] + '}' :
+        braceLabel(n, cs, 'mover', '⏞', '\\overbrace', '^', '\\overset') ?? hatAccent(n, cs) ?? '\\overset{' + cs[1] + '}{' + cs[0] + '}';
       case 'munderover': return '{' + cs[0] + '}_{' + cs[1] + '}^{' + cs[2] + '}';
       case 'msqrt': return '\\sqrt{' + cs.join('') + '}';
       case 'mroot': return '\\sqrt[' + cs[1] + ']{' + cs[0] + '}';
@@ -263,6 +328,9 @@
         .map(([control,key]) => [control.id.match(/-(\d+)$/)?.[1], key]));
       const tex = m(math);
       formulaFields = previous;
+      // Bare phantom spacing has no visible content. Empty inline delimiters
+      // would become an unmatched display opener in the saved Markdown.
+      if (!tex.trim()) return '';
       return n.getAttribute('display') === 'true' ? '\n\n$$\n' + tex + '\n$$\n\n' : '$' + tex + '$';
     }
     if (t === 'table') {

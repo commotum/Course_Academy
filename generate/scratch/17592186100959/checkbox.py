@@ -35,6 +35,15 @@ def markdown(r):
     q=r['question'];flags=[next(a[':answer/value'] for a in f[':answer-field/choices'] if a[':answer/id']==f[':answer-field/correct'][1]) for f in q[':question/answer-fields']]
     return '**Difficulty and origin:** '+core.preview_label(r)+'\n\n'+q[':question/problem']+'\n\n**Correct checkbox values:** '+', '.join(k+'='+a for k,a in zip(KEYS,flags))+'\n\n'+q[':question/worked-solution']
 
+
+# Every learner-facing checkbox question has a nonempty correct selection.
+import sys as _policy_sys
+from pathlib import Path as _PolicyPath
+_policy_sys.path.insert(0, str(next(p for p in _PolicyPath(__file__).resolve().parents if (p / "scripts/generator_policy.py").is_file())))
+from scripts.generator_policy import nonempty_checkbox as _nonempty_checkbox
+for _policy_name in ['generate']:
+    globals()[_policy_name] = _nonempty_checkbox(globals()[_policy_name], none_label='None of the above')
+
 if __name__=='__main__':
     ap=argparse.ArgumentParser();ap.add_argument('--difficulty',choices=['easy','moderate','hard','all'],default='all');ap.add_argument('--count',type=int,default=1);ap.add_argument('--seed',type=int,default=0);ap.add_argument('--format',choices=['json','markdown'],default='json');ap.add_argument('--template');args=ap.parse_args()
     if args.count<1:ap.error('--count must be positive')

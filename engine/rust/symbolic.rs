@@ -154,7 +154,7 @@ impl Poly {
     fn interval(&self) -> Option<(Q, Q)> {
         self.interval_at(None)
     }
-    fn interval_at(&self, sample: Option<i64>) -> Option<(Q, Q)> {
+    fn interval_at(&self, sample: Option<&Q>) -> Option<(Q, Q)> {
         if self.0.len() > 16
             || self.0.iter().any(|(m, c)| {
                 m.values().copied().sum::<u16>() > 32
@@ -177,7 +177,7 @@ impl Poly {
                         // Distinct values prevent x-y from vanishing at every
                         // witness. These are exact substitutions, not floats.
                         let offset = name.bytes().map(u64::from).sum::<u64>() % 7;
-                        let v = Q::from_integer((n + offset as i64).into());
+                        let v = n + Q::from_integer(offset.into());
                         (v.clone(), v)
                     }
                     Atom::Function(name, arg) => {
@@ -247,10 +247,37 @@ fn log_bounds(x: &Q) -> Option<(Q, Q)> {
     if !x.is_positive() || x.numer().bits().max(x.denom().bits()) > 128 {
         return None;
     }
-    let t = (x - Q::one()) / (x + Q::one());
-    if t.abs() > Q::new(9.into(), 10.into()) {
-        return None;
+    // ln(x) = ln(reduced) + exponent*ln(2). Exact power-of-two reduction
+    // keeps the atanh series rapidly convergent for every supported positive
+    // rational, including large arguments and their reciprocals.
+    let two = Q::from_integer(2.into());
+    let mut reduced = x.clone();
+    let mut exponent = 0i32;
+    while reduced > two {
+        reduced /= &two;
+        exponent += 1;
     }
+    while reduced < Q::one() {
+        reduced *= &two;
+        exponent -= 1;
+    }
+    let (lo, hi) = reduced_log_bounds(&reduced);
+    if exponent == 0 {
+        return Some((lo, hi));
+    }
+    static LOG_TWO: std::sync::OnceLock<(Q, Q)> = std::sync::OnceLock::new();
+    let (two_lo, two_hi) = LOG_TWO.get_or_init(|| reduced_log_bounds(&Q::from_integer(2.into())));
+    let scale = Q::from_integer(exponent.into());
+    let (shift_lo, shift_hi) = if exponent > 0 {
+        (two_lo * &scale, two_hi * &scale)
+    } else {
+        (two_hi * &scale, two_lo * &scale)
+    };
+    Some((lo + shift_lo, hi + shift_hi))
+}
+fn reduced_log_bounds(x: &Q) -> (Q, Q) {
+    debug_assert!(*x >= Q::one() && *x <= Q::from_integer(2.into()));
+    let t = (x - Q::one()) / (x + Q::one());
     let square = &t * &t;
     let mut power = t.clone();
     let mut sum = Q::zero();
@@ -261,7 +288,7 @@ fn log_bounds(x: &Q) -> Option<(Q, Q)> {
     sum *= Q::from_integer(2.into());
     let remainder = Q::from_integer(2.into()) * power.abs()
         / (Q::from_integer(49.into()) * (Q::one() - square));
-    Some((&sum - &remainder, sum + remainder))
+    (&sum - &remainder, sum + remainder)
 }
 fn trig_bounds(name: &str, x: &Q) -> Option<(Q, Q)> {
     if x.abs() > Q::from_integer(16.into()) || x.numer().bits().max(x.denom().bits()) > 128 {
@@ -352,7 +379,7 @@ impl Value {
             den: self.den.clone(),
         }
     }
-    fn interval_at(&self, sample: Option<i64>) -> Option<(Q, Q)> {
+    fn interval_at(&self, sample: Option<&Q>) -> Option<(Q, Q)> {
         let a = self.num.interval_at(sample)?;
         let (l, h) = self.den.interval_at(sample)?;
         if l <= Q::zero() && h >= Q::zero() {
@@ -366,6 +393,7 @@ struct Algebra {
     work: usize,
     depth: usize,
     conditions: BTreeSet<Condition>,
+    nonzero_power_bases: BTreeMap<Poly, Poly>,
     context: Context,
 }
 impl Algebra {
@@ -478,6 +506,17 @@ impl Algebra {
         for _ in 0..n {
             out = self.pmul(&out, p)?;
         }
+        // p^n != 0 iff p != 0. Keep the exact construction available after
+        // expansion when it reduces the polynomial degree of a domain guard.
+        let degree = |p: &Poly| {
+            p.0.keys()
+                .map(|m| m.values().map(|e| usize::from(*e)).sum::<usize>())
+                .max()
+                .unwrap_or(0)
+        };
+        if n > 1 && degree(&out) > degree(p) {
+            self.nonzero_power_bases.insert(out.monic(), p.monic());
+        }
         Ok(out)
     }
     fn value(&mut self, num: Poly, den: Poly) -> Result<Value> {
@@ -539,6 +578,7 @@ impl Algebra {
         self.value(num, den)
     }
     fn nonzero(&mut self, p: &Poly) -> Result<()> {
+        self.spend(p.0.len() + 1)?;
         if p.is_zero() {
             return Err("division by zero".into());
         }
@@ -552,6 +592,15 @@ impl Algebra {
             .is_some_and(|(lo, hi)| lo.is_positive() || hi.is_negative())
         {
             return Ok(());
+        }
+        let power_key = p.monic();
+        if let Some(base) = self.nonzero_power_bases.remove(&power_key) {
+            // A root's own relation can lead back to this polynomial. Hide
+            // this hint while resolving it, so that path retains the direct
+            // polynomial guard instead of following a provenance cycle.
+            let result = self.nonzero(&base);
+            self.nonzero_power_bases.insert(power_key, base);
+            return result;
         }
         if p.0.len() == 1 {
             for a in p.0.first_key_value().unwrap().0.keys() {
@@ -571,6 +620,32 @@ impl Algebra {
                 }
             }
         } else {
+            // Expansion can turn u*sqrt(u) into several terms. Its nonzero
+            // condition still requires both factors, just as sqrt(u)^(-3)
+            // requires u != 0. Retain the residual factor's guard as well.
+            let mut common = p.0.first_key_value().unwrap().0.clone();
+            for m in p.0.keys() {
+                common.retain(|a, e| {
+                    *e = (*e).min(*m.get(a).unwrap_or(&0));
+                    *e > 0
+                });
+            }
+            if !common.is_empty() {
+                self.nonzero(&Poly(BTreeMap::from([(common.clone(), Q::one())])))?;
+                let rest = Poly(p.0.iter().map(|(m, c)| {
+                    let mut m = m.clone();
+                    for (a, e) in &common {
+                        let remaining = m[a] - e;
+                        if remaining == 0 {
+                            m.remove(a);
+                        } else {
+                            m.insert(a.clone(), remaining);
+                        }
+                    }
+                    (m, c.clone())
+                }).collect());
+                return self.nonzero(&rest);
+            }
             self.conditions.insert(Condition::Nonzero(p.monic()));
         }
         Ok(())
@@ -700,6 +775,15 @@ impl Algebra {
             let (m, c) = v.num.0.first_key_value().unwrap();
             if m.len() == 1 && c.is_one() {
                 let (atom, exponent) = m.first_key_value().unwrap();
+                // Positive constants have no even-root sign ambiguity. Reduce
+                // the exponent fraction so sqrt(e^3) and e^(3/2), including
+                // reducible forms such as fourth_root(e^2), share root atoms.
+                if matches!(atom, Atom::E | Atom::Pi) && *exponent > 1 {
+                    return self.power(
+                        &Value::atom(atom.clone()),
+                        &Value::number(Q::new((*exponent).into(), degree.into())),
+                    );
+                }
                 if matches!(atom, Atom::Variable(_)) {
                     if degree % 2 == 0 && exponent % 2 == 0 {
                         let a = Value::atom(atom.clone());
@@ -779,8 +863,48 @@ impl Algebra {
                 if *x == Value::atom(Atom::E) {
                     return Ok(Value::integer(1));
                 }
+                // Positive rational constants have an exact logarithm sum.
+                // Bound trial division; any remaining factor stays opaque.
+                // This never expands ln(x*y) for symbolic, possibly negative
+                // factors, whose real domains would need additional guards.
+                if let Some(c) = x.constant()
+                    && let (Some(n), Some(d)) = (c.numer().to_u64(), c.denom().to_u64())
+                    && n <= 1_000_000_000_000 && d <= 1_000_000_000_000
+                {
+                    let mut factors = BTreeMap::<u64, i32>::new();
+                    for (mut remaining, sign) in [(n, 1), (d, -1)] {
+                        let mut prime = 2;
+                        while prime <= remaining / prime && prime <= 10_000 {
+                            self.spend(1)?;
+                            while remaining % prime == 0 {
+                                *factors.entry(prime).or_default() += sign;
+                                remaining /= prime;
+                            }
+                            prime += if prime == 2 { 1 } else { 2 };
+                        }
+                        if remaining > 1 {
+                            *factors.entry(remaining).or_default() += sign;
+                        }
+                    }
+                    let mut sum = Value::integer(0);
+                    for (factor, exponent) in factors {
+                        let atom = Value::atom(Atom::Function("ln".into(),
+                            Box::new(Value::number(Q::from_integer(factor.into())))));
+                        let term = self.mul(&Value::integer(exponent.into()), &atom)?;
+                        sum = self.add(&sum, &term)?;
+                    }
+                    return Ok(sum);
+                }
             }
             "exp" => {
+                // exp(-u) is the reciprocal of exp(u) for every supported real
+                // argument, including rational coefficients. Orient by the
+                // leading term so opaque exponential atoms share this identity.
+                // Conditions introduced while evaluating u remain in force.
+                if x.num.0.first_key_value().is_some_and(|(_, c)| c.is_negative()) {
+                    let positive = self.function("exp", &x.neg())?;
+                    return self.div(&Value::integer(1), &positive);
+                }
                 if let Some(c) = x.constant().filter(Q::is_integer) {
                     let n = c.to_integer().to_i32().ok_or("exponential exceeds range")?;
                     return self.integer_power(&Value::atom(Atom::E), n);
@@ -886,6 +1010,28 @@ impl Algebra {
         };
         Ok(if sign < 0 { v.neg() } else { v })
     }
+    fn eval_root(&mut self, degree: u8, ast: &Ast) -> Result<Value> {
+        if !(2..=8).contains(&degree) {
+            return Err("only roots of degree 2 through 8 are supported".into());
+        }
+        if let Ast::Binary('^', base, exponent) = ast {
+            let base = self.eval(base)?;
+            let exponent = self.eval(exponent)?;
+            if let Some(n) = exponent.constant().filter(Q::is_integer)
+                .and_then(|c| c.to_integer().to_i32())
+                .filter(|n| *n > 1 && n % 2 == 1 && *n <= MAX_POWER as i32)
+            {
+                // For odd n, root(u^n) = root(u)^n on the same real domain.
+                // Apply before expanding u^n, so both the root atom and its
+                // domain obligations retain the compound base u.
+                return self.power(&base, &Value::number(Q::new(n.into(), degree.into())));
+            }
+            let powered = self.power(&base, &exponent)?;
+            return self.root(&powered, degree);
+        }
+        let value = self.eval(ast)?;
+        self.root(&value, degree)
+    }
     fn eval(&mut self, ast: &Ast) -> Result<Value> {
         self.spend(1)?;
         match ast {
@@ -910,13 +1056,13 @@ impl Algebra {
                 }
             }
             Ast::Function(name, a) => {
+                if name == "sqrt" || name == "cbrt" {
+                    return self.eval_root(if name == "sqrt" { 2 } else { 3 }, a);
+                }
                 let a = self.eval(a)?;
                 self.function(name, &a)
             }
-            Ast::Root(n, a) => {
-                let a = self.eval(a)?;
-                self.root(&a, *n)
-            }
+            Ast::Root(n, a) => self.eval_root(*n, a),
         }
     }
 }
@@ -1383,6 +1529,7 @@ fn parse(source: &str, context: Context) -> Result<Answer> {
         work: 0,
         depth: 0,
         conditions: BTreeSet::new(),
+        nonzero_power_bases: BTreeMap::new(),
         context,
     };
     let value = algebra.eval(&ast)?;
@@ -1430,6 +1577,58 @@ pub fn supports(source: &str, context: Context) -> bool {
     parse(source, context).is_ok()
 }
 
+/// Compare the expression before an explicitly displayed arbitrary +C.
+/// An exact, variable-free real difference is absorbed by that constant.
+/// Domain restrictions must still match; this does not prove identities by
+/// numerical sampling or turn ordinary expression equality into family equality.
+pub fn compare_up_to_constant(a: &str, b: &str, context: Context) -> Result<bool> {
+    fn constant_poly(p: &Poly) -> bool {
+        p.0.keys().all(|mono| mono.keys().all(|atom| match atom {
+            Atom::Pi | Atom::E => true,
+            Atom::Root(_, p) => constant_poly(p),
+            Atom::Function(_, v) => constant_value(v),
+            Atom::Power(base, exponent) => constant_value(base) && constant_value(exponent),
+            Atom::Variable(_) | Atom::I => false,
+        }))
+    }
+    fn constant_value(v: &Value) -> bool {
+        constant_poly(&v.num) && constant_poly(&v.den)
+    }
+    if let (Answer::Expression(av, ac), Answer::Expression(bv, bc)) =
+        (parse(a, context)?, parse(b, context)?)
+    {
+        let mut algebra = Algebra {
+            work: 0, depth: 0, conditions: BTreeSet::new(),
+            nonzero_power_bases: BTreeMap::new(), context,
+        };
+        let difference = algebra.add(&av, &bv.neg())?;
+        if constant_value(&difference) {
+            if ac != bc {
+                return Err("antiderivative comparison has unresolved domain differences".into());
+            }
+            return Ok(true);
+        }
+        // Literal inequality is insufficient here: a nonzero constant is a
+        // valid family difference. Two disjoint exact interval evaluations
+        // instead prove that the difference actually varies. As with ordinary
+        // comparison, samples can reject; they can never establish acceptance.
+        let mut intervals: Vec<(Q, Q)> = vec![];
+        for sample in counterexample_samples() {
+            if !ac.iter().chain(bc.iter()).all(|c| condition_at(c, &sample)) {
+                continue;
+            }
+            if let Some((lo, hi)) = difference.interval_at(Some(&sample)) {
+                if intervals.iter().any(|(a, b)| hi < *a || lo > *b) {
+                    return Ok(false);
+                }
+                intervals.push((lo, hi));
+            }
+        }
+        return Err("constant antiderivative difference is not established by the supported rules".into());
+    }
+    compare(a, b, context)
+}
+
 /// True is proved by exact normal forms. A nonzero rational polynomial proves
 /// false. A counterexample must be valid in both domains. Unresolved identities
 /// or domain equivalence return an error rather than a learner failure.
@@ -1445,6 +1644,7 @@ pub fn compare(a: &str, b: &str, context: Context) -> Result<bool> {
                 work: 0,
                 depth: 0,
                 conditions: BTreeSet::new(),
+                nonzero_power_bases: BTreeMap::new(),
                 context,
             };
             let l = algebra.pmul(&a.num, &b.den)?;
@@ -1459,9 +1659,9 @@ pub fn compare(a: &str, b: &str, context: Context) -> Result<bool> {
             // A counterexample valid in BOTH domains proves inequality even
             // when their restrictions differ. Never cancel away domain guards.
             if ca != cb {
-                for sample in [-4, -2, 0, 1, 3] {
-                    if ca.iter().chain(cb.iter()).all(|c| condition_at(c, sample))
-                        && diff.interval_at(Some(sample)).is_some_and(|(lo, hi)|
+                for sample in counterexample_samples() {
+                    if ca.iter().chain(cb.iter()).all(|c| condition_at(c, &sample))
+                        && diff.interval_at(Some(&sample)).is_some_and(|(lo, hi)|
                             lo.is_positive() || hi.is_negative()) {
                         return Ok(false);
                     }
@@ -1477,12 +1677,12 @@ pub fn compare(a: &str, b: &str, context: Context) -> Result<bool> {
             {
                 return Ok(false);
             }
-            for sample in [-4, -2, 0, 1, 3] {
-                if !ca.iter().all(|c| condition_at(c, sample)) {
+            for sample in counterexample_samples() {
+                if !ca.iter().all(|c| condition_at(c, &sample)) {
                     continue;
                 }
                 if diff
-                    .interval_at(Some(sample))
+                    .interval_at(Some(&sample))
                     .is_some_and(|(lo, hi)| lo.is_positive() || hi.is_negative())
                 {
                     return Ok(false);
@@ -1492,7 +1692,13 @@ pub fn compare(a: &str, b: &str, context: Context) -> Result<bool> {
         }
     }
 }
-fn condition_at(c: &Condition, sample: i64) -> bool {
+fn counterexample_samples() -> impl Iterator<Item = Q> {
+    // Include exact fractional witnesses inside bounded radical domains.
+    // Substitutions prove inequality only; equality still needs a normal form.
+    [-4, -2, 0, 1, 3].into_iter().map(|n| Q::from_integer(n.into()))
+        .chain((-16..=8).filter(|n| n % 2 != 0).map(|n| Q::new(n.into(), 2.into())))
+}
+fn condition_at(c: &Condition, sample: &Q) -> bool {
     match c {
         Condition::Nonzero(p) => p
             .interval_at(Some(sample))
@@ -1508,6 +1714,114 @@ fn condition_at(c: &Condition, sample: i64) -> bool {
 
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn reciprocal_exponentials_preserve_arguments_and_domains() {
+        for (a, b) in [
+            ("1/e^{0.03t}", "e^{-0.03t}"),
+            ("1/exp(3t/100)", "exp(-3t/100)"),
+            ("exp(-x/7-2/3)", "1/exp(x/7+2/3)"),
+            ("exp(-sin(x)/3)", "1/exp(sin(x)/3)"),
+            ("exp(-1/x)", "1/exp(1/x)"),
+            ("exp(-2x)", "1/exp(2x)"),
+        ] {
+            eq(a, b);
+            eq(b, a);
+        }
+        for (a, b) in [
+            ("1/e^{0.03t}", "e^{0.03t}"),
+            ("1/e^{0.03t}", "e^{-0.04t}"),
+            ("2/e^{0.03t}", "e^{-0.03t}"),
+            ("exp(-x/7-2/3)", "1/exp(x/7)"),
+        ] {
+            assert_eq!(compare(a, b, Context::default()), Ok(false), "{a} vs {b}");
+        }
+        assert!(compare("exp(-x/x)", "exp(-1)", Context::default()).is_err());
+        assert!(!supports("exp(-1/0)", Context::default()));
+    }
+    #[test]
+    fn antiderivative_families_preserve_domain_and_nonconstant_terms() {
+        use super::{compare, compare_up_to_constant, Context};
+        let canonical = "t^7/7+5*t";
+        for value in ["t^7/7+5*t+1", "5*t+t^7/7-3/2", "t^7/7+5*t+pi", "t^7/7+5*t+ln(2)"] {
+            assert_eq!(compare_up_to_constant(value, canonical, Context::default()), Ok(true));
+            assert_eq!(compare(value, canonical, Context::default()), Ok(false));
+        }
+        for wrong in ["t^7/6+5*t+1", "t^7/7+6*t+1", "t^7/7+5*t+t^2", "1"] {
+            assert_eq!(compare_up_to_constant(wrong, canonical, Context::default()), Ok(false));
+        }
+        assert!(compare_up_to_constant("t^7/7+5*t+t/t", canonical, Context::default()).is_err());
+        assert_eq!(compare_up_to_constant("ln(t)+3", "ln(t)", Context::default()), Ok(true));
+        assert!(compare_up_to_constant("ln(t^2)/2+3", "ln(t)", Context::default()).is_err());
+        assert_eq!(compare_up_to_constant("0", "ln(t)", Context::default()), Ok(false));
+        assert_eq!(compare_up_to_constant("0", "1/sqrt(t)", Context::default()), Ok(false));
+    }
+    #[test]
+    fn rational_logarithm_identities_preserve_grading_and_domains() {
+        for (a, b) in [
+            ("ln(4)", "2ln(2)"), ("ln(72)", "3ln(2)+2ln(3)"),
+            ("ln(4/9)", "2ln(2)-2ln(3)"), ("ln(1/8)", "-3ln(2)"),
+            ("4^x*ln(4)*sin(x)", "2*4^x*ln(2)*sin(x)"),
+            ("4^x/(x*ln(4))", "4^x/(2x*ln(2))"),
+            ("-15x^2*ln(4)", "-30x^2*ln(2)"),
+        ] {
+            eq(a, b);
+            eq(b, a);
+        }
+        for (a, b) in [("ln(4)", "ln(2)"), ("-15x^2*ln(4)", "30x^2*ln(2)"),
+                       ("4^x/(x*ln(4))", "4^x/(x*ln(2))")] {
+            assert_eq!(compare(a, b, Context::default()), Ok(false));
+        }
+        assert!(!supports("ln(-4)", Context::default()));
+        assert!(!supports("ln(0)", Context::default()));
+        assert!(compare("ln(x^2)", "2ln(x)", Context::default()).is_err());
+        assert!(compare("ln(4)*x/x", "2ln(2)", Context::default()).is_err());
+    }
+    #[test]
+    fn fractional_counterexamples_reject_wrong_radical_answers() {
+        for (a, b) in [("-x/sqrt(1-x^2)", "0"),
+                       ("-x/sqrt(1-x^2)", "x/sqrt(1-x^2)"),
+                       ("sqrt(1-x^2)", "0")] {
+            assert_eq!(compare(a, b, Context::default()), Ok(false));
+            assert_eq!(compare(b, a, Context::default()), Ok(false));
+        }
+        assert!(compare("sqrt(1-x^2)^2", "1-x^2", Context::default()).is_err());
+        assert!(compare("x/x", "1", Context::default()).is_err());
+    }
+    #[test]
+    fn natural_log_equation_answers_reject_wrong_values_beyond_old_bounds() {
+        for rhs in [2, 19, 20, 21, 30, 128, 1000] {
+            let canonical = format!("(4-ln({rhs}))/5");
+            for equivalent in [format!("(ln({rhs})-4)/(-5)"), format!("4/5-ln({rhs})/5")] {
+                assert_eq!(compare(&canonical, &equivalent, Context::default()), Ok(true));
+            }
+            for wrong in ["0".to_owned(), rhs.to_string(), format!("ln({rhs})-4")] {
+                assert_eq!(compare(&canonical, &wrong, Context::default()), Ok(false), "{canonical} versus {wrong}");
+                assert_eq!(compare(&wrong, &canonical, Context::default()), Ok(false));
+            }
+        }
+        for (a, b) in [("ln(21)", "ln(22)"), ("ln(1/21)", "0"),
+                       ("ln(1/1000)", "-1"), ("ln(1000)", "1")] {
+            assert_eq!(compare(a, b, Context::default()), Ok(false), "{a} versus {b}");
+        }
+        assert!(compare("ln(x)/ln(x)", "1", Context::default()).is_err());
+        assert!(!supports("ln(-21)", Context::default()));
+    }
+
+    #[test]
+    fn reduced_logarithm_intervals_enclose_known_bounds() {
+        let q = |n: i64, d: i64| Q::new(n.into(), d.into());
+        for (x, lower, upper) in [(q(21,1),q(3044,1000),q(3045,1000)),
+                                 (q(1,21),q(-3045,1000),q(-3044,1000)),
+                                 (q(1000,1),q(6907,1000),q(6908,1000)),
+                                 (q(1,1000),q(-6908,1000),q(-6907,1000))] {
+            let (lo, hi) = log_bounds(&x).unwrap();
+            assert!(lower < lo && lo < hi && hi < upper);
+        }
+        assert_eq!(log_bounds(&Q::one()), Some((Q::zero(), Q::zero())));
+        assert!(log_bounds(&Q::zero()).is_none());
+        assert!(log_bounds(&q(-1,1)).is_none());
+        assert!(log_bounds(&Q::from_integer(BigInt::one() << 129)).is_none());
+    }
     use super::*;
     fn eq(a: &str, b: &str) {
         assert_eq!(compare(a, b, Context::default()), Ok(true), "{a} != {b}");
@@ -1572,6 +1886,62 @@ mod tests {
         ] {
             eq(a, b);
         }
+    }
+    #[test]
+    fn roots_of_positive_constant_powers_share_rational_power_form() {
+        eq(r"\frac{\sqrt{e^3}}{3}", r"\frac{e^{\frac{3}{2}}}{3}");
+        for base in ["e", "pi"] {
+            for degree in 2..=8 {
+                for exponent in 1..=8 {
+                    let radical = format!(r"\sqrt[{degree}]{{{base}^{exponent}}}");
+                    let power = format!("{base}^({exponent}/{degree})");
+                    eq(&radical, &power);
+                    eq(&power, &radical);
+                }
+            }
+        }
+        for wrong in ["-e^(3/2)/3", "2e^(3/2)/3"] {
+            assert_eq!(compare("sqrt(e^3)/3", wrong, Context::default()), Ok(false));
+        }
+        assert!(!supports("sqrt(-e^3)", Context::default()));
+        assert_eq!(compare("sqrt(x^2)", "x", Context::default()), Ok(false));
+        assert!(compare("sqrt(x)^2", "x", Context::default()).is_err());
+        assert!(compare("sqrt(e^3)*(x/x)", "e^(3/2)", Context::default()).is_err());
+    }
+    #[test]
+    fn roots_of_compound_odd_powers_preserve_domains() {
+        for (a, b) in [
+            (r"-\left(2x+7\right)^{-\frac32}", r"-\frac{1}{\sqrt{(2x+7)^3}}"),
+            ("sqrt((2x+7)^3)", "(2x+7)^(3/2)"),
+            ("1/sqrt((x-2)^5)", "(x-2)^(-5/2)"),
+            ("sqrt((x^2+1)^3)", "(x^2+1)^(3/2)"),
+            ("sqrt((1-x)^3)", "(1-x)^(3/2)"),
+            (r"\sqrt[4]{(2x-1)^3}", "(2x-1)^(3/4)"),
+            ("cbrt((x+1)^3)", "x+1"),
+            ("1/((x+1)*sqrt(x+1))", "(x+1)^(-3/2)"),
+        ] {
+            eq(a, b);
+            eq(b, a);
+        }
+        for (a, b) in [
+            ("-1/sqrt((2x+7)^3)", "(2x+7)^(-3/2)"),
+            ("sqrt((x+1)^2)", "x+1"),
+        ] {
+            assert_eq!(compare(a, b, Context::default()), Ok(false), "{a} == {b}");
+        }
+        for (a, b) in [
+            ("sqrt((x+1)^3)^2", "(x+1)^3"),
+            ("sqrt((x+1)^3)/sqrt((x+1)^3)", "1"),
+            ("(x*sqrt(x+1))/(x*sqrt(x+1))", "sqrt(x+1)/sqrt(x+1)"),
+            ("sqrt((x/x)^3)", "1"),
+            ("1/(sqrt(x^2-1)^2)", "1/(x^2-1)"),
+            ("sqrt(x^2-1)^2/sqrt(x^2-1)^2", "1"),
+            ("sqrt(((x+1)/x)^3)", "((x+1)/x)^(3/2)"),
+        ] {
+            assert!(compare(a, b, Context::default()).is_err(), "{a} == {b}");
+        }
+        assert!(!supports("sqrt((-x^2-1)^3)", Context::default()));
+        assert!(!supports("sqrt((x+1)^65)", Context::default()));
     }
     #[test]
     fn rational_scaling_of_symbolic_radicands_is_exact() {

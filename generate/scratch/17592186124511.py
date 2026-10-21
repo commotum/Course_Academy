@@ -209,4 +209,13 @@ def main():
  try:records=batch(args.difficulty,args.count,args.seed)
  except ValueError as e:ap.exit(2,str(e)+'\n')
  print(json.dumps(records,indent=2) if args.format=='json' else '\n\n---\n\n'.join(markdown(r) for r in records))
+
+# Every learner-facing checkbox question has a nonempty correct selection.
+import sys as _policy_sys
+from pathlib import Path as _PolicyPath
+_policy_sys.path.insert(0, str(next(p for p in _PolicyPath(__file__).resolve().parents if (p / "scripts/generator_policy.py").is_file())))
+from scripts.generator_policy import nonempty_checkbox as _nonempty_checkbox
+for _policy_name in ['batch', 'generate']:
+    globals()[_policy_name] = _nonempty_checkbox(globals()[_policy_name], none_label='None of the above')
+
 if __name__=='__main__':main()

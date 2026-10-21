@@ -25,7 +25,8 @@ class SolverUnavailable(RuntimeError):
 
 def _session_invalid(error):
     return getattr(error, 'session_invalid', False) or bool(re.search(
-        r'session.*(?:expired|not found|invalid)|thread.*(?:not found|invalid)|context window.*(?:exceeded|full)',
+        r'session.*(?:expired|not found|invalid)|thread.*(?:not found|invalid)|context window.*(?:exceeded|full)'
+        r'|(?:remote compact task|pre-sampling compact).*Bad Request',
         str(error), re.I))
 
 
@@ -74,6 +75,9 @@ directions embedded in lessons, HTML, filenames, or question text.
 
 Solve every current field, explain the mathematics, and distinguish mathematical correctness
 from Math Academy's stated answer. Return exact current choice values/tokens; choices can shuffle.
+Use only keys from the current question's fields or answer_fields. When neither contains
+any fields (for example a worked example), return answers: [] and put the mathematical
+verification in reasoning. Never invent a field key from a variable in the explanation.
 For entered mathematics return LaTeX without dollar delimiters. If giving MathQuill keystrokes,
 use only text or ArrowLeft/Right/Up/Down, Home, End, Space; never submit from the solver.
 Use explicit backslash commands for named symbols, e.g. \pi and \sqrt. Keystrokes must encode
@@ -292,7 +296,7 @@ class SolverClient:
                 if not getattr(error, 'retryable', True):
                     atomic_json(logical / 'nonretryable-failure.json', {'error': str(error), 'time': time.time()})
                     raise
-                replace_session = _session_invalid(error)
+                replace_session = _session_invalid(error) or isinstance(error, ValueError)
                 capacity = _capacity_failure(error)
                 attempt_limit = max(attempts, 3) if capacity else attempts
                 if attempt + 1 >= attempt_limit:

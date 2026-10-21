@@ -164,7 +164,7 @@ class EDBClient:
         # one lineage. Bind the reads before preparing a durable write request.
         identity = self.status()
         topics = {int(q.get('topic_id') or content.get('topic_id')) for q in
-                  content.get('questions', []) + content.get('canonical_examples', [])
+                  content.get('questions', []) + content.get('reference_questions', []) + content.get('canonical_examples', [])
                   if q.get('topic_id') or content.get('topic_id')}
         if content.get('topic_id'):
             topics.add(int(content['topic_id']))
@@ -180,7 +180,7 @@ class EDBClient:
               :in $ [?id ...] :where [?t :topic/math-academy-id ?id]]''', [group], directory, 'topic-batch-' + str(start), basis)
         # Unreconciled live originals remain capture evidence. They have no
         # verified source identity to query and will receive explicit omissions.
-        mids = {q['math_academy_id'] for q in content.get('questions', []) + content.get('canonical_examples', [])
+        mids = {q['math_academy_id'] for q in content.get('questions', []) + content.get('reference_questions', []) + content.get('canonical_examples', [])
                 if isinstance(q.get('math_academy_id'), str) and re.fullmatch(r'[qe]-\d+', q['math_academy_id'])}
         # Existing examples can be revisions with changed MA IDs; include them in the complete pull.
         if content.get('canonical_examples'):
@@ -294,6 +294,25 @@ class EDBClient:
         targets = sorted({str(row[0]) for row in rows})
         return {'target_basis': basis, 'learner_id': learner_id, 'targets': targets,
                 'target_origins': {'learner_targets': targets}}
+
+    def source_dependencies(self, questions, directory):
+        """Find captured topics/KP titles that need their original lesson source."""
+        required = {}
+        for question in questions:
+            tid = question.get('topic_id')
+            if tid is not None:
+                required.setdefault(int(tid), set()).add(question.get('knowledge_point') or question.get('kp_title'))
+        if not required:
+            return []
+        rows = self.query('''[:find (pull ?t [:topic/math-academy-id
+            {:topic/knowledge-points [:knowledge-point/title]}])
+            :in $ [?id ...] :where [?t :topic/math-academy-id ?id]]''',
+            [sorted(required)], directory, 'source-dependencies', self.basis())
+        known = {int(topic[':topic/math-academy-id']):
+                 {point.get(':knowledge-point/title') for point in topic.get(':topic/knowledge-points', [])}
+                 for [topic] in rows}
+        return [str(tid) for tid, titles in sorted(required.items())
+                if tid not in known or any(title and title not in known[tid] for title in titles)]
 
     def context(self, activity, directory):
         basis = self.basis()

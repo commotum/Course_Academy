@@ -1,5 +1,10 @@
 # Generator priorities deployed: relevance-v2
 
+Historical deployment report. The later user correction requires completion of
+all directly selected KP generators and question stock before prerequisite or
+downstream work becomes eligible. See the
+[current selection-gate report](../generator-priority-selection-gate-2026-10-17/summary.md).
+
 The finder and durable build/refill workers now share one relevance-first comparator.
 The running service accepted the new policy at EDB basis 3442. All 6,980 pending or
 running build requests in the saved verification snapshot carry `relevance-v2`.

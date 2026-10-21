@@ -228,6 +228,10 @@ pub struct Policy {
     pub maximum_interval_days: f64,
     pub due_threshold: f64,
     pub restored_memory: f64,
+    /// Fraction of a full refresh's log-memory headroom restored by a completed
+    /// failed review. Existing EDB policies use this runtime default; no new
+    /// stored learner state is needed. Zero disables the approximation.
+    pub failed_review_refresh_fraction: f64,
     pub discount_power: f64,
     pub failure_overdue_slope: f64,
     pub maximum_failure_multiplier: f64,
@@ -250,6 +254,7 @@ impl Default for Policy {
             maximum_interval_days: 36500.0,
             due_threshold: 0.5,
             restored_memory: 1.0,
+            failed_review_refresh_fraction: 0.01,
             discount_power: 1.0,
             failure_overdue_slope: 1.0,
             maximum_failure_multiplier: 4.0,
@@ -273,6 +278,7 @@ impl Policy {
             ("maximum_interval_days", self.maximum_interval_days),
             ("due_threshold", self.due_threshold),
             ("restored_memory", self.restored_memory),
+            ("failed_review_refresh_fraction", self.failed_review_refresh_fraction),
             ("discount_power", self.discount_power),
             ("failure_overdue_slope", self.failure_overdue_slope),
             (
@@ -293,6 +299,7 @@ impl Policy {
             && self.maximum_interval_days >= self.base_interval_days
             && self.due_threshold > 0.0
             && self.due_threshold < self.restored_memory
+            && self.failed_review_refresh_fraction <= 1.0
             && self.prior_accuracy > 0.0
             && self.prior_accuracy < 1.0
             && self.accuracy_alpha > 0.0
@@ -363,6 +370,22 @@ impl Policy {
                 .clamp(0.0, 1.0)
                 .powf(self.discount_power),
         )
+    }
+
+    /// Re-exposure after unsuccessful recall provides a small current-memory
+    /// refresh without successful repetition credit. Log-space interpolation
+    /// makes its time to due a fraction of the usual refreshed interval:
+    /// interval * fraction * log2(restored_memory / due_threshold).
+    pub fn failed_review_memory(&self) -> f64 {
+        if self.failed_review_refresh_fraction == 0.0 {
+            return self.due_threshold;
+        }
+        let log_memory = self.due_threshold.log2()
+            + self.failed_review_refresh_fraction
+                * (self.restored_memory.log2() - self.due_threshold.log2());
+        2.0_f64.powf(log_memory)
+            .max(self.due_threshold.next_up())
+            .min(self.restored_memory)
     }
 
     pub fn failure_multiplier(&self, memory_now: f64) -> Result<f64> {
@@ -935,6 +958,15 @@ impl FireEngine {
             if raw != 0.0 || initializing && direct {
                 state.interval_days = p.interval(repetitions)?;
             }
+            // A terminal review is both retrieval evidence and a learning
+            // opportunity. Keep its negative repetition/accuracy evidence,
+            // but refresh only the reviewed topic, never its propagated
+            // dependents. Assessment misses and failed lessons do not get it.
+            let review_refresh = direct && !event.passed && !event.assessment
+                && event.kind == "review" && p.failed_review_refresh_fraction > 0.0;
+            if review_refresh {
+                state.memory = state.memory.max(p.failed_review_memory());
+            }
             if direct {
                 state.last_direct_at = Some(event.at);
             }
@@ -945,6 +977,7 @@ impl FireEngine {
             updates.push(json!({"topic": topic, "direct": direct, "coverage": coverage, "created": created,
                 "memory_before_decay": before["memory"], "memory_now": now, "discount": discount, "raw_delta": raw,
                 "speed": speed, "accuracy_evidence": evidence, "failure_multiplier": decay, "implicit_gated": gated,
+                "failed_review_refresh": review_refresh,
                 "before": before, "after": state, "due_at": due_at}));
         }
         let receipt = json!({"event": event, "event_hash": digest, "mode": mode, "policy_id": p.id(),
@@ -1267,6 +1300,169 @@ mod tests {
         let receipt = engine.apply(event("e", "A", 1.0, true)).unwrap();
         assert_eq!(receipt["updates"][0]["raw_delta"], 0.0);
         assert_eq!(receipt["updates"][1]["raw_delta"], 1.0);
+    }
+
+    #[test]
+    fn failed_review_refresh_preserves_penalties_without_refreshing_related_topics() {
+        let mut refreshed = engine(&[("A", "B", 1.0)]);
+        for topic in ["A", "B"] {
+            refreshed.states.get_mut("learner").unwrap().insert(
+                topic.into(),
+                TopicState {
+                    repetitions: 3.0,
+                    memory: 0.25,
+                    memory_at: 10.0,
+                    interval_days: 8.0,
+                    ..TopicState::default()
+                },
+            );
+        }
+        let mut penalty_only = refreshed.clone();
+        penalty_only.policy.failed_review_refresh_fraction = 0.0;
+        let failure = event("failed-review", "B", 10.0, false);
+        let receipt = refreshed.apply(&failure).unwrap();
+        penalty_only.apply(&failure).unwrap();
+        let state = &refreshed.states["learner"]["B"];
+        let penalized = &penalty_only.states["learner"]["B"];
+        assert!(state.repetitions < 3.0);
+        assert!(state.interval_days < 8.0);
+        assert!(state.accuracy() < TopicState::default().accuracy());
+        close(state.repetitions, penalized.repetitions);
+        close(state.interval_days, penalized.interval_days);
+        assert_eq!(state.ability, penalized.ability);
+        assert!(state.memory > refreshed.policy.due_threshold);
+        assert!(state.memory < refreshed.policy.restored_memory);
+        assert_eq!(
+            refreshed.states["learner"]["A"],
+            penalty_only.states["learner"]["A"]
+        );
+        let due = state.due_at(&refreshed.policy);
+        assert!(due > 10.0);
+        assert!(
+            !refreshed
+                .due("learner", 10.0)
+                .unwrap()
+                .contains(&"B".into())
+        );
+        assert!(
+            refreshed
+                .due("learner", due + 1e-9)
+                .unwrap()
+                .contains(&"B".into())
+        );
+        let snapshot = refreshed.snapshot();
+        assert_eq!(refreshed.apply(&failure).unwrap(), receipt);
+        assert_eq!(
+            refreshed.snapshot(),
+            snapshot,
+            "exact replay cannot refresh twice"
+        );
+        let restored = FireEngine::restore(snapshot).unwrap();
+        close(
+            restored.states["learner"]["B"].due_at(&restored.policy),
+            due,
+        );
+    }
+
+    #[test]
+    fn failed_review_return_time_scales_with_remaining_strength_and_failure_severity() {
+        let mut delays = vec![];
+        for (repetitions, quality) in [(2.0, 1.0), (4.0, 1.0), (4.0, 2.0)] {
+            let mut e = engine(&[]);
+            e.states.get_mut("learner").unwrap().insert(
+                "A".into(),
+                TopicState {
+                    repetitions,
+                    memory: 0.5,
+                    memory_at: 0.0,
+                    interval_days: e.policy.interval(repetitions).unwrap(),
+                    ..TopicState::default()
+                },
+            );
+            e.apply_retention(Event {
+                quality,
+                ..event("failed", "A", 0.0, false)
+            })
+            .unwrap();
+            let state = &e.states["learner"]["A"];
+            delays.push(state.due_at(&e.policy));
+            close(state.due_at(&e.policy), state.interval_days * 0.01);
+        }
+        assert!(
+            delays[1] > delays[0],
+            "stronger remaining retention permits a longer return"
+        );
+        assert!(
+            delays[2] < delays[1],
+            "a larger failure penalty shortens the return"
+        );
+        assert!(delays.iter().all(|delay| *delay > 0.0));
+    }
+
+    #[test]
+    fn failed_review_refresh_excludes_answer_only_events_lessons_and_assessment_misses() {
+        for (kind, assessment, retention) in [
+            ("review", false, false),
+            ("lesson", false, true),
+            ("assessment", true, true),
+            ("review", true, true),
+        ] {
+            let mut e = engine(&[]);
+            e.states.get_mut("learner").unwrap().insert(
+                "A".into(),
+                TopicState {
+                    memory: 0.2,
+                    repetitions: 2.0,
+                    interval_days: 4.0,
+                    ..TopicState::default()
+                },
+            );
+            let failure = Event {
+                kind: kind.into(),
+                assessment,
+                ..event("failed", "A", 0.0, false)
+            };
+            if retention {
+                e.apply_retention(failure).unwrap();
+            } else {
+                e.apply_accuracy(failure).unwrap();
+            }
+            let state = &e.states["learner"]["A"];
+            assert!(state.memory <= e.policy.due_threshold);
+            if !retention {
+                close(state.memory, 0.2);
+                close(state.repetitions, 2.0);
+            }
+        }
+    }
+
+    #[test]
+    fn failed_review_refresh_defaults_support_existing_policies_and_both_memory_conventions() {
+        let mut legacy = serde_json::to_value(Policy::default()).unwrap();
+        legacy
+            .as_object_mut()
+            .unwrap()
+            .remove("failed_review_refresh_fraction");
+        let p: Policy = serde_json::from_value(legacy).unwrap();
+        close(p.failed_review_refresh_fraction, 0.01);
+        for fraction in [-0.1, 1.1, f64::NAN] {
+            assert!(
+                Policy {
+                    failed_review_refresh_fraction: fraction,
+                    ..p.clone()
+                }
+                .validate()
+                .is_err()
+            );
+        }
+        for order in ["decay-before-add", "literal-add-before-decay"] {
+            let mut e = engine(&[]);
+            e.policy.memory_order = order.into();
+            e.apply_retention(event("failed", "A", 1.0, false)).unwrap();
+            let state = &e.states["learner"]["A"];
+            assert!(state.due_at(&e.policy) > 1.0);
+            close(state.repetitions, 0.0);
+        }
     }
 
     #[test]

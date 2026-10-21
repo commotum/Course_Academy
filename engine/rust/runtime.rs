@@ -1649,15 +1649,18 @@ mod tests {
             f.answer(q, Some(r));
         }
         let s = f.state(20);
-        assert!(!s.learned);
-        assert_eq!(
-            (s.repetitions, s.memory, s.evidence_mass()),
-            (0.0, 0.0, 5.0)
-        );
+        assert!(s.learned);
+        assert_eq!(s.evidence_mass(), 5.0);
         assert_eq!(
             f.entities[&3]["learner-task/status"],
-            f.enums["learner-task.status/failed"]
+            f.enums["learner-task.status/completed"]
         );
+        let mut f = Fixture::new("lesson");
+        f.answer(210, None);
+        f.answer(200, None);
+        assert!(!f.answer(100, Some(false)).delivery.complete);
+        assert_eq!(f.answer(101, Some(false)).delivery.passed, Some(false));
+        assert!(!f.state(20).learned);
         let mut f = Fixture::new("lesson");
         f.set(40, "knowledge-point/questions", json!([100]));
         f.answer(210, None);
@@ -2011,11 +2014,11 @@ mod tests {
     #[test]
     fn default_xp_scores_failed_practice_without_changing_mastery() {
         for (kind, outcomes, expected) in [
-            ("lesson", [true, false, true, false, true], 4),
-            ("lesson", [false; 5], -1),
-            ("review", [true, false, true, false, true], 4),
-            ("review", [true, true, false, true, false], 0),
-            ("review", [true, false, true, false, false], -1),
+            ("lesson", vec![true, false, true, false, true], 4),
+            ("lesson", vec![false; 2], -1),
+            ("review", vec![true, false, true, false, true], 4),
+            ("review", vec![true, true, false, true, false], 0),
+            ("review", vec![true, false, true, false, false], -1),
         ] {
             let mut f = Fixture::new(kind);
             f.set(3, "learner-task/xp-base", json!(7));
@@ -2023,13 +2026,14 @@ mod tests {
                 f.answer(210, None);
                 f.answer(200, None);
             }
+            let passed = kind == "lesson" && outcomes.last() == Some(&true);
             for (n, outcome) in outcomes.into_iter().enumerate() {
                 f.answer(100 + n as u64, Some(outcome));
             }
             assert_eq!(f.entities[&3]["learner-task/xp-earned"], expected);
             assert_eq!(
                 f.entities[&3]["learner-task/status"],
-                f.enums["learner-task.status/failed"]
+                f.enums[if passed { "learner-task.status/completed" } else { "learner-task.status/failed" }]
             );
         }
     }

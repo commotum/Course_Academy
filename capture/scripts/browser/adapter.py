@@ -715,8 +715,15 @@ class MathAcademyBrowser:
 
         def clean(value, source_html=None, part=None):
             value = value or ""
-            return re.sub(r"!\[[^]]*\]\(([^)]+)\)",
-                          lambda match: image_identity(match[1], source_html, part), value)
+            value = re.sub(r"!\[[^]]*\]\(([^)]+)\)",
+                           lambda match: image_identity(match[1], source_html, part), value)
+            # Tables retain HTML images so their layout survives extraction.
+            # Compare their original source identity just like Markdown images;
+            # collecting an asset changes its marker into a local file path.
+            return re.sub(r'''(<img\b[^>]*?\s+src\s*=\s*)(["'])(.*?)\2''',
+                          lambda match: match[1] + match[2] +
+                          image_identity(match[3], source_html, part) + match[2],
+                          value, flags=re.I | re.S)
 
         def choice_value(choice):
             value = choice.get("value")
@@ -972,6 +979,10 @@ class MathAcademyBrowser:
                            multistep=multistep)
         atomic_json(directory / "history-content.json", content)
         return content
+
+    def lesson_source(self, topic_id, directory):
+        """Read instructional source only; never start or submit an activity."""
+        return self._lesson({'topic_id': str(topic_id), 'kind': 'lesson'}, directory)
 
     def _lesson(self, activity, directory):
         page = self.context.new_page()

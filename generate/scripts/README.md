@@ -8,18 +8,39 @@ python3 generate/scripts/find_candidates.py
 
 The fixed Datalog queries are in `queries/`. Rust executes them against one captured EDB database value; the Python launcher reuses the project's native build and database configuration. The default database and learner match the local application. Output retains complete nested `topics` and their inventories, and adds a flat `knowledge_points` list containing one ranked build candidate per KP. Topics with no KPs and KPs with empty question banks remain visible.
 
-Eligibility includes studied topics, targets, queued topics, their unmet necessary prerequisites, direct descendants of studied or queued topics, and current activity needs. Necessary prerequisites follow `topic/next` and KP key-prerequisite relationships transitively, stopping at prerequisites that satisfy the engine's current retention readiness. A learned but overdue prerequisite retains selected relevance for review; an unlearned prerequisite needs lesson supply. Direct descendant expansion remains one hop. Required remediation and active work can enter even outside the learner's selections. There is no course or stock filter. A completed lesson or initialized learned progress establishes study history; legacy positive repetitions count when `progress/learned` is absent. A completed review establishes review history.
+Eligibility includes studied topics, targets, queued topics, their unready prerequisite topics, direct descendants of studied or queued topics, and current activity needs. Prerequisite preparation follows `topic/next` and KP key-prerequisite relationships transitively, stopping at prerequisites that satisfy the engine's current retention readiness. A learned but overdue prerequisite receives prerequisite relevance for review; an unlearned prerequisite needs lesson supply. Prerequisite preparation is a lower priority than direct selections; graph ancestry alone does not make a topic an immediate study obligation. Direct descendant expansion remains one hop. Required remediation and active work can enter even outside the learner's selections. There is no course or stock filter. A completed lesson or initialized learned progress establishes study history; legacy positive repetitions count when `progress/learned` is absent. A completed review establishes review history.
 
-The finder and durable worker use one comparator, `scripts/generator_priority.py`, under policy `relevance-v2`. Relevance is the first key:
+Before admitting agent build or review work outside direct selections, the finder checks every
+distinct KP belonging to the current queue or targets. Each must have a usable
+hashed generator package and at least five available questions in each of the easy,
+moderate, and hard bands. A missing generator, legacy package awaiting migration,
+or any remaining band deficit keeps this gate closed. A failed/rejected generation
+attempt does not count as completed supply.
+
+While the gate is closed, only those selected KPs enter the build lane. Approved
+packages can refill automatically across all topics. With `include_registered`,
+the native first pass reads selected inventories plus registered hashed-package
+KPs, using the registered-script index. It excludes unregistered sibling KPs in
+outside topics and does not expand prerequisite, downstream, or studied-topic
+banks for agent work. Missing or stale approvals outside the selected scope wait
+for the build gate to open. When selected supply is complete, discovery may inspect
+the broader population. It checks the gate again on that snapshot, so a selection
+or supply change can close it again.
+`selection_gate` records the selected KP set and remaining generator/stock deficits.
+Pending publication reconciliation remains the sole safety exception; other drafts
+retain their workspace until their scope becomes eligible again.
+
+The finder and durable worker use one comparator, `scripts/generator_priority.py`, under policy `relevance-v5`. Within the eligible population, relevance is the first key:
 
 | Tier | Relevance |
 | ---: | --- |
 | 0 | Required remediation or supply needed by an active/requested activity |
-| 1 | Selected study: queue, targets, and unmet necessary prerequisites |
-| 2 | Other current review or assessment needs |
-| 3 | Speculative preparation and maintenance outside current study |
+| 1 | Directly selected study: queue and targets |
+| 2 | Prerequisite preparation for selected topics |
+| 3 | Other current review or assessment needs |
+| 4 | Speculative preparation and maintenance outside current study |
 
-Tier 0 applies to the matching activity demand, not every possible shortage in its topic. A selected review shortage precedes a speculative lesson shortage regardless of either bank's size. Within each relevance tier, purpose orders work as follows:
+Tier 0 applies to the matching activity demand, not every possible shortage in its topic. Direct queue/target membership wins when a topic is also a prerequisite. A directly selected review shortage precedes a prerequisite lesson shortage regardless of graph layer, support count, or bank size. Purpose and topic order are compared only within the same relevance tier. Within each relevance tier, purpose orders work as follows:
 
 | Purpose | Points | Shortage |
 | --- | ---: | --- |
@@ -47,7 +68,7 @@ For later runs, pass the last successfully processed cursor:
 python3 generate/scripts/find_candidates.py --after-basis BASIS --lineage LINEAGE
 ```
 
-The cursor validates the captured transaction log and lineage. Every invocation still ranks the complete current eligible population: omitting unchanged topics would corrupt global variety counts and hide proactive builds. Due reviews are also checked on every run because time can advance without a transaction. The output contains the next cursor. A lineage mismatch or log gap fails instead of silently advancing; run full discovery to recover.
+The cursor validates the captured transaction log and lineage. Every invocation ranks the current eligible population at its captured basis. While selected supply is incomplete, agent work is limited to direct selections; registered packages remain visible for automated refills. Assessment coverage is diagnostic for the scoped population. Broader coverage and proactive preparation are evaluated only after the gate opens. Due reviews are checked within the admitted scope because time can advance without a transaction. The output contains the next cursor. A lineage mismatch or log gap fails instead of silently advancing.
 
 The scheduler can supply selected topic entity IDs before creating an activity or choosing questions:
 
@@ -55,20 +76,21 @@ The scheduler can supply selected topic entity IDs before creating an activity o
 python3 generate/scripts/find_candidates.py --topic TOPIC_EID --activity-type assessment
 ```
 
-Repeat `--topic` to annotate several scheduler requests. These establish demand for the requested activity and can admit a topic outside the usual eligibility groups. They do not restrict the global inventory read. Use bounded entity reads for a small readiness investigation instead of treating this option as a query filter. The coverage calculation guides build ranking and does not construct an assessment or change assessment admission. `--at RFC3339_TIME` makes review checks reproducible.
+Repeat `--topic` to annotate several scheduler requests. These establish activity demand within the admitted scope; they do not bypass the direct-selection completion gate. Once that gate opens, a scheduler request can admit a topic outside the usual eligibility groups. This option is not a query filter: use bounded entity reads for a small readiness investigation. The coverage calculation guides build ranking and does not construct an assessment or change assessment admission. `--at RFC3339_TIME` makes review checks reproducible.
 
 This command is read-only. The learner server calls the same discovery and ranking
 code in its background inventory refresh, then admits durable jobs through
 `scripts/inventory_jobs.py`. Its build worker uses this ranking; valid legacy
 registrations additionally enter the queue for packaging and independent review.
 Its separate refill worker maintains approved packages toward five questions per
-difficulty. `--include-registered` adds registered hashed-package topics outside
-the urgency groups to the nested inventory for maintenance; those topics cannot
-create new generators and use routine replenishment priority.
+difficulty. Regardless of the selection gate, `--include-registered` adds registered
+hashed-package topics outside the urgency groups to the nested inventory for
+maintenance; those topics cannot create new generators and use routine
+replenishment priority.
 
 The accepted live cursor and job files are under
 `.local/learning/inventory/<database>/<learner>/`; the cursor marks this policy as
-`relevance-v2`. `/api/inventory` remains the native activity-readiness diagnostic from
+`relevance-v5`. `/api/inventory` remains the native activity-readiness diagnostic from
 `engine/rust/inventory.rs`, not the ranked generator job queue. Generator ranking
 does not change the engine's lesson/review/assessment admission rules.
 

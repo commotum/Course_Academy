@@ -833,6 +833,18 @@ class ActivityCapture:
             history = self._browser_call('history', self.activity, self.directory)
             self.state['history'] = history
             self._save()
+        lookup = getattr(self.context_provider, 'source_dependencies', None)
+        if (lookup and hasattr(self.browser, 'lesson_source') and self.activity['kind'] != 'lesson'
+                and not self.state.get('source_dependencies_checked')):
+            for tid in lookup(history.get('questions', [])):
+                source = self._browser_call('lesson_source', tid, self.directory / 'dependencies' / str(tid))
+                definition = source.get('lesson_definition') or {}
+                history.setdefault('source_lesson_definitions', {})[str(tid)] = definition
+                history = self._merge_content(history, self._dependency_content(source, history.get('questions', [])))
+                self.state['history'] = history
+                self._save()
+            self.state['source_dependencies_checked'] = True
+            self._save()
         content = self._merge_history(history)
         gaps = capture_gaps(content)
         if any(not gap.get('final') for gap in gaps) and not self.state.get('source_recovery_attempted'):
@@ -847,7 +859,7 @@ class ActivityCapture:
             self._save()
             content = self._merge_history(history)
         content['source_limitations'] = content.get('source_limitations', []) + capture_gaps(content)
-        for name in ('questions', 'canonical_examples'):
+        for name in ('questions', 'reference_questions', 'canonical_examples'):
             for index, question in enumerate(content.get(name, [])):
                 self._normalize_kp(question, example=name == 'canonical_examples')
                 key = name + ':' + question_key(question)
@@ -919,6 +931,21 @@ class ActivityCapture:
         checked['answer_validation'] = {'status': 'supported', 'version': 1,
             'evidence_hash': semantic_identity('finalized_source', checked)}
         return checked
+
+    @staticmethod
+    def _dependency_content(source, questions):
+        """Retain the examples needed by captured practice, without importing empty KPs."""
+        required = {(str(q.get('topic_id')), str(q.get('kp_id') or q.get('knowledge_point_id') or ''),
+                     q.get('knowledge_point') or q.get('kp_title')) for q in questions}
+        examples = []
+        for example in source.get('canonical_examples', []):
+            tid = str(example.get('topic_id'))
+            kid = str(example.get('kp_id') or example.get('knowledge_point_id') or
+                      str(example.get('math_academy_id', '')).removeprefix('e-'))
+            title = example.get('knowledge_point') or example.get('kp_title')
+            if any(t == tid and (k and k == kid or name and name == title) for t, k, name in required):
+                examples.append(example)
+        return {'canonical_examples': examples, 'tutorials': source.get('tutorials', [])}
 
     @staticmethod
     def _source_binding_matches(before, after):
@@ -1089,7 +1116,7 @@ class ActivityCapture:
         for key, value in after.items():
             if key == 'examples':
                 key = 'canonical_examples'
-            if key in ('questions', 'canonical_examples'):
+            if key in ('questions', 'reference_questions', 'canonical_examples'):
                 records = {question_key(q): q for q in result.get(key, [])}
                 for q in value or []:
                     identity = question_key(q)

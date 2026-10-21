@@ -70,6 +70,30 @@ class SourceParsingTests(unittest.TestCase):
                 moved = replace_markers(moved, {'/capture/assets/hash.png': '/another/assets/hash.png'})
                 self.assertEqual(MathAcademyBrowser._binding(moved), MathAcademyBrowser._binding(captured))
 
+    def test_table_image_binding_uses_original_source_and_keeps_layout_and_controls(self):
+        raw = {'dom_id': 'step-q363860',
+               'problem': '<table><tr><td rowspan="2"><img src="@asset-0@" alt=""></td>'
+                          '<td>{{field-1}}</td></tr><tr><td><img src="@asset-1@" alt=""></td></tr></table>',
+               'assets': [{'index': i, 'tag': 'img', 'source_url': 'https://mathacademy.com/graphics/tree',
+                           'html': '<img src="/graphics/tree">', 'extraction_part': 'problem'} for i in range(2)],
+               'fields': [{'key': 'field-1', 'type': 'select', 'tag': 'custom-select', 'dom_id': 'select-1',
+                           'choices': [{'option': '0', 'type': 'text', 'value': 'M'}]}]}
+        captured = deepcopy(raw)
+        for asset in captured['assets']:
+            asset['path'] = '/capture/assets/shared-tree.png'
+        captured = replace_markers(captured, {f'@asset-{i}@': '/capture/assets/shared-tree.png' for i in range(2)})
+        self.assertEqual(MathAcademyBrowser._binding(raw), MathAcademyBrowser._binding(captured))
+        for kind in ('source', 'layout', 'choice'):
+            changed = deepcopy(raw)
+            if kind == 'source':
+                changed['assets'][1]['source_url'] += '-different'
+            elif kind == 'layout':
+                changed['problem'] = changed['problem'].replace('rowspan="2"', 'rowspan="3"')
+            else:
+                changed['fields'][0]['choices'][0]['value'] = 'D'
+            with self.subTest(change=kind):
+                self.assertNotEqual(MathAcademyBrowser._binding(changed), MathAcademyBrowser._binding(captured))
+
     def test_learn_course_percentage_uses_authored_label_and_source_course(self):
         html = (FIXTURES / 'learn-course-progress.html').read_text()
         result = parse_dashboard(html + '<div id="dailyGoalPoints">999/50 XP</div>', '1')
@@ -207,6 +231,18 @@ class SourceParsingTests(unittest.TestCase):
 
 
 class OfflineBrowserTests(unittest.TestCase):
+    def test_unstyled_empty_final_screen_does_not_complete_unanswered_review(self):
+        from scripts.browser.adapter import VIEW
+        self.page.set_content('''<div id="steps"><div class="step questionWidget" id="step-q8740">
+          <div class="questionWidget-text">Choose the equation.</div>
+          <div class="questionWidget-choiceLetterCircle">a</div>
+          <button class="questionWidget-submitButton">Submit</button></div></div>
+          <div id="finalScreen"><div id="finalScreen-completionMessage"></div>
+          <div id="finalScreen-pointsMessage"></div><button>Continue</button></div>''')
+        self.assertEqual(self.page.evaluate(VIEW)['kind'], 'question')
+        self.page.locator('#finalScreen-completionMessage').evaluate("n=>n.textContent='Review complete'")
+        self.assertEqual(self.page.evaluate(VIEW)['kind'], 'complete')
+
     @classmethod
     def setUpClass(cls):
         try:

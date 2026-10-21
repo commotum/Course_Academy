@@ -87,6 +87,38 @@ class DecoratedPhantomTests(unittest.TestCase):
         self.assertEqual(record['problem'], '$x+[]$')
         self.assertNotIn('phantom', record['problem'])
 
+    def test_calculator_square_root_button_preserves_visible_root_and_hidden_radicand(self):
+        child = '<mstyle mathcolor="gray"><msqrt><mrow data-mjx-texclass="ORD"><mphantom><mi>a</mi></mphantom></mrow></msqrt></mstyle>'
+        record = self.extract(self.boxed(child))
+        self.assertEqual(record['errors'], [])
+        self.assertIn(r'\color{gray}{\sqrt{\phantom{a}}}', record['problem'])
+        self.assertIn(r'\bbox[2pt,lightgray]', record['problem'])
+        changed = self.extract(self.boxed(child.replace('<msqrt>', '<msqrt mathsize="2em">')))
+        self.assertTrue(any('geometry attributes' in error for error in changed['errors']))
+
+    def test_unpadded_gray_phantom_keeps_original_width_without_adding_padding(self):
+        source = '<math><mstyle mathbackground="gray"><mrow data-mjx-texclass="ORD"><mphantom><mn>00</mn></mphantom></mrow></mstyle></math>'
+        record = self.extract(source)
+        self.assertEqual(record['errors'], [])
+        self.assertEqual(record['problem'], r'$\bbox[gray]{\phantom{00}}$')
+        host = self.ui_render(record['problem'])
+        self.assertEqual(host.locator('mjx-assistive-mml mpadded').count(), 0)
+        self.assertEqual(host.locator('mjx-assistive-mml mstyle[mathbackground="gray"] mphantom mn').text_content(), '00')
+        self.assertEqual(host.locator('svg rect[fill="gray"]').count(), 1)
+        self.assertEqual(host.locator('svg use').count(), 0)
+        changed = self.extract(source.replace('data-mjx-texclass="ORD"', 'style="transform:scale(2)"'))
+        self.assertIn('Unsupported decorated MathML phantom: padding container', changed['errors'])
+
+    def test_spacing_only_mathml_does_not_create_empty_markdown_delimiters(self):
+        from scripts.database.math_content import prose
+        spacing = '<mrow><mphantom><mfrac><mi>x</mi><mi>y</mi></mfrac></mphantom></mrow>'
+        for formula in ('<math>' + spacing + '</math>',
+                        '<mjx-container><mjx-assistive-mml><math>' + spacing + '</math></mjx-assistive-mml></mjx-container>'):
+            record = self.extract('Divide.<span>' + formula + '</span><p>Answer below.</p>')
+            self.assertEqual(record['errors'], [])
+            self.assertNotIn('$', record['problem'])
+            self.assertEqual(prose(record['problem']), record['problem'])
+
     def test_completed_empty_mathjax_svg_is_not_a_missing_graphic(self):
         svg = '<svg width="0.036ex" height="0.036ex" viewBox="0 0 16 16"><g><g data-mml-node="math"></g></g></svg>'
         record = self.extract('<mjx-container jax="SVG">'+svg+'</mjx-container><p>Actual tutorial content.</p>')
@@ -106,6 +138,19 @@ class DecoratedPhantomTests(unittest.TestCase):
         self.assertEqual(reordered['errors'],[])
         self.assertEqual(first['problem'],reordered['problem'])
         self.assertIn(r'\bbox[2pt,border:1pt solid black]',reordered['problem'])
+
+    def test_source_border_without_explicit_color_preserves_inherited_color(self):
+        record = self.extract(self.boxed(decoration='style="border:1pt solid"'))
+        self.assertEqual(record['errors'], [])
+        self.assertIn(r'\bbox[2pt,border:1pt solid]{\phantom{A}}', record['problem'])
+
+    def test_broken_currency_title_retains_original_visible_svg(self):
+        for token in (r'\[math]', r'\[/math]'):
+            svg = '<svg viewBox="0 0 20 20"><title>' + token + '6.42</title><path d="M0 0L1 1"/></svg>'
+            record = self.extract('<mjx-container jax="SVG">' + svg + '</mjx-container>')
+            self.assertEqual(record['errors'], [])
+            self.assertEqual(len(record['assets']), 1)
+            self.assertEqual(record['problem'], '![](@asset-0@)')
 
     def test_unknown_css_or_invalid_color_is_an_explicit_gap(self):
         for decoration in ('style="border:1pt solid black; transform:scale(2)"',

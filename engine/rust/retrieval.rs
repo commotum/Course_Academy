@@ -19,6 +19,7 @@ pub const ASSESSMENT_SECONDS: f64 = 900.0;
 // Provisional learning-age floor for ordinary assessments only. Reviews do
 // not reset acquisition age, and remediation must not inherit this delay.
 pub const ASSESSMENT_TOPIC_AGE_HOURS: i64 = 48;
+pub const ASSESSMENT_MIN_NEW_TOPICS: usize = 5;
 // Captured questions do not yet contain measured duration estimates.
 const QUESTION_SECONDS: f64 = 90.0;
 
@@ -315,6 +316,34 @@ pub fn assessment_pools(
     Ok(pools)
 }
 
+/// A never-started ordinary quiz must still contain five eligible new topics.
+/// Started routes and retakes are checked separately by callers.
+pub fn ordinary_assessment_ready(
+    s: &EntitySnapshot,
+    learner: u64,
+    activity: u64,
+    at: DateTime<Utc>,
+) -> Result<bool> {
+    if !fresh(s, learner, activity)? {
+        return Ok(false);
+    }
+    let h = history(s, learner)?;
+    let eligible = assessment_topics(s, learner, at)?;
+    let mut new = BTreeSet::new();
+    for step in learning::lesson_steps(s, activity)? {
+        let topic = s.topic_for_question(step.content)?;
+        if !eligible.contains(&topic)
+            || crate::assessment_sampling::band(s, step.content)?.is_none()
+        {
+            return Ok(false);
+        }
+        if !h.assessed.contains(&topic) {
+            new.insert(topic);
+        }
+    }
+    Ok(new.len() >= ASSESSMENT_MIN_NEW_TOPICS)
+}
+
 /// Build an ordinary assessment from current eligible supply. Callers enforce
 /// cadence and whether an existing unstarted definition may be replaced.
 pub fn assessment_definition(
@@ -324,7 +353,9 @@ pub fn assessment_definition(
 ) -> Result<Option<Definition>> {
     let h = history(s, learner)?;
     let pools = assessment_pools(s, learner, at)?;
-    if pools.is_empty() {
+    if pools.keys().filter(|topic| !h.assessed.contains(topic)).count()
+        < ASSESSMENT_MIN_NEW_TOPICS
+    {
         return Ok(None);
     }
     let policy = crate::question_selection::active_policy(s)?;
@@ -359,13 +390,13 @@ pub fn assessment_definition(
             }) * (0.05 + 0.95 * (1.0 - coverage).powi(2)),
         );
     }
-    let questions = crate::assessment_sampling::assemble(
+    let questions = crate::assessment_sampling::ordinary(
         s,
         learner,
+        &h,
         pools,
         weights,
         topic_weights,
-        false,
         &format!("assessment-{learner}-{}", s.basis_t),
     )?;
     if questions.is_empty() {
@@ -487,6 +518,11 @@ pub fn candidates(
             continue;
         }
         let retake = s.optional_ref(task, "learner-task/retake-of")?;
+        if kind == "assessment" && !ongoing && retake.is_none()
+            && !ordinary_assessment_ready(s, learner, activity, at)?
+        {
+            continue;
+        }
         if let Some(original) = retake {
             if !h.retake_ready(s, original)? {
                 continue;
@@ -1249,9 +1285,11 @@ mod tests {
         assert_eq!(status["eligibleTopics"], 2);
         assert_eq!(status["agedLearnedTopics"], 3);
         assert_eq!(status["availableQuestions"], 2);
+        assert_eq!(status["newEligibleTopics"], 2);
+        assert_eq!(status["minimumNewTopics"], 5);
         assert_eq!(
             status["unavailableReason"],
-            "Preparing an assessment from eligible questions"
+            "Waiting for five eligible topics not previously assessed (2/5 ready)"
         );
         s.entities
             .get_mut(&2100)
@@ -1269,6 +1307,40 @@ mod tests {
             "Waiting for fresh rated questions for eligible topics"
         );
     }
+    #[test]
+    fn assessment_minimum_counts_only_fresh_aged_topics_not_previously_assessed() {
+        let (mut s, at) = assessment_fixture();
+        assert!(assessment_definition(&s, 1, at).unwrap().is_some());
+        // An older completed assessment establishes prior exposure independently
+        // of subsequent relearning, reviews, or positive practice XP.
+        put(&mut s, 6000, json!({"learner-task/activity":6001,
+            "learner-task/status":"learner-task.status/completed","learner-task/items":[6003]}));
+        put(&mut s, 6001, json!({"activity/type":"activity.type/assessment",
+            "activity/steps":[6002],"activity/first-step":6002}));
+        put(&mut s, 6002, json!({"step/content":2701}));
+        put(&mut s, 6003, json!({"task-item/content":2701,"task-item/status":"task-item.status/correct"}));
+        s.entities.get_mut(&1).unwrap().get_mut("learner/activity").unwrap().as_array_mut().unwrap().push(json!(6000));
+        s.status_history.push(crate::schema::StatusAssertion {entity:6000,
+            attribute:"learner-task/status".into(),value:json!("learner-task.status/completed"),t:1,
+            at:json!({"$instant":(at-chrono::Duration::days(7)).timestamp_millis()})});
+        assert_eq!(assessment_pools(&s,1,at).unwrap().len(),5);
+        assert!(assessment_definition(&s,1,at).unwrap().is_none());
+        let status=crate::inventory::assessment_status(&s,1,at).unwrap();
+        assert_eq!(status["newEligibleTopics"],4);
+        assert_eq!(status["practiceXp"],150.0);
+        assert_eq!(status["required"],false);
+        assert_eq!(status["unavailableReason"],"Waiting for five eligible topics not previously assessed (4/5 ready)");
+        s.entities.get_mut(&2400).unwrap().insert("learner-task/xp-earned".into(),json!(125.0));
+        assert_eq!(history(&s,1).unwrap().xp,250.0,"Waiting never resets practice XP");
+        assert!(schedule(&s,1,5,at).unwrap().is_empty());
+
+        let (mut s,at)=assessment_fixture();
+        s.entities.get_mut(&2104).unwrap().insert("knowledge-point/questions".into(),json!([]));
+        assert_eq!(assessment_topics(&s,1,at).unwrap().len(),5);
+        assert!(assessment_definition(&s,1,at).unwrap().is_none());
+        assert_eq!(crate::inventory::assessment_status(&s,1,at).unwrap()["newEligibleTopics"],4);
+    }
+
     #[test]
     fn assessments_use_updated_initial_weights_and_require_configuration() {
         let (mut s, at) = assessment_fixture();
@@ -1417,12 +1489,8 @@ mod tests {
                 event.at = json!({"$instant":(at - chrono::Duration::hours(48) + chrono::Duration::milliseconds(1)).timestamp_millis()});
             }
         }
-        assert!(
-            schedule(&s, 1, 5000, at).unwrap()[0]
-                .questions
-                .iter()
-                .all(|q| s.topic_for_question(*q).unwrap() != 2000)
-        );
+        assert_eq!(assessment_pools(&s,1,at).unwrap().len(),4);
+        assert!(schedule(&s, 1, 5000, at).unwrap().is_empty());
         for event in &mut s.status_history {
             if event.entity == 2400 && event.value == json!("learner-task.status/completed") {
                 event.at =

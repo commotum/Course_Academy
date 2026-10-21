@@ -81,6 +81,15 @@ def batch(level,count,seed=0):
     return [generate(level,seed,profile,p) for profile,p in pool[:count]]
 def generate_moderate(seed=0,**kwargs):return generate('moderate',seed,**kwargs)
 def generate_hard(seed=0,**kwargs):return generate('hard',seed,**kwargs)
+
+# Every learner-facing checkbox question has a nonempty correct selection.
+import sys as _policy_sys
+from pathlib import Path as _PolicyPath
+_policy_sys.path.insert(0, str(next(p for p in _PolicyPath(__file__).resolve().parents if (p / "scripts/generator_policy.py").is_file())))
+from scripts.generator_policy import nonempty_checkbox as _nonempty_checkbox
+for _policy_name in ['batch', 'generate', 'generate_hard', 'generate_moderate']:
+    globals()[_policy_name] = _nonempty_checkbox(globals()[_policy_name])
+
 if __name__=='__main__':
     ap=argparse.ArgumentParser();ap.add_argument('--difficulty',required=True);ap.add_argument('--count',type=int,default=1);ap.add_argument('--seed',type=int,default=0);ap.add_argument('--format',choices=('json','markdown'),default='json');a=ap.parse_args()
     records=batch(a.difficulty,a.count,a.seed)

@@ -117,6 +117,34 @@ class Browser:
 
 
 class CaptureTests(unittest.TestCase):
+    def test_dependency_source_keeps_only_kps_with_captured_practice(self):
+        needed = question('e-8', knowledge_point='Needed')
+        unrelated = question('e-9', kp_id='9', knowledge_point='Unobserved')
+        source = {'canonical_examples': [needed, unrelated], 'tutorials': []}
+        result = ActivityCapture._dependency_content(source, [question(knowledge_point='Needed')])
+        self.assertEqual(result['canonical_examples'], [needed])
+
+    def test_review_captures_missing_dependency_source_before_final_judgments(self):
+        class Context:
+            def __call__(self, activity):
+                return {}
+            def source_dependencies(self, questions):
+                return ['7']
+        class SourceBrowser(Browser):
+            source_reads = 0
+            def lesson_source(self, topic, directory):
+                self.source_reads += 1
+                return {'lesson_definition': {'topic_id': topic, 'complete': True, 'steps': []},
+                        'canonical_examples': [question('e-2', worked_solution='The answer is 2.')], 'tutorials': []}
+        browser = SourceBrowser([question()], 'review')
+        capture = ActivityCapture(self.config, browser, self.stop, Context(), solver=self.agent,
+                                  clock=lambda: self.clock_value, sleeper=self.sleep)
+        result = capture.run({'task_id': '99', 'kind': 'review', 'topic_id': '7', 'title': 'Addition'}, self.directory)
+        self.assertEqual(browser.source_reads, 1)
+        self.assertTrue(result['source_lesson_definitions']['7']['complete'])
+        self.assertEqual(result['canonical_examples'][0]['math_academy_id'], 'e-2')
+        self.assertTrue(capture.state['source_dependencies_checked'])
+
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)

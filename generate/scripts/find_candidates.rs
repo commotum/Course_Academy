@@ -372,7 +372,29 @@ fn registered_topics(db: &DatabaseValue) -> Result<BTreeSet<u64>> {
     Ok(topics)
 }
 
+#[cfg(test)]
 fn candidates(
+    db: &DatabaseValue,
+    learner: u64,
+    now: i64,
+    changes: Option<&Changes>,
+    scheduler_topics: &BTreeSet<u64>,
+    scheduler_kind: &str,
+    include_registered: bool,
+) -> Result<Json> {
+    candidates_scoped(
+        db,
+        learner,
+        now,
+        changes,
+        scheduler_topics,
+        scheduler_kind,
+        include_registered,
+        false,
+    )
+}
+
+fn candidates_scoped(
     db: &DatabaseValue,
     learner: u64,
     now: i64,
@@ -380,22 +402,53 @@ fn candidates(
     scheduler_topics: &BTreeSet<u64>,
     scheduler_kind: &str,
     include_registered: bool,
+    selected_only: bool,
 ) -> Result<Json> {
     // A ranking needs the complete eligible population. A cursor validates the
     // captured lineage/log but must never hide unchanged queue or study facts.
-    let mut groups = urgency_groups(db, learner, now)?;
+    let selections = EdnValue::Vector(vec![
+        EdnValue::Keyword(Keyword::new("learner", "queue")),
+        EdnValue::Keyword(Keyword::new("learner", "targets")),
+    ]);
+    let selection_rows = query(db, SELECTED, vec![input_eid(learner)?, selections])?;
+    let direct: BTreeSet<_> = selection_rows
+        .iter()
+        .map(|row| eid(&row[0]))
+        .collect::<Result<_>>()?;
+    if selected_only && direct.is_empty() && !include_registered {
+        return Ok(json!([]));
+    }
+    // The primary phase does not enumerate studied topics, prerequisite or
+    // downstream banks. Registered packages may still be included for refill
+    // maintenance without expanding the population eligible for authoring.
+    let mut groups = if selected_only {
+        let mut groups = BTreeMap::<u64, BTreeSet<(u8, String)>>::new();
+        for row in &selection_rows {
+            let membership = if row[1] == "learner/targets" {
+                (4, "target")
+            } else {
+                (3, "queued")
+            };
+            groups
+                .entry(eid(&row[0])?)
+                .or_default()
+                .insert((membership.0, membership.1.into()));
+        }
+        groups
+    } else {
+        urgency_groups(db, learner, now)?
+    };
     let mut triggers: BTreeMap<u64, BTreeSet<(String, String, Option<u64>)>> = BTreeMap::new();
     let mut add = |topic, reason: &str, kind: &str, task| {
+        if selected_only && !direct.contains(&topic) {
+            return;
+        }
         triggers
             .entry(topic)
             .or_default()
             .insert((reason.into(), kind.into(), task));
     };
-    let selections = EdnValue::Vector(vec![
-        EdnValue::Keyword(Keyword::new("learner", "queue")),
-        EdnValue::Keyword(Keyword::new("learner", "targets")),
-    ]);
-    for row in query(db, SELECTED, vec![input_eid(learner)?, selections])? {
+    for row in selection_rows {
         let topic = eid(&row[0])?;
         let reason = row[1].as_str().ok_or("selection ident missing")?;
         add(topic, reason, "lesson", None);
@@ -561,6 +614,7 @@ fn candidates(
             records.insert(topic, record);
         }
         for row in query(db, KPS, vec![ids(&selected)?])? {
+            let topic = eid(&row[0])?;
             let mut kp = row[1].clone();
             let generator = kp
                 .get("knowledge-point/question-generator")
@@ -572,10 +626,21 @@ fn candidates(
                 .and_then(Json::as_str)
                 .filter(|s| !s.trim().is_empty())
                 .map(str::to_owned);
+            // Outside direct selections, the primary pass only inventories
+            // immutable registered packages. Unregistered sibling KPs must not
+            // enter the ranking/inventory pass merely by sharing a topic.
+            if selected_only
+                && !direct.contains(&topic)
+                && !script
+                    .as_ref()
+                    .is_some_and(|s| s.starts_with("generators/"))
+            {
+                continue;
+            }
             kp["has_generator"] = json!(script.is_some());
             kp["generator_script"] = json!(script);
             kp["generator_entity"] = generator.unwrap_or(Json::Null);
-            records.get_mut(&eid(&row[0])?).ok_or("KP topic missing")?["knowledge_points"]
+            records.get_mut(&topic).ok_or("KP topic missing")?["knowledge_points"]
                 .as_array_mut()
                 .ok_or("KP array missing")?
                 .push(kp);
@@ -683,7 +748,11 @@ fn main() -> Result<()> {
             .ok_or("include_registered must be a boolean")?,
         None => false,
     };
-    let mut candidates = candidates(
+    let selected_only = match request.get("selected_only") {
+        Some(value) => value.as_bool().ok_or("selected_only must be a boolean")?,
+        None => false,
+    };
+    let mut candidates = candidates_scoped(
         &db,
         learner,
         now,
@@ -691,13 +760,14 @@ fn main() -> Result<()> {
         &topics,
         kind,
         include_registered,
+        selected_only,
     )?;
     find_candidates_ranking::annotate(&db, learner, now, &mut candidates)?;
     println!(
         "{}",
         serde_json::to_string_pretty(&json!({"database":database,"learner":learner_id,
         "basis":basis,"cursor":{"lineage":lineage,"basis":basis},"at":DateTime::<Utc>::from_timestamp_millis(now),
-        "topics":candidates}))?
+        "selected_only":selected_only,"topics":candidates}))?
     );
     Ok(())
 }

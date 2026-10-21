@@ -58,7 +58,11 @@ def snapshot(config, running=None, *, details=True):
     errors = []
     worker = _read(config.state_root / 'worker.json', errors)
     status = _read(config.state_root / 'status.json', errors)
-    is_running = process_running(worker) if running is None else bool(running)
+    supervised = process_running(worker)
+    child_running = process_running({'pid': worker.get('child_pid'), 'process_token': worker.get('child_token')})
+    is_running = (supervised or child_running) if running is None else bool(running)
+    if running is None and child_running and not supervised:
+        errors.append('Supervisor exited; capture process is still running')
     started = worker.get('started_at')
     stale_status = (is_running and isinstance(started, (int, float))
                     and (status.get('at') or 0) < started)

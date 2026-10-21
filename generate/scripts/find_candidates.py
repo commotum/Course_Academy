@@ -70,11 +70,13 @@ def baseline_relevance(topic):
     if topic.get("relevance_tier") is not None:
         return topic["relevance_tier"]
     groups = set(topic.get("urgency_groups", []))
-    if groups & {"queued", "target", "target-prerequisite", "selected-prerequisite"}:
+    if groups & {"queued", "target"}:
         return 1
-    if groups & {"studied", "current-need", "immediate"}:
+    if groups & {"target-prerequisite", "selected-prerequisite"}:
         return 2
-    return 3
+    if groups & {"studied", "current-need", "immediate"}:
+        return 3
+    return 4
 
 
 def activity_demands(topic, relevance):
@@ -90,12 +92,41 @@ def activity_demands(topic, relevance):
         stage = demand["activity_type"]
         if stage not in {"lesson", "review", "assessment"}:
             raise ValueError("Unknown activity demand: " + str(stage))
-        stages[stage] = min(stages.get(stage, 3), demand.get("relevance_tier", relevance))
+        tier = demand.get("relevance_tier", relevance)
+        stages[stage] = min(stages.get(stage, tier), tier)
     return stages
+
+
+def selection_gate(topics):
+    """Expand agent build/review work after directly selected KPs are stocked."""
+    selected_topics, selected_kps, missing, understocked = set(), set(), set(), set()
+    for topic in topics:
+        if not set(topic.get("urgency_groups", [])) & {"queued", "target"}:
+            continue
+        selected_topics.add(topic["db/id"])
+        for kp in topic["knowledge_points"]:
+            kp_id = kp["db/id"]
+            selected_kps.add(kp_id)
+            script = kp.get("generator_script")
+            if not (kp.get("generator_usable") and isinstance(script, str)
+                    and script.startswith("generators/")):
+                missing.add(kp_id)
+            if any(kp["inventory"]["available"].get(band, 0) < 5 for band in COVERAGE_BANDS):
+                understocked.add(kp_id)
+    return {"open": not missing and not understocked,
+            "selected_knowledge_points": sorted(selected_kps),
+            "missing_generators": sorted(missing),
+            "understocked_knowledge_points": sorted(understocked),
+            "required_per_band": 5,
+            "selected_topic_count": len(selected_topics),
+            "selected_knowledge_point_count": len(selected_kps)}
 
 
 def ranked_candidates(result):
     """Keep complete nested inventories; rank one build job per KP by its strongest reason."""
+    gate = selection_gate(result["topics"])
+    result["selection_gate"] = gate
+    selected_kps = set(gate["selected_knowledge_points"])
     topic_bands = {}
     for topic in result["topics"]:
         groups = [group for group in topic.get("urgency_groups", []) if group in URGENCY]
@@ -172,8 +203,10 @@ def ranked_candidates(result):
             reasons.sort(key=priority_key)
             kp.update(reasons[0])
             kp["priority_reasons"] = reasons
-            kp["build_required"] = bool(u) and kp["db/id"] not in usable
+            admitted = gate["open"] or kp["db/id"] in selected_kps
+            kp["build_required"] = bool(u) and admitted and kp["db/id"] not in usable
             kp["build_exclusion_reason"] = ("outside-urgency-groups" if not u else
+                                             "selected-inventory-incomplete" if not admitted else
                                              "usable-generator-registered" if kp["db/id"] in usable else None)
             kp["build_action"] = ("repair-generator" if kp.get("has_generator") else "create-generator") if kp["build_required"] else None
             if kp["build_required"]:
@@ -209,7 +242,8 @@ def ranked_candidates(result):
     result["sort_order"] = ["relevance_tier", "purpose", "purpose_specific_topic_order",
                             "waiting_since", "topic_entity", "shortage_desc", "knowledge_point_entity"]
     result["priority_order"] = {
-        "relevance": ["immediate obligation", "selected study and unmet prerequisites",
+        "admission": "Build and review only direct queue/target KPs until each has a usable package and five fresh questions in every difficulty band; approved refills run independently",
+        "relevance": ["immediate obligation", "direct queue and targets", "unmet prerequisites",
                       "other current study", "speculative preparation"],
         "purpose": list(PURPOSE_ORDER),
         "lesson_topic": ["topic_layer", "selected_support_count_desc", "engine_priority_desc"],
@@ -259,15 +293,24 @@ def build(edb_root, test=False):
 
 def discover(database, learner, environment, *, binary, after_basis=None, lineage=None,
              at=None, topics=(), activity_type="assessment", include_registered=False):
-    """Read and rank one captured snapshot, without holding the learner API lock."""
+    """Read selections and registered refills first; expand agent work when ready."""
     request = {"database": database, "learner": learner, "after_basis": after_basis,
                "lineage": lineage, "at": at, "topics": list(topics),
                "activity_type": activity_type, "include_registered": include_registered}
-    response = subprocess.run([str(binary)], input=json.dumps(request), text=True,
-                              env=environment, stdout=subprocess.PIPE, check=True, timeout=180)
-    result = json.loads(response.stdout)
-    check_generator_files(result, environment["EDB_MATH_ROOT"])
-    return ranked_candidates(result)
+    def capture(selected_only):
+        response = subprocess.run([str(binary)], input=json.dumps({**request, "selected_only": selected_only}),
+                                  text=True, env=environment, stdout=subprocess.PIPE,
+                                  check=True, timeout=180)
+        result = json.loads(response.stdout)
+        check_generator_files(result, environment["EDB_MATH_ROOT"])
+        return ranked_candidates(result)
+
+    primary = capture(True)
+    if not primary["selection_gate"]["open"]:
+        return primary
+    # Recompute the gate on the full snapshot: a newly selected topic or consumed
+    # question between captures must close admission again before workers run.
+    return capture(False)
 
 
 def main():

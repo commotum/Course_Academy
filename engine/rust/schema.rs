@@ -108,6 +108,7 @@ fn normalize(record: &Record) -> Result<Record> {
 
 type OwnersIndex = BTreeMap<u64, Vec<u64>>;
 type AttributeIndex = BTreeMap<String, Vec<u64>>;
+pub(crate) type TopicAdjacency = BTreeMap<u64, Vec<u64>>;
 
 /// Captured records with derived reverse references. Any direct mutable access
 /// invalidates the indexes, including edits to a cloned speculative snapshot.
@@ -119,6 +120,8 @@ pub struct SnapshotRecords {
     owners: RefCell<BTreeMap<String, Arc<Result<OwnersIndex>>>>,
     #[serde(skip)]
     attributes: RefCell<Option<Arc<AttributeIndex>>>,
+    #[serde(skip)]
+    topic_neighbors: RefCell<Option<Arc<TopicAdjacency>>>,
 }
 impl Deref for SnapshotRecords {
     type Target = BTreeMap<u64, Record>;
@@ -130,6 +133,7 @@ impl DerefMut for SnapshotRecords {
     fn deref_mut(&mut self) -> &mut Self::Target {
         self.owners.get_mut().clear();
         *self.attributes.get_mut() = None;
+        *self.topic_neighbors.get_mut() = None;
         &mut self.records
     }
 }
@@ -145,6 +149,7 @@ impl From<BTreeMap<u64, Record>> for SnapshotRecords {
             records,
             owners: RefCell::default(),
             attributes: RefCell::new(Some(Arc::new(attributes))),
+            topic_neighbors: RefCell::default(),
         }
     }
 }
@@ -293,6 +298,11 @@ impl EntitySnapshot {
         // attributes. New task items must not discard the curriculum indexes.
         for (&eid, record) in &normalized {
             let old = self.entities.records.get(&eid);
+            if ["topic/id", "topic/next"].iter().any(|attr| {
+                old.and_then(|r| r.get(*attr)) != record.get(*attr)
+            }) {
+                *self.entities.topic_neighbors.get_mut() = None;
+            }
             let previous_example = old
                 .and_then(|r| r.get("knowledge-point/canonical-example"))
                 .and_then(Value::as_u64);
@@ -455,6 +465,37 @@ impl EntitySnapshot {
                 .into_iter()
                 .collect()),
         }
+    }
+    /// Undirected prerequisite graph, reused across learner-only updates.
+    pub(crate) fn topic_neighbors(&self) -> Result<Arc<TopicAdjacency>> {
+        if let Some(graph) = self.entities.topic_neighbors.borrow().as_ref() {
+            return Ok(graph.clone());
+        }
+        let mut graph: TopicAdjacency = self
+            .entities
+            .with_attribute("topic/id")
+            .into_iter()
+            .map(|topic| (topic, vec![]))
+            .collect();
+        for topic in self.entities.with_attribute("topic/next") {
+            if !graph.contains_key(&topic) {
+                return Err("topic/next must belong to a topic".into());
+            }
+            for next in self.refs(topic, "topic/next")? {
+                graph
+                    .get_mut(&next)
+                    .ok_or("topic/next must reference topics")?
+                    .push(topic);
+                graph.get_mut(&topic).unwrap().push(next);
+            }
+        }
+        for neighbors in graph.values_mut() {
+            neighbors.sort_unstable();
+            neighbors.dedup();
+        }
+        let graph = Arc::new(graph);
+        *self.entities.topic_neighbors.borrow_mut() = Some(graph.clone());
+        Ok(graph)
     }
     pub fn owners(&self, target: u64, attr: &str) -> Result<Vec<u64>> {
         self.entity(target)?;
@@ -1500,6 +1541,56 @@ pub(crate) fn writeback(
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn prerequisite_graph_cache_tracks_curriculum_edits_but_survives_progress_updates() {
+        let mut snapshot = EntitySnapshot::from_json(&json!({"basis_t":10,"entities":{
+            "1":{"topic/id":"one","topic/next":[2]},
+            "2":{"topic/id":"two"},
+            "3":{"topic/id":"three"},
+            "4":{"progress/memory":1.0}
+        }}))
+        .unwrap();
+        let graph = snapshot.topic_neighbors().unwrap();
+        assert_eq!(graph[&1], [2]);
+        assert_eq!(graph[&2], [1]);
+        snapshot
+            .replace_records(
+                BTreeMap::from([(
+                    4,
+                    json!({"progress/memory":0.5}).as_object().unwrap().clone(),
+                )]),
+                11,
+            )
+            .unwrap();
+        assert!(Arc::ptr_eq(&graph, &snapshot.topic_neighbors().unwrap()));
+        let mut changed = snapshot.clone();
+        changed
+            .entities
+            .get_mut(&1)
+            .unwrap()
+            .insert("topic/next".into(), json!([3]));
+        assert_eq!(changed.topic_neighbors().unwrap()[&1], [3]);
+        assert!(Arc::ptr_eq(&graph, &snapshot.topic_neighbors().unwrap()));
+        snapshot
+            .replace_records(
+                BTreeMap::from([(
+                    1,
+                    json!({"topic/id":"one","topic/next":[3]})
+                        .as_object()
+                        .unwrap()
+                        .clone(),
+                )]),
+                12,
+            )
+            .unwrap();
+        assert_eq!(snapshot.topic_neighbors().unwrap()[&1], [3]);
+        assert!(snapshot.topic_neighbors().unwrap()[&2].is_empty());
+        snapshot
+            .replace_records(BTreeMap::from([(3, Record::new())]), 13)
+            .unwrap();
+        assert!(snapshot.topic_neighbors().is_err());
+    }
+
     #[test]
     fn ownership_indexes_follow_mutation_cloning_and_sparse_replacements() {
         let mut snapshot = EntitySnapshot::from_json(&json!({

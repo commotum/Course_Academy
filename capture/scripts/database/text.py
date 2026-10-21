@@ -4,7 +4,7 @@ from urllib.parse import urljoin
 
 
 def markdown(source: str) -> str:
-    if not re.search(r'<(?:p|div|span|table|img|h[1-6]|ul|ol|br|mjx-container|math)\b', source, re.I):
+    if not re.search(r'<(?:p|div|span|table|img|h[1-6]|ul|ol|br|mjx-container|math)(?:\s[^<>]*|/?)>', source, re.I):
         return source.strip()
     # These are authored UI layouts, not source tables to flatten into Markdown.
     # Keep complete nested wrappers verbatim, including their answer controls.

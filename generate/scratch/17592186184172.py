@@ -127,4 +127,13 @@ def main():
  p=argparse.ArgumentParser();p.add_argument('--difficulty',required=True);p.add_argument('--count',type=int,default=1);p.add_argument('--seed',type=int,default=0);p.add_argument('--template');a=p.parse_args()
  rows=[generate(a.difficulty,a.seed,a.template)] if a.template else batch(a.difficulty,a.count,a.seed)
  print(json.dumps(rows,indent=2))
+
+# Every learner-facing checkbox question has a nonempty correct selection.
+import sys as _policy_sys
+from pathlib import Path as _PolicyPath
+_policy_sys.path.insert(0, str(next(p for p in _PolicyPath(__file__).resolve().parents if (p / "scripts/generator_policy.py").is_file())))
+from scripts.generator_policy import nonempty_checkbox as _nonempty_checkbox
+for _policy_name in ['batch', 'generate']:
+    globals()[_policy_name] = _nonempty_checkbox(globals()[_policy_name])
+
 if __name__=='__main__':main()

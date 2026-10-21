@@ -32,6 +32,12 @@ class DatabasePipeline:
         with tempfile.TemporaryDirectory(prefix='read-', dir=root) as directory:
             return self.client.context(activity, directory)
 
+    def source_dependencies(self, questions):
+        root = Path(self.config.state_root) / 'database-context'
+        root.mkdir(parents=True, exist_ok=True)
+        with tempfile.TemporaryDirectory(prefix='source-dependencies-', dir=root) as directory:
+            return self.client.source_dependencies(questions, directory)
+
     def question_topic(self, question_id):
         root = Path(self.config.state_root) / 'database-context'
         root.mkdir(parents=True, exist_ok=True)

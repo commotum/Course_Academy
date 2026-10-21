@@ -100,6 +100,7 @@ def generate(level,seed=0,template=None,parameters=None,profile='boolean-checkbo
     assert level in ('easy','moderate'), 'Unsupported source-backed difficulty'
     assert profile=='boolean-checkbox'
     rng=random.Random(seed)
+    # The captured None family has an explicit, correctly keyed selectable answer.
     eligible=[t for t,(l,_) in CASES.items() if l==level]
     template=template or rng.choice(eligible)
     assert template in eligible
@@ -121,6 +122,15 @@ def generate(level,seed=0,template=None,parameters=None,profile='boolean-checkbo
 
 def markdown(record):
     q=record['question'];return q[':question/problem']+'\n\n'+q[':question/worked-solution']
+
+
+# Every learner-facing checkbox question has a nonempty correct selection.
+import sys as _policy_sys
+from pathlib import Path as _PolicyPath
+_policy_sys.path.insert(0, str(next(p for p in _PolicyPath(__file__).resolve().parents if (p / "scripts/generator_policy.py").is_file())))
+from scripts.generator_policy import nonempty_checkbox as _nonempty_checkbox
+for _policy_name in ['generate']:
+    globals()[_policy_name] = _nonempty_checkbox(globals()[_policy_name], none_label='None of the above')
 
 if __name__=='__main__':
     parser=argparse.ArgumentParser();parser.add_argument('--difficulty',choices=('easy','moderate'),required=True);parser.add_argument('--seed',type=int,default=0);parser.add_argument('--template',choices=tuple(CASES));parser.add_argument('--output',type=Path)

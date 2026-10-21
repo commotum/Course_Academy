@@ -384,12 +384,16 @@ class Preparation:
                     ids.append(identity)
             content['lesson_workload_sample'] = {'questions_by_knowledge_point': groups,
                 'selection': 'first-two-distinct-practice-questions-in-captured-order', 'base_xp': content.get('base_xp')}
+        observed_ids = {question_key(q) for q in content.get('questions', [])}
+        reference_ids = {question_key(q) for q in content.get('reference_questions', [])} - observed_ids
         records, source_repairs, preserved = [], [], []
-        for bucket, example in (('questions', False), ('canonical_examples', True)):
+        for bucket, example in (('questions', False), ('reference_questions', False), ('canonical_examples', True)):
             seen = set()
             kept = []
             for original in content.get(bucket, []):
                 capture_key = question_key(original)
+                if bucket == 'reference_questions' and capture_key in observed_ids:
+                    continue
                 if capture_key in seen:
                     continue
                 seen.add(capture_key)
@@ -476,6 +480,8 @@ class Preparation:
             topic = topic_map.get(tid) or self.exact('topic/math-academy-id', tid)
             if not topic:
                 definition = content.get('lesson_definition', {})
+                if int(definition.get('topic_id') or 0) != tid:
+                    definition = (content.get('source_lesson_definitions') or {}).get(str(tid), {})
                 title = definition.get('title') if definition.get('complete') and int(definition.get('topic_id') or 0) == tid else None
                 if not title:
                     self.omit_or_resolve(content, q, UnsupportedContent('Question topic is absent from the catalog and has no complete source definition'))
@@ -534,7 +540,7 @@ class Preparation:
                     if point is None:
                         siblings = [r for r, ex in records if not ex and str(r.get('knowledge_point_id') or r.get('kp_id') or '') == kid]
                         definition = content.get('lesson_definition') or {}
-                        definition_topic = int(definition.get('topic_id') or content.get('topic_id') or 0)
+                        definition_topic = int(definition.get('topic_id') or content.get('topic_id') or 0) if definition else 0
                         if definition_topic != tid:
                             definition = (content.get('source_lesson_definitions') or {}).get(str(tid), {})
                             definition_topic = int(definition.get('topic_id') or 0)
@@ -616,7 +622,8 @@ class Preparation:
             accepted.append((q, example))
         if not content.get('question_order'):
             content['question_order'] = [q['math_academy_id'] for q in content.get('questions', [])]
-        content['questions'] = [q for q, ex in accepted if not ex]
+        content['questions'] = [q for q, ex in accepted if not ex and question_key(q) not in reference_ids]
+        content['reference_questions'] = [q for q, ex in accepted if not ex and question_key(q) in reference_ids]
         content['canonical_examples'] = [q for q, ex in accepted if ex]
         if content.get('lesson_definition'):
             try:

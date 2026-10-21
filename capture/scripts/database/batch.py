@@ -149,7 +149,7 @@ def size(batch):
 
 def question_ids(content):
     return {q.get('math_academy_id') or q.get('capture_key') or digest(q)
-            for bucket in ('questions', 'canonical_examples') for q in content.get(bucket, [])}
+            for bucket in ('questions', 'reference_questions', 'canonical_examples') for q in content.get(bucket, [])}
 
 
 def question_count(content):

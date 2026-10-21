@@ -32,6 +32,20 @@ systemctl --user daemon-reload
 systemctl --user restart course-academy-writer.service course-academy.service
 ```
 
+After changing EDB or the native writer, rebuild both before restarting the
+writer. The build command checks the EDB source first so a new writer cannot
+silently retain an older compiled EDB library:
+
+```bash
+bash scripts/build_local_edb_writer.sh
+# Install the completed build, then restart only the writer:
+writer="${EDB_MATH_ROOT:-/media/jake/SSD/EDB/math}/bin/course-academy-transactor"
+cp -p "$writer" "$writer.previous"
+install -m 755 .local/edb-build/course-academy-transactor "$writer.new"
+mv -f "$writer.new" "$writer"
+systemctl --user restart course-academy-writer.service
+```
+
 ```bash
 systemctl --user status course-academy.service
 systemctl --user restart course-academy.service
@@ -45,10 +59,22 @@ the [Progress](http://127.0.0.1:8765/progress), or the
 [knowledge graph](http://127.0.0.1:8765/). Course pages read curriculum metadata
 and repetition values from EDB; browsing them leaves the study course unchanged.
 Lessons present one item at a time
-and save responses, active elapsed time, XP, and FIRe progress to EDB. The current
-queue serves lessons; review and assessment scheduling is not yet connected to
-this interface. Content without a supported grader or sufficient practice is
-excluded from the queue.
+and save responses, active elapsed time, XP, and FIRe progress to EDB. Study serves
+lessons, due reviews, and assessments. In self-directed mode, it combines your
+explicit queue with targets and their unfinished prerequisites, stopping at known
+topics and the prerequisite ancestry of topics you have studied. Content without
+a supported grader or sufficient practice is excluded from new lesson offers.
+Only `learner/targets` expands into automatic prerequisite lessons.
+`learner/queue` requests the selected topics directly. A prerequisite can still
+appear if it independently supports a target or was explicitly queued.
+Equal-priority ordinary reviews fill the five visible slots with graph variety:
+the longest-overdue review comes first, followed by topics farthest from the
+closest review already selected, using prerequisite links in both directions.
+Further ties use overdue age and task ID. Required and ongoing work keep their
+positions, as does the optional lesson offered after three ordinary reviews.
+Completed failed reviews reduce long-term retention strength but refresh current
+memory, so their next ordinary review follows a shorter, positive decay interval
+instead of returning immediately. Required remediation keeps its existing gates.
 
 For private remote access, use Tailscale Serve while keeping the app bound to
 localhost. Set `COURSE_ACADEMY_PUBLIC_ORIGIN` to the exact HTTPS origin Serve

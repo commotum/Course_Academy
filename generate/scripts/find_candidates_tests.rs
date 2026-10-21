@@ -772,22 +772,321 @@ fn selected_prerequisites_use_current_retention_and_preserve_review_vs_lesson_de
     let result = ranked_fixture(&db, learner)?;
     let rows = result.as_array().unwrap();
     let row = rows.iter().find(|t| t["db/id"] == due).unwrap();
-    assert_eq!(row["relevance_tier"], 1);
+    assert_eq!(row["relevance_tier"], 2);
     assert_eq!(
         row["activity_demands"],
-        json!([{"activity_type":"review","relevance_tier":1}])
+        json!([{"activity_type":"review","relevance_tier":2}])
     );
     let row = rows.iter().find(|t| t["db/id"] == forgotten).unwrap();
     assert_eq!(row["studied"], true);
     assert_eq!(row["completed_local_lesson"], true);
-    assert_eq!(row["relevance_tier"], 1);
+    assert_eq!(row["relevance_tier"], 2);
     assert_eq!(
         row["activity_demands"],
-        json!([{"activity_type":"lesson","relevance_tier":1}])
+        json!([{"activity_type":"lesson","relevance_tier":2}])
     );
     let row = rows.iter().find(|t| t["db/id"] == ready).unwrap();
-    assert_eq!(row["relevance_tier"], 3);
+    assert_eq!(row["relevance_tier"], 4);
     assert!(!rows.iter().any(|t| t["db/id"] == behind_ready));
+    Ok(())
+}
+
+#[test]
+fn direct_selection_precedes_foundation_relevance_regardless_of_layer() -> Result<()> {
+    let db = fixture()?;
+    let learner = identity(&db, "learner/id", "test")?;
+    let foundation = identity(&db, "topic/title", "Locked lesson")?;
+    let queue = identity(&db, "topic/title", "Queue")?;
+    let target = identity(&db, "topic/title", "Target")?;
+    let mut forms = vec![format!("[:db/add {foundation} :topic/next {queue}]")];
+    for layer in 2..38 {
+        forms.push(format!(r#"{{:db/id "layer-{layer}" :topic/id #uuid "00000000-0000-4000-8020-{layer:012}" :topic/title "Layer {layer}"}}"#));
+        if layer == 2 {
+            forms.push(format!(r#"[:db/add {queue} :topic/next "layer-{layer}"]"#));
+        } else {
+            forms.push(format!(
+                r#"[:db/add "layer-{}" :topic/next "layer-{layer}"]"#,
+                layer - 1
+            ));
+        }
+    }
+    forms.push(format!(r#"[:db/add "layer-37" :topic/next {target}]"#));
+    let db = db
+        .with_edn(
+            &format!("[{}]", forms.join("\n")),
+            0,
+            EntityRef::Ident(Keyword::new("db.source", "system")),
+        )?
+        .db_after;
+    let mut result = candidates(
+        &db,
+        learner,
+        at("2026-10-11T00:00:00Z"),
+        None,
+        &BTreeSet::new(),
+        "assessment",
+        false,
+    )?;
+    // Both memberships may be present in captured metadata. Direct selection
+    // wins even for the queue topic that is also an ancestor of this target.
+    result
+        .as_array_mut()
+        .unwrap()
+        .iter_mut()
+        .find(|t| t["db/id"] == queue)
+        .unwrap()["urgency_groups"]
+        .as_array_mut()
+        .unwrap()
+        .push(json!("selected-prerequisite"));
+    find_candidates_ranking::annotate(&db, learner, at("2026-10-11T00:00:00Z"), &mut result)?;
+    let rows = result.as_array().unwrap();
+    for (topic, layer, tier) in [(foundation, 0, 2), (queue, 1, 1), (target, 38, 1)] {
+        let row = rows.iter().find(|t| t["db/id"] == topic).unwrap();
+        assert_eq!(row["topic_layer"], layer);
+        assert_eq!(row["relevance_tier"], tier);
+        assert_eq!(
+            row["activity_demands"],
+            json!([{"activity_type":"lesson","relevance_tier":tier}])
+        );
+    }
+    Ok(())
+}
+
+#[test]
+fn selected_only_discovery_keeps_all_direct_kps_without_expanding_other_work() -> Result<()> {
+    let db = fixture()?;
+    let learner = identity(&db, "learner/id", "test")?;
+    let queue = identity(&db, "topic/title", "Queue")?;
+    let target = identity(&db, "topic/title", "Target")?;
+    let prerequisite = identity(&db, "topic/title", "Locked lesson")?;
+    let downstream = identity(&db, "topic/title", "Refreshed")?;
+    let registered_kp = identity(&db, "knowledge-point/title", "KP Completed review")?;
+    let generator = db.entid(&Keyword::new("fixture", "generator")).unwrap();
+    let script = format!("generators/aa/{}/generator.py", "a".repeat(64));
+    let source = EntityRef::Ident(Keyword::new("db.source", "system"));
+    let db = db.with_edn(&format!(r#"[
+      [:db/add {prerequisite} :topic/next {queue}]
+      [:db/add {queue} :topic/next {downstream}]
+      [:db/add {registered_kp} :knowledge-point/question-generator {generator}]
+      [:db/add {generator} :question-generator/script "{script}"]
+      [:db/add {learner} :learner/knowledge-profile "queued-import"]
+      {{:db/id "queued-import" :progress/topic {queue} :progress/learned true :progress/repetitions 2.0}}
+    ]"#), 0, source.clone())?.db_after;
+    let now = at("2026-10-11T00:00:00Z");
+    let mut selected = candidates_scoped(
+        &db,
+        learner,
+        now,
+        None,
+        &BTreeSet::from([prerequisite]),
+        "lesson",
+        false,
+        true,
+    )?;
+    assert_eq!(
+        titles(&selected),
+        ["Queue", "Target"].into_iter().map(String::from).collect()
+    );
+    find_candidates_ranking::annotate(&db, learner, now, &mut selected)?;
+    let rows = selected.as_array().unwrap();
+    let queued = rows.iter().find(|t| t["db/id"] == queue).unwrap();
+    assert_eq!(queued["knowledge_points"].as_array().unwrap().len(), 1);
+    assert_eq!(queued["knowledge_points"][0]["has_generator"], false);
+    assert_eq!(
+        queued["knowledge_points"][0]["inventory"]["available_total"],
+        0
+    );
+    assert_eq!(queued["studied"], true);
+    assert_eq!(
+        queued["activity_demands"],
+        json!([
+            {"activity_type":"lesson","relevance_tier":1},
+            {"activity_type":"review","relevance_tier":1}
+        ])
+    );
+    let targeted = rows.iter().find(|t| t["db/id"] == target).unwrap();
+    assert_eq!(targeted["knowledge_points"].as_array().unwrap().len(), 1);
+    assert_eq!(targeted["knowledge_points"][0]["has_generator"], true);
+    assert_eq!(targeted["knowledge_points"][0]["generator_script"], script);
+    assert_eq!(
+        targeted["knowledge_points"][0]["inventory"]["available_total"],
+        0
+    );
+    let mut full = candidates_scoped(
+        &db,
+        learner,
+        now,
+        None,
+        &BTreeSet::new(),
+        "assessment",
+        true,
+        false,
+    )?;
+    find_candidates_ranking::annotate(&db, learner, now, &mut full)?;
+    for title in [
+        "Locked lesson",
+        "Refreshed",
+        "Due",
+        "Completed review",
+        "Unlocked",
+        "Assigned review",
+        "Assessment",
+        "Retake",
+    ] {
+        assert!(titles(&full).contains(title), "full mode omitted {title}");
+    }
+    for direct in rows {
+        let full = full
+            .as_array()
+            .unwrap()
+            .iter()
+            .find(|t| t["db/id"] == direct["db/id"])
+            .unwrap();
+        for field in [
+            "studied",
+            "relevance_tier",
+            "topic_layer",
+            "selected_support_count",
+            "activity_demands",
+            "completed_local_lesson",
+            "topic_inventory",
+        ] {
+            assert_eq!(
+                direct[field], full[field],
+                "selected metadata differs for {field}"
+            );
+        }
+    }
+    let db = db
+        .with_edn(
+            &format!(
+                r#"[
+      [:db/retract {learner} :learner/queue {queue}]
+      [:db/retract {learner} :learner/targets {target}]
+    ]"#
+            ),
+            0,
+            source,
+        )?
+        .db_after;
+    assert_eq!(
+        candidates_scoped(
+            &db,
+            learner,
+            now,
+            None,
+            &BTreeSet::new(),
+            "assessment",
+            false,
+            true
+        )?,
+        json!([])
+    );
+    Ok(())
+}
+
+#[test]
+fn selected_only_refill_maintenance_includes_only_registered_outside_kps() -> Result<()> {
+    let db = fixture()?;
+    let learner = identity(&db, "learner/id", "test")?;
+    let queue = identity(&db, "topic/title", "Queue")?;
+    let target = identity(&db, "topic/title", "Target")?;
+    let outside = identity(&db, "topic/title", "Completed review")?;
+    let registered_kp = identity(&db, "knowledge-point/title", "KP Completed review")?;
+    let generator = db.entid(&Keyword::new("fixture", "generator")).unwrap();
+    let source = EntityRef::Ident(Keyword::new("db.source", "system"));
+    let script = format!("generators/aa/{}/generator.py", "a".repeat(64));
+    let db = db.with_edn(&format!(r#"[
+      [:db/add {registered_kp} :knowledge-point/question-generator {generator}]
+      [:db/add {generator} :question-generator/script "{script}"]
+      [:db/add {outside} :topic/knowledge-points "unregistered-sibling"]
+      [:db/add {outside} :topic/knowledge-points "legacy-sibling"]
+      {{:db/id "unregistered-sibling" :knowledge-point/id #uuid "00000000-0000-4000-8030-000000000001" :knowledge-point/title "Unregistered sibling"}}
+      {{:db/id "legacy-sibling" :knowledge-point/id #uuid "00000000-0000-4000-8030-000000000002" :knowledge-point/title "Legacy sibling" :knowledge-point/question-generator "legacy-generator"}}
+      {{:db/id "legacy-generator" :question-generator/script "legacy/generator.py"}}
+    ]"#), 0, source.clone())?.db_after;
+    let now = at("2026-10-11T00:00:00Z");
+    let mut result = candidates_scoped(
+        &db,
+        learner,
+        now,
+        None,
+        &BTreeSet::new(),
+        "assessment",
+        true,
+        true,
+    )?;
+    assert_eq!(
+        titles(&result),
+        ["Queue", "Target", "Completed review"]
+            .into_iter()
+            .map(String::from)
+            .collect()
+    );
+    find_candidates_ranking::annotate(&db, learner, now, &mut result)?;
+    let outside_record = result
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|t| t["db/id"] == outside)
+        .unwrap();
+    let kps = outside_record["knowledge_points"].as_array().unwrap();
+    assert_eq!(kps.len(), 1);
+    assert_eq!(kps[0]["db/id"], registered_kp);
+    assert_eq!(kps[0]["generator_script"], script);
+    assert_eq!(kps[0]["inventory"]["available_total"], 0);
+    // This is maintenance metadata, not a new selected-topic obligation.
+    assert_eq!(outside_record["urgency_groups"], json!([]));
+
+    let db = db
+        .with_edn(
+            &format!(
+                r#"[
+      [:db/retract {learner} :learner/queue {queue}]
+      [:db/retract {learner} :learner/targets {target}]
+    ]"#
+            ),
+            0,
+            source,
+        )?
+        .db_after;
+    let result = candidates_scoped(
+        &db,
+        learner,
+        now,
+        None,
+        &BTreeSet::new(),
+        "assessment",
+        true,
+        true,
+    )?;
+    assert_eq!(
+        titles(&result),
+        ["Target", "Completed review"]
+            .into_iter()
+            .map(String::from)
+            .collect()
+    );
+    assert!(
+        result
+            .as_array()
+            .unwrap()
+            .iter()
+            .all(|topic| topic["knowledge_points"].as_array().unwrap().len() == 1)
+    );
+    assert_eq!(
+        candidates_scoped(
+            &db,
+            learner,
+            now,
+            None,
+            &BTreeSet::new(),
+            "assessment",
+            false,
+            true,
+        )?,
+        json!([])
+    );
     Ok(())
 }
 
@@ -838,10 +1137,10 @@ fn imported_mastery_does_not_hide_selected_fresh_lesson_but_local_completion_doe
         .iter()
         .find(|t| t["topic/title"] == "Refreshed")
         .unwrap();
-    assert_eq!(refreshed["relevance_tier"], 3);
+    assert_eq!(refreshed["relevance_tier"], 4);
     assert_eq!(refreshed["review_due_at"], "2026-10-11T12:00:00+00:00");
     let due = rows.iter().find(|t| t["topic/title"] == "Due").unwrap();
-    assert_eq!(due["relevance_tier"], 2);
+    assert_eq!(due["relevance_tier"], 3);
     assert_eq!(due["review_due_at"], "2026-10-11T00:00:00+00:00");
 
     let db = db.with_edn(&format!(r#"[
@@ -876,7 +1175,7 @@ fn imported_mastery_does_not_hide_selected_fresh_lesson_but_local_completion_doe
     assert_eq!(row["next_activity"], "assessment");
     assert_eq!(
         row["activity_demands"],
-        json!([{"activity_type":"assessment","relevance_tier":3}])
+        json!([{"activity_type":"assessment","relevance_tier":4}])
     );
     let db = db
         .with_edn(
@@ -937,7 +1236,10 @@ fn selected_support_deduplicates_membership_and_diamond_paths_and_uses_global_la
         (target, 2, 1),
     ] {
         let row = rows.iter().find(|t| t["db/id"] == id).unwrap();
-        assert_eq!(row["relevance_tier"], 1);
+        assert_eq!(
+            row["relevance_tier"],
+            if id == queue || id == target { 1 } else { 2 }
+        );
         assert_eq!(row["topic_layer"], layer);
         assert_eq!(row["selected_support_count"], support);
     }
@@ -1000,7 +1302,7 @@ fn required_review_upgrades_only_review_and_locked_remediation_lessons_are_eligi
         .iter()
         .find(|t| t["db/id"] == locked)
         .unwrap();
-    assert_eq!(row["relevance_tier"], 2);
+    assert_eq!(row["relevance_tier"], 3);
     assert_eq!(
         row["activity_demands"],
         json!([{"activity_type":"lesson","relevance_tier":0}])
