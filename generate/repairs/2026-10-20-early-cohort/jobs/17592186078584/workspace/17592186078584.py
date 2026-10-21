@@ -3,21 +3,24 @@
 
 No EDB writes. The observed scalar profiles preserve rounded offsets only; they
 are explicitly opt-in evidence profiles and do not claim recovered error intent.
-Default banks implement complete, named method errors and reject whole instances.
+Default banks sample nearby integer errors with variable numeric ranks, without
+restricting valid IVPs to accommodate fixed misconception recipes.
 """
 from __future__ import annotations
 import argparse, hashlib, json, math, random, uuid
 from pathlib import Path
 import sympy as sp
 
-VERSION='1.1.0'
+VERSION='1.2.0'
 ROOT=Path(__file__).with_suffix('')
 SNAPSHOT=json.loads((ROOT/'source.json').read_text())
 KP=SNAPSHOT['record']
 LEVELS=('easy','moderate','hard')
 TEMPLATES={'exhaust':'easy','coffee':'easy','iron':'easy','cake':'easy','compressor':'easy',
-           'bath':'moderate','outside':'moderate','water':'moderate','tea':'moderate','two_observations':'hard'}
+           'body':'easy','bulb':'easy','pork':'moderate','bath':'moderate','outside':'moderate','water':'moderate','tea':'moderate','two_observations':'hard'}
 ORIGINALS={
+ 'q-107121':('body',dict(ambient=21,initial=40,rate='0.06',time=4)),
+ 'q-107123':('pork',dict(ambient=24,initial=150,observed=100,target=60,time=15)),
  'q-107128':('exhaust',dict(ambient=74,initial=140,rate='0.08',time=3)),
  'q-15595':('coffee',dict(ambient=25,initial=100,rate='0.05',time=6)),
  'q-107118':('iron',dict(ambient=28,initial=140,rate='0.1',time=5)),
@@ -29,6 +32,7 @@ ORIGINALS={
  'q-107125':('tea',dict(ambient=28,initial=60,observed=52,target=40,time=10))}
 SOURCE_Q={q[':question/math-academy-id']:q for q in KP[':knowledge-point/questions']}
 CONTEXT={'exhaust':('exhaust pipe of a motorcycle','exhaust pipe','F','Fahrenheit'),'coffee':('cup of coffee','coffee','C','Celsius'),'iron':('cooling iron','iron','C','Celsius'),
+'body':('body','body','C','Celsius'),'bulb':('fluorescent light bulb after turning off','bulb','C','Celsius'),
 'cake':('fresh-baked cake','cake','F','Fahrenheit'),'compressor':('compressor of a refrigerator','compressor','C','Celsius')}
 BANKS={sid:[int(__import__('re').search(r'\d+',a[':answer/value']).group()) for a in q[':question/answer-fields'][0][':answer-field/choices']] for sid,q in SOURCE_Q.items()}
 
@@ -85,18 +89,19 @@ def base_solution(A,initial,k,U):
 def build_easy(template,p):
     A,I,t=p['ambient'],p['initial'],p['time']; k=dec(p['rate']); D=I-A
     obj,short,U,name=CONTEXT[template]
+    solution_obj='fluorescent light bulb' if template=='bulb' else obj
     pronoun='its temperature' if template in ('iron','exhaust') else f'the temperature of the {short}'
     prompt=f'The temperature $T(t),$ in degrees {name}, of {'an' if template=='exhaust' else 'a'} {obj} can be modeled by the differential equation'
     prompt+=block(rf'\frac{{dT}}{{dt}}=-{k}(T-{A})')
     prompt+=f'\n\nwhere $t>0$ is the time, measured in minutes. If the initial temperature of the {short} is ${{{I}}}^{{∘}}{U},$ calculate {pronoun} after ${t}$ minutes. Round your answer to the nearest integer.'
     x=sp.Rational(str(k))*t; exact=A+D*sp.exp(-x); answer=rounded(exact)
-    solution=f"We're told that the temperature of the {obj} is modeled by the inhibited decay equation"+block(rf'\frac{{dT}}{{dt}}=-{k}(T-{A}).')
+    solution=f"We're told that the temperature of the {solution_obj} is modeled by the inhibited decay equation"+block(rf'\frac{{dT}}{{dt}}=-{k}(T-{A}).')
     solution+='\n\n'+base_solution(A,I,k,U)
     solution+=f"\n\nWe're told that the initial temperature of the {short} was ${{{I}}}^{{∘}}{U}.$ So, we apply the initial condition $T(0)={I},$ and solve for $K:$"
     solution+=aligned([rf'{I} & ={A}+K{{e}}^{{0}}',rf'{I} & ={A}+K',rf'K & ={D}'])
     solution+='\n\nTherefore, the solution to our initial value problem is'+block(rf'T(t)={A}+{D}{{e}}^{{-{k}t}}.')
     solution+=f'\n\nFinally, the temperature of the {short} after $t={t}$ minutes is'+block(rf'T({t})={A}+{D}{{e}}^{{-{k}\cdot {t}}}≈{{{answer}}}^{{∘}}\text{{{U}}},')+'\n\nrounded to the nearest integer.'
-    values=[answer,rounded(D*sp.exp(-x)),rounded(A+I*sp.exp(-x)),rounded(A+D*sp.exp(-x/2)),rounded(A+D*sp.exp(-2*x))]
+    values=[answer]
     return prompt,solution,answer,values,lambda n:rf'{{{n}}}^{{∘}}\text{{{U}}}'
 
 # ============================================================================
@@ -112,6 +117,9 @@ def build_moderate(template,p,raw_units=False):
     elif template=='outside':
         intro=f'A thermometer is taken out of a room where the air temperature is ${{{I}}}^{{∘}}F$  and brought outside where the temperature is ${{{A}}}^{{∘}}F,$ and its reading begins to decrease. After ${t}$ minutes, the thermometer reading is ${{{O}}}^{{∘}}F.$ To the nearest minute, how long does it take for the thermometer to register a reading of ${{{Z}}}^{{∘}}F?$ '
         who='thermometer'; initial='initial temperature reading'; observed=f'the thermometer reading is ${{{O}}}^{{∘}}'+('C' if raw_units else U)+'.$'; target=f'the thermometer reads ${{{Z}}}^{{∘}}{U}.$'; final=f'the thermometer will read ${{{Z}}}^{{∘}}'+('C' if raw_units else U)+'$'; since=f'the thermometer was transferred outside to ${{{A}}}^{{∘}}F.$'
+    elif template=='pork':
+        intro=f'A pork leg is taken out of the oven with a temperature of ${{{I}}}^{{∘}}C,$ and placed in a room that maintains a temperature of ${{{A}}}^{{∘}}C$, and its temperature begins to decrease. After ${t}$ minutes, the  temperature of the pork leg is ${{{O}}}^{{∘}}C.$ To the nearest minute, how long does it take for the pork leg to have a temperature of ${{{Z}}}^{{∘}}C?$ '
+        who='pork leg'; initial='initial temperature of the pork leg'; observed=f'the temperature of the pork leg is ${{{O}}}^{{∘}}C.$'; target=f'the pork leg has a temperature of ${{{Z}}}^{{∘}}C.$'; final=f'the pork leg will have a temperature of ${{{Z}}}^{{∘}}C$'; since=f'the pork leg was transferred into the ${{{A}}}^{{∘}}C$ room.'
     elif template=='water':
         intro=f'The water boils in a pan at a temperature of ${{{I}}}^{{∘}}C.$ The pan with water is then placed to a room with a temperature of ${{{A}}}^{{∘}}C,$ and the temperature of water decreases. After ${t}$ minutes, it cools to ${{{O}}}^{{∘}}C.$ To the nearest minute, how long does it take for the water to have a temperature of ${{{Z}}}^{{∘}}C?$ '
         who='water in the pan'; initial='initial temperature'; observed=f'it cools to ${{{O}}}^{{∘}}C.$'; target=f'the water has a temperature of ${{{Z}}}^{{∘}}C.$'; final=f'the temperature of water will be ${{{Z}}}^{{∘}}C$'; since='the water starts cooling.'
@@ -135,7 +143,7 @@ def build_moderate(template,p,raw_units=False):
     solution+=f'\n\nFinally, let ${{t}}_{{1}}$ be the time when {target} Then, we have'
     solution+=aligned([rf'T({{t}}_{{1}}) & ={Z}',rf'{A}+{D}{{e}}^{{-k{{t}}_{{1}}}} & ={Z}',rf'{D}{{e}}^{{-k{{t}}_{{1}}}} & ={Q}',rf'{{e}}^{{-k{{t}}_{{1}}}} & ={target_ratio}',rf'-k{{t}}_{{1}} & =\operatorname{{ln}}⁡({target_ratio})',rf'{{t}}_{{1}} & =-\frac{{1}}{{k}}\operatorname{{ln}}⁡({target_ratio}).'])
     solution+=f'\n\nSubstituting in our value for $k,$ we conclude that {final} after'+block(rf'{{t}}_{{1}}=\frac{{-\operatorname{{ln}}⁡({target_ratio})}}{{-\frac{{1}}{{{t}}}\operatorname{{ln}}⁡({ratio})}}≈{answer}\,\text{{min}},')+'\n\nrounded to the nearest minute.'
-    values=[answer,rounded(t*sp.log(sp.Rational(Z,I))/sp.log(sp.Rational(O,I))),rounded(-sp.log(sp.Rational(Z,I))/k),rounded(target_time/2),rounded(target_time*2)]
+    values=[answer]
     return prompt,solution,answer,values,lambda n:rf'{n}\,\text{{min}}'
 
 # ============================================================================
@@ -164,21 +172,41 @@ def build_hard(p):
     solution+=f'\n\nFinally, let ${{t}}_{{1}}$ be the time when the body reaches ${{{Z}}}^{{∘}}\\text{{C}}.$ Then, we have'
     solution+=aligned([rf'T({{t}}_{{1}}) & ={Z}',rf'{A}+Ke^{{-k{{t}}_{{1}}}} & ={Z}',rf'Ke^{{-k{{t}}_{{1}}}} & ={Q}',rf'e^{{-k{{t}}_{{1}}}} & =\frac{{{Q}}}{{K}}',rf'-k{{t}}_{{1}} & =\ln\left(\frac{{{Q}}}{{K}}\right)',rf'{{t}}_{{1}} & =-\frac{{1}}{{k}}\ln\left(\frac{{{Q}}}{{K}}\right)'])
     solution+='\n\nSubstitute the values of $K$ and $k$ to obtain the time measured since cooling began:'+aligned([rf'{{t}}_{{1}} & =-\frac{{1}}{{{tex(k)}}}\ln\left(\frac{{{Q}}}{{{Ktex}}}\right)',rf'{{t}}_{{1}} & ={a}+{h}\frac{{\ln({tex(sp.Rational(Q,D))})}}{{\ln({tex(ratio)})}}≈{answer}\,\text{{min}}.'])
-    values=[answer,rounded(elapsed-a),rounded(a+(elapsed-a)/2),rounded(a+2*(elapsed-a)),rounded(a+h*sp.log(sp.Rational(Z,O))/sp.log(sp.Rational(L,O)))]
+    values=[answer]
     return prompt,solution,answer,values,lambda n:rf'{n}\,\text{{min}}'
 
 
 def sample(level,rng,template):
     if level=='easy':
         A=rng.randint(15,35) if template not in ('cake','exhaust') else rng.randint(60,80)
-        I=rng.randint(70,100) if template=='coffee' else rng.randint(100,200) if template=='iron' else rng.randint(250,370) if template=='cake' else rng.randint(120,220) if template=='exhaust' else rng.randint(65,100)
+        I=rng.randint(A+15,A+35) if template=='body' else rng.randint(60,100) if template=='bulb' else rng.randint(70,100) if template=='coffee' else rng.randint(100,200) if template=='iron' else rng.randint(250,370) if template=='cake' else rng.randint(120,220) if template=='exhaust' else rng.randint(65,100)
         return dict(ambient=A,initial=I,rate=dec(sp.Rational(rng.randint(3,20),100)),time=rng.randint(3,12))
     if level=='moderate':
-        A=rng.randint(10,35); I=100 if template=='water' else rng.randint(max(50,A+35),90) if template=='outside' else rng.randint(A+35,100)
+        A=rng.randint(10,35); I=rng.randint(120,190) if template=='pork' else 100 if template=='water' else rng.randint(max(50,A+35),90) if template=='outside' else rng.randint(A+35,100)
         O=rng.randint(A+20,I-5); Z=rng.randint(A+3,O-8)
         return dict(ambient=A,initial=I,observed=O,target=Z,time=rng.randint(2,12))
     A=rng.randint(10,35); D=rng.randint(40,100); R=rng.randint(math.ceil(D/3),math.floor(4*D/5))
     return dict(ambient=A,observed=A+D,later=A+R,target=A+rng.randint(2,max(3,R//3)),start=rng.randint(1,6),gap=rng.randint(2,6))
+
+
+def integer_bank(level,p,correct,rng,desired_below):
+    """A whole scalar-error profile, independent of named misconception ranks.
+
+    Endpoint-inclusive bounds reflect rounding, not a restriction on the IVP.
+    Adapt the eligible rank to integer room instead of resampling mathematical data.
+    """
+    if level=='easy':
+        lo,hi=p['ambient'],p['initial']
+    else:
+        lo=p['time'] if level=='moderate' else p['start']+p['gap']
+        hi=max(correct+4,correct+max(6,(correct-lo)//2))
+    # All supported IVPs have >=15 integer temperatures or unbounded future times.
+    width=max(6,min(30,(hi-lo)//3))
+    lower=list(range(max(lo,correct-width),correct))
+    upper=list(range(correct+1,min(hi,correct+width)+1))
+    eligible=[n for n in range(5) if n<=len(lower) and 4-n<=len(upper)]
+    below=desired_below if desired_below in eligible else rng.choice(eligible)
+    return [correct]+rng.sample(lower,below)+rng.sample(upper,4-below)
 
 
 def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
@@ -192,6 +220,9 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
     rng=random.Random(seed)
     template=template or rng.choice([n for n,l in TEMPLATES.items() if l==level])
     if TEMPLATES.get(template)!=level: raise ValueError('Template difficulty mismatch')
+    desired_below=rng.randrange(5)
+    if profile and parameters is None:
+        parameters=ORIGINALS[profile][1]
     for attempt in range(1000):
         p=dict(parameters) if parameters is not None else sample(level,rng,template)
         try:
@@ -202,17 +233,16 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
             if template=='compressor' and p['initial']>140: raise ValueError('Compressor context bound 140 Celsius')
             if template=='cake' and not 180<=p['initial']<=400: raise ValueError('Fresh baked Fahrenheit cake context bound')
             if level=='easy': prompt,solution,correct,values,render=build_easy(template,p)
-            elif level=='moderate': prompt,solution,correct,values,render=build_moderate(template,p,bool(profile))
+            elif level=='moderate': prompt,solution,correct,values,render=build_moderate(template,p)
             else: prompt,solution,correct,values,render=build_hard(p)
             if profile:
                 source_correct=int(__import__('re').search(r'\d+',SOURCE_Q[profile][':question/answer-fields'][0][':answer-field/correct'][':answer/value']).group())
                 offsets=[v-source_correct for v in BANKS[profile]]
                 values=[correct+delta for delta in offsets]
-            if level!='hard':
-                if len(set(values))!=5: raise ValueError('Whole bank rounded collision')
-                if level=='easy' and not all(p['ambient']<v<p['initial'] for v in values): raise ValueError('Whole bank temperature-domain violation')
-                if level=='moderate' and not all(v>p['time'] for v in values): raise ValueError('Whole bank target time-domain violation')
-            elif len(set(values))!=5 or not all(v>p['start']+p['gap'] for v in values): raise ValueError('Whole hard bank collision/time-domain violation')
+            else:
+                values=integer_bank(level,p,correct,rng,desired_below)
+            if len(set(values))!=5 or values.count(correct)!=1:
+                raise ValueError('Bank must have five distinct integers and one correct value')
             break
         except ValueError:
             if parameters is not None: raise
@@ -229,7 +259,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
     choices=[{':answer/id':uid([fid,value]),':answer/type':':answer.type/math',':answer/value':value} for value in bank]
     rng.shuffle(choices)
     question={':question/id':identity,':question/difficulty':':question.difficulty/'+level,':question/problem':prompt,':question/worked-solution':solution,':question/answer-fields':[{':answer-field/id':fid,':answer-field/key':'selection',':answer-field/type':':answer-field.type/radio',':answer-field/choices':choices,':answer-field/correct':[':answer/id',uid([fid,right])]}]}
-    return {'knowledge_point':{'db_id':KP[':db/id'],'id':KP[':knowledge-point/id'],'title':KP[':knowledge-point/title']},'question':question,'generation':{'version':VERSION,'seed':seed,'template':template,'parameters':p,'bank_profile':profile or 'authored_operations','origin':'authored_hard' if level=='hard' else 'observed_template','bank_origin':'observed_scalar_offsets_intent_underdetermined' if profile else 'authored_operations','source_basis':SNAPSHOT['basis'],'source_lineage':SNAPSHOT['lineage'],'mathematical_fingerprint':fingerprint(mathematical),'content_fingerprint':fingerprint(content),'domain':'T(t)>ambient; positive rate; t>=0; observations strictly cooling','recipes':(['correct','omit_ambient','do_not_subtract_ambient_in_K','halve_rate','double_rate'] if level=='easy' else ['correct','omit_ambient_in_both_ratios','omit_ambient_in_target_ratio','double_rate','halve_rate'] if level=='moderate' else ['correct','omit_elapsed_origin','double_rate','halve_rate','omit_ambient_in_both_ratios']) if not profile else ['rounded_correct_plus_'+str(v-correct) for v in values]}}
+    return {'knowledge_point':{'db_id':KP[':db/id'],'id':KP[':knowledge-point/id'],'title':KP[':knowledge-point/title']},'question':question,'generation':{'version':VERSION,'seed':seed,'template':template,'parameters':p,'bank_profile':profile or 'authored_local_integers','origin':'authored_hard' if level=='hard' else 'observed_template','bank_origin':'observed_scalar_offsets_intent_underdetermined' if profile else 'authored_local_integers','source_basis':SNAPSHOT['basis'],'source_lineage':SNAPSHOT['lineage'],'mathematical_fingerprint':fingerprint(mathematical),'content_fingerprint':fingerprint(content),'domain':'T(t)>ambient; positive rate; t>=0; observations strictly cooling','attempts':attempt+1,'source_refs':[SOURCE_Q[sid][':question/id'] for sid,(context,_) in ORIGINALS.items() if context==template] or [KP[':knowledge-point/canonical-example'][':question/id']],'recipes':['correct']+['rounded_correct_plus_'+str(v-correct) for v in values if v!=correct] if not profile else ['rounded_correct_plus_'+str(v-correct) for v in values]}}
 
 
 def generate_easy(seed=0,template=None,field_type=None,parameters=None,profile=None):

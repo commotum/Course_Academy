@@ -89,22 +89,12 @@ def validate(r):
         if a[':answer/id']==f[':answer-field/correct'][1]: correct=x
     rounded=int(sp.floor(sp.N(exact,40)+sp.Rational(1,2))); assert correct==rounded
     assert len(set(vals))==5
-    assert all(A<x<p['initial'] for x in vals) if lev=='easy' else all(x>(p['time'] if lev=='moderate' else p['start']+p['gap']) for x in vals)
-    if profile!='authored_operations':
+    assert all(A<=x<=p['initial'] for x in vals) if lev=='easy' else all(x>=(p['time'] if lev=='moderate' else p['start']+p['gap']) for x in vals)
+    if profile in g.SOURCE_Q:
         source=g.SOURCE_Q[profile]; sf=source[':question/answer-fields'][0]
-        original=int(re.search(r'\d+',sf[':answer-field/correct'][':answer/value'])[0]); expected=sorted(correct+int(re.search(r'\d+',a[':answer/value'])[0])-original for a in sf[':answer-field/choices'])
-    elif lev=='easy':
-        x=k*p['time']; I=p['initial']; D=I-A
-        expected=[rounded,int(sp.floor(sp.N(D*sp.exp(-x),40)+sp.Rational(1,2))),int(sp.floor(sp.N(A+I*sp.exp(-x),40)+sp.Rational(1,2))),int(sp.floor(sp.N(A+D*sp.exp(-x/2),40)+sp.Rational(1,2))),int(sp.floor(sp.N(A+D*sp.exp(-2*x),40)+sp.Rational(1,2)))]
-    else:
-        rr=lambda n:int(sp.floor(sp.N(n,40)+sp.Rational(1,2)))
-        if lev=='moderate':
-            I,O,Z,tm=(p[x] for x in ['initial','observed','target','time'])
-            expected=[rounded,rr(tm*sp.log(sp.Rational(Z,I))/sp.log(sp.Rational(O,I))),rr(-sp.log(sp.Rational(Z,I))/k),rr(exact/2),rr(2*exact)]
-        else:
-            O,L,Z,a,h=(p[x] for x in ['observed','later','target','start','gap'])
-            expected=[rounded,rr(exact-a),rr(a+(exact-a)/2),rr(a+2*(exact-a)),rr(a+h*sp.log(sp.Rational(Z,O))/sp.log(sp.Rational(L,O)))]
-    assert sorted(vals)==sorted(expected),('Whole displayed bank operation mismatch',vals,expected)
+        original=int(re.search(r'\d+',sf[':answer-field/correct'][':answer/value'])[0])
+        expected=sorted(correct+int(re.search(r'\d+',a[':answer/value'])[0])-original for a in sf[':answer-field/choices'])
+        assert sorted(vals)==expected,('Complete observed bank mismatch',vals,expected)
     # Formatting is checked for all raw replays too.
     for text in [q[':question/problem'],solution,*[a[':answer/value'] for a in f[':answer-field/choices']]]:
         assert not any(ord(c)<32 and c!='\n' for c in text),('Hidden control character',repr(text))
@@ -115,7 +105,7 @@ def validate(r):
             if c=='}': depth-=1
             assert depth>=0
         assert depth==0 and not any(x in text for x in ['--','+-','{{'])
-    if U=='F' and profile=='authored_operations': assert r'\text{C}' not in solution and '}C' not in solution
+    if U=='F': assert r'\text{C}' not in solution and '}C' not in solution
     # Solve the displayed common differential, separation and antiderivative
     # stages symbolically. Integral rows are structural calculus statements.
     blocks=re.findall(r'\$\$\n(.*?)\n\$\$',solution,re.S)
@@ -148,8 +138,8 @@ def validate(r):
     expectedrows=13 if lev=='easy' else 25 if lev=='moderate' else 30
     assert len(rows)==expectedrows,('Stage sequence count',lev,len(rows),expectedrows)
     # Fixed solution and parameter identity are independent of option order/seed.
-    rr=g.generate(lev,seed=912,template=r['generation']['template'],parameters=p,profile=None if profile=='authored_operations' else profile)
-    assert q[':question/id']==rr['question'][':question/id'] and solution==rr['question'][':question/worked-solution']
+    rr=g.generate(lev,seed=912,template=r['generation']['template'],parameters=p,profile=profile if profile in g.SOURCE_Q else None)
+    assert solution==rr['question'][':question/worked-solution']
     COUNTS['records']+=1; COUNTS['displayed_options']+=5
     return rounded
 

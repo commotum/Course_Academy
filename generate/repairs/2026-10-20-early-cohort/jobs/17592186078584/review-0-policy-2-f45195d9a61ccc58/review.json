@@ -1,0 +1,170 @@
+{
+  "verdict": "revise",
+  "summary": "Default answer banks expose a deterministic numeric-rank shortcut, including all five delivered runner records. Valid source IVPs are rejected, and two supplied source profiles are missing. Seven stored generated questions reproduce the rank weakness. Package unchanged.",
+  "source_analysis": {
+    "skill": "Solve an inhibited decay IVP by separation of variables, determine the integration constant from an initial temperature, then evaluate and round a future temperature; in moderate cases infer the rate constant from a second observation and solve logarithmically for a target time.",
+    "reasoning_steps": [
+      "Recognize dT/dt=-k(T-S) with k>0 and T>S.",
+      "Separate, integrate ln|T-S|=-kt+C, exponentiate to T=S+K exp(-kt).",
+      "Use T(0)=T0 to derive K=T0-S.",
+      "Easy: substitute given k and future time, then round temperature to nearest integer.",
+      "Moderate: infer k=-ln((Tobs-S)/(T0-S))/tobs and solve t=-ln((Ttarget-S)/(T0-S))/k; round to nearest minute."
+    ],
+    "invariants": [
+      "Positive decay coefficient, initial temperature above equilibrium, positive times; cooling approaches equilibrium from above.",
+      "Temperature scales remain consistent within an instance.",
+      "Single rounded integer result, one correct option among five distinct choices.",
+      "Solutions retain separation, integration, initial-condition substitution and final evaluation; moderate adds observation calibration and target inversion."
+    ],
+    "permitted_variations": [
+      "Ambient and initial temperatures, positive rate and elapsed time can vary independently subject to cooling and reasonable workload.",
+      "Cooling object and Celsius/Fahrenheit are incidental context; units must propagate consistently.",
+      "Rounded answer, option position, numeric rank and distractor distribution are eligible answer-bearing assignments; no source-based justification fixes any of them.",
+      "Moderate observation and target temperatures and times can vary while preserving the same calibration/inversion stages; target need not always be later than the observation if wording remains clear.",
+      "Easy must continue asking a future temperature, rather than importing moderate unknown-rate or time-inversion work."
+    ],
+    "source_refs": [
+      "canonical e3e001a8-9294-59a4-82e6-b1122afdc72f (e-6677): bulb, S=23,T0=80,k=.25,t=4,answer 44",
+      "daa15db5-c1a1-535c-9031-79b2bb1e03e9: coffee,25,100,.05,6 ->81; bank 83,79,85,81,77",
+      "2b60de53-dea5-5dd2-908e-421b529445e3: iron,28,140,.1,5 ->96; bank 96,92,79,76,81",
+      "f919d480-6159-52e5-bf01-76d804f5fa17: cake,F,70,340,.09,8 ->201; bank 198,223,194,201,189",
+      "6ff863d3-8088-512b-858b-b0b33302607f: compressor,21,65,.12,8 ->38; bank 31,38,43,29,58",
+      "533feaf7-7a54-5e3c-8829-f3324ed43a28: exhaust,F,74,140,.08,3 ->126; bank 98,126,112,92,134",
+      "44b64320-501f-5d6a-b8c7-b8cf6a960fc2: body,21,40,.06,4 ->36; bank 28,34,30,32,36",
+      "8b0ed3c5-b3aa-5668-ae2c-48b159839332: bath 10,50,observation 40 at 5,target30 ->12; bank 12,15,13,14,10",
+      "39da46ca-e83e-580d-8039-34194e24ef5f: outdoors F,15,72,54 at 2,target25 ->9; bank 11,15,9,8,13",
+      "02ce9872-8986-5e67-bea1-b49d589c24ac: water,25,100,90 at5,target30 ->95; bank 87,95,67,89,98",
+      "fee906ee-def7-5194-a87e-a1f77108aa56: tea,28,60,52 at10,target40 ->34; bank23,45,28,34,31",
+      "4360bcb1-959b-53b1-855f-91f5d582be11: pork,24,150,100 at15,target60 ->37; bank31,45,37,29,28",
+      "tutorial da7cd802-d46b-546f-bdc3-8a783a8bb999 (5513), Introduction: inhibited decay has dP/dt=-r(P-a), r>0, P>a; equilibrium is a lower bound.",
+      "tutorial f58653bc-cafb-532a-b92d-8183054c181b (4075), Newton's Law of Cooling: separate dT/(T-20)=-k dt and derive T=20+K exp(-kt).",
+      "tutorial 7811364e-9b00-5478-8f01-6f3ddfee6f58 (14906), Continued: T(0)=100 gives K=80; T(7)=60 gives k=ln2/7."
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "failed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "source-replay.json",
+        "source-replay-records.json",
+        "regression-results.json"
+      ],
+      "details": "Nine older cases replay their prompts, normalized solutions, complete five-option banks and keys. Supplied q-107121/body and q-107123/pork profiles are absent; canonical bulb wording is unavailable. Its missing captured bank is explicitly documented."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "solution-dependencies.json",
+        "scope-and-math.json"
+      ],
+      "details": "76 independently computed numeric answers and72 solution dependency checks pass. Easy and moderate givens parsed from printed prompts. Documented outside-source unit typo is preserved only by the raw opt-in evidence profile; normal outside solutions use Fahrenheit consistently."
+    },
+    "variety": {
+      "status": "failed",
+      "evidence_paths": [
+        "fresh-samples.json",
+        "regression.py",
+        "regression-results.json",
+        "packaging.json"
+      ],
+      "details": "Numerical slots vary across all five easy contexts, but rejecting any bank option outside ambient<choice<initial excludes valid source IVPs. Canonical ambient23,initial80,rate.25,time4 and body ambient21,initial40,rate.06,time4 both fail Whole bank temperature-domain violation."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "scope-and-math.json",
+        "fresh-samples.json",
+        "runner-batch.json"
+      ],
+      "details": "Requested easy records retain the explicit-rate initial-condition temperature evaluation, integer rounding, five-choice radio contract and separation-of-variables explanation. Moderate controls retain source calibration/inversion stages. No exhaustive scope certification of authored hard extensions is claimed."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-report.json",
+        "counterfactual-results.json"
+      ],
+      "details": "Actual native learner grader passed130 option selections:26 independently checked correct choices accepted and104 distractors rejected, including relevant/irrelevant counterfactuals. Free-entry notation is inapplicable to the source radio contract."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render-records.json",
+        "render/rendering.json",
+        "render-counterfactuals/rendering.json",
+        "rendering-inspection.json",
+        "render/question-001.png",
+        "render-counterfactuals/question-002.png",
+        "render-counterfactuals/question-005.png"
+      ],
+      "details": "Actual unmodified UI rendered11 cases, including all five runner records and all controlled pairs. Representative full screenshots inspected; math, radio controls and worked solutions display correctly."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging.json",
+        "relocated-records.json",
+        "package-integrity.json",
+        "commands.txt"
+      ],
+      "details": "Declared exact Python3.13.5 and nested sympy1.14.0 match runtime. Relocated entrypoint plus packaged source dependency runs deterministically without external assets. Invalid-input rejection exercised. Package file hashes unchanged; no database writes or publication."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "shortcut-results.json",
+        "delivery-selection.json",
+        "delivery-batch/accepted.json",
+        "delivery-fresh/accepted.json",
+        "affected-inventory.json",
+        "generated-records.json"
+      ],
+      "details": "Choose median succeeds50/50 fresh easy samples,10/10 within each easy template, and5/5 exact runner survivors. Choose second-largest succeeds12/12 moderate samples and7/7 exactly replayed stored generated target-time records. Relevant time/target changes and irrelevant context changes update correctly but retain these answer-producing shortcuts. Actual delivery filters and conditional learner-selection rules cannot eliminate the invariant."
+    }
+  },
+  "findings": [
+    {
+      "kind": "decision_shortcut",
+      "description": "Default easy construction always places two distractor values below and two above the correct value. Selecting the median temperature solves every accepted default easy instance without using the ODE. All five exact runner survivors exhibit this defect. Sampled moderate layouts and all seven stored generated target-time records similarly expose the second-largest-time rule. Option shuffling does not change numeric rank.",
+      "source_refs": [
+        "daa15db5-c1a1-535c-9031-79b2bb1e03e9",
+        "2b60de53-dea5-5dd2-908e-421b529445e3",
+        "6ff863d3-8088-512b-858b-b0b33302607f",
+        "8b0ed3c5-b3aa-5668-ae2c-48b159839332",
+        "tutorial f58653bc-cafb-532a-b92d-8183054c181b, separation and integration stages",
+        "generate/principles.md §2 meaningful variety"
+      ],
+      "reproduction": "Run PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python regression.py. Minimal exact runner record9d4ab96c-d8a2-56aa-91e4-663ddd431436,seed1403253416,compressor,ambient20,initial96,k=.09,time12: options29,64,46,53,26; correct46 is median. See runner-batch.json and delivery-batch/accepted.json. inventory-audit.py exactly replays all7 records in generated-records.json; affected-inventory.json identifies their stored entities.",
+      "requested_change": "Change the family-wide bank-construction rule so error recipes and their signed relations do not determine a fixed correct numeric rank within recognizable templates. Derive all keys/solutions from each instance, retain plausible distractors and source radio contracts, and replace the five shortcut-answerable runner records. Retain the strict rank regression and check delivered as well as raw samples."
+    },
+    {
+      "kind": "restriction",
+      "description": "Whole-bank physical-domain validation suppresses valid IVPs whenever the omit-ambient distractor is at or below ambient. With integer ambient A, that recipe forces every accepted easy correct answer above2A, a condition absent from the lesson and contradicted by the canonical bulb and stored body example. The model itself is valid; the fixed distractor set causes rejection.",
+      "source_refs": [
+        "e3e001a8-9294-59a4-82e6-b1122afdc72f",
+        "44b64320-501f-5d6a-b8c7-b8cf6a960fc2",
+        "tutorial da7cd802-d46b-546f-bdc3-8a783a8bb999: solution approaches ambient from above"
+      ],
+      "reproduction": "regression.py reproduces generate(\"easy\",84199,\"coffee\",parameters={\"ambient\":23,\"initial\":80,\"rate\":\"0.25\",\"time\":4}) -> ValueError(\"Whole bank temperature-domain violation\"), although the canonical result is44. The same call with21,40,.06,4 rejects the body source result36. Complete inputs and outputs are in regression-results.json.",
+      "requested_change": "Retain these valid source parameter combinations. Construct a suitable full bank for the IVP instead of conditioning the IVP domain on every fixed misconception recipe surviving the physical-domain filter; preserve source-level workload and the strict acceptance tests."
+    },
+    {
+      "kind": "source_fidelity",
+      "description": "The packaged snapshot/profile catalog covers nine older questions and omits two supplied current source cases: body q-107121 and pork q-107123. Both explicit source profiles fail before construction, so complete source replay is not established.",
+      "source_refs": [
+        "44b64320-501f-5d6a-b8c7-b8cf6a960fc2 (q-107121)",
+        "4360bcb1-959b-53b1-855f-91f5d582be11 (q-107123)"
+      ],
+      "reproduction": "regression.py calls generate(\"easy\",84199,profile=\"q-107121\") and generate(\"moderate\",84199,profile=\"q-107123\"); both raise Unknown explicit observed bank profile. source-replay.json records9 successful older replays and the two missing source IDs.",
+      "requested_change": "Add the two supplied source layouts and original-parameter profiles, including their complete banks and worked-solution stages, and verify them independently against the current source. Keep the documented Fahrenheit-label correction for q-107122 in served content."
+    }
+  ]
+}

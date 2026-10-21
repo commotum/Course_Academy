@@ -1,0 +1,207 @@
+{
+  "format": 1,
+  "findings": [
+    {
+      "id": "ac0c1cf7997b4910bec6",
+      "finding": {
+        "kind": "decision_shortcut",
+        "description": "Default easy banks always contain two values below and two above the correct temperature, making the median invariably correct. Sampled moderate banks and seven stored generated target-time records similarly expose a second-largest-answer shortcut.",
+        "source_refs": [
+          "2b60de53-dea5-5dd2-908e-421b529445e3",
+          "6ff863d3-8088-512b-858b-b0b33302607f",
+          "8b0ed3c5-b3aa-5668-ae2c-48b159839332",
+          "generate/principles.md \u00a72"
+        ],
+        "reproduction": "Run regression.py with the context Python. Runner record 9d4ab96c-d8a2-56aa-91e4-663ddd431436, seed 1403253416, offers 29,64,46,53,26; correct 46 is the median. All five runner survivors behave similarly. inventory-audit.py reproduces the seven affected stored records.",
+        "requested_change": "Change bank construction so recognizable templates do not determine the correct numeric rank. Preserve valid distractors and source response contracts, retain strict shortcut regressions, and replace the five affected runner records."
+      },
+      "source_hash": "fb3447337131409ed2e7b6181725e2286b8939bfe50024674cc4a3fb9b76a07b",
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186078584/review-0-policy-2-f45195d9a61ccc58",
+      "attempt": 0
+    },
+    {
+      "id": "20d9dfcf2465e68e0ac7",
+      "finding": {
+        "kind": "restriction",
+        "description": "Requiring every fixed misconception distractor to lie between ambient and initial temperature rejects legitimate IVPs. The omit-ambient recipe imposes an unsupported restriction that accepted easy answers exceed twice ambient.",
+        "source_refs": [
+          "e3e001a8-9294-59a4-82e6-b1122afdc72f",
+          "44b64320-501f-5d6a-b8c7-b8cf6a960fc2"
+        ],
+        "reproduction": "regression.py calls generate('easy',84199,'coffee',parameters={'ambient':23,'initial':80,'rate':'0.25','time':4}). It raises 'Whole bank temperature-domain violation' although the canonical answer is 44. Body parameters 21,40,.06,4 similarly reject the valid answer 36.",
+        "requested_change": "Construct suitable banks for valid source IVPs instead of restricting the IVP domain to accommodate every fixed distractor recipe. Retain these failing acceptance tests."
+      },
+      "source_hash": "fb3447337131409ed2e7b6181725e2286b8939bfe50024674cc4a3fb9b76a07b",
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186078584/review-0-policy-2-f45195d9a61ccc58",
+      "attempt": 0
+    },
+    {
+      "id": "e86a572838bfd263537b",
+      "finding": {
+        "kind": "source_fidelity",
+        "description": "The packaged source catalog omits the supplied body q-107121 and pork q-107123 cases.",
+        "source_refs": [
+          "44b64320-501f-5d6a-b8c7-b8cf6a960fc2",
+          "4360bcb1-959b-53b1-855f-91f5d582be11"
+        ],
+        "reproduction": "regression.py requests profiles q-107121 and q-107123; both raise 'Unknown explicit observed bank profile'. Results are retained in regression-results.json.",
+        "requested_change": "Add both supplied source layouts and original-parameter profiles, including complete answer banks and worked-solution stages, then verify their replay."
+      },
+      "source_hash": "fb3447337131409ed2e7b6181725e2286b8939bfe50024674cc4a3fb9b76a07b",
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186078584/review-0-policy-2-f45195d9a61ccc58",
+      "attempt": 0
+    }
+  ],
+  "events": [
+    {
+      "attempt": 0,
+      "package_hash": "aadfdb7d7de71045c72026cb588d9069b2edb4eb74a1f28d719858ab6e086663",
+      "reason": {
+        "verdict": "revise",
+        "summary": "Demonstrated answer-rank shortcuts, rejection of valid source IVPs, and two missing source profiles. All five delivered runner records expose the easy shortcut. Seven stored generated questions reproduce a related weakness. Package unchanged.",
+        "source_analysis": {
+          "skill": "Solve an inhibited decay IVP by separation, apply initial conditions, evaluate a future temperature and round. Moderate cases additionally calibrate the rate and solve for a target time.",
+          "reasoning_steps": [
+            "Integrate dT/(T-S)=-k dt.",
+            "Derive T=S+(T0-S)exp(-kt).",
+            "Evaluate the requested temperature, or calibrate k and invert for time.",
+            "Round and select one of five radio choices."
+          ],
+          "invariants": [
+            "Positive decay coefficient and initial temperature above equilibrium.",
+            "Consistent units and positive times.",
+            "One correct rounded result among five distinct choices."
+          ],
+          "permitted_variations": [
+            "Change valid temperatures, rates and times without adding reasoning stages.",
+            "Vary object context, answer position and correct numeric rank.",
+            "Update all dependent prompts, solutions and keys together."
+          ],
+          "source_refs": [
+            "e3e001a8-9294-59a4-82e6-b1122afdc72f: canonical bulb IVP",
+            "44b64320-501f-5d6a-b8c7-b8cf6a960fc2: body IVP",
+            "4360bcb1-959b-53b1-855f-91f5d582be11: pork target-time problem",
+            "tutorial f58653bc-cafb-532a-b92d-8183054c181b: separation and exponential solution",
+            "tutorial 7811364e-9b00-5478-8f01-6f3ddfee6f58: initial-condition and rate calibration"
+          ],
+          "evidence_paths": [
+            "source-analysis.json"
+          ]
+        },
+        "checks": {
+          "source_replay": {
+            "status": "failed",
+            "evidence_paths": [
+              "source-replay.json",
+              "source-replay-records.json",
+              "regression-results.json"
+            ],
+            "details": "Nine older cases replay successfully. Supplied body and pork profiles are missing; canonical bulb wording is unavailable."
+          },
+          "math": {
+            "status": "passed",
+            "evidence_paths": [
+              "math-results.json",
+              "solution-dependencies.json",
+              "scope-and-math.json"
+            ],
+            "details": "76 independent numeric checks and 72 solution dependency checks passed. The documented source unit typo is distinguished from corrected normal output."
+          },
+          "variety": {
+            "status": "failed",
+            "evidence_paths": [
+              "fresh-samples.json",
+              "regression.py",
+              "regression-results.json"
+            ],
+            "details": "Numeric slots vary, but fixed distractor requirements reject valid canonical and body source parameters."
+          },
+          "scope": {
+            "status": "passed",
+            "evidence_paths": [
+              "source-analysis.json",
+              "scope-and-math.json",
+              "runner-batch.json"
+            ],
+            "details": "Requested easy records preserve explicit-rate temperature evaluation, integer rounding and the source radio response contract."
+          },
+          "grading": {
+            "status": "passed",
+            "evidence_paths": [
+              "grader-input.json",
+              "grader-report.json",
+              "counterfactual-results.json"
+            ],
+            "details": "Native grader passed 130 selections: 26 correct choices accepted and 104 distractors rejected, including controlled changes."
+          },
+          "rendering": {
+            "status": "passed",
+            "evidence_paths": [
+              "render/rendering.json",
+              "render-counterfactuals/rendering.json",
+              "rendering-inspection.json"
+            ],
+            "details": "Actual UI rendered 11 cases successfully. Representative screenshots show readable mathematics, radio controls and worked solutions."
+          },
+          "packaging": {
+            "status": "passed",
+            "evidence_paths": [
+              "packaging.json",
+              "relocated-records.json",
+              "package-integrity.json",
+              "commands.txt"
+            ],
+            "details": "Exact dependency versions match. Relocation and deterministic replay passed. Package hashes remain unchanged."
+          },
+          "decision_variation": {
+            "status": "failed",
+            "evidence_paths": [
+              "pedagogical-variation.json",
+              "shortcut-results.json",
+              "delivery-selection.json",
+              "delivery-batch/accepted.json",
+              "affected-inventory.json",
+              "generated-records.json"
+            ],
+            "details": "Median selection succeeds on 50/50 fresh easy samples and 5/5 runner survivors. Second-largest selection succeeds on 12/12 moderate samples and seven exactly reproduced stored generated target-time records. Delivery filtering preserves these shortcuts."
+          }
+        },
+        "findings": [
+          {
+            "kind": "decision_shortcut",
+            "description": "Default easy banks always contain two values below and two above the correct temperature, making the median invariably correct. Sampled moderate banks and seven stored generated target-time records similarly expose a second-largest-answer shortcut.",
+            "source_refs": [
+              "2b60de53-dea5-5dd2-908e-421b529445e3",
+              "6ff863d3-8088-512b-858b-b0b33302607f",
+              "8b0ed3c5-b3aa-5668-ae2c-48b159839332",
+              "generate/principles.md \u00a72"
+            ],
+            "reproduction": "Run regression.py with the context Python. Runner record 9d4ab96c-d8a2-56aa-91e4-663ddd431436, seed 1403253416, offers 29,64,46,53,26; correct 46 is the median. All five runner survivors behave similarly. inventory-audit.py reproduces the seven affected stored records.",
+            "requested_change": "Change bank construction so recognizable templates do not determine the correct numeric rank. Preserve valid distractors and source response contracts, retain strict shortcut regressions, and replace the five affected runner records."
+          },
+          {
+            "kind": "restriction",
+            "description": "Requiring every fixed misconception distractor to lie between ambient and initial temperature rejects legitimate IVPs. The omit-ambient recipe imposes an unsupported restriction that accepted easy answers exceed twice ambient.",
+            "source_refs": [
+              "e3e001a8-9294-59a4-82e6-b1122afdc72f",
+              "44b64320-501f-5d6a-b8c7-b8cf6a960fc2"
+            ],
+            "reproduction": "regression.py calls generate('easy',84199,'coffee',parameters={'ambient':23,'initial':80,'rate':'0.25','time':4}). It raises 'Whole bank temperature-domain violation' although the canonical answer is 44. Body parameters 21,40,.06,4 similarly reject the valid answer 36.",
+            "requested_change": "Construct suitable banks for valid source IVPs instead of restricting the IVP domain to accommodate every fixed distractor recipe. Retain these failing acceptance tests."
+          },
+          {
+            "kind": "source_fidelity",
+            "description": "The packaged source catalog omits the supplied body q-107121 and pork q-107123 cases.",
+            "source_refs": [
+              "44b64320-501f-5d6a-b8c7-b8cf6a960fc2",
+              "4360bcb1-959b-53b1-855f-91f5d582be11"
+            ],
+            "reproduction": "regression.py requests profiles q-107121 and q-107123; both raise 'Unknown explicit observed bank profile'. Results are retained in regression-results.json.",
+            "requested_change": "Add both supplied source layouts and original-parameter profiles, including complete answer banks and worked-solution stages, then verify their replay."
+          }
+        ]
+      },
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186078584/review-0-policy-2-f45195d9a61ccc58"
+    }
+  ]
+}
