@@ -148,9 +148,9 @@ export function assignTargetCourses(snapshot, graph, targetCalendar, nodeIds) {
     return courses.filter(course=>course.nodeIds.size);
   }
 
-export function projectTargetScope(snapshot, options = {}) {
-  const graph=indexTargetGraph(snapshot);
-  const selectors=targetSelectors(snapshot,graph,options);
+export function projectTargetScope(snapshot, options = {}, graph = indexTargetGraph(snapshot)) {
+  const calendar=buildTargetCalendar(snapshot.targetSchedule || []);
+  const selectors=targetSelectors(snapshot,graph,options,calendar);
   const roots=selectors.roots(),distances=new Map(roots.map(id=>[id,0])),pending=[...roots];
   const depth=options.prerequisiteDepth ?? 2;
   for(let i=0;i<pending.length;i++) {
@@ -161,7 +161,6 @@ export function projectTargetScope(snapshot, options = {}) {
     }
   }
   const nodeIds=new Set(distances.keys());
-  const calendar=buildTargetCalendar(snapshot.targetSchedule || []);
   const courses=assignTargetCourses(snapshot,graph,calendar,nodeIds);
   const tracks=new Map(courses.flatMap(c=>[...c.nodeIds].map(id=>[id,c.key])));
   const targets=new Set(snapshot.learner?.targets || []),queue=new Set(snapshot.learner?.queue || []);

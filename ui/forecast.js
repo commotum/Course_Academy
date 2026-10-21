@@ -15,11 +15,16 @@ export class ForecastFacts {
     this.records = new Map(Object.entries(records).map(([e, r]) => [Number(e),
       new Map(Object.entries(r).map(([a, values]) => [a, new Map(values.map(v => [JSON.stringify(v), v]))]))]));
     this.enums = enums;
+    this.attributes = new Map();
+    for (const [e, record] of this.records) for (const [a, values] of record) if (values.size) {
+      if (!this.attributes.has(a)) this.attributes.set(a, new Set());
+      this.attributes.get(a).add(e);
+    }
   }
   values(e, a) { return [...(this.records.get(Number(e))?.get(a)?.values() || [])]; }
-  get(e, a) { return scalar(this.values(e, a)[0]); }
+  get(e, a) { return scalar(this.records.get(Number(e))?.get(a)?.values().next().value); }
   kind(e, a) { return (this.enums[this.get(e, a)] || '').split('/').at(-1); }
-  ids(a) { return [...this.records].filter(([, r]) => r.get(a)?.size).map(([e]) => e); }
+  ids(a) { return [...(this.attributes.get(a) || [])]; }
   apply(changes) {
     // Transaction operations are simultaneous; remove old facts before adding.
     for (const added of [false, true]) for (const [e, a, v, isAdded] of changes) {
@@ -29,6 +34,8 @@ export class ForecastFacts {
       if (!record.has(a)) record.set(a, new Map());
       if (added) record.get(a).set(JSON.stringify(v), v);
       else record.get(a).delete(JSON.stringify(v));
+      if (!this.attributes.has(a)) this.attributes.set(a, new Set());
+      if (record.get(a).size) this.attributes.get(a).add(e); else this.attributes.get(a).delete(e);
     }
   }
 }
@@ -147,23 +154,40 @@ export function historicalGrowth(inputs, options, currentScope, now) {
   const f = new ForecastFacts({}, inputs.enums), learner = inputs.learnerId;
   const courses = Object.fromEntries(TARGET_COURSE_CODES.map(code => [code, emptyGrowth()]));
   const total = emptyGrowth(), modeledTasks = new Set();
-  let previous = null, observedFrom = null, invalid = null;
+  let previous = null, observedFrom = null, invalid = null, indexedGraph;
+  // Review/lesson preparation creates steps too. Only assignment-owned
+  // containment can change the Targets calendar or course associations.
+  const containment = new Set(['activity/steps', 'step/content', 'multistep/steps', 'assigned-problem/content']);
+  const possibleChildren = new Map(), assignments = new Set();
+  for (const event of inputs.history) for (const [e, a, v] of event.changes) {
+    if (e === learner && a === 'learner/assignments') assignments.add(v);
+    if (containment.has(a)) {
+      if (!possibleChildren.has(e)) possibleChildren.set(e, new Set());
+      possibleChildren.get(e).add(v);
+    }
+  }
+  const assignmentEntities = new Set(assignments), pending = [...assignments];
+  for (let i = 0; i < pending.length; i++) for (const next of possibleChildren.get(pending[i]) || []) {
+    if (!assignmentEntities.has(next)) { assignmentEntities.add(next); pending.push(next); }
+  }
+  const assignmentFields = new Set([...containment, 'assigned-problem/topic-coverage', 'activity/course', 'activity/due']);
   for (const event of inputs.history) {
-    const at = Date.parse(event.at);
+    const at = new Date(scalar(event.at)).getTime();
     if (!Number.isFinite(at) || at > now) continue;
     const completed = event.changes.filter(([, a, v, added]) => added && a === 'learner-task/status'
       && terminal((inputs.enums[v] || '').split('/').at(-1))).map(([task]) => task);
     f.apply(event.changes);
+    if (event.changes.some(([, a]) => ['topic/id', 'topic/title', 'topic/next'].includes(a))) indexedGraph = undefined;
     // Task completion can remove its queue root in the same transaction. Its
     // lesson still belongs to the scope it was in immediately before finishing.
     for (const task of completed) {
       const topic = f.get(f.get(task, 'learner-task/activity'), 'activity/scope');
       if (previous?.nodeIds.has(topic)) modeledTasks.add(task);
     }
-    if (!event.changes.some(([, a]) => growthFields.has(a))) continue;
+    if (!event.changes.some(([e, a]) => growthFields.has(a) && (!assignmentFields.has(a) || assignmentEntities.has(e)))) continue;
     if (!f.get(learner, 'learner/id') || !f.ids('topic/id').length) continue;
     let scope;
-    try { scope = projectTargetScope(forecastGraph(f, learner), options); }
+    try { scope = projectTargetScope(forecastGraph(f, learner), options, indexedGraph); indexedGraph = scope.graph; }
     catch (error) { invalid = error.message; continue; }
     for (const task of completed) if (scope.nodeIds.has(f.get(f.get(task, 'learner-task/activity'), 'activity/scope'))) modeledTasks.add(task);
     if (previous === null) {
@@ -171,9 +195,11 @@ export function historicalGrowth(inputs, options, currentScope, now) {
       if (!scope.nodeIds.size) continue;
       previous = scope; observedFrom = at; continue;
     }
-    const known = knownPreparationTopics(f, learner), price = topicPrices(f, learner, inputs.lessonBases);
-    for (const topic of scope.nodeIds) {
-      if (previous.nodeIds.has(topic) || known.has(topic)) continue;
+    const additions = [...scope.nodeIds].filter(topic => !previous.nodeIds.has(topic));
+    const known = additions.length ? knownPreparationTopics(f, learner) : new Set();
+    const price = additions.length ? topicPrices(f, learner, inputs.lessonBases) : null;
+    for (const topic of additions) {
+      if (known.has(topic)) continue;
       const cost = price(topic), course = courses[scope.tracks.get(topic)], category = scope.categories.get(topic);
       for (const item of [total, course]) {
         item.topics++; item.categories[category].topics++;

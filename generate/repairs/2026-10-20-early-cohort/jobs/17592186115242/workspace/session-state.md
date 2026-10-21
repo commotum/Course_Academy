@@ -1,43 +1,40 @@
-# Current repair state — pass 60
+# Current repair state — pass 64
 
-Read feedback and complete retained findings/history, source lesson and questions,
-existing instructional account, and required generation/validation documentation.
-Preserved completed runtime repairs, regression declarations and staged replacements.
-No new generator construction failure is demonstrated by the latest feedback.
+Read feedback, all retained finding descriptions and prior history/state before
+running tests. Preserved the existing generator, instructional account, runtime
+manifest and staged replacement proposal. No new construction defect is reported.
 
 First executed regression:
 `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory`
-Exit 1: all five historical records reproduce against captured inventory; the
-possible learner-history witness yields 64/64 sign-extremum shortcut successes.
+Exit 1: five fully reproduced historical records still match captured inventory
+and retain the sign-extremum shortcut. The possible new-seen-history witness
+has 64/64 successes, conditional on that history rather than all learner histories.
 
-Verification command:
-`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/repair-60`
-Exit 1 solely for finding 591f580cadb749294588. Four current-generator regressions
-pass, including 17 complete source banks, fractional bare-k, zero-root and finite
-batch contrasts. Shared delivery retains 14/14 records; native grading accepts
-7 correct selections and rejects 28 incorrect selections. Relocation, exact
-dependencies, protected hashes and the five staged replacement mappings pass.
-Commands and results are in evidence/repair-60/commands.json and results.json.
+Retained verification:
+`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/repair-64`
+Exit 1 solely for finding 591f580cadb749294588. All four current-generator
+regressions pass: bank shortcut, fractional bare-k source replay, zero roots,
+and finite-batch contrasts. Seventeen source banks replay. Shared delivery
+retains 14/14 records and contrasts. Relevant/irrelevant counterfactuals pass;
+native grading accepts 7 correct choices and rejects 28 wrong choices. Relocation,
+exact dependencies, protected hashes and all five replacement mappings pass.
+See evidence/repair-64/commands.json and results.json.
 
-Visually reinspected evidence/repair-3/render/question-002.png: readable prompt,
-five options and full elimination solution without clipping. Runtime hashes are
-unchanged, so retained rendering applies; no interchangeable render was added.
+Inspected retained actual-UI screenshot evidence/repair-3/render/question-002.png
+and the source classification diagram. The screenshot is readable without
+clipping. Reused rendering because runtime hashes remain unchanged; see
+visual-inspection.json in this pass's evidence directory.
 
-Remaining action: separately remediate the five stored records listed in
-affected-inventory.json, then provide refreshed inventory and rerun the strict
-inventory regression. The existing proposal is
-evidence/repair-3/inventory-repair-proposal.json. question_selection.rs selects
-stored entity IDs without invoking this Python generator; workspace runtime edits
-cannot change their old banks or retire those entities. Database changes and
-publication are explicitly prohibited in this task. Preserve the strict failure;
-do not substitute proposed records for captured inventory or repeat broad checks
-against unchanged inputs. All five generated inventory records were tested;
-source questions retain their original status. Evidence paths resolve from the
-requested author-60 root via ../workspace/. No engine/database/publication edits.
+Unfinished step: separate inventory remediation must review/apply
+`evidence/repair-3/inventory-repair-proposal.json`, recapture inventory, then rerun
+the strict inventory regression. All five generated inventory records were
+tested; none remain untested. affected-inventory.json points to complete records
+through ../workspace/evidence/generated-records.json relative to author-64.
+Original source questions are not marked generated.
 
-Confirmed the scope directly in question_selection.rs:125–195: selection reads
-stored candidate entity IDs and their difficulties; it does not execute the
-workspace generator. The retained finding explicitly requests the separate
-inventory-remediation workflow. No candidate construction change can remove
-those unchanged stored banks. Reinspected the tutorial classification diagram
-and retained actual UI screenshot; no runtime changes require a new render.
+The selector reads stored candidate IDs and difficulties directly
+(engine/rust/question_selection.rs:125–195), without invoking this package.
+Workspace generator edits cannot change those stored banks. Database changes,
+publication and engine edits are prohibited by this task. Preserved the strict
+failing check; status remains unsupported. Further identical generator passes
+cannot resolve the stored-inventory finding without the separate workflow.

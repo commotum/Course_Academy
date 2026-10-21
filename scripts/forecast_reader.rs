@@ -166,3 +166,47 @@ pub(super) fn read(capture: &Capture, body: &Json, now: DateTime<Utc>) -> Result
     data["firstObservedAt"]=json!(first_observed.map(|at|at.timestamp_millis()));
     Ok(data)
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn forecast_dating_preserves_original_dates_and_excludes_undated_imports() -> Result<()> {
+        let day=86_400_000i64;
+        let mut entities=BTreeMap::new();
+        for (id,r) in [
+            (1,json!({"learner/id":"test","learner/activity":[2,3,4]})),
+            (2,json!({"learner-task/id":"native","learner-task/status":11,"learner-task/items":[20],"learner-task/xp-earned":10,"learner-task/elapsed-seconds":60})),
+            (3,json!({"learner-task/id":"dated-import","learner-task/status":11,"learner-task/finished-at":{"$instant":day},"learner-task/xp-earned":20,"learner-task/elapsed-seconds":100})),
+            (4,json!({"learner-task/id":"undated-import","learner-task/status":11,"learner-task/xp-earned":999})),
+            (10,json!({"db/ident":{"$keyword":"learner-task.status/started"}})),
+            (11,json!({"db/ident":{"$keyword":"learner-task.status/completed"}})),
+            (12,json!({"db/ident":{"$keyword":"task-item.status/started"}})),
+            (13,json!({"db/ident":{"$keyword":"task-item.status/correct"}})),
+            (20,json!({"task-item/id":"item","task-item/status":13,"task-item/elapsed-seconds":60})),
+        ] {entities.insert(id,r.as_object().unwrap().clone());}
+        let mut timing=EntitySnapshot::new(entities,6)?;
+        for (t,(entity,attribute,status,at)) in [
+            (2,"learner-task/status",10,2*day),
+            (20,"task-item/status",12,2*day),
+            (20,"task-item/status",13,2*day+60_000),
+            (2,"learner-task/status",11,2*day+60_000),
+            (3,"learner-task/status",11,6*day),
+            (4,"learner-task/status",11,6*day),
+        ].into_iter().enumerate() {
+            timing.status_history.push(StatusAssertion {entity,attribute:attribute.into(),value:json!(status),t:t as u64+1,at:json!({"$instant":at})});
+        }
+        timing::validate_history(&mut timing)?;
+        let before=timing.entities.clone();
+        let capture=Capture {data:json!({}),timing,learner:1};
+        let result=read(&capture,&json!({"dayStarts":(0..8).map(|i|i*day).collect::<Vec<_>>()}),DateTime::from_timestamp_millis(8*day).unwrap())?;
+        assert_eq!(result["finishedAt"]["2"],2*day+60_000);
+        assert_eq!(result["finishedAt"]["3"],day);
+        assert!(result["finishedAt"].get("4").is_none());
+        assert_eq!(result["timing"]["workingSeconds"],60.0);
+        assert_eq!(result["timingUnknownTasks"],json!([3,4]));
+        assert_eq!(capture.timing.entities,before);
+        Ok(())
+    }
+}

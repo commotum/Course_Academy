@@ -354,8 +354,12 @@ Correct recipe: -k(T-S). The remaining recipes are retained as complete displaye
 
 ## Supported corrections
 
-For q-106936 normal output preserves the other four recipes and replaces the equivalent wrong -k(S-T) with -kT, retaining five unequal choices. This is an explicit bank correction. Other normal banks retain every observed complete recipe. Body/liquid, oil/liquid, soup/pot and chocolate/liquid slips are corrected with consistent object names.
+For q-106936 normal output preserves the other four recipes and replaces the equivalent wrong -k(S-T) with -kT, retaining five unequal choices. Other easy normal banks retain every observed recipe. Body/liquid, oil/liquid, soup/pot and chocolate/liquid slips remain corrected. Moderate raw banks above are preserved for source replay; normal moderate output now uses the explicit mixed-source bank construction in ../instructional-account.md. This supersedes the earlier claim that every normal moderate bank is unchanged.
+
+## Restored cake q-106877
+
+Source 29a46a1b-3fea-5ef3-98e8-a12878014c94, easy, ambient 70 F, no initial reading. Exact prose and solution are extracted into templates.json. Complete source RHS bank: `kT(T-S)`, `-kT(T-S)`, `-k(T-S)` (correct), `-k(T+S)`, `k(T-S)`. The common LHS is `{T}^{′}(t)`. All five recipes remain in ordinary easy output, with the source Fahrenheit context.
 
 ## Source fidelity and variation
 
-validate.py exactly replays all nine prompts, all nine complete banks (45/45 options), all keys and all worked solutions. Independent symbolic checks verify the displayed givens, complete equations, unique correct selection and the two rendered solution equations. All ambient values and initial boundary values are swept per template. Changed-ambient controls hold context and initial fixed; initial-only controls keep the same task key. review.md places every raw original alongside its normal counterpart and changed variants.
+Current checks/repair_checks.py (also invoked by validate.py) exactly replays ten prompts, ten banks (50/50 options), keys and worked solutions. The retained independent checker verifies visible givens, whole equations, unique correct selections and both worked equations. The targeted pass tests ambient endpoints and both initial endpoints, with a small interior sample, rather than repeating the earlier full sweep. Counterfactuals hold context/initial fixed while changing ambient, and preserve the answer under initial-only changes. Current records and reports are under ../evidence; older review.md and validation.json describe the pre-repair state.

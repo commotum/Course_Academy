@@ -1,8 +1,8 @@
 # Current classification
 
-math basis **2710**, lineage `01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1`. Full current capture is `reference/current/source.json`; the immutable basis-1356 source remains `source.json`, with the prior package archived in `reference/historical-basis-1356/`.
+Supplied math basis **5389**, lineage `01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1`. Current source is the job's supplied source/source.json; reference/current/source.json is the earlier nine-bank basis-2710 capture. Historical captures remain unchanged.
 
-Nine practice questions: four easy and five moderate. Every question uses one `selection` radio field and five complete differential-equation math choices. All current originals now have a key and worked solution. q-106932 is newly captured chocolate context. There are nine prose masks with one complete bank profile each; no plots or assets (rating **none**). Easy asks for a rate proportional to the difference with the surroundings, with only ambient supplied. Moderate supplies initial and ambient readings and asks for Newton cooling model setup. Both use the generic/substituted two-equation solution.
+Ten practice questions: five easy and five moderate. Each has one `selection` radio field, five complete equation choices, a key and a worked solution. Ten prose masks have one raw observed bank each; easy cake q-106877 supplies the Fahrenheit profile. Moderate practice uses explicitly documented mixed-source banks, with raw source replay preserved. Question plots/assets: none. The lesson introduction's equilibrium diagram is contextual and is not reproduced in questions. Easy supplies ambient alone; moderate supplies initial and ambient readings. Both retain the generic/substituted two-equation solution.
 
 Hard is unsupported in this bounded package: no current hard source, and the historical authored later-reading extension changes the supplied-information backbone. Absence alone is not the evidence: the implemented historical proposal was checked and rejected under current template rules. New source evidence can reopen classification.
 
@@ -17,3 +17,4 @@ Source q-106936 has two algebraically equal wrong options, k(T-S) and -k(S-T). T
 - q-106937: moderate; template and full bank `q-106937`; plot rating none.
 - q-106878: easy; template and full bank `q-106878`; plot rating none.
 - q-106932: easy; template and full bank `q-106932`; plot rating none.
+- q-106877: easy; Fahrenheit cake; template and full bank `q-106877`; plot rating none.

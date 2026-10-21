@@ -2,14 +2,16 @@
 // local hours, so Sunday boundaries remain stable across daylight saving time.
 const CALENDAR_DAY_MS = 86400000;
 export const TARGET_WEEK_TIME_ZONE = 'America/Los_Angeles';
+const calendarFormatters = new Map();
 
 export function targetCalendarDay(instant, timeZone = TARGET_WEEK_TIME_ZONE) {
   if (instant === null || instant === undefined || instant === '') return null;
   const date = new Date(instant);
   if (!Number.isFinite(date.getTime())) return null;
-  const parts = new Intl.DateTimeFormat('en-US', {
+  if (!calendarFormatters.has(timeZone)) calendarFormatters.set(timeZone, new Intl.DateTimeFormat('en-US', {
     timeZone, year: 'numeric', month: 'numeric', day: 'numeric',
-  }).formatToParts(date);
+  }));
+  const parts = calendarFormatters.get(timeZone).formatToParts(date);
   const part = type => Number(parts.find(p => p.type === type).value);
   return Date.UTC(part('year'), part('month') - 1, part('day')) / CALENDAR_DAY_MS;
 }
