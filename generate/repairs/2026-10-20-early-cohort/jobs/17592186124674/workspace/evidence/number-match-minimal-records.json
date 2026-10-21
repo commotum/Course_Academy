@@ -6,43 +6,43 @@
       "title": "Modeling Inhibited Growth"
     },
     "question": {
-      ":question/id": "78913fef-0e7f-5e0a-bc15-cd78f05292b1",
+      ":question/id": "87141569-6717-56d7-8aa5-b890565a05fc",
       ":question/problem": "The growth of the number of deer in a protected forest is directly proportional to the difference between its maximum capacity and its current population. Let $N(t)$ be the number of deer, and let $t\\ge 0$ be the time in years. If the maximum capacity is $60$ deer, which differential equation models this population? Assume that $k>0$ is a constant of proportionality.",
       ":question/answer-fields": [
         {
-          ":answer-field/id": "6cad3782-9be3-574f-ad7f-c12a84563544",
+          ":answer-field/id": "f1e8c695-d376-53f4-b78d-e9f0c15f8c68",
           ":answer-field/key": "selection",
           ":answer-field/type": ":answer-field.type/radio",
           ":answer-field/choices": [
             {
-              ":answer/id": "769d800d-650e-5423-a8d3-551ee017d1f7",
+              ":answer/id": "9e1fab19-9c41-53fe-b04f-e012cf5ed8eb",
               ":answer/type": ":answer.type/math",
               ":answer/value": "\\frac{\\text{d}N}{\\text{d}t}=k(60-N)"
             },
             {
-              ":answer/id": "f46888e6-c469-5911-b71f-89d5ed6a9c91",
+              ":answer/id": "f924cbf3-c5b8-52f0-bf7d-d33323d5d3ca",
               ":answer/type": ":answer.type/math",
-              ":answer/value": "\\frac{\\text{d}N}{\\text{d}t}=-k(84-N)"
+              ":answer/value": "\\frac{\\text{d}N}{\\text{d}t}=k(N-60)"
             },
             {
-              ":answer/id": "94530c02-8da7-5390-b474-7d9061776caf",
+              ":answer/id": "ae3bb683-402b-52fd-8adc-0fccde960a5b",
               ":answer/type": ":answer.type/math",
-              ":answer/value": "\\frac{\\text{d}N}{\\text{d}t}=-k(89+N)"
+              ":answer/value": "\\frac{\\text{d}N}{\\text{d}t}=k(N-66)"
             },
             {
-              ":answer/id": "d6f17e53-f39d-51f7-bbd0-87f10dd4392c",
+              ":answer/id": "dac97248-b185-589e-add6-fb14c800be16",
               ":answer/type": ":answer.type/math",
-              ":answer/value": "\\frac{\\text{d}N}{\\text{d}t}=k(91-N)"
+              ":answer/value": "\\frac{\\text{d}N}{\\text{d}t}=kN(60-N)"
             },
             {
-              ":answer/id": "122da1a0-2540-535e-b14b-f4886fe9ac06",
+              ":answer/id": "ca1224f7-2021-5763-9526-26fe0928ed9d",
               ":answer/type": ":answer.type/math",
               ":answer/value": "\\frac{\\text{d}N}{\\text{d}t}=k(66-N)"
             }
           ],
           ":answer-field/correct": [
             ":answer/id",
-            "769d800d-650e-5423-a8d3-551ee017d1f7"
+            "9e1fab19-9c41-53fe-b04f-e012cf5ed8eb"
           ]
         }
       ],
@@ -50,7 +50,7 @@
       ":question/worked-solution": "The rate of change is proportional to the difference between the maximum capacity and the current quantity. Therefore,\n\n$$\n\\frac{\\text{d}N}{\\text{d}t}=k(a-N),\n$$\n\nwhere $a$ is the maximum capacity and $k>0$.\n\nHere $a=60$, so\n\n$$\n\\frac{\\text{d}N}{\\text{d}t}=k(60-N).\n$$"
     },
     "generation": {
-      "version": "inhibited-growth-easy-repair-2",
+      "version": "inhibited-growth-easy-repair-3",
       "seed": 3,
       "template": "direct_model",
       "profile": "model_operations",
@@ -59,16 +59,12 @@
         "capacity": 60,
         "candidates": [
           60,
-          66,
-          84,
-          89,
-          91
+          66
         ],
         "target_rank": 0,
         "linear_indices": [
           0,
-          1,
-          4
+          1
         ]
       },
       "source": {
@@ -81,7 +77,7 @@
       "evidence_only": false,
       "eligible_for_learning": true,
       "origin": "observed-method/authored-context",
-      "content_sha256": "afa43c0cb4104d0d1d9e2329085adfb5293502b8127a14f3343164a3e69cf4b0",
+      "content_sha256": "5f79ed9f65d636edd4f9d3fc1d611c29080ef20d4b84cd24d5cdbcec20642bce",
       "mathematical_fingerprint": "ada6bedf1aecaa5e887830e5141b8b657e706f7a60988b4460eb8b666c78c6ec",
       "symbol": "N",
       "domains": {
@@ -93,12 +89,16 @@
         "linear_gap",
         "linear_gap",
         "reverse_gap",
-        "negative_sum",
-        "linear_gap"
+        "reverse_gap",
+        "population_factor"
       ],
       "plots": [],
       "bank_kind": "mixed",
-      "target_rank": 0
+      "target_rank": 0,
+      "mixed_extra": {
+        "operation": "population_factor",
+        "candidate_rank": 0
+      }
     }
   }
 ]

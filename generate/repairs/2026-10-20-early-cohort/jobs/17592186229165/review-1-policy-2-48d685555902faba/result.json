@@ -1,0 +1,107 @@
+{
+  "verdict": "unsupported",
+  "summary": "The report correction passes the actual validator, but installation is blocked because evidence_root is read-only. Generator files remain unchanged; no generator repair is requested.",
+  "source_analysis": {
+    "skill": "Solve exponential-forcing initial value problems using a supplied complementary solution.",
+    "reasoning_steps": [
+      "Compare forcing and complementary exponents.",
+      "Choose trial forms and determine coefficients.",
+      "Apply the initial condition."
+    ],
+    "invariants": [
+      "Trial form follows exponent overlap.",
+      "Preserve the explicit-expression response."
+    ],
+    "permitted_variations": [
+      "Vary rates, coefficients and initial values.",
+      "Either mixed forcing position may carry resonance."
+    ],
+    "source_refs": [
+      "d2382def-85b2-5002-9614-692f272355c8",
+      "tutorial e6655774-c9ab-58c6-bfec-5013b08b7918"
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "provenance.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay-results.json"
+      ],
+      "details": "Completed source replay retained."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "hard-math-results.json"
+      ],
+      "details": "Independent mathematical checks retained."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "coverage-results.json",
+        "retained-finding-results.json"
+      ],
+      "details": "Fresh mixed samples cover both resonant positions."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "scope-results.json",
+        "construction-review.json"
+      ],
+      "details": "Completed scope validation retained."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-delivered-report.json"
+      ],
+      "details": "All 217 native-grader expectations matched."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render-inspection.json",
+        "render/rendering.json"
+      ],
+      "details": "Completed actual-UI rendering evidence retained."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "contract-repair/correction-validation.json",
+        "runtime-results.json"
+      ],
+      "details": "All 196 package files remain unchanged."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "contract-repair/pedagogical-variation.json",
+        "contract-repair/correction-validation.json",
+        "contract-repair/historical-inventory-shortcut.json",
+        "contract-repair/installation-failure.json",
+        "affected-inventory.json"
+      ],
+      "details": "Corrected evidence passes the actual validator in a saved snapshot. The required parent file remains uncorrected because installation raises EROFS. Historical inventory defects remain explicitly documented."
+    }
+  },
+  "findings": [
+    {
+      "kind": "evidence",
+      "description": "The validated correction cannot replace the required evidence-root report because that destination is read-only.",
+      "source_refs": [
+        "review_contract_feedback",
+        "scripts/generator_review.py:_decision_evidence"
+      ],
+      "reproduction": "Run python3 contract-repair/correct_report.py --install from evidence_root. Replacing pedagogical-variation.json raises OSError [Errno 30] Read-only file system.",
+      "requested_change": "Install the saved corrected artifacts with evidence-root write access and rerun validate_review. Use contract-repair/corrected-accepted-result.json as the acceptance candidate. Preserve historical inventory evidence; no generator authoring is needed."
+    }
+  ]
+}

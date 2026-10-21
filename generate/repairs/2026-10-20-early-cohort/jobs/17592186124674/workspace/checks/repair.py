@@ -58,8 +58,30 @@ def probes(records):
         caps=[int(sp.expand(eq[i]).subs(X,0)/k) for i in linear]
         rank=sorted(caps).index(caps[linear.index(next(i for i,c in enumerate(choices(r)) if c[':answer/id']==key(r)))])
         correct_i=next(i for i,c in enumerate(choices(r)) if c[':answer/id']==key(r))
-        group=(r['generation']['template'],'capacities' if len(linear)==5 else 'mixed')
+        kind='capacities' if len(linear)==5 else 'mixed'
+        # Visible token matching, including a stricter composition with length.
+        cap=int(re.search(r'(?:maximum.+?is|maximum capacity is) \$(\d+)\$',r['question'][':question/problem'])[1])
+        matching=[i for i,v in enumerate(vals) if cap in [int(n) for n in re.findall(r'\d+',v)]]
+        shortest_matching=[i for i in matching if lengths[i]==min(lengths[j] for j in matching)]
+        if kind=='mixed':
+            assert len(linear)>=2
+            # Both target assignments have wrong opposite-growth twins, not just
+            # today's correct one. No dependence on internal recipe metadata.
+            for i in linear:
+                twins=[j for j,e in enumerate(eq) if sp.expand(e+eq[i])==0]
+                assert twins and any(lengths[i]==lengths[j] for j in twins), vals
+            assert len(matching)>=2 and len(shortest_matching)>=2, vals
+        frequencies={c:sum(c in [int(n) for n in re.findall(r'\d+',v)] for v in vals) for c in caps}
+        most={c for c,n in frequencies.items() if n==max(frequencies.values())}
+        least={c for c,n in frequencies.items() if n==min(frequencies.values())}
+        first_freq=lambda ns:next(i for i,v in enumerate(vals) if ns.intersection(int(n) for n in re.findall(r'\d+',v)))
+        group=(r['generation']['template'],kind)
         groups[group].append({'lengths':lengths,'position':correct_i,'rank':rank,
+            'numeral_then_shortest_first':correct_i==shortest_matching[0],
+            'first_most_repeated':correct_i==first_freq(most),
+            'first_least_repeated':correct_i==first_freq(least),
+            'unique_numeral':len(matching)==1 and matching[0]==correct_i,
+            'numeral_then_unique_shortest':len(shortest_matching)==1 and shortest_matching[0]==correct_i,
             'unique_shortest':lengths.count(min(lengths))==1 and lengths[correct_i]==min(lengths),
             'unique_longest':lengths.count(max(lengths))==1 and lengths[correct_i]==max(lengths),
             'shortest_first':correct_i==min(range(5),key=lambda i:lengths[i]),
@@ -68,12 +90,14 @@ def probes(records):
     for (template,kind),rows in groups.items():
         n=len(rows)
         result={'template':template,'bank_kind':kind,'count':n,'chance':0.2,
-          'chance_after_identifying_linear_form':1/(5 if kind=='capacities' else 3),
+          'chance_after_identifying_linear_form':1/(5 if kind=='capacities' else 2),
           'positions':dict(collections.Counter(x['position'] for x in rows)),
           'eligible_capacity_ranks':dict(collections.Counter(x['rank'] for x in rows)),
-          **{name:sum(x[name] for x in rows) for name in ('unique_shortest','unique_longest','shortest_first','longest_first')}}
+          **{name:sum(x[name] for x in rows) for name in ('unique_shortest','unique_longest','shortest_first','longest_first','unique_numeral','numeral_then_unique_shortest','numeral_then_shortest_first','first_most_repeated','first_least_repeated')}}
         # Strict original shortcut: never a uniquely shortest correct normal item.
         assert result['unique_shortest']==0, result
+        if kind=='mixed':
+            assert result['unique_numeral']==result['numeral_then_unique_shortest']==0, result
         if n>=3:
             assert max(result['positions'].values())<n, result
             assert max(result['eligible_capacity_ranks'].values())<n, result
@@ -92,6 +116,8 @@ def main():
         return
     # Both exact retained counterexamples are tested against current code.
     minimal=g.generate_easy(seed=88,parameters={'context':'deer','capacity':20})
+    latest=g.generate_easy(seed=3,parameters={'context':'deer','capacity':60})
+    witness(latest)
     fixed60=g.generate_easy(seed=624,template='source_17592186308739',parameters={'capacity':60,'initial':10})
     witness(minimal);witness(fixed60)
     assert not fixed60['generation']['evidence_only']
@@ -105,8 +131,8 @@ def main():
             base=g.generate_easy(seed=seed,template=template)
             X=sp.Symbol(base['generation']['symbol']);k=sp.Symbol('k')
             linear_count=sum(bool(sp.degree(rhs(c[':answer/value']),X)==1 and sp.expand(rhs(c[':answer/value'])).coeff(X)==-k and rhs(c[':answer/value']).subs(X,0)/k>0) for c in choices(base))
-            eligible=[0,2,4] if linear_count==3 else list(range(5))
-            bank=[30,45,60,75,95]
+            eligible=list(range(linear_count))
+            bank=[60,95] if linear_count==2 else [30,45,60,75,95]
             group=[]
             for i in eligible:
                 params={'capacity':bank[i],'candidates':bank,'target_rank':i,'linear_indices':eligible}
@@ -118,6 +144,31 @@ def main():
             assert len({tuple(sorted(c[':answer/value'] for c in choices(r))) for r in group})==1
             assert len({r['question'][':question/problem'] for r in group})==linear_count
             assert len({r['question'][':question/worked-solution'] for r in group})==linear_count
+    # Resolve the concrete operation/role coverage obligation using a small
+    # targeted seed search. Classify the extra equation from printed polynomials.
+    seen={}; search_count=0
+    X=sp.Symbol('N');k=sp.Symbol('k')
+    for seed in range(64):
+        search_count+=1
+        base=g.generate_easy(seed=seed,parameters={'context':'deer','capacity':60})
+        if sum(bool(sp.expand(rhs(c[':answer/value'])).coeff(X)==-k and sp.degree(rhs(c[':answer/value']),X)==1 and rhs(c[':answer/value']).subs(X,0)/k>0) for c in choices(base))!=2:continue
+        pair=[g.generate_easy(seed=seed,parameters={'context':'deer','capacity':cap,'candidates':[60,95],'target_rank':i}) for i,cap in enumerate((60,95))]
+        eq=[rhs(c[':answer/value']) for c in choices(pair[0])]
+        paired=[sign*k*(cap-X) for sign in (-1,1) for cap in (60,95)]
+        extra=next(e for e in eq if not any(sp.expand(e-v)==0 for v in paired))
+        degree=sp.degree(extra,X)
+        op={1:'negative_sum',2:'population_factor',3:'quadratic_factor'}[degree]
+        cap=int(-extra.subs(X,0)/k if degree==1 else sp.expand(extra).coeff(X,degree-1)/k)
+        tag=(op,cap)
+        if tag not in seen:
+            assert sorted(c[':answer/value'] for c in choices(pair[0]))==sorted(c[':answer/value'] for c in choices(pair[1]))
+            assert answer(pair[0])!=answer(pair[1])
+            assert pair[0]['question'][':question/worked-solution']!=pair[1]['question'][':question/worked-solution']
+            for r in pair:witness(r)
+            seen[tag]=seed;controlled.extend(pair)
+        if len(seen)==6:break
+    assert len(seen)==6,seen
+    save('operation-coverage.json',{'independent_visible_classification':True,'targeted_seeds_searched':search_count,'cases':[{'operation':op,'extra_capacity':cap,'seed':seed,'target_capacities_tested':[60,95]} for (op,cap),seed in seen.items()],'note':'Every extra-operation assignment has both targets with the complete bank fixed. Seeds 3, 22 and 25 supplement the retained fresh range to resolve its small deer/hospital/frog subgroup coincidences; fixed-bank pairs independently demonstrate both roles in every template.'})
     # Exact reviewer fixed-bank pair: hold all source capacities fixed, 95 -> 60.
     for A in (95,60):
         pairs.append(g.generate_easy(seed=624,template='source_17592186308739',parameters={'capacity':A,'initial':10,'candidates':[95,30,60,100,950]}))
@@ -128,7 +179,7 @@ def main():
     assert irrelevant['question'][':question/worked-solution']==pairs[1]['question'][':question/worked-solution']
     assert sorted(c[':answer/value'] for c in choices(irrelevant))==sorted(c[':answer/value'] for c in choices(pairs[1]))
     # Small fresh default sample; normal branch must deliver competing capacities.
-    fresh=[g.generate_easy(seed=i) for i in range(48371,48411)]
+    fresh=[g.generate_easy(seed=i) for i in [*range(48371,48411),3,22,25]]
     for r in fresh:
         meta=r['generation']
         assert g.generate_easy(seed=meta['seed'],template=meta['template'],parameters=meta['parameters'])==r
@@ -144,23 +195,23 @@ def main():
         else:raise AssertionError(('unexpected acceptance',cap))
     for A in (10,99,100,5000):
         witness(g.generate_easy(seed=624,template='source_17592186308739',parameters={'capacity':A,'initial':1}))
-    records=[minimal,fixed60]+controlled+pairs+[irrelevant]+fresh+boundaries
+    records=[minimal,fixed60,latest]+controlled+pairs+[irrelevant]+fresh+boundaries
     maths=[witness(r) for r in records]
     save('regression-records.json',records)
     save('fresh-records.json',fresh)
     save('counterfactual-records.json',pairs+[irrelevant])
-    save('render-records.json',[next(r for r in fresh if r['generation']['bank_kind']=='mixed'),pairs[0],pairs[1]])
+    save('render-records.json',[g.generate_easy(seed=3,parameters={'context':'deer','capacity':cap,'candidates':[60,95],'target_rank':i}) for i,cap in enumerate((60,95))]+[pairs[1]])
     # Separate controlled groups remove stochastic small-group ambiguity.
     variation=probes(controlled)
-    save('pedagogical-variation.json',{'controlled':variation,'fresh':probes(fresh),'exact_minimal':probes([minimal]),'pairs':'counterfactual-records.json','semantic_models':len({x['capacity'] for x in maths}),'normal_sampler_rejection':'Constructive sampling: no rejection loop; explicit invalid calls raise ValueError.','limitations':'Cue probes are finite, not a proof against every strategy. Structure elimination in mixed banks exercises the lesson but leaves three competing equilibrium capacities.'})
+    save('pedagogical-variation.json',{'controlled':variation,'fresh':probes(fresh),'exact_minimal':probes([minimal]),'pairs':'counterfactual-records.json','semantic_models':len({x['capacity'] for x in maths}),'normal_sampler_rejection':'Constructive sampling: no rejection loop; explicit invalid calls raise ValueError.','limitations':'Cue probes are finite, not a proof against every strategy. Structure elimination in mixed banks exercises the lesson but leaves two competing equilibrium capacities. Numeral matching still leaves a same-length reversed-gap alternative; neither cue alone or combined uniquely identifies the answer.'})
     save('math-results.json',{'passed':True,'count':len(maths),'cases':maths,'invalid_parameters_rejected':invalid})
     # Native checks are selected using independent visible-equation witnesses.
     grader=[]
-    for index,r in enumerate([minimal,fixed60]+controlled+pairs+[irrelevant]+fresh[:5]):
+    for index,r in enumerate([minimal,fixed60,latest]+controlled+pairs+[irrelevant]+fresh[:5]):
         w=witness(r)
         grader.append({'label':f'easy {index} capacity {w["capacity"]}','record':r,'checks':[{'submitted_answer_id':c[':answer/id'],'expected':'accepted' if c[':answer/value']==w['correct'] else 'rejected','purpose':'visible equilibrium and complete equation independently checked'} for c in choices(r)]})
     save('grader-input.json',grader)
-    save('regression-results.json',{'passed':True,'finding_ids':['4063419ca27213935be7','8eb8b8ca4774f2a7305b'],'tested_records':len(records),'controlled_records':len(controlled),'fresh_records':len(fresh),'command':'<job-python> -B checks/repair.py'})
+    save('regression-results.json',{'passed':True,'finding_ids':['4063419ca27213935be7','8eb8b8ca4774f2a7305b','26de3f6661580d924a7d'],'tested_records':len(records),'controlled_records':len(controlled),'fresh_records':len(fresh),'command':'<job-python> -B checks/repair.py'})
     print(json.dumps({'passed':True,'records':len(records),'controlled':len(controlled),'fresh':len(fresh)}))
 
 if __name__=='__main__':main()

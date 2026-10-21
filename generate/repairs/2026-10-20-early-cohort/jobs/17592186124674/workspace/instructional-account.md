@@ -1,115 +1,82 @@
-# Inhibited-growth repair
+# Modeling inhibited growth
 
-The learner identifies the changing quantity, distinguishes its equilibrium capacity
-from its initial stock, and translates positive growth proportional to the remaining
-gap into dX/dt=k(a-X). The response remains one whole-equation radio selection from
-five alternatives. No integration, fitting, or population prediction is added.
+The learner identifies the changing quantity X and its equilibrium a, distinguishes
+any initial stock from that equilibrium, then translates positive growth proportional
+to the remaining gap into dX/dt=k(a-X), k>0. The response is one whole-equation
+radio selection from five alternatives. Solutions state the general model and
+substitute the equilibrium; integration and parameter fitting are outside this task.
+The requested easy band is supported. Existing moderate/hard coefficient-placement
+extensions are retained without a new source-fidelity claim for those bands.
 
-The supplied lesson Introduction (tutorial 9afedae3-a674-5a44-9d7a-4cdf57e66285)
-defines the rate in terms of distance from equilibrium, with positive coefficient
-and stock below equilibrium. Canonical fish question
-a568fc63-e81c-5210-93f0-bcbd429a9e40 substitutes capacity 200 into that model.
-Question 5651275c-fd64-5799-85e0-52ab15ebd288 distinguishes initial 10 from capacity
-95 among candidate capacities 95,30,60,100,950. Question
-3974627f-3801-52ea-b93f-3d1a3033e2cc distinguishes initial 320 from equilibrium
-1000; 4108ce6a-5d28-540e-b8c0-e4b52161a458 uses vehicles and a competing-capacity
-bank. The deer source 54bac72f-651e-55b5-8b4b-fbc4e753ebc5 instead contrasts signs
-and population factors. All 14 captured banks and solutions remain replayable.
+Tutorial 9afedae3-a674-5a44-9d7a-4cdf57e66285 says the rate depends on distance
+from the equilibrium and gives r(a-P), r>0, P<a. Its graph shows approach from
+below to a horizontal equilibrium; it supplies no additional question data and
+requires no generated plot. Canonical example a568fc63-e81c-5210-93f0-bcbd429a9e40
+substitutes fish capacity 200. Deer question
+54bac72f-651e-55b5-8b4b-fbc4e753ebc5 and factory question
+19a4e47b-fcd5-50aa-804a-b275eeea23d5 contrast positive gap, reversed gap,
+population factor, squared population factor, and negative sum at a shared capacity.
+Tutoring question 5651275c-fd64-5799-85e0-52ab15ebd288 distinguishes initial 10
+from capacity 95 among capacities 95,30,60,100,950. Computer question
+3974627f-3801-52ea-b93f-3d1a3033e2cc distinguishes initial 320 from capacity
+1000. Vehicle question 4108ce6a-5d28-540e-b8c0-e4b52161a458 also contrasts
+capacities. All 14 captured practice banks remain replayable with original fields,
+choices, solutions, keys and difficulty labels, including captured absences.
 
-Normal easy generation will sample the competing-capacity family and an explicit
-mixed-bank extension of the structural family. Mixed banks contain three distinct
-positive linear-gap models and two source-supported wrong operations (reversed
-gap, population factor, squared population factor, negative sum). Thus recognizing
-linear positive-gap form helps, but does not alone select the answer. Wrong
-structural constants are independent, distinct competing capacities, rather than
-four repetitions revealing the correct constant. Their historical misconception
-intent is not asserted. This extension changes neither modeling method nor workload.
+Normal easy samples source contexts and an authored direct-model context catalog.
+Capacity-only banks use five distinct positive linear gaps; any candidate capacity
+can be stated as the equilibrium. This preserves the source's legitimate capacity
+selection exercise. New constants use instructional integer bounds rather than
+requiring historical distractor ratios. Initial stocks remain positive and below
+equilibrium and need not equal a distractor capacity.
 
-Before incidental context is sampled, choose the bank kind, eligible linear target
-role, and a compatible set of five distinct positive capacities. Only that target's
-capacity is stated as the equilibrium; every linear target is eligible. For normal
-sampling choose a two- or three-digit range, five candidates, and the selected
-target's capacity. For explicit capacity calls, insert that capacity and sample
-the other candidates without historical-ratio restrictions. All constants use the
-same digit width in automatic sampling to prevent notation length from identifying the answer. Explicit
-candidate banks can preserve the source's differing digit widths. This is
-a presentation safeguard, not a mathematical constraint. Explicit calls may provide
-five distinct candidate capacities and target rank for controlled same-bank changes.
-Initial stocks, where present, remain positive and below equilibrium, independently
-sampled. They need not occur among the distractors: whether an initial stock equals
-a candidate cannot become a mandatory elimination shortcut. Correct position is
-shuffled independently. Solution stages remain general model then substitution.
+Mixed banks are a conservative combination of the two observed bank types. Choose
+the bank kind and eligible target rank before values/context. Draw two distinct
+candidate capacities. For each c, include k(c-X) and k(X-c). The latter is exactly
+the observed reversed-gap error -k(c-X), with equivalent presentation preventing a
+leading-minus length cue. A fifth equation uses one independently chosen candidate
+with the observed population factor, squared factor, or negative-sum error. Choose
+its operation and candidate role independently of the target before drawing values.
+Every equation is distinct; constants are intentionally shared. Both positive-gap
+candidates can become correct with the complete bank held fixed. Thus numeral
+matching leaves at least two choices, and choosing the shortest among them still
+leaves both signs. Frequency of a constant and the fifth equation's capacity cannot
+identify the target. Two candidate/sign pairs leave room for another observed wrong
+operation within the five-choice contract. This is an authored extension, not an
+assertion that these exact mixed banks appeared in the sources.
 
-Capacity, eligible candidate rank, bank kind, context, symbol, initial stock, and
-choice position must be covered; report them within recognizable prompt/bank groups.
-Controlled fixed-bank equilibrium changes must change key, prompt and solution;
-initial-stock changes must preserve the model and bank. Test shortest/longest,
-positions, candidate ranks and repeated-number cues before and after delivery.
-Source replay preserves all five choices, captured keys or their absences, and
-original difficulty labels; it does not constrain new distractors to source ratios.
+Fixed features have instructional reasons: positive k and stock below equilibrium
+express growth; a whole derivative equation preserves the modeling response; one
+correct choice and five options preserve the radio workload. Numeric values,
+eligible equilibrium assignments, context, variable, units, initial stock and option
+position can vary without changing the solution stages. Automatic sampling uses
+same-digit-width constants to remove length cues. Explicit banks may cross digit
+widths; mixed candidates still have equal-length reversed twins. Normal numerical
+bounds are unchanged (direct capacity20..500; source-context10..5000), with two mixed
+candidates or five capacity-only candidates. target_rank indexes the sorted candidate
+list; all ranks are eligible. Positive initial-stock variation is irrelevant to the
+ODE and must preserve its answer. No new learner operations are introduced.
 
-Positive k and below-equilibrium stock are fixed because they express inhibited
-growth. The derivative and five-choice contract preserve the assessed operation.
-The normal band is easy, matching 13 labeled source questions; one source is unrated.
-The existing bounded moderate/hard coefficient-placement extensions are retained
-unchanged, without a new source-fidelity claim for those bands.
+The latest defect was reproduced before implementation: seed3/deer/capacity60 let
+numeral copying identify the sole correct option. Earlier shortest-option and
+capacity60/initial10 regressions passed at that milestone. The second-repair design
+was written before runtime changes; the pre-implementation
+specification is retained in evidence/instructional-account-design-history.md.
+Current regressions parse the visible equations independently, exercise both mixed
+targets in every structural context, all five capacity targets, all three extra
+operations and both extra-capacity assignments. Controlled pairs hold the entire
+bank fixed while equilibrium, key and solution change together. Changed initial
+stock preserves the bank and response. Check numeral copying, lengths and their
+composition, frequency cues, option positions and capacity ranks before/after the
+shared delivery filter. Semantic instances are numerical equilibrium models, not
+seeds, UUIDs, context aliases or shuffles. Actual native grading tests every option
+in representative banks, including controlled pairs.
 
-Source gaps: the canonical fish bank is absent; rehabilitation has no captured key,
-solution, or difficulty. Its unique model can be derived for normal learning, while
-replay preserves absences. Factory source mixes stock units with units/day for its
-capacity; normal generation corrects both prompt and solution to units. No practice
-question has a plot. The introductory graph illustrates approach from below, not
-additional evidence required by these tasks. Prerequisite snapshot is empty; the
-neighboring identification example supplies the positive linear-gap form. Existing
-historical extraction documents describe the previous design; this account supersedes
-their normal-easy exclusion and ratio restrictions, while preserving replay.
-
-## Second repair specification (before implementation)
-
-Latest finding 26de3f6661580d924a7d reproduces at seed 3, deer, equilibrium
-60: only k(60-N) contains the prompt numeral. evidence/before-number-match.json
-records the exact failure; both earlier findings still pass before this repair.
-The preceding distinct-constant rule is superseded here, not the source evidence.
-
-A mixed bank will use two distinct candidate capacities. For EACH candidate c,
-include k(c-X) and k(X-c). The latter is the same reversed-gap error as the
-source's -k(c-X), written without a leading-minus length cue. A fifth alternative
-uses one independently chosen candidate capacity with the observed population
-factor, squared population factor, or negative-sum error. Source questions
-54bac72f-651e-55b5-8b4b-fbc4e753ebc5 and
-19a4e47b-fcd5-50aa-804a-b275eeea23d5 support all these wrong operations;
-5651275c-fd64-5799-85e0-52ab15ebd288 supports capacity competition.
-This complete mixed bank is an authored same-method extension. Original banks
-remain available through exact evidence replay.
-
-Choose bank kind, target rank, and fifth-option operation/capacity role before
-numerical values and context. Both linear candidates can be correct with the
-ENTIRE option bank held fixed. Each has a wrong, equally short reversed-gap twin.
-The fifth option's capacity assignment is independent of the chosen target, so
-neither repetition count nor the factor alternative identifies the correct
-capacity. Two candidates leave room for both signs and one factor/sum error in
-the five-choice contract; five unrelated constants are not instructional invariants.
-Equations must be distinct; constants are intentionally shared. Capacity matching
-alone now leaves at least two choices. Selecting the shortest of these still
-leaves both signs, including at digit-width boundaries. Positive growth for
-X<c distinguishes them, as required by the tutorial's r>0 and P<a passages.
-
-Competing-capacity banks retain five distinct linear gaps, freely reassigned
-among all five source-supported target roles, including initial10/capacity60.
-Their legitimate equilibrium-matching shortcut is the skill itself. Neither
-initial stock nor context alters the correct differential equation. No solving,
-fitting, extra response fields, or new learner operations are introduced.
-The supported parameter API uses two mixed candidates or five capacity-only
-candidates; target_rank indexes that list. All are eligible. Sampling bounds,
-source prompts/solutions, easy difficulty, and five radio choices are retained.
-
-Coverage must exercise both mixed target ranks in each structural context with
-an unchanged bank, all five capacity-only target ranks, all three fifth-option
-operations and both fifth-option capacity assignments. Independently parse the
-visible equations; test numeral matching, shortest/longest choices, their
-composition with numeral matching, most/least repeated constants, labels and
-positions before/after delivery. Preserve every history finding as an executable
-regression, and rerun the two exact earlier counterexamples. Count semantic
-models by equilibrium, not by shuffles or UUIDs. Actual native grader acceptance
-and rejection must track every changed target. Source, inventory, and relocation
-checks are reused; moderate/hard runtime branches remain unchanged.
+Source limitations: the canonical fish answer bank is absent; rehabilitation
+bdadb029-2e6a-54b7-8c42-d0b37b92a134 lacks key, solution and difficulty. Replay
+preserves those gaps; normal learning derives its unique model. Factory source
+mixes stock units and units/day; served prompt and solution consistently use units,
+while replay retains the original. Prerequisite snapshot is empty; the neighboring
+identification example supports the positive linear-gap rule. Live learner history
+and post-capture inventory are unavailable offline. No engine limitation was found
+in the radio response contract.

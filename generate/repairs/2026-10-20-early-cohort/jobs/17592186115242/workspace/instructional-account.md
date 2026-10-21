@@ -1,5 +1,29 @@
 # Instructional account and targeted repair
 
+Eleventh-pass scope: preserve the existing construction repairs and five staged
+replacements. Canonical f2c7cfd3-da43-5208-bd0e-21692357fabe eliminates x to get
+`(k+4)y=-5`; tutorial e0c85152-daea-5a87-a3ba-81870558c7a2 distinguishes no
+solutions from infinitely many solutions. These learner operations and the
+five-choice contract remain supported. The latest retained defect concerns
+already stored answer banks, not a new construction rule in this candidate.
+Reproduce the strict failure, rerun retained regressions, and verify the existing
+replacement mapping. Preserve the strict failure until separately authorized
+inventory remediation changes the captured selectable pool. No further runtime
+implementation is justified by the unchanged evidence.
+
+Tenth-pass scope: the first executed regression again reproduced the five
+historical banks and 64/64 possible-history shortcut successes. Preserve the
+completed generator repairs and exact old counterexamples. The learner still
+eliminates x, solves the surviving coefficient for k, and interprets a false or
+redundant equation (canonical f2c7cfd3-da43-5208-bd0e-21692357fabe and tutorial
+e0c85152-daea-5a87-a3ba-81870558c7a2). No new mathematical construction defect
+is reported. Recheck every retained finding and the existing replacement mapping,
+using one reusable status script; do not produce another interchangeable render
+or silently substitute replacements for captured inventory. Historical-pool
+resolution requires the separate remediation step named in the review, which
+this task's explicit prohibition on database changes prevents. Keep its strict
+regression failing and report the scope conflict without weakening acceptance.
+
 Ninth-pass scope: reproduced finding 591f580cadb749294588 first; the strict
 check exits 1 for five stored records and the 64/64 possible-history witness.
 The latest feedback reports that same stored-pool defect, not a new runtime

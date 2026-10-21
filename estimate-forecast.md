@@ -4,7 +4,7 @@ Prepared for ChatGPT Pro on 2026-10-21. Project: Course Academy. This is a resea
 
 ## 1. The assignment for ChatGPT Pro
 
-Develop a defensible way to estimate the learner's remaining workload, the rate at which that workload grows, the completion date at the learner's current pace, and the pace needed to be ready by a chosen future date. Report both overall and per-course results. The courses of interest are MTH 255 (Vector Calculus II), MTH 256 (Differential Equations), and MTH 341 (Linear Algebra).
+Develop a defensible way to estimate the learner's remaining workload, the rate at which that workload grows, the completion date at the learner's current pace, and the pace needed to be ready by a chosen future date. Report both overall and per-course results. The courses of interest are MTH 255 (Vector Calculus II), MTH 256 (Applied Differential Equations), and MTH 341 (Linear Algebra I), using their current database titles.
 
 The learner's first approximation is:
 
@@ -151,6 +151,8 @@ Browser preferences store enabled courses, Queue visibility, week selection, and
 
 An exact chosen week range can deliberately suppress most assignment workload. Show that selection in any result. For a report intended to describe all three courses' workload, All weeks is the explicit census setting rather than an unnoticed browser setting. Pro should preserve the requested filter behavior and state how historical week selections are interpreted.
 
+For an implementation, prefer one shared scope calculation or explicit parity checks against these UI functions. A second approximation that happens to use “depth 2” can still disagree on root filtering, legacy course associations, unassigned targets, or week selection. Carry the scope descriptor into every saved observation and result.
+
 ### Course-track placement
 
 Split layout currently has only the three course tracks. There is no Shared or Other track. Placement is a reporting/layout allocation, not a mutation of course membership or a scheduler restriction.
@@ -286,6 +288,8 @@ Each lesson KP advances after two consecutive correct answers, fails the lesson 
 
 Failed lessons can create retry delays and targeted repairs. Repeated failure at the same KP can escalate to that KP's key prerequisite topics. Assessment misses create review obligations; failed remediation reviews can require relearning. Retakes are linked to the exact original task and remain optional after required repairs. Count this work by obligation and attempt provenance rather than creating one extra review for every incoming graph edge.
 
+The current assessment lifecycle examines every assigned assessment step. A step without a correct recorded outcome can create a repair obligation even though an unanswered/unpresented step creates no fabricated wrong-answer FIRe evidence. Preserve that distinction when estimating the consequences of expiry.
+
 ### Assessment cadence is global and uses earned practice XP
 
 `scheduling::lifecycle` reconstructs cadence from finalized lesson/review/assignment awards. An ordinary assessment completion or expiry resets its running practice-XP total; retakes do not reset it the same way. Assessment awards themselves are not added as ordinary practice XP in this counter. Negative awards and overshoot affect cadence.
@@ -324,6 +328,8 @@ Reviews are learner-wide. `retrieval::due_topics` needs explicitly learned, comp
 
 Do not count only reviews due today or only the first due date per topic. During a forecast horizon, existing topics decay again, newly learned topics become reviewable, and reviews/lessons/assessments can postpone future due dates through direct or implicit credit. Some due reviews will not surface immediately, and the learner may skip optional recommendations. Report a review-adherence assumption and distinguish due, prepared, recommended, and actually completed reviews. Required remediation needs separate treatment.
 
+Tag review work as inside the selected topic scope or outside it. The engine can surface reviews/remediation for topics excluded from this graph, including low-layer topics. If the forecast assumes the learner follows those recommendations, their time is a separate interruption/overhead budget; it must not silently reintroduce excluded topics into the graph-matching lesson inventory. If the learner elects to ignore optional outside-scope reviews, that is an explicit behavioral scenario.
+
 ## 9. Historical weekly growth using the same scope
 
 The primary requested estimate is **average weekly growth observed through the forecast cutoff**, per course, in both topic counts and base-XP workload. Historical additions of prerequisites are derived changes in the scoped graph, not a separate `learner/prerequisites` collection.
@@ -333,6 +339,8 @@ The primary requested estimate is **average weekly growth observed through the f
 For each historical observation, capture or reconstruct the learner's targets/queue, linked assignments and their coverage, curriculum associations, prerequisite graph, lesson estimates, and available progress at that point. Apply the same scope descriptor, depth, L30 cutoff, and track policy. Preserve enough history to distinguish additions, removals, completions, mapping edits, and changes in workload estimates.
 
 For scoped set `S(t)`, use set differences between observations. For remaining-work set `U(t)`, remove completed acquisition only under an explicit mastery/completion rule. “Target added” does not necessarily mean “new physical lesson required”: the topic might already be queued, already in the depth-2 closure, already learned, below the cutoff, or covered by another assignment. A new root can also bring several additional prerequisites.
+
+Publish both graph-scope growth and additional required-work growth if needed. The latter is the demand term for a remaining-work forecast: newly visible but already learned topics should not automatically add a full lesson's base XP. Conversely, a target that was already a displayed prerequisite can add zero new first-learning workload while changing its deadline or importance. Changes in `U(t)` caused by completed study are service, not negative arrivals.
 
 Keep explanatory source categories (target, queue, prerequisite-only), but deduplicate the total. A prerequisite becoming a target is a category transition, not a new lesson. Use an explicit precedence or marginal-allocation convention if additive category totals are wanted. Keep gross additions, gross removals, and net backlog change separate. Net backlog decline is not the arrival rate, because it includes learning service.
 
@@ -512,3 +520,676 @@ Paths below are relative to the repository root. The report carries the schema a
 | [Assignment import](scripts/import_school_assignments.py), [sync](scripts/sync_f26_assignments.py), [remaining import](scripts/prepare_remaining_f26_assignments.py) | Newly linked assignment targets, source provenance, deadlines, preservation of removed targets |
 | [Engine overview](engine/rust/README.md), [app setup](README.md) | Operational orientation; confirm current details against runtime code |
 
+
+## Appendix A. Complete declared domain schema
+This catalog covers every `:db/ident` declaration in the repository’s schema EDN files: **174 attributes, 29 entity validation specifications, and 34 enum/documentation identities**. Native EDB built-ins are described separately below. Types, cardinality, uniqueness, components, indexes, documentation, and validation requirements come from the source declarations. Seed transactions contain values and relationship instances rather than additional domain attributes. Older installed aliases or retired definitions require a live schema inventory if they matter to an export.
+An ordinary ref does not establish ownership. `component` marks owned children; `identity` marks a unique identity; `index` records an explicit source index declaration. A validation specification is opt-in through `:db/ensure`; its existence does not imply every imported entity is complete or every target/reference contract is automatically enforced. Source documentation occasionally mentions old filenames; the linked current schema file is authoritative for this catalog.
+
+### `schema/data/1-1-course-group.edn`
+
+| Attribute | Type / cardinality | Other declarations | Schema documentation |
+|---|---|---|---|
+| `:course-group/id` | uuid / one | identity | Stable identity of this course group. |
+| `:course-group/title` | string / one | — | Catalog group title, for example High School - Traditional or Mathematical Foundations. |
+| `:course-group/courses` | ref / many | — | Courses included in this catalog group. Ordinary refs define unordered membership without owning or duplicating courses. Reverse lookup supplies a course's groups. Course/next supplies progression independently; topic/next remains the prerequisite graph. Validate referenced courses separately. |
+
+**Validation `:course-group/validate`**: Requires identity, title, and at least one course ref when explicitly ensured. Nonempty titles and reference target types require application validation.
+
+Required attributes: `[:course-group/id :course-group/title :course-group/courses]`.
+
+### `schema/data/2-course.edn`
+
+| Attribute | Type / cardinality | Other declarations | Schema documentation |
+|---|---|---|---|
+| `:course/id` | uuid / one | identity | Stable course identity assigned by our application, independent of Math Academy's identifier. |
+| `:course/math-academy-id` | long / one | identity | Optional original Math Academy course identifier, taken from course-id in DATA/Courses.csv. Omit for independently created courses. |
+| `:course/title` | string / one | — | Course title without its code, for example Algebra I or Vector Calculus II. |
+| `:course/code` | string / one | — | Optional short course code, for example AG1 or MTH 255. |
+| `:course/school` | string / one | — | Optional name of the school offering the course, for example Oregon State University. |
+| `:course/description` | string / one | — | Optional Markdown description of the course's purpose and overall scope. Corresponds to the Course Description section in a course map; store the section body without its heading. |
+| `:course/overview` | string / one | — | Optional Markdown overview of what students study and how the major areas connect, including teaching progression where established. Corresponds to the Course Overview section in a course map; store the section body without its heading. |
+| `:course/outcomes` | ref / many | component | Optional owned course outcomes, defined in 2-2-course-outcome.edn. Sort by course-outcome/index for display order; each outcome may have a category heading. Writers must separately ensure course-outcome/validate on each outcome. |
+| `:course/units` | ref / many | — | Units belonging to this course. At least one is required when course/validate is explicitly ensured. These ordinary refs define unordered membership; unit/next supplies navigation between units. Topic/next supplies the underlying knowledge dependencies. Referenced units must be validated separately. |
+| `:course/next` | ref / many | — | Optional direct downstream courses for curriculum navigation. Ordinary refs preserve shared courses; reverse lookup supplies preceding courses. These links present progression between topic collections. Topic/next remains the authoritative prerequisite graph; course links do not impose additional whole-course completion requirements. |
+| `:course-outcome/id` | uuid / one | identity | Stable identity of a learning outcome owned by one course. |
+| `:course-outcome/index` | long / one | — | 1-based display order across all outcomes in the course, continuing across category headings. Must be positive and unique within that course, not globally unique. |
+| `:course-outcome/category` | string / one | — | Optional category heading, for example Differentiation. Omit for an ungrouped outcome. This is a display grouping within the course, not a reference to a curriculum unit or module. |
+| `:course-outcome/text` | string / one | — | The course-level capability stated by one outcome bullet, stored as Markdown supporting LaTeX. Excludes the bullet marker, category heading, and shared introductory sentence. |
+
+**Validation `:course/identity-validate`**: Requires only identity for a placeholder course when explicitly ensured. Use course/validate after filling in its required data.
+
+Required attributes: `[:course/id]`.
+
+**Validation `:course/validate`**: Requires our identity, a title, and at least one unit ref when explicitly ensured. The Math Academy identifier, course code, school, description, overview, outcomes, and next courses are optional. Nonempty titles, reference target types, outcome indexes unique within this course, and prevention of self-links and cycles require application validation.
+
+Required attributes: `[:course/id :course/title :course/units]`.
+
+**Validation `:course-outcome/validate`**: Requires identity, index, and outcome text when explicitly ensured. Category is optional. Nonempty text and category labels, positive indexes, index uniqueness within the course, and ownership by exactly one course require additional validation.
+
+Required attributes: `[:course-outcome/id :course-outcome/index :course-outcome/text]`.
+
+### `schema/data/3-unit.edn`
+
+| Attribute | Type / cardinality | Other declarations | Schema documentation |
+|---|---|---|---|
+| `:unit/id` | uuid / one | identity | Stable unit identity assigned by our application, independent of Math Academy's identifier and the unit's order within its course. |
+| `:unit/math-academy-id` | long / one | identity | Optional original Math Academy unit identifier, taken from unit-id in DATA/Units.csv. Omit for independently created units. |
+| `:unit/title` | string / one | — | Unit title, taken from unit-name in DATA/Units.csv, for example Operations & Algebraic Thinking. |
+| `:unit/modules` | ref / many | — | Modules belonging to this unit. At least one is required when unit/validate is explicitly ensured. These ordinary refs define unordered membership; module/next supplies navigation between modules. Referenced modules must also ensure module/validate. |
+| `:unit/next` | ref / many | — | Optional direct downstream units for curriculum navigation. Ordinary refs preserve shared units; reverse lookup supplies preceding units. These links present progression between topic collections. Topic/next remains the authoritative prerequisite graph; unit links do not impose additional completion requirements. |
+
+**Validation `:unit/identity-validate`**: Requires only identity for a placeholder unit when explicitly ensured. Use unit/validate after filling in its required data.
+
+Required attributes: `[:unit/id]`.
+
+**Validation `:unit/validate`**: Requires our identity, a title, and at least one module ref when explicitly ensured. The Math Academy identifier and next units are optional. Nonempty titles, reference target types, and prevention of self-links and cycles require application validation. Referenced modules must be validated separately.
+
+Required attributes: `[:unit/id :unit/title :unit/modules]`.
+
+### `schema/data/4-module.edn`
+
+| Attribute | Type / cardinality | Other declarations | Schema documentation |
+|---|---|---|---|
+| `:module/id` | uuid / one | identity | Stable module identity assigned by our application, independent of Math Academy's identifier and the module's order within its unit. |
+| `:module/math-academy-id` | long / one | identity | Optional original Math Academy module identifier, taken from module-id in DATA/Modules.csv. Omit for independently created modules. |
+| `:module/title` | string / one | — | Module title, taken from module-name in DATA/Modules.csv, for example Operations on Numbers. |
+| `:module/topics` | ref / many | — | Topics belonging to this module. At least one is required when module/validate is explicitly ensured. These ordinary refs permit topic reuse across modules without cascading deletion. References define unordered membership; topic/next supplies direct downstream dependencies across the shared topic graph. Referenced topics must also ensure topic/validate. |
+| `:module/next` | ref / many | — | Optional direct downstream modules for curriculum navigation. Ordinary refs preserve shared modules; reverse lookup supplies preceding modules. These links present progression between topic collections. Topic/next remains the authoritative prerequisite graph; module links do not impose additional completion requirements. |
+
+**Validation `:module/identity-validate`**: Requires only identity for a placeholder module when explicitly ensured. Use module/validate after filling in its required data.
+
+Required attributes: `[:module/id]`.
+
+**Validation `:module/validate`**: Requires our identity, a title, and at least one topic ref when explicitly ensured. The Math Academy identifier and next modules are optional. Nonempty titles, reference target types, and prevention of self-links and cycles require application validation. Referenced topics must be validated separately.
+
+Required attributes: `[:module/id :module/title :module/topics]`.
+
+### `schema/data/5-1-topic.edn`
+
+| Attribute | Type / cardinality | Other declarations | Schema documentation |
+|---|---|---|---|
+| `:topic/id` | uuid / one | identity | Stable topic identity, independent of its course memberships. |
+| `:topic/math-academy-id` | long / one | identity | Optional original Math Academy topic identifier, taken from topic-id in DATA/Topics.csv or DATA/Lesson-Data tables. Omit for independently created topics. |
+| `:topic/title` | string / one | — | Name of the topic, for example Integration by Substitution. |
+| `:topic/difficulty` | double / one | — | Optional positive finite lesson workload multiplier, default 1.0. Multiply the unrounded expected-distribution content score before rounding base XP. Calibrate from an authoritative Math Academy lesson base denominator and the first two questions per KP. Values above one are allowed. This is not accuracy and never enters retention or learning speed. |
+| `:topic/next` | ref / many | — | Direct downstream topics that require this topic. A next C means A is a direct prerequisite of C; reverse lookup of topics pointing to C supplies C's prerequisites. This is the authoritative topic dependency graph across all courses. Store direct edges; derive transitive dependencies by traversal. These ordinary refs do not establish ownership. Reference target types and prevention of self-dependencies and cycles require application validation. Distinct from encompassing weights and knowledge-point/key-prerequisites used for targeted remediation. |
+| `:topic/encompasses` | ref / many | component | Optional owned encompassing records, each identifying a component topic and its coverage weight. The containing topic supplies the source: practicing it exercises the referenced topics' skills. Defined in this file. Writers separately ensure encompassing/validate on each record. Relationships are distinct from prerequisites; duplicate targets, self-links, cycles, and ownership require additional validation. |
+| `:topic/knowledge-points` | ref / many | — | Knowledge points taught within this topic; at least one is required when topic/validate is explicitly ensured. Their question pools are associated with the knowledge points. Instructional order will be defined separately; these references are unordered. |
+
+**Validation `:topic/identity-validate`**: Requires only identity for a placeholder topic when explicitly ensured. Use topic/validate after filling in its required data.
+
+Required attributes: `[:topic/id]`.
+
+**Validation `:topic/difficulty-validate`**: Requires a topic identity and a strictly positive finite workload multiplier. Does not require a fully populated curriculum topic.
+
+Required attributes: `[:topic/id :topic/difficulty]`.
+
+Application predicate: `course-academy.topic/valid-difficulty?`.
+
+**Validation `:topic/validate`**: A curricular topic, shared across courses and containing knowledge points. Explicit db/ensure requires identity, title, and at least one knowledge-point reference. The predicate checks difficulty when present. Referenced knowledge points and encompassing records must be validated separately.
+
+Required attributes: `[:topic/id :topic/title :topic/knowledge-points]`.
+
+Application predicate: `course-academy.topic/valid-difficulty?`.
+
+### `schema/data/5-2-encompassing.edn`
+
+| Attribute | Type / cardinality | Other declarations | Schema documentation |
+|---|---|---|---|
+| `:encompassing/topic` | ref / one | — | The component topic whose skills are practiced implicitly. This ordinary ref preserves the topic when the encompassing record is deleted. Validate the referenced topic separately. |
+| `:encompassing/weight` | double / one | — | Coverage fraction from 0 to 1 describing how much practice the containing topic provides for the component topic. Distinct from learner accuracy and final repetition credit; the engine applies performance and timing rules separately. |
+| `:encompassing/rationale` | string / one | — | Optional explanation of which component skills the containing topic exercises and why this coverage weight was chosen. |
+
+**Validation `:encompassing/validate`**: Requires a component topic and weight when explicitly ensured. A valid topic target, finite weight in [0,1], and relationship consistency require additional validation.
+
+Required attributes: `[:encompassing/topic :encompassing/weight]`.
+
+### `schema/data/6-knowledge-point.edn`
+
+| Attribute | Type / cardinality | Other declarations | Schema documentation |
+|---|---|---|---|
+| `:knowledge-point/id` | uuid / one | identity | Stable identity of the knowledge point, independent of an individual learner's progress or question occurrences. |
+| `:knowledge-point/title` | string / one | — | Name of the instructional skill or case demonstrated by the worked example, corresponding to captured example titles. |
+| `:knowledge-point/key-prerequisites` | ref / many | — | Optional references to prerequisite topics whose skills are most directly used in this KP, supporting targeted remedial reviews. Distinct from the containing topic's general prerequisites. These ordinary refs do not establish ownership; omit when no links are known. |
+| `:knowledge-point/canonical-example` | ref / one | — | Required reference to the canonical worked example question demonstrating this KP. The target must have question/id, a problem, and a nonempty worked solution. This reference establishes its worked-example role. This ordinary ref permits content reuse without cascading deletion. Canonical-example targets cannot belong to any KP practice question pool. |
+| `:knowledge-point/questions` | ref / many | — | Required pool containing at least one ordinary gradable question associated with this KP. Any question referenced through knowledge-point/canonical-example is excluded, including examples of other KPs. Lesson practice, reviews, and assessments select appropriate items from the pool using learner history. This collection is unordered; question selection and avoidance of already-answered lesson items belong to the engine. |
+| `:knowledge-point/question-generator` | ref / one | — | Optional reference to a question-generator entity holding a Python script that produces new questions for this KP. The application invokes the generator when more questions are needed, validates its output, and adds accepted questions to the KP's pool. |
+
+**Validation `:knowledge-point/identity-validate`**: Requires only identity for a placeholder knowledge point when explicitly ensured. Use knowledge-point/validate after filling in its required data.
+
+Required attributes: `[:knowledge-point/id]`.
+
+**Validation `:knowledge-point/validate`**: Native EDB specification requiring KP identity, title, a canonical example question ref, and at least one practice question ref when explicitly ensured. Writers ensure question/validate for both examples and practice questions, along with child specifications. The application checks target types, nonempty canonical worked solutions, disjointness of all canonical targets from every practice pool, mathematical correctness, and selection rules.
+
+Required attributes: `[:knowledge-point/id :knowledge-point/title :knowledge-point/canonical-example :knowledge-point/questions]`.
+
+### `schema/data/7-question-generator.edn`
+
+| Attribute | Type / cardinality | Other declarations | Schema documentation |
+|---|---|---|---|
+| `:question-generator/id` | uuid / one | identity | Stable identity of a validated question generator registered through knowledge-point/question-generator. |
+| `:question-generator/script` | string / one | — | Reference to the validated Python generator: generators/<prefix>/<sha256>/<entrypoint> resolves below EDB_MATH_ROOT to an immutable content-addressed package; legacy repository-relative paths remain supported. Its package records supported templates, difficulty capabilities, finite limits, dependencies and reproducible CLI usage. Registration does not certify arbitrary generated output; generation must pass the content validation and durable commit workflow. |
+
+### `schema/content/0-activity.edn`
+
+| Attribute | Type / cardinality | Other declarations | Schema documentation |
+|---|---|---|---|
+| `:activity/id` | uuid / one | identity | Stable identity of the activity definition, independent of learner attempts. |
+| `:activity/math-academy-id` | long / one | — | Optional verified Math Academy activity-definition identifier. Captured taskId values belong on learner-task; do not substitute a topic or content ID. |
+| `:activity/title` | string / one | — | Display title of the activity. |
+| `:activity/type` | ref / one | — | Activity-type enum selecting the application's lesson, review, assessment, diagnostic, or assignment rules. An assignment may contain one multistep problem or several problems. |
+| `:activity/course` | ref / one | — | Optional course this activity belongs to, such as the school course assigning homework. References a course entity. Independent of the content targeted by activity/scope and assigned-problem/topic-coverage; does not restrict supporting topics to this course. |
+| `:activity/due` | instant / one | — | Optional calendar deadline, such as an assignment due date. Distinct from a time limit measured after starting. |
+| `:activity/scope` | ref / one | — | Optional curriculum content targeted by this activity. Lessons and reviews target a topic; diagnostics may target a course, unit, module, or topic. Omit when scope is fully described by the selected content. Course affiliation belongs on activity/course; assignment problem coverage belongs on assigned-problem/topic-coverage. This ordinary ref preserves shared curriculum. |
+| `:activity/time-limit-seconds` | double / one | — | Optional positive finite wall-clock limit for the whole activity, measured from the task's first start. Pausing does not extend this limit. |
+| `:activity/expected-seconds` | double / one | — | Optional positive finite estimate of the activity's total working time, including adaptive practice. Omit when calculated directly from step estimates. |
+| `:activity/steps` | ref / many | component | Immediate steps owned by this activity. The collection is unordered; first-step and the steps' continuation links define the route. Steps inside referenced multistep content belong to that multistep instead. Validate steps and their referenced content separately. |
+| `:activity/first-step` | ref / one | — | Entry point into the activity; must be a member of activity/steps. This ordinary ref adds no second ownership relationship. Application stopping rules may finish an attempt before every step is presented. |
+
+- `:activity.type/lesson`.
+
+- `:activity.type/review`.
+
+- `:activity.type/assessment`.
+
+- `:activity.type/diagnostic`.
+
+- `:activity.type/assignment`.
+
+**Validation `:activity/validate`**: Requires identity, title, type, steps, and an entry point. The application checks enum values, step ownership and routing, positive finite timings, and type-specific requirements: topic scope for lessons/reviews and curriculum scope for diagnostics. Assignment deadlines are optional.
+
+Required attributes: `[:activity/id :activity/title :activity/type :activity/steps :activity/first-step]`.
+
+### `schema/content/1-step.edn`
+
+| Attribute | Type / cardinality | Other declarations | Schema documentation |
+|---|---|---|---|
+| `:step/id` | uuid / one | identity | Stable identity of a stage in one activity or multistep problem. |
+| `:step/math-academy-id` | long / one | identity | Optional verified Math Academy step or placement ID. Not a question or content ID. |
+| `:step/content` | ref / one | — | Tutorial, question (including a worked example), multistep, assigned problem, or knowledge point presented at this stage. An assigned problem references its question or multistep and carries its topic mapping. A multistep expands into its own steps; a knowledge point expands into its canonical example question and adaptive practice. Removing the step preserves its content. |
+| `:step/time-limit-seconds` | double / one | — | Optional positive finite maximum duration for the whole stage, including any expanded practice. Actual learner timing belongs to task records. |
+| `:step/expected-seconds` | double / one | — | Optional positive finite expected workload for the whole stage, including any expanded practice. This estimate is not an enforced limit. |
+| `:diagnostic-probe/on-correct` | ref / one | — | Next step in the same activity after a correct answer. Omit when this outcome ends the diagnostic. |
+| `:diagnostic-probe/on-incorrect` | ref / one | — | Next step in the same activity after an incorrect answer when no retry is taken. Omit when this outcome ends the diagnostic. |
+| `:diagnostic-probe/on-skipped` | ref / one | — | Next step in the same activity when the learner explicitly skips the presented question. Omit when this outcome ends the diagnostic. Unpresented questions do not take this branch. |
+| `:diagnostic-probe/on-silly-mistake` | ref / one | — | Optional alternate step in the same activity taken when the learner accepts a retry after a submitted incorrect answer. Use a different question on the same topic at the same difficulty, distinguishable from the ordinary incorrect continuation. The completed retry replaces the original result for frontier placement; both presentations remain in history. The application offers the available retry without a timing gate; skips receive no retry. Omit this branch on the alternate step to allow only one retry. |
+| `:step/next` | ref / one | — | Optional next sibling step under the same activity or multistep owner. The final inner step returns to the enclosing step's continuation. This is presentation order, not a prerequisite edge. Diagnostic steps use outcome branches instead of this linear continuation. |
+
+**Validation `:step/validate`**: Requires identity and content when explicitly ensured. The application checks exactly one owner through activity/steps or multistep/steps, reference targets, positive finite timings, and valid continuation links. Containment must be acyclic. Validate content separately.
+
+Required attributes: `[:step/id :step/content]`.
+
+### `schema/content/2-tutorial.edn`
+
+| Attribute | Type / cardinality | Other declarations | Schema documentation |
+|---|---|---|---|
+| `:tutorial/id` | uuid / one | identity | Stable identity of instructional content, independent of its placement in a lesson. |
+| `:tutorial/math-academy-id` | long / one | identity | Optional MA tutorial content ID: contentid on a tutorial step in source HTML, or content_id in lesson JSON. |
+| `:tutorial/title` | string / one | — | Title of the instructional section, such as Introduction or A Note on Differentiability. |
+| `:tutorial/content` | string / one | — | Complete tutorial body as Markdown with LaTeX, tables, lists, and image links at their intended locations. Document order preserves the sequence of explanation, equations, and illustrations. Tutorials have no fixed problem/solution structure and do not require a gradable response. |
+
+**Validation `:tutorial/validate`**: Native EDB specification requiring identity, title, and instructional content when explicitly ensured. Nonempty content, valid assets, and mathematical correctness require additional validation.
+
+Required attributes: `[:tutorial/id :tutorial/title :tutorial/content]`.
+
+### `schema/content/4-question.edn`
+
+| Attribute | Type / cardinality | Other declarations | Schema documentation |
+|---|---|---|---|
+| `:question/id` | uuid / one | identity | Stable identity of a question or worked example. Individual presentations and submissions have separate identities; changing option order does not create a new question. |
+| `:question/math-academy-id` | string / one | identity | Optional prefixed Math Academy content identifier: q-N for a source question ID or e-N for a source example content ID. The prefixes prevent overlap in this unique attribute. Identifies content, not a presentation or learner attempt. Omit for independently created content. |
+| `:question/difficulty` | ref / one | — | Optional reference to an E/M/H difficulty enum entity observed in completed MA activity: :question.difficulty/easy, /moderate, or /hard. This is distinct from aggregate topic difficulty and learner ability. Omit when unknown; allowed values require validation. |
+| `:question/requires-calculator` | boolean / one | — | Whether a calculator is required to answer the question. Captured MA instructions all express a requirement, sometimes specifying a scientific or graphing calculator. This boolean records the requirement only. False means not required, not forbidden; omit when unknown. Absence of a captured instruction alone does not establish false. |
+| `:question/retired` | boolean / one | — | True withdraws this question from fresh adaptive lesson, review, assessment and inventory selection. Retain its content, answer banks, KP ownership and learner presentations for historical grading and replay. False or absence leaves normal eligibility checks in effect. |
+| `:question/problem` | string / one | — | Problem statement, stored as Markdown supporting LaTeX and image links. For gradable questions, named field locations correspond to answer-field/key on this question's fields. For examples, this is the demonstrated problem. |
+| `:question/answer-fields` | ref / many | component | Owned answer fields. A question may mix radio, blank, select, checkbox, and free fields. Each blank/select has its own key and bank. Each authored checkbox option has its own field, key, two text answers true/false, and one canonical answer. All required fields together form one question; grading produces one question correctness observation. Free fields collect responses and may reveal an optional reference without automatic correctness evidence. Fieldless school prompts remain displayable without grading or mastery credit. |
+| `:question/worked-solution` | string / one | — | Worked solution for the whole problem, stored as Markdown supporting LaTeX and image links. Required for worked examples; optional for ordinary questions. |
+
+- `:question.difficulty/easy`.
+
+- `:question.difficulty/moderate`.
+
+- `:question.difficulty/hard`.
+
+**Validation `:question/validate`**: Requires identity and problem when explicitly ensured. The application requires complete answer fields before automatic grading, and a worked solution for canonical examples, validates any present fields and answer values, and derives example roles from knowledge-point/canonical-example and excludes those targets from every practice pool. A fieldless school problem may be displayed through assigned-problem without grading or awarding mastery.
+
+Required attributes: `[:question/id :question/problem]`.
+
+### `schema/content/5-answer-field.edn`
+
+| Attribute | Type / cardinality | Other declarations | Schema documentation |
+|---|---|---|---|
+| `:answer-field/id` | uuid / one | identity | Stable identity of a field owned by one question. |
+| `:answer-field/type` | ref / one | — | Interaction type for this field: :answer-field.type/radio, /checkbox, /blank, /select, or /free. The application checks supported enum membership and type-specific interaction rules. Registering a type does not supply application rendering or evaluation. |
+| `:answer-field/key` | string / one | — | Key unique within the question, binding the field to a problem location such as x or y. A single radio field can use selection without an inline placeholder. |
+| `:answer-field/choices` | ref / many | component | All answer values owned by this field, including authored options, canonical or reference answers, and verbatim learner-entered blank/free responses. Each answer belongs to one field; reuse identical typed values within that field. Radio/select display authored options; blank/free display editors without the bank. Each checkbox option is a separate field owning two text values, true and false. An optional free reference, or the required canonical answer for another type, must belong to this bank. An unanswered free field may have no bank members. Preserve values referenced by task-item/responses. |
+| `:answer-field/correct` | ref / one | — | One canonical answer, required for radio, select, blank, and checkbox fields; optional reference answer for a free field. When present, it must belong to the field's choices bank. Free references are revealed for comparison without automatic grading. This ordinary ref does not add ownership. |
+
+- `:answer-field.type/radio`.
+
+- `:answer-field.type/blank`.
+
+- `:answer-field.type/select`.
+
+- `:answer-field.type/checkbox`.
+
+- `:answer-field.type/free`.
+
+**Validation `:answer-field/validate`**: Requires identity, key, and type when explicitly ensured. The type-specific predicate validates owned answer values and canonical membership. Radio, select, blank, and checkbox require a nonempty bank and one canonical answer. Free permits an empty bank and no reference answer. Checkbox banks contain exactly two text answers, true and false. Writers also ensure answer/validate. Question field-key uniqueness, immutable referenced values, entered-answer reuse, and response completeness require application handling.
+
+Required attributes: `[:answer-field/id :answer-field/key :answer-field/type]`.
+
+Application predicate: `[course-academy.answer-field/valid?]`.
+
+### `schema/content/6-answer.edn`
+
+| Attribute | Type / cardinality | Other declarations | Schema documentation |
+|---|---|---|---|
+| `:answer/id` | uuid / one | identity | Stable identity of a field-scoped answer value. Reuse this entity for repeated identical values within its field; do not share it across fields. |
+| `:answer/type` | ref / one | — | Representation: answer.type/math, answer.type/text, or answer.type/image. |
+| `:answer/value` | string / one | — | Exact answer content: learner-entered strings are retained verbatim, including empty or malformed math input. Authored math values may use LaTeX without Markdown delimiters; text and image values hold their respective content. Evaluation and normalization are separate from storage. |
+| `:answer/feedback` | string / one | — | Optional feedback associated with this answer value, such as an explanation for a radio or select option. |
+
+- `:answer.type/math`.
+
+- `:answer.type/text`.
+
+- `:answer.type/image`.
+
+**Validation `:answer/validate`**: Requires identity, type, and a string value when explicitly ensured. The application checks supported answer types and field-scoped deduplication, keeps referenced values immutable, and may validate authored image availability. Do not reject an entered value solely because its math syntax is malformed.
+
+Required attributes: `[:answer/id :answer/type :answer/value]`.
+
+### `schema/content/7-multistep.edn`
+
+| Attribute | Type / cardinality | Other declarations | Schema documentation |
+|---|---|---|---|
+| `:multistep/id` | uuid / one | identity | Stable identity of a reusable multipart problem. |
+| `:multistep/context` | string / one | — | Optional shared setup, data, diagrams, or instructions in Markdown with LaTeX and image links. Kept available throughout this problem's parts; omit when parts share no setup. |
+| `:multistep/steps` | ref / many | component | Immediate generic steps owned by this problem. The collection is unordered; first-step and step/next define presentation order. Do not also add these steps to the enclosing activity's steps. |
+| `:multistep/first-step` | ref / one | — | Starting step; must be a member of multistep/steps. This ordinary ref adds no second ownership relationship. |
+
+**Validation `:multistep/validate`**: Requires identity, steps, and an entry point. The application checks single step ownership, a connected acyclic sibling sequence, and acyclic content nesting. Validate steps and their content separately.
+
+Required attributes: `[:multistep/id :multistep/steps :multistep/first-step]`.
+
+### `schema/content/8-assigned-problem.edn`
+
+| Attribute | Type / cardinality | Other declarations | Schema documentation |
+|---|---|---|---|
+| `:assigned-problem/id` | uuid / one | identity | Stable identity of an externally supplied problem, independent of its placement in an assignment. |
+| `:assigned-problem/topic-coverage` | ref / many | — | Optional mapped topics needed for this problem. The scheduler combines these targets with the enclosing assignment's deadline and learner progress to prioritize preparation. Derive prerequisites from topic/next. Absent coverage means the problem is not yet mapped; coverage does not establish question-bank membership or award mastery. |
+| `:assigned-problem/content` | ref / one | — | Question or multistep containing the problem itself. This ordinary ref preserves reusable content when the assigned-problem entity is removed. |
+
+**Validation `:assigned-problem/validate`**: Requires identity and content when explicitly ensured. Coverage may be added later. The application checks that content references a question or multistep and coverage references topics; validate the referenced content separately.
+
+Required attributes: `[:assigned-problem/id :assigned-problem/content]`.
+
+### `schema/learner/1-1-learner.edn`
+
+| Attribute | Type / cardinality | Other declarations | Schema documentation |
+|---|---|---|---|
+| `:learner/id` | string / one | identity | Stable learner identity used by the FIRe engine; not a login credential. |
+| `:learner/name` | string / one | — | The learner's display name. |
+| `:learner/course` | ref / one | — | Optional course currently selected in the UI. References a shared course entity. |
+| `:learner/self-directed` | boolean / one | — | Whether Study uses the learner's explicitly selected topic queue instead of engine recommendations. Applications should treat an absent value as false. |
+| `:learner/daily-xp-goal` | long / one | — | Optional positive integer daily earned-XP goal across all courses. Days use the learner's local calendar. Absence means no goal has been set. Today and weekly totals are derived from task history, not stored as learner counters. |
+| `:learner/queue` | ref / many | — | Unordered topics explicitly selected by the learner for self-directed study. References shared topics across courses. Adding a topic requests preparation from its existing database lesson content regardless of the selected Study mode. When learner/self-directed is true, Study serves these prepared activities even without engine prerequisite eligibility, without marking them unlocked. Ongoing attempts come first, followed by lower global topic/next layers and then higher scheduling priority within a layer. An empty queue does not fall back to engine recommendations. These ordinary refs do not establish ownership. Removing a queued topic preserves the topic and all learner history. Distinct from learner/targets, which records longer-term study destinations. |
+| `:learner/targets` | ref / many | — | Longer-term study destinations selected by the learner, displayed with their prerequisite graph. These ordinary refs point to shared topics across courses. Immediate self-directed activities come from learner/queue. Removing a target preserves its topic and all learner history. |
+| `:learner/assignments` | ref / many | — | Assignments associated with this learner. References activities whose activity/type is activity.type/assignment. |
+| `:learner/performance` | ref / one | component | Optional owned overall performance record, defined in 1-learner.edn. Holds accuracy and evidence mass across topics. Find its learner through learner/_performance; no duplicate learner ref is needed. Ensure performance/validate separately on each performance write. Retracting the learner also retracts this record. |
+| `:learner/knowledge-profile` | ref / many | component | Owned, unordered collection of current progress records, one per topic. Find the learner through the reverse reference learner/_knowledge-profile. Ensure learner/validate when changing membership. Partial imports may contain only known progress facts; ensure progress/validate when writing complete operational state for the engine. Retracting the learner also retracts these records, but not their shared topics. |
+| `:learner/activity` | ref / many | — | Optional collection of learner-specific tasks, including attempts and their history. Each task references a shared activity definition and records its status, elapsed working time, and XP. Status includes completed and failed; there is no separate task outcome. Tasks are defined in 3-learner-task.edn and own the items defined in 3-learner-task.edn. Calendar timestamps and history order come from status transactions. Validate each task and its learner association separately. These ordinary refs do not establish component ownership. |
+
+**Validation `:learner/validate`**: Learner identity and knowledge-profile ownership/uniqueness. Overall performance is optional and its child record must be separately ensured with performance/validate. This spec does not validate performance ownership or values.
+
+Required attributes: `[:learner/id]`.
+
+Application predicate: `course-academy.progress/valid-profile?`.
+
+### `schema/learner/1-2-learner-performance.edn`
+
+| Attribute | Type / cardinality | Other declarations | Schema documentation |
+|---|---|---|---|
+| `:performance/assessment-accuracy` | double / one | — | Learner-global assessment-only exponentially weighted accuracy in [0,1]. Equal averaging with practice accuracy is described publicly; the precise update rate and prior are local parameters. Update from direct observed answers once, not from every propagated topic update. |
+| `:performance/practice-accuracy` | double / one | — | Learner-global non-assessment exponentially weighted accuracy in [0,1], kept separate so repeated lesson/review work does not swamp assessment evidence. Update from direct observed answers once, not from every propagated topic update. |
+| `:performance/assessment-mass` | double / one | — | Learner-global nonnegative effective assessment evidence mass under the local update, distinct from assessment accuracy. Update from direct observed answers once, not from every propagated topic update. |
+| `:performance/practice-mass` | double / one | — | Learner-global nonnegative effective non-assessment evidence mass under the local update, distinct from practice accuracy. Update from direct observed answers once, not from every propagated topic update. |
+
+**Validation `:performance/validate`**: Requires all four values for the complete overall performance estimate. Effective accuracy is the mean of the two accuracy fields; do not persist another independently mutable copy. The writer checks exactly one learner owner, finite accuracy in [0,1], and finite nonnegative evidence mass. Update the existing child through learner/performance rather than replacing it for each observation.
+
+Required attributes: `[:performance/assessment-accuracy :performance/practice-accuracy :performance/assessment-mass :performance/practice-mass]`.
+
+### `schema/learner/1-3-learner-progress.edn`
+
+| Attribute | Type / cardinality | Other declarations | Schema documentation |
+|---|---|---|---|
+| `:progress/id` | string / one | identity | Stable state identity; update it rather than creating another profile for the same learner-topic pair. |
+| `:progress/topic` | ref / one | index | Existing topic entity, shared across course contexts. |
+| `:progress/repetitions` | double / one | — | Nonnegative fractional repetition position. Operational state is clamped at zero; it is not an integer count of reviews. |
+| `:progress/memory` | double / one | — | Nonnegative model memory value anchored at memory-at. It is not a probability and need not be at most one. |
+| `:progress/memory-at` | instant / one | — | Time at which the stored memory value applies. Compute elapsed days from this anchor once. |
+| `:progress/interval-days` | double / one | — | Positive finite interval used to decay this anchored memory until the next update. The local interval function determines its value. |
+| `:progress/assessment-accuracy` | double / one | — | Assessment-only exponentially weighted accuracy in [0,1]. Equal averaging with practice accuracy is described publicly; the precise update rate and prior are local parameters. |
+| `:progress/practice-accuracy` | double / one | — | Non-assessment exponentially weighted accuracy in [0,1], kept separate so repeated lesson/review work does not swamp assessment evidence. |
+| `:progress/expected-assessment-accuracy` | double / one | — | Optional initial assessment accuracy forecast in [0,1], frozen before the first local outcome. Direct prerequisite assessment accuracies are weighted by their positive assessment masses; fallback is the learner's mass-weighted topic assessment accuracy, then policy/initial-accuracy. This forecast creates no evidence and does not overwrite observed accuracy. Backfilled values are migration-time estimates. |
+| `:progress/expected-practice-accuracy` | double / one | — | Optional initial practice accuracy forecast in [0,1], frozen before the first local outcome. Direct prerequisite practice accuracies are weighted by their positive practice masses; fallback is the learner's mass-weighted topic practice accuracy, then policy/initial-accuracy. Separate from assessment and from the shared topic workload multiplier. Backfilled values are migration-time estimates. |
+| `:progress/assessment-mass` | double / one | — | Nonnegative effective assessment evidence mass under the local update, distinct from assessment accuracy. |
+| `:progress/practice-mass` | double / one | — | Nonnegative effective non-assessment evidence mass under the local update. |
+| `:progress/learned` | boolean / one | — | Whether this topic is admitted to retention tracking after a mastery-learning or explicit initialization decision. True alone does not establish current recall. |
+| `:progress/last-direct-at` | instant / one | — | Last direct qualifying practice time, when known; implicit credit does not replace it. |
+| `:progress/policy` | ref / one | — | Policy used to compute this state, identified by policy/id. Historical reads at the state-change transaction recover the settings used then; current policy values may have been adjusted since. |
+
+**Validation `:progress/validate`**: Requires one learner owner, one record per topic in that profile, and complete operational state. Ability can exist while learned=false, including after failed initial lessons. Effective accuracy is the mean of the two accuracy strata. Initialization values are explicit local choices, not inferred from XP.
+
+Required attributes: `[:progress/id :progress/topic :progress/repetitions :progress/memory :progress/memory-at :progress/interval-days :progress/assessment-accuracy :progress/practice-accuracy :progress/assessment-mass :progress/practice-mass :progress/learned :progress/policy]`.
+
+Application predicate: `course-academy.progress/valid-progress?`.
+
+### `schema/learner/2-1-learner-task.edn`
+
+| Attribute | Type / cardinality | Other declarations | Schema documentation |
+|---|---|---|---|
+| `:learner-task/id` | uuid / one | identity | Stable identity of this attempt, independent of external identifiers. |
+| `:learner-task/math-academy-id` | long / one | — | Optional Math Academy taskId. Reconcile within the learner's history; global uniqueness across learners is not established. |
+| `:learner-task/activity` | ref / one | — | Shared activity definition for this learner task. Resolve its title, type, and intended scope through this reference. |
+| `:learner-task/retake-of` | ref / one | — | Optional reference from an assessment retake task to the exact original assessment task. This is an attempt relationship, not activity ownership. The application checks assessment task kinds, prevents self/cyclic links and duplicate generated retakes, selects never-presented questions from the original knowledge points, and offers the retake only after required remediation succeeds. The retake remains optional; this relationship alone does not schedule or require it. |
+| `:learner-task/remediation-for` | ref / many | — | Optional references from a review or replacement relearning task to the assessment or failed lesson task(s) that triggered required practice through incorrect/unanswered assessment questions or repeated failure at a key knowledge point. One practice task may address obligations from several assessments. The application matches the task topic to each originating topic obligation and clears it only after qualifying successful practice; prior or unrelated practice does not count. These links preserve trigger provenance, are not component ownership, and do not themselves enforce scheduling or record invented wrong answers. |
+| `:learner-task/status` | ref / one | — | Locked means not yet eligible for an engine-selected start; unlocked means engine-eligible but not started. Explicit self-directed queue selections may start a prepared locked task directly without an intermediate unlock. Preparation does not start a clock or establish mastery. A lesson opened without completing its first presentation returns to locked when paused; its presentation and elapsed time remain saved and are reused on the next start. Started means in progress; paused means suspended and unfinished, including a lesson route whose completed presentations retain deferred practice markers while waiting for fresh questions. Completed means finished under the activity's completion rules; failed means an explicit task-level failure condition ended the attempt. Status transaction history supplies calendar timestamps, including the first start and terminal transition. Pausing does not extend a timed exam's deadline. Question correctness is recorded by task-item/status; no separate task outcome is stored. |
+| `:learner-task/priority` | double / one | — | Numerical scheduling priority; higher values are served first. Eligible unfinished tasks at or above the application's threshold are required. The application calculates finite values and defines the scale and threshold. |
+| `:learner-task/active-item` | ref / one | — | Optional current presentation for freely navigable assessments. References an item owned by this task. Visit order remains in task-item/next; navigation and editable draft responses do not grade a question. The application checks membership and stops edits at whole-assessment submission or expiry. |
+| `:learner-task/offered-at` | instant / one | — | Latest ordinary queue offer for this task. Records actual inclusion among the five displayed recommendations, rather than preparation alone. Used with finalized review history to derive periodic optional lesson availability; no separate review counter is stored. |
+| `:learner-task/elapsed-seconds` | double / one | — | Accumulated working seconds, calculated by summing task-item/elapsed-seconds across this task's items. The application updates this total with the item durations; it is not an independently edited value or the timed-exam deadline. Omit when durations are unknown. |
+| `:learner-task/finished-at` | instant / one | — | Optional original completion or failure instant recovered from migrated task history. Used for lifecycle ordering, assessment learning age, and dated XP/history instead of the import transaction time. Requires a completed or failed task and must not be later than its recorded terminal status. Omit when the original date is unknown; ordinary task completion uses status transaction history. This does not assert a start or replay learning credit. |
+| `:learner-task/xp-earned` | long / one | — | XP awarded for this attempt, including penalties and bonuses. May be negative or exceed xp-base. Omit when unknown. |
+| `:learner-task/xp-base` | long / one | — | Optional nonnegative baseline XP for this attempt, before bonuses or penalties. The displayed denominator is not a maximum. |
+| `:learner-task/items` | ref / many | component | Owned question, tutorial, and example presentations, linked in order through task-item/next. The reference collection itself is unordered. Repeated presentations have separate item identities. |
+
+- `:learner-task.status/locked`.
+
+- `:learner-task.status/unlocked`.
+
+- `:learner-task.status/started`.
+
+- `:learner-task.status/paused`.
+
+- `:learner-task.status/completed`.
+
+- `:learner-task.status/failed`.
+
+**Validation `:learner-task/validate`**: Requires identity, activity, and lifecycle state. The application checks one learner association, valid content, enums, and timing; validate child records separately.
+
+Required attributes: `[:learner-task/id :learner-task/activity :learner-task/status]`.
+
+### `schema/learner/2-2-learner-task-item.edn`
+
+| Attribute | Type / cardinality | Other declarations | Schema documentation |
+|---|---|---|---|
+| `:task-item/id` | uuid / one | identity | Stable identity of this presentation, separate from the content ID. |
+| `:task-item/content` | ref / one | — | Question, worked example question, or tutorial presented. May be absent when historical content identity is unknown. |
+| `:task-item/status` | ref / one | — | Started means actively working; paused suspends the working timer. Completed ends a tutorial, worked example, or submitted question containing free fields whose responses are saved without automatic grading. Correct, incorrect, and skipped end automatically evaluated ordinary question attempts. Retained status history supplies timing. Free response completion does not assert correctness, performance, or mastery credit. Questions never presented do not create task items. Valid transitions and type-specific completion require application validation. |
+| `:task-item/responses` | ref / many | — | Answer entities submitted for this question: entered blank/free values, selected radio/select options, and explicit true or false answers for every checkbox field. Unchecked checkbox options submit false and are not unanswered. Recover each answer's field through reverse answer-field/choices ownership. At most one response per field; identical typed entered values are reused within that field and original strings are preserved. These ordinary refs do not own answers. A free response does not itself assert correct or incorrect. |
+| `:task-item/elapsed-seconds` | double / one | — | Accumulated seconds spent in started, calculated from this item's status transaction history. Paused intervals are excluded. The application updates this value and the parent task's elapsed total together, with at most one actively timed item per learner. Imported observed durations may be retained when their status history is unavailable. |
+| `:task-item/performance` | double / one | — | Calculated performance magnitude used by the engine. Positive and finite; may exceed one. Distinct from correctness and XP. Omit until evaluated; the application checks the range. |
+| `:task-item/working-ended-at` | instant / one | — | Optional server-observed submission instant for a terminal question item. Working time ends here, excluding subsequent admission, grading, and database waits even when the status transaction commits later. Absent on older items. Imported duration checkpoints already contain this cutoff when present; dated summaries only count observed started intervals up to this instant. |
+| `:task-item/next` | ref / one | — | Optional next presentation in the same learner task. Omit on the last item. This ordinary ref orders the task's existing members; learner-task/items remains their component owner. Derive the first item from the member with no incoming next link. The application checks that all members form one chain without cycles, merges, or links outside the task. |
+| `:task-item/deferred-step` | ref / one | — | Authored knowledge-point stage deferred after this completed example or answered question because no fresh gradable questions were available. Keeps the practice unfinished while later lesson stages proceed; never a skip, failure, or mastery assertion. Application validates same-activity membership and exhaustion. |
+| `:task-item/resumed-step` | ref / one | — | Authored knowledge-point stage revisited by this canonical-example presentation after finishing a lesson route with deferred practice. Replay resumes only outstanding stages and retains prior question outcomes and exposure history. Application validates that the stage was deferred in this task. |
+
+- `:task-item.status/started`.
+
+- `:task-item.status/paused`.
+
+- `:task-item.status/completed`.
+
+- `:task-item.status/skipped`.
+
+- `:task-item.status/correct`.
+
+- `:task-item.status/incorrect`.
+
+**Validation `:task-item/validate`**: Requires presentation identity and status. The next link is optional; historical content may be unknown. Task membership, chain consistency, status transitions, and derived elapsed totals require application validation.
+
+Required attributes: `[:task-item/id :task-item/status]`.
+
+### `schema/engine/1-fire-policy.edn`
+
+| Attribute | Type / cardinality | Other declarations | Schema documentation |
+|---|---|---|---|
+| `:policy/id` | uuid / one | identity | Stable identity of this parameter set. Edit its settings under this identity; retained EDB history records previous values. Independent of the engine runtime fingerprint. |
+| `:policy/base-half-life-days` | double / one | — | Starting retention half-life in days before repetition credit increases it. Must be finite and positive. |
+| `:policy/interval-growth` | double / one | — | Half-life multiplier per unit of repetition credit. Must be finite and greater than one. |
+| `:policy/maximum-half-life-days` | double / one | — | Finite upper bound on retention half-life, at least base-half-life-days. |
+| `:policy/review-threshold` | double / one | — | Retention score at or below which an established topic is due for review. Positive and below initial-retention; not a recall probability. |
+| `:policy/initial-retention` | double / one | — | Retention score assigned on initial learning and reference level used to discount early practice. Positive and finite; later practice can produce a larger score. |
+| `:policy/early-practice-discount-power` | double / one | — | Positive exponent controlling how repetition credit increases as retention falls toward the review threshold. |
+| `:policy/initial-accuracy` | double / one | — | Fallback starting accuracy when learner and prerequisite evidence is unavailable, and normalization baseline for learner-topic repetition speed. Strictly between zero and one. |
+| `:policy/accuracy-update-rate` | double / one | — | Weight assigned to a new direct answer in the accuracy estimate. Greater than zero and at most one; fractional evidence adjusts this rate in application code. |
+| `:policy/speed-exponent` | double / one | — | Nonnegative finite exponent controlling how learner-topic effective accuracy relative to initial-accuracy changes repetition speed. Topic workload difficulty does not enter this calculation. |
+| `:policy/minimum-speed` | double / one | — | Positive lower bound on the repetition-credit multiplier; at most one. |
+| `:policy/maximum-speed` | double / one | — | Finite upper bound on the repetition-credit multiplier; at least one. |
+| `:policy/overdue-failure-slope` | double / one | — | Nonnegative finite rate at which the failure penalty increases with overdue half-lives. |
+| `:policy/maximum-failure-multiplier` | double / one | — | Finite upper bound on the failure penalty multiplier; at least one. |
+| `:policy/gate-slow-implicit` | boolean / one | — | Whether positive implicit retention credit is withheld when the topic repetition-credit multiplier is below one. |
+| `:policy/retention-update-order` | ref / one | — | Supported update order: policy.retention-update/decay-before-add or /add-before-decay. The engine applies the selected ordering explicitly. |
+| `:policy/future-horizon-days` | double / one | — | Nonnegative finite horizon used to compare how much candidate activities postpone upcoming reviews. |
+| `:policy/question-selection-weights` | ref / many | component | Optional owned question-weight records, defined in 2-question-weights.edn. Each record supplies initial and remedial difficulty distributions for one activity type. Keep at most one record per activity type in this policy; find the policy through the reverse ref. Ensure question-weights/validate on each child. Selection and missing-configuration handling belong to application code. |
+| `:policy/description` | string / one | — | Optional explanation of the settings and their intended use. |
+
+- `:policy.retention-update/decay-before-add`.
+
+- `:policy.retention-update/add-before-decay`.
+
+**Validation `:policy/validate`**: Requires identity and all FIRe retention settings. The registered predicate checks the update-order enum, finite numeric ranges, and relationships between those settings. Optional question-selection records require their own validation; the application checks their ownership and unique activity types. Formulas and applying changed settings to existing progress belong to application code.
+
+Required attributes: `[:policy/id :policy/base-half-life-days :policy/interval-growth :policy/maximum-half-life-days :policy/review-threshold :policy/initial-retention :policy/early-practice-discount-power :policy/initial-accuracy :policy/accuracy-update-rate :policy/speed-exponent :policy/minimum-speed :policy/maximum-speed :policy/overdue-failure-slope :policy/maximum-failure-multiplier :policy/gate-slow-implicit :policy/retention-update-order :policy/future-horizon-days]`.
+
+Application predicate: `course-academy.policy/valid?`.
+
+### `schema/engine/2-question-weights.edn`
+
+| Attribute | Type / cardinality | Other declarations | Schema documentation |
+|---|---|---|---|
+| `:question-weights/activity-type` | ref / one | — | Activity-type enum selecting the distribution's use: activity.type/lesson, activity.type/review, or activity.type/assessment. Reuses the enums defined in content/0-activity.edn. |
+| `:question-weights/initial-easy` | double / one | — | Relative weight for choosing Easy questions in the initial set. Must be finite and nonnegative; zero excludes this band. |
+| `:question-weights/initial-moderate` | double / one | — | Relative weight for choosing Moderate questions in the initial set. Must be finite and nonnegative; zero excludes this band. |
+| `:question-weights/initial-hard` | double / one | — | Relative weight for choosing Hard questions in the initial set. Must be finite and nonnegative; zero excludes this band. |
+| `:question-weights/remedial-easy` | double / one | — | Relative weight for choosing Easy questions in the remedial set. Must be finite and nonnegative; zero excludes this band. |
+| `:question-weights/remedial-moderate` | double / one | — | Relative weight for choosing Moderate questions in the remedial set. Must be finite and nonnegative; zero excludes this band. |
+| `:question-weights/remedial-hard` | double / one | — | Relative weight for choosing Hard questions in the remedial set. Must be finite and nonnegative; zero excludes this band. |
+
+**Validation `:question-weights/validate`**: Requires an activity type and all six weights when explicitly ensured. The application supports lessons, reviews, and assessments and checks finite nonnegative weights, a positive finite total for each distribution, exactly one policy owner, and one record per activity type in that policy. Lessons and reviews choose the phase using their stopping rules; ordinary assessments use initial weights throughout, while a designated assessment retake/recheck explicitly requests remedial weights. Weights are normalized across eligible bands before selecting a fresh question within the chosen band; an unavailable question supply is not learner failure. Stopping rules and retake scheduling remain application code.
+
+Required attributes: `[:question-weights/activity-type :question-weights/initial-easy :question-weights/initial-moderate :question-weights/initial-hard :question-weights/remedial-easy :question-weights/remedial-moderate :question-weights/remedial-hard]`.
+
+### `schema/engine/3-xp-weights.edn`
+
+- `:xp-weights/lesson-v1`: Completed lesson: if p < 0.50, XP = -1; else if p = 1, XP = R(1.25 B); else XP = R(B min(1, 1.5 p - 0.30)). Use all ordinary question occurrences across the task, not average per-KP accuracy. A failed completed task still receives this formula's award; unfinished tasks receive no final award..
+
+- `:xp-weights/review-v1`: Completed review, in order: p < 0.50 -> -1; p = 1 -> B + 2; p >= 2/3 -> B; otherwise final ordinary question incorrect/skipped -> 0; otherwise R(B p). The final outcome must be known in the partial-credit band. The perfect bonus is additive two XP, not a percentage..
+
+- `:xp-weights/assessment-v1`: Completed or expired quiz/assessment: p < 0.20 -> -1; otherwise max(0, R(1.20 B (p - 0.35) / 0.65)). N is the full assigned question count; C counts correct submissions. Unanswered questions receive no correct credit. Perfect work earns R(1.20 B). Diagnostic placement is a separate policy and does not use this rule..
+
+- `:xp-weights/multistep-v1`: Completed multistep activity: XP = max(-1, R(B (2.25 p - 1))). Count ordinary question occurrences once regardless of answer-field count. Perfect work earns R(1.25 B). The negative floor applies after rounding..
+
+### Native EDB metadata relevant to this analysis
+
+`db/id` identifies an entity. `db/ident` identifies attributes/enums/specifications by keyword. Attribute entities use `db/valueType`, `db/cardinality`, `db/unique`, `db/isComponent`, `db/index`, and `db/doc`; entity specifications use `db.entity/attrs` and optional `db.entity/preds`. `db/ensure` requests validation during a transaction rather than representing learner mastery. `db/txInstant` supplies a transaction's recorded time. Datom transaction, source, and added/retracted flags support provenance and historical membership reconstruction. Native built-ins and retained old schema are broader than the current domain catalog; do not manufacture extra domain columns from database internals.
+
+The repository omits retired domain definitions such as `question/is-example` and `course/level`; some installed aliases/retired schema may remain. Worked-example role now comes from incoming `knowledge-point/canonical-example` references in the captured value. A missing or retired current attribute is not a valid current forecast input merely because an old export contains it.
+
+### Schema and seed file inventory
+
+The following includes data/relationship seeds as well as definitions. Existing live data can have been reconciled after these seed files were produced.
+
+| File | Role in this repository |
+|---|---|
+| [schema/content/0-activity.edn](schema/content/0-activity.edn) | Domain attributes, enums, specifications, or documented XP rule identities (cataloged above) |
+| [schema/content/1-step.edn](schema/content/1-step.edn) | Domain attributes, enums, specifications, or documented XP rule identities (cataloged above) |
+| [schema/content/2-tutorial.edn](schema/content/2-tutorial.edn) | Domain attributes, enums, specifications, or documented XP rule identities (cataloged above) |
+| [schema/content/4-question.edn](schema/content/4-question.edn) | Domain attributes, enums, specifications, or documented XP rule identities (cataloged above) |
+| [schema/content/5-answer-field.edn](schema/content/5-answer-field.edn) | Domain attributes, enums, specifications, or documented XP rule identities (cataloged above) |
+| [schema/content/6-answer.edn](schema/content/6-answer.edn) | Domain attributes, enums, specifications, or documented XP rule identities (cataloged above) |
+| [schema/content/7-multistep.edn](schema/content/7-multistep.edn) | Domain attributes, enums, specifications, or documented XP rule identities (cataloged above) |
+| [schema/content/8-assigned-problem.edn](schema/content/8-assigned-problem.edn) | Domain attributes, enums, specifications, or documented XP rule identities (cataloged above) |
+| [schema/data/1-1-course-group.edn](schema/data/1-1-course-group.edn) | Domain attributes, enums, specifications, or documented XP rule identities (cataloged above) |
+| [schema/data/1-2-course-groups.edn](schema/data/1-2-course-groups.edn) | Seed curriculum identities, metadata, or membership relationships; not a live workload/history snapshot |
+| [schema/data/2-3-courses.edn](schema/data/2-3-courses.edn) | Seed curriculum identities, metadata, or membership relationships; not a live workload/history snapshot |
+| [schema/data/2-4-oregon-state-courses.edn](schema/data/2-4-oregon-state-courses.edn) | Seed curriculum identities, metadata, or membership relationships; not a live workload/history snapshot |
+| [schema/data/2-course.edn](schema/data/2-course.edn) | Domain attributes, enums, specifications, or documented XP rule identities (cataloged above) |
+| [schema/data/3-2-units.edn](schema/data/3-2-units.edn) | Seed curriculum identities, metadata, or membership relationships; not a live workload/history snapshot |
+| [schema/data/3-3-course-units.edn](schema/data/3-3-course-units.edn) | Seed curriculum identities, metadata, or membership relationships; not a live workload/history snapshot |
+| [schema/data/3-unit.edn](schema/data/3-unit.edn) | Domain attributes, enums, specifications, or documented XP rule identities (cataloged above) |
+| [schema/data/4-2-modules.edn](schema/data/4-2-modules.edn) | Seed curriculum identities, metadata, or membership relationships; not a live workload/history snapshot |
+| [schema/data/4-3-unit-modules.edn](schema/data/4-3-unit-modules.edn) | Seed curriculum identities, metadata, or membership relationships; not a live workload/history snapshot |
+| [schema/data/4-module.edn](schema/data/4-module.edn) | Domain attributes, enums, specifications, or documented XP rule identities (cataloged above) |
+| [schema/data/5-1-topic.edn](schema/data/5-1-topic.edn) | Domain attributes, enums, specifications, or documented XP rule identities (cataloged above) |
+| [schema/data/5-2-encompassing.edn](schema/data/5-2-encompassing.edn) | Domain attributes, enums, specifications, or documented XP rule identities (cataloged above) |
+| [schema/data/5-3-topics.edn](schema/data/5-3-topics.edn) | Seed curriculum identities, metadata, or membership relationships; not a live workload/history snapshot |
+| [schema/data/5-4-module-topics.edn](schema/data/5-4-module-topics.edn) | Seed curriculum identities, metadata, or membership relationships; not a live workload/history snapshot |
+| [schema/data/5-5-prerequisites.edn](schema/data/5-5-prerequisites.edn) | Seed topic prerequisite relationships; actual current topology must come from EDB |
+| [schema/data/6-knowledge-point.edn](schema/data/6-knowledge-point.edn) | Domain attributes, enums, specifications, or documented XP rule identities (cataloged above) |
+| [schema/data/7-question-generator.edn](schema/data/7-question-generator.edn) | Domain attributes, enums, specifications, or documented XP rule identities (cataloged above) |
+| [schema/engine/1-fire-policy.edn](schema/engine/1-fire-policy.edn) | Domain attributes, enums, specifications, or documented XP rule identities (cataloged above) |
+| [schema/engine/2-question-weights.edn](schema/engine/2-question-weights.edn) | Domain attributes, enums, specifications, or documented XP rule identities (cataloged above) |
+| [schema/engine/3-xp-weights.edn](schema/engine/3-xp-weights.edn) | Domain attributes, enums, specifications, or documented XP rule identities (cataloged above) |
+| [schema/engine/4-default-fire-policy.edn](schema/engine/4-default-fire-policy.edn) | Seed policy values and owned question-weight records |
+| [schema/learner/1-1-learner.edn](schema/learner/1-1-learner.edn) | Domain attributes, enums, specifications, or documented XP rule identities (cataloged above) |
+| [schema/learner/1-2-learner-performance.edn](schema/learner/1-2-learner-performance.edn) | Domain attributes, enums, specifications, or documented XP rule identities (cataloged above) |
+| [schema/learner/1-3-learner-progress.edn](schema/learner/1-3-learner-progress.edn) | Domain attributes, enums, specifications, or documented XP rule identities (cataloged above) |
+| [schema/learner/2-1-learner-task.edn](schema/learner/2-1-learner-task.edn) | Domain attributes, enums, specifications, or documented XP rule identities (cataloged above) |
+| [schema/learner/2-2-learner-task-item.edn](schema/learner/2-2-learner-task-item.edn) | Domain attributes, enums, specifications, or documented XP rule identities (cataloged above) |
+
+## Appendix B. Dated graph census and known schedule coverage
+
+This census is derived from one read-only graph-reader response at EDB basis **5382**, then replaying the current full-graph layer calculation, depth-2 scope, L30 cutoff, and actual `targetCourseBands` function. It uses all three courses, Queue on, All weeks, and no mastery filtering. It is a reproducibility check and a concrete starting inventory, **not an estimate of remaining lessons or remaining XP**.
+
+Capture time: `2026-10-21T20:28:55+00:00`. Learner ID: `59d5cf13-351c-4114-be19-4c3bb64ee051`. Self-directed mode: `true`.
+
+The captured graph contains **3,020 topics, 6,560 prerequisite edges, and 93 displayed global layers**. The learner has **164 saved targets and 43 queued topics**, with **2 topics in both**. Their deduplicated retained root set has **205 topics**. Depth-2 expansion produces **487 distinct visible topics**.
+
+| Course track | Visible topics | Unique target/queue roots | Target memberships | Queue memberships | Prerequisite-only topics | Explicit learned=true | Legacy positive reps, no learned flag |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| MTH 255 | 198 | 92 | 82 | 10 | 106 | 2 | 34 |
+| MTH 256 | 156 | 57 | 31 | 28 | 99 | 22 | 29 |
+| MTH 341 | 133 | 56 | 51 | 5 | 77 | 26 | 47 |
+
+The root counts sum to 205 and the visible counts sum to 487. Target/queue membership columns can overlap; prerequisite-only means membership in neither list. Learned/legacy counts are evidence categories, not deductions already applied to workload, and do not establish current recall or full operational retention state. A topic can be a known ancestor without having its own complete progress record.
+
+### Linked assignment coverage by course
+
+| Course | Linked assignments | Latest known local due date | Assignments with no mapped topics |
+|---|---:|---|---:|
+| MTH 255 | 19 | 2026-12-03 | 0 |
+| MTH 256 | 8 | 2026-10-20 | 0 |
+| MTH 341 | 14 | 2026-10-21 | 1 |
+
+All covered topics of these linked assignments are already in the learner's target set at this basis. Do not count those same topics as future additions simply when their due dates arrive. This schedule is the set linked to this learner, not a verified complete semester syllabus. A missing mapping or a gap in the imported schedule has unknown workload.
+
+The following local due dates are deadline evidence, not release dates or historical target-added dates. Per-assignment topic counts are not additive because coverage overlaps.
+
+| Local due date (America/Los_Angeles) | Assignment | Mapped distinct topics | Already targeted |
+|---|---|---:|---:|
+| 2026-09-29 | MTH 255 — R-1 | 13 | 13 |
+| 2026-09-29 | MTH 256 — R-1 | 6 | 6 |
+| 2026-10-01 | MTH 255 — OHW-1 | 10 | 10 |
+| 2026-10-01 | MTH 255 — OHW-2 | 6 | 6 |
+| 2026-10-01 | MTH 255 — WHW-1 | 14 | 14 |
+| 2026-10-02 | MTH 256 — OHW-1 | 6 | 6 |
+| 2026-10-02 | MTH 256 — WHW-1 | 8 | 8 |
+| 2026-10-02 | MTH 341 — Post-reading Questions: §§1.2.2–1.2.3 | 4 | 4 |
+| 2026-10-02 | MTH 341 — Week 1 Graded Group Discussion | 6 | 6 |
+| 2026-10-06 | MTH 255 — R-2 | 6 | 6 |
+| 2026-10-06 | MTH 256 — SG-1 | 4 | 4 |
+| 2026-10-06 | MTH 341 — Post-reading Questions: §§1.2.3–1.2.4 | 6 | 6 |
+| 2026-10-07 | MTH 341 — Post-reading Questions: §§2.1.1–2.1.3 | 7 | 7 |
+| 2026-10-07 | MTH 341 — WHW-1 | 8 | 8 |
+| 2026-10-08 | MTH 255 — OHW-3 | 7 | 7 |
+| 2026-10-08 | MTH 255 — WHW-2 | 9 | 9 |
+| 2026-10-09 | MTH 341 — Post-reading Questions: §§2.1.3–2.1.7 | 8 | 8 |
+| 2026-10-09 | MTH 341 — Week 2 Graded Group Discussion | 4 | 4 |
+| 2026-10-13 | MTH 341 — Post-reading Questions: §§2.1.7–2.1.8 | 3 | 3 |
+| 2026-10-14 | MTH 256 — R-3 | 5 | 5 |
+| 2026-10-14 | MTH 341 — Post-reading Questions: §§2.1.9–2.1.10 | 0 | 0 |
+| 2026-10-14 | MTH 341 — WHW-2 | 29 | 29 |
+| 2026-10-15 | MTH 255 — OHW-4 | 10 | 10 |
+| 2026-10-15 | MTH 255 — R-3 | 8 | 8 |
+| 2026-10-15 | MTH 255 — WHW-3 | 7 | 7 |
+| 2026-10-16 | MTH 256 — WHW-2 | 3 | 3 |
+| 2026-10-16 | MTH 341 — Mini Exam 1 Review | 10 | 10 |
+| 2026-10-18 | MTH 256 — OHW-2 | 9 | 9 |
+| 2026-10-20 | MTH 255 — R-4 | 12 | 12 |
+| 2026-10-20 | MTH 256 — SG-2 | 11 | 11 |
+| 2026-10-20 | MTH 341 — PRQ-7 | 4 | 4 |
+| 2026-10-21 | MTH 341 — PRQ-8 | 4 | 4 |
+| 2026-10-21 | MTH 341 — WHW-3 | 8 | 8 |
+| 2026-10-22 | MTH 255 — OHW-5 | 3 | 3 |
+| 2026-10-22 | MTH 255 — WHW-4 | 13 | 13 |
+| 2026-10-29 | MTH 255 — OHW-6 | 4 | 4 |
+| 2026-11-05 | MTH 255 — OHW-7 | 2 | 2 |
+| 2026-11-12 | MTH 255 — OHW-8 | 7 | 7 |
+| 2026-11-19 | MTH 255 — OHW-9 | 6 | 6 |
+| 2026-11-26 | MTH 255 — OHW-10 | 4 | 4 |
+| 2026-12-03 | MTH 255 — OHW-11 | 2 | 2 |
+
+No seven-day base-XP speed, historical weekly arrival rate, remaining-XP sum, or future completion date is implied by this table. The current graph projection does not contain all the measurements needed for those quantities. In particular, future due-date rows must not enter the historical growth average requested by the learner.
+
+## Appendix C. Seeded policy and selection defaults
+
+These are source defaults, not a readout of the persisted policy at basis 5382. Export the active policy and its historical values for an actual forecast. The failed-review-refresh fraction is a runtime default rather than a declared policy attribute.
+
+| Policy quantity | Seed/runtime default |
+|---|---:|
+| Base interval / half-life | 1 day |
+| Interval growth per repetition | 2 |
+| Maximum interval | 36,500 days |
+| Due threshold | 0.5 |
+| Restored initial memory | 1.0 |
+| Early-practice discount exponent | 1 |
+| Prior accuracy | 0.8 |
+| Accuracy update rate | 0.2 |
+| FIRe speed exponent | 2 |
+| Minimum / maximum FIRe speed | 0.25 / 4 |
+| Overdue failure slope | 1 |
+| Maximum failure multiplier | 4 |
+| Gate slow implicit positive retention credit | true |
+| Retention ordering | decay-before-add |
+| Review-ranking future horizon | 7 days |
+| Failed-review log-memory refresh fraction (runtime) | 0.01 |
+
+| Activity | Initial easy/moderate/hard weights | Remedial easy/moderate/hard weights |
+|---|---|---|
+| Lesson | 60 / 30 / 10 | 45 / 55 / 0 |
+| Review | 40 / 40 / 20 | 90 / 10 / 0 |
+| Assessment | 50 / 40 / 10 | 45 / 40 / 15 |
+
+Weights normalize to probabilities; they need not sum to 100 in custom policies. Ordinary previously assessed topics use an additional easy/moderate/hard preference multiplier 0.4 / 1.25 / 3.0, yielding 20/50/30 under the seeded assessment distribution. This is a repeat preference, not escalation on every quiz. Retakes use their explicit remedial phase. Assessment KP selection gives later KPs in the latest completed authored lesson a linear weight from 1 to 2; a one-KP lesson has weight 1 and malformed/missing legacy order gets neutral weights. Available difficulty bands and the time budget constrain realized composition.
+
+The learner's daily earned-XP goal is a preference, not service capacity. The seeded `policy/future-horizon-days` is the engine review-ranking lookahead, not a forecast horizon chosen by the learner. Neither setting supplies the missing deadline or a committed daily study budget.
+
+## Appendix D. Reproduction and source fingerprints
+
+The analysis used repository source plus a read-only captured EDB graph response. No learner facts, XP, policies, memberships, task status, or application behavior were changed to create this handoff. The only requested deliverable is this Markdown report; the temporary audit files are not required to understand its algorithms and schema catalog.
+
+Repository HEAD at report assembly: `dcd1458ece404d3944b216142a1c00e84a2eab41`. Working-tree source can include the changes discussed in the accompanying session; hashes below identify the actual inspected bytes rather than asserting that HEAD alone contains them.
+
+| Source | SHA-256 prefix (16 hex characters) |
+|---|---|
+| `ui/Math-Academy-Graph-Explorer.html` | `caacd3d5733ec421` |
+| `ui/target-weeks.js` | `5ee0ad9b83e8971f` |
+| `ui/study-stats.js` | `858d0fc012439a22` |
+| `scripts/graph_explorer_reader.rs` | `65aeac0c918de4e8` |
+| `scripts/learning_api.rs` | `c924a4dae73aa20e` |
+| `scripts/study_stats.rs` | `bb38c4cdaf92d6f1` |
+| `scripts/assignment_interaction.rs` | `2c5b26dec1541b1c` |
+| `scripts/sync_f26_assignments.py` | `07d7500031e52bda` |
+| `engine/rust/base_xp.rs` | `c576d94966c3cf3a` |
+| `engine/rust/activities.rs` | `d35539dd28d09dbe` |
+| `engine/rust/learning.rs` | `ea714a6bf2de9836` |
+| `engine/rust/scheduling.rs` | `53682b2affeb44f9` |
+| `engine/rust/retrieval.rs` | `623c04ac38d7917c` |
+| `engine/rust/core.rs` | `d444d1c88941020f` |
+| `engine/rust/timing.rs` | `1093c6cd3c371b34` |
+| `schema/engine/4-default-fire-policy.edn` | `02905691ca92262d` |
+
+Recompute the numerical census if any source affecting topology, scope, assignment coverage, or placement changes, or if the database basis changes. For later forecasts preserve a versioned manifest with an observation clock, scope descriptor, source/policy versions, and data-completeness flags. Reusing a current edited graph to describe an older arrival is a deliberate modeling choice that needs a label; it is not exact historical replay.

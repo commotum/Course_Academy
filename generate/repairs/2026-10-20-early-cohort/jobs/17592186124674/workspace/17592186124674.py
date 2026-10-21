@@ -154,9 +154,14 @@ def learning_easy(seed,template,profile,parameters=None):
  spec=LEARNING_SOURCES.get(template)
  structural=spec is None or any('^{2}' in c['mask'] for c in spec['choices'])
  kind=('mixed' if structural else 'capacities') if spec else rng.choice(('mixed','capacities'))
- linear_count=3 if kind=='mixed' else 5
- linear_indices=sorted(rng.sample(range(5),linear_count))
+ candidate_count=2 if kind=='mixed' else 5
+ linear_count=candidate_count
+ linear_indices=sorted(rng.sample(range(candidate_count),linear_count))
  target=rng.choice(linear_indices)
+ # Assign the extra operation and its candidate independently of the correct role.
+ operation_rng=random.Random(f'{seed}:easy-operations')
+ extra_operation=operation_rng.choice(('population_factor','quadratic_factor','negative_sum')) if kind=='mixed' else None
+ extra_rank=operation_rng.randrange(candidate_count) if kind=='mixed' else None
  p=dict(parameters) if parameters is not None else {}
  allowed={'capacity','candidates','target_rank','linear_indices'} | ({'initial'} if spec and spec['initial'] is not None else {'context'} if spec is None else set())
  if set(p)-allowed:raise ValueError('unknown easy parameter')
@@ -166,19 +171,19 @@ def learning_easy(seed,template,profile,parameters=None):
  if 'linear_indices' in p:
   linear_indices=p['linear_indices']
   if not isinstance(linear_indices,list) or len(linear_indices)!=linear_count or len(set(linear_indices))!=linear_count:raise ValueError('distinct eligible linear indices required')
-  for i in linear_indices:integer(i,'linear index',0,4)
+  for i in linear_indices:integer(i,'linear index',0,candidate_count-1)
   linear_indices=sorted(linear_indices)
   target=rng.choice(linear_indices)
  if 'target_rank' in p:
-  target=integer(p['target_rank'],'target_rank',0,4)
+  target=integer(p['target_rank'],'target_rank',0,candidate_count-1)
   if target not in linear_indices:raise ValueError('target must be an eligible linear candidate')
  if 'capacity' in p:
   A=integer(p['capacity'],'capacity',10 if spec else 20,5000 if spec else 500)
   if 'candidates' in p:
    candidates=p['candidates']
-   if not isinstance(candidates,list) or len(candidates)!=5:raise ValueError('five candidate capacities required')
+   if not isinstance(candidates,list) or len(candidates)!=candidate_count:raise ValueError(f'{candidate_count} candidate capacities required')
    for n in candidates:integer(n,'candidate',1,20000)
-   if len(set(candidates))!=5:raise ValueError('candidate capacities must be distinct')
+   if len(set(candidates))!=candidate_count:raise ValueError('candidate capacities must be distinct')
    candidates=sorted(candidates)
    if A not in [candidates[i] for i in linear_indices]:raise ValueError('capacity must be an eligible linear candidate')
    if 'target_rank' in p and candidates[target]!=A:raise ValueError('target rank disagrees with equilibrium')
@@ -186,21 +191,21 @@ def learning_easy(seed,template,profile,parameters=None):
   else:
    low,high=10**(len(str(A))-1),10**len(str(A))-1
    # Rank is sampled from its feasible domain, never silently forced to a source rank.
-   feasible=[i for i in linear_indices if A-low>=i and high-A>=4-i]
+   feasible=[i for i in linear_indices if A-low>=i and high-A>=candidate_count-1-i]
    if not feasible:
     if 'target_rank' in p or 'linear_indices' in p:raise ValueError('explicit linear target positions infeasible at this boundary')
     # Explicit boundary: choose eligible linear positions among feasible ranks.
-    feasible=[i for i in range(5) if A-low>=i and high-A>=4-i]
+    feasible=[i for i in range(candidate_count) if A-low>=i and high-A>=candidate_count-1-i]
     target=rng.choice(feasible)
-    linear_indices=sorted([target]+rng.sample([i for i in range(5) if i!=target],linear_count-1))
+    linear_indices=sorted([target]+rng.sample([i for i in range(candidate_count) if i!=target],linear_count-1))
    if 'target_rank' not in p:target=rng.choice(feasible)
    if target not in feasible:raise ValueError('target rank infeasible at this boundary')
-   candidates=sorted(rng.sample(range(low,A),target)+[A]+rng.sample(range(A+1,high+1),4-target))
+   candidates=sorted(rng.sample(range(low,A),target)+[A]+rng.sample(range(A+1,high+1),candidate_count-1-target))
  else:
   # First choose the eligible target, then draw compatible values. Two/three digits
   # are presentation strata, not answer roles or different mathematical methods.
   low,high=rng.choice(((20,99),(100,500)))
-  candidates=sorted(rng.sample(range(low,high+1),5));A=candidates[target]
+  candidates=sorted(rng.sample(range(low,high+1),candidate_count));A=candidates[target]
   p['capacity']=A
  p['candidates']=candidates;p['target_rank']=target;p['linear_indices']=linear_indices
  if spec:
@@ -225,17 +230,19 @@ def learning_easy(seed,template,profile,parameters=None):
  # Normalize captured doubled slashes only in served content; replay stays exact.
  clean=lambda text:re.sub(r'\\{2,}(?=[A-Za-z])',lambda m:'\\',text)
  prompt=clean(prompt);solution=clean(solution)
- operations=random.Random(f'{seed}:easy-operations').sample(('reverse_gap','population_factor','quadratic_factor','negative_sum'),2) if kind=='mixed' else []
- rhs=[];info=[];operation_iter=iter(operations)
- for i,n in enumerate(candidates):
-  if i in linear_indices:
-   rhs.append('k('+str(n)+'-'+s+')');info.append('linear_gap');continue
-  operation=next(operation_iter)
-  gap='('+str(n)+'-'+s+')'
-  rhs.append({'reverse_gap':'-k'+gap,'population_factor':'k'+s+gap,'quadratic_factor':'k{'+s+'}^{2}'+gap,'negative_sum':'-k('+str(n)+'+'+s+')'}[operation])
-  info.append(operation)
+ # Distinct equations, not distinct constants: each eligible capacity has both
+ # signs. Keep the complete bank invariant when only the stated target changes.
+ rhs=['k('+str(n)+'-'+s+')' for n in candidates]
+ info=['linear_gap']*candidate_count
+ if kind=='mixed':
+  rhs.extend('k('+s+'-'+str(n)+')' for n in candidates)
+  info.extend(['reverse_gap']*candidate_count)
+  n=candidates[extra_rank];gap='('+str(n)+'-'+s+')'
+  rhs.append({'population_factor':'k'+s+gap,'quadratic_factor':'k{'+s+'}^{2}'+gap,'negative_sum':'-k('+str(n)+'+'+s+')'}[extra_operation])
+  info.append(extra_operation)
  rec=assemble('easy',seed,template,profile,p,prompt,solution,[equation(s,x) for x in rhs],target,recipe_info=info,symbol=s,source_id=source_id)
- rec['generation'].update(bank_kind=kind,target_rank=target,version='inhibited-growth-easy-repair-2')
+ rec['generation'].update(bank_kind=kind,target_rank=target,version='inhibited-growth-easy-repair-3')
+ if kind=='mixed':rec['generation']['mixed_extra']={'operation':extra_operation,'candidate_rank':extra_rank}
  return rec
 
 
