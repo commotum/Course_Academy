@@ -1,0 +1,811 @@
+{
+  "learner_operation": "Infer h(x) and g(y), separate dy/g(y)=h(x)dx, integrate with an arbitrary constant, then invert to obtain the requested explicit solution or missing expression and distinguish plausible incorrect integrals/forms.",
+  "fixed_features": [
+    {
+      "feature": "First-order separable ODEs, elementary primitives, explicit general solutions",
+      "justification": "Tutorial 6767 requires separating dy/g(y)=h(x)dx; e-10833 integrates and solves explicitly. No initial values or integrating-factor method."
+    },
+    {
+      "feature": "Five-choice radio or explicit-solution scaffold with one blank",
+      "justification": "All 15 captured questions use these contracts. Scaffolds provide some algebra by design; missing expression still follows the printed ODE."
+    },
+    {
+      "feature": "Real local domains and branches",
+      "justification": "Tutorial 6767 requires g(y)≠0; roots require local valid branches. Such assumptions need not print their antiderivatives."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Exponent coefficient and sign",
+      "eligible_variation": "Change signed coefficient and constant/linear x multiplier; derive exponent and choices together.",
+      "observed": "Both easy templates and coefficient signs occur in ordinary fresh seeds and survive delivery; independent boundaries include ±1 and ±12. Batch has five linear cases with three positive and two negative coefficients."
+    },
+    {
+      "role": "Missing polynomial power or coefficient",
+      "eligible_variation": "Vary which polynomial term fills the blank while retaining its explicit solution scaffold and arbitrary-constant freedom.",
+      "observed": "q-128191 changes x² to x⁵; restored q-128198 changes x² to 8x². Both source scaffolds remain supported, including ± branch. Constant shifts accepted without narrowing prompt."
+    },
+    {
+      "role": "Correct choice placement and distinguishing integration/inversion operation",
+      "eligible_variation": "Position may permute independently; mathematical primitive and distractors must respond to coefficient changes. Fixed root/exponential solution type follows g(y) and is legitimate partial knowledge, but must leave competing choices.",
+      "observed": "Current radical banks contain multiple candidates with the required power; interval-copy cue removed. Easy sign-only cue leaves ≥2 candidates. Position-only strategies are not perfect in the five-item batch or independent ordinary-seed subgroups."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "Source replay",
+      "sample_refs": [
+        "source-replay.json",
+        "source-normalization.json",
+        "source-bank-comparison.json"
+      ],
+      "result": "All 15 prompts match ignoring captured whitespace; complete answer banks, keyed designations and exact worked templates replay. Observed domain/duplicate distractor errors remain evidence-only; served profiles correct them."
+    },
+    {
+      "case": "Exact requested easy batch",
+      "sample_refs": [
+        "batch.json",
+        "delivery-batch/accepted.json",
+        "coverage-results.json"
+      ],
+      "result": "5/5 survive. All linear, with a=3,12,-4,-1,1; three magnitude levels beyond signs. Fixed-position and sign-only unique-choice attacks do not solve the batch. This five-item pool is narrow but valid practice of the canonical polynomial route, and is not claimed to cover every source route."
+    },
+    {
+      "case": "Independent boundaries and fresh natural seeds",
+      "sample_refs": [
+        "easy-grid.json",
+        "fresh-samples.json",
+        "coverage-results.json",
+        "delivery-fresh/accepted.json"
+      ],
+      "result": "12 boundary controls across both templates; 9 survive inventory. Fresh seeds 942701..942716 give 16 records, 10 survivors, both templates and signs retained. Fixed grid intentionally reused one seed; its common position is an audit control, not natural sampling."
+    },
+    {
+      "case": "Changed source families and profiles",
+      "sample_refs": [
+        "normal-cases.json",
+        "author-rerun/family-records.json",
+        "leak-cases.json",
+        "delivery-moderate/accepted.json"
+      ],
+      "result": "Default and upper boundary for every family, both public blank profiles at 1,2,8 for restored family. All three repaired radical families tested at 1,2,7,8; all twelve coefficient cases survive in the combined moderate delivery."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "q-128198: coefficient/power or sign changed with seed held fixed",
+      "expected": "Prompt, solution and mathematical response change coherently",
+      "observed": "x^{2} → 8 x^{2}. Native grader validates both, and rejects crossed old/new blank responses. Printed final solutions and independent differential residuals agree; both rendered.",
+      "status": "passed",
+      "justification": "Separation and integration in tutorial 6767 depend on the ODE coefficients, not option order. Blank scaffolds are source-supported.",
+      "sample_refs": [
+        "pairs.json",
+        "counterfactual-results.json",
+        "pair-math.json",
+        "fresh-grader-input.json",
+        "fresh-grader-report.json",
+        "fresh-render-input.json",
+        "fresh-render/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "q-128191: coefficient/power or sign changed with seed held fixed",
+      "expected": "Prompt, solution and mathematical response change coherently",
+      "observed": "x^{2} → x^{5}. Native grader validates both, and rejects crossed old/new blank responses. Printed final solutions and independent differential residuals agree; both rendered.",
+      "status": "passed",
+      "justification": "Separation and integration in tutorial 6767 depend on the ODE coefficients, not option order. Blank scaffolds are source-supported.",
+      "sample_refs": [
+        "pairs.json",
+        "counterfactual-results.json",
+        "pair-math.json",
+        "fresh-grader-input.json",
+        "fresh-grader-report.json",
+        "fresh-render-input.json",
+        "fresh-render/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "easy_linear: coefficient/power or sign changed with seed held fixed",
+      "expected": "Prompt, solution and mathematical response change coherently",
+      "observed": "y=K e^{- x^{2}} → y=K e^{x^{2}}. Native grader validates both, and rejects crossed old/new blank responses. Printed final solutions and independent differential residuals agree; both rendered.",
+      "status": "passed",
+      "justification": "Separation and integration in tutorial 6767 depend on the ODE coefficients, not option order. Blank scaffolds are source-supported.",
+      "sample_refs": [
+        "pairs.json",
+        "counterfactual-results.json",
+        "pair-math.json",
+        "fresh-grader-input.json",
+        "fresh-grader-report.json",
+        "fresh-render-input.json",
+        "fresh-render/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "q-79665: coefficient/power or sign changed with seed held fixed",
+      "expected": "Prompt, solution and mathematical response change coherently",
+      "observed": "y=\\left(K + \\frac{x^{\\frac{3}{2}}}{3}\\right)^{2} → y=\\left(K + \\frac{2 x^{\\frac{3}{2}}}{3}\\right)^{2}. Native grader validates both, and rejects crossed old/new blank responses. Printed final solutions and independent differential residuals agree; both rendered.",
+      "status": "passed",
+      "justification": "Separation and integration in tutorial 6767 depend on the ODE coefficients, not option order. Blank scaffolds are source-supported.",
+      "sample_refs": [
+        "pairs.json",
+        "counterfactual-results.json",
+        "pair-math.json",
+        "fresh-grader-input.json",
+        "fresh-grader-report.json",
+        "fresh-render-input.json",
+        "fresh-render/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "q-8303: coefficient/power or sign changed with seed held fixed",
+      "expected": "Prompt, solution and mathematical response change coherently",
+      "observed": "y=\\left(\\frac{C}{2} + \\frac{x^{2}}{2} + \\frac{x}{2}\\right)^{2} → y=\\left(\\frac{C}{2} + \\frac{x^{2}}{2} + x\\right)^{2}. Native grader validates both, and rejects crossed old/new blank responses. Printed final solutions and independent differential residuals agree; both rendered.",
+      "status": "passed",
+      "justification": "Separation and integration in tutorial 6767 depend on the ODE coefficients, not option order. Blank scaffolds are source-supported.",
+      "sample_refs": [
+        "pairs.json",
+        "counterfactual-results.json",
+        "pair-math.json",
+        "fresh-grader-input.json",
+        "fresh-grader-report.json",
+        "fresh-render-input.json",
+        "fresh-render/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "q-8304: coefficient/power or sign changed with seed held fixed",
+      "expected": "Prompt, solution and mathematical response change coherently",
+      "observed": "y=\\left(K + 3 \\sqrt{x}\\right)^{\\frac{2}{3}} → y=\\left(K + 6 \\sqrt{x}\\right)^{\\frac{2}{3}}. Native grader validates both, and rejects crossed old/new blank responses. Printed final solutions and independent differential residuals agree; both rendered.",
+      "status": "passed",
+      "justification": "Separation and integration in tutorial 6767 depend on the ODE coefficients, not option order. Blank scaffolds are source-supported.",
+      "sample_refs": [
+        "pairs.json",
+        "counterfactual-results.json",
+        "pair-math.json",
+        "fresh-grader-input.json",
+        "fresh-grader-report.json",
+        "fresh-render-input.json",
+        "fresh-render/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "easy_linear: seed and option order changed, printed ODE held fixed",
+      "expected": "Prompt, solution and response preserved despite choice reordering",
+      "observed": "y=K e^{- x^{2}} → y=K e^{- x^{2}}. Native grader validates both, and rejects crossed old/new blank responses. Printed final solutions and independent differential residuals agree; both rendered.",
+      "status": "passed",
+      "justification": "Separation and integration in tutorial 6767 depend on the ODE coefficients, not option order. Blank scaffolds are source-supported.",
+      "sample_refs": [
+        "pairs.json",
+        "counterfactual-results.json",
+        "pair-math.json",
+        "fresh-grader-input.json",
+        "fresh-grader-report.json",
+        "fresh-render-input.json",
+        "fresh-render/rendering.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "option position",
+      "subgroup": "fresh-samples.json:easy_constant",
+      "scope": "within_template",
+      "strategy": "Always choose position 1",
+      "correct": 1,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio options give chance baseline 1/5. No stable perfect position strategy across this subgroup and independent control; finite batch counts are descriptive.",
+      "sample_refs": [
+        "fresh-samples.json"
+      ]
+    },
+    {
+      "cue": "option position",
+      "subgroup": "fresh-samples.json:easy_constant",
+      "scope": "within_template",
+      "strategy": "Always choose position 2",
+      "correct": 2,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio options give chance baseline 1/5. No stable perfect position strategy across this subgroup and independent control; finite batch counts are descriptive.",
+      "sample_refs": [
+        "fresh-samples.json"
+      ]
+    },
+    {
+      "cue": "option position",
+      "subgroup": "fresh-samples.json:easy_constant",
+      "scope": "within_template",
+      "strategy": "Always choose position 3",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio options give chance baseline 1/5. No stable perfect position strategy across this subgroup and independent control; finite batch counts are descriptive.",
+      "sample_refs": [
+        "fresh-samples.json"
+      ]
+    },
+    {
+      "cue": "option position",
+      "subgroup": "fresh-samples.json:easy_constant",
+      "scope": "within_template",
+      "strategy": "Always choose position 4",
+      "correct": 3,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio options give chance baseline 1/5. No stable perfect position strategy across this subgroup and independent control; finite batch counts are descriptive.",
+      "sample_refs": [
+        "fresh-samples.json"
+      ]
+    },
+    {
+      "cue": "option position",
+      "subgroup": "fresh-samples.json:easy_constant",
+      "scope": "within_template",
+      "strategy": "Always choose position 5",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio options give chance baseline 1/5. No stable perfect position strategy across this subgroup and independent control; finite batch counts are descriptive.",
+      "sample_refs": [
+        "fresh-samples.json"
+      ]
+    },
+    {
+      "cue": "option position",
+      "subgroup": "fresh-samples.json:easy_linear",
+      "scope": "within_template",
+      "strategy": "Always choose position 1",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio options give chance baseline 1/5. No stable perfect position strategy across this subgroup and independent control; finite batch counts are descriptive.",
+      "sample_refs": [
+        "fresh-samples.json"
+      ]
+    },
+    {
+      "cue": "option position",
+      "subgroup": "fresh-samples.json:easy_linear",
+      "scope": "within_template",
+      "strategy": "Always choose position 2",
+      "correct": 3,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio options give chance baseline 1/5. No stable perfect position strategy across this subgroup and independent control; finite batch counts are descriptive.",
+      "sample_refs": [
+        "fresh-samples.json"
+      ]
+    },
+    {
+      "cue": "option position",
+      "subgroup": "fresh-samples.json:easy_linear",
+      "scope": "within_template",
+      "strategy": "Always choose position 3",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio options give chance baseline 1/5. No stable perfect position strategy across this subgroup and independent control; finite batch counts are descriptive.",
+      "sample_refs": [
+        "fresh-samples.json"
+      ]
+    },
+    {
+      "cue": "option position",
+      "subgroup": "fresh-samples.json:easy_linear",
+      "scope": "within_template",
+      "strategy": "Always choose position 4",
+      "correct": 5,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio options give chance baseline 1/5. No stable perfect position strategy across this subgroup and independent control; finite batch counts are descriptive.",
+      "sample_refs": [
+        "fresh-samples.json"
+      ]
+    },
+    {
+      "cue": "option position",
+      "subgroup": "fresh-samples.json:easy_linear",
+      "scope": "within_template",
+      "strategy": "Always choose position 5",
+      "correct": 0,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio options give chance baseline 1/5. No stable perfect position strategy across this subgroup and independent control; finite batch counts are descriptive.",
+      "sample_refs": [
+        "fresh-samples.json"
+      ]
+    },
+    {
+      "cue": "option position",
+      "subgroup": "delivery-fresh/accepted.json:easy_constant",
+      "scope": "within_template",
+      "strategy": "Always choose position 1",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio options give chance baseline 1/5. No stable perfect position strategy across this subgroup and independent control; finite batch counts are descriptive.",
+      "sample_refs": [
+        "delivery-fresh/accepted.json"
+      ]
+    },
+    {
+      "cue": "option position",
+      "subgroup": "delivery-fresh/accepted.json:easy_constant",
+      "scope": "within_template",
+      "strategy": "Always choose position 2",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio options give chance baseline 1/5. No stable perfect position strategy across this subgroup and independent control; finite batch counts are descriptive.",
+      "sample_refs": [
+        "delivery-fresh/accepted.json"
+      ]
+    },
+    {
+      "cue": "option position",
+      "subgroup": "delivery-fresh/accepted.json:easy_constant",
+      "scope": "within_template",
+      "strategy": "Always choose position 3",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio options give chance baseline 1/5. No stable perfect position strategy across this subgroup and independent control; finite batch counts are descriptive.",
+      "sample_refs": [
+        "delivery-fresh/accepted.json"
+      ]
+    },
+    {
+      "cue": "option position",
+      "subgroup": "delivery-fresh/accepted.json:easy_constant",
+      "scope": "within_template",
+      "strategy": "Always choose position 4",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio options give chance baseline 1/5. No stable perfect position strategy across this subgroup and independent control; finite batch counts are descriptive.",
+      "sample_refs": [
+        "delivery-fresh/accepted.json"
+      ]
+    },
+    {
+      "cue": "option position",
+      "subgroup": "delivery-fresh/accepted.json:easy_constant",
+      "scope": "within_template",
+      "strategy": "Always choose position 5",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio options give chance baseline 1/5. No stable perfect position strategy across this subgroup and independent control; finite batch counts are descriptive.",
+      "sample_refs": [
+        "delivery-fresh/accepted.json"
+      ]
+    },
+    {
+      "cue": "option position",
+      "subgroup": "delivery-fresh/accepted.json:easy_linear",
+      "scope": "within_template",
+      "strategy": "Always choose position 1",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio options give chance baseline 1/5. No stable perfect position strategy across this subgroup and independent control; finite batch counts are descriptive.",
+      "sample_refs": [
+        "delivery-fresh/accepted.json"
+      ]
+    },
+    {
+      "cue": "option position",
+      "subgroup": "delivery-fresh/accepted.json:easy_linear",
+      "scope": "within_template",
+      "strategy": "Always choose position 2",
+      "correct": 2,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio options give chance baseline 1/5. No stable perfect position strategy across this subgroup and independent control; finite batch counts are descriptive.",
+      "sample_refs": [
+        "delivery-fresh/accepted.json"
+      ]
+    },
+    {
+      "cue": "option position",
+      "subgroup": "delivery-fresh/accepted.json:easy_linear",
+      "scope": "within_template",
+      "strategy": "Always choose position 3",
+      "correct": 1,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio options give chance baseline 1/5. No stable perfect position strategy across this subgroup and independent control; finite batch counts are descriptive.",
+      "sample_refs": [
+        "delivery-fresh/accepted.json"
+      ]
+    },
+    {
+      "cue": "option position",
+      "subgroup": "delivery-fresh/accepted.json:easy_linear",
+      "scope": "within_template",
+      "strategy": "Always choose position 4",
+      "correct": 3,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio options give chance baseline 1/5. No stable perfect position strategy across this subgroup and independent control; finite batch counts are descriptive.",
+      "sample_refs": [
+        "delivery-fresh/accepted.json"
+      ]
+    },
+    {
+      "cue": "option position",
+      "subgroup": "delivery-fresh/accepted.json:easy_linear",
+      "scope": "within_template",
+      "strategy": "Always choose position 5",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio options give chance baseline 1/5. No stable perfect position strategy across this subgroup and independent control; finite batch counts are descriptive.",
+      "sample_refs": [
+        "delivery-fresh/accepted.json"
+      ]
+    },
+    {
+      "cue": "option position",
+      "subgroup": "batch.json:easy_linear",
+      "scope": "within_template",
+      "strategy": "Always choose position 1",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio options give chance baseline 1/5. No stable perfect position strategy across this subgroup and independent control; finite batch counts are descriptive.",
+      "sample_refs": [
+        "batch.json"
+      ]
+    },
+    {
+      "cue": "option position",
+      "subgroup": "batch.json:easy_linear",
+      "scope": "within_template",
+      "strategy": "Always choose position 2",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio options give chance baseline 1/5. No stable perfect position strategy across this subgroup and independent control; finite batch counts are descriptive.",
+      "sample_refs": [
+        "batch.json"
+      ]
+    },
+    {
+      "cue": "option position",
+      "subgroup": "batch.json:easy_linear",
+      "scope": "within_template",
+      "strategy": "Always choose position 3",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio options give chance baseline 1/5. No stable perfect position strategy across this subgroup and independent control; finite batch counts are descriptive.",
+      "sample_refs": [
+        "batch.json"
+      ]
+    },
+    {
+      "cue": "option position",
+      "subgroup": "batch.json:easy_linear",
+      "scope": "within_template",
+      "strategy": "Always choose position 4",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio options give chance baseline 1/5. No stable perfect position strategy across this subgroup and independent control; finite batch counts are descriptive.",
+      "sample_refs": [
+        "batch.json"
+      ]
+    },
+    {
+      "cue": "option position",
+      "subgroup": "batch.json:easy_linear",
+      "scope": "within_template",
+      "strategy": "Always choose position 5",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio options give chance baseline 1/5. No stable perfect position strategy across this subgroup and independent control; finite batch counts are descriptive.",
+      "sample_refs": [
+        "batch.json"
+      ]
+    },
+    {
+      "cue": "option position",
+      "subgroup": "delivery-batch/accepted.json:easy_linear",
+      "scope": "within_template",
+      "strategy": "Always choose position 1",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio options give chance baseline 1/5. No stable perfect position strategy across this subgroup and independent control; finite batch counts are descriptive.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "option position",
+      "subgroup": "delivery-batch/accepted.json:easy_linear",
+      "scope": "within_template",
+      "strategy": "Always choose position 2",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio options give chance baseline 1/5. No stable perfect position strategy across this subgroup and independent control; finite batch counts are descriptive.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "option position",
+      "subgroup": "delivery-batch/accepted.json:easy_linear",
+      "scope": "within_template",
+      "strategy": "Always choose position 3",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio options give chance baseline 1/5. No stable perfect position strategy across this subgroup and independent control; finite batch counts are descriptive.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "option position",
+      "subgroup": "delivery-batch/accepted.json:easy_linear",
+      "scope": "within_template",
+      "strategy": "Always choose position 4",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio options give chance baseline 1/5. No stable perfect position strategy across this subgroup and independent control; finite batch counts are descriptive.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "option position",
+      "subgroup": "delivery-batch/accepted.json:easy_linear",
+      "scope": "within_template",
+      "strategy": "Always choose position 5",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five radio options give chance baseline 1/5. No stable perfect position strategy across this subgroup and independent control; finite batch counts are descriptive.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "prompt integrated branch restriction",
+      "subgroup": "leak-cases.json:q-8303",
+      "scope": "within_template",
+      "strategy": "Copy printed constant-containing x expression and invert/square it, without integration",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No candidate primitive occurs in the current prompt; no copy action is available. Baseline is random one-of-five. The historical cue is detected by author-rerun shortcut-results and independent retained-failures.",
+      "sample_refs": [
+        "leak-cases.json",
+        "author-rerun/shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "prompt integrated branch restriction",
+      "subgroup": "leak-cases.json:q-79665",
+      "scope": "within_template",
+      "strategy": "Copy printed constant-containing x expression and invert/square it, without integration",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No candidate primitive occurs in the current prompt; no copy action is available. Baseline is random one-of-five. The historical cue is detected by author-rerun shortcut-results and independent retained-failures.",
+      "sample_refs": [
+        "leak-cases.json",
+        "author-rerun/shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "prompt integrated branch restriction",
+      "subgroup": "leak-cases.json:q-8304",
+      "scope": "within_template",
+      "strategy": "Copy printed constant-containing x expression and invert/square it, without integration",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No candidate primitive occurs in the current prompt; no copy action is available. Baseline is random one-of-five. The historical cue is detected by author-rerun shortcut-results and independent retained-failures.",
+      "sample_refs": [
+        "leak-cases.json",
+        "author-rerun/shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "prompt integrated branch restriction",
+      "subgroup": "delivery-moderate/accepted.json:q-8303",
+      "scope": "within_template",
+      "strategy": "Copy printed constant-containing x expression and invert/square it, without integration",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No candidate primitive occurs in the current prompt; no copy action is available. Baseline is random one-of-five. The historical cue is detected by author-rerun shortcut-results and independent retained-failures.",
+      "sample_refs": [
+        "delivery-moderate/accepted.json",
+        "author-rerun/shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "prompt integrated branch restriction",
+      "subgroup": "delivery-moderate/accepted.json:q-79665",
+      "scope": "within_template",
+      "strategy": "Copy printed constant-containing x expression and invert/square it, without integration",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No candidate primitive occurs in the current prompt; no copy action is available. Baseline is random one-of-five. The historical cue is detected by author-rerun shortcut-results and independent retained-failures.",
+      "sample_refs": [
+        "delivery-moderate/accepted.json",
+        "author-rerun/shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "prompt integrated branch restriction",
+      "subgroup": "delivery-moderate/accepted.json:q-8304",
+      "scope": "within_template",
+      "strategy": "Copy printed constant-containing x expression and invert/square it, without integration",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No candidate primitive occurs in the current prompt; no copy action is available. Baseline is random one-of-five. The historical cue is detected by author-rerun shortcut-results and independent retained-failures.",
+      "sample_refs": [
+        "delivery-moderate/accepted.json",
+        "author-rerun/shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "sign of exponential factor",
+      "subgroup": "batch.json:easy_linear",
+      "scope": "within_template",
+      "strategy": "Choose the unique multiplicative exponential having the expected sign, without computing the primitive",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Opposite-sign knowledge expresses rearrangement, but does not determine the option: at least two candidates remain for every record. Correct counts measure unique successful action. Baseline is random choice among five.",
+      "sample_refs": [
+        "batch.json",
+        "batch-sign-cue.json"
+      ]
+    },
+    {
+      "cue": "sign of exponential factor",
+      "subgroup": "fresh-samples.json:easy_constant",
+      "scope": "within_template",
+      "strategy": "Choose the unique multiplicative exponential having the expected sign, without computing the primitive",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Opposite-sign knowledge expresses rearrangement, but does not determine the option: at least two candidates remain for every record. Correct counts measure unique successful action. Baseline is random choice among five.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "fresh-samples-sign-cue.json"
+      ]
+    },
+    {
+      "cue": "sign of exponential factor",
+      "subgroup": "fresh-samples.json:easy_linear",
+      "scope": "within_template",
+      "strategy": "Choose the unique multiplicative exponential having the expected sign, without computing the primitive",
+      "correct": 0,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Opposite-sign knowledge expresses rearrangement, but does not determine the option: at least two candidates remain for every record. Correct counts measure unique successful action. Baseline is random choice among five.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "fresh-samples-sign-cue.json"
+      ]
+    },
+    {
+      "cue": "sign of exponential factor",
+      "subgroup": "delivery-fresh/accepted.json:easy_constant",
+      "scope": "within_template",
+      "strategy": "Choose the unique multiplicative exponential having the expected sign, without computing the primitive",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Opposite-sign knowledge expresses rearrangement, but does not determine the option: at least two candidates remain for every record. Correct counts measure unique successful action. Baseline is random choice among five.",
+      "sample_refs": [
+        "delivery-fresh/accepted.json",
+        "delivery-fresh/accepted-sign-cue.json"
+      ]
+    },
+    {
+      "cue": "sign of exponential factor",
+      "subgroup": "delivery-fresh/accepted.json:easy_linear",
+      "scope": "within_template",
+      "strategy": "Choose the unique multiplicative exponential having the expected sign, without computing the primitive",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Opposite-sign knowledge expresses rearrangement, but does not determine the option: at least two candidates remain for every record. Correct counts measure unique successful action. Baseline is random choice among five.",
+      "sample_refs": [
+        "delivery-fresh/accepted.json",
+        "delivery-fresh/accepted-sign-cue.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "generator bounds, complete-bank equivalence rejection and deterministic replay",
+      "requested-difficulty filtering",
+      "actual publisher normalization, validation and stable IDs",
+      "captured inventory and within-batch deduplication",
+      "freshness/history exclusion and difficulty-first learner selection rules"
+    ],
+    "sample_refs": [
+      "runtime.json",
+      "coverage-results.json",
+      "delivery-batch/delivery.json",
+      "delivery-fresh/delivery.json",
+      "delivery-moderate/delivery.json",
+      "delivery-hard/delivery.json",
+      "learner-selection.json",
+      "inventory-reproduction.json",
+      "generated-records.json",
+      "affected-inventory.json"
+    ],
+    "result": "Batch 5→5; easy boundaries 12→9; fresh easy 16→10; moderate 30→24; hard 12→11. No cue reappears after filtering. Read-only selector reproduction uses exact SHA draw for positive-weight fresh pools; all surviving decisions remain reachable. Source snapshot basis 5369; six historical generated records reproduce and none belongs to retained defective families. No publication preparation exists; no database writes."
+  },
+  "limitations": [
+    "Finite review does not prove absence of every shortcut.",
+    "Actual future learner policy, numeric entity ordering and histories are unavailable. Selection counts are illustrative under explicit positive-weight fresh-learner conditions; structural selection behavior inspected including zero-weight and no-policy fallback.",
+    "Captured inventory basis 5369 can change.",
+    "No easy-labeled exercise is captured: easy variants are conservative authored extensions of canonical e-10833.",
+    "Unchanged construction rules were sampled and prior analysis reused rather than exhaustively re-audited."
+  ]
+}

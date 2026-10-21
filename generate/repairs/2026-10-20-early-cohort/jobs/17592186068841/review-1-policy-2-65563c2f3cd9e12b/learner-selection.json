@@ -1,0 +1,94 @@
+{
+  "source": "engine/rust/question_selection.rs select/seen_before_task/weights_for_phase inspected",
+  "seed_prefix": "review-942751-",
+  "scenario": "Fresh learner; all accepted records fresh and usable; each examined band has positive configured weight. SHA256 exact second-word within-band draw. Sorted UUIDs substitute future numeric IDs; counts illustrative, positive reachability invariant.",
+  "results": {
+    "delivery-batch/accepted.json": {
+      "draws": 256,
+      "templates": {
+        "easy_linear": 256
+      },
+      "pool": {
+        "count": 5,
+        "templates": {
+          "easy_linear": 5
+        },
+        "signs": {
+          "positive": 3,
+          "negative": 2
+        },
+        "positions": {
+          "4": 1,
+          "3": 3,
+          "2": 1
+        }
+      }
+    },
+    "delivery-fresh/accepted.json": {
+      "draws": 256,
+      "templates": {
+        "easy_linear": 155,
+        "easy_constant": 101
+      },
+      "pool": {
+        "count": 10,
+        "templates": {
+          "easy_constant": 4,
+          "easy_linear": 6
+        },
+        "signs": {
+          "positive": 4,
+          "negative": 6
+        },
+        "positions": {
+          "1": 1,
+          "2": 4,
+          "4": 4,
+          "3": 1
+        }
+      }
+    },
+    "delivery-moderate/accepted.json": {
+      "draws": 256,
+      "templates": {
+        "q-8304": 53,
+        "q-128198": 25,
+        "q-79660": 22,
+        "q-79665": 41,
+        "q-79664": 14,
+        "q-79666": 16,
+        "q-128191": 24,
+        "q-8303": 44,
+        "q-14253": 17
+      },
+      "pool": {
+        "count": 24,
+        "templates": {
+          "q-8303": 4,
+          "q-79660": 2,
+          "q-128191": 2,
+          "q-79665": 4,
+          "q-128198": 2,
+          "q-14253": 2,
+          "q-79666": 2,
+          "q-79664": 2,
+          "q-8304": 4
+        },
+        "signs": {
+          "positive": 24
+        },
+        "positions": {
+          "5": 3,
+          "1": 7,
+          "3": 9,
+          "4": 1
+        }
+      }
+    }
+  },
+  "structural_analysis": "Known-difficulty zero-weight bands excluded; nonempty bands renormalize difficulty weight; history removes previously used records; no-policy fallback selects smallest ID. No content-shape filtering occurs in selector. Removal cannot introduce a shortcut into a member that lacks it. Exact five-item batch remains linear with both signs under the positive-easy scenario; after all seen it exhausts.",
+  "limits": [
+    "No live learner history or policy weights captured: exact future frequencies unknown.",
+    "Inventory basis 5369 only; concurrent publication can change duplicates."
+  ]
+}

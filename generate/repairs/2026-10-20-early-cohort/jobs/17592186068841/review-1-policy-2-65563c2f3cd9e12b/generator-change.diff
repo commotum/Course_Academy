@@ -1,0 +1,97 @@
+--- prior
++++ current
+@@ -30,7 +30,7 @@
+ X,Y,C,K=sp.symbols('x y C K',real=True)
+ D=sp.Symbol('D',real=True)
+ DY=r'\frac{\text{d}y}{\text{d}x}'
+-SOURCE_DEFAULTS={'q-8303':1,'q-8305':1,'q-128191':1,'q-14247':1,
++SOURCE_DEFAULTS={'q-8303':1,'q-8305':1,'q-128198':1,'q-128191':1,'q-14247':1,
+  'q-14253':1,'q-158009':3,'q-158010':1,'q-3854':2,'q-79660':1,
+  'q-79663':2,'q-79664':1,'q-79665':1,'q-79666':1,'q-8304':1}
+ LEVELS={k:q[':question/difficulty'][':db/ident'].split('/')[-1] for k,q in QUESTIONS.items()}
+@@ -38,6 +38,7 @@
+ AUTHORED_BANKS={'q-14247','q-14253','q-158009','q-79660','q-79664','q-79665','q-8304'}
+ DOMAINS={
+  'q-8303':r'y>0,\quad x^2+a x+C>0',
++ 'q-128198':r'y\ne0',
+  'q-8305':r'K\ne0', 'q-128191':r'x^{a+1}+K\ne0',
+  'q-14247':r'K\ne0','q-14253':r'x^2+a x+C\ne0',
+  'q-158009':r'x\ne0,\quad K\ne0',
+@@ -100,6 +101,14 @@
+           r'-\frac{2}{':'-'+r'\frac{'+str(a+1)+'}{',r'-2{(':'-'+str(a+1)+r'{(',
+           r'-2($':'-'+str(a+1)+'($',r'$K=2C$':f'$K={a+1}C$'}
+         bank=[X**(a+1)]
++    elif name=='q-128198':
++        f=a*X;F=a*X**2/2;g=Y
++        # Coefficient slot in the x integrand and its primitive, including the
++        # completed square-root radicand. The source scaffold keeps both signs.
++        mapping={r'\frac{x}{y}':r'\frac{'+ct(a,'x')+'}{y}',
++          r'& =x':r'& ='+ct(a,'x'),r'\int x\,':r'\int '+ct(a,'x')+r'\,',
++          r'\frac{{x}^{2}}{2}':source_tex(F),r'{x}^{2}':source_tex(a*X**2)}
++        bank=[a*X**2]
+     elif name=='q-14247':
+         f=a+3*X**2;F=X**3+a*X;g=1/Y
+         mapping={r'y+3y':ct(a,'y')+'+3y',r'1+3{x}^{2}':str(a)+r'+3{x}^{2}',
+@@ -236,7 +245,7 @@
+ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
+     if level not in ('easy','moderate','hard'):raise ValueError('Unknown difficulty')
+     rng=random.Random(seed)
+-    choices=[n for n,l in LEVELS.items() if l==level and (field_type is None or ('blank' if n=='q-128191' else 'radio')==field_type)]
++    choices=[n for n,l in LEVELS.items() if l==level and (field_type is None or ('blank' if n in ('q-128191','q-128198') else 'radio')==field_type)]
+     if template is None:
+         if not choices:raise ValueError('No templates for field type')
+         template=rng.choice(choices)
+@@ -265,18 +274,33 @@
+         prompt=component_mask(q[':question/problem'],s['mapping'])
+         solution=component_mask(q[':question/worked-solution'],s['mapping'])
+         if profile!='observed':
+-            if template=='q-128191':
+-                prompt+='\n\nGive the nonconstant polynomial term; put the integration constant in $K.$'
+             if template in ('q-79665','q-8304'):
+                 prompt+='\n\nAssume $x>0$ and $y>0.$'
+             if template=='q-158009':
+                 # Delete only the mathematically false signed-K |y+a| row.
+                 solution=solution.replace(r'\begin{aligned}|y+'+str(a)+r'| & =K{e}^{-1/x} \\ ',r'\begin{aligned}')
+                 prompt+='\n\nAssume $x\\ne0.$'
+-            if template=='q-8303':prompt+='\n\nUse an interval where $'+tex(s['F'])+'+C>0.$'
+-            if template=='q-79665':prompt+='\n\nUse an interval where $'+tex(a*X**sp.Rational(3,2)/3)+'+K>0.$'
+-            if template=='q-8304':prompt+='\n\nUse an interval where $'+tex(3*a*sp.sqrt(X))+'+K>0.$'
+-    kind='blank' if template=='q-128191' else 'radio';key='field-1' if kind=='blank' else 'selection'
++
++
++
++            if template in ('q-8303','q-79665','q-8304'):
++                prompt+='\n\nUse a local interval on which the integrated, separated equation holds on its positive branch.'
++                # This restriction belongs after integration, where it explains
++                # the inversion rather than providing the primitive in advance.
++                inner=(s['F']+C if template=='q-8303' else
++                       a*X**sp.Rational(3,2)/3+K if template=='q-79665' else
++                       3*a*sp.sqrt(X)+K)
++                solution+='\n\nThe displayed family is valid locally where $'+tex(inner)+'>0.$'
++    kind='blank' if template in ('q-128191','q-128198') else 'radio';key='field-1' if kind=='blank' else 'selection'
++    if kind=='blank':
++        # Captured indentation must never create Markdown code blocks. Preserve
++        # mathematical fragments and the exact placeholder in one inline row.
++        head=prompt.split('\n\n',1)[0]
++        scaffold=(f'$y=-{a+1}($ '+ '{{field-1}}' + r' $+K)^{-1}$'
++                  if template=='q-128191' else
++                  r'$y=\pm ($ '+ '{{field-1}}' + r' $+K)^{1/2}$')
++        prompt=head+'\n\n'+scaffold
++
+     values=[tex(v) if kind=='blank' else 'y='+tex(v) for v in s['bank']]
+     # Observed wrong log choices require source positive x intervals but are
+     # mathematical expressions with nonempty real domains. No domain is guessed.
+@@ -299,11 +323,11 @@
+        ':question/answer-fields':[{':answer-field/id':str(fid),':answer-field/key':key,
+         ':answer-field/type':':answer-field.type/'+kind,':answer-field/choices':answers,
+         ':answer-field/correct':[':answer/id',correct]}]},
+-      'generation':{'version':VERSION,'template':template,'parameters':dict(parameters),'seed':seed,
++      'generation':{'version':VERSION,'repair_revision':2,'template':template,'parameters':dict(parameters),'seed':seed,
+        'bank_profile':profile,'bank_origin':('authored complete operation bank' if level=='easy' or template in AUTHORED_BANKS and profile!='observed' else 'authored one-option repair of observed bank' if template=='q-3854' and profile=='repaired' else 'observed complete symbolic shapes'),
+        'bank_recipes':recipes,
+        'authored_bank_repair':template=='q-3854' and profile=='repaired',
+-       'field_normalization':('nonconstant polynomial term; all integration constants in K' if template=='q-128191' and profile!='observed' else None),
++       'field_normalization':None,
+        'authored_extension':level=='easy','source_id':QUESTIONS[template][':db/id'] if template in QUESTIONS else None,
+        'source_provenance':{k:SNAPSHOT[k] for k in ('database','basis','lineage')},
+        'content_fingerprint':fingerprint,'parameter_fingerprint':task,'mathematical_fingerprint':task,

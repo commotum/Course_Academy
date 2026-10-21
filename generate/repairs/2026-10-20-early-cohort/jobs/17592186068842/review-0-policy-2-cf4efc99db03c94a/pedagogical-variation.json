@@ -1,0 +1,333 @@
+{
+  "learner_operation": "Identify independent h(x) and g(y) in the ODE, then select an equivalent equation (1/g(y))dy/dx=h(x). Merely recognizing a distinctive answer-row shape does not perform that operation.",
+  "fixed_features": [
+    {
+      "feature": "First-order dy/dx, separated y-only multiplier and x-only RHS; no integration.",
+      "justification": "Tutorial 6767 explicitly defines this target form; canonical example stops at this step."
+    },
+    {
+      "feature": "Single radio field and five complete equations.",
+      "justification": "All ten captured source question banks use this response contract."
+    },
+    {
+      "feature": "Bounded positive coefficients and even positive-polynomial/radical powers.",
+      "justification": "Keep real regular domains and the same local algebra; broad sign coverage is not necessary to demonstrate reciprocal transfer."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Correct complete equation and its display position",
+      "eligible_variation": "Derive the reciprocal factor and x-only RHS from each new instance; shuffle rows.",
+      "observed": "Correct expressions update with parameters; native grading accepts them. Raw sampler and UI shuffle row positions."
+    },
+    {
+      "role": "Dependent factor in numerator versus denominator",
+      "eligible_variation": "Both direct and reciprocal multipliers are supported by easy sources q-158022 and q-158025/q-158030; vary factor/power roles without adding integration.",
+      "observed": "Both operation types occur across easy templates, before and after delivery; quotient templates always isolate the correct response as the sole fractionless row."
+    },
+    {
+      "role": "Fraction-bar layout of correct versus incorrect choices",
+      "eligible_variation": "Use same-scope distractors and bank profiles so a fractionless row can be incorrect and the correct row need not be uniquely recognizable without reading the ODE. Preserve observed banks for source replay.",
+      "observed": "exp_quotient and simple_quotient fix four fractional distractors against one fractionless correct response for every allowed parameter, by construction."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "Six easy template profiles before/after filtering",
+      "sample_refs": [
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "delivery-selection.json"
+      ],
+      "result": "18 inputs ->15 accepted; all six profiles survive; direct multiplication and reciprocal division both remain."
+    },
+    {
+      "case": "Exact runner batch",
+      "sample_refs": [
+        "batch.json",
+        "delivery-batch/accepted.json",
+        "fraction-shortcut-results.json"
+      ],
+      "result": "5->5 accepted; four recognizable templates, including one exp_quotient item vulnerable to prompt-blind fraction-bar selection. This is not a claim that a single cue solves all five."
+    },
+    {
+      "case": "Independent quotient seed cases and minimal boundary",
+      "sample_refs": [
+        "shortcut-records.json",
+        "minimal-failing-record.json",
+        "fraction-shortcut-results.json"
+      ],
+      "result": "13/13 prompt-blind selections correct across fresh seeds 27011..27016 and minimal n=1,seed=17; shuffles and numerical variation do not remove the cue."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Hold rational_product a=2 and seed=8102; change n=2 to n=3.",
+      "expected": "ODE changes from xy^2/(x+2) to xy^3/(x+2); correct multiplier and worked explanation change from 1/y^2 to 1/y^3; the direct-multiplier distractor remains rejected.",
+      "observed": "Prompt/key/solution update as expected; native grader accepts the appropriate key and rejects all alternatives; screenshots 006/007 show corresponding math.",
+      "status": "passed",
+      "justification": "The dependent exponent controls which reciprocal factor is needed, per source q-154678 and tutorial 6767.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-complete-report.json",
+        "visual-inspection.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Hold rational_product parameters n=2,a=2; seed=8102 ->8103 changes only option order.",
+      "expected": "Same mathematical prompt, correct expression and explanation; correct choice ID continues to be accepted despite different order.",
+      "observed": "All content/key invariants preserved; row order changes. Native grader passes and screenshots 006/008 show preserved mathematics.",
+      "status": "passed",
+      "justification": "Order is absent from the source definition of separated variables and cannot determine correctness.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-complete-report.json",
+        "visual-inspection.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "Fraction-bar count",
+      "subgroup": "Entire exact batch",
+      "scope": "overall",
+      "strategy": "Select the unique choice without a fraction outside dy/dx; abstain if not unique.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Overall 1/5 hides a perfect conditional predictor; no all-batch mastery bypass is asserted. Baseline 0.2 is uniform guessing among five radio options.",
+      "sample_refs": [
+        "batch.json",
+        "conditional-shortcut-counts.json"
+      ]
+    },
+    {
+      "cue": "Fraction-bar count",
+      "subgroup": "exp_quotient",
+      "scope": "within_template",
+      "strategy": "Select the unique choice without a fraction outside dy/dx; abstain if not unique.",
+      "correct": 6,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "The ODE can be hidden; choice shape alone identifies every correct response. Changing eligible numbers or row order cannot break the bank recipe invariant. Baseline 0.2 is uniform guessing among five radio options.",
+      "sample_refs": [
+        "shortcut-records.json",
+        "fraction-shortcut-results.json",
+        "render-all/rendering.json"
+      ]
+    },
+    {
+      "cue": "Fraction-bar count",
+      "subgroup": "simple_quotient",
+      "scope": "within_template",
+      "strategy": "Select the unique choice without a fraction outside dy/dx; abstain if not unique.",
+      "correct": 7,
+      "total": 7,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "The ODE can be hidden; choice shape alone identifies every correct response. Changing eligible numbers or row order cannot break the bank recipe invariant. Baseline 0.2 is uniform guessing among five radio options.",
+      "sample_refs": [
+        "shortcut-records.json",
+        "fraction-shortcut-results.json",
+        "render-all/rendering.json"
+      ]
+    },
+    {
+      "cue": "Fraction-bar count",
+      "subgroup": "base_exp",
+      "scope": "within_template",
+      "strategy": "Select the unique choice without a fraction outside dy/dx; abstain if not unique.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "This cue did not yield a correct response in the controlled boundary/fresh sample; no absence of other shortcuts is inferred. Baseline 0.2 is uniform guessing among five radio options.",
+      "sample_refs": [
+        "independent-records.json",
+        "conditional-shortcut-counts.json"
+      ]
+    },
+    {
+      "cue": "Fraction-bar count",
+      "subgroup": "double_factor",
+      "scope": "within_template",
+      "strategy": "Select the unique choice without a fraction outside dy/dx; abstain if not unique.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "This cue did not yield a correct response in the controlled boundary/fresh sample; no absence of other shortcuts is inferred. Baseline 0.2 is uniform guessing among five radio options.",
+      "sample_refs": [
+        "independent-records.json",
+        "conditional-shortcut-counts.json"
+      ]
+    },
+    {
+      "cue": "Fraction-bar count",
+      "subgroup": "exp_product",
+      "scope": "within_template",
+      "strategy": "Select the unique choice without a fraction outside dy/dx; abstain if not unique.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "This cue did not yield a correct response in the controlled boundary/fresh sample; no absence of other shortcuts is inferred. Baseline 0.2 is uniform guessing among five radio options.",
+      "sample_refs": [
+        "independent-records.json",
+        "conditional-shortcut-counts.json"
+      ]
+    },
+    {
+      "cue": "Fraction-bar count",
+      "subgroup": "exp_sum",
+      "scope": "within_template",
+      "strategy": "Select the unique choice without a fraction outside dy/dx; abstain if not unique.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "This cue did not yield a correct response in the controlled boundary/fresh sample; no absence of other shortcuts is inferred. Baseline 0.2 is uniform guessing among five radio options.",
+      "sample_refs": [
+        "independent-records.json",
+        "conditional-shortcut-counts.json"
+      ]
+    },
+    {
+      "cue": "Fraction-bar count",
+      "subgroup": "polynomial_factor",
+      "scope": "within_template",
+      "strategy": "Select the unique choice without a fraction outside dy/dx; abstain if not unique.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "This cue did not yield a correct response in the controlled boundary/fresh sample; no absence of other shortcuts is inferred. Baseline 0.2 is uniform guessing among five radio options.",
+      "sample_refs": [
+        "independent-records.json",
+        "conditional-shortcut-counts.json"
+      ]
+    },
+    {
+      "cue": "Fraction-bar count",
+      "subgroup": "rational_factor",
+      "scope": "within_template",
+      "strategy": "Select the unique choice without a fraction outside dy/dx; abstain if not unique.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "This cue did not yield a correct response in the controlled boundary/fresh sample; no absence of other shortcuts is inferred. Baseline 0.2 is uniform guessing among five radio options.",
+      "sample_refs": [
+        "independent-records.json",
+        "conditional-shortcut-counts.json"
+      ]
+    },
+    {
+      "cue": "Fraction-bar count",
+      "subgroup": "rational_product",
+      "scope": "within_template",
+      "strategy": "Select the unique choice without a fraction outside dy/dx; abstain if not unique.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "This cue did not yield a correct response in the controlled boundary/fresh sample; no absence of other shortcuts is inferred. Baseline 0.2 is uniform guessing among five radio options.",
+      "sample_refs": [
+        "independent-records.json",
+        "conditional-shortcut-counts.json"
+      ]
+    },
+    {
+      "cue": "Fraction-bar count",
+      "subgroup": "sqrt_quotient",
+      "scope": "within_template",
+      "strategy": "Select the unique choice without a fraction outside dy/dx; abstain if not unique.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "This cue did not yield a correct response in the controlled boundary/fresh sample; no absence of other shortcuts is inferred. Baseline 0.2 is uniform guessing among five radio options.",
+      "sample_refs": [
+        "independent-records.json",
+        "conditional-shortcut-counts.json"
+      ]
+    },
+    {
+      "cue": "Fraction-bar count",
+      "subgroup": "trig_product",
+      "scope": "within_template",
+      "strategy": "Select the unique choice without a fraction outside dy/dx; abstain if not unique.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "This cue did not yield a correct response in the controlled boundary/fresh sample; no absence of other shortcuts is inferred. Baseline 0.2 is uniform guessing among five radio options.",
+      "sample_refs": [
+        "independent-records.json",
+        "conditional-shortcut-counts.json"
+      ]
+    },
+    {
+      "cue": "Fraction-bar count",
+      "subgroup": "Accepted quotient controls",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select the unique choice without a fraction outside dy/dx; abstain if not unique.",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Actual deduplication retains five vulnerable records. Baseline 0.2 is uniform guessing among five radio options.",
+      "sample_refs": [
+        "delivery-control/accepted.json",
+        "fraction-shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Fraction-bar count",
+      "subgroup": "Accepted exponential-quotient batch member",
+      "scope": "within_template",
+      "strategy": "Select the unique choice without a fraction outside dy/dx; abstain if not unique.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "The batch contains one concrete vulnerable member; this follows the universal bank invariant rather than a one-item statistical inference. Baseline 0.2 is uniform guessing among five radio options.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "fraction-shortcut-results.json",
+        "visual-inspection.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "Generator parameter validation and difficulty eligibility; no rejection/resampling loop",
+      "Actual publication normalization, stable identities, captured inventory and batch deduplication",
+      "Requested easy difficulty filtering",
+      "Actual learner selection algorithm: history exclusion and weighted band/uniform within-band selection, conditional read-only simulation",
+      "Actual UI choice rendering and native ID-based grading"
+    ],
+    "sample_refs": [
+      "delivery-selection.json",
+      "delivery-control/delivery.json",
+      "delivery-batch/delivery.json",
+      "fraction-shortcut-results.json",
+      "grader-complete-report.json",
+      "visual-inspection.json"
+    ],
+    "result": "Cue survives filtering in 5/15 control and 1/5 batch records. Within any fresh eligible positive-weight easy pool these records remain selectable; selection does not rewrite banks. No personalized live state is claimed."
+  },
+  "limitations": [
+    "Finite audit, not proof against every shortcut.",
+    "Canonical radical has no captured answer bank and is not a supported replay family; no answer choices invented.",
+    "Captured inventory basis 5365; six generated records tested and this particular shortcut absent there. Original source instances with the cue are not reported as generated.",
+    "No supplied learner history, live policy weights, reservations, or future assigned entity IDs; conditional selection analysis uses actual code with explicitly labeled surrogate pools.",
+    "Raw first/last/TeX-length probes are retained; same-seed boundary samples and UI reordering prevent interpreting their conditional counts as a delivered position defect. The fractionless cue is independently confirmed visually."
+  ]
+}

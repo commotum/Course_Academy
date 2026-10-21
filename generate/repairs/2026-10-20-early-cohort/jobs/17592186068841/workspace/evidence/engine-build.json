@@ -1,0 +1,43 @@
+[
+  {
+    "command": [
+      "cargo",
+      "test",
+      "--lib",
+      "constant"
+    ],
+    "returncode": 0,
+    "stdout": "\nrunning 4 tests\ntest learning::tests::antiderivative_blanks_absorb_numeric_constants_only_when_displayed ... ok\ntest learning::tests::general_ode_scaffolds_absorb_only_additive_constant_shifts ... ok\ntest symbolic::tests::roots_of_positive_constant_powers_share_rational_power_form ... ok\ntest symbolic::tests::antiderivative_families_preserve_domain_and_nonconstant_terms ... ok\n\ntest result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 169 filtered out; finished in 0.56s\n\n",
+    "stderr": "   Compiling course-academy-engine v0.1.0 (/home/jake/Developer/Course_Academy)\n    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.78s\n     Running unittests engine/rust/lib.rs (target/debug/deps/course_academy_engine-d3d83e933cc62900)\n"
+  },
+  {
+    "command": [
+      "cargo",
+      "build",
+      "--release",
+      "--lib"
+    ],
+    "returncode": 0,
+    "stdout": "",
+    "stderr": "   Compiling course-academy-engine v0.1.0 (/home/jake/Developer/Course_Academy)\n    Finished `release` profile [optimized] target(s) in 10.99s\n"
+  },
+  {
+    "command": [
+      "rustc",
+      "--edition=2024",
+      "-O",
+      "generate/runs/current/check-engine.rs",
+      "--extern",
+      "course_academy_engine=target/release/deps/libcourse_academy_engine-db2f80585ab00950.rlib",
+      "--extern",
+      "serde_json=target/release/deps/libserde_json-37082c8a95e79bab.rlib",
+      "-L",
+      "dependency=target/release/deps",
+      "-o",
+      "generate/runs/current/check-engine"
+    ],
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  }
+]

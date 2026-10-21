@@ -1,0 +1,119 @@
+{
+  "verdict": "revise",
+  "summary": "Two quotient templates expose a prompt-blind answer-choice shortcut. It succeeds on 13/13 fresh tests and affects one of five actual batch records after delivery filtering. Package files remain unchanged.",
+  "source_analysis": {
+    "skill": "Identify h(x)g(y), then select the equivalent separated equation (1/g(y))dy/dx=h(x).",
+    "reasoning_steps": [
+      "Identify the independent x and y factors.",
+      "Take the reciprocal of the y factor.",
+      "Distinguish a separated equation from an equivalent but unseparated rearrangement."
+    ],
+    "invariants": [
+      "Stop at separation; do not integrate.",
+      "Preserve the five-choice radio response contract.",
+      "Respect domains and require one correct separated equation."
+    ],
+    "permitted_variations": [
+      "Vary supported coefficients, powers, exponential factors and rational shifts.",
+      "Vary direct versus reciprocal dependent factors within the supported scope.",
+      "Vary distractor roles and correct-choice position without making layout predict correctness."
+    ],
+    "source_refs": [
+      "31bffd11-cf10-5855-9455-e621eb1969bd",
+      "7037401f-27c0-588d-a952-7eb3ef7b14ef",
+      "Tutorial 6767 / 56fc1c96-3599-5022-8d83-60d4188ccf07"
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "source-extract.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay.json",
+        "source-replay-records.json"
+      ],
+      "details": "All ten captured complete question banks reproduce prompts, choices, keys and solutions after harmless presentation normalization. The canonical radical example lacks a captured answer bank and is explicitly disclosed as unsupported."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "independent_checks.py",
+        "math-results.json"
+      ],
+      "details": "Independent symbolic checks passed for 51 records, including unique separated correctness and every worked-solution stage."
+    },
+    "variety": {
+      "status": "failed",
+      "evidence_paths": [
+        "generation-summary.json",
+        "fraction-shortcut-results.json",
+        "delivery-selection.json"
+      ],
+      "details": "All six easy templates survive filtering, but both quotient bank recipes preserve a uniquely fractionless correct choice across numerical variation."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "scope-results.json",
+        "independent-records.json"
+      ],
+      "details": "Supported variations retain algebraic separation and the radio response contract. The authored hard extension is identified separately; no integration is introduced."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-complete-input.json",
+        "grader-complete-report.json"
+      ],
+      "details": "The native grader checked every choice on 64 records: 64 accepted and 256 rejected. All fields are radio, so free-entry notation tests are inapplicable."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render-all/rendering.json",
+        "visual-inspection.json",
+        "render-all/question-003.png",
+        "render-all/question-017.png"
+      ],
+      "details": "The actual UI rendered 19 records successfully. Inspected screenshots show readable prompts, controls and solutions, and visually confirm the shortcut."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging.json",
+        "package-integrity.json",
+        "commands.md"
+      ],
+      "details": "Exact dependency versions match. Replay, relocation and invalid-input rejection pass. Package hashes remain unchanged."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "shortcut_reproduction.py",
+        "shortcut-regression-result.json",
+        "minimal-failing-record.json",
+        "fraction-shortcut-results.json",
+        "inventory-probe.json",
+        "affected-inventory.json"
+      ],
+      "details": "Controlled counterfactuals pass, but fraction-bar layout bypasses the intended reasoning in both quotient families: 13/13 fresh cases, 5/5 accepted quotient controls and the actual batch quotient member. None of the six captured generated inventory questions demonstrates this specific defect; affected original sources were not classified as generated."
+    }
+  },
+  "findings": [
+    {
+      "kind": "decision_shortcut",
+      "description": "In exp_quotient and simple_quotient, the correct answer is always the only row without a fraction outside dy/dx. Learners can hide the ODE and select that row. The invariant survives shuffling and delivery filtering. Actual batch question 7412ba17-9fc5-51fc-b2a5-80c01769de08 is affected.",
+      "source_refs": [
+        "31bffd11-cf10-5855-9455-e621eb1969bd (q-158025)",
+        "7037401f-27c0-588d-a952-7eb3ef7b14ef (q-158030)",
+        "Tutorial 6767 / 56fc1c96-3599-5022-8d83-60d4188ccf07"
+      ],
+      "reproduction": "From evidence_root, run PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python shortcut_reproduction.py. It exits 1 and retains complete records. Minimal case: generate_easy(seed=17, template=\"simple_quotient\", parameters={\"n\":1}); dy/dx=x/y has correct answer y*dy/dx=x, the sole fractionless row. See minimal-failing-record.json. The affected batch case uses seed=2404317989, template=exp_quotient, base=4, a=3, n=4.",
+      "requested_change": "Change normal-generation bank construction in both quotient families so fractionless layout cannot uniquely identify the correct answer. Include plausible same-scope incorrect fractionless equations and vary distractor roles. Preserve observed banks for source replay, retain both families, and keep the strict shortcut regression. Replace the affected batch member after validating the revised bank; numerical changes or shuffling alone do not repair this rule."
+    }
+  ]
+}

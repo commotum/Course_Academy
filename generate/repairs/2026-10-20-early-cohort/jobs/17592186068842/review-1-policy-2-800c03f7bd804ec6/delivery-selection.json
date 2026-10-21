@@ -1,0 +1,123 @@
+{
+  "stages": {
+    "control_before": {
+      "count": 40,
+      "templates": {
+        "rational_product": 3,
+        "exp_product": 3,
+        "exp_quotient": 12,
+        "sqrt_quotient": 7,
+        "trig_product": 3,
+        "simple_quotient": 12
+      },
+      "profiles": {
+        "observed": 9,
+        "quotient-reciprocal": 14,
+        "radical-transfer": 7,
+        "quotient-power-sign": 10
+      },
+      "quotient_count": 24,
+      "affected_quotient_count": 24
+    },
+    "control_after": {
+      "count": 28,
+      "templates": {
+        "rational_product": 2,
+        "exp_product": 2,
+        "exp_quotient": 10,
+        "sqrt_quotient": 4,
+        "trig_product": 2,
+        "simple_quotient": 8
+      },
+      "profiles": {
+        "observed": 6,
+        "quotient-reciprocal": 9,
+        "radical-transfer": 4,
+        "quotient-power-sign": 9
+      },
+      "quotient_count": 18,
+      "affected_quotient_count": 18
+    },
+    "batch_before": {
+      "count": 5,
+      "templates": {
+        "trig_product": 1,
+        "rational_product": 2,
+        "exp_quotient": 1,
+        "exp_product": 1
+      },
+      "profiles": {
+        "observed": 4,
+        "quotient-power-sign": 1
+      },
+      "quotient_count": 1,
+      "affected_quotient_count": 1
+    },
+    "batch_after": {
+      "count": 5,
+      "templates": {
+        "trig_product": 1,
+        "rational_product": 2,
+        "exp_quotient": 1,
+        "exp_product": 1
+      },
+      "profiles": {
+        "observed": 4,
+        "quotient-power-sign": 1
+      },
+      "quotient_count": 1,
+      "affected_quotient_count": 1
+    }
+  },
+  "filter_reports": [
+    "delivery-control/delivery.json",
+    "delivery-batch/delivery.json"
+  ],
+  "rejection_resampling": "No retry/resampling loop: difficulty eligibility -> uniform template choice -> uniform profile choice before integer parameters -> validation. Invalid explicit cases reject. Independent boundary/fresh samples all returned.",
+  "captured_inventory_basis": 5365,
+  "learner_selection_source": "engine/rust/question_selection.rs 109-202: previous task exclusion, caller current-prefix exclusion, sorted/deduplicated candidates; configured band weights; uniform in eligible nonempty positive-weight easy band; unconfigured fallback lowest entity id.",
+  "conditional_easy_simulation": {
+    "actual_captured_easy_entity_ids": [
+      17592186069081,
+      17592186275414,
+      17592186275417,
+      17592186275418,
+      17592186275419,
+      17592186275421
+    ],
+    "hypothetical_future_entity_id_map": {
+      "17592186533010": "2b2de01b-9c24-57b5-ab7b-9a58a2d499df",
+      "17592186533011": "f53921ad-14e5-53c4-8aac-ee2f62ff5e14",
+      "17592186533012": "5d2d27f9-99cc-50be-88d3-34ffd9d1caa1",
+      "17592186533013": "f7f03e26-82e0-5fd2-a240-4632479a76e4",
+      "17592186533014": "1f3824b9-c900-5e9e-8087-0cc8093edc0c"
+    },
+    "future_ids_are_surrogates": true,
+    "draws": {
+      "17592186533010": 26,
+      "17592186275414": 25,
+      "17592186275418": 30,
+      "17592186533012": 23,
+      "17592186533011": 20,
+      "17592186275419": 23,
+      "17592186533013": 27,
+      "17592186275417": 21,
+      "17592186069081": 22,
+      "17592186275421": 14,
+      "17592186533014": 25
+    },
+    "defective_item_draws": 23,
+    "history_excluding_all_but_defective_item": {
+      "remaining": [
+        17592186533012
+      ],
+      "selected": 17592186533012
+    }
+  },
+  "conclusion": "Both revised quotient profiles survive actual delivery deduplication. 18/18 accepted quotient controls and the one quotient in the exact accepted 5-item batch retain the modal-component cue. Uniform within a positive-weight easy pool gives affected items positive probability; history can leave only the affected item. Selection does not rewrite banks.",
+  "limitations": [
+    "Publication preparation absent; shared actual publication filter reproduced read-only against captured basis.",
+    "No live learner histories, reservations, policy distribution or future entity IDs supplied; conditional simulation uses actual captured existing IDs and explicit future surrogates. Easy band with zero weight would deliver none of this batch.",
+    "No database or assets published. Inventory can change after capture."
+  ]
+}

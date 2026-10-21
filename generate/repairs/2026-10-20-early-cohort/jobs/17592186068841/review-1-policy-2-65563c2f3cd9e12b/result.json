@@ -1,0 +1,109 @@
+{
+  "verdict": "accepted",
+  "summary": "All eight checks pass. The four retained defects are resolved in tested cases. All five batch records survive filtering. Package files remained unchanged.",
+  "source_analysis": {
+    "skill": "Solve elementary separable differential equations by rearranging, separating, integrating and solving explicitly for y.",
+    "reasoning_steps": [
+      "Rearrange and separate variables under valid domain assumptions.",
+      "Integrate both sides with an arbitrary constant.",
+      "Solve for y and retain valid branches.",
+      "Choose the solution or supply the missing expression."
+    ],
+    "invariants": [
+      "Preserve elementary separation and integration workload.",
+      "Preserve source response contracts and complete answer banks.",
+      "Respect domain restrictions without revealing computed answers."
+    ],
+    "permitted_variations": [
+      "Vary coefficients, signs and supported polynomial powers.",
+      "Vary missing expressions coherently with their scaffolds.",
+      "Permute answer positions independently."
+    ],
+    "source_refs": [
+      "23d66cc8-8e5a-5a33-a7a1-c43f5facdcbc / e-10833",
+      "56fc1c96-3599-5022-8d83-60d4188ccf07 / tutorial 6767",
+      "dfb65111-b319-54c6-84cc-f60506595a69 / tutorial 6766"
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-normalization.json",
+        "source-bank-comparison.json",
+        "source-replay.json"
+      ],
+      "details": "All 15 source cases replay with complete banks and keys; blank whitespace is normalized."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "pair-math.json"
+      ],
+      "details": "Independent printed-ODE checks pass 78 records. Both restored square-root branches and controlled-pair solutions pass."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "coverage-results.json",
+        "fresh-samples.json",
+        "author-rerun/family-math.json"
+      ],
+      "details": "Restored family, blank profiles, coefficient boundaries and signed easy cases work; meaningful cases survive filtering."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "scope-results.json",
+        "normal-cases.json"
+      ],
+      "details": "Repairs preserve the source methods, response contracts and branch requirements. The response-narrowing restriction was removed."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "fresh-grader-input.json",
+        "fresh-grader-report.json",
+        "author-rerun/grader-report.json",
+        "retained-failures.json"
+      ],
+      "details": "Native grading passes 56 valid and 96 invalid independent submissions, including historical constant-shift acceptance and changed-equation rejection."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "rendering-inspection.json",
+        "fresh-render/rendering.json",
+        "fresh-render/question-007.png",
+        "fresh-render/question-009.png"
+      ],
+      "details": "Actual UI renders all 19 batch and counterfactual records. Inspected screenshots show correct blank controls and worked mathematics."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "relocation-samples.json",
+        "review-integrity.json"
+      ],
+      "details": "Exact dependency versions, declared-file relocation, deterministic replay and boundary rejection pass. Package hashes are unchanged."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "counterfactual-results.json",
+        "coverage-results.json",
+        "learner-selection.json",
+        "inventory-reproduction.json",
+        "affected-inventory.json"
+      ],
+      "details": "Controlled changes, conditional shortcut probes and delivery stages pass. No demonstrated affected generated inventory records. Conclusions use captured inventory and stated learner-selection assumptions; finite testing cannot exclude every shortcut."
+    }
+  },
+  "findings": []
+}

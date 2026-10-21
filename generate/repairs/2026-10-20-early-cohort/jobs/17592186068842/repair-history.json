@@ -1,0 +1,295 @@
+{
+  "format": 1,
+  "findings": [
+    {
+      "id": "f1832733ee777b3c1e25",
+      "finding": {
+        "kind": "decision_shortcut",
+        "description": "In exp_quotient and simple_quotient, the correct answer is always the only row without a fraction outside dy/dx. Learners can hide the ODE and select that row. The invariant survives shuffling and delivery filtering. Actual batch question 7412ba17-9fc5-51fc-b2a5-80c01769de08 is affected.",
+        "source_refs": [
+          "31bffd11-cf10-5855-9455-e621eb1969bd (q-158025)",
+          "7037401f-27c0-588d-a952-7eb3ef7b14ef (q-158030)",
+          "Tutorial 6767 / 56fc1c96-3599-5022-8d83-60d4188ccf07"
+        ],
+        "reproduction": "From evidence_root, run PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python shortcut_reproduction.py. It exits 1 and retains complete records. Minimal case: generate_easy(seed=17, template=\"simple_quotient\", parameters={\"n\":1}); dy/dx=x/y has correct answer y*dy/dx=x, the sole fractionless row. See minimal-failing-record.json. The affected batch case uses seed=2404317989, template=exp_quotient, base=4, a=3, n=4.",
+        "requested_change": "Change normal-generation bank construction in both quotient families so fractionless layout cannot uniquely identify the correct answer. Include plausible same-scope incorrect fractionless equations and vary distractor roles. Preserve observed banks for source replay, retain both families, and keep the strict shortcut regression. Replace the affected batch member after validating the revised bank; numerical changes or shuffling alone do not repair this rule."
+      },
+      "source_hash": "49848be6835e656ba18fc748543cc398ffb1f4c9bdde5ea9e2704f01559ece90",
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186068842/review-0-policy-2-cf4efc99db03c94a",
+      "attempt": 0
+    },
+    {
+      "id": "9a89e94337b098d0aba5",
+      "finding": {
+        "kind": "decision_shortcut",
+        "description": "Both revised quotient profiles repeat the correct dependent power four times and its RHS three times, enabling prompt-blind modal-component selection. In quotient-power-sign, the correct answer is also always the shortest of three rows sharing one left side. Both cues affect batch question 4cc34a53-2d0e-5e5d-9f42-8f3c31da05f8.",
+        "source_refs": [
+          "31bffd11-cf10-5855-9455-e621eb1969bd",
+          "7037401f-27c0-588d-a952-7eb3ef7b14ef",
+          "Tutorial 6767 / 56fc1c96-3599-5022-8d83-60d4188ccf07"
+        ],
+        "reproduction": "From evidence_root run PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python minimal_repro.py; it exits 1. Minimal case: generate_easy(seed=17, template=\"simple_quotient\", parameters={\"n\":1}). Writing D=dy/dx, its choices are yD=1/x, yD=x, xD=y, yD=-x and y^2D=x. Hide the ODE and choose the shortest of the three yD rows: yD=x. The exact batch witness uses seed=2404317989, exp_quotient, base=4, a=4, n=4.",
+        "requested_change": "Change quotient_bank\u2019s family-wide distractor construction so modal component frequencies and the shortest RHS within a repeated-LHS subgroup cannot determine correctness. Retain both families, observed source replay and mathematical correctness. Preserve the old regression, adopt these new failing probes, and regenerate the affected batch member after repairing the rule."
+      },
+      "source_hash": "49848be6835e656ba18fc748543cc398ffb1f4c9bdde5ea9e2704f01559ece90",
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186068842/review-1-policy-2-800c03f7bd804ec6",
+      "attempt": 1
+    }
+  ],
+  "events": [
+    {
+      "attempt": 0,
+      "package_hash": "3a4664b395c2a7ad867cc8607a511a72353fcfc44f44a9bc4d9ba2ea845b240a",
+      "reason": {
+        "verdict": "revise",
+        "summary": "Two quotient templates expose a prompt-blind answer-choice shortcut. It succeeds on 13/13 fresh tests and affects one of five actual batch records after delivery filtering. Package files remain unchanged.",
+        "source_analysis": {
+          "skill": "Identify h(x)g(y), then select the equivalent separated equation (1/g(y))dy/dx=h(x).",
+          "reasoning_steps": [
+            "Identify the independent x and y factors.",
+            "Take the reciprocal of the y factor.",
+            "Distinguish a separated equation from an equivalent but unseparated rearrangement."
+          ],
+          "invariants": [
+            "Stop at separation; do not integrate.",
+            "Preserve the five-choice radio response contract.",
+            "Respect domains and require one correct separated equation."
+          ],
+          "permitted_variations": [
+            "Vary supported coefficients, powers, exponential factors and rational shifts.",
+            "Vary direct versus reciprocal dependent factors within the supported scope.",
+            "Vary distractor roles and correct-choice position without making layout predict correctness."
+          ],
+          "source_refs": [
+            "31bffd11-cf10-5855-9455-e621eb1969bd",
+            "7037401f-27c0-588d-a952-7eb3ef7b14ef",
+            "Tutorial 6767 / 56fc1c96-3599-5022-8d83-60d4188ccf07"
+          ],
+          "evidence_paths": [
+            "source-analysis.json",
+            "source-extract.json"
+          ]
+        },
+        "checks": {
+          "source_replay": {
+            "status": "passed",
+            "evidence_paths": [
+              "source-replay.json",
+              "source-replay-records.json"
+            ],
+            "details": "All ten captured complete question banks reproduce prompts, choices, keys and solutions after harmless presentation normalization. The canonical radical example lacks a captured answer bank and is explicitly disclosed as unsupported."
+          },
+          "math": {
+            "status": "passed",
+            "evidence_paths": [
+              "independent_checks.py",
+              "math-results.json"
+            ],
+            "details": "Independent symbolic checks passed for 51 records, including unique separated correctness and every worked-solution stage."
+          },
+          "variety": {
+            "status": "failed",
+            "evidence_paths": [
+              "generation-summary.json",
+              "fraction-shortcut-results.json",
+              "delivery-selection.json"
+            ],
+            "details": "All six easy templates survive filtering, but both quotient bank recipes preserve a uniquely fractionless correct choice across numerical variation."
+          },
+          "scope": {
+            "status": "passed",
+            "evidence_paths": [
+              "scope-results.json",
+              "independent-records.json"
+            ],
+            "details": "Supported variations retain algebraic separation and the radio response contract. The authored hard extension is identified separately; no integration is introduced."
+          },
+          "grading": {
+            "status": "passed",
+            "evidence_paths": [
+              "grader-complete-input.json",
+              "grader-complete-report.json"
+            ],
+            "details": "The native grader checked every choice on 64 records: 64 accepted and 256 rejected. All fields are radio, so free-entry notation tests are inapplicable."
+          },
+          "rendering": {
+            "status": "passed",
+            "evidence_paths": [
+              "render-all/rendering.json",
+              "visual-inspection.json",
+              "render-all/question-003.png",
+              "render-all/question-017.png"
+            ],
+            "details": "The actual UI rendered 19 records successfully. Inspected screenshots show readable prompts, controls and solutions, and visually confirm the shortcut."
+          },
+          "packaging": {
+            "status": "passed",
+            "evidence_paths": [
+              "packaging.json",
+              "package-integrity.json",
+              "commands.md"
+            ],
+            "details": "Exact dependency versions match. Replay, relocation and invalid-input rejection pass. Package hashes remain unchanged."
+          },
+          "decision_variation": {
+            "status": "failed",
+            "evidence_paths": [
+              "pedagogical-variation.json",
+              "shortcut_reproduction.py",
+              "shortcut-regression-result.json",
+              "minimal-failing-record.json",
+              "fraction-shortcut-results.json",
+              "inventory-probe.json",
+              "affected-inventory.json"
+            ],
+            "details": "Controlled counterfactuals pass, but fraction-bar layout bypasses the intended reasoning in both quotient families: 13/13 fresh cases, 5/5 accepted quotient controls and the actual batch quotient member. None of the six captured generated inventory questions demonstrates this specific defect; affected original sources were not classified as generated."
+          }
+        },
+        "findings": [
+          {
+            "kind": "decision_shortcut",
+            "description": "In exp_quotient and simple_quotient, the correct answer is always the only row without a fraction outside dy/dx. Learners can hide the ODE and select that row. The invariant survives shuffling and delivery filtering. Actual batch question 7412ba17-9fc5-51fc-b2a5-80c01769de08 is affected.",
+            "source_refs": [
+              "31bffd11-cf10-5855-9455-e621eb1969bd (q-158025)",
+              "7037401f-27c0-588d-a952-7eb3ef7b14ef (q-158030)",
+              "Tutorial 6767 / 56fc1c96-3599-5022-8d83-60d4188ccf07"
+            ],
+            "reproduction": "From evidence_root, run PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python shortcut_reproduction.py. It exits 1 and retains complete records. Minimal case: generate_easy(seed=17, template=\"simple_quotient\", parameters={\"n\":1}); dy/dx=x/y has correct answer y*dy/dx=x, the sole fractionless row. See minimal-failing-record.json. The affected batch case uses seed=2404317989, template=exp_quotient, base=4, a=3, n=4.",
+            "requested_change": "Change normal-generation bank construction in both quotient families so fractionless layout cannot uniquely identify the correct answer. Include plausible same-scope incorrect fractionless equations and vary distractor roles. Preserve observed banks for source replay, retain both families, and keep the strict shortcut regression. Replace the affected batch member after validating the revised bank; numerical changes or shuffling alone do not repair this rule."
+          }
+        ]
+      },
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186068842/review-0-policy-2-cf4efc99db03c94a"
+    },
+    {
+      "attempt": 1,
+      "package_hash": "9367bec6da8118e543b24b429e690f5a4ee9777de2c78145a4b00b89c91673be",
+      "reason": {
+        "verdict": "revise",
+        "summary": "The previous shortcut is repaired, but revised quotient banks expose another prompt-blind answer cue. It succeeds on 18/18 focused cases and the replacement batch\u2019s quotient item. Package files remain unchanged.",
+        "source_analysis": {
+          "skill": "Identify h(x) and g(y), then select the equivalent separated equation (1/g(y))dy/dx=h(x).",
+          "reasoning_steps": [
+            "Identify independent and dependent factors in the ODE.",
+            "Take the reciprocal of the complete dependent factor.",
+            "Distinguish a separated equation from incorrect or equivalent-but-unseparated alternatives."
+          ],
+          "invariants": [
+            "Stop at separation without integrating.",
+            "Preserve five-choice radio responses with one correct equation.",
+            "Respect the regular-domain restrictions."
+          ],
+          "permitted_variations": [
+            "Vary supported coefficients, powers, exponential factors and rational shifts.",
+            "Vary eligible factor placement and distractor roles.",
+            "Shuffle answer positions without making answer-bank structure reveal correctness."
+          ],
+          "source_refs": [
+            "31bffd11-cf10-5855-9455-e621eb1969bd",
+            "7037401f-27c0-588d-a952-7eb3ef7b14ef",
+            "Tutorial 6767 / 56fc1c96-3599-5022-8d83-60d4188ccf07"
+          ],
+          "evidence_paths": [
+            "source-analysis.json",
+            "source-extract.json",
+            "reuse-provenance.json"
+          ]
+        },
+        "checks": {
+          "source_replay": {
+            "status": "passed",
+            "evidence_paths": [
+              "source-replay.json",
+              "source-replay-records.json"
+            ],
+            "details": "All ten complete captured source banks replay successfully. The canonical radical lacks a captured answer bank; that gap is explicitly recorded."
+          },
+          "math": {
+            "status": "passed",
+            "evidence_paths": [
+              "independent_checks.py",
+              "math-results.json"
+            ],
+            "details": "Independent symbolic checks verified unique separated correctness and worked-solution stages on 81 records."
+          },
+          "variety": {
+            "status": "failed",
+            "evidence_paths": [
+              "revision-records.json",
+              "bank-shortcut-results.json",
+              "delivery-selection.json"
+            ],
+            "details": "Both quotient profiles preserve an answer-bank repetition signature that identifies the key despite numerical variation and shuffling."
+          },
+          "scope": {
+            "status": "passed",
+            "evidence_paths": [
+              "scope-results.json",
+              "runtime-changes.json",
+              "independent-records.json"
+            ],
+            "details": "Changed banks retain the source algebra, response contract and easy workload."
+          },
+          "grading": {
+            "status": "passed",
+            "evidence_paths": [
+              "grader-input.json",
+              "grader-report.json",
+              "revision-counterfactual-results.json"
+            ],
+            "details": "The native grader accepted 81 correct choices and rejected 324 alternatives. Relevant shared-choice truth flips and irrelevant shuffles passed."
+          },
+          "rendering": {
+            "status": "passed",
+            "evidence_paths": [
+              "render-all/rendering.json",
+              "visual-inspection.json",
+              "render-contact-sheet.png",
+              "render-all/question-003.png"
+            ],
+            "details": "The actual UI rendered 32 records. Inspected screenshots show readable equations, controls and explanations, including the batch shortcut."
+          },
+          "packaging": {
+            "status": "passed",
+            "evidence_paths": [
+              "packaging.json",
+              "package-integrity.json",
+              "retained-regression-verification.json",
+              "commands.md"
+            ],
+            "details": "Exact dependency versions, determinism, relocation and invalid-input rejection pass. The retained regression fails the previous implementation and passes current. Package hashes are unchanged."
+          },
+          "decision_variation": {
+            "status": "failed",
+            "evidence_paths": [
+              "pedagogical-variation.json",
+              "bank_shortcut.py",
+              "bank-shortcut-results.json",
+              "minimal_repro.py",
+              "minimal-reproduction-records.json",
+              "minimal-reproduction-results.json",
+              "delivery-selection.json",
+              "inventory-probe.json",
+              "affected-inventory.json"
+            ],
+            "details": "Modal-component selection succeeds on 18/18 focused quotient cases, 18/18 accepted quotient controls and the exact batch quotient. The power/sign profile also reveals the key as the shortest of three same-LHS rows. None of the six captured generated inventory entries is a revised quotient instance."
+          }
+        },
+        "findings": [
+          {
+            "kind": "decision_shortcut",
+            "description": "Both revised quotient profiles repeat the correct dependent power four times and its RHS three times, enabling prompt-blind modal-component selection. In quotient-power-sign, the correct answer is also always the shortest of three rows sharing one left side. Both cues affect batch question 4cc34a53-2d0e-5e5d-9f42-8f3c31da05f8.",
+            "source_refs": [
+              "31bffd11-cf10-5855-9455-e621eb1969bd",
+              "7037401f-27c0-588d-a952-7eb3ef7b14ef",
+              "Tutorial 6767 / 56fc1c96-3599-5022-8d83-60d4188ccf07"
+            ],
+            "reproduction": "From evidence_root run PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python minimal_repro.py; it exits 1. Minimal case: generate_easy(seed=17, template=\"simple_quotient\", parameters={\"n\":1}). Writing D=dy/dx, its choices are yD=1/x, yD=x, xD=y, yD=-x and y^2D=x. Hide the ODE and choose the shortest of the three yD rows: yD=x. The exact batch witness uses seed=2404317989, exp_quotient, base=4, a=4, n=4.",
+            "requested_change": "Change quotient_bank\u2019s family-wide distractor construction so modal component frequencies and the shortest RHS within a repeated-LHS subgroup cannot determine correctness. Retain both families, observed source replay and mathematical correctness. Preserve the old regression, adopt these new failing probes, and regenerate the affected batch member after repairing the rule."
+          }
+        ]
+      },
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186068842/review-1-policy-2-800c03f7bd804ec6"
+    }
+  ]
+}

@@ -1,0 +1,96 @@
+--- a/engine/rust/learning.rs
++++ b/engine/rust/learning.rs
+@@ -1778,7 +1778,9 @@
+                     .to_lowercase();
+                 let context = math_context(s, question)?;
+                 let key = s.entity(field)?.get("answer-field/key").and_then(Value::as_str).unwrap_or("");
+-                if displayed_integration_constant(&prompt, key) {
++                if displayed_integration_constant(&prompt, key)
++                    || displayed_solution_family_constant(&prompt, key)
++                {
+                     symbolic::compare_up_to_constant(submitted, canonical, context)?
+                 } else {
+                     compare_math_in_context(submitted, canonical, &prompt, context)?
+@@ -1975,6 +1977,40 @@
+     let Some(after_plus) = suffix.trim_start().strip_prefix('+') else { return false; };
+     let Some(after_c) = after_plus.trim_start().strip_prefix('c') else { return false; };
+     after_c.chars().next().is_none_or(|c| !c.is_alphanumeric() && !"_^({".contains(c))
++}
++
++/// A whole additive blank inside (blank + K) has the same constant freedom
++/// even when that group is subsequently inverted, rooted, or exponentiated.
++/// Require both an explicit general-ODE-solution contract and the arbitrary
++/// constant adjacent to this field. Merely mentioning K elsewhere is not enough.
++fn displayed_solution_family_constant(prompt: &str, key: &str) -> bool {
++    if key.is_empty() || requires_answer_form(prompt)
++        || !prompt.contains("general solution") || !prompt.contains("differential equation")
++        || ["zero constant term", "constant term is zero", "constant term is 0", "nonconstant polynomial term"]
++            .iter().any(|text| prompt.contains(text))
++    {
++        return false;
++    }
++    let compact = normalize_math(prompt).replace('$', "").to_lowercase();
++    let marker = format!("{{{{{}}}}}", key.to_lowercase());
++    let Some((prefix, suffix)) = compact.split_once(&marker) else { return false; };
++    if suffix.contains(&marker) { return false; }
++    // An immediately preceding group opener makes the field a whole additive
++    // term. This excludes x*blank+K and blank^2+K, whose shifts do not commute
++    // with addition of K. Outer transformations of the whole group are safe.
++    let close = match prefix.chars().last() {
++        Some('(') => ')',
++        Some('{') => '}',
++        _ => return false,
++    };
++    let Some((_, outer)) = prefix.rsplit_once('=') else { return false; };
++    ['c', 'k'].iter().any(|constant| {
++        // The same parameter elsewhere in the outer expression would couple
++        // its occurrences, so a shift of this one occurrence is not enough.
++        suffix.starts_with(&format!("+{constant}{close}"))
++            && !outer.contains(*constant) && !suffix[2..].contains(*constant)
++            && compact.contains(&format!("{constant}isanarbitraryconstant"))
++    })
+ }
+ 
+ /// Error-preserving comparison shared by grading and content reconciliation.
+@@ -3917,6 +3953,41 @@
+     }
+ 
+     #[test]
++    fn general_ode_scaffolds_absorb_only_additive_constant_shifts() {
++        let mut s = fixture();
++        s.entities.get_mut(&300).unwrap().insert("answer/value".into(), json!("x^2"));
++        for scaffold in [
++            "$y=-2($\n{{x}}\n$+K)^{-1}$",
++            "$y=\\pm ($ {{x}} $+K)^{1/2}$",
++            "$y=\\sqrt{ $ {{x}} $+K}$",
++        ] {
++            s.entities.get_mut(&100).unwrap().insert("question/problem".into(),
++                json!(format!("Find the general solution to the differential equation y'=x/y. K is an arbitrary constant.\n\n{scaffold}")));
++            for value in ["x*x", "x^2+5", "x^2-2/3", "x^2+pi"] {
++                assert_eq!(grade_field(&s,100,200,value), Ok(true), "{scaffold}: {value}");
++            }
++            for value in ["2*x^2", "x^3+5", "x^2+x", "5"] {
++                assert_eq!(grade_field(&s,100,200,value), Ok(false), "{scaffold}: {value}");
++            }
++            assert!(grade_field(&s,100,200,"x^2+x/x").is_err());
++        }
++        for prompt in [
++            "Simplify. K is an arbitrary constant. $y=($ {{x}} $+K)^{-1}$",
++            "Find the general solution to the differential equation. $y=($ {{x}} $+K)^{-1}$",
++            "Find the general solution to the differential equation. K is an arbitrary constant. $y=(x*$ {{x}} $+K)^{-1}$",
++            "Find the general solution to the differential equation. K is an arbitrary constant. $y=($ {{x}} $^2+K)^{-1}$",
++            "Find the general solution to the differential equation. K is an arbitrary constant. $y=($ {{other}} $+K)^{-1}$ {{x}}",
++            "Find the general solution to the differential equation. K is an arbitrary constant. $y=($ {{x}} $+K*x)^{-1}$",
++            "Find the general solution to the differential equation. K is an arbitrary constant. $y=K($ {{x}} $+K)^{-1}$",
++            "Find the general solution to the differential equation. K is an arbitrary constant. $y=($ {{x}} $+K)^{-1}+K*x$",
++            "Find the general solution to the differential equation. K is an arbitrary constant. Give the zero constant term. $y=($ {{x}} $+K)^{-1}$",
++        ] {
++            s.entities.get_mut(&100).unwrap().insert("question/problem".into(), json!(prompt));
++            assert_eq!(grade_field(&s,100,200,"x^2+5"), Ok(false), "{prompt}");
++        }
++    }
++
++    #[test]
+     fn antiderivative_blanks_absorb_numeric_constants_only_when_displayed() {
+         let mut s = fixture();
+         s.entities.get_mut(&300).unwrap().insert("answer/value".into(), json!("t^7/7+5*t"));

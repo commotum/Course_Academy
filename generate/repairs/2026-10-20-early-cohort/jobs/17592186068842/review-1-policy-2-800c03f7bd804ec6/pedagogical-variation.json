@@ -1,0 +1,1200 @@
+{
+  "learner_operation": "Read the differential equation, identify h(x) and g(y), and select an equivalent separated equation (1/g(y))dy/dx=h(x). Counting repeated components in the answer bank can avoid identifying either factor from the ODE.",
+  "fixed_features": [
+    {
+      "feature": "One first derivative and separation only, with y-only derivative multiplier and x-only RHS.",
+      "justification": "Tutorial 6767 / 56fc1c96-3599-5022-8d83-60d4188ccf07 defines this form; canonical example ends at separation. No integration or initial conditions are assessed."
+    },
+    {
+      "feature": "Five equations in a single radio field and exactly one separated equivalent answer.",
+      "justification": "All ten complete captured source banks have this response contract."
+    },
+    {
+      "feature": "Small positive coefficients, bounded integer powers, positive even-power radicals.",
+      "justification": "Conservative same-method variations preserve local domains and easy algebraic workload. Sign coverage is not required as a quota; however no instructional rule requires the correct row to be uniquely free of minus signs in a recognizable bank."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Complete dependent factor and reciprocal multiplier",
+      "eligible_variation": "Vary supported powers and direct versus inverse placement; source q-158022 has y as a numerator factor, q-158025 and q-158030 place it in the denominator. Derive every dependent display together.",
+      "observed": "Across six easy templates both transfer directions occur. Revised quotient banks vary n=1..4 but repeat the correct n four times and the wrong n once; this leaks the answer-bearing assignment through answer-bank frequency."
+    },
+    {
+      "role": "Independent x factor",
+      "eligible_variation": "Vary exponential base/scale, rational shifts and supported explicit factors independently of dependent powers.",
+      "observed": "Prompt/solution/answer content follows supported parameter changes, but quotient-bank construction repeats h as RHS three times. Combined modal power and modal RHS identify the key without reading the ODE."
+    },
+    {
+      "role": "Correct row versus distractor roles and position",
+      "eligible_variation": "Shuffle choices and author plausible competing separated equations without a fixed count, sign, length or component-frequency signature of correctness. Exact observed banks may be reserved for source replay.",
+      "observed": "Row positions vary. Both quotient profiles remain vulnerable to a modal-component cue. In the recognizable power/sign profile three rows share the correct LHS, and the shortest among those is always correct."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "All ten complete source banks",
+      "sample_refs": [
+        "source-replay.json",
+        "source-replay-records.json"
+      ],
+      "result": "10/10 prompts, complete choices, correct values and solutions match after harmless display normalization. Canonical radical has no captured answer bank."
+    },
+    {
+      "case": "Changed quotient profiles and boundaries",
+      "sample_refs": [
+        "revision-records.json",
+        "bank-shortcut-results.json"
+      ],
+      "result": "Both profiles and all four quotient powers exercised for each quotient family, including exponential base/scale endpoints and prior exact witnesses. Modal strategy succeeds 18/18 quotient records."
+    },
+    {
+      "case": "Changed radical profile",
+      "sample_refs": [
+        "revision-records.json",
+        "revision-counterfactual-records.json",
+        "math-results.json"
+      ],
+      "result": "Even powers 2/4 and coefficient endpoints 1/5 retain unique mathematical correctness; shared reciprocal-root candidates flip under a relevant change."
+    },
+    {
+      "case": "Surviving control distribution",
+      "sample_refs": [
+        "easy-records.json",
+        "delivery-control/accepted.json",
+        "delivery-selection.json"
+      ],
+      "result": "40 input records ->28 accepted; all six easy templates and both quotient profiles survive. All 24 raw and 18 accepted quotient instances admit the new cue."
+    },
+    {
+      "case": "Exact replacement batch",
+      "sample_refs": [
+        "batch.json",
+        "delivery-batch/accepted.json",
+        "bank-shortcut-results.json"
+      ],
+      "result": "5/5 survive actual delivery filtering. Its exponential quotient 4cc34a53-2d0e-5e5d-9f42-8f3c31da05f8 admits both the modal and shorter conditional cue. This does not assert one cue solves all five members."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Hold other parameters/profile fixed; change simple_quotient n=1->2, exp_quotient n=1->2, and sqrt_quotient n=2->4.",
+      "expected": "ODE, reciprocal multiplier and explanation change together. A common displayed candidate must switch truth value when its dependent power changes from a distractor to the required power, or conversely.",
+      "observed": "All three pairs have shared candidate truth flips, correct answers update, all five choices per record pass native acceptance/rejection expectations, and actual UI screenshots 025..030 display the changes.",
+      "status": "passed",
+      "justification": "Tutorial 6767 requires the reciprocal of the actual g(y), so changing its power must reconsider the selected equation. Source q-158025/q-158030/q-158026 supply these factor forms.",
+      "sample_refs": [
+        "revision-counterfactual-records.json",
+        "revision-counterfactual-results.json",
+        "math-results.json",
+        "grader-input.json",
+        "grader-report.json",
+        "visual-inspection.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Hold simple_quotient n=1 and quotient-power-sign profile; change seed 0->5 to shuffle choices.",
+      "expected": "The ODE, solution, complete mathematical bank and correct expression remain identical; order cannot determine native grading.",
+      "observed": "All content invariants preserved, order changes, native grader accepts the same expression in both records, and UI screenshots 031/032 retain identical mathematics.",
+      "status": "passed",
+      "justification": "Display position is absent from the lesson definition of separation and has no answer-bearing role.",
+      "sample_refs": [
+        "revision-counterfactual-records.json",
+        "revision-counterfactual-results.json",
+        "grader-report.json",
+        "visual-inspection.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "Repeated visible y-power and RHS",
+      "subgroup": "simple_quotient/quotient-reciprocal",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Hide ODE; count visible y powers (outside dy/dx); take most common exponent and most common RHS; select row whose bare y-power coefficient and RHS match those modes. No equation is factored or checked against the ODE.",
+      "correct": 4,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "This deterministic answer-bank signature replaces reading and factoring the ODE. The profile is recognizable from the bank, without metadata. Baseline 0.2 is uniform guessing among five equations; abstention counts incorrect.",
+      "sample_refs": [
+        "revision-records.json",
+        "bank-shortcut-results.json",
+        "bank_shortcut.py"
+      ]
+    },
+    {
+      "cue": "Repeated visible y-power and RHS",
+      "subgroup": "simple_quotient/quotient-power-sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Hide ODE; count visible y powers (outside dy/dx); take most common exponent and most common RHS; select row whose bare y-power coefficient and RHS match those modes. No equation is factored or checked against the ODE.",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "This deterministic answer-bank signature replaces reading and factoring the ODE. The profile is recognizable from the bank, without metadata. Baseline 0.2 is uniform guessing among five equations; abstention counts incorrect.",
+      "sample_refs": [
+        "revision-records.json",
+        "bank-shortcut-results.json",
+        "bank_shortcut.py"
+      ]
+    },
+    {
+      "cue": "Repeated visible y-power and RHS",
+      "subgroup": "exp_quotient/quotient-reciprocal",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Hide ODE; count visible y powers (outside dy/dx); take most common exponent and most common RHS; select row whose bare y-power coefficient and RHS match those modes. No equation is factored or checked against the ODE.",
+      "correct": 4,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "This deterministic answer-bank signature replaces reading and factoring the ODE. The profile is recognizable from the bank, without metadata. Baseline 0.2 is uniform guessing among five equations; abstention counts incorrect.",
+      "sample_refs": [
+        "revision-records.json",
+        "bank-shortcut-results.json",
+        "bank_shortcut.py"
+      ]
+    },
+    {
+      "cue": "Repeated visible y-power and RHS",
+      "subgroup": "exp_quotient/quotient-power-sign",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Hide ODE; count visible y powers (outside dy/dx); take most common exponent and most common RHS; select row whose bare y-power coefficient and RHS match those modes. No equation is factored or checked against the ODE.",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "This deterministic answer-bank signature replaces reading and factoring the ODE. The profile is recognizable from the bank, without metadata. Baseline 0.2 is uniform guessing among five equations; abstention counts incorrect.",
+      "sample_refs": [
+        "revision-records.json",
+        "bank-shortcut-results.json",
+        "bank_shortcut.py"
+      ]
+    },
+    {
+      "cue": "Modal answer-bank components",
+      "subgroup": "batch quotient members",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Hide ODE; count visible y powers (outside dy/dx); take most common exponent and most common RHS; select row whose bare y-power coefficient and RHS match those modes. No equation is factored or checked against the ODE.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Structural prompt-blind predictor persists in this measured pool; no statistical inference from a singleton is needed because the bank recipe fixes the relationship. Baseline 0.2 is uniform guessing among five equations; abstention counts incorrect.",
+      "sample_refs": [
+        "bank-shortcut-results.json",
+        "delivery-selection.json",
+        "batch.json"
+      ]
+    },
+    {
+      "cue": "Modal answer-bank components",
+      "subgroup": "accepted_batch quotient members",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Hide ODE; count visible y powers (outside dy/dx); take most common exponent and most common RHS; select row whose bare y-power coefficient and RHS match those modes. No equation is factored or checked against the ODE.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Structural prompt-blind predictor persists in this measured pool; no statistical inference from a singleton is needed because the bank recipe fixes the relationship. Baseline 0.2 is uniform guessing among five equations; abstention counts incorrect.",
+      "sample_refs": [
+        "bank-shortcut-results.json",
+        "delivery-selection.json",
+        "batch.json"
+      ]
+    },
+    {
+      "cue": "Modal answer-bank components",
+      "subgroup": "accepted_control quotient members",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Hide ODE; count visible y powers (outside dy/dx); take most common exponent and most common RHS; select row whose bare y-power coefficient and RHS match those modes. No equation is factored or checked against the ODE.",
+      "correct": 18,
+      "total": 18,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Structural prompt-blind predictor persists in this measured pool; no statistical inference from a singleton is needed because the bank recipe fixes the relationship. Baseline 0.2 is uniform guessing among five equations; abstention counts incorrect.",
+      "sample_refs": [
+        "bank-shortcut-results.json",
+        "delivery-selection.json",
+        "delivery-control/accepted.json"
+      ]
+    },
+    {
+      "cue": "Three identical left sides, with a uniquely shortest RHS",
+      "subgroup": "quotient-power-sign profile",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose shortest among the three rows with identical derivative-side coefficient.",
+      "correct": 10,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "The correct row omits the added minus/reciprocal feature of both same-LHS distractors; no ODE evidence is used. Verified visually on the exact batch quotient. Baseline 0.2 is uniform guessing among five equations; abstention counts incorrect.",
+      "sample_refs": [
+        "bank-shortcut-results.json",
+        "revision-records.json",
+        "render-all/question-003.png"
+      ]
+    },
+    {
+      "cue": "Position or raw choice length",
+      "subgroup": "control/rational_product",
+      "scope": "within_template",
+      "strategy": "first",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect conditional predictor appears in any subgroup with at least three cases. Tiny counts are diagnostic, with repeated boundary seeds and UI reshuffling limiting inference. No additional defect is established by these probes. Baseline 0.2 is uniform guessing among five equations; abstention counts incorrect.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "independent-records.json"
+      ]
+    },
+    {
+      "cue": "Position or raw choice length",
+      "subgroup": "control/exp_sum",
+      "scope": "within_template",
+      "strategy": "first",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect conditional predictor appears in any subgroup with at least three cases. Tiny counts are diagnostic, with repeated boundary seeds and UI reshuffling limiting inference. No additional defect is established by these probes. Baseline 0.2 is uniform guessing among five equations; abstention counts incorrect.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "independent-records.json"
+      ]
+    },
+    {
+      "cue": "Position or raw choice length",
+      "subgroup": "control/exp_product",
+      "scope": "within_template",
+      "strategy": "first",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect conditional predictor appears in any subgroup with at least three cases. Tiny counts are diagnostic, with repeated boundary seeds and UI reshuffling limiting inference. No additional defect is established by these probes. Baseline 0.2 is uniform guessing among five equations; abstention counts incorrect.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "independent-records.json"
+      ]
+    },
+    {
+      "cue": "Position or raw choice length",
+      "subgroup": "control/polynomial_factor",
+      "scope": "within_template",
+      "strategy": "first",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect conditional predictor appears in any subgroup with at least three cases. Tiny counts are diagnostic, with repeated boundary seeds and UI reshuffling limiting inference. No additional defect is established by these probes. Baseline 0.2 is uniform guessing among five equations; abstention counts incorrect.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "independent-records.json"
+      ]
+    },
+    {
+      "cue": "Position or raw choice length",
+      "subgroup": "control/base_exp",
+      "scope": "within_template",
+      "strategy": "first",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect conditional predictor appears in any subgroup with at least three cases. Tiny counts are diagnostic, with repeated boundary seeds and UI reshuffling limiting inference. No additional defect is established by these probes. Baseline 0.2 is uniform guessing among five equations; abstention counts incorrect.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "independent-records.json"
+      ]
+    },
+    {
+      "cue": "Position or raw choice length",
+      "subgroup": "control/exp_quotient",
+      "scope": "within_template",
+      "strategy": "first",
+      "correct": 1,
+      "total": 14,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect conditional predictor appears in any subgroup with at least three cases. Tiny counts are diagnostic, with repeated boundary seeds and UI reshuffling limiting inference. No additional defect is established by these probes. Baseline 0.2 is uniform guessing among five equations; abstention counts incorrect.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "independent-records.json"
+      ]
+    },
+    {
+      "cue": "Position or raw choice length",
+      "subgroup": "control/sqrt_quotient",
+      "scope": "within_template",
+      "strategy": "first",
+      "correct": 0,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect conditional predictor appears in any subgroup with at least three cases. Tiny counts are diagnostic, with repeated boundary seeds and UI reshuffling limiting inference. No additional defect is established by these probes. Baseline 0.2 is uniform guessing among five equations; abstention counts incorrect.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "independent-records.json"
+      ]
+    },
+    {
+      "cue": "Position or raw choice length",
+      "subgroup": "control/trig_product",
+      "scope": "within_template",
+      "strategy": "first",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect conditional predictor appears in any subgroup with at least three cases. Tiny counts are diagnostic, with repeated boundary seeds and UI reshuffling limiting inference. No additional defect is established by these probes. Baseline 0.2 is uniform guessing among five equations; abstention counts incorrect.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "independent-records.json"
+      ]
+    },
+    {
+      "cue": "Position or raw choice length",
+      "subgroup": "control/simple_quotient",
+      "scope": "within_template",
+      "strategy": "first",
+      "correct": 0,
+      "total": 16,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect conditional predictor appears in any subgroup with at least three cases. Tiny counts are diagnostic, with repeated boundary seeds and UI reshuffling limiting inference. No additional defect is established by these probes. Baseline 0.2 is uniform guessing among five equations; abstention counts incorrect.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "independent-records.json"
+      ]
+    },
+    {
+      "cue": "Position or raw choice length",
+      "subgroup": "control/rational_factor",
+      "scope": "within_template",
+      "strategy": "first",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect conditional predictor appears in any subgroup with at least three cases. Tiny counts are diagnostic, with repeated boundary seeds and UI reshuffling limiting inference. No additional defect is established by these probes. Baseline 0.2 is uniform guessing among five equations; abstention counts incorrect.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "independent-records.json"
+      ]
+    },
+    {
+      "cue": "Position or raw choice length",
+      "subgroup": "control/double_factor",
+      "scope": "within_template",
+      "strategy": "first",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect conditional predictor appears in any subgroup with at least three cases. Tiny counts are diagnostic, with repeated boundary seeds and UI reshuffling limiting inference. No additional defect is established by these probes. Baseline 0.2 is uniform guessing among five equations; abstention counts incorrect.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "independent-records.json"
+      ]
+    },
+    {
+      "cue": "Position or raw choice length",
+      "subgroup": "control/rational_product",
+      "scope": "within_template",
+      "strategy": "last",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect conditional predictor appears in any subgroup with at least three cases. Tiny counts are diagnostic, with repeated boundary seeds and UI reshuffling limiting inference. No additional defect is established by these probes. Baseline 0.2 is uniform guessing among five equations; abstention counts incorrect.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "independent-records.json"
+      ]
+    },
+    {
+      "cue": "Position or raw choice length",
+      "subgroup": "control/exp_sum",
+      "scope": "within_template",
+      "strategy": "last",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect conditional predictor appears in any subgroup with at least three cases. Tiny counts are diagnostic, with repeated boundary seeds and UI reshuffling limiting inference. No additional defect is established by these probes. Baseline 0.2 is uniform guessing among five equations; abstention counts incorrect.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "independent-records.json"
+      ]
+    },
+    {
+      "cue": "Position or raw choice length",
+      "subgroup": "control/exp_product",
+      "scope": "within_template",
+      "strategy": "last",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect conditional predictor appears in any subgroup with at least three cases. Tiny counts are diagnostic, with repeated boundary seeds and UI reshuffling limiting inference. No additional defect is established by these probes. Baseline 0.2 is uniform guessing among five equations; abstention counts incorrect.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "independent-records.json"
+      ]
+    },
+    {
+      "cue": "Position or raw choice length",
+      "subgroup": "control/polynomial_factor",
+      "scope": "within_template",
+      "strategy": "last",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect conditional predictor appears in any subgroup with at least three cases. Tiny counts are diagnostic, with repeated boundary seeds and UI reshuffling limiting inference. No additional defect is established by these probes. Baseline 0.2 is uniform guessing among five equations; abstention counts incorrect.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "independent-records.json"
+      ]
+    },
+    {
+      "cue": "Position or raw choice length",
+      "subgroup": "control/base_exp",
+      "scope": "within_template",
+      "strategy": "last",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect conditional predictor appears in any subgroup with at least three cases. Tiny counts are diagnostic, with repeated boundary seeds and UI reshuffling limiting inference. No additional defect is established by these probes. Baseline 0.2 is uniform guessing among five equations; abstention counts incorrect.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "independent-records.json"
+      ]
+    },
+    {
+      "cue": "Position or raw choice length",
+      "subgroup": "control/exp_quotient",
+      "scope": "within_template",
+      "strategy": "last",
+      "correct": 2,
+      "total": 14,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect conditional predictor appears in any subgroup with at least three cases. Tiny counts are diagnostic, with repeated boundary seeds and UI reshuffling limiting inference. No additional defect is established by these probes. Baseline 0.2 is uniform guessing among five equations; abstention counts incorrect.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "independent-records.json"
+      ]
+    },
+    {
+      "cue": "Position or raw choice length",
+      "subgroup": "control/sqrt_quotient",
+      "scope": "within_template",
+      "strategy": "last",
+      "correct": 3,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect conditional predictor appears in any subgroup with at least three cases. Tiny counts are diagnostic, with repeated boundary seeds and UI reshuffling limiting inference. No additional defect is established by these probes. Baseline 0.2 is uniform guessing among five equations; abstention counts incorrect.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "independent-records.json"
+      ]
+    },
+    {
+      "cue": "Position or raw choice length",
+      "subgroup": "control/trig_product",
+      "scope": "within_template",
+      "strategy": "last",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect conditional predictor appears in any subgroup with at least three cases. Tiny counts are diagnostic, with repeated boundary seeds and UI reshuffling limiting inference. No additional defect is established by these probes. Baseline 0.2 is uniform guessing among five equations; abstention counts incorrect.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "independent-records.json"
+      ]
+    },
+    {
+      "cue": "Position or raw choice length",
+      "subgroup": "control/simple_quotient",
+      "scope": "within_template",
+      "strategy": "last",
+      "correct": 2,
+      "total": 16,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect conditional predictor appears in any subgroup with at least three cases. Tiny counts are diagnostic, with repeated boundary seeds and UI reshuffling limiting inference. No additional defect is established by these probes. Baseline 0.2 is uniform guessing among five equations; abstention counts incorrect.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "independent-records.json"
+      ]
+    },
+    {
+      "cue": "Position or raw choice length",
+      "subgroup": "control/rational_factor",
+      "scope": "within_template",
+      "strategy": "last",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect conditional predictor appears in any subgroup with at least three cases. Tiny counts are diagnostic, with repeated boundary seeds and UI reshuffling limiting inference. No additional defect is established by these probes. Baseline 0.2 is uniform guessing among five equations; abstention counts incorrect.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "independent-records.json"
+      ]
+    },
+    {
+      "cue": "Position or raw choice length",
+      "subgroup": "control/double_factor",
+      "scope": "within_template",
+      "strategy": "last",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect conditional predictor appears in any subgroup with at least three cases. Tiny counts are diagnostic, with repeated boundary seeds and UI reshuffling limiting inference. No additional defect is established by these probes. Baseline 0.2 is uniform guessing among five equations; abstention counts incorrect.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "independent-records.json"
+      ]
+    },
+    {
+      "cue": "Position or raw choice length",
+      "subgroup": "control/rational_product",
+      "scope": "within_template",
+      "strategy": "shortest",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect conditional predictor appears in any subgroup with at least three cases. Tiny counts are diagnostic, with repeated boundary seeds and UI reshuffling limiting inference. No additional defect is established by these probes. Baseline 0.2 is uniform guessing among five equations; abstention counts incorrect.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "independent-records.json"
+      ]
+    },
+    {
+      "cue": "Position or raw choice length",
+      "subgroup": "control/exp_sum",
+      "scope": "within_template",
+      "strategy": "shortest",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect conditional predictor appears in any subgroup with at least three cases. Tiny counts are diagnostic, with repeated boundary seeds and UI reshuffling limiting inference. No additional defect is established by these probes. Baseline 0.2 is uniform guessing among five equations; abstention counts incorrect.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "independent-records.json"
+      ]
+    },
+    {
+      "cue": "Position or raw choice length",
+      "subgroup": "control/exp_product",
+      "scope": "within_template",
+      "strategy": "shortest",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect conditional predictor appears in any subgroup with at least three cases. Tiny counts are diagnostic, with repeated boundary seeds and UI reshuffling limiting inference. No additional defect is established by these probes. Baseline 0.2 is uniform guessing among five equations; abstention counts incorrect.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "independent-records.json"
+      ]
+    },
+    {
+      "cue": "Position or raw choice length",
+      "subgroup": "control/polynomial_factor",
+      "scope": "within_template",
+      "strategy": "shortest",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect conditional predictor appears in any subgroup with at least three cases. Tiny counts are diagnostic, with repeated boundary seeds and UI reshuffling limiting inference. No additional defect is established by these probes. Baseline 0.2 is uniform guessing among five equations; abstention counts incorrect.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "independent-records.json"
+      ]
+    },
+    {
+      "cue": "Position or raw choice length",
+      "subgroup": "control/base_exp",
+      "scope": "within_template",
+      "strategy": "shortest",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect conditional predictor appears in any subgroup with at least three cases. Tiny counts are diagnostic, with repeated boundary seeds and UI reshuffling limiting inference. No additional defect is established by these probes. Baseline 0.2 is uniform guessing among five equations; abstention counts incorrect.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "independent-records.json"
+      ]
+    },
+    {
+      "cue": "Position or raw choice length",
+      "subgroup": "control/exp_quotient",
+      "scope": "within_template",
+      "strategy": "shortest",
+      "correct": 0,
+      "total": 14,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect conditional predictor appears in any subgroup with at least three cases. Tiny counts are diagnostic, with repeated boundary seeds and UI reshuffling limiting inference. No additional defect is established by these probes. Baseline 0.2 is uniform guessing among five equations; abstention counts incorrect.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "independent-records.json"
+      ]
+    },
+    {
+      "cue": "Position or raw choice length",
+      "subgroup": "control/sqrt_quotient",
+      "scope": "within_template",
+      "strategy": "shortest",
+      "correct": 0,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect conditional predictor appears in any subgroup with at least three cases. Tiny counts are diagnostic, with repeated boundary seeds and UI reshuffling limiting inference. No additional defect is established by these probes. Baseline 0.2 is uniform guessing among five equations; abstention counts incorrect.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "independent-records.json"
+      ]
+    },
+    {
+      "cue": "Position or raw choice length",
+      "subgroup": "control/trig_product",
+      "scope": "within_template",
+      "strategy": "shortest",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect conditional predictor appears in any subgroup with at least three cases. Tiny counts are diagnostic, with repeated boundary seeds and UI reshuffling limiting inference. No additional defect is established by these probes. Baseline 0.2 is uniform guessing among five equations; abstention counts incorrect.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "independent-records.json"
+      ]
+    },
+    {
+      "cue": "Position or raw choice length",
+      "subgroup": "control/simple_quotient",
+      "scope": "within_template",
+      "strategy": "shortest",
+      "correct": 2,
+      "total": 16,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect conditional predictor appears in any subgroup with at least three cases. Tiny counts are diagnostic, with repeated boundary seeds and UI reshuffling limiting inference. No additional defect is established by these probes. Baseline 0.2 is uniform guessing among five equations; abstention counts incorrect.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "independent-records.json"
+      ]
+    },
+    {
+      "cue": "Position or raw choice length",
+      "subgroup": "control/rational_factor",
+      "scope": "within_template",
+      "strategy": "shortest",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect conditional predictor appears in any subgroup with at least three cases. Tiny counts are diagnostic, with repeated boundary seeds and UI reshuffling limiting inference. No additional defect is established by these probes. Baseline 0.2 is uniform guessing among five equations; abstention counts incorrect.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "independent-records.json"
+      ]
+    },
+    {
+      "cue": "Position or raw choice length",
+      "subgroup": "control/double_factor",
+      "scope": "within_template",
+      "strategy": "shortest",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect conditional predictor appears in any subgroup with at least three cases. Tiny counts are diagnostic, with repeated boundary seeds and UI reshuffling limiting inference. No additional defect is established by these probes. Baseline 0.2 is uniform guessing among five equations; abstention counts incorrect.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "independent-records.json"
+      ]
+    },
+    {
+      "cue": "Position or raw choice length",
+      "subgroup": "control/rational_product",
+      "scope": "within_template",
+      "strategy": "longest",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect conditional predictor appears in any subgroup with at least three cases. Tiny counts are diagnostic, with repeated boundary seeds and UI reshuffling limiting inference. No additional defect is established by these probes. Baseline 0.2 is uniform guessing among five equations; abstention counts incorrect.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "independent-records.json"
+      ]
+    },
+    {
+      "cue": "Position or raw choice length",
+      "subgroup": "control/exp_sum",
+      "scope": "within_template",
+      "strategy": "longest",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect conditional predictor appears in any subgroup with at least three cases. Tiny counts are diagnostic, with repeated boundary seeds and UI reshuffling limiting inference. No additional defect is established by these probes. Baseline 0.2 is uniform guessing among five equations; abstention counts incorrect.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "independent-records.json"
+      ]
+    },
+    {
+      "cue": "Position or raw choice length",
+      "subgroup": "control/exp_product",
+      "scope": "within_template",
+      "strategy": "longest",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect conditional predictor appears in any subgroup with at least three cases. Tiny counts are diagnostic, with repeated boundary seeds and UI reshuffling limiting inference. No additional defect is established by these probes. Baseline 0.2 is uniform guessing among five equations; abstention counts incorrect.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "independent-records.json"
+      ]
+    },
+    {
+      "cue": "Position or raw choice length",
+      "subgroup": "control/polynomial_factor",
+      "scope": "within_template",
+      "strategy": "longest",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect conditional predictor appears in any subgroup with at least three cases. Tiny counts are diagnostic, with repeated boundary seeds and UI reshuffling limiting inference. No additional defect is established by these probes. Baseline 0.2 is uniform guessing among five equations; abstention counts incorrect.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "independent-records.json"
+      ]
+    },
+    {
+      "cue": "Position or raw choice length",
+      "subgroup": "control/base_exp",
+      "scope": "within_template",
+      "strategy": "longest",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect conditional predictor appears in any subgroup with at least three cases. Tiny counts are diagnostic, with repeated boundary seeds and UI reshuffling limiting inference. No additional defect is established by these probes. Baseline 0.2 is uniform guessing among five equations; abstention counts incorrect.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "independent-records.json"
+      ]
+    },
+    {
+      "cue": "Position or raw choice length",
+      "subgroup": "control/exp_quotient",
+      "scope": "within_template",
+      "strategy": "longest",
+      "correct": 0,
+      "total": 14,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect conditional predictor appears in any subgroup with at least three cases. Tiny counts are diagnostic, with repeated boundary seeds and UI reshuffling limiting inference. No additional defect is established by these probes. Baseline 0.2 is uniform guessing among five equations; abstention counts incorrect.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "independent-records.json"
+      ]
+    },
+    {
+      "cue": "Position or raw choice length",
+      "subgroup": "control/sqrt_quotient",
+      "scope": "within_template",
+      "strategy": "longest",
+      "correct": 2,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect conditional predictor appears in any subgroup with at least three cases. Tiny counts are diagnostic, with repeated boundary seeds and UI reshuffling limiting inference. No additional defect is established by these probes. Baseline 0.2 is uniform guessing among five equations; abstention counts incorrect.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "independent-records.json"
+      ]
+    },
+    {
+      "cue": "Position or raw choice length",
+      "subgroup": "control/trig_product",
+      "scope": "within_template",
+      "strategy": "longest",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect conditional predictor appears in any subgroup with at least three cases. Tiny counts are diagnostic, with repeated boundary seeds and UI reshuffling limiting inference. No additional defect is established by these probes. Baseline 0.2 is uniform guessing among five equations; abstention counts incorrect.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "independent-records.json"
+      ]
+    },
+    {
+      "cue": "Position or raw choice length",
+      "subgroup": "control/simple_quotient",
+      "scope": "within_template",
+      "strategy": "longest",
+      "correct": 0,
+      "total": 16,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect conditional predictor appears in any subgroup with at least three cases. Tiny counts are diagnostic, with repeated boundary seeds and UI reshuffling limiting inference. No additional defect is established by these probes. Baseline 0.2 is uniform guessing among five equations; abstention counts incorrect.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "independent-records.json"
+      ]
+    },
+    {
+      "cue": "Position or raw choice length",
+      "subgroup": "control/rational_factor",
+      "scope": "within_template",
+      "strategy": "longest",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect conditional predictor appears in any subgroup with at least three cases. Tiny counts are diagnostic, with repeated boundary seeds and UI reshuffling limiting inference. No additional defect is established by these probes. Baseline 0.2 is uniform guessing among five equations; abstention counts incorrect.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "independent-records.json"
+      ]
+    },
+    {
+      "cue": "Position or raw choice length",
+      "subgroup": "control/double_factor",
+      "scope": "within_template",
+      "strategy": "longest",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect conditional predictor appears in any subgroup with at least three cases. Tiny counts are diagnostic, with repeated boundary seeds and UI reshuffling limiting inference. No additional defect is established by these probes. Baseline 0.2 is uniform guessing among five equations; abstention counts incorrect.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "independent-records.json"
+      ]
+    },
+    {
+      "cue": "Position or raw choice length",
+      "subgroup": "batch/trig_product",
+      "scope": "within_template",
+      "strategy": "first",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect conditional predictor appears in any subgroup with at least three cases. Tiny counts are diagnostic, with repeated boundary seeds and UI reshuffling limiting inference. No additional defect is established by these probes. Baseline 0.2 is uniform guessing among five equations; abstention counts incorrect.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "batch.json"
+      ]
+    },
+    {
+      "cue": "Position or raw choice length",
+      "subgroup": "batch/rational_product",
+      "scope": "within_template",
+      "strategy": "first",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect conditional predictor appears in any subgroup with at least three cases. Tiny counts are diagnostic, with repeated boundary seeds and UI reshuffling limiting inference. No additional defect is established by these probes. Baseline 0.2 is uniform guessing among five equations; abstention counts incorrect.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "batch.json"
+      ]
+    },
+    {
+      "cue": "Position or raw choice length",
+      "subgroup": "batch/exp_quotient",
+      "scope": "within_template",
+      "strategy": "first",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect conditional predictor appears in any subgroup with at least three cases. Tiny counts are diagnostic, with repeated boundary seeds and UI reshuffling limiting inference. No additional defect is established by these probes. Baseline 0.2 is uniform guessing among five equations; abstention counts incorrect.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "batch.json"
+      ]
+    },
+    {
+      "cue": "Position or raw choice length",
+      "subgroup": "batch/exp_product",
+      "scope": "within_template",
+      "strategy": "first",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect conditional predictor appears in any subgroup with at least three cases. Tiny counts are diagnostic, with repeated boundary seeds and UI reshuffling limiting inference. No additional defect is established by these probes. Baseline 0.2 is uniform guessing among five equations; abstention counts incorrect.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "batch.json"
+      ]
+    },
+    {
+      "cue": "Position or raw choice length",
+      "subgroup": "batch/trig_product",
+      "scope": "within_template",
+      "strategy": "last",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect conditional predictor appears in any subgroup with at least three cases. Tiny counts are diagnostic, with repeated boundary seeds and UI reshuffling limiting inference. No additional defect is established by these probes. Baseline 0.2 is uniform guessing among five equations; abstention counts incorrect.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "batch.json"
+      ]
+    },
+    {
+      "cue": "Position or raw choice length",
+      "subgroup": "batch/rational_product",
+      "scope": "within_template",
+      "strategy": "last",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect conditional predictor appears in any subgroup with at least three cases. Tiny counts are diagnostic, with repeated boundary seeds and UI reshuffling limiting inference. No additional defect is established by these probes. Baseline 0.2 is uniform guessing among five equations; abstention counts incorrect.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "batch.json"
+      ]
+    },
+    {
+      "cue": "Position or raw choice length",
+      "subgroup": "batch/exp_quotient",
+      "scope": "within_template",
+      "strategy": "last",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect conditional predictor appears in any subgroup with at least three cases. Tiny counts are diagnostic, with repeated boundary seeds and UI reshuffling limiting inference. No additional defect is established by these probes. Baseline 0.2 is uniform guessing among five equations; abstention counts incorrect.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "batch.json"
+      ]
+    },
+    {
+      "cue": "Position or raw choice length",
+      "subgroup": "batch/exp_product",
+      "scope": "within_template",
+      "strategy": "last",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect conditional predictor appears in any subgroup with at least three cases. Tiny counts are diagnostic, with repeated boundary seeds and UI reshuffling limiting inference. No additional defect is established by these probes. Baseline 0.2 is uniform guessing among five equations; abstention counts incorrect.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "batch.json"
+      ]
+    },
+    {
+      "cue": "Position or raw choice length",
+      "subgroup": "batch/trig_product",
+      "scope": "within_template",
+      "strategy": "shortest",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect conditional predictor appears in any subgroup with at least three cases. Tiny counts are diagnostic, with repeated boundary seeds and UI reshuffling limiting inference. No additional defect is established by these probes. Baseline 0.2 is uniform guessing among five equations; abstention counts incorrect.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "batch.json"
+      ]
+    },
+    {
+      "cue": "Position or raw choice length",
+      "subgroup": "batch/rational_product",
+      "scope": "within_template",
+      "strategy": "shortest",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect conditional predictor appears in any subgroup with at least three cases. Tiny counts are diagnostic, with repeated boundary seeds and UI reshuffling limiting inference. No additional defect is established by these probes. Baseline 0.2 is uniform guessing among five equations; abstention counts incorrect.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "batch.json"
+      ]
+    },
+    {
+      "cue": "Position or raw choice length",
+      "subgroup": "batch/exp_quotient",
+      "scope": "within_template",
+      "strategy": "shortest",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect conditional predictor appears in any subgroup with at least three cases. Tiny counts are diagnostic, with repeated boundary seeds and UI reshuffling limiting inference. No additional defect is established by these probes. Baseline 0.2 is uniform guessing among five equations; abstention counts incorrect.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "batch.json"
+      ]
+    },
+    {
+      "cue": "Position or raw choice length",
+      "subgroup": "batch/exp_product",
+      "scope": "within_template",
+      "strategy": "shortest",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect conditional predictor appears in any subgroup with at least three cases. Tiny counts are diagnostic, with repeated boundary seeds and UI reshuffling limiting inference. No additional defect is established by these probes. Baseline 0.2 is uniform guessing among five equations; abstention counts incorrect.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "batch.json"
+      ]
+    },
+    {
+      "cue": "Position or raw choice length",
+      "subgroup": "batch/trig_product",
+      "scope": "within_template",
+      "strategy": "longest",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect conditional predictor appears in any subgroup with at least three cases. Tiny counts are diagnostic, with repeated boundary seeds and UI reshuffling limiting inference. No additional defect is established by these probes. Baseline 0.2 is uniform guessing among five equations; abstention counts incorrect.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "batch.json"
+      ]
+    },
+    {
+      "cue": "Position or raw choice length",
+      "subgroup": "batch/rational_product",
+      "scope": "within_template",
+      "strategy": "longest",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect conditional predictor appears in any subgroup with at least three cases. Tiny counts are diagnostic, with repeated boundary seeds and UI reshuffling limiting inference. No additional defect is established by these probes. Baseline 0.2 is uniform guessing among five equations; abstention counts incorrect.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "batch.json"
+      ]
+    },
+    {
+      "cue": "Position or raw choice length",
+      "subgroup": "batch/exp_quotient",
+      "scope": "within_template",
+      "strategy": "longest",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect conditional predictor appears in any subgroup with at least three cases. Tiny counts are diagnostic, with repeated boundary seeds and UI reshuffling limiting inference. No additional defect is established by these probes. Baseline 0.2 is uniform guessing among five equations; abstention counts incorrect.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "batch.json"
+      ]
+    },
+    {
+      "cue": "Position or raw choice length",
+      "subgroup": "batch/exp_product",
+      "scope": "within_template",
+      "strategy": "longest",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect conditional predictor appears in any subgroup with at least three cases. Tiny counts are diagnostic, with repeated boundary seeds and UI reshuffling limiting inference. No additional defect is established by these probes. Baseline 0.2 is uniform guessing among five equations; abstention counts incorrect.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "batch.json"
+      ]
+    },
+    {
+      "cue": "Unique fractionless row",
+      "subgroup": "simple_quotient",
+      "scope": "within_template",
+      "strategy": "Select the unique row with no fraction bar except dy/dx; do not inspect the prompt, variables, exponents, or values.",
+      "correct": 0,
+      "total": 7,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "The retained prior attack now fails: multiple fractionless candidates defeat it. This does not waive the separately demonstrated new predictor. Baseline 0.2 is uniform guessing among five equations; abstention counts incorrect.",
+      "sample_refs": [
+        "fraction-shortcut-results.json",
+        "shortcut-records.json",
+        "retained-regression-verification.json"
+      ]
+    },
+    {
+      "cue": "Unique fractionless row",
+      "subgroup": "exp_quotient",
+      "scope": "within_template",
+      "strategy": "Select the unique row with no fraction bar except dy/dx; do not inspect the prompt, variables, exponents, or values.",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "The retained prior attack now fails: multiple fractionless candidates defeat it. This does not waive the separately demonstrated new predictor. Baseline 0.2 is uniform guessing among five equations; abstention counts incorrect.",
+      "sample_refs": [
+        "fraction-shortcut-results.json",
+        "shortcut-records.json",
+        "retained-regression-verification.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "Generator difficulty/template/profile/parameter sampling, explicit rejection and absence of resampling loops",
+      "Actual publisher prepare_records via shared check_delivery: normalization, identity, captured-inventory and within-batch deduplication",
+      "Requested easy filter on independently selected controls and exact batch",
+      "Actual question_selection.rs history exclusion, configured weighted band selection and deterministic uniform within-band draw; faithful conditional simulation",
+      "Actual UI answer rendering/shuffling and native radio-ID grading"
+    ],
+    "sample_refs": [
+      "delivery-selection.json",
+      "delivery-control/delivery.json",
+      "delivery-batch/delivery.json",
+      "bank-shortcut-results.json",
+      "grader-report.json",
+      "visual-inspection.json"
+    ],
+    "result": "The bypass survives all applicable read-only delivery filters: 18/18 accepted quotient controls and 1/1 quotient in the 5-item accepted batch. Conditional on a positive easy-band weight and freshness, selection can deliver the affected member; selection does not rewrite banks. Captured source inventory contains no generated quotient instance of this new rule."
+  },
+  "limitations": [
+    "Finite targeted audit; no claim that all possible shortcuts were excluded.",
+    "Original source/policy binding reused and cited passages rechecked. Unchanged math helper was hash-compared; a small regression sample and all source banks were rerun rather than repeating the earlier exhaustive audit.",
+    "Canonical radical example has no captured answer bank; no invented bank or complete replay claim.",
+    "Inventory basis 5365 only: all 16 captured questions including six generated entries inspected for this demonstrated family-specific defect. No generated revised quotient instance is present. Other defects in unrelated inventory families are outside this targeted investigation.",
+    "Publication preparation is absent. Shared actual filter was run read-only; live inventory changes could affect later duplicate handling.",
+    "No live learner history, reservation state, policy weights or future database entity IDs supplied. Selection simulation explicitly uses captured existing IDs and surrogate future IDs, conditional on an eligible positively weighted easy band.",
+    "Raw first/last/shortest/longest probes are diagnostics; actual UI may reorder rows. Their finite counts are not proof of absence. The demonstrated modal and repeated-LHS cues survive every permutation."
+  ]
+}
