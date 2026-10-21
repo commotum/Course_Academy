@@ -1,0 +1,30 @@
+{
+  "finding_id": "591f580cadb749294588",
+  "strict_command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory",
+  "strict_exit_code": 1,
+  "latest_failure_reproduced_first": true,
+  "affected_stored_records": 5,
+  "cause": "The captured inventory contains five v2 banks with a sign-only extremum shortcut. The native selector selects stored identities and does not invoke the Python generator.",
+  "selector_reference": "engine/rust/question_selection.rs:125-205",
+  "current_generator_findings_passed": 4,
+  "current_runtime_changed": false,
+  "proposal": "evidence/repair-3/inventory-repair-proposal.json",
+  "proposal_verified": true,
+  "proposal_applied": false,
+  "retry_condition": "Separate inventory remediation has been applied and a new inventory capture supplied. Repeating this author pass with the same captured pool cannot change the failing result.",
+  "required_external_action": "Independently review the staged replacement mapping, retire only the five affected generated records from future selection, publish approved replacements, and recapture inventory. Preserve source questions and learner history.",
+  "constraint": "This author task prohibits database changes and publication; engine_repair_allowed is false.",
+  "evidence_paths_resolve_from_requested_evidence_root": true,
+  "claims": {
+    "fidelity": "17 complete source banks replayed",
+    "correctness": "retained printed-system, bank and counterfactual checks pass",
+    "grading": "7 accepted and 28 rejected native responses match expected results",
+    "variation": "three current CLI batches retain sign-group contrasts after delivery filtering; historical pool remains failing"
+  },
+  "rendering": "Reinspected retained actual-UI screenshot evidence/repair-3/render/question-001.png and source flowchart; output and runtime unchanged.",
+  "limits": [
+    "Inventory is a supplied capture, not a live database read.",
+    "64/64 shortcut successes demonstrate one possible learner-history scenario, not actual learner history.",
+    "No acceptance criterion was waived and no runtime, database, engine or publication change was made."
+  ]
+}

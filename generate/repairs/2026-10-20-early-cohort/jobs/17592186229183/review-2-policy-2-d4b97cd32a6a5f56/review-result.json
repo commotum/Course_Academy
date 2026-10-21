@@ -1,0 +1,136 @@
+{
+  "verdict": "accepted",
+  "summary": "Current easy generator and exact five-item batch pass all eight checks; retained shortcuts are repaired. Ten historical inventory defects remain documented separately. Package unchanged.",
+  "source_analysis": {
+    "skill": "Construct and solve a well-mixed variable-volume first-order linear mixture model, determine the overflow time from capacity, and evaluate solute mass there.",
+    "reasoning_steps": [
+      "Find net volume growth and overflow time.",
+      "Compute solute inflow and time-dependent outflow.",
+      "Use a variable-coefficient integrating factor and the initial condition.",
+      "Evaluate at overflow and round to one decimal place."
+    ],
+    "invariants": [
+      "Well-mixed single tank, constant positive inflow/outflow and incoming concentration.",
+      "Capacity greater than initial volume and inflow greater than outflow so a finite positive overflow time exists.",
+      "Mass balance, initial condition, capacity-defined evaluation time and consistent units.",
+      "Five numerical radio choices with one correct rounded mass."
+    ],
+    "permitted_variations": [
+      "Capacity, initial volume, initial mass, feed concentration, net flow, physical context, and nearby distractor offsets can vary jointly with consistent solutions.",
+      "Correct choice position and numerical rank are incidental and eligible to vary independently of context and parameter patterns.",
+      "Context names and common positive rescaling of both flows are irrelevant to final overflow mass, though overflow time changes.",
+      "Feed concentration, initial mass, capacity or volume changes must recompute the response; no source license fixes a correct label, rank or distractor configuration.",
+      "Source more-concentrated wording constrains initial/feed concentration ordering; opposing order would require changed wording and scope justification."
+    ],
+    "source_refs": [
+      "bbf602f0-1101-55d5-a6b3-9bfc5731e9ec",
+      "98f92dde-10ee-5a2e-ae0c-afe47e1981a5",
+      "138b92a0-177f-5f9d-993c-5b85e485defc",
+      "c2fb266c-0e36-5075-b402-7e3b0f1013d7",
+      "47a16983-dbf1-596b-b57d-9f38439fdd0f",
+      "729a2fd5-523f-5eb2-bf2f-20fedeba14f1",
+      "3c6933cf-ef37-5bf5-8816-b51b8e56e9df",
+      "9d3bb996-2c5a-57e9-940a-6b48f2e05670",
+      "0b0e00ac-15e0-50ff-896e-2fb3f25eb38a",
+      "c3e80580-6c31-591c-a6d6-df75a9aede3a",
+      "36a65a87-c8d0-5bbf-adbe-0789f4e08164",
+      "6c55e9d5-5244-5391-84ab-9850b2ba8152",
+      "lesson 70852def-fb14-50cc-b88d-6fe2af2343bf tutorial: rate of entry is no longer zero; Q'=Q_in'-Q_out'",
+      "lesson 51694459-f27a-580f-878c-371665540655 step ff264ca2-0325-5ecb-9be4-8cbee9d9ba83 / canonical bbf602f0: Steps 1\u20134, I(t)=(12+t)^2, Q(0)=32, V(t_o)=240, Q(18)\u2248342.1 lb"
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "source-replay-results.json",
+        "source-replay-records.json",
+        "repair-verification.json",
+        "independent-negative-controls.json"
+      ],
+      "details": "All eleven supplied observed profiles replay full banks, prompts, solutions, keys and omissions. Missing q-336499 evidence and source editorial corrections are documented. Historical failing controls reproduce retained defects."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "displayed-math-results.json",
+        "counterfactual-results.json",
+        "decision-results.json"
+      ],
+      "details": "Prompt-derived exact mass balance, ODE and initial-condition residuals agree for 54 records; 21 displayed solved expressions and endpoints checked independently. Controlled relevant changes recompute the expected mass."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "sample-records.json",
+        "sampling-summary.json",
+        "decision-results.json",
+        "delivery-selection-results.json"
+      ],
+      "details": "Fresh 44-record sample covers eleven contexts and 34 distinct physical tasks. All five correct ranks remain eligible, including a low-mass boundary. Exact batch: ranks 2/3, position 3 correct on 4/5; no tested strategy solves every batch item. Actual delivery preserves all 44 sample and five batch records."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "scope-results.json",
+        "render-inspection.json"
+      ],
+      "details": "Requested easy variants preserve source mass-balance modeling, quadratic integrating factor, initial condition, overflow-time operation and five-choice numerical response. Unchanged moderate/hard extensions are outside this targeted certification."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-report.json",
+        "same-bank-records.json"
+      ],
+      "details": "Actual native learner grader: 36 expected acceptances, 144 expected rejections, zero unresolved cases. Every displayed choice tested for delivered, controlled-dependency, same-bank and low-boundary cases; radio response contract requires no free-entry equivalence test."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-records.json",
+        "render-inspection.json",
+        "render-inspection/remaining-top.png",
+        "render-inspection/case-01-middle.png"
+      ],
+      "details": "Unmodified UI renders all 27 records without reported math, image, font or JavaScript errors. Screenshots inspected across complete batch, all eleven contexts, relevant/irrelevant pairs and five same-bank keys."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "runtime-results.json",
+        "package-before.json",
+        "package-after.json",
+        "relocation-records.json"
+      ],
+      "details": "Python 3.13.5 and SymPy 1.14.0 exactly match nested dependency declarations. Deterministic replay and manifest-only relocation pass; physical rejection tested. All 213 original package files remain byte-for-byte unchanged."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "decision_checks.py",
+        "decision-results.json",
+        "same-bank-records.json",
+        "delivery-controls/accepted.json",
+        "grader-report.json",
+        "independent-negative-controls.json",
+        "negative-radius-records.json",
+        "affected-inventory.json",
+        "generated-records.json",
+        "inventory-results.json"
+      ],
+      "details": "Original median, missing-source and radius counterexamples are reproduced with historical controls and pass current regressions. Identical visible bank supports five physically computed keys; conditional template and geometry probes no longer imply a correct key. Actual delivery and conditional native selection examined against captured basis 5395. Ten old generated inventory items retain the historical median defect; they are reverified separately and are not current outputs."
+    }
+  },
+  "findings": []
+}

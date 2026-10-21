@@ -1,0 +1,1524 @@
+{
+  "learner_operation": "Translate incoming concentration and both flow rates into Q' = c*r_in - r_out*Q/(V0+(r_in-r_out)*t); solve with Q(0)=Q0, compute t_o=(capacity-V0)/(r_in-r_out), evaluate and round mass, then select among five nearby numerical masses.",
+  "fixed_features": [
+    {
+      "feature": "Overflow evaluation target",
+      "justification": "The KP is explicitly Determining an Amount at an Overflow Point; varying to a fixed unrelated time removes its extra operation."
+    },
+    {
+      "feature": "Inflow greater than outflow; positive capacity headroom",
+      "justification": "Necessary for the stated filling-to-overflow scenario."
+    },
+    {
+      "feature": "Small integral outflow/net-flow exponent (observed 2)",
+      "justification": "Observed easy method uses a quadratic integrating factor; retaining 2 is defensible for elementary workload, nearby small integral exponents need independent scope assessment."
+    },
+    {
+      "feature": "One five-choice numerical mass radio response",
+      "justification": "Every supplied bank question uses this response contract; no free-entry or target-selection operation is licensed."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Mass at overflow",
+      "eligible_variation": "Capacity, starting volume/mass, concentration and flow rates recompute the modeled endpoint.",
+      "observed": "Capacity 210\u2192240 changes 100.0\u2192116.2 lb; initial mass 18\u219230 changes 100.0\u2192102.2 lb."
+    },
+    {
+      "role": "Correct numerical rank and display position",
+      "eligible_variation": "Every bank member/position may represent the calculated mass; neither is mathematically essential.",
+      "observed": "All five ranks demonstrated at fixed physical inputs and at the positive low boundary; identical bank 35.3..39.3 has five independently calculated keys."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "Eleven observed source contexts and complete banks",
+      "sample_refs": [
+        "source-replay-records.json",
+        "source-replay-results.json"
+      ],
+      "result": "All source profiles, banks, keys and omissions match. Missing q-336499 solution/key is preserved and documented."
+    },
+    {
+      "case": "Fresh random physical tasks",
+      "sample_refs": [
+        "sample-records.json",
+        "decision-results.json",
+        "math-results.json"
+      ],
+      "result": "44 records represent 34 distinct physical tasks across eleven templates; one shared seed deliberately compares source masks. All five numerical ranks observed overall; probes measured separately within each template."
+    },
+    {
+      "case": "Exact five-item batch",
+      "sample_refs": [
+        "batch-records.json",
+        "delivery-batch/accepted.json",
+        "decision-results.json"
+      ],
+      "result": "All five survive; ranks 2:3 and 3:2, display positions 3:4 and 2:1. Median 2/5; radius cue applies 0/5; best fixed position 4/5. No tested universal strategy."
+    },
+    {
+      "case": "Same bank, all answer roles",
+      "sample_refs": [
+        "same-bank-records.json",
+        "delivery-controls/accepted.json",
+        "grader-report.json"
+      ],
+      "result": "Same shape and mass bank with changed initial mass selects each of its five members. Radius center accepted once and rejected four times."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Capacity 210\u2192240 or initial mass 18\u219230; other physical data fixed.",
+      "expected": "Recompute endpoint; correct mass and explanation change.",
+      "observed": "100.0\u2192116.2 and 100.0\u2192102.2 lb; prompt-derived expressions match worked solutions and every native radio response.",
+      "status": "passed",
+      "justification": "Source overflow evaluation depends on capacity and the ODE initial condition.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "displayed-math-results.json",
+        "grader-input.json",
+        "grader-report.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "Keep displayed bank 35.3..39.3 fixed; change initial mass through 1,5,9,13,17 with legal fixed gap draws.",
+      "expected": "Every candidate can be correct as physical evidence changes.",
+      "observed": "Keys 35.3,36.3,37.3,38.3,39.3; explanations and native outcomes track all five.",
+      "status": "passed",
+      "justification": "Initial condition is essential evidence; numerical rank is incidental. Controlled random gap stream is legal, not a changed model or key.",
+      "sample_refs": [
+        "decision_checks.py",
+        "same-bank-records.json",
+        "decision-results.json",
+        "delivery-controls/accepted.json",
+        "grader-report.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Halve both flow rates, or change coolant context to fertilizer with physical data fixed.",
+      "expected": "Final mass preserved; halved flows double overflow time. Context changes only substance wording.",
+      "observed": "100.0 lb retained for both changes; prompt/solution/actual grader outcomes agree.",
+      "status": "passed",
+      "justification": "Common flow scaling cancels in the capacity-defined endpoint; context is incidental in the single-tank source model.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "displayed-math-results.json",
+        "grader-report.json",
+        "render/rendering.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "largest nearest-neighbor gap",
+      "subgroup": "fresh sample after / all",
+      "scope": "overall",
+      "strategy": "Choose largest nearest-neighbor gap; ties select lowest numerical value.",
+      "correct": 9,
+      "total": 44,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "sample-records.json",
+        "delivery-sample/accepted.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "nearest mean",
+      "subgroup": "fresh sample after / all",
+      "scope": "overall",
+      "strategy": "Choose nearest mean; ties select lowest numerical value.",
+      "correct": 5,
+      "total": 44,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "sample-records.json",
+        "delivery-sample/accepted.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "numeric rank 1",
+      "subgroup": "fresh sample after / all",
+      "scope": "overall",
+      "strategy": "Choose numeric rank 1; ties select lowest numerical value.",
+      "correct": 9,
+      "total": 44,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "sample-records.json",
+        "delivery-sample/accepted.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "numeric rank 2",
+      "subgroup": "fresh sample after / all",
+      "scope": "overall",
+      "strategy": "Choose numeric rank 2; ties select lowest numerical value.",
+      "correct": 19,
+      "total": 44,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "sample-records.json",
+        "delivery-sample/accepted.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "numeric rank 3",
+      "subgroup": "fresh sample after / all",
+      "scope": "overall",
+      "strategy": "Choose numeric rank 3; ties select lowest numerical value.",
+      "correct": 5,
+      "total": 44,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "sample-records.json",
+        "delivery-sample/accepted.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "numeric rank 4",
+      "subgroup": "fresh sample after / all",
+      "scope": "overall",
+      "strategy": "Choose numeric rank 4; ties select lowest numerical value.",
+      "correct": 6,
+      "total": 44,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "sample-records.json",
+        "delivery-sample/accepted.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "numeric rank 5",
+      "subgroup": "fresh sample after / all",
+      "scope": "overall",
+      "strategy": "Choose numeric rank 5; ties select lowest numerical value.",
+      "correct": 5,
+      "total": 44,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "sample-records.json",
+        "delivery-sample/accepted.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "position 1",
+      "subgroup": "fresh sample after / all",
+      "scope": "overall",
+      "strategy": "Choose position 1; ties select lowest numerical value.",
+      "correct": 2,
+      "total": 44,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "sample-records.json",
+        "delivery-sample/accepted.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "position 2",
+      "subgroup": "fresh sample after / all",
+      "scope": "overall",
+      "strategy": "Choose position 2; ties select lowest numerical value.",
+      "correct": 10,
+      "total": 44,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "sample-records.json",
+        "delivery-sample/accepted.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "position 3",
+      "subgroup": "fresh sample after / all",
+      "scope": "overall",
+      "strategy": "Choose position 3; ties select lowest numerical value.",
+      "correct": 7,
+      "total": 44,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "sample-records.json",
+        "delivery-sample/accepted.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "position 4",
+      "subgroup": "fresh sample after / all",
+      "scope": "overall",
+      "strategy": "Choose position 4; ties select lowest numerical value.",
+      "correct": 7,
+      "total": 44,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "sample-records.json",
+        "delivery-sample/accepted.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "position 5",
+      "subgroup": "fresh sample after / all",
+      "scope": "overall",
+      "strategy": "Choose position 5; ties select lowest numerical value.",
+      "correct": 18,
+      "total": 44,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "sample-records.json",
+        "delivery-sample/accepted.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "smallest nearest-neighbor gap",
+      "subgroup": "fresh sample after / all",
+      "scope": "overall",
+      "strategy": "Choose smallest nearest-neighbor gap; ties select lowest numerical value.",
+      "correct": 21,
+      "total": 44,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "sample-records.json",
+        "delivery-sample/accepted.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "unique 2 lb radius center",
+      "subgroup": "fresh sample after / all",
+      "scope": "overall",
+      "strategy": "Choose unique 2 lb radius center; ties select lowest numerical value.",
+      "correct": 0,
+      "total": 16,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "sample-records.json",
+        "delivery-sample/accepted.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "nearest mean",
+      "subgroup": "fresh sample after / q-336451",
+      "scope": "within_template",
+      "strategy": "Choose nearest mean; ties select lowest numerical value.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "sample-records.json",
+        "delivery-sample/accepted.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "numeric rank 3",
+      "subgroup": "fresh sample after / q-336451",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 3; ties select lowest numerical value.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "sample-records.json",
+        "delivery-sample/accepted.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "position 3",
+      "subgroup": "fresh sample after / q-336451",
+      "scope": "within_template",
+      "strategy": "Choose position 3; ties select lowest numerical value.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "sample-records.json",
+        "delivery-sample/accepted.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "unique 2 lb radius center",
+      "subgroup": "fresh sample after / q-336451",
+      "scope": "within_template",
+      "strategy": "Choose unique 2 lb radius center; ties select lowest numerical value.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "sample-records.json",
+        "delivery-sample/accepted.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "nearest mean",
+      "subgroup": "fresh sample after / q-336499",
+      "scope": "within_template",
+      "strategy": "Choose nearest mean; ties select lowest numerical value.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "sample-records.json",
+        "delivery-sample/accepted.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "numeric rank 3",
+      "subgroup": "fresh sample after / q-336499",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 3; ties select lowest numerical value.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "sample-records.json",
+        "delivery-sample/accepted.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "position 3",
+      "subgroup": "fresh sample after / q-336499",
+      "scope": "within_template",
+      "strategy": "Choose position 3; ties select lowest numerical value.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "sample-records.json",
+        "delivery-sample/accepted.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "unique 2 lb radius center",
+      "subgroup": "fresh sample after / q-336499",
+      "scope": "within_template",
+      "strategy": "Choose unique 2 lb radius center; ties select lowest numerical value.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "sample-records.json",
+        "delivery-sample/accepted.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "nearest mean",
+      "subgroup": "fresh sample after / q-336500",
+      "scope": "within_template",
+      "strategy": "Choose nearest mean; ties select lowest numerical value.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "sample-records.json",
+        "delivery-sample/accepted.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "numeric rank 3",
+      "subgroup": "fresh sample after / q-336500",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 3; ties select lowest numerical value.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "sample-records.json",
+        "delivery-sample/accepted.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "position 3",
+      "subgroup": "fresh sample after / q-336500",
+      "scope": "within_template",
+      "strategy": "Choose position 3; ties select lowest numerical value.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "sample-records.json",
+        "delivery-sample/accepted.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "unique 2 lb radius center",
+      "subgroup": "fresh sample after / q-336500",
+      "scope": "within_template",
+      "strategy": "Choose unique 2 lb radius center; ties select lowest numerical value.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "sample-records.json",
+        "delivery-sample/accepted.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "nearest mean",
+      "subgroup": "fresh sample after / q-336501",
+      "scope": "within_template",
+      "strategy": "Choose nearest mean; ties select lowest numerical value.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "sample-records.json",
+        "delivery-sample/accepted.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "numeric rank 3",
+      "subgroup": "fresh sample after / q-336501",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 3; ties select lowest numerical value.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "sample-records.json",
+        "delivery-sample/accepted.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "position 3",
+      "subgroup": "fresh sample after / q-336501",
+      "scope": "within_template",
+      "strategy": "Choose position 3; ties select lowest numerical value.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "sample-records.json",
+        "delivery-sample/accepted.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "unique 2 lb radius center",
+      "subgroup": "fresh sample after / q-336501",
+      "scope": "within_template",
+      "strategy": "Choose unique 2 lb radius center; ties select lowest numerical value.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "sample-records.json",
+        "delivery-sample/accepted.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "nearest mean",
+      "subgroup": "fresh sample after / q-336502",
+      "scope": "within_template",
+      "strategy": "Choose nearest mean; ties select lowest numerical value.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "sample-records.json",
+        "delivery-sample/accepted.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "numeric rank 3",
+      "subgroup": "fresh sample after / q-336502",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 3; ties select lowest numerical value.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "sample-records.json",
+        "delivery-sample/accepted.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "position 3",
+      "subgroup": "fresh sample after / q-336502",
+      "scope": "within_template",
+      "strategy": "Choose position 3; ties select lowest numerical value.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "sample-records.json",
+        "delivery-sample/accepted.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "unique 2 lb radius center",
+      "subgroup": "fresh sample after / q-336502",
+      "scope": "within_template",
+      "strategy": "Choose unique 2 lb radius center; ties select lowest numerical value.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "sample-records.json",
+        "delivery-sample/accepted.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "nearest mean",
+      "subgroup": "fresh sample after / q-336503",
+      "scope": "within_template",
+      "strategy": "Choose nearest mean; ties select lowest numerical value.",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "sample-records.json",
+        "delivery-sample/accepted.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "numeric rank 3",
+      "subgroup": "fresh sample after / q-336503",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 3; ties select lowest numerical value.",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "sample-records.json",
+        "delivery-sample/accepted.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "position 3",
+      "subgroup": "fresh sample after / q-336503",
+      "scope": "within_template",
+      "strategy": "Choose position 3; ties select lowest numerical value.",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "sample-records.json",
+        "delivery-sample/accepted.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "unique 2 lb radius center",
+      "subgroup": "fresh sample after / q-336503",
+      "scope": "within_template",
+      "strategy": "Choose unique 2 lb radius center; ties select lowest numerical value.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "sample-records.json",
+        "delivery-sample/accepted.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "nearest mean",
+      "subgroup": "fresh sample after / q-336506",
+      "scope": "within_template",
+      "strategy": "Choose nearest mean; ties select lowest numerical value.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "sample-records.json",
+        "delivery-sample/accepted.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "numeric rank 3",
+      "subgroup": "fresh sample after / q-336506",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 3; ties select lowest numerical value.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "sample-records.json",
+        "delivery-sample/accepted.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "position 3",
+      "subgroup": "fresh sample after / q-336506",
+      "scope": "within_template",
+      "strategy": "Choose position 3; ties select lowest numerical value.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "sample-records.json",
+        "delivery-sample/accepted.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "unique 2 lb radius center",
+      "subgroup": "fresh sample after / q-336506",
+      "scope": "within_template",
+      "strategy": "Choose unique 2 lb radius center; ties select lowest numerical value.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "sample-records.json",
+        "delivery-sample/accepted.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "nearest mean",
+      "subgroup": "fresh sample after / q-336508",
+      "scope": "within_template",
+      "strategy": "Choose nearest mean; ties select lowest numerical value.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "sample-records.json",
+        "delivery-sample/accepted.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "numeric rank 3",
+      "subgroup": "fresh sample after / q-336508",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 3; ties select lowest numerical value.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "sample-records.json",
+        "delivery-sample/accepted.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "position 3",
+      "subgroup": "fresh sample after / q-336508",
+      "scope": "within_template",
+      "strategy": "Choose position 3; ties select lowest numerical value.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "sample-records.json",
+        "delivery-sample/accepted.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "unique 2 lb radius center",
+      "subgroup": "fresh sample after / q-336508",
+      "scope": "within_template",
+      "strategy": "Choose unique 2 lb radius center; ties select lowest numerical value.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "sample-records.json",
+        "delivery-sample/accepted.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "nearest mean",
+      "subgroup": "fresh sample after / q-336513",
+      "scope": "within_template",
+      "strategy": "Choose nearest mean; ties select lowest numerical value.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "sample-records.json",
+        "delivery-sample/accepted.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "numeric rank 3",
+      "subgroup": "fresh sample after / q-336513",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 3; ties select lowest numerical value.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "sample-records.json",
+        "delivery-sample/accepted.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "position 3",
+      "subgroup": "fresh sample after / q-336513",
+      "scope": "within_template",
+      "strategy": "Choose position 3; ties select lowest numerical value.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "sample-records.json",
+        "delivery-sample/accepted.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "unique 2 lb radius center",
+      "subgroup": "fresh sample after / q-336513",
+      "scope": "within_template",
+      "strategy": "Choose unique 2 lb radius center; ties select lowest numerical value.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "sample-records.json",
+        "delivery-sample/accepted.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "nearest mean",
+      "subgroup": "fresh sample after / q-336516",
+      "scope": "within_template",
+      "strategy": "Choose nearest mean; ties select lowest numerical value.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "sample-records.json",
+        "delivery-sample/accepted.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "numeric rank 3",
+      "subgroup": "fresh sample after / q-336516",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 3; ties select lowest numerical value.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "sample-records.json",
+        "delivery-sample/accepted.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "position 3",
+      "subgroup": "fresh sample after / q-336516",
+      "scope": "within_template",
+      "strategy": "Choose position 3; ties select lowest numerical value.",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "sample-records.json",
+        "delivery-sample/accepted.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "unique 2 lb radius center",
+      "subgroup": "fresh sample after / q-336516",
+      "scope": "within_template",
+      "strategy": "Choose unique 2 lb radius center; ties select lowest numerical value.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "sample-records.json",
+        "delivery-sample/accepted.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "nearest mean",
+      "subgroup": "fresh sample after / q-336519",
+      "scope": "within_template",
+      "strategy": "Choose nearest mean; ties select lowest numerical value.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "sample-records.json",
+        "delivery-sample/accepted.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "numeric rank 3",
+      "subgroup": "fresh sample after / q-336519",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 3; ties select lowest numerical value.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "sample-records.json",
+        "delivery-sample/accepted.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "position 3",
+      "subgroup": "fresh sample after / q-336519",
+      "scope": "within_template",
+      "strategy": "Choose position 3; ties select lowest numerical value.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "sample-records.json",
+        "delivery-sample/accepted.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "unique 2 lb radius center",
+      "subgroup": "fresh sample after / q-336519",
+      "scope": "within_template",
+      "strategy": "Choose unique 2 lb radius center; ties select lowest numerical value.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "sample-records.json",
+        "delivery-sample/accepted.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "largest nearest-neighbor gap",
+      "subgroup": "exact batch after / all",
+      "scope": "overall",
+      "strategy": "Choose largest nearest-neighbor gap; ties select lowest numerical value.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "batch-records.json",
+        "delivery-batch/accepted.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "nearest mean",
+      "subgroup": "exact batch after / all",
+      "scope": "overall",
+      "strategy": "Choose nearest mean; ties select lowest numerical value.",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "batch-records.json",
+        "delivery-batch/accepted.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "numeric rank 1",
+      "subgroup": "exact batch after / all",
+      "scope": "overall",
+      "strategy": "Choose numeric rank 1; ties select lowest numerical value.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "batch-records.json",
+        "delivery-batch/accepted.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "numeric rank 2",
+      "subgroup": "exact batch after / all",
+      "scope": "overall",
+      "strategy": "Choose numeric rank 2; ties select lowest numerical value.",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "batch-records.json",
+        "delivery-batch/accepted.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "numeric rank 3",
+      "subgroup": "exact batch after / all",
+      "scope": "overall",
+      "strategy": "Choose numeric rank 3; ties select lowest numerical value.",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "batch-records.json",
+        "delivery-batch/accepted.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "numeric rank 4",
+      "subgroup": "exact batch after / all",
+      "scope": "overall",
+      "strategy": "Choose numeric rank 4; ties select lowest numerical value.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "batch-records.json",
+        "delivery-batch/accepted.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "numeric rank 5",
+      "subgroup": "exact batch after / all",
+      "scope": "overall",
+      "strategy": "Choose numeric rank 5; ties select lowest numerical value.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "batch-records.json",
+        "delivery-batch/accepted.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "position 1",
+      "subgroup": "exact batch after / all",
+      "scope": "overall",
+      "strategy": "Choose position 1; ties select lowest numerical value.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "batch-records.json",
+        "delivery-batch/accepted.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "position 2",
+      "subgroup": "exact batch after / all",
+      "scope": "overall",
+      "strategy": "Choose position 2; ties select lowest numerical value.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "batch-records.json",
+        "delivery-batch/accepted.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "position 3",
+      "subgroup": "exact batch after / all",
+      "scope": "overall",
+      "strategy": "Choose position 3; ties select lowest numerical value.",
+      "correct": 4,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "batch-records.json",
+        "delivery-batch/accepted.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "position 4",
+      "subgroup": "exact batch after / all",
+      "scope": "overall",
+      "strategy": "Choose position 4; ties select lowest numerical value.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "batch-records.json",
+        "delivery-batch/accepted.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "position 5",
+      "subgroup": "exact batch after / all",
+      "scope": "overall",
+      "strategy": "Choose position 5; ties select lowest numerical value.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "batch-records.json",
+        "delivery-batch/accepted.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "smallest nearest-neighbor gap",
+      "subgroup": "exact batch after / all",
+      "scope": "overall",
+      "strategy": "Choose smallest nearest-neighbor gap; ties select lowest numerical value.",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "batch-records.json",
+        "delivery-batch/accepted.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "largest nearest-neighbor gap",
+      "subgroup": "same bank / all",
+      "scope": "overall",
+      "strategy": "Choose largest nearest-neighbor gap; ties select lowest numerical value.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "same-bank-records.json",
+        "delivery-controls/accepted.json",
+        "grader-report.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "nearest mean",
+      "subgroup": "same bank / all",
+      "scope": "overall",
+      "strategy": "Choose nearest mean; ties select lowest numerical value.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "same-bank-records.json",
+        "delivery-controls/accepted.json",
+        "grader-report.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "numeric rank 1",
+      "subgroup": "same bank / all",
+      "scope": "overall",
+      "strategy": "Choose numeric rank 1; ties select lowest numerical value.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "same-bank-records.json",
+        "delivery-controls/accepted.json",
+        "grader-report.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "numeric rank 2",
+      "subgroup": "same bank / all",
+      "scope": "overall",
+      "strategy": "Choose numeric rank 2; ties select lowest numerical value.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "same-bank-records.json",
+        "delivery-controls/accepted.json",
+        "grader-report.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "numeric rank 3",
+      "subgroup": "same bank / all",
+      "scope": "overall",
+      "strategy": "Choose numeric rank 3; ties select lowest numerical value.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "same-bank-records.json",
+        "delivery-controls/accepted.json",
+        "grader-report.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "numeric rank 4",
+      "subgroup": "same bank / all",
+      "scope": "overall",
+      "strategy": "Choose numeric rank 4; ties select lowest numerical value.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "same-bank-records.json",
+        "delivery-controls/accepted.json",
+        "grader-report.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "numeric rank 5",
+      "subgroup": "same bank / all",
+      "scope": "overall",
+      "strategy": "Choose numeric rank 5; ties select lowest numerical value.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "same-bank-records.json",
+        "delivery-controls/accepted.json",
+        "grader-report.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "position 1",
+      "subgroup": "same bank / all",
+      "scope": "overall",
+      "strategy": "Choose position 1; ties select lowest numerical value.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "same-bank-records.json",
+        "delivery-controls/accepted.json",
+        "grader-report.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "position 2",
+      "subgroup": "same bank / all",
+      "scope": "overall",
+      "strategy": "Choose position 2; ties select lowest numerical value.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "same-bank-records.json",
+        "delivery-controls/accepted.json",
+        "grader-report.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "position 3",
+      "subgroup": "same bank / all",
+      "scope": "overall",
+      "strategy": "Choose position 3; ties select lowest numerical value.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "same-bank-records.json",
+        "delivery-controls/accepted.json",
+        "grader-report.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "position 4",
+      "subgroup": "same bank / all",
+      "scope": "overall",
+      "strategy": "Choose position 4; ties select lowest numerical value.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "same-bank-records.json",
+        "delivery-controls/accepted.json",
+        "grader-report.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "position 5",
+      "subgroup": "same bank / all",
+      "scope": "overall",
+      "strategy": "Choose position 5; ties select lowest numerical value.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "same-bank-records.json",
+        "delivery-controls/accepted.json",
+        "grader-report.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "smallest nearest-neighbor gap",
+      "subgroup": "same bank / all",
+      "scope": "overall",
+      "strategy": "Choose smallest nearest-neighbor gap; ties select lowest numerical value.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "same-bank-records.json",
+        "delivery-controls/accepted.json",
+        "grader-report.json",
+        "decision-results.json"
+      ]
+    },
+    {
+      "cue": "unique 2 lb radius center",
+      "subgroup": "same bank / all",
+      "scope": "overall",
+      "strategy": "Choose unique 2 lb radius center; ties select lowest numerical value.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five choices has success rate 0.2. Finite results do not establish a guaranteed answer cue; bank-shape counterfactuals give four wrong-key witnesses for every fixed numerical selector. Exact batch position 3 succeeds 4/5 and is explicitly retained as a small-pool imbalance, not concealed by larger samples.",
+      "sample_refs": [
+        "same-bank-records.json",
+        "delivery-controls/accepted.json",
+        "grader-report.json",
+        "decision-results.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "generator physical rejection/resampling",
+      "whole-bank positive-shape rejection retaining selected rank",
+      "actual shared normalization and inventory/within-batch deduplication",
+      "requested easy difficulty filter",
+      "captured inventory usability and seen-question history assumptions",
+      "native selection algorithm with declared conditional weights and unconfigured first-ID fallback"
+    ],
+    "sample_refs": [
+      "runtime-results.json",
+      "low-boundary-records.json",
+      "delivery-sample/delivery.json",
+      "delivery-batch/delivery.json",
+      "delivery-controls/delivery.json",
+      "delivery-selection-results.json",
+      "selection-pool-records.json",
+      "decision-results.json"
+    ],
+    "result": "44/44 fresh records, 5/5 batch records and 5/5 same-bank controls accepted. Normalization preserves measured decision cases. Conditional native-algorithm selection covers fresh batch, existing bank and history-excluded pools; historical median defect remains in ten captured inventory records, explicitly separate from current repaired construction."
+  },
+  "limitations": [
+    "No publication/preparation.json exists; actual shared preparation filtering reproduced read-only against captured inventory basis 5395.",
+    "No live learner policy/history is captured; declared conditional scenarios inspect the applicable selection algorithm, not a specific learner.",
+    "Ten historical generated inventory records remain demonstrated affected by the old median defect; retained affected-inventory.json and complete original regenerated metadata identify them. No database remediation performed.",
+    "Requested easy only; unchanged moderate/hard authored extensions are outside this targeted certification.",
+    "Small batch positions are imbalanced; no tested selector solves every batch member. No finite review proves absence of every shortcut.",
+    "Fresh sample uses one common seed across masks plus three context-specific seeds; counts are records, not 44 statistically independent physical draws."
+  ]
+}
