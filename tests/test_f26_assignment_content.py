@@ -85,6 +85,35 @@ class CanonicalFields(unittest.TestCase):
         self.assertEqual(len(self.builder.audit['grading_limitations']), 1)
 
 
+    def test_recitation_renames_preserve_all_imported_entity_ids(self):
+        folder = self.vault / 'F26' / '256'
+        folder.mkdir(parents=True)
+        source = ('Due: 2026-10-06\n\n## Problem 1\n\n'
+                  '```quiz\nid: q-1\ncontent: Answer {{value}}.\nfields:\n'
+                  '- key: value\n  type: blank\n  correct:\n'
+                  '    type: math\n    value: "0"\n```\n')
+        for date, old_code, new_code in (
+            ('10-06-26', 'SG-1', 'R-2'),
+            ('10-20-26', 'SG-2', 'R-4'),
+        ):
+            with self.subTest(recitation=new_code):
+                old = folder / f'{date}_{old_code}.md'
+                new = folder / f'{date}_{new_code}.md'
+                old.write_text(source)
+                new.write_text(source)
+                original, renamed = Builder(self.vault), Builder(self.vault)
+                old_activity = original.assignment(str(old.relative_to(self.vault)))
+                new_activity = renamed.assignment(str(new.relative_to(self.vault)))
+                original.validate()
+                renamed.validate()
+                self.assertEqual(new_activity, old_activity)
+                self.assertEqual(
+                    {r[':db/id'] for r in original.entities},
+                    {r[':db/id'] for r in renamed.entities},
+                )
+                self.assertEqual(renamed.audit['activities'][0]['title'], f'MTH 256 — {new_code}')
+
+
 class AssignmentTargets(unittest.TestCase):
     def setUp(self):
         self.snapshot = {'basis_t': 1, 'entities': {

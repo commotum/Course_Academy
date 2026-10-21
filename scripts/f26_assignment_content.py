@@ -29,6 +29,9 @@ ALIASES = {
     'F26/256/09-29-26_R-1.md': 'F26/256/W1 09-27/R1 09-29/R1 09-29.md',
     'F26/256/10-02-26_OHW-1.md': 'F26/256/W1 09-27/OHW-1/OHW-1.md',
     'F26/256/10-02-26_WHW-1.md': 'F26/256/W1 09-27/WHW-1/WHW-1.md',
+    # Recitation quiz reviews were initially imported under study-guide names.
+    'F26/256/10-06-26_R-2.md': 'F26/256/SG-1',
+    'F26/256/10-20-26_R-4.md': 'F26/256/SG-2',
 }
 COURSES = {
     '255': 'c37c596e-77c4-5554-8295-443fb5da076b',

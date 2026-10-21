@@ -1,4 +1,79 @@
-{
-  "launches": 1,
-  "status": "running"
-}
+[
+  {
+    "command": [
+      "/home/jake/Developer/Course_Academy/.venv/bin/python",
+      "-B",
+      "prior-reproduce_shortcut.py",
+      "--input",
+      "prior-boundary-records.json",
+      "--index",
+      "0",
+      "--output",
+      "prior-failure-shortcut.json"
+    ],
+    "expected_exit": 1,
+    "actual_exit": 1,
+    "stdout": "{\"strategy\": \"Choose the uniquely shortest equation without reading the prompt or interpreting its mathematics.\", \"baseline\": 0.2, \"correct\": 1, \"total\": 1, \"acceptance_failed\": true}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/home/jake/Developer/Course_Academy/.venv/bin/python",
+      "-B",
+      "author_repair_check.py",
+      "--records",
+      "prior-boundary-records.json",
+      "--output",
+      "old-failure.json"
+    ],
+    "expected_exit": 1,
+    "actual_exit": 1,
+    "stdout": "",
+    "stderr": "Traceback (most recent call last):\n  File \"/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186124674/review-1-policy-2-f08a3651ea6369b6/author_repair_check.py\", line 166, in <module>\n    if __name__=='__main__':main()\n                            ~~~~^^\n  File \"/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186124674/review-1-policy-2-f08a3651ea6369b6/author_repair_check.py\", line 89, in main\n    report={'input':a.records,'count':len(records),'groups':probes(records),'math':maths}\n                                                            ~~~~~~^^^^^^^^^\n  File \"/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186124674/review-1-policy-2-f08a3651ea6369b6/author_repair_check.py\", line 76, in probes\n    assert result['unique_shortest']==0, result\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: {'template': 'direct_model', 'bank_kind': 'mixed', 'count': 2, 'chance': 0.2, 'chance_after_identifying_linear_form': 0.3333333333333333, 'positions': {1: 2}, 'eligible_capacity_ranks': {0: 2}, 'unique_shortest': 2, 'unique_longest': 0, 'shortest_first': 2, 'longest_first': 0}\n"
+  },
+  {
+    "command": [
+      "/home/jake/Developer/Course_Academy/.venv/bin/python",
+      "-B",
+      "prior-reproduce_shortcut.py",
+      "--input",
+      "boundary-records.json",
+      "--index",
+      "0",
+      "--output",
+      "current-shortest-minimal.json"
+    ],
+    "expected_exit": 0,
+    "actual_exit": 0,
+    "stdout": "{\"strategy\": \"Choose the uniquely shortest equation without reading the prompt or interpreting its mathematics.\", \"baseline\": 0.2, \"correct\": 0, \"total\": 1, \"acceptance_failed\": false}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/home/jake/Developer/Course_Academy/.venv/bin/python",
+      "-B",
+      "reproduce_number_match.py",
+      "--output",
+      "number-match-results.json"
+    ],
+    "expected_exit": 1,
+    "actual_exit": 1,
+    "stdout": "{\"strategy\": \"Copy the sole positive numeral from the prompt; select its unique matching option, without interpreting signs, variable factors, powers, or equation form.\", \"baseline\": 0.2, \"correct\": 1, \"total\": 1, \"acceptance_failed\": true}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/home/jake/Developer/Course_Academy/.venv/bin/python",
+      "-B",
+      "reproduce_number_match.py",
+      "--input",
+      "delivery-batch/accepted.json",
+      "--output",
+      "number-match-delivered-batch.json"
+    ],
+    "expected_exit": 1,
+    "actual_exit": 1,
+    "stdout": "{\"strategy\": \"Copy the sole positive numeral from the prompt; select its unique matching option, without interpreting signs, variable factors, powers, or equation form.\", \"baseline\": 0.2, \"correct\": 5, \"total\": 5, \"acceptance_failed\": true}\n",
+    "stderr": ""
+  }
+]

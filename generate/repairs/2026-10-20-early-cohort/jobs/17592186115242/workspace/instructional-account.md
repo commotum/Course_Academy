@@ -1,5 +1,38 @@
 # Instructional account and targeted repair
 
+Eighth-pass scope: the first executed check reproduced the retained inventory
+failure (five stored banks, 64/64 sign-extremum successes). The source still
+requires elimination and interpreting the residual equation, as canonical
+f2c7cfd3-da43-5208-bd0e-21692357fabe and tutorial
+e0c85152-daea-5a87-a3ba-81870558c7a2 demonstrate. Preserve the repaired runtime
+and the reviewed replacement proposal. Recheck the retained findings and their
+input bindings; do not alter stored questions, publication state, or the strict
+failure. No new generator construction defect is evidenced by the latest report.
+Current reproducible commands and outcomes belong in evidence/repair-8.
+
+Seventh-pass scope: latest failure reproduced first with the strict inventory
+regression: five affected stored banks and 64/64 successes in the retained
+possible-history selection witness. Preserve the completed construction repairs.
+Canonical f2c7cfd3-da43-5208-bd0e-21692357fabe requires elimination to
+`(k+4)y=-5`; tutorial e0c85152-daea-5a87-a3ba-81870558c7a2 defines
+inconsistency by no solutions. Neither supports changing the skill to avoid
+historical bank remediation. Verify the retained findings and the binding of
+the staged replacements; do not substitute that proposal for the captured pool.
+The remaining requested action is outside the explicit no-database-change scope.
+Current commands and results belong in evidence/repair-7.
+
+Sixth-pass scope: source and complete retained history were read before testing.
+The first test reproduced finding 591f580cadb749294588 against all five captured
+stored records. The current-generator shortcut, source, zero-root and finite
+batch regressions pass. Canonical f2c7cfd3-da43-5208-bd0e-21692357fabe and tutorial
+e0c85152-daea-5a87-a3ba-81870558c7a2 continue to require elimination followed by
+contradiction/redundancy interpretation. No new source or generator construction
+defect is demonstrated. Preserve runtime and staged replacements, verify their
+binding and native grading, and retain the failing historical-pool check. A
+workspace-only generator change cannot alter the selector's stored candidates.
+No database, source, engine or publication changes are authorized or performed.
+Current evidence: evidence/repair-6/commands.json and results.json.
+
 Fifth-pass scope: the first executed regression again reproduced finding
 591f580cadb749294588: five unchanged stored banks, with 64/64 successes for
 the retained possible learner-history shortcut. Reuse the source analysis and

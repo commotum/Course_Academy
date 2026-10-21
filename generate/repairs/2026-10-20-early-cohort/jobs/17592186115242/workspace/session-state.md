@@ -1,5 +1,78 @@
 # Repair state
 
+## Seventh pass (latest)
+
+Read feedback and full retained history first; first executed test was the exact
+strict inventory regression. It exits 1: five reproduced stored banks and the
+retained possible-history 64/64 sign-extremum witness. Current source/inventory
+and runtime match protected hashes, so that counterexample still applies.
+
+All four current-generator finding regressions pass. Three CLI batches retain
+within-sign contrasts after shared delivery filtering (14/14 accepted). Source
+replay covers 17 complete practice banks and the canonical system. Native grader
+accepts 7 correct responses and rejects 28 wrong choices, with no unresolved
+checks. Exact dependency and relocated CLI checks pass. Two retained actual-UI
+screenshots and the source flowchart were visually inspected; rendering was
+reused because runtime and complete replacement output are unchanged.
+
+Commands/results: evidence/repair-7/commands.json and results.json. All five
+finding regressions remain declared, including the strict failing inventory
+check. All five generated inventory records were tested; evidence paths resolve
+from author-7. No runtime, database, engine, source, publication, or other-job
+changes. The validated proposal remains at
+evidence/repair-3/inventory-repair-proposal.json, unapplied.
+
+Status: unsupported. Next unfinished action is the separately authorized
+inventory-remediation workflow explicitly requested by finding
+591f580cadb749294588, then a refreshed inventory and strict selectable-pool
+recheck. This job explicitly forbids that database change. Do not replace the
+repaired generator, narrow its source-supported scope, or weaken the failure.
+
+## Sixth pass (latest)
+
+Latest strict inventory failure reproduced first: exit 1, five matched historical
+records, retained possible-history selection witness 64/64. All four current
+generator regressions pass. Three CLI batches retain conditional contrasts through
+shared delivery filtering (14/14 accepted); source replay covers 17 complete banks
+and canonical system. Native grader: 7 accepted, 28 rejected, zero unresolved.
+Relocation/exact dependencies pass. Protected runtime, manifest, source and
+inventory hashes match retained evidence. Both unchanged actual-UI screenshots
+and source tutorial flowchart visually inspected. Affected evidence paths resolve
+relative to author-6; no generated inventory records remain untested.
+
+Commands/results: evidence/repair-6/commands.json and results.json. No runtime,
+source, engine, publication, database, or other-job changes. All five finding
+regressions remain declared, including the strict failing inventory check.
+The five validated replacements and exact identity mapping remain staged at
+evidence/repair-3/inventory-repair-proposal.json. Status remains unsupported until
+separate authorized inventory remediation and refreshed inventory allow the same
+strict check to pass. Do not overwrite the repaired generator or disguise the
+stored-pool failure by changing runtime sampling or weakening its regression.
+
+## Fifth pass (current)
+
+Read feedback and full retained history; first executed regression was the exact
+strict inventory check. It exits 1: five affected records and the retained
+64/64 sign-only selection witness. All four current-generator finding checks
+pass. Three CLI requests deliver 14 records through shared filtering with
+within-sign contrasts intact. Native grader: 7 correct accepted, 28 wrong
+rejected, zero unresolved. Relocated package and exact dependencies pass.
+
+Runtime, manifest, source and inventory hashes still match protected evidence.
+Current five-record batch still equals the staged replacement proposal. Both
+retained actual-UI screenshots and the source flowchart were visually inspected;
+no layout defects observed. Affected-record evidence paths also resolve from
+the requested author-5 evidence root. No runtime, engine, database, publication,
+or other-job changes. Instructional account updated before validation.
+
+Commands and results: evidence/repair-5/commands.json and results.json. All five
+finding IDs and the strict failing inventory regression remain in place.
+Status: unsupported. The next unfinished action is the separate authorized
+inventory-remediation stage, using the already validated
+evidence/repair-3/inventory-repair-proposal.json, followed by refreshed inventory
+and the strict pool check. Another generator-only pass cannot alter those
+stored banks; do not overwrite this repaired candidate or waive that failure.
+
 ## Fourth pass (current)
 
 Read the latest feedback and full retained history first. The first executed
