@@ -1,0 +1,11 @@
+Author-2 repair complete within workspace; final delivery status UNSUPPORTED because one native-grader defect remains. Do not treat the earlier ready result as current.
+
+Preserved existing generator/helpers/source data and prior useful evidence. Read feedback first, required docs, original complete source questions and lesson/prerequisites. Instructional specification updated before implementation.
+
+Implemented generator.py v4: polynomial degrees 1..4 in validation and normal sampling for q-1907, q-104300, q-47965 and q-319357. Canonical e-3634 x cos x now generated with a valid five-choice q-1907 bank; source canonical historical answer field absent and explicitly documented. Original source replay/banks and previous repairs preserved.
+
+Validation milestone: validate.py passes 75 generated/probe records, 12 counterfactual pairs, all 11 source replays and 30 bank values. Fidelity: 102 fragments pass. Native regression: 201 accepted, 342 rejected; targeted degree-1 suite: 59 accepted, 200 rejected; 10 stale-target keys reject. Shared delivery: regression 70/75 (58 semantic instances); repair cases 31/33 (16 semantic instances); runner 5/5. Within-template/trig new-boundary shortcut probes pass tested cues before/after filtering. Five affected actual UI screenshots visually inspected. Relocation passes and exact declared runtime pins match.
+
+BLOCKER: q-310188 b=4 missing_term=0 expects 4^x ln(4) sin(x); valid 2*4^x*ln(2)*sin(x) is unresolved, both TeX/plain. Mandatory expected-accepted native test exits 1. A separate diagnostic observes both failures plus reversed-key failure; unresolved is not counted as success. No package-local native grader hook exists; changing response format, suppressing bases or adding answer-form restrictions would evade the source contract. Do not publish this package as ready.
+
+Reproduce using evidence/author-2/commands.md; principal result evidence/author-2/repair-summary.json and required failure evidence/author-2/log-required.log. Next unfinished requirement: upstream native-grader support for ln(4)=2 ln(2), outside workspace-only scope, then rerun mandatory acceptance and equivalent tests. No publication/database/image mutations performed.

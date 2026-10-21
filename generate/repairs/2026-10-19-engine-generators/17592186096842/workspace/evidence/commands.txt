@@ -1,0 +1,27 @@
+All commands run from the workspace; PY=/home/jake/Developer/Course_Academy/.venv/bin/python, REPO=/home/jake/Developer/Course_Academy. No publishing/database calls.
+
+$PY validate.py > evidence/validate.log 2>&1
+  Full parsed-math/source replay/boundary/CLI/relocation audit. Following concrete solution and sign-pool repairs, refresh_affected.py independently checked affected records and validate.py --resume retained verified unrelated records; final validation.json reports 180 probes, 17 replays, 37 counterfactuals, 122 semantic tuples.
+$PY role_controls.py > evidence/role-controls.log 2>&1
+$PY rejection_probe.py > evidence/rejection.log 2>&1
+
+For each band easy, moderate, hard, split probe-records.json, counterfactual-records.json and role-control-records.json by question difficulty to probes-BAND.json, counterfactual-BAND.json and roles-BAND.json. Run the shared filter on each:
+$PY $REPO/generate/pipeline/check_delivery.py --input evidence/probes-BAND.json --source ../source/source.json --inventory ../source/inventory.json --difficulty BAND --output evidence/delivery-BAND --asset-root evidence/assets --math-root /media/jake/SSD/EDB/math
+$PY $REPO/generate/pipeline/check_delivery.py --input evidence/counterfactual-BAND.json --source ../source/source.json --inventory ../source/inventory.json --difficulty BAND --output evidence/delivery-counterfactual-BAND --asset-root evidence/assets --math-root /media/jake/SSD/EDB/math
+$PY $REPO/generate/pipeline/check_delivery.py --input evidence/roles-BAND.json --source ../source/source.json --inventory ../source/inventory.json --difficulty BAND --output evidence/delivery-roles-BAND --asset-root evidence/assets --math-root /media/jake/SSD/EDB/math
+$PY $REPO/generate/pipeline/check_delivery.py --input evidence/sample.json --source ../source/source.json --inventory ../source/inventory.json --difficulty moderate --output evidence/delivery-sample --asset-root evidence/assets --math-root /media/jake/SSD/EDB/math
+
+$PY delivery_audit.py > evidence/delivery-audit.log 2>&1
+$PY final_evidence.py > evidence/final-evidence.log 2>&1
+$REPO/generate/runs/current/check-engine evidence/grader-input.json evidence/grader-report.json
+$REPO/generate/runs/current/check-engine evidence/role-control-grader-input.json evidence/role-control-grader-report.json
+$REPO/generate/runs/current/check-engine evidence/rejection-grader-input.json evidence/rejection-grader-report.json
+$REPO/generate/runs/current/check-engine evidence/grader-domain-input.json evidence/grader-domain-report.json
+$REPO/generate/runs/current/check-engine evidence/post-delivery-grader-input.json evidence/post-delivery-grader-report.json
+
+$PY $REPO/generate/pipeline/render_preview.py --input evidence/final-render-records.json --output evidence/final-render --asset-root evidence/assets --math-root /media/jake/SSD/EDB/math --limit 6
+  Inspect all six final-render/question-00N.png files. Earlier render/ and render-variants/ are retained pre-final snapshots, superseded by final-render/.
+
+$PY generator.py --difficulty moderate --count 5 --seed 42 --format json
+$PY generator.py --replay-source --format json
+  Source replay recomputes the bank/key/solution and retains the immutable complete source capture separately. Partial historical blank submissions are not served as alternatives.

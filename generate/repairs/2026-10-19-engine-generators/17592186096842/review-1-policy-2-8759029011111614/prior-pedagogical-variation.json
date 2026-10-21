@@ -1,0 +1,1939 @@
+{
+  "learner_operation": "Identify inner polynomial u and outer exponent +1/2 or -1/2; differentiate each, multiply, simplify, and where requested substitute x0. Select the matching expression or enter an equivalent expression.",
+  "fixed_features": [
+    {
+      "feature": "Outer function is square root or reciprocal square root; inner polynomial degree at most two",
+      "justification": "Lesson e-182, q-48730 and q-342680 establish this chain-rule depth; sum term only in q-20181."
+    },
+    {
+      "feature": "Finite real slope and simple square radicand for evaluated questions",
+      "justification": "Source slopes all evaluate at positive square radicands. Avoiding undefined roots preserves the stated derivative task and arithmetic workload."
+    },
+    {
+      "feature": "One correct expression in a five-option radio or equivalent-expression blank",
+      "justification": "Captured field contracts; zero-total radio bank must be rejected to keep five distinct choices."
+    },
+    {
+      "feature": "Derivative-only quadratic template forces c=0",
+      "justification": "No defensible instructional reason found. Author cites q-342680 shape, but the central lesson e-182 uses 1-x^2 with a nonzero constant and no linear term. This fixed assignment fails review."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "inner coefficient sign and magnitude",
+      "eligible_variation": "Either sign and bounded magnitudes without changing chain-rule method",
+      "observed": "Both coefficient signs in every sampled template; details in coverage.json."
+    },
+    {
+      "role": "outer derivative sign and exponent",
+      "eligible_variation": "Square root and reciprocal square root follow +1/2 versus -1/2 rules",
+      "observed": "Same inner 6x-3 pair changes derivative from -3/(6x-3)^(3/2) to 3/sqrt(6x-3)."
+    },
+    {
+      "role": "evaluated slope sign/zero and target point",
+      "eligible_variation": "Hold curve fixed and vary valid x0; positive, zero, negative all legitimate",
+      "observed": "-x^2+10x at targets 2,5,8 gives 3/4,0,-3/4. Both quadratic blank samplers include negative, zero, positive in fresh samples."
+    },
+    {
+      "role": "which displayed choice is correct",
+      "eligible_variation": "Every displayed position and eligible scalar rank; no source answer position is essential",
+      "observed": "Rank and displayed-position counts vary. No perfect incidental cue found in tested raw, filtered or selected groups."
+    },
+    {
+      "role": "constant-versus-linear term in quadratic radicand",
+      "eligible_variation": "Canonical 1-x^2 and practice x^2-6x both require one polynomial derivative and one chain-rule multiplication",
+      "observed": "Generator forbids nonzero quadratic constants outside constant-quadratic slope template; canonical derivative cannot be generated."
+    },
+    {
+      "role": "radical contribution versus cubic contribution in total slope",
+      "eligible_variation": "Distractors should require the learner to calculate the radical chain-rule contribution rather than identify the polynomial derivative approximately.",
+      "observed": "FAIL: whole-slope scaling spaces options so widely that ignoring the radical gives a perfect nearest-cubic predictor in a recognizable subgroup."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "reciprocal_radio",
+      "sample_refs": [
+        "samples.json",
+        "coverage.json"
+      ],
+      "result": "{\"samples\": 10, \"a_signs\": [-1, 1], \"answer_signs\": [], \"positions\": {\"3\": 6, \"0\": 1, \"1\": 2, \"2\": 1}, \"roles\": {\"0\": 1, \"2\": 4, \"1\": 3, \"4\": 1, \"3\": 1}, \"attempts\": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]}"
+    },
+    {
+      "case": "sqrt_spaced_radio",
+      "sample_refs": [
+        "samples.json",
+        "coverage.json"
+      ],
+      "result": "{\"samples\": 10, \"a_signs\": [-1, 1], \"answer_signs\": [], \"positions\": {\"3\": 1, \"4\": 2, \"0\": 4, \"2\": 2, \"1\": 1}, \"roles\": {\"4\": 3, \"2\": 4, \"3\": 2, \"0\": 1}, \"attempts\": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]}"
+    },
+    {
+      "case": "sqrt_constfirst_radio",
+      "sample_refs": [
+        "samples.json",
+        "coverage.json"
+      ],
+      "result": "{\"samples\": 10, \"a_signs\": [-1, 1], \"answer_signs\": [], \"positions\": {\"0\": 3, \"4\": 2, \"1\": 1, \"3\": 2, \"2\": 2}, \"roles\": {\"2\": 3, \"3\": 1, \"1\": 4, \"4\": 2}, \"attempts\": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]}"
+    },
+    {
+      "case": "slope_sqrt_radio",
+      "sample_refs": [
+        "samples.json",
+        "coverage.json"
+      ],
+      "result": "{\"samples\": 10, \"a_signs\": [-1, 1], \"answer_signs\": [-1, 1], \"positions\": {\"0\": 3, \"1\": 4, \"3\": 1, \"2\": 1, \"4\": 1}, \"roles\": {\"4\": 2, \"1\": 4, \"0\": 2, \"3\": 2}, \"attempts\": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]}"
+    },
+    {
+      "case": "reciprocal_blank",
+      "sample_refs": [
+        "samples.json",
+        "coverage.json"
+      ],
+      "result": "{\"samples\": 10, \"a_signs\": [-1, 1], \"answer_signs\": [], \"positions\": {\"0\": 10}, \"roles\": {\"None\": 10}, \"attempts\": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]}"
+    },
+    {
+      "case": "reciprocal_blank_braced",
+      "sample_refs": [
+        "samples.json",
+        "coverage.json"
+      ],
+      "result": "{\"samples\": 10, \"a_signs\": [-1, 1], \"answer_signs\": [], \"positions\": {\"0\": 10}, \"roles\": {\"None\": 10}, \"attempts\": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]}"
+    },
+    {
+      "case": "sqrt_quadratic_blank",
+      "sample_refs": [
+        "samples.json",
+        "coverage.json"
+      ],
+      "result": "{\"samples\": 10, \"a_signs\": [-1, 1], \"answer_signs\": [], \"positions\": {\"0\": 10}, \"roles\": {\"None\": 10}, \"attempts\": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]}"
+    },
+    {
+      "case": "sqrt_linear_blank",
+      "sample_refs": [
+        "samples.json",
+        "coverage.json"
+      ],
+      "result": "{\"samples\": 10, \"a_signs\": [-1, 1], \"answer_signs\": [], \"positions\": {\"0\": 10}, \"roles\": {\"None\": 10}, \"attempts\": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]}"
+    },
+    {
+      "case": "slope_reciprocal_blank",
+      "sample_refs": [
+        "samples.json",
+        "coverage.json"
+      ],
+      "result": "{\"samples\": 10, \"a_signs\": [-1, 1], \"answer_signs\": [-1, 0, 1], \"positions\": {\"0\": 10}, \"roles\": {\"None\": 10}, \"attempts\": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]}"
+    },
+    {
+      "case": "sqrt_linear_radio",
+      "sample_refs": [
+        "samples.json",
+        "coverage.json"
+      ],
+      "result": "{\"samples\": 10, \"a_signs\": [-1, 1], \"answer_signs\": [], \"positions\": {\"2\": 3, \"0\": 3, \"3\": 2, \"4\": 2}, \"roles\": {\"2\": 2, \"4\": 2, \"0\": 2, \"3\": 3, \"1\": 1}, \"attempts\": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]}"
+    },
+    {
+      "case": "slope_sqrt_positive_radio",
+      "sample_refs": [
+        "samples.json",
+        "coverage.json"
+      ],
+      "result": "{\"samples\": 10, \"a_signs\": [-1, 1], \"answer_signs\": [-1, 1], \"positions\": {\"4\": 4, \"2\": 1, \"3\": 2, \"0\": 1, \"1\": 2}, \"roles\": {\"3\": 2, \"1\": 2, \"4\": 3, \"0\": 3}, \"attempts\": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]}"
+    },
+    {
+      "case": "slope_sqrt_linear_blank",
+      "sample_refs": [
+        "samples.json",
+        "coverage.json"
+      ],
+      "result": "{\"samples\": 10, \"a_signs\": [-1, 1], \"answer_signs\": [-1, 1], \"positions\": {\"0\": 10}, \"roles\": {\"None\": 10}, \"attempts\": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]}"
+    },
+    {
+      "case": "slope_sqrt_quadratic_blank",
+      "sample_refs": [
+        "samples.json",
+        "coverage.json"
+      ],
+      "result": "{\"samples\": 10, \"a_signs\": [-1, 1], \"answer_signs\": [-1, 0, 1], \"positions\": {\"0\": 10}, \"roles\": {\"None\": 10}, \"attempts\": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]}"
+    },
+    {
+      "case": "slope_sqrt_quadratic_radio",
+      "sample_refs": [
+        "samples.json",
+        "coverage.json"
+      ],
+      "result": "{\"samples\": 10, \"a_signs\": [-1, 1], \"answer_signs\": [-1, 1], \"positions\": {\"1\": 1, \"2\": 7, \"0\": 1, \"3\": 1}, \"roles\": {\"4\": 1, \"2\": 2, \"3\": 5, \"1\": 1, \"0\": 1}, \"attempts\": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]}"
+    },
+    {
+      "case": "slope_sum_radio",
+      "sample_refs": [
+        "samples.json",
+        "coverage.json"
+      ],
+      "result": "{\"samples\": 10, \"a_signs\": [-1, 1], \"answer_signs\": [-1, 1], \"positions\": {\"0\": 5, \"4\": 1, \"1\": 2, \"3\": 1, \"2\": 1}, \"roles\": {\"4\": 6, \"1\": 1, \"0\": 1, \"3\": 1, \"2\": 1}, \"attempts\": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]}"
+    },
+    {
+      "case": "runner requested moderate batch",
+      "sample_refs": [
+        "runner-batch.json",
+        "delivery-runner/accepted.json"
+      ],
+      "result": "All 5 pass shared delivery; 3 radio and 2 reciprocal blank records."
+    },
+    {
+      "case": "canonical quadratic constant derivative",
+      "sample_refs": [
+        "restriction-results.json"
+      ],
+      "result": "FAIL: explicit a=-1,b=0,c=1 rejected before rendering."
+    },
+    {
+      "case": "dominating cubic shortcut across every bank role",
+      "sample_refs": [
+        "sum-shortcut-records.json",
+        "sum-shortcut-results.json"
+      ],
+      "result": "20/20 shortcut successes. These are ordinary sampler-range parameters in the supported easy family, not out-of-scope constructed expressions."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Hold -x^2+10x fixed; change target 2 to 5 to 8",
+      "expected": "Slope changes 3/4 to 0 to -3/4; former answers stop grading correct",
+      "observed": "Matching prompts, substitutions, rendered answers and native accepted canonical/equivalent entries; six cross-target responses rejected.",
+      "status": "passed",
+      "justification": "q-342792 and q-342789 require evaluating the derivative at a specified point. Targets 5 and 8 are explicit same-method controls outside normal t bound.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-input.json",
+        "grader-results.json",
+        "render-all/rendering.json",
+        "visual-inspection.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "Hold a=-4, root family and display seed fixed; shift constant 3 to 7",
+      "expected": "Inner derivative stays -4; denominator, prompt and solution change together",
+      "observed": "2/sqrt((-4x+3)^3) changes to 2/sqrt((-4x+7)^3); actual canonical and scaled equivalents accepted, matching visible solutions.",
+      "status": "passed",
+      "justification": "Inner constant affects composition value, not inner derivative, exactly the separation taught in e-182.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-results.json",
+        "visual-inspection.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "Hold inner 6x-3 fixed; swap root versus reciprocal root",
+      "expected": "Reconsider outer power and sign; derivative changes",
+      "observed": "-3/(6x-3)^(3/2) versus 3/sqrt(6x-3), correct radio IDs accepted and four wrong choices rejected for each.",
+      "status": "passed",
+      "justification": "q-48730 versus q-107303 requires different outer power derivatives.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-results.json",
+        "render-all/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Reverse the same radio choices without altering math, key or explanation",
+      "expected": "Correct mathematical value and native accepted choice UUID remain; screen position changes",
+      "observed": "Response 3/sqrt(6x-3) unchanged; choices reversed, actual grader accepts same UUID and rejects the other four; renderer passes.",
+      "status": "passed",
+      "justification": "Choice ordering does not enter the chain rule or source mathematical task.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-results.json",
+        "visual-inspection.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "Use canonical e-182 constant-quadratic radicand 1-x^2 in derivative template",
+      "expected": "Generate -x/sqrt(1-x^2) with original chain-rule stages",
+      "observed": "ValueError: Observed quadratic scope has two nonconstant terms and c=0",
+      "status": "failed",
+      "justification": "e-182 is the central radical chain-rule lesson example. Its constant assignment is not an extra prerequisite.",
+      "sample_refs": [
+        "restriction-results.json",
+        "source-analysis.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "first",
+      "subgroup": "ALL",
+      "scope": "overall",
+      "strategy": "Choose first option, tie broken by first displayed",
+      "correct": 21,
+      "total": 80,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "21/80 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "ALL",
+      "scope": "overall",
+      "strategy": "Choose last option, tie broken by first displayed",
+      "correct": 12,
+      "total": 80,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "12/80 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "shortest TeX",
+      "subgroup": "ALL",
+      "scope": "overall",
+      "strategy": "Choose shortest TeX option, tie broken by first displayed",
+      "correct": 20,
+      "total": 80,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "20/80 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "longest TeX",
+      "subgroup": "ALL",
+      "scope": "overall",
+      "strategy": "Choose longest TeX option, tie broken by first displayed",
+      "correct": 11,
+      "total": 80,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "11/80 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "numeric median",
+      "subgroup": "ALL",
+      "scope": "overall",
+      "strategy": "Choose numeric median option, tie broken by first displayed",
+      "correct": 16,
+      "total": 80,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "16/80 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "reciprocal_radio",
+      "scope": "within_template",
+      "strategy": "Choose first option, tie broken by first displayed",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/10 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "reciprocal_radio",
+      "scope": "within_template",
+      "strategy": "Choose last option, tie broken by first displayed",
+      "correct": 0,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/10 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "shortest TeX",
+      "subgroup": "reciprocal_radio",
+      "scope": "within_template",
+      "strategy": "Choose shortest TeX option, tie broken by first displayed",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/10 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "longest TeX",
+      "subgroup": "reciprocal_radio",
+      "scope": "within_template",
+      "strategy": "Choose longest TeX option, tie broken by first displayed",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/10 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "numeric median",
+      "subgroup": "reciprocal_radio",
+      "scope": "within_template",
+      "strategy": "Choose numeric median option, tie broken by first displayed",
+      "correct": 4,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "4/10 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "sqrt_spaced_radio",
+      "scope": "within_template",
+      "strategy": "Choose first option, tie broken by first displayed",
+      "correct": 4,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "4/10 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "sqrt_spaced_radio",
+      "scope": "within_template",
+      "strategy": "Choose last option, tie broken by first displayed",
+      "correct": 2,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/10 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "shortest TeX",
+      "subgroup": "sqrt_spaced_radio",
+      "scope": "within_template",
+      "strategy": "Choose shortest TeX option, tie broken by first displayed",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/10 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "longest TeX",
+      "subgroup": "sqrt_spaced_radio",
+      "scope": "within_template",
+      "strategy": "Choose longest TeX option, tie broken by first displayed",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/10 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "numeric median",
+      "subgroup": "sqrt_spaced_radio",
+      "scope": "within_template",
+      "strategy": "Choose numeric median option, tie broken by first displayed",
+      "correct": 4,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "4/10 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "sqrt_constfirst_radio",
+      "scope": "within_template",
+      "strategy": "Choose first option, tie broken by first displayed",
+      "correct": 3,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/10 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "sqrt_constfirst_radio",
+      "scope": "within_template",
+      "strategy": "Choose last option, tie broken by first displayed",
+      "correct": 2,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/10 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "shortest TeX",
+      "subgroup": "sqrt_constfirst_radio",
+      "scope": "within_template",
+      "strategy": "Choose shortest TeX option, tie broken by first displayed",
+      "correct": 5,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "5/10 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "longest TeX",
+      "subgroup": "sqrt_constfirst_radio",
+      "scope": "within_template",
+      "strategy": "Choose longest TeX option, tie broken by first displayed",
+      "correct": 0,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/10 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "numeric median",
+      "subgroup": "sqrt_constfirst_radio",
+      "scope": "within_template",
+      "strategy": "Choose numeric median option, tie broken by first displayed",
+      "correct": 3,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/10 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "slope_sqrt_radio",
+      "scope": "within_template",
+      "strategy": "Choose first option, tie broken by first displayed",
+      "correct": 3,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/10 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "slope_sqrt_radio",
+      "scope": "within_template",
+      "strategy": "Choose last option, tie broken by first displayed",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/10 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "shortest TeX",
+      "subgroup": "slope_sqrt_radio",
+      "scope": "within_template",
+      "strategy": "Choose shortest TeX option, tie broken by first displayed",
+      "correct": 3,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/10 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "longest TeX",
+      "subgroup": "slope_sqrt_radio",
+      "scope": "within_template",
+      "strategy": "Choose longest TeX option, tie broken by first displayed",
+      "correct": 3,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/10 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "numeric median",
+      "subgroup": "slope_sqrt_radio",
+      "scope": "within_template",
+      "strategy": "Choose numeric median option, tie broken by first displayed",
+      "correct": 0,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/10 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "sqrt_linear_radio",
+      "scope": "within_template",
+      "strategy": "Choose first option, tie broken by first displayed",
+      "correct": 3,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/10 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "sqrt_linear_radio",
+      "scope": "within_template",
+      "strategy": "Choose last option, tie broken by first displayed",
+      "correct": 2,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/10 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "shortest TeX",
+      "subgroup": "sqrt_linear_radio",
+      "scope": "within_template",
+      "strategy": "Choose shortest TeX option, tie broken by first displayed",
+      "correct": 3,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/10 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "longest TeX",
+      "subgroup": "sqrt_linear_radio",
+      "scope": "within_template",
+      "strategy": "Choose longest TeX option, tie broken by first displayed",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/10 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "numeric median",
+      "subgroup": "sqrt_linear_radio",
+      "scope": "within_template",
+      "strategy": "Choose numeric median option, tie broken by first displayed",
+      "correct": 2,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/10 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "slope_sqrt_positive_radio",
+      "scope": "within_template",
+      "strategy": "Choose first option, tie broken by first displayed",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/10 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "slope_sqrt_positive_radio",
+      "scope": "within_template",
+      "strategy": "Choose last option, tie broken by first displayed",
+      "correct": 4,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "4/10 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "shortest TeX",
+      "subgroup": "slope_sqrt_positive_radio",
+      "scope": "within_template",
+      "strategy": "Choose shortest TeX option, tie broken by first displayed",
+      "correct": 2,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/10 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "longest TeX",
+      "subgroup": "slope_sqrt_positive_radio",
+      "scope": "within_template",
+      "strategy": "Choose longest TeX option, tie broken by first displayed",
+      "correct": 0,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/10 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "numeric median",
+      "subgroup": "slope_sqrt_positive_radio",
+      "scope": "within_template",
+      "strategy": "Choose numeric median option, tie broken by first displayed",
+      "correct": 0,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/10 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "slope_sqrt_quadratic_radio",
+      "scope": "within_template",
+      "strategy": "Choose first option, tie broken by first displayed",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/10 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "slope_sqrt_quadratic_radio",
+      "scope": "within_template",
+      "strategy": "Choose last option, tie broken by first displayed",
+      "correct": 0,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/10 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "shortest TeX",
+      "subgroup": "slope_sqrt_quadratic_radio",
+      "scope": "within_template",
+      "strategy": "Choose shortest TeX option, tie broken by first displayed",
+      "correct": 2,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/10 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "longest TeX",
+      "subgroup": "slope_sqrt_quadratic_radio",
+      "scope": "within_template",
+      "strategy": "Choose longest TeX option, tie broken by first displayed",
+      "correct": 2,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/10 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "numeric median",
+      "subgroup": "slope_sqrt_quadratic_radio",
+      "scope": "within_template",
+      "strategy": "Choose numeric median option, tie broken by first displayed",
+      "correct": 2,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/10 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "slope_sum_radio",
+      "scope": "within_template",
+      "strategy": "Choose first option, tie broken by first displayed",
+      "correct": 5,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "5/10 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "slope_sum_radio",
+      "scope": "within_template",
+      "strategy": "Choose last option, tie broken by first displayed",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/10 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "shortest TeX",
+      "subgroup": "slope_sum_radio",
+      "scope": "within_template",
+      "strategy": "Choose shortest TeX option, tie broken by first displayed",
+      "correct": 3,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/10 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "longest TeX",
+      "subgroup": "slope_sum_radio",
+      "scope": "within_template",
+      "strategy": "Choose longest TeX option, tie broken by first displayed",
+      "correct": 3,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/10 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "numeric median",
+      "subgroup": "slope_sum_radio",
+      "scope": "within_template",
+      "strategy": "Choose numeric median option, tie broken by first displayed",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/10 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "ALL",
+      "scope": "overall",
+      "strategy": "Choose first option, tie broken by first displayed",
+      "correct": 11,
+      "total": 40,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "11/40 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "ALL",
+      "scope": "overall",
+      "strategy": "Choose last option, tie broken by first displayed",
+      "correct": 6,
+      "total": 40,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "6/40 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest TeX",
+      "subgroup": "ALL",
+      "scope": "overall",
+      "strategy": "Choose shortest TeX option, tie broken by first displayed",
+      "correct": 10,
+      "total": 40,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "10/40 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "longest TeX",
+      "subgroup": "ALL",
+      "scope": "overall",
+      "strategy": "Choose longest TeX option, tie broken by first displayed",
+      "correct": 3,
+      "total": 40,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/40 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "numeric median",
+      "subgroup": "ALL",
+      "scope": "overall",
+      "strategy": "Choose numeric median option, tie broken by first displayed",
+      "correct": 13,
+      "total": 40,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "13/40 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "reciprocal_radio",
+      "scope": "within_template",
+      "strategy": "Choose first option, tie broken by first displayed",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/10 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "reciprocal_radio",
+      "scope": "within_template",
+      "strategy": "Choose last option, tie broken by first displayed",
+      "correct": 0,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/10 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest TeX",
+      "subgroup": "reciprocal_radio",
+      "scope": "within_template",
+      "strategy": "Choose shortest TeX option, tie broken by first displayed",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/10 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "longest TeX",
+      "subgroup": "reciprocal_radio",
+      "scope": "within_template",
+      "strategy": "Choose longest TeX option, tie broken by first displayed",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/10 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "numeric median",
+      "subgroup": "reciprocal_radio",
+      "scope": "within_template",
+      "strategy": "Choose numeric median option, tie broken by first displayed",
+      "correct": 4,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "4/10 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "sqrt_spaced_radio",
+      "scope": "within_template",
+      "strategy": "Choose first option, tie broken by first displayed",
+      "correct": 4,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "4/10 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "sqrt_spaced_radio",
+      "scope": "within_template",
+      "strategy": "Choose last option, tie broken by first displayed",
+      "correct": 2,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/10 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest TeX",
+      "subgroup": "sqrt_spaced_radio",
+      "scope": "within_template",
+      "strategy": "Choose shortest TeX option, tie broken by first displayed",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/10 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "longest TeX",
+      "subgroup": "sqrt_spaced_radio",
+      "scope": "within_template",
+      "strategy": "Choose longest TeX option, tie broken by first displayed",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/10 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "numeric median",
+      "subgroup": "sqrt_spaced_radio",
+      "scope": "within_template",
+      "strategy": "Choose numeric median option, tie broken by first displayed",
+      "correct": 4,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "4/10 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "sqrt_constfirst_radio",
+      "scope": "within_template",
+      "strategy": "Choose first option, tie broken by first displayed",
+      "correct": 3,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/10 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "sqrt_constfirst_radio",
+      "scope": "within_template",
+      "strategy": "Choose last option, tie broken by first displayed",
+      "correct": 2,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/10 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest TeX",
+      "subgroup": "sqrt_constfirst_radio",
+      "scope": "within_template",
+      "strategy": "Choose shortest TeX option, tie broken by first displayed",
+      "correct": 5,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "5/10 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "longest TeX",
+      "subgroup": "sqrt_constfirst_radio",
+      "scope": "within_template",
+      "strategy": "Choose longest TeX option, tie broken by first displayed",
+      "correct": 0,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/10 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "numeric median",
+      "subgroup": "sqrt_constfirst_radio",
+      "scope": "within_template",
+      "strategy": "Choose numeric median option, tie broken by first displayed",
+      "correct": 3,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/10 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "sqrt_linear_radio",
+      "scope": "within_template",
+      "strategy": "Choose first option, tie broken by first displayed",
+      "correct": 3,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/10 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "sqrt_linear_radio",
+      "scope": "within_template",
+      "strategy": "Choose last option, tie broken by first displayed",
+      "correct": 2,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/10 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest TeX",
+      "subgroup": "sqrt_linear_radio",
+      "scope": "within_template",
+      "strategy": "Choose shortest TeX option, tie broken by first displayed",
+      "correct": 3,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/10 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "longest TeX",
+      "subgroup": "sqrt_linear_radio",
+      "scope": "within_template",
+      "strategy": "Choose longest TeX option, tie broken by first displayed",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/10 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "numeric median",
+      "subgroup": "sqrt_linear_radio",
+      "scope": "within_template",
+      "strategy": "Choose numeric median option, tie broken by first displayed",
+      "correct": 2,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/10 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "ALL",
+      "scope": "overall",
+      "strategy": "Choose first option, tie broken by first displayed",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/3 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "delivery-runner/accepted.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "ALL",
+      "scope": "overall",
+      "strategy": "Choose last option, tie broken by first displayed",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/3 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "delivery-runner/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest TeX",
+      "subgroup": "ALL",
+      "scope": "overall",
+      "strategy": "Choose shortest TeX option, tie broken by first displayed",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/3 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "delivery-runner/accepted.json"
+      ]
+    },
+    {
+      "cue": "longest TeX",
+      "subgroup": "ALL",
+      "scope": "overall",
+      "strategy": "Choose longest TeX option, tie broken by first displayed",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/3 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "delivery-runner/accepted.json"
+      ]
+    },
+    {
+      "cue": "numeric median",
+      "subgroup": "ALL",
+      "scope": "overall",
+      "strategy": "Choose numeric median option, tie broken by first displayed",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/3 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "delivery-runner/accepted.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "sqrt_constfirst_radio",
+      "scope": "within_template",
+      "strategy": "Choose first option, tie broken by first displayed",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "delivery-runner/accepted.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "sqrt_constfirst_radio",
+      "scope": "within_template",
+      "strategy": "Choose last option, tie broken by first displayed",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "delivery-runner/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest TeX",
+      "subgroup": "sqrt_constfirst_radio",
+      "scope": "within_template",
+      "strategy": "Choose shortest TeX option, tie broken by first displayed",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "delivery-runner/accepted.json"
+      ]
+    },
+    {
+      "cue": "longest TeX",
+      "subgroup": "sqrt_constfirst_radio",
+      "scope": "within_template",
+      "strategy": "Choose longest TeX option, tie broken by first displayed",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/1 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "delivery-runner/accepted.json"
+      ]
+    },
+    {
+      "cue": "numeric median",
+      "subgroup": "sqrt_constfirst_radio",
+      "scope": "within_template",
+      "strategy": "Choose numeric median option, tie broken by first displayed",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "delivery-runner/accepted.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "sqrt_linear_radio",
+      "scope": "within_template",
+      "strategy": "Choose first option, tie broken by first displayed",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "delivery-runner/accepted.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "sqrt_linear_radio",
+      "scope": "within_template",
+      "strategy": "Choose last option, tie broken by first displayed",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "delivery-runner/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest TeX",
+      "subgroup": "sqrt_linear_radio",
+      "scope": "within_template",
+      "strategy": "Choose shortest TeX option, tie broken by first displayed",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/1 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "delivery-runner/accepted.json"
+      ]
+    },
+    {
+      "cue": "longest TeX",
+      "subgroup": "sqrt_linear_radio",
+      "scope": "within_template",
+      "strategy": "Choose longest TeX option, tie broken by first displayed",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "delivery-runner/accepted.json"
+      ]
+    },
+    {
+      "cue": "numeric median",
+      "subgroup": "sqrt_linear_radio",
+      "scope": "within_template",
+      "strategy": "Choose numeric median option, tie broken by first displayed",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "delivery-runner/accepted.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "reciprocal_radio",
+      "scope": "within_template",
+      "strategy": "Choose first option, tie broken by first displayed",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "delivery-runner/accepted.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "reciprocal_radio",
+      "scope": "within_template",
+      "strategy": "Choose last option, tie broken by first displayed",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "delivery-runner/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest TeX",
+      "subgroup": "reciprocal_radio",
+      "scope": "within_template",
+      "strategy": "Choose shortest TeX option, tie broken by first displayed",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "delivery-runner/accepted.json"
+      ]
+    },
+    {
+      "cue": "longest TeX",
+      "subgroup": "reciprocal_radio",
+      "scope": "within_template",
+      "strategy": "Choose longest TeX option, tie broken by first displayed",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "delivery-runner/accepted.json"
+      ]
+    },
+    {
+      "cue": "numeric median",
+      "subgroup": "reciprocal_radio",
+      "scope": "within_template",
+      "strategy": "Choose numeric median option, tie broken by first displayed",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "delivery-runner/accepted.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "ALL",
+      "scope": "overall",
+      "strategy": "Choose first option, tie broken by first displayed",
+      "correct": 83,
+      "total": 342,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "83/342 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "selected-delivered-records.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "ALL",
+      "scope": "overall",
+      "strategy": "Choose last option, tie broken by first displayed",
+      "correct": 47,
+      "total": 342,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "47/342 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "selected-delivered-records.json"
+      ]
+    },
+    {
+      "cue": "shortest TeX",
+      "subgroup": "ALL",
+      "scope": "overall",
+      "strategy": "Choose shortest TeX option, tie broken by first displayed",
+      "correct": 84,
+      "total": 342,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "84/342 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "selected-delivered-records.json"
+      ]
+    },
+    {
+      "cue": "longest TeX",
+      "subgroup": "ALL",
+      "scope": "overall",
+      "strategy": "Choose longest TeX option, tie broken by first displayed",
+      "correct": 34,
+      "total": 342,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "34/342 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "selected-delivered-records.json"
+      ]
+    },
+    {
+      "cue": "numeric median",
+      "subgroup": "ALL",
+      "scope": "overall",
+      "strategy": "Choose numeric median option, tie broken by first displayed",
+      "correct": 98,
+      "total": 342,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "98/342 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "selected-delivered-records.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "reciprocal_radio",
+      "scope": "within_template",
+      "strategy": "Choose first option, tie broken by first displayed",
+      "correct": 6,
+      "total": 84,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "6/84 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "selected-delivered-records.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "reciprocal_radio",
+      "scope": "within_template",
+      "strategy": "Choose last option, tie broken by first displayed",
+      "correct": 0,
+      "total": 84,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/84 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "selected-delivered-records.json"
+      ]
+    },
+    {
+      "cue": "shortest TeX",
+      "subgroup": "reciprocal_radio",
+      "scope": "within_template",
+      "strategy": "Choose shortest TeX option, tie broken by first displayed",
+      "correct": 6,
+      "total": 84,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "6/84 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "selected-delivered-records.json"
+      ]
+    },
+    {
+      "cue": "longest TeX",
+      "subgroup": "reciprocal_radio",
+      "scope": "within_template",
+      "strategy": "Choose longest TeX option, tie broken by first displayed",
+      "correct": 11,
+      "total": 84,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "11/84 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "selected-delivered-records.json"
+      ]
+    },
+    {
+      "cue": "numeric median",
+      "subgroup": "reciprocal_radio",
+      "scope": "within_template",
+      "strategy": "Choose numeric median option, tie broken by first displayed",
+      "correct": 24,
+      "total": 84,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "24/84 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "selected-delivered-records.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "sqrt_spaced_radio",
+      "scope": "within_template",
+      "strategy": "Choose first option, tie broken by first displayed",
+      "correct": 26,
+      "total": 87,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "26/87 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "selected-delivered-records.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "sqrt_spaced_radio",
+      "scope": "within_template",
+      "strategy": "Choose last option, tie broken by first displayed",
+      "correct": 21,
+      "total": 87,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "21/87 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "selected-delivered-records.json"
+      ]
+    },
+    {
+      "cue": "shortest TeX",
+      "subgroup": "sqrt_spaced_radio",
+      "scope": "within_template",
+      "strategy": "Choose shortest TeX option, tie broken by first displayed",
+      "correct": 4,
+      "total": 87,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "4/87 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "selected-delivered-records.json"
+      ]
+    },
+    {
+      "cue": "longest TeX",
+      "subgroup": "sqrt_spaced_radio",
+      "scope": "within_template",
+      "strategy": "Choose longest TeX option, tie broken by first displayed",
+      "correct": 10,
+      "total": 87,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "10/87 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "selected-delivered-records.json"
+      ]
+    },
+    {
+      "cue": "numeric median",
+      "subgroup": "sqrt_spaced_radio",
+      "scope": "within_template",
+      "strategy": "Choose numeric median option, tie broken by first displayed",
+      "correct": 38,
+      "total": 87,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "38/87 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "selected-delivered-records.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "sqrt_constfirst_radio",
+      "scope": "within_template",
+      "strategy": "Choose first option, tie broken by first displayed",
+      "correct": 25,
+      "total": 88,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "25/88 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "selected-delivered-records.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "sqrt_constfirst_radio",
+      "scope": "within_template",
+      "strategy": "Choose last option, tie broken by first displayed",
+      "correct": 14,
+      "total": 88,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "14/88 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "selected-delivered-records.json"
+      ]
+    },
+    {
+      "cue": "shortest TeX",
+      "subgroup": "sqrt_constfirst_radio",
+      "scope": "within_template",
+      "strategy": "Choose shortest TeX option, tie broken by first displayed",
+      "correct": 40,
+      "total": 88,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "40/88 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "selected-delivered-records.json"
+      ]
+    },
+    {
+      "cue": "longest TeX",
+      "subgroup": "sqrt_constfirst_radio",
+      "scope": "within_template",
+      "strategy": "Choose longest TeX option, tie broken by first displayed",
+      "correct": 8,
+      "total": 88,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "8/88 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "selected-delivered-records.json"
+      ]
+    },
+    {
+      "cue": "numeric median",
+      "subgroup": "sqrt_constfirst_radio",
+      "scope": "within_template",
+      "strategy": "Choose numeric median option, tie broken by first displayed",
+      "correct": 24,
+      "total": 88,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "24/88 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "selected-delivered-records.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "sqrt_linear_radio",
+      "scope": "within_template",
+      "strategy": "Choose first option, tie broken by first displayed",
+      "correct": 26,
+      "total": 83,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "26/83 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "selected-delivered-records.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "sqrt_linear_radio",
+      "scope": "within_template",
+      "strategy": "Choose last option, tie broken by first displayed",
+      "correct": 12,
+      "total": 83,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "12/83 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "selected-delivered-records.json"
+      ]
+    },
+    {
+      "cue": "shortest TeX",
+      "subgroup": "sqrt_linear_radio",
+      "scope": "within_template",
+      "strategy": "Choose shortest TeX option, tie broken by first displayed",
+      "correct": 34,
+      "total": 83,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "34/83 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "selected-delivered-records.json"
+      ]
+    },
+    {
+      "cue": "longest TeX",
+      "subgroup": "sqrt_linear_radio",
+      "scope": "within_template",
+      "strategy": "Choose longest TeX option, tie broken by first displayed",
+      "correct": 5,
+      "total": 83,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "5/83 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "selected-delivered-records.json"
+      ]
+    },
+    {
+      "cue": "numeric median",
+      "subgroup": "sqrt_linear_radio",
+      "scope": "within_template",
+      "strategy": "Choose numeric median option, tie broken by first displayed",
+      "correct": 12,
+      "total": 83,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "12/83 versus 1/5 uniform radio chance. No perfect cue in this bounded subgroup; small samples do not estimate a reliable long-run advantage.",
+      "sample_refs": [
+        "selected-delivered-records.json"
+      ]
+    },
+    {
+      "cue": "Dominating cubic addend and a five-choice full-slope scale ladder",
+      "subgroup": "slope_sum_radio, |x0|>=3 and inner radicand at x0>=9 (supported easy band)",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Differentiate only the cubic: C=3*k*x0^2. Choose the numeric option closest to C. Never differentiate the radical.",
+      "correct": 20,
+      "total": 20,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "20/20 versus 1/5 uniform radio guessing, across both coefficient signs, both cubic signs, and every assigned rank 0..4. The scale-bank spacing makes the strategy provably correct throughout this subgroup. This bypasses the target radical chain rule; it is not a simplification expressing that skill. All 20 survive easy delivery and native grader accepts all chosen IDs. 19 distinct cases are drawn 105 times in 512 native equal-band selection trials. Requested moderate-only filtering excludes this easy family.",
+      "sample_refs": [
+        "sum-shortcut-records.json",
+        "sum-shortcut-results.json",
+        "sum-shortcut-grader-results.json",
+        "delivery-shortcut/accepted.json",
+        "sum-shortcut-delivered-selection.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "Whole-bank rejection and deterministic resampling",
+      "Requested difficulty: mixed audit rejected as expected; matching moderate subset used",
+      "Actual prepare_records validation, normalization, captured inventory and within-batch deduplication",
+      "Native usable-response validation with current practice exclusions checked for applicability",
+      "Native difficulty-weighted selection under explicit weights/history scenarios"
+    ],
+    "sample_refs": [
+      "resampling-results.json",
+      "rejection-results.json",
+      "samples-moderate.json",
+      "delivery-independent/delivery.json",
+      "delivery-independent/accepted.json",
+      "delivery-runner/delivery.json",
+      "delivery-runner/accepted.json",
+      "selection-input.json",
+      "selection-results.json",
+      "selection-coverage.json",
+      "selection-provenance.json",
+      "selected-delivered-records.json",
+      "delivery-shortcut/delivery.json",
+      "delivery-shortcut/accepted.json",
+      "selection-shortcut-results.json",
+      "selection-shortcut-map.json",
+      "sum-shortcut-delivered-selection.json"
+    ],
+    "result": "At basis 3951, independent moderate 60 -> 58 after deduplication; runner 5 -> 5. Seed 72676 resamples a zero-sum collapsed bank once while preserving chosen role 3. Native response validation excludes captured q-48846 (missing key). All 63 unpublished moderate records are selected at least once in 512 fresh-history scenario draws after captured inventory is marked seen. Other scenarios and legacy first-ID behavior are recorded. No shortcut perfect in tested generated subgroups, before or after delivery/selection; canonical restriction persists. Additional demonstrated shortcut: supported easy sum family 20 -> 20 accepted; native grader accepts the shortcut-selected option 20/20. Under configured equal-band weights, 19 of these cases are selected 105 times in 512 draws. It is excluded by requested moderate-only weights."
+  },
+  "limitations": [
+    "Finite tests cannot establish absence of every shortcut.",
+    "Actual policy weights and learner history absent; selection scenarios are explicit conditional checks, not live forecasts.",
+    "Unpublished database IDs synthetic; future IDs can alter seeded order. Captured inventory may change after basis 3951.",
+    "Installed native rlib lacks current validate_practice_question wrapper; native validate_response_question plus inspection of absent free/multistep/example markers reproduces applicable candidate checks for these records.",
+    "Math answer tests use independent prompt parsing and SymPy differentiation; branch-sensitive equivalents checked on exact real-domain points, not a formal proof for every possible parameter.",
+    "Grading failure remains: valid equivalent fractional-power reciprocal derivative is unresolved.",
+    "The sum shortcut is demonstrated in the supported easy family, not in the requested moderate batch. Other tested surface cues were not perfect in their bounded subgroups.",
+    "The sum shortcut is demonstrated in the supported easy family, not in the requested moderate batch. Other tested surface cues were not perfect in their bounded subgroups."
+  ]
+}

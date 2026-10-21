@@ -1,0 +1,1144 @@
+{
+  "learner_operation": "Identify two factors, differentiate the appropriate factor(s), preserve the undifferentiated partner, and combine using u'v+uv'. Read the displayed scaffold to determine which summand is missing. Distinguish product-rule, sign, power, exponential-base and logarithmic-base errors.",
+  "fixed_features": [
+    {
+      "feature": "Two-factor first derivative and source-style fragment or five-choice response",
+      "justification": "Tutorial 2622 and the 17 practice questions establish u′v+uv′, with no point evaluation."
+    },
+    {
+      "feature": "Easy-sized atomic factors and small parameter bounds",
+      "justification": "Sources use powers, simple exponent scales, trig factors and log bases. Root-order and nonlinear nesting changes would add derivative/simplification workload."
+    },
+    {
+      "feature": "One missing product-rule term per blank",
+      "justification": "Source scaffolds supply the other contribution; full derivative is not a valid missing fragment."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Missing differentiated-factor contribution",
+      "eligible_variation": "Either left u′v or right uv′ at fixed factors, with printed minus for a negative second contribution.",
+      "observed": "Both targets in each blank family before and after deduplication; controlled cosine swap passes native grading and UI checks."
+    },
+    {
+      "role": "Exponential sign and relative exponential/logarithmic bases",
+      "eligible_variation": "Positive/negative simple scales and equal/unequal bases as in q-320814/815/816.",
+      "observed": "Sampling code independently draws b,d and k; both signs retained. Controlled sign change is consistent."
+    },
+    {
+      "role": "Correct radio option position and coefficients",
+      "eligible_variation": "Correct pair can change with c,n,k,b; bank directions/placement and option order may change.",
+      "observed": "Conditional position and length probes do not establish a reproducible perfect predictor; log-log scalar doubling is intended product-rule simplification, not an incidental label."
+    },
+    {
+      "role": "Natural-log polynomial factor",
+      "eligible_variation": "Allow zero additive constant to include canonical x^2 ln x; h also changes the right target without changing the left.",
+      "observed": "h=1..5 only; canonical h=0 is rejected. Relevant/irrelevant h changes within admitted range behave correctly."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "log_log_radio",
+      "sample_refs": [
+        "requests.json",
+        "samples.json",
+        "delivery/accepted.json",
+        "coverage.json"
+      ],
+      "result": "Delivered 8; targets {'null': 8}; exponent scales {'None': 8}. Both target roles survive for every blank family."
+    },
+    {
+      "case": "power_log_radio",
+      "sample_refs": [
+        "requests.json",
+        "samples.json",
+        "delivery/accepted.json",
+        "coverage.json"
+      ],
+      "result": "Delivered 8; targets {'null': 8}; exponent scales {'None': 8}. Both target roles survive for every blank family."
+    },
+    {
+      "case": "base_sin_left_blank",
+      "sample_refs": [
+        "requests.json",
+        "samples.json",
+        "delivery/accepted.json",
+        "coverage.json"
+      ],
+      "result": "Delivered 7; targets {'left': 4, 'right': 3}; exponent scales {'None': 7}. Both target roles survive for every blank family."
+    },
+    {
+      "case": "power_exp_right_blank",
+      "sample_refs": [
+        "requests.json",
+        "samples.json",
+        "delivery/accepted.json",
+        "coverage.json"
+      ],
+      "result": "Delivered 8; targets {'right': 4, 'left': 4}; exponent scales {'1': 3, '3': 3, '2': 2}. Both target roles survive for every blank family."
+    },
+    {
+      "case": "linear_base_radio",
+      "sample_refs": [
+        "requests.json",
+        "samples.json",
+        "delivery/accepted.json",
+        "coverage.json"
+      ],
+      "result": "Delivered 8; targets {'null': 8}; exponent scales {'None': 8}. Both target roles survive for every blank family."
+    },
+    {
+      "case": "power_exp_radio",
+      "sample_refs": [
+        "requests.json",
+        "samples.json",
+        "delivery/accepted.json",
+        "coverage.json"
+      ],
+      "result": "Delivered 8; targets {'null': 8}; exponent scales {'1': 8}. Both target roles survive for every blank family."
+    },
+    {
+      "case": "cos_log_radio",
+      "sample_refs": [
+        "requests.json",
+        "samples.json",
+        "delivery/accepted.json",
+        "coverage.json"
+      ],
+      "result": "Delivered 8; targets {'null': 8}; exponent scales {'None': 8}. Both target roles survive for every blank family."
+    },
+    {
+      "case": "base_tan_right_blank",
+      "sample_refs": [
+        "requests.json",
+        "samples.json",
+        "delivery/accepted.json",
+        "coverage.json"
+      ],
+      "result": "Delivered 8; targets {'left': 6, 'right': 2}; exponent scales {'None': 8}. Both target roles survive for every blank family."
+    },
+    {
+      "case": "power_exp_left_blank",
+      "sample_refs": [
+        "requests.json",
+        "samples.json",
+        "delivery/accepted.json",
+        "coverage.json"
+      ],
+      "result": "Delivered 7; targets {'left': 6, 'right': 1}; exponent scales {'1': 4, '2': 2, '3': 1}. Both target roles survive for every blank family."
+    },
+    {
+      "case": "base_log_left_blank",
+      "sample_refs": [
+        "requests.json",
+        "samples.json",
+        "delivery/accepted.json",
+        "coverage.json"
+      ],
+      "result": "Delivered 8; targets {'right': 5, 'left': 3}; exponent scales {'-1': 5, '1': 3}. Both target roles survive for every blank family."
+    },
+    {
+      "case": "base_log_right_blank",
+      "sample_refs": [
+        "requests.json",
+        "samples.json",
+        "delivery/accepted.json",
+        "coverage.json"
+      ],
+      "result": "Delivered 6; targets {'left': 2, 'right': 4}; exponent scales {'1': 2, '-1': 4}. Both target roles survive for every blank family."
+    },
+    {
+      "case": "base_log_negative_left_blank",
+      "sample_refs": [
+        "requests.json",
+        "samples.json",
+        "delivery/accepted.json",
+        "coverage.json"
+      ],
+      "result": "Delivered 6; targets {'left': 2, 'right': 4}; exponent scales {'-1': 2, '1': 4}. Both target roles survive for every blank family."
+    },
+    {
+      "case": "tan_log_blank",
+      "sample_refs": [
+        "requests.json",
+        "samples.json",
+        "delivery/accepted.json",
+        "coverage.json"
+      ],
+      "result": "Delivered 2; targets {'right': 1, 'left': 1}; exponent scales {'None': 2}. Both target roles survive for every blank family."
+    },
+    {
+      "case": "polynomial_log_blank",
+      "sample_refs": [
+        "requests.json",
+        "samples.json",
+        "delivery/accepted.json",
+        "coverage.json"
+      ],
+      "result": "Delivered 5; targets {'right': 3, 'left': 2}; exponent scales {'None': 5}. Both target roles survive for every blank family."
+    },
+    {
+      "case": "base_cos_left_blank",
+      "sample_refs": [
+        "requests.json",
+        "samples.json",
+        "delivery/accepted.json",
+        "coverage.json"
+      ],
+      "result": "Delivered 7; targets {'left': 5, 'right': 2}; exponent scales {'None': 7}. Both target roles survive for every blank family."
+    },
+    {
+      "case": "sqrt_exp_radio",
+      "sample_refs": [
+        "requests.json",
+        "samples.json",
+        "delivery/accepted.json",
+        "coverage.json"
+      ],
+      "result": "Delivered 8; targets {'null': 8}; exponent scales {'3': 2, '2': 3, '1': 3}. Both target roles survive for every blank family."
+    },
+    {
+      "case": "canonical monomial ln family",
+      "sample_refs": [
+        "packaging.json",
+        "source-analysis.json"
+      ],
+      "result": "FAIL: e-3635 x^2 ln x is excluded by h>=1 in the only polynomial-ln family. No instructional need for a nonzero additive constant."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Hold b=7 and 7^x cos(x) fixed; switch omitted left term to right term.",
+      "expected": "Answer changes from 7^x ln7 cos(x) to positive 7^x sin(x), with printed subtraction.",
+      "observed": "Prompts switch mask, solutions preserve full derivative and sign, both correct entries accepted and cross entries rejected.",
+      "status": "passed",
+      "justification": "q-319421/q-319425/q-311231 specify product-rule fragments; either contribution is eligible.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "grader-complete-input.json",
+        "grader-complete-report.json",
+        "render-all/input.json",
+        "render-all/rendering.json",
+        "visual-inspection.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "Hold b=5,d=7 and left target fixed; replace 5^x by 5^-x.",
+      "expected": "Answer changes sign and exponential; supplied second term changes exponential too.",
+      "observed": "Both prompts and solution reflect the sign; native own-key accepts and opposite-key rejects.",
+      "status": "passed",
+      "justification": "q-320816 demonstrates negative linear exponent and unequal bases.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "grader-complete-input.json",
+        "grader-complete-report.json",
+        "render-all/input.json",
+        "render-all/rendering.json",
+        "visual-inspection.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "Hold n=3 and right target fixed; h=1 ->5 in (x^3+h)ln x.",
+      "expected": "Missing term changes from (x^3+1)/x to (x^3+5)/x.",
+      "observed": "Native grader accepts each own answer and rejects the other; solutions and UI follow h.",
+      "status": "passed",
+      "justification": "q-320824 requires retaining the undifferentiated polynomial in uv′.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "grader-complete-input.json",
+        "grader-complete-report.json",
+        "render-all/input.json",
+        "render-all/rendering.json",
+        "visual-inspection.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Hold n=3 and left target fixed; h=1 ->5 in (x^3+h)ln x.",
+      "expected": "Missing term stays 3x^2 ln x while the known term changes.",
+      "observed": "Responses preserve exact equality; native cross answers accept in both directions; rendered prompts and explanations show changed h.",
+      "status": "passed",
+      "justification": "Derivative of constant h is zero, as the source factor-derivative stages imply.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "grader-complete-input.json",
+        "grader-complete-report.json",
+        "render-all/input.json",
+        "render-all/rendering.json",
+        "visual-inspection.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "first position",
+      "subgroup": "raw / log_log_radio",
+      "scope": "within_template",
+      "strategy": "first position",
+      "correct": 1,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform selection among five radio choices has success probability 0.2. No reproducible perfect surface predictor in this conditional sample; limited counts do not prove absence of all cues.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "shortest string",
+      "subgroup": "raw / log_log_radio",
+      "scope": "within_template",
+      "strategy": "shortest string",
+      "correct": 1,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform selection among five radio choices has success probability 0.2. No reproducible perfect surface predictor in this conditional sample; limited counts do not prove absence of all cues.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "longest string",
+      "subgroup": "raw / log_log_radio",
+      "scope": "within_template",
+      "strategy": "longest string",
+      "correct": 1,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform selection among five radio choices has success probability 0.2. No reproducible perfect surface predictor in this conditional sample; limited counts do not prove absence of all cues.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "first position",
+      "subgroup": "raw / power_log_radio",
+      "scope": "within_template",
+      "strategy": "first position",
+      "correct": 2,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform selection among five radio choices has success probability 0.2. No reproducible perfect surface predictor in this conditional sample; limited counts do not prove absence of all cues.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "shortest string",
+      "subgroup": "raw / power_log_radio",
+      "scope": "within_template",
+      "strategy": "shortest string",
+      "correct": 2,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform selection among five radio choices has success probability 0.2. No reproducible perfect surface predictor in this conditional sample; limited counts do not prove absence of all cues.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "longest string",
+      "subgroup": "raw / power_log_radio",
+      "scope": "within_template",
+      "strategy": "longest string",
+      "correct": 2,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform selection among five radio choices has success probability 0.2. No reproducible perfect surface predictor in this conditional sample; limited counts do not prove absence of all cues.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "first position",
+      "subgroup": "raw / linear_base_radio",
+      "scope": "within_template",
+      "strategy": "first position",
+      "correct": 0,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform selection among five radio choices has success probability 0.2. No reproducible perfect surface predictor in this conditional sample; limited counts do not prove absence of all cues.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "shortest string",
+      "subgroup": "raw / linear_base_radio",
+      "scope": "within_template",
+      "strategy": "shortest string",
+      "correct": 0,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform selection among five radio choices has success probability 0.2. No reproducible perfect surface predictor in this conditional sample; limited counts do not prove absence of all cues.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "longest string",
+      "subgroup": "raw / linear_base_radio",
+      "scope": "within_template",
+      "strategy": "longest string",
+      "correct": 0,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform selection among five radio choices has success probability 0.2. No reproducible perfect surface predictor in this conditional sample; limited counts do not prove absence of all cues.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "first position",
+      "subgroup": "raw / power_exp_radio",
+      "scope": "within_template",
+      "strategy": "first position",
+      "correct": 2,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform selection among five radio choices has success probability 0.2. No reproducible perfect surface predictor in this conditional sample; limited counts do not prove absence of all cues.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "shortest string",
+      "subgroup": "raw / power_exp_radio",
+      "scope": "within_template",
+      "strategy": "shortest string",
+      "correct": 2,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform selection among five radio choices has success probability 0.2. No reproducible perfect surface predictor in this conditional sample; limited counts do not prove absence of all cues.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "longest string",
+      "subgroup": "raw / power_exp_radio",
+      "scope": "within_template",
+      "strategy": "longest string",
+      "correct": 3,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform selection among five radio choices has success probability 0.2. No reproducible perfect surface predictor in this conditional sample; limited counts do not prove absence of all cues.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "first position",
+      "subgroup": "raw / cos_log_radio",
+      "scope": "within_template",
+      "strategy": "first position",
+      "correct": 0,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform selection among five radio choices has success probability 0.2. No reproducible perfect surface predictor in this conditional sample; limited counts do not prove absence of all cues.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "shortest string",
+      "subgroup": "raw / cos_log_radio",
+      "scope": "within_template",
+      "strategy": "shortest string",
+      "correct": 0,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform selection among five radio choices has success probability 0.2. No reproducible perfect surface predictor in this conditional sample; limited counts do not prove absence of all cues.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "longest string",
+      "subgroup": "raw / cos_log_radio",
+      "scope": "within_template",
+      "strategy": "longest string",
+      "correct": 0,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform selection among five radio choices has success probability 0.2. No reproducible perfect surface predictor in this conditional sample; limited counts do not prove absence of all cues.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "first position",
+      "subgroup": "raw / sqrt_exp_radio",
+      "scope": "within_template",
+      "strategy": "first position",
+      "correct": 2,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform selection among five radio choices has success probability 0.2. No reproducible perfect surface predictor in this conditional sample; limited counts do not prove absence of all cues.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "shortest string",
+      "subgroup": "raw / sqrt_exp_radio",
+      "scope": "within_template",
+      "strategy": "shortest string",
+      "correct": 1,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform selection among five radio choices has success probability 0.2. No reproducible perfect surface predictor in this conditional sample; limited counts do not prove absence of all cues.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "longest string",
+      "subgroup": "raw / sqrt_exp_radio",
+      "scope": "within_template",
+      "strategy": "longest string",
+      "correct": 2,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform selection among five radio choices has success probability 0.2. No reproducible perfect surface predictor in this conditional sample; limited counts do not prove absence of all cues.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "first position",
+      "subgroup": "delivered / log_log_radio",
+      "scope": "within_template",
+      "strategy": "first position",
+      "correct": 1,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform selection among five radio choices has success probability 0.2. No reproducible perfect surface predictor in this conditional sample; limited counts do not prove absence of all cues.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest string",
+      "subgroup": "delivered / log_log_radio",
+      "scope": "within_template",
+      "strategy": "shortest string",
+      "correct": 1,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform selection among five radio choices has success probability 0.2. No reproducible perfect surface predictor in this conditional sample; limited counts do not prove absence of all cues.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "longest string",
+      "subgroup": "delivered / log_log_radio",
+      "scope": "within_template",
+      "strategy": "longest string",
+      "correct": 1,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform selection among five radio choices has success probability 0.2. No reproducible perfect surface predictor in this conditional sample; limited counts do not prove absence of all cues.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "first position",
+      "subgroup": "delivered / power_log_radio",
+      "scope": "within_template",
+      "strategy": "first position",
+      "correct": 2,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform selection among five radio choices has success probability 0.2. No reproducible perfect surface predictor in this conditional sample; limited counts do not prove absence of all cues.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest string",
+      "subgroup": "delivered / power_log_radio",
+      "scope": "within_template",
+      "strategy": "shortest string",
+      "correct": 2,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform selection among five radio choices has success probability 0.2. No reproducible perfect surface predictor in this conditional sample; limited counts do not prove absence of all cues.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "longest string",
+      "subgroup": "delivered / power_log_radio",
+      "scope": "within_template",
+      "strategy": "longest string",
+      "correct": 2,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform selection among five radio choices has success probability 0.2. No reproducible perfect surface predictor in this conditional sample; limited counts do not prove absence of all cues.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "first position",
+      "subgroup": "delivered / linear_base_radio",
+      "scope": "within_template",
+      "strategy": "first position",
+      "correct": 0,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform selection among five radio choices has success probability 0.2. No reproducible perfect surface predictor in this conditional sample; limited counts do not prove absence of all cues.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest string",
+      "subgroup": "delivered / linear_base_radio",
+      "scope": "within_template",
+      "strategy": "shortest string",
+      "correct": 0,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform selection among five radio choices has success probability 0.2. No reproducible perfect surface predictor in this conditional sample; limited counts do not prove absence of all cues.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "longest string",
+      "subgroup": "delivered / linear_base_radio",
+      "scope": "within_template",
+      "strategy": "longest string",
+      "correct": 0,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform selection among five radio choices has success probability 0.2. No reproducible perfect surface predictor in this conditional sample; limited counts do not prove absence of all cues.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "first position",
+      "subgroup": "delivered / power_exp_radio",
+      "scope": "within_template",
+      "strategy": "first position",
+      "correct": 2,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform selection among five radio choices has success probability 0.2. No reproducible perfect surface predictor in this conditional sample; limited counts do not prove absence of all cues.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest string",
+      "subgroup": "delivered / power_exp_radio",
+      "scope": "within_template",
+      "strategy": "shortest string",
+      "correct": 2,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform selection among five radio choices has success probability 0.2. No reproducible perfect surface predictor in this conditional sample; limited counts do not prove absence of all cues.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "longest string",
+      "subgroup": "delivered / power_exp_radio",
+      "scope": "within_template",
+      "strategy": "longest string",
+      "correct": 3,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform selection among five radio choices has success probability 0.2. No reproducible perfect surface predictor in this conditional sample; limited counts do not prove absence of all cues.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "first position",
+      "subgroup": "delivered / cos_log_radio",
+      "scope": "within_template",
+      "strategy": "first position",
+      "correct": 0,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform selection among five radio choices has success probability 0.2. No reproducible perfect surface predictor in this conditional sample; limited counts do not prove absence of all cues.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest string",
+      "subgroup": "delivered / cos_log_radio",
+      "scope": "within_template",
+      "strategy": "shortest string",
+      "correct": 0,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform selection among five radio choices has success probability 0.2. No reproducible perfect surface predictor in this conditional sample; limited counts do not prove absence of all cues.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "longest string",
+      "subgroup": "delivered / cos_log_radio",
+      "scope": "within_template",
+      "strategy": "longest string",
+      "correct": 0,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform selection among five radio choices has success probability 0.2. No reproducible perfect surface predictor in this conditional sample; limited counts do not prove absence of all cues.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "first position",
+      "subgroup": "delivered / sqrt_exp_radio",
+      "scope": "within_template",
+      "strategy": "first position",
+      "correct": 2,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform selection among five radio choices has success probability 0.2. No reproducible perfect surface predictor in this conditional sample; limited counts do not prove absence of all cues.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest string",
+      "subgroup": "delivered / sqrt_exp_radio",
+      "scope": "within_template",
+      "strategy": "shortest string",
+      "correct": 1,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform selection among five radio choices has success probability 0.2. No reproducible perfect surface predictor in this conditional sample; limited counts do not prove absence of all cues.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "longest string",
+      "subgroup": "delivered / sqrt_exp_radio",
+      "scope": "within_template",
+      "strategy": "longest string",
+      "correct": 2,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform selection among five radio choices has success probability 0.2. No reproducible perfect surface predictor in this conditional sample; limited counts do not prove absence of all cues.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "copy the printed known summand",
+      "subgroup": "raw / base_sin_left_blank",
+      "scope": "within_template",
+      "strategy": "copy the printed known summand",
+      "correct": 0,
+      "total": 8,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison is random choice of which of the two product-rule contributions is requested; this is an action baseline, not a probability of guessing an arbitrary symbolic entry. No reproducible perfect surface predictor in this conditional sample; limited counts do not prove absence of all cues.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "copy the printed known summand",
+      "subgroup": "raw / power_exp_right_blank",
+      "scope": "within_template",
+      "strategy": "copy the printed known summand",
+      "correct": 0,
+      "total": 8,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison is random choice of which of the two product-rule contributions is requested; this is an action baseline, not a probability of guessing an arbitrary symbolic entry. No reproducible perfect surface predictor in this conditional sample; limited counts do not prove absence of all cues.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "copy the printed known summand",
+      "subgroup": "raw / base_tan_right_blank",
+      "scope": "within_template",
+      "strategy": "copy the printed known summand",
+      "correct": 0,
+      "total": 8,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison is random choice of which of the two product-rule contributions is requested; this is an action baseline, not a probability of guessing an arbitrary symbolic entry. No reproducible perfect surface predictor in this conditional sample; limited counts do not prove absence of all cues.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "copy the printed known summand",
+      "subgroup": "raw / power_exp_left_blank",
+      "scope": "within_template",
+      "strategy": "copy the printed known summand",
+      "correct": 0,
+      "total": 8,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison is random choice of which of the two product-rule contributions is requested; this is an action baseline, not a probability of guessing an arbitrary symbolic entry. No reproducible perfect surface predictor in this conditional sample; limited counts do not prove absence of all cues.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "copy the printed known summand",
+      "subgroup": "raw / base_log_left_blank",
+      "scope": "within_template",
+      "strategy": "copy the printed known summand",
+      "correct": 0,
+      "total": 8,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison is random choice of which of the two product-rule contributions is requested; this is an action baseline, not a probability of guessing an arbitrary symbolic entry. No reproducible perfect surface predictor in this conditional sample; limited counts do not prove absence of all cues.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "copy the printed known summand",
+      "subgroup": "raw / base_log_right_blank",
+      "scope": "within_template",
+      "strategy": "copy the printed known summand",
+      "correct": 0,
+      "total": 8,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison is random choice of which of the two product-rule contributions is requested; this is an action baseline, not a probability of guessing an arbitrary symbolic entry. No reproducible perfect surface predictor in this conditional sample; limited counts do not prove absence of all cues.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "copy the printed known summand",
+      "subgroup": "raw / base_log_negative_left_blank",
+      "scope": "within_template",
+      "strategy": "copy the printed known summand",
+      "correct": 0,
+      "total": 8,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison is random choice of which of the two product-rule contributions is requested; this is an action baseline, not a probability of guessing an arbitrary symbolic entry. No reproducible perfect surface predictor in this conditional sample; limited counts do not prove absence of all cues.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "copy the printed known summand",
+      "subgroup": "raw / tan_log_blank",
+      "scope": "within_template",
+      "strategy": "copy the printed known summand",
+      "correct": 0,
+      "total": 8,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison is random choice of which of the two product-rule contributions is requested; this is an action baseline, not a probability of guessing an arbitrary symbolic entry. No reproducible perfect surface predictor in this conditional sample; limited counts do not prove absence of all cues.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "copy the printed known summand",
+      "subgroup": "raw / polynomial_log_blank",
+      "scope": "within_template",
+      "strategy": "copy the printed known summand",
+      "correct": 0,
+      "total": 8,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison is random choice of which of the two product-rule contributions is requested; this is an action baseline, not a probability of guessing an arbitrary symbolic entry. No reproducible perfect surface predictor in this conditional sample; limited counts do not prove absence of all cues.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "copy the printed known summand",
+      "subgroup": "raw / base_cos_left_blank",
+      "scope": "within_template",
+      "strategy": "copy the printed known summand",
+      "correct": 0,
+      "total": 8,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison is random choice of which of the two product-rule contributions is requested; this is an action baseline, not a probability of guessing an arbitrary symbolic entry. No reproducible perfect surface predictor in this conditional sample; limited counts do not prove absence of all cues.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "copy the printed known summand",
+      "subgroup": "delivered / base_sin_left_blank",
+      "scope": "within_template",
+      "strategy": "copy the printed known summand",
+      "correct": 0,
+      "total": 7,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison is random choice of which of the two product-rule contributions is requested; this is an action baseline, not a probability of guessing an arbitrary symbolic entry. No reproducible perfect surface predictor in this conditional sample; limited counts do not prove absence of all cues.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "copy the printed known summand",
+      "subgroup": "delivered / power_exp_right_blank",
+      "scope": "within_template",
+      "strategy": "copy the printed known summand",
+      "correct": 0,
+      "total": 8,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison is random choice of which of the two product-rule contributions is requested; this is an action baseline, not a probability of guessing an arbitrary symbolic entry. No reproducible perfect surface predictor in this conditional sample; limited counts do not prove absence of all cues.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "copy the printed known summand",
+      "subgroup": "delivered / base_tan_right_blank",
+      "scope": "within_template",
+      "strategy": "copy the printed known summand",
+      "correct": 0,
+      "total": 8,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison is random choice of which of the two product-rule contributions is requested; this is an action baseline, not a probability of guessing an arbitrary symbolic entry. No reproducible perfect surface predictor in this conditional sample; limited counts do not prove absence of all cues.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "copy the printed known summand",
+      "subgroup": "delivered / power_exp_left_blank",
+      "scope": "within_template",
+      "strategy": "copy the printed known summand",
+      "correct": 0,
+      "total": 7,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison is random choice of which of the two product-rule contributions is requested; this is an action baseline, not a probability of guessing an arbitrary symbolic entry. No reproducible perfect surface predictor in this conditional sample; limited counts do not prove absence of all cues.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "copy the printed known summand",
+      "subgroup": "delivered / base_log_left_blank",
+      "scope": "within_template",
+      "strategy": "copy the printed known summand",
+      "correct": 0,
+      "total": 8,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison is random choice of which of the two product-rule contributions is requested; this is an action baseline, not a probability of guessing an arbitrary symbolic entry. No reproducible perfect surface predictor in this conditional sample; limited counts do not prove absence of all cues.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "copy the printed known summand",
+      "subgroup": "delivered / base_log_right_blank",
+      "scope": "within_template",
+      "strategy": "copy the printed known summand",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison is random choice of which of the two product-rule contributions is requested; this is an action baseline, not a probability of guessing an arbitrary symbolic entry. No reproducible perfect surface predictor in this conditional sample; limited counts do not prove absence of all cues.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "copy the printed known summand",
+      "subgroup": "delivered / base_log_negative_left_blank",
+      "scope": "within_template",
+      "strategy": "copy the printed known summand",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison is random choice of which of the two product-rule contributions is requested; this is an action baseline, not a probability of guessing an arbitrary symbolic entry. No reproducible perfect surface predictor in this conditional sample; limited counts do not prove absence of all cues.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "copy the printed known summand",
+      "subgroup": "delivered / tan_log_blank",
+      "scope": "within_template",
+      "strategy": "copy the printed known summand",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison is random choice of which of the two product-rule contributions is requested; this is an action baseline, not a probability of guessing an arbitrary symbolic entry. No reproducible perfect surface predictor in this conditional sample; limited counts do not prove absence of all cues.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "copy the printed known summand",
+      "subgroup": "delivered / polynomial_log_blank",
+      "scope": "within_template",
+      "strategy": "copy the printed known summand",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison is random choice of which of the two product-rule contributions is requested; this is an action baseline, not a probability of guessing an arbitrary symbolic entry. No reproducible perfect surface predictor in this conditional sample; limited counts do not prove absence of all cues.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "copy the printed known summand",
+      "subgroup": "delivered / base_cos_left_blank",
+      "scope": "within_template",
+      "strategy": "copy the printed known summand",
+      "correct": 0,
+      "total": 7,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison is random choice of which of the two product-rule contributions is requested; this is an action baseline, not a probability of guessing an arbitrary symbolic entry. No reproducible perfect surface predictor in this conditional sample; limited counts do not prove absence of all cues.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery/accepted.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "explicit parameter guards and absence of rejection/resampling loop",
+      "128 fresh/boundary records -> shared normalization/validation, difficulty and captured-inventory deduplication ->112 accepted",
+      "runner batch 5 ->shared delivery ->5 accepted",
+      "configured learner-selection hash draw for fresh generated pool and combined captured usable easy pool; existing-seen scenario; legacy no-distribution branch"
+    ],
+    "sample_refs": [
+      "requests.json",
+      "packaging.json",
+      "delivery/delivery.json",
+      "delivery/accepted.json",
+      "batch-delivery/delivery.json",
+      "batch-delivery/accepted.json",
+      "selection.json",
+      "shortcut-results.json"
+    ],
+    "result": "All 16 implemented identifiers and both blank targets survive captured filtering; selection within configured easy band is uniform. Source canonical family is already absent before delivery. No publication preparation file existed, so actual shared read-only preparation was used."
+  },
+  "limitations": [
+    "Finite conditional samples cannot prove absence of every shortcut.",
+    "Source replay observed banks are explicit replay only; native practice uses authored banks.",
+    "Canonical source monomial-ln product is missing; variation check cannot pass overall despite healthy tested target variation.",
+    "A valid logarithm-identity entry fails native grading; separate grading failure is retained.",
+    "Only captured basis3950 and source/selection code were available, with no live learner history, new database IDs or future inventory.",
+    "Renderer uses preview answer controls and revealed solutions; native grading is tested separately."
+  ]
+}

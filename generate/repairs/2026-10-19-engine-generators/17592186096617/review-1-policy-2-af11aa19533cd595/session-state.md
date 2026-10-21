@@ -1,0 +1,1 @@
+Source reconstruction, 11 source replays, fresh seeded/boundary samples, independent displayed-expression math, counterfactual inputs, native grader input and relocation tests complete. See math-results.json, samples.json and packaging-results.json. Next: run shared delivery, native grader and UI renderer, inspect screenshots and conditional shortcut coverage. No package writes.

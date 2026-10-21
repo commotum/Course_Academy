@@ -1,0 +1,940 @@
+{
+  "learner_operation": "Identify inner polynomial u and outer exponent +1/2 or -1/2; differentiate each, multiply, simplify, and where requested substitute x0. Select the matching expression or enter an equivalent expression.",
+  "fixed_features": [
+    {
+      "feature": "Outer function is square root or reciprocal square root; inner polynomial degree at most two",
+      "justification": "Lesson e-182, q-48730 and q-342680 establish this chain-rule depth; sum term only in q-20181."
+    },
+    {
+      "feature": "Finite real slope and simple square radicand for evaluated questions",
+      "justification": "Source slopes all evaluate at positive square radicands. Avoiding undefined roots preserves the stated derivative task and arithmetic workload."
+    },
+    {
+      "feature": "One correct expression in a five-option radio or equivalent-expression blank",
+      "justification": "Captured field contracts; zero-total radio bank must be rejected to keep five distinct choices."
+    },
+    {
+      "feature": "Derivative-only quadratic template forces c=0",
+      "justification": "No defensible instructional reason found. Author cites q-342680 shape, but the central lesson e-182 uses 1-x^2 with a nonzero constant and no linear term. This fixed assignment fails review."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "inner coefficient sign and magnitude",
+      "eligible_variation": "Either sign and bounded magnitudes without changing chain-rule method",
+      "observed": "Rechecked in the current sample, canonical and controlled records; see coverage and canonical-current-checks.json. Either sign and bounded magnitudes without changing chain-rule method"
+    },
+    {
+      "role": "outer derivative sign and exponent",
+      "eligible_variation": "Square root and reciprocal square root follow +1/2 versus -1/2 rules",
+      "observed": "Rechecked in the current sample, canonical and controlled records; see coverage and canonical-current-checks.json. Square root and reciprocal square root follow +1/2 versus -1/2 rules"
+    },
+    {
+      "role": "evaluated slope sign/zero and target point",
+      "eligible_variation": "Hold curve fixed and vary valid x0; positive, zero, negative all legitimate",
+      "observed": "Rechecked in the current sample, canonical and controlled records; see coverage and canonical-current-checks.json. Hold curve fixed and vary valid x0; positive, zero, negative all legitimate"
+    },
+    {
+      "role": "which displayed choice is correct",
+      "eligible_variation": "Every displayed position and eligible scalar rank; no source answer position is essential",
+      "observed": "Rechecked in the current sample, canonical and controlled records; see coverage and canonical-current-checks.json. Every displayed position and eligible scalar rank; no source answer position is essential"
+    },
+    {
+      "role": "constant-versus-linear term in quadratic radicand",
+      "eligible_variation": "Canonical 1-x^2 and practice x^2-6x both require one polynomial derivative and one chain-rule multiplication",
+      "observed": "Rechecked in the current sample, canonical and controlled records; see coverage and canonical-current-checks.json. Canonical 1-x^2 and practice x^2-6x both require one polynomial derivative and one chain-rule multiplication"
+    },
+    {
+      "role": "radical contribution versus cubic contribution in total slope",
+      "eligible_variation": "Distractors should require the learner to calculate the radical chain-rule contribution rather than identify the polynomial derivative approximately.",
+      "observed": "Rechecked in the current sample, canonical and controlled records; see coverage and canonical-current-checks.json. Distractors should require the learner to calculate the radical chain-rule contribution rather than identify the polynomial derivative approximately."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "raw reciprocal_radio",
+      "sample_refs": [
+        "samples.json"
+      ],
+      "result": "10 records; parameter values {'a': ['-2', '-3', '-4', '-6', '-8', '3', '8'], 'b': ['-1', '-10', '-11', '-2', '-7', '1', '11', '7', '9']}"
+    },
+    {
+      "case": "raw sqrt_spaced_radio",
+      "sample_refs": [
+        "samples.json"
+      ],
+      "result": "10 records; parameter values {'a': ['-3', '-6', '-7', '-8', '2', '4', '7'], 'b': ['-12', '-5', '1', '11', '12', '2', '4', '5', '7']}"
+    },
+    {
+      "case": "raw sqrt_constfirst_radio",
+      "sample_refs": [
+        "samples.json"
+      ],
+      "result": "10 records; parameter values {'a': ['-4', '-5', '-6', '-7', '-8', '3', '5', '6'], 'b': ['-1', '-10', '-12', '-3', '-5', '-7', '5', '7', '8', '9']}"
+    },
+    {
+      "case": "raw slope_sqrt_radio",
+      "sample_refs": [
+        "samples.json"
+      ],
+      "result": "10 records; parameter values {'a': ['-2', '-4', '-5', '-6', '-8', '5', '6', '7'], 'b': ['-20', '-23', '-9', '16', '17', '21', '49', '74', '88'], 't': ['-1', '-2', '-4', '0', '1', '3']}"
+    },
+    {
+      "case": "raw reciprocal_blank",
+      "sample_refs": [
+        "samples.json"
+      ],
+      "result": "10 records; parameter values {'a': ['-3', '-6', '-8', '2', '5', '6', '7'], 'b': ['-10', '-11', '-7', '1', '12', '2', '7', '9']}"
+    },
+    {
+      "case": "raw reciprocal_blank_braced",
+      "sample_refs": [
+        "samples.json"
+      ],
+      "result": "10 records; parameter values {'a': ['-2', '-3', '-4', '-5', '-6', '-8', '5', '6'], 'b': ['-1', '-10', '-12', '-6', '-7', '-9', '4', '5']}"
+    },
+    {
+      "case": "raw sqrt_quadratic_blank",
+      "sample_refs": [
+        "samples.json"
+      ],
+      "result": "10 records; parameter values {'a': ['-3', '-4', '-7', '3', '4', '5'], 'b': ['-11', '-12', '0'], 'c': ['-1', '-12', '-3', '-6', '0', '1', '10', '11', '7']}"
+    },
+    {
+      "case": "raw sqrt_linear_blank",
+      "sample_refs": [
+        "samples.json"
+      ],
+      "result": "10 records; parameter values {'a': ['-2', '-6', '2', '5', '6', '8'], 'b': ['-11', '-2', '-3', '-4', '-5', '-6', '-8', '10']}"
+    },
+    {
+      "case": "raw slope_reciprocal_blank",
+      "sample_refs": [
+        "samples.json"
+      ],
+      "result": "10 records; parameter values {'a': ['-1', '-5', '2', '3', '6'], 'b': ['-10', '-11', '-13', '-2', '-5', '-6', '18', '2', '4', '8'], 'c': ['0'], 't': ['-1', '-3', '1', '2', '3', '4']}"
+    },
+    {
+      "case": "raw sqrt_linear_radio",
+      "sample_refs": [
+        "samples.json"
+      ],
+      "result": "10 records; parameter values {'a': ['-3', '-4', '-5', '-6', '-7', '3', '4', '5', '6'], 'b': ['-1', '-6', '-7', '-9', '12', '8']}"
+    },
+    {
+      "case": "raw slope_sqrt_positive_radio",
+      "sample_refs": [
+        "samples.json"
+      ],
+      "result": "10 records; parameter values {'a': ['-3', '-5', '2', '3', '4', '8'], 'b': ['-4', '10', '13', '16', '44', '5', '7', '73', '8', '93'], 't': ['-2', '-3', '-4', '0', '1', '2', '4']}"
+    },
+    {
+      "case": "raw slope_sqrt_linear_blank",
+      "sample_refs": [
+        "samples.json"
+      ],
+      "result": "10 records; parameter values {'a': ['-3', '-5', '-6', '-7', '-8', '2', '3', '8'], 'b': ['-14', '-23', '14', '36', '4', '42', '43', '63', '7', '9'], 't': ['-3', '-4', '0', '1', '2', '3', '4']}"
+    },
+    {
+      "case": "raw slope_sqrt_quadratic_blank",
+      "sample_refs": [
+        "samples.json"
+      ],
+      "result": "10 records; parameter values {'a': ['-1', '-2', '-3', '1', '2', '3'], 'b': ['-1', '-11', '-12', '-8', '-9', '10', '4', '5', '8'], 'c': ['0'], 't': ['-1', '-3', '-4', '1', '4']}"
+    },
+    {
+      "case": "raw slope_sqrt_quadratic_radio",
+      "sample_refs": [
+        "samples.json"
+      ],
+      "result": "10 records; parameter values {'a': ['-2', '-3', '-4', '-6', '3', '5', '6'], 'b': ['0'], 'c': ['-11', '-45', '112', '136', '146', '147', '198', '61', '94', '96'], 't': ['-1', '-3', '-4', '1', '2', '3', '4']}"
+    },
+    {
+      "case": "raw slope_sum_radio",
+      "sample_refs": [
+        "samples.json"
+      ],
+      "result": "10 records; parameter values {'a': ['-3', '-4', '-5', '-7', '2', '3', '4', '5', '8'], 'b': ['16', '17', '19', '22', '54', '57', '61', '64', '9'], 't': ['-2', '-3', '-4', '0', '3', '4'], 'k': ['-2', '-3', '1', '2', '3', '4']}"
+    },
+    {
+      "case": "delivered reciprocal_radio",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ],
+      "result": "10 records; parameter values {'a': ['-2', '-3', '-4', '-6', '-8', '3', '8'], 'b': ['-1', '-10', '-11', '-2', '-7', '1', '11', '7', '9']}"
+    },
+    {
+      "case": "delivered sqrt_spaced_radio",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ],
+      "result": "10 records; parameter values {'a': ['-3', '-6', '-7', '-8', '2', '4', '7'], 'b': ['-12', '-5', '1', '11', '12', '2', '4', '5', '7']}"
+    },
+    {
+      "case": "delivered sqrt_constfirst_radio",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ],
+      "result": "10 records; parameter values {'a': ['-4', '-5', '-6', '-7', '-8', '3', '5', '6'], 'b': ['-1', '-10', '-12', '-3', '-5', '-7', '5', '7', '8', '9']}"
+    },
+    {
+      "case": "delivered reciprocal_blank",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ],
+      "result": "9 records; parameter values {'a': ['-3', '-6', '-8', '5', '6', '7'], 'b': ['-10', '-11', '-7', '1', '12', '2', '7', '9']}"
+    },
+    {
+      "case": "delivered reciprocal_blank_braced",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ],
+      "result": "9 records; parameter values {'a': ['-2', '-3', '-4', '-5', '-6', '5', '6'], 'b': ['-1', '-10', '-12', '-6', '-7', '-9', '4', '5']}"
+    },
+    {
+      "case": "delivered sqrt_linear_radio",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ],
+      "result": "10 records; parameter values {'a': ['-3', '-4', '-5', '-6', '-7', '3', '4', '5', '6'], 'b': ['-1', '-6', '-7', '-9', '12', '8']}"
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Switch missing product-rule term, exponent coefficient, or radical inner/target data at fixed remaining inputs.",
+      "expected": "Response follows the changed mathematical evidence.",
+      "observed": "Independent prompt differentiation and native grading agree; stale responses are rejected in applicable blank controls.",
+      "status": "passed",
+      "justification": "These changes alter a differentiated contribution or chain-rule factor without adding a reasoning stage.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "native-grading.json",
+        "current-regression-grading.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Change presentation/choice ordering, or an additive parameter absent from the requested derivative fragment.",
+      "expected": "Mathematical response is preserved.",
+      "observed": "Current controlled pairs preserve the response and native acceptance.",
+      "status": "passed",
+      "justification": "The selected source-style response depends on the differentiated mathematical evidence, not incidental presentation.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "native-grading.json",
+        "current-regression-grading.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "first",
+      "subgroup": "raw reciprocal_radio",
+      "scope": "within_template",
+      "strategy": "Choose first visible option",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "raw reciprocal_radio",
+      "scope": "within_template",
+      "strategy": "Choose last visible option",
+      "correct": 0,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "raw reciprocal_radio",
+      "scope": "within_template",
+      "strategy": "Choose shortest visible option",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "raw reciprocal_radio",
+      "scope": "within_template",
+      "strategy": "Choose longest visible option",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "raw sqrt_spaced_radio",
+      "scope": "within_template",
+      "strategy": "Choose first visible option",
+      "correct": 4,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "raw sqrt_spaced_radio",
+      "scope": "within_template",
+      "strategy": "Choose last visible option",
+      "correct": 2,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "raw sqrt_spaced_radio",
+      "scope": "within_template",
+      "strategy": "Choose shortest visible option",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "raw sqrt_spaced_radio",
+      "scope": "within_template",
+      "strategy": "Choose longest visible option",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "raw sqrt_constfirst_radio",
+      "scope": "within_template",
+      "strategy": "Choose first visible option",
+      "correct": 3,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "raw sqrt_constfirst_radio",
+      "scope": "within_template",
+      "strategy": "Choose last visible option",
+      "correct": 2,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "raw sqrt_constfirst_radio",
+      "scope": "within_template",
+      "strategy": "Choose shortest visible option",
+      "correct": 5,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "raw sqrt_constfirst_radio",
+      "scope": "within_template",
+      "strategy": "Choose longest visible option",
+      "correct": 0,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "raw slope_sqrt_radio",
+      "scope": "within_template",
+      "strategy": "Choose first visible option",
+      "correct": 3,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "raw slope_sqrt_radio",
+      "scope": "within_template",
+      "strategy": "Choose last visible option",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "raw slope_sqrt_radio",
+      "scope": "within_template",
+      "strategy": "Choose shortest visible option",
+      "correct": 3,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "raw slope_sqrt_radio",
+      "scope": "within_template",
+      "strategy": "Choose longest visible option",
+      "correct": 3,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "raw sqrt_linear_radio",
+      "scope": "within_template",
+      "strategy": "Choose first visible option",
+      "correct": 3,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "raw sqrt_linear_radio",
+      "scope": "within_template",
+      "strategy": "Choose last visible option",
+      "correct": 2,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "raw sqrt_linear_radio",
+      "scope": "within_template",
+      "strategy": "Choose shortest visible option",
+      "correct": 3,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "raw sqrt_linear_radio",
+      "scope": "within_template",
+      "strategy": "Choose longest visible option",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "raw slope_sqrt_positive_radio",
+      "scope": "within_template",
+      "strategy": "Choose first visible option",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "raw slope_sqrt_positive_radio",
+      "scope": "within_template",
+      "strategy": "Choose last visible option",
+      "correct": 4,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "raw slope_sqrt_positive_radio",
+      "scope": "within_template",
+      "strategy": "Choose shortest visible option",
+      "correct": 2,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "raw slope_sqrt_positive_radio",
+      "scope": "within_template",
+      "strategy": "Choose longest visible option",
+      "correct": 0,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "raw slope_sqrt_quadratic_radio",
+      "scope": "within_template",
+      "strategy": "Choose first visible option",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "raw slope_sqrt_quadratic_radio",
+      "scope": "within_template",
+      "strategy": "Choose last visible option",
+      "correct": 0,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "raw slope_sqrt_quadratic_radio",
+      "scope": "within_template",
+      "strategy": "Choose shortest visible option",
+      "correct": 2,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "raw slope_sqrt_quadratic_radio",
+      "scope": "within_template",
+      "strategy": "Choose longest visible option",
+      "correct": 2,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "raw slope_sum_radio",
+      "scope": "within_template",
+      "strategy": "Choose first visible option",
+      "correct": 5,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "raw slope_sum_radio",
+      "scope": "within_template",
+      "strategy": "Choose last visible option",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "raw slope_sum_radio",
+      "scope": "within_template",
+      "strategy": "Choose shortest visible option",
+      "correct": 3,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "raw slope_sum_radio",
+      "scope": "within_template",
+      "strategy": "Choose longest visible option",
+      "correct": 5,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "delivered reciprocal_radio",
+      "scope": "within_template",
+      "strategy": "Choose first visible option",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "delivered reciprocal_radio",
+      "scope": "within_template",
+      "strategy": "Choose last visible option",
+      "correct": 0,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "delivered reciprocal_radio",
+      "scope": "within_template",
+      "strategy": "Choose shortest visible option",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "delivered reciprocal_radio",
+      "scope": "within_template",
+      "strategy": "Choose longest visible option",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "delivered sqrt_spaced_radio",
+      "scope": "within_template",
+      "strategy": "Choose first visible option",
+      "correct": 4,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "delivered sqrt_spaced_radio",
+      "scope": "within_template",
+      "strategy": "Choose last visible option",
+      "correct": 2,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "delivered sqrt_spaced_radio",
+      "scope": "within_template",
+      "strategy": "Choose shortest visible option",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "delivered sqrt_spaced_radio",
+      "scope": "within_template",
+      "strategy": "Choose longest visible option",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "delivered sqrt_constfirst_radio",
+      "scope": "within_template",
+      "strategy": "Choose first visible option",
+      "correct": 3,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "delivered sqrt_constfirst_radio",
+      "scope": "within_template",
+      "strategy": "Choose last visible option",
+      "correct": 2,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "delivered sqrt_constfirst_radio",
+      "scope": "within_template",
+      "strategy": "Choose shortest visible option",
+      "correct": 5,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "delivered sqrt_constfirst_radio",
+      "scope": "within_template",
+      "strategy": "Choose longest visible option",
+      "correct": 0,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "first",
+      "subgroup": "delivered sqrt_linear_radio",
+      "scope": "within_template",
+      "strategy": "Choose first visible option",
+      "correct": 3,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "last",
+      "subgroup": "delivered sqrt_linear_radio",
+      "scope": "within_template",
+      "strategy": "Choose last visible option",
+      "correct": 2,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "delivered sqrt_linear_radio",
+      "scope": "within_template",
+      "strategy": "Choose shortest visible option",
+      "correct": 3,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "delivered sqrt_linear_radio",
+      "scope": "within_template",
+      "strategy": "Choose longest visible option",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No perfect cue in this bounded sample; 0.2 is uniform five-option chance. Small samples do not establish a long-run rate.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "nearest cubic-only derivative",
+      "subgroup": "high-point high-radicand sum questions",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Compute only 3*k*t^2; choose numeric option nearest it. Do not differentiate the radical.",
+      "correct": 4,
+      "total": 20,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "The original 20/20 bypass now succeeds 4/20. All options hold the cubic contribution fixed and vary the radical contribution. Native outcomes were checked.",
+      "sample_refs": [
+        "sum-shortcut-results.json",
+        "current-regression-grading.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "explicit boundary/domain validation",
+      "seeded sampling and rejection",
+      "shared publication normalization and deduplication",
+      "requested-band filtering",
+      "conditional learner selection"
+    ],
+    "sample_refs": [
+      "samples.json",
+      "selection-current.json",
+      "delivery/accepted.json"
+    ],
+    "result": "150 independently chosen raw records; 58 fresh records survive the reviewed band at basis 5048. Five deterministic runner records are retained. Role coverage and visible-cue probes are recorded separately before and after filtering."
+  },
+  "limitations": [
+    "Finite tests do not prove absence of every shortcut.",
+    "Learner selection is conditional on fresh eligible candidates and a positive weight for the reviewed band; real history and future IDs were not simulated as fact.",
+    "Only moderate receives this publication certificate; other advertised bands require their own certificate.",
+    "Source omissions and explicit source corrections are retained in source-analysis.json. Canonical missing answer widgets are authored completions, not recovered historical fields."
+  ]
+}

@@ -1,0 +1,1 @@
+Source reconstruction complete. Independently sampled all 15 templates, 150 fresh records; runner batch copied, all 17 sources replayed, 10 controlled records, math/coverage/rejection/runtime reports saved. Next: native grading, delivery filtering, relocation and actual UI render.

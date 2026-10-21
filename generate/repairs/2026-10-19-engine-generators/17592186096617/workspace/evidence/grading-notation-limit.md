@@ -1,0 +1,5 @@
+Current status: BLOCKING, unsupported. The previous author treated the ln(4)=2 ln(2) identity as outside final equivalent-entry probes. Independent review correctly rejected that treatment. The prompt imposes no logarithm-form restriction, and the valid answer must be accepted.
+
+Author-2 reran the review reproducer as expected accepted. Native check-engine exits 1: symbolic equivalence is not established by the supported rules. A separate diagnostic batch observes both TeX and plain forms as unresolved. Reversing the canonical key also leaves the original valid form unresolved. These diagnostic outcomes are not grading passes. See author-2/log-required-input.json, log-required.log, log-diagnostic-report.json and repair-summary.json.
+
+No native grader code was modified. Its blank interface reads a single canonical answer value, so additional generator helpers or bank entries cannot change this comparison. Restricting source-supported bases, imposing a new form constraint or changing the source blank response type would evade the required repair. The package remains unsupported pending an upstream native-grader equivalence repair.

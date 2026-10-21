@@ -1,0 +1,101 @@
+{
+  "deterministic_replay": true,
+  "rejections": [
+    {
+      "parameters": {
+        "level": "hard"
+      },
+      "outcome": "rejected",
+      "reason": "only source-justified easy difficulty is supported"
+    },
+    {
+      "parameters": {
+        "template": "polynomial_log_blank",
+        "parameters": {
+          "n": 2,
+          "h": 0
+        }
+      },
+      "outcome": "accepted"
+    },
+    {
+      "parameters": {
+        "template": "base_log_left_blank",
+        "parameters": {
+          "b": 1,
+          "d": 7,
+          "k": 1
+        }
+      },
+      "outcome": "rejected",
+      "reason": "out-of-bounds b"
+    },
+    {
+      "parameters": {
+        "template": "base_sin_left_blank",
+        "parameters": {
+          "b": 11
+        }
+      },
+      "outcome": "rejected",
+      "reason": "out-of-bounds b"
+    },
+    {
+      "parameters": {
+        "template": "power_exp_radio",
+        "parameters": {
+          "c": true,
+          "n": 2,
+          "k": 1
+        }
+      },
+      "outcome": "rejected",
+      "reason": "integer parameters required"
+    },
+    {
+      "parameters": {
+        "template": "base_sin_left_blank",
+        "target": "middle"
+      },
+      "outcome": "rejected",
+      "reason": "invalid target"
+    }
+  ],
+  "canonical_replay_supported": true,
+  "relocation": {
+    "command": [
+      "/home/jake/Developer/Course_Academy/.venv/bin/python",
+      "-B",
+      "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-19-engine-generators/17592186096618/independent-review/relocated/generator.py",
+      "--seed",
+      "701229",
+      "--count",
+      "5"
+    ],
+    "exit_code": 0,
+    "matches_original": true,
+    "external_output": "stdout JSON only; no images, files, network or database code in runtime"
+  },
+  "dependencies": {
+    "python": "3.13.5",
+    "packages": {
+      "sympy": "1.14.0"
+    },
+    "manifest": {
+      "entrypoint": "generator.py",
+      "files": [
+        "generator.py",
+        "math_format.py",
+        "requirements.txt"
+      ],
+      "dependencies": {
+        "python": "3.13.5",
+        "packages": {
+          "sympy": "1.14.0"
+        }
+      },
+      "default_difficulty": "easy"
+    }
+  },
+  "rejection_analysis": "No rejection/resampling loop in normal generation; domain guards fail explicit invalid parameters and complete-bank ambiguity checks raise. All 128 selected fresh/boundary calls succeeded; no cases were silently resampled."
+}
