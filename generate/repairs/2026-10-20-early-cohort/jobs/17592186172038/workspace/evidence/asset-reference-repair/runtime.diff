@@ -1,0 +1,25 @@
+--- /home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186172038/runtime-2/17592186172038.py	2026-10-20 09:14:46.659659394 -0700
++++ 17592186172038.py	2026-10-20 09:26:20.335458838 -0700
+@@ -108,7 +108,9 @@
+  for slopes in instance['bank']:
+   data={'points':points,'exact_points':exact_points,'slopes':['inf' if v==sp.oo else str(v) for v in slopes],'bounds':bounds}
+   if any(sp.Rational(v).q!=1 for pt in exact_points for v in pt):data['coordinate_labels']='exact-half-v2'
+-  path=Path(output_dir)/(digest(data)+'.png');paths.append(path.name)
++  # The runner binds relative references against the runtime, not output_dir.
++  # Emit the configured absolute output path so both directories may relocate.
++  path=Path(output_dir)/(digest(data)+'.png');paths.append(str(path))
+   if not path.exists() or not path.with_suffix('.json').exists():records.append(dict(data,path=str(path)))
+  if records:
+   Path(output_dir).mkdir(parents=True,exist_ok=True)
+@@ -177,8 +179,9 @@
+  ci=bank.index(s);assets=render_plots({'points':p['points'],'bank':bank,'correct_index':ci})
+  problem,solution,rows=presentation(t,p,profile,s,assets,level)
+  task=digest({'equation':str(eq(t,p)),'points':sorted(p['points'])})
+- identity=digest({'version':VERSION,'level':level,'problem':problem,'solution':solution,'bank':sorted(assets['choices'])})
+- fid=uid(identity+'field');answers=[{':answer/id':uid(fid+'answer:'+v),':answer/type':':answer.type/image',':answer/value':v} for v in assets['choices']]
++ # Output paths locate bytes, but do not define mathematical/content identity.
++ identity=digest({'version':VERSION,'level':level,'problem':problem,'solution':solution.replace(assets['solution'],Path(assets['solution']).name),'bank':sorted(Path(v).name for v in assets['choices'])})
++ fid=uid(identity+'field');answers=[{':answer/id':uid(fid+'answer:'+Path(v).name),':answer/type':':answer.type/image',':answer/value':v} for v in assets['choices']]
+  correct=answers[ci][':answer/id'];r.shuffle(answers)
+  return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':{':question/id':uid(identity),':question/difficulty':':question.difficulty/'+level,':question/problem':problem,':question/worked-solution':solution,':question/answer-fields':[{':answer-field/id':fid,':answer-field/key':'selection',':answer-field/type':':answer-field.type/radio',':answer-field/choices':answers,':answer-field/correct':[':answer/id',correct]}]},'generation':{'version':VERSION,'template':t,'bank_profile':profile,'seed':seed,'parameters':canonical,'source':{k:SOURCE[k] for k in ('database','basis','lineage')},'source_ids':[profile] if profile!='authored' else [],'authored':profile=='authored' or level!='easy','mathematical_fingerprint':task,'content_fingerprint':identity,'exact_slopes':list(map(str,s)),'choice_geometry':{path:list(map(str,row)) for path,row in zip(assets['choices'],bank)},'worked_rows':rows,'domain':{'point_count':3,'equation':str(eq(t,p)),'x_nonzero':t=='rational_square'}}}
+ def generate_easy(seed=0,**kw):return generate('easy',seed,**kw)
