@@ -1,0 +1,35 @@
+{
+  "status": "unsupported",
+  "finding_id": "591f580cadb749294588",
+  "root_cause": "Five captured historical v2 records retain stored shortcut-bearing banks. The selector reads stored entities independently of the Python generator.",
+  "strict_regression": {
+    "command": [
+      "/home/jake/Developer/Course_Academy/.venv/bin/python",
+      "-B",
+      "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186115242/workspace/checks/batch_regressions.py",
+      "--finding",
+      "inventory"
+    ],
+    "exit_code": 1,
+    "stdout": "{\"finding\": \"591f580cadb749294588\", \"passed\": false, \"affected\": 5, \"selection_successes\": 64, \"draws\": 64}\n",
+    "stderr": ""
+  },
+  "current_generator_findings_passed": 4,
+  "source_banks_replayed": 17,
+  "native_accepted": 7,
+  "native_rejected": 28,
+  "source_inventory_runtime_unchanged": true,
+  "proposal_verified": true,
+  "proposal_applied": false,
+  "replacement_proposal": "evidence/repair-3/inventory-repair-proposal.json",
+  "required_action": "Separate inventory-remediation workflow must reconcile the five affected generated records, recapture inventory, and rerun the strict check.",
+  "authorization_constraint": "User prohibits database changes and publication; engine_repair_allowed is false.",
+  "selector_evidence": "engine/rust/question_selection.rs:125-202 reads stored candidates and difficulty, without invoking the generator.",
+  "visual_inspection": {
+    "retained_screenshot": "evidence/repair-3/render/question-001.png",
+    "result": "Reinspected prompt, all five choices, elimination matrices, and contradiction; legible without clipping or overlap."
+  },
+  "database_changed": false,
+  "published": false,
+  "next_author_pass": "No unchanged workspace-only generator edit can resolve the stored-pool finding. Do not weaken the strict regression or substitute the hypothetical replacement pool."
+}

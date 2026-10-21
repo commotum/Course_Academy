@@ -1,0 +1,144 @@
+{
+  "verdict": "revise",
+  "summary": "Normal banks always make the third-smallest mass correct: 28/28 independent samples, 5/5 delivered batch items and ten reproduced stored generated questions. Source replay also omits four supplied cases and retains an obsolete extra field. Package unchanged.",
+  "source_analysis": {
+    "skill": "Construct and solve a well-mixed variable-volume first-order linear mixture model, determine the overflow time from capacity, and evaluate solute mass there.",
+    "reasoning_steps": [
+      "Find net volume growth and overflow time.",
+      "Compute solute inflow and time-dependent outflow.",
+      "Use a variable-coefficient integrating factor and the initial condition.",
+      "Evaluate at overflow and round to one decimal place."
+    ],
+    "invariants": [
+      "Well-mixed single tank, constant positive inflow/outflow and incoming concentration.",
+      "Capacity greater than initial volume and inflow greater than outflow so a finite positive overflow time exists.",
+      "Mass balance, initial condition, capacity-defined evaluation time and consistent units.",
+      "Five numerical radio choices with one correct rounded mass."
+    ],
+    "permitted_variations": [
+      "Capacity, initial volume, initial mass, feed concentration, net flow, physical context, and nearby distractor offsets can vary jointly with consistent solutions.",
+      "Correct choice position and numerical rank are incidental and eligible to vary independently of context and parameter patterns.",
+      "Context names and common positive rescaling of both flows are irrelevant to final overflow mass, though overflow time changes.",
+      "Feed concentration, initial mass, capacity or volume changes must recompute the response; no source license fixes a correct label, rank or distractor configuration.",
+      "Source more-concentrated wording constrains initial/feed concentration ordering; opposing order would require changed wording and scope justification."
+    ],
+    "source_refs": [
+      "bbf602f0-1101-55d5-a6b3-9bfc5731e9ec",
+      "98f92dde-10ee-5a2e-ae0c-afe47e1981a5",
+      "138b92a0-177f-5f9d-993c-5b85e485defc",
+      "c2fb266c-0e36-5075-b402-7e3b0f1013d7",
+      "47a16983-dbf1-596b-b57d-9f38439fdd0f",
+      "729a2fd5-523f-5eb2-bf2f-20fedeba14f1",
+      "3c6933cf-ef37-5bf5-8816-b51b8e56e9df",
+      "9d3bb996-2c5a-57e9-940a-6b48f2e05670",
+      "0b0e00ac-15e0-50ff-896e-2fb3f25eb38a",
+      "c3e80580-6c31-591c-a6d6-df75a9aede3a",
+      "36a65a87-c8d0-5bbf-adbe-0789f4e08164",
+      "6c55e9d5-5244-5391-84ab-9850b2ba8152",
+      "lesson 70852def-fb14-50cc-b88d-6fe2af2343bf tutorial: rate of entry is no longer zero; Q'=Q_in'-Q_out'",
+      "lesson ff264ca2-0325-5ecb-9be4-8cbee9d9ba83 / canonical bbf602f0: Steps 1\u20134, I(t)=(12+t)^2, Q(0)=32, V(t_o)=240, Q(18)\u2248342.1 lb"
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "failed",
+      "evidence_paths": [
+        "source-replay-results.json",
+        "source-replay-records.json",
+        "regression-checks.json"
+      ],
+      "details": "Four supplied bank profiles raise Unknown template; q-336451 raw replay has two fields versus one captured field. Source gaps and legitimate unit corrections distinguished in source-analysis.json."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "counterfactual-results.json"
+      ],
+      "details": "38 generated records independently parsed from prompts; exact ODE/initial-condition residuals and rounded masses agree. Full source-parameter calculations also retained."
+    },
+    "variety": {
+      "status": "failed",
+      "evidence_paths": [
+        "sampling-summary.json",
+        "delivery-selection-results.json",
+        "regression-checks.json"
+      ],
+      "details": "Numerical and context variation retains a universally correct median-choice action, including the exact surviving five-item batch."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "scope-results.json",
+        "source-analysis.json",
+        "render-inspection.json"
+      ],
+      "details": "Tested easy variants preserve the overflow-modeling task, quadratic integrating factor and five-choice response workload."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-report.json"
+      ],
+      "details": "Actual native grader: 20 expected acceptances and 69 expected rejections, zero unresolved, including delivered choices and controlled pairs. Radio responses have no free-entry equivalence contract."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-inspection.json"
+      ],
+      "details": "Actual unmodified UI rendered 17 records; screenshots inspected for batch, every template and controlled pairs. No rendering errors."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "runtime-results.json",
+        "package-before.json",
+        "package-after.json"
+      ],
+      "details": "Exact Python3.13.5/SymPy1.14.0 match nested manifest dependency declarations; relocation and deterministic replay pass. Original package files unchanged."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "minimal-records.json",
+        "affected-inventory.json",
+        "generated-records.json"
+      ],
+      "details": "Relevant/irrelevant dependencies track correctly, but every normal bank forces correct numeric rank3; rejection, filtering, deduplication and selection cannot remove this family-wide bypass."
+    }
+  },
+  "findings": [
+    {
+      "kind": "decision_shortcut",
+      "description": "Normal method_bank always places two distractors below and two above the correct rounded mass. Sorting the answer values yields the answer without modeling or integration. This affects every surviving batch member and ten demonstrated stored generated records.",
+      "source_refs": [
+        "bbf602f0-1101-55d5-a6b3-9bfc5731e9ec: Steps1\u20134 and overflow evaluation",
+        "47a16983-dbf1-596b-b57d-9f38439fdd0f: correct93.8 among five numerical alternatives",
+        "generate/principles.md: vary eligible answer-bearing relationships"
+      ],
+      "reproduction": "Run /home/jake/Developer/Course_Academy/.venv/bin/python regression_checks.py (exit1). Minimal API case: generate(\"easy\",seed=9041,template=\"q-336506\",parameters={\"H\":\"20\",\"v\":\"10\",\"q\":\"1\",\"c\":\"0.4\",\"rin\":\"6\",\"rout\":\"4\"}). Sorted choices6.5,7.0,7.3,7.6,8.0; correct7.3 is the median. Complete record: minimal-records.json. Family-wide proof: sampling-summary.json.",
+      "requested_change": "Change whole-bank distractor construction so the correct numerical rank is not forced by the recipes and concentrated-inflow constraints. Preserve the physical/ODE skill and response shape; option shuffling alone cannot fix it. Replace the affected five-item batch and address the ten IDs in affected-inventory.json after independent validation."
+    },
+    {
+      "kind": "source_fidelity",
+      "description": "The package replays an older seven-case capture instead of all eleven supplied source cases. Four current source profiles are unknown; observed:q-336451 emits a second field with no key although the captured current source has one complete field.",
+      "source_refs": [
+        "98f92dde-10ee-5a2e-ae0c-afe47e1981a5",
+        "0b0e00ac-15e0-50ff-896e-2fb3f25eb38a",
+        "c3e80580-6c31-591c-a6d6-df75a9aede3a",
+        "36a65a87-c8d0-5bbf-adbe-0789f4e08164",
+        "6c55e9d5-5244-5391-84ab-9850b2ba8152"
+      ],
+      "reproduction": "Run regression_checks.py. Minimal missing replay: generate(\"easy\",seed=9041,profile=\"observed:q-336519\") raises ValueError: Unknown template. profile=\"observed:q-336451\" yields two fields, while source UUID98f92dde has one. Exact cases and complete available replays: source-replay-results.json and source-replay-records.json.",
+      "requested_change": "Refresh source masks and explicit historical banks against the supplied source.json: add q-336519,q-336503,q-336500,q-336508 and align q-336451 field structure. Preserve missing q-336499 evidence as a documented gap and distinguish authored completion from observed content."
+    }
+  ]
+}

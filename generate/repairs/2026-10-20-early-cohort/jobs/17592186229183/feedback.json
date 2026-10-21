@@ -1,0 +1,133 @@
+{
+  "verdict": "revise",
+  "summary": "A family-wide shortcut answers every normal question: choose the third-smallest mass. Confirmed on 28 independent samples, all five delivered batch items, and ten reproduced stored generated questions. Source replay also fails. Package files remained unchanged.",
+  "source_analysis": {
+    "skill": "Construct and solve a variable-volume mixture model, determine overflow time, and evaluate the solute mass there.",
+    "reasoning_steps": [
+      "Calculate volume growth and overflow time.",
+      "Construct the solute inflow-minus-outflow equation.",
+      "Solve the linear ODE using an integrating factor and initial condition.",
+      "Evaluate at overflow, round, and select the numerical mass."
+    ],
+    "invariants": [
+      "Well-mixed tank with constant positive inflow, outflow, and feed concentration.",
+      "Capacity exceeds initial volume; inflow exceeds outflow.",
+      "Consistent mass balance, units, and initial condition.",
+      "Normal questions use one five-choice numerical radio field."
+    ],
+    "permitted_variations": [
+      "Vary physical quantities and capacity while updating every dependent expression.",
+      "Vary context without changing the mathematical response.",
+      "Vary distractors, correct-choice position, and correct numerical rank; these assignments are incidental."
+    ],
+    "source_refs": [
+      "bbf602f0-1101-55d5-a6b3-9bfc5731e9ec: Steps 1\u20134 and overflow evaluation",
+      "47a16983-dbf1-596b-b57d-9f38439fdd0f: five-choice numerical response",
+      "lesson 70852def-fb14-50cc-b88d-6fe2af2343bf: mass balance Q'=Q_in'-Q_out'",
+      "lesson ff264ca2-0325-5ecb-9be4-8cbee9d9ba83: capacity-defined overflow time"
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "failed",
+      "evidence_paths": [
+        "source-replay-results.json",
+        "source-replay-records.json",
+        "regression-checks.json"
+      ],
+      "details": "Four supplied source profiles raise Unknown template. Raw q-336451 replay emits two fields versus one in the supplied source. Missing source evidence is documented separately."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "counterfactual-results.json"
+      ],
+      "details": "Independent prompt-derived calculations agree for 38 generated records, including exact ODE and initial-condition residuals and rounded masses."
+    },
+    "variety": {
+      "status": "failed",
+      "evidence_paths": [
+        "sampling-summary.json",
+        "delivery-selection-results.json"
+      ],
+      "details": "Parameter and context variation preserve a universally correct median-choice action. All five actual batch records survive delivery filtering and retain it."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "scope-results.json",
+        "source-analysis.json",
+        "render-inspection.json"
+      ],
+      "details": "Tested easy variants preserve the overflow task, quadratic integrating factor, and five-choice response workload."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-report.json"
+      ],
+      "details": "Native learner grader produced 20 expected acceptances and 69 expected rejections, with zero unresolved cases."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-inspection.json"
+      ],
+      "details": "Actual UI rendered 17 records without reported errors. Screenshots inspected for the complete batch, every template, and controlled pairs."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "runtime-results.json",
+        "package-before.json",
+        "package-after.json"
+      ],
+      "details": "Exact dependency versions, deterministic replay, and relocated CLI execution pass. Original package hashes are unchanged."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "minimal-records.json",
+        "affected-inventory.json",
+        "generated-records.json"
+      ],
+      "details": "Controlled dependencies update correctly, but bank construction forces numerical rank 3. Conditional template probes and delivered-batch measurements confirm the bypass. Ten stored generated questions are demonstrated affected."
+    }
+  },
+  "findings": [
+    {
+      "kind": "decision_shortcut",
+      "description": "Normal bank construction always puts two distractors below and two above the correct mass. Selecting the third-smallest choice bypasses mixture modeling and integration. Rejection, shuffling, deduplication, and learner selection preserve this property.",
+      "source_refs": [
+        "bbf602f0-1101-55d5-a6b3-9bfc5731e9ec: modeling, integration, and overflow evaluation",
+        "47a16983-dbf1-596b-b57d-9f38439fdd0f: numerical answer bank",
+        "generate/principles.md: vary eligible answer-bearing relationships"
+      ],
+      "reproduction": "Run /home/jake/Developer/Course_Academy/.venv/bin/python regression_checks.py; it exits 1. Minimal API case: generate('easy', seed=9041, template='q-336506', parameters={'H':'20','v':'10','q':'1','c':'0.4','rin':'6','rout':'4'}). Sorted choices are 6.5, 7.0, 7.3, 7.6, 8.0; correct 7.3 is the median. Complete record: minimal-records.json. Algebraic proof: sampling-summary.json.",
+      "requested_change": "Change whole-bank distractor construction so the correct numerical rank is not forced. Preserve the physical model and response contract. Replace the affected five-item batch and address the ten demonstrated inventory IDs listed in affected-inventory.json."
+    },
+    {
+      "kind": "source_fidelity",
+      "description": "The package retains an older seven-case source capture. Four supplied source cases cannot replay, and observed:q-336451 retains an obsolete extra field.",
+      "source_refs": [
+        "98f92dde-10ee-5a2e-ae0c-afe47e1981a5",
+        "0b0e00ac-15e0-50ff-896e-2fb3f25eb38a",
+        "c3e80580-6c31-591c-a6d6-df75a9aede3a",
+        "36a65a87-c8d0-5bbf-adbe-0789f4e08164",
+        "6c55e9d5-5244-5391-84ab-9850b2ba8152"
+      ],
+      "reproduction": "generate('easy', seed=9041, profile='observed:q-336519') raises ValueError: Unknown template. The same occurs for q-336503, q-336500, and q-336508. observed:q-336451 emits two fields against one captured field. Run regression_checks.py; complete results are in source-replay-results.json.",
+      "requested_change": "Refresh masks and complete historical banks against the supplied source.json. Add the four missing profiles and align q-336451 field structure. Preserve documented missing evidence for q-336499 and distinguish authored completion from observed content."
+    }
+  ],
+  "repair_history_file": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186229183/repair-history.json",
+  "instruction": "Fix the root cause, retain every earlier counterexample, and declare executable checks in repair-regressions.json. A failed check is another repair task, not permission to abandon the generator."
+}

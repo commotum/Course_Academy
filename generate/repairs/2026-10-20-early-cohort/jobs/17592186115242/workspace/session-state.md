@@ -1,34 +1,35 @@
-# Current repair state — pass 110
+# Current repair state — pass 114
 
-Read latest feedback, retained findings/history, existing instructional account,
-and source lesson/questions. Preserved all completed runtime repairs, source
-profiles, strict regression declarations, and staged replacements.
+Read feedback, all five retained findings, latest history, existing instructional
+account/source analysis, required generation/validation documentation and selector.
+Preserved completed runtime repairs and staged inventory replacements.
 
-Executed:
-`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/repair-110`
+First test reproduced the exact outstanding failure:
+`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory`
+Exit 1: all five captured historical generated records remain affected; the
+retained possible new-seen history gives 64/64 sign-extremum shortcut successes.
+All non-source captured inventory records were tested. This witness does not
+predict every learner history.
 
-Exit 1 solely for finding 591f580cadb749294588, reproduced first. All five
-historical records match captured prompts, solutions, complete banks, keys and
-archival generation metadata; all remain affected. No generated inventory items
-are untested. The retained possible new-seen history gives 64/64 shortcut hits.
+Validation:
+`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/repair-114`
+Exit 1 solely for finding 591f580cadb749294588. Four current-generator findings
+pass; 17 source banks replay; 14 records survive shared delivery with required
+contrasts; relevant/irrelevant counterfactuals pass. Native grading accepts 7
+correct and rejects 28 wrong responses. Relocation, exact versions, protected
+source/inventory/runtime hashes and five replacement mappings pass.
+Reinspected retained actual-UI screenshot evidence/repair-3/render/question-001.png:
+legible choices, systems, matrices and solution, without clipping or overlap.
+No changes required rerendering.
 
-Four current-generator regressions pass: bank construction, fractional bare-k
-source coverage, zero roots, and finite batch selection. All 17 practice banks
-replay. Three small CLI batches retain 14 records and within-sign contrasts
-through shared delivery; relevant/irrelevant counterfactuals pass. Native grading
-accepts 7 correct choices and rejects 28 wrong choices. Relocation, exact
-dependencies, protected hashes and staged replacement mapping pass. Reinspected
-retained actual UI screenshot evidence/repair-3/render/question-001.png: legible,
-with no clipping or overlap. Runtime, engine, source and inventory unchanged.
+Evidence: evidence/repair-114/commands.json, results.json, grader-report.json,
+blocker.json. Replacement proposal: evidence/repair-3/inventory-repair-proposal.json.
 
-Current evidence: evidence/repair-110/commands.json, results.json,
-grader-report.json and blocker.json. No database writes or publication occurred.
-
-Next unfinished action: separate inventory remediation of the five generated
-records, then recapture inventory and rerun the strict regression. Verified
-old/new mappings and complete replacements are already staged in
-evidence/repair-3/inventory-repair-proposal.json.
-The user explicitly prohibits database changes here. Further edits to the
-workspace generator cannot repair the captured stored pool; do not waive the
-strict failure or repeatedly rerun unchanged author passes in lieu of remediation.
-Status remains unsupported for the unresolved delivered-pool requirement.
+Outstanding action is external inventory remediation, followed by inventory
+recapture and the strict regression. User prohibits database changes and
+publication. The selector reads stored candidates independently of this package;
+a workspace generator edit cannot change their banks or selectable identities.
+No runtime, engine, source, inventory, publication or database changes performed.
+Status remains unsupported for the delivered-pool requirement. Preserve strict
+failure. Do not repeat an unchanged repair pass or present staged replacements
+as an applied repair.

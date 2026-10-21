@@ -4,7 +4,7 @@
 Shared helpers + independently documented easy/moderate/hard entrypoints below.
 Full positional source masks preserve all blocks, arithmetic rows and omissions.
 Historical numerical banks are explicit opaque evidence profiles, never defaults.
-Normal complete five-option banks use four defined mistakes in the actual method.
+Normal complete five-option banks use independently sampled numerical perturbations.
 All concentrations are lb/gal, all flow rates gal/min, time minutes, answers lb.
 No post-overflow model, plot, database client, writes, registration or commits.
 """
@@ -15,7 +15,7 @@ import sympy as s
 KP_ID=17592186229183
 KP_UUID='c652164a-2e94-5e16-a410-5143037af134'
 TITLE='Determining an Amount at an Overflow Point'
-VERSION='overflow-onset-1'
+VERSION='overflow-onset-2'
 D=Path(__file__).with_suffix('')
 MASKS=json.loads((D/'masks.json').read_text())
 SOURCE=json.loads((D/'source.json').read_text())
@@ -68,15 +68,20 @@ def fill(mask,x,p):
  values['c']=r'\frac{2}{3}' if str(p['c'])=='2/3' else str(p['c']) if '/' not in str(p['c']) else s.latex(s.Rational(str(p['c'])))
  return re.sub(r'<<([a-zA-Z_]+)>>',lambda m:values[m[1]],mask)
 
-def method_bank(x):
- """Whole bank: correct, omitted transient, exponent+1, exponent-1,
- initial amount omitted. No recipe replacement after collision rejection.
+def method_bank(x,rng,rank):
+ """Authored complete near-value bank; numerical rank is incidental.
+
+ Rank is selected before physical sampling. Independently sampled offsets do
+ not force equal spacing, a median, or a characteristic central position.
+ Historical source banks are replayed separately, without this extension.
  """
- H,v,c,n,D0=x['H'],x['v'],x['c'],x['n'],x['D'];r=v/H
- vals=[x['amount'],c*H,c*H-D0*r**(n+1),c*H-D0*r**(n-1),c*H-c*v*r**n]
- displays=[rounded(v) for v in vals]
- if len(set(displays))!=5 or any(s.N(v)<=0 for v in vals):raise ValueError('Reject whole collided/nonphysical bank.')
- return [(display+r'\,\text{lb}',i==0) for i,display in enumerate(displays)]
+ ticks=int(Decimal(x['rounded'])*10)
+ width=max(4,min(20,ticks-1))
+ if ticks<5:raise ValueError('Mass too small for five positive rounded choices.')
+ below=rng.sample(range(1,min(width,ticks-1)+1),rank-1)
+ above=rng.sample(range(1,width+1),5-rank)
+ values=[ticks]+[ticks-k for k in below]+[ticks+k for k in above]
+ return [(f'{Decimal(v)/10:.1f}'+r'\,\text{lb}',i==0) for i,v in enumerate(values)]
 
 def sample(level,rng):
  for _ in range(1000):
@@ -87,7 +92,7 @@ def sample(level,rng):
   c=rng.choice(['0.4','0.5','0.6','0.8','1.0','1.2','1.5','2/3']);v=d*a;H=v+d*to
   q=s.Rational(str(c))*v*rng.choice([s.Rational(1,4),s.Rational(1,3),s.Rational(1,2),s.Rational(2,3)])
   p={k:str(vv) for k,vv in dict(H=H,v=v,q=q,c=c,rin=d*(n+1),rout=d*n).items()}
-  try:x=guard(p,level);method_bank(x);return p
+  try:x=guard(p,level);return p
   except ValueError:continue
  raise RuntimeError('No eligible complete instance found.')
 
@@ -102,6 +107,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
   if template is not None and template!=sid:raise ValueError('Profile/template mismatch.')
   template=sid
  rng=random.Random(seed)
+ rank=rng.randint(1,5)  # Eligible answer-bearing assignment, before parameters.
  template=template or rng.choice(list(MASKS))
  if template not in MASKS:raise ValueError('Unknown template.')
  mask=MASKS[template]
@@ -127,7 +133,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
     value=rounded(s.Rational(x['rounded'])+off)+a['display_suffix']
     opts.append((value,a['correct'] or (repaired and s.Rational(a['observed_numeric'])==s.Rational(base['rounded']))))
    banks.append((f['key'],f['has_correct'] or repaired,opts))
- else:banks=[('selection',True,method_bank(x))]
+ else:banks=[('selection',True,method_bank(x,rng,rank))]
  # All displayed content, including full bank and actual level, enters identity.
  payload=[VERSION,level if not raw or mask['has_difficulty'] else None,prompt,solution,[[k,has,sorted(opts)] for k,has,opts in banks]]
  digest=stable(payload);qid=uid(digest);fields=[]
@@ -144,7 +150,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
  if not raw or mask['has_difficulty']:question[':question/difficulty']=':question.difficulty/'+level
  if solution is not None:question[':question/worked-solution']=solution
  task=stable([str(x[k]) for k in ('H','v','q','c','rin','rout')])
- return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':question,'generation':{'version':VERSION,'level':level,'difficulty_provenance':'observed' if raw and mask['has_difficulty'] else 'omitted in raw source' if raw else 'authored workload policy','template':template,'profile':profile or 'method','seed':seed,'parameters':{k:str(v) for k,v in p.items()},'source':{k:SOURCE[k] for k in ('database','basis','lineage')},'origin':'source replay' if raw or repaired else 'generated variant','evidence_only':raw or repaired,'eligible_for_learning':not(raw or repaired),'mathematical_fingerprint':task,'content_fingerprint':digest,'dependencies':{'python':sys.version.split()[0],'sympy':s.__version__},'domain':'0 <= t <= overflow onset; capacity > initial volume, inflow > outflow, incoming concentration > initial concentration','bank_recipes':['correct','omit transient','use exponent n+1','use exponent n-1','omit initial amount'] if not(raw or repaired) else ['opaque historical offsets; not recovered error intent']}}
+ return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':question,'generation':{'version':VERSION,'level':level,'difficulty_provenance':'observed' if raw and mask['has_difficulty'] else 'omitted in raw source' if raw else 'authored workload policy','template':template,'profile':profile or 'method','seed':seed,'parameters':{k:str(v) for k,v in p.items()},'source':{k:SOURCE[k] for k in ('database','basis','lineage')},'origin':'source replay' if raw or repaired else 'generated variant','evidence_only':raw or repaired,'eligible_for_learning':not(raw or repaired),'mathematical_fingerprint':task,'content_fingerprint':digest,'dependencies':{'python':sys.version.split()[0],'sympy':s.__version__},'domain':'0 <= t <= overflow onset; capacity > initial volume, inflow > outflow, incoming concentration > initial concentration','bank_recipes':['correct','four independently sampled nonzero tenth-pound offsets; authored near-value bank'] if not(raw or repaired) else ['opaque historical offsets; not recovered error intent']}}
 
 # EASY: observed exponent 2, integral offset/time; source-shared full method.
 def generate_easy(seed=0,**kwargs):return generate('easy',seed,**kwargs)

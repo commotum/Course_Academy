@@ -1,0 +1,330 @@
+{
+  "learner_operation": "Translate incoming concentration and both flow rates into Q' = c*r_in - r_out*Q/(V0+(r_in-r_out)*t); solve with Q(0)=Q0, compute t_o=(capacity-V0)/(r_in-r_out), evaluate and round mass, then select among five nearby numerical masses.",
+  "fixed_features": [
+    {
+      "feature": "Overflow evaluation target",
+      "justification": "The KP is explicitly Determining an Amount at an Overflow Point; varying to a fixed unrelated time removes its extra operation."
+    },
+    {
+      "feature": "Inflow greater than outflow; positive capacity headroom",
+      "justification": "Necessary for the stated filling-to-overflow scenario."
+    },
+    {
+      "feature": "Small integral outflow/net-flow exponent (observed 2)",
+      "justification": "Observed easy method uses a quadratic integrating factor; retaining 2 is defensible for elementary workload, nearby small integral exponents need independent scope assessment."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Correct numerical mass",
+      "eligible_variation": "Physical quantities and capacity vary; response must be derived from the mass-balance solution at overflow.",
+      "observed": "Independent prompt-derived mass checks pass for 38 generated records; capacity pair changes 100.0 to 116.2 lb."
+    },
+    {
+      "role": "Correct choice numerical rank",
+      "eligible_variation": "Source banks have different ranks; no physical or instructional reason requires two alternatives on each side. Distractor construction may change rank while preserving one correct choice.",
+      "observed": "Rank 3 in all 28 independent samples, all 5 batch items, and all 10 reproduced stored generated records; structural proof covers the full normal method domain."
+    },
+    {
+      "role": "Correct choice display position",
+      "eligible_variation": "Shuffling is incidental to the modeling skill.",
+      "observed": "Ordering changes in generator and actual UI. This does not remove the invariant numerical-rank cue."
+    },
+    {
+      "role": "Overflow capacity target",
+      "eligible_variation": "Keep the overflow target operation but vary capacity independently of other physical inputs.",
+      "observed": "Holding v90 q18 c0.5 rin18 rout12 fixed, H210\u2192240 changes time20\u219225 and mass100.0\u2192116.2; solution and grading track it."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "All seven normal easy prompt masks; four fixed seeds each",
+      "sample_refs": [
+        "sample-records.json",
+        "sampling-summary.json"
+      ],
+      "result": "28 records, four distinct physical tasks replicated across seven contexts; median shortcut succeeds in every subgroup. No arbitrary diversity quota inferred."
+    },
+    {
+      "case": "Exact five-item runner batch",
+      "sample_refs": [
+        "batch-records.json",
+        "delivery-batch/accepted.json",
+        "delivery-selection-results.json"
+      ],
+      "result": "All five accepted after requested-difficulty, validation, identity normalization and captured-inventory deduplication. Median shortcut answers every surviving record."
+    },
+    {
+      "case": "Smallest admitted offset/time boundary and whole-bank rejection rules",
+      "sample_refs": [
+        "minimal-records.json",
+        "runtime-results.json"
+      ],
+      "result": "d2 a5 time5 case has sorted choices6.5,7.0,7.3,7.6,8.0; correct7.3. Rejection of rounded collisions preserves strict rank ordering."
+    },
+    {
+      "case": "Stored generated practice pool",
+      "sample_refs": [
+        "generated-records.json",
+        "inventory-results.json",
+        "affected-inventory.json"
+      ],
+      "result": "Ten generated records reproduced with identical IDs and generation metadata, prompt/bank/key matches and solutions equivalent after shared scalable-parentheses normalization; all rank3. Original source items excluded."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Hold v90 q18 c0.5 rin18 rout12 and context fixed; change capacity210\u2192240.",
+      "expected": "Overflow time20\u219225 and rounded mass100.0\u2192116.2; prompt, solution and correct selectable answer update.",
+      "observed": "Expected dependencies verified in independent arithmetic, real UI screenshots006/007 and native option grading. Numerical rank remains3, exposing the shortcut despite correct dependencies.",
+      "status": "passed",
+      "justification": "Capacity determines overflow evaluation time in the canonical solution V(t_o)=H.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-input.json",
+        "grader-report.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Halve both inflow18\u21929 and outflow12\u21926, keeping all masses, concentrations and volumes fixed.",
+      "expected": "Overflow time doubles20\u219240; overflow mass remains100.0 lb; correct logical numerical response preserved.",
+      "observed": "Time and solution change, mass and complete numerical bank preserved; same displayed mass accepted by the native grader; screenshots006/008 show consistent endpoints.",
+      "status": "passed",
+      "justification": "Canonical mass balance can be reparameterized by volume; common flow scaling changes elapsed time but not mass at a specified capacity.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-input.json",
+        "grader-report.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Keep physical data fixed and change coolant/inhibitor reservoir context to flavoring tank.",
+      "expected": "Numerical solution and mass100.0 lb preserved, with prompt/solution nouns updated.",
+      "observed": "Independent calculation, native acceptance and screenshots006/009 confirm preserved numerical response and consistent context.",
+      "status": "passed",
+      "justification": "Names of well-mixed solutes and containers do not enter the source mass-balance equation.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-report.json",
+        "render/rendering.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "Numerical order of the five displayed masses",
+      "subgroup": "all independent easy samples",
+      "scope": "overall",
+      "strategy": "Select the third-smallest mass without using the physical data or solving the ODE.",
+      "correct": 28,
+      "total": 28,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "28/28 correct versus uniform five-choice guessing at 0.2. Sorting answer values bypasses modeling, integration, initial conditions and overflow-time evaluation. The bank algebra forces two distractors below and two above the correct mass; this is an incidental authored arrangement, not the intended skill.",
+      "sample_refs": [
+        "sample-records.json",
+        "sampling-summary.json"
+      ]
+    },
+    {
+      "cue": "Numerical order of the five displayed masses",
+      "subgroup": "normal method bank / q-336451",
+      "scope": "within_template",
+      "strategy": "Select the third-smallest mass without using the physical data or solving the ODE.",
+      "correct": 4,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "4/4 correct versus uniform five-choice guessing at 0.2. Sorting answer values bypasses modeling, integration, initial conditions and overflow-time evaluation. The bank algebra forces two distractors below and two above the correct mass; this is an incidental authored arrangement, not the intended skill.",
+      "sample_refs": [
+        "delivery-sample/accepted.json",
+        "sampling-summary.json"
+      ]
+    },
+    {
+      "cue": "Numerical order of the five displayed masses",
+      "subgroup": "normal method bank / q-336499",
+      "scope": "within_template",
+      "strategy": "Select the third-smallest mass without using the physical data or solving the ODE.",
+      "correct": 4,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "4/4 correct versus uniform five-choice guessing at 0.2. Sorting answer values bypasses modeling, integration, initial conditions and overflow-time evaluation. The bank algebra forces two distractors below and two above the correct mass; this is an incidental authored arrangement, not the intended skill.",
+      "sample_refs": [
+        "delivery-sample/accepted.json",
+        "sampling-summary.json"
+      ]
+    },
+    {
+      "cue": "Numerical order of the five displayed masses",
+      "subgroup": "normal method bank / q-336506",
+      "scope": "within_template",
+      "strategy": "Select the third-smallest mass without using the physical data or solving the ODE.",
+      "correct": 4,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "4/4 correct versus uniform five-choice guessing at 0.2. Sorting answer values bypasses modeling, integration, initial conditions and overflow-time evaluation. The bank algebra forces two distractors below and two above the correct mass; this is an incidental authored arrangement, not the intended skill.",
+      "sample_refs": [
+        "delivery-sample/accepted.json",
+        "sampling-summary.json"
+      ]
+    },
+    {
+      "cue": "Numerical order of the five displayed masses",
+      "subgroup": "normal method bank / q-336513",
+      "scope": "within_template",
+      "strategy": "Select the third-smallest mass without using the physical data or solving the ODE.",
+      "correct": 4,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "4/4 correct versus uniform five-choice guessing at 0.2. Sorting answer values bypasses modeling, integration, initial conditions and overflow-time evaluation. The bank algebra forces two distractors below and two above the correct mass; this is an incidental authored arrangement, not the intended skill.",
+      "sample_refs": [
+        "delivery-sample/accepted.json",
+        "sampling-summary.json"
+      ]
+    },
+    {
+      "cue": "Numerical order of the five displayed masses",
+      "subgroup": "normal method bank / q-336516",
+      "scope": "within_template",
+      "strategy": "Select the third-smallest mass without using the physical data or solving the ODE.",
+      "correct": 4,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "4/4 correct versus uniform five-choice guessing at 0.2. Sorting answer values bypasses modeling, integration, initial conditions and overflow-time evaluation. The bank algebra forces two distractors below and two above the correct mass; this is an incidental authored arrangement, not the intended skill.",
+      "sample_refs": [
+        "delivery-sample/accepted.json",
+        "sampling-summary.json"
+      ]
+    },
+    {
+      "cue": "Numerical order of the five displayed masses",
+      "subgroup": "normal method bank / q-336501",
+      "scope": "within_template",
+      "strategy": "Select the third-smallest mass without using the physical data or solving the ODE.",
+      "correct": 4,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "4/4 correct versus uniform five-choice guessing at 0.2. Sorting answer values bypasses modeling, integration, initial conditions and overflow-time evaluation. The bank algebra forces two distractors below and two above the correct mass; this is an incidental authored arrangement, not the intended skill.",
+      "sample_refs": [
+        "delivery-sample/accepted.json",
+        "sampling-summary.json"
+      ]
+    },
+    {
+      "cue": "Numerical order of the five displayed masses",
+      "subgroup": "normal method bank / q-336502",
+      "scope": "within_template",
+      "strategy": "Select the third-smallest mass without using the physical data or solving the ODE.",
+      "correct": 4,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "4/4 correct versus uniform five-choice guessing at 0.2. Sorting answer values bypasses modeling, integration, initial conditions and overflow-time evaluation. The bank algebra forces two distractors below and two above the correct mass; this is an incidental authored arrangement, not the intended skill.",
+      "sample_refs": [
+        "delivery-sample/accepted.json",
+        "sampling-summary.json"
+      ]
+    },
+    {
+      "cue": "Numerical order of the five displayed masses",
+      "subgroup": "exact runner batch after shared delivery filtering",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select the third-smallest mass without using the physical data or solving the ODE.",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "5/5 correct versus uniform five-choice guessing at 0.2. Sorting answer values bypasses modeling, integration, initial conditions and overflow-time evaluation. The bank algebra forces two distractors below and two above the correct mass; this is an incidental authored arrangement, not the intended skill.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "delivery-selection-results.json"
+      ]
+    },
+    {
+      "cue": "Numerical order of the five displayed masses",
+      "subgroup": "exact batch / q-336499",
+      "scope": "within_template",
+      "strategy": "Select the third-smallest mass without using the physical data or solving the ODE.",
+      "correct": 3,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "3/3 correct versus uniform five-choice guessing at 0.2. Sorting answer values bypasses modeling, integration, initial conditions and overflow-time evaluation. The bank algebra forces two distractors below and two above the correct mass; this is an incidental authored arrangement, not the intended skill.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "delivery-selection-results.json"
+      ]
+    },
+    {
+      "cue": "Numerical order of the five displayed masses",
+      "subgroup": "exact batch / q-336502",
+      "scope": "within_template",
+      "strategy": "Select the third-smallest mass without using the physical data or solving the ODE.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "1/1 correct versus uniform five-choice guessing at 0.2. Sorting answer values bypasses modeling, integration, initial conditions and overflow-time evaluation. The bank algebra forces two distractors below and two above the correct mass; this is an incidental authored arrangement, not the intended skill.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "delivery-selection-results.json"
+      ]
+    },
+    {
+      "cue": "Numerical order of the five displayed masses",
+      "subgroup": "exact batch / q-336506",
+      "scope": "within_template",
+      "strategy": "Select the third-smallest mass without using the physical data or solving the ODE.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "1/1 correct versus uniform five-choice guessing at 0.2. Sorting answer values bypasses modeling, integration, initial conditions and overflow-time evaluation. The bank algebra forces two distractors below and two above the correct mass; this is an incidental authored arrangement, not the intended skill.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "delivery-selection-results.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "generator physical/arithmetic rejection and complete-bank collision rejection",
+      "requested easy difficulty",
+      "shared prepare_records validation and stable identities",
+      "captured basis5395 inventory and within-batch deduplication",
+      "Rust selection band/draw rules and history exclusion, conditional read-only scenarios",
+      "actual UI answer order and solution display",
+      "native learner grading"
+    ],
+    "sample_refs": [
+      "runtime-results.json",
+      "delivery-sample/delivery.json",
+      "delivery-batch/delivery.json",
+      "delivery-selection-results.json",
+      "grader-report.json",
+      "render/rendering.json"
+    ],
+    "result": "28/28 independent and 5/5 batch records survive filtering and retain the shortcut. Any nonempty subset of the normal generated family retains it. Faithful conditional selection scenarios show source inventory can dilute aggregate success, while the exact batch and generated-only pool remain completely vulnerable."
+  },
+  "limitations": [
+    "No live learner history or policy weights captured. Selection scenarios state assumed weights/freshness; no claim about an individual learner. Structural rank result is independent of these missing values.",
+    "Captured inventory basis5395; concurrent inventory changes can change deduplication and candidate frequencies.",
+    "Fresh audit focuses on requested easy level. Stored moderate/hard records are replayed to establish inventory impact of the same bank rule; broader difficulty-scope claims are not made.",
+    "Finite probes do not prove absence of all shortcuts; the demonstrated median shortcut is supported by an algebraic family-wide argument.",
+    "Source q-336499 lacks a key and solution; independent mass95.2 is inference. Four supplied source bank profiles are unsupported, and raw q-336451 retains a second obsolete field."
+  ]
+}
