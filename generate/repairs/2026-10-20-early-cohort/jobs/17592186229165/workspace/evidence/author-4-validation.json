@@ -1,0 +1,34 @@
+{
+  "status": "unsupported",
+  "scope": "author-4 workspace-only revalidation",
+  "checks": [
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -E -s -B checks/check_report_installation.py",
+      "exit_code": 1,
+      "log": "evidence/report-repair/latest-reproduction.log"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -E -s -B checks/test_role_exchange.py",
+      "exit_code": 0,
+      "log": "evidence/role-regression/latest.log"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -E -s -B checks/check_package.py",
+      "exit_code": 0,
+      "log": "evidence/package-latest.log"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -E -s -B checks/check_report_installation.py --evidence-root evidence/corrected-review",
+      "exit_code": 0,
+      "log": "evidence/report-repair/local-latest.log"
+    }
+  ],
+  "runtime_changed": false,
+  "regression_contract_changed": false,
+  "root_cause": "The remaining retained finding requires installation into a prior review directory outside the explicitly authorized workspace. Current generator and staged report pass their checks. The external report still fails the actual validator.",
+  "required_destination": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186229165/review-1-policy-2-48d685555902faba",
+  "staged_correction": "evidence/corrected-review",
+  "historical_inventory_findings_retained": 4,
+  "visual_reinspection": "evidence/render/question-002.png: second-position resonance and its full worked solution remain readable and consistent.",
+  "next_action": "Runner installs the validated corrected report and references at the required destination with its own write access, reruns the default declared regression, then starts fresh independent review. No author approval is implied."
+}

@@ -1,4 +1,22 @@
+# Author-5 milestone
+
+Reproduced default report regression first (exit 1), then reran retained role regression and package/relocation check (both exit 0). Local corrected report validation passed (26 current record replays); final default regression still exits 1 at the required prior-review destination. Exact commands, exit codes and logs: `evidence/author-5-validation.json`. Runtime and regression criteria unchanged. Reinspected second-position-resonance actual-UI screenshot. No external write attempted.
+
+Next unfinished step: runner installs `evidence/corrected-review/` at the required destination recorded in `evidence/report-repair/results.json`, then reruns `checks/check_report_installation.py` and fresh independent review. This is outside the author workspace authorization. Current status remains unsupported; local validation does not close the external installation finding.
+
 # Session state
+
+## Author-4 workspace-only revalidation
+
+Reproduced the strict installation failure first and again after passing the retained role regression, package relocation check, and local report validation. Commands and exit codes: `evidence/author-4-validation.json`. No runtime or regression criteria changed. Default regression remains red; its required prior-review destination is outside authorized writes. Reinspected `evidence/render/question-002.png`. The next unfinished step is runner installation at the destination recorded in `evidence/report-repair/results.json`, followed by the default regression and fresh independent review.
+
+## Latest revalidation
+
+Read the latest feedback, complete repair history, original source context and runner report/preflight code. Reproduced the exact declared installation regression before further checks: exit 1, `decision_variation has an unresolved decision shortcut`, at the original external review destination. No authorized workspace-only change can replace that external file. Retained the strict default and every original counterexample; no generator, manifest, test criteria, database, image or external report was changed.
+
+Reran with `/home/jake/Developer/Course_Academy/.venv/bin/python -E -s -B`: `checks/test_role_exchange.py` passed (41 records, 37 semantic instances, both resonant positions after shared delivery, native acceptance/rejection); `checks/check_package.py` passed (relocation, exact versions, requested five easy records); `checks/check_report_installation.py --evidence-root evidence/corrected-review` passed (26 visible record replays, schema and actual validator). Then reran the default installation regression: exit 1, preserving the real required-destination failure in `evidence/report-repair/results.json` and `latest-reproduction.log`. New bounded logs: `evidence/role-regression/latest.log`, `evidence/package-latest.log`, `evidence/report-repair/local-latest.log`. Reinspected the retained actual-UI screenshot `evidence/render/question-002.png`: second-position resonance, trial, derivative, coefficient equations and final solution agree and are readable. Runtime unchanged, so prior source replay and remaining rendering evidence are retained rather than duplicated.
+
+Current status is still unsupported solely for finding 645672a4cd3f9bf609ca's required external installation. Corrected artifacts are already concrete and reviewable in `evidence/corrected-review/`. The necessary next action requires the runner's external write access, which this task explicitly withholds. Do not replace the required destination with a local path to manufacture a passing preflight.
 
 Evidence-only continuation is locally complete; final author status is unsupported because the required external report installation remains outside the workspace-only authorization.
 

@@ -1,5 +1,7 @@
 # Reproduction commands and results
 
+Latest revalidation used the same Python with `-E -s -B`. `checks/test_role_exchange.py`, `checks/check_package.py`, and `checks/check_report_installation.py --evidence-root evidence/corrected-review` each exited 0. The strict default `checks/check_report_installation.py` exited 1 before and after those checks; final results remain failing in `report-repair/results.json`, with the exact error in `report-repair/latest-reproduction.log`. Logs for successful checks are `role-regression/latest.log`, `package-latest.log`, and `report-repair/local-latest.log`. No runtime or acceptance criterion changed. Original external installation remains outside authorized writes; the saved EROFS reproduction was not retried. Retained actual-UI screenshot `render/question-002.png` was visually reinspected and remains readable with correct second-position resonance.
+
 Run from the workspace with `/home/jake/Developer/Course_Academy/.venv/bin/python` (below, `$PY`). All outputs remain in this workspace. No publication or database commands were run.
 
 - Original review failure: `$PY ../review-0-policy-2-8d63f2e6b23f8ebd/test_role_exchange.py ./17592186229165.py` exited 1 before repair (`initial-failure.txt`), then 0 after repair. The retained stricter test `$PY checks/test_role_exchange.py --entry evidence/generator-before.py --output evidence/baseline-regression` also exits 1 (`strict-before.log`). It reaches the same rejected reordered parameters.
