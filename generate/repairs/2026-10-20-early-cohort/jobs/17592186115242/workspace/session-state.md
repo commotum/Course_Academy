@@ -1,34 +1,41 @@
-# Current repair state — pass 52
+# Current repair state — pass 56
 
-Read latest feedback and retained findings/history, prior session state,
-instructional account, source lesson/context and required generation/validation
-docs. Preserved repaired runtime and all five strict regression declarations.
+Read feedback, all five retained findings, existing source analysis and supplied
+source material. Preserved runtime repairs, five staged replacements and all
+strict regression declarations. No new generator construction defect is reported.
 
-First test:
+First executed test:
 `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory`
-Exit 1: all five historical banks reproduce against captured inventory; the
-possible new-seen-history shortcut succeeds 64/64.
+Exit 1: all five historical banks reproduce against captured inventory;
+the possible learner-history witness has 64/64 sign-only shortcut successes.
 
-Validation:
-`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/repair-52`
-Exit 1 solely for 591f580cadb749294588. Four generator finding regressions pass:
-17 complete source banks, zero roots, construction and finite-batch shortcut
-checks; shared delivery retains all 14 records; native grading accepts 7 correct
-and rejects 28 wrong submissions; exact dependency and relocated replay checks
-pass. Staged replacement mappings and unchanged runtime/source/inventory/manifest
-hashes verified. Reinspected retained actual-UI screenshot question-002.png:
-readable with no clipping. Also inspected the source lesson classification chart.
+Bounded verification:
+`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/repair-56`
+Exit 1 solely for finding 591f580cadb749294588. Four current-generator
+regressions pass, covering source banks, fractional bare-k cases, zero roots
+and finite-batch contrasts. Shared delivery retains 14/14 records; native
+grading accepts 7 correct selections and rejects 28 incorrect selections.
+Dependency versions, relocation, protected hashes and staged mapping pass.
+Commands and results: evidence/repair-56/commands.json and results.json.
 
-No new runtime defect is demonstrated. No runtime files, source families,
-regression criteria, database content, publication or engine code were changed.
+Reinspected evidence/repair-3/render/question-002.png: readable prompt,
+five options, augmented matrices, elimination and complete solution; no clipping.
+Runtime is unchanged, so retained rendering evidence remains applicable.
+Also inspected the tutorial classification flowchart; it is context rather
+than a diagram requiring per-instance generation.
 
-Next unfinished step: separate inventory remediation must resolve the five
-historical generated selection candidates, then supply refreshed inventory.
-The author task explicitly prohibits that database/publication action. Do not
-repeat unchanged generator repairs or waive the failing historical-pool check.
+Remaining failure: five captured stored generated records remain selectable.
+question_selection.rs lines 125–202 selects stored candidate entity IDs by
+difficulty and seed; it does not invoke this Python generator. A workspace
+runtime edit cannot change those banks or retire their entities. The review
+explicitly asks for separate inventory remediation, while this task prohibits
+database changes. Keep the strict inventory check failing until refreshed
+inventory demonstrates that remediation. Do not weaken the check, substitute
+proposed records for captured inventory or repeat broad validation against
+unchanged data.
 
-Current evidence: evidence/repair-52/commands.json, results.json and
-scope-diagnosis.json. Replacement handoff remains
- evidence/repair-3/inventory-repair-proposal.json. Complete reproduced historical
-records: evidence/generated-records.json. affected-inventory.json evidence paths
-resolve relative to author-52 as ../workspace/evidence/generated-records.json.
+Existing proposal: evidence/repair-3/inventory-repair-proposal.json.
+Complete historical reproductions: evidence/generated-records.json.
+affected-inventory.json evidence paths resolve relative to author-56 via
+../workspace/. All five generated inventory records were tested; original source
+questions were preserved. No runtime, engine, database or publication changes.

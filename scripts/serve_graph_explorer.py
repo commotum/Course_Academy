@@ -255,7 +255,7 @@ def build_learning(edb_root: Path, *, test: bool = False) -> Path:
     for name, directory in (("edb_core", edb_deps), ("serde_json", deps), ("chrono", deps), ("course_academy_engine", deps)):
         libraries[name] = max(directory.glob(f"lib{name}-*.rlib"), key=lambda p: p.stat().st_mtime_ns)
     sources = (source, ROOT / "scripts/page_reader.rs", ROOT / "scripts/activity_history.rs", ROOT / "scripts/assignment_reader.rs", ROOT / "scripts/assignment_interaction.rs",
-               ROOT / "scripts/developer_preview.rs", ROOT / "scripts/study_stats.rs", ROOT / "scripts/quiz_labels.rs")
+               ROOT / "scripts/developer_preview.rs", ROOT / "scripts/study_stats.rs", ROOT / "scripts/forecast_reader.rs", ROOT / "scripts/quiz_labels.rs")
     if test:
         sources += (ROOT / "scripts/assignment_interaction_tests.rs", ROOT / "scripts/retrieval_tests.rs",
                     ROOT / "engine/edb/progress.rs", ROOT / "engine/edb/configuration.rs",
@@ -466,7 +466,7 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
                 body = admit_answer(body, directory, learner, received)
                 # Shared across request threads and server processes. Native writes also
                 # compare the EDB basis, covering writers outside this application.
-                page_read = body.get("action") in {"assignments", "activity-history", "study-stats"}
+                page_read = body.get("action") in {"assignments", "activity-history", "study-stats", "forecast-inputs"}
                 # Immutable list reads have their own peer and never record
                 # learner state. Scheduler/write admission must not block them.
                 # Publishers can spend minutes validating under api.lock. Answers
@@ -601,7 +601,7 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
                 self.learning_request({"action": "inventory"})
             elif path == "/api/home":
                 self.learning_request({"action": "home"})
-            elif path == "/api/study-stats":
+            elif path in ("/api/study-stats", "/api/forecast-inputs"):
                 try:
                     boundaries = query.get("dayStarts", [])
                     if len(boundaries) != 1 or len(boundaries[0]) > 160:
@@ -612,7 +612,7 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
                 except ValueError:
                     self.send_bytes(400, b'{"error":"Provide eight local day boundaries."}', "application/json")
                     return
-                self.learning_request({"action": "study-stats", "dayStarts": days})
+                self.learning_request({"action": "forecast-inputs" if path == "/api/forecast-inputs" else "study-stats", "dayStarts": days})
             elif path == "/api/assignments":
                 self.learning_request({"action": "assignments"})
             elif path == "/api/assignment":

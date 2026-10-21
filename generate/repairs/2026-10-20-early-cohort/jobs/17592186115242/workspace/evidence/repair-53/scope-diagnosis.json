@@ -1,0 +1,31 @@
+{
+  "status": "unsupported",
+  "finding_id": "591f580cadb749294588",
+  "first_command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory",
+  "first_command_exit_code": 1,
+  "first_command_stdout": {
+    "finding": "591f580cadb749294588",
+    "passed": false,
+    "affected": 5,
+    "selection_successes": 64,
+    "draws": 64
+  },
+  "root_cause": "Five stored v2 answer banks retain the sign-extremum shortcut. Current generator changes cannot alter these stored question entities; question_selection.rs selects supplied stored candidate IDs by difficulty and learner history.",
+  "current_generator_findings_passed": 4,
+  "runtime_source_inventory_manifest_unchanged": true,
+  "proposal_verified": true,
+  "proposal_applied": false,
+  "proposal": "evidence/repair-3/inventory-repair-proposal.json",
+  "required_action": "Separate inventory remediation for the five identified generated records, followed by refreshed inventory and rerun of the strict inventory regression. Preserve source questions and historical learner responses.",
+  "scope_constraint": "User prohibits database changes and publication; engine_repair_allowed is false. Work is restricted to this workspace.",
+  "rendering": {
+    "retained_report": "evidence/repair-3/render/rendering.json",
+    "visually_reinspected": "evidence/repair-3/render/question-002.png",
+    "assessment": "Prompt, choices, row elimination and complete solution are readable without clipping; package unchanged."
+  },
+  "limits": [
+    "64/64 is a possible learner-history witness; actual history and policy are unavailable.",
+    "No passing claim is made for the captured historical pool."
+  ],
+  "forbidden_actions_performed": []
+}

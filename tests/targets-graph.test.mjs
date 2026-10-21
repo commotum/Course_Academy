@@ -6,6 +6,7 @@ import vm from 'node:vm';
 // Exercise the actual graph scope and URL code with fixtures, without a server or DB.
 const html = await readFile(new URL('../ui/Math-Academy-Graph-Explorer.html', import.meta.url), 'utf8');
 const weekSource = (await readFile(new URL('../ui/target-weeks.js', import.meta.url), 'utf8')).replaceAll('export ', '');
+const targetScopeSource = (await readFile(new URL('../ui/target-scope.js', import.meta.url), 'utf8')).replace(/^import .*;\n/gm, '').replaceAll('export ', '');
 const scopeSource = html.slice(html.indexOf('  function selectedCourse()'), html.indexOf('  const coursePicker ='));
 const activeSource = html.slice(html.indexOf('  function buildActiveSet()'), html.indexOf('  // Keep dependency columns fixed.'));
 const helperSource = html.slice(html.indexOf('  function isScoped()'), html.indexOf('  function titleWrap('));
@@ -59,7 +60,7 @@ function fixture(targets = [1, 3], { splitSaved = null, queueSaved = null } = {}
     guidesG: $('guides'),
   });
   context.history = { replaceState(_state, _title, url) { context.location.href = String(url); } };
-  vm.runInContext(`${weekSource}\n${helperSource}\n${geometrySource}\n${columnSource}\n${selectionSource}\n${depthSource}\n${resetSource}\n${scopeSource}\n${activeSource}\n${layoutSource}\n${guidesSource}\nfunction learnerChanged(learner) { ${changeSource} }`, context);
+  vm.runInContext(`${weekSource}\n${targetScopeSource}\n${helperSource}\n${geometrySource}\n${columnSource}\n${selectionSource}\n${depthSource}\n${resetSource}\n${scopeSource}\n${activeSource}\n${layoutSource}\n${guidesSource}\nfunction learnerChanged(learner) { ${changeSource} }`, context);
   vm.runInContext(`function queueChanged(learner) { ${queueChangeSource} }`, context);
   return context;
 }

@@ -1,6 +1,7 @@
 //! Local learner application boundary: immutable EDB reads and guarded durable writes.
 mod activity_history;
 mod study_stats;
+mod forecast_reader;
 mod assignment_interaction;
 mod assignment_reader;
 mod developer_preview;

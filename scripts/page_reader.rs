@@ -9,7 +9,7 @@ fn attribute(db: &DatabaseValue, name: &str) -> Result<u32> {
         .ok_or("Missing page schema")?)
 }
 
-fn record(db: &DatabaseValue, entity: u64) -> Result<Record> {
+pub(super) fn record(db: &DatabaseValue, entity: u64) -> Result<Record> {
     let mut record = Record::new();
     for d in db.collect_datoms_with_prefix(&IndexPrefix::Eavt {
         entity,
@@ -36,7 +36,7 @@ fn record(db: &DatabaseValue, entity: u64) -> Result<Record> {
     Ok(record)
 }
 
-fn references(record: &Record, name: &str) -> Vec<u64> {
+pub(super) fn references(record: &Record, name: &str) -> Vec<u64> {
     match record.get(name) {
         Some(Json::Array(values)) => values.iter().filter_map(Json::as_u64).collect(),
         Some(value) => value.as_u64().into_iter().collect(),
@@ -197,7 +197,7 @@ fn capture(db: &DatabaseValue, learner: &str, assignments: bool) -> Result<(Enti
     Ok((s, learner))
 }
 
-fn capture_stats(db: &DatabaseValue, learner: &str) -> Result<(EntitySnapshot,u64)> {
+pub(super) fn capture_stats(db: &DatabaseValue, learner: &str) -> Result<(EntitySnapshot,u64)> {
     let learner = db.collect_datoms_with_prefix(&IndexPrefix::Avet {
         attribute:attribute(db,"learner/id")?, value:Some(Value::String(learner.into())),entity:None,
     })?.first().ok_or("Learner not found")?.entity;
@@ -228,6 +228,7 @@ pub(super) fn serve(database: String, learner: String) -> Result<bool> {
     )?;
     let mut cache: BTreeMap<bool, (SnapshotReference, EntitySnapshot, u64)> = BTreeMap::new();
     let mut stats_cache: Option<(SnapshotReference,EntitySnapshot,u64)> = None;
+    let mut forecast_cache: Option<(SnapshotReference,forecast_reader::Capture)> = None;
     let stdin = std::io::stdin();
     let stdout = std::io::stdout();
     let mut output = stdout.lock();
@@ -235,14 +236,21 @@ pub(super) fn serve(database: String, learner: String) -> Result<bool> {
         let result = (|| -> Result<Json> {
             let body: Json = serde_json::from_str(&line?)?;
             let stats = body["action"] == "study-stats";
+            let forecast = body["action"] == "forecast-inputs";
             let assignments = match body["action"].as_str() {
                 Some("assignments") => true,
-                Some("activity-history"|"study-stats") => false,
+                Some("activity-history"|"study-stats"|"forecast-inputs") => false,
                 _ => return Err("Page reader accepts only read-only list actions".into()),
             };
             let started = Instant::now();
             let db = conn.sync()?;
             let reference = db.snapshot_reference()?;
+            if forecast {
+                if forecast_cache.as_ref().is_none_or(|(old,_)|*old!=reference) {
+                    forecast_cache=Some((reference,forecast_reader::capture(&db,&learner)?));
+                }
+                return forecast_reader::read(&forecast_cache.as_ref().unwrap().1,&body,Utc::now());
+            }
             if stats {
                 if stats_cache.as_ref().is_none_or(|(old,_,_)|*old!=reference) {
                     let (s,learner)=capture_stats(&db,&learner)?;

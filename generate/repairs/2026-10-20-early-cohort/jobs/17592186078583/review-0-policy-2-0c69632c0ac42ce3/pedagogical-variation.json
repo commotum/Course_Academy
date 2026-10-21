@@ -1,0 +1,887 @@
+{
+  "learner_operation": "Identify the surrounding temperature as equilibrium, represent the temperature excess T-T_S, and choose a negative rate proportional to that excess with k>0; distinguish sign, equilibrium and spurious factors. Moderate cases also require ignoring the initial object temperature.",
+  "fixed_features": [
+    {
+      "feature": "Negative proportionality with k>0, approaching a fixed ambient temperature from above",
+      "justification": "Tutorial f58653bc-cafb-532a-b92d-8183054c181b states dT/dt=-k(T-T_S); introduction requires T>ambient."
+    },
+    {
+      "feature": "Five equations, one radio answer, generic then substituted solution",
+      "justification": "All ten captured source question banks use this response contract and two-stage solution."
+    },
+    {
+      "feature": "Easy has one ambient reading; moderate also gives initial object reading",
+      "justification": "Source 246dbe47-9137-5b96-af87-04ddded3bed6 versus 58a15628-6a07-582f-a2d4-e1c7a7c6e77c establishes this workload distinction."
+    },
+    {
+      "feature": "Correct option always uses canonical -k(T-S) representation",
+      "justification": "This is the intended Newton model and is acceptable mathematical recognition. Fixing its position or superficial length advantage is not required."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Ambient number and scale",
+      "eligible_variation": "Ambient values in source-supported C and F easy/moderate contexts",
+      "observed": "Ambient values vary; all easy generator profiles use Celsius. The captured easy Fahrenheit cake case q-106877 is omitted."
+    },
+    {
+      "role": "Correct choice position",
+      "eligible_variation": "Any of five positions",
+      "observed": "Shuffled and varied within templates. No demonstrated position shortcut."
+    },
+    {
+      "role": "Initial versus surrounding reading",
+      "eligible_variation": "Initial stays above ambient; varying initial alone must preserve correct model",
+      "observed": "Relevant ambient changes alter answer; irrelevant initial changes preserve model. Turkey/soup force three-digit initial and two-digit ambient, making correct choice always uniquely shortest."
+    },
+    {
+      "role": "Choice representation and distractor assignment",
+      "eligible_variation": "Preserve source banks in replay; use justified same-method bank variants in practice so superficial signatures do not uniquely identify the answer",
+      "observed": "Source-style templates fix a length advantage in turkey/soup, with a conditional recurrence for thermometer I>=100."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "Source replay",
+      "sample_refs": [
+        "source-replay.json",
+        "source-replay-records.json"
+      ],
+      "result": "Nine of ten banks replay completely; q-106877 raises Profile outside difficulty."
+    },
+    {
+      "case": "Per-template/boundary control",
+      "sample_refs": [
+        "samples.json",
+        "math.json",
+        "shortcut-results.json"
+      ],
+      "result": "90 records, ten per supported template, including ambient boundaries. Mathematical keys and solutions pass; turkey/soup shortest strategy 20/20."
+    },
+    {
+      "case": "Exact runner batch before/after delivery",
+      "sample_refs": [
+        "batch.json",
+        "delivery-batch/accepted.json",
+        "shortcut-results.json"
+      ],
+      "result": "5/5 survive, five distinct Celsius ambients, templates liquid/chocolate/body. First-position cue 2/5; unique-shortest cue 0/5; no demonstrated batch-wide shortcut from these probes. Missing Fahrenheit generator family remains a package defect, not a separate claim that this five-item batch must contain every family."
+    },
+    {
+      "case": "Historical generated inventory",
+      "sample_refs": [
+        "generated-records.json",
+        "inventory-review.json",
+        "affected-inventory.json"
+      ],
+      "result": "All seven generated inventory records independently reproduced with matching stored identities and saved generation provenance. None exhibits the demonstrated unique-shortest cue; original source examples are not classified as generated."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Hold easy liquid template and seed 92817 fixed; ambient 22 -> 29 C",
+      "expected": "Correct model, prompt and substituted solution change from -k(T-22) to -k(T-29); actual grader accepts the corresponding choice only.",
+      "observed": "Expected relation verified in records, independent polynomial checks, native grading, actual renderer text and inspected screenshots 001/002.",
+      "status": "passed",
+      "justification": "Ambient is the equilibrium in Newton law.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-input.json",
+        "grader-report.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "Hold thermometer seed 92817 and initial 100 F fixed; ambient 64 -> 65 F",
+      "expected": "Change correct model and worked substitution to -k(T-65), retaining the initial-reading distractor role.",
+      "observed": "Native grader accepts updated equation, rejects all wrong choices; rendered prompts and solutions track the changed equilibrium in screenshots 003/004.",
+      "status": "passed",
+      "justification": "Ambient, not the initial reading, determines equilibrium.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-report.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Hold thermometer seed 92817 and ambient 64 F fixed; initial 100 -> 101 F",
+      "expected": "Correct mathematical response and solution remain -k(T-64); prompt and dependent wrong choices may change.",
+      "observed": "Model and solution preserved. Actual grader accepts the same mathematical response through its new authored choice UUID; inspected render screenshots 003/005 show changed initial reading and preserved correct model.",
+      "status": "passed",
+      "justification": "Source solutions substitute ambient only; initial is irrelevant to setting up the ODE in moderate cases.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-report.json",
+        "render/rendering.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "Unique shortest equation",
+      "subgroup": "samples.json: q-105917",
+      "scope": "within_template",
+      "strategy": "Choose the uniquely shortest full equation; abstain if tied.",
+      "correct": 0,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Not a perfect predictor in this subgroup; no absence-of-shortcuts claim. Baseline is a uniform guess among five choices; abstentions count as failures. All equation LHSs are identical within a question.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "First option position",
+      "subgroup": "samples.json: q-105917",
+      "scope": "within_template",
+      "strategy": "Select the first rendered choice.",
+      "correct": 0,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 0.2. Small one-record batch subgroups do not establish prediction; bank code shuffles positions and the larger same-template control varies them.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Unique shortest equation",
+      "subgroup": "samples.json: q-106936",
+      "scope": "within_template",
+      "strategy": "Choose the uniquely shortest full equation; abstain if tied.",
+      "correct": 0,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Not a perfect predictor in this subgroup; no absence-of-shortcuts claim. Baseline is a uniform guess among five choices; abstentions count as failures. All equation LHSs are identical within a question.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "First option position",
+      "subgroup": "samples.json: q-106936",
+      "scope": "within_template",
+      "strategy": "Select the first rendered choice.",
+      "correct": 2,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 0.2. Small one-record batch subgroups do not establish prediction; bank code shuffles positions and the larger same-template control varies them.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Unique shortest equation",
+      "subgroup": "samples.json: q-106878",
+      "scope": "within_template",
+      "strategy": "Choose the uniquely shortest full equation; abstain if tied.",
+      "correct": 0,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Not a perfect predictor in this subgroup; no absence-of-shortcuts claim. Baseline is a uniform guess among five choices; abstentions count as failures. All equation LHSs are identical within a question.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "First option position",
+      "subgroup": "samples.json: q-106878",
+      "scope": "within_template",
+      "strategy": "Select the first rendered choice.",
+      "correct": 2,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 0.2. Small one-record batch subgroups do not establish prediction; bank code shuffles positions and the larger same-template control varies them.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Unique shortest equation",
+      "subgroup": "samples.json: q-106932",
+      "scope": "within_template",
+      "strategy": "Choose the uniquely shortest full equation; abstain if tied.",
+      "correct": 0,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Not a perfect predictor in this subgroup; no absence-of-shortcuts claim. Baseline is a uniform guess among five choices; abstentions count as failures. All equation LHSs are identical within a question.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "First option position",
+      "subgroup": "samples.json: q-106932",
+      "scope": "within_template",
+      "strategy": "Select the first rendered choice.",
+      "correct": 4,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 0.2. Small one-record batch subgroups do not establish prediction; bank code shuffles positions and the larger same-template control varies them.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Unique shortest equation",
+      "subgroup": "samples.json: q-37365",
+      "scope": "within_template",
+      "strategy": "Choose the uniquely shortest full equation; abstain if tied.",
+      "correct": 3,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Not a perfect predictor in this subgroup; no absence-of-shortcuts claim. Baseline is a uniform guess among five choices; abstentions count as failures. All equation LHSs are identical within a question.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "First option position",
+      "subgroup": "samples.json: q-37365",
+      "scope": "within_template",
+      "strategy": "Select the first rendered choice.",
+      "correct": 3,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 0.2. Small one-record batch subgroups do not establish prediction; bank code shuffles positions and the larger same-template control varies them.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Unique shortest equation",
+      "subgroup": "samples.json: q-106883",
+      "scope": "within_template",
+      "strategy": "Choose the uniquely shortest full equation; abstain if tied.",
+      "correct": 10,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Perfect superficial prediction; no reading of ambient, sign reasoning, or Newton law is required. Baseline is a uniform guess among five choices; abstentions count as failures. All equation LHSs are identical within a question.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "First option position",
+      "subgroup": "samples.json: q-106883",
+      "scope": "within_template",
+      "strategy": "Select the first rendered choice.",
+      "correct": 2,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 0.2. Small one-record batch subgroups do not establish prediction; bank code shuffles positions and the larger same-template control varies them.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Unique shortest equation",
+      "subgroup": "samples.json: q-106934",
+      "scope": "within_template",
+      "strategy": "Choose the uniquely shortest full equation; abstain if tied.",
+      "correct": 10,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Perfect superficial prediction; no reading of ambient, sign reasoning, or Newton law is required. Baseline is a uniform guess among five choices; abstentions count as failures. All equation LHSs are identical within a question.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "First option position",
+      "subgroup": "samples.json: q-106934",
+      "scope": "within_template",
+      "strategy": "Select the first rendered choice.",
+      "correct": 3,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 0.2. Small one-record batch subgroups do not establish prediction; bank code shuffles positions and the larger same-template control varies them.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Unique shortest equation",
+      "subgroup": "samples.json: q-106935",
+      "scope": "within_template",
+      "strategy": "Choose the uniquely shortest full equation; abstain if tied.",
+      "correct": 0,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Not a perfect predictor in this subgroup; no absence-of-shortcuts claim. Baseline is a uniform guess among five choices; abstentions count as failures. All equation LHSs are identical within a question.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "First option position",
+      "subgroup": "samples.json: q-106935",
+      "scope": "within_template",
+      "strategy": "Select the first rendered choice.",
+      "correct": 2,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 0.2. Small one-record batch subgroups do not establish prediction; bank code shuffles positions and the larger same-template control varies them.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Unique shortest equation",
+      "subgroup": "samples.json: q-106937",
+      "scope": "within_template",
+      "strategy": "Choose the uniquely shortest full equation; abstain if tied.",
+      "correct": 0,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Not a perfect predictor in this subgroup; no absence-of-shortcuts claim. Baseline is a uniform guess among five choices; abstentions count as failures. All equation LHSs are identical within a question.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "First option position",
+      "subgroup": "samples.json: q-106937",
+      "scope": "within_template",
+      "strategy": "Select the first rendered choice.",
+      "correct": 2,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 0.2. Small one-record batch subgroups do not establish prediction; bank code shuffles positions and the larger same-template control varies them.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Unique shortest equation",
+      "subgroup": "delivery-easy/accepted.json: q-105917",
+      "scope": "within_template",
+      "strategy": "Choose the uniquely shortest full equation; abstain if tied.",
+      "correct": 0,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Not a perfect predictor in this subgroup; no absence-of-shortcuts claim. Baseline is a uniform guess among five choices; abstentions count as failures. All equation LHSs are identical within a question.",
+      "sample_refs": [
+        "delivery-easy/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "First option position",
+      "subgroup": "delivery-easy/accepted.json: q-105917",
+      "scope": "within_template",
+      "strategy": "Select the first rendered choice.",
+      "correct": 0,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 0.2. Small one-record batch subgroups do not establish prediction; bank code shuffles positions and the larger same-template control varies them.",
+      "sample_refs": [
+        "delivery-easy/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Unique shortest equation",
+      "subgroup": "delivery-easy/accepted.json: q-106936",
+      "scope": "within_template",
+      "strategy": "Choose the uniquely shortest full equation; abstain if tied.",
+      "correct": 0,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Not a perfect predictor in this subgroup; no absence-of-shortcuts claim. Baseline is a uniform guess among five choices; abstentions count as failures. All equation LHSs are identical within a question.",
+      "sample_refs": [
+        "delivery-easy/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "First option position",
+      "subgroup": "delivery-easy/accepted.json: q-106936",
+      "scope": "within_template",
+      "strategy": "Select the first rendered choice.",
+      "correct": 2,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 0.2. Small one-record batch subgroups do not establish prediction; bank code shuffles positions and the larger same-template control varies them.",
+      "sample_refs": [
+        "delivery-easy/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Unique shortest equation",
+      "subgroup": "delivery-easy/accepted.json: q-106878",
+      "scope": "within_template",
+      "strategy": "Choose the uniquely shortest full equation; abstain if tied.",
+      "correct": 0,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Not a perfect predictor in this subgroup; no absence-of-shortcuts claim. Baseline is a uniform guess among five choices; abstentions count as failures. All equation LHSs are identical within a question.",
+      "sample_refs": [
+        "delivery-easy/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "First option position",
+      "subgroup": "delivery-easy/accepted.json: q-106878",
+      "scope": "within_template",
+      "strategy": "Select the first rendered choice.",
+      "correct": 2,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 0.2. Small one-record batch subgroups do not establish prediction; bank code shuffles positions and the larger same-template control varies them.",
+      "sample_refs": [
+        "delivery-easy/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Unique shortest equation",
+      "subgroup": "delivery-easy/accepted.json: q-106932",
+      "scope": "within_template",
+      "strategy": "Choose the uniquely shortest full equation; abstain if tied.",
+      "correct": 0,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Not a perfect predictor in this subgroup; no absence-of-shortcuts claim. Baseline is a uniform guess among five choices; abstentions count as failures. All equation LHSs are identical within a question.",
+      "sample_refs": [
+        "delivery-easy/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "First option position",
+      "subgroup": "delivery-easy/accepted.json: q-106932",
+      "scope": "within_template",
+      "strategy": "Select the first rendered choice.",
+      "correct": 4,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 0.2. Small one-record batch subgroups do not establish prediction; bank code shuffles positions and the larger same-template control varies them.",
+      "sample_refs": [
+        "delivery-easy/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Unique shortest equation",
+      "subgroup": "delivery-moderate/accepted.json: q-37365",
+      "scope": "within_template",
+      "strategy": "Choose the uniquely shortest full equation; abstain if tied.",
+      "correct": 3,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Not a perfect predictor in this subgroup; no absence-of-shortcuts claim. Baseline is a uniform guess among five choices; abstentions count as failures. All equation LHSs are identical within a question.",
+      "sample_refs": [
+        "delivery-moderate/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "First option position",
+      "subgroup": "delivery-moderate/accepted.json: q-37365",
+      "scope": "within_template",
+      "strategy": "Select the first rendered choice.",
+      "correct": 3,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 0.2. Small one-record batch subgroups do not establish prediction; bank code shuffles positions and the larger same-template control varies them.",
+      "sample_refs": [
+        "delivery-moderate/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Unique shortest equation",
+      "subgroup": "delivery-moderate/accepted.json: q-106883",
+      "scope": "within_template",
+      "strategy": "Choose the uniquely shortest full equation; abstain if tied.",
+      "correct": 10,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Perfect superficial prediction; no reading of ambient, sign reasoning, or Newton law is required. Baseline is a uniform guess among five choices; abstentions count as failures. All equation LHSs are identical within a question.",
+      "sample_refs": [
+        "delivery-moderate/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "First option position",
+      "subgroup": "delivery-moderate/accepted.json: q-106883",
+      "scope": "within_template",
+      "strategy": "Select the first rendered choice.",
+      "correct": 2,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 0.2. Small one-record batch subgroups do not establish prediction; bank code shuffles positions and the larger same-template control varies them.",
+      "sample_refs": [
+        "delivery-moderate/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Unique shortest equation",
+      "subgroup": "delivery-moderate/accepted.json: q-106934",
+      "scope": "within_template",
+      "strategy": "Choose the uniquely shortest full equation; abstain if tied.",
+      "correct": 10,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Perfect superficial prediction; no reading of ambient, sign reasoning, or Newton law is required. Baseline is a uniform guess among five choices; abstentions count as failures. All equation LHSs are identical within a question.",
+      "sample_refs": [
+        "delivery-moderate/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "First option position",
+      "subgroup": "delivery-moderate/accepted.json: q-106934",
+      "scope": "within_template",
+      "strategy": "Select the first rendered choice.",
+      "correct": 3,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 0.2. Small one-record batch subgroups do not establish prediction; bank code shuffles positions and the larger same-template control varies them.",
+      "sample_refs": [
+        "delivery-moderate/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Unique shortest equation",
+      "subgroup": "delivery-moderate/accepted.json: q-106935",
+      "scope": "within_template",
+      "strategy": "Choose the uniquely shortest full equation; abstain if tied.",
+      "correct": 0,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Not a perfect predictor in this subgroup; no absence-of-shortcuts claim. Baseline is a uniform guess among five choices; abstentions count as failures. All equation LHSs are identical within a question.",
+      "sample_refs": [
+        "delivery-moderate/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "First option position",
+      "subgroup": "delivery-moderate/accepted.json: q-106935",
+      "scope": "within_template",
+      "strategy": "Select the first rendered choice.",
+      "correct": 2,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 0.2. Small one-record batch subgroups do not establish prediction; bank code shuffles positions and the larger same-template control varies them.",
+      "sample_refs": [
+        "delivery-moderate/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Unique shortest equation",
+      "subgroup": "delivery-moderate/accepted.json: q-106937",
+      "scope": "within_template",
+      "strategy": "Choose the uniquely shortest full equation; abstain if tied.",
+      "correct": 0,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Not a perfect predictor in this subgroup; no absence-of-shortcuts claim. Baseline is a uniform guess among five choices; abstentions count as failures. All equation LHSs are identical within a question.",
+      "sample_refs": [
+        "delivery-moderate/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "First option position",
+      "subgroup": "delivery-moderate/accepted.json: q-106937",
+      "scope": "within_template",
+      "strategy": "Select the first rendered choice.",
+      "correct": 2,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 0.2. Small one-record batch subgroups do not establish prediction; bank code shuffles positions and the larger same-template control varies them.",
+      "sample_refs": [
+        "delivery-moderate/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Unique shortest equation",
+      "subgroup": "batch.json: q-105917",
+      "scope": "within_template",
+      "strategy": "Choose the uniquely shortest full equation; abstain if tied.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Not a perfect predictor in this subgroup; no absence-of-shortcuts claim. Baseline is a uniform guess among five choices; abstentions count as failures. All equation LHSs are identical within a question.",
+      "sample_refs": [
+        "batch.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "First option position",
+      "subgroup": "batch.json: q-105917",
+      "scope": "within_template",
+      "strategy": "Select the first rendered choice.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 0.2. Small one-record batch subgroups do not establish prediction; bank code shuffles positions and the larger same-template control varies them.",
+      "sample_refs": [
+        "batch.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Unique shortest equation",
+      "subgroup": "batch.json: q-106932",
+      "scope": "within_template",
+      "strategy": "Choose the uniquely shortest full equation; abstain if tied.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Not a perfect predictor in this subgroup; no absence-of-shortcuts claim. Baseline is a uniform guess among five choices; abstentions count as failures. All equation LHSs are identical within a question.",
+      "sample_refs": [
+        "batch.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "First option position",
+      "subgroup": "batch.json: q-106932",
+      "scope": "within_template",
+      "strategy": "Select the first rendered choice.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 0.2. Small one-record batch subgroups do not establish prediction; bank code shuffles positions and the larger same-template control varies them.",
+      "sample_refs": [
+        "batch.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Unique shortest equation",
+      "subgroup": "batch.json: q-106878",
+      "scope": "within_template",
+      "strategy": "Choose the uniquely shortest full equation; abstain if tied.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Not a perfect predictor in this subgroup; no absence-of-shortcuts claim. Baseline is a uniform guess among five choices; abstentions count as failures. All equation LHSs are identical within a question.",
+      "sample_refs": [
+        "batch.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "First option position",
+      "subgroup": "batch.json: q-106878",
+      "scope": "within_template",
+      "strategy": "Select the first rendered choice.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 0.2. Small one-record batch subgroups do not establish prediction; bank code shuffles positions and the larger same-template control varies them.",
+      "sample_refs": [
+        "batch.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Unique shortest equation",
+      "subgroup": "delivery-batch/accepted.json: q-105917",
+      "scope": "within_template",
+      "strategy": "Choose the uniquely shortest full equation; abstain if tied.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Not a perfect predictor in this subgroup; no absence-of-shortcuts claim. Baseline is a uniform guess among five choices; abstentions count as failures. All equation LHSs are identical within a question.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "First option position",
+      "subgroup": "delivery-batch/accepted.json: q-105917",
+      "scope": "within_template",
+      "strategy": "Select the first rendered choice.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 0.2. Small one-record batch subgroups do not establish prediction; bank code shuffles positions and the larger same-template control varies them.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Unique shortest equation",
+      "subgroup": "delivery-batch/accepted.json: q-106932",
+      "scope": "within_template",
+      "strategy": "Choose the uniquely shortest full equation; abstain if tied.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Not a perfect predictor in this subgroup; no absence-of-shortcuts claim. Baseline is a uniform guess among five choices; abstentions count as failures. All equation LHSs are identical within a question.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "First option position",
+      "subgroup": "delivery-batch/accepted.json: q-106932",
+      "scope": "within_template",
+      "strategy": "Select the first rendered choice.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 0.2. Small one-record batch subgroups do not establish prediction; bank code shuffles positions and the larger same-template control varies them.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Unique shortest equation",
+      "subgroup": "delivery-batch/accepted.json: q-106878",
+      "scope": "within_template",
+      "strategy": "Choose the uniquely shortest full equation; abstain if tied.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Not a perfect predictor in this subgroup; no absence-of-shortcuts claim. Baseline is a uniform guess among five choices; abstentions count as failures. All equation LHSs are identical within a question.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "First option position",
+      "subgroup": "delivery-batch/accepted.json: q-106878",
+      "scope": "within_template",
+      "strategy": "Select the first rendered choice.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 0.2. Small one-record batch subgroups do not establish prediction; bank code shuffles positions and the larger same-template control varies them.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Thermometer wording and a three-digit initial reading",
+      "subgroup": "q-37365; I>=100",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select the uniquely shortest equation.",
+      "correct": 3,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "The three-digit initial-reading subgroup also gives perfect length-based prediction. Baseline is uniform among five choices; source family with two-digit initial reading has a shortest-length tie.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "Generator parameter validation and duplicate rejection/resampling code",
+      "Generator CLI fingerprint deduplication and finite-domain behavior",
+      "Actual shared publisher normalization and captured-inventory/within-batch deduplication",
+      "Requested-difficulty filtering",
+      "Learner difficulty-first selection and history exclusions; read-only conditional simulation"
+    ],
+    "sample_refs": [
+      "packaging.json",
+      "relocated-cli.json",
+      "delivery-batch/delivery.json",
+      "delivery-easy/delivery.json",
+      "delivery-moderate/delivery.json",
+      "shortcut-results.json",
+      "learner-selection.json"
+    ],
+    "result": "Exact batch 5 -> 5; independent easy 40 -> 38, moderate 50 -> 48. All 20 turkey/soup cases survive their moderate delivery stage. The requested easy stage excludes moderate cases as intended. Within a positive difficulty band, the selection algorithm leaves the surviving family shortcut reachable; it cannot repair the missing easy generator family. No preparation file or live publication was available; actual shared read-only filtering used captured basis 5389."
+  },
+  "limitations": [
+    "Finite audit does not prove absence of every shortcut.",
+    "Live inventory, configured selection weights, and individual learner history were not provided; selection statements are conditional and based on the inspected algorithm and captured inventory, with synthetic IDs for unpublished accepted questions.",
+    "Shortest-choice defect is demonstrated in supported moderate templates; no claim that it answers the requested easy batch.",
+    "Canonical example bank is absent and cannot be faithfully reconstructed as a complete source-bank replay."
+  ]
+}

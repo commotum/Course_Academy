@@ -1193,6 +1193,12 @@ fn known_topic_ancestry(
     Ok(known)
 }
 
+/// Read-only preparation coverage, shared with workload estimates. Retention
+/// due dates do not turn already acquired lessons back into first-learning work.
+pub fn known_preparation_topics(s: &EntitySnapshot, learner: u64) -> Result<BTreeSet<u64>> {
+    known_topic_ancestry(s, learner, &topic_prerequisites(s)?)
+}
+
 fn target_support(
     s: &EntitySnapshot,
     learner: u64,

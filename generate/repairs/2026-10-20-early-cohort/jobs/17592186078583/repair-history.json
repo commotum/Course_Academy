@@ -1,0 +1,186 @@
+{
+  "format": 1,
+  "findings": [
+    {
+      "id": "740ca70087bb0b79e807",
+      "finding": {
+        "kind": "source_fidelity",
+        "description": "The current source contains ten question banks, but the package retains nine. Easy Fahrenheit cake q-106877 is omitted, leaving normal easy sampling entirely Celsius.",
+        "source_refs": [
+          "29a46a1b-3fea-5ef3-98e8-a12878014c94 / q-106877"
+        ],
+        "reproduction": "From evidence_root run: PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python reproduce_failures.py cake. The exact source case uses seed 90271, template/profile q-106877, parameters {S:70}; it raises ValueError: Template does not belong to level.",
+        "requested_change": "Restore the complete cake source bank and include its Fahrenheit profile in normal easy sampling. Update source-coverage claims and retain the strict regression test."
+      },
+      "source_hash": "e3728133b97969e6f150b26ae63a4841900487d2e6248167fe4736520e0d3e49",
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186078583/review-0-policy-2-0c69632c0ac42ce3",
+      "attempt": 0
+    },
+    {
+      "id": "a6abccb1458850272d61",
+      "finding": {
+        "kind": "decision_shortcut",
+        "description": "Within turkey and soup templates, the correct equation is always uniquely shortest. Three-digit initial readings and two-digit ambient readings preserve this cue, bypassing ambient identification and Newton-law reasoning. All 20 tested cases survive moderate delivery. The requested easy batch does not exhibit this demonstrated shortcut.",
+        "source_refs": [
+          "3ba4e3cf-6728-56eb-8731-1748c4ffae5c / q-106883",
+          "9d9f1ee5-0c1f-52df-9e3a-c2e55b83891f / q-106934",
+          "58a15628-6a07-582f-a2d4-e1c7a7c6e77c / q-37365",
+          "generate/principles.md: incidental answer-producing cues"
+        ],
+        "reproduction": "Run: PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python reproduce_failures.py shortest. Exact case: moderate q-106883, seed 92601, S=52, I=179. The RHS choices are -179(T-52), -k(T-52), -52(T-179), -k(T-179), and -kT(T-52). The correct second expression alone is shortest. Complete record and screenshot: shortcut-render-records.json and render-shortcut/question-001.png.",
+        "requested_change": "Revise practice-bank construction so equation length cannot determine correctness within recognizable templates. Preserve raw source replay, cooling constraints, and workload; retain affected families and the strict shortcut regression. Shuffling choices alone does not fix this rule."
+      },
+      "source_hash": "e3728133b97969e6f150b26ae63a4841900487d2e6248167fe4736520e0d3e49",
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186078583/review-0-policy-2-0c69632c0ac42ce3",
+      "attempt": 0
+    }
+  ],
+  "events": [
+    {
+      "attempt": 0,
+      "package_hash": "c6c3b57aa49e2a24681457468ee879fab4fc736343eb0b0b3b8412dc57a879ee",
+      "reason": {
+        "verdict": "revise",
+        "summary": "Two demonstrated defects: the easy Fahrenheit cake family is omitted, and moderate turkey/soup templates permit a perfect shortest-choice shortcut. The exact easy batch passes tested math, grading, and delivery checks. Package files remain unchanged; no database writes occurred.",
+        "source_analysis": {
+          "skill": "Translate Newton's cooling statement into a differential equation approaching ambient temperature from above.",
+          "reasoning_steps": [
+            "Identify the surrounding temperature as equilibrium.",
+            "Form the excess T-T_S.",
+            "Apply negative proportionality with k>0.",
+            "Select the matching differential equation."
+          ],
+          "invariants": [
+            "Cooling follows dT/dt=-k(T-T_S), with k>0.",
+            "One correct equation among five radio choices.",
+            "Easy cases provide ambient temperature; moderate cases also provide an initial temperature.",
+            "No integration or parameter fitting is required."
+          ],
+          "permitted_variations": [
+            "Ambient temperature, supported Celsius/Fahrenheit contexts, and hotter initial temperatures.",
+            "Choice position and source-supported distractor profiles.",
+            "Equivalent equation representations preserving the method and workload."
+          ],
+          "source_refs": [
+            "246dbe47-9137-5b96-af87-04ddded3bed6: easy liquid",
+            "29a46a1b-3fea-5ef3-98e8-a12878014c94: easy Fahrenheit cake",
+            "3ba4e3cf-6728-56eb-8731-1748c4ffae5c: moderate turkey",
+            "9d9f1ee5-0c1f-52df-9e3a-c2e55b83891f: moderate soup",
+            "Tutorial f58653bc-cafb-532a-b92d-8183054c181b: Newton's law of cooling"
+          ],
+          "evidence_paths": [
+            "source-analysis.json"
+          ]
+        },
+        "checks": {
+          "source_replay": {
+            "status": "failed",
+            "evidence_paths": [
+              "source-replay.json",
+              "source-replay-records.json",
+              "failure-cake.txt"
+            ],
+            "details": "Nine complete source banks replay exactly. The tenth, easy Fahrenheit cake q-106877, is absent and rejected. The canonical example has no captured answer bank."
+          },
+          "math": {
+            "status": "passed",
+            "evidence_paths": [
+              "audit.py",
+              "math.json",
+              "samples.json",
+              "batch.json"
+            ],
+            "details": "Independent prompt-derived symbolic checks pass for 90 control records and all five batch records: unique correct model, distinct choices, and matching worked substitution."
+          },
+          "variety": {
+            "status": "failed",
+            "evidence_paths": [
+              "source-replay.json",
+              "samples.json",
+              "shortcut-results.json"
+            ],
+            "details": "Numbers and positions vary, but all easy generator templates use Celsius, omitting the supported Fahrenheit family. Moderate conditional shortcuts persist across numeric variation."
+          },
+          "scope": {
+            "status": "passed",
+            "evidence_paths": [
+              "scope.json",
+              "source-analysis.json",
+              "samples.json"
+            ],
+            "details": "Supported templates preserve the observed model-selection workload and radio response contract without adding ODE solving."
+          },
+          "grading": {
+            "status": "passed",
+            "evidence_paths": [
+              "grader-input.json",
+              "grader-report.json",
+              "delivered-grader-input.json",
+              "delivered-grader-report.json"
+            ],
+            "details": "Native grade_field passes 535 choice tests: 107 accepted and 428 rejected, including controlled pairs and normalized delivered records."
+          },
+          "rendering": {
+            "status": "passed",
+            "evidence_paths": [
+              "visual-inspection.json",
+              "render/rendering.json",
+              "render-extra/rendering.json",
+              "render-shortcut/rendering.json"
+            ],
+            "details": "Eleven actual-UI screenshots inspected. Prompts, equations, radio controls, solutions, and counterfactual updates display correctly."
+          },
+          "packaging": {
+            "status": "passed",
+            "evidence_paths": [
+              "packaging.json",
+              "package-before.json",
+              "package-after.json",
+              "relocated-cli.json"
+            ],
+            "details": "Exact declared runtime versions match. Deterministic replay, relocation, CLI deduplication, and invalid-boundary rejection pass. All 96 package files remain unchanged."
+          },
+          "decision_variation": {
+            "status": "failed",
+            "evidence_paths": [
+              "pedagogical-variation.json",
+              "shortcut-results.json",
+              "counterfactual-results.json",
+              "delivery-batch/delivery.json",
+              "delivery-moderate/delivery.json",
+              "learner-selection.json",
+              "inventory-review.json",
+              "affected-inventory.json",
+              "generated-records.json"
+            ],
+            "details": "Relevant and irrelevant counterfactuals pass. Choosing the uniquely shortest equation succeeds on all 20 turkey/soup controls, including delivery survivors. That strategy scores 0/5 on the exact easy batch. All seven stored generated records were reproduced and lack this specific defect. Learner-selection conclusions are conditional because live policy and history were unavailable."
+          }
+        },
+        "findings": [
+          {
+            "kind": "source_fidelity",
+            "description": "The current source contains ten question banks, but the package retains nine. Easy Fahrenheit cake q-106877 is omitted, leaving normal easy sampling entirely Celsius.",
+            "source_refs": [
+              "29a46a1b-3fea-5ef3-98e8-a12878014c94 / q-106877"
+            ],
+            "reproduction": "From evidence_root run: PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python reproduce_failures.py cake. The exact source case uses seed 90271, template/profile q-106877, parameters {S:70}; it raises ValueError: Template does not belong to level.",
+            "requested_change": "Restore the complete cake source bank and include its Fahrenheit profile in normal easy sampling. Update source-coverage claims and retain the strict regression test."
+          },
+          {
+            "kind": "decision_shortcut",
+            "description": "Within turkey and soup templates, the correct equation is always uniquely shortest. Three-digit initial readings and two-digit ambient readings preserve this cue, bypassing ambient identification and Newton-law reasoning. All 20 tested cases survive moderate delivery. The requested easy batch does not exhibit this demonstrated shortcut.",
+            "source_refs": [
+              "3ba4e3cf-6728-56eb-8731-1748c4ffae5c / q-106883",
+              "9d9f1ee5-0c1f-52df-9e3a-c2e55b83891f / q-106934",
+              "58a15628-6a07-582f-a2d4-e1c7a7c6e77c / q-37365",
+              "generate/principles.md: incidental answer-producing cues"
+            ],
+            "reproduction": "Run: PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python reproduce_failures.py shortest. Exact case: moderate q-106883, seed 92601, S=52, I=179. The RHS choices are -179(T-52), -k(T-52), -52(T-179), -k(T-179), and -kT(T-52). The correct second expression alone is shortest. Complete record and screenshot: shortcut-render-records.json and render-shortcut/question-001.png.",
+            "requested_change": "Revise practice-bank construction so equation length cannot determine correctness within recognizable templates. Preserve raw source replay, cooling constraints, and workload; retain affected families and the strict shortcut regression. Shuffling choices alone does not fix this rule."
+          }
+        ]
+      },
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186078583/review-0-policy-2-0c69632c0ac42ce3"
+    }
+  ]
+}
