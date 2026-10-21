@@ -1,0 +1,129 @@
+{
+  "verdict": "revise",
+  "summary": "Previous defects are repaired in tested outputs. A valid unit-coefficient assignment still crashes during distractor construction. Package unchanged.",
+  "source_analysis": {
+    "skill": "Translate a linear system into its augmented matrix.",
+    "reasoning_steps": [
+      "Collect variables on the left and constants on the right.",
+      "Identify implicit unit and missing zero coefficients.",
+      "Preserve equation order and natural variable order.",
+      "Append the constants column and select the matching matrix."
+    ],
+    "invariants": [
+      "Integer linear equations.",
+      "Five-choice radio response.",
+      "Two-variable easy workload.",
+      "No solving or row reduction."
+    ],
+    "permitted_variations": [
+      "Coefficient and constant signs and magnitudes, including unit coefficients.",
+      "Missing-variable locations.",
+      "Term placement and order.",
+      "Distractor error locations and choice positions."
+    ],
+    "source_refs": [
+      "dfed30ca-4b53-5a19-b938-cfe31a91deda",
+      "608e444e-fb7d-584c-a616-ea55f4a46535",
+      "tutorial 36b1a271-77b9-59ed-9f12-1b6675c26830",
+      "tutorial f6081e68-9014-5a0d-a6bf-084abe5fd28e",
+      "generate/principles.md sections 1\u20133"
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "provenance.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay-results.json",
+        "source-replays.json",
+        "retained-regression-results.json"
+      ],
+      "details": "All ten assessed source profiles replay complete banks, keys, prompts and solution stages."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "counterfactual-results.json"
+      ],
+      "details": "Independent exact parsing verified 127 returned current records, including banks, keys and worked solutions."
+    },
+    "variety": {
+      "status": "failed",
+      "evidence_paths": [
+        "coverage-results.json",
+        "boundaries.json",
+        "boundary-counterexample.json",
+        "boundary-regression-result.json",
+        "delivery-batch/delivery.json"
+      ],
+      "details": "Normal sampling varies decisions, but declared valid positive and negative unit-literal assignments fail during bank construction."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "scope-results.json",
+        "source-analysis.json"
+      ],
+      "details": "Tested records preserve the source method, response contract and easy workload."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-results.json"
+      ],
+      "details": "Native grader accepted 127 independently verified choices and rejected 508 wrong choices; zero unresolved."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-remaining/rendering.json",
+        "visual-inspection.json",
+        "counterfactual-ui-results.json"
+      ],
+      "details": "21 actual-UI previews passed; 14 screenshots inspected, including all five batch records."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "runtime.json",
+        "packaging-results.json",
+        "final-integrity.json"
+      ],
+      "details": "Exact dependencies, deterministic replay and manifest-only relocation pass. All 184 package files remain unchanged."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "shortcut-results.json",
+        "counterfactual-ui-results.json",
+        "boundary-regression-result.json",
+        "affected-inventory.json",
+        "inventory-reproduction-results.json"
+      ],
+      "details": "Previous sign shortcuts are defeated in tested current samples and batch. The relevant unit-coefficient change cannot produce its dependent record. Seven historical stored shortcut cases were separately reconstructed."
+    }
+  },
+  "findings": [
+    {
+      "kind": "restriction",
+      "description": "q-71722 permits unit literals but cannot construct their answer bank. With parameters {\"2\":1,\"3\":4}, the valid system is x-4=y; 1+y=-x, with augmented matrix [[1,-1,4],[1,1,-1]]. Only four distinct same-sign permutations exist, so bank_for_matrix raises ValueError instead of returning five choices. Negative unit input also fails; adjacent positive and negative 2 inputs succeed. This demonstrates a controlled-construction defect, not a crash in the tested CLI batch.",
+      "source_refs": [
+        "dfed30ca-4b53-5a19-b938-cfe31a91deda",
+        "608e444e-fb7d-584c-a616-ea55f4a46535",
+        "generate/principles.md sections 1\u20133",
+        "workspace/17592186059768.py: bank_for_matrix and generate literal validation"
+      ],
+      "reproduction": "From evidence_root run /home/jake/Developer/Course_Academy/.venv/bin/python -B boundary_regression.py. Exact call: generate('easy',941713401,profile='q-71722',parameters={'2':1,'3':4}). The strict acceptance test exits 1 with ValueError: Not enough distinct same-mask entry assignments.",
+      "requested_change": "Support the declared valid literal range. When same-sign permutations provide fewer than five choices, construct additional source-scope coefficient, constant-placement or sign-error distractors while preserving one correct answer. Retain strict positive and negative unit acceptance tests and the repaired shortcut checks."
+    }
+  ],
+  "repair_history_file": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186059768/repair-history.json",
+  "instruction": "Fix the root cause, retain every earlier counterexample, and declare executable checks in repair-regressions.json. A failed check is another repair task, not permission to abandon the generator."
+}

@@ -1,0 +1,389 @@
+{
+  "learner_operation": "For each displayed equation, collect variable terms on the left and constants on the right without scaling the equation; identify implicit unit and missing zero coefficients; select the matrix whose coefficient columns and final constant column match every row.",
+  "fixed_features": [
+    {
+      "feature": "Find augmented matrix, natural variable order, original equation order",
+      "justification": "Canonical b5967dd6-bdf9-5cd0-9639-ec2816d04256 and tutorial 36b1a271-77b9-59ed-9f12-1b6675c26830 define coefficient columns plus RHS column; row reduction is not the skill."
+    },
+    {
+      "feature": "One radio field with five matrix choices",
+      "justification": "All ten assessed source questions have that response contract."
+    },
+    {
+      "feature": "Easy: two equations in x,y; moderate: two or three equations in x,y,z",
+      "justification": "Observed source difficulty split; changing variable names or adding fractions belongs to adjacent KPs, not this requested easy family."
+    },
+    {
+      "feature": "Generator fixes every sign, zero, unit, equality placement, and equal-magnitude coupling",
+      "justification": "Author states source fidelity as rationale. That is insufficient for incidental assignments: source lesson requires coefficient collection, not a fixed sign topology. This fixed feature is rejected, not endorsed."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Coefficient and RHS signs",
+      "eligible_variation": "Signed small integers with prompt, organized equations, matrix, choices and explanation recomputed",
+      "observed": "All seven profile sign masks are fixed. Positive magnitude-only slots cannot alter them; explicit negative parameter is rejected."
+    },
+    {
+      "role": "Omitted variable location and implicit unit coefficients",
+      "eligible_variation": "Which row/variable is missing or unit, while preserving the source workload and natural order",
+      "observed": "q-129122 always omits second-row y; q-1051 always omits second-row y; units and zeros cannot vary."
+    },
+    {
+      "role": "RHS constant placement and sign after transposition",
+      "eligible_variation": "Which constants need moving and their resulting signs",
+      "observed": "q-1052 and q-71722 correct bottom-right is always negative; all four distractors have a nonnegative bottom-right."
+    },
+    {
+      "role": "Correct choice position",
+      "eligible_variation": "Options can be permuted while preserving answer identity",
+      "observed": "Raw bank order fixed, but actual UI choiceOrder hashes item/field/choice IDs and shuffles options. Position alone is not reported as a learner defect."
+    },
+    {
+      "role": "Magnitude assignments",
+      "eligible_variation": "Independent coefficient and constant values, allowing incidental equalities as mathematically valid",
+      "observed": "Distinct original literals are forced distinct; equal original magnitudes remain coupled across unrelated roles. 2..24 range supplies numerical variation, but no sign decision variation."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "q-20361 decision/sign cases",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut-results.json"
+      ],
+      "result": "14 independently seeded/boundary records; exactly one sign mask for the correct choice. Source and variants mathematically checked. Fixed zero/unit/side assignments remain."
+    },
+    {
+      "case": "q-1052 decision/sign cases",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut-results.json"
+      ],
+      "result": "14 independently seeded/boundary records; exactly one sign mask for the correct choice. Source and variants mathematically checked. Fixed zero/unit/side assignments remain."
+    },
+    {
+      "case": "q-129122 decision/sign cases",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut-results.json"
+      ],
+      "result": "14 independently seeded/boundary records; exactly one sign mask for the correct choice. Source and variants mathematically checked. Fixed zero/unit/side assignments remain."
+    },
+    {
+      "case": "q-129124 decision/sign cases",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut-results.json"
+      ],
+      "result": "14 independently seeded/boundary records; exactly one sign mask for the correct choice. Source and variants mathematically checked. Fixed zero/unit/side assignments remain."
+    },
+    {
+      "case": "q-71722 decision/sign cases",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut-results.json"
+      ],
+      "result": "14 independently seeded/boundary records; exactly one sign mask for the correct choice. Source and variants mathematically checked. Fixed zero/unit/side assignments remain."
+    },
+    {
+      "case": "q-1051 decision/sign cases",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut-results.json"
+      ],
+      "result": "14 independently seeded/boundary records; exactly one sign mask for the correct choice. Source and variants mathematically checked. Fixed zero/unit/side assignments remain."
+    },
+    {
+      "case": "q-1065 decision/sign cases",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut-results.json"
+      ],
+      "result": "14 independently seeded/boundary records; exactly one sign mask for the correct choice. Source and variants mathematically checked. Fixed zero/unit/side assignments remain."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "q-1052 same seed and parameters except literal 6 changes to 24",
+      "expected": "Second organized RHS and augmented matrix bottom-right change from -6 to -24; canonical selected matrix and its UUID change; new correct choice accepted and four distractors rejected",
+      "observed": "Displayed equations, independently parsed matrix, explanation and native grader all follow the change; render/question-006.png versus render-remaining/question-001.png show changed prompt/matrix/solution",
+      "status": "passed",
+      "justification": "The source requires moving a left-hand constant to the RHS. This tests a genuine dependency but leaves the defective sign cue intact.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-input.json",
+        "grader-results.json",
+        "render/rendering.json",
+        "render-remaining/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Reorder second equation 6+y=4x to y+6=4x in a read-only review fixture, holding key and explanation fixed",
+      "expected": "Identical matrix, correct answer identity and grading; the prompt shows commuted terms",
+      "observed": "Independent integer parsing, full choice grading and actual screenshots confirm preserved response: render/question-006.png and render-remaining/question-002.png",
+      "status": "passed",
+      "justification": "Commutativity does not alter coefficients or constants in the source-defined coefficient-collection task. Fixture is authored evidence, not a generator capability claim.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-input.json",
+        "grader-results.json",
+        "render-remaining/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "Change a left constant sign within q-1052, literal 6 -> -6, keeping all other values fixed",
+      "expected": "A valid same-method instance changes the normalized second RHS from -6 to +6 and recomputes bank, key and explanation",
+      "observed": "Current generator rejects the explicit negative assignment with AssertionError; there is no generator-produced pair to grade. The sign-changing capability is absent rather than falsely certified.",
+      "status": "failed",
+      "justification": "Signs of constants are incidental source assignments; sign transposition remains the same operation and workload. Rejection proves the fixed-sign restriction, not a grader limitation.",
+      "sample_refs": [
+        "counterfactual-results.json",
+        "boundaries.json",
+        "audit.py"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "Recognizable equation layout plus source matrix sign mask",
+      "subgroup": "q-20361",
+      "scope": "within_template",
+      "strategy": "Recognize equation layout by regex; choose unique answer with the memorized +/\u2212/0 matrix pattern; ignore all magnitudes and do no term transposition",
+      "correct": 14,
+      "total": 14,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Random selection among five choices succeeds with probability 0.2. Perfect conditional prediction is caused by fixed source sign assignments; metadata is not consulted. Actual UI shuffling and array reversal preserve this choice-value cue.",
+      "sample_refs": [
+        "variation_audit.py",
+        "independent-samples.json",
+        "shortcut-signatures.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Recognizable equation layout plus source matrix sign mask",
+      "subgroup": "q-1052",
+      "scope": "within_template",
+      "strategy": "Recognize equation layout by regex; choose unique answer with the memorized +/\u2212/0 matrix pattern; ignore all magnitudes and do no term transposition",
+      "correct": 14,
+      "total": 14,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Random selection among five choices succeeds with probability 0.2. Perfect conditional prediction is caused by fixed source sign assignments; metadata is not consulted. Actual UI shuffling and array reversal preserve this choice-value cue.",
+      "sample_refs": [
+        "variation_audit.py",
+        "independent-samples.json",
+        "shortcut-signatures.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Recognizable equation layout plus source matrix sign mask",
+      "subgroup": "q-129122",
+      "scope": "within_template",
+      "strategy": "Recognize equation layout by regex; choose unique answer with the memorized +/\u2212/0 matrix pattern; ignore all magnitudes and do no term transposition",
+      "correct": 14,
+      "total": 14,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Random selection among five choices succeeds with probability 0.2. Perfect conditional prediction is caused by fixed source sign assignments; metadata is not consulted. Actual UI shuffling and array reversal preserve this choice-value cue.",
+      "sample_refs": [
+        "variation_audit.py",
+        "independent-samples.json",
+        "shortcut-signatures.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Recognizable equation layout plus source matrix sign mask",
+      "subgroup": "q-129124",
+      "scope": "within_template",
+      "strategy": "Recognize equation layout by regex; choose unique answer with the memorized +/\u2212/0 matrix pattern; ignore all magnitudes and do no term transposition",
+      "correct": 14,
+      "total": 14,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Random selection among five choices succeeds with probability 0.2. Perfect conditional prediction is caused by fixed source sign assignments; metadata is not consulted. Actual UI shuffling and array reversal preserve this choice-value cue.",
+      "sample_refs": [
+        "variation_audit.py",
+        "independent-samples.json",
+        "shortcut-signatures.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Recognizable equation layout plus source matrix sign mask",
+      "subgroup": "q-71722",
+      "scope": "within_template",
+      "strategy": "Recognize equation layout by regex; choose unique answer with the memorized +/\u2212/0 matrix pattern; ignore all magnitudes and do no term transposition",
+      "correct": 14,
+      "total": 14,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Random selection among five choices succeeds with probability 0.2. Perfect conditional prediction is caused by fixed source sign assignments; metadata is not consulted. Actual UI shuffling and array reversal preserve this choice-value cue.",
+      "sample_refs": [
+        "variation_audit.py",
+        "independent-samples.json",
+        "shortcut-signatures.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Recognizable equation layout plus source matrix sign mask",
+      "subgroup": "q-1051",
+      "scope": "within_template",
+      "strategy": "Recognize equation layout by regex; choose unique answer with the memorized +/\u2212/0 matrix pattern; ignore all magnitudes and do no term transposition",
+      "correct": 14,
+      "total": 14,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Random selection among five choices succeeds with probability 0.2. Perfect conditional prediction is caused by fixed source sign assignments; metadata is not consulted. Actual UI shuffling and array reversal preserve this choice-value cue.",
+      "sample_refs": [
+        "variation_audit.py",
+        "independent-samples.json",
+        "shortcut-signatures.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Recognizable equation layout plus source matrix sign mask",
+      "subgroup": "q-1065",
+      "scope": "within_template",
+      "strategy": "Recognize equation layout by regex; choose unique answer with the memorized +/\u2212/0 matrix pattern; ignore all magnitudes and do no term transposition",
+      "correct": 14,
+      "total": 14,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Random selection among five choices succeeds with probability 0.2. Perfect conditional prediction is caused by fixed source sign assignments; metadata is not consulted. Actual UI shuffling and array reversal preserve this choice-value cue.",
+      "sample_refs": [
+        "variation_audit.py",
+        "independent-samples.json",
+        "shortcut-signatures.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Bottom-right sign only",
+      "subgroup": "q-1052",
+      "scope": "within_template",
+      "strategy": "Choose the sole matrix whose bottom-right entry is negative",
+      "correct": 14,
+      "total": 14,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Random five-choice baseline is 0.2. This sign-only action is correct for every tested parameterization, and construction keeps all four distractor corners nonnegative. It bypasses organizing coefficient columns.",
+      "sample_refs": [
+        "minimal-failing-case.json",
+        "independent-samples.json",
+        "regression-results.json",
+        "variation_audit.py"
+      ]
+    },
+    {
+      "cue": "Bottom-right sign only",
+      "subgroup": "q-71722",
+      "scope": "within_template",
+      "strategy": "Choose the sole matrix whose bottom-right entry is negative",
+      "correct": 14,
+      "total": 14,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Random five-choice baseline is 0.2. This sign-only action is correct for every tested parameterization, and construction keeps all four distractor corners nonnegative. It bypasses organizing coefficient columns.",
+      "sample_refs": [
+        "minimal-failing-case.json",
+        "independent-samples.json",
+        "regression-results.json",
+        "variation_audit.py"
+      ]
+    },
+    {
+      "cue": "Template layout and memorized sign mask",
+      "subgroup": "runner_batch",
+      "scope": "overall",
+      "strategy": "Choose the unique matrix matching the source sign mask for that recognizable layout",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Random baseline is 0.2 for each five-choice field. The exact finite batch is fully predicted; broader sampling does not excuse its failure. Stored generated questions are separately reproduced, not confused with original source examples.",
+      "sample_refs": [
+        "runner-batch.json",
+        "shortcut-results.json",
+        "variation_audit.py"
+      ]
+    },
+    {
+      "cue": "Template layout and memorized sign mask",
+      "subgroup": "delivered_batch",
+      "scope": "overall",
+      "strategy": "Choose the unique matrix matching the source sign mask for that recognizable layout",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Random baseline is 0.2 for each five-choice field. The exact finite batch is fully predicted; broader sampling does not excuse its failure. Stored generated questions are separately reproduced, not confused with original source examples.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "shortcut-results.json",
+        "variation_audit.py"
+      ]
+    },
+    {
+      "cue": "Template layout and memorized sign mask",
+      "subgroup": "stored_generated",
+      "scope": "overall",
+      "strategy": "Choose the unique matrix matching the source sign mask for that recognizable layout",
+      "correct": 7,
+      "total": 7,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Random baseline is 0.2 for each five-choice field. The exact finite batch is fully predicted; broader sampling does not excuse its failure. Stored generated questions are separately reproduced, not confused with original source examples.",
+      "sample_refs": [
+        "generated-records.json",
+        "shortcut-results.json",
+        "variation_audit.py"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "Generator selection and positive distinct-magnitude construction; no retry loop",
+      "Requested difficulty filtering",
+      "Actual publisher normalization, identities and captured-inventory/batch deduplication",
+      "Actual UI choiceOrder shuffling",
+      "Read-only faithful learner-selection reproduction under explicit weights and freshness scenarios"
+    ],
+    "sample_refs": [
+      "independent-samples.json",
+      "runner-batch.json",
+      "delivery-easy/accepted.json",
+      "delivery-easy/delivery.json",
+      "delivery-moderate/accepted.json",
+      "delivery-moderate/delivery.json",
+      "delivery-batch/accepted.json",
+      "delivery-batch/delivery.json",
+      "delivery-duplicate-input.json",
+      "delivery-duplicate/delivery.json",
+      "learner-selection-results.json",
+      "shortcut-results.json",
+      "inventory-reproduction-results.json",
+      "reproduce_inventory.py"
+    ],
+    "result": "Raw sample 98/98 sign-pattern successes; delivery retained 70 easy and 28 moderate, with identical 98/98 success. Exact batch retained 5/5, all answerable by memorized template sign patterns. Positive/negative corner probe succeeds 28/28 across q-1052 and q-71722 and 1/1 on the exact batch q-71722 member. A separate three-record exercise rejects one stored duplicate and one repeated batch record, retaining one cue-vulnerable record. Captured generated inventory 7/7 vulnerable; conditional selection gives 64/64 sign-pattern successes under each of unconfigured, easy-only and both-band configurations. Actual current learner weights/history were not captured; those outcomes are conditional, not a claim about a live learner."
+  },
+  "limitations": [
+    "No finite review proves absence of every shortcut. Here a specific fixed-sign construction proves persistence of the demonstrated cue within its family.",
+    "Inventory basis 5352 is captured data. Later publications and learner histories may change which members are delivered.",
+    "Actual learner weights and reservations are absent; selection is examined with faithful read-only rules and explicit conditional candidate sets, not a live database.",
+    "Three moderate source profiles are absent from the package. Their failures are reported, not silently removed from supported-source obligations.",
+    "Canonical example is independently interpreted but has no replay profile; seven supported assessed banks replay, three do not.",
+    "Historical v1.0.0 records are exactly reconstructed from original source templates, archived parameters and historical identities. Full prompts, solutions, banks, keys and IDs match captured inventory. Current generation normalizes display whitespace and uses different raw identities; that does not alter this shortcut."
+  ]
+}

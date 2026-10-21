@@ -1,0 +1,722 @@
+{
+  "learner_operation": "Identify the exponential base and RHS, apply log_b(b^c)=c, then undo the signed exponent offset and select the equivalent exact expression.",
+  "fixed_features": [
+    {
+      "feature": "One exponential b^(x+s)=n with positive small integer b>1,n>0; coefficient of x one.",
+      "justification": "Tutorial 2794, e-4067 and four source questions teach inversion and at most one additive isolation. Broader neighboring KPs introduce multiplication/approximation/isolation."
+    },
+    {
+      "feature": "Exact logarithmic answer and one radio field with five math choices.",
+      "justification": "All four source banks use that response contract; fixed choice count preserves workload, not a fixed qualifying label or correct position."
+    },
+    {
+      "feature": "Normal direct banks have no additive offsets; normal shifted banks contain both signs.",
+      "justification": "Maintains comparable inversion/isolation workload and gives every bank member an eligible inverse equation. Shift sign and selected member are not fixed."
+    },
+    {
+      "feature": "Normal bank contains two distinct bases, several arguments and five distinct numerical choices.",
+      "justification": "Authors a same-method distractor family; no specific base, argument, multiplicity, rank or option position is privileged. Independent conditional probes test these surface constraints."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "logarithm base",
+      "eligible_variation": "Exponential base varies independently; source values 2,3,5,7 are examples.",
+      "observed": "All integer bases 2..9 observed in independently sampled delivered items."
+    },
+    {
+      "role": "logarithm argument",
+      "eligible_variation": "Positive RHS can be below, equal to, or above the base; RHS is not a fixed source label.",
+      "observed": "All RHS integers 2..40 observed; same-bank controlled RHS 3 ->5 changes response and explanation."
+    },
+    {
+      "role": "inverse offset",
+      "eligible_variation": "Zero, positive, negative offsets; undo exponent shift rather than always add/subtract.",
+      "observed": "Every shift -6..6 observed; controlled fixed b=2,r=3 changes exponent x-1 ->x+1 and answer +1 ->-1."
+    },
+    {
+      "role": "correct option and displayed position",
+      "eligible_variation": "Any bank member may be correct in an eligible inverse equation and any displayed position is permitted.",
+      "observed": "All five members of each of two fixed banks exercised; fresh templates contain all five key positions and no tested UI position always works."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "Direct inversion",
+      "sample_refs": [
+        "samples.json",
+        "delivery-fresh/accepted.json",
+        "stage-coverage.json"
+      ],
+      "result": "160/320 fresh and delivered samples; 3/5 runner items."
+    },
+    {
+      "case": "Positive and negative exponent shifts",
+      "sample_refs": [
+        "samples.json",
+        "controlled.json",
+        "stage-coverage.json"
+      ],
+      "result": "160 shifted fresh/delivered samples, including 78 positive and 82 negative shifts, and every shift magnitude 1..6."
+    },
+    {
+      "case": "All roles eligible within a fixed bank",
+      "sample_refs": [
+        "controlled.json",
+        "counterfactual-results.json",
+        "grader-input.json",
+        "grader-results.json"
+      ],
+      "result": "Two banks x five chosen roles checked independently and through native grader; no bank member fixed as key."
+    },
+    {
+      "case": "Rejection, maximum count and learner selection",
+      "sample_refs": [
+        "rejection-trace.json",
+        "boundary-1000.json",
+        "selection-results.json"
+      ],
+      "result": "Exact replay traces match generator output; bank rejection happens before key selection, semantic deduplication after. At count1000 direct bank saturates sooner, both templates survive. Positive easy weight samples both templates in combined captured/new pool; zero-weight and unconfigured branches exclude new items as specified."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Hold complete five-option direct bank fixed; b=2 RHS 3 ->5.",
+      "expected": "Change log_2(3) to log_2(5), with prompt, inversion, final solution and accepted native response following.",
+      "observed": "Controlled indexes 0,1; rendered cases 4,5 and native controlled-0/1 agree.",
+      "status": "passed",
+      "justification": "RHS is answer-bearing under tutorial 2794 inversion.",
+      "sample_refs": [
+        "controlled.json",
+        "counterfactual-results.json",
+        "grader-input.json",
+        "grader-results.json",
+        "render-input.json",
+        "render/rendering.json",
+        "render-assessment.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "Hold b=2,RHS=3 and five-option shifted bank fixed; x-1 ->x+1.",
+      "expected": "Answer changes log_2(3)+1 ->log_2(3)-1; prior mathematical response becomes wrong.",
+      "observed": "Controlled indexes 5,6; both options are present in each bank, and native grade outcomes switch; rendered equations and final solutions switch consistently.",
+      "status": "passed",
+      "justification": "e-4067 and q-25124/q-100163 require undoing the signed additive shift.",
+      "sample_refs": [
+        "controlled.json",
+        "counterfactual-results.json",
+        "grader-results.json",
+        "render-input.json",
+        "render/rendering.json",
+        "render-assessment.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Only reorder displayed choices and change generation seed for fixed b=2,RHS=3,x-1.",
+      "expected": "Preserve equation, mathematical correct answer, key UUID, full worked solution and grading.",
+      "observed": "Controlled indexes 5,10 preserve all dependencies; native grading accepts same answer. Rendered math is preserved. Delivery deduplication removes the reorder, demonstrating that presentation-only variety is not counted as a new delivered item.",
+      "status": "passed",
+      "justification": "Source inversion rule is independent of option order; selection key is mathematical, not positional.",
+      "sample_refs": [
+        "controlled.json",
+        "counterfactual-results.json",
+        "grader-results.json",
+        "delivery-controlled/accepted.json",
+        "delivery-controlled/delivery.json",
+        "render-assessment.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "position 1",
+      "subgroup": "delivered fresh / direct",
+      "scope": "within_template",
+      "strategy": "position 1",
+      "correct": 32,
+      "total": 160,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No fixed answer role established; binomial fluctuations in finite samples are not proof of a predictor. Runner batch is only five items.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "samples.json",
+        "delivery-fresh/accepted.json"
+      ]
+    },
+    {
+      "cue": "position 2",
+      "subgroup": "delivered fresh / direct",
+      "scope": "within_template",
+      "strategy": "position 2",
+      "correct": 32,
+      "total": 160,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No fixed answer role established; binomial fluctuations in finite samples are not proof of a predictor. Runner batch is only five items.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "samples.json",
+        "delivery-fresh/accepted.json"
+      ]
+    },
+    {
+      "cue": "position 3",
+      "subgroup": "delivered fresh / direct",
+      "scope": "within_template",
+      "strategy": "position 3",
+      "correct": 29,
+      "total": 160,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No fixed answer role established; binomial fluctuations in finite samples are not proof of a predictor. Runner batch is only five items.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "samples.json",
+        "delivery-fresh/accepted.json"
+      ]
+    },
+    {
+      "cue": "position 4",
+      "subgroup": "delivered fresh / direct",
+      "scope": "within_template",
+      "strategy": "position 4",
+      "correct": 35,
+      "total": 160,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No fixed answer role established; binomial fluctuations in finite samples are not proof of a predictor. Runner batch is only five items.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "samples.json",
+        "delivery-fresh/accepted.json"
+      ]
+    },
+    {
+      "cue": "position 5",
+      "subgroup": "delivered fresh / direct",
+      "scope": "within_template",
+      "strategy": "position 5",
+      "correct": 32,
+      "total": 160,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No fixed answer role established; binomial fluctuations in finite samples are not proof of a predictor. Runner batch is only five items.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "samples.json",
+        "delivery-fresh/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest TeX",
+      "subgroup": "delivered fresh / direct",
+      "scope": "within_template",
+      "strategy": "shortest TeX",
+      "correct": 29,
+      "total": 160,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No fixed answer role established; binomial fluctuations in finite samples are not proof of a predictor. Runner batch is only five items.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "samples.json",
+        "delivery-fresh/accepted.json"
+      ]
+    },
+    {
+      "cue": "longest TeX",
+      "subgroup": "delivered fresh / direct",
+      "scope": "within_template",
+      "strategy": "longest TeX",
+      "correct": 26,
+      "total": 160,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No fixed answer role established; binomial fluctuations in finite samples are not proof of a predictor. Runner batch is only five items.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "samples.json",
+        "delivery-fresh/accepted.json"
+      ]
+    },
+    {
+      "cue": "position 1",
+      "subgroup": "delivered fresh / shifted",
+      "scope": "within_template",
+      "strategy": "position 1",
+      "correct": 25,
+      "total": 160,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No fixed answer role established; binomial fluctuations in finite samples are not proof of a predictor. Runner batch is only five items.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "samples.json",
+        "delivery-fresh/accepted.json"
+      ]
+    },
+    {
+      "cue": "position 2",
+      "subgroup": "delivered fresh / shifted",
+      "scope": "within_template",
+      "strategy": "position 2",
+      "correct": 31,
+      "total": 160,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No fixed answer role established; binomial fluctuations in finite samples are not proof of a predictor. Runner batch is only five items.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "samples.json",
+        "delivery-fresh/accepted.json"
+      ]
+    },
+    {
+      "cue": "position 3",
+      "subgroup": "delivered fresh / shifted",
+      "scope": "within_template",
+      "strategy": "position 3",
+      "correct": 30,
+      "total": 160,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No fixed answer role established; binomial fluctuations in finite samples are not proof of a predictor. Runner batch is only five items.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "samples.json",
+        "delivery-fresh/accepted.json"
+      ]
+    },
+    {
+      "cue": "position 4",
+      "subgroup": "delivered fresh / shifted",
+      "scope": "within_template",
+      "strategy": "position 4",
+      "correct": 41,
+      "total": 160,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No fixed answer role established; binomial fluctuations in finite samples are not proof of a predictor. Runner batch is only five items.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "samples.json",
+        "delivery-fresh/accepted.json"
+      ]
+    },
+    {
+      "cue": "position 5",
+      "subgroup": "delivered fresh / shifted",
+      "scope": "within_template",
+      "strategy": "position 5",
+      "correct": 33,
+      "total": 160,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No fixed answer role established; binomial fluctuations in finite samples are not proof of a predictor. Runner batch is only five items.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "samples.json",
+        "delivery-fresh/accepted.json"
+      ]
+    },
+    {
+      "cue": "shortest TeX",
+      "subgroup": "delivered fresh / shifted",
+      "scope": "within_template",
+      "strategy": "shortest TeX",
+      "correct": 32,
+      "total": 160,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No fixed answer role established; binomial fluctuations in finite samples are not proof of a predictor. Runner batch is only five items.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "samples.json",
+        "delivery-fresh/accepted.json"
+      ]
+    },
+    {
+      "cue": "longest TeX",
+      "subgroup": "delivered fresh / shifted",
+      "scope": "within_template",
+      "strategy": "longest TeX",
+      "correct": 23,
+      "total": 160,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No fixed answer role established; binomial fluctuations in finite samples are not proof of a predictor. Runner batch is only five items.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "samples.json",
+        "delivery-fresh/accepted.json"
+      ]
+    },
+    {
+      "cue": "Apply same-base inverse identity; match both log base and positive RHS",
+      "subgroup": "delivered fresh / direct unique matching base and argument",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Apply same-base inverse identity; match both log base and positive RHS",
+      "correct": 160,
+      "total": 160,
+      "baseline": 0.2,
+      "disposition": "intended_skill",
+      "conclusion": "Uses tutorial 2794 logarithmic inversion, so success is an intended mathematical simplification. It is not a label/layout-only strategy. Controlled shifted pair separately forces offset-sign reconsideration with base/RHS fixed.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "samples.json",
+        "delivery-fresh/accepted.json"
+      ]
+    },
+    {
+      "cue": "Apply same-base inverse identity; match both log base and positive RHS",
+      "subgroup": "delivered fresh / shifted unique matching base and argument",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Apply same-base inverse identity; match both log base and positive RHS",
+      "correct": 66,
+      "total": 66,
+      "baseline": 0.2,
+      "disposition": "intended_skill",
+      "conclusion": "Uses tutorial 2794 logarithmic inversion, so success is an intended mathematical simplification. It is not a label/layout-only strategy. Controlled shifted pair separately forces offset-sign reconsideration with base/RHS fixed.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "samples.json",
+        "delivery-fresh/accepted.json"
+      ]
+    },
+    {
+      "cue": "rarest displayed base",
+      "subgroup": "delivered fresh / direct",
+      "scope": "within_template",
+      "strategy": "rarest displayed base",
+      "correct": 37,
+      "total": 160,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with uniform 1/5 selection. No deterministic cue predicts the answer in this recognizable group; rare or common bank features do not establish correctness. Selection probe uses selected generated records, separately from pre-existing bank questions.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "samples.json",
+        "delivery-fresh/accepted.json"
+      ]
+    },
+    {
+      "cue": "most common displayed base",
+      "subgroup": "delivered fresh / direct",
+      "scope": "within_template",
+      "strategy": "most common displayed base",
+      "correct": 24,
+      "total": 160,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with uniform 1/5 selection. No deterministic cue predicts the answer in this recognizable group; rare or common bank features do not establish correctness. Selection probe uses selected generated records, separately from pre-existing bank questions.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "samples.json",
+        "delivery-fresh/accepted.json"
+      ]
+    },
+    {
+      "cue": "rarest displayed argument",
+      "subgroup": "delivered fresh / direct",
+      "scope": "within_template",
+      "strategy": "rarest displayed argument",
+      "correct": 28,
+      "total": 160,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with uniform 1/5 selection. No deterministic cue predicts the answer in this recognizable group; rare or common bank features do not establish correctness. Selection probe uses selected generated records, separately from pre-existing bank questions.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "samples.json",
+        "delivery-fresh/accepted.json"
+      ]
+    },
+    {
+      "cue": "most common displayed argument",
+      "subgroup": "delivered fresh / direct",
+      "scope": "within_template",
+      "strategy": "most common displayed argument",
+      "correct": 31,
+      "total": 160,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with uniform 1/5 selection. No deterministic cue predicts the answer in this recognizable group; rare or common bank features do not establish correctness. Selection probe uses selected generated records, separately from pre-existing bank questions.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "samples.json",
+        "delivery-fresh/accepted.json"
+      ]
+    },
+    {
+      "cue": "rarest displayed offset",
+      "subgroup": "delivered fresh / direct",
+      "scope": "within_template",
+      "strategy": "rarest displayed offset",
+      "correct": 32,
+      "total": 160,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with uniform 1/5 selection. No deterministic cue predicts the answer in this recognizable group; rare or common bank features do not establish correctness. Selection probe uses selected generated records, separately from pre-existing bank questions.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "samples.json",
+        "delivery-fresh/accepted.json"
+      ]
+    },
+    {
+      "cue": "most common displayed offset",
+      "subgroup": "delivered fresh / direct",
+      "scope": "within_template",
+      "strategy": "most common displayed offset",
+      "correct": 32,
+      "total": 160,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with uniform 1/5 selection. No deterministic cue predicts the answer in this recognizable group; rare or common bank features do not establish correctness. Selection probe uses selected generated records, separately from pre-existing bank questions.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "samples.json",
+        "delivery-fresh/accepted.json"
+      ]
+    },
+    {
+      "cue": "rarest displayed base",
+      "subgroup": "delivered fresh / shifted",
+      "scope": "within_template",
+      "strategy": "rarest displayed base",
+      "correct": 34,
+      "total": 160,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with uniform 1/5 selection. No deterministic cue predicts the answer in this recognizable group; rare or common bank features do not establish correctness. Selection probe uses selected generated records, separately from pre-existing bank questions.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "samples.json",
+        "delivery-fresh/accepted.json"
+      ]
+    },
+    {
+      "cue": "most common displayed base",
+      "subgroup": "delivered fresh / shifted",
+      "scope": "within_template",
+      "strategy": "most common displayed base",
+      "correct": 30,
+      "total": 160,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with uniform 1/5 selection. No deterministic cue predicts the answer in this recognizable group; rare or common bank features do not establish correctness. Selection probe uses selected generated records, separately from pre-existing bank questions.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "samples.json",
+        "delivery-fresh/accepted.json"
+      ]
+    },
+    {
+      "cue": "rarest displayed argument",
+      "subgroup": "delivered fresh / shifted",
+      "scope": "within_template",
+      "strategy": "rarest displayed argument",
+      "correct": 23,
+      "total": 160,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with uniform 1/5 selection. No deterministic cue predicts the answer in this recognizable group; rare or common bank features do not establish correctness. Selection probe uses selected generated records, separately from pre-existing bank questions.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "samples.json",
+        "delivery-fresh/accepted.json"
+      ]
+    },
+    {
+      "cue": "most common displayed argument",
+      "subgroup": "delivered fresh / shifted",
+      "scope": "within_template",
+      "strategy": "most common displayed argument",
+      "correct": 32,
+      "total": 160,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with uniform 1/5 selection. No deterministic cue predicts the answer in this recognizable group; rare or common bank features do not establish correctness. Selection probe uses selected generated records, separately from pre-existing bank questions.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "samples.json",
+        "delivery-fresh/accepted.json"
+      ]
+    },
+    {
+      "cue": "rarest displayed offset",
+      "subgroup": "delivered fresh / shifted",
+      "scope": "within_template",
+      "strategy": "rarest displayed offset",
+      "correct": 30,
+      "total": 160,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with uniform 1/5 selection. No deterministic cue predicts the answer in this recognizable group; rare or common bank features do not establish correctness. Selection probe uses selected generated records, separately from pre-existing bank questions.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "samples.json",
+        "delivery-fresh/accepted.json"
+      ]
+    },
+    {
+      "cue": "most common displayed offset",
+      "subgroup": "delivered fresh / shifted",
+      "scope": "within_template",
+      "strategy": "most common displayed offset",
+      "correct": 25,
+      "total": 160,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with uniform 1/5 selection. No deterministic cue predicts the answer in this recognizable group; rare or common bank features do not establish correctness. Selection probe uses selected generated records, separately from pre-existing bank questions.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "samples.json",
+        "delivery-fresh/accepted.json"
+      ]
+    },
+    {
+      "cue": "rarest displayed base",
+      "subgroup": "delivered fresh / shifted singleton minority base",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "rarest displayed base",
+      "correct": 14,
+      "total": 46,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with uniform 1/5 selection. No deterministic cue predicts the answer in this recognizable group; rare or common bank features do not establish correctness. Selection probe uses selected generated records, separately from pre-existing bank questions.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "samples.json",
+        "delivery-fresh/accepted.json"
+      ]
+    },
+    {
+      "cue": "position 1",
+      "subgroup": "selected generated / direct",
+      "scope": "within_template",
+      "strategy": "position 1",
+      "correct": 215,
+      "total": 1030,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with uniform 1/5 selection. No deterministic cue predicts the answer in this recognizable group; rare or common bank features do not establish correctness. Selection probe uses selected generated records, separately from pre-existing bank questions.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "selection-results.json"
+      ]
+    },
+    {
+      "cue": "shortest TeX",
+      "subgroup": "selected generated / direct",
+      "scope": "within_template",
+      "strategy": "shortest TeX",
+      "correct": 194,
+      "total": 1030,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with uniform 1/5 selection. No deterministic cue predicts the answer in this recognizable group; rare or common bank features do not establish correctness. Selection probe uses selected generated records, separately from pre-existing bank questions.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "selection-results.json"
+      ]
+    },
+    {
+      "cue": "rarest displayed base",
+      "subgroup": "selected generated / direct",
+      "scope": "within_template",
+      "strategy": "rarest displayed base",
+      "correct": 239,
+      "total": 1030,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with uniform 1/5 selection. No deterministic cue predicts the answer in this recognizable group; rare or common bank features do not establish correctness. Selection probe uses selected generated records, separately from pre-existing bank questions.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "selection-results.json"
+      ]
+    },
+    {
+      "cue": "position 1",
+      "subgroup": "selected generated / shifted",
+      "scope": "within_template",
+      "strategy": "position 1",
+      "correct": 153,
+      "total": 992,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with uniform 1/5 selection. No deterministic cue predicts the answer in this recognizable group; rare or common bank features do not establish correctness. Selection probe uses selected generated records, separately from pre-existing bank questions.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "selection-results.json"
+      ]
+    },
+    {
+      "cue": "shortest TeX",
+      "subgroup": "selected generated / shifted",
+      "scope": "within_template",
+      "strategy": "shortest TeX",
+      "correct": 202,
+      "total": 992,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with uniform 1/5 selection. No deterministic cue predicts the answer in this recognizable group; rare or common bank features do not establish correctness. Selection probe uses selected generated records, separately from pre-existing bank questions.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "selection-results.json"
+      ]
+    },
+    {
+      "cue": "rarest displayed base",
+      "subgroup": "selected generated / shifted",
+      "scope": "within_template",
+      "strategy": "rarest displayed base",
+      "correct": 207,
+      "total": 992,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with uniform 1/5 selection. No deterministic cue predicts the answer in this recognizable group; rare or common bank features do not establish correctness. Selection probe uses selected generated records, separately from pre-existing bank questions.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "selection-results.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "generator bank rejection before key choice",
+      "semantic duplicate rejection/resampling after key choice",
+      "requested easy difficulty",
+      "KP validation and stable identity normalization",
+      "captured inventory and within-batch deduplication",
+      "fresh learner inventory pool and within-easy weighted selection",
+      "unrated fallback and unconfigured-policy selection",
+      "actual UI choiceOrder"
+    ],
+    "sample_refs": [
+      "samples.json",
+      "runner-batch.json",
+      "rejection-trace.json",
+      "delivery-fresh/accepted.json",
+      "delivery-fresh/delivery.json",
+      "delivery-runner/accepted.json",
+      "delivery-runner/delivery.json",
+      "stage-coverage.json",
+      "selection-results.json",
+      "shortcut-results.json"
+    ],
+    "result": "320/320 independent items and 5/5 runner records retained at captured basis4974. Fresh remains 160 direct /160 shifted; runner remains 3 direct /2 shifted. Controlled irrelevant reorder alone removed. New items have uniform within-easy selection when easy weight is positive; 2022 new generated draws among 2048 combined-pool simulations retain both cases, with conditional shortcut probes recorded. Selection fallback cases correctly do not claim generated-item delivery."
+  },
+  "limitations": [
+    "Finite tests support the stated shortcut claims, not absence of all conceivable shortcuts.",
+    "Inventory is captured at basis4974; later publication can alter deduplication and relative selection shares.",
+    "Live policy weights, learner history, assigned numeric IDs and task seeds are not supplied. Selection is examined parametrically with faithful rules and synthetic new IDs; exact live draws are not claimed.",
+    "Unconfigured policy selects minimum candidate ID; easy-zero policy uses unrated fallback, so generated easy records are not reached under those policy branches. Those are selector semantics rather than a generator defect.",
+    "No unsupported original question family was omitted; canonical example has no captured answer bank.",
+    "Screenshot inspection used desktop completed-answer UI; responsive/mobile layouts are outside this review."
+  ]
+}

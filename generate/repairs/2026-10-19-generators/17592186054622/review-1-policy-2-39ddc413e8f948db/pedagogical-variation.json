@@ -1,0 +1,1919 @@
+{
+  "learner_operation": "Use product and power logarithm rules to expand or combine two factors; on hard items substitute known logarithms into the resulting weighted sum. Associate the exponent on each variable with that same variable’s given logarithm; the displayed evidence must determine the weighted sum.",
+  "fixed_features": [
+    {
+      "feature": "Two factors with a common valid base; product/power expansion and given-log substitution.",
+      "justification": "q-79453 and q-98925 both use this operation; tutorial 2796 provides its identities. More factors or quotients would add a reasoning stage outside these hard examples."
+    },
+    {
+      "feature": "Numeric family has two nonunit exponents; symbolic family has one unit exponent, one nonunit exponent and one symbolic given.",
+      "justification": "Preserves the two observed hard workloads: two short numeric products versus one affine result. Fixing which variable has these roles is unnecessary and is tested independently."
+    },
+    {
+      "feature": "Five radio choices, one correct identity/value; x and y positive and base >1.",
+      "justification": "All four bank items use five radio alternatives; logarithm domain is mathematically necessary. Conservative bases >1 suffice without a new prerequisite."
+    },
+    {
+      "feature": "Integer exponent/given magnitudes remain small; no fractional exponents sampled as hard.",
+      "justification": "Two explicit hard cases have integer exponents and givens. The wider lesson has a fractional example but does not establish its hard substitution workload. Negative given logarithms remain realizable by positive x=b^u, y=b^v."
+    },
+    {
+      "feature": "Letters x,y,k and base set {2,3,5,7,10}.",
+      "justification": "Renaming letters and extending the infinite valid base set does not change the answer-bearing association operation. Both variable assignments are varied, so fixed letters provide no fixed-role shortcut."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Which given is symbolic",
+      "eligible_variation": "Either x or y, independently of which factor is powered.",
+      "observed": "All four symbol/powered assignments and both signs observed. Controlled x-to-y swap changes k+6 to 3k+2 with exponents fixed."
+    },
+    {
+      "role": "Which variable carries the nonunit symbolic-family exponent",
+      "eligible_variation": "Either factor; change its exponent while holding the other givens and bank fixed.",
+      "observed": "Both factors are powered in sampled symbolic cases; minimal exponent changes produce 2k-2 then 3k-2 for each symbolic variable."
+    },
+    {
+      "role": "Numeric coefficients and given values",
+      "eligible_variation": "Vary both exponent/value assignments, magnitudes, and signs without changing product/power rules.",
+      "observed": "All 12 unequal exponent pairs from 2..5, all 12 nonzero givens -6..6, all four sign quadrants, all five bases and both given orders occur in 160 fresh samples."
+    },
+    {
+      "role": "Which visible candidate is correct",
+      "eligible_variation": "All five bank values and positions may be correct when the prompt evidence changes.",
+      "observed": "12 controlled sign/factor subgroups each retain a fixed five-value bank and five different correct values; all 60 survive delivery. Raw options are shuffled independently, and the UI further reorders by IDs."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "numeric (-1, -1)",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "delivery/accepted.json"
+      ],
+      "result": "Five different correct values ['-8', '-10', '-12', '-14', '-16'] with the same visible bank; no controlled role removed by delivery."
+    },
+    {
+      "case": "numeric (-1, 1)",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "delivery/accepted.json"
+      ],
+      "result": "Five different correct values ['4', '2', '0', '-2', '-4'] with the same visible bank; no controlled role removed by delivery."
+    },
+    {
+      "case": "numeric (1, -1)",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "delivery/accepted.json"
+      ],
+      "result": "Five different correct values ['-4', '-2', '0', '2', '4'] with the same visible bank; no controlled role removed by delivery."
+    },
+    {
+      "case": "numeric (1, 1)",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "delivery/accepted.json"
+      ],
+      "result": "Five different correct values ['8', '10', '12', '14', '16'] with the same visible bank; no controlled role removed by delivery."
+    },
+    {
+      "case": "symbolic symbol=x powered=x sign=-1",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "delivery/accepted.json"
+      ],
+      "result": "Five different correct values ['2k-2', '3k-2', '4k-2', '5k-2', '2k-6'] with the same visible bank; no controlled role removed by delivery."
+    },
+    {
+      "case": "symbolic symbol=x powered=x sign=1",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "delivery/accepted.json"
+      ],
+      "result": "Five different correct values ['2k+2', '3k+2', '4k+2', '5k+2', '2k+6'] with the same visible bank; no controlled role removed by delivery."
+    },
+    {
+      "case": "symbolic symbol=x powered=y sign=-1",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "delivery/accepted.json"
+      ],
+      "result": "Five different correct values ['k-4', 'k-6', 'k-8', 'k-10', 'k-12'] with the same visible bank; no controlled role removed by delivery."
+    },
+    {
+      "case": "symbolic symbol=x powered=y sign=1",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "delivery/accepted.json"
+      ],
+      "result": "Five different correct values ['k+4', 'k+6', 'k+8', 'k+10', 'k+12'] with the same visible bank; no controlled role removed by delivery."
+    },
+    {
+      "case": "symbolic symbol=y powered=x sign=-1",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "delivery/accepted.json"
+      ],
+      "result": "Five different correct values ['k-4', 'k-6', 'k-8', 'k-10', 'k-12'] with the same visible bank; no controlled role removed by delivery."
+    },
+    {
+      "case": "symbolic symbol=y powered=x sign=1",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "delivery/accepted.json"
+      ],
+      "result": "Five different correct values ['k+4', 'k+6', 'k+8', 'k+10', 'k+12'] with the same visible bank; no controlled role removed by delivery."
+    },
+    {
+      "case": "symbolic symbol=y powered=y sign=-1",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "delivery/accepted.json"
+      ],
+      "result": "Five different correct values ['2k-2', '3k-2', '4k-2', '5k-2', '2k-6'] with the same visible bank; no controlled role removed by delivery."
+    },
+    {
+      "case": "symbolic symbol=y powered=y sign=1",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "delivery/accepted.json"
+      ],
+      "result": "Five different correct values ['2k+2', '3k+2', '4k+2', '5k+2', '2k+6'] with the same visible bank; no controlled role removed by delivery."
+    },
+    {
+      "case": "Fresh-seed slot coverage and actual runner batch",
+      "sample_refs": [
+        "samples.json",
+        "runner-batch.json",
+        "math-tests.json",
+        "delivery-stage-tests.json"
+      ],
+      "result": "160 fresh samples cover 74 numeric and 86 symbolic; all justified sign/factor/exponent/base/order slots observed. Runner batch 5/5 accepted. Delivery 220/220 independent and 5/5 runner records."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "numeric: change only u from -1 to -2, identical bank",
+      "expected": "Recompute answer because the weighted-sum evidence changed.",
+      "observed": "Before -8; after -10. Exact visible-prompt arithmetic, worked substitution, rendered prompt/final equation and native grading all agree.",
+      "status": "passed",
+      "justification": "The exponent-to-given association in q-79453/q-98925 determines the answer; common-base relabeling, given order and display order do not change that weighted sum.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-tests.json",
+        "render-inspection.json",
+        "grader-input.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "symbolic x: change only exponent 2 to 3, identical bank",
+      "expected": "Recompute answer because the weighted-sum evidence changed.",
+      "observed": "Before 2k-2; after 3k-2. Exact visible-prompt arithmetic, worked substitution, rendered prompt/final equation and native grading all agree.",
+      "status": "passed",
+      "justification": "The exponent-to-given association in q-79453/q-98925 determines the answer; common-base relabeling, given order and display order do not change that weighted sum.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-tests.json",
+        "render-inspection.json",
+        "grader-input.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "symbolic y: change only exponent 2 to 3, identical bank",
+      "expected": "Recompute answer because the weighted-sum evidence changed.",
+      "observed": "Before 2k-2; after 3k-2. Exact visible-prompt arithmetic, worked substitution, rendered prompt/final equation and native grading all agree.",
+      "status": "passed",
+      "justification": "The exponent-to-given association in q-79453/q-98925 determines the answer; common-base relabeling, given order and display order do not change that weighted sum.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-tests.json",
+        "render-inspection.json",
+        "grader-input.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "numeric: change only y exponent; both answers available",
+      "expected": "Recompute answer because the weighted-sum evidence changed.",
+      "observed": "Before 7; after 8. Exact visible-prompt arithmetic, worked substitution, rendered prompt/final equation and native grading all agree.",
+      "status": "passed",
+      "justification": "The exponent-to-given association in q-79453/q-98925 determines the answer; common-base relabeling, given order and display order do not change that weighted sum.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-tests.json",
+        "render-inspection.json",
+        "grader-input.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "numeric: change only base",
+      "expected": "Preserve the mathematical response while updating presentation and any base notation.",
+      "observed": "Before 4; after 4. Exact visible-prompt arithmetic, worked substitution, rendered prompt/final equation and native grading all agree.",
+      "status": "passed",
+      "justification": "The exponent-to-given association in q-79453/q-98925 determines the answer; common-base relabeling, given order and display order do not change that weighted sum.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-tests.json",
+        "render-inspection.json",
+        "grader-input.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "numeric: change only given order",
+      "expected": "Preserve the mathematical response while updating presentation and any base notation.",
+      "observed": "Before 4; after 4. Exact visible-prompt arithmetic, worked substitution, rendered prompt/final equation and native grading all agree.",
+      "status": "passed",
+      "justification": "The exponent-to-given association in q-79453/q-98925 determines the answer; common-base relabeling, given order and display order do not change that weighted sum.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-tests.json",
+        "render-inspection.json",
+        "grader-input.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "numeric: reverse choice order",
+      "expected": "Preserve the mathematical response while updating presentation and any base notation.",
+      "observed": "Before 4; after 4. Exact visible-prompt arithmetic, worked substitution, rendered prompt/final equation and native grading all agree.",
+      "status": "passed",
+      "justification": "The exponent-to-given association in q-79453/q-98925 determines the answer; common-base relabeling, given order and display order do not change that weighted sum.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-tests.json",
+        "render-inspection.json",
+        "grader-input.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "symbolic: change only base",
+      "expected": "Preserve the mathematical response while updating presentation and any base notation.",
+      "observed": "Before k+4; after k+4. Exact visible-prompt arithmetic, worked substitution, rendered prompt/final equation and native grading all agree.",
+      "status": "passed",
+      "justification": "The exponent-to-given association in q-79453/q-98925 determines the answer; common-base relabeling, given order and display order do not change that weighted sum.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-tests.json",
+        "render-inspection.json",
+        "grader-input.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "symbolic: change only given order",
+      "expected": "Preserve the mathematical response while updating presentation and any base notation.",
+      "observed": "Before k+4; after k+4. Exact visible-prompt arithmetic, worked substitution, rendered prompt/final equation and native grading all agree.",
+      "status": "passed",
+      "justification": "The exponent-to-given association in q-79453/q-98925 determines the answer; common-base relabeling, given order and display order do not change that weighted sum.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-tests.json",
+        "render-inspection.json",
+        "grader-input.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "symbolic: reverse choice order",
+      "expected": "Preserve the mathematical response while updating presentation and any base notation.",
+      "observed": "Before k+4; after k+4. Exact visible-prompt arithmetic, worked substitution, rendered prompt/final equation and native grading all agree.",
+      "status": "passed",
+      "justification": "The exponent-to-given association in q-79453/q-98925 determines the answer; common-base relabeling, given order and display order do not change that weighted sum.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-tests.json",
+        "render-inspection.json",
+        "grader-input.json",
+        "grader-report.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "move symbolic given x to y with fixed exponents and n",
+      "expected": "Recompute answer because the weighted-sum evidence changed.",
+      "observed": "Before k+6; after 3k+2. Exact visible-prompt arithmetic, worked substitution, rendered prompt/final equation and native grading all agree.",
+      "status": "passed",
+      "justification": "The exponent-to-given association in q-79453/q-98925 determines the answer; common-base relabeling, given order and display order do not change that weighted sum.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-tests.json",
+        "render-inspection.json",
+        "grader-input.json",
+        "grader-report.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "first choice",
+      "subgroup": "overall",
+      "scope": "overall",
+      "strategy": "first choice using only displayed choices; ties use first stored choice.",
+      "correct": 26,
+      "total": 160,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/5 is blind selection among five distinct alternatives. This finite descriptive rate does not show a reliable perfect predictor; conditional controlled banks test the stronger fixed-bank claim.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-tests.json"
+      ]
+    },
+    {
+      "cue": "last choice",
+      "subgroup": "overall",
+      "scope": "overall",
+      "strategy": "last choice using only displayed choices; ties use first stored choice.",
+      "correct": 34,
+      "total": 160,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/5 is blind selection among five distinct alternatives. This finite descriptive rate does not show a reliable perfect predictor; conditional controlled banks test the stronger fixed-bank claim.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-tests.json"
+      ]
+    },
+    {
+      "cue": "largest constant",
+      "subgroup": "overall",
+      "scope": "overall",
+      "strategy": "largest constant using only displayed choices; ties use first stored choice.",
+      "correct": 36,
+      "total": 160,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/5 is blind selection among five distinct alternatives. This finite descriptive rate does not show a reliable perfect predictor; conditional controlled banks test the stronger fixed-bank claim.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-tests.json"
+      ]
+    },
+    {
+      "cue": "smallest constant",
+      "subgroup": "overall",
+      "scope": "overall",
+      "strategy": "smallest constant using only displayed choices; ties use first stored choice.",
+      "correct": 32,
+      "total": 160,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/5 is blind selection among five distinct alternatives. This finite descriptive rate does not show a reliable perfect predictor; conditional controlled banks test the stronger fixed-bank claim.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-tests.json"
+      ]
+    },
+    {
+      "cue": "largest coefficient",
+      "subgroup": "overall",
+      "scope": "overall",
+      "strategy": "largest coefficient using only displayed choices; ties use first stored choice.",
+      "correct": 29,
+      "total": 160,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/5 is blind selection among five distinct alternatives. This finite descriptive rate does not show a reliable perfect predictor; conditional controlled banks test the stronger fixed-bank claim.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-tests.json"
+      ]
+    },
+    {
+      "cue": "modal coefficient then first",
+      "subgroup": "overall",
+      "scope": "overall",
+      "strategy": "modal coefficient then first using only displayed choices; ties use first stored choice.",
+      "correct": 27,
+      "total": 160,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/5 is blind selection among five distinct alternatives. This finite descriptive rate does not show a reliable perfect predictor; conditional controlled banks test the stronger fixed-bank claim.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-tests.json"
+      ]
+    },
+    {
+      "cue": "first choice",
+      "subgroup": "numeric",
+      "scope": "within_template",
+      "strategy": "first choice using only displayed choices; ties use first stored choice.",
+      "correct": 10,
+      "total": 74,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/5 is blind selection among five distinct alternatives. This finite descriptive rate does not show a reliable perfect predictor; conditional controlled banks test the stronger fixed-bank claim.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-tests.json"
+      ]
+    },
+    {
+      "cue": "last choice",
+      "subgroup": "numeric",
+      "scope": "within_template",
+      "strategy": "last choice using only displayed choices; ties use first stored choice.",
+      "correct": 17,
+      "total": 74,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/5 is blind selection among five distinct alternatives. This finite descriptive rate does not show a reliable perfect predictor; conditional controlled banks test the stronger fixed-bank claim.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-tests.json"
+      ]
+    },
+    {
+      "cue": "largest constant",
+      "subgroup": "numeric",
+      "scope": "within_template",
+      "strategy": "largest constant using only displayed choices; ties use first stored choice.",
+      "correct": 11,
+      "total": 74,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/5 is blind selection among five distinct alternatives. This finite descriptive rate does not show a reliable perfect predictor; conditional controlled banks test the stronger fixed-bank claim.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-tests.json"
+      ]
+    },
+    {
+      "cue": "smallest constant",
+      "subgroup": "numeric",
+      "scope": "within_template",
+      "strategy": "smallest constant using only displayed choices; ties use first stored choice.",
+      "correct": 16,
+      "total": 74,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/5 is blind selection among five distinct alternatives. This finite descriptive rate does not show a reliable perfect predictor; conditional controlled banks test the stronger fixed-bank claim.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-tests.json"
+      ]
+    },
+    {
+      "cue": "largest coefficient",
+      "subgroup": "numeric",
+      "scope": "within_template",
+      "strategy": "largest coefficient using only displayed choices; ties use first stored choice.",
+      "correct": 10,
+      "total": 74,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/5 is blind selection among five distinct alternatives. This finite descriptive rate does not show a reliable perfect predictor; conditional controlled banks test the stronger fixed-bank claim.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-tests.json"
+      ]
+    },
+    {
+      "cue": "modal coefficient then first",
+      "subgroup": "numeric",
+      "scope": "within_template",
+      "strategy": "modal coefficient then first using only displayed choices; ties use first stored choice.",
+      "correct": 10,
+      "total": 74,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/5 is blind selection among five distinct alternatives. This finite descriptive rate does not show a reliable perfect predictor; conditional controlled banks test the stronger fixed-bank claim.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-tests.json"
+      ]
+    },
+    {
+      "cue": "first choice",
+      "subgroup": "symbolic",
+      "scope": "within_template",
+      "strategy": "first choice using only displayed choices; ties use first stored choice.",
+      "correct": 16,
+      "total": 86,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/5 is blind selection among five distinct alternatives. This finite descriptive rate does not show a reliable perfect predictor; conditional controlled banks test the stronger fixed-bank claim.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-tests.json"
+      ]
+    },
+    {
+      "cue": "last choice",
+      "subgroup": "symbolic",
+      "scope": "within_template",
+      "strategy": "last choice using only displayed choices; ties use first stored choice.",
+      "correct": 17,
+      "total": 86,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/5 is blind selection among five distinct alternatives. This finite descriptive rate does not show a reliable perfect predictor; conditional controlled banks test the stronger fixed-bank claim.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-tests.json"
+      ]
+    },
+    {
+      "cue": "largest constant",
+      "subgroup": "symbolic",
+      "scope": "within_template",
+      "strategy": "largest constant using only displayed choices; ties use first stored choice.",
+      "correct": 25,
+      "total": 86,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/5 is blind selection among five distinct alternatives. This finite descriptive rate does not show a reliable perfect predictor; conditional controlled banks test the stronger fixed-bank claim.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-tests.json"
+      ]
+    },
+    {
+      "cue": "smallest constant",
+      "subgroup": "symbolic",
+      "scope": "within_template",
+      "strategy": "smallest constant using only displayed choices; ties use first stored choice.",
+      "correct": 16,
+      "total": 86,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/5 is blind selection among five distinct alternatives. This finite descriptive rate does not show a reliable perfect predictor; conditional controlled banks test the stronger fixed-bank claim.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-tests.json"
+      ]
+    },
+    {
+      "cue": "largest coefficient",
+      "subgroup": "symbolic",
+      "scope": "within_template",
+      "strategy": "largest coefficient using only displayed choices; ties use first stored choice.",
+      "correct": 19,
+      "total": 86,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/5 is blind selection among five distinct alternatives. This finite descriptive rate does not show a reliable perfect predictor; conditional controlled banks test the stronger fixed-bank claim.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-tests.json"
+      ]
+    },
+    {
+      "cue": "modal coefficient then first",
+      "subgroup": "symbolic",
+      "scope": "within_template",
+      "strategy": "modal coefficient then first using only displayed choices; ties use first stored choice.",
+      "correct": 17,
+      "total": 86,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 1/5 is blind selection among five distinct alternatives. This finite descriptive rate does not show a reliable perfect predictor; conditional controlled banks test the stronger fixed-bank claim.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-tests.json"
+      ]
+    },
+    {
+      "cue": "first choice",
+      "subgroup": "numeric (-1, -1)",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "first choice; hold the visible bank and recognizable sign/factor subgroup fixed while changing target evidence.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5 equals blind-choice baseline. Each of five bank values is correct for one prompt. This remains true after shared delivery filtering. Role changes, not numerical uniqueness, establish the result.",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "shortcut-tests.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "last choice",
+      "subgroup": "numeric (-1, -1)",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "last choice; hold the visible bank and recognizable sign/factor subgroup fixed while changing target evidence.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5 equals blind-choice baseline. Each of five bank values is correct for one prompt. This remains true after shared delivery filtering. Role changes, not numerical uniqueness, establish the result.",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "shortcut-tests.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "largest constant",
+      "subgroup": "numeric (-1, -1)",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "largest constant; hold the visible bank and recognizable sign/factor subgroup fixed while changing target evidence.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5 equals blind-choice baseline. Each of five bank values is correct for one prompt. This remains true after shared delivery filtering. Role changes, not numerical uniqueness, establish the result.",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "shortcut-tests.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "smallest constant",
+      "subgroup": "numeric (-1, -1)",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "smallest constant; hold the visible bank and recognizable sign/factor subgroup fixed while changing target evidence.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5 equals blind-choice baseline. Each of five bank values is correct for one prompt. This remains true after shared delivery filtering. Role changes, not numerical uniqueness, establish the result.",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "shortcut-tests.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "largest coefficient",
+      "subgroup": "numeric (-1, -1)",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "largest coefficient; hold the visible bank and recognizable sign/factor subgroup fixed while changing target evidence.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5 equals blind-choice baseline. Each of five bank values is correct for one prompt. This remains true after shared delivery filtering. Role changes, not numerical uniqueness, establish the result.",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "shortcut-tests.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "modal coefficient then first",
+      "subgroup": "numeric (-1, -1)",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "modal coefficient then first; hold the visible bank and recognizable sign/factor subgroup fixed while changing target evidence.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5 equals blind-choice baseline. Each of five bank values is correct for one prompt. This remains true after shared delivery filtering. Role changes, not numerical uniqueness, establish the result.",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "shortcut-tests.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "first choice",
+      "subgroup": "numeric (-1, 1)",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "first choice; hold the visible bank and recognizable sign/factor subgroup fixed while changing target evidence.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5 equals blind-choice baseline. Each of five bank values is correct for one prompt. This remains true after shared delivery filtering. Role changes, not numerical uniqueness, establish the result.",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "shortcut-tests.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "last choice",
+      "subgroup": "numeric (-1, 1)",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "last choice; hold the visible bank and recognizable sign/factor subgroup fixed while changing target evidence.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5 equals blind-choice baseline. Each of five bank values is correct for one prompt. This remains true after shared delivery filtering. Role changes, not numerical uniqueness, establish the result.",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "shortcut-tests.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "largest constant",
+      "subgroup": "numeric (-1, 1)",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "largest constant; hold the visible bank and recognizable sign/factor subgroup fixed while changing target evidence.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5 equals blind-choice baseline. Each of five bank values is correct for one prompt. This remains true after shared delivery filtering. Role changes, not numerical uniqueness, establish the result.",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "shortcut-tests.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "smallest constant",
+      "subgroup": "numeric (-1, 1)",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "smallest constant; hold the visible bank and recognizable sign/factor subgroup fixed while changing target evidence.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5 equals blind-choice baseline. Each of five bank values is correct for one prompt. This remains true after shared delivery filtering. Role changes, not numerical uniqueness, establish the result.",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "shortcut-tests.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "largest coefficient",
+      "subgroup": "numeric (-1, 1)",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "largest coefficient; hold the visible bank and recognizable sign/factor subgroup fixed while changing target evidence.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5 equals blind-choice baseline. Each of five bank values is correct for one prompt. This remains true after shared delivery filtering. Role changes, not numerical uniqueness, establish the result.",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "shortcut-tests.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "modal coefficient then first",
+      "subgroup": "numeric (-1, 1)",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "modal coefficient then first; hold the visible bank and recognizable sign/factor subgroup fixed while changing target evidence.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5 equals blind-choice baseline. Each of five bank values is correct for one prompt. This remains true after shared delivery filtering. Role changes, not numerical uniqueness, establish the result.",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "shortcut-tests.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "first choice",
+      "subgroup": "numeric (1, -1)",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "first choice; hold the visible bank and recognizable sign/factor subgroup fixed while changing target evidence.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5 equals blind-choice baseline. Each of five bank values is correct for one prompt. This remains true after shared delivery filtering. Role changes, not numerical uniqueness, establish the result.",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "shortcut-tests.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "last choice",
+      "subgroup": "numeric (1, -1)",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "last choice; hold the visible bank and recognizable sign/factor subgroup fixed while changing target evidence.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5 equals blind-choice baseline. Each of five bank values is correct for one prompt. This remains true after shared delivery filtering. Role changes, not numerical uniqueness, establish the result.",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "shortcut-tests.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "largest constant",
+      "subgroup": "numeric (1, -1)",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "largest constant; hold the visible bank and recognizable sign/factor subgroup fixed while changing target evidence.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5 equals blind-choice baseline. Each of five bank values is correct for one prompt. This remains true after shared delivery filtering. Role changes, not numerical uniqueness, establish the result.",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "shortcut-tests.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "smallest constant",
+      "subgroup": "numeric (1, -1)",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "smallest constant; hold the visible bank and recognizable sign/factor subgroup fixed while changing target evidence.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5 equals blind-choice baseline. Each of five bank values is correct for one prompt. This remains true after shared delivery filtering. Role changes, not numerical uniqueness, establish the result.",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "shortcut-tests.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "largest coefficient",
+      "subgroup": "numeric (1, -1)",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "largest coefficient; hold the visible bank and recognizable sign/factor subgroup fixed while changing target evidence.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5 equals blind-choice baseline. Each of five bank values is correct for one prompt. This remains true after shared delivery filtering. Role changes, not numerical uniqueness, establish the result.",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "shortcut-tests.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "modal coefficient then first",
+      "subgroup": "numeric (1, -1)",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "modal coefficient then first; hold the visible bank and recognizable sign/factor subgroup fixed while changing target evidence.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5 equals blind-choice baseline. Each of five bank values is correct for one prompt. This remains true after shared delivery filtering. Role changes, not numerical uniqueness, establish the result.",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "shortcut-tests.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "first choice",
+      "subgroup": "numeric (1, 1)",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "first choice; hold the visible bank and recognizable sign/factor subgroup fixed while changing target evidence.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5 equals blind-choice baseline. Each of five bank values is correct for one prompt. This remains true after shared delivery filtering. Role changes, not numerical uniqueness, establish the result.",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "shortcut-tests.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "last choice",
+      "subgroup": "numeric (1, 1)",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "last choice; hold the visible bank and recognizable sign/factor subgroup fixed while changing target evidence.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5 equals blind-choice baseline. Each of five bank values is correct for one prompt. This remains true after shared delivery filtering. Role changes, not numerical uniqueness, establish the result.",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "shortcut-tests.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "largest constant",
+      "subgroup": "numeric (1, 1)",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "largest constant; hold the visible bank and recognizable sign/factor subgroup fixed while changing target evidence.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5 equals blind-choice baseline. Each of five bank values is correct for one prompt. This remains true after shared delivery filtering. Role changes, not numerical uniqueness, establish the result.",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "shortcut-tests.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "smallest constant",
+      "subgroup": "numeric (1, 1)",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "smallest constant; hold the visible bank and recognizable sign/factor subgroup fixed while changing target evidence.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5 equals blind-choice baseline. Each of five bank values is correct for one prompt. This remains true after shared delivery filtering. Role changes, not numerical uniqueness, establish the result.",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "shortcut-tests.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "largest coefficient",
+      "subgroup": "numeric (1, 1)",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "largest coefficient; hold the visible bank and recognizable sign/factor subgroup fixed while changing target evidence.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5 equals blind-choice baseline. Each of five bank values is correct for one prompt. This remains true after shared delivery filtering. Role changes, not numerical uniqueness, establish the result.",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "shortcut-tests.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "modal coefficient then first",
+      "subgroup": "numeric (1, 1)",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "modal coefficient then first; hold the visible bank and recognizable sign/factor subgroup fixed while changing target evidence.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5 equals blind-choice baseline. Each of five bank values is correct for one prompt. This remains true after shared delivery filtering. Role changes, not numerical uniqueness, establish the result.",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "shortcut-tests.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "first choice",
+      "subgroup": "symbolic symbol=x powered=x sign=-1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "first choice; hold the visible bank and recognizable sign/factor subgroup fixed while changing target evidence.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5 equals blind-choice baseline. Each of five bank values is correct for one prompt. This remains true after shared delivery filtering. Role changes, not numerical uniqueness, establish the result.",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "shortcut-tests.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "last choice",
+      "subgroup": "symbolic symbol=x powered=x sign=-1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "last choice; hold the visible bank and recognizable sign/factor subgroup fixed while changing target evidence.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5 equals blind-choice baseline. Each of five bank values is correct for one prompt. This remains true after shared delivery filtering. Role changes, not numerical uniqueness, establish the result.",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "shortcut-tests.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "largest constant",
+      "subgroup": "symbolic symbol=x powered=x sign=-1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "largest constant; hold the visible bank and recognizable sign/factor subgroup fixed while changing target evidence.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5 equals blind-choice baseline. Each of five bank values is correct for one prompt. This remains true after shared delivery filtering. Role changes, not numerical uniqueness, establish the result.",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "shortcut-tests.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "smallest constant",
+      "subgroup": "symbolic symbol=x powered=x sign=-1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "smallest constant; hold the visible bank and recognizable sign/factor subgroup fixed while changing target evidence.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5 equals blind-choice baseline. Each of five bank values is correct for one prompt. This remains true after shared delivery filtering. Role changes, not numerical uniqueness, establish the result.",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "shortcut-tests.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "largest coefficient",
+      "subgroup": "symbolic symbol=x powered=x sign=-1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "largest coefficient; hold the visible bank and recognizable sign/factor subgroup fixed while changing target evidence.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5 equals blind-choice baseline. Each of five bank values is correct for one prompt. This remains true after shared delivery filtering. Role changes, not numerical uniqueness, establish the result.",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "shortcut-tests.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "modal coefficient then first",
+      "subgroup": "symbolic symbol=x powered=x sign=-1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "modal coefficient then first; hold the visible bank and recognizable sign/factor subgroup fixed while changing target evidence.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5 equals blind-choice baseline. Each of five bank values is correct for one prompt. This remains true after shared delivery filtering. Role changes, not numerical uniqueness, establish the result.",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "shortcut-tests.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "first choice",
+      "subgroup": "symbolic symbol=x powered=x sign=1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "first choice; hold the visible bank and recognizable sign/factor subgroup fixed while changing target evidence.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5 equals blind-choice baseline. Each of five bank values is correct for one prompt. This remains true after shared delivery filtering. Role changes, not numerical uniqueness, establish the result.",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "shortcut-tests.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "last choice",
+      "subgroup": "symbolic symbol=x powered=x sign=1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "last choice; hold the visible bank and recognizable sign/factor subgroup fixed while changing target evidence.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5 equals blind-choice baseline. Each of five bank values is correct for one prompt. This remains true after shared delivery filtering. Role changes, not numerical uniqueness, establish the result.",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "shortcut-tests.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "largest constant",
+      "subgroup": "symbolic symbol=x powered=x sign=1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "largest constant; hold the visible bank and recognizable sign/factor subgroup fixed while changing target evidence.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5 equals blind-choice baseline. Each of five bank values is correct for one prompt. This remains true after shared delivery filtering. Role changes, not numerical uniqueness, establish the result.",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "shortcut-tests.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "smallest constant",
+      "subgroup": "symbolic symbol=x powered=x sign=1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "smallest constant; hold the visible bank and recognizable sign/factor subgroup fixed while changing target evidence.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5 equals blind-choice baseline. Each of five bank values is correct for one prompt. This remains true after shared delivery filtering. Role changes, not numerical uniqueness, establish the result.",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "shortcut-tests.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "largest coefficient",
+      "subgroup": "symbolic symbol=x powered=x sign=1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "largest coefficient; hold the visible bank and recognizable sign/factor subgroup fixed while changing target evidence.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5 equals blind-choice baseline. Each of five bank values is correct for one prompt. This remains true after shared delivery filtering. Role changes, not numerical uniqueness, establish the result.",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "shortcut-tests.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "modal coefficient then first",
+      "subgroup": "symbolic symbol=x powered=x sign=1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "modal coefficient then first; hold the visible bank and recognizable sign/factor subgroup fixed while changing target evidence.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5 equals blind-choice baseline. Each of five bank values is correct for one prompt. This remains true after shared delivery filtering. Role changes, not numerical uniqueness, establish the result.",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "shortcut-tests.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "first choice",
+      "subgroup": "symbolic symbol=x powered=y sign=-1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "first choice; hold the visible bank and recognizable sign/factor subgroup fixed while changing target evidence.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5 equals blind-choice baseline. Each of five bank values is correct for one prompt. This remains true after shared delivery filtering. Role changes, not numerical uniqueness, establish the result.",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "shortcut-tests.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "last choice",
+      "subgroup": "symbolic symbol=x powered=y sign=-1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "last choice; hold the visible bank and recognizable sign/factor subgroup fixed while changing target evidence.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5 equals blind-choice baseline. Each of five bank values is correct for one prompt. This remains true after shared delivery filtering. Role changes, not numerical uniqueness, establish the result.",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "shortcut-tests.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "largest constant",
+      "subgroup": "symbolic symbol=x powered=y sign=-1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "largest constant; hold the visible bank and recognizable sign/factor subgroup fixed while changing target evidence.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5 equals blind-choice baseline. Each of five bank values is correct for one prompt. This remains true after shared delivery filtering. Role changes, not numerical uniqueness, establish the result.",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "shortcut-tests.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "smallest constant",
+      "subgroup": "symbolic symbol=x powered=y sign=-1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "smallest constant; hold the visible bank and recognizable sign/factor subgroup fixed while changing target evidence.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5 equals blind-choice baseline. Each of five bank values is correct for one prompt. This remains true after shared delivery filtering. Role changes, not numerical uniqueness, establish the result.",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "shortcut-tests.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "largest coefficient",
+      "subgroup": "symbolic symbol=x powered=y sign=-1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "largest coefficient; hold the visible bank and recognizable sign/factor subgroup fixed while changing target evidence.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5 equals blind-choice baseline. Each of five bank values is correct for one prompt. This remains true after shared delivery filtering. Role changes, not numerical uniqueness, establish the result.",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "shortcut-tests.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "modal coefficient then first",
+      "subgroup": "symbolic symbol=x powered=y sign=-1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "modal coefficient then first; hold the visible bank and recognizable sign/factor subgroup fixed while changing target evidence.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5 equals blind-choice baseline. Each of five bank values is correct for one prompt. This remains true after shared delivery filtering. Role changes, not numerical uniqueness, establish the result.",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "shortcut-tests.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "first choice",
+      "subgroup": "symbolic symbol=x powered=y sign=1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "first choice; hold the visible bank and recognizable sign/factor subgroup fixed while changing target evidence.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5 equals blind-choice baseline. Each of five bank values is correct for one prompt. This remains true after shared delivery filtering. Role changes, not numerical uniqueness, establish the result.",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "shortcut-tests.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "last choice",
+      "subgroup": "symbolic symbol=x powered=y sign=1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "last choice; hold the visible bank and recognizable sign/factor subgroup fixed while changing target evidence.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5 equals blind-choice baseline. Each of five bank values is correct for one prompt. This remains true after shared delivery filtering. Role changes, not numerical uniqueness, establish the result.",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "shortcut-tests.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "largest constant",
+      "subgroup": "symbolic symbol=x powered=y sign=1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "largest constant; hold the visible bank and recognizable sign/factor subgroup fixed while changing target evidence.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5 equals blind-choice baseline. Each of five bank values is correct for one prompt. This remains true after shared delivery filtering. Role changes, not numerical uniqueness, establish the result.",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "shortcut-tests.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "smallest constant",
+      "subgroup": "symbolic symbol=x powered=y sign=1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "smallest constant; hold the visible bank and recognizable sign/factor subgroup fixed while changing target evidence.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5 equals blind-choice baseline. Each of five bank values is correct for one prompt. This remains true after shared delivery filtering. Role changes, not numerical uniqueness, establish the result.",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "shortcut-tests.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "largest coefficient",
+      "subgroup": "symbolic symbol=x powered=y sign=1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "largest coefficient; hold the visible bank and recognizable sign/factor subgroup fixed while changing target evidence.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5 equals blind-choice baseline. Each of five bank values is correct for one prompt. This remains true after shared delivery filtering. Role changes, not numerical uniqueness, establish the result.",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "shortcut-tests.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "modal coefficient then first",
+      "subgroup": "symbolic symbol=x powered=y sign=1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "modal coefficient then first; hold the visible bank and recognizable sign/factor subgroup fixed while changing target evidence.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5 equals blind-choice baseline. Each of five bank values is correct for one prompt. This remains true after shared delivery filtering. Role changes, not numerical uniqueness, establish the result.",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "shortcut-tests.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "first choice",
+      "subgroup": "symbolic symbol=y powered=x sign=-1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "first choice; hold the visible bank and recognizable sign/factor subgroup fixed while changing target evidence.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5 equals blind-choice baseline. Each of five bank values is correct for one prompt. This remains true after shared delivery filtering. Role changes, not numerical uniqueness, establish the result.",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "shortcut-tests.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "last choice",
+      "subgroup": "symbolic symbol=y powered=x sign=-1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "last choice; hold the visible bank and recognizable sign/factor subgroup fixed while changing target evidence.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5 equals blind-choice baseline. Each of five bank values is correct for one prompt. This remains true after shared delivery filtering. Role changes, not numerical uniqueness, establish the result.",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "shortcut-tests.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "largest constant",
+      "subgroup": "symbolic symbol=y powered=x sign=-1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "largest constant; hold the visible bank and recognizable sign/factor subgroup fixed while changing target evidence.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5 equals blind-choice baseline. Each of five bank values is correct for one prompt. This remains true after shared delivery filtering. Role changes, not numerical uniqueness, establish the result.",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "shortcut-tests.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "smallest constant",
+      "subgroup": "symbolic symbol=y powered=x sign=-1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "smallest constant; hold the visible bank and recognizable sign/factor subgroup fixed while changing target evidence.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5 equals blind-choice baseline. Each of five bank values is correct for one prompt. This remains true after shared delivery filtering. Role changes, not numerical uniqueness, establish the result.",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "shortcut-tests.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "largest coefficient",
+      "subgroup": "symbolic symbol=y powered=x sign=-1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "largest coefficient; hold the visible bank and recognizable sign/factor subgroup fixed while changing target evidence.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5 equals blind-choice baseline. Each of five bank values is correct for one prompt. This remains true after shared delivery filtering. Role changes, not numerical uniqueness, establish the result.",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "shortcut-tests.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "modal coefficient then first",
+      "subgroup": "symbolic symbol=y powered=x sign=-1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "modal coefficient then first; hold the visible bank and recognizable sign/factor subgroup fixed while changing target evidence.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5 equals blind-choice baseline. Each of five bank values is correct for one prompt. This remains true after shared delivery filtering. Role changes, not numerical uniqueness, establish the result.",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "shortcut-tests.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "first choice",
+      "subgroup": "symbolic symbol=y powered=x sign=1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "first choice; hold the visible bank and recognizable sign/factor subgroup fixed while changing target evidence.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5 equals blind-choice baseline. Each of five bank values is correct for one prompt. This remains true after shared delivery filtering. Role changes, not numerical uniqueness, establish the result.",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "shortcut-tests.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "last choice",
+      "subgroup": "symbolic symbol=y powered=x sign=1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "last choice; hold the visible bank and recognizable sign/factor subgroup fixed while changing target evidence.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5 equals blind-choice baseline. Each of five bank values is correct for one prompt. This remains true after shared delivery filtering. Role changes, not numerical uniqueness, establish the result.",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "shortcut-tests.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "largest constant",
+      "subgroup": "symbolic symbol=y powered=x sign=1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "largest constant; hold the visible bank and recognizable sign/factor subgroup fixed while changing target evidence.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5 equals blind-choice baseline. Each of five bank values is correct for one prompt. This remains true after shared delivery filtering. Role changes, not numerical uniqueness, establish the result.",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "shortcut-tests.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "smallest constant",
+      "subgroup": "symbolic symbol=y powered=x sign=1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "smallest constant; hold the visible bank and recognizable sign/factor subgroup fixed while changing target evidence.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5 equals blind-choice baseline. Each of five bank values is correct for one prompt. This remains true after shared delivery filtering. Role changes, not numerical uniqueness, establish the result.",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "shortcut-tests.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "largest coefficient",
+      "subgroup": "symbolic symbol=y powered=x sign=1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "largest coefficient; hold the visible bank and recognizable sign/factor subgroup fixed while changing target evidence.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5 equals blind-choice baseline. Each of five bank values is correct for one prompt. This remains true after shared delivery filtering. Role changes, not numerical uniqueness, establish the result.",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "shortcut-tests.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "modal coefficient then first",
+      "subgroup": "symbolic symbol=y powered=x sign=1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "modal coefficient then first; hold the visible bank and recognizable sign/factor subgroup fixed while changing target evidence.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5 equals blind-choice baseline. Each of five bank values is correct for one prompt. This remains true after shared delivery filtering. Role changes, not numerical uniqueness, establish the result.",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "shortcut-tests.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "first choice",
+      "subgroup": "symbolic symbol=y powered=y sign=-1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "first choice; hold the visible bank and recognizable sign/factor subgroup fixed while changing target evidence.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5 equals blind-choice baseline. Each of five bank values is correct for one prompt. This remains true after shared delivery filtering. Role changes, not numerical uniqueness, establish the result.",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "shortcut-tests.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "last choice",
+      "subgroup": "symbolic symbol=y powered=y sign=-1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "last choice; hold the visible bank and recognizable sign/factor subgroup fixed while changing target evidence.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5 equals blind-choice baseline. Each of five bank values is correct for one prompt. This remains true after shared delivery filtering. Role changes, not numerical uniqueness, establish the result.",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "shortcut-tests.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "largest constant",
+      "subgroup": "symbolic symbol=y powered=y sign=-1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "largest constant; hold the visible bank and recognizable sign/factor subgroup fixed while changing target evidence.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5 equals blind-choice baseline. Each of five bank values is correct for one prompt. This remains true after shared delivery filtering. Role changes, not numerical uniqueness, establish the result.",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "shortcut-tests.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "smallest constant",
+      "subgroup": "symbolic symbol=y powered=y sign=-1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "smallest constant; hold the visible bank and recognizable sign/factor subgroup fixed while changing target evidence.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5 equals blind-choice baseline. Each of five bank values is correct for one prompt. This remains true after shared delivery filtering. Role changes, not numerical uniqueness, establish the result.",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "shortcut-tests.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "largest coefficient",
+      "subgroup": "symbolic symbol=y powered=y sign=-1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "largest coefficient; hold the visible bank and recognizable sign/factor subgroup fixed while changing target evidence.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5 equals blind-choice baseline. Each of five bank values is correct for one prompt. This remains true after shared delivery filtering. Role changes, not numerical uniqueness, establish the result.",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "shortcut-tests.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "modal coefficient then first",
+      "subgroup": "symbolic symbol=y powered=y sign=-1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "modal coefficient then first; hold the visible bank and recognizable sign/factor subgroup fixed while changing target evidence.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5 equals blind-choice baseline. Each of five bank values is correct for one prompt. This remains true after shared delivery filtering. Role changes, not numerical uniqueness, establish the result.",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "shortcut-tests.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "first choice",
+      "subgroup": "symbolic symbol=y powered=y sign=1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "first choice; hold the visible bank and recognizable sign/factor subgroup fixed while changing target evidence.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5 equals blind-choice baseline. Each of five bank values is correct for one prompt. This remains true after shared delivery filtering. Role changes, not numerical uniqueness, establish the result.",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "shortcut-tests.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "last choice",
+      "subgroup": "symbolic symbol=y powered=y sign=1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "last choice; hold the visible bank and recognizable sign/factor subgroup fixed while changing target evidence.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5 equals blind-choice baseline. Each of five bank values is correct for one prompt. This remains true after shared delivery filtering. Role changes, not numerical uniqueness, establish the result.",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "shortcut-tests.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "largest constant",
+      "subgroup": "symbolic symbol=y powered=y sign=1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "largest constant; hold the visible bank and recognizable sign/factor subgroup fixed while changing target evidence.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5 equals blind-choice baseline. Each of five bank values is correct for one prompt. This remains true after shared delivery filtering. Role changes, not numerical uniqueness, establish the result.",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "shortcut-tests.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "smallest constant",
+      "subgroup": "symbolic symbol=y powered=y sign=1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "smallest constant; hold the visible bank and recognizable sign/factor subgroup fixed while changing target evidence.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5 equals blind-choice baseline. Each of five bank values is correct for one prompt. This remains true after shared delivery filtering. Role changes, not numerical uniqueness, establish the result.",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "shortcut-tests.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "largest coefficient",
+      "subgroup": "symbolic symbol=y powered=y sign=1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "largest coefficient; hold the visible bank and recognizable sign/factor subgroup fixed while changing target evidence.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5 equals blind-choice baseline. Each of five bank values is correct for one prompt. This remains true after shared delivery filtering. Role changes, not numerical uniqueness, establish the result.",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "shortcut-tests.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "modal coefficient then first",
+      "subgroup": "symbolic symbol=y powered=y sign=1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "modal coefficient then first; hold the visible bank and recognizable sign/factor subgroup fixed while changing target evidence.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Exactly 1/5 equals blind-choice baseline. Each of five bank values is correct for one prompt. This remains true after shared delivery filtering. Role changes, not numerical uniqueness, establish the result.",
+      "sample_refs": [
+        "controlled-bank-records.json",
+        "controlled-bank-tests.json",
+        "shortcut-tests.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "Actual UI option position",
+      "subgroup": "numeric",
+      "scope": "within_template",
+      "strategy": "UI displayed position 1",
+      "correct": 3,
+      "total": 15,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Descriptive sample with counterfactual pairs; no perfect position predictor. UI choiceOrder hashes item/field/answer IDs and differs from stored order. Baseline is blind 1-of-5 selection; these paired cases are a descriptive layout check, not an independent random-frequency estimate.",
+      "sample_refs": [
+        "render-inspection.json",
+        "render-input.json"
+      ]
+    },
+    {
+      "cue": "Actual UI option position",
+      "subgroup": "numeric",
+      "scope": "within_template",
+      "strategy": "UI displayed position 5",
+      "correct": 8,
+      "total": 15,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Descriptive sample with counterfactual pairs; no perfect position predictor. UI choiceOrder hashes item/field/answer IDs and differs from stored order. Baseline is blind 1-of-5 selection; these paired cases are a descriptive layout check, not an independent random-frequency estimate.",
+      "sample_refs": [
+        "render-inspection.json",
+        "render-input.json"
+      ]
+    },
+    {
+      "cue": "Actual UI option position",
+      "subgroup": "symbolic",
+      "scope": "within_template",
+      "strategy": "UI displayed position 1",
+      "correct": 2,
+      "total": 14,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Descriptive sample with counterfactual pairs; no perfect position predictor. UI choiceOrder hashes item/field/answer IDs and differs from stored order. Baseline is blind 1-of-5 selection; these paired cases are a descriptive layout check, not an independent random-frequency estimate.",
+      "sample_refs": [
+        "render-inspection.json",
+        "render-input.json"
+      ]
+    },
+    {
+      "cue": "Actual UI option position",
+      "subgroup": "symbolic",
+      "scope": "within_template",
+      "strategy": "UI displayed position 5",
+      "correct": 3,
+      "total": 14,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Descriptive sample with counterfactual pairs; no perfect position predictor. UI choiceOrder hashes item/field/answer IDs and differs from stored order. Baseline is blind 1-of-5 selection; these paired cases are a descriptive layout check, not an independent random-frequency estimate.",
+      "sample_refs": [
+        "render-inspection.json",
+        "render-input.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "Generator duplicate-answer rejection before key selection",
+      "Requested hard difficulty",
+      "Publisher actual prepare_records normalization, validation and inventory/within-batch deduplication",
+      "Actual native radio grading",
+      "Actual UI hash-based option ordering and rendering",
+      "Learner freshness and difficulty-first weighted selection, with unconfigured/zero-weight branches"
+    ],
+    "sample_refs": [
+      "samples.json",
+      "controlled-bank-records.json",
+      "runner-batch.json",
+      "delivery/delivery.json",
+      "runner-delivery/delivery.json",
+      "delivery-stage-tests.json",
+      "selection-tests.json",
+      "grader-report.json",
+      "render-inspection.json"
+    ],
+    "result": "At captured basis 4975, all 220 independent and 5 runner records survive; all 12 controlled subgroups retain all five answer roles. Duplicate-answer rejection precedes uniformly selected role, so does not favor a selected key. Faithful read-only selection reproduction retains every eligible subgroup when hard has positive weight. Zero hard weight and consumed history intentionally remove supply; unconfigured policy selects lowest fresh ID rather than sampling uniformly."
+  },
+  "limitations": [
+    "Finite audit cannot prove absence of every possible shortcut. Option-based use of exponent association or arithmetic is intended skill, not automatically a defect.",
+    "Selection policy, learner history and future allocated entity IDs are absent from captured inventory. Selection scenarios use explicit synthetic IDs and the actual SHA256 selector algorithm; they show conditional support, not a prediction of a particular live learner draw.",
+    "Inventory may change after captured basis 4975; later deduplication can change available coverage. No publication or database writes occurred.",
+    "Canonical e-4082 is a demonstration without a captured radio bank and is not separately replayable through the hard generator. Two unrated source banks lack original keys/solutions; their inferred completions are independently checked, not presented as original source evidence.",
+    "Easy/moderate, three-factor/quotient tasks, and fractional hard-substitution workloads are not supported or certified."
+  ]
+}

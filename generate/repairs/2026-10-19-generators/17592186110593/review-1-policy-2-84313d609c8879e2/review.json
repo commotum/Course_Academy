@@ -1,0 +1,131 @@
+{
+  "verdict": "accepted",
+  "summary": "All eight checks passed. No concrete generator defect found in the audited cases; package unchanged. Selection conclusions use captured inventory and explicitly stated policy/history limits.",
+  "source_analysis": {
+    "skill": "Find exact solutions of b^(x+s)=n using a same-base logarithm and at most one addition/subtraction step.",
+    "reasoning_steps": [
+      "Read base b, positive RHS n and offset s.",
+      "Take log_b of both sides.",
+      "Reduce x+s=log_b(n).",
+      "Subtract s and select the unique exact answer."
+    ],
+    "invariants": [
+      "b>0, b!=1, n>0; one real solution.",
+      "Exact logarithmic form; coefficient of x remains one.",
+      "Zero, positive and negative offsets are supported.",
+      "Preserve complete five-choice banks during source replay, including equivalent wrong distractors where present."
+    ],
+    "permitted_variations": [
+      "Change small positive integer bases and RHS independently while keeping an instructive nontrivial logarithm.",
+      "Change offset sign, magnitude or omit it; derive inverse operation and correct choice from it.",
+      "Correct choice position and distractor assignment may vary; source positions are incidental.",
+      "Change variable symbol if all content follows it; no need to introduce this variation."
+    ],
+    "source_refs": [
+      "q-25124 / f2ec7bb2-2b5c-5a6c-af77-21a3068576a7: 3^(x-2)=6 -> log_3(6)+2",
+      "q-66805 / 3e958238-ee2a-58d3-b257-eafe2e7f6b42: 5^x=15 -> log_5(15)",
+      "q-100163 / 07d6770c-e373-5366-b946-966ce2aa6000: 7^(x+4)=5 -> log_7(5)-4",
+      "q-66801 / 4dbd2fd5-279c-5b4f-83af-6acbee35f908: 3^x=5 -> log_3(5)",
+      "e-4067 / 7c937587-dc81-5ee9-aa66-a509a87433e2: 2^(x+1)=3 -> log_2(3)-1",
+      "tutorial 2794 / bcae8943-0768-5280-ad4d-a67f04877fbe: \"we always use the base of the exponential as the base of the logarithm\"; log_b(b^c)=c.",
+      "lesson step 14454: exact solution; next step 14465 / e-4069 uses 2x+3 and calculator approximation; step 14467 / e-4071 introduces isolation."
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "source-records.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "source-records.json",
+        "source-replays.json",
+        "source-replay-results.json"
+      ],
+      "details": "All four original prompts, complete five-choice banks, original choice IDs, correct links, field contracts and normalized worked solutions match. Canonical e-4067 equation/derivation checked; no source answer bank captured."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "audit.py",
+        "math-results.json",
+        "samples.json",
+        "runner-batch.json",
+        "controlled.json"
+      ],
+      "details": "Parsed prompts and all choices independently with SymPy at 75 digits; 320 fresh, 5 runner, 4 source and 12 controlled/canonical items have one correct option and consistent solutions. No math failures."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "test-plan.json",
+        "samples.json",
+        "stage-coverage.json",
+        "rejection-trace.json",
+        "selection-results.json"
+      ],
+      "details": "Both profiles, all eight bases, RHS2..40, all shifts -6..6 and all key positions observed. Shared delivery retains 320/320 and runner5/5; source families covered. Rejection and selector cases examined with captured inventory limits."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "scope-results.json",
+        "math-results.json"
+      ],
+      "details": "Same exact-logarithm operation and at most one additive isolation; five-option radio response. Conservative integer changes preserve easy workload; no neighboring approximation or exponential-isolation skills introduced."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-results.json",
+        "counterfactual-results.json"
+      ],
+      "details": "Real database-free learning::grade_field passed all1785 checks across357 records:357 correct selections accepted,1428 distractors rejected, including source banks, counterfactual pairs and delivered rekeyed records. No free-entry fields exist."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render-input.json",
+        "render/rendering.json",
+        "render-assessment.json",
+        "render/question-001.png",
+        "render/question-004.png",
+        "render/question-005.png",
+        "render/question-006.png",
+        "render/question-007.png",
+        "render/question-008.png",
+        "render/question-009.png",
+        "render/question-011.png"
+      ],
+      "details": "Actual unmodified UI rendered12 records without MathJax, font, image or JS errors. Full screenshots inspected for notation, complete radio controls, source banks, relevant/irrelevant counterfactuals and delivered worked solutions."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "package-integrity.json",
+        "package-before.json",
+        "package-after.json",
+        "commands.json"
+      ],
+      "details": "Declared stdlib-only Python3.13.5 matches installed runtime. Determinism, relocation, count0/max1000, invalid counts and unsupported difficulty exercised. All package files unchanged; outputs limited to evidence root."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "rejection-trace.json",
+        "stage-coverage.json",
+        "selection-results.json"
+      ],
+      "details": "Independent role analysis, same-bank relevant and irrelevant pairs, native grading and actual rendering support varying decisions. Conditional position, length, lexical, sign and bank-multiplicity probes run before/after delivery and after positive-easy selection. No demonstrated incidental shortcut; matching logarithm base/RHS is intended inversion."
+    }
+  },
+  "findings": []
+}

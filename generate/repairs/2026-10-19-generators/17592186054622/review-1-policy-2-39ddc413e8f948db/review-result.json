@@ -1,0 +1,124 @@
+{
+  "verdict": "accepted",
+  "summary": "No concrete defect found. All eight checks passed; original package unchanged. Acceptance is limited to hard product/power substitution practice and captured inventory basis 4975.",
+  "source_analysis": {
+    "skill": "Use product and power logarithm rules to expand or combine two factors; on hard items substitute known logarithms into the resulting weighted sum.",
+    "reasoning_steps": [
+      "Identify the common logarithm base and multiplicative factors.",
+      "Apply log_b(x^m y^n)=m log_b(x)+n log_b(y), or its reverse for combining.",
+      "For hard numeric/symbolic givens, substitute each supplied logarithm into its corresponding coefficient and simplify.",
+      "Select the equivalent expression or value from five radio choices."
+    ],
+    "invariants": [
+      "Common valid logarithm base; positive arguments.",
+      "Product and power rules only; no quotient rule required even though the wider lesson teaches it.",
+      "Two multiplicative factors or two additive logarithm terms; comparable short workload.",
+      "Five radio alternatives, exactly one mathematically correct choice."
+    ],
+    "permitted_variations": [
+      "Base, positive known log values, exponents, variable letters, and option ordering.",
+      "The symbolic given may belong to either factor; its exponent may change. The numeric given need not always be the second factor.",
+      "Both exponents and their assignments to known values may vary, including unit exponents where instructional workload is preserved.",
+      "Complete misconception banks should vary with parameters and remain distinct. Combining/expansion source families remain reproducible, although only the substitution families have explicit hard tags."
+    ],
+    "source_refs": [
+      "e-4082 / 5a566673-4529-57b8-87c9-d5a6118e0398: power-rule then product-rule solution",
+      "q-47194 / 21c18a11-6bc1-5de0-bcda-f9622b617f6d: log(5p^3), bank includes log(5)+3log(p)",
+      "q-66907 / c8f2e17a-2817-5868-a9e3-61bbc105efb0: 3log_2(x)+2log_2(y), bank includes log_2(x^3 y^2)",
+      "q-79453 / 841f3191-5c7e-5e47-b725-127033cb9a73: log_5(x)=3, log_5(y)=2; solution 2*3+3*2=12; bank 8,6,9,12,10",
+      "q-98925 / 9796dfce-fb6b-57bd-b442-e9278daaaa20: log_2(x)=k, log_2(y)=4; solution k+3*4=k+12; bank 7k,k+12,k-12,k+7,12k",
+      "Tutorial 2796 / 435a21a1-8874-500c-93b0-c742ac5f2a73 Introduction: common-base product/power identities and worked 3log_2(x)+(1/2)log_2(y)=log_2(x^3 sqrt(y))"
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "source-replay-records.json",
+        "source-replay-tests.json",
+        "source-symbolic-math.json"
+      ],
+      "details": "All four practice prompts and all 20 choices replay at original parameters. Both recorded hard keys and solution stages match. Missing unrated keys/solutions are explicitly inferred and independently checked; canonical demonstration has no source bank to reproduce."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-tests.json",
+        "source-symbolic-math.json",
+        "counterfactual-tests.json",
+        "cli-1000.json"
+      ],
+      "details": "Exact visible-prompt arithmetic, five distinct answer identities and worked expansions/substitutions pass on 249 hard test records plus 1000 boundary outputs. SymPy independently verifies both incomplete symbolic-source identities and refutes all distractors with positive witnesses."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "samples.json",
+        "math-tests.json",
+        "controlled-bank-tests.json",
+        "delivery-stage-tests.json",
+        "selection-tests.json"
+      ],
+      "details": "160 fresh samples cover both hard families, all 12 exponent pairs, 12 signed givens, five bases, both orders and all 12 sign/factor subgroups. All controlled answer roles survive delivery. Freshness/weighted-selection conclusions are conditional on explicit policies and history scenarios."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "scope-tests.json",
+        "source-replay-tests.json"
+      ],
+      "details": "Two-factor product/power expansion and substitution retain source workloads. Signed logarithm values are realizable with positive arguments. Unrated source-only, unsupported difficulty and canonical demonstration limits are explicit."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-report.json",
+        "grader-command.log"
+      ],
+      "details": "Native learning::grade_field accepted 476 independently correct radio selections and rejected 1904 distractor selections, including before/after pairs and normalized delivery records. No free-entry fields exist, so free-entry equivalents are inapplicable."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-inspection.json",
+        "render/question-001.png",
+        "render/question-003.png",
+        "render/question-022.png",
+        "render/question-023.png",
+        "render/question-024.png"
+      ],
+      "details": "Actual UI renders all 31 cases without reported math/JS/font/image errors. Parsed rendered MathML matches every prompt and final equation; five radio controls and feedback keys match. Representative full screenshots visually inspected."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-tests.json",
+        "package-integrity.json",
+        "commands.json",
+        "determinism-relocated.json"
+      ],
+      "details": "Exact declared/actual Python 3.13.5; empty third-party package map matches stdlib-only runtime plus declared local helper. Determinism, relocation, count boundaries 0/1/1000, invalid counts/difficulties and no external outputs checked. Package file hashes unchanged."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "counterfactual-tests.json",
+        "controlled-bank-tests.json",
+        "shortcut-tests.json",
+        "delivery-stage-tests.json",
+        "selection-tests.json",
+        "render-inspection.json"
+      ],
+      "details": "Relevant changes update prompts, answers, solutions, rendered math and native grades; irrelevant base/order changes preserve responses. Six bank-only strategies are 1/5 in each of 12 controlled sign/factor subgroups, including after delivery. Actual UI position probes and selection-support scenarios reveal no reproducible incidental shortcut."
+    }
+  },
+  "findings": []
+}

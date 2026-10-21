@@ -1,0 +1,109 @@
+{
+  "verdict": "accepted",
+  "summary": "All eight checks passed for the declared moderate blank family. The historical grader failure was not reproduced with the current native executable. Package files remained unchanged.",
+  "source_analysis": {
+    "skill": "Solve isolated base-e exponential equations with signed affine exponents using natural logarithms and exact linear rearrangement.",
+    "reasoning_steps": [
+      "Take natural logarithms of both sides.",
+      "Apply ln(e^u)=u.",
+      "Isolate the requested variable.",
+      "Enter an equivalent exact expression."
+    ],
+    "invariants": [
+      "Base e and a positive right-hand side.",
+      "One unknown occurring linearly in the exponent.",
+      "Exact logarithmic answer.",
+      "Moderate translation and nonunit division workload."
+    ],
+    "permitted_variations": [
+      "Coefficient and offset signs and small magnitudes.",
+      "Positive integer logarithm argument.",
+      "Variable name and exponent term order."
+    ],
+    "source_refs": [
+      "q-263058 / ba9070de-c707-5661-a14c-cac1b4371745",
+      "e-4103 / 5e22ac55-3e84-5cb4-8231-5f882da9240e",
+      "Tutorial 2806 / 0f1cb099-7970-59ba-ad74-7052da9f2872: natural-log inversion and exact logarithmic solutions"
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "source-analysis-initial.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay-results.json"
+      ],
+      "details": "Supported moderate source prompt, solution, complete answer bank, field contract and key replay correctly. Excluded source families are documented."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "samples.json",
+        "runner-batch.json"
+      ],
+      "details": "137 records independently checked using exact arithmetic, including keys and worked solve equations."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "sampler-domain.json",
+        "delivery-coverage.json",
+        "selection-results.json"
+      ],
+      "details": "All 6264 supported parameter triples sampled successfully. All four sign cases survive independent delivery filtering. Selection conclusions are conditional on documented eligibility and policy assumptions."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "scope-results.json"
+      ],
+      "details": "Variations preserve the supported moderate natural-log inversion and affine rearrangement task."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "native-diagnostic-report.json",
+        "shortcut-native-report.json",
+        "native-strict-report.json",
+        "native-current-binding.json"
+      ],
+      "details": "1484 native checks matched required outcomes, including equivalent entries, wrong answers and controlled changes. No unresolved outcomes."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-visual-inspection.json",
+        "render/question-001.png",
+        "render/question-008.png"
+      ],
+      "details": "Eight actual-UI previews passed rendering checks and screenshot inspection."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "package-before.json",
+        "package-after.json",
+        "reproduction-commands.json"
+      ],
+      "details": "Exact runtime dependency contract, deterministic replay, relocation and boundary rejection verified. Package files unchanged."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "counterfactual-results.json",
+        "shortcut-observations.json",
+        "shortcut-native-report.json"
+      ],
+      "details": "Relevant changes alter responses and grading; irrelevant presentation changes preserve them. Conditional shortcut probes found no reproducible incidental predictor."
+    }
+  },
+  "findings": []
+}

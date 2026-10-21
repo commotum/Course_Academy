@@ -1,0 +1,1691 @@
+{
+  "learner_operation": "Read the signed coefficient and constant of the unknown in the exponent and the positive right-hand-side expression; derive the logarithmic value and isolate the requested unknown. The logarithm coefficient and constant in the response must follow those assignments.",
+  "fixed_features": [
+    {
+      "feature": "Base e and isolated exponential equals a positive integer RHS",
+      "justification": "Tutorial 2806 uses the base-e inverse and exact ln answer; q-263058 directly supplies an integer RHS. Roots/powers are separately scoped sources."
+    },
+    {
+      "feature": "One blank for the RHS of the requested variable equation",
+      "justification": "Complete moderate q-263058 has exactly this field contract."
+    },
+    {
+      "feature": "2<=|a|<=7, 1<=|b|<=9, 2<=n<=30",
+      "justification": "Nonzero translation and nonunit division retain the moderate source stages. Small integer bounds retain comparable arithmetic. ln(1) and zero offsets would remove assessed stages; no sign is fixed."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Signed unknown coefficient",
+      "eligible_variation": "Both signs and nonunit small integer magnitudes",
+      "observed": "All 12 signed coefficients covered; relevant sign change negates response and updates native grading."
+    },
+    {
+      "role": "Signed offset",
+      "eligible_variation": "Both signs and small nonzero magnitudes",
+      "observed": "All 18 signed offsets covered; offset change moves response by the independently expected rational amount."
+    },
+    {
+      "role": "RHS logarithm argument",
+      "eligible_variation": "Positive integer n with nontrivial ln, comparable source arithmetic",
+      "observed": "Every integer 2..30 covered; changing 11 to13 changes prompt, solution, key and learner outcome."
+    },
+    {
+      "role": "Variable name and exponent ordering",
+      "eligible_variation": "x/y/t and both term orders, irrelevant to numeric solution",
+      "observed": "All names and both orders sampled; controlled rename/order preserve numeric answer and native acceptance."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "independent_raw",
+      "sample_refs": [
+        "samples.json",
+        "runner-batch.json",
+        "delivery-independent/accepted.json",
+        "delivery-runner/accepted.json",
+        "delivery-coverage.json"
+      ],
+      "result": "{\"count\": 132, \"sign_cases\": {\"negative/positive\": 53, \"positive/negative\": 27, \"positive/positive\": 24, \"negative/negative\": 28}, \"orders\": {\"constant-first\": 85, \"variable-first\": 47}, \"variables\": {\"y\": 64, \"t\": 34, \"x\": 34}, \"solution_signs\": {\"positive\": 81, \"negative\": 51}, \"n_values\": [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30], \"coefficient_values\": [-7, -6, -5, -4, -3, -2, 2, 3, 4, 5, 6, 7], \"offset_values\": [-9, -8, -7, -6, -5, -4, -3, -2, -1, 1, 2, 3, 4, 5, 6, 7, 8, 9], \"conditional_sign_cases\": {\"x/constant-first\": {\"positive/positive\": 4, \"negative/positive\": 6, \"negative/negative\": 5, \"positive/negative\": 5}, \"x/variable-first\": {\"positive/negative\": 4, \"negative/positive\": 2, \"negative/negative\": 5, \"positive/positive\": 3}, \"y/constant-first\": {\"negative/positive\": 35, \"positive/negative\": 6, \"negative/negative\": 3, \"positive/positive\": 6}, \"y/variable-first\": {\"negative/positive\": 6, \"negative/negative\": 2, \"positive/negative\": 4, \"positive/positive\": 2}, \"t/constant-first\": {\"positive/negative\": 3, \"negative/negative\": 7, \"positive/positive\": 4, \"negative/positive\": 1}, \"t/variable-first\": {\"positive/positive\": 5, \"negative/negative\": 6, \"positive/negative\": 5, \"negative/positive\": 3}}}"
+    },
+    {
+      "case": "fresh_seed_normal64",
+      "sample_refs": [
+        "samples.json",
+        "runner-batch.json",
+        "delivery-independent/accepted.json",
+        "delivery-runner/accepted.json",
+        "delivery-coverage.json"
+      ],
+      "result": "{\"count\": 64, \"sign_cases\": {\"positive/negative\": 19, \"negative/positive\": 11, \"positive/positive\": 15, \"negative/negative\": 19}, \"orders\": {\"constant-first\": 34, \"variable-first\": 30}, \"variables\": {\"t\": 24, \"y\": 18, \"x\": 22}, \"solution_signs\": {\"positive\": 31, \"negative\": 33}, \"n_values\": [2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13, 14, 15, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30], \"coefficient_values\": [-7, -6, -5, -4, -3, -2, 2, 3, 4, 5, 6, 7], \"offset_values\": [-9, -8, -7, -6, -5, -4, -3, -2, -1, 1, 2, 3, 4, 5, 6, 7, 8, 9], \"conditional_sign_cases\": {\"x/constant-first\": {\"positive/positive\": 3, \"negative/positive\": 3, \"negative/negative\": 4, \"positive/negative\": 3}, \"x/variable-first\": {\"positive/negative\": 3, \"negative/positive\": 1, \"negative/negative\": 3, \"positive/positive\": 2}, \"y/constant-first\": {\"positive/negative\": 5, \"negative/positive\": 2, \"negative/negative\": 1, \"positive/positive\": 3}, \"y/variable-first\": {\"negative/positive\": 3, \"negative/negative\": 1, \"positive/negative\": 2, \"positive/positive\": 1}, \"t/constant-first\": {\"positive/negative\": 2, \"negative/negative\": 5, \"positive/positive\": 3}, \"t/variable-first\": {\"positive/positive\": 3, \"negative/negative\": 5, \"positive/negative\": 4, \"negative/positive\": 2}}}"
+    },
+    {
+      "case": "independent_accepted",
+      "sample_refs": [
+        "samples.json",
+        "runner-batch.json",
+        "delivery-independent/accepted.json",
+        "delivery-runner/accepted.json",
+        "delivery-coverage.json"
+      ],
+      "result": "{\"count\": 129, \"sign_cases\": {\"positive/negative\": 27, \"negative/positive\": 50, \"positive/positive\": 24, \"negative/negative\": 28}, \"orders\": {\"constant-first\": 82, \"variable-first\": 47}, \"variables\": {\"t\": 34, \"y\": 61, \"x\": 34}, \"solution_signs\": {\"positive\": 78, \"negative\": 51}, \"n_values\": [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30], \"coefficient_values\": [-7, -6, -5, -4, -3, -2, 2, 3, 4, 5, 6, 7], \"offset_values\": [-9, -8, -7, -6, -5, -4, -3, -2, -1, 1, 2, 3, 4, 5, 6, 7, 8, 9], \"conditional_sign_cases\": {\"x/constant-first\": {\"positive/positive\": 4, \"negative/positive\": 6, \"negative/negative\": 5, \"positive/negative\": 5}, \"x/variable-first\": {\"positive/negative\": 4, \"negative/positive\": 2, \"negative/negative\": 5, \"positive/positive\": 3}, \"y/constant-first\": {\"positive/negative\": 6, \"negative/positive\": 32, \"negative/negative\": 3, \"positive/positive\": 6}, \"y/variable-first\": {\"negative/positive\": 6, \"negative/negative\": 2, \"positive/negative\": 4, \"positive/positive\": 2}, \"t/constant-first\": {\"positive/negative\": 3, \"negative/negative\": 7, \"positive/positive\": 4, \"negative/positive\": 1}, \"t/variable-first\": {\"positive/positive\": 5, \"negative/negative\": 6, \"positive/negative\": 5, \"negative/positive\": 3}}}"
+    },
+    {
+      "case": "runner_raw",
+      "sample_refs": [
+        "samples.json",
+        "runner-batch.json",
+        "delivery-independent/accepted.json",
+        "delivery-runner/accepted.json",
+        "delivery-coverage.json"
+      ],
+      "result": "{\"count\": 5, \"sign_cases\": {\"positive/positive\": 3, \"positive/negative\": 1, \"negative/negative\": 1}, \"orders\": {\"variable-first\": 3, \"constant-first\": 2}, \"variables\": {\"t\": 1, \"y\": 4}, \"solution_signs\": {\"negative\": 4, \"positive\": 1}, \"n_values\": [10, 11, 15, 24, 25], \"coefficient_values\": [-3, 2, 3, 4, 5], \"offset_values\": [-9, -7, 3, 4, 9], \"conditional_sign_cases\": {\"x/constant-first\": {}, \"x/variable-first\": {}, \"y/constant-first\": {\"positive/positive\": 2}, \"y/variable-first\": {\"positive/negative\": 1, \"negative/negative\": 1}, \"t/constant-first\": {}, \"t/variable-first\": {\"positive/positive\": 1}}}"
+    },
+    {
+      "case": "runner_accepted",
+      "sample_refs": [
+        "samples.json",
+        "runner-batch.json",
+        "delivery-independent/accepted.json",
+        "delivery-runner/accepted.json",
+        "delivery-coverage.json"
+      ],
+      "result": "{\"count\": 5, \"sign_cases\": {\"positive/positive\": 3, \"positive/negative\": 1, \"negative/negative\": 1}, \"orders\": {\"variable-first\": 3, \"constant-first\": 2}, \"variables\": {\"t\": 1, \"y\": 4}, \"solution_signs\": {\"negative\": 4, \"positive\": 1}, \"n_values\": [10, 11, 15, 24, 25], \"coefficient_values\": [-3, 2, 3, 4, 5], \"offset_values\": [-9, -7, 3, 4, 9], \"conditional_sign_cases\": {\"x/constant-first\": {}, \"x/variable-first\": {}, \"y/constant-first\": {\"positive/positive\": 2}, \"y/variable-first\": {\"positive/negative\": 1, \"negative/negative\": 1}, \"t/constant-first\": {}, \"t/variable-first\": {\"positive/positive\": 1}}}"
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Hold a=-5,b=4,n=11,y,constant-first fixed, then separately change a to5, b to-4, or n to13.",
+      "expected": "Coefficient sign negates the response; offset sign changes translation by -8/5; RHS change changes logarithm by -(ln13-ln11)/5. Old response is rejected after each change.",
+      "observed": "Independent exact checks and real native grading agree in all three cases; displayed prompt and worked equations follow each changed value.",
+      "status": "passed",
+      "justification": "Signed exponent coefficients and RHS determine solution via the source natural-log and affine-solve stages.",
+      "sample_refs": [
+        "counterfactual-samples.json",
+        "counterfactual-results.json",
+        "native-diagnostic-report.json",
+        "render/input.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Hold a=-5,b=4,n=11 fixed and rename y tox or change constant-first to variable-first.",
+      "expected": "Numeric solution preserved; variable references or ordering in prompt and solution update; original numeric response remains accepted.",
+      "observed": "Both pairs preserve independently derived value and native acceptance; actual UI preview includes both changes.",
+      "status": "passed",
+      "justification": "The source asks for the variable value, so its name and algebraically identical term order cannot alter that value.",
+      "sample_refs": [
+        "counterfactual-samples.json",
+        "counterfactual-results.json",
+        "native-diagnostic-report.json",
+        "render/input.json",
+        "render/rendering.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "source-negative-coefficient-action",
+      "subgroup": "fresh-seed-normal64/all",
+      "scope": "overall",
+      "strategy": "source-negative-coefficient-action",
+      "correct": 30,
+      "total": 64,
+      "baseline": 0.5,
+      "disposition": "intended_skill",
+      "conclusion": "Baseline 0.5 is choosing one of the two eligible coefficient-sign actions without reading the sign. Successes equal the negative-coefficient cases exactly. The coefficient sign is mathematical evidence; name/order never fixes it in the sampler domain.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "copy-rhs",
+      "subgroup": "fresh-seed-normal64/all",
+      "scope": "overall",
+      "strategy": "copy-rhs",
+      "correct": 0,
+      "total": 64,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0 is a response that omits the required inverse/affine computation; observed count is recorded. The fixed source key can succeed on a literal source-equivalent instance, not on this template generally.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "take-ln-only",
+      "subgroup": "fresh-seed-normal64/all",
+      "scope": "overall",
+      "strategy": "take-ln-only",
+      "correct": 0,
+      "total": 64,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0 is a response that omits the required inverse/affine computation; observed count is recorded. The fixed source key can succeed on a literal source-equivalent instance, not on this template generally.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "fixed-source-answer",
+      "subgroup": "fresh-seed-normal64/all",
+      "scope": "overall",
+      "strategy": "fixed-source-answer",
+      "correct": 0,
+      "total": 64,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0 is a response that omits the required inverse/affine computation; observed count is recorded. The fixed source key can succeed on a literal source-equivalent instance, not on this template generally.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "source-negative-coefficient-action",
+      "subgroup": "fresh-seed-normal64/order=constant-first",
+      "scope": "within_template",
+      "strategy": "source-negative-coefficient-action",
+      "correct": 15,
+      "total": 34,
+      "baseline": 0.5,
+      "disposition": "intended_skill",
+      "conclusion": "Baseline 0.5 is choosing one of the two eligible coefficient-sign actions without reading the sign. Successes equal the negative-coefficient cases exactly. The coefficient sign is mathematical evidence; name/order never fixes it in the sampler domain.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "copy-rhs",
+      "subgroup": "fresh-seed-normal64/order=constant-first",
+      "scope": "within_template",
+      "strategy": "copy-rhs",
+      "correct": 0,
+      "total": 34,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0 is a response that omits the required inverse/affine computation; observed count is recorded. The fixed source key can succeed on a literal source-equivalent instance, not on this template generally.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "take-ln-only",
+      "subgroup": "fresh-seed-normal64/order=constant-first",
+      "scope": "within_template",
+      "strategy": "take-ln-only",
+      "correct": 0,
+      "total": 34,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0 is a response that omits the required inverse/affine computation; observed count is recorded. The fixed source key can succeed on a literal source-equivalent instance, not on this template generally.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "fixed-source-answer",
+      "subgroup": "fresh-seed-normal64/order=constant-first",
+      "scope": "within_template",
+      "strategy": "fixed-source-answer",
+      "correct": 0,
+      "total": 34,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0 is a response that omits the required inverse/affine computation; observed count is recorded. The fixed source key can succeed on a literal source-equivalent instance, not on this template generally.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "source-negative-coefficient-action",
+      "subgroup": "fresh-seed-normal64/order=variable-first",
+      "scope": "within_template",
+      "strategy": "source-negative-coefficient-action",
+      "correct": 15,
+      "total": 30,
+      "baseline": 0.5,
+      "disposition": "intended_skill",
+      "conclusion": "Baseline 0.5 is choosing one of the two eligible coefficient-sign actions without reading the sign. Successes equal the negative-coefficient cases exactly. The coefficient sign is mathematical evidence; name/order never fixes it in the sampler domain.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "copy-rhs",
+      "subgroup": "fresh-seed-normal64/order=variable-first",
+      "scope": "within_template",
+      "strategy": "copy-rhs",
+      "correct": 0,
+      "total": 30,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0 is a response that omits the required inverse/affine computation; observed count is recorded. The fixed source key can succeed on a literal source-equivalent instance, not on this template generally.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "take-ln-only",
+      "subgroup": "fresh-seed-normal64/order=variable-first",
+      "scope": "within_template",
+      "strategy": "take-ln-only",
+      "correct": 0,
+      "total": 30,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0 is a response that omits the required inverse/affine computation; observed count is recorded. The fixed source key can succeed on a literal source-equivalent instance, not on this template generally.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "fixed-source-answer",
+      "subgroup": "fresh-seed-normal64/order=variable-first",
+      "scope": "within_template",
+      "strategy": "fixed-source-answer",
+      "correct": 0,
+      "total": 30,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0 is a response that omits the required inverse/affine computation; observed count is recorded. The fixed source key can succeed on a literal source-equivalent instance, not on this template generally.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "source-negative-coefficient-action",
+      "subgroup": "fresh-seed-normal64/variable=x/order=constant-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "source-negative-coefficient-action",
+      "correct": 7,
+      "total": 13,
+      "baseline": 0.5,
+      "disposition": "intended_skill",
+      "conclusion": "Baseline 0.5 is choosing one of the two eligible coefficient-sign actions without reading the sign. Successes equal the negative-coefficient cases exactly. The coefficient sign is mathematical evidence; name/order never fixes it in the sampler domain.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "copy-rhs",
+      "subgroup": "fresh-seed-normal64/variable=x/order=constant-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "copy-rhs",
+      "correct": 0,
+      "total": 13,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0 is a response that omits the required inverse/affine computation; observed count is recorded. The fixed source key can succeed on a literal source-equivalent instance, not on this template generally.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "take-ln-only",
+      "subgroup": "fresh-seed-normal64/variable=x/order=constant-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "take-ln-only",
+      "correct": 0,
+      "total": 13,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0 is a response that omits the required inverse/affine computation; observed count is recorded. The fixed source key can succeed on a literal source-equivalent instance, not on this template generally.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "fixed-source-answer",
+      "subgroup": "fresh-seed-normal64/variable=x/order=constant-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed-source-answer",
+      "correct": 0,
+      "total": 13,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0 is a response that omits the required inverse/affine computation; observed count is recorded. The fixed source key can succeed on a literal source-equivalent instance, not on this template generally.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "source-negative-coefficient-action",
+      "subgroup": "fresh-seed-normal64/variable=x/order=variable-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "source-negative-coefficient-action",
+      "correct": 4,
+      "total": 9,
+      "baseline": 0.5,
+      "disposition": "intended_skill",
+      "conclusion": "Baseline 0.5 is choosing one of the two eligible coefficient-sign actions without reading the sign. Successes equal the negative-coefficient cases exactly. The coefficient sign is mathematical evidence; name/order never fixes it in the sampler domain.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "copy-rhs",
+      "subgroup": "fresh-seed-normal64/variable=x/order=variable-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "copy-rhs",
+      "correct": 0,
+      "total": 9,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0 is a response that omits the required inverse/affine computation; observed count is recorded. The fixed source key can succeed on a literal source-equivalent instance, not on this template generally.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "take-ln-only",
+      "subgroup": "fresh-seed-normal64/variable=x/order=variable-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "take-ln-only",
+      "correct": 0,
+      "total": 9,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0 is a response that omits the required inverse/affine computation; observed count is recorded. The fixed source key can succeed on a literal source-equivalent instance, not on this template generally.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "fixed-source-answer",
+      "subgroup": "fresh-seed-normal64/variable=x/order=variable-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed-source-answer",
+      "correct": 0,
+      "total": 9,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0 is a response that omits the required inverse/affine computation; observed count is recorded. The fixed source key can succeed on a literal source-equivalent instance, not on this template generally.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "source-negative-coefficient-action",
+      "subgroup": "fresh-seed-normal64/variable=y/order=constant-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "source-negative-coefficient-action",
+      "correct": 3,
+      "total": 11,
+      "baseline": 0.5,
+      "disposition": "intended_skill",
+      "conclusion": "Baseline 0.5 is choosing one of the two eligible coefficient-sign actions without reading the sign. Successes equal the negative-coefficient cases exactly. The coefficient sign is mathematical evidence; name/order never fixes it in the sampler domain.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "copy-rhs",
+      "subgroup": "fresh-seed-normal64/variable=y/order=constant-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "copy-rhs",
+      "correct": 0,
+      "total": 11,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0 is a response that omits the required inverse/affine computation; observed count is recorded. The fixed source key can succeed on a literal source-equivalent instance, not on this template generally.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "take-ln-only",
+      "subgroup": "fresh-seed-normal64/variable=y/order=constant-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "take-ln-only",
+      "correct": 0,
+      "total": 11,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0 is a response that omits the required inverse/affine computation; observed count is recorded. The fixed source key can succeed on a literal source-equivalent instance, not on this template generally.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "fixed-source-answer",
+      "subgroup": "fresh-seed-normal64/variable=y/order=constant-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed-source-answer",
+      "correct": 0,
+      "total": 11,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0 is a response that omits the required inverse/affine computation; observed count is recorded. The fixed source key can succeed on a literal source-equivalent instance, not on this template generally.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "source-negative-coefficient-action",
+      "subgroup": "fresh-seed-normal64/variable=y/order=variable-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "source-negative-coefficient-action",
+      "correct": 4,
+      "total": 7,
+      "baseline": 0.5,
+      "disposition": "intended_skill",
+      "conclusion": "Baseline 0.5 is choosing one of the two eligible coefficient-sign actions without reading the sign. Successes equal the negative-coefficient cases exactly. The coefficient sign is mathematical evidence; name/order never fixes it in the sampler domain.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "copy-rhs",
+      "subgroup": "fresh-seed-normal64/variable=y/order=variable-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "copy-rhs",
+      "correct": 0,
+      "total": 7,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0 is a response that omits the required inverse/affine computation; observed count is recorded. The fixed source key can succeed on a literal source-equivalent instance, not on this template generally.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "take-ln-only",
+      "subgroup": "fresh-seed-normal64/variable=y/order=variable-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "take-ln-only",
+      "correct": 0,
+      "total": 7,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0 is a response that omits the required inverse/affine computation; observed count is recorded. The fixed source key can succeed on a literal source-equivalent instance, not on this template generally.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "fixed-source-answer",
+      "subgroup": "fresh-seed-normal64/variable=y/order=variable-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed-source-answer",
+      "correct": 0,
+      "total": 7,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0 is a response that omits the required inverse/affine computation; observed count is recorded. The fixed source key can succeed on a literal source-equivalent instance, not on this template generally.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "source-negative-coefficient-action",
+      "subgroup": "fresh-seed-normal64/variable=t/order=constant-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "source-negative-coefficient-action",
+      "correct": 5,
+      "total": 10,
+      "baseline": 0.5,
+      "disposition": "intended_skill",
+      "conclusion": "Baseline 0.5 is choosing one of the two eligible coefficient-sign actions without reading the sign. Successes equal the negative-coefficient cases exactly. The coefficient sign is mathematical evidence; name/order never fixes it in the sampler domain.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "copy-rhs",
+      "subgroup": "fresh-seed-normal64/variable=t/order=constant-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "copy-rhs",
+      "correct": 0,
+      "total": 10,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0 is a response that omits the required inverse/affine computation; observed count is recorded. The fixed source key can succeed on a literal source-equivalent instance, not on this template generally.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "take-ln-only",
+      "subgroup": "fresh-seed-normal64/variable=t/order=constant-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "take-ln-only",
+      "correct": 0,
+      "total": 10,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0 is a response that omits the required inverse/affine computation; observed count is recorded. The fixed source key can succeed on a literal source-equivalent instance, not on this template generally.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "fixed-source-answer",
+      "subgroup": "fresh-seed-normal64/variable=t/order=constant-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed-source-answer",
+      "correct": 0,
+      "total": 10,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0 is a response that omits the required inverse/affine computation; observed count is recorded. The fixed source key can succeed on a literal source-equivalent instance, not on this template generally.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "source-negative-coefficient-action",
+      "subgroup": "fresh-seed-normal64/variable=t/order=variable-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "source-negative-coefficient-action",
+      "correct": 7,
+      "total": 14,
+      "baseline": 0.5,
+      "disposition": "intended_skill",
+      "conclusion": "Baseline 0.5 is choosing one of the two eligible coefficient-sign actions without reading the sign. Successes equal the negative-coefficient cases exactly. The coefficient sign is mathematical evidence; name/order never fixes it in the sampler domain.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "copy-rhs",
+      "subgroup": "fresh-seed-normal64/variable=t/order=variable-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "copy-rhs",
+      "correct": 0,
+      "total": 14,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0 is a response that omits the required inverse/affine computation; observed count is recorded. The fixed source key can succeed on a literal source-equivalent instance, not on this template generally.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "take-ln-only",
+      "subgroup": "fresh-seed-normal64/variable=t/order=variable-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "take-ln-only",
+      "correct": 0,
+      "total": 14,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0 is a response that omits the required inverse/affine computation; observed count is recorded. The fixed source key can succeed on a literal source-equivalent instance, not on this template generally.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "fixed-source-answer",
+      "subgroup": "fresh-seed-normal64/variable=t/order=variable-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed-source-answer",
+      "correct": 0,
+      "total": 14,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0 is a response that omits the required inverse/affine computation; observed count is recorded. The fixed source key can succeed on a literal source-equivalent instance, not on this template generally.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "source-negative-coefficient-action",
+      "subgroup": "delivered-independent/all",
+      "scope": "overall",
+      "strategy": "source-negative-coefficient-action",
+      "correct": 78,
+      "total": 129,
+      "baseline": 0.5,
+      "disposition": "intended_skill",
+      "conclusion": "Baseline 0.5 is choosing one of the two eligible coefficient-sign actions without reading the sign. Successes equal the negative-coefficient cases exactly. The coefficient sign is mathematical evidence; name/order never fixes it in the sampler domain.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "copy-rhs",
+      "subgroup": "delivered-independent/all",
+      "scope": "overall",
+      "strategy": "copy-rhs",
+      "correct": 0,
+      "total": 129,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0 is a response that omits the required inverse/affine computation; observed count is recorded. The fixed source key can succeed on a literal source-equivalent instance, not on this template generally.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "take-ln-only",
+      "subgroup": "delivered-independent/all",
+      "scope": "overall",
+      "strategy": "take-ln-only",
+      "correct": 0,
+      "total": 129,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0 is a response that omits the required inverse/affine computation; observed count is recorded. The fixed source key can succeed on a literal source-equivalent instance, not on this template generally.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "fixed-source-answer",
+      "subgroup": "delivered-independent/all",
+      "scope": "overall",
+      "strategy": "fixed-source-answer",
+      "correct": 1,
+      "total": 129,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0 is a response that omits the required inverse/affine computation; observed count is recorded. The fixed source key can succeed on a literal source-equivalent instance, not on this template generally.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "source-negative-coefficient-action",
+      "subgroup": "delivered-independent/order=constant-first",
+      "scope": "within_template",
+      "strategy": "source-negative-coefficient-action",
+      "correct": 54,
+      "total": 82,
+      "baseline": 0.5,
+      "disposition": "intended_skill",
+      "conclusion": "Baseline 0.5 is choosing one of the two eligible coefficient-sign actions without reading the sign. Successes equal the negative-coefficient cases exactly. The coefficient sign is mathematical evidence; name/order never fixes it in the sampler domain.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "copy-rhs",
+      "subgroup": "delivered-independent/order=constant-first",
+      "scope": "within_template",
+      "strategy": "copy-rhs",
+      "correct": 0,
+      "total": 82,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0 is a response that omits the required inverse/affine computation; observed count is recorded. The fixed source key can succeed on a literal source-equivalent instance, not on this template generally.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "take-ln-only",
+      "subgroup": "delivered-independent/order=constant-first",
+      "scope": "within_template",
+      "strategy": "take-ln-only",
+      "correct": 0,
+      "total": 82,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0 is a response that omits the required inverse/affine computation; observed count is recorded. The fixed source key can succeed on a literal source-equivalent instance, not on this template generally.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "fixed-source-answer",
+      "subgroup": "delivered-independent/order=constant-first",
+      "scope": "within_template",
+      "strategy": "fixed-source-answer",
+      "correct": 1,
+      "total": 82,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0 is a response that omits the required inverse/affine computation; observed count is recorded. The fixed source key can succeed on a literal source-equivalent instance, not on this template generally.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "source-negative-coefficient-action",
+      "subgroup": "delivered-independent/order=variable-first",
+      "scope": "within_template",
+      "strategy": "source-negative-coefficient-action",
+      "correct": 24,
+      "total": 47,
+      "baseline": 0.5,
+      "disposition": "intended_skill",
+      "conclusion": "Baseline 0.5 is choosing one of the two eligible coefficient-sign actions without reading the sign. Successes equal the negative-coefficient cases exactly. The coefficient sign is mathematical evidence; name/order never fixes it in the sampler domain.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "copy-rhs",
+      "subgroup": "delivered-independent/order=variable-first",
+      "scope": "within_template",
+      "strategy": "copy-rhs",
+      "correct": 0,
+      "total": 47,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0 is a response that omits the required inverse/affine computation; observed count is recorded. The fixed source key can succeed on a literal source-equivalent instance, not on this template generally.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "take-ln-only",
+      "subgroup": "delivered-independent/order=variable-first",
+      "scope": "within_template",
+      "strategy": "take-ln-only",
+      "correct": 0,
+      "total": 47,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0 is a response that omits the required inverse/affine computation; observed count is recorded. The fixed source key can succeed on a literal source-equivalent instance, not on this template generally.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "fixed-source-answer",
+      "subgroup": "delivered-independent/order=variable-first",
+      "scope": "within_template",
+      "strategy": "fixed-source-answer",
+      "correct": 0,
+      "total": 47,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0 is a response that omits the required inverse/affine computation; observed count is recorded. The fixed source key can succeed on a literal source-equivalent instance, not on this template generally.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "source-negative-coefficient-action",
+      "subgroup": "delivered-independent/variable=x/order=constant-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "source-negative-coefficient-action",
+      "correct": 11,
+      "total": 20,
+      "baseline": 0.5,
+      "disposition": "intended_skill",
+      "conclusion": "Baseline 0.5 is choosing one of the two eligible coefficient-sign actions without reading the sign. Successes equal the negative-coefficient cases exactly. The coefficient sign is mathematical evidence; name/order never fixes it in the sampler domain.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "copy-rhs",
+      "subgroup": "delivered-independent/variable=x/order=constant-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "copy-rhs",
+      "correct": 0,
+      "total": 20,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0 is a response that omits the required inverse/affine computation; observed count is recorded. The fixed source key can succeed on a literal source-equivalent instance, not on this template generally.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "take-ln-only",
+      "subgroup": "delivered-independent/variable=x/order=constant-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "take-ln-only",
+      "correct": 0,
+      "total": 20,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0 is a response that omits the required inverse/affine computation; observed count is recorded. The fixed source key can succeed on a literal source-equivalent instance, not on this template generally.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "fixed-source-answer",
+      "subgroup": "delivered-independent/variable=x/order=constant-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed-source-answer",
+      "correct": 0,
+      "total": 20,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0 is a response that omits the required inverse/affine computation; observed count is recorded. The fixed source key can succeed on a literal source-equivalent instance, not on this template generally.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "source-negative-coefficient-action",
+      "subgroup": "delivered-independent/variable=x/order=variable-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "source-negative-coefficient-action",
+      "correct": 7,
+      "total": 14,
+      "baseline": 0.5,
+      "disposition": "intended_skill",
+      "conclusion": "Baseline 0.5 is choosing one of the two eligible coefficient-sign actions without reading the sign. Successes equal the negative-coefficient cases exactly. The coefficient sign is mathematical evidence; name/order never fixes it in the sampler domain.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "copy-rhs",
+      "subgroup": "delivered-independent/variable=x/order=variable-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "copy-rhs",
+      "correct": 0,
+      "total": 14,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0 is a response that omits the required inverse/affine computation; observed count is recorded. The fixed source key can succeed on a literal source-equivalent instance, not on this template generally.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "take-ln-only",
+      "subgroup": "delivered-independent/variable=x/order=variable-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "take-ln-only",
+      "correct": 0,
+      "total": 14,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0 is a response that omits the required inverse/affine computation; observed count is recorded. The fixed source key can succeed on a literal source-equivalent instance, not on this template generally.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "fixed-source-answer",
+      "subgroup": "delivered-independent/variable=x/order=variable-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed-source-answer",
+      "correct": 0,
+      "total": 14,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0 is a response that omits the required inverse/affine computation; observed count is recorded. The fixed source key can succeed on a literal source-equivalent instance, not on this template generally.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "source-negative-coefficient-action",
+      "subgroup": "delivered-independent/variable=y/order=constant-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "source-negative-coefficient-action",
+      "correct": 35,
+      "total": 47,
+      "baseline": 0.5,
+      "disposition": "intended_skill",
+      "conclusion": "Baseline 0.5 is choosing one of the two eligible coefficient-sign actions without reading the sign. Successes equal the negative-coefficient cases exactly. The coefficient sign is mathematical evidence; name/order never fixes it in the sampler domain.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "copy-rhs",
+      "subgroup": "delivered-independent/variable=y/order=constant-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "copy-rhs",
+      "correct": 0,
+      "total": 47,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0 is a response that omits the required inverse/affine computation; observed count is recorded. The fixed source key can succeed on a literal source-equivalent instance, not on this template generally.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "take-ln-only",
+      "subgroup": "delivered-independent/variable=y/order=constant-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "take-ln-only",
+      "correct": 0,
+      "total": 47,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0 is a response that omits the required inverse/affine computation; observed count is recorded. The fixed source key can succeed on a literal source-equivalent instance, not on this template generally.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "fixed-source-answer",
+      "subgroup": "delivered-independent/variable=y/order=constant-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed-source-answer",
+      "correct": 1,
+      "total": 47,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0 is a response that omits the required inverse/affine computation; observed count is recorded. The fixed source key can succeed on a literal source-equivalent instance, not on this template generally.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "source-negative-coefficient-action",
+      "subgroup": "delivered-independent/variable=y/order=variable-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "source-negative-coefficient-action",
+      "correct": 8,
+      "total": 14,
+      "baseline": 0.5,
+      "disposition": "intended_skill",
+      "conclusion": "Baseline 0.5 is choosing one of the two eligible coefficient-sign actions without reading the sign. Successes equal the negative-coefficient cases exactly. The coefficient sign is mathematical evidence; name/order never fixes it in the sampler domain.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "copy-rhs",
+      "subgroup": "delivered-independent/variable=y/order=variable-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "copy-rhs",
+      "correct": 0,
+      "total": 14,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0 is a response that omits the required inverse/affine computation; observed count is recorded. The fixed source key can succeed on a literal source-equivalent instance, not on this template generally.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "take-ln-only",
+      "subgroup": "delivered-independent/variable=y/order=variable-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "take-ln-only",
+      "correct": 0,
+      "total": 14,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0 is a response that omits the required inverse/affine computation; observed count is recorded. The fixed source key can succeed on a literal source-equivalent instance, not on this template generally.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "fixed-source-answer",
+      "subgroup": "delivered-independent/variable=y/order=variable-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed-source-answer",
+      "correct": 0,
+      "total": 14,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0 is a response that omits the required inverse/affine computation; observed count is recorded. The fixed source key can succeed on a literal source-equivalent instance, not on this template generally.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "source-negative-coefficient-action",
+      "subgroup": "delivered-independent/variable=t/order=constant-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "source-negative-coefficient-action",
+      "correct": 8,
+      "total": 15,
+      "baseline": 0.5,
+      "disposition": "intended_skill",
+      "conclusion": "Baseline 0.5 is choosing one of the two eligible coefficient-sign actions without reading the sign. Successes equal the negative-coefficient cases exactly. The coefficient sign is mathematical evidence; name/order never fixes it in the sampler domain.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "copy-rhs",
+      "subgroup": "delivered-independent/variable=t/order=constant-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "copy-rhs",
+      "correct": 0,
+      "total": 15,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0 is a response that omits the required inverse/affine computation; observed count is recorded. The fixed source key can succeed on a literal source-equivalent instance, not on this template generally.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "take-ln-only",
+      "subgroup": "delivered-independent/variable=t/order=constant-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "take-ln-only",
+      "correct": 0,
+      "total": 15,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0 is a response that omits the required inverse/affine computation; observed count is recorded. The fixed source key can succeed on a literal source-equivalent instance, not on this template generally.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "fixed-source-answer",
+      "subgroup": "delivered-independent/variable=t/order=constant-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed-source-answer",
+      "correct": 0,
+      "total": 15,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0 is a response that omits the required inverse/affine computation; observed count is recorded. The fixed source key can succeed on a literal source-equivalent instance, not on this template generally.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "source-negative-coefficient-action",
+      "subgroup": "delivered-independent/variable=t/order=variable-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "source-negative-coefficient-action",
+      "correct": 9,
+      "total": 19,
+      "baseline": 0.5,
+      "disposition": "intended_skill",
+      "conclusion": "Baseline 0.5 is choosing one of the two eligible coefficient-sign actions without reading the sign. Successes equal the negative-coefficient cases exactly. The coefficient sign is mathematical evidence; name/order never fixes it in the sampler domain.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "copy-rhs",
+      "subgroup": "delivered-independent/variable=t/order=variable-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "copy-rhs",
+      "correct": 0,
+      "total": 19,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0 is a response that omits the required inverse/affine computation; observed count is recorded. The fixed source key can succeed on a literal source-equivalent instance, not on this template generally.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "take-ln-only",
+      "subgroup": "delivered-independent/variable=t/order=variable-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "take-ln-only",
+      "correct": 0,
+      "total": 19,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0 is a response that omits the required inverse/affine computation; observed count is recorded. The fixed source key can succeed on a literal source-equivalent instance, not on this template generally.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "fixed-source-answer",
+      "subgroup": "delivered-independent/variable=t/order=variable-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed-source-answer",
+      "correct": 0,
+      "total": 19,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0 is a response that omits the required inverse/affine computation; observed count is recorded. The fixed source key can succeed on a literal source-equivalent instance, not on this template generally.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "source-negative-coefficient-action",
+      "subgroup": "delivered-runner/all",
+      "scope": "overall",
+      "strategy": "source-negative-coefficient-action",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.5,
+      "disposition": "intended_skill",
+      "conclusion": "Baseline 0.5 is choosing one of the two eligible coefficient-sign actions without reading the sign. Successes equal the negative-coefficient cases exactly. The coefficient sign is mathematical evidence; name/order never fixes it in the sampler domain. Five runner items are a small snapshot; perfect success in a singleton subgroup is not evidence that code fixes that role. The fresh 64 and full-domain inspection test that claim.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "copy-rhs",
+      "subgroup": "delivered-runner/all",
+      "scope": "overall",
+      "strategy": "copy-rhs",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0 is a response that omits the required inverse/affine computation; observed count is recorded. The fixed source key can succeed on a literal source-equivalent instance, not on this template generally. Five runner items are a small snapshot; perfect success in a singleton subgroup is not evidence that code fixes that role. The fresh 64 and full-domain inspection test that claim.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "take-ln-only",
+      "subgroup": "delivered-runner/all",
+      "scope": "overall",
+      "strategy": "take-ln-only",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0 is a response that omits the required inverse/affine computation; observed count is recorded. The fixed source key can succeed on a literal source-equivalent instance, not on this template generally. Five runner items are a small snapshot; perfect success in a singleton subgroup is not evidence that code fixes that role. The fresh 64 and full-domain inspection test that claim.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "fixed-source-answer",
+      "subgroup": "delivered-runner/all",
+      "scope": "overall",
+      "strategy": "fixed-source-answer",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0 is a response that omits the required inverse/affine computation; observed count is recorded. The fixed source key can succeed on a literal source-equivalent instance, not on this template generally. Five runner items are a small snapshot; perfect success in a singleton subgroup is not evidence that code fixes that role. The fresh 64 and full-domain inspection test that claim.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "source-negative-coefficient-action",
+      "subgroup": "delivered-runner/order=constant-first",
+      "scope": "within_template",
+      "strategy": "source-negative-coefficient-action",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "intended_skill",
+      "conclusion": "Baseline 0.5 is choosing one of the two eligible coefficient-sign actions without reading the sign. Successes equal the negative-coefficient cases exactly. The coefficient sign is mathematical evidence; name/order never fixes it in the sampler domain. Five runner items are a small snapshot; perfect success in a singleton subgroup is not evidence that code fixes that role. The fresh 64 and full-domain inspection test that claim.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "copy-rhs",
+      "subgroup": "delivered-runner/order=constant-first",
+      "scope": "within_template",
+      "strategy": "copy-rhs",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0 is a response that omits the required inverse/affine computation; observed count is recorded. The fixed source key can succeed on a literal source-equivalent instance, not on this template generally. Five runner items are a small snapshot; perfect success in a singleton subgroup is not evidence that code fixes that role. The fresh 64 and full-domain inspection test that claim.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "take-ln-only",
+      "subgroup": "delivered-runner/order=constant-first",
+      "scope": "within_template",
+      "strategy": "take-ln-only",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0 is a response that omits the required inverse/affine computation; observed count is recorded. The fixed source key can succeed on a literal source-equivalent instance, not on this template generally. Five runner items are a small snapshot; perfect success in a singleton subgroup is not evidence that code fixes that role. The fresh 64 and full-domain inspection test that claim.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "fixed-source-answer",
+      "subgroup": "delivered-runner/order=constant-first",
+      "scope": "within_template",
+      "strategy": "fixed-source-answer",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0 is a response that omits the required inverse/affine computation; observed count is recorded. The fixed source key can succeed on a literal source-equivalent instance, not on this template generally. Five runner items are a small snapshot; perfect success in a singleton subgroup is not evidence that code fixes that role. The fresh 64 and full-domain inspection test that claim.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "source-negative-coefficient-action",
+      "subgroup": "delivered-runner/order=variable-first",
+      "scope": "within_template",
+      "strategy": "source-negative-coefficient-action",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.5,
+      "disposition": "intended_skill",
+      "conclusion": "Baseline 0.5 is choosing one of the two eligible coefficient-sign actions without reading the sign. Successes equal the negative-coefficient cases exactly. The coefficient sign is mathematical evidence; name/order never fixes it in the sampler domain. Five runner items are a small snapshot; perfect success in a singleton subgroup is not evidence that code fixes that role. The fresh 64 and full-domain inspection test that claim.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "copy-rhs",
+      "subgroup": "delivered-runner/order=variable-first",
+      "scope": "within_template",
+      "strategy": "copy-rhs",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0 is a response that omits the required inverse/affine computation; observed count is recorded. The fixed source key can succeed on a literal source-equivalent instance, not on this template generally. Five runner items are a small snapshot; perfect success in a singleton subgroup is not evidence that code fixes that role. The fresh 64 and full-domain inspection test that claim.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "take-ln-only",
+      "subgroup": "delivered-runner/order=variable-first",
+      "scope": "within_template",
+      "strategy": "take-ln-only",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0 is a response that omits the required inverse/affine computation; observed count is recorded. The fixed source key can succeed on a literal source-equivalent instance, not on this template generally. Five runner items are a small snapshot; perfect success in a singleton subgroup is not evidence that code fixes that role. The fresh 64 and full-domain inspection test that claim.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "fixed-source-answer",
+      "subgroup": "delivered-runner/order=variable-first",
+      "scope": "within_template",
+      "strategy": "fixed-source-answer",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0 is a response that omits the required inverse/affine computation; observed count is recorded. The fixed source key can succeed on a literal source-equivalent instance, not on this template generally. Five runner items are a small snapshot; perfect success in a singleton subgroup is not evidence that code fixes that role. The fresh 64 and full-domain inspection test that claim.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "source-negative-coefficient-action",
+      "subgroup": "delivered-runner/variable=y/order=constant-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "source-negative-coefficient-action",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "intended_skill",
+      "conclusion": "Baseline 0.5 is choosing one of the two eligible coefficient-sign actions without reading the sign. Successes equal the negative-coefficient cases exactly. The coefficient sign is mathematical evidence; name/order never fixes it in the sampler domain. Five runner items are a small snapshot; perfect success in a singleton subgroup is not evidence that code fixes that role. The fresh 64 and full-domain inspection test that claim.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "copy-rhs",
+      "subgroup": "delivered-runner/variable=y/order=constant-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "copy-rhs",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0 is a response that omits the required inverse/affine computation; observed count is recorded. The fixed source key can succeed on a literal source-equivalent instance, not on this template generally. Five runner items are a small snapshot; perfect success in a singleton subgroup is not evidence that code fixes that role. The fresh 64 and full-domain inspection test that claim.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "take-ln-only",
+      "subgroup": "delivered-runner/variable=y/order=constant-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "take-ln-only",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0 is a response that omits the required inverse/affine computation; observed count is recorded. The fixed source key can succeed on a literal source-equivalent instance, not on this template generally. Five runner items are a small snapshot; perfect success in a singleton subgroup is not evidence that code fixes that role. The fresh 64 and full-domain inspection test that claim.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "fixed-source-answer",
+      "subgroup": "delivered-runner/variable=y/order=constant-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed-source-answer",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0 is a response that omits the required inverse/affine computation; observed count is recorded. The fixed source key can succeed on a literal source-equivalent instance, not on this template generally. Five runner items are a small snapshot; perfect success in a singleton subgroup is not evidence that code fixes that role. The fresh 64 and full-domain inspection test that claim.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "source-negative-coefficient-action",
+      "subgroup": "delivered-runner/variable=y/order=variable-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "source-negative-coefficient-action",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "intended_skill",
+      "conclusion": "Baseline 0.5 is choosing one of the two eligible coefficient-sign actions without reading the sign. Successes equal the negative-coefficient cases exactly. The coefficient sign is mathematical evidence; name/order never fixes it in the sampler domain. Five runner items are a small snapshot; perfect success in a singleton subgroup is not evidence that code fixes that role. The fresh 64 and full-domain inspection test that claim.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "copy-rhs",
+      "subgroup": "delivered-runner/variable=y/order=variable-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "copy-rhs",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0 is a response that omits the required inverse/affine computation; observed count is recorded. The fixed source key can succeed on a literal source-equivalent instance, not on this template generally. Five runner items are a small snapshot; perfect success in a singleton subgroup is not evidence that code fixes that role. The fresh 64 and full-domain inspection test that claim.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "take-ln-only",
+      "subgroup": "delivered-runner/variable=y/order=variable-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "take-ln-only",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0 is a response that omits the required inverse/affine computation; observed count is recorded. The fixed source key can succeed on a literal source-equivalent instance, not on this template generally. Five runner items are a small snapshot; perfect success in a singleton subgroup is not evidence that code fixes that role. The fresh 64 and full-domain inspection test that claim.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "fixed-source-answer",
+      "subgroup": "delivered-runner/variable=y/order=variable-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed-source-answer",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0 is a response that omits the required inverse/affine computation; observed count is recorded. The fixed source key can succeed on a literal source-equivalent instance, not on this template generally. Five runner items are a small snapshot; perfect success in a singleton subgroup is not evidence that code fixes that role. The fresh 64 and full-domain inspection test that claim.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "source-negative-coefficient-action",
+      "subgroup": "delivered-runner/variable=t/order=variable-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "source-negative-coefficient-action",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.5,
+      "disposition": "intended_skill",
+      "conclusion": "Baseline 0.5 is choosing one of the two eligible coefficient-sign actions without reading the sign. Successes equal the negative-coefficient cases exactly. The coefficient sign is mathematical evidence; name/order never fixes it in the sampler domain. Five runner items are a small snapshot; perfect success in a singleton subgroup is not evidence that code fixes that role. The fresh 64 and full-domain inspection test that claim.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "copy-rhs",
+      "subgroup": "delivered-runner/variable=t/order=variable-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "copy-rhs",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0 is a response that omits the required inverse/affine computation; observed count is recorded. The fixed source key can succeed on a literal source-equivalent instance, not on this template generally. Five runner items are a small snapshot; perfect success in a singleton subgroup is not evidence that code fixes that role. The fresh 64 and full-domain inspection test that claim.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "take-ln-only",
+      "subgroup": "delivered-runner/variable=t/order=variable-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "take-ln-only",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0 is a response that omits the required inverse/affine computation; observed count is recorded. The fixed source key can succeed on a literal source-equivalent instance, not on this template generally. Five runner items are a small snapshot; perfect success in a singleton subgroup is not evidence that code fixes that role. The fresh 64 and full-domain inspection test that claim.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    },
+    {
+      "cue": "fixed-source-answer",
+      "subgroup": "delivered-runner/variable=t/order=variable-first",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed-source-answer",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.0,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0 is a response that omits the required inverse/affine computation; observed count is recorded. The fixed source key can succeed on a literal source-equivalent instance, not on this template generally. Five runner items are a small snapshot; perfect success in a singleton subgroup is not evidence that code fixes that role. The fresh 64 and full-domain inspection test that claim.",
+      "sample_refs": [
+        "shortcut-input.json",
+        "shortcut-native-report.json",
+        "shortcut-observations.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "Generator sign-first sampling, semantic-repeat rejection/resampling and finite-domain completion",
+      "Actual prepare_records normalization and captured inventory/batch deduplication",
+      "Requested moderate difficulty filter",
+      "Read-only learner freshness and difficulty-first selection rules; conditional hash-draw reproduction and fallback branches"
+    ],
+    "sample_refs": [
+      "sampler-domain.json",
+      "samples.json",
+      "delivery-independent/delivery.json",
+      "delivery-independent/accepted.json",
+      "delivery-runner/delivery.json",
+      "delivery-runner/accepted.json",
+      "selection-results.json",
+      "delivery-coverage.json"
+    ],
+    "result": "Independent132 ->129 accepted; runner5 ->5. All four sign cases remain in independently delivered pool. Selector is uniform conditional on eligible moderate pool and positive configured moderate weight; live histories/weights not captured."
+  },
+  "limitations": [
+    "Finite probes do not establish absence of every conceivable shortcut.",
+    "One moderate source profile supported; easy, hard, unrated radios and power-RHS canonical example are explicitly excluded.",
+    "Captured inventory basis4964 only. Later inventory changes and learner history/weights are outside the saved snapshot; selection conclusions are conditional as documented.",
+    "Renderer uses the real UI in correct-response preview mode, not a live lesson transaction. Native grading is database-free."
+  ]
+}

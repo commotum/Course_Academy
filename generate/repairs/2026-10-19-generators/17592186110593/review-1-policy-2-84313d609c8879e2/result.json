@@ -1,0 +1,109 @@
+{
+  "verdict": "accepted",
+  "summary": "No concrete generator defect found. All eight checks passed. Package files remained unchanged; no publication or database writes occurred.",
+  "source_analysis": {
+    "skill": "Solve b^(x+s)=n exactly using a same-base logarithm and at most one addition or subtraction.",
+    "reasoning_steps": [
+      "Identify the exponential base, RHS and signed exponent offset.",
+      "Apply log_b(b^c)=c.",
+      "Undo the offset and select the equivalent exact expression."
+    ],
+    "invariants": [
+      "Positive base other than one and positive RHS.",
+      "Coefficient of x remains one.",
+      "Exact logarithmic response through one five-choice radio field.",
+      "Preserve complete source banks during replay."
+    ],
+    "permitted_variations": [
+      "Vary small integer bases and RHS values independently.",
+      "Vary offset sign and magnitude, including zero.",
+      "Vary which bank member is correct and its displayed position."
+    ],
+    "source_refs": [
+      "q-25124 / f2ec7bb2-2b5c-5a6c-af77-21a3068576a7",
+      "q-66805 / 3e958238-ee2a-58d3-b257-eafe2e7f6b42",
+      "q-100163 / 07d6770c-e373-5366-b946-966ce2aa6000",
+      "q-66801 / 4dbd2fd5-279c-5b4f-83af-6acbee35f908",
+      "e-4067 / 7c937587-dc81-5ee9-aa66-a509a87433e2",
+      "Tutorial 2794: use the exponential base as the logarithm base; apply log_b(b^c)=c."
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "source-records.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay-results.json",
+        "source-replays.json"
+      ],
+      "details": "All four complete source banks, keys, prompts and normalized solutions matched. Canonical example checked separately; its source answer bank was not captured."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "audit.py",
+        "math-results.json"
+      ],
+      "details": "Independent prompt and option evaluation found no errors across 320 fresh, five runner, four source and 12 controlled/canonical records."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "samples.json",
+        "stage-coverage.json",
+        "rejection-trace.json",
+        "selection-results.json"
+      ],
+      "details": "Both templates, every declared base, RHS and offset, and all answer positions appeared. Delivery retained all fresh and runner items."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "scope-results.json"
+      ],
+      "details": "Variations preserve exact inversion, optional additive isolation, response format and easy workload."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-results.json"
+      ],
+      "details": "Native grader passed 1,785 checks: 357 correct selections accepted and 1,428 distractors rejected, including counterfactual and delivered records."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render-input.json",
+        "render/rendering.json",
+        "render-assessment.json"
+      ],
+      "details": "Actual UI rendered 12 records without reported errors. Screenshot inspection confirmed readable notation, complete radio controls and consistent worked solutions."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "package-integrity.json",
+        "commands.json"
+      ],
+      "details": "Runtime matches Python 3.13.5 with no third-party dependencies. Determinism, relocation, count boundaries and invalid requests passed. Package fingerprints are unchanged."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "selection-results.json",
+        "contract-validation.json"
+      ],
+      "details": "Relevant changes switched answers, explanations and native grading; irrelevant reordering preserved them. Conditional shortcut probes found no demonstrated incidental predictor. Selection analysis uses captured inventory and explicit policy/history limits; finite tests do not exclude every possible shortcut."
+    }
+  },
+  "findings": []
+}

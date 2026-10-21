@@ -1,0 +1,112 @@
+{
+  "verdict": "accepted",
+  "summary": "No reproducible defect found. All eight checks passed. Package files remain unchanged; no publication or database writes occurred.",
+  "source_analysis": {
+    "skill": "Apply product and power logarithm rules, associate each exponent with its given logarithm, substitute, and simplify.",
+    "reasoning_steps": [
+      "Identify the common base and product factors.",
+      "Expand into exponent-weighted logarithms.",
+      "Substitute the corresponding numeric or symbolic givens.",
+      "Simplify and select the equivalent answer."
+    ],
+    "invariants": [
+      "Valid common base and positive arguments.",
+      "Two-factor product/power reasoning with comparable workload.",
+      "Five radio choices with exactly one correct answer."
+    ],
+    "permitted_variations": [
+      "Bases, exponents, given values, signs, and presentation order.",
+      "Either variable may carry the symbolic given or nonunit exponent.",
+      "Correct answer values and positions must follow the displayed evidence."
+    ],
+    "source_refs": [
+      "q-47194 / 21c18a11-6bc1-5de0-bcda-f9622b617f6d",
+      "q-66907 / c8f2e17a-2817-5868-a9e3-61bbc105efb0",
+      "q-79453 / 841f3191-5c7e-5e47-b725-127033cb9a73",
+      "q-98925 / 9796dfce-fb6b-57bd-b442-e9278daaaa20",
+      "e-4082 / 5a566673-4529-57b8-87c9-d5a6118e0398: power-rule then product-rule demonstration",
+      "Tutorial 2796 / 435a21a1-8874-500c-93b0-c742ac5f2a73: common-base identities and fractional-power example"
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay-tests.json",
+        "source-replay-records.json",
+        "source-symbolic-math.json"
+      ],
+      "details": "All four practice prompts and all 20 choices reproduced. Recorded hard keys and solution stages match. Missing unrated keys/solutions are explicitly inferred and independently checked. The canonical demonstration has no captured answer bank."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-tests.json",
+        "source-symbolic-math.json",
+        "cli-1000.json"
+      ],
+      "details": "Independent visible-prompt arithmetic, distinct alternatives, and worked substitutions passed for 249 hard test records and 1,000 boundary outputs. Symbolic checks verified the incomplete source cases."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-tests.json",
+        "controlled-bank-tests.json",
+        "delivery-stage-tests.json",
+        "selection-tests.json"
+      ],
+      "details": "Fresh samples cover both families, all justified sign/factor subgroups, exponent pairs, given values, bases, and presentation orders. All 220 independent delivery records and five runner records survived filtering. Selection support was examined under explicit policy/history scenarios."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "scope-tests.json"
+      ],
+      "details": "Variations retain the hard source operation and workload. Signed logarithm values are mathematically valid. Unsupported difficulties and source-only families are identified."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-report.json"
+      ],
+      "details": "The native grader accepted 476 independently correct selections and rejected 1,904 distractor selections, including counterfactual and normalized delivery records. No free-entry fields exist."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-inspection.json",
+        "render/question-001.png",
+        "render/question-023.png",
+        "render/question-024.png"
+      ],
+      "details": "All 31 actual-UI cases passed. Rendered prompts, final equations, five radio controls, and feedback keys match expectations. Representative screenshots were visually inspected."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-tests.json",
+        "package-integrity.json",
+        "commands.json"
+      ],
+      "details": "Exact Python dependency contract, deterministic replay, relocation, count boundaries, and unsupported-input rejection passed. Package hashes remain unchanged."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "counterfactual-tests.json",
+        "shortcut-tests.json",
+        "selection-tests.json",
+        "render-inspection.json"
+      ],
+      "details": "Relevant changes update answers, explanations, rendered mathematics, and grading; irrelevant changes preserve responses. Six bank-only strategies score exactly 1/5 in each controlled subgroup before and after delivery. Conclusions are limited to tested cases and captured inventory basis 4975; live policies, histories, and future inventory may differ."
+    }
+  },
+  "findings": []
+}
