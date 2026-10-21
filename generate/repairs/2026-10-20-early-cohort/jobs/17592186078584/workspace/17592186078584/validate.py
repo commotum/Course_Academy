@@ -145,59 +145,6 @@ def validate(r):
 
 
 def run():
-    records=[]; sourcecases=[]; native=[]; sections=['# Inhibited decay model review\n\nRaw originals retain one documented unit-label anomaly. Generated variants use complete operation banks unless labeled observed profile.']
-    for sid,(temp,p) in g.ORIGINALS.items():
-        level=g.TEMPLATES[temp]; r=g.generate(level,template=temp,parameters=p,profile=sid); validate(r); source=g.SOURCE_Q[sid]; f=source[':question/answer-fields'][0]; gf=r['question'][':question/answer-fields'][0]
-        assert r['question'][':question/problem']==source[':question/problem']; COUNTS['original_prompts_exact']+=1
-        assert r['question'][':question/worked-solution']==source[':question/worked-solution']; COUNTS['original_solutions_raw_exact']+=1
-        assert sorted(a[':answer/value'] for a in gf[':answer-field/choices'])==sorted(a[':answer/value'] for a in f[':answer-field/choices']); COUNTS['original_banks_exact']+=1
-        right=next(a[':answer/value'] for a in gf[':answer-field/choices'] if a[':answer/id']==gf[':answer-field/correct'][1]); assert right==f[':answer-field/correct'][':answer/value']; COUNTS['original_correct_designations']+=1
-        sourcecases.append({'source_id':sid,'template':temp,'difficulty':level,'parameters':p,'bank_profile':sid})
-        records.append({'label':'Original '+sid,'record':r}); sections+=['\n## Original '+sid+' — exact raw replay\n\n'+g.markdown(r)]
-        # Change complete givens, including every time prose slot, while retaining
-        # the entire observed parameterized offset bank through the public API.
-        changed=dict(p); changed['time']=p['time']+1
-        if temp!='water': changed['initial']+=(-1 if temp=='coffee' else 1)
-        changed['ambient']+=1
-        if level=='moderate': changed['observed']+=1; changed['target']+=1
-        rr=g.generate(level,seed=32,template=temp,parameters=changed,profile=sid); validate(rr)
-        records.append({'label':'Changed observed bank '+sid,'record':rr}); sections+=['\n## Changed observed profile '+sid+' — underdetermined scalar intent\n\n'+g.markdown(rr)]
-        # Authored operation bank at a changed eligible parameter set.
-        authored=g.generate(level,seed=440+len(records),template=temp); validate(authored); records.append({'label':'Changed default operations '+temp,'record':authored}); sections+=['\n## Generated default operations '+temp+'\n\n'+g.markdown(authored)]
-    for level in g.LEVELS:
-        for seed in (121,722):
-            r=g.generate(level,seed=seed); validate(r); records.append({'label':f'Generated {level} seed {seed}','record':r}); sections+=['\n## Generated '+level+f' seed {seed}\n\n'+g.markdown(r)]
-    # Repair source q-107122 with mathematically supported same numeric data.
-    temp,p=g.ORIGINALS['q-107122']; repaired=g.generate('moderate',template=temp,parameters=p)
-    validate(repaired); assert repaired['question'][':question/worked-solution']==g.SOURCE_Q['q-107122'][':question/worked-solution'].replace(r'\text{C}',r'\text{F}').replace('}C','}F'); COUNTS['repaired_solutions_correct']+=1
-    records.append({'label':'Fahrenheit unit repair','record':repaired}); sections+=['\n## Fahrenheit source unit repair — authored default bank\n\n'+g.markdown(repaired)]
-    for row in records:
-        r=row['record']; f=r['question'][':question/answer-fields'][0]
-        native.append({'label':row['label'],'record':r,'checks':[{'submitted_answer_id':a[':answer/id'],'expected':'accepted' if a[':answer/id']==f[':answer-field/correct'][1] else 'rejected','purpose':'Actual owned radio selection; independent displayed numeric bank and solution checks run separately'} for a in f[':answer-field/choices']]})
-    # Broader changed-parameter mathematics/formatting smoke checks.
-    for level in g.LEVELS:
-        for seed in range(12): validate(g.generate(level,seed=seed))
-    invalid=[('hard',dict(ambient=20,observed=100,later=60,target=30,start=0,gap=4)),('hard',dict(ambient=20,observed=100,later=60,target=30,start=4,gap=4)),('hard',dict(ambient=20,observed=100,later=60,target=19,start=2,gap=4)),('easy',dict(ambient=-1,initial=80,rate='0.1',time=5)),('easy',dict(ambient=20,initial=90,rate='0.001',time=5)),('moderate',dict(ambient=20,initial=100,observed=80,target=90,time=5))]
-    for level,p in invalid:
-        try: g.generate(level,parameters=p)
-        except ValueError: pass
-        else: raise AssertionError(('Scope guard accepted',p))
-    try: g.generate('moderate',template='water',parameters=dict(ambient=20,initial=95,observed=80,target=40,time=5))
-    except ValueError: pass
-    else: raise AssertionError('Boiling-water context guard failed')
-    try: g.generate('moderate',template='outside',parameters=dict(ambient=20,initial=400,observed=80,target=40,time=5))
-    except ValueError: pass
-    else: raise AssertionError('Outside ordinary room-air guard failed')
-    # General solution families are equivalent modulo nonzero rescaling of K;
-    # logarithm constant may shift. This is separate from calibrated answer value.
-    t=sp.Symbol('t',real=True); c=sp.Symbol('c',positive=True); A=20; k=sp.Rational(1,5)
-    assert_equal(A+c*sp.exp(-k*t),A+(3*c)*sp.exp(-k*t)/3,'General family nonzero rescaling')
-    assert_equal(A+sp.exp(sp.log(c)+2)*sp.exp(-k*t),A+sp.exp(2)*c*sp.exp(-k*t),'General family constant shift')
-    for filename,value in [('source-cases.json',sourcecases),('review.json',records),('native-input.json',native)]: (ROOT/filename).write_text(json.dumps(value,indent=2,ensure_ascii=False)+'\n')
-    (ROOT/'review.md').write_text('\n\n'.join(sections)+'\n')
-    engine=ROOT/'check-engine'; subprocess.run([str(engine),str(ROOT/'native-input.json'),str(ROOT/'native-report.json')],check=True)
-    nr=json.loads((ROOT/'native-report.json').read_text())
-    report={'status':'pass','database':'math','basis':g.SNAPSHOT['basis'],'counts':COUNTS,'source_coverage':'9/9 (5 easy, 4 moderate; 0 hard)','source_fidelity':{'complete_option_values':'45/45','distractor_values':'36/36','complete_banks':'9/9','correct_designations':'9/9','full_prompt_strings':'9/9','full_raw_solution_strings':'9/9','raw_solution_equations_correct':'9/9','raw_solution_unit_consistency':'8/9','normal_unit_repair':'1/1; all normal outputs correct'},'source_anomaly':'q-107122: 3 Celsius prose labels in Fahrenheit problem; 9/9 raw exact solutions; 1/1 normal repair verified','authored_hard':'Same cooling target time from two nonzero observations, nonintegral start/gap, no analytical branch; 2 reviewed examples','native':{k:nr[k] for k in ['entry_point','accepted_checks','rejected_checks','documented_unresolved_checks','database_writes']},'blank_equivalent_entries':'Not applicable: all observed and authored layouts are radio; no new blank layout introduced','engine_sha256':hashlib.sha256(engine.read_bytes()).hexdigest(),'engine_source_sha256':hashlib.sha256(ROOT.joinpath('check-engine.rs').read_bytes()).hexdigest(),'sympy_version':sp.__version__,'invalid_explicit_cases_rejected':len(invalid)+2,'plots':'none'}
-    (ROOT/'validation.json').write_text(json.dumps(report,indent=2)+'\n')
-    print(json.dumps(report,indent=2))
+    import runpy
+    runpy.run_path(str(ROOT.parent/'checks/regressions.py'),run_name='__main__')
 if __name__=='__main__': run()

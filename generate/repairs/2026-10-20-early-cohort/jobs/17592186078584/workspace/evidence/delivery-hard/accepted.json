@@ -1,0 +1,1010 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186078584,
+      "id": "bfe4679b-9724-5502-89d4-05e7661a1b5f",
+      "title": "Solving an Inhibited Decay Model"
+    },
+    "question": {
+      ":question/id": "bd1cf185-0c69-533d-a106-a669b402c787",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "A heated metal body cools in a room at ${24}^{∘}\\text{C}.$ Its temperature is ${97}^{∘}\\text{C}$ after $1$ minute and ${75}^{∘}\\text{C}$ after $4$ minutes. The temperature $T(t)$, in degrees Celsius, obeys Newton's law of cooling, with $t$ measured in minutes since cooling began. To the nearest minute, how long after cooling began does the body reach ${30}^{∘}\\text{C}$?",
+      ":question/worked-solution": "Newton's law of cooling states that the rate at which the temperature $T(t)$ of a body changes is proportional to the difference between its temperature and its surroundings. Therefore, we have the inhibited decay equation\n\n$$\n\\frac{dT}{dt}=-k(T-24),\\qquad k>0.\n$$\n\nFirst, we integrate our differential equation by separating the variables:\n\n$$\n\\begin{aligned}\\frac{dT}{T-24} & =-k\\,dt \\\\ \\int \\frac{dT}{T-24} & =-k\\int dt \\\\ \\operatorname{ln}⁡|T-24| & =-kt+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited decay equation, we have $T-24>0$ for all $t>0.$\nNext, we solve for $T(t),$ as follows:\n\n$$\n\\begin{aligned}T-24 & ={e}^{-kt+C} \\\\ T-24 & ={e}^{C}{e}^{-kt} \\\\ T-24 & =K{e}^{-kt} \\\\ T & =24+K{e}^{-kt}\\end{aligned}\n$$\n\nNote that $K={e}^{C}$ is a constant of integration. \n\nApply the two observed conditions $T(1)=97$ and $T(4)=75$:\n\n$$\n\\begin{aligned}97 & =24+Ke^{-1k} \\\\ 73 & =Ke^{-1k} \\\\ 75 & =24+Ke^{-4k} \\\\ 51 & =Ke^{-4k}\\end{aligned}\n$$\n\nDivide the excess temperatures to eliminate $K$, then take natural logarithms:\n\n$$\n\\begin{aligned}\\frac{51}{73} & =\\frac{Ke^{-4k}}{Ke^{-1k}} \\\\ \\frac{51}{73} & =e^{-3k} \\\\ \\ln(\\frac{51}{73}) & =-3k \\\\ k & =- \\frac{\\ln{\\left(\\frac{51}{73} \\right)}}{3}\\end{aligned}\n$$\n\nNow substitute this rate into $T(1)=97$ to determine the constant:\n\n$$\n\\begin{aligned}73 & =Ke^{-1(- \\frac{\\ln{\\left(\\frac{51}{73} \\right)}}{3})} \\\\ K & =73e^{1(- \\frac{\\ln{\\left(\\frac{51}{73} \\right)}}{3})} \\\\ K & =73\\left(\\frac{73}{51}\\right)^{\\frac{1}{3}}\\end{aligned}\n$$\n\nTherefore, the solution satisfying both observations is\n\n$$\nT(t)=24+73\\left(\\frac{73}{51}\\right)^{\\frac{1}{3}}e^{-(- \\frac{\\ln{\\left(\\frac{51}{73} \\right)}}{3})t}.\n$$\n\nSubstituting the two observation times confirms the model:\n\n$$\n\\begin{aligned}T(1) & =24+(73\\left(\\frac{73}{51}\\right)^{\\frac{1}{3}})e^{-(- \\frac{\\ln{\\left(\\frac{51}{73} \\right)}}{3})\\cdot 1}=97 \\\\ T(4) & =24+(73\\left(\\frac{73}{51}\\right)^{\\frac{1}{3}})e^{-(- \\frac{\\ln{\\left(\\frac{51}{73} \\right)}}{3})\\cdot 4}=75\\end{aligned}\n$$\n\nFinally, let ${t}_{1}$ be the time when the body reaches ${30}^{∘}\\text{C}.$ Then, we have\n\n$$\n\\begin{aligned}T({t}_{1}) & =30 \\\\ 24+Ke^{-k{t}_{1}} & =30 \\\\ Ke^{-k{t}_{1}} & =6 \\\\ e^{-k{t}_{1}} & =\\frac{6}{K} \\\\ -k{t}_{1} & =\\ln\\left(\\frac{6}{K}\\right) \\\\ {t}_{1} & =-\\frac{1}{k}\\ln\\left(\\frac{6}{K}\\right)\\end{aligned}\n$$\n\nSubstitute the values of $K$ and $k$ to obtain the time measured since cooling began:\n\n$$\n\\begin{aligned}{t}_{1} & =-\\frac{1}{- \\frac{\\ln{\\left(\\frac{51}{73} \\right)}}{3}}\\ln\\left(\\frac{6}{73\\left(\\frac{73}{51}\\right)^{\\frac{1}{3}}}\\right) \\\\ {t}_{1} & =1+3\\frac{\\ln(\\frac{6}{73})}{\\ln(\\frac{51}{73})}≈22\\,\\text{min}.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "48d1ab7b-591f-5f03-8eb3-69fffccdbad3",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "b22ce85d-65db-5286-86c7-46df75f1cfab",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "23\\,\\text{min}"
+            },
+            {
+              ":answer/id": "08fdbb8c-de65-527e-9da6-8478885d6f61",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "19\\,\\text{min}"
+            },
+            {
+              ":answer/id": "2b9c4372-c127-5c5f-b383-5eca667929be",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "24\\,\\text{min}"
+            },
+            {
+              ":answer/id": "91fd3d75-1059-5b95-a1c8-1e2f81c2bcda",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "20\\,\\text{min}"
+            },
+            {
+              ":answer/id": "0ac3f72c-76de-526b-9a8d-8fa53287ed5e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "22\\,\\text{min}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "0ac3f72c-76de-526b-9a8d-8fa53287ed5e"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "1.2.0",
+      "seed": 84101,
+      "template": "two_observations",
+      "parameters": {
+        "ambient": 24,
+        "observed": 97,
+        "later": 75,
+        "target": 30,
+        "start": 1,
+        "gap": 3
+      },
+      "bank_profile": "authored_local_integers",
+      "origin": "authored_hard",
+      "bank_origin": "authored_local_integers",
+      "source_basis": 5392,
+      "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+      "mathematical_fingerprint": "741bc1feab49738ceac7b014ce5e5a074eb2950f6208f82e73006dbcae0e993a",
+      "content_fingerprint": "b68e25ead840530945f445cbd69ee39330685c1aa407e47092f8e6d85fc1cb27",
+      "domain": "T(t)>ambient; positive rate; t>=0; observations strictly cooling",
+      "attempts": 1,
+      "source_refs": [
+        "e3e001a8-9294-59a4-82e6-b1122afdc72f"
+      ],
+      "recipes": [
+        "correct",
+        "rounded_correct_plus_-3",
+        "rounded_correct_plus_-2",
+        "rounded_correct_plus_1",
+        "rounded_correct_plus_2"
+      ]
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186078584,
+      "id": "bfe4679b-9724-5502-89d4-05e7661a1b5f",
+      "title": "Solving an Inhibited Decay Model"
+    },
+    "question": {
+      ":question/id": "edabc174-99a9-5a84-a6ac-2cbd19b67271",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "A heated metal body cools in a room at ${17}^{∘}\\text{C}.$ Its temperature is ${89}^{∘}\\text{C}$ after $1$ minute and ${47}^{∘}\\text{C}$ after $5$ minutes. The temperature $T(t)$, in degrees Celsius, obeys Newton's law of cooling, with $t$ measured in minutes since cooling began. To the nearest minute, how long after cooling began does the body reach ${26}^{∘}\\text{C}$?",
+      ":question/worked-solution": "Newton's law of cooling states that the rate at which the temperature $T(t)$ of a body changes is proportional to the difference between its temperature and its surroundings. Therefore, we have the inhibited decay equation\n\n$$\n\\frac{dT}{dt}=-k(T-17),\\qquad k>0.\n$$\n\nFirst, we integrate our differential equation by separating the variables:\n\n$$\n\\begin{aligned}\\frac{dT}{T-17} & =-k\\,dt \\\\ \\int \\frac{dT}{T-17} & =-k\\int dt \\\\ \\operatorname{ln}⁡|T-17| & =-kt+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited decay equation, we have $T-17>0$ for all $t>0.$\nNext, we solve for $T(t),$ as follows:\n\n$$\n\\begin{aligned}T-17 & ={e}^{-kt+C} \\\\ T-17 & ={e}^{C}{e}^{-kt} \\\\ T-17 & =K{e}^{-kt} \\\\ T & =17+K{e}^{-kt}\\end{aligned}\n$$\n\nNote that $K={e}^{C}$ is a constant of integration. \n\nApply the two observed conditions $T(1)=89$ and $T(5)=47$:\n\n$$\n\\begin{aligned}89 & =17+Ke^{-1k} \\\\ 72 & =Ke^{-1k} \\\\ 47 & =17+Ke^{-5k} \\\\ 30 & =Ke^{-5k}\\end{aligned}\n$$\n\nDivide the excess temperatures to eliminate $K$, then take natural logarithms:\n\n$$\n\\begin{aligned}\\frac{30}{72} & =\\frac{Ke^{-5k}}{Ke^{-1k}} \\\\ \\frac{5}{12} & =e^{-4k} \\\\ \\ln(\\frac{5}{12}) & =-4k \\\\ k & =- \\frac{\\ln{\\left(\\frac{5}{12} \\right)}}{4}\\end{aligned}\n$$\n\nNow substitute this rate into $T(1)=89$ to determine the constant:\n\n$$\n\\begin{aligned}72 & =Ke^{-1(- \\frac{\\ln{\\left(\\frac{5}{12} \\right)}}{4})} \\\\ K & =72e^{1(- \\frac{\\ln{\\left(\\frac{5}{12} \\right)}}{4})} \\\\ K & =72\\left(\\frac{72}{30}\\right)^{\\frac{1}{4}}\\end{aligned}\n$$\n\nTherefore, the solution satisfying both observations is\n\n$$\nT(t)=17+72\\left(\\frac{72}{30}\\right)^{\\frac{1}{4}}e^{-(- \\frac{\\ln{\\left(\\frac{5}{12} \\right)}}{4})t}.\n$$\n\nSubstituting the two observation times confirms the model:\n\n$$\n\\begin{aligned}T(1) & =17+(72\\left(\\frac{72}{30}\\right)^{\\frac{1}{4}})e^{-(- \\frac{\\ln{\\left(\\frac{5}{12} \\right)}}{4})\\cdot 1}=89 \\\\ T(5) & =17+(72\\left(\\frac{72}{30}\\right)^{\\frac{1}{4}})e^{-(- \\frac{\\ln{\\left(\\frac{5}{12} \\right)}}{4})\\cdot 5}=47\\end{aligned}\n$$\n\nFinally, let ${t}_{1}$ be the time when the body reaches ${26}^{∘}\\text{C}.$ Then, we have\n\n$$\n\\begin{aligned}T({t}_{1}) & =26 \\\\ 17+Ke^{-k{t}_{1}} & =26 \\\\ Ke^{-k{t}_{1}} & =9 \\\\ e^{-k{t}_{1}} & =\\frac{9}{K} \\\\ -k{t}_{1} & =\\ln\\left(\\frac{9}{K}\\right) \\\\ {t}_{1} & =-\\frac{1}{k}\\ln\\left(\\frac{9}{K}\\right)\\end{aligned}\n$$\n\nSubstitute the values of $K$ and $k$ to obtain the time measured since cooling began:\n\n$$\n\\begin{aligned}{t}_{1} & =-\\frac{1}{- \\frac{\\ln{\\left(\\frac{5}{12} \\right)}}{4}}\\ln\\left(\\frac{9}{72\\left(\\frac{72}{30}\\right)^{\\frac{1}{4}}}\\right) \\\\ {t}_{1} & =1+4\\frac{\\ln(\\frac{1}{8})}{\\ln(\\frac{5}{12})}≈11\\,\\text{min}.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "c1d2b27d-5c1c-510c-aae4-91a132dbba97",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "ff9837d7-8015-569b-8511-f38561a4e1c4",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "11\\,\\text{min}"
+            },
+            {
+              ":answer/id": "34b221e7-952e-52c1-bba7-c74f241ec8d3",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "15\\,\\text{min}"
+            },
+            {
+              ":answer/id": "29b7650c-c4f1-5775-88ce-f4eb255e5d6f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "14\\,\\text{min}"
+            },
+            {
+              ":answer/id": "a1344eb9-3b89-565b-b399-f5c7e2328277",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "12\\,\\text{min}"
+            },
+            {
+              ":answer/id": "c2848ba5-7073-5fc2-87b4-8aa6cabd61c8",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "13\\,\\text{min}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "ff9837d7-8015-569b-8511-f38561a4e1c4"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "1.2.0",
+      "seed": 84102,
+      "template": "two_observations",
+      "parameters": {
+        "ambient": 17,
+        "observed": 89,
+        "later": 47,
+        "target": 26,
+        "start": 1,
+        "gap": 4
+      },
+      "bank_profile": "authored_local_integers",
+      "origin": "authored_hard",
+      "bank_origin": "authored_local_integers",
+      "source_basis": 5392,
+      "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+      "mathematical_fingerprint": "9a2db1da93b1f76459e07167862190d00b7e4ac4f895a9e3e52e0a1dbb9838a5",
+      "content_fingerprint": "c0dcee16990edc794128b6a94e7029c2a8178f4bb21ad0f1a4025337397e1782",
+      "domain": "T(t)>ambient; positive rate; t>=0; observations strictly cooling",
+      "attempts": 2,
+      "source_refs": [
+        "e3e001a8-9294-59a4-82e6-b1122afdc72f"
+      ],
+      "recipes": [
+        "correct",
+        "rounded_correct_plus_1",
+        "rounded_correct_plus_2",
+        "rounded_correct_plus_3",
+        "rounded_correct_plus_4"
+      ]
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186078584,
+      "id": "bfe4679b-9724-5502-89d4-05e7661a1b5f",
+      "title": "Solving an Inhibited Decay Model"
+    },
+    "question": {
+      ":question/id": "d8a1cd90-c8a6-5802-b2df-1dc24e85f087",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "A heated metal body cools in a room at ${30}^{∘}\\text{C}.$ Its temperature is ${80}^{∘}\\text{C}$ after $4$ minutes and ${50}^{∘}\\text{C}$ after $10$ minutes. The temperature $T(t)$, in degrees Celsius, obeys Newton's law of cooling, with $t$ measured in minutes since cooling began. To the nearest minute, how long after cooling began does the body reach ${35}^{∘}\\text{C}$?",
+      ":question/worked-solution": "Newton's law of cooling states that the rate at which the temperature $T(t)$ of a body changes is proportional to the difference between its temperature and its surroundings. Therefore, we have the inhibited decay equation\n\n$$\n\\frac{dT}{dt}=-k(T-30),\\qquad k>0.\n$$\n\nFirst, we integrate our differential equation by separating the variables:\n\n$$\n\\begin{aligned}\\frac{dT}{T-30} & =-k\\,dt \\\\ \\int \\frac{dT}{T-30} & =-k\\int dt \\\\ \\operatorname{ln}⁡|T-30| & =-kt+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited decay equation, we have $T-30>0$ for all $t>0.$\nNext, we solve for $T(t),$ as follows:\n\n$$\n\\begin{aligned}T-30 & ={e}^{-kt+C} \\\\ T-30 & ={e}^{C}{e}^{-kt} \\\\ T-30 & =K{e}^{-kt} \\\\ T & =30+K{e}^{-kt}\\end{aligned}\n$$\n\nNote that $K={e}^{C}$ is a constant of integration. \n\nApply the two observed conditions $T(4)=80$ and $T(10)=50$:\n\n$$\n\\begin{aligned}80 & =30+Ke^{-4k} \\\\ 50 & =Ke^{-4k} \\\\ 50 & =30+Ke^{-10k} \\\\ 20 & =Ke^{-10k}\\end{aligned}\n$$\n\nDivide the excess temperatures to eliminate $K$, then take natural logarithms:\n\n$$\n\\begin{aligned}\\frac{20}{50} & =\\frac{Ke^{-10k}}{Ke^{-4k}} \\\\ \\frac{2}{5} & =e^{-6k} \\\\ \\ln(\\frac{2}{5}) & =-6k \\\\ k & =- \\frac{\\ln{\\left(\\frac{2}{5} \\right)}}{6}\\end{aligned}\n$$\n\nNow substitute this rate into $T(4)=80$ to determine the constant:\n\n$$\n\\begin{aligned}50 & =Ke^{-4(- \\frac{\\ln{\\left(\\frac{2}{5} \\right)}}{6})} \\\\ K & =50e^{4(- \\frac{\\ln{\\left(\\frac{2}{5} \\right)}}{6})} \\\\ K & =50\\left(\\frac{50}{20}\\right)^{\\frac{2}{3}}\\end{aligned}\n$$\n\nTherefore, the solution satisfying both observations is\n\n$$\nT(t)=30+50\\left(\\frac{50}{20}\\right)^{\\frac{2}{3}}e^{-(- \\frac{\\ln{\\left(\\frac{2}{5} \\right)}}{6})t}.\n$$\n\nSubstituting the two observation times confirms the model:\n\n$$\n\\begin{aligned}T(4) & =30+(50\\left(\\frac{50}{20}\\right)^{\\frac{2}{3}})e^{-(- \\frac{\\ln{\\left(\\frac{2}{5} \\right)}}{6})\\cdot 4}=80 \\\\ T(10) & =30+(50\\left(\\frac{50}{20}\\right)^{\\frac{2}{3}})e^{-(- \\frac{\\ln{\\left(\\frac{2}{5} \\right)}}{6})\\cdot 10}=50\\end{aligned}\n$$\n\nFinally, let ${t}_{1}$ be the time when the body reaches ${35}^{∘}\\text{C}.$ Then, we have\n\n$$\n\\begin{aligned}T({t}_{1}) & =35 \\\\ 30+Ke^{-k{t}_{1}} & =35 \\\\ Ke^{-k{t}_{1}} & =5 \\\\ e^{-k{t}_{1}} & =\\frac{5}{K} \\\\ -k{t}_{1} & =\\ln\\left(\\frac{5}{K}\\right) \\\\ {t}_{1} & =-\\frac{1}{k}\\ln\\left(\\frac{5}{K}\\right)\\end{aligned}\n$$\n\nSubstitute the values of $K$ and $k$ to obtain the time measured since cooling began:\n\n$$\n\\begin{aligned}{t}_{1} & =-\\frac{1}{- \\frac{\\ln{\\left(\\frac{2}{5} \\right)}}{6}}\\ln\\left(\\frac{5}{50\\left(\\frac{50}{20}\\right)^{\\frac{2}{3}}}\\right) \\\\ {t}_{1} & =4+6\\frac{\\ln(\\frac{1}{10})}{\\ln(\\frac{2}{5})}≈19\\,\\text{min}.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "cf023bf1-8389-57ca-b45d-d3ff0b5fb06b",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "86408b5a-480b-5d66-8a2a-840413f3f8a0",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "17\\,\\text{min}"
+            },
+            {
+              ":answer/id": "1d5cd0b9-65c1-51ff-858f-0f37dc189ea2",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "19\\,\\text{min}"
+            },
+            {
+              ":answer/id": "06e8fa1f-d320-5a31-9b56-5f182f8006ca",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "18\\,\\text{min}"
+            },
+            {
+              ":answer/id": "3614d3c4-c9d8-5e39-8126-39261b2907cb",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "20\\,\\text{min}"
+            },
+            {
+              ":answer/id": "6b825eed-cddb-5a8f-a89e-5559ba9107e0",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "21\\,\\text{min}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "1d5cd0b9-65c1-51ff-858f-0f37dc189ea2"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "1.2.0",
+      "seed": 84103,
+      "template": "two_observations",
+      "parameters": {
+        "ambient": 30,
+        "observed": 80,
+        "later": 50,
+        "target": 35,
+        "start": 4,
+        "gap": 6
+      },
+      "bank_profile": "authored_local_integers",
+      "origin": "authored_hard",
+      "bank_origin": "authored_local_integers",
+      "source_basis": 5392,
+      "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+      "mathematical_fingerprint": "018dee7646e9de21595f29c3a6d3f5d7469af449028aa8d7192d64a812bd0ec4",
+      "content_fingerprint": "4226d98377c8998ae726873dbddbc871881bc9fc80c8d2a020e7d68900f9d148",
+      "domain": "T(t)>ambient; positive rate; t>=0; observations strictly cooling",
+      "attempts": 2,
+      "source_refs": [
+        "e3e001a8-9294-59a4-82e6-b1122afdc72f"
+      ],
+      "recipes": [
+        "correct",
+        "rounded_correct_plus_-2",
+        "rounded_correct_plus_-1",
+        "rounded_correct_plus_1",
+        "rounded_correct_plus_2"
+      ]
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186078584,
+      "id": "bfe4679b-9724-5502-89d4-05e7661a1b5f",
+      "title": "Solving an Inhibited Decay Model"
+    },
+    "question": {
+      ":question/id": "e447a27b-e2bb-535a-bd0e-33f0d49839d1",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "A heated metal body cools in a room at ${32}^{∘}\\text{C}.$ Its temperature is ${111}^{∘}\\text{C}$ after $6$ minutes and ${66}^{∘}\\text{C}$ after $11$ minutes. The temperature $T(t)$, in degrees Celsius, obeys Newton's law of cooling, with $t$ measured in minutes since cooling began. To the nearest minute, how long after cooling began does the body reach ${41}^{∘}\\text{C}$?",
+      ":question/worked-solution": "Newton's law of cooling states that the rate at which the temperature $T(t)$ of a body changes is proportional to the difference between its temperature and its surroundings. Therefore, we have the inhibited decay equation\n\n$$\n\\frac{dT}{dt}=-k(T-32),\\qquad k>0.\n$$\n\nFirst, we integrate our differential equation by separating the variables:\n\n$$\n\\begin{aligned}\\frac{dT}{T-32} & =-k\\,dt \\\\ \\int \\frac{dT}{T-32} & =-k\\int dt \\\\ \\operatorname{ln}⁡|T-32| & =-kt+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited decay equation, we have $T-32>0$ for all $t>0.$\nNext, we solve for $T(t),$ as follows:\n\n$$\n\\begin{aligned}T-32 & ={e}^{-kt+C} \\\\ T-32 & ={e}^{C}{e}^{-kt} \\\\ T-32 & =K{e}^{-kt} \\\\ T & =32+K{e}^{-kt}\\end{aligned}\n$$\n\nNote that $K={e}^{C}$ is a constant of integration. \n\nApply the two observed conditions $T(6)=111$ and $T(11)=66$:\n\n$$\n\\begin{aligned}111 & =32+Ke^{-6k} \\\\ 79 & =Ke^{-6k} \\\\ 66 & =32+Ke^{-11k} \\\\ 34 & =Ke^{-11k}\\end{aligned}\n$$\n\nDivide the excess temperatures to eliminate $K$, then take natural logarithms:\n\n$$\n\\begin{aligned}\\frac{34}{79} & =\\frac{Ke^{-11k}}{Ke^{-6k}} \\\\ \\frac{34}{79} & =e^{-5k} \\\\ \\ln(\\frac{34}{79}) & =-5k \\\\ k & =- \\frac{\\ln{\\left(\\frac{34}{79} \\right)}}{5}\\end{aligned}\n$$\n\nNow substitute this rate into $T(6)=111$ to determine the constant:\n\n$$\n\\begin{aligned}79 & =Ke^{-6(- \\frac{\\ln{\\left(\\frac{34}{79} \\right)}}{5})} \\\\ K & =79e^{6(- \\frac{\\ln{\\left(\\frac{34}{79} \\right)}}{5})} \\\\ K & =79\\left(\\frac{79}{34}\\right)^{\\frac{6}{5}}\\end{aligned}\n$$\n\nTherefore, the solution satisfying both observations is\n\n$$\nT(t)=32+79\\left(\\frac{79}{34}\\right)^{\\frac{6}{5}}e^{-(- \\frac{\\ln{\\left(\\frac{34}{79} \\right)}}{5})t}.\n$$\n\nSubstituting the two observation times confirms the model:\n\n$$\n\\begin{aligned}T(6) & =32+(79\\left(\\frac{79}{34}\\right)^{\\frac{6}{5}})e^{-(- \\frac{\\ln{\\left(\\frac{34}{79} \\right)}}{5})\\cdot 6}=111 \\\\ T(11) & =32+(79\\left(\\frac{79}{34}\\right)^{\\frac{6}{5}})e^{-(- \\frac{\\ln{\\left(\\frac{34}{79} \\right)}}{5})\\cdot 11}=66\\end{aligned}\n$$\n\nFinally, let ${t}_{1}$ be the time when the body reaches ${41}^{∘}\\text{C}.$ Then, we have\n\n$$\n\\begin{aligned}T({t}_{1}) & =41 \\\\ 32+Ke^{-k{t}_{1}} & =41 \\\\ Ke^{-k{t}_{1}} & =9 \\\\ e^{-k{t}_{1}} & =\\frac{9}{K} \\\\ -k{t}_{1} & =\\ln\\left(\\frac{9}{K}\\right) \\\\ {t}_{1} & =-\\frac{1}{k}\\ln\\left(\\frac{9}{K}\\right)\\end{aligned}\n$$\n\nSubstitute the values of $K$ and $k$ to obtain the time measured since cooling began:\n\n$$\n\\begin{aligned}{t}_{1} & =-\\frac{1}{- \\frac{\\ln{\\left(\\frac{34}{79} \\right)}}{5}}\\ln\\left(\\frac{9}{79\\left(\\frac{79}{34}\\right)^{\\frac{6}{5}}}\\right) \\\\ {t}_{1} & =6+5\\frac{\\ln(\\frac{9}{79})}{\\ln(\\frac{34}{79})}≈19\\,\\text{min}.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "49a3cb4a-f1c5-552e-9c30-502211bb6013",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "980f503d-544d-576b-8ae9-bfb1f1c6efa9",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "22\\,\\text{min}"
+            },
+            {
+              ":answer/id": "6e17209e-8cc3-5bbb-aa73-aaf469649440",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "20\\,\\text{min}"
+            },
+            {
+              ":answer/id": "43ec03e2-021c-5170-b733-1804d4cfb9fa",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "18\\,\\text{min}"
+            },
+            {
+              ":answer/id": "f16fdcc8-a5d6-5039-998b-de4d02aa180a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "21\\,\\text{min}"
+            },
+            {
+              ":answer/id": "fbc878a5-4801-5505-81c0-4b98256f4716",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "19\\,\\text{min}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "fbc878a5-4801-5505-81c0-4b98256f4716"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "1.2.0",
+      "seed": 84104,
+      "template": "two_observations",
+      "parameters": {
+        "ambient": 32,
+        "observed": 111,
+        "later": 66,
+        "target": 41,
+        "start": 6,
+        "gap": 5
+      },
+      "bank_profile": "authored_local_integers",
+      "origin": "authored_hard",
+      "bank_origin": "authored_local_integers",
+      "source_basis": 5392,
+      "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+      "mathematical_fingerprint": "79cb19ee286760e77d32cb8613280d3459be3ecdb519d57ddc53dcafcd11a708",
+      "content_fingerprint": "49c3651162faaae5c5ae6fb8e3293785cacde0273b70bb9f4c579780f6626768",
+      "domain": "T(t)>ambient; positive rate; t>=0; observations strictly cooling",
+      "attempts": 1,
+      "source_refs": [
+        "e3e001a8-9294-59a4-82e6-b1122afdc72f"
+      ],
+      "recipes": [
+        "correct",
+        "rounded_correct_plus_-1",
+        "rounded_correct_plus_1",
+        "rounded_correct_plus_2",
+        "rounded_correct_plus_3"
+      ]
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186078584,
+      "id": "bfe4679b-9724-5502-89d4-05e7661a1b5f",
+      "title": "Solving an Inhibited Decay Model"
+    },
+    "question": {
+      ":question/id": "dff1e745-7d96-5430-b86f-b941306619ac",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "A heated metal body cools in a room at ${15}^{∘}\\text{C}.$ Its temperature is ${84}^{∘}\\text{C}$ after $3$ minutes and ${46}^{∘}\\text{C}$ after $7$ minutes. The temperature $T(t)$, in degrees Celsius, obeys Newton's law of cooling, with $t$ measured in minutes since cooling began. To the nearest minute, how long after cooling began does the body reach ${20}^{∘}\\text{C}$?",
+      ":question/worked-solution": "Newton's law of cooling states that the rate at which the temperature $T(t)$ of a body changes is proportional to the difference between its temperature and its surroundings. Therefore, we have the inhibited decay equation\n\n$$\n\\frac{dT}{dt}=-k(T-15),\\qquad k>0.\n$$\n\nFirst, we integrate our differential equation by separating the variables:\n\n$$\n\\begin{aligned}\\frac{dT}{T-15} & =-k\\,dt \\\\ \\int \\frac{dT}{T-15} & =-k\\int dt \\\\ \\operatorname{ln}⁡|T-15| & =-kt+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited decay equation, we have $T-15>0$ for all $t>0.$\nNext, we solve for $T(t),$ as follows:\n\n$$\n\\begin{aligned}T-15 & ={e}^{-kt+C} \\\\ T-15 & ={e}^{C}{e}^{-kt} \\\\ T-15 & =K{e}^{-kt} \\\\ T & =15+K{e}^{-kt}\\end{aligned}\n$$\n\nNote that $K={e}^{C}$ is a constant of integration. \n\nApply the two observed conditions $T(3)=84$ and $T(7)=46$:\n\n$$\n\\begin{aligned}84 & =15+Ke^{-3k} \\\\ 69 & =Ke^{-3k} \\\\ 46 & =15+Ke^{-7k} \\\\ 31 & =Ke^{-7k}\\end{aligned}\n$$\n\nDivide the excess temperatures to eliminate $K$, then take natural logarithms:\n\n$$\n\\begin{aligned}\\frac{31}{69} & =\\frac{Ke^{-7k}}{Ke^{-3k}} \\\\ \\frac{31}{69} & =e^{-4k} \\\\ \\ln(\\frac{31}{69}) & =-4k \\\\ k & =- \\frac{\\ln{\\left(\\frac{31}{69} \\right)}}{4}\\end{aligned}\n$$\n\nNow substitute this rate into $T(3)=84$ to determine the constant:\n\n$$\n\\begin{aligned}69 & =Ke^{-3(- \\frac{\\ln{\\left(\\frac{31}{69} \\right)}}{4})} \\\\ K & =69e^{3(- \\frac{\\ln{\\left(\\frac{31}{69} \\right)}}{4})} \\\\ K & =69\\left(\\frac{69}{31}\\right)^{\\frac{3}{4}}\\end{aligned}\n$$\n\nTherefore, the solution satisfying both observations is\n\n$$\nT(t)=15+69\\left(\\frac{69}{31}\\right)^{\\frac{3}{4}}e^{-(- \\frac{\\ln{\\left(\\frac{31}{69} \\right)}}{4})t}.\n$$\n\nSubstituting the two observation times confirms the model:\n\n$$\n\\begin{aligned}T(3) & =15+(69\\left(\\frac{69}{31}\\right)^{\\frac{3}{4}})e^{-(- \\frac{\\ln{\\left(\\frac{31}{69} \\right)}}{4})\\cdot 3}=84 \\\\ T(7) & =15+(69\\left(\\frac{69}{31}\\right)^{\\frac{3}{4}})e^{-(- \\frac{\\ln{\\left(\\frac{31}{69} \\right)}}{4})\\cdot 7}=46\\end{aligned}\n$$\n\nFinally, let ${t}_{1}$ be the time when the body reaches ${20}^{∘}\\text{C}.$ Then, we have\n\n$$\n\\begin{aligned}T({t}_{1}) & =20 \\\\ 15+Ke^{-k{t}_{1}} & =20 \\\\ Ke^{-k{t}_{1}} & =5 \\\\ e^{-k{t}_{1}} & =\\frac{5}{K} \\\\ -k{t}_{1} & =\\ln\\left(\\frac{5}{K}\\right) \\\\ {t}_{1} & =-\\frac{1}{k}\\ln\\left(\\frac{5}{K}\\right)\\end{aligned}\n$$\n\nSubstitute the values of $K$ and $k$ to obtain the time measured since cooling began:\n\n$$\n\\begin{aligned}{t}_{1} & =-\\frac{1}{- \\frac{\\ln{\\left(\\frac{31}{69} \\right)}}{4}}\\ln\\left(\\frac{5}{69\\left(\\frac{69}{31}\\right)^{\\frac{3}{4}}}\\right) \\\\ {t}_{1} & =3+4\\frac{\\ln(\\frac{5}{69})}{\\ln(\\frac{31}{69})}≈16\\,\\text{min}.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "f9e6a42f-27f8-5530-ac6f-2787f4a7425c",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "b542ad96-fa09-590c-8a86-b391bc610e5d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "13\\,\\text{min}"
+            },
+            {
+              ":answer/id": "ccb234c9-ae51-5f8f-a3f5-794d5c2ca5ba",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "14\\,\\text{min}"
+            },
+            {
+              ":answer/id": "7a5633cf-5228-5051-b9a5-828c9eab4d34",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "16\\,\\text{min}"
+            },
+            {
+              ":answer/id": "addccba1-bdf5-5d08-b58f-ceff738ca5db",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "17\\,\\text{min}"
+            },
+            {
+              ":answer/id": "9b56330e-4f7e-5433-8eb6-de8b5cd90be7",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "15\\,\\text{min}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "7a5633cf-5228-5051-b9a5-828c9eab4d34"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "1.2.0",
+      "seed": 84105,
+      "template": "two_observations",
+      "parameters": {
+        "ambient": 15,
+        "observed": 84,
+        "later": 46,
+        "target": 20,
+        "start": 3,
+        "gap": 4
+      },
+      "bank_profile": "authored_local_integers",
+      "origin": "authored_hard",
+      "bank_origin": "authored_local_integers",
+      "source_basis": 5392,
+      "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+      "mathematical_fingerprint": "0051fe74d3744557cca2f3fc192eb481c2f730c81dc5d94618f089ec37e829eb",
+      "content_fingerprint": "e399c0fb98a8c021b03655fb44fad024aa7dc06f4b0efa7a8e18f9b1727dbfd5",
+      "domain": "T(t)>ambient; positive rate; t>=0; observations strictly cooling",
+      "attempts": 1,
+      "source_refs": [
+        "e3e001a8-9294-59a4-82e6-b1122afdc72f"
+      ],
+      "recipes": [
+        "correct",
+        "rounded_correct_plus_-3",
+        "rounded_correct_plus_-2",
+        "rounded_correct_plus_-1",
+        "rounded_correct_plus_1"
+      ]
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186078584,
+      "id": "bfe4679b-9724-5502-89d4-05e7661a1b5f",
+      "title": "Solving an Inhibited Decay Model"
+    },
+    "question": {
+      ":question/id": "2b534d01-435a-5035-b2da-51a5dc4aec09",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "A heated metal body cools in a room at ${16}^{∘}\\text{C}.$ Its temperature is ${75}^{∘}\\text{C}$ after $3$ minutes and ${47}^{∘}\\text{C}$ after $9$ minutes. The temperature $T(t)$, in degrees Celsius, obeys Newton's law of cooling, with $t$ measured in minutes since cooling began. To the nearest minute, how long after cooling began does the body reach ${19}^{∘}\\text{C}$?",
+      ":question/worked-solution": "Newton's law of cooling states that the rate at which the temperature $T(t)$ of a body changes is proportional to the difference between its temperature and its surroundings. Therefore, we have the inhibited decay equation\n\n$$\n\\frac{dT}{dt}=-k(T-16),\\qquad k>0.\n$$\n\nFirst, we integrate our differential equation by separating the variables:\n\n$$\n\\begin{aligned}\\frac{dT}{T-16} & =-k\\,dt \\\\ \\int \\frac{dT}{T-16} & =-k\\int dt \\\\ \\operatorname{ln}⁡|T-16| & =-kt+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited decay equation, we have $T-16>0$ for all $t>0.$\nNext, we solve for $T(t),$ as follows:\n\n$$\n\\begin{aligned}T-16 & ={e}^{-kt+C} \\\\ T-16 & ={e}^{C}{e}^{-kt} \\\\ T-16 & =K{e}^{-kt} \\\\ T & =16+K{e}^{-kt}\\end{aligned}\n$$\n\nNote that $K={e}^{C}$ is a constant of integration. \n\nApply the two observed conditions $T(3)=75$ and $T(9)=47$:\n\n$$\n\\begin{aligned}75 & =16+Ke^{-3k} \\\\ 59 & =Ke^{-3k} \\\\ 47 & =16+Ke^{-9k} \\\\ 31 & =Ke^{-9k}\\end{aligned}\n$$\n\nDivide the excess temperatures to eliminate $K$, then take natural logarithms:\n\n$$\n\\begin{aligned}\\frac{31}{59} & =\\frac{Ke^{-9k}}{Ke^{-3k}} \\\\ \\frac{31}{59} & =e^{-6k} \\\\ \\ln(\\frac{31}{59}) & =-6k \\\\ k & =- \\frac{\\ln{\\left(\\frac{31}{59} \\right)}}{6}\\end{aligned}\n$$\n\nNow substitute this rate into $T(3)=75$ to determine the constant:\n\n$$\n\\begin{aligned}59 & =Ke^{-3(- \\frac{\\ln{\\left(\\frac{31}{59} \\right)}}{6})} \\\\ K & =59e^{3(- \\frac{\\ln{\\left(\\frac{31}{59} \\right)}}{6})} \\\\ K & =59\\left(\\frac{59}{31}\\right)^{\\frac{1}{2}}\\end{aligned}\n$$\n\nTherefore, the solution satisfying both observations is\n\n$$\nT(t)=16+59\\left(\\frac{59}{31}\\right)^{\\frac{1}{2}}e^{-(- \\frac{\\ln{\\left(\\frac{31}{59} \\right)}}{6})t}.\n$$\n\nSubstituting the two observation times confirms the model:\n\n$$\n\\begin{aligned}T(3) & =16+(59\\left(\\frac{59}{31}\\right)^{\\frac{1}{2}})e^{-(- \\frac{\\ln{\\left(\\frac{31}{59} \\right)}}{6})\\cdot 3}=75 \\\\ T(9) & =16+(59\\left(\\frac{59}{31}\\right)^{\\frac{1}{2}})e^{-(- \\frac{\\ln{\\left(\\frac{31}{59} \\right)}}{6})\\cdot 9}=47\\end{aligned}\n$$\n\nFinally, let ${t}_{1}$ be the time when the body reaches ${19}^{∘}\\text{C}.$ Then, we have\n\n$$\n\\begin{aligned}T({t}_{1}) & =19 \\\\ 16+Ke^{-k{t}_{1}} & =19 \\\\ Ke^{-k{t}_{1}} & =3 \\\\ e^{-k{t}_{1}} & =\\frac{3}{K} \\\\ -k{t}_{1} & =\\ln\\left(\\frac{3}{K}\\right) \\\\ {t}_{1} & =-\\frac{1}{k}\\ln\\left(\\frac{3}{K}\\right)\\end{aligned}\n$$\n\nSubstitute the values of $K$ and $k$ to obtain the time measured since cooling began:\n\n$$\n\\begin{aligned}{t}_{1} & =-\\frac{1}{- \\frac{\\ln{\\left(\\frac{31}{59} \\right)}}{6}}\\ln\\left(\\frac{3}{59\\left(\\frac{59}{31}\\right)^{\\frac{1}{2}}}\\right) \\\\ {t}_{1} & =3+6\\frac{\\ln(\\frac{3}{59})}{\\ln(\\frac{31}{59})}≈31\\,\\text{min}.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "ffa585f9-1dc1-56be-8c52-9d7823509bf3",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "703703c6-33f9-58e9-9d52-2b0ddb8d8a0e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "30\\,\\text{min}"
+            },
+            {
+              ":answer/id": "b5b4acac-5493-5b93-acab-c8e82047b4ab",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "31\\,\\text{min}"
+            },
+            {
+              ":answer/id": "0141cd5b-2af8-53ad-8816-40bce53d7eac",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "32\\,\\text{min}"
+            },
+            {
+              ":answer/id": "72025dd0-50bc-5113-94cc-6b9a1c10fa3b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "34\\,\\text{min}"
+            },
+            {
+              ":answer/id": "103058ad-0bec-55d2-a0f7-f3051bf9ac77",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "36\\,\\text{min}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "b5b4acac-5493-5b93-acab-c8e82047b4ab"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "1.2.0",
+      "seed": 84106,
+      "template": "two_observations",
+      "parameters": {
+        "ambient": 16,
+        "observed": 75,
+        "later": 47,
+        "target": 19,
+        "start": 3,
+        "gap": 6
+      },
+      "bank_profile": "authored_local_integers",
+      "origin": "authored_hard",
+      "bank_origin": "authored_local_integers",
+      "source_basis": 5392,
+      "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+      "mathematical_fingerprint": "058f373cd6c0a4f9601478f16f7f7461c569f76a129a7d77ecbdbd1ed18a264f",
+      "content_fingerprint": "c11ea321dc099ca0240d847730aa6c4a0958ff5def006b8620996ae44a5c1a34",
+      "domain": "T(t)>ambient; positive rate; t>=0; observations strictly cooling",
+      "attempts": 2,
+      "source_refs": [
+        "e3e001a8-9294-59a4-82e6-b1122afdc72f"
+      ],
+      "recipes": [
+        "correct",
+        "rounded_correct_plus_-1",
+        "rounded_correct_plus_1",
+        "rounded_correct_plus_3",
+        "rounded_correct_plus_5"
+      ]
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186078584,
+      "id": "bfe4679b-9724-5502-89d4-05e7661a1b5f",
+      "title": "Solving an Inhibited Decay Model"
+    },
+    "question": {
+      ":question/id": "ee291ee4-f3d7-5c07-a744-bd0f26658e95",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "A heated metal body cools in a room at ${17}^{∘}\\text{C}.$ Its temperature is ${94}^{∘}\\text{C}$ after $3$ minutes and ${73}^{∘}\\text{C}$ after $7$ minutes. The temperature $T(t)$, in degrees Celsius, obeys Newton's law of cooling, with $t$ measured in minutes since cooling began. To the nearest minute, how long after cooling began does the body reach ${27}^{∘}\\text{C}$?",
+      ":question/worked-solution": "Newton's law of cooling states that the rate at which the temperature $T(t)$ of a body changes is proportional to the difference between its temperature and its surroundings. Therefore, we have the inhibited decay equation\n\n$$\n\\frac{dT}{dt}=-k(T-17),\\qquad k>0.\n$$\n\nFirst, we integrate our differential equation by separating the variables:\n\n$$\n\\begin{aligned}\\frac{dT}{T-17} & =-k\\,dt \\\\ \\int \\frac{dT}{T-17} & =-k\\int dt \\\\ \\operatorname{ln}⁡|T-17| & =-kt+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited decay equation, we have $T-17>0$ for all $t>0.$\nNext, we solve for $T(t),$ as follows:\n\n$$\n\\begin{aligned}T-17 & ={e}^{-kt+C} \\\\ T-17 & ={e}^{C}{e}^{-kt} \\\\ T-17 & =K{e}^{-kt} \\\\ T & =17+K{e}^{-kt}\\end{aligned}\n$$\n\nNote that $K={e}^{C}$ is a constant of integration. \n\nApply the two observed conditions $T(3)=94$ and $T(7)=73$:\n\n$$\n\\begin{aligned}94 & =17+Ke^{-3k} \\\\ 77 & =Ke^{-3k} \\\\ 73 & =17+Ke^{-7k} \\\\ 56 & =Ke^{-7k}\\end{aligned}\n$$\n\nDivide the excess temperatures to eliminate $K$, then take natural logarithms:\n\n$$\n\\begin{aligned}\\frac{56}{77} & =\\frac{Ke^{-7k}}{Ke^{-3k}} \\\\ \\frac{8}{11} & =e^{-4k} \\\\ \\ln(\\frac{8}{11}) & =-4k \\\\ k & =- \\frac{\\ln{\\left(\\frac{8}{11} \\right)}}{4}\\end{aligned}\n$$\n\nNow substitute this rate into $T(3)=94$ to determine the constant:\n\n$$\n\\begin{aligned}77 & =Ke^{-3(- \\frac{\\ln{\\left(\\frac{8}{11} \\right)}}{4})} \\\\ K & =77e^{3(- \\frac{\\ln{\\left(\\frac{8}{11} \\right)}}{4})} \\\\ K & =77\\left(\\frac{77}{56}\\right)^{\\frac{3}{4}}\\end{aligned}\n$$\n\nTherefore, the solution satisfying both observations is\n\n$$\nT(t)=17+77\\left(\\frac{77}{56}\\right)^{\\frac{3}{4}}e^{-(- \\frac{\\ln{\\left(\\frac{8}{11} \\right)}}{4})t}.\n$$\n\nSubstituting the two observation times confirms the model:\n\n$$\n\\begin{aligned}T(3) & =17+(77\\left(\\frac{77}{56}\\right)^{\\frac{3}{4}})e^{-(- \\frac{\\ln{\\left(\\frac{8}{11} \\right)}}{4})\\cdot 3}=94 \\\\ T(7) & =17+(77\\left(\\frac{77}{56}\\right)^{\\frac{3}{4}})e^{-(- \\frac{\\ln{\\left(\\frac{8}{11} \\right)}}{4})\\cdot 7}=73\\end{aligned}\n$$\n\nFinally, let ${t}_{1}$ be the time when the body reaches ${27}^{∘}\\text{C}.$ Then, we have\n\n$$\n\\begin{aligned}T({t}_{1}) & =27 \\\\ 17+Ke^{-k{t}_{1}} & =27 \\\\ Ke^{-k{t}_{1}} & =10 \\\\ e^{-k{t}_{1}} & =\\frac{10}{K} \\\\ -k{t}_{1} & =\\ln\\left(\\frac{10}{K}\\right) \\\\ {t}_{1} & =-\\frac{1}{k}\\ln\\left(\\frac{10}{K}\\right)\\end{aligned}\n$$\n\nSubstitute the values of $K$ and $k$ to obtain the time measured since cooling began:\n\n$$\n\\begin{aligned}{t}_{1} & =-\\frac{1}{- \\frac{\\ln{\\left(\\frac{8}{11} \\right)}}{4}}\\ln\\left(\\frac{10}{77\\left(\\frac{77}{56}\\right)^{\\frac{3}{4}}}\\right) \\\\ {t}_{1} & =3+4\\frac{\\ln(\\frac{10}{77})}{\\ln(\\frac{8}{11})}≈29\\,\\text{min}.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "0be5a48f-14d4-58da-b235-5391ab99ce10",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "9a0d29e2-818b-57e6-b1d6-f25668d7c53e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "33\\,\\text{min}"
+            },
+            {
+              ":answer/id": "3adb1272-5a95-5527-8a88-5cb089e600f9",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "31\\,\\text{min}"
+            },
+            {
+              ":answer/id": "52a8c54d-878c-56cd-9537-05c69eb6d352",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "29\\,\\text{min}"
+            },
+            {
+              ":answer/id": "a886a554-531c-5e59-b426-c13fe3539339",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "30\\,\\text{min}"
+            },
+            {
+              ":answer/id": "327c10d9-b319-5abd-afbf-d0198b55e281",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "28\\,\\text{min}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "52a8c54d-878c-56cd-9537-05c69eb6d352"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "1.2.0",
+      "seed": 84107,
+      "template": "two_observations",
+      "parameters": {
+        "ambient": 17,
+        "observed": 94,
+        "later": 73,
+        "target": 27,
+        "start": 3,
+        "gap": 4
+      },
+      "bank_profile": "authored_local_integers",
+      "origin": "authored_hard",
+      "bank_origin": "authored_local_integers",
+      "source_basis": 5392,
+      "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+      "mathematical_fingerprint": "a45fc570905602d69dca1e8107332b507338d296533c8ec095a428db816c2471",
+      "content_fingerprint": "7b736593cb6cd826263b32ed05b034e3d7c59860948b11cfaf1e576c76a4e95e",
+      "domain": "T(t)>ambient; positive rate; t>=0; observations strictly cooling",
+      "attempts": 1,
+      "source_refs": [
+        "e3e001a8-9294-59a4-82e6-b1122afdc72f"
+      ],
+      "recipes": [
+        "correct",
+        "rounded_correct_plus_-1",
+        "rounded_correct_plus_1",
+        "rounded_correct_plus_2",
+        "rounded_correct_plus_4"
+      ]
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186078584,
+      "id": "bfe4679b-9724-5502-89d4-05e7661a1b5f",
+      "title": "Solving an Inhibited Decay Model"
+    },
+    "question": {
+      ":question/id": "0bf10aa6-ca5a-57f4-921a-3db1d0dba5b0",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "A heated metal body cools in a room at ${35}^{∘}\\text{C}.$ Its temperature is ${117}^{∘}\\text{C}$ after $5$ minutes and ${73}^{∘}\\text{C}$ after $8$ minutes. The temperature $T(t)$, in degrees Celsius, obeys Newton's law of cooling, with $t$ measured in minutes since cooling began. To the nearest minute, how long after cooling began does the body reach ${44}^{∘}\\text{C}$?",
+      ":question/worked-solution": "Newton's law of cooling states that the rate at which the temperature $T(t)$ of a body changes is proportional to the difference between its temperature and its surroundings. Therefore, we have the inhibited decay equation\n\n$$\n\\frac{dT}{dt}=-k(T-35),\\qquad k>0.\n$$\n\nFirst, we integrate our differential equation by separating the variables:\n\n$$\n\\begin{aligned}\\frac{dT}{T-35} & =-k\\,dt \\\\ \\int \\frac{dT}{T-35} & =-k\\int dt \\\\ \\operatorname{ln}⁡|T-35| & =-kt+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited decay equation, we have $T-35>0$ for all $t>0.$\nNext, we solve for $T(t),$ as follows:\n\n$$\n\\begin{aligned}T-35 & ={e}^{-kt+C} \\\\ T-35 & ={e}^{C}{e}^{-kt} \\\\ T-35 & =K{e}^{-kt} \\\\ T & =35+K{e}^{-kt}\\end{aligned}\n$$\n\nNote that $K={e}^{C}$ is a constant of integration. \n\nApply the two observed conditions $T(5)=117$ and $T(8)=73$:\n\n$$\n\\begin{aligned}117 & =35+Ke^{-5k} \\\\ 82 & =Ke^{-5k} \\\\ 73 & =35+Ke^{-8k} \\\\ 38 & =Ke^{-8k}\\end{aligned}\n$$\n\nDivide the excess temperatures to eliminate $K$, then take natural logarithms:\n\n$$\n\\begin{aligned}\\frac{38}{82} & =\\frac{Ke^{-8k}}{Ke^{-5k}} \\\\ \\frac{19}{41} & =e^{-3k} \\\\ \\ln(\\frac{19}{41}) & =-3k \\\\ k & =- \\frac{\\ln{\\left(\\frac{19}{41} \\right)}}{3}\\end{aligned}\n$$\n\nNow substitute this rate into $T(5)=117$ to determine the constant:\n\n$$\n\\begin{aligned}82 & =Ke^{-5(- \\frac{\\ln{\\left(\\frac{19}{41} \\right)}}{3})} \\\\ K & =82e^{5(- \\frac{\\ln{\\left(\\frac{19}{41} \\right)}}{3})} \\\\ K & =82\\left(\\frac{82}{38}\\right)^{\\frac{5}{3}}\\end{aligned}\n$$\n\nTherefore, the solution satisfying both observations is\n\n$$\nT(t)=35+82\\left(\\frac{82}{38}\\right)^{\\frac{5}{3}}e^{-(- \\frac{\\ln{\\left(\\frac{19}{41} \\right)}}{3})t}.\n$$\n\nSubstituting the two observation times confirms the model:\n\n$$\n\\begin{aligned}T(5) & =35+(82\\left(\\frac{82}{38}\\right)^{\\frac{5}{3}})e^{-(- \\frac{\\ln{\\left(\\frac{19}{41} \\right)}}{3})\\cdot 5}=117 \\\\ T(8) & =35+(82\\left(\\frac{82}{38}\\right)^{\\frac{5}{3}})e^{-(- \\frac{\\ln{\\left(\\frac{19}{41} \\right)}}{3})\\cdot 8}=73\\end{aligned}\n$$\n\nFinally, let ${t}_{1}$ be the time when the body reaches ${44}^{∘}\\text{C}.$ Then, we have\n\n$$\n\\begin{aligned}T({t}_{1}) & =44 \\\\ 35+Ke^{-k{t}_{1}} & =44 \\\\ Ke^{-k{t}_{1}} & =9 \\\\ e^{-k{t}_{1}} & =\\frac{9}{K} \\\\ -k{t}_{1} & =\\ln\\left(\\frac{9}{K}\\right) \\\\ {t}_{1} & =-\\frac{1}{k}\\ln\\left(\\frac{9}{K}\\right)\\end{aligned}\n$$\n\nSubstitute the values of $K$ and $k$ to obtain the time measured since cooling began:\n\n$$\n\\begin{aligned}{t}_{1} & =-\\frac{1}{- \\frac{\\ln{\\left(\\frac{19}{41} \\right)}}{3}}\\ln\\left(\\frac{9}{82\\left(\\frac{82}{38}\\right)^{\\frac{5}{3}}}\\right) \\\\ {t}_{1} & =5+3\\frac{\\ln(\\frac{9}{82})}{\\ln(\\frac{19}{41})}≈14\\,\\text{min}.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "9e70ddd3-7016-55c2-ba1f-a28c5fa00be6",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "5728cc77-09c0-54af-a195-72281bec2a54",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "11\\,\\text{min}"
+            },
+            {
+              ":answer/id": "fe8f76d1-0768-5c32-9090-0555382cf99b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "13\\,\\text{min}"
+            },
+            {
+              ":answer/id": "62f0c9ee-9ee7-5b6e-a227-4af9d94fb324",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "10\\,\\text{min}"
+            },
+            {
+              ":answer/id": "c23ec976-8fba-56e2-bdc3-15a195a28efd",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "14\\,\\text{min}"
+            },
+            {
+              ":answer/id": "f046b536-acb8-57e9-b341-5daaecbff05a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "12\\,\\text{min}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "c23ec976-8fba-56e2-bdc3-15a195a28efd"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "1.2.0",
+      "seed": 84108,
+      "template": "two_observations",
+      "parameters": {
+        "ambient": 35,
+        "observed": 117,
+        "later": 73,
+        "target": 44,
+        "start": 5,
+        "gap": 3
+      },
+      "bank_profile": "authored_local_integers",
+      "origin": "authored_hard",
+      "bank_origin": "authored_local_integers",
+      "source_basis": 5392,
+      "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+      "mathematical_fingerprint": "a5df66957009a91125d492841c33be3dd94158857a07ced8e49e06fe3f0a5828",
+      "content_fingerprint": "b4fd112851c0da280ee2d0c51b242cf017eb9005e4bed8c6f07e2323d5cd38be",
+      "domain": "T(t)>ambient; positive rate; t>=0; observations strictly cooling",
+      "attempts": 2,
+      "source_refs": [
+        "e3e001a8-9294-59a4-82e6-b1122afdc72f"
+      ],
+      "recipes": [
+        "correct",
+        "rounded_correct_plus_-4",
+        "rounded_correct_plus_-3",
+        "rounded_correct_plus_-2",
+        "rounded_correct_plus_-1"
+      ]
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186078584,
+      "id": "bfe4679b-9724-5502-89d4-05e7661a1b5f",
+      "title": "Solving an Inhibited Decay Model"
+    },
+    "question": {
+      ":question/id": "f2b5b3d8-58d9-59b3-8735-c6b18330fd5c",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "A heated metal body cools in a room at ${29}^{∘}\\text{C}.$ Its temperature is ${102}^{∘}\\text{C}$ after $2$ minutes and ${74}^{∘}\\text{C}$ after $7$ minutes. The temperature $T(t)$, in degrees Celsius, obeys Newton's law of cooling, with $t$ measured in minutes since cooling began. To the nearest minute, how long after cooling began does the body reach ${37}^{∘}\\text{C}$?",
+      ":question/worked-solution": "Newton's law of cooling states that the rate at which the temperature $T(t)$ of a body changes is proportional to the difference between its temperature and its surroundings. Therefore, we have the inhibited decay equation\n\n$$\n\\frac{dT}{dt}=-k(T-29),\\qquad k>0.\n$$\n\nFirst, we integrate our differential equation by separating the variables:\n\n$$\n\\begin{aligned}\\frac{dT}{T-29} & =-k\\,dt \\\\ \\int \\frac{dT}{T-29} & =-k\\int dt \\\\ \\operatorname{ln}⁡|T-29| & =-kt+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited decay equation, we have $T-29>0$ for all $t>0.$\nNext, we solve for $T(t),$ as follows:\n\n$$\n\\begin{aligned}T-29 & ={e}^{-kt+C} \\\\ T-29 & ={e}^{C}{e}^{-kt} \\\\ T-29 & =K{e}^{-kt} \\\\ T & =29+K{e}^{-kt}\\end{aligned}\n$$\n\nNote that $K={e}^{C}$ is a constant of integration. \n\nApply the two observed conditions $T(2)=102$ and $T(7)=74$:\n\n$$\n\\begin{aligned}102 & =29+Ke^{-2k} \\\\ 73 & =Ke^{-2k} \\\\ 74 & =29+Ke^{-7k} \\\\ 45 & =Ke^{-7k}\\end{aligned}\n$$\n\nDivide the excess temperatures to eliminate $K$, then take natural logarithms:\n\n$$\n\\begin{aligned}\\frac{45}{73} & =\\frac{Ke^{-7k}}{Ke^{-2k}} \\\\ \\frac{45}{73} & =e^{-5k} \\\\ \\ln(\\frac{45}{73}) & =-5k \\\\ k & =- \\frac{\\ln{\\left(\\frac{45}{73} \\right)}}{5}\\end{aligned}\n$$\n\nNow substitute this rate into $T(2)=102$ to determine the constant:\n\n$$\n\\begin{aligned}73 & =Ke^{-2(- \\frac{\\ln{\\left(\\frac{45}{73} \\right)}}{5})} \\\\ K & =73e^{2(- \\frac{\\ln{\\left(\\frac{45}{73} \\right)}}{5})} \\\\ K & =73\\left(\\frac{73}{45}\\right)^{\\frac{2}{5}}\\end{aligned}\n$$\n\nTherefore, the solution satisfying both observations is\n\n$$\nT(t)=29+73\\left(\\frac{73}{45}\\right)^{\\frac{2}{5}}e^{-(- \\frac{\\ln{\\left(\\frac{45}{73} \\right)}}{5})t}.\n$$\n\nSubstituting the two observation times confirms the model:\n\n$$\n\\begin{aligned}T(2) & =29+(73\\left(\\frac{73}{45}\\right)^{\\frac{2}{5}})e^{-(- \\frac{\\ln{\\left(\\frac{45}{73} \\right)}}{5})\\cdot 2}=102 \\\\ T(7) & =29+(73\\left(\\frac{73}{45}\\right)^{\\frac{2}{5}})e^{-(- \\frac{\\ln{\\left(\\frac{45}{73} \\right)}}{5})\\cdot 7}=74\\end{aligned}\n$$\n\nFinally, let ${t}_{1}$ be the time when the body reaches ${37}^{∘}\\text{C}.$ Then, we have\n\n$$\n\\begin{aligned}T({t}_{1}) & =37 \\\\ 29+Ke^{-k{t}_{1}} & =37 \\\\ Ke^{-k{t}_{1}} & =8 \\\\ e^{-k{t}_{1}} & =\\frac{8}{K} \\\\ -k{t}_{1} & =\\ln\\left(\\frac{8}{K}\\right) \\\\ {t}_{1} & =-\\frac{1}{k}\\ln\\left(\\frac{8}{K}\\right)\\end{aligned}\n$$\n\nSubstitute the values of $K$ and $k$ to obtain the time measured since cooling began:\n\n$$\n\\begin{aligned}{t}_{1} & =-\\frac{1}{- \\frac{\\ln{\\left(\\frac{45}{73} \\right)}}{5}}\\ln\\left(\\frac{8}{73\\left(\\frac{73}{45}\\right)^{\\frac{2}{5}}}\\right) \\\\ {t}_{1} & =2+5\\frac{\\ln(\\frac{8}{73})}{\\ln(\\frac{45}{73})}≈25\\,\\text{min}.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "9fba3a5e-3508-5398-a814-08eb0be510c7",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "d5c9efc1-6500-541b-8e5a-2f9aad8a7c0a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "22\\,\\text{min}"
+            },
+            {
+              ":answer/id": "069f6508-4958-56fe-bccb-4677870c2122",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "20\\,\\text{min}"
+            },
+            {
+              ":answer/id": "0110a382-eaaf-5ff0-b988-9fb834ae6098",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "23\\,\\text{min}"
+            },
+            {
+              ":answer/id": "50e6c7ef-c167-53e0-8309-3d88cbe6c45c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "19\\,\\text{min}"
+            },
+            {
+              ":answer/id": "fb53dafe-cb57-5582-92d5-3358a71e598d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "25\\,\\text{min}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "fb53dafe-cb57-5582-92d5-3358a71e598d"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "1.2.0",
+      "seed": 84109,
+      "template": "two_observations",
+      "parameters": {
+        "ambient": 29,
+        "observed": 102,
+        "later": 74,
+        "target": 37,
+        "start": 2,
+        "gap": 5
+      },
+      "bank_profile": "authored_local_integers",
+      "origin": "authored_hard",
+      "bank_origin": "authored_local_integers",
+      "source_basis": 5392,
+      "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+      "mathematical_fingerprint": "2e7bd18d08f397410114ae2a8d5628008a86adf716be752cea3ed5caa8a19e76",
+      "content_fingerprint": "99de9439992c48f2b4701d4ec2c762c8f10f3ba2f9070577ebbe63da3a9c396e",
+      "domain": "T(t)>ambient; positive rate; t>=0; observations strictly cooling",
+      "attempts": 1,
+      "source_refs": [
+        "e3e001a8-9294-59a4-82e6-b1122afdc72f"
+      ],
+      "recipes": [
+        "correct",
+        "rounded_correct_plus_-6",
+        "rounded_correct_plus_-5",
+        "rounded_correct_plus_-3",
+        "rounded_correct_plus_-2"
+      ]
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186078584,
+      "id": "bfe4679b-9724-5502-89d4-05e7661a1b5f",
+      "title": "Solving an Inhibited Decay Model"
+    },
+    "question": {
+      ":question/id": "b859e023-48bd-57d5-a0ee-1939c775c8ad",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "A heated metal body cools in a room at ${24}^{∘}\\text{C}.$ Its temperature is ${82}^{∘}\\text{C}$ after $3$ minutes and ${55}^{∘}\\text{C}$ after $9$ minutes. The temperature $T(t)$, in degrees Celsius, obeys Newton's law of cooling, with $t$ measured in minutes since cooling began. To the nearest minute, how long after cooling began does the body reach ${28}^{∘}\\text{C}$?",
+      ":question/worked-solution": "Newton's law of cooling states that the rate at which the temperature $T(t)$ of a body changes is proportional to the difference between its temperature and its surroundings. Therefore, we have the inhibited decay equation\n\n$$\n\\frac{dT}{dt}=-k(T-24),\\qquad k>0.\n$$\n\nFirst, we integrate our differential equation by separating the variables:\n\n$$\n\\begin{aligned}\\frac{dT}{T-24} & =-k\\,dt \\\\ \\int \\frac{dT}{T-24} & =-k\\int dt \\\\ \\operatorname{ln}⁡|T-24| & =-kt+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited decay equation, we have $T-24>0$ for all $t>0.$\nNext, we solve for $T(t),$ as follows:\n\n$$\n\\begin{aligned}T-24 & ={e}^{-kt+C} \\\\ T-24 & ={e}^{C}{e}^{-kt} \\\\ T-24 & =K{e}^{-kt} \\\\ T & =24+K{e}^{-kt}\\end{aligned}\n$$\n\nNote that $K={e}^{C}$ is a constant of integration. \n\nApply the two observed conditions $T(3)=82$ and $T(9)=55$:\n\n$$\n\\begin{aligned}82 & =24+Ke^{-3k} \\\\ 58 & =Ke^{-3k} \\\\ 55 & =24+Ke^{-9k} \\\\ 31 & =Ke^{-9k}\\end{aligned}\n$$\n\nDivide the excess temperatures to eliminate $K$, then take natural logarithms:\n\n$$\n\\begin{aligned}\\frac{31}{58} & =\\frac{Ke^{-9k}}{Ke^{-3k}} \\\\ \\frac{31}{58} & =e^{-6k} \\\\ \\ln(\\frac{31}{58}) & =-6k \\\\ k & =- \\frac{\\ln{\\left(\\frac{31}{58} \\right)}}{6}\\end{aligned}\n$$\n\nNow substitute this rate into $T(3)=82$ to determine the constant:\n\n$$\n\\begin{aligned}58 & =Ke^{-3(- \\frac{\\ln{\\left(\\frac{31}{58} \\right)}}{6})} \\\\ K & =58e^{3(- \\frac{\\ln{\\left(\\frac{31}{58} \\right)}}{6})} \\\\ K & =58\\left(\\frac{58}{31}\\right)^{\\frac{1}{2}}\\end{aligned}\n$$\n\nTherefore, the solution satisfying both observations is\n\n$$\nT(t)=24+58\\left(\\frac{58}{31}\\right)^{\\frac{1}{2}}e^{-(- \\frac{\\ln{\\left(\\frac{31}{58} \\right)}}{6})t}.\n$$\n\nSubstituting the two observation times confirms the model:\n\n$$\n\\begin{aligned}T(3) & =24+(58\\left(\\frac{58}{31}\\right)^{\\frac{1}{2}})e^{-(- \\frac{\\ln{\\left(\\frac{31}{58} \\right)}}{6})\\cdot 3}=82 \\\\ T(9) & =24+(58\\left(\\frac{58}{31}\\right)^{\\frac{1}{2}})e^{-(- \\frac{\\ln{\\left(\\frac{31}{58} \\right)}}{6})\\cdot 9}=55\\end{aligned}\n$$\n\nFinally, let ${t}_{1}$ be the time when the body reaches ${28}^{∘}\\text{C}.$ Then, we have\n\n$$\n\\begin{aligned}T({t}_{1}) & =28 \\\\ 24+Ke^{-k{t}_{1}} & =28 \\\\ Ke^{-k{t}_{1}} & =4 \\\\ e^{-k{t}_{1}} & =\\frac{4}{K} \\\\ -k{t}_{1} & =\\ln\\left(\\frac{4}{K}\\right) \\\\ {t}_{1} & =-\\frac{1}{k}\\ln\\left(\\frac{4}{K}\\right)\\end{aligned}\n$$\n\nSubstitute the values of $K$ and $k$ to obtain the time measured since cooling began:\n\n$$\n\\begin{aligned}{t}_{1} & =-\\frac{1}{- \\frac{\\ln{\\left(\\frac{31}{58} \\right)}}{6}}\\ln\\left(\\frac{4}{58\\left(\\frac{58}{31}\\right)^{\\frac{1}{2}}}\\right) \\\\ {t}_{1} & =3+6\\frac{\\ln(\\frac{2}{29})}{\\ln(\\frac{31}{58})}≈29\\,\\text{min}.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "4f64b504-4a28-534e-ba42-3c4d83cd5e9b",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "e11f6671-99fe-5b40-b665-376f62c41818",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "29\\,\\text{min}"
+            },
+            {
+              ":answer/id": "cabd6816-b779-52e3-82ca-0c374b259045",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "30\\,\\text{min}"
+            },
+            {
+              ":answer/id": "5c88cdad-d988-5f62-ab39-9132f0411e0b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "32\\,\\text{min}"
+            },
+            {
+              ":answer/id": "b3729a82-7f4c-52d2-beb2-75aeefa090d4",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "26\\,\\text{min}"
+            },
+            {
+              ":answer/id": "e2aadc00-aba5-5980-8e37-8b9391e54bfa",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "28\\,\\text{min}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "e11f6671-99fe-5b40-b665-376f62c41818"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "1.2.0",
+      "seed": 84110,
+      "template": "two_observations",
+      "parameters": {
+        "ambient": 24,
+        "observed": 82,
+        "later": 55,
+        "target": 28,
+        "start": 3,
+        "gap": 6
+      },
+      "bank_profile": "authored_local_integers",
+      "origin": "authored_hard",
+      "bank_origin": "authored_local_integers",
+      "source_basis": 5392,
+      "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+      "mathematical_fingerprint": "d89980a1f8e8473fe4390abd72dedb203d8972e7ba4243f671b5b7c96848c25e",
+      "content_fingerprint": "da88e1587ff42db5d6e397b4ab0a9113496b7455c3938ae0adda53554c891104",
+      "domain": "T(t)>ambient; positive rate; t>=0; observations strictly cooling",
+      "attempts": 3,
+      "source_refs": [
+        "e3e001a8-9294-59a4-82e6-b1122afdc72f"
+      ],
+      "recipes": [
+        "correct",
+        "rounded_correct_plus_-3",
+        "rounded_correct_plus_-1",
+        "rounded_correct_plus_1",
+        "rounded_correct_plus_3"
+      ]
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186078584,
+      "id": "bfe4679b-9724-5502-89d4-05e7661a1b5f",
+      "title": "Solving an Inhibited Decay Model"
+    },
+    "question": {
+      ":question/id": "da2b3547-b800-540c-baed-13989fb1678e",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "A heated metal body cools in a room at ${28}^{∘}\\text{C}.$ Its temperature is ${108}^{∘}\\text{C}$ after $5$ minutes and ${92}^{∘}\\text{C}$ after $7$ minutes. The temperature $T(t)$, in degrees Celsius, obeys Newton's law of cooling, with $t$ measured in minutes since cooling began. To the nearest minute, how long after cooling began does the body reach ${39}^{∘}\\text{C}$?",
+      ":question/worked-solution": "Newton's law of cooling states that the rate at which the temperature $T(t)$ of a body changes is proportional to the difference between its temperature and its surroundings. Therefore, we have the inhibited decay equation\n\n$$\n\\frac{dT}{dt}=-k(T-28),\\qquad k>0.\n$$\n\nFirst, we integrate our differential equation by separating the variables:\n\n$$\n\\begin{aligned}\\frac{dT}{T-28} & =-k\\,dt \\\\ \\int \\frac{dT}{T-28} & =-k\\int dt \\\\ \\operatorname{ln}⁡|T-28| & =-kt+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited decay equation, we have $T-28>0$ for all $t>0.$\nNext, we solve for $T(t),$ as follows:\n\n$$\n\\begin{aligned}T-28 & ={e}^{-kt+C} \\\\ T-28 & ={e}^{C}{e}^{-kt} \\\\ T-28 & =K{e}^{-kt} \\\\ T & =28+K{e}^{-kt}\\end{aligned}\n$$\n\nNote that $K={e}^{C}$ is a constant of integration. \n\nApply the two observed conditions $T(5)=108$ and $T(7)=92$:\n\n$$\n\\begin{aligned}108 & =28+Ke^{-5k} \\\\ 80 & =Ke^{-5k} \\\\ 92 & =28+Ke^{-7k} \\\\ 64 & =Ke^{-7k}\\end{aligned}\n$$\n\nDivide the excess temperatures to eliminate $K$, then take natural logarithms:\n\n$$\n\\begin{aligned}\\frac{64}{80} & =\\frac{Ke^{-7k}}{Ke^{-5k}} \\\\ \\frac{4}{5} & =e^{-2k} \\\\ \\ln(\\frac{4}{5}) & =-2k \\\\ k & =- \\frac{\\ln{\\left(\\frac{4}{5} \\right)}}{2}\\end{aligned}\n$$\n\nNow substitute this rate into $T(5)=108$ to determine the constant:\n\n$$\n\\begin{aligned}80 & =Ke^{-5(- \\frac{\\ln{\\left(\\frac{4}{5} \\right)}}{2})} \\\\ K & =80e^{5(- \\frac{\\ln{\\left(\\frac{4}{5} \\right)}}{2})} \\\\ K & =80\\left(\\frac{80}{64}\\right)^{\\frac{5}{2}}\\end{aligned}\n$$\n\nTherefore, the solution satisfying both observations is\n\n$$\nT(t)=28+80\\left(\\frac{80}{64}\\right)^{\\frac{5}{2}}e^{-(- \\frac{\\ln{\\left(\\frac{4}{5} \\right)}}{2})t}.\n$$\n\nSubstituting the two observation times confirms the model:\n\n$$\n\\begin{aligned}T(5) & =28+(80\\left(\\frac{80}{64}\\right)^{\\frac{5}{2}})e^{-(- \\frac{\\ln{\\left(\\frac{4}{5} \\right)}}{2})\\cdot 5}=108 \\\\ T(7) & =28+(80\\left(\\frac{80}{64}\\right)^{\\frac{5}{2}})e^{-(- \\frac{\\ln{\\left(\\frac{4}{5} \\right)}}{2})\\cdot 7}=92\\end{aligned}\n$$\n\nFinally, let ${t}_{1}$ be the time when the body reaches ${39}^{∘}\\text{C}.$ Then, we have\n\n$$\n\\begin{aligned}T({t}_{1}) & =39 \\\\ 28+Ke^{-k{t}_{1}} & =39 \\\\ Ke^{-k{t}_{1}} & =11 \\\\ e^{-k{t}_{1}} & =\\frac{11}{K} \\\\ -k{t}_{1} & =\\ln\\left(\\frac{11}{K}\\right) \\\\ {t}_{1} & =-\\frac{1}{k}\\ln\\left(\\frac{11}{K}\\right)\\end{aligned}\n$$\n\nSubstitute the values of $K$ and $k$ to obtain the time measured since cooling began:\n\n$$\n\\begin{aligned}{t}_{1} & =-\\frac{1}{- \\frac{\\ln{\\left(\\frac{4}{5} \\right)}}{2}}\\ln\\left(\\frac{11}{80\\left(\\frac{80}{64}\\right)^{\\frac{5}{2}}}\\right) \\\\ {t}_{1} & =5+2\\frac{\\ln(\\frac{11}{80})}{\\ln(\\frac{4}{5})}≈23\\,\\text{min}.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "3763a168-0e7f-5c1f-bf84-d19a46630db9",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "14633707-5743-5240-938c-7d6ec7025b28",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "24\\,\\text{min}"
+            },
+            {
+              ":answer/id": "053e46e2-d3df-5fb3-9a61-907201af89a3",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "23\\,\\text{min}"
+            },
+            {
+              ":answer/id": "8b494812-13ff-5d8a-a511-4668878ecfc9",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "19\\,\\text{min}"
+            },
+            {
+              ":answer/id": "b03417c5-3a53-543e-8943-ce56de08d070",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "20\\,\\text{min}"
+            },
+            {
+              ":answer/id": "ad484980-a85b-5e9a-a8e5-cca69abe6981",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "22\\,\\text{min}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "053e46e2-d3df-5fb3-9a61-907201af89a3"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "1.2.0",
+      "seed": 84111,
+      "template": "two_observations",
+      "parameters": {
+        "ambient": 28,
+        "observed": 108,
+        "later": 92,
+        "target": 39,
+        "start": 5,
+        "gap": 2
+      },
+      "bank_profile": "authored_local_integers",
+      "origin": "authored_hard",
+      "bank_origin": "authored_local_integers",
+      "source_basis": 5392,
+      "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+      "mathematical_fingerprint": "1f3315062cf27854bcbe46952e4e0db51b5c76027764004d758cc259603f5897",
+      "content_fingerprint": "6fb27c8514e3616147304e29f2a408015028ebceb8563a14d1e16dd3a10ccd1d",
+      "domain": "T(t)>ambient; positive rate; t>=0; observations strictly cooling",
+      "attempts": 1,
+      "source_refs": [
+        "e3e001a8-9294-59a4-82e6-b1122afdc72f"
+      ],
+      "recipes": [
+        "correct",
+        "rounded_correct_plus_-4",
+        "rounded_correct_plus_-3",
+        "rounded_correct_plus_-1",
+        "rounded_correct_plus_1"
+      ]
+    },
+    "assets": {}
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186078584,
+      "id": "bfe4679b-9724-5502-89d4-05e7661a1b5f",
+      "title": "Solving an Inhibited Decay Model"
+    },
+    "question": {
+      ":question/id": "8d07d1c5-7be5-5a7d-9e9c-be0840838588",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "A heated metal body cools in a room at ${34}^{∘}\\text{C}.$ Its temperature is ${86}^{∘}\\text{C}$ after $1$ minute and ${63}^{∘}\\text{C}$ after $5$ minutes. The temperature $T(t)$, in degrees Celsius, obeys Newton's law of cooling, with $t$ measured in minutes since cooling began. To the nearest minute, how long after cooling began does the body reach ${40}^{∘}\\text{C}$?",
+      ":question/worked-solution": "Newton's law of cooling states that the rate at which the temperature $T(t)$ of a body changes is proportional to the difference between its temperature and its surroundings. Therefore, we have the inhibited decay equation\n\n$$\n\\frac{dT}{dt}=-k(T-34),\\qquad k>0.\n$$\n\nFirst, we integrate our differential equation by separating the variables:\n\n$$\n\\begin{aligned}\\frac{dT}{T-34} & =-k\\,dt \\\\ \\int \\frac{dT}{T-34} & =-k\\int dt \\\\ \\operatorname{ln}⁡|T-34| & =-kt+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited decay equation, we have $T-34>0$ for all $t>0.$\nNext, we solve for $T(t),$ as follows:\n\n$$\n\\begin{aligned}T-34 & ={e}^{-kt+C} \\\\ T-34 & ={e}^{C}{e}^{-kt} \\\\ T-34 & =K{e}^{-kt} \\\\ T & =34+K{e}^{-kt}\\end{aligned}\n$$\n\nNote that $K={e}^{C}$ is a constant of integration. \n\nApply the two observed conditions $T(1)=86$ and $T(5)=63$:\n\n$$\n\\begin{aligned}86 & =34+Ke^{-1k} \\\\ 52 & =Ke^{-1k} \\\\ 63 & =34+Ke^{-5k} \\\\ 29 & =Ke^{-5k}\\end{aligned}\n$$\n\nDivide the excess temperatures to eliminate $K$, then take natural logarithms:\n\n$$\n\\begin{aligned}\\frac{29}{52} & =\\frac{Ke^{-5k}}{Ke^{-1k}} \\\\ \\frac{29}{52} & =e^{-4k} \\\\ \\ln(\\frac{29}{52}) & =-4k \\\\ k & =- \\frac{\\ln{\\left(\\frac{29}{52} \\right)}}{4}\\end{aligned}\n$$\n\nNow substitute this rate into $T(1)=86$ to determine the constant:\n\n$$\n\\begin{aligned}52 & =Ke^{-1(- \\frac{\\ln{\\left(\\frac{29}{52} \\right)}}{4})} \\\\ K & =52e^{1(- \\frac{\\ln{\\left(\\frac{29}{52} \\right)}}{4})} \\\\ K & =52\\left(\\frac{52}{29}\\right)^{\\frac{1}{4}}\\end{aligned}\n$$\n\nTherefore, the solution satisfying both observations is\n\n$$\nT(t)=34+52\\left(\\frac{52}{29}\\right)^{\\frac{1}{4}}e^{-(- \\frac{\\ln{\\left(\\frac{29}{52} \\right)}}{4})t}.\n$$\n\nSubstituting the two observation times confirms the model:\n\n$$\n\\begin{aligned}T(1) & =34+(52\\left(\\frac{52}{29}\\right)^{\\frac{1}{4}})e^{-(- \\frac{\\ln{\\left(\\frac{29}{52} \\right)}}{4})\\cdot 1}=86 \\\\ T(5) & =34+(52\\left(\\frac{52}{29}\\right)^{\\frac{1}{4}})e^{-(- \\frac{\\ln{\\left(\\frac{29}{52} \\right)}}{4})\\cdot 5}=63\\end{aligned}\n$$\n\nFinally, let ${t}_{1}$ be the time when the body reaches ${40}^{∘}\\text{C}.$ Then, we have\n\n$$\n\\begin{aligned}T({t}_{1}) & =40 \\\\ 34+Ke^{-k{t}_{1}} & =40 \\\\ Ke^{-k{t}_{1}} & =6 \\\\ e^{-k{t}_{1}} & =\\frac{6}{K} \\\\ -k{t}_{1} & =\\ln\\left(\\frac{6}{K}\\right) \\\\ {t}_{1} & =-\\frac{1}{k}\\ln\\left(\\frac{6}{K}\\right)\\end{aligned}\n$$\n\nSubstitute the values of $K$ and $k$ to obtain the time measured since cooling began:\n\n$$\n\\begin{aligned}{t}_{1} & =-\\frac{1}{- \\frac{\\ln{\\left(\\frac{29}{52} \\right)}}{4}}\\ln\\left(\\frac{6}{52\\left(\\frac{52}{29}\\right)^{\\frac{1}{4}}}\\right) \\\\ {t}_{1} & =1+4\\frac{\\ln(\\frac{3}{26})}{\\ln(\\frac{29}{52})}≈16\\,\\text{min}.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "127fd838-d268-5214-845e-d2ab814e5d3e",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "4ce249e1-0944-54c4-aa9c-602823316047",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "17\\,\\text{min}"
+            },
+            {
+              ":answer/id": "09d3a9f4-d3f4-50f4-aed8-c1d1f44a3901",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "18\\,\\text{min}"
+            },
+            {
+              ":answer/id": "e7bacaaa-aa21-5138-8014-867dbf9d2f0f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "19\\,\\text{min}"
+            },
+            {
+              ":answer/id": "1c5a3e77-cc4e-5858-a463-0d3ac3ac1304",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "15\\,\\text{min}"
+            },
+            {
+              ":answer/id": "d6add716-4c86-526c-943a-5a9c86668943",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "16\\,\\text{min}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "d6add716-4c86-526c-943a-5a9c86668943"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "1.2.0",
+      "seed": 84112,
+      "template": "two_observations",
+      "parameters": {
+        "ambient": 34,
+        "observed": 86,
+        "later": 63,
+        "target": 40,
+        "start": 1,
+        "gap": 4
+      },
+      "bank_profile": "authored_local_integers",
+      "origin": "authored_hard",
+      "bank_origin": "authored_local_integers",
+      "source_basis": 5392,
+      "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+      "mathematical_fingerprint": "c1c5973f57656287e4e1835098b92f2c7194b1a045e3125f14b8a9b3866fd4e1",
+      "content_fingerprint": "85e8ede4444082440910e7f03433bf77671f04a494622d165888b72a9e7107ab",
+      "domain": "T(t)>ambient; positive rate; t>=0; observations strictly cooling",
+      "attempts": 1,
+      "source_refs": [
+        "e3e001a8-9294-59a4-82e6-b1122afdc72f"
+      ],
+      "recipes": [
+        "correct",
+        "rounded_correct_plus_-1",
+        "rounded_correct_plus_1",
+        "rounded_correct_plus_2",
+        "rounded_correct_plus_3"
+      ]
+    },
+    "assets": {}
+  }
+]

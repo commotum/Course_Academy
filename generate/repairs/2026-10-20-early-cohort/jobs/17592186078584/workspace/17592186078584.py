@@ -200,13 +200,19 @@ def integer_bank(level,p,correct,rng,desired_below):
     else:
         lo=p['time'] if level=='moderate' else p['start']+p['gap']
         hi=max(correct+4,correct+max(6,(correct-lo)//2))
-    # All supported IVPs have >=15 integer temperatures or unbounded future times.
-    width=max(6,min(30,(hi-lo)//3))
-    lower=list(range(max(lo,correct-width),correct))
-    upper=list(range(correct+1,min(hi,correct+width)+1))
-    eligible=[n for n in range(5) if n<=len(lower) and 4-n<=len(upper)]
+    # Build the spacing independently of the key's rank. Centering four errors
+    # around the key would leave a nearest-midpoint heuristic even with varied ranks.
+    room=min(correct-lo,hi-correct)
+    cap=max(1,min(6,room//4))
+    gaps=[rng.randint(1,cap) for _ in range(4)]
+    offsets=[0]
+    for gap in gaps:
+        offsets.append(offsets[-1]+gap)
+    eligible=[n for n in range(5)
+              if correct-offsets[n]>=lo and correct+offsets[-1]-offsets[n]<=hi]
     below=desired_below if desired_below in eligible else rng.choice(eligible)
-    return [correct]+rng.sample(lower,below)+rng.sample(upper,4-below)
+    return [correct+offset-offsets[below] for offset in offsets]
+
 
 
 def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):

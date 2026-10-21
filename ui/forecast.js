@@ -1,6 +1,6 @@
 // Forecast calculations only; presentation is deliberately left to the caller.
 import { readRequest } from './requests.js';
-import { projectTargetScope, assignTargetCourses, TARGET_COURSE_CODES } from './target-scope.js';
+import { projectTargetScope, assignTargetCourses, targetSelectors, TARGET_COURSE_CODES } from './target-scope.js';
 import { buildTargetCalendar, normalizeTargetWeekSelection, targetCalendarDay } from './target-weeks.js';
 
 const DAY = 86400000;
@@ -140,21 +140,61 @@ const growthFields = new Set(['topic/id', 'topic/title', 'topic/next', 'course/i
 const emptyCategories = () => Object.fromEntries(['target', 'queue', 'prerequisite'].map(key => [key, { topics: 0, baseXp: 0 }]));
 const emptyGrowth = () => ({ topics: 0, baseXp: 0, unknownCosts: 0, categories: emptyCategories() });
 
+const civilClock = new Intl.DateTimeFormat('en-US', { timeZone: 'America/Los_Angeles', hourCycle: 'h23',
+  year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' });
+function civilMilliseconds(at) {
+  const parts = civilClock.formatToParts(new Date(at));
+  const part = type => Number(parts.find(p => p.type === type).value);
+  return Date.UTC(part('year'), part('month') - 1, part('day'), part('hour'), part('minute'), part('second'));
+}
+function dayStartsAt(day) {
+  let at = day * DAY;
+  for (let i = 0; i < 3; i++) at += day * DAY - civilMilliseconds(at);
+  return at;
+}
 function calendarExposure(start, end) {
-  const position = ms => {
-    const parts = new Intl.DateTimeFormat('en-US', { timeZone: 'America/Los_Angeles', hourCycle: 'h23',
-      hour: 'numeric', minute: 'numeric', second: 'numeric' }).formatToParts(new Date(ms));
-    const part = type => Number(parts.find(p => p.type === type).value);
-    return targetCalendarDay(ms) + (part('hour') * 3600 + part('minute') * 60 + part('second')) / 86400;
-  };
-  return Math.max(0, position(end) - position(start));
+  return Math.max(0, (civilMilliseconds(end) - civilMilliseconds(start)) / DAY);
+}
+
+// Date admission is applied to the viewer's selected roots, before expanding
+// prerequisites. A prerequisite inherits the earliest date of any needing root.
+export function topicDueDays(snapshot, scope, options) {
+  const calendar = buildTargetCalendar(snapshot.targetSchedule || []);
+  const courseIds = targetSelectors(snapshot, scope.graph, options, calendar).targetWeekCourseIds();
+  const week = options.weekSelection ?? { kind: 'all' }, rootDays = new Map();
+  for (const assignment of calendar.assignments) {
+    if (assignment.day === null || (courseIds && !courseIds.has(assignment.courseId))) continue;
+    if (week.kind === 'unscheduled') continue;
+    if (week.kind === 'range' && (assignment.day < week.start || assignment.day > week.end + 6)) continue;
+    for (const topic of assignment.topicIds) if (scope.roots.has(topic)) {
+      rootDays.set(topic, Math.min(rootDays.get(topic) ?? Infinity, assignment.day));
+    }
+  }
+  const queued = new Set(options.includeQueue !== false ? snapshot.learner.queue || [] : []);
+  const dueDays = new Map();
+  for (const root of scope.roots) {
+    // Queue and undated targets are standing work; no invented future date.
+    const day = queued.has(root) ? -Infinity : rootDays.get(root) ?? -Infinity;
+    const pending = [[root, 0]], seen = new Set([root]);
+    for (let i = 0; i < pending.length; i++) {
+      const [id, distance] = pending[i];
+      dueDays.set(id, Math.min(dueDays.get(id) ?? Infinity, day));
+      if (distance >= 2) continue;
+      for (const previous of scope.graph.inMap.get(id) || []) {
+        if (!seen.has(previous) && scope.graph.nodeById.get(previous)?.layer >= 29) {
+          seen.add(previous); pending.push([previous, distance + 1]);
+        }
+      }
+    }
+  }
+  return dueDays;
 }
 
 export function historicalGrowth(inputs, options, currentScope, now) {
   const f = new ForecastFacts({}, inputs.enums), learner = inputs.learnerId;
   const courses = Object.fromEntries(TARGET_COURSE_CODES.map(code => [code, emptyGrowth()]));
   const total = emptyGrowth(), modeledTasks = new Set();
-  let previous = null, observedFrom = null, invalid = null, indexedGraph;
+  let previous = null, previousDue = new Set(), observedFrom = null, invalid = null, indexedGraph;
   // Review/lesson preparation creates steps too. Only assignment-owned
   // containment can change the Targets calendar or course associations.
   const containment = new Set(['activity/steps', 'step/content', 'multistep/steps', 'assigned-problem/content']);
@@ -171,9 +211,19 @@ export function historicalGrowth(inputs, options, currentScope, now) {
     if (!assignmentEntities.has(next)) { assignmentEntities.add(next); pending.push(next); }
   }
   const assignmentFields = new Set([...containment, 'assigned-problem/topic-coverage', 'activity/course', 'activity/due']);
-  for (const event of inputs.history) {
-    const at = new Date(scalar(event.at)).getTime();
-    if (!Number.isFinite(at) || at > now) continue;
+  const dueDays = new Set();
+  for (const event of inputs.history) for (const [e, a, v] of event.changes) {
+    if (a === 'activity/due' && assignments.has(e)) {
+      const day = targetCalendarDay(scalar(v));
+      if (day !== null) dueDays.add(day);
+    }
+  }
+  const events = [...inputs.history.map(event => ({ ...event, instant: new Date(scalar(event.at)).getTime() })),
+    ...[...dueDays].map(day => ({ instant: dayStartsAt(day), changes: [], virtual: true, t: -1 }))]
+    .filter(event => Number.isFinite(event.instant) && event.instant <= now)
+    .sort((a, b) => a.instant - b.instant || a.t - b.t);
+  for (const event of events) {
+    const at = event.instant;
     const completed = event.changes.filter(([, a, v, added]) => added && a === 'learner-task/status'
       && terminal((inputs.enums[v] || '').split('/').at(-1))).map(([task]) => task);
     f.apply(event.changes);
@@ -184,18 +234,23 @@ export function historicalGrowth(inputs, options, currentScope, now) {
       const topic = f.get(f.get(task, 'learner-task/activity'), 'activity/scope');
       if (previous?.nodeIds.has(topic)) modeledTasks.add(task);
     }
-    if (!event.changes.some(([e, a]) => growthFields.has(a) && (!assignmentFields.has(a) || assignmentEntities.has(e)))) continue;
+    if (!event.virtual && !event.changes.some(([e, a]) => growthFields.has(a) && (!assignmentFields.has(a) || assignmentEntities.has(e)))) continue;
     if (!f.get(learner, 'learner/id') || !f.ids('topic/id').length) continue;
-    let scope;
-    try { scope = projectTargetScope(forecastGraph(f, learner), options, indexedGraph); indexedGraph = scope.graph; }
-    catch (error) { invalid = error.message; continue; }
+    let scope, snapshot;
+    try {
+      snapshot = forecastGraph(f, learner);
+      scope = projectTargetScope(snapshot, options, indexedGraph); indexedGraph = scope.graph;
+    } catch (error) { invalid = error.message; continue; }
     for (const task of completed) if (scope.nodeIds.has(f.get(f.get(task, 'learner-task/activity'), 'activity/scope'))) modeledTasks.add(task);
+    const activation = topicDueDays(snapshot, scope, options), today = targetCalendarDay(at);
+    const due = new Set([...scope.nodeIds].filter(topic => activation.get(topic) <= today));
     if (previous === null) {
-      // First nonempty retained scope is opening inventory, not weekly demand.
+      // Retained opening inventory is not an arrival. Future preloads become
+      // arrivals only when their actual due day is reached, without a new tx.
       if (!scope.nodeIds.size) continue;
-      previous = scope; observedFrom = at; continue;
+      previous = scope; previousDue = due; observedFrom = at; continue;
     }
-    const additions = [...scope.nodeIds].filter(topic => !previous.nodeIds.has(topic));
+    const additions = [...due].filter(topic => !previousDue.has(topic));
     const known = additions.length ? knownPreparationTopics(f, learner) : new Set();
     const price = additions.length ? topicPrices(f, learner, inputs.lessonBases) : null;
     for (const topic of additions) {
@@ -207,7 +262,7 @@ export function historicalGrowth(inputs, options, currentScope, now) {
         else item.unknownCosts++;
       }
     }
-    previous = scope;
+    previous = scope; previousDue = due;
   }
   if (previous === null || observedFrom === null) invalid ||= 'No reliable opening inventory in retained history.';
   if (previous && (previous.nodeIds.size !== currentScope.nodeIds.size || [...previous.nodeIds].some(id => !currentScope.nodeIds.has(id))
@@ -223,7 +278,7 @@ export function historicalGrowth(inputs, options, currentScope, now) {
       topicsPerWeek: observedDays > 0 && !invalid ? value.topics * 7 / observedDays : null,
       baseXpPerWeek: observedDays > 0 && !invalid && !item.unknownCosts ? value.baseXp * 7 / observedDays : null }])),
   });
-  return { observedFrom: observedFrom === null ? null : new Date(observedFrom).toISOString(), observedThrough: new Date(now).toISOString(),
+  return { clock: 'assignment-due-date-or-standing-entry', observedFrom: observedFrom === null ? null : new Date(observedFrom).toISOString(), observedThrough: new Date(now).toISOString(),
     observedDays, reason: invalid || (observedDays > 0 ? null : 'No elapsed growth observation period.'),
     total: summarize(total), courses: Object.fromEntries(Object.entries(courses).map(([code, value]) => [code, summarize(value)])), modeledTasks };
 }
@@ -239,19 +294,81 @@ export function completionEstimate(initialWork, dailyDemand, pace, now, remainin
   return { status: 'estimated', days, date: new Date(at).toISOString(), baseXpPerDay: pace };
 }
 
-function scenario(forecast, pace) {
-  const result = completionEstimate(forecast.initialWorkBaseXp, forecast.dailyDemandBaseXp, pace,
-    Date.parse(forecast.capturedAt), forecast.inventory.remainingTopics);
-  if (result.days === null) return { ...result, workload: null };
-  const T = result.days, d = forecast.pace.observedDays, o = forecast.overhead;
-  const lessonAttemptBaseXp = T === 0 ? 0 : o.retryFactor * (forecast.inventory.remainingLessonBaseXp + forecast.growth.total.baseXpPerDay * T);
-  const reviewBaseXp = d ? forecast.pace.reviewBaseXp / d * T : 0;
-  const otherBaseXp = d ? forecast.pace.otherBaseXp / d * T : 0;
+// Known scheduled work and average growth describe the same incoming demand.
+// Use the larger cumulative amount per course, never their sum: known deadlines
+// are honored, while the historical trend can cover work not mapped yet.
+export function forecastWorkloadAt(forecast, days) {
+  const o = forecast.overhead, d = forecast.pace.observedDays;
+  const future = Object.fromEntries(TARGET_COURSE_CODES.map(code => [code, 0]));
+  const unknownCosts = [...forecast.inventory.unknownCosts];
+  for (const step of forecast.demandCurve.steps) {
+    if (step.days > days) break;
+    for (const topic of step.topics) {
+      if (positive(topic.baseXp)) future[topic.course] += topic.baseXp;
+      else unknownCosts.push(topic);
+    }
+  }
+  if (unknownCosts.length || !positive(o.retryFactor) || !Number.isFinite(o.reviewOtherBaseXpPerDay)
+    || forecast.courses.some(c => c.growth.baseXpPerDay === null)) return null;
+  let lessonBaseXp = 0, knownIncomingBaseXp = 0, additionalIncomingBaseXp = 0, slope = o.reviewOtherBaseXpPerDay;
+  for (const course of forecast.courses) {
+    const known = future[course.code], trend = course.growth.baseXpPerDay * days;
+    knownIncomingBaseXp += known;
+    additionalIncomingBaseXp += Math.max(0, trend - known);
+    lessonBaseXp += course.remainingLessonBaseXp + Math.max(known, trend);
+    if (trend >= known) slope += o.retryFactor * course.growth.baseXpPerDay;
+  }
+  const lessonAttemptBaseXp = o.retryFactor * lessonBaseXp;
+  const reviewBaseXp = d ? forecast.pace.reviewBaseXp / d * days : 0;
+  const otherBaseXp = d ? forecast.pace.otherBaseXp / d * days : 0;
   const quizBaseXp = o.quizRatio * (lessonAttemptBaseXp + reviewBaseXp + otherBaseXp);
-  return { ...result, workload: { lessonAttemptBaseXp, reviewBaseXp, otherBaseXp, quizBaseXp,
+  return { lessonBaseXp, lessonAttemptBaseXp, reviewBaseXp, otherBaseXp, quizBaseXp,
+    knownIncomingBaseXp, additionalIncomingBaseXp,
     totalBaseXp: lessonAttemptBaseXp + reviewBaseXp + otherBaseXp + quizBaseXp,
-    estimatedReviews: d ? forecast.pace.reviewAttempts / d * T : 0,
-    estimatedQuizzes: quizBaseXp / o.averageQuizBaseXp } };
+    slope: (1 + o.quizRatio) * slope,
+    estimatedReviews: d ? forecast.pace.reviewAttempts / d * days : 0,
+    estimatedQuizzes: quizBaseXp / o.averageQuizBaseXp };
+}
+
+function scenario(forecast, pace) {
+  const now = Date.parse(forecast.capturedAt);
+  if (!forecast.inventory.remainingTopics) return { status: 'complete', days: 0,
+    date: forecast.capturedAt, baseXpPerDay: pace, workload: { totalBaseXp: 0 } };
+  const unavailable = { status: 'unavailable', days: null, date: null, baseXpPerDay: pace, workload: null };
+  if (typeof pace !== 'number' || !Number.isFinite(pace) || pace < 0) return unavailable;
+  // Inspect every linear segment chronologically. A binary search could skip
+  // an early catch-up followed by another assignment becoming due tomorrow.
+  const boundaries = new Set([0]), steps = forecast.demandCurve.steps;
+  const known = Object.fromEntries(TARGET_COURSE_CODES.map(code => [code, 0]));
+  for (let i = -1; i < steps.length; i++) {
+    const start = i < 0 ? 0 : steps[i].days, end = steps[i + 1]?.days ?? Infinity;
+    if (i >= 0) {
+      boundaries.add(start);
+      for (const topic of steps[i].topics) if (positive(topic.baseXp)) known[topic.course] += topic.baseXp;
+    }
+    for (const course of forecast.courses) {
+      const g = course.growth.baseXpPerDay;
+      if (positive(g)) {
+        const crossing = known[course.code] / g;
+        if (crossing > start && crossing < end) boundaries.add(crossing);
+      }
+    }
+  }
+  const points = [...boundaries].sort((a, b) => a - b);
+  for (let i = 0; i < points.length; i++) {
+    const start = points[i], end = points[i + 1] ?? Infinity;
+    const work = forecastWorkloadAt(forecast, start);
+    if (work === null) return unavailable;
+    const gap = work.totalBaseXp - pace * start;
+    let days = gap <= 1e-8 ? start : pace > work.slope ? start + gap / (pace - work.slope) : Infinity;
+    // At a due-day boundary the new day's work must already be included.
+    if (!Number.isFinite(days) || (Number.isFinite(end) && days >= end - 1e-9)) continue;
+    const at = now + days * DAY;
+    if (!Number.isFinite(at) || Math.abs(at) > 8.64e15) return { ...unavailable, status: 'out-of-range' };
+    return { status: 'estimated', days, date: new Date(at).toISOString(), baseXpPerDay: pace,
+      workload: forecastWorkloadAt(forecast, days) };
+  }
+  return { ...unavailable, status: 'not-catching-up' };
 }
 
 // Goal previews reuse the measured workload/rates and update immediately,
@@ -273,12 +390,23 @@ export function calculateForecast(inputs, options = {}) {
   if (scopeOptions.courses.some(code => !TARGET_COURSE_CODES.includes(code))) throw new Error('Unknown forecast course.');
   const scope = projectTargetScope(graph, scopeOptions), known = new Set(inputs.knownTopics ?? knownPreparationTopics(f, learner));
   const price = topicPrices(f, learner, inputs.lessonBases);
+  const activation = topicDueDays(graph, scope, scopeOptions), today = targetCalendarDay(now);
+  const future = new Map();
   const courses = Object.fromEntries(TARGET_COURSE_CODES.map(code => [code, { code, selectedTopics: 0, remainingTopics: 0,
-    remainingLessonBaseXp: 0, unknownCosts: [], categories: emptyCategories() }]));
+    remainingLessonBaseXp: 0, unknownCosts: [], futureRemainingTopics: 0, futureLessonBaseXp: 0,
+    futureUnknownCosts: [], categories: emptyCategories() }]));
   for (const topic of scope.nodeIds) {
     const course = courses[scope.tracks.get(topic)]; course.selectedTopics++;
     if (known.has(topic)) continue;
-    const cost = price(topic), category = course.categories[scope.categories.get(topic)];
+    const cost = price(topic), day = activation.get(topic), category = course.categories[scope.categories.get(topic)];
+    if (day > today) {
+      course.futureRemainingTopics++;
+      if (!future.has(day)) future.set(day, []);
+      future.get(day).push({ topicId: topic, course: course.code, baseXp: cost.baseXp, reason: cost.reason });
+      if (positive(cost.baseXp)) course.futureLessonBaseXp += cost.baseXp;
+      else course.futureUnknownCosts.push({ topicId: topic, dueDay: day, reason: cost.reason || 'Unknown lesson cost.' });
+      continue;
+    }
     course.remainingTopics++; category.topics++;
     if (positive(cost.baseXp)) { course.remainingLessonBaseXp += cost.baseXp; category.baseXp += cost.baseXp; }
     else course.unknownCosts.push({ topicId: topic, reason: cost.reason || 'Unknown lesson cost.' });
@@ -364,7 +492,9 @@ export function calculateForecast(inputs, options = {}) {
   const { modeledTasks, ...publicGrowth } = growth;
   const forecast = { basis: inputs.basis, capturedAt: inputs.capturedAt, scope: scopeOptions,
     inventory: { selectedTopics: scope.nodeIds.size, roots: scope.roots.size, remainingTopics,
-      remainingLessonBaseXp: sum('remainingLessonBaseXp'), unknownCosts: values.flatMap(c => c.unknownCosts) },
+      remainingLessonBaseXp: sum('remainingLessonBaseXp'), unknownCosts: values.flatMap(c => c.unknownCosts),
+      dueThrough: new Date(today * DAY).toISOString().slice(0, 10), futureRemainingTopics: sum('futureRemainingTopics'),
+      futureLessonBaseXp: sum('futureLessonBaseXp'), futureUnknownCosts: values.flatMap(c => c.futureUnknownCosts) },
     pace: { observedFrom: new Date(start).toISOString(), observedThrough: new Date(end).toISOString(), observedDays: d,
       ...totals, workingMinutes, baseXpPerDay: pace, activeMinutesPerDay: d ? workingMinutes / d : null,
       baseXpPerActiveMinute: positive(workingMinutes) && !totals.missingTiming && !totals.missingBases ? totals.baseXp / workingMinutes : null,
@@ -374,6 +504,9 @@ export function calculateForecast(inputs, options = {}) {
       averageQuizBaseXp: totals.quizAttempts ? totals.quizBaseXp / totals.quizAttempts : 15,
       reviewOtherBaseXpPerDay: reviewOtherPerDay, reviewsPerDay: d ? totals.reviewAttempts / d : null },
     growth: publicGrowth, courses: values, initialWorkBaseXp: B, dailyDemandBaseXp: k,
+    demandCurve: { steps: [...future].sort(([a], [b]) => a - b).map(([day, topics]) => ({
+      dueDay: day, at: new Date(dayStartsAt(day)).toISOString(), days: (dayStartsAt(day) - now) / DAY, topics })),
+      growthRule: 'greater-of-known-due-work-and-average-growth-per-course' },
     warnings };
   return { ...forecast, currentPace: scenario(forecast, pace), goalPace: scenario(forecast, goalPace) };
 }

@@ -1241,17 +1241,18 @@
       "claimed": 1792611874.028126,
       "worker_slot": 2,
       "worker_pid": 30000,
-      "repair_cycle": 25,
+      "repair_cycle": 26,
       "error": {
         "code": "author_reported_limitation",
         "error": {
           "status": "unsupported",
           "manifest": "package.json",
-          "summary": "Preserved completed repairs. Four generator regressions pass; the strict inventory regression still fails on five stored questions. Verified replacements remain staged.",
+          "summary": "Preserved completed repairs. Four generator regressions pass; five historical questions still fail the strict inventory check. Verified replacements remain staged.",
           "evidence_paths": [
-            "evidence/repair-75/commands.json",
-            "evidence/repair-75/results.json",
-            "evidence/repair-75/visual-inspection.json",
+            "evidence/repair-78/commands.json",
+            "evidence/repair-78/results.json",
+            "evidence/repair-78/grader-report.json",
+            "evidence/repair-78/visual-inspection.json",
             "repair-regressions.json",
             "affected-inventory.json",
             "evidence/generated-records.json",
@@ -1259,7 +1260,7 @@
             "session-state.md"
           ],
           "limitations": [
-            "Finding 591f580cadb749294588 requires separate inventory remediation. Applying the staged replacements requires database changes explicitly prohibited by this task; workspace generator changes cannot repair stored questions."
+            "Finding 591f580cadb749294588 requires the separate inventory-remediation workflow. Workspace generator edits cannot change stored questions, and this task explicitly prohibits database changes."
           ]
         },
         "instruction": "The source supports this skill. Diagnose and repair the limitation; do not drop source families or valid responses."
@@ -1309,22 +1310,22 @@
       "claimed": 1792613829.9277666,
       "worker_slot": 0,
       "worker_pid": 29998,
-      "repair_cycle": 25,
+      "repair_cycle": 26,
       "error": {
         "code": "author_reported_limitation",
         "error": {
           "status": "unsupported",
           "manifest": "package.json",
-          "summary": "Preserved the repaired generator. Role variation, delivery filtering, and native-grader checks pass. The strict report-installation regression still fails.",
+          "summary": "Preserved the repaired generator. Role variation, delivery filtering, and 30 native-grader checks pass. The strict report-installation regression still fails.",
           "evidence_paths": [
-            "evidence/author-75-validation.json",
-            "evidence/report-repair/author-75-reproduction.log",
+            "evidence/author-78-validation.json",
+            "evidence/report-repair/author-78-reproduction.log",
             "evidence/review-installation-handoff.json",
             "repair-regressions.json",
             "affected-inventory.json"
           ],
           "limitations": [
-            "Finding 645672a4cd3f9bf609ca requires installing corrected evidence into the prior-review directory outside the authorized workspace. The runner must perform that installation before the strict regression and fresh review can pass."
+            "Finding 645672a4cd3f9bf609ca requires runner installation of the validated staged report into the prior-review directory outside this workspace, followed by the strict regression and fresh independent review. Workspace-only authorization prevents completing that step."
           ]
         },
         "instruction": "The source supports this skill. Diagnose and repair the limitation; do not drop source families or valid responses."
