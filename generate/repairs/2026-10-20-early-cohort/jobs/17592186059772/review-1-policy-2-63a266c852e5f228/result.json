@@ -1,0 +1,116 @@
+{
+  "verdict": "accepted",
+  "summary": "Both retained source-bank failures are repaired. All eight checks pass; no new defect demonstrated. Package unchanged.",
+  "source_analysis": {
+    "skill": "Apply stated elementary row operations to an augmented matrix and select the resulting matrix.",
+    "reasoning_steps": [
+      "Identify the operation, row roles and scalar.",
+      "Update every affected entry, including the constants column.",
+      "Use updated intermediate rows for sequential operations.",
+      "Select the matching whole matrix."
+    ],
+    "invariants": [
+      "Preserve augmented-column semantics and unaffected rows.",
+      "Use nonzero scaling and distinct addition source/target rows.",
+      "Provide one correct radio choice among five."
+    ],
+    "permitted_variations": [
+      "Vary entries, eligible row roles, scalar signs and magnitudes.",
+      "Vary choice positions and matrix names.",
+      "Preserve difficulty-specific operation counts."
+    ],
+    "source_refs": [
+      "2ff0a6f5-f3b2-5b39-8b69-1a0c969548cf: canonical swap",
+      "926d4b45-89b4-5d26-9733-b0d97c69c160: easy swap",
+      "0f08a2c2-eb16-5d85-a714-beb36e4a0c94: reciprocal scaling",
+      "afe0707b-0259-50d7-a719-7a8d24334500: repaired scaling bank; captured key and solution absent",
+      "337ae2e1-4641-5c8b-9b2a-9435340f0134: repaired addition bank",
+      "Tutorial 7aa753a7-1450-53dd-8e61-71e07952cecb: elementary row operations and assignment to every row entry"
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "source-replay-results.json",
+      "provenance.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "repair-verification.json",
+        "retained-test-runs.json",
+        "source-replay-results.json",
+        "source-profile-guards.json"
+      ],
+      "details": "All 13 source cases replay, including 12 complete captured banks. Both retained regressions fail on preserved old code and pass current code. Missing source evidence is explicitly documented."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "revision_audit.py",
+        "math-results.json"
+      ],
+      "details": "Independent exact arithmetic verifies unique correct answers and final solutions for 99 records, including the exact batch and controlled variants."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "stage-coverage.json",
+        "rejection-results.json",
+        "delivery-sample/delivery.json",
+        "delivery-batch/delivery.json",
+        "selection-results.json"
+      ],
+      "details": "All 48 independent easy samples and five batch records survive filtering. Samples cover all swap pairs and scaling targets. Learner selection was examined conditionally; live history and policy weights were unavailable."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "scope-results.json",
+        "revision-diff.json"
+      ],
+      "details": "The revision adds guarded source replay banks. Sampling rules, supported operations, response contract and difficulty-specific workloads remain unchanged."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-results.json"
+      ],
+      "details": "Native grading accepts 35 correct selections and rejects 140 wrong selections, including controlled variants and normalized batch records. Free-entry notation is inapplicable."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render-all/rendering.json",
+        "render-delivered/rendering.json",
+        "visual-inspection.json",
+        "render-all/question-006.png",
+        "render-all/question-007.png"
+      ],
+      "details": "The actual UI renders 24 source/control/batch records and five normalized batch records successfully. Seven representative screenshots were inspected."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "relocated-source-results.json",
+        "package-hashes-before.json",
+        "package-hashes-after.json"
+      ],
+      "details": "Python 3.13.5 matches the dependency declaration. Determinism and relocation pass, including both new profiles. Recursive package hashes are unchanged."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "ui-order-results.json",
+        "grader-results.json"
+      ],
+      "details": "Relevant changes alter computed and graded answers; renaming preserves them. Conditional position and magnitude probes demonstrate no incidental shortcut in the tested samples or surviving batch. The batch's two swaps share one row pair, limiting coverage claims."
+    }
+  },
+  "findings": []
+}

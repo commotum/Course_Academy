@@ -1,0 +1,774 @@
+{
+  "learner_operation": "Locate the requested nonzero entry; determine which listed elementary row operation uniquely zeros it; verify its full-row effect.",
+  "fixed_features": [
+    {
+      "feature": "Zero target and initially nonzero entry",
+      "justification": "e-4696 teaches cancellation by one operation; changing the desired value would expand the assessed skill."
+    },
+    {
+      "feature": "3x3 coefficient matrix, five radio choices",
+      "justification": "Retains the captured inspection and whole-row verification workload. Conservative scope limit rather than a mathematical necessity."
+    },
+    {
+      "feature": "Complete source bank expressions",
+      "justification": "Preserve the captured comparison of swaps, additions and nonzero scalings, including self-row notation in q-72858."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Successful operation",
+      "eligible_variation": "Every listed distinct-row addition into the target row, or swap involving that row, when uniquely successful.",
+      "observed": "36 independently eligible winner assignments across ten complete banks; all survive delivery."
+    },
+    {
+      "role": "Target coordinate",
+      "eligible_variation": "All nine cells under coherent relabeling; displayed target may change with the matrix and bank fixed when uniquely solvable.",
+      "observed": "Restored bank tests both winners at all nine coordinates; fixed-matrix a21/a23 pair changes subtraction to swap."
+    },
+    {
+      "role": "Decisive evidence",
+      "eligible_variation": "Target column controls cancellation; non-target columns are irrelevant to the winning operation.",
+      "observed": "Relevant donor changes switch the key; non-target-column changes preserve it and update full result matrix."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "source replay",
+      "sample_refs": [
+        "source-replay-results.json",
+        "source-replays.json"
+      ],
+      "result": "11/11 supplied banks, 55/55 complete choices. q-20392 completion explicitly inferred; earlier q-130301 source arithmetic correction retained."
+    },
+    {
+      "case": "restored ordinary generation and permutation coverage",
+      "sample_refs": [
+        "restored-profile-records.json",
+        "repair-regression-results.json"
+      ],
+      "result": "Both winners at all nine target coordinates and all six row permutations; ordinary sampling reaches q-72858."
+    },
+    {
+      "case": "all complete bank winner assignments and five-item batch",
+      "sample_refs": [
+        "coverage.json",
+        "validation-records.json",
+        "sample-batch.json",
+        "delivery/delivery.json"
+      ],
+      "result": "36 eligible assignments; 46/46 records retained, including 5/5 batch records. 44 semantic fingerprints; cosmetic/irrelevant changes are not extra semantic coverage."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "In the fixed restored bank and target a23, change donor entries a13:3->4 and a33:3->0.",
+      "expected": "Subtraction ceases to succeed and swapping rows 2 and 3 becomes uniquely correct.",
+      "observed": "Independent Fraction arithmetic, all five native grades, worked matrices and rendered cases 2/3 agree.",
+      "status": "passed",
+      "justification": "Two decisive entries must change to switch between disjoint subtraction/swap conditions without an ambiguous intermediate instance.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "repair-regression-results.json",
+        "grader-results.json",
+        "render/question-002.png",
+        "render/question-003.png"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Change only a11 and a12 outside target column 3.",
+      "expected": "Winning subtraction remains; changed non-target result entries follow whole-row arithmetic.",
+      "observed": "Independent math and all five native grades preserve the winner and verify the updated matrix.",
+      "status": "passed",
+      "justification": "Target cancellation depends only on column 3.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "repair-regression-results.json",
+        "grader-results.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "Keep the displayed matrix and five bank expressions fixed; request a21 versus a23.",
+      "expected": "Correct subtraction for a21; correct swap for a23.",
+      "observed": "Target text, key, explanation, native grades and actual UI screenshots all switch together.",
+      "status": "passed",
+      "justification": "The inspected column determines the applicable cancellation rule.",
+      "sample_refs": [
+        "changed-target-records.json",
+        "repair-regression-results.json",
+        "grader-results.json",
+        "render/question-004.png",
+        "render/question-005.png"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "complete bank signature",
+      "subgroup": "q-20388 before delivery",
+      "scope": "within_template",
+      "strategy": "Always choose empirical most common original-bank slot, ignoring matrix",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "No fixed response answers the whole group. Purposeful witnesses test support, not population frequency. Actual UI order is checked separately.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "validation-records.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "stored position",
+      "subgroup": "q-20388 before delivery",
+      "scope": "within_template",
+      "strategy": "Always choose empirical most common serialized position",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No fixed response answers the whole group. Purposeful witnesses test support, not population frequency. Actual UI order is checked separately.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "validation-records.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "complete bank signature",
+      "subgroup": "q-130283 before delivery",
+      "scope": "within_template",
+      "strategy": "Always choose empirical most common original-bank slot, ignoring matrix",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "No fixed response answers the whole group. Purposeful witnesses test support, not population frequency. Actual UI order is checked separately.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "validation-records.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "stored position",
+      "subgroup": "q-130283 before delivery",
+      "scope": "within_template",
+      "strategy": "Always choose empirical most common serialized position",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No fixed response answers the whole group. Purposeful witnesses test support, not population frequency. Actual UI order is checked separately.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "validation-records.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "complete bank signature",
+      "subgroup": "q-130285 before delivery",
+      "scope": "within_template",
+      "strategy": "Always choose empirical most common original-bank slot, ignoring matrix",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "No fixed response answers the whole group. Purposeful witnesses test support, not population frequency. Actual UI order is checked separately.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "validation-records.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "stored position",
+      "subgroup": "q-130285 before delivery",
+      "scope": "within_template",
+      "strategy": "Always choose empirical most common serialized position",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No fixed response answers the whole group. Purposeful witnesses test support, not population frequency. Actual UI order is checked separately.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "validation-records.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "complete bank signature",
+      "subgroup": "q-130301 before delivery",
+      "scope": "within_template",
+      "strategy": "Always choose empirical most common original-bank slot, ignoring matrix",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "No fixed response answers the whole group. Purposeful witnesses test support, not population frequency. Actual UI order is checked separately.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "validation-records.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "stored position",
+      "subgroup": "q-130301 before delivery",
+      "scope": "within_template",
+      "strategy": "Always choose empirical most common serialized position",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No fixed response answers the whole group. Purposeful witnesses test support, not population frequency. Actual UI order is checked separately.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "validation-records.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "complete bank signature",
+      "subgroup": "q-130304 before delivery",
+      "scope": "within_template",
+      "strategy": "Always choose empirical most common original-bank slot, ignoring matrix",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "No fixed response answers the whole group. Purposeful witnesses test support, not population frequency. Actual UI order is checked separately.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "validation-records.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "stored position",
+      "subgroup": "q-130304 before delivery",
+      "scope": "within_template",
+      "strategy": "Always choose empirical most common serialized position",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No fixed response answers the whole group. Purposeful witnesses test support, not population frequency. Actual UI order is checked separately.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "validation-records.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "complete bank signature",
+      "subgroup": "q-20241 before delivery",
+      "scope": "within_template",
+      "strategy": "Always choose empirical most common original-bank slot, ignoring matrix",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No fixed response answers the whole group. Purposeful witnesses test support, not population frequency. Actual UI order is checked separately.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "validation-records.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "stored position",
+      "subgroup": "q-20241 before delivery",
+      "scope": "within_template",
+      "strategy": "Always choose empirical most common serialized position",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No fixed response answers the whole group. Purposeful witnesses test support, not population frequency. Actual UI order is checked separately.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "validation-records.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "complete bank signature",
+      "subgroup": "q-20386 before delivery",
+      "scope": "within_template",
+      "strategy": "Always choose empirical most common original-bank slot, ignoring matrix",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "No fixed response answers the whole group. Purposeful witnesses test support, not population frequency. Actual UI order is checked separately.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "validation-records.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "stored position",
+      "subgroup": "q-20386 before delivery",
+      "scope": "within_template",
+      "strategy": "Always choose empirical most common serialized position",
+      "correct": 3,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No fixed response answers the whole group. Purposeful witnesses test support, not population frequency. Actual UI order is checked separately.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "validation-records.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "complete bank signature",
+      "subgroup": "q-72857 before delivery",
+      "scope": "within_template",
+      "strategy": "Always choose empirical most common original-bank slot, ignoring matrix",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "No fixed response answers the whole group. Purposeful witnesses test support, not population frequency. Actual UI order is checked separately.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "validation-records.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "stored position",
+      "subgroup": "q-72857 before delivery",
+      "scope": "within_template",
+      "strategy": "Always choose empirical most common serialized position",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No fixed response answers the whole group. Purposeful witnesses test support, not population frequency. Actual UI order is checked separately.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "validation-records.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "complete bank signature",
+      "subgroup": "q-72860 before delivery",
+      "scope": "within_template",
+      "strategy": "Always choose empirical most common original-bank slot, ignoring matrix",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "No fixed response answers the whole group. Purposeful witnesses test support, not population frequency. Actual UI order is checked separately.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "validation-records.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "stored position",
+      "subgroup": "q-72860 before delivery",
+      "scope": "within_template",
+      "strategy": "Always choose empirical most common serialized position",
+      "correct": 3,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No fixed response answers the whole group. Purposeful witnesses test support, not population frequency. Actual UI order is checked separately.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "validation-records.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "complete bank signature",
+      "subgroup": "q-72858 before delivery",
+      "scope": "within_template",
+      "strategy": "Always choose empirical most common original-bank slot, ignoring matrix",
+      "correct": 5,
+      "total": 8,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "No fixed response answers the whole group. Purposeful witnesses test support, not population frequency. Actual UI order is checked separately.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "validation-records.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "stored position",
+      "subgroup": "q-72858 before delivery",
+      "scope": "within_template",
+      "strategy": "Always choose empirical most common serialized position",
+      "correct": 4,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No fixed response answers the whole group. Purposeful witnesses test support, not population frequency. Actual UI order is checked separately.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "validation-records.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "complete bank signature",
+      "subgroup": "q-20388 after delivery",
+      "scope": "within_template",
+      "strategy": "Always choose empirical most common original-bank slot, ignoring matrix",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "No fixed response answers the whole group. Purposeful witnesses test support, not population frequency. Actual UI order is checked separately.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "validation-records.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "stored position",
+      "subgroup": "q-20388 after delivery",
+      "scope": "within_template",
+      "strategy": "Always choose empirical most common serialized position",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No fixed response answers the whole group. Purposeful witnesses test support, not population frequency. Actual UI order is checked separately.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "validation-records.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "complete bank signature",
+      "subgroup": "q-130283 after delivery",
+      "scope": "within_template",
+      "strategy": "Always choose empirical most common original-bank slot, ignoring matrix",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "No fixed response answers the whole group. Purposeful witnesses test support, not population frequency. Actual UI order is checked separately.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "validation-records.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "stored position",
+      "subgroup": "q-130283 after delivery",
+      "scope": "within_template",
+      "strategy": "Always choose empirical most common serialized position",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No fixed response answers the whole group. Purposeful witnesses test support, not population frequency. Actual UI order is checked separately.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "validation-records.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "complete bank signature",
+      "subgroup": "q-130285 after delivery",
+      "scope": "within_template",
+      "strategy": "Always choose empirical most common original-bank slot, ignoring matrix",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "No fixed response answers the whole group. Purposeful witnesses test support, not population frequency. Actual UI order is checked separately.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "validation-records.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "stored position",
+      "subgroup": "q-130285 after delivery",
+      "scope": "within_template",
+      "strategy": "Always choose empirical most common serialized position",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No fixed response answers the whole group. Purposeful witnesses test support, not population frequency. Actual UI order is checked separately.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "validation-records.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "complete bank signature",
+      "subgroup": "q-130301 after delivery",
+      "scope": "within_template",
+      "strategy": "Always choose empirical most common original-bank slot, ignoring matrix",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "No fixed response answers the whole group. Purposeful witnesses test support, not population frequency. Actual UI order is checked separately.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "validation-records.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "stored position",
+      "subgroup": "q-130301 after delivery",
+      "scope": "within_template",
+      "strategy": "Always choose empirical most common serialized position",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No fixed response answers the whole group. Purposeful witnesses test support, not population frequency. Actual UI order is checked separately.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "validation-records.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "complete bank signature",
+      "subgroup": "q-130304 after delivery",
+      "scope": "within_template",
+      "strategy": "Always choose empirical most common original-bank slot, ignoring matrix",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "No fixed response answers the whole group. Purposeful witnesses test support, not population frequency. Actual UI order is checked separately.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "validation-records.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "stored position",
+      "subgroup": "q-130304 after delivery",
+      "scope": "within_template",
+      "strategy": "Always choose empirical most common serialized position",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No fixed response answers the whole group. Purposeful witnesses test support, not population frequency. Actual UI order is checked separately.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "validation-records.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "complete bank signature",
+      "subgroup": "q-20241 after delivery",
+      "scope": "within_template",
+      "strategy": "Always choose empirical most common original-bank slot, ignoring matrix",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No fixed response answers the whole group. Purposeful witnesses test support, not population frequency. Actual UI order is checked separately.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "validation-records.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "stored position",
+      "subgroup": "q-20241 after delivery",
+      "scope": "within_template",
+      "strategy": "Always choose empirical most common serialized position",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No fixed response answers the whole group. Purposeful witnesses test support, not population frequency. Actual UI order is checked separately.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "validation-records.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "complete bank signature",
+      "subgroup": "q-20386 after delivery",
+      "scope": "within_template",
+      "strategy": "Always choose empirical most common original-bank slot, ignoring matrix",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "No fixed response answers the whole group. Purposeful witnesses test support, not population frequency. Actual UI order is checked separately.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "validation-records.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "stored position",
+      "subgroup": "q-20386 after delivery",
+      "scope": "within_template",
+      "strategy": "Always choose empirical most common serialized position",
+      "correct": 3,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No fixed response answers the whole group. Purposeful witnesses test support, not population frequency. Actual UI order is checked separately.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "validation-records.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "complete bank signature",
+      "subgroup": "q-72857 after delivery",
+      "scope": "within_template",
+      "strategy": "Always choose empirical most common original-bank slot, ignoring matrix",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "No fixed response answers the whole group. Purposeful witnesses test support, not population frequency. Actual UI order is checked separately.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "validation-records.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "stored position",
+      "subgroup": "q-72857 after delivery",
+      "scope": "within_template",
+      "strategy": "Always choose empirical most common serialized position",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No fixed response answers the whole group. Purposeful witnesses test support, not population frequency. Actual UI order is checked separately.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "validation-records.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "complete bank signature",
+      "subgroup": "q-72860 after delivery",
+      "scope": "within_template",
+      "strategy": "Always choose empirical most common original-bank slot, ignoring matrix",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "No fixed response answers the whole group. Purposeful witnesses test support, not population frequency. Actual UI order is checked separately.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "validation-records.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "stored position",
+      "subgroup": "q-72860 after delivery",
+      "scope": "within_template",
+      "strategy": "Always choose empirical most common serialized position",
+      "correct": 3,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No fixed response answers the whole group. Purposeful witnesses test support, not population frequency. Actual UI order is checked separately.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "validation-records.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "complete bank signature",
+      "subgroup": "q-72858 after delivery",
+      "scope": "within_template",
+      "strategy": "Always choose empirical most common original-bank slot, ignoring matrix",
+      "correct": 5,
+      "total": 8,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "No fixed response answers the whole group. Purposeful witnesses test support, not population frequency. Actual UI order is checked separately.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "validation-records.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "stored position",
+      "subgroup": "q-72858 after delivery",
+      "scope": "within_template",
+      "strategy": "Always choose empirical most common serialized position",
+      "correct": 4,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No fixed response answers the whole group. Purposeful witnesses test support, not population frequency. Actual UI order is checked separately.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "validation-records.json",
+        "delivery/accepted.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "winner construction and ambiguity rejection",
+      "semantic batch deduplication",
+      "hard difficulty",
+      "actual shared publisher delivery and inventory deduplication",
+      "read-only conditional learner selection",
+      "actual UI answer ordering"
+    ],
+    "sample_refs": [
+      "repair-regression-results.json",
+      "shortcut-results.json",
+      "delivery/delivery.json",
+      "selection-results.json",
+      "ui-order-results.json"
+    ],
+    "result": "All 36 eligible assignments survive in 46/46 delivered records. Within-bank fixed slot, position and operation-type probes are nonconstant. Donor labels alone can match multiple bank operations and are not a response key. Actual rendered position varies. Positive hard-weight selection has no bank filter; unconfigured or zero-hard-weight policies have the documented limits."
+  },
+  "limitations": [
+    "q-20392 lacks captured difficulty, key and solution; its unique completion remains replay-only.",
+    "Source canonical example has no original radio bank. Its reasoning supports the scope without an invented bank.",
+    "No live learner policy/history or future publication IDs supplied; no live selection probability claimed.",
+    "Non-source inventory generation metadata is absent; no exact generation replay of stored instances claimed.",
+    "Finite cue probes and purposeful winner coverage establish no demonstrated shortcut; they do not prove natural-frequency balance or exclude all possible strategies."
+  ]
+}

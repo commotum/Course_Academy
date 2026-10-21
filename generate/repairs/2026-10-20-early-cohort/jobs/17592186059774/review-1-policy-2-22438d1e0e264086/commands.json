@@ -1,0 +1,24 @@
+{
+  "cwd": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186059774/review-1-policy-2-22438d1e0e264086",
+  "environment": {
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "python": "/home/jake/Developer/Course_Academy/.venv/bin/python",
+  "ordered_commands": [
+    "<python> targeted_audit.py",
+    "<python> <repo>/generate/pipeline/check_delivery.py --input fresh-samples.json --source <job>/source/source.json --inventory <job>/source/inventory.json --difficulty hard --output delivery-independent --math-root /media/jake/SSD/EDB/math",
+    "<python> <repo>/generate/pipeline/check_delivery.py --input runner-batch.json --source <job>/source/source.json --inventory <job>/source/inventory.json --difficulty hard --output delivery-batch --math-root /media/jake/SSD/EDB/math",
+    "<python> post_delivery.py",
+    "<repo>/generate/runs/current/check-engine grader-input.json grader-results.json",
+    "<python> <repo>/generate/pipeline/render_preview.py --input render-records.json --output render --limit 11 --asset-root delivery-batch/assets --math-root /media/jake/SSD/EDB/math",
+    "<python> decision_audit.py",
+    "<python> reproduce_batch_shortcut.py",
+    "python3: jsonschema.validate(pedagogical-variation.json, <repo>/generate/pipeline/pedagogical-variation.schema.json)"
+  ],
+  "expansions": {
+    "<python>": "/home/jake/Developer/Course_Academy/.venv/bin/python",
+    "<repo>": "/home/jake/Developer/Course_Academy",
+    "<job>": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186059774"
+  },
+  "retained_regression": "preflight-reproduction.json retains exact subprocess arguments, failing old example and passing current; both relocated copies are under preflight-reproduction/."
+}

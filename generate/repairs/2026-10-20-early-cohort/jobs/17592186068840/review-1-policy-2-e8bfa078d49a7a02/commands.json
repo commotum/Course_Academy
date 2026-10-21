@@ -1,0 +1,20 @@
+{
+  "python": "/home/jake/Developer/Course_Academy/.venv/bin/python",
+  "cwd": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186068840/review-1-policy-2-e8bfa078d49a7a02",
+  "sequence": [
+    "python -B regression_acceptance.py --entrypoint baseline/17592186068840.py --batch ../review-0-policy-2-f6d92a4daf8eee94/batch-records.json (expected exit 1)",
+    "python -B regression_acceptance.py",
+    "python -B author_regressions.py --finding source",
+    "python -B author_regressions.py --finding shortcut",
+    "python -B author_regressions.py --finding grading",
+    "python -B review_checks.py",
+    "python -B /home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py --input independent-easy-current.json --source /home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186068840/source/source.json --inventory /home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186068840/source/inventory.json --difficulty easy --output delivery-independent --asset-root assets --math-root /media/jake/SSD/EDB/math",
+    "Repeat check_delivery.py with --input batch-records.json --output delivery-batch",
+    "python -B delivery_variation.py",
+    "python -B grade_delivery.py",
+    "python -B /home/jake/Developer/Course_Academy/generate/pipeline/render_preview.py --input render-records.json --output render --limit 14 --math-root /media/jake/SSD/EDB/math",
+    "Repeat render_preview.py with --input render-counterfactuals.json --output render-pairs --limit 17",
+    "Repeat render_preview.py with --input delivery-batch/accepted.json --output render-delivered --limit 5",
+    "python -B finalize_review.py"
+  ]
+}

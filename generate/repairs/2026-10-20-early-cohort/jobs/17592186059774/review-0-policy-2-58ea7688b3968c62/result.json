@@ -1,0 +1,128 @@
+{
+  "verdict": "revise",
+  "summary": "The complete source bank q-72858 is missing from the package and cannot replay or generate. Available content and the exact five-item batch passed the tested math, grading, rendering, and packaging checks. Package files remained unchanged.",
+  "source_analysis": {
+    "skill": "Identify the unique listed elementary row operation that makes a specified matrix entry zero.",
+    "reasoning_steps": [
+      "Locate the target entry.",
+      "Evaluate candidate operations using the target-column entries.",
+      "Select the unique successful operation and verify its whole-row effect."
+    ],
+    "invariants": [
+      "A 3\u00d73 coefficient matrix and five radio choices.",
+      "One elementary operation with exactly one successful listed choice.",
+      "Prompt, key, and worked matrix transformation agree."
+    ],
+    "permitted_variations": [
+      "Target coordinates, donor rows, signed entries, and simple fractional multipliers.",
+      "Which eligible listed operation succeeds.",
+      "Coherent row/column permutations and option ordering.",
+      "Non-target-column changes that preserve the correct operation."
+    ],
+    "source_refs": [
+      "f8417bbc-b748-519b-a997-fbb4aed755eb (e-4696)",
+      "372c1499-bf5a-558e-ad8a-af28e6ae7898 (q-72858)",
+      "541b14bb-d8ea-55de-b269-54fae6c76be2 (q-130301)",
+      "45680acf-db20-5a6f-9386-10731c57b3e2 (q-20392)",
+      "Tutorial 7aa753a7-1450-53dd-8e61-71e07952cecb: three elementary row-operation definitions"
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "source-corrections.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "failed",
+      "evidence_paths": [
+        "source-replay-results.json",
+        "source-replay-failures.json",
+        "capture-fidelity.json",
+        "minimal-failure.json"
+      ],
+      "details": "Ten of eleven supplied banks replay. The fully captured q-72858 bank is absent and raises Unknown source profile. Supported source corrections are documented."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "audit.py",
+        "math-results.json",
+        "source-corrections.json"
+      ],
+      "details": "Independent exact Fraction arithmetic verified keys and complete result matrices for 98 independent samples, all five runner items, five counterfactuals, and ten available source replays."
+    },
+    "variety": {
+      "status": "failed",
+      "evidence_paths": [
+        "coverage.json",
+        "scope-results.json",
+        "shortcut-results.json"
+      ],
+      "details": "Observed 34 eligible winner assignments across nine sampled banks and all nine target coordinates. Coverage remains incomplete because q-72858 is missing; q-20392 is replay-only."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "scope-results.json"
+      ],
+      "details": "Represented variations preserve the response contract and single-operation skill. Successful swaps follow the lesson's target-column-dependent rule."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-results.json",
+        "counterfactual-results.json"
+      ],
+      "details": "The native learner grader accepted 21 independently verified correct choices and rejected 84 distractors, including controlled pairs. Free-entry equivalence is inapplicable to these radio questions."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-inspection.json",
+        "render/contact-sheet.jpg",
+        "ui-order-results.json"
+      ],
+      "details": "The actual UI renderer passed twelve cases. Screenshot inspection covered the exact batch, controlled changes, fractions, swaps, answer controls, and worked solutions."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "determinism-results.json",
+        "rejection-results.json",
+        "package-before.json",
+        "package-after.json"
+      ],
+      "details": "Exact dependency versions match. Deterministic question replay, relocated execution, JSON output, and invalid-instance rejection passed. Package hashes remained unchanged."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "decision-validation.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "delivery-batch/delivery.json",
+        "delivery-independent/delivery.json",
+        "selection-results.json",
+        "inventory-review.json"
+      ],
+      "details": "Relevant changes switched correctness; irrelevant changes preserved it. Conditional probes covered every sampled bank. Delivery retained 5/5 batch and 98/98 independent records; no tested cue solved the entire batch. Missing q-72858 prevents complete decision coverage. Selection conclusions use captured inventory and explicit policy/history assumptions."
+    }
+  },
+  "findings": [
+    {
+      "kind": "source_fidelity",
+      "description": "Packaged source_data.json uses basis 4571 and omits complete supplied q-72858 from basis 5360. Its matrix [[2,1,3],[6,4,3],[1,2,3]], target a23=0, and full five-choice bank have the unique correct operation R2:=R2-R1, producing row [4,3,0]. Both replay and ordinary generation reject this profile.",
+      "source_refs": [
+        "372c1499-bf5a-558e-ad8a-af28e6ae7898 (q-72858): complete prompt, bank, key, and worked solution",
+        "generate/principles.md: reproduce complete source answer banks"
+      ],
+      "reproduction": "From evidence_root run PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python reproduce_missing_profile.py. generator.replay('q-72858') raises ValueError: Unknown source profile. minimal-failure.json retains the failing exit and traceback.",
+      "requested_change": "Refresh the packaged source mapping from the supplied capture and retain every complete supported bank, including q-72858. Support its original replay and ordinary winner-based sampling, preserving all five choices. Adopt the retained failing regression and verify subtraction, self-row scaling distractors, permutations, and eligible winner changes."
+    }
+  ]
+}

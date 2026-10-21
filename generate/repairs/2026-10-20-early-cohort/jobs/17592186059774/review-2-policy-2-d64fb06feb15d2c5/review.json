@@ -1,0 +1,137 @@
+{
+  "verdict": "accepted",
+  "summary": "Both retained defects are resolved. All eight checks pass, including the exact five-item batch, native grading and actual UI rendering. No remaining demonstrated failure; package unchanged.",
+  "source_analysis": {
+    "skill": "Identify which of five elementary row operations changes a specified entry of a 3 by 3 integer coefficient matrix to zero.",
+    "reasoning_steps": [
+      "Read target row and column from a_ij.",
+      "Evaluate candidate row operations, rejecting operations that leave a nonzero target unchanged or do not cancel it.",
+      "Select the unique listed successful operation; worked solution applies that operation to the whole matrix."
+    ],
+    "invariants": [
+      "One elementary row operation; no multi-step elimination or solving a system.",
+      "Nonzero scaling and distinct rows for row addition.",
+      "Exactly one valid listed choice achieves the stated target.",
+      "Prompt, correct bank entry, full-row arithmetic and explanation agree."
+    ],
+    "permitted_variations": [
+      "All target coordinates and donor/recipient assignments may vary if prompt and dependencies follow.",
+      "Signed small integer entries, integer and simple fractional cancellation factors, matrix letter and option order may vary.",
+      "The successful listed donor and factor must be determined by entries rather than fixed labels or template signatures.",
+      "Distinct candidate row-addition options can exchange correctness when the relevant matrix entry changes while the rest stays fixed.",
+      "Non-target columns and matrix name are irrelevant to the selected operation and may change without changing the response."
+    ],
+    "source_refs": [
+      "9ec5da5b-045b-5f9b-81d1-dca84ed41202 (q-20388)",
+      "45680acf-db20-5a6f-9386-10731c57b3e2 (q-20392)",
+      "815f9e6c-522e-56ab-89a5-4e0b1a29d889 (q-130283)",
+      "a2315259-d90e-5796-af9b-5986097263bc (q-130285)",
+      "541b14bb-d8ea-55de-b269-54fae6c76be2 (q-130301)",
+      "cc281877-0bbe-5bdb-b4ec-bdbce5eb8a4f (q-130304)",
+      "24e16efc-bc74-58ba-b952-74e30fe541c3 (q-20241)",
+      "8272f6cc-17eb-50ed-8172-2168502e8c44 (q-20386)",
+      "4620d00b-e63c-5bb6-90cb-233c01e9e5ab (q-72857)",
+      "d64eac74-31dd-5514-b904-fdc9f48abd1b (q-72860)",
+      "372c1499-bf5a-558e-ad8a-af28e6ae7898 (q-72858)",
+      "f8417bbc-b748-519b-a997-fbb4aed755eb (e-4696)",
+      "tutorial 7aa753a7-1450-53dd-8e61-71e07952cecb (3150), lesson step 3df97c2e-febb-5f72-be71-e1d739dbbd92"
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "source-corrections.json",
+      "revision-diff.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay-results.json",
+        "source-replays.json",
+        "source-corrections.json",
+        "preflight-reproduction.json"
+      ],
+      "details": "All eleven supplied banks replay with all five operations intact. q-72858 restored; documented q-130301 source arithmetic correction and inferred q-20392 completion retained. Both retained regressions fail on their original defective packages and pass current code."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "independent.py",
+        "audit_revision.py",
+        "math-results.json",
+        "delivery-identity-results.json"
+      ],
+      "details": "Independent exact Fraction arithmetic checks every listed operation, unique correct choice and complete worked matrix across 32 fresh controls, five current batch items, five repaired retained proposals, eleven source replays, five controlled records and ten equality controls. Normalized batch records checked separately."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "scheduler-results.json",
+        "coverage.json",
+        "fresh-samples.json",
+        "shortcut-results.json",
+        "reused/coverage.json",
+        "revision-diff.json"
+      ],
+      "details": "New batch scheduling produces both swap and replacement winners for each of ten recognizable banks in controlled repeated proposals. Prior eligible-slot and all-nine-target coverage reused only for unchanged source/generate rules. Current repeated q-72858 group has both roles."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "scope-results.json",
+        "counterfactual-records.json"
+      ],
+      "details": "Variation preserves one elementary operation, a zero target, 3x3 matrix and five radio choices. Successful swaps follow the lesson's zero-donor rule. No added operators, response types or multi-step elimination."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-results.json",
+        "counterfactual-results.json"
+      ],
+      "details": "Actual native learner grader accepted all 58 independently determined correct selections and rejected all 232 distractors; no unresolved outcomes. All controlled pairs and normalized delivery records included. Free-entry equivalence is inapplicable to radio selection."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render-records.json",
+        "render/rendering.json",
+        "render-inspection.json",
+        "render/contact-sheet.jpg",
+        "ui-order-results.json"
+      ],
+      "details": "All eleven actual-UI cases rendered without reported errors; screenshots inspected for the exact five-item batch, relevant/irrelevant/target counterfactuals, fractions, controls and worked matrices."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "rejection-results.json",
+        "relocated-records.json",
+        "package-before.json",
+        "package-after.json",
+        "commands.json"
+      ],
+      "details": "Exact Python 3.13.5, sympy 1.14.0 and mpmath 1.3.0 match manifest. Deterministic replay, batch replay, relocation, JSON-only output and invalid-input rejection pass. All package files unchanged; no external assets or database operations."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "decision-validation.json",
+        "shortcut-results.json",
+        "counterfactual-results.json",
+        "delivery-batch/delivery.json",
+        "delivery-independent/delivery.json",
+        "delivery-retained/delivery.json",
+        "selection-results.json",
+        "inventory-review.json",
+        "affected-inventory.json"
+      ],
+      "details": "Relevant matrix/target changes alter decisions and grading; irrelevant columns preserve them. Forty-three probes include 33 conditional probes. Prior sole-subtraction shortcut falls from 2/2 to 1/2 on both current batch and repaired retained stream. All 32 controls and both five-item pools survive delivery. Captured inventory and conditional learner-selection limits are explicit."
+    }
+  },
+  "findings": []
+}

@@ -1,0 +1,305 @@
+{
+  "format": 1,
+  "findings": [
+    {
+      "id": "43e8c2b7435f7ef1bee2",
+      "finding": {
+        "kind": "source_fidelity",
+        "description": "Packaged source_data.json uses basis 4571 and omits complete supplied q-72858 from basis 5360. Its matrix [[2,1,3],[6,4,3],[1,2,3]], target a23=0, and full five-choice bank have the unique correct operation R2:=R2-R1, producing row [4,3,0]. Both replay and ordinary generation reject this profile.",
+        "source_refs": [
+          "372c1499-bf5a-558e-ad8a-af28e6ae7898 (q-72858): complete prompt, bank, key, and worked solution",
+          "generate/principles.md: reproduce complete source answer banks"
+        ],
+        "reproduction": "From evidence_root run PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python reproduce_missing_profile.py. generator.replay('q-72858') raises ValueError: Unknown source profile. minimal-failure.json retains the failing exit and traceback.",
+        "requested_change": "Refresh the packaged source mapping from the supplied capture and retain every complete supported bank, including q-72858. Support its original replay and ordinary winner-based sampling, preserving all five choices. Adopt the retained failing regression and verify subtraction, self-row scaling distractors, permutations, and eligible winner changes."
+      },
+      "source_hash": "c392428e442092ded9ca5366c69897bc16a61765342e8306ab22933d8a1074f9",
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186059774/review-0-policy-2-58ea7688b3968c62",
+      "attempt": 0
+    },
+    {
+      "id": "7db753d2c3e5a969a0e7",
+      "finding": {
+        "kind": "decision_shortcut",
+        "description": "Both delivered q-72858 records contain two swaps, two self-scaling distractors and one distinct-row subtraction. Selecting that sole distinct-row operation answers both without inspecting the matrix or target. The generator supports swap counterexamples, but this repeated subgroup of the exact delivered batch contains none.",
+        "source_refs": [
+          "372c1499-bf5a-558e-ad8a-af28e6ae7898 (q-72858): complete answer bank",
+          "f8417bbc-b748-519b-a997-fbb4aed755eb (e-4696): target-column evidence determines swap eligibility",
+          "generate/principles.md: fixed decision structures and delivered cue groups"
+        ],
+        "reproduction": "Run PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python reproduce_batch_shortcut.py from evidence_root. The cue succeeds 2/2. First failing batch case: seed 12312996823910534779, q-72858, winner 0; exact parameters and both raw/delivered identities are retained in minimal-batch-failure.json.",
+        "requested_change": "Revise batch construction or selection to defeat this winning-role cue. Include a supported q-72858 target-row-swap instance alongside subtraction, then rerun the retained shortcut test after delivery filtering. Preserve the complete bank and source replay."
+      },
+      "source_hash": "c392428e442092ded9ca5366c69897bc16a61765342e8306ab22933d8a1074f9",
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186059774/review-1-policy-2-22438d1e0e264086",
+      "attempt": 1
+    }
+  ],
+  "events": [
+    {
+      "attempt": 0,
+      "package_hash": "5a5be6963fa0b74f19d3aaf7470839d04e89a1bec9a7d99f71305b603b4a1b8a",
+      "reason": {
+        "verdict": "revise",
+        "summary": "The complete source bank q-72858 is missing from the package and cannot replay or generate. Available content and the exact five-item batch passed the tested math, grading, rendering, and packaging checks. Package files remained unchanged.",
+        "source_analysis": {
+          "skill": "Identify the unique listed elementary row operation that makes a specified matrix entry zero.",
+          "reasoning_steps": [
+            "Locate the target entry.",
+            "Evaluate candidate operations using the target-column entries.",
+            "Select the unique successful operation and verify its whole-row effect."
+          ],
+          "invariants": [
+            "A 3\u00d73 coefficient matrix and five radio choices.",
+            "One elementary operation with exactly one successful listed choice.",
+            "Prompt, key, and worked matrix transformation agree."
+          ],
+          "permitted_variations": [
+            "Target coordinates, donor rows, signed entries, and simple fractional multipliers.",
+            "Which eligible listed operation succeeds.",
+            "Coherent row/column permutations and option ordering.",
+            "Non-target-column changes that preserve the correct operation."
+          ],
+          "source_refs": [
+            "f8417bbc-b748-519b-a997-fbb4aed755eb (e-4696)",
+            "372c1499-bf5a-558e-ad8a-af28e6ae7898 (q-72858)",
+            "541b14bb-d8ea-55de-b269-54fae6c76be2 (q-130301)",
+            "45680acf-db20-5a6f-9386-10731c57b3e2 (q-20392)",
+            "Tutorial 7aa753a7-1450-53dd-8e61-71e07952cecb: three elementary row-operation definitions"
+          ],
+          "evidence_paths": [
+            "source-analysis.json",
+            "source-corrections.json"
+          ]
+        },
+        "checks": {
+          "source_replay": {
+            "status": "failed",
+            "evidence_paths": [
+              "source-replay-results.json",
+              "source-replay-failures.json",
+              "capture-fidelity.json",
+              "minimal-failure.json"
+            ],
+            "details": "Ten of eleven supplied banks replay. The fully captured q-72858 bank is absent and raises Unknown source profile. Supported source corrections are documented."
+          },
+          "math": {
+            "status": "passed",
+            "evidence_paths": [
+              "audit.py",
+              "math-results.json",
+              "source-corrections.json"
+            ],
+            "details": "Independent exact Fraction arithmetic verified keys and complete result matrices for 98 independent samples, all five runner items, five counterfactuals, and ten available source replays."
+          },
+          "variety": {
+            "status": "failed",
+            "evidence_paths": [
+              "coverage.json",
+              "scope-results.json",
+              "shortcut-results.json"
+            ],
+            "details": "Observed 34 eligible winner assignments across nine sampled banks and all nine target coordinates. Coverage remains incomplete because q-72858 is missing; q-20392 is replay-only."
+          },
+          "scope": {
+            "status": "passed",
+            "evidence_paths": [
+              "source-analysis.json",
+              "scope-results.json"
+            ],
+            "details": "Represented variations preserve the response contract and single-operation skill. Successful swaps follow the lesson's target-column-dependent rule."
+          },
+          "grading": {
+            "status": "passed",
+            "evidence_paths": [
+              "grader-input.json",
+              "grader-results.json",
+              "counterfactual-results.json"
+            ],
+            "details": "The native learner grader accepted 21 independently verified correct choices and rejected 84 distractors, including controlled pairs. Free-entry equivalence is inapplicable to these radio questions."
+          },
+          "rendering": {
+            "status": "passed",
+            "evidence_paths": [
+              "render/rendering.json",
+              "render-inspection.json",
+              "render/contact-sheet.jpg",
+              "ui-order-results.json"
+            ],
+            "details": "The actual UI renderer passed twelve cases. Screenshot inspection covered the exact batch, controlled changes, fractions, swaps, answer controls, and worked solutions."
+          },
+          "packaging": {
+            "status": "passed",
+            "evidence_paths": [
+              "packaging-results.json",
+              "determinism-results.json",
+              "rejection-results.json",
+              "package-before.json",
+              "package-after.json"
+            ],
+            "details": "Exact dependency versions match. Deterministic question replay, relocated execution, JSON output, and invalid-instance rejection passed. Package hashes remained unchanged."
+          },
+          "decision_variation": {
+            "status": "failed",
+            "evidence_paths": [
+              "pedagogical-variation.json",
+              "decision-validation.json",
+              "counterfactual-results.json",
+              "shortcut-results.json",
+              "delivery-batch/delivery.json",
+              "delivery-independent/delivery.json",
+              "selection-results.json",
+              "inventory-review.json"
+            ],
+            "details": "Relevant changes switched correctness; irrelevant changes preserved it. Conditional probes covered every sampled bank. Delivery retained 5/5 batch and 98/98 independent records; no tested cue solved the entire batch. Missing q-72858 prevents complete decision coverage. Selection conclusions use captured inventory and explicit policy/history assumptions."
+          }
+        },
+        "findings": [
+          {
+            "kind": "source_fidelity",
+            "description": "Packaged source_data.json uses basis 4571 and omits complete supplied q-72858 from basis 5360. Its matrix [[2,1,3],[6,4,3],[1,2,3]], target a23=0, and full five-choice bank have the unique correct operation R2:=R2-R1, producing row [4,3,0]. Both replay and ordinary generation reject this profile.",
+            "source_refs": [
+              "372c1499-bf5a-558e-ad8a-af28e6ae7898 (q-72858): complete prompt, bank, key, and worked solution",
+              "generate/principles.md: reproduce complete source answer banks"
+            ],
+            "reproduction": "From evidence_root run PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python reproduce_missing_profile.py. generator.replay('q-72858') raises ValueError: Unknown source profile. minimal-failure.json retains the failing exit and traceback.",
+            "requested_change": "Refresh the packaged source mapping from the supplied capture and retain every complete supported bank, including q-72858. Support its original replay and ordinary winner-based sampling, preserving all five choices. Adopt the retained failing regression and verify subtraction, self-row scaling distractors, permutations, and eligible winner changes."
+          }
+        ]
+      },
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186059774/review-0-policy-2-58ea7688b3968c62"
+    },
+    {
+      "attempt": 1,
+      "package_hash": "5fcec8b4a8d90568d557a9b44d2d7a9932a47682d79880e907d3b6668c924bd5",
+      "reason": {
+        "verdict": "revise",
+        "summary": "The missing source bank is restored. The exact delivered batch has a matrix-free shortcut within its repeated q-72858 subgroup. Package files remained unchanged.",
+        "source_analysis": {
+          "skill": "Identify the unique listed elementary row operation that makes a specified matrix entry zero.",
+          "reasoning_steps": [
+            "Locate the target entry.",
+            "Evaluate candidate operations using target-column entries.",
+            "Select the successful operation and verify its whole-row effect."
+          ],
+          "invariants": [
+            "A 3\u00d73 matrix and five radio choices.",
+            "Exactly one successful listed elementary operation.",
+            "Prompt, key and worked transformation agree."
+          ],
+          "permitted_variations": [
+            "Target coordinates, donor rows, signed entries and supported fractional factors.",
+            "Which eligible listed operation succeeds.",
+            "Coherent row and column permutations.",
+            "Non-target-column changes preserving the correct operation."
+          ],
+          "source_refs": [
+            "372c1499-bf5a-558e-ad8a-af28e6ae7898 (q-72858)",
+            "f8417bbc-b748-519b-a997-fbb4aed755eb (e-4696)",
+            "Tutorial 7aa753a7-1450-53dd-8e61-71e07952cecb, step 3df97c2e-febb-5f72-be71-e1d739dbbd92"
+          ],
+          "evidence_paths": [
+            "source-analysis.json",
+            "source-corrections.json",
+            "revision-diff.json"
+          ]
+        },
+        "checks": {
+          "source_replay": {
+            "status": "passed",
+            "evidence_paths": [
+              "source-replay-results.json",
+              "source-replays.json",
+              "preflight-reproduction.json"
+            ],
+            "details": "All eleven complete banks replay. The retained regression fails on the old package and passes on the current package."
+          },
+          "math": {
+            "status": "passed",
+            "evidence_paths": [
+              "independent.py",
+              "math-results.json",
+              "delivery-identity-results.json"
+            ],
+            "details": "Independent exact arithmetic verifies all choices, unique keys and worked matrices across fresh samples, source replays, controlled pairs and raw/delivered batch records."
+          },
+          "variety": {
+            "status": "failed",
+            "evidence_paths": [
+              "coverage.json",
+              "batch-shortcut-results.json",
+              "minimal-batch-failure.json"
+            ],
+            "details": "Both restored winners occur across all nine targets in controls. However, both delivered q-72858 instances preserve the same syntactically identifiable winning role."
+          },
+          "scope": {
+            "status": "passed",
+            "evidence_paths": [
+              "source-analysis.json",
+              "scope-results.json"
+            ],
+            "details": "Tested variations preserve the source workload, response contract and single-operation skill. Successful swaps follow the lesson's conditional rule."
+          },
+          "grading": {
+            "status": "passed",
+            "evidence_paths": [
+              "grader-input.json",
+              "grader-results.json",
+              "counterfactual-results.json"
+            ],
+            "details": "The native grader accepted 28 correct selections and rejected 112 distractors, including normalized delivery records and controlled pairs."
+          },
+          "rendering": {
+            "status": "passed",
+            "evidence_paths": [
+              "render/rendering.json",
+              "render-inspection.json",
+              "render/contact-sheet.jpg",
+              "ui-order-results.json"
+            ],
+            "details": "Eleven actual-UI renders passed screenshot inspection, including all five delivered records and controlled pairs."
+          },
+          "packaging": {
+            "status": "passed",
+            "evidence_paths": [
+              "packaging-results.json",
+              "rejection-results.json",
+              "package-before.json",
+              "package-after.json",
+              "commands.json"
+            ],
+            "details": "Exact dependency versions, deterministic replay, relocation, invalid-instance rejection and unchanged package hashes verified."
+          },
+          "decision_variation": {
+            "status": "failed",
+            "evidence_paths": [
+              "pedagogical-variation.json",
+              "decision-validation.json",
+              "shortcut-results.json",
+              "minimal-batch-failure.json",
+              "delivery-batch/delivery.json",
+              "delivery-independent/delivery.json",
+              "selection-results.json",
+              "inventory-review.json"
+            ],
+            "details": "Controlled dependencies pass. All 55 fresh samples and five runner records survive delivery. The matrix-free cue succeeds on both delivered q-72858 records, versus 17/34 controls. This is a finite batch-selection failure; captured inventory contains no affected non-source records."
+          }
+        },
+        "findings": [
+          {
+            "kind": "decision_shortcut",
+            "description": "Both delivered q-72858 records contain two swaps, two self-scaling distractors and one distinct-row subtraction. Selecting that sole distinct-row operation answers both without inspecting the matrix or target. The generator supports swap counterexamples, but this repeated subgroup of the exact delivered batch contains none.",
+            "source_refs": [
+              "372c1499-bf5a-558e-ad8a-af28e6ae7898 (q-72858): complete answer bank",
+              "f8417bbc-b748-519b-a997-fbb4aed755eb (e-4696): target-column evidence determines swap eligibility",
+              "generate/principles.md: fixed decision structures and delivered cue groups"
+            ],
+            "reproduction": "Run PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python reproduce_batch_shortcut.py from evidence_root. The cue succeeds 2/2. First failing batch case: seed 12312996823910534779, q-72858, winner 0; exact parameters and both raw/delivered identities are retained in minimal-batch-failure.json.",
+            "requested_change": "Revise batch construction or selection to defeat this winning-role cue. Include a supported q-72858 target-row-swap instance alongside subtraction, then rerun the retained shortcut test after delivery filtering. Preserve the complete bank and source replay."
+          }
+        ]
+      },
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186059774/review-1-policy-2-22438d1e0e264086"
+    }
+  ]
+}

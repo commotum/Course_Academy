@@ -1,0 +1,894 @@
+{
+  "learner_operation": "Locate a_ij, determine the effect of each candidate operation on that entry, and select the unique operation attaining zero. For replacement evaluate a_ij+k*a_sj, using s != i; scaling must be nonzero; swaps use the donor entry.",
+  "fixed_features": [
+    {
+      "feature": "zero target",
+      "justification": "All 11 source questions and e-4696 teach cancellation; nonzero desired values need additional source support."
+    },
+    {
+      "feature": "3x3 matrix and five radio choices",
+      "justification": "Every captured assessed question has this workload and response contract."
+    },
+    {
+      "feature": "row replacement is the successful operation in observed banks",
+      "justification": "This is the observed cancellation family. It does not justify fixing donor row, factor sign, coefficient, position, or using a single syntactically distinguishable addition option."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Target coordinate",
+      "eligible_variation": "All nine coordinates and target-only change with displayed matrix/bank fixed",
+      "observed": "Prior all-nine coverage reused with unchanged generate; current target-only pair switches subtraction to swap."
+    },
+    {
+      "role": "Successful operation",
+      "eligible_variation": "All eligible listed replacements and swaps, with decisive entries rather than fixed operation shape determining correctness",
+      "observed": "Both operation kinds survive fresh scheduler and delivery in ten banks; exact repeated q-72858 subgroup 1 subtraction and 1 swap."
+    },
+    {
+      "role": "Correct position",
+      "eligible_variation": "Stored order and actual UI hashing",
+      "observed": "No perfect constant position in fresh/current/retained pools; actual UI order inspected."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "q-130283",
+      "sample_refs": [
+        "fresh-samples.json",
+        "delivery-independent/accepted.json",
+        "scheduler-results.json"
+      ],
+      "result": "{'swap': 2, 'linear': 1}"
+    },
+    {
+      "case": "q-130285",
+      "sample_refs": [
+        "fresh-samples.json",
+        "delivery-independent/accepted.json",
+        "scheduler-results.json"
+      ],
+      "result": "{'linear': 1, 'swap': 2}"
+    },
+    {
+      "case": "q-130301",
+      "sample_refs": [
+        "fresh-samples.json",
+        "delivery-independent/accepted.json",
+        "scheduler-results.json"
+      ],
+      "result": "{'linear': 2, 'swap': 2}"
+    },
+    {
+      "case": "q-130304",
+      "sample_refs": [
+        "fresh-samples.json",
+        "delivery-independent/accepted.json",
+        "scheduler-results.json"
+      ],
+      "result": "{'linear': 3, 'swap': 2}"
+    },
+    {
+      "case": "q-20241",
+      "sample_refs": [
+        "fresh-samples.json",
+        "delivery-independent/accepted.json",
+        "scheduler-results.json"
+      ],
+      "result": "{'linear': 1, 'swap': 1}"
+    },
+    {
+      "case": "q-20386",
+      "sample_refs": [
+        "fresh-samples.json",
+        "delivery-independent/accepted.json",
+        "scheduler-results.json"
+      ],
+      "result": "{'swap': 2, 'linear': 2}"
+    },
+    {
+      "case": "q-20388",
+      "sample_refs": [
+        "fresh-samples.json",
+        "delivery-independent/accepted.json",
+        "scheduler-results.json"
+      ],
+      "result": "{'swap': 1, 'linear': 2}"
+    },
+    {
+      "case": "q-72857",
+      "sample_refs": [
+        "fresh-samples.json",
+        "delivery-independent/accepted.json",
+        "scheduler-results.json"
+      ],
+      "result": "{'swap': 1, 'linear': 2}"
+    },
+    {
+      "case": "q-72858",
+      "sample_refs": [
+        "fresh-samples.json",
+        "delivery-independent/accepted.json",
+        "scheduler-results.json"
+      ],
+      "result": "{'swap': 1, 'linear': 2}"
+    },
+    {
+      "case": "q-72860",
+      "sample_refs": [
+        "fresh-samples.json",
+        "delivery-independent/accepted.json",
+        "scheduler-results.json"
+      ],
+      "result": "{'linear': 1, 'swap': 1}"
+    },
+    {
+      "case": "exact five-item runner batch",
+      "sample_refs": [
+        "runner-batch.json",
+        "delivery-batch/accepted.json",
+        "shortcut-results.json"
+      ],
+      "result": "All five survive; repeated q-72858 has both decisions; sole subtraction cue 1/2."
+    },
+    {
+      "case": "unchanged complete source/eligible-slot domain",
+      "sample_refs": [
+        "source-replays.json",
+        "source-replay-results.json",
+        "reused/independent-samples.json",
+        "reused/fresh-samples.json",
+        "revision-diff.json"
+      ],
+      "result": "All eleven banks replay, including q-72858; prior independently tested winning-slot and nine-target coverage reused only for unchanged generate/source rules."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "q-72858 a13:3->4 and a33:3->0; target a23 and other columns/bank fixed.",
+      "expected": "Subtraction becomes incorrect and target-row/third-row swap becomes unique correct.",
+      "observed": "Visible prompts, explanations and resulting matrices update; native grader accepts the new swap and rejects old subtraction. Actual UI cases 006-007 show the change.",
+      "status": "passed",
+      "justification": "Canonical e-4696 makes swap eligibility depend on zero donor and replacement on cancellation.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-results.json",
+        "render-records.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "Only target a21->a23 with identical displayed matrix and full answer bank.",
+      "expected": "Unique correct subtraction switches to target-row/third-row swap.",
+      "observed": "Native outcomes, displayed target, choice key and full worked row outcome all follow the target; actual UI cases 009-010.",
+      "status": "passed",
+      "justification": "Source questions ask about the specified entry, not an arbitrary zero elsewhere.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-results.json",
+        "render-records.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Change a11:2->-9 and a12:1->8, leaving target-column values fixed.",
+      "expected": "Correct subtraction and learner grading preserved; other columns of worked matrix update.",
+      "observed": "Unique response unchanged with proper full-row arithmetic; native correct/wrong outcomes preserved, actual UI cases 006/008.",
+      "status": "passed",
+      "justification": "Only the target-column entries determine target cancellation; whole row still changes under the source operation.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-results.json",
+        "render-records.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "stored answer position",
+      "subgroup": "fresh post-delivery",
+      "scope": "overall",
+      "strategy": "Always select position 4",
+      "correct": 8,
+      "total": 32,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-way uniform guessing is 0.2; post-hoc best fixed position does not solve this pool.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "coefficient sign",
+      "subgroup": "fresh post-delivery",
+      "scope": "overall",
+      "strategy": "Choose first distinct-row addition with sign -1, else first choice",
+      "correct": 8,
+      "total": 32,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-way random baseline; sign alone does not determine cancellation. Choosing a matching coefficient from actual entries is the intended skill.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "coefficient sign",
+      "subgroup": "fresh post-delivery",
+      "scope": "overall",
+      "strategy": "Choose first distinct-row addition with sign 1, else first choice",
+      "correct": 7,
+      "total": 32,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-way random baseline; sign alone does not determine cancellation. Choosing a matching coefficient from actual entries is the intended skill.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "stored answer position",
+      "subgroup": "exact current batch",
+      "scope": "overall",
+      "strategy": "Always select position 2",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-way uniform guessing is 0.2; post-hoc best fixed position does not solve this pool.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "coefficient sign",
+      "subgroup": "exact current batch",
+      "scope": "overall",
+      "strategy": "Choose first distinct-row addition with sign -1, else first choice",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-way random baseline; sign alone does not determine cancellation. Choosing a matching coefficient from actual entries is the intended skill.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "coefficient sign",
+      "subgroup": "exact current batch",
+      "scope": "overall",
+      "strategy": "Choose first distinct-row addition with sign 1, else first choice",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-way random baseline; sign alone does not determine cancellation. Choosing a matching coefficient from actual entries is the intended skill.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "stored answer position",
+      "subgroup": "retained proposal stream repaired",
+      "scope": "overall",
+      "strategy": "Always select position 2",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-way uniform guessing is 0.2; post-hoc best fixed position does not solve this pool.",
+      "sample_refs": [
+        "delivery-retained/accepted.json"
+      ]
+    },
+    {
+      "cue": "coefficient sign",
+      "subgroup": "retained proposal stream repaired",
+      "scope": "overall",
+      "strategy": "Choose first distinct-row addition with sign -1, else first choice",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-way random baseline; sign alone does not determine cancellation. Choosing a matching coefficient from actual entries is the intended skill.",
+      "sample_refs": [
+        "delivery-retained/accepted.json"
+      ]
+    },
+    {
+      "cue": "coefficient sign",
+      "subgroup": "retained proposal stream repaired",
+      "scope": "overall",
+      "strategy": "Choose first distinct-row addition with sign 1, else first choice",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-way random baseline; sign alone does not determine cancellation. Choosing a matching coefficient from actual entries is the intended skill.",
+      "sample_refs": [
+        "delivery-retained/accepted.json"
+      ]
+    },
+    {
+      "cue": "operation shape",
+      "subgroup": "q-130283",
+      "scope": "within_template",
+      "strategy": "Always choose first visible linear candidate without reading matrix/target",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-way baseline 0.2. Each profile contains both successful addition and swap decisions, refuting a fixed operation-shape rule. This sample is a scheduler regression, not an exhaustive search of all coefficients.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "delivery-independent/accepted.json",
+        "scheduler-results.json"
+      ]
+    },
+    {
+      "cue": "operation shape",
+      "subgroup": "q-130283",
+      "scope": "within_template",
+      "strategy": "Always choose first visible swap candidate without reading matrix/target",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-way baseline 0.2. Each profile contains both successful addition and swap decisions, refuting a fixed operation-shape rule. This sample is a scheduler regression, not an exhaustive search of all coefficients.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "delivery-independent/accepted.json",
+        "scheduler-results.json"
+      ]
+    },
+    {
+      "cue": "operation shape",
+      "subgroup": "q-130285",
+      "scope": "within_template",
+      "strategy": "Always choose first visible linear candidate without reading matrix/target",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-way baseline 0.2. Each profile contains both successful addition and swap decisions, refuting a fixed operation-shape rule. This sample is a scheduler regression, not an exhaustive search of all coefficients.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "delivery-independent/accepted.json",
+        "scheduler-results.json"
+      ]
+    },
+    {
+      "cue": "operation shape",
+      "subgroup": "q-130285",
+      "scope": "within_template",
+      "strategy": "Always choose first visible swap candidate without reading matrix/target",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-way baseline 0.2. Each profile contains both successful addition and swap decisions, refuting a fixed operation-shape rule. This sample is a scheduler regression, not an exhaustive search of all coefficients.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "delivery-independent/accepted.json",
+        "scheduler-results.json"
+      ]
+    },
+    {
+      "cue": "operation shape",
+      "subgroup": "q-130301",
+      "scope": "within_template",
+      "strategy": "Always choose first visible linear candidate without reading matrix/target",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-way baseline 0.2. Each profile contains both successful addition and swap decisions, refuting a fixed operation-shape rule. This sample is a scheduler regression, not an exhaustive search of all coefficients.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "delivery-independent/accepted.json",
+        "scheduler-results.json"
+      ]
+    },
+    {
+      "cue": "operation shape",
+      "subgroup": "q-130301",
+      "scope": "within_template",
+      "strategy": "Always choose first visible swap candidate without reading matrix/target",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-way baseline 0.2. Each profile contains both successful addition and swap decisions, refuting a fixed operation-shape rule. This sample is a scheduler regression, not an exhaustive search of all coefficients.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "delivery-independent/accepted.json",
+        "scheduler-results.json"
+      ]
+    },
+    {
+      "cue": "operation shape",
+      "subgroup": "q-130304",
+      "scope": "within_template",
+      "strategy": "Always choose first visible linear candidate without reading matrix/target",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-way baseline 0.2. Each profile contains both successful addition and swap decisions, refuting a fixed operation-shape rule. This sample is a scheduler regression, not an exhaustive search of all coefficients.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "delivery-independent/accepted.json",
+        "scheduler-results.json"
+      ]
+    },
+    {
+      "cue": "operation shape",
+      "subgroup": "q-130304",
+      "scope": "within_template",
+      "strategy": "Always choose first visible swap candidate without reading matrix/target",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-way baseline 0.2. Each profile contains both successful addition and swap decisions, refuting a fixed operation-shape rule. This sample is a scheduler regression, not an exhaustive search of all coefficients.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "delivery-independent/accepted.json",
+        "scheduler-results.json"
+      ]
+    },
+    {
+      "cue": "operation shape",
+      "subgroup": "q-20241",
+      "scope": "within_template",
+      "strategy": "Always choose first visible linear candidate without reading matrix/target",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-way baseline 0.2. Each profile contains both successful addition and swap decisions, refuting a fixed operation-shape rule. This sample is a scheduler regression, not an exhaustive search of all coefficients.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "delivery-independent/accepted.json",
+        "scheduler-results.json"
+      ]
+    },
+    {
+      "cue": "operation shape",
+      "subgroup": "q-20241",
+      "scope": "within_template",
+      "strategy": "Always choose first visible swap candidate without reading matrix/target",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-way baseline 0.2. Each profile contains both successful addition and swap decisions, refuting a fixed operation-shape rule. This sample is a scheduler regression, not an exhaustive search of all coefficients.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "delivery-independent/accepted.json",
+        "scheduler-results.json"
+      ]
+    },
+    {
+      "cue": "operation shape",
+      "subgroup": "q-20386",
+      "scope": "within_template",
+      "strategy": "Always choose first visible linear candidate without reading matrix/target",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-way baseline 0.2. Each profile contains both successful addition and swap decisions, refuting a fixed operation-shape rule. This sample is a scheduler regression, not an exhaustive search of all coefficients.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "delivery-independent/accepted.json",
+        "scheduler-results.json"
+      ]
+    },
+    {
+      "cue": "operation shape",
+      "subgroup": "q-20386",
+      "scope": "within_template",
+      "strategy": "Always choose first visible swap candidate without reading matrix/target",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-way baseline 0.2. Each profile contains both successful addition and swap decisions, refuting a fixed operation-shape rule. This sample is a scheduler regression, not an exhaustive search of all coefficients.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "delivery-independent/accepted.json",
+        "scheduler-results.json"
+      ]
+    },
+    {
+      "cue": "operation shape",
+      "subgroup": "q-20388",
+      "scope": "within_template",
+      "strategy": "Always choose first visible linear candidate without reading matrix/target",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-way baseline 0.2. Each profile contains both successful addition and swap decisions, refuting a fixed operation-shape rule. This sample is a scheduler regression, not an exhaustive search of all coefficients.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "delivery-independent/accepted.json",
+        "scheduler-results.json"
+      ]
+    },
+    {
+      "cue": "operation shape",
+      "subgroup": "q-20388",
+      "scope": "within_template",
+      "strategy": "Always choose first visible swap candidate without reading matrix/target",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-way baseline 0.2. Each profile contains both successful addition and swap decisions, refuting a fixed operation-shape rule. This sample is a scheduler regression, not an exhaustive search of all coefficients.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "delivery-independent/accepted.json",
+        "scheduler-results.json"
+      ]
+    },
+    {
+      "cue": "operation shape",
+      "subgroup": "q-72857",
+      "scope": "within_template",
+      "strategy": "Always choose first visible linear candidate without reading matrix/target",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-way baseline 0.2. Each profile contains both successful addition and swap decisions, refuting a fixed operation-shape rule. This sample is a scheduler regression, not an exhaustive search of all coefficients.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "delivery-independent/accepted.json",
+        "scheduler-results.json"
+      ]
+    },
+    {
+      "cue": "operation shape",
+      "subgroup": "q-72857",
+      "scope": "within_template",
+      "strategy": "Always choose first visible swap candidate without reading matrix/target",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-way baseline 0.2. Each profile contains both successful addition and swap decisions, refuting a fixed operation-shape rule. This sample is a scheduler regression, not an exhaustive search of all coefficients.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "delivery-independent/accepted.json",
+        "scheduler-results.json"
+      ]
+    },
+    {
+      "cue": "operation shape",
+      "subgroup": "q-72858",
+      "scope": "within_template",
+      "strategy": "Always choose first visible linear candidate without reading matrix/target",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-way baseline 0.2. Each profile contains both successful addition and swap decisions, refuting a fixed operation-shape rule. This sample is a scheduler regression, not an exhaustive search of all coefficients.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "delivery-independent/accepted.json",
+        "scheduler-results.json"
+      ]
+    },
+    {
+      "cue": "operation shape",
+      "subgroup": "q-72858",
+      "scope": "within_template",
+      "strategy": "Always choose first visible swap candidate without reading matrix/target",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-way baseline 0.2. Each profile contains both successful addition and swap decisions, refuting a fixed operation-shape rule. This sample is a scheduler regression, not an exhaustive search of all coefficients.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "delivery-independent/accepted.json",
+        "scheduler-results.json"
+      ]
+    },
+    {
+      "cue": "operation shape",
+      "subgroup": "q-72860",
+      "scope": "within_template",
+      "strategy": "Always choose first visible linear candidate without reading matrix/target",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-way baseline 0.2. Each profile contains both successful addition and swap decisions, refuting a fixed operation-shape rule. This sample is a scheduler regression, not an exhaustive search of all coefficients.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "delivery-independent/accepted.json",
+        "scheduler-results.json"
+      ]
+    },
+    {
+      "cue": "operation shape",
+      "subgroup": "q-72860",
+      "scope": "within_template",
+      "strategy": "Always choose first visible swap candidate without reading matrix/target",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Five-way baseline 0.2. Each profile contains both successful addition and swap decisions, refuting a fixed operation-shape rule. This sample is a scheduler regression, not an exhaustive search of all coefficients.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "delivery-independent/accepted.json",
+        "scheduler-results.json"
+      ]
+    },
+    {
+      "cue": "recognizable bank and coefficient/donor role",
+      "subgroup": "q-20388",
+      "scope": "within_template",
+      "strategy": "Always choose original source operation slot 2, locating its expression after row relabeling",
+      "correct": 5,
+      "total": 15,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform over observed eligible roles. No role is universally correct. These prior independent samples are reused because source_data and generate() are unchanged, with current equality controls in unchanged-control-results.json.",
+      "sample_refs": [
+        "reused/independent-samples.json",
+        "reused/fresh-samples.json",
+        "revision-diff.json",
+        "unchanged-control-results.json"
+      ]
+    },
+    {
+      "cue": "recognizable bank and coefficient/donor role",
+      "subgroup": "q-130283",
+      "scope": "within_template",
+      "strategy": "Always choose original source operation slot 0, locating its expression after row relabeling",
+      "correct": 5,
+      "total": 11,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform over observed eligible roles. No role is universally correct. These prior independent samples are reused because source_data and generate() are unchanged, with current equality controls in unchanged-control-results.json.",
+      "sample_refs": [
+        "reused/independent-samples.json",
+        "reused/fresh-samples.json",
+        "revision-diff.json",
+        "unchanged-control-results.json"
+      ]
+    },
+    {
+      "cue": "recognizable bank and coefficient/donor role",
+      "subgroup": "q-130285",
+      "scope": "within_template",
+      "strategy": "Always choose original source operation slot 0, locating its expression after row relabeling",
+      "correct": 5,
+      "total": 14,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform over observed eligible roles. No role is universally correct. These prior independent samples are reused because source_data and generate() are unchanged, with current equality controls in unchanged-control-results.json.",
+      "sample_refs": [
+        "reused/independent-samples.json",
+        "reused/fresh-samples.json",
+        "revision-diff.json",
+        "unchanged-control-results.json"
+      ]
+    },
+    {
+      "cue": "recognizable bank and coefficient/donor role",
+      "subgroup": "q-130301",
+      "scope": "within_template",
+      "strategy": "Always choose original source operation slot 1, locating its expression after row relabeling",
+      "correct": 5,
+      "total": 15,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform over observed eligible roles. No role is universally correct. These prior independent samples are reused because source_data and generate() are unchanged, with current equality controls in unchanged-control-results.json.",
+      "sample_refs": [
+        "reused/independent-samples.json",
+        "reused/fresh-samples.json",
+        "revision-diff.json",
+        "unchanged-control-results.json"
+      ]
+    },
+    {
+      "cue": "recognizable bank and coefficient/donor role",
+      "subgroup": "q-130304",
+      "scope": "within_template",
+      "strategy": "Always choose original source operation slot 1, locating its expression after row relabeling",
+      "correct": 7,
+      "total": 12,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform over observed eligible roles. No role is universally correct. These prior independent samples are reused because source_data and generate() are unchanged, with current equality controls in unchanged-control-results.json.",
+      "sample_refs": [
+        "reused/independent-samples.json",
+        "reused/fresh-samples.json",
+        "revision-diff.json",
+        "unchanged-control-results.json"
+      ]
+    },
+    {
+      "cue": "recognizable bank and coefficient/donor role",
+      "subgroup": "q-20241",
+      "scope": "within_template",
+      "strategy": "Always choose original source operation slot 0, locating its expression after row relabeling",
+      "correct": 4,
+      "total": 13,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform over observed eligible roles. No role is universally correct. These prior independent samples are reused because source_data and generate() are unchanged, with current equality controls in unchanged-control-results.json.",
+      "sample_refs": [
+        "reused/independent-samples.json",
+        "reused/fresh-samples.json",
+        "revision-diff.json",
+        "unchanged-control-results.json"
+      ]
+    },
+    {
+      "cue": "recognizable bank and coefficient/donor role",
+      "subgroup": "q-20386",
+      "scope": "within_template",
+      "strategy": "Always choose original source operation slot 0, locating its expression after row relabeling",
+      "correct": 3,
+      "total": 11,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform over observed eligible roles. No role is universally correct. These prior independent samples are reused because source_data and generate() are unchanged, with current equality controls in unchanged-control-results.json.",
+      "sample_refs": [
+        "reused/independent-samples.json",
+        "reused/fresh-samples.json",
+        "revision-diff.json",
+        "unchanged-control-results.json"
+      ]
+    },
+    {
+      "cue": "recognizable bank and coefficient/donor role",
+      "subgroup": "q-72857",
+      "scope": "within_template",
+      "strategy": "Always choose original source operation slot 0, locating its expression after row relabeling",
+      "correct": 4,
+      "total": 13,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform over observed eligible roles. No role is universally correct. These prior independent samples are reused because source_data and generate() are unchanged, with current equality controls in unchanged-control-results.json.",
+      "sample_refs": [
+        "reused/independent-samples.json",
+        "reused/fresh-samples.json",
+        "revision-diff.json",
+        "unchanged-control-results.json"
+      ]
+    },
+    {
+      "cue": "recognizable bank and coefficient/donor role",
+      "subgroup": "q-72860",
+      "scope": "within_template",
+      "strategy": "Always choose original source operation slot 1, locating its expression after row relabeling",
+      "correct": 5,
+      "total": 15,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform over observed eligible roles. No role is universally correct. These prior independent samples are reused because source_data and generate() are unchanged, with current equality controls in unchanged-control-results.json.",
+      "sample_refs": [
+        "reused/independent-samples.json",
+        "reused/fresh-samples.json",
+        "revision-diff.json",
+        "unchanged-control-results.json"
+      ]
+    },
+    {
+      "cue": "recognizable bank and coefficient/donor role",
+      "subgroup": "q-72858",
+      "scope": "within_template",
+      "strategy": "Always choose original source operation slot 0, locating its expression after row relabeling",
+      "correct": 17,
+      "total": 34,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline is uniform over observed eligible roles. No role is universally correct. These prior independent samples are reused because source_data and generate() are unchanged, with current equality controls in unchanged-control-results.json.",
+      "sample_refs": [
+        "reused/independent-samples.json",
+        "reused/fresh-samples.json",
+        "revision-diff.json",
+        "unchanged-control-results.json"
+      ]
+    },
+    {
+      "cue": "two swaps, two self-scalings and one subtraction",
+      "subgroup": "current exact batch q-72858",
+      "scope": "within_template",
+      "strategy": "Choose the sole distinct-row subtraction, ignoring matrix and target",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline 0.5 chooses between the two eligible operation roles. The exact current and retained proposal groups both contain a swap counterexample, so the previous 2/2 shortcut is defeated.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "two swaps, two self-scalings and one subtraction",
+      "subgroup": "repaired retained stream q-72858",
+      "scope": "within_template",
+      "strategy": "Choose the sole distinct-row subtraction, ignoring matrix and target",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline 0.5 chooses between the two eligible operation roles. The exact current and retained proposal groups both contain a swap counterexample, so the previous 2/2 shortcut is defeated.",
+      "sample_refs": [
+        "delivery-retained/accepted.json"
+      ]
+    },
+    {
+      "cue": "two swaps, two self-scalings and one subtraction",
+      "subgroup": "fresh controls q-72858",
+      "scope": "within_template",
+      "strategy": "Choose the sole distinct-row subtraction, ignoring matrix and target",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline 0.5 chooses between the two eligible operation roles. The exact current and retained proposal groups both contain a swap counterexample, so the previous 2/2 shortcut is defeated.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "actual UI answer position",
+      "subgroup": "current exact batch",
+      "scope": "overall",
+      "strategy": "Always choose displayed position 3",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is 0.2 among five; actual UI reordering has counterexamples to the best constant position.",
+      "sample_refs": [
+        "render-records.json",
+        "ui-order-results.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "winner selection and uniqueness rejection/resampling",
+      "batch winner-kind scheduling and semantic deduplication",
+      "requested hard difficulty filtering",
+      "actual publication normalization/validation and captured inventory deduplication",
+      "seen/usability/retirement gates",
+      "conditional weighted learner selection",
+      "actual UI answer order"
+    ],
+    "sample_refs": [
+      "scheduler-results.json",
+      "rejection-results.json",
+      "coverage.json",
+      "delivery-batch/delivery.json",
+      "delivery-independent/delivery.json",
+      "delivery-retained/delivery.json",
+      "selection-results.json",
+      "ui-order-results.json"
+    ],
+    "result": "32/32 independent controls, 5/5 current batch and 5/5 repaired retained proposals survive. Both decision cases retained per repeated control bank; exact repeated q-72858 also retains subtraction and swap. Positive-hard-weight conditional selections reach both roles; history/policy limits explicit."
+  },
+  "limitations": [
+    "Finite audit cannot exclude every possible shortcut.",
+    "q-20392 lacks original solution/key/difficulty and is only an explicitly inferred replay.",
+    "No live publication exists; read-only filtering uses captured basis 5360. Later inventory may change deduplication.",
+    "Learner history/policy and future IDs unavailable; selection statements use explicit conditional scenarios.",
+    "The prior finite-batch defect is resolved on this exact batch; no guarantee that every arbitrary pool/history has balanced cases."
+  ]
+}

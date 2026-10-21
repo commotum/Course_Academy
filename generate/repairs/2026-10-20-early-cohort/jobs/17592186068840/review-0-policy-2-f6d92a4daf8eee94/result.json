@@ -1,0 +1,148 @@
+{
+  "verdict": "revise",
+  "summary": "The exact batch is answerable by a fixed answer-shape rule: 5/5 native-graded successes. Three captured source families are missing, and valid reciprocal-exponential notation remains unresolved by the native grader. Tested easy mathematics, rendering, and packaging passed. Package unchanged.",
+  "source_analysis": {
+    "skill": "Solve separable first-order ODEs, integrate both sides, and isolate the dependent variable as an explicit general solution.",
+    "reasoning_steps": [
+      "Separate variables on a valid domain.",
+      "Integrate both sides with an arbitrary constant.",
+      "Invert, preserving required branches and constant rescaling.",
+      "Select the complete solution family or enter the requested fragment."
+    ],
+    "invariants": [
+      "Elementary separation, integration, and explicit inversion.",
+      "Consistent prompt, solution, answer bank, and key.",
+      "Five choices with one correct solution for captured easy questions."
+    ],
+    "permitted_variations": [
+      "Small signed coefficients and low-degree elementary primitives.",
+      "Eligible answer-bearing signs, coefficients, and inversion families.",
+      "Choice ordering and distractor errors."
+    ],
+    "source_refs": [
+      "e-10832 / d1de6657-82b1-5bcb-b8cc-fd2629d31faa",
+      "q-158012 / 088db977-5f34-5d61-a165-97cdc5e6df38",
+      "q-3850 / 12b9ca6b-0ddb-5ee4-aeb2-e1fcfdc8bcb6",
+      "q-51256 / a67e182b-8e5b-5502-83c8-9d36e701587d",
+      "q-14251 / 9faaedf3-7c41-5002-95a6-335a2235c1fc",
+      "Tutorials 6766 and 6767: separation, integration, explicit inversion, and nonzero-domain requirements."
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "failed",
+      "evidence_paths": [
+        "source-replay.json",
+        "source-replay-records.json",
+        "canonical-check.json"
+      ],
+      "details": "Eleven historical practice cases replay complete banks after presentation-only normalization. Captured q-14251, q-168070, and q-168084 lack templates."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math_checks.py",
+        "math-results.json",
+        "batch-records.json"
+      ],
+      "details": "All 45 tested easy constructions passed independently parsed exact derivative checks at three regular points, distractor checks, and final displayed-solution comparison. This is finite easy-scope verification."
+    },
+    "variety": {
+      "status": "failed",
+      "evidence_paths": [
+        "sampling.json",
+        "restriction-tests.json",
+        "shortcut-results.json",
+        "delivery-batch/delivery.json"
+      ],
+      "details": "Three easy families preserve positive squared primitives under translation. The shape cue succeeds on 23/23 surviving subgroup samples and all five runner records."
+    },
+    "scope": {
+      "status": "failed",
+      "evidence_paths": [
+        "scope-results.json",
+        "counterfactual-records.json",
+        "grader-execution.json"
+      ],
+      "details": "Sampled easy workload stays within scope. The moderate temperature template adds response-form constraints absent from its source to accommodate native equivalence limitations."
+    },
+    "grading": {
+      "status": "failed",
+      "evidence_paths": [
+        "grader-supported-results.json",
+        "grader-reciprocal-input.json",
+        "grader-execution.json",
+        "shortcut-grader-results.json"
+      ],
+      "details": "321 ordinary native checks pass, as do five shortcut-produced batch selections. Valid source response 1/e^{0.03t} returns unresolved instead of accepted."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-pairs/rendering.json",
+        "render-inspection.json"
+      ],
+      "details": "Actual UI rendering passed for the batch and controlled pairs. Representative screenshots confirm legible notation, controls, blanks, and worked solutions."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging.json",
+        "boundary-checks.json",
+        "package-integrity.json"
+      ],
+      "details": "Exact runtime dependencies match. Deterministic replay, relocation, and boundary rejection pass. Manifest-listed files and package.json remain byte-identical."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "selection-analysis.json",
+        "affected-inventory.json",
+        "generated-records.json",
+        "evidence-contract.json"
+      ],
+      "details": "Controlled dependencies propagate correctly, but a fixed plus-square cue bypasses the ODE across three tested families and the entire batch. Filtering and UI shuffling preserve it. One stored generated easy question was reproduced as affected. Selection conclusions are bounded to captured inventory basis 5366."
+    }
+  },
+  "findings": [
+    {
+      "kind": "source_fidelity",
+      "description": "The package omits the captured easy affine-numerator square-root family and two moderate contextual blank families.",
+      "source_refs": [
+        "q-14251 / 9faaedf3-7c41-5002-95a6-335a2235c1fc",
+        "q-168070 / b5785d45-e79c-5188-8c0a-65a380b832ea",
+        "q-168084 / b071164a-d7dc-50ad-9600-bbe303de9fa0"
+      ],
+      "reproduction": "Run /home/jake/Developer/Course_Academy/.venv/bin/python -B regression_acceptance.py from evidence_root. All three source-coverage assertions fail. Minimal missing easy case: y'=(2x+3)/y, answer \u00b1sqrt(2x\u00b2+6x+K).",
+      "requested_change": "Extend extraction and construction rules to all three captured families, preserving complete banks and response contracts. Replay original parameters before extending them."
+    },
+    {
+      "kind": "decision_shortcut",
+      "description": "Ignoring the ODE and choosing the unique option containing C plus a squared x-expression inside the inverse or cube succeeds on 27/27 raw subgroup samples, 23/23 delivered subgroup samples, and 5/5 exact batch records. One stored generated easy question has the same weakness.",
+      "source_refs": [
+        "q-158012 / 088db977-5f34-5d61-a165-97cdc5e6df38",
+        "q-3850 / 12b9ca6b-0ddb-5ee4-aeb2-e1fcfdc8bcb6",
+        "q-51256 / a67e182b-8e5b-5502-83c8-9d36e701587d",
+        "generate/principles.md: eligible answer-bearing relationships"
+      ],
+      "reproduction": "Minimal case: generate_easy(71101, 'reciprocal_cube', parameters={'h':0}). Run variation_checks.py and regression_acceptance.py. shortcut-grader-results.json confirms five native-accepted batch shortcut responses. Stored question e1bf8ae5-5934-5cc9-9596-ee1587453d65 is reproduced in generated-records.json.",
+      "requested_change": "Replace translation-only positive-primitive construction with justified variation in signed coefficients and other answer-bearing assignments. Derive banks and solutions together, preserve source replay, and regenerate the batch. Shuffling choices cannot fix this cue."
+    },
+    {
+      "kind": "grading",
+      "description": "The native grader cannot establish that 1/e^{0.03t} equals the source answer e^{-0.03t}. Normal generation adds narrower response instructions instead of resolving this engine capability gap.",
+      "source_refs": [
+        "q-168077 / 39cc2ed4-7534-5355-9c68-129ad8345d1f"
+      ],
+      "reproduction": "Run /home/jake/Developer/Course_Academy/generate/runs/current/check-engine grader-reciprocal-input.json reciprocal-recheck.json from evidence_root. It exits 1: expected accepted, got unresolved.",
+      "requested_change": "Retain the strict equivalent-entry acceptance test and source-valid notation. Identify reciprocal-exponential equivalence as required engine support; engine repair is disallowed in this job. Do not conceal the limitation through narrower instructions or removal of the family."
+    }
+  ]
+}

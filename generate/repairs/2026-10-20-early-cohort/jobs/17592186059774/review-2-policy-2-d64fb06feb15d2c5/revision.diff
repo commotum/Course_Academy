@@ -1,0 +1,47 @@
+--- /home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186059774/review-1-policy-2-22438d1e0e264086/relocated/generator.py	2026-10-21 04:12:39.029955491 -0700
++++ /home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186059774/workspace/generator.py	2026-10-21 04:32:46.667442039 -0700
+@@ -21,7 +21,7 @@
+ KP_ID = 17592186059774
+ KP_UUID = '0464b51e-8568-521e-96a5-a65c04569c2a'
+ GENERATOR_UUID = str(uuid.uuid5(uuid.UUID(KP_UUID), 'row-operation-generator-v2'))
+-VERSION = '2.0.1'
++VERSION = '2.0.2'
+ SUPPORTED_LEVELS = ('hard',)
+ SOURCE = json.loads(Path(__file__).with_name('source_data.json').read_text())
+ ALL_CASES = {q[':question/math-academy-id']: q
+@@ -295,14 +295,34 @@
+         raise ValueError('Count must be nonnegative')
+     rng = random.Random(seed)
+     seen, records = set(), []
++    # Counts are committed only for retained semantic instances. Independent
++    # winner draws can otherwise make a repeated source bank answerable from
++    # its expression shapes alone (notably the sole subtraction in q-72858).
++    winner_counts = {}
+     for _ in range(max(100, count * 100)):
+         if len(records) == count:
+             return records
+-        record = generate(difficulty, rng.getrandbits(64))
++        item_seed = rng.getrandbits(64)
++        selector = random.Random(item_seed)
++        sid = selector.choice(list(CASES))
++        eligible = eligible_winners(sid)
++        preferred = selector.choice(eligible)
++        counts = winner_counts.setdefault(sid, {i: 0 for i in eligible})
++        kinds = {i: operation(source_values(sid)[i])[0] for i in eligible}
++        case_counts = {kind: sum(counts[i] for i in eligible if kinds[i] == kind)
++                       for kind in set(kinds.values())}
++        # Exercise the other instructional case before repeating a case;
++        # within it, exercise the other eligible operations before repetition.
++        candidates = [i for i in eligible
++                      if case_counts[kinds[i]] == min(case_counts.values())]
++        candidates = [i for i in candidates if counts[i] == min(counts[j] for j in candidates)]
++        winner = preferred if preferred in candidates else selector.choice(candidates)
++        record = generate(difficulty, item_seed, parameters={'source': sid, 'winner': winner})
+         semantic = record['generation']['mathematical_fingerprint']
+         if semantic in seen:
+             continue
+         seen.add(semantic)
++        counts[winner] += 1
+         records.append(record)
+     raise ValueError('Insufficient distinct semantic instances')
+ 

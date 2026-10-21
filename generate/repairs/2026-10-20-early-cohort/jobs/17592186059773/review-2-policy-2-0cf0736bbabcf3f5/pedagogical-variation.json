@@ -1,0 +1,466 @@
+{
+  "learner_operation": "Compare the two matrices row by row; identify the changed row(s), distinguish scaling/addition/swapping, and verify which offered operation reproduces every affected entry.",
+  "fixed_features": [
+    {
+      "feature": "One operation on ordinary 3\u00d73 matrices, one five-choice radio field",
+      "justification": "All twelve captured question banks use this structure; canonical example and lesson assess a single elementary operation rather than elimination or system solving."
+    },
+    {
+      "feature": "A single valid offered answer; nonzero scale and distinct addition rows",
+      "justification": "Radio response contract and tutorial 3150\u2019s elementary-operation definitions."
+    },
+    {
+      "feature": "Complete observed bank profiles and their small coefficients; bounded single-entry matrix perturbations",
+      "justification": "Keeps source distractors and comparable arithmetic workload. Fixed source signs and zero locations are conservative domain limits, not mathematical invariants; they do not fix the answer because all 48 eligible bank choices are exercised with identical A within each panel."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Operation family",
+      "eligible_variation": "Swap, scale, row addition; never a non-elementary replacement",
+      "observed": "All three in audit; exact five-record batch has 3 additions and 2 scales."
+    },
+    {
+      "role": "Qualifying bank choice",
+      "eligible_variation": "Every lesson-defined elementary operation in each complete source bank",
+      "observed": "48/48 eligible choices observed across ten banks before and after actual delivery; q-72850 has three swaps and two ineligible replacements."
+    },
+    {
+      "role": "Source/destination row or swapped pair",
+      "eligible_variation": "All three row identities via simultaneous row permutations",
+      "observed": "Domain contains all six permutations for every bank; samples exercise changed rows 1, 2 and 3 and swap pairs."
+    },
+    {
+      "role": "Scalar",
+      "eligible_variation": "Source-bank nonzero simple integer or rational multipliers",
+      "observed": "Positive and negative integer/fraction coefficients are present. They are derived from offered source choices, rather than independently unbounded coefficients."
+    },
+    {
+      "role": "Correct displayed position",
+      "eligible_variation": "Any radio position; no canonical correct position",
+      "observed": "Authored correct keys vary within every bank; actual UI hash ordering and item-ID scenarios tested. Exact batch uses authored slots 1,3,4,5."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "Complete source banks",
+      "sample_refs": [
+        "source-replays.json",
+        "source-replay-results.json"
+      ],
+      "result": "10 exact prompts/solutions/banks, 50 choices. Two incomplete unrated captures have no authored replay certification."
+    },
+    {
+      "case": "Within-bank alternative targets at fixed A",
+      "sample_refs": [
+        "controlled-records.json",
+        "counterfactual-results.json"
+      ],
+      "result": "All 48 elementary qualifying choices; two non-elementary choices in q-72850 are rejected."
+    },
+    {
+      "case": "Delivered cases",
+      "sample_refs": [
+        "stage-coverage.json",
+        "delivery/accepted.json",
+        "sampling-domain.json"
+      ],
+      "result": "182/197 audited records survive, removing source duplicates and repeated controls; all 48 eligible operation roles remain."
+    },
+    {
+      "case": "Exact runner batch",
+      "sample_refs": [
+        "runner-batch.json",
+        "batch-delivery/accepted.json",
+        "shortcut-results.json"
+      ],
+      "result": "5/5 survive, with distinct mathematical records, two operation types and four authored answer positions; no fixed slot or fixed-type action solves all five."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Hold A, full answer bank and row mapping fixed; change target between R3:=R3-2R1 and R3:=1/5 R3 in q-130087. Both change the same row. Repeat eligible-target panels for all ten banks.",
+      "expected": "Target B, explanation, accepted operation and rejected former operation follow the relevant change.",
+      "observed": "Exact Fraction execution and native grading confirm each changed key and reject every other choice. Actual UI shows both target matrices and matching final operations. All ten panels have distinct keys and targets.",
+      "status": "passed",
+      "justification": "Canonical e-4695 requires comparing the target entries after locating changed rows; unchanged-row structure alone cannot decide scaling versus addition.",
+      "sample_refs": [
+        "controlled-records.json",
+        "counterfactual-results.json",
+        "native-input.json",
+        "native-results.json",
+        "render/input.json",
+        "render-inspection.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "For a scaling question, alter one entry of an unchanged row equally in A and B, keeping the scaled row and operation fixed.",
+      "expected": "Same operation remains the unique accepted choice; prompt and solution reflect the irrelevant row edit.",
+      "observed": "Seven bank panels preserve the operation. Fraction checks and native all-choice grading pass. q-130087 rendered pair changes first-row 5 to 6 while R3:=1/5 R3 remains the correct response.",
+      "status": "passed",
+      "justification": "Scaling a row does not depend on entries in other rows, by tutorial 3150\u2019s definition.",
+      "sample_refs": [
+        "controlled-records.json",
+        "counterfactual-results.json",
+        "native-results.json",
+        "render/input.json",
+        "render-inspection.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "Recognizable full answer bank",
+      "subgroup": "q-130087",
+      "scope": "within_template",
+      "strategy": "Always choose source-bank slot 2",
+      "correct": 3,
+      "total": 7,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with uniform five-choice guessing (0.2), fitted best bank-only action gives 3/7. Singleton batch groups permit a memorized fitted rule but do not demonstrate an invariant; the controlled same-bank targets disprove a fixed key in every current bank. The exact batch also contains different correct keys in its repeated q-130087 bank.",
+      "sample_refs": [
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "Recognizable full answer bank",
+      "subgroup": "q-130093",
+      "scope": "within_template",
+      "strategy": "Always choose source-bank slot 1",
+      "correct": 3,
+      "total": 7,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with uniform five-choice guessing (0.2), fitted best bank-only action gives 3/7. Singleton batch groups permit a memorized fitted rule but do not demonstrate an invariant; the controlled same-bank targets disprove a fixed key in every current bank. The exact batch also contains different correct keys in its repeated q-130087 bank.",
+      "sample_refs": [
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "Recognizable full answer bank",
+      "subgroup": "q-130095",
+      "scope": "within_template",
+      "strategy": "Always choose source-bank slot 2",
+      "correct": 3,
+      "total": 7,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with uniform five-choice guessing (0.2), fitted best bank-only action gives 3/7. Singleton batch groups permit a memorized fitted rule but do not demonstrate an invariant; the controlled same-bank targets disprove a fixed key in every current bank. The exact batch also contains different correct keys in its repeated q-130087 bank.",
+      "sample_refs": [
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "Recognizable full answer bank",
+      "subgroup": "q-130098",
+      "scope": "within_template",
+      "strategy": "Always choose source-bank slot 2",
+      "correct": 3,
+      "total": 7,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with uniform five-choice guessing (0.2), fitted best bank-only action gives 3/7. Singleton batch groups permit a memorized fitted rule but do not demonstrate an invariant; the controlled same-bank targets disprove a fixed key in every current bank. The exact batch also contains different correct keys in its repeated q-130087 bank.",
+      "sample_refs": [
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "Recognizable full answer bank",
+      "subgroup": "q-130100",
+      "scope": "within_template",
+      "strategy": "Always choose source-bank slot 2",
+      "correct": 3,
+      "total": 7,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with uniform five-choice guessing (0.2), fitted best bank-only action gives 3/7. Singleton batch groups permit a memorized fitted rule but do not demonstrate an invariant; the controlled same-bank targets disprove a fixed key in every current bank. The exact batch also contains different correct keys in its repeated q-130087 bank.",
+      "sample_refs": [
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "Recognizable full answer bank",
+      "subgroup": "q-130103",
+      "scope": "within_template",
+      "strategy": "Always choose source-bank slot 1",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with uniform five-choice guessing (0.2), fitted best bank-only action gives 1/5. Singleton batch groups permit a memorized fitted rule but do not demonstrate an invariant; the controlled same-bank targets disprove a fixed key in every current bank. The exact batch also contains different correct keys in its repeated q-130087 bank.",
+      "sample_refs": [
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "Recognizable full answer bank",
+      "subgroup": "q-20387",
+      "scope": "within_template",
+      "strategy": "Always choose source-bank slot 2",
+      "correct": 3,
+      "total": 7,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with uniform five-choice guessing (0.2), fitted best bank-only action gives 3/7. Singleton batch groups permit a memorized fitted rule but do not demonstrate an invariant; the controlled same-bank targets disprove a fixed key in every current bank. The exact batch also contains different correct keys in its repeated q-130087 bank.",
+      "sample_refs": [
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "Recognizable full answer bank",
+      "subgroup": "q-72850",
+      "scope": "within_template",
+      "strategy": "Always choose source-bank slot 1",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with uniform five-choice guessing (0.2), fitted best bank-only action gives 1/3. Singleton batch groups permit a memorized fitted rule but do not demonstrate an invariant; the controlled same-bank targets disprove a fixed key in every current bank. The exact batch also contains different correct keys in its repeated q-130087 bank.",
+      "sample_refs": [
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "Recognizable full answer bank",
+      "subgroup": "q-72854",
+      "scope": "within_template",
+      "strategy": "Always choose source-bank slot 1",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with uniform five-choice guessing (0.2), fitted best bank-only action gives 1/5. Singleton batch groups permit a memorized fitted rule but do not demonstrate an invariant; the controlled same-bank targets disprove a fixed key in every current bank. The exact batch also contains different correct keys in its repeated q-130087 bank.",
+      "sample_refs": [
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "Recognizable full answer bank",
+      "subgroup": "q-72856",
+      "scope": "within_template",
+      "strategy": "Always choose source-bank slot 3",
+      "correct": 3,
+      "total": 7,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Compared with uniform five-choice guessing (0.2), fitted best bank-only action gives 3/7. Singleton batch groups permit a memorized fitted rule but do not demonstrate an invariant; the controlled same-bank targets disprove a fixed key in every current bank. The exact batch also contains different correct keys in its repeated q-130087 bank.",
+      "sample_refs": [
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "Target rows equal exchanged input rows",
+      "subgroup": "swap targets",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Match the exchanged pair of rows, select that swap",
+      "correct": 11,
+      "total": 11,
+      "baseline": 0.2,
+      "disposition": "intended_skill",
+      "conclusion": "Baseline is uniform five-choice guessing. Row matching implements the source lesson, rather than an incidental label cue.",
+      "sample_refs": [
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "Authored first position",
+      "subgroup": "all records",
+      "scope": "overall",
+      "strategy": "Choose first authored choice",
+      "correct": 12,
+      "total": 62,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "12/62; comparison baseline is 0.2. The real UI additionally hashes choice IDs with item and field IDs to order options.",
+      "sample_refs": [
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "Recognizable complete operation bank",
+      "subgroup": "q-130087",
+      "scope": "within_template",
+      "strategy": "Choose an operation of type addition without examining the matrices",
+      "correct": 4,
+      "total": 5,
+      "baseline": 0.8,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is the proportion of five offered choices belonging to the bank\u2019s most common operation type. Type prediction is a generous answer-producing-action upper bound; it does not identify the correct choice. Distinct eligible types occur while A and bank are held fixed.",
+      "sample_refs": [
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "Recognizable complete operation bank",
+      "subgroup": "q-130095",
+      "scope": "within_template",
+      "strategy": "Choose an operation of type addition without examining the matrices",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.4,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is the proportion of five offered choices belonging to the bank\u2019s most common operation type. Type prediction is a generous answer-producing-action upper bound; it does not identify the correct choice. Distinct eligible types occur while A and bank are held fixed.",
+      "sample_refs": [
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "Recognizable complete operation bank",
+      "subgroup": "q-130100",
+      "scope": "within_template",
+      "strategy": "Choose an operation of type addition without examining the matrices",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.4,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is the proportion of five offered choices belonging to the bank\u2019s most common operation type. Type prediction is a generous answer-producing-action upper bound; it does not identify the correct choice. Distinct eligible types occur while A and bank are held fixed.",
+      "sample_refs": [
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "Recognizable complete operation bank",
+      "subgroup": "q-130103",
+      "scope": "within_template",
+      "strategy": "Choose an operation of type addition without examining the matrices",
+      "correct": 4,
+      "total": 5,
+      "baseline": 0.8,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is the proportion of five offered choices belonging to the bank\u2019s most common operation type. Type prediction is a generous answer-producing-action upper bound; it does not identify the correct choice. Distinct eligible types occur while A and bank are held fixed.",
+      "sample_refs": [
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "Recognizable complete operation bank",
+      "subgroup": "q-20387",
+      "scope": "within_template",
+      "strategy": "Choose an operation of type scale without examining the matrices",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.6,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is the proportion of five offered choices belonging to the bank\u2019s most common operation type. Type prediction is a generous answer-producing-action upper bound; it does not identify the correct choice. Distinct eligible types occur while A and bank are held fixed.",
+      "sample_refs": [
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "Recognizable complete operation bank",
+      "subgroup": "q-72850",
+      "scope": "within_template",
+      "strategy": "Choose an operation of type swap without examining the matrices",
+      "correct": 3,
+      "total": 3,
+      "baseline": 0.6,
+      "disposition": "intended_skill",
+      "conclusion": "Baseline is the proportion of five offered choices belonging to the bank\u2019s most common operation type. This is a generous type-only success bound; it still does not identify a choice. The swap-only q-72850 bank has three distinct elementary swap targets; matching the pair of changed rows is the lesson operation, and a bank-only fixed action succeeds only 1/3.",
+      "sample_refs": [
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "Recognizable complete operation bank",
+      "subgroup": "q-72854",
+      "scope": "within_template",
+      "strategy": "Choose an operation of type addition without examining the matrices",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.6,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is the proportion of five offered choices belonging to the bank\u2019s most common operation type. Type prediction is a generous answer-producing-action upper bound; it does not identify the correct choice. Distinct eligible types occur while A and bank are held fixed.",
+      "sample_refs": [
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "Recognizable complete operation bank",
+      "subgroup": "q-72856",
+      "scope": "within_template",
+      "strategy": "Choose an operation of type addition without examining the matrices",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.4,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is the proportion of five offered choices belonging to the bank\u2019s most common operation type. Type prediction is a generous answer-producing-action upper bound; it does not identify the correct choice. Distinct eligible types occur while A and bank are held fixed.",
+      "sample_refs": [
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "Recognizable complete operation bank",
+      "subgroup": "q-130093",
+      "scope": "within_template",
+      "strategy": "Choose an operation of type addition without examining the matrices",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.6,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is the proportion of five offered choices belonging to the bank\u2019s most common operation type. Type prediction is a generous answer-producing-action upper bound; it does not identify the correct choice. Distinct eligible types occur while A and bank are held fixed.",
+      "sample_refs": [
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "Recognizable complete operation bank",
+      "subgroup": "q-130098",
+      "scope": "within_template",
+      "strategy": "Choose an operation of type addition without examining the matrices",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.6,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is the proportion of five offered choices belonging to the bank\u2019s most common operation type. Type prediction is a generous answer-producing-action upper bound; it does not identify the correct choice. Distinct eligible types occur while A and bank are held fixed.",
+      "sample_refs": [
+        "controlled-records.json"
+      ]
+    },
+    {
+      "cue": "Authored slot 3",
+      "subgroup": "exact five-record runner batch",
+      "scope": "overall",
+      "strategy": "Always choose third authored option",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/5 versus uniform five-choice guessing at 0.2; fails on three members. Bank-only best fitted fixed-choice rule succeeds 4/5, because the repeated q-130087 bank has two different qualifying choices. UI additionally reorders choices by item and answer IDs. No universal incidental action was demonstrated on this batch.",
+      "sample_refs": [
+        "batch-delivery/accepted.json",
+        "action-shortcut-results.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "Generator construction and rejection/resampling",
+      "Generator mathematical fingerprint deduplication",
+      "Shared requested-difficulty filtering and stable identity normalization",
+      "Captured-inventory and within-batch deduplication",
+      "Read-only reproduction of difficulty weights and fresh-candidate selection",
+      "Actual UI answer ordering"
+    ],
+    "sample_refs": [
+      "resampling-results.json",
+      "rejection-witness.json",
+      "rejection-witness-records.json",
+      "delivery/delivery.json",
+      "batch-delivery/delivery.json",
+      "stage-coverage.json",
+      "selection-results.json",
+      "action-shortcut-results.json"
+    ],
+    "result": "Fresh seed 694821 returns 60/60 proposals; explicit identity-swap rejection and seed 429 demonstrate resampling to a full five-record batch. Shared publication rules retain all 48 audited roles and all five runner records at captured basis 5359. With any positive configured moderate weight, all delivered moderate candidates remain selectable uniformly after freshness exclusions. Unconfigured lowest-entity fallback and zero-weight behavior examined separately."
+  },
+  "limitations": [
+    "No finite audit proves absence of every incidental shortcut.",
+    "Captured inventory basis 5359 contains only twelve original questions; none is relabeled as generated. Live later inventory can differ.",
+    "No live learner history, policy weights, task IDs or future generated entity IDs were supplied. Selection tests use actual rules on explicit provisional pools and report conditional conclusions.",
+    "q-20240 and q-20389 lack captured keys, worked solutions and ratings; canonical e-4695 lacks an answer field. Those missing artifacts are not invented or certified.",
+    "Numeric matrix variation is bounded to one nonzero-entry perturbation with source signs/zero patterns preserved. This review certifies the tested source-bank skill scope, not broad arbitrary-matrix mastery."
+  ]
+}

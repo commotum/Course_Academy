@@ -1,0 +1,505 @@
+{
+  "learner_operation": "Locate a_ij, determine the effect of each candidate operation on that entry, and select the unique operation attaining zero. For replacement evaluate a_ij+k*a_sj, using s != i; scaling must be nonzero; swaps use the donor entry.",
+  "fixed_features": [
+    {
+      "feature": "zero target",
+      "justification": "All 11 source questions and e-4696 teach cancellation; nonzero desired values need additional source support."
+    },
+    {
+      "feature": "3x3 matrix and five radio choices",
+      "justification": "Every captured assessed question has this workload and response contract."
+    },
+    {
+      "feature": "row replacement is the successful operation in observed banks",
+      "justification": "This is the observed cancellation family. It does not justify fixing donor row, factor sign, coefficient, position, or using a single syntactically distinguishable addition option."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Target coordinates",
+      "eligible_variation": "All nine coordinates; target may change with identical displayed matrix and bank",
+      "observed": "All nine for both restored winners; target-only pair switches subtraction to swap."
+    },
+    {
+      "role": "Which listed operation succeeds",
+      "eligible_variation": "All mathematically eligible choices; for q-72858 subtraction or target-row swap",
+      "observed": "Both survive generator rejection and publication in fresh control samples; exact new batch includes only subtraction in both q-72858 instances."
+    },
+    {
+      "role": "Correct position",
+      "eligible_variation": "Stored order and actual UI permutation",
+      "observed": "No universal constant position; actual UI HTML inspected."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "q-20388",
+      "sample_refs": [
+        "reused/independent-samples.json",
+        "fresh-samples.json",
+        "shortcut-results.json"
+      ],
+      "result": "{2: 5, 3: 5, 4: 5}"
+    },
+    {
+      "case": "q-130283",
+      "sample_refs": [
+        "reused/independent-samples.json",
+        "fresh-samples.json",
+        "shortcut-results.json"
+      ],
+      "result": "{0: 5, 2: 2, 3: 2, 4: 2}"
+    },
+    {
+      "case": "q-130285",
+      "sample_refs": [
+        "reused/independent-samples.json",
+        "fresh-samples.json",
+        "shortcut-results.json"
+      ],
+      "result": "{0: 5, 2: 5, 3: 4}"
+    },
+    {
+      "case": "q-130301",
+      "sample_refs": [
+        "reused/independent-samples.json",
+        "fresh-samples.json",
+        "shortcut-results.json"
+      ],
+      "result": "{1: 5, 2: 4, 3: 3, 4: 3}"
+    },
+    {
+      "case": "q-130304",
+      "sample_refs": [
+        "reused/independent-samples.json",
+        "fresh-samples.json",
+        "shortcut-results.json"
+      ],
+      "result": "{1: 7, 2: 3, 4: 2}"
+    },
+    {
+      "case": "q-20241",
+      "sample_refs": [
+        "reused/independent-samples.json",
+        "fresh-samples.json",
+        "shortcut-results.json"
+      ],
+      "result": "{0: 4, 1: 2, 2: 2, 3: 2, 4: 3}"
+    },
+    {
+      "case": "q-20386",
+      "sample_refs": [
+        "reused/independent-samples.json",
+        "fresh-samples.json",
+        "shortcut-results.json"
+      ],
+      "result": "{0: 3, 1: 2, 2: 3, 3: 3}"
+    },
+    {
+      "case": "q-72857",
+      "sample_refs": [
+        "reused/independent-samples.json",
+        "fresh-samples.json",
+        "shortcut-results.json"
+      ],
+      "result": "{0: 4, 2: 3, 3: 3, 4: 3}"
+    },
+    {
+      "case": "q-72860",
+      "sample_refs": [
+        "reused/independent-samples.json",
+        "fresh-samples.json",
+        "shortcut-results.json"
+      ],
+      "result": "{0: 3, 1: 5, 2: 4, 3: 3}"
+    },
+    {
+      "case": "q-72858",
+      "sample_refs": [
+        "reused/independent-samples.json",
+        "fresh-samples.json",
+        "shortcut-results.json"
+      ],
+      "result": "{0: 17, 1: 17}"
+    },
+    {
+      "case": "all source banks",
+      "sample_refs": [
+        "source-replays.json",
+        "source-replay-results.json"
+      ],
+      "result": "11/11 complete five-choice banks replay, with documented source correction and inferred incomplete-key completion."
+    },
+    {
+      "case": "exact delivered batch",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "batch-shortcut-results.json"
+      ],
+      "result": "5/5 survive. Repeated q-72858 subgroup fixes sole distinct-row subtraction 2/2, allowing bank-recognition shortcut."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Change q-72858 donor entries a13:3->4 and a33:3->0, retaining target value, other columns, and bank.",
+      "expected": "Correct subtraction changes to target-row/third-row swap.",
+      "observed": "Independent visible arithmetic and native grader agree; final row matrix and explanation update. Actual UI screenshot pair retained.",
+      "status": "passed",
+      "justification": "Source e-4696 makes swap eligibility depend on a zero donor; row subtraction depends on donor equality.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-results.json",
+        "render-records.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "Only requested target a21->a23, with identical visible matrix and five choices.",
+      "expected": "Correct subtraction changes to swap.",
+      "observed": "Prompt target, keyed choice, native grader outcomes and worked result all switch coherently.",
+      "status": "passed",
+      "justification": "The assessed source operation must zero the specified entry, rather than an unrelated entry.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-results.json",
+        "render-records.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Change a11:2->-9 and a12:1->8, holding target column and bank fixed.",
+      "expected": "Correct operation and grading preserved; result in other columns changes.",
+      "observed": "Subtraction remains unique; whole-row result and explanation update, native choices graded correctly.",
+      "status": "passed",
+      "justification": "Non-target columns do not determine whether the target entry becomes zero, but do participate in source whole-row calculation.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-results.json",
+        "render-records.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "stored position",
+      "subgroup": "fresh post-delivery",
+      "scope": "overall",
+      "strategy": "Always choose stored position 2",
+      "correct": 17,
+      "total": 55,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform among five. Post-hoc best position is not perfect; actual UI order separately examined.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "addition coefficient sign",
+      "subgroup": "fresh post-delivery",
+      "scope": "overall",
+      "strategy": "Select first distinct-row addition with sign -1, else first choice",
+      "correct": 25,
+      "total": 55,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is five-way guessing. The exact batch has counterexamples; coefficient sign alone does not decide cancellation.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "addition coefficient sign",
+      "subgroup": "fresh post-delivery",
+      "scope": "overall",
+      "strategy": "Select first distinct-row addition with sign 1, else first choice",
+      "correct": 15,
+      "total": 55,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is five-way guessing. The exact batch has counterexamples; coefficient sign alone does not decide cancellation.",
+      "sample_refs": [
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "stored position",
+      "subgroup": "exact runner post-delivery",
+      "scope": "overall",
+      "strategy": "Always choose stored position 3",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform among five. Post-hoc best position is not perfect; actual UI order separately examined.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "addition coefficient sign",
+      "subgroup": "exact runner post-delivery",
+      "scope": "overall",
+      "strategy": "Select first distinct-row addition with sign -1, else first choice",
+      "correct": 4,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is five-way guessing. The exact batch has counterexamples; coefficient sign alone does not decide cancellation.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "addition coefficient sign",
+      "subgroup": "exact runner post-delivery",
+      "scope": "overall",
+      "strategy": "Select first distinct-row addition with sign 1, else first choice",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is five-way guessing. The exact batch has counterexamples; coefficient sign alone does not decide cancellation.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "recognizable source bank",
+      "subgroup": "q-20388",
+      "scope": "within_template",
+      "strategy": "Always choose original bank slot 2",
+      "correct": 5,
+      "total": 15,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform among independently eligible operations. Every bank has multiple observed winning roles. Prior unchanged-bank observations are reused only with revision-diff equality evidence.",
+      "sample_refs": [
+        "reused/independent-samples.json",
+        "fresh-samples.json",
+        "revision-diff.json"
+      ]
+    },
+    {
+      "cue": "recognizable source bank",
+      "subgroup": "q-130283",
+      "scope": "within_template",
+      "strategy": "Always choose original bank slot 0",
+      "correct": 5,
+      "total": 11,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform among independently eligible operations. Every bank has multiple observed winning roles. Prior unchanged-bank observations are reused only with revision-diff equality evidence.",
+      "sample_refs": [
+        "reused/independent-samples.json",
+        "fresh-samples.json",
+        "revision-diff.json"
+      ]
+    },
+    {
+      "cue": "recognizable source bank",
+      "subgroup": "q-130285",
+      "scope": "within_template",
+      "strategy": "Always choose original bank slot 0",
+      "correct": 5,
+      "total": 14,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform among independently eligible operations. Every bank has multiple observed winning roles. Prior unchanged-bank observations are reused only with revision-diff equality evidence.",
+      "sample_refs": [
+        "reused/independent-samples.json",
+        "fresh-samples.json",
+        "revision-diff.json"
+      ]
+    },
+    {
+      "cue": "recognizable source bank",
+      "subgroup": "q-130301",
+      "scope": "within_template",
+      "strategy": "Always choose original bank slot 1",
+      "correct": 5,
+      "total": 15,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform among independently eligible operations. Every bank has multiple observed winning roles. Prior unchanged-bank observations are reused only with revision-diff equality evidence.",
+      "sample_refs": [
+        "reused/independent-samples.json",
+        "fresh-samples.json",
+        "revision-diff.json"
+      ]
+    },
+    {
+      "cue": "recognizable source bank",
+      "subgroup": "q-130304",
+      "scope": "within_template",
+      "strategy": "Always choose original bank slot 1",
+      "correct": 7,
+      "total": 12,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform among independently eligible operations. Every bank has multiple observed winning roles. Prior unchanged-bank observations are reused only with revision-diff equality evidence.",
+      "sample_refs": [
+        "reused/independent-samples.json",
+        "fresh-samples.json",
+        "revision-diff.json"
+      ]
+    },
+    {
+      "cue": "recognizable source bank",
+      "subgroup": "q-20241",
+      "scope": "within_template",
+      "strategy": "Always choose original bank slot 0",
+      "correct": 4,
+      "total": 13,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform among independently eligible operations. Every bank has multiple observed winning roles. Prior unchanged-bank observations are reused only with revision-diff equality evidence.",
+      "sample_refs": [
+        "reused/independent-samples.json",
+        "fresh-samples.json",
+        "revision-diff.json"
+      ]
+    },
+    {
+      "cue": "recognizable source bank",
+      "subgroup": "q-20386",
+      "scope": "within_template",
+      "strategy": "Always choose original bank slot 0",
+      "correct": 3,
+      "total": 11,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform among independently eligible operations. Every bank has multiple observed winning roles. Prior unchanged-bank observations are reused only with revision-diff equality evidence.",
+      "sample_refs": [
+        "reused/independent-samples.json",
+        "fresh-samples.json",
+        "revision-diff.json"
+      ]
+    },
+    {
+      "cue": "recognizable source bank",
+      "subgroup": "q-72857",
+      "scope": "within_template",
+      "strategy": "Always choose original bank slot 0",
+      "correct": 4,
+      "total": 13,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform among independently eligible operations. Every bank has multiple observed winning roles. Prior unchanged-bank observations are reused only with revision-diff equality evidence.",
+      "sample_refs": [
+        "reused/independent-samples.json",
+        "fresh-samples.json",
+        "revision-diff.json"
+      ]
+    },
+    {
+      "cue": "recognizable source bank",
+      "subgroup": "q-72860",
+      "scope": "within_template",
+      "strategy": "Always choose original bank slot 1",
+      "correct": 5,
+      "total": 15,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform among independently eligible operations. Every bank has multiple observed winning roles. Prior unchanged-bank observations are reused only with revision-diff equality evidence.",
+      "sample_refs": [
+        "reused/independent-samples.json",
+        "fresh-samples.json",
+        "revision-diff.json"
+      ]
+    },
+    {
+      "cue": "recognizable source bank",
+      "subgroup": "q-72858",
+      "scope": "within_template",
+      "strategy": "Always choose original bank slot 0",
+      "correct": 17,
+      "total": 34,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform among independently eligible operations. Every bank has multiple observed winning roles. Prior unchanged-bank observations are reused only with revision-diff equality evidence.",
+      "sample_refs": [
+        "reused/independent-samples.json",
+        "fresh-samples.json",
+        "revision-diff.json"
+      ]
+    },
+    {
+      "cue": "one distinct-row addition; two self-scalings and two swaps",
+      "subgroup": "restored q-72858 control pool",
+      "scope": "within_template",
+      "strategy": "Choose the sole distinct-row addition without reading matrix entries",
+      "correct": 17,
+      "total": 34,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform among the two eligible operation roles (addition and target-row swap). Control records refute this strategy as a universal generator defect.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "one distinct-row addition; two self-scalings and two swaps",
+      "subgroup": "q-72858 in exact delivered five-question batch",
+      "scope": "within_template",
+      "strategy": "Choose the sole distinct-row addition without reading matrix entries",
+      "correct": 2,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "defect",
+      "conclusion": "Baseline is uniform among the two eligible operation roles, so the matrix-free action achieves 2/2 versus 1/2. Both delivered instances of this repeated recognizable bank omit the swap outcome. This is a finite delivered-subpool weakness, not a universal generator defect or a claim from singletons.",
+      "sample_refs": [
+        "runner-batch.json",
+        "delivery-batch/accepted.json",
+        "batch-shortcut-records.json"
+      ]
+    },
+    {
+      "cue": "actual rendered position",
+      "subgroup": "exact runner batch",
+      "scope": "overall",
+      "strategy": "Always choose actual UI position 3",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is five-way guessing. Actual rendered HTML includes the UI hash-based reordering; constant position does not solve the exact batch.",
+      "sample_refs": [
+        "render-records.json",
+        "ui-order-results.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "winner construction and uniqueness rejection/resampling",
+      "generator semantic batch deduplication",
+      "requested difficulty",
+      "actual publisher normalization/validation/inventory deduplication",
+      "freshness and practice usability",
+      "conditional rated-band/ID learner selection",
+      "actual UI choice order"
+    ],
+    "sample_refs": [
+      "coverage.json",
+      "rejection-results.json",
+      "delivery-independent/delivery.json",
+      "delivery-batch/delivery.json",
+      "selection-results.json",
+      "shortcut-results.json",
+      "ui-order-results.json"
+    ],
+    "result": "All 55 fresh and 5 batch records survive. Rejection permits both restored roles; selection cannot restore the missing swap in the repeated bank subgroup of this exact batch."
+  },
+  "limitations": [
+    "Finite testing does not exclude every shortcut.",
+    "q-20392 remains replay-only because captured source lacks key, solution and difficulty; unique inferred answer is documented.",
+    "The demonstrated defect is finite delivered-batch selection, not universal q-72858 generator behavior; larger controls have counterexamples.",
+    "Live policy/history and future IDs are unknown; captured-basis and stated conditional selection conclusions only."
+  ]
+}

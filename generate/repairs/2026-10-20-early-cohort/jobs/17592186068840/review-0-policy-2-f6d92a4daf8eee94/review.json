@@ -1,0 +1,173 @@
+{
+  "verdict": "revise",
+  "summary": "The exact five-question batch is answerable by a fixed plus-square shape rule (5/5 native-graded successes). Three captured source families are missing. A valid reciprocal-exponential source response remains unresolved by the native grader; normal prompts constrain notation to avoid that limitation. Tested easy mathematics, actual UI rendering, runtime dependencies, replay determinism and relocation passed. Package unchanged; one stored generated easy question reproduced as affected.",
+  "source_analysis": {
+    "skill": "Solve a first-order separable ODE and isolate its dependent variable in explicit form; select the general solution or fill its designated mathematical factor.",
+    "reasoning_steps": [
+      "Separate h(x)g(y) as dy/g(y)=h(x)dx on a nonzero domain.",
+      "Integrate both sides, retaining one arbitrary constant.",
+      "Invert the dependent-variable antiderivative, rescale or rename the arbitrary constant, and retain both square-root branches where appropriate.",
+      "Compare complete candidate solution families, or provide only the expression requested by a blank."
+    ],
+    "invariants": [
+      "Separation, elementary integration, and explicit inversion are the assessed operations.",
+      "The correct option must represent the full general family on valid local domains, not one particular solution.",
+      "One correct radio option with four mathematically distinct distractors.",
+      "Prompt, answer, bank, and worked solution must refer to the same differential equation and parameters."
+    ],
+    "permitted_variations": [
+      "Small nonzero signed coefficients, low polynomial powers and affine numerators, preserving integration workload.",
+      "Eligible placement and magnitude of coefficients inside and outside inverse functions; derive every option from the resulting equation.",
+      "Shuffle correct answer position and vary distractor mistakes rather than preserving a unique superficial signature.",
+      "Vary easy source family and relevant antiderivative, with constant names or option ordering as irrelevant counterfactuals.",
+      "Moderate-only elementary trig factors and self-contained contextual blank coefficients, retaining their response contracts."
+    ],
+    "source_refs": [
+      "e-10832 / d1de6657-82b1-5bcb-b8cc-fd2629d31faa: y'=x^2/y -> y=+-sqrt(2x^3/3+K)",
+      "q-14257 / c17c4aa5-1ffc-5c4e-9267-85cce391b502: y'=y^2+1 -> tan(x+C), complete five-choice bank",
+      "q-158012 / 088db977-5f34-5d61-a165-97cdc5e6df38: y'=2x/(3y^2) -> cbrt(x^2+C)",
+      "q-3850 / 12b9ca6b-0ddb-5ee4-aeb2-e1fcfdc8bcb6: y'=xe^-y -> ln(x^2/2+C)",
+      "q-51256 / a67e182b-8e5b-5502-83c8-9d36e701587d: y'=6x cbrt(y^2) -> (x^2+C)^3",
+      "q-14251 / 9faaedf3-7c41-5002-95a6-335a2235c1fc: y'=(2x+3)/y -> +-sqrt(2x^2+6x+K)",
+      "q-168077 / 39cc2ed4-7534-5355-9c68-129ad8345d1f: T'= -.03(T-25), blank e^(-.03t)",
+      "q-168070 / b5785d45-e79c-5188-8c0a-65a380b832ea: s'=2s^2, blank -2t",
+      "q-168084 / b071164a-d7dc-50ad-9600-bbe303de9fa0: p'=3e^-p, blank 3t",
+      "tutorial 6766 / dfb65111-b319-54c6-84cc-f60506595a69: 'We can write our general solution in explicit form ... by ... apply the natural logarithm'",
+      "tutorial 6767 / 56fc1c96-3599-5022-8d83-60d4188ccf07: 'Once the variables are separated, we can integrate both sides ... require g(y) != 0.'",
+      "q-14244 / 432fe98f-ffaf-5033-958e-d3cb37de9f8b: Find the general solution to the differential equation ${y}^{′}=y\\operatorname{sin}⁡x$ for $y\\ne 0.$",
+      "q-158013 / 253f761f-d9dd-516e-a877-3691e4e75b8a: Find the general solution to the differential equation ${y}^{′}=\\frac{y}{{cos}^{2}⁡x}$ for $y\\ne 0$ and $-\\frac{\\pi }{2}<x<\\frac{\\pi }{2}.$",
+      "q-158014 / 2c6ab8c9-fca1-56b1-82a8-98c4fa9f8c2c: Find the general solution to the differential equation ${y}^{′}=y\\operatorname{cos}⁡x$ for $y\\ne 0.$",
+      "q-158015 / 4256446e-61ea-5cf5-ad92-3c95c9cc3119: Find the general solution to the differential equation ${y}^{′}={x}^{2}y$ for $y\\ne 0.$",
+      "q-158016 / ec2b6cd2-ba6d-52f7-9530-1a245bad9c0a: Find the general solution to the differential equation ${y}^{′}=\\frac{y}{\\sqrt{1-{x}^{2}}}$ for $y\\ne 0$ and $|x|<1.$",
+      "q-158017 / 594ba672-eefa-575c-8c38-2d0804124171: Find the general solution to the differential equation ${y}^{′}=y\\operatorname{sec}⁡x\\operatorname{tan}⁡x$ for $y\\ne 0$ and $-\\frac{\\pi }{2}<x<\\frac{\\pi }{2}.$"
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "failed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "source-replay.json",
+        "source-replay-records.json",
+        "canonical-check.json",
+        "strict-regression-results.json"
+      ],
+      "details": "Eleven supported historical practice cases replay complete banks after ignoring only presentation sizing/U+2061. Captured q-14251 (easy affine-numerator square root), q-168070 and q-168084 (moderate blanks) have no template. Canonical mathematics retained in a hard template, but no original answer field was captured."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math_checks.py",
+        "math-results.json",
+        "independent-easy.json",
+        "batch-records.json"
+      ],
+      "details": "All 45 tested easy constructions, including exact runner batch and relevant controlled pairs, have independently parsed correct solutions and exactly one keyed candidate passing exact derivative residuals at three regular test points; all distractors fail. Final displayed solutions agree. This is finite easy-scope verification, not certification of every parameter or moderate/hard bank."
+    },
+    "variety": {
+      "status": "failed",
+      "evidence_paths": [
+        "sampling.json",
+        "restriction-tests.json",
+        "source-replay.json",
+        "shortcut-results.json",
+        "delivery-independent/delivery.json",
+        "delivery-batch/delivery.json"
+      ],
+      "details": "The generator supplies four easy templates and omits captured square-root practice. Three families change translations only, preserving positive squared primitives. 26/35 independently chosen easy records survive captured deduplication; all 23 survivors in those three recognizable families retain the cue. All five runner records survive and share it."
+    },
+    "scope": {
+      "status": "failed",
+      "evidence_paths": [
+        "scope-results.json",
+        "counterfactual-records.json",
+        "render-pairs/question-006.png",
+        "grader-execution.json"
+      ],
+      "details": "Sampled easy variations preserve separation/integration/inversion workload. The moderate temperature template adds a single-exponential/leading-coefficient response constraint absent from the source, while the native grader cannot establish an equivalent reciprocal exponential. Retain source-valid notation and identify the engine gap rather than adding a format restriction."
+    },
+    "grading": {
+      "status": "failed",
+      "evidence_paths": [
+        "grader-supported-input.json",
+        "grader-supported-results.json",
+        "grader-reciprocal-input.json",
+        "grader-execution.json",
+        "shortcut-grader-results.json"
+      ],
+      "details": "321 native checks pass across selection choices and blank decimal/rational controls; five extra shape-only batch selections are accepted. Strict valid response 1/e^{0.03t} for observed temperature q-168077 returns unresolved, not accepted. Missing native capability is reciprocal exponential equivalence; no engine changes made."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-pairs/rendering.json",
+        "render-inspection.json"
+      ],
+      "details": "Actual unmodified UI rendered six initial records (all five batch entries plus root control) and seven controlled-pair records. Reports pass and representative screenshots were opened: prompts, answer controls, roots, logarithms, cancellation, scaled tangent and blank/solutions display. UI shuffling preserves the shape cue."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "package-baseline.json",
+        "packaging.json",
+        "boundary-checks.json",
+        "package-integrity.json"
+      ],
+      "details": "Installed Python 3.13.5 and SymPy 1.14.0 exactly match nested manifest dependencies. Deterministic replay and relocated entrypoint/source execution from /tmp agree. Valid sampled boundaries construct; out-of-range inputs reject. No assets/external runtime outputs needed. All manifest-listed files plus package.json remain byte-identical."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "shortcut-grader-results.json",
+        "selection-analysis.json",
+        "affected-inventory.json",
+        "inventory-audit.json",
+        "evidence-contract.json"
+      ],
+      "details": "Controlled shift/coefficient changes and irrelevant seed/ambient changes propagate through prompt, solution, independent math, actual grading and UI. Nevertheless the positive-square assignment stays fixed in three easy families: shape rule 27/27 raw subgroup, 23/23 delivered subgroup, and 5/5 exact batch. Native selection does not balance templates, and any nonempty history subset of this batch retains the cue. One stored generated easy record reproduced with matching ID/content/metadata is affected. Other stored hard records are not certified shortcut-free; captured inventory basis 5366 and unknown live learner state limit selection conclusions."
+    }
+  },
+  "findings": [
+    {
+      "kind": "source_fidelity",
+      "description": "Three supplied source families have no implementation: easy q-14251 requires y=+-sqrt(2x^2+6x+K) for y'=(2x+3)/y; moderate q-168070 and q-168084 require reciprocal and logarithm blanks. The package extracts an older eleven-question snapshot and silently excludes these current sources.",
+      "source_refs": [
+        "q-14251 / 9faaedf3-7c41-5002-95a6-335a2235c1fc",
+        "q-168070 / b5785d45-e79c-5188-8c0a-65a380b832ea",
+        "q-168084 / b071164a-d7dc-50ad-9600-bbe303de9fa0"
+      ],
+      "reproduction": "Run /home/jake/Developer/Course_Academy/.venv/bin/python -B regression_acceptance.py from evidence_root. The three complete-source-coverage assertions fail; source-replay.json records exact source IDs and missing cases.",
+      "requested_change": "Extend extraction and construction rules to the captured affine-numerator square-root easy family and both moderate blank families, preserving their full source banks/contracts and self-contained equations. Reproduce source parameters before extending them; do not relabel the missing easy source as hard."
+    },
+    {
+      "kind": "decision_shortcut",
+      "description": "In reciprocal_cube, negative_exp and cube_power, the integrated primitive is always a positive square. Ignoring the ODE and choosing the unique option with C plus a squared x-expression nested inside the inverse/cube succeeds on 27/27 sampled subgroup records, 23/23 post-delivery subgroup records and all 5 exact runner records. Source translations cannot change this answer-producing action. Stored generated e1bf8ae5-5934-5cc9-9596-ee1587453d65 has the same demonstrated weakness.",
+      "source_refs": [
+        "q-158012 / 088db977-5f34-5d61-a165-97cdc5e6df38",
+        "q-3850 / 12b9ca6b-0ddb-5ee4-aeb2-e1fcfdc8bcb6",
+        "q-51256 / a67e182b-8e5b-5502-83c8-9d36e701587d",
+        "tutorial 6767 / 56fc1c96-3599-5022-8d83-60d4188ccf07",
+        "generate/principles.md: meaningful variety and eligible answer-bearing relationships"
+      ],
+      "reproduction": "Minimal case: generate_easy(71101, \"reciprocal_cube\", parameters={\"h\":0}) yields y'=2x/(3y^2), whose only nested C + square cube-root option is correct. Run variation_checks.py and regression_acceptance.py; shortcut-grader-input.json reproduces five native-accepted batch shortcut responses. Existing inventory seed 2332419294 is reproduced completely in generated-records.json; affected-inventory.json contains entity identity.",
+      "requested_change": "Replace the translation-only positive-primitive rule with same-method variation in signed small coefficients and other eligible answer-bearing assignments; derive complete banks and solutions together, retaining exact source profiles. Ensure conditional answer-shape strategies require reconsidering the ODE rather than always choosing the plus-square candidate. Regenerate the exact easy batch with genuine decision variation and rerun strict regressions; option shuffling alone cannot fix this."
+    },
+    {
+      "kind": "grading",
+      "description": "The native grader returns unresolved for source-valid 1/e^{0.03t}, equivalent to e^{-0.03t}, in the temperature blank. The normal prompt adds single-exponential/leading-coefficient constraints absent from the source; the package README acknowledges the engine limitation. This is an engine capability gap, not incorrect mathematics or a failure in the five easy radio records.",
+      "source_refs": [
+        "q-168077 / 39cc2ed4-7534-5355-9c68-129ad8345d1f",
+        "tutorial 6766 / dfb65111-b319-54c6-84cc-f60506595a69"
+      ],
+      "reproduction": "Run /home/jake/Developer/Course_Academy/generate/runs/current/check-engine grader-reciprocal-input.json reciprocal-recheck.json from evidence_root. Exit 1: submitted 1/e^{0.03t} expected accepted, got unresolved (symbolic equivalence is not established by supported rules). Strict input and original stderr retained in grader-execution.json.",
+      "requested_change": "Retain the strict failing equivalent-entry acceptance test and the source family/notation contract. Identify reciprocal-exponential equivalence as required engine support; this job forbids engine repair. Do not hide the gap with narrower valid-entry instructions or remove the family. Preserve ordinary wrong-sign rejection controls."
+    }
+  ]
+}

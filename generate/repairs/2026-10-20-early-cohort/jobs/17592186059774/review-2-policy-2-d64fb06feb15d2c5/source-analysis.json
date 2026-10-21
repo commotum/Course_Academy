@@ -1,0 +1,78 @@
+{
+  "skill": "Identify which of five elementary row operations changes a specified entry of a 3 by 3 integer coefficient matrix to zero.",
+  "learner_operation": "Locate a_ij, determine the effect of each candidate operation on that entry, and select the unique operation attaining zero. For replacement evaluate a_ij+k*a_sj, using s != i; scaling must be nonzero; swaps use the donor entry.",
+  "reasoning_steps": [
+    "Read target row and column from a_ij.",
+    "Evaluate candidate row operations, rejecting operations that leave a nonzero target unchanged or do not cancel it.",
+    "Select the unique listed successful operation; worked solution applies that operation to the whole matrix."
+  ],
+  "response_contract": {
+    "type": "radio",
+    "choices": 5,
+    "correct": 1,
+    "difficulty": "hard",
+    "matrix": "3x3 integer coefficient matrix",
+    "observed_target": "zero",
+    "observed_correct_family": "addition of a multiple of another row"
+  },
+  "invariants": [
+    "One elementary row operation; no multi-step elimination or solving a system.",
+    "Nonzero scaling and distinct rows for row addition.",
+    "Exactly one valid listed choice achieves the stated target.",
+    "Prompt, correct bank entry, full-row arithmetic and explanation agree."
+  ],
+  "permitted_variations": [
+    "All target coordinates and donor/recipient assignments may vary if prompt and dependencies follow.",
+    "Signed small integer entries, integer and simple fractional cancellation factors, matrix letter and option order may vary.",
+    "The successful listed donor and factor must be determined by entries rather than fixed labels or template signatures.",
+    "Distinct candidate row-addition options can exchange correctness when the relevant matrix entry changes while the rest stays fixed.",
+    "Non-target columns and matrix name are irrelevant to the selected operation and may change without changing the response."
+  ],
+  "fixed_features": [
+    {
+      "feature": "zero target",
+      "justification": "All 11 source questions and e-4696 teach cancellation; nonzero desired values need additional source support."
+    },
+    {
+      "feature": "3x3 matrix and five radio choices",
+      "justification": "Every captured assessed question has this workload and response contract."
+    },
+    {
+      "feature": "row replacement is the successful operation in observed banks",
+      "justification": "This is the observed cancellation family. It does not justify fixing donor row, factor sign, coefficient, position, or using a single syntactically distinguishable addition option."
+    }
+  ],
+  "source_refs": [
+    "9ec5da5b-045b-5f9b-81d1-dca84ed41202 (q-20388)",
+    "45680acf-db20-5a6f-9386-10731c57b3e2 (q-20392)",
+    "815f9e6c-522e-56ab-89a5-4e0b1a29d889 (q-130283)",
+    "a2315259-d90e-5796-af9b-5986097263bc (q-130285)",
+    "541b14bb-d8ea-55de-b269-54fae6c76be2 (q-130301)",
+    "cc281877-0bbe-5bdb-b4ec-bdbce5eb8a4f (q-130304)",
+    "24e16efc-bc74-58ba-b952-74e30fe541c3 (q-20241)",
+    "8272f6cc-17eb-50ed-8172-2168502e8c44 (q-20386)",
+    "4620d00b-e63c-5bb6-90cb-233c01e9e5ab (q-72857)",
+    "d64eac74-31dd-5514-b904-fdc9f48abd1b (q-72860)",
+    "372c1499-bf5a-558e-ad8a-af28e6ae7898 (q-72858)",
+    "f8417bbc-b748-519b-a997-fbb4aed755eb (e-4696)",
+    "tutorial 7aa753a7-1450-53dd-8e61-71e07952cecb (3150), lesson step 3df97c2e-febb-5f72-be71-e1d739dbbd92"
+  ],
+  "lesson_passages": [
+    "Introduction: multiplying (each element of) a row by a non-zero number: R_i := k R_i, k != 0.",
+    "Introduction: adding a multiple of one row to another row: R_j := R_j+k R_i, j != i.",
+    "e-4696: cannot make a22=0 by switching two rows, because there are no rows with 0 as the second entry; cannot multiply the second row by 0; can add a multiple of another row.",
+    "q-130301 uses +1/2 R3; q-72858 uses -R1; q-20392 has correct addition +R1 inferred from -1+1=0."
+  ],
+  "evidence_gaps": [
+    "q-20392 lacks captured correct link and worked solution; its unique correct bank entry is independently inferable as R2:=R2+R1.",
+    "Canonical example has no captured answer bank; use its stated operation for explanatory replay, not an invented original bank."
+  ],
+  "evidence_paths": [
+    "source-analysis.json"
+  ],
+  "provenance": {
+    "reused_from": "../review-1-policy-2-22438d1e0e264086/source-analysis.json",
+    "confirmed": "All 11 original prompts and canonical example reread; lesson definition of nonzero scaling and distinct donor/recipient confirmed before package inspection. Source hash matched by runner.",
+    "source_file_sha256": "f07a3f88597290ddb189bf62bb8c8621e85adb6ca058321934b9b63d6d230707"
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "skill": "Identify which single elementary row operation maps one displayed 3\u00d73 matrix to another; select the unique correct operation from a five-choice radio bank.",
+  "reasoning_steps": [
+    "Compare all rows to locate changed row(s).",
+    "For a swap, identify the exchanged rows; for one changed row, distinguish scaling from adding a multiple of another row.",
+    "Infer or test the nonzero multiplier and verify all entries, then select the valid bank operation."
+  ],
+  "response_contract": "Observed question banks use one selection radio field with five math choices. Canonical example has a worked operation but no answer field. No free-entry requirement inferred.",
+  "difficulty": "Moderate: one elementary operation, small integer matrices, integer or simple rational scalar; no solving a system or multi-step elimination.",
+  "invariants": [
+    "One elementary operation; scaling multiplier nonzero; row addition uses distinct source and destination.",
+    "Displayed target, unique valid offered choice, and worked calculation agree.",
+    "Preserve complete source banks including plausible incorrect/non-elementary distractors.",
+    "Three by three ordinary matrices and five-option radio questions are the observed assessed format."
+  ],
+  "permitted_variations": [
+    "Eligible destination/source indices and swapped pairs may vary across all three rows.",
+    "Operation type, scalar sign and simple magnitude, matrix entries and zero locations may vary while preserving one-step workload.",
+    "Labels, choice order, and distractor profiles may vary; matrix names must not determine the operation.",
+    "A fixed source-example correct type or row assignment is incidental; source and target matrices must determine it."
+  ],
+  "answer_roles": [
+    {
+      "role": "correct operation family",
+      "eligible": "swap, scale, row addition"
+    },
+    {
+      "role": "destination and source rows",
+      "eligible": "all ordered distinct pairs, or any scale destination"
+    },
+    {
+      "role": "scalar",
+      "eligible": "positive/negative integers and simple rationals as supported"
+    },
+    {
+      "role": "correct answer position",
+      "eligible": "any of five positions"
+    }
+  ],
+  "source_refs": [
+    "a24c9621-793b-5c60-9c47-2b452f0faa2b: solution compares unchanged rows then verifies R2:=R2+R1.",
+    "b8c55c12-17df-581d-b93b-78d07db8cec0: R3:=1/5 R3, complete five-choice bank.",
+    "84b806b0-6ebe-59b8-9bb2-7c89ea346a6f: R1:=3 R1.",
+    "a30d667b-677d-5256-b122-58f01905e5c9: R2:=(-2) R2.",
+    "85e6dfb7-2447-51c4-a184-4a363a6b54d0: swap R2 and R3.",
+    "8d79bcd3-c9f6-51cc-bac3-1326fcc4218c: R1:=R1+5R3.",
+    "bf5f9366-1ce3-5395-93b6-14a04149ebc4: proportional rows, scaling R1 by 1/4; zero column is legitimate.",
+    "c70a88ac-8f1d-5e97-afff-9c3f83ff71f2: swap R1/R3, bank also has non-elementary distractors.",
+    "4a88dee0-a622-519b-8c88-19f1fcfff46b and dd718a57-6301-5304-b58e-f8632645f2ed: R2 plus multiple of R1.",
+    "c9060efa-f3e3-51e4-a87e-07de0525647c: swap R1/R3.",
+    "e2dc9d0e-faaf-52a3-b487-1837ebe01f47 and a2105120-b69b-54ae-a450-1a629e320d19: complete banks but missing captured correct links and solutions; infer unique operations by exact row arithmetic.",
+    "Lesson 84d7f054-fed4-524c-b241-f09c7fd42e5e, Introduction tutorial 7aa753a7-1450-53dd-8e61-71e07952cecb: \u201cswitching any two rows\u201d; \u201cmultiplying (each element of) a row by a non-zero number\u201d; \u201cadding a multiple of one row to another row\u201d.",
+    "Lesson step cfe1d425-2185-5011-8249-58d7c6bd7ec8 places identification after applying operations, before targeting a desired entry."
+  ],
+  "gaps": [
+    "Two early questions lack captured key and solution. Canonical lacks answer fields. No image evidence is needed or present."
+  ],
+  "evidence_paths": [
+    "source-analysis.json"
+  ]
+}

@@ -1,0 +1,129 @@
+{
+  "verdict": "revise",
+  "summary": "The missing source bank is restored. The exact delivered batch has a matrix-free shortcut within its repeated q-72858 subgroup. Package files remained unchanged.",
+  "source_analysis": {
+    "skill": "Identify the unique listed elementary row operation that makes a specified matrix entry zero.",
+    "reasoning_steps": [
+      "Locate the target entry.",
+      "Evaluate candidate operations using target-column entries.",
+      "Select the successful operation and verify its whole-row effect."
+    ],
+    "invariants": [
+      "A 3\u00d73 matrix and five radio choices.",
+      "Exactly one successful listed elementary operation.",
+      "Prompt, key and worked transformation agree."
+    ],
+    "permitted_variations": [
+      "Target coordinates, donor rows, signed entries and supported fractional factors.",
+      "Which eligible listed operation succeeds.",
+      "Coherent row and column permutations.",
+      "Non-target-column changes preserving the correct operation."
+    ],
+    "source_refs": [
+      "372c1499-bf5a-558e-ad8a-af28e6ae7898 (q-72858)",
+      "f8417bbc-b748-519b-a997-fbb4aed755eb (e-4696)",
+      "Tutorial 7aa753a7-1450-53dd-8e61-71e07952cecb, step 3df97c2e-febb-5f72-be71-e1d739dbbd92"
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "source-corrections.json",
+      "revision-diff.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay-results.json",
+        "source-replays.json",
+        "preflight-reproduction.json"
+      ],
+      "details": "All eleven complete banks replay. The retained regression fails on the old package and passes on the current package."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "independent.py",
+        "math-results.json",
+        "delivery-identity-results.json"
+      ],
+      "details": "Independent exact arithmetic verifies all choices, unique keys and worked matrices across fresh samples, source replays, controlled pairs and raw/delivered batch records."
+    },
+    "variety": {
+      "status": "failed",
+      "evidence_paths": [
+        "coverage.json",
+        "batch-shortcut-results.json",
+        "minimal-batch-failure.json"
+      ],
+      "details": "Both restored winners occur across all nine targets in controls. However, both delivered q-72858 instances preserve the same syntactically identifiable winning role."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "scope-results.json"
+      ],
+      "details": "Tested variations preserve the source workload, response contract and single-operation skill. Successful swaps follow the lesson's conditional rule."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-results.json",
+        "counterfactual-results.json"
+      ],
+      "details": "The native grader accepted 28 correct selections and rejected 112 distractors, including normalized delivery records and controlled pairs."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-inspection.json",
+        "render/contact-sheet.jpg",
+        "ui-order-results.json"
+      ],
+      "details": "Eleven actual-UI renders passed screenshot inspection, including all five delivered records and controlled pairs."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "rejection-results.json",
+        "package-before.json",
+        "package-after.json",
+        "commands.json"
+      ],
+      "details": "Exact dependency versions, deterministic replay, relocation, invalid-instance rejection and unchanged package hashes verified."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "decision-validation.json",
+        "shortcut-results.json",
+        "minimal-batch-failure.json",
+        "delivery-batch/delivery.json",
+        "delivery-independent/delivery.json",
+        "selection-results.json",
+        "inventory-review.json"
+      ],
+      "details": "Controlled dependencies pass. All 55 fresh samples and five runner records survive delivery. The matrix-free cue succeeds on both delivered q-72858 records, versus 17/34 controls. This is a finite batch-selection failure; captured inventory contains no affected non-source records."
+    }
+  },
+  "findings": [
+    {
+      "kind": "decision_shortcut",
+      "description": "Both delivered q-72858 records contain two swaps, two self-scaling distractors and one distinct-row subtraction. Selecting that sole distinct-row operation answers both without inspecting the matrix or target. The generator supports swap counterexamples, but this repeated subgroup of the exact delivered batch contains none.",
+      "source_refs": [
+        "372c1499-bf5a-558e-ad8a-af28e6ae7898 (q-72858): complete answer bank",
+        "f8417bbc-b748-519b-a997-fbb4aed755eb (e-4696): target-column evidence determines swap eligibility",
+        "generate/principles.md: fixed decision structures and delivered cue groups"
+      ],
+      "reproduction": "Run PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python reproduce_batch_shortcut.py from evidence_root. The cue succeeds 2/2. First failing batch case: seed 12312996823910534779, q-72858, winner 0; exact parameters and both raw/delivered identities are retained in minimal-batch-failure.json.",
+      "requested_change": "Revise batch construction or selection to defeat this winning-role cue. Include a supported q-72858 target-row-swap instance alongside subtraction, then rerun the retained shortcut test after delivery filtering. Preserve the complete bank and source replay."
+    }
+  ],
+  "repair_history_file": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186059774/repair-history.json",
+  "instruction": "Fix the root cause, retain every earlier counterexample, and declare executable checks in repair-regressions.json. A failed check is another repair task, not permission to abandon the generator."
+}

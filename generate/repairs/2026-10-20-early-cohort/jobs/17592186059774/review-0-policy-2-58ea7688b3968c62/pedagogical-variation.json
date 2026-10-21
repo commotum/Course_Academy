@@ -1,0 +1,443 @@
+{
+  "learner_operation": "Locate a_ij, determine the effect of each candidate operation on that entry, and select the unique operation attaining zero. For replacement evaluate a_ij+k*a_sj, using s != i; scaling must be nonzero; swaps use the donor entry.",
+  "fixed_features": [
+    {
+      "feature": "zero target",
+      "justification": "All 11 source questions and e-4696 teach cancellation; nonzero desired values need additional source support."
+    },
+    {
+      "feature": "3x3 matrix and five radio choices",
+      "justification": "Every captured assessed question has this workload and response contract."
+    },
+    {
+      "feature": "row replacement is the successful operation in observed banks",
+      "justification": "This is the observed cancellation family. It does not justify fixing donor row, factor sign, coefficient, position, or using a single syntactically distinguishable addition option."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Target row/column",
+      "eligible_variation": "All nine coordinates by coherent row and column permutations",
+      "observed": "All nine observed; controlled row/column changes update target and operation."
+    },
+    {
+      "role": "Successful listed operation and donor",
+      "eligible_variation": "All bank operations that can uniquely zero a nonzero entry; donor and multiplier depend on target-column entries",
+      "observed": "34 eligible winner slots across nine sampled banks, each tested at two fresh seeds, survive filtering. q-72858 absent; q-20392 replay-only."
+    },
+    {
+      "role": "Choice position",
+      "eligible_variation": "All five, with UI hash-based order additionally applied",
+      "observed": "Stored and actual rendered position probes do not produce a perfect batch predictor."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "q-20388",
+      "sample_refs": [
+        "coverage.json",
+        "independent-samples.json",
+        "delivery-independent/accepted.json"
+      ],
+      "result": "{2: 4, 3: 5, 4: 2}"
+    },
+    {
+      "case": "q-130283",
+      "sample_refs": [
+        "coverage.json",
+        "independent-samples.json",
+        "delivery-independent/accepted.json"
+      ],
+      "result": "{0: 3, 2: 2, 3: 2, 4: 2}"
+    },
+    {
+      "case": "q-130285",
+      "sample_refs": [
+        "coverage.json",
+        "independent-samples.json",
+        "delivery-independent/accepted.json"
+      ],
+      "result": "{0: 4, 2: 3, 3: 4}"
+    },
+    {
+      "case": "q-130301",
+      "sample_refs": [
+        "coverage.json",
+        "independent-samples.json",
+        "delivery-independent/accepted.json"
+      ],
+      "result": "{1: 4, 2: 3, 3: 3, 4: 3}"
+    },
+    {
+      "case": "q-130304",
+      "sample_refs": [
+        "coverage.json",
+        "independent-samples.json",
+        "delivery-independent/accepted.json"
+      ],
+      "result": "{1: 4, 2: 3, 4: 2}"
+    },
+    {
+      "case": "q-20241",
+      "sample_refs": [
+        "coverage.json",
+        "independent-samples.json",
+        "delivery-independent/accepted.json"
+      ],
+      "result": "{0: 2, 1: 2, 2: 2, 3: 2, 4: 3}"
+    },
+    {
+      "case": "q-20386",
+      "sample_refs": [
+        "coverage.json",
+        "independent-samples.json",
+        "delivery-independent/accepted.json"
+      ],
+      "result": "{0: 2, 1: 2, 2: 3, 3: 3}"
+    },
+    {
+      "case": "q-72857",
+      "sample_refs": [
+        "coverage.json",
+        "independent-samples.json",
+        "delivery-independent/accepted.json"
+      ],
+      "result": "{0: 3, 2: 3, 3: 3, 4: 3}"
+    },
+    {
+      "case": "q-72860",
+      "sample_refs": [
+        "coverage.json",
+        "independent-samples.json",
+        "delivery-independent/accepted.json"
+      ],
+      "result": "{0: 2, 1: 4, 2: 3, 3: 3}"
+    },
+    {
+      "case": "missing supplied banks",
+      "sample_refs": [
+        "source-replay-failures.json",
+        "minimal-failure.json",
+        "coverage.json"
+      ],
+      "result": "Complete q-72858 has no implementation profile. q-20392 can replay its inferred completion but cannot sample."
+    },
+    {
+      "case": "exact runner batch",
+      "sample_refs": [
+        "runner-batch.json",
+        "delivery-batch/accepted.json",
+        "shortcut-results.json"
+      ],
+      "result": "Five different bank profiles, four additions and one swap; all survive publication filters. No tested constant option/sign rule solves the full batch."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Change only a22 from 6 to 8 in fixed q-20388 bank and matrix.",
+      "expected": "Correct operation changes from R2-3R1 to R2-2R3.",
+      "observed": "Changing only a22 from 6 to 8 changes the winning donor from row1 (-3) to row3 (-2); all five native outcomes tested; rendered cases 6 and 7 inspected.",
+      "status": "passed",
+      "justification": "Cancellation depends on target and donor entries; source q-20388 and e-4696 require inspecting these values.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-input.json",
+        "grader-results.json",
+        "render-records.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Change a11 from 4 to 9 and a33 from 1 to -9, holding target column and bank fixed.",
+      "expected": "Preserve winning operation and its native grading; update whole-matrix result.",
+      "observed": "Changing only two non-target-column entries preserves operation; final matrix updates; native outcomes and rendered cases 6 and 8 agree.",
+      "status": "passed",
+      "justification": "Only column 2 determines whether a22 becomes zero; full-row calculation in source solution determines the changed non-target entries.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-results.json",
+        "render-records.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "stored option position",
+      "subgroup": "independent before and after delivery",
+      "scope": "overall",
+      "strategy": "Always select zero-based stored position 2 (empirical most successful constant)",
+      "correct": 24,
+      "total": 98,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. This post-hoc maximum is not perfect; serialization order also differs from actual UI ordering.",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "coefficient sign",
+      "subgroup": "independent before and after delivery",
+      "scope": "overall",
+      "strategy": "Select first row-addition option with donor coefficient sign -1; fall back to first option",
+      "correct": 29,
+      "total": 98,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five. Sign alone does not determine cancellation; this rule has counterexamples in the exact batch and larger samples.",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "coefficient sign",
+      "subgroup": "independent before and after delivery",
+      "scope": "overall",
+      "strategy": "Select first row-addition option with donor coefficient sign 1; fall back to first option",
+      "correct": 22,
+      "total": 98,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five. Sign alone does not determine cancellation; this rule has counterexamples in the exact batch and larger samples.",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "stored option position",
+      "subgroup": "exact runner batch before and after delivery",
+      "scope": "overall",
+      "strategy": "Always select zero-based stored position 2 (empirical most successful constant)",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five options. This post-hoc maximum is not perfect; serialization order also differs from actual UI ordering.",
+      "sample_refs": [
+        "runner-batch.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "coefficient sign",
+      "subgroup": "exact runner batch before and after delivery",
+      "scope": "overall",
+      "strategy": "Select first row-addition option with donor coefficient sign -1; fall back to first option",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five. Sign alone does not determine cancellation; this rule has counterexamples in the exact batch and larger samples.",
+      "sample_refs": [
+        "runner-batch.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "coefficient sign",
+      "subgroup": "exact runner batch before and after delivery",
+      "scope": "overall",
+      "strategy": "Select first row-addition option with donor coefficient sign 1; fall back to first option",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform choice among five. Sign alone does not determine cancellation; this rule has counterexamples in the exact batch and larger samples.",
+      "sample_refs": [
+        "runner-batch.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "recognizable complete bank signature",
+      "subgroup": "q-20388",
+      "scope": "within_template",
+      "strategy": "Always choose original-bank slot 3, independent of matrix values (post-hoc best constant)",
+      "correct": 5,
+      "total": 11,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform over the 3 independently eligible bank operations, after mathematically eliminating impossible operation types. Every eligible winner is observed; no single bank slot is always correct. Two forced samples per winner plus random controls; empirical modes are not population estimates.",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "recognizable complete bank signature",
+      "subgroup": "q-130283",
+      "scope": "within_template",
+      "strategy": "Always choose original-bank slot 0, independent of matrix values (post-hoc best constant)",
+      "correct": 3,
+      "total": 9,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform over the 4 independently eligible bank operations, after mathematically eliminating impossible operation types. Every eligible winner is observed; no single bank slot is always correct. Two forced samples per winner plus random controls; empirical modes are not population estimates.",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "recognizable complete bank signature",
+      "subgroup": "q-130285",
+      "scope": "within_template",
+      "strategy": "Always choose original-bank slot 0, independent of matrix values (post-hoc best constant)",
+      "correct": 4,
+      "total": 11,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform over the 3 independently eligible bank operations, after mathematically eliminating impossible operation types. Every eligible winner is observed; no single bank slot is always correct. Two forced samples per winner plus random controls; empirical modes are not population estimates.",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "recognizable complete bank signature",
+      "subgroup": "q-130301",
+      "scope": "within_template",
+      "strategy": "Always choose original-bank slot 1, independent of matrix values (post-hoc best constant)",
+      "correct": 4,
+      "total": 13,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform over the 4 independently eligible bank operations, after mathematically eliminating impossible operation types. Every eligible winner is observed; no single bank slot is always correct. Two forced samples per winner plus random controls; empirical modes are not population estimates.",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "recognizable complete bank signature",
+      "subgroup": "q-130304",
+      "scope": "within_template",
+      "strategy": "Always choose original-bank slot 1, independent of matrix values (post-hoc best constant)",
+      "correct": 4,
+      "total": 9,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform over the 3 independently eligible bank operations, after mathematically eliminating impossible operation types. Every eligible winner is observed; no single bank slot is always correct. Two forced samples per winner plus random controls; empirical modes are not population estimates.",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "recognizable complete bank signature",
+      "subgroup": "q-20241",
+      "scope": "within_template",
+      "strategy": "Always choose original-bank slot 4, independent of matrix values (post-hoc best constant)",
+      "correct": 3,
+      "total": 11,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform over the 5 independently eligible bank operations, after mathematically eliminating impossible operation types. Every eligible winner is observed; no single bank slot is always correct. Two forced samples per winner plus random controls; empirical modes are not population estimates.",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "recognizable complete bank signature",
+      "subgroup": "q-20386",
+      "scope": "within_template",
+      "strategy": "Always choose original-bank slot 2, independent of matrix values (post-hoc best constant)",
+      "correct": 3,
+      "total": 10,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform over the 4 independently eligible bank operations, after mathematically eliminating impossible operation types. Every eligible winner is observed; no single bank slot is always correct. Two forced samples per winner plus random controls; empirical modes are not population estimates.",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "recognizable complete bank signature",
+      "subgroup": "q-72857",
+      "scope": "within_template",
+      "strategy": "Always choose original-bank slot 0, independent of matrix values (post-hoc best constant)",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform over the 4 independently eligible bank operations, after mathematically eliminating impossible operation types. Every eligible winner is observed; no single bank slot is always correct. Two forced samples per winner plus random controls; empirical modes are not population estimates.",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "recognizable complete bank signature",
+      "subgroup": "q-72860",
+      "scope": "within_template",
+      "strategy": "Always choose original-bank slot 1, independent of matrix values (post-hoc best constant)",
+      "correct": 4,
+      "total": 12,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform over the 4 independently eligible bank operations, after mathematically eliminating impossible operation types. Every eligible winner is observed; no single bank slot is always correct. Two forced samples per winner plus random controls; empirical modes are not population estimates.",
+      "sample_refs": [
+        "independent-samples.json",
+        "coverage.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "actual rendered option position",
+      "subgroup": "exact runner batch",
+      "scope": "overall",
+      "strategy": "Always choose rendered position 2 (post-hoc best constant)",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is five-way guessing. Measured from actual UI HTML; the UI hashes item/field/answer IDs to order options. No constant rendered position answers all five.",
+      "sample_refs": [
+        "render-records.json",
+        "ui-order-results.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "generator winner selection and rejection/resampling",
+      "semantic batch deduplication",
+      "requested hard difficulty",
+      "actual publisher normalization and captured-inventory deduplication",
+      "freshness/practice-usability filter code",
+      "rated-band and sorted-ID learner-selection rule read-only reproduction",
+      "actual UI answer order"
+    ],
+    "sample_refs": [
+      "coverage.json",
+      "rejection-results.json",
+      "delivery-batch/delivery.json",
+      "delivery-independent/delivery.json",
+      "shortcut-results.json",
+      "selection-results.json",
+      "ui-order-results.json"
+    ],
+    "result": "5/5 batch and 98/98 independent records survive delivery. Eligible outcomes survive resampling and delivery for represented banks, but omitted q-72858 and replay-only q-20392 remain unavailable to generated practice. Live policy/history were not captured; conditional selection behavior and limits are recorded."
+  },
+  "limitations": [
+    "No finite sample excludes all possible shortcuts.",
+    "Nine sampled banks do not cover the omitted supplied q-72858 profile or replay-only q-20392.",
+    "Selection reproduced against captured inventory under explicit positive hard-weight and freshness assumptions; no live learner policy or future publication IDs are supplied."
+  ]
+}

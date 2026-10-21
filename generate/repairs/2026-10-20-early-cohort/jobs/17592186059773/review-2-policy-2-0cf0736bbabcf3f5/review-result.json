@@ -1,0 +1,129 @@
+{
+  "verdict": "accepted",
+  "summary": "No current failure demonstrated. Ten complete source banks replay exactly; independent math, native grading, delivery, rendering and decision-role checks pass. All five runner records survive. Package unchanged.",
+  "source_analysis": {
+    "skill": "Identify which single elementary row operation maps one displayed 3\u00d73 matrix to another; select the unique correct operation from a five-choice radio bank.",
+    "reasoning_steps": [
+      "Compare all rows to locate changed row(s).",
+      "For a swap, identify the exchanged rows; for one changed row, distinguish scaling from adding a multiple of another row.",
+      "Infer or test the nonzero multiplier and verify all entries, then select the valid bank operation."
+    ],
+    "invariants": [
+      "One elementary operation; scaling multiplier nonzero; row addition uses distinct source and destination.",
+      "Displayed target, unique valid offered choice, and worked calculation agree.",
+      "Preserve complete source banks including plausible incorrect/non-elementary distractors.",
+      "Three by three ordinary matrices and five-option radio questions are the observed assessed format."
+    ],
+    "permitted_variations": [
+      "Eligible destination/source indices and swapped pairs may vary across all three rows.",
+      "Operation type, scalar sign and simple magnitude, matrix entries and zero locations may vary while preserving one-step workload.",
+      "Labels, choice order, and distractor profiles may vary; matrix names must not determine the operation.",
+      "A fixed source-example correct type or row assignment is incidental; source and target matrices must determine it."
+    ],
+    "source_refs": [
+      "a24c9621-793b-5c60-9c47-2b452f0faa2b: solution compares unchanged rows then verifies R2:=R2+R1.",
+      "b8c55c12-17df-581d-b93b-78d07db8cec0: R3:=1/5 R3, complete five-choice bank.",
+      "84b806b0-6ebe-59b8-9bb2-7c89ea346a6f: R1:=3 R1.",
+      "a30d667b-677d-5256-b122-58f01905e5c9: R2:=(-2) R2.",
+      "85e6dfb7-2447-51c4-a184-4a363a6b54d0: swap R2 and R3.",
+      "8d79bcd3-c9f6-51cc-bac3-1326fcc4218c: R1:=R1+5R3.",
+      "bf5f9366-1ce3-5395-93b6-14a04149ebc4: proportional rows, scaling R1 by 1/4; zero column is legitimate.",
+      "c70a88ac-8f1d-5e97-afff-9c3f83ff71f2: swap R1/R3, bank also has non-elementary distractors.",
+      "4a88dee0-a622-519b-8c88-19f1fcfff46b and dd718a57-6301-5304-b58e-f8632645f2ed: R2 plus multiple of R1.",
+      "c9060efa-f3e3-51e4-a87e-07de0525647c: swap R1/R3.",
+      "e2dc9d0e-faaf-52a3-b487-1837ebe01f47 and a2105120-b69b-54ae-a450-1a629e320d19: complete banks but missing captured correct links and solutions; infer unique operations by exact row arithmetic.",
+      "Lesson 84d7f054-fed4-524c-b241-f09c7fd42e5e, Introduction tutorial 7aa753a7-1450-53dd-8e61-71e07952cecb: \u201cswitching any two rows\u201d; \u201cmultiplying (each element of) a row by a non-zero number\u201d; \u201cadding a multiple of one row to another row\u201d.",
+      "Lesson step cfe1d425-2185-5011-8249-58d7c6bd7ec8 places identification after applying operations, before targeting a desired entry."
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "source-replay-results.json",
+        "source-replays.json"
+      ],
+      "details": "Ten supported prompts, worked solutions and complete five-choice banks replay exactly. Two incomplete unrated captures and canonical missing answer field are explicitly documented gaps."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "review.py",
+        "all-records.json"
+      ],
+      "details": "197 records independently checked with exact Fraction arithmetic, executing all 985 bank operations and validating solution matrices, final operations and changed-row prose. Post-normalization records rechecked."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "sampling-domain.json",
+        "boundary-records.json",
+        "fresh-sample.json",
+        "resampling-results.json",
+        "rejection-witness.json",
+        "stage-coverage.json"
+      ],
+      "details": "Ten bank profiles and all 48 eligible answer roles covered; boundary perturbations, row permutations, fresh seed, rejection/resampling and delivered coverage verified."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "scope-results.json",
+        "controlled-records.json"
+      ],
+      "details": "One-step elementary row identification and five-choice radio contract remain at moderate workload. Conservative finite numeric scope documented."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "native-input.json",
+        "native-results.json",
+        "delivered-native-input.json",
+        "delivered-native-results.json"
+      ],
+      "details": "Native grader: 197 accepted/788 rejected raw responses; 187 accepted/748 rejected normalized delivery responses, zero unresolved. Every choice tested; no free-entry fields occur."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-remaining/rendering.json",
+        "render-inspection.json",
+        "render-records.json"
+      ],
+      "details": "Eleven actual UI previews pass. Representative screenshots inspected for matrices, fractions, controls, worked solutions and both controlled pair kinds."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "runtime-results.json",
+        "author-regressions.json",
+        "legacy-fixed-bank-results.json",
+        "package-integrity.json",
+        "inventory-audit.json",
+        "affected-inventory.json"
+      ],
+      "details": "Declared closure runs relocated; Python 3.13.5/SymPy 1.14.0 match exact manifest pins. Legacy format/wrapper/fixed-key failures reproduced; current regressions and deterministic CLI counts pass. Package remains byte-identical."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "action-shortcut-results.json",
+        "stage-coverage.json",
+        "selection-results.json",
+        "batch-delivery/delivery.json"
+      ],
+      "details": "Fixed-A alternative targets and irrelevant-row edits track prompts, explanations and real grading. All 48 eligible choices survive actual filters. No reproducible incidental shortcut found in tested banks or exact five-record batch. Selection conclusions are conditional on supplied-rule scenarios; live learner state absent."
+    }
+  },
+  "findings": []
+}

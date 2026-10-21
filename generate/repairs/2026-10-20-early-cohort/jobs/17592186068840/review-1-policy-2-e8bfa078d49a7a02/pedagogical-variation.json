@@ -1,0 +1,449 @@
+{
+  "learner_operation": "Separate the displayed ODE, integrate both sides, invert to an explicit general family, and distinguish the candidate with the correct primitive coefficient or fill the specified solution factor.",
+  "fixed_features": [
+    {
+      "feature": "First-order separable ODE with elementary primitives and explicit inversion",
+      "justification": "Tutorials 6766/6767 and all five easy source questions establish this operation; initial-value or harder integration tasks would drift."
+    },
+    {
+      "feature": "Five-choice single-correct radio for easy practice",
+      "justification": "All captured easy banks have this response contract. Fixing one correct choice is essential; its identity and position are eligible to vary."
+    },
+    {
+      "feature": "One inverse family within each fresh coefficient-peer bank",
+      "justification": "The intended integration/inversion is still required to determine its coefficient. Matching the source inverse type alone now leaves five possibilities. Controlled changes make each possible candidate correct; this is a valid focused simplification."
+    },
+    {
+      "feature": "Small signed coefficient palette and bounded translations",
+      "justification": "Keeps arithmetic and elementary antiderivative workload comparable to the source. Palette size is not claimed as comprehensive mastery; both signs and every candidate role are tested."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Correct integrated coefficient/candidate identity",
+      "eligible_variation": "Each supported signed candidate can satisfy the displayed ODE while the same bank remains fixed.",
+      "observed": "Five distinct targets per easy template, all surviving delivery; additional tan a=5 and h boundaries tested."
+    },
+    {
+      "role": "Correct radio position and distractor expression",
+      "eligible_variation": "May change independently of mathematical response; no label or UI position is intrinsic.",
+      "observed": "Seed-only pairs preserve mathematical response; source banks replay and fresh UI positions vary. Live task IDs are unavailable."
+    },
+    {
+      "role": "Requested fragment in contextual blanks",
+      "eligible_variation": "Signed ODE coefficients change reciprocal/log fragments; temperature rate changes exponential factor, ambient offset does not.",
+      "observed": "New moderate signed blanks pass visible ODE derivative and native equivalent-entry tests. Ambient-only pair preserves factor."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "five easy inverse families, every candidate coefficient role",
+      "sample_refs": [
+        "independent-easy-current.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ],
+      "result": "All 25 controlled cases survive and retain five distinct correct answers in an identical bank per template."
+    },
+    {
+      "case": "exact five-record runner batch",
+      "sample_refs": [
+        "batch-records.json",
+        "delivery-batch/accepted.json",
+        "shortcut-results.json",
+        "ui-position-results.json"
+      ],
+      "result": "Five accepted, zero duplicates; reciprocal cube 3, cube power 1, log 1; two negative and three positive coefficients. Old shape cue determines none. This batch is limited practice, not coverage of all five families."
+    },
+    {
+      "case": "source and newly restored blank families",
+      "sample_refs": [
+        "source-replay-records.json",
+        "moderate-current.json",
+        "blank-math.json"
+      ],
+      "result": "14 complete banks replay; signed reciprocal/log blanks and rate/ambient cases independently checked."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "For each easy template, coefficient a=-1 becomes a=2 with translation, other coefficients, seed and complete bank held fixed.",
+      "expected": "ODE, primitive, explicit correct family and keyed response change; previous answer must be rejected.",
+      "observed": "All five pairs update together. Exact derivative checks, rendered prompts/solutions and native stale-answer rejection pass.",
+      "status": "passed",
+      "justification": "Source tutorials require integrating h(x); scaling h changes its primitive and explicit solution coefficient.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "math-results.json",
+        "grader-final-results.json",
+        "render-pairs/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Change shuffle seed only, and separately change temperature ambient 25 to 35 at fixed decay rate.",
+      "expected": "Seed changes preserve equation/solution/answer; ambient changes displayed offset and full solution but preserve requested exponential factor.",
+      "observed": "All five seed pairs and ambient pair pass content comparisons and actual native acceptance; full ambient render updates while factor remains e^(-0.03t).",
+      "status": "passed",
+      "justification": "Choice order does not enter the differential equation. Source q-168077 integrates dT/(T-ambient)=-rate dt; ambient disappears from the requested factor.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-final-results.json",
+        "render-pairs/rendering.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "inverse type, sign pattern, constant placement, or fixed coefficient rank without reading the ODE",
+      "subgroup": "autonomous_tan with identical complete bank",
+      "scope": "within_template",
+      "strategy": "Pick any one fixed visible candidate from the unchanged bank. Every candidate is correct for exactly one of five changed ODEs.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best equation-blind fixed candidate succeeds 1/5, equal to uniform five-choice guessing. The bank holds shape and labels constant while answer-bearing coefficients change. This tests answer-producing actions, not numerical answer uniqueness.",
+      "sample_refs": [
+        "independent-easy-current.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "inverse type, sign pattern, constant placement, or fixed coefficient rank without reading the ODE",
+      "subgroup": "reciprocal_cube with identical complete bank",
+      "scope": "within_template",
+      "strategy": "Pick any one fixed visible candidate from the unchanged bank. Every candidate is correct for exactly one of five changed ODEs.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best equation-blind fixed candidate succeeds 1/5, equal to uniform five-choice guessing. The bank holds shape and labels constant while answer-bearing coefficients change. This tests answer-producing actions, not numerical answer uniqueness.",
+      "sample_refs": [
+        "independent-easy-current.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "inverse type, sign pattern, constant placement, or fixed coefficient rank without reading the ODE",
+      "subgroup": "negative_exp with identical complete bank",
+      "scope": "within_template",
+      "strategy": "Pick any one fixed visible candidate from the unchanged bank. Every candidate is correct for exactly one of five changed ODEs.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best equation-blind fixed candidate succeeds 1/5, equal to uniform five-choice guessing. The bank holds shape and labels constant while answer-bearing coefficients change. This tests answer-producing actions, not numerical answer uniqueness.",
+      "sample_refs": [
+        "independent-easy-current.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "inverse type, sign pattern, constant placement, or fixed coefficient rank without reading the ODE",
+      "subgroup": "cube_power with identical complete bank",
+      "scope": "within_template",
+      "strategy": "Pick any one fixed visible candidate from the unchanged bank. Every candidate is correct for exactly one of five changed ODEs.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best equation-blind fixed candidate succeeds 1/5, equal to uniform five-choice guessing. The bank holds shape and labels constant while answer-bearing coefficients change. This tests answer-producing actions, not numerical answer uniqueness.",
+      "sample_refs": [
+        "independent-easy-current.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "inverse type, sign pattern, constant placement, or fixed coefficient rank without reading the ODE",
+      "subgroup": "affine_root with identical complete bank",
+      "scope": "within_template",
+      "strategy": "Pick any one fixed visible candidate from the unchanged bank. Every candidate is correct for exactly one of five changed ODEs.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best equation-blind fixed candidate succeeds 1/5, equal to uniform five-choice guessing. The bank holds shape and labels constant while answer-bearing coefficients change. This tests answer-producing actions, not numerical answer uniqueness.",
+      "sample_refs": [
+        "independent-easy-current.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "unique C + squared x-expression inside cube root, log or cube",
+      "subgroup": "raw",
+      "scope": "overall",
+      "strategy": "Apply retained old shape-only shortcut; ambiguous matches do not determine an answer.",
+      "correct": 0,
+      "total": 28,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "The old cue no longer uniquely identifies a correct answer (zero uniquely correct predictions). The 0.2 baseline is random five-choice guessing, not an asserted success rate for abstention. Identical-bank coefficient sweeps provide the stronger control.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "batch-records.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "unique C + squared x-expression inside cube root, log or cube",
+      "subgroup": "delivered",
+      "scope": "overall",
+      "strategy": "Apply retained old shape-only shortcut; ambiguous matches do not determine an answer.",
+      "correct": 0,
+      "total": 27,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "The old cue no longer uniquely identifies a correct answer (zero uniquely correct predictions). The 0.2 baseline is random five-choice guessing, not an asserted success rate for abstention. Identical-bank coefficient sweeps provide the stronger control.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "batch-records.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "unique C + squared x-expression inside cube root, log or cube",
+      "subgroup": "batch",
+      "scope": "overall",
+      "strategy": "Apply retained old shape-only shortcut; ambiguous matches do not determine an answer.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "The old cue no longer uniquely identifies a correct answer (zero uniquely correct predictions). The 0.2 baseline is random five-choice guessing, not an asserted success rate for abstention. Identical-bank coefficient sweeps provide the stronger control.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "batch-records.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "unique C + squared x-expression inside cube root, log or cube",
+      "subgroup": "batch_delivered",
+      "scope": "overall",
+      "strategy": "Apply retained old shape-only shortcut; ambiguous matches do not determine an answer.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "The old cue no longer uniquely identifies a correct answer (zero uniquely correct predictions). The 0.2 baseline is random five-choice guessing, not an asserted success rate for abstention. Identical-bank coefficient sweeps provide the stronger control.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "batch-records.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer",
+      "subgroup": "render exact batch / cube_power",
+      "scope": "within_template",
+      "strategy": "Select first radio control in actual UI DOM without reading math.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Descriptive finite batch measurement; singleton subgroups cannot establish a reliable family rule. UI hashes task/field/answer identities, so authored array order is not a live position guarantee. Baseline is uniform five-choice guessing. No all-batch fixed-position cue observed.",
+      "sample_refs": [
+        "ui-position-results.json",
+        "batch-records.json",
+        "render-delivered/rendering.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer",
+      "subgroup": "render exact batch / negative_exp",
+      "scope": "within_template",
+      "strategy": "Select first radio control in actual UI DOM without reading math.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Descriptive finite batch measurement; singleton subgroups cannot establish a reliable family rule. UI hashes task/field/answer identities, so authored array order is not a live position guarantee. Baseline is uniform five-choice guessing. No all-batch fixed-position cue observed.",
+      "sample_refs": [
+        "ui-position-results.json",
+        "batch-records.json",
+        "render-delivered/rendering.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer",
+      "subgroup": "render exact batch / reciprocal_cube",
+      "scope": "within_template",
+      "strategy": "Select first radio control in actual UI DOM without reading math.",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Descriptive finite batch measurement; singleton subgroups cannot establish a reliable family rule. UI hashes task/field/answer identities, so authored array order is not a live position guarantee. Baseline is uniform five-choice guessing. No all-batch fixed-position cue observed.",
+      "sample_refs": [
+        "ui-position-results.json",
+        "batch-records.json",
+        "render-delivered/rendering.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer",
+      "subgroup": "render-delivered exact batch / cube_power",
+      "scope": "within_template",
+      "strategy": "Select first radio control in actual UI DOM without reading math.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Descriptive finite batch measurement; singleton subgroups cannot establish a reliable family rule. UI hashes task/field/answer identities, so authored array order is not a live position guarantee. Baseline is uniform five-choice guessing. No all-batch fixed-position cue observed.",
+      "sample_refs": [
+        "ui-position-results.json",
+        "batch-records.json",
+        "render-delivered/rendering.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer",
+      "subgroup": "render-delivered exact batch / negative_exp",
+      "scope": "within_template",
+      "strategy": "Select first radio control in actual UI DOM without reading math.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Descriptive finite batch measurement; singleton subgroups cannot establish a reliable family rule. UI hashes task/field/answer identities, so authored array order is not a live position guarantee. Baseline is uniform five-choice guessing. No all-batch fixed-position cue observed.",
+      "sample_refs": [
+        "ui-position-results.json",
+        "batch-records.json",
+        "render-delivered/rendering.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer",
+      "subgroup": "render-delivered exact batch / reciprocal_cube",
+      "scope": "within_template",
+      "strategy": "Select first radio control in actual UI DOM without reading math.",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Descriptive finite batch measurement; singleton subgroups cannot establish a reliable family rule. UI hashes task/field/answer identities, so authored array order is not a live position guarantee. Baseline is uniform five-choice guessing. No all-batch fixed-position cue observed.",
+      "sample_refs": [
+        "ui-position-results.json",
+        "batch-records.json",
+        "render-delivered/rendering.json"
+      ]
+    },
+    {
+      "cue": "lexicographically first visible expression",
+      "subgroup": "affine_root delivered independent sample",
+      "scope": "within_template",
+      "strategy": "Choose the text-first formula, ignoring the equation.",
+      "correct": 2,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No template has perfect conditional prediction. Baseline 0.2 is uniform five-choice selection. Controlled grids deliberately reuse a seed, so array-position frequencies there are test artifacts; actual UI positions are tested separately.",
+      "sample_refs": [
+        "independent-easy-current.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lexicographically first visible expression",
+      "subgroup": "autonomous_tan delivered independent sample",
+      "scope": "within_template",
+      "strategy": "Choose the text-first formula, ignoring the equation.",
+      "correct": 2,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No template has perfect conditional prediction. Baseline 0.2 is uniform five-choice selection. Controlled grids deliberately reuse a seed, so array-position frequencies there are test artifacts; actual UI positions are tested separately.",
+      "sample_refs": [
+        "independent-easy-current.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lexicographically first visible expression",
+      "subgroup": "cube_power delivered independent sample",
+      "scope": "within_template",
+      "strategy": "Choose the text-first formula, ignoring the equation.",
+      "correct": 1,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No template has perfect conditional prediction. Baseline 0.2 is uniform five-choice selection. Controlled grids deliberately reuse a seed, so array-position frequencies there are test artifacts; actual UI positions are tested separately.",
+      "sample_refs": [
+        "independent-easy-current.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lexicographically first visible expression",
+      "subgroup": "negative_exp delivered independent sample",
+      "scope": "within_template",
+      "strategy": "Choose the text-first formula, ignoring the equation.",
+      "correct": 2,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No template has perfect conditional prediction. Baseline 0.2 is uniform five-choice selection. Controlled grids deliberately reuse a seed, so array-position frequencies there are test artifacts; actual UI positions are tested separately.",
+      "sample_refs": [
+        "independent-easy-current.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "lexicographically first visible expression",
+      "subgroup": "reciprocal_cube delivered independent sample",
+      "scope": "within_template",
+      "strategy": "Choose the text-first formula, ignoring the equation.",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "No template has perfect conditional prediction. Baseline 0.2 is uniform five-choice selection. Controlled grids deliberately reuse a seed, so array-position frequencies there are test artifacts; actual UI positions are tested separately.",
+      "sample_refs": [
+        "independent-easy-current.json",
+        "delivery-independent/accepted.json",
+        "shortcut-results.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "generator parameter rejection and whole-bank equivalence guard",
+      "requested easy difficulty",
+      "shared prepare_records validation/normalization",
+      "captured inventory and within-batch deduplication",
+      "learner history exclusion and weighted within-band selector rules",
+      "actual UI choice ordering and native response grading"
+    ],
+    "sample_refs": [
+      "sampling.json",
+      "delivery-independent/delivery.json",
+      "delivery-batch/delivery.json",
+      "delivery-independent/accepted.json",
+      "delivery-batch/accepted.json",
+      "selection-analysis.json",
+      "ui-position-results.json",
+      "grader-final-results.json"
+    ],
+    "result": "46 raw independent records become 45 after one duplicate; all controlled coefficient cases survive. Actual batch remains 5/5. Unchanged selector uses no template/answer features; positive easy weights preserve reachability. Read-only pipeline, zero database writes."
+  },
+  "limitations": [
+    "Finite focused revision review does not prove absence of every shortcut or certify all authored hard extensions.",
+    "No publication preparation exists. Delivery reproduced read-only at captured inventory basis 5366; future inventory may change duplicates.",
+    "Real learner history, future entity/task IDs and policy weights are unavailable. Selector mechanics examined and reproduced with synthetic IDs; exact live selection/position frequencies are not claimed.",
+    "The five-record batch is not exhaustive family coverage; repeated practice can draw further varied signed cases. Singleton batch template subgroups do not justify a universal predictor.",
+    "One historical generated easy inventory item retains the original shortcut. It was reproduced completely and reported in affected-inventory.json; it is not produced by the current construction, and no database repair was performed."
+  ]
+}

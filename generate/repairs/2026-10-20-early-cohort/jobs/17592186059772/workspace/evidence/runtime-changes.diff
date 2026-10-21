@@ -1,0 +1,470 @@
+--- before/generator.py
++++ after/generator.py
+@@ -3,10 +3,12 @@
+ import argparse
+ import copy
+ from fractions import Fraction
++from functools import lru_cache
+ import hashlib
+ import json
+ import math
+ import random
++from pathlib import Path
+ import uuid
+ 
+ from math_format import checked_math_content, matrix_tex, normalize_prose, normalize_tex
+@@ -14,7 +16,7 @@
+ import hard_ops
+ import moderate_ops
+ 
+-VERSION = '1.2.0'
++VERSION = '1.2.1'
+ KP = {'db_id': 17592186059772, 'id': 'c27a3f3c-77c7-55e9-8714-1f24c4a48063',
+       'title': 'Applying Row Operations To an Augmented Matrix'}
+ SOURCES = {'swap': '926d4b45-89b4-5d26-9733-b0d97c69c160',
+@@ -25,6 +27,11 @@
+ ORDINAL = ('first', 'second', 'third')
+ 
+ 
++@lru_cache(maxsize=1)
++def easy_source_data():
++    return json.loads(Path(__file__).with_name('easy_sources.json').read_text())
++
++
+ def tex(value):
+     x = Fraction(value)
+     if x.denominator == 1:
+@@ -43,7 +50,7 @@
+          'pair': [0, 1], 'letter': 'A'},
+         {'template': 'scale', 'matrix': [[1, 3, 8, -1], [7, 1, -9, 4], [6, -3, 9, 0]],
+          'target': 2, 'factor': '-1/3', 'columns': [0, 1, 2], 'extra_row': 0, 'letter': 'A'},
+-    ]
++    ] + [copy.deepcopy(item['instance']) for item in easy_source_data()]
+ 
+ 
+ def bank(instance):
+@@ -52,6 +59,15 @@
+         return moderate_ops.bank(instance)
+     if instance['template'] in ('swap-add', 'scale-add'):
+         return hard_ops.bank(instance)
++    if instance.get('profile', '').startswith('source:'):
++        item = next((x for x in easy_source_data()
++                     if x['instance']['profile'] == instance['profile']), None)
++        if item is None:
++            raise ValueError('Unknown easy source bank profile')
++        for name in ('template', 'matrix', 'target', 'factor'):
++            if instance[name] != item['instance'][name]:
++                raise ValueError('Source-only bank cannot be used with changed mathematical parameters')
++        return copy.deepcopy(item['bank']), item['correct_index'], item['recipes'][:]
+     m = [[Fraction(x) for x in row] for row in instance['matrix']]
+     if instance['template'] == 'swap':
+         i, j = instance['pair']
+--- before/moderate_sources.json
++++ after/moderate_sources.json
+@@ -206,7 +206,7 @@
+       ":question/id": "00a500f4-f378-5f41-9cd3-c3d0604af452",
+       ":question/math-academy-id": "q-10217",
+       ":question/problem": "Consider the augmented matrix $M,$ given by\n\n$$\nM=\\left[\\begin{array}{ccc|c}1 & 3 & 9 & 1 \\\\ 5 & -1 & 2 & 1 \\\\ 5 & 2 & -1 & 1\\end{array}\\right].\n$$\n\nWhat matrix results from carrying out the row operation ${R}_{2}:={R}_{2}+(-1)\\cdot {R}_{3}$ on $M?$",
+-      ":question/worked-solution": "The operation ${R}_{2}:={R}_{2}+(-1)\\cdot {R}_{3}$ means that we need to add $-1$ times the third row to the second row.\n\nApplying this row operation, we obtain the following:\n\n$$\n\\begin{aligned}M & =\\left[\\begin{array}{ccc|c}1 & 3 & 9 & 1 \\\\ 5 & -1 & 2 & 1 \\\\ 5 & 2 & -1 & 1\\end{array}\\right]\\,{R}_{2}:={R}_{2}+(-1)\\cdot {R}_{3} \\\\  & \u223c\\left[\\begin{array}{ccc|c}1 & 3 & 9 & 1 \\\\ 5+(-1)(5) & -1+(-1)(2) & 2+(-1)(-1) & 1+(-1)(1) \\\\ 5 & 2 & -1 & 1\\end{array}\\right] \\\\  & \u223c\\left[\\begin{array}{ccc|c}1 & 3 & 9 & 1 \\\\ 0 & -3 & 3 & 0 \\\\ 5 & 2 & -1 & 1\\end{array}\\right]\\end{aligned}\n$$"
++      ":question/worked-solution": "The operation ${R}_{2}:={R}_{2}+(-1)\\cdot {R}_{3}$ means that we need to add $-1$ times the third row to the second row.\n\nApplying this row operation, we obtain the following:\n\n$$\n\\begin{aligned}M & =\\left[\\begin{array}{ccc|c}1 & 3 & 9 & 1 \\\\ 5 & -1 & 2 & 1 \\\\ 5 & 2 & -1 & 1\\end{array}\\right]\\,{R}_{2}:={R}_{2}+(-1)\\cdot {R}_{3} \\\\  & ∼\\left[\\begin{array}{ccc|c}1 & 3 & 9 & 1 \\\\ 5+(-1)(5) & -1+(-1)(2) & 2+(-1)(-1) & 1+(-1)(1) \\\\ 5 & 2 & -1 & 1\\end{array}\\right] \\\\  & ∼\\left[\\begin{array}{ccc|c}1 & 3 & 9 & 1 \\\\ 0 & -3 & 3 & 0 \\\\ 5 & 2 & -1 & 1\\end{array}\\right]\\end{aligned}\n$$"
+     }
+   },
+   {
+@@ -416,7 +416,7 @@
+       ":question/id": "7de40719-e1b7-5230-a137-1dc3c55de0ef",
+       ":question/math-academy-id": "q-72763",
+       ":question/problem": "Consider the augmented matrix $M,$ given by\n\n$$\nM=\\left[\\begin{array}{ccc|c}1 & 0 & 2 & 3 \\\\ 0 & -2 & 1 & 4 \\\\ 1 & -1 & 1 & 2\\end{array}\\right].\n$$\n\nWhat matrix results from carrying out the row operation ${R}_{3}:={R}_{3}+(-1)\\cdot {R}_{1}$ on $M?$",
+-      ":question/worked-solution": "The operation ${R}_{3}:={R}_{3}+(-1)\\cdot {R}_{1}$ means that we need to add $-1$ times the first row to the third row.\n\nApplying this row operation, we obtain the following:\n\n$$\n\\begin{aligned}M & =\\left[\\begin{array}{ccc|c}1 & 0 & 2 & 3 \\\\ 0 & -2 & 1 & 4 \\\\ 1 & -1 & 1 & 2\\end{array}\\right]\\,{R}_{3}:={R}_{3}+(-1)\\cdot {R}_{1} \\\\  & \u223c\\left[\\begin{array}{ccc|c}1 & 0 & 2 & 3 \\\\ 0 & -2 & 1 & 4 \\\\ 1+(-1)(1) & -1+(-1)(0) & 1+(-1)(2) & 2+(-1)(3)\\end{array}\\right] \\\\  & \u223c\\left[\\begin{array}{ccc|c}1 & 0 & 2 & 3 \\\\ 0 & -2 & 1 & 4 \\\\ 0 & -1 & -1 & -1\\end{array}\\right]\\end{aligned}\n$$"
++      ":question/worked-solution": "The operation ${R}_{3}:={R}_{3}+(-1)\\cdot {R}_{1}$ means that we need to add $-1$ times the first row to the third row.\n\nApplying this row operation, we obtain the following:\n\n$$\n\\begin{aligned}M & =\\left[\\begin{array}{ccc|c}1 & 0 & 2 & 3 \\\\ 0 & -2 & 1 & 4 \\\\ 1 & -1 & 1 & 2\\end{array}\\right]\\,{R}_{3}:={R}_{3}+(-1)\\cdot {R}_{1} \\\\  & ∼\\left[\\begin{array}{ccc|c}1 & 0 & 2 & 3 \\\\ 0 & -2 & 1 & 4 \\\\ 1+(-1)(1) & -1+(-1)(0) & 1+(-1)(2) & 2+(-1)(3)\\end{array}\\right] \\\\  & ∼\\left[\\begin{array}{ccc|c}1 & 0 & 2 & 3 \\\\ 0 & -2 & 1 & 4 \\\\ 0 & -1 & -1 & -1\\end{array}\\right]\\end{aligned}\n$$"
+     }
+   },
+   {
+@@ -578,7 +578,7 @@
+       ":question/id": "7e529998-60b8-53c0-bae5-50351fb55c46",
+       ":question/math-academy-id": "q-72757",
+       ":question/problem": "Consider the augmented matrix $T,$ given by\n\n$$\nT=\\left[\\begin{array}{cc|c}1 & 3 & 2 \\\\ -2 & -2 & 1\\end{array}\\right].\n$$\n\nWhat matrix results from carrying out the row operation ${R}_{2}:={R}_{2}+2{R}_{1}$ on $T?$",
+-      ":question/worked-solution": "The operation ${R}_{2}:={R}_{2}+2{R}_{1}$ means that we need to add $2$ times the first row to the second row. \n\nApplying this row operation, we obtain the following:  \n\n$$\n\\begin{aligned}T & =\\left[\\begin{array}{cc|c}1 & 3 & 2 \\\\ -2 & -2 & 1\\end{array}\\right]\\,{R}_{2}:={R}_{2}+2\\cdot {R}_{1} \\\\  & \u223c\\left[\\begin{array}{cc|c}1 & 3 & 2 \\\\ -2+(2)(1) & -2+(2)(3) & 1+(2)(2)\\end{array}\\right] \\\\  & \u223c\\left[\\begin{array}{cc|c}1 & 3 & 2 \\\\ 0 & 4 & 5\\end{array}\\right]\\end{aligned}\n$$"
++      ":question/worked-solution": "The operation ${R}_{2}:={R}_{2}+2{R}_{1}$ means that we need to add $2$ times the first row to the second row. \n\nApplying this row operation, we obtain the following:  \n\n$$\n\\begin{aligned}T & =\\left[\\begin{array}{cc|c}1 & 3 & 2 \\\\ -2 & -2 & 1\\end{array}\\right]\\,{R}_{2}:={R}_{2}+2\\cdot {R}_{1} \\\\  & ∼\\left[\\begin{array}{cc|c}1 & 3 & 2 \\\\ -2+(2)(1) & -2+(2)(3) & 1+(2)(2)\\end{array}\\right] \\\\  & ∼\\left[\\begin{array}{cc|c}1 & 3 & 2 \\\\ 0 & 4 & 5\\end{array}\\right]\\end{aligned}\n$$"
+     }
+   },
+   {
+@@ -788,7 +788,7 @@
+       ":question/id": "4f1ba7f0-e4f6-511d-875d-abce33676c37",
+       ":question/math-academy-id": "q-72760",
+       ":question/problem": "Consider the augmented matrix $X,$ given by\n\n$$\nX=\\left[\\begin{array}{ccc|c}1 & 3 & 2 & 1 \\\\ 1 & 5 & -1 & 2 \\\\ 3 & 4 & -2 & 3\\end{array}\\right].\n$$\n\nWhat matrix results from carrying out the row operation ${R}_{2}:={R}_{2}+(-1)\\cdot {R}_{1}$ on $X?$",
+-      ":question/worked-solution": "The operation ${R}_{2}:={R}_{2}+(-1)\\cdot {R}_{1}$ means that we need to add $-1$ times the first row to the second row. \n\nApplying this row operation, we obtain the following:\n\n$$\n\\begin{aligned}X & =\\left[\\begin{array}{ccc|c}1 & 3 & 2 & 1 \\\\ 1 & 5 & -1 & 2 \\\\ 3 & 4 & -2 & 3\\end{array}\\right]\\,{R}_{2}:={R}_{2}+(-1)\\cdot {R}_{1} \\\\  & \u223c\\left[\\begin{array}{ccc|c}1 & 3 & 2 & 1 \\\\ 1+(-1)(1) & 5+(-1)(3) & -1+(-1)(2) & 2+(-1)(1) \\\\ 3 & 4 & -2 & 3\\end{array}\\right] \\\\  & \u223c\\left[\\begin{array}{ccc|c}1 & 3 & 2 & 1 \\\\ 0 & 2 & -3 & 1 \\\\ 3 & 4 & -2 & 3\\end{array}\\right]\\end{aligned}\n$$"
++      ":question/worked-solution": "The operation ${R}_{2}:={R}_{2}+(-1)\\cdot {R}_{1}$ means that we need to add $-1$ times the first row to the second row. \n\nApplying this row operation, we obtain the following:\n\n$$\n\\begin{aligned}X & =\\left[\\begin{array}{ccc|c}1 & 3 & 2 & 1 \\\\ 1 & 5 & -1 & 2 \\\\ 3 & 4 & -2 & 3\\end{array}\\right]\\,{R}_{2}:={R}_{2}+(-1)\\cdot {R}_{1} \\\\  & ∼\\left[\\begin{array}{ccc|c}1 & 3 & 2 & 1 \\\\ 1+(-1)(1) & 5+(-1)(3) & -1+(-1)(2) & 2+(-1)(1) \\\\ 3 & 4 & -2 & 3\\end{array}\\right] \\\\  & ∼\\left[\\begin{array}{ccc|c}1 & 3 & 2 & 1 \\\\ 0 & 2 & -3 & 1 \\\\ 3 & 4 & -2 & 3\\end{array}\\right]\\end{aligned}\n$$"
+     }
+   },
+   {
+@@ -998,7 +998,169 @@
+       ":question/id": "2facacda-0611-5507-a35e-091ce7069bfa",
+       ":question/math-academy-id": "q-72781",
+       ":question/problem": "Consider the augmented matrix $N,$ given by\n\n$$\nN=\\left[\\begin{array}{ccc|c}1 & -2 & 1 & -1 \\\\ 2 & 1 & 2 & 3 \\\\ 7 & -1 & 3 & 1\\end{array}\\right].\n$$\n\nWhat matrix results from carrying out the row operation ${R}_{2}:={R}_{2}+(-2)\\cdot {R}_{1}$ on $N?$",
+-      ":question/worked-solution": "The operation ${R}_{2}:={R}_{2}+(-2)\\cdot {R}_{1}$ means that we need to add $-2$ times the first row to the second row.\n\nApplying this row operation, we obtain the following:\n\n$$\n\\begin{aligned}N & =\\left[\\begin{array}{ccc|c}1 & -2 & 1 & -1 \\\\ 2 & 1 & 2 & 3 \\\\ 7 & -1 & 3 & 1\\end{array}\\right]\\,{R}_{2}:={R}_{2}+(-2)\\cdot {R}_{1} \\\\  & \u223c\\left[\\begin{array}{ccc|c}1 & -2 & 1 & -1 \\\\ 2+(-2)(1) & 1+(-2)(-2) & 2+(-2)(1) & 3+(-2)(-1) \\\\ 7 & -1 & 3 & 1\\end{array}\\right] \\\\  & \u223c\\left[\\begin{array}{ccc|c}1 & -2 & 1 & -1 \\\\ 0 & 5 & 0 & 5 \\\\ 7 & -1 & 3 & 1\\end{array}\\right]\\end{aligned}\n$$"
++      ":question/worked-solution": "The operation ${R}_{2}:={R}_{2}+(-2)\\cdot {R}_{1}$ means that we need to add $-2$ times the first row to the second row.\n\nApplying this row operation, we obtain the following:\n\n$$\n\\begin{aligned}N & =\\left[\\begin{array}{ccc|c}1 & -2 & 1 & -1 \\\\ 2 & 1 & 2 & 3 \\\\ 7 & -1 & 3 & 1\\end{array}\\right]\\,{R}_{2}:={R}_{2}+(-2)\\cdot {R}_{1} \\\\  & ∼\\left[\\begin{array}{ccc|c}1 & -2 & 1 & -1 \\\\ 2+(-2)(1) & 1+(-2)(-2) & 2+(-2)(1) & 3+(-2)(-1) \\\\ 7 & -1 & 3 & 1\\end{array}\\right] \\\\  & ∼\\left[\\begin{array}{ccc|c}1 & -2 & 1 & -1 \\\\ 0 & 5 & 0 & 5 \\\\ 7 & -1 & 3 & 1\\end{array}\\right]\\end{aligned}\n$$"
++    }
++  },
++  {
++    "instance": {
++      "template": "add",
++      "matrix": [
++        [
++          1,
++          -1,
++          2
++        ],
++        [
++          3,
++          -4,
++          4
++        ]
++      ],
++      "target": 1,
++      "donor": 0,
++      "coefficient": -3,
++      "letter": "B",
++      "profile": "source:337ae2e1-4641-5c8b-9b2a-9435340f0134"
++    },
++    "bank": [
++      [
++        [
++          1,
++          -1,
++          2
++        ],
++        [
++          0,
++          -1,
++          2
++        ]
++      ],
++      [
++        [
++          -8,
++          -13,
++          -10
++        ],
++        [
++          3,
++          -4,
++          4
++        ]
++      ],
++      [
++        [
++          1,
++          -1,
++          2
++        ],
++        [
++          0,
++          -1,
++          -2
++        ]
++      ],
++      [
++        [
++          1,
++          -1,
++          2
++        ],
++        [
++          0,
++          1,
++          -3
++        ]
++      ],
++      [
++        [
++          1,
++          -1,
++          2
++        ],
++        [
++          0,
++          1,
++          -10
++        ]
++      ]
++    ],
++    "correct_index": 2,
++    "recipes": [
++      "observed-positive-final-constant",
++      "observed-wrong-row-compound-signs",
++      "correct",
++      "observed-compound-entry-pattern-1",
++      "observed-compound-entry-pattern-2"
++    ],
++    "source_question": {
++      ":db/id": 17592186639186,
++      ":question/answer-fields": [
++        {
++          ":answer-field/choices": [
++            {
++              ":answer/id": "0930acbc-df69-576b-87d7-072b49518f33",
++              ":answer/type": {
++                ":db/ident": ":answer.type/math"
++              },
++              ":answer/value": "\\begin{bmatrix}1 & -1 & 2 \\\\ 0 & -1 & 2\\end{bmatrix}",
++              ":db/id": 17592186638644
++            },
++            {
++              ":answer/id": "28a55372-d2ab-52c0-8679-7ad03f1b045a",
++              ":answer/type": {
++                ":db/ident": ":answer.type/math"
++              },
++              ":answer/value": "\\begin{bmatrix}-8 & -13 & -10 \\\\ 3 & -4 & 4\\end{bmatrix}",
++              ":db/id": 17592186638704
++            },
++            {
++              ":answer/id": "422b4cfe-a8a7-53d5-a963-9fa48b739b46",
++              ":answer/type": {
++                ":db/ident": ":answer.type/math"
++              },
++              ":answer/value": "\\begin{bmatrix}1 & -1 & 2 \\\\ 0 & -1 & -2\\end{bmatrix}",
++              ":db/id": 17592186638745
++            },
++            {
++              ":answer/id": "44c56208-7cf8-5248-84c1-731af46517d0",
++              ":answer/type": {
++                ":db/ident": ":answer.type/math"
++              },
++              ":answer/value": "\\begin{bmatrix}1 & -1 & 2 \\\\ 0 & 1 & -3\\end{bmatrix}",
++              ":db/id": 17592186638749
++            },
++            {
++              ":answer/id": "ec58bdfe-a4a4-539a-ac5d-3e739dd3dfb6",
++              ":answer/type": {
++                ":db/ident": ":answer.type/math"
++              },
++              ":answer/value": "\\begin{bmatrix}1 & -1 & 2 \\\\ 0 & 1 & -10\\end{bmatrix}",
++              ":db/id": 17592186639038
++            }
++          ],
++          ":answer-field/correct": {
++            ":answer/id": "422b4cfe-a8a7-53d5-a963-9fa48b739b46",
++            ":answer/type": {
++              ":db/ident": ":answer.type/math"
++            },
++            ":answer/value": "\\begin{bmatrix}1 & -1 & 2 \\\\ 0 & -1 & -2\\end{bmatrix}",
++            ":db/id": 17592186638745
++          },
++          ":answer-field/id": "c5cb001e-150b-5b43-9a7e-767211fab1fa",
++          ":answer-field/key": "selection",
++          ":answer-field/type": {
++            ":db/ident": ":answer-field.type/radio"
++          },
++          ":db/id": 17592186639143
++        }
++      ],
++      ":question/difficulty": {
++        ":db/ident": ":question.difficulty/moderate"
++      },
++      ":question/id": "337ae2e1-4641-5c8b-9b2a-9435340f0134",
++      ":question/math-academy-id": "q-72747",
++      ":question/problem": "Consider the augmented matrix $B,$ given by\n\n$$\nB=\\begin{bmatrix}1 & -1 & 2 \\\\ 3 & -4 & 4\\end{bmatrix}.\n$$\n\nWhat matrix results from carrying out the row operation ${R}_{2}:={R}_{2}+(-3)\\cdot {R}_{1}$ on $B?$",
++      ":question/worked-solution": "The operation ${R}_{2}:={R}_{2}+(-3)\\cdot {R}_{1}$ means that we need to add $-3$ times the first row to the second row. \n\nApplying this row operation, we obtain the following:\n\n$$\n\\begin{aligned}B & =\\begin{bmatrix}1 & -1 & 2 \\\\ 3 & -4 & 4\\end{bmatrix}\\,{R}_{2}:={R}_{2}+(-3)\\cdot {R}_{1} \\\\  & ∼\\begin{bmatrix}1 & -1 & 2 \\\\ 3+(-3)(1) & -4+(-3)(-1) & 4+(-3)(2)\\end{bmatrix} \\\\  & ∼\\begin{bmatrix}1 & -1 & 2 \\\\ 0 & -1 & -2\\end{bmatrix}\\end{aligned}\n$$"
+     }
+   }
+ ]
+--- before/easy_sources.json
++++ after/easy_sources.json
+@@ -0,0 +1,181 @@
++[
++  {
++    "instance": {
++      "template": "scale",
++      "matrix": [
++        [
++          1,
++          2,
++          3
++        ],
++        [
++          3,
++          4,
++          5
++        ],
++        [
++          4,
++          6,
++          7
++        ]
++      ],
++      "target": 0,
++      "factor": "2",
++      "letter": "A",
++      "profile": "source:afe0707b-0259-50d7-a719-7a8d24334500"
++    },
++    "bank": [
++      [
++        [
++          2,
++          2,
++          3
++        ],
++        [
++          6,
++          4,
++          5
++        ],
++        [
++          8,
++          6,
++          7
++        ]
++      ],
++      [
++        [
++          2,
++          2,
++          3
++        ],
++        [
++          3,
++          4,
++          5
++        ],
++        [
++          4,
++          6,
++          7
++        ]
++      ],
++      [
++        [
++          1,
++          4,
++          6
++        ],
++        [
++          6,
++          8,
++          10
++        ],
++        [
++          8,
++          12,
++          14
++        ]
++      ],
++      [
++        [
++          1,
++          4,
++          6
++        ],
++        [
++          1,
++          12,
++          15
++        ],
++        [
++          1,
++          24,
++          28
++        ]
++      ],
++      [
++        [
++          2,
++          4,
++          6
++        ],
++        [
++          3,
++          4,
++          5
++        ],
++        [
++          4,
++          6,
++          7
++        ]
++      ]
++    ],
++    "correct_index": 4,
++    "recipes": [
++      "column-1",
++      "cell-1-1",
++      "all-except-cell-1-1",
++      "observed-compound-entry-pattern",
++      "correct"
++    ],
++    "source_question": {
++      ":db/id": 17592186059963,
++      ":question/answer-fields": [
++        {
++          ":answer-field/choices": [
++            {
++              ":answer/id": "0df38360-a680-533c-85cb-cbf6cc1b956d",
++              ":answer/type": {
++                ":db/ident": ":answer.type/math"
++              },
++              ":answer/value": "\\left[\\begin{array}{cc|c}2 & 2 & 3 \\\\ 6 & 4 & 5 \\\\ 8 & 6 & 7\\end{array}\\right]",
++              ":db/id": 17592186056141
++            },
++            {
++              ":answer/id": "5fc99020-ce13-5c21-9960-e34814529660",
++              ":answer/type": {
++                ":db/ident": ":answer.type/math"
++              },
++              ":answer/value": "\\left[\\begin{array}{cc|c}2 & 2 & 3 \\\\ 3 & 4 & 5 \\\\ 4 & 6 & 7\\end{array}\\right]",
++              ":db/id": 17592186056142
++            },
++            {
++              ":answer/id": "85f1ad10-af76-57c6-940f-54720a66b04e",
++              ":answer/type": {
++                ":db/ident": ":answer.type/math"
++              },
++              ":answer/value": "\\left[\\begin{array}{cc|c}1 & 4 & 6 \\\\ 6 & 8 & 10 \\\\ 8 & 12 & 14\\end{array}\\right]",
++              ":db/id": 17592186056138
++            },
++            {
++              ":answer/id": "dc6b2671-bf35-5e2b-8ae2-6ed3f7c4f920",
++              ":answer/type": {
++                ":db/ident": ":answer.type/math"
++              },
++              ":answer/value": "\\left[\\begin{array}{cc|c}1 & 4 & 6 \\\\ 1 & 12 & 15 \\\\ 1 & 24 & 28\\end{array}\\right]",
++              ":db/id": 17592186056139
++            },
++            {
++              ":answer/id": "e2588b59-90ef-5467-875e-c92359e99c71",
++              ":answer/type": {
++                ":db/ident": ":answer.type/math"
++              },
++              ":answer/value": "\\left[\\begin{array}{cc|c}2 & 4 & 6 \\\\ 3 & 4 & 5 \\\\ 4 & 6 & 7\\end{array}\\right]",
++              ":db/id": 17592186056140
++            }
++          ],
++          ":answer-field/id": "7e5993af-0e10-5818-81f9-6717646c2956",
++          ":answer-field/key": "selection",
++          ":answer-field/type": {
++            ":db/ident": ":answer-field.type/radio"
++          },
++          ":db/id": 17592186056137
++        }
++      ],
++      ":question/id": "afe0707b-0259-50d7-a719-7a8d24334500",
++      ":question/math-academy-id": "q-10252",
++      ":question/problem": "Consider the augmented matrix $A$, given by\n$$\nA = \\left[\\begin{array}{cc|c}1 & 2 & 3 \\\\ 3 & 4 & 5 \\\\ 4 & 6 & 7\\end{array}\\right]\n$$.\nWhat matrix results from carrying out the row operation $R_{1}:=2R_{1}$ on $A$?"
++    }
++  }
++]
+--- before/package.json
++++ after/package.json
+@@ -5,11 +5,12 @@
+     "hard_ops.py",
+     "math_format.py",
+     "moderate_ops.py",
+-    "moderate_sources.json"
++    "moderate_sources.json",
++    "easy_sources.json"
+   ],
+   "dependencies": {
+     "packages": {},
+     "python": "3.13.5"
+   },
+   "default_difficulty": "easy"
+-}+}

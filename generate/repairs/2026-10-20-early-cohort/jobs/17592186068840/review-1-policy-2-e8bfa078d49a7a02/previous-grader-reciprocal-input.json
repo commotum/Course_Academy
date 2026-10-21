@@ -1,0 +1,67 @@
+[
+  {
+    "label": "source valid reciprocal exponential",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186068840,
+        "id": "16f0876a-33f0-5c6b-9195-8b9a0a550655",
+        "title": "Finding a General Solution in Explicit Form"
+      },
+      "question": {
+        ":question/id": "7864d86e-313c-5481-ace8-8714cdaa04bc",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/problem": "Find the general solution to the differential equation in part 1 for $T\\ne 25.$\n\n                            \n                                    \n                                        \n                                            \n\n                                                \n\n                                        \n                                        \n                                        \n\n                                    \n                                \n                                    \n                                        \n                                        $T\\,=\\,25+K\\cdot \\,$\n\n                                    \n                                \n                                    \n                            \n                                        {{field-1}}                \n                                    \n                                \n                                    \n                                        \n                                        \n$\\,\\,$where $K$ is an arbitrary constant.",
+        ":question/worked-solution": "To find the general solution, we separate variables and integrate both sides with respect to $t,$ as follows:\n\n$$\n\\begin{aligned}\\frac{\\text{d}T}{\\text{d}t} & =-0.03(T-25) \\\\ \\frac{1}{T-25}\\cdot \\frac{\\text{d}T}{\\text{d}t} & =-0.03 \\\\ \\int \\frac{1}{T-25}\\cdot \\frac{\\text{d}T}{\\text{d}t}\\,\\text{d}t & =\\int -0.03\\,\\text{d}t \\\\ \\int \\frac{\\text{d}T}{T-25} & =-0.03\\int \\,\\text{d}t \\\\ \\operatorname{ln}\u2061|T-25| & =-0.03t+C\\end{aligned}\n$$\n\nThis is a perfectly valid general solution. However, if we want to write $T=T(t)$ explicitly, then we can solve for $T.$ This gives\n\n$$\n\\begin{aligned}\\operatorname{ln}\u2061|T-25| & =-0.03t+C \\\\ |T-25| & ={e}^{-0.03t+C} \\\\ |T-25| & =K\\,{e}^{-0.03t}\\end{aligned}\n$$\n\nwhere $K={e}^{C}$ is an arbitrary positive constant.\n\nWe can drop the absolute value bars by allowing $K$ to be both positive and negative. Therefore, the most general solution is\n\n$$\n\\begin{aligned}T & =25+K\\,{e}^{-0.03t}.\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "dc3c5c38-e565-53b6-b972-7ddb87955663",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "4b11f1e7-b47d-5bd3-9c81-9dd79a50de54",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "{e}^{-0.03t}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "4b11f1e7-b47d-5bd3-9c81-9dd79a50de54"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "explicit-separable-v1",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+        "template": "temperature_blank",
+        "seed": 71021,
+        "parameters": {
+          "rate": "0.03",
+          "ambient": 25
+        },
+        "bank_profile": "observed_temperature_blank",
+        "source_id": 17592186235519,
+        "authored_level": false,
+        "mathematical_fingerprint": "ba3428a4eef73ef2aa7171ffdc0a914282fe996d10bac743537350cdafdde306",
+        "content_hash": "9bb0f94fab7053905ba6efe962d166a2cc110fd223623fffa613ace400255d6a",
+        "domain": "temperature",
+        "observed_bank_anomalies_retained": true,
+        "sympy_version": "1.14.0"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "1/e^{0.03t}",
+        "expected": "accepted",
+        "purpose": "equivalent nonzero factor; no source syntax restriction"
+      },
+      {
+        "submitted": "e^{-0.03t}",
+        "expected": "accepted",
+        "purpose": "control"
+      }
+    ]
+  }
+]

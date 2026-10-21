@@ -1,0 +1,147 @@
+{
+  "verdict": "revise",
+  "summary": "Complete source bank q-72858 is missing and cannot replay or generate. Tested available content and the exact five-item batch passed math, native grading, rendering and packaging; no tested universal batch shortcut was found.",
+  "source_analysis": {
+    "skill": "Identify which of five elementary row operations changes a specified entry of a 3 by 3 integer coefficient matrix to zero.",
+    "reasoning_steps": [
+      "Read target row and column from a_ij.",
+      "Evaluate candidate row operations, rejecting operations that leave a nonzero target unchanged or do not cancel it.",
+      "Select the unique listed successful operation; worked solution applies that operation to the whole matrix."
+    ],
+    "invariants": [
+      "One elementary row operation; no multi-step elimination or solving a system.",
+      "Nonzero scaling and distinct rows for row addition.",
+      "Exactly one valid listed choice achieves the stated target.",
+      "Prompt, correct bank entry, full-row arithmetic and explanation agree."
+    ],
+    "permitted_variations": [
+      "All target coordinates and donor/recipient assignments may vary if prompt and dependencies follow.",
+      "Signed small integer entries, integer and simple fractional cancellation factors, matrix letter and option order may vary.",
+      "The successful listed donor and factor must be determined by entries rather than fixed labels or template signatures.",
+      "Distinct candidate row-addition options can exchange correctness when the relevant matrix entry changes while the rest stays fixed.",
+      "Non-target columns and matrix name are irrelevant to the selected operation and may change without changing the response."
+    ],
+    "source_refs": [
+      "9ec5da5b-045b-5f9b-81d1-dca84ed41202 (q-20388)",
+      "45680acf-db20-5a6f-9386-10731c57b3e2 (q-20392)",
+      "815f9e6c-522e-56ab-89a5-4e0b1a29d889 (q-130283)",
+      "a2315259-d90e-5796-af9b-5986097263bc (q-130285)",
+      "541b14bb-d8ea-55de-b269-54fae6c76be2 (q-130301)",
+      "cc281877-0bbe-5bdb-b4ec-bdbce5eb8a4f (q-130304)",
+      "24e16efc-bc74-58ba-b952-74e30fe541c3 (q-20241)",
+      "8272f6cc-17eb-50ed-8172-2168502e8c44 (q-20386)",
+      "4620d00b-e63c-5bb6-90cb-233c01e9e5ab (q-72857)",
+      "d64eac74-31dd-5514-b904-fdc9f48abd1b (q-72860)",
+      "372c1499-bf5a-558e-ad8a-af28e6ae7898 (q-72858)",
+      "f8417bbc-b748-519b-a997-fbb4aed755eb (e-4696)",
+      "tutorial 7aa753a7-1450-53dd-8e61-71e07952cecb (3150), lesson step 3df97c2e-febb-5f72-be71-e1d739dbbd92"
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "failed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "source-replay-failures.json",
+        "source-replay-results.json",
+        "capture-fidelity.json",
+        "source-corrections.json",
+        "minimal-failure.json"
+      ],
+      "details": "10/11 supplied question banks replay with all choices and independently correct keys/results. Complete q-72858 is absent from packaged source and raises Unknown source profile. Canonical row arithmetic verified without inventing its missing bank. q-130301 correction and q-20392 inferred completion are supported."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "audit.py",
+        "math-results.json",
+        "source-replay-results.json",
+        "source-corrections.json",
+        "counterfactual-results.json"
+      ],
+      "details": "Exact independent Fraction evaluation verifies unique successful choice and full result matrix for 98 independent samples, all 5 runner items, 5 counterfactuals, and 10 available source replays. Missing profile is a source-coverage failure, not a claim of correct generation."
+    },
+    "variety": {
+      "status": "failed",
+      "evidence_paths": [
+        "coverage.json",
+        "scope-results.json",
+        "shortcut-results.json",
+        "minimal-failure.json"
+      ],
+      "details": "34 winner assignments across 9 sampled banks and all 9 target coordinates observed; all survive delivery. Nevertheless complete supplied q-72858 is unavailable, and q-20392 is replay-only. Required source-bank coverage is incomplete."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "scope-results.json",
+        "independent-samples.json"
+      ],
+      "details": "Represented variations preserve 3x3 matrices, five radio choices, a zero target and one elementary operation. Correct swaps are supported by the lesson and target-column-dependent rule; integer/simple fractional additions preserve the taught skill."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-results.json",
+        "counterfactual-results.json"
+      ],
+      "details": "Actual native grade_field: 21 correct selections accepted, 84 independent distractors rejected, zero unresolved. Includes both relevant/irrelevant counterfactual outcomes and corrected source replays. Free-entry equivalence is inapplicable to this radio contract."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render-records.json",
+        "render/rendering.json",
+        "render-inspection.json",
+        "render/contact-sheet.jpg",
+        "ui-order-results.json"
+      ],
+      "details": "Actual unmodified UI renderer passed all 12 cases; screenshots inspected for matrices, fractions, target indices, answer controls and worked solutions, including controlled pairs and all 5 runner items."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "determinism-results.json",
+        "rejection-results.json",
+        "relocated-records.json",
+        "package-before.json",
+        "package-after.json"
+      ],
+      "details": "Exact installed versions match manifest (Python 3.13.5, sympy 1.14.0, mpmath 1.3.0). Deterministic question replay, repeated batch calls, relocated CLI JSON output and invalid-instance rejection verified. No assets/external-output handling needed; package hashes unchanged."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "decision-validation.json",
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "delivery-batch/delivery.json",
+        "delivery-independent/delivery.json",
+        "selection-results.json",
+        "inventory-review.json"
+      ],
+      "details": "Controlled relevant and irrelevant pairs, conditional probes for every sampled bank, exact-batch probes and post-filter coverage were examined. No tested incidental cue solves the full delivered batch; positive hard-weight selection preserves eligible fresh records. Overall coverage fails because the complete q-72858 bank is missing. Live policy/history and future inventory are not supplied; selection conclusions are conditional on the captured basis and stated rule."
+    }
+  },
+  "findings": [
+    {
+      "kind": "source_fidelity",
+      "description": "The package freezes source_data.json at basis 4571 and omits fully supplied q-72858 (372c1499-bf5a-558e-ad8a-af28e6ae7898) from basis 5360. Its original matrix [[2,1,3],[6,4,3],[1,2,3]], target a23=0, and five-option bank have the unique correct operation R2:=R2-R1, yielding second row [4,3,0]. Both replay and normal generation reject the entire profile as unknown. This is an omitted source family, not an arithmetic defect in the five runner records.",
+      "source_refs": [
+        "372c1499-bf5a-558e-ad8a-af28e6ae7898 (q-72858), complete prompt/bank/key/worked solution",
+        "tutorial 7aa753a7-1450-53dd-8e61-71e07952cecb: R_j:=R_j+kR_i, j!=i",
+        "generate/principles.md: establish fidelity first; complete answer banks"
+      ],
+      "reproduction": "From evidence_root run PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python reproduce_missing_profile.py. generator.replay(\"q-72858\") raises ValueError: Unknown source profile; minimal-failure.json retains exit 1 and traceback. Normal generate(template=\"q-72858\", seed=81703, parameters={\"winner\":0}) also fails, recorded in coverage.json.",
+      "requested_change": "Refresh the packaged source mapping from the supplied capture and retain every complete supported bank, including q-72858; make that profile replayable with its full original bank and eligible for ordinary winner-based sampling. Add the retained failing regression and independently verify its original subtraction key, self-row scaling distractors, coherent row/column permutations and eligible winner changes. Preserve existing profiles and source corrections."
+    }
+  ]
+}

@@ -1,0 +1,118 @@
+{
+  "verdict": "accepted",
+  "summary": "No current defect demonstrated. All eight checks pass, including the exact five-record runner batch. Package files remain unchanged.",
+  "source_analysis": {
+    "skill": "Identify the single elementary row operation transforming one displayed matrix into another.",
+    "reasoning_steps": [
+      "Compare corresponding rows.",
+      "Distinguish swapping, scaling, and row addition.",
+      "Verify every affected entry and select the unique valid operation."
+    ],
+    "invariants": [
+      "One elementary operation on a 3\u00d73 matrix.",
+      "Five-choice radio response with one correct answer.",
+      "Prompt, target matrix, key, and worked solution agree."
+    ],
+    "permitted_variations": [
+      "Operation family, qualifying choice, source and destination rows, and swapped pair.",
+      "Small integer or rational coefficients and matrix entries.",
+      "Matrix labels, row permutations, and answer positions."
+    ],
+    "source_refs": [
+      "a24c9621-793b-5c60-9c47-2b452f0faa2b: compare unchanged rows, then verify row addition.",
+      "b8c55c12-17df-581d-b93b-78d07db8cec0: fractional scaling.",
+      "85e6dfb7-2447-51c4-a184-4a363a6b54d0: row swapping.",
+      "7aa753a7-1450-53dd-8e61-71e07952cecb: lesson definitions of the three elementary operations.",
+      "e2dc9d0e-faaf-52a3-b487-1837ebe01f47 and a2105120-b69b-54ae-a450-1a629e320d19: missing captured keys, solutions, and ratings."
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "source-replay-results.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "source-replays.json",
+        "source-replay-results.json"
+      ],
+      "details": "Ten complete source prompts, solutions, and five-choice banks replay exactly. Incomplete source captures are explicitly documented."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "review.py",
+        "math-results.json",
+        "all-records.json"
+      ],
+      "details": "Exact Fraction arithmetic independently verifies 197 records, all 985 offered operations, solution matrices, final operations, and changed-row explanations."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "sampling-domain.json",
+        "fresh-sample.json",
+        "stage-coverage.json",
+        "rejection-witness.json"
+      ],
+      "details": "All ten complete bank profiles and 48 eligible operation choices are covered and survive delivery filtering. Boundary cases and rejection/resampling were exercised."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "scope-results.json",
+        "controlled-records.json"
+      ],
+      "details": "Variations preserve single-operation identification, moderate arithmetic, and the radio response contract. Conservative numeric sampling limits are documented."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "native-input.json",
+        "native-results.json",
+        "delivered-native-input.json",
+        "delivered-native-results.json"
+      ],
+      "details": "Native grading accepted 197 correct and rejected 788 wrong raw responses; normalized delivery checks accepted 187 and rejected 748. Zero unresolved cases."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-remaining/rendering.json",
+        "render-inspection.json"
+      ],
+      "details": "Eleven actual UI previews pass. Representative screenshots were inspected, including controlled pairs, fractions, swaps, and runner records."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "runtime-results.json",
+        "author-regressions.json",
+        "legacy-fixed-bank-results.json",
+        "package-integrity.json",
+        "inventory-audit.json",
+        "affected-inventory.json",
+        "commands.md"
+      ],
+      "details": "Relocated runtime, exact dependency versions, deterministic replay, and CLI counts pass. Historical failures were reproduced. All 136 package files remain byte-identical."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "action-shortcut-results.json",
+        "stage-coverage.json",
+        "selection-results.json",
+        "batch-delivery/delivery.json"
+      ],
+      "details": "Controlled relevant and irrelevant changes track prompts, solutions, and native grading. All five runner records survive delivery; no incidental shortcut was demonstrated. Selection conclusions explicitly account for unavailable live learner state."
+    }
+  },
+  "findings": []
+}

@@ -1,0 +1,106 @@
+{
+  "manifest": {
+    "entrypoint": "17592186068840.py",
+    "files": [
+      "17592186068840.py",
+      "17592186068840/source.json",
+      "requirements.txt"
+    ],
+    "dependencies": {
+      "python": "3.13.5",
+      "packages": {
+        "sympy": "1.14.0"
+      }
+    },
+    "default_difficulty": "easy"
+  },
+  "runtime": {
+    "python": "3.13.5",
+    "packages": {
+      "sympy": "1.14.0"
+    }
+  },
+  "exact_dependency_match": true,
+  "deterministic": true,
+  "relocation_equal": true,
+  "boundary_rejections": [
+    {
+      "level": "easy",
+      "template": "reciprocal_cube",
+      "parameters": {
+        "a": 0,
+        "h": 0
+      },
+      "outcome": "rejected: signed coefficient palette"
+    },
+    {
+      "level": "easy",
+      "template": "affine_root",
+      "parameters": {
+        "a": 1,
+        "b": 0,
+        "h": 0
+      },
+      "outcome": "rejected: intercept bound"
+    },
+    {
+      "level": "easy",
+      "template": "negative_exp",
+      "parameters": {
+        "a": 1,
+        "h": 9
+      },
+      "outcome": "rejected: h bound"
+    },
+    {
+      "level": "easy",
+      "template": "cube_power",
+      "parameters": {
+        "a": 1,
+        "h": -9
+      },
+      "outcome": "rejected: h bound"
+    },
+    {
+      "level": "easy",
+      "template": "autonomous_tan",
+      "parameters": {
+        "a": 1,
+        "candidates": [
+          1,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "outcome": "rejected: five distinct candidate coefficients including target required"
+    },
+    {
+      "level": "moderate",
+      "template": "reciprocal_blank",
+      "parameters": {
+        "a": 0
+      },
+      "outcome": "rejected: signed coefficient palette"
+    },
+    {
+      "level": "moderate",
+      "template": "context_log_blank",
+      "parameters": {
+        "a": 4
+      },
+      "outcome": "rejected: signed coefficient palette"
+    },
+    {
+      "level": "moderate",
+      "template": "temperature_blank",
+      "parameters": {
+        "rate": "0",
+        "ambient": 25
+      },
+      "outcome": "rejected: temperature bounds"
+    }
+  ],
+  "output_contract": "stdout JSON; no runtime file writes, network, database calls or assets in inspected entrypoint."
+}

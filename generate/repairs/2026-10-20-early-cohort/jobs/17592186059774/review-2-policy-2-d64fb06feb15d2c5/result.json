@@ -1,0 +1,120 @@
+{
+  "verdict": "accepted",
+  "summary": "Both retained defects are resolved. All eight checks pass, including the exact five-item batch. Package files remained unchanged.",
+  "source_analysis": {
+    "skill": "Select the elementary row operation that makes a specified matrix entry zero.",
+    "reasoning_steps": [
+      "Locate the target entry.",
+      "Evaluate candidate operations using the target-column entries.",
+      "Select the unique successful operation and verify its whole-row effect."
+    ],
+    "invariants": [
+      "One elementary operation on a 3\u00d73 matrix.",
+      "Five radio choices with exactly one correct response.",
+      "Prompt, answer and worked transformation agree."
+    ],
+    "permitted_variations": [
+      "Target coordinates, signed entries and coherent row/column permutations.",
+      "Which eligible replacement or swap succeeds.",
+      "Choice order and irrelevant non-target-column entries."
+    ],
+    "source_refs": [
+      "372c1499-bf5a-558e-ad8a-af28e6ae7898 (q-72858)",
+      "541b14bb-d8ea-55de-b269-54fae6c76be2 (q-130301)",
+      "45680acf-db20-5a6f-9386-10731c57b3e2 (q-20392)",
+      "f8417bbc-b748-519b-a997-fbb4aed755eb (e-4696)",
+      "Tutorial 7aa753a7-1450-53dd-8e61-71e07952cecb, step 3df97c2e-febb-5f72-be71-e1d739dbbd92"
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "source-corrections.json",
+      "revision-diff.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay-results.json",
+        "source-replays.json",
+        "preflight-reproduction.json"
+      ],
+      "details": "All eleven complete banks replay. Both retained regressions reproduce their stated failures on old packages and pass current code."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "independent.py",
+        "audit_revision.py",
+        "math-results.json",
+        "delivery-identity-results.json"
+      ],
+      "details": "Independent exact arithmetic verifies unique keys, every candidate operation and complete worked matrices."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "scheduler-results.json",
+        "coverage.json",
+        "fresh-samples.json",
+        "shortcut-results.json"
+      ],
+      "details": "Repeated proposals produce both replacement and swap decisions across ten banks. The exact repeated q-72858 subgroup retains both outcomes."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "scope-results.json"
+      ],
+      "details": "Variations preserve the source response contract, single-operation reasoning and workload."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-results.json",
+        "counterfactual-results.json"
+      ],
+      "details": "Native grading accepted 58 independently verified correct selections and rejected 232 distractors, with no unresolved outcomes."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-inspection.json",
+        "render/contact-sheet.jpg",
+        "ui-order-results.json"
+      ],
+      "details": "Eleven actual-UI renders passed screenshot inspection, covering the exact batch, controlled pairs and fractional notation."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "rejection-results.json",
+        "package-before.json",
+        "package-after.json",
+        "commands.json"
+      ],
+      "details": "Exact dependencies, deterministic replay, relocation and invalid-input rejection pass. Every package file remained unchanged."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "decision-validation.json",
+        "shortcut-results.json",
+        "counterfactual-results.json",
+        "delivery-batch/delivery.json",
+        "delivery-independent/delivery.json",
+        "delivery-retained/delivery.json",
+        "selection-results.json",
+        "inventory-review.json",
+        "affected-inventory.json"
+      ],
+      "details": "Controlled dependencies pass. The prior sole-subtraction shortcut succeeds only 1/2 in the current repeated subgroup. All 32 controls and both five-item pools survive delivery. Captured-inventory and conditional learner-selection limits are documented."
+    }
+  },
+  "findings": []
+}
