@@ -1,17 +1,25 @@
-# Current repair state — pass 270
+# Current state — pass 272
 
-Read latest feedback, all five retained findings and the full history structure (270 events), existing instructional analysis, original source cases and lesson context. Preserve completed runtime repairs and the five-record replacement proposal.
+Preserved runtime and all five declared regressions. Read feedback, retained
+findings, latest history event, instructional account and source context.
+No additional generator construction failure was demonstrated.
 
-First executed regression:
-`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory`
-Exit 1: five captured historical banks remain affected; retained possible learner-history witness scores 64/64 using the sign-extremum shortcut. Evidence: evidence/repair-270/initial-reproduction.json.
+First check: supplied Python with
+`-B checks/batch_regressions.py --finding inventory`.
+Exit 1: five historical banks remain affected; possible-history witness 64/64.
 
-Validation:
-`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/repair-270`
-Exit 1 solely for finding 591f580cadb749294588. Four current-generator regressions pass, including 17 complete practice-source banks, bare-k fractional and zero-root support, within-sign shortcut checks, three finite batches (14/14 delivered), relevant/irrelevant counterfactuals, 35 native grading checks (7 accepted, 28 rejected), dependency pins and relocated seeded CLI. Protected runtime/source/inventory hashes and five staged replacements verify. All generated inventory records were reproduced; none remain untested. Commands and results: evidence/repair-270/{commands,results}.json.
+Then ran supplied Python with
+`-B checks/recheck_status.py --output evidence/repair-272`.
+Exit 1 solely for finding 591f580cadb749294588. Four generator regressions pass:
+17 complete source banks plus canonical replay, zero roots, fractional bare-k,
+shortcut and counterfactual checks, 14/14 delivered records, native grading
+(7 accepted, 28 rejected), relocation and exact dependency pins. Existing
+replacement mapping and protected runtime/input hashes verify. None of the
+generated inventory remains untested. Reinspected retained actual-UI screenshot.
 
-Reinspected evidence/repair-3/render/question-001.png; no clipping or readability defect. Reuse actual-UI render because runtime and replacement inputs are unchanged. Review: evidence/repair-270/visual-review.json.
-
-Next unfinished action: separate inventory remediation of the five generated identities using evidence/repair-3/inventory-repair-proposal.json, fresh inventory capture, then rerun strict regression. This task prohibits those database changes and publication. The current generator cannot rewrite stored banks. Preserve captured records, source identities and acceptance criteria. Do not repeat unchanged author attempts expecting external state to change.
-
-Status remains unsupported. No database, engine, runtime, source, publication or other-job changes. Scope decision and source citations: evidence/repair-270/scope-resolution.md. Retained regressions: repair-regressions.json. Historical records: evidence/generated-records.json; exact affected identities: affected-inventory.json.
+Evidence: evidence/repair-272/{commands,results}.json and outcome.md.
+Status unsupported. Unfinished action: separate inventory remediation using
+evidence/repair-3/inventory-repair-proposal.json, then fresh capture and strict
+recheck. This task prohibits those database changes. Repeating generator edits
+against unchanged stored records cannot resolve that action; retain its failure.
+No runtime, engine, database, publication, image, source or other-job changes.

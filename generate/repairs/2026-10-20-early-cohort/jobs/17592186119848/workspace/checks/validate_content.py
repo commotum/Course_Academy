@@ -87,7 +87,13 @@ def inspect(rec):
 
 def fidelity(old,rec):
     q=rec['question']
-    assert q[':question/problem']==g.normalize_prose(old[':question/problem'])
+    if PATTERN.search(old[':question/problem']):
+        # Source's one overwide display is replaced with independently wrapping
+        # matrices. Prose and every matrix entry are checked separately.
+        assert q[':question/problem'].split('\n\n')[0]==g.normalize_prose(old[':question/problem']).split('\n\n')[0]
+        assert 'matrix-operands' in q[':question/problem']
+    else:
+        assert q[':question/problem']==g.normalize_prose(old[':question/problem'])
     assert q[':question/worked-solution']==g.normalize_prose(old[':question/worked-solution']).replace('coumns','columns')
     assert visible_bank(q)==visible_bank(old)
     assert len(q[':question/answer-fields'])==len(old[':question/answer-fields'])
@@ -106,7 +112,9 @@ def analyze(records):
     groups={}
     for rec in records:
         witness,_=inspect(rec);sid=rec['generation']['bank_profile']
-        key=sid+' / fields='+str(witness['field_count'])
+        bank=visible_bank(rec['question'])
+        excluded=','.join(k for k,m in sorted(bank.items()) if min(len(m),len(m[0]))<witness['target'])
+        key=sid+' / fields='+str(witness['field_count'])+' / excluded='+excluded+' / bank='+rec['generation'].get('choice_profile',sid)
         groups.setdefault(key,[]).append(witness)
     report={}
     for key,rows in groups.items():
@@ -151,6 +159,27 @@ def main():
                 except (AssertionError,StopIteration):pass
                 else:raise AssertionError('stale component accepted '+sid+' '+part)
             counterfactuals.append({'profile':sid,'assignment':list(assignment),'before_question':a['question'][':question/id'],'after_question':b['question'][':question/id'],'before':aw['truth'],'after':bw['truth'],'unchanged_excluded_matrices':excluded,'stale_solution_and_key_rejected':True})
+    # Irrelevant numeric scaling must preserve the independently derived response.
+    scaling=[]
+    for sid in ('q-139965','q-34824','q-79568','q-35283'):
+        rec=next(r for r in records if r['generation']['bank_profile']==sid)
+        p=dict(rec['generation']['parameters'],scale=1)
+        alt=g.generate('easy',0,sid,p)
+        rw,_=inspect(rec);aw,c=inspect(alt)
+        assert rw['truth']==aw['truth'] and rw['ranks']==aw['ranks']
+        assert visible_bank(rec['question'])!=visible_bank(alt['question'])
+        assert rec['question'][':question/id']!=alt['question'][':question/id'], 'Different visible matrices share an identity'
+        native.append({'label':'irrelevant scale '+sid,'record':alt,'checks':c})
+        scaling.append({'profile':sid,'scale_before':1,'scale_after':2,'response_preserved':True,'independent_ranks_preserved':True})
+    for level in ('moderate','hard','unclassified'):
+        try:g.batch(level,1)
+        except ValueError:pass
+        else:raise AssertionError('unsupported difficulty admitted')
+    capacity=len({r['generation']['mathematical_fingerprint'] for r in records})
+    try:g.batch('easy',capacity+1)
+    except ValueError:pass
+    else:raise AssertionError('semantic capacity limit ignored')
+    assert len(g.batch('easy',capacity,7))==capacity
     before=analyze(records)
     save('catalog.json',records);save('source-replay-records.json',replays);save('grader-input.json',native)
     result=subprocess.run([str(REPO/'generate/runs/current/check-engine'),str(E/'grader-input.json'),str(E/'grading.json')],capture_output=True,text=True)
@@ -158,6 +187,7 @@ def main():
     grading=json.loads((E/'grading.json').read_text());assert grading['documented_unresolved_checks']==0
     save('source-replay.json',{'passed':True,'questions':len(replays),'complete_banks':sum(len(x['question'][':question/answer-fields']) for x in replays),'choices':choice_count,'excluded_incomplete':['q-34807','q-35270'],'normal_sampling_extension':'q-79568 adds source-family None option; exact replay retains its three fields'})
     save('counterfactuals.json',counterfactuals)
+    save('scale-invariance.json',scaling)
     save('coverage.json',{'per_profile':coverage,'catalog_presentations':len(records),'semantic_structures':len({r['generation']['mathematical_fingerprint'] for r in records}),'role_permutations_count_as_extra_semantic_capacity':False})
     save('pedagogical-variation-before.json',before)
     # Native grading checks counterfactuals above in the same batch, all choices.

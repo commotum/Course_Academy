@@ -92,3 +92,28 @@ integers; no image assets are generated. Both scale values are verified to give
 the same response with different numeric evidence. Scale 2 is a finite policy
 for this captured inventory, not a claim that future inventories cannot exhaust
 this catalog.
+
+Visual inspection found that the source's single display containing three
+matrices clips the third matrix in the real learning card. Prompt matrices in
+the subset-radio family now use shared `matrix_operands` containers, which wrap
+each labeled matrix independently. The prose, matrix entries, complete banks,
+answers and worked solutions are unchanged by this presentation correction.
+Replay compares matrix content and introductory prose separately from this
+necessary layout normalization. The first render is retained as failure evidence;
+its second screenshot is superseded by evidence/render-subset/question-001.png.
+
+A stronger probe conditions on the dimension-excluded labels as well as the source
+profile. It showed that role reassignment alone left q-139965's original bank
+forcing B when C was excluded, or C when B was excluded. Normal sampling now
+chooses a **complete compatible observed bank**: the original q-139965 bank when
+B/C are eligible, and q-79562's same-family bank with labels mapped to the two
+eligible candidates and the excluded candidate otherwise. This retains five
+choices and the same response method while making both eligible singletons and
+their pair possible in every arrangement. Exact q-139965 source replay still
+preserves its original bank at original parameters. Metadata identifies the
+selected choice profile; banks are not pooled piecemeal. Normal sampling exercises
+both bank profiles, all six role assignments, and all three nonempty qualifying
+subsets per assignment. Omitting the empty subset here is required because these
+observed banks have no None choice; q-34823 separately supports that decision case.
+The earlier two-case description for q-139965 is superseded by this full
+three-case rule. The conditional probe is retained in validate_content.py.

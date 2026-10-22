@@ -9,7 +9,7 @@ Moderate/hard remain unsupported pending evidence. See adjacent extraction.
 import argparse, copy, hashlib, itertools, json, random, re, sys, uuid
 from pathlib import Path
 import sympy as sp
-from math_format import matrix_tex,normalize_prose,normalize_tex,checked_math_content
+from math_format import matrix_tex,matrix_operands,normalize_prose,normalize_tex,checked_math_content
 HERE=Path(__file__).with_suffix('')
 SOURCE=json.loads((HERE/'source.json').read_text())
 KP_ID=17592186119848
@@ -43,8 +43,10 @@ def original_matches(sid):
     q=CASES[sid];r=target(q)
     return tuple(k for k,m in sorted(matrices(q).items()) if m.rank()==r)
 def subset(value):return tuple(sorted(set(re.findall(r'\$([A-E])\$',value))))
-def domain(sid,assignment=None):
+def domain(sid,assignment=None,source_replay=False):
     q=CASES[sid];typ=kind(sid);labels=eligible(sid,assignment)
+    if sid=='q-139965' and not source_replay:
+        return [tuple(s) for n in (1,2) for s in itertools.combinations(labels,n)]
     if typ=='five-matrix-radio':return [(label,) for label in labels]
     if typ=='three-matrix-checkbox':return sorted({original_matches(sid), ()})
     f=q[':question/answer-fields'][0]
@@ -109,12 +111,24 @@ def generate(level,seed=0,profile=None,parameters=None,source_replay=False):
     if type(scale) is not int or scale not in (1,2):raise ValueError('Supported coefficient scales: 1 and 2')
     if assignment not in assignments(sid):raise ValueError('Unsupported role assignment')
     mapping=dict(zip(labels,assignment))
-    desired=tuple(parameters['matches']) if parameters is not None else rng.choice(domain(sid,assignment))
+    desired=tuple(parameters['matches']) if parameters is not None else rng.choice(domain(sid,assignment,source_replay))
     if parameters is not None and not {'matches'}<=set(parameters)<= {'matches','assignment','scale'}:raise ValueError('Expected matches, optional assignment and scale')
-    if desired not in domain(sid,assignment):raise ValueError('Unsupported match subset')
+    if desired not in domain(sid,assignment,source_replay):raise ValueError('Unsupported match subset')
     r=target(old);bank={mapping[k]:m for k,m in matrices(old).items()};original=tuple(sorted(mapping[k] for k in original_matches(sid)))
     old=copy.deepcopy(old)
     for key in (':question/problem',':question/worked-solution'):old[key]=reassign_text(old[key],mapping)
+    choice_profile=sid
+    if sid=='q-139965' and not source_replay and eligible(sid,assignment)!=['B','C']:
+        # Preserve a complete observed bank from the same instructional family.
+        # Both eligible singleton cases and the pair must be expressible; the
+        # original bank otherwise forces B when C is dimension-ineligible.
+        eligible_labels=eligible(sid,assignment)
+        excluded=next(k for k in labels if k not in eligible_labels)
+        bank_mapping=dict(zip('ABC',eligible_labels+[excluded]))
+        choices=copy.deepcopy(CASES['q-79562'][':question/answer-fields'][0][':answer-field/choices'])
+        for choice in choices:choice[':answer/value']=reassign_text(choice[':answer/value'],bank_mapping)
+        old[':question/answer-fields'][0][':answer-field/choices']=choices
+        choice_profile='q-79562-reassigned'
     if desired!=original:
         # Only dimension-eligible candidates can change rank. Deficient candidates
         # retain their observed rank unless they need to become correct.
@@ -124,6 +138,8 @@ def generate(level,seed=0,profile=None,parameters=None,source_replay=False):
             bank[label]=rank_adjust(bank[label],wanted)
     bank={k:m*scale for k,m in bank.items()}
     problem=order_prompt_matrices(render_matrices(normalize_prose(old[':question/problem']),bank))
+    if kind(sid)=='three-matrix-subset-radio':
+        problem=re.sub(r'\$\$.*?\$\$',lambda m:matrix_operands(x[0] for x in MATRIX.finditer(m[0])),problem,flags=re.S)
     solution=normalize_prose(old[':question/worked-solution']).replace('coumns','columns') if desired==original else variant_solution(old,bank,r)
     rawfields=[]
     for f in old[':question/answer-fields']:
@@ -139,7 +155,7 @@ def generate(level,seed=0,profile=None,parameters=None,source_replay=False):
             choices.append((a[':answer/type'][':db/ident'],val,correct))
         assert sum(x[2] for x in choices)==1
         rawfields.append((f,choices))
-    content=hashlib.sha256(json.dumps([VERSION,problem,solution,[(f[':answer-field/key'],sorted(v)) for f,v in rawfields]],sort_keys=True).encode()).hexdigest()
+    content=hashlib.sha256(json.dumps([VERSION,problem,solution,[(render_matrices(normalize_prose(f[':answer-field/key']),bank),sorted(v)) for f,v in rawfields]],sort_keys=True).encode()).hexdigest()
     uid=lambda key:str(uuid.uuid5(uuid.NAMESPACE_URL,str(KP_ID)+':'+content+':'+key))
     fields=[]
     for f,rows in rawfields:
@@ -151,6 +167,7 @@ def generate(level,seed=0,profile=None,parameters=None,source_replay=False):
         fields.append(field)
     question={':question/id':uid('question'),':question/difficulty':':question.difficulty/easy',':question/problem':problem,':question/worked-solution':solution,':question/answer-fields':fields}
     record={'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':SOURCE['record'][':knowledge-point/title']},'question':question,'generation':{'version':VERSION,'seed':seed,'template':kind(sid),'bank_profile':sid,'source_id':sid,'source_replay':source_replay,'parameters':{'matches':list(desired),'assignment':list(assignment),'scale':scale},'mathematical_fingerprint':fingerprint(question),'content_fingerprint':content,'assets':[],'source':{'basis':SOURCE['basis'],'lineage':SOURCE['lineage']},'dependencies':{'sympy':sp.__version__},'ranks':{k:int(m.rank()) for k,m in bank.items()},'extension':desired!=original or assignment!=tuple(labels) or scale!=1}}
+    record['generation']['choice_profile']=choice_profile
     # q-35283 supplies family evidence for a visible None option. Exact replay
     # of q-79568 keeps its original three fields; new practice uses both cases.
     if kind(sid)=='three-matrix-checkbox' and not source_replay:
