@@ -1,0 +1,1222 @@
+{
+  "implementation": "engine/rust/question_selection.rs select(), and learning.rs 594–622 prefilter; read only faithful same-band reproduction",
+  "rules": [
+    "Remove seen and invalid questions before select.",
+    "Sort and deduplicate numeric entity IDs.",
+    "Choose a nonempty positively weighted difficulty band by SHA256 first 53-bit uniform.",
+    "Choose an index by SHA256 second 53-bit uniform.",
+    "If no configured weights, first candidate; if rated positive bands absent, unrated fallback only."
+  ],
+  "assumptions": [
+    "No learner history or policy weights were captured. Two explicitly assumed history scenarios tested. New records have no database IDs: UUID order used to assign synthetic sorted numeric IDs. Every member satisfies the demonstrated shortcut, so all numeric orders, positive band weights and eligible subsets preserve the defect.",
+    "Existing stored pool has source and generated records: only two generated records are attributed to the generator; source records are not relabeled. A mixed learner pool is not claimed universally shortcut-solvable."
+  ],
+  "scenarios": [
+    {
+      "pool": "batch",
+      "scenario": "no_history",
+      "candidate_count": 5,
+      "draws": [
+        {
+          "seed": "task-1/kp-17592186119805/slot-0",
+          "selected_uuid": "17714c98-e3e6-556e-b73a-df664af2f4d8",
+          "cue": "h",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-2/kp-17592186119805/slot-0",
+          "selected_uuid": "17714c98-e3e6-556e-b73a-df664af2f4d8",
+          "cue": "h",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-3/kp-17592186119805/slot-0",
+          "selected_uuid": "2dff54a4-230e-5faa-aa71-34bd3e083aa9",
+          "cue": "l-with-No-solution",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-4/kp-17592186119805/slot-0",
+          "selected_uuid": "d7e7b83e-cc47-5164-b527-e33226f5b881",
+          "cue": "l-with-No-solution",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-5/kp-17592186119805/slot-0",
+          "selected_uuid": "62340c8e-e2f7-56de-b8cc-17c7e059b670",
+          "cue": "l-numeric-bank",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-6/kp-17592186119805/slot-0",
+          "selected_uuid": "2dff54a4-230e-5faa-aa71-34bd3e083aa9",
+          "cue": "l-with-No-solution",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-7/kp-17592186119805/slot-0",
+          "selected_uuid": "d7e7b83e-cc47-5164-b527-e33226f5b881",
+          "cue": "l-with-No-solution",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-8/kp-17592186119805/slot-0",
+          "selected_uuid": "d7e7b83e-cc47-5164-b527-e33226f5b881",
+          "cue": "l-with-No-solution",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-9/kp-17592186119805/slot-0",
+          "selected_uuid": "a1e3ce60-8601-58a1-941b-f92cca657aa6",
+          "cue": "h",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-10/kp-17592186119805/slot-0",
+          "selected_uuid": "d7e7b83e-cc47-5164-b527-e33226f5b881",
+          "cue": "l-with-No-solution",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-11/kp-17592186119805/slot-0",
+          "selected_uuid": "17714c98-e3e6-556e-b73a-df664af2f4d8",
+          "cue": "h",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-12/kp-17592186119805/slot-0",
+          "selected_uuid": "17714c98-e3e6-556e-b73a-df664af2f4d8",
+          "cue": "h",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-13/kp-17592186119805/slot-0",
+          "selected_uuid": "17714c98-e3e6-556e-b73a-df664af2f4d8",
+          "cue": "h",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-14/kp-17592186119805/slot-0",
+          "selected_uuid": "d7e7b83e-cc47-5164-b527-e33226f5b881",
+          "cue": "l-with-No-solution",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-15/kp-17592186119805/slot-0",
+          "selected_uuid": "17714c98-e3e6-556e-b73a-df664af2f4d8",
+          "cue": "h",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-16/kp-17592186119805/slot-0",
+          "selected_uuid": "2dff54a4-230e-5faa-aa71-34bd3e083aa9",
+          "cue": "l-with-No-solution",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-17/kp-17592186119805/slot-0",
+          "selected_uuid": "a1e3ce60-8601-58a1-941b-f92cca657aa6",
+          "cue": "h",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-18/kp-17592186119805/slot-0",
+          "selected_uuid": "62340c8e-e2f7-56de-b8cc-17c7e059b670",
+          "cue": "l-numeric-bank",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-19/kp-17592186119805/slot-0",
+          "selected_uuid": "17714c98-e3e6-556e-b73a-df664af2f4d8",
+          "cue": "h",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-20/kp-17592186119805/slot-0",
+          "selected_uuid": "d7e7b83e-cc47-5164-b527-e33226f5b881",
+          "cue": "l-with-No-solution",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-21/kp-17592186119805/slot-0",
+          "selected_uuid": "17714c98-e3e6-556e-b73a-df664af2f4d8",
+          "cue": "h",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-22/kp-17592186119805/slot-0",
+          "selected_uuid": "62340c8e-e2f7-56de-b8cc-17c7e059b670",
+          "cue": "l-numeric-bank",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-23/kp-17592186119805/slot-0",
+          "selected_uuid": "2dff54a4-230e-5faa-aa71-34bd3e083aa9",
+          "cue": "l-with-No-solution",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-24/kp-17592186119805/slot-0",
+          "selected_uuid": "17714c98-e3e6-556e-b73a-df664af2f4d8",
+          "cue": "h",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-25/kp-17592186119805/slot-0",
+          "selected_uuid": "62340c8e-e2f7-56de-b8cc-17c7e059b670",
+          "cue": "l-numeric-bank",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-26/kp-17592186119805/slot-0",
+          "selected_uuid": "2dff54a4-230e-5faa-aa71-34bd3e083aa9",
+          "cue": "l-with-No-solution",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-27/kp-17592186119805/slot-0",
+          "selected_uuid": "62340c8e-e2f7-56de-b8cc-17c7e059b670",
+          "cue": "l-numeric-bank",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-28/kp-17592186119805/slot-0",
+          "selected_uuid": "a1e3ce60-8601-58a1-941b-f92cca657aa6",
+          "cue": "h",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-29/kp-17592186119805/slot-0",
+          "selected_uuid": "a1e3ce60-8601-58a1-941b-f92cca657aa6",
+          "cue": "h",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-30/kp-17592186119805/slot-0",
+          "selected_uuid": "d7e7b83e-cc47-5164-b527-e33226f5b881",
+          "cue": "l-with-No-solution",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-31/kp-17592186119805/slot-0",
+          "selected_uuid": "17714c98-e3e6-556e-b73a-df664af2f4d8",
+          "cue": "h",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-32/kp-17592186119805/slot-0",
+          "selected_uuid": "17714c98-e3e6-556e-b73a-df664af2f4d8",
+          "cue": "h",
+          "shortcut_correct": true
+        }
+      ],
+      "shortcut_correct": 32,
+      "total": 32
+    },
+    {
+      "pool": "batch",
+      "scenario": "exclude_first_half",
+      "candidate_count": 3,
+      "draws": [
+        {
+          "seed": "task-1/kp-17592186119805/slot-0",
+          "selected_uuid": "17714c98-e3e6-556e-b73a-df664af2f4d8",
+          "cue": "h",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-2/kp-17592186119805/slot-0",
+          "selected_uuid": "17714c98-e3e6-556e-b73a-df664af2f4d8",
+          "cue": "h",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-3/kp-17592186119805/slot-0",
+          "selected_uuid": "2dff54a4-230e-5faa-aa71-34bd3e083aa9",
+          "cue": "l-with-No-solution",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-4/kp-17592186119805/slot-0",
+          "selected_uuid": "a1e3ce60-8601-58a1-941b-f92cca657aa6",
+          "cue": "h",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-5/kp-17592186119805/slot-0",
+          "selected_uuid": "2dff54a4-230e-5faa-aa71-34bd3e083aa9",
+          "cue": "l-with-No-solution",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-6/kp-17592186119805/slot-0",
+          "selected_uuid": "2dff54a4-230e-5faa-aa71-34bd3e083aa9",
+          "cue": "l-with-No-solution",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-7/kp-17592186119805/slot-0",
+          "selected_uuid": "a1e3ce60-8601-58a1-941b-f92cca657aa6",
+          "cue": "h",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-8/kp-17592186119805/slot-0",
+          "selected_uuid": "a1e3ce60-8601-58a1-941b-f92cca657aa6",
+          "cue": "h",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-9/kp-17592186119805/slot-0",
+          "selected_uuid": "2dff54a4-230e-5faa-aa71-34bd3e083aa9",
+          "cue": "l-with-No-solution",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-10/kp-17592186119805/slot-0",
+          "selected_uuid": "a1e3ce60-8601-58a1-941b-f92cca657aa6",
+          "cue": "h",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-11/kp-17592186119805/slot-0",
+          "selected_uuid": "17714c98-e3e6-556e-b73a-df664af2f4d8",
+          "cue": "h",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-12/kp-17592186119805/slot-0",
+          "selected_uuid": "17714c98-e3e6-556e-b73a-df664af2f4d8",
+          "cue": "h",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-13/kp-17592186119805/slot-0",
+          "selected_uuid": "17714c98-e3e6-556e-b73a-df664af2f4d8",
+          "cue": "h",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-14/kp-17592186119805/slot-0",
+          "selected_uuid": "a1e3ce60-8601-58a1-941b-f92cca657aa6",
+          "cue": "h",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-15/kp-17592186119805/slot-0",
+          "selected_uuid": "17714c98-e3e6-556e-b73a-df664af2f4d8",
+          "cue": "h",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-16/kp-17592186119805/slot-0",
+          "selected_uuid": "2dff54a4-230e-5faa-aa71-34bd3e083aa9",
+          "cue": "l-with-No-solution",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-17/kp-17592186119805/slot-0",
+          "selected_uuid": "a1e3ce60-8601-58a1-941b-f92cca657aa6",
+          "cue": "h",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-18/kp-17592186119805/slot-0",
+          "selected_uuid": "2dff54a4-230e-5faa-aa71-34bd3e083aa9",
+          "cue": "l-with-No-solution",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-19/kp-17592186119805/slot-0",
+          "selected_uuid": "17714c98-e3e6-556e-b73a-df664af2f4d8",
+          "cue": "h",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-20/kp-17592186119805/slot-0",
+          "selected_uuid": "a1e3ce60-8601-58a1-941b-f92cca657aa6",
+          "cue": "h",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-21/kp-17592186119805/slot-0",
+          "selected_uuid": "17714c98-e3e6-556e-b73a-df664af2f4d8",
+          "cue": "h",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-22/kp-17592186119805/slot-0",
+          "selected_uuid": "2dff54a4-230e-5faa-aa71-34bd3e083aa9",
+          "cue": "l-with-No-solution",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-23/kp-17592186119805/slot-0",
+          "selected_uuid": "17714c98-e3e6-556e-b73a-df664af2f4d8",
+          "cue": "h",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-24/kp-17592186119805/slot-0",
+          "selected_uuid": "17714c98-e3e6-556e-b73a-df664af2f4d8",
+          "cue": "h",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-25/kp-17592186119805/slot-0",
+          "selected_uuid": "2dff54a4-230e-5faa-aa71-34bd3e083aa9",
+          "cue": "l-with-No-solution",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-26/kp-17592186119805/slot-0",
+          "selected_uuid": "17714c98-e3e6-556e-b73a-df664af2f4d8",
+          "cue": "h",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-27/kp-17592186119805/slot-0",
+          "selected_uuid": "2dff54a4-230e-5faa-aa71-34bd3e083aa9",
+          "cue": "l-with-No-solution",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-28/kp-17592186119805/slot-0",
+          "selected_uuid": "a1e3ce60-8601-58a1-941b-f92cca657aa6",
+          "cue": "h",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-29/kp-17592186119805/slot-0",
+          "selected_uuid": "a1e3ce60-8601-58a1-941b-f92cca657aa6",
+          "cue": "h",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-30/kp-17592186119805/slot-0",
+          "selected_uuid": "a1e3ce60-8601-58a1-941b-f92cca657aa6",
+          "cue": "h",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-31/kp-17592186119805/slot-0",
+          "selected_uuid": "17714c98-e3e6-556e-b73a-df664af2f4d8",
+          "cue": "h",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-32/kp-17592186119805/slot-0",
+          "selected_uuid": "17714c98-e3e6-556e-b73a-df664af2f4d8",
+          "cue": "h",
+          "shortcut_correct": true
+        }
+      ],
+      "shortcut_correct": 32,
+      "total": 32
+    },
+    {
+      "pool": "easy",
+      "scenario": "no_history",
+      "candidate_count": 36,
+      "draws": [
+        {
+          "seed": "task-1/kp-17592186119805/slot-0",
+          "selected_uuid": "0b0c13a4-9d17-5ba6-90e3-3d9feee9390b",
+          "cue": "m",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-2/kp-17592186119805/slot-0",
+          "selected_uuid": "2b8e137c-e70f-5ebe-a06f-59862b3ec254",
+          "cue": "l-with-No-solution",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-3/kp-17592186119805/slot-0",
+          "selected_uuid": "65abf557-57e0-564d-b063-aab77f52c3a3",
+          "cue": "l-numeric-bank",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-4/kp-17592186119805/slot-0",
+          "selected_uuid": "e2b0919d-3cf6-5db5-b374-05309db366b7",
+          "cue": "m",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-5/kp-17592186119805/slot-0",
+          "selected_uuid": "80b6c6ba-bd3c-5dff-a96d-40b76b883555",
+          "cue": "m",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-6/kp-17592186119805/slot-0",
+          "selected_uuid": "62fcf26c-ae3c-558b-ba40-04e5a6384900",
+          "cue": "j-subtraction",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-7/kp-17592186119805/slot-0",
+          "selected_uuid": "e2b0919d-3cf6-5db5-b374-05309db366b7",
+          "cue": "m",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-8/kp-17592186119805/slot-0",
+          "selected_uuid": "e9032cb7-01aa-57aa-b7c2-c9faa7a21df9",
+          "cue": "m",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-9/kp-17592186119805/slot-0",
+          "selected_uuid": "b0bd14b1-6e31-514f-b1d4-37c7e8f4d0cc",
+          "cue": "k-explicit-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-10/kp-17592186119805/slot-0",
+          "selected_uuid": "e2b0919d-3cf6-5db5-b374-05309db366b7",
+          "cue": "m",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-11/kp-17592186119805/slot-0",
+          "selected_uuid": "01172172-7606-5406-aa8c-1e7829a00cab",
+          "cue": "k-explicit-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-12/kp-17592186119805/slot-0",
+          "selected_uuid": "1ab25404-d96f-5c75-a1a7-f93bdd727b0f",
+          "cue": "l-with-No-solution",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-13/kp-17592186119805/slot-0",
+          "selected_uuid": "1ab25404-d96f-5c75-a1a7-f93bdd727b0f",
+          "cue": "l-with-No-solution",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-14/kp-17592186119805/slot-0",
+          "selected_uuid": "e9032cb7-01aa-57aa-b7c2-c9faa7a21df9",
+          "cue": "m",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-15/kp-17592186119805/slot-0",
+          "selected_uuid": "01172172-7606-5406-aa8c-1e7829a00cab",
+          "cue": "k-explicit-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-16/kp-17592186119805/slot-0",
+          "selected_uuid": "65abf557-57e0-564d-b063-aab77f52c3a3",
+          "cue": "l-numeric-bank",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-17/kp-17592186119805/slot-0",
+          "selected_uuid": "c81527f1-acc1-5584-ab8b-2d34169d100b",
+          "cue": "j-subtraction",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-18/kp-17592186119805/slot-0",
+          "selected_uuid": "9dd9149c-f8a0-5e1f-8738-674cd2ffbeb9",
+          "cue": "k-explicit-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-19/kp-17592186119805/slot-0",
+          "selected_uuid": "16e8f54e-333d-5acc-b691-562df2609674",
+          "cue": "l-with-No-solution",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-20/kp-17592186119805/slot-0",
+          "selected_uuid": "e9032cb7-01aa-57aa-b7c2-c9faa7a21df9",
+          "cue": "m",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-21/kp-17592186119805/slot-0",
+          "selected_uuid": "301d1aca-e0f2-5a09-ad61-3c45f9c3fc5a",
+          "cue": "k-explicit-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-22/kp-17592186119805/slot-0",
+          "selected_uuid": "abb4f939-b6f1-5e08-841a-1797eb582ded",
+          "cue": "k-explicit-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-23/kp-17592186119805/slot-0",
+          "selected_uuid": "500c96b7-49be-5b14-9f5f-56bf1ab7ef1c",
+          "cue": "j-subtraction",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-24/kp-17592186119805/slot-0",
+          "selected_uuid": "01172172-7606-5406-aa8c-1e7829a00cab",
+          "cue": "k-explicit-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-25/kp-17592186119805/slot-0",
+          "selected_uuid": "ac8436b6-0436-5f05-b77f-4c33ce4a2585",
+          "cue": "h",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-26/kp-17592186119805/slot-0",
+          "selected_uuid": "301d1aca-e0f2-5a09-ad61-3c45f9c3fc5a",
+          "cue": "k-explicit-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-27/kp-17592186119805/slot-0",
+          "selected_uuid": "80b6c6ba-bd3c-5dff-a96d-40b76b883555",
+          "cue": "m",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-28/kp-17592186119805/slot-0",
+          "selected_uuid": "c4fd98dd-0a7a-55cb-9af1-a5eb420b3a95",
+          "cue": "j-subtraction",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-29/kp-17592186119805/slot-0",
+          "selected_uuid": "ce6a4588-8084-5ac5-858e-c721efe4289e",
+          "cue": "h",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-30/kp-17592186119805/slot-0",
+          "selected_uuid": "e9032cb7-01aa-57aa-b7c2-c9faa7a21df9",
+          "cue": "m",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-31/kp-17592186119805/slot-0",
+          "selected_uuid": "0b0c13a4-9d17-5ba6-90e3-3d9feee9390b",
+          "cue": "m",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-32/kp-17592186119805/slot-0",
+          "selected_uuid": "2cc439c1-d5bc-5c30-a26f-54bc0a1d1783",
+          "cue": "m",
+          "shortcut_correct": true
+        }
+      ],
+      "shortcut_correct": 32,
+      "total": 32
+    },
+    {
+      "pool": "easy",
+      "scenario": "exclude_first_half",
+      "candidate_count": 18,
+      "draws": [
+        {
+          "seed": "task-1/kp-17592186119805/slot-0",
+          "selected_uuid": "01172172-7606-5406-aa8c-1e7829a00cab",
+          "cue": "k-explicit-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-2/kp-17592186119805/slot-0",
+          "selected_uuid": "500c96b7-49be-5b14-9f5f-56bf1ab7ef1c",
+          "cue": "j-subtraction",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-3/kp-17592186119805/slot-0",
+          "selected_uuid": "77aa70c5-33b3-5454-b529-3d32212d2d87",
+          "cue": "l-numeric-bank",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-4/kp-17592186119805/slot-0",
+          "selected_uuid": "c81527f1-acc1-5584-ab8b-2d34169d100b",
+          "cue": "j-subtraction",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-5/kp-17592186119805/slot-0",
+          "selected_uuid": "9dd9149c-f8a0-5e1f-8738-674cd2ffbeb9",
+          "cue": "k-explicit-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-6/kp-17592186119805/slot-0",
+          "selected_uuid": "77aa70c5-33b3-5454-b529-3d32212d2d87",
+          "cue": "l-numeric-bank",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-7/kp-17592186119805/slot-0",
+          "selected_uuid": "c81527f1-acc1-5584-ab8b-2d34169d100b",
+          "cue": "j-subtraction",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-8/kp-17592186119805/slot-0",
+          "selected_uuid": "df17e073-bbe5-5998-9b03-5a12146d9b92",
+          "cue": "l-numeric-bank",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-9/kp-17592186119805/slot-0",
+          "selected_uuid": "b0bd14b1-6e31-514f-b1d4-37c7e8f4d0cc",
+          "cue": "k-explicit-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-10/kp-17592186119805/slot-0",
+          "selected_uuid": "c81527f1-acc1-5584-ab8b-2d34169d100b",
+          "cue": "j-subtraction",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-11/kp-17592186119805/slot-0",
+          "selected_uuid": "01172172-7606-5406-aa8c-1e7829a00cab",
+          "cue": "k-explicit-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-12/kp-17592186119805/slot-0",
+          "selected_uuid": "500c96b7-49be-5b14-9f5f-56bf1ab7ef1c",
+          "cue": "j-subtraction",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-13/kp-17592186119805/slot-0",
+          "selected_uuid": "500c96b7-49be-5b14-9f5f-56bf1ab7ef1c",
+          "cue": "j-subtraction",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-14/kp-17592186119805/slot-0",
+          "selected_uuid": "df17e073-bbe5-5998-9b03-5a12146d9b92",
+          "cue": "l-numeric-bank",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-15/kp-17592186119805/slot-0",
+          "selected_uuid": "01172172-7606-5406-aa8c-1e7829a00cab",
+          "cue": "k-explicit-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-16/kp-17592186119805/slot-0",
+          "selected_uuid": "77aa70c5-33b3-5454-b529-3d32212d2d87",
+          "cue": "l-numeric-bank",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-17/kp-17592186119805/slot-0",
+          "selected_uuid": "c4fd98dd-0a7a-55cb-9af1-a5eb420b3a95",
+          "cue": "j-subtraction",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-18/kp-17592186119805/slot-0",
+          "selected_uuid": "a2cf28a7-31af-50aa-826b-3b81410151d4",
+          "cue": "l-numeric-bank",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-19/kp-17592186119805/slot-0",
+          "selected_uuid": "301d1aca-e0f2-5a09-ad61-3c45f9c3fc5a",
+          "cue": "k-explicit-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-20/kp-17592186119805/slot-0",
+          "selected_uuid": "df17e073-bbe5-5998-9b03-5a12146d9b92",
+          "cue": "l-numeric-bank",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-21/kp-17592186119805/slot-0",
+          "selected_uuid": "62fcf26c-ae3c-558b-ba40-04e5a6384900",
+          "cue": "j-subtraction",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-22/kp-17592186119805/slot-0",
+          "selected_uuid": "abb4f939-b6f1-5e08-841a-1797eb582ded",
+          "cue": "k-explicit-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-23/kp-17592186119805/slot-0",
+          "selected_uuid": "65ba6633-8ecd-5f15-826d-83d9c961c616",
+          "cue": "l-numeric-bank",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-24/kp-17592186119805/slot-0",
+          "selected_uuid": "01172172-7606-5406-aa8c-1e7829a00cab",
+          "cue": "k-explicit-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-25/kp-17592186119805/slot-0",
+          "selected_uuid": "abb4f939-b6f1-5e08-841a-1797eb582ded",
+          "cue": "k-explicit-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-26/kp-17592186119805/slot-0",
+          "selected_uuid": "62fcf26c-ae3c-558b-ba40-04e5a6384900",
+          "cue": "j-subtraction",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-27/kp-17592186119805/slot-0",
+          "selected_uuid": "9dd9149c-f8a0-5e1f-8738-674cd2ffbeb9",
+          "cue": "k-explicit-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-28/kp-17592186119805/slot-0",
+          "selected_uuid": "bb7447d6-a597-59a3-acd6-0f8052b57a13",
+          "cue": "j-subtraction",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-29/kp-17592186119805/slot-0",
+          "selected_uuid": "c5ccbf29-d2de-5683-8590-6ecfad7ff0b9",
+          "cue": "l-numeric-bank",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-30/kp-17592186119805/slot-0",
+          "selected_uuid": "df17e073-bbe5-5998-9b03-5a12146d9b92",
+          "cue": "l-numeric-bank",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-31/kp-17592186119805/slot-0",
+          "selected_uuid": "01172172-7606-5406-aa8c-1e7829a00cab",
+          "cue": "k-explicit-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-32/kp-17592186119805/slot-0",
+          "selected_uuid": "62fcf26c-ae3c-558b-ba40-04e5a6384900",
+          "cue": "j-subtraction",
+          "shortcut_correct": true
+        }
+      ],
+      "shortcut_correct": 32,
+      "total": 32
+    },
+    {
+      "pool": "moderate",
+      "scenario": "no_history",
+      "candidate_count": 17,
+      "draws": [
+        {
+          "seed": "task-1/kp-17592186119805/slot-0",
+          "selected_uuid": "182a7206-8ec0-5499-b68a-ff807f2267e0",
+          "cue": "zero-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-2/kp-17592186119805/slot-0",
+          "selected_uuid": "29afd9bf-938f-5d56-8502-eaea91bacb6d",
+          "cue": "zero-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-3/kp-17592186119805/slot-0",
+          "selected_uuid": "677ea217-e089-554f-84a0-4030183b9336",
+          "cue": "zero-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-4/kp-17592186119805/slot-0",
+          "selected_uuid": "bc0690ea-7509-50e3-8979-1ea4f1948da4",
+          "cue": "zero-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-5/kp-17592186119805/slot-0",
+          "selected_uuid": "6cde3e63-bd5b-5220-8ed0-8e43cab31c8d",
+          "cue": "zero-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-6/kp-17592186119805/slot-0",
+          "selected_uuid": "677ea217-e089-554f-84a0-4030183b9336",
+          "cue": "zero-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-7/kp-17592186119805/slot-0",
+          "selected_uuid": "bc0690ea-7509-50e3-8979-1ea4f1948da4",
+          "cue": "zero-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-8/kp-17592186119805/slot-0",
+          "selected_uuid": "c06752ff-c604-5d20-a55b-1118a535730d",
+          "cue": "zero-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-9/kp-17592186119805/slot-0",
+          "selected_uuid": "95368c3a-b9a9-5e9e-8395-509bf2a2d9a7",
+          "cue": "zero-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-10/kp-17592186119805/slot-0",
+          "selected_uuid": "bc0690ea-7509-50e3-8979-1ea4f1948da4",
+          "cue": "zero-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-11/kp-17592186119805/slot-0",
+          "selected_uuid": "182a7206-8ec0-5499-b68a-ff807f2267e0",
+          "cue": "zero-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-12/kp-17592186119805/slot-0",
+          "selected_uuid": "29afd9bf-938f-5d56-8502-eaea91bacb6d",
+          "cue": "zero-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-13/kp-17592186119805/slot-0",
+          "selected_uuid": "29afd9bf-938f-5d56-8502-eaea91bacb6d",
+          "cue": "zero-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-14/kp-17592186119805/slot-0",
+          "selected_uuid": "c06752ff-c604-5d20-a55b-1118a535730d",
+          "cue": "zero-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-15/kp-17592186119805/slot-0",
+          "selected_uuid": "182a7206-8ec0-5499-b68a-ff807f2267e0",
+          "cue": "zero-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-16/kp-17592186119805/slot-0",
+          "selected_uuid": "677ea217-e089-554f-84a0-4030183b9336",
+          "cue": "zero-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-17/kp-17592186119805/slot-0",
+          "selected_uuid": "b62dd0dd-bfcd-5f35-98a1-728325807308",
+          "cue": "zero-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-18/kp-17592186119805/slot-0",
+          "selected_uuid": "9207d7eb-9a13-5ba7-ac02-9ec0b9f71747",
+          "cue": "zero-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-19/kp-17592186119805/slot-0",
+          "selected_uuid": "1bbc2d19-75f9-58f2-a5ad-3d9fe5fe1e3b",
+          "cue": "zero-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-20/kp-17592186119805/slot-0",
+          "selected_uuid": "c06752ff-c604-5d20-a55b-1118a535730d",
+          "cue": "zero-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-21/kp-17592186119805/slot-0",
+          "selected_uuid": "2d0ff3b7-8162-5c34-8ab7-24d73222e125",
+          "cue": "zero-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-22/kp-17592186119805/slot-0",
+          "selected_uuid": "9273e814-ad68-5444-9a45-08a3f0898af6",
+          "cue": "zero-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-23/kp-17592186119805/slot-0",
+          "selected_uuid": "3a1a41a0-19c5-506d-8321-3216b6637d7b",
+          "cue": "zero-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-24/kp-17592186119805/slot-0",
+          "selected_uuid": "182a7206-8ec0-5499-b68a-ff807f2267e0",
+          "cue": "zero-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-25/kp-17592186119805/slot-0",
+          "selected_uuid": "95368c3a-b9a9-5e9e-8395-509bf2a2d9a7",
+          "cue": "zero-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-26/kp-17592186119805/slot-0",
+          "selected_uuid": "2d0ff3b7-8162-5c34-8ab7-24d73222e125",
+          "cue": "zero-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-27/kp-17592186119805/slot-0",
+          "selected_uuid": "6cde3e63-bd5b-5220-8ed0-8e43cab31c8d",
+          "cue": "zero-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-28/kp-17592186119805/slot-0",
+          "selected_uuid": "b62dd0dd-bfcd-5f35-98a1-728325807308",
+          "cue": "zero-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-29/kp-17592186119805/slot-0",
+          "selected_uuid": "b7bbf3d6-c233-5297-acd8-af59ef378731",
+          "cue": "zero-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-30/kp-17592186119805/slot-0",
+          "selected_uuid": "c06752ff-c604-5d20-a55b-1118a535730d",
+          "cue": "zero-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-31/kp-17592186119805/slot-0",
+          "selected_uuid": "182a7206-8ec0-5499-b68a-ff807f2267e0",
+          "cue": "zero-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-32/kp-17592186119805/slot-0",
+          "selected_uuid": "29afd9bf-938f-5d56-8502-eaea91bacb6d",
+          "cue": "zero-target",
+          "shortcut_correct": true
+        }
+      ],
+      "shortcut_correct": 32,
+      "total": 32
+    },
+    {
+      "pool": "moderate",
+      "scenario": "exclude_first_half",
+      "candidate_count": 9,
+      "draws": [
+        {
+          "seed": "task-1/kp-17592186119805/slot-0",
+          "selected_uuid": "1bbc2d19-75f9-58f2-a5ad-3d9fe5fe1e3b",
+          "cue": "zero-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-2/kp-17592186119805/slot-0",
+          "selected_uuid": "677ea217-e089-554f-84a0-4030183b9336",
+          "cue": "zero-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-3/kp-17592186119805/slot-0",
+          "selected_uuid": "9273e814-ad68-5444-9a45-08a3f0898af6",
+          "cue": "zero-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-4/kp-17592186119805/slot-0",
+          "selected_uuid": "c06752ff-c604-5d20-a55b-1118a535730d",
+          "cue": "zero-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-5/kp-17592186119805/slot-0",
+          "selected_uuid": "95368c3a-b9a9-5e9e-8395-509bf2a2d9a7",
+          "cue": "zero-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-6/kp-17592186119805/slot-0",
+          "selected_uuid": "9273e814-ad68-5444-9a45-08a3f0898af6",
+          "cue": "zero-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-7/kp-17592186119805/slot-0",
+          "selected_uuid": "c06752ff-c604-5d20-a55b-1118a535730d",
+          "cue": "zero-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-8/kp-17592186119805/slot-0",
+          "selected_uuid": "fb717f9e-6a29-555d-99f4-f4f73b42156e",
+          "cue": "zero-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-9/kp-17592186119805/slot-0",
+          "selected_uuid": "a3847233-ffc7-535b-aebc-914ea8b8acf5",
+          "cue": "zero-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-10/kp-17592186119805/slot-0",
+          "selected_uuid": "c06752ff-c604-5d20-a55b-1118a535730d",
+          "cue": "zero-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-11/kp-17592186119805/slot-0",
+          "selected_uuid": "1bbc2d19-75f9-58f2-a5ad-3d9fe5fe1e3b",
+          "cue": "zero-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-12/kp-17592186119805/slot-0",
+          "selected_uuid": "677ea217-e089-554f-84a0-4030183b9336",
+          "cue": "zero-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-13/kp-17592186119805/slot-0",
+          "selected_uuid": "677ea217-e089-554f-84a0-4030183b9336",
+          "cue": "zero-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-14/kp-17592186119805/slot-0",
+          "selected_uuid": "fb717f9e-6a29-555d-99f4-f4f73b42156e",
+          "cue": "zero-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-15/kp-17592186119805/slot-0",
+          "selected_uuid": "1bbc2d19-75f9-58f2-a5ad-3d9fe5fe1e3b",
+          "cue": "zero-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-16/kp-17592186119805/slot-0",
+          "selected_uuid": "9273e814-ad68-5444-9a45-08a3f0898af6",
+          "cue": "zero-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-17/kp-17592186119805/slot-0",
+          "selected_uuid": "b7bbf3d6-c233-5297-acd8-af59ef378731",
+          "cue": "zero-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-18/kp-17592186119805/slot-0",
+          "selected_uuid": "95368c3a-b9a9-5e9e-8395-509bf2a2d9a7",
+          "cue": "zero-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-19/kp-17592186119805/slot-0",
+          "selected_uuid": "1bbc2d19-75f9-58f2-a5ad-3d9fe5fe1e3b",
+          "cue": "zero-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-20/kp-17592186119805/slot-0",
+          "selected_uuid": "fb717f9e-6a29-555d-99f4-f4f73b42156e",
+          "cue": "zero-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-21/kp-17592186119805/slot-0",
+          "selected_uuid": "677ea217-e089-554f-84a0-4030183b9336",
+          "cue": "zero-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-22/kp-17592186119805/slot-0",
+          "selected_uuid": "a3847233-ffc7-535b-aebc-914ea8b8acf5",
+          "cue": "zero-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-23/kp-17592186119805/slot-0",
+          "selected_uuid": "9207d7eb-9a13-5ba7-ac02-9ec0b9f71747",
+          "cue": "zero-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-24/kp-17592186119805/slot-0",
+          "selected_uuid": "1bbc2d19-75f9-58f2-a5ad-3d9fe5fe1e3b",
+          "cue": "zero-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-25/kp-17592186119805/slot-0",
+          "selected_uuid": "a3847233-ffc7-535b-aebc-914ea8b8acf5",
+          "cue": "zero-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-26/kp-17592186119805/slot-0",
+          "selected_uuid": "677ea217-e089-554f-84a0-4030183b9336",
+          "cue": "zero-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-27/kp-17592186119805/slot-0",
+          "selected_uuid": "95368c3a-b9a9-5e9e-8395-509bf2a2d9a7",
+          "cue": "zero-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-28/kp-17592186119805/slot-0",
+          "selected_uuid": "b7bbf3d6-c233-5297-acd8-af59ef378731",
+          "cue": "zero-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-29/kp-17592186119805/slot-0",
+          "selected_uuid": "c06752ff-c604-5d20-a55b-1118a535730d",
+          "cue": "zero-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-30/kp-17592186119805/slot-0",
+          "selected_uuid": "fb717f9e-6a29-555d-99f4-f4f73b42156e",
+          "cue": "zero-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-31/kp-17592186119805/slot-0",
+          "selected_uuid": "1bbc2d19-75f9-58f2-a5ad-3d9fe5fe1e3b",
+          "cue": "zero-target",
+          "shortcut_correct": true
+        },
+        {
+          "seed": "task-32/kp-17592186119805/slot-0",
+          "selected_uuid": "677ea217-e089-554f-84a0-4030183b9336",
+          "cue": "zero-target",
+          "shortcut_correct": true
+        }
+      ],
+      "shortcut_correct": 32,
+      "total": 32
+    }
+  ]
+}

@@ -1,1 +1,1 @@
-Source reconstruction complete. source-analysis.json written and verified before package inspection. No package files changed.
+Delivery complete: batch 5/5, easy controls 36/36, moderate controls 17/18 (one duplicate). Native normal grading 320/320 as expected. First six UI cases rendered and screenshot inspected. Saved follow-up checks for actual delivered IDs, opposite-sign counterfactual, accepted invalid subtraction parameters. Pending final native/render follow-up and evidence/report finalization.
