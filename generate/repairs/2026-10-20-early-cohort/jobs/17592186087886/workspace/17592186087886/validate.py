@@ -38,7 +38,7 @@ def solution_check(q):
 def independent(r):
     m=r['generation'];q=r['question'];assert r['knowledge_point']['db_id']==g.KP_ID and r['knowledge_point']['id']==g.KP_UUID
     assert q[':question/difficulty']==':question.difficulty/easy'
-    assert equivalent(prompt_rhs(q[':question/problem']),g.mathematics(m['template'],m['parameters']['k'])[0])
+    assert equivalent(prompt_rhs(q[':question/problem']),g.mathematics(m['template'],m['parameters']['k'])[0]+m['parameters'].get('shift',0)*y/x)
     assert fingerprint(q[':question/problem'])==m['parameter_fingerprint']
     assert r==g.generate('easy',m['seed'],m['template'],m['parameters'],m['bank_profile'])
     solution_check(q)

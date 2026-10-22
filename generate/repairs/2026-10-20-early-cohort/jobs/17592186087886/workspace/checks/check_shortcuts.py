@@ -25,7 +25,7 @@ def main():
         independently_correct=sp.cancel(rate(selected[':answer/value'])-expected)==0
         witnesses.append({'question_id':q[':question/id'],'parameters':r['generation']['parameters'],'chosen_by':'unique shortest mathematical text, without prompt inspection','selected_value':selected[':answer/value'],'math_correct':independently_correct})
     persists=len(witnesses)==5 and all(w['math_correct'] for w in witnesses)
-    result={'status':'fail' if persists else 'pass','current_generator_tested':True,'template':'q-90600','input_records':len(records),'delivered_records':len(accepted),'shortcut_hits':sum(w['math_correct'] for w in witnesses),'witnesses':witnesses,'delivery_command':command,'limitation':'This strict regression remains failing; source-bank coefficient variation leaves an answer-shape bypass. No engine limitation is implicated.'}
+    result={'status':'fail' if persists else 'pass','current_generator_tested':True,'template':'q-90600','input_records':len(records),'delivered_records':len(accepted),'shortcut_hits':sum(w['math_correct'] for w in witnesses),'witnesses':witnesses,'delivery_command':command,'construction_change':'The authored profile chooses a surviving linear role as well as k; retained exact seed/k calls now include shift=2. Separate check_roles.py tests every shift including zero, every family and both delivery stages. Source evidence is unchanged.'}
     (ROOT/'evidence/shortcut-regression.json').write_text(json.dumps(result,indent=2)+'\n')
     print(json.dumps({k:result[k] for k in ('status','template','input_records','delivered_records','shortcut_hits')}))
     return 1 if persists else 0

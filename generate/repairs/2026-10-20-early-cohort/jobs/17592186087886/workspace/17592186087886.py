@@ -4,16 +4,17 @@ import argparse, json, random, sys, uuid
 from pathlib import Path
 import sympy as sp
 HERE = Path(__file__).with_suffix('')
-from math_reader import x, y, v, D, fingerprint
+from math_reader import x, y, v, D, DY, fingerprint
 KP_ID = 17592186087886
 KP_UUID = 'a8edbecf-59d3-5f32-a0ac-d6e8f2128dc0'
 GENERATOR_UUID = str(uuid.uuid5(uuid.UUID(KP_UUID), 'question-generator'))
-VERSION = '1.1.0'
+VERSION = '1.2.0'
 SUPPORTED_LEVELS = ('easy',)
 SOURCES = {q[':question/math-academy-id']:q for q in json.loads((HERE/'source.json').read_text())['record'][':knowledge-point/questions']}
-# Each source owns one complete bank. No pooled or inferred replacement banks.
+# Source banks are replayed intact; authored banks vary the surviving linear role.
 ORIGINAL = {'q-14315':3, 'q-8745':1, 'q-14314':3, 'q-14316':1, 'q-14323':1, 'q-8747':1, 'q-90601':2, 'q-90600':3}
 DOMAINS = {t:list(range(2,8)) if t in ('q-14315','q-14314') else list(range(1,7)) for t in ORIGINAL}
+ROLES = (-2, -1, 0, 1, 2)
 
 def mathematics(t, k):
     if t == 'q-14315':
@@ -68,21 +69,59 @@ def render_source(text, t, k):
         text = text.replace('3',str(k))
     return text
 
+def equation(coefficient, right):
+    return r'\left('+sp.latex(coefficient)+r'\right)'+D+'='+sp.latex(right)
+
+def role_instance(t, k, shift):
+    base = mathematics(t, k)[0]
+    rhs = base + shift*y/x
+    transformed = sp.cancel(base.subs(y, v*x))
+    # A complete bank shared by all five assignments of the relevant evidence.
+    bank = [(sp.cancel(1/(transformed+(j-1)*v)), 1/x) for j in ROLES]
+    return rhs, bank
+
+def role_text(src, rhs):
+    problem = src[':question/problem'].split('$$')
+    problem[1] = '\n'+DY+'='+sp.latex(rhs)+'.\n'
+    problem = '$$'.join(problem)
+    substituted = rhs.xreplace({y:sp.Mul(v,x,evaluate=False)})
+    F = sp.cancel(rhs.subs(y,v*x))
+    residual = sp.cancel(F-v)
+    rows = [DY+' & ='+sp.latex(rhs),
+            'x'+D+'+v & ='+sp.latex(substituted),
+            'x'+D+'+v & ='+sp.latex(F),
+            'x'+D+' & ='+sp.latex(sp.Add(F,-v,evaluate=False)),
+            'x'+D+' & ='+sp.latex(residual),
+            equation(sp.cancel(1/residual),1/x).replace('=', ' & =')]
+    prefix = src[':question/worked-solution'].rsplit(r'\begin{aligned}',1)[0]
+    solution = prefix+r'\begin{aligned}'+r' \\ '.join(rows)+r'.\end{aligned}'+'\n$$'
+    return problem, solution
+
 def generate(difficulty='easy', seed=0, template=None, parameters=None, profile=None):
     if difficulty not in SUPPORTED_LEVELS: raise ValueError('Unsupported band: no moderate/hard source backbone or validated grading contract')
-    rng = random.Random(seed); t = template or rng.choice(list(ORIGINAL)); k = (parameters or {}).get('k', rng.choice(DOMAINS[t]))
+    rng = random.Random(seed); t = template or rng.choice(list(ORIGINAL))
+    parameters = parameters or {}
+    shift = parameters.get('shift', 0 if parameters.get('k') == ORIGINAL[t] else rng.choice(ROLES))
+    k = parameters.get('k', rng.choice(DOMAINS[t]))
     if type(k) is not int or k not in DOMAINS[t]: raise ValueError('Outside certified parameter domain')
-    if profile not in (None,t): raise ValueError('Each template requires its own complete source bank')
-    src = SOURCES[t]; rhs, bank = mathematics(t,k)
+    if type(shift) is not int or shift not in ROLES: raise ValueError('Outside certified linear-role domain')
+    replay = k == ORIGINAL[t] and shift == 0
+    bank_profile = t if replay else 'linear-role'
+    if profile not in (None,bank_profile): raise ValueError('Profile does not match source replay / authored role case')
+    src = SOURCES[t]
+    rhs, bank = mathematics(t,k) if replay else role_instance(t,k,shift)
     expected = sp.cancel((rhs.subs(y,v*x)-v)/x)
     # Correctness before rendering: identify exactly one equation equal to the transformed ODE.
     rates = [sp.cancel(b/a) for a,b in bank]
     good = [i for i,r in enumerate(rates) if sp.simplify(r-expected)==0]
     if len(good)!=1 or any(sp.simplify(a-b)==0 for i,a in enumerate(rates) for b in rates[:i]): raise ValueError('Colliding or ambiguous complete bank')
-    problem = render_source(src[':question/problem'],t,k); solution = render_source(src[':question/worked-solution'],t,k)
+    if replay:
+        problem = src[':question/problem']; solution = src[':question/worked-solution']
+    else:
+        problem, solution = role_text(src,rhs)
     # Equations retain derivative notation, source answer shape, and five choices.
-    values = [r'\left('+sp.latex(a)+r'\right)'+D+'='+sp.latex(b) for a,b in bank]
-    if k == ORIGINAL[t]:
+    values = [equation(a,b) for a,b in bank]
+    if replay:
         values = [a[':answer/value'] for a in src[':question/answer-fields'][0][':answer-field/choices']]
     fp = fingerprint(problem)
     # Mathematical prompt, version and full bank establish identity, never seed or ordering.
@@ -90,16 +129,24 @@ def generate(difficulty='easy', seed=0, template=None, parameters=None, profile=
     fid = str(uuid.uuid5(uuid.UUID(qid),'field:selection'))
     answers = [{':answer/id':str(uuid.uuid5(uuid.UUID(fid),'recipe:'+str(i))),':answer/type':':answer.type/math',':answer/value':value} for i,value in enumerate(values)]
     correct_id = answers[good[0]][':answer/id']
-    random.Random(f'{seed}:{t}:{k}:choice-order').shuffle(answers)
+    random.Random(f'{seed}:{t}:{k}:{shift}:choice-order').shuffle(answers)
     question = {':question/id':qid,':question/problem':problem,':question/worked-solution':solution,':question/difficulty':':question.difficulty/easy',':question/answer-fields':[{':answer-field/id':fid,':answer-field/key':'selection',':answer-field/type':':answer-field.type/radio',':answer-field/choices':answers,':answer-field/correct':[':answer/id',correct_id]}]}
-    return {'question':question,'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':'Transforming a Homogeneous Differential Equation into a Separable Equation Using a Substitution'},'generation':{'version':VERSION,'seed':seed,'template':t,'bank_profile':t,'parameters':{'k':k},'source_question_id':src[':question/id'],'source_db_id':src[':db/id'],'parameter_fingerprint':fp,'domains':'x != 0; original RHS defined; separated coefficient defined; exclude equilibria where F(v)-v=0 when dividing. Transformation does not assert equivalence across excluded branches.','dependencies':{'sympy':sp.__version__}}}
+    return {'question':question,'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':'Transforming a Homogeneous Differential Equation into a Separable Equation Using a Substitution'},'generation':{'version':VERSION,'seed':seed,'template':t,'bank_profile':bank_profile,'parameters':{'k':k,'shift':shift},'source_question_id':src[':question/id'],'source_db_id':src[':db/id'],'parameter_fingerprint':fp,'domains':'x != 0; original RHS defined; separated coefficient defined; exclude equilibria where F(v)-v=0 when dividing. Transformation does not assert equivalence across excluded branches.','dependencies':{'sympy':sp.__version__}}}
 
 def batch(difficulty,count,seed=0,template=None):
     if difficulty not in SUPPORTED_LEVELS: raise ValueError('Unsupported difficulty')
     if template is not None and template not in DOMAINS:raise ValueError('Unknown template')
-    tasks = [(t,k) for t,domain in DOMAINS.items() if template is None or t==template for k in domain];random.Random(seed).shuffle(tasks)
+    tasks = [(t,k,s) for s in ROLES for t,domain in DOMAINS.items() if template is None or t==template for k in domain]
+    # Prefer exact source replays when several coefficient decompositions coincide.
+    tasks.sort(key=lambda task: not (task[1]==ORIGINAL[task[0]] and task[2]==0))
+    distinct = {}
+    for t,k,s in tasks:
+        rhs = mathematics(t,k)[0]+s*y/x
+        semantic = sp.srepr(sp.cancel(rhs.subs(y,v*x)))
+        distinct.setdefault(semantic,(t,k,s))
+    tasks=list(distinct.values());random.Random(seed).shuffle(tasks)
     if count>len(tasks):raise ValueError('Finite domain: at most '+str(len(tasks))+' mathematical tasks, including source tasks')
-    return [generate(difficulty,seed,t,{'k':k}) for t,k in tasks[:count]]
+    return [generate(difficulty,seed,t,{'k':k,'shift':s}) for t,k,s in tasks[:count]]
 
 def markdown(r):
     q=r['question'];f=q[':question/answer-fields'][0]
