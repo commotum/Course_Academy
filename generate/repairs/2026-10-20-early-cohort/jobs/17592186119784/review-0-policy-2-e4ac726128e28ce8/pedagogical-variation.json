@@ -1,0 +1,268 @@
+{
+  "learner_operation": "Identify every true triangularity statement by inspecting the correct off-diagonal half of a square matrix, transposing and, for the hard family, adding or subtracting the transpose.",
+  "fixed_features": [
+    {
+      "feature": "Square 3x3 or 4x4 matrices and all-zero strict triangular regions",
+      "justification": "Source tutorial defines upper/lower triangular only for square matrices and checks strict halves; sizes match observed workload."
+    },
+    {
+      "feature": "Moderate transpose-only and hard transpose sums/differences; Boolean select-all response",
+      "justification": "These operations and response fields occur in the supplied practice questions; no new prerequisite is needed."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Which of direct upper, direct lower, and transpose-derived statements qualify",
+      "eligible_variation": "Vary strict-half support including diagonal, upper-only, lower-only, and neither, then compute all keys and explanations. Labels and dimensions must not determine the subset.",
+      "observed": "Overall patterns vary across templates, but each visible label/dimension/bank signature predicts a fixed whole subset; 25/25 delivered controls and 5/5 delivered batch bypass entries."
+    },
+    {
+      "role": "Derived sum/difference cancellation and None qualifier",
+      "eligible_variation": "Mirrored entries can cancel or not within observed +/- workload; None should qualify if all ordinary statements are false.",
+      "observed": "Hard both-sided samples force antisymmetric off-diagonal entries; normal generation rejects empty ordinary selections before explicit None is attached. None is false in 50/50 sampled questions."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "Moderate lower, upper and diagonal global profiles",
+      "sample_refs": [
+        "samples-moderate.json",
+        "shortcut-results.json"
+      ],
+      "result": "25 questions across five moderate templates; globally varied answers, but no conditional variation within visible signatures. No neither-profile moderate source variant can pass the truth guard."
+    },
+    {
+      "case": "Runner batch finite practice pool",
+      "sample_refs": [
+        "batch.json",
+        "delivery-batch/accepted.json",
+        "shortcut-results.json"
+      ],
+      "result": "5/5 survive actual filtering and 5/5 whole responses are predicted by label/dimension/bank; this exact batch fails independently of larger controls."
+    },
+    {
+      "case": "Hard arithmetic and full-source replay",
+      "sample_refs": [
+        "samples-independent.json",
+        "source-replay-results.json"
+      ],
+      "result": "25 hard samples included in 50 exact mathematical checks; two additional supplied source templates are unsupported."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "For q-42091 seed 101 clear the only lower off-diagonal nonzero, a21:1 to 0, holding every other entry and statement fixed.",
+      "expected": "[false,true,true,false] becomes [true,true,true,false]; diagonal qualifies as both; prompt, explanation and learner key must follow.",
+      "observed": "After matrix [[4,0,0],[0,1,0],[0,0,3]] is rejected with Complete source-bank truth profile required. There is no generated after prompt/solution/grader input to render or grade. Before prompt is rendered and both Boolean choices are native-graded.",
+      "status": "failed",
+      "justification": "The source tutorial permits zeros anywhere in the untested half and the diagonal-source example explicitly qualifies as both. Fixing the original lower-only assignment is incidental.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "regression_tests.py",
+        "regression-results.txt",
+        "grader-results.json",
+        "render-all/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Change only a11 from 4 to -8 in the same lower-only q-42091 matrix.",
+      "expected": "Preserve all four Boolean responses; all displayed copies of the matrix and transpose update the diagonal.",
+      "observed": "Generated keys remain [false,true,true,false]; exact matrix/solution oracle, native accepted/rejected choices, and screenshots 006/007 confirm dependency and preservation.",
+      "status": "passed",
+      "justification": "Tutorial states diagonal entries may be any number including zero; diagonal values are irrelevant to strict-half zero tests.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "grader-input.json",
+        "grader-results.json",
+        "render-all/rendering.json",
+        "render-all/question-006.png",
+        "render-all/question-007.png"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "Matrix label, dimension, and statement bank; no matrix entries",
+      "subgroup": "raw-moderate",
+      "scope": "overall",
+      "strategy": "Use source-derived visible-signature lookup in shortcut-source-map.json to select complete ordinary subset; leave None unchecked.",
+      "correct": 25,
+      "total": 25,
+      "baseline": 0.4,
+      "disposition": "defect",
+      "conclusion": "Complete-response accuracy 25/25. Baseline 0.4 is measured accuracy of always selecting the direct lower-triangular and transpose upper-triangular statements, ignoring all cues and entries. The lookup is an incidental association, not triangularity reasoning.",
+      "sample_refs": [
+        "samples-moderate.json",
+        "shortcut-source-map.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Matrix label, dimension, and statement bank; no matrix entries",
+      "subgroup": "delivered-independent",
+      "scope": "overall",
+      "strategy": "Use source-derived visible-signature lookup in shortcut-source-map.json to select complete ordinary subset; leave None unchecked.",
+      "correct": 25,
+      "total": 25,
+      "baseline": 0.4,
+      "disposition": "defect",
+      "conclusion": "Complete-response accuracy 25/25. Baseline 0.4 is measured accuracy of always selecting the direct lower-triangular and transpose upper-triangular statements, ignoring all cues and entries. The lookup is an incidental association, not triangularity reasoning.",
+      "sample_refs": [
+        "delivery-independent/accepted.json",
+        "shortcut-source-map.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Matrix label, dimension, and statement bank; no matrix entries",
+      "subgroup": "runner-batch",
+      "scope": "overall",
+      "strategy": "Use source-derived visible-signature lookup in shortcut-source-map.json to select complete ordinary subset; leave None unchecked.",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.6,
+      "disposition": "defect",
+      "conclusion": "Complete-response accuracy 5/5. Baseline 0.6 is measured accuracy of always selecting the direct lower-triangular and transpose upper-triangular statements, ignoring all cues and entries. The lookup is an incidental association, not triangularity reasoning.",
+      "sample_refs": [
+        "batch.json",
+        "shortcut-source-map.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Matrix label, dimension, and statement bank; no matrix entries",
+      "subgroup": "delivered-batch",
+      "scope": "overall",
+      "strategy": "Use source-derived visible-signature lookup in shortcut-source-map.json to select complete ordinary subset; leave None unchecked.",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.6,
+      "disposition": "defect",
+      "conclusion": "Complete-response accuracy 5/5. Baseline 0.6 is measured accuracy of always selecting the direct lower-triangular and transpose upper-triangular statements, ignoring all cues and entries. The lookup is an incidental association, not triangularity reasoning.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "shortcut-source-map.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Visible label, dimension and statement bank",
+      "subgroup": "('A', 3, ('A^Tisuppertriangular.', 'Aislowertriangular.', 'Aisuppertriangular.'))",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select the fixed subset assigned to this signature in shortcut-source-map.json.",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.4,
+      "disposition": "defect",
+      "conclusion": "Perfect prediction within this recognizable subgroup (5 records). Baseline 0.4 is the global moderate constant strategy measured above; the subgroup assignment comes from original examples rather than inspecting entries. Code explicitly fixes every template truth vector.",
+      "sample_refs": [
+        "samples-moderate.json",
+        "shortcut-results.json",
+        "shortcut-source-map.json"
+      ]
+    },
+    {
+      "cue": "Visible label, dimension and statement bank",
+      "subgroup": "('C', 3, ('C^Tisuppertriangular.', 'Cislowertriangular.', 'Cisuppertriangular.'))",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select the fixed subset assigned to this signature in shortcut-source-map.json.",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.4,
+      "disposition": "defect",
+      "conclusion": "Perfect prediction within this recognizable subgroup (5 records). Baseline 0.4 is the global moderate constant strategy measured above; the subgroup assignment comes from original examples rather than inspecting entries. Code explicitly fixes every template truth vector.",
+      "sample_refs": [
+        "samples-moderate.json",
+        "shortcut-results.json",
+        "shortcut-source-map.json"
+      ]
+    },
+    {
+      "cue": "Visible label, dimension and statement bank",
+      "subgroup": "('B', 3, ('B^Tislowertriangular.', 'Bislowertriangular.', 'Bisuppertriangular.'))",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select the fixed subset assigned to this signature in shortcut-source-map.json.",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.4,
+      "disposition": "defect",
+      "conclusion": "Perfect prediction within this recognizable subgroup (5 records). Baseline 0.4 is the global moderate constant strategy measured above; the subgroup assignment comes from original examples rather than inspecting entries. Code explicitly fixes every template truth vector.",
+      "sample_refs": [
+        "samples-moderate.json",
+        "shortcut-results.json",
+        "shortcut-source-map.json"
+      ]
+    },
+    {
+      "cue": "Visible label, dimension and statement bank",
+      "subgroup": "('C', 4, ('C^Tisuppertriangular.', 'Cislowertriangular.', 'Cisuppertriangular.'))",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select the fixed subset assigned to this signature in shortcut-source-map.json.",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.4,
+      "disposition": "defect",
+      "conclusion": "Perfect prediction within this recognizable subgroup (5 records). Baseline 0.4 is the global moderate constant strategy measured above; the subgroup assignment comes from original examples rather than inspecting entries. Code explicitly fixes every template truth vector.",
+      "sample_refs": [
+        "samples-moderate.json",
+        "shortcut-results.json",
+        "shortcut-source-map.json"
+      ]
+    },
+    {
+      "cue": "Visible label, dimension and statement bank",
+      "subgroup": "('D', 3, ('D^Tisuppertriangular.', 'Dislowertriangular.', 'Disuppertriangular.'))",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select the fixed subset assigned to this signature in shortcut-source-map.json.",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.4,
+      "disposition": "defect",
+      "conclusion": "Perfect prediction within this recognizable subgroup (5 records). Baseline 0.4 is the global moderate constant strategy measured above; the subgroup assignment comes from original examples rather than inspecting entries. Code explicitly fixes every template truth vector.",
+      "sample_refs": [
+        "samples-moderate.json",
+        "shortcut-results.json",
+        "shortcut-source-map.json"
+      ]
+    },
+    {
+      "cue": "None of the above wording",
+      "subgroup": "All sampled moderate and hard normal templates",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always leave None of the above unchecked, without examining any matrix.",
+      "correct": 50,
+      "total": 50,
+      "baseline": 0.5,
+      "disposition": "defect",
+      "conclusion": "50/50 individual-field predictions versus a uniform true/false guess rate of 0.5. Source includes a None bank, but the sampled profiles and truth guard keep ordinary selections nonempty, so the added None role never qualifies. This is a partial-field shortcut, separate from the complete-response lookup.",
+      "sample_refs": [
+        "samples-independent.json",
+        "shortcut-results.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "Generator support enumeration and explicit truth-profile rejection",
+      "Actual publisher requested-difficulty, validation, normalization and captured-inventory/within-batch deduplication",
+      "Read-only conditional moderate learner selection using actual SHA256 rule and captured candidate bank; freshness-subset invariance inspected"
+    ],
+    "sample_refs": [
+      "rejection-results.json",
+      "delivery-independent/delivery.json",
+      "delivery-batch/delivery.json",
+      "selection-results.json",
+      "shortcut-results.json"
+    ],
+    "result": "25/25 independent moderate and 5/5 runner records accepted at inventory basis 5452. Whole-response shortcut remains perfect before and after delivery. Conditional selection probe 32/32; exact live learner weights/history unavailable. Any subset of the tested moderate pool retains the same signature shortcut."
+  },
+  "limitations": [
+    "No finite sample establishes absence of every possible shortcut; this review demonstrates specific conditional ones.",
+    "Relevant decision-changing counterfactual is rejected, so after-render and after-grading cannot be exercised; that is a failed requirement, not a pass.",
+    "Active learner policy weights/history and publication-assigned entity IDs are absent. Conditional selection is read-only, not a claim about a particular live draw.",
+    "Captured inventory contains 12 original source questions and one entry without generation metadata. Current generator does not reproduce its stored question ID; affected-inventory.json is empty because no matching generated record was demonstrated, not because existing-pool absence was verified.",
+    "Publication preparation file and repair history/preflight are absent; actual shared read-only filtering was used."
+  ]
+}

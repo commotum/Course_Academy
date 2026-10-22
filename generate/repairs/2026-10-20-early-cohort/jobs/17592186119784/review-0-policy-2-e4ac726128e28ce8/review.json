@@ -1,0 +1,162 @@
+{
+  "verdict": "revise",
+  "summary": "Reject: label/dimension/statement-bank cues answer every delivered batch item; a valid one-entry decision change is rejected; two supplied source cases are unsupported. Independent math, native grading, rendering and runtime packaging checks pass. Package unchanged. Existing-pool absence is not verified.",
+  "source_analysis": {
+    "skill": "Identify every true triangularity statement by inspecting the correct off-diagonal half of a square matrix, transposing and, for the hard family, adding or subtracting the transpose.",
+    "reasoning_steps": [
+      "Read the matrix and each independently phrased statement.",
+      "Form the indicated transpose or sum/difference when applicable.",
+      "Upper triangular means every entry strictly below the diagonal is zero; lower means every entry strictly above is zero.",
+      "Select all and only true statements; None of the above is true exactly when all substantive statements are false."
+    ],
+    "invariants": [
+      "Square matrices; diagonal entries do not determine triangularity.",
+      "Retain zero-testing, transpose and observed +/- operations, Boolean select-all response and comparable workload.",
+      "Diagonal matrices qualify as both upper and lower; transpose swaps the halves."
+    ],
+    "permitted_variations": [
+      "Vary label independently of truth, signed integer entries including diagonal zeros, sparse nonzero positions, and 3x3/4x4 size.",
+      "Vary which off-diagonal half has nonzeros: lower-only, upper-only, both, neither. This changes qualifying statements and selection counts and is essential eligible answer-bearing variation.",
+      "Vary transpose target upper/lower and statement order independently of label and matrix profile.",
+      "Within hard scope vary symmetry/antisymmetry of mirrored entries so sums/differences may cancel or not; do not fix the derived statement true just because a source example does."
+    ],
+    "source_refs": [
+      "tutorial 658a47dc-4d32-5d9d-a04c-82d683e87739: upper triangular is square with all entries below the diagonal zero; lower uses above; any number including 0 is allowed on diagonal and other half.",
+      "canonical 205d32a2-ac26-5eaf-896a-c6182a70eff7: A lower true, upper and A^T-A lower false.",
+      "prerequisite e3d1f202-a3d6-561f-bd4b-3e886142e5a0: interchange rows and columns.",
+      "39d12d09-6555-5993-ad4c-5e191be1b0c7",
+      "64e75667-2ca8-5517-b38f-4bfa5cf4e995",
+      "d3df39a1-3dce-5051-9bb1-2a36ee3c62ca",
+      "f41ff7d0-b754-5033-a620-53eef8a376e3",
+      "a03e6ad4-897b-5475-96e7-f211a321e037",
+      "ccdf19a6-45a3-5b56-b00e-b00d25e501ba",
+      "7fc84187-05b2-57ce-8e48-261250d11c80",
+      "deb97145-eaf3-5dcc-a36b-24fae2c52b5c",
+      "e68d4b2f-c3b6-584c-8430-662a571e8316",
+      "10915988-162b-5dec-9de2-5241d5fc3202",
+      "5fc95051-8b70-5447-aece-290d3854c40e",
+      "814b1f0e-0432-56a4-8a3b-10efb7462756"
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "failed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "source-replay-records.json",
+        "source-replay-results.json",
+        "regression-results.txt"
+      ],
+      "details": "10 older source recipes replay; supplied q-126481 and q-126474 are absent. Evidence-only replay retains historical radio banks instead of supplied checkbox banks. Normal source matrices and truth sets agree where supported, with an added None control."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "audit.py",
+        "math-results.json",
+        "samples-independent.json",
+        "batch.json"
+      ],
+      "details": "Independent integer-list matrix arithmetic confirms every checkbox key, every worked matrix and each truth assertion in 50 fresh moderate/hard samples plus all 5 runner records."
+    },
+    "variety": {
+      "status": "failed",
+      "evidence_paths": [
+        "rejection-results.json",
+        "counterfactuals.json",
+        "shortcut-results.json",
+        "packaging-results.json"
+      ],
+      "details": "Each normal source recipe preserves its original truth vector and zero regions. Source-derived recognizable signatures determine answers; legitimate diagonal/upper/neither changes are rejected. Varying numeric values and support positions within fixed regions does not remove this restriction."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "scope-results.json",
+        "source-analysis.json",
+        "samples-independent.json"
+      ],
+      "details": "Sampled moderate and hard operations, matrix sizes and Boolean response workload remain within observed source scope."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-results.json",
+        "counterfactuals.json"
+      ],
+      "details": "Actual native grade_field: 36 correct Boolean choices accepted and 36 wrong choices rejected across exact batch, irrelevant pair and controls. No free-entry response type applies."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render-all/rendering.json",
+        "render-inspection.json",
+        "render-all/question-006.png",
+        "render-all/question-007.png"
+      ],
+      "details": "Actual unmodified UI rendered 9 records, including all runner records and the diagonal-preserving pair; no math/JS/image errors. Representative screenshots visually inspected."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "package-before.json",
+        "package-final.json",
+        "commands.json"
+      ],
+      "details": "Declared exact dependency versions match Python 3.13.5 and SymPy 1.14.0. Replay and package relocation agree; all batch seeds reproduce. Stdout JSON only; no asset output required. Package bytes unchanged."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "variation-schema-validation.json",
+        "shortcut-results.json",
+        "delivery-batch/delivery.json",
+        "selection-results.json",
+        "counterfactuals.json"
+      ],
+      "details": "Visible label/dimension/statement-bank lookup answers 50/50 fresh controls, 25/25 delivered moderate controls and 5/5 exact delivered batch without reading entries. Conditional probes are perfect. Decision-changing pair rejected; irrelevant diagonal pair renders/grades correctly. Captured-inventory selection cannot remove the demonstrated conditional mapping."
+    }
+  },
+  "findings": [
+    {
+      "kind": "decision_shortcut",
+      "description": "Complete answers are predictable from matrix label, dimension and statement wording, without inspecting entries. This succeeds on all 5 exact runner records after actual delivery filtering, as well as all 50 independently seeded controls. For example, every moderate A record selects direct lower and transpose upper; C 3x3 selects all ordinary statements while C 4x4 selects only direct upper. None is always false.",
+      "source_refs": [
+        "tutorial 658a47dc-4d32-5d9d-a04c-82d683e87739",
+        "39d12d09-6555-5993-ad4c-5e191be1b0c7",
+        "f41ff7d0-b754-5033-a620-53eef8a376e3",
+        "e68d4b2f-c3b6-584c-8430-662a571e8316"
+      ],
+      "reproduction": "Run <job-python> -B audit.py; run shared delivery commands in commands.json; run <job-python> -B analyze_variation.py. Exact batch seed 4077425948 gives C 3x3, all three ordinary selections; seeds 4077425949 and 4077425952 give A, lower+transpose upper. See shortcut-source-map.json, shortcut-results.json and delivery-batch/accepted.json.",
+      "requested_change": "Decouple labels, dimensions and statement-bank identity from qualifying roles; vary strict-half zero/nonzero assignments within each recognizable family and derive keys/solutions from the complete instance. Replace the exact delivered batch after repair and retest conditional shortcuts; numerical resampling or choice shuffling alone cannot fix it."
+    },
+    {
+      "kind": "restriction",
+      "description": "The complete-source-bank truth guard rejects valid same-skill decision changes. A single entry a21:1\u21920 changes lower-only to diagonal, but q-42091 rejects it before prompt/key/solution construction. This enforces an incidental source outcome and prevents meaningful counterfactual grading.",
+      "source_refs": [
+        "tutorial 658a47dc-4d32-5d9d-a04c-82d683e87739",
+        "39d12d09-6555-5993-ad4c-5e191be1b0c7",
+        "f41ff7d0-b754-5033-a620-53eef8a376e3"
+      ],
+      "reproduction": "<job-python> -B regression_tests.py AcceptanceRegressions.test_relevant_entry_can_change_decision. Before matrix [[4,0,0],[1,1,0],[0,0,3]], after [[4,0,0],[0,1,0],[0,0,3]], moderate/q-42091/seed101. Expected first-three truths F,T,T\u2192T,T,T. Actual ValueError: Complete source-bank truth profile required.",
+      "requested_change": "Replace family-wide source-truth/zero-region restrictions and source-only support catalogs with constraints on operation, size and workload. Permit diagonal, upper-only, lower-only and neither assignments where meaningful, derive all Boolean decisions and explanations, and handle all-false ordinary sets using the source-backed None option rather than suppressing them. Retain strict relevant/irrelevant tests."
+    },
+    {
+      "kind": "source_fidelity",
+      "description": "The package contains an older 10-question source snapshot and cannot replay supplied source q-126481 or q-126474. Its evidence-only replay also uses old radio answer banks instead of the supplied checkbox contract.",
+      "source_refs": [
+        "5fc95051-8b70-5447-aece-290d3854c40e",
+        "814b1f0e-0432-56a4-8a3b-10efb7462756",
+        "39d12d09-6555-5993-ad4c-5e191be1b0c7"
+      ],
+      "reproduction": "<job-python> -B regression_tests.py AcceptanceRegressions.test_source_q126481_supported AcceptanceRegressions.test_source_q126474_supported. Both reject with Wrong template difficulty at original matrices, seed101. See source-replay-results.json for all 12 supplied questions.",
+      "requested_change": "Update source coverage and executable replay to all supplied original cases, preserving complete current statement/Boolean banks and observed matrix/transpose or sum workload. Reconcile the historical radio evidence snapshot with the current supplied checkbox source rather than treating it as full current replay."
+    }
+  ]
+}
