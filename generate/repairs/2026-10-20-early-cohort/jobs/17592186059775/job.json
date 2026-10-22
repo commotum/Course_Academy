@@ -6,11 +6,11 @@
     "existing_entrypoint": "/home/jake/Developer/Course_Academy/generate/scratch/17592186059775.py",
     "job_kind": "build"
   },
-  "stage": "validate",
-  "attempt": 2,
+  "stage": "generate",
+  "attempt": 3,
   "seed": 4258185931,
   "created": 1792680517.8311014,
-  "updated": 1792681798.9217472,
+  "updated": 1792682727.8262556,
   "source_hash": "8b047c52499a110e01543680c6040b102a643231b57cebd87903c80c9c28452e",
   "inventory_hash": "2ca46edb2ade278dd8313f38dcb1aa2d840e7717e29b05fe1db2f7c8334928b9",
   "manifest": "package.json",
@@ -18,12 +18,150 @@
   "effective_difficulty": "easy",
   "needs_repair": true,
   "error": {
-    "error": "Generator must return exactly the requested number of records; report finite limits explicitly"
+    "verdict": "revise",
+    "summary": "The exact five-question batch admits a 5/5 incidental shortcut. This is a batch-selection defect; the broader generator supports valid counterexamples. Source replay, mathematics, grading, rendering, scope and packaging checks passed.",
+    "source_analysis": {
+      "skill": "Normalize the first pivot, eliminate the lower-left entry, normalize the second pivot, and optionally back-substitute to solve the represented 2x2 system.",
+      "reasoning_steps": [
+        "Read the augmented matrix.",
+        "Normalize and eliminate using elementary row operations.",
+        "Identify the resulting normalized REF.",
+        "For solve prompts, back-substitute and select the matching matrix and solution."
+      ],
+      "invariants": [
+        "Nonsingular 2x2 coefficient matrix with nonzero first pivot.",
+        "Five radio choices.",
+        "Preserve the observed forward-elimination stages and arithmetic difficulty."
+      ],
+      "permitted_variations": [
+        "Vary coefficients and constants within the observed workload.",
+        "Vary which candidate qualifies and its displayed position.",
+        "Derive prompts, solutions and grading consistently from changed evidence."
+      ],
+      "source_refs": [
+        "9752715d-a11c-5d27-95dc-d20bec1117cb",
+        "dc5530a8-d7bb-5ee6-b842-11178cec4e06",
+        "8ad44012-c8dc-51b0-90ac-8e2b89d003b4",
+        "Tutorial 2112d3af-1fb0-5a70-ab99-59931db99930: three Gaussian-elimination steps",
+        "Tutorial ee4b134d-2908-5930-86bb-32537e0d8347: REF nonuniqueness"
+      ],
+      "evidence_paths": [
+        "source-analysis.json"
+      ]
+    },
+    "checks": {
+      "source_replay": {
+        "status": "passed",
+        "evidence_paths": [
+          "source-replays.json",
+          "source-replay-results.json"
+        ],
+        "details": "Ten complete source banks replay exactly. The known REF/RREF ambiguity is confirmed and corrected in normal generation. Two incomplete captures remain explicitly unsupported."
+      },
+      "math": {
+        "status": "passed",
+        "evidence_paths": [
+          "audit.py",
+          "math-results.json",
+          "grader-final-input.json"
+        ],
+        "details": "Exact independent checks passed for 81 raw and 70 post-delivery records, including intermediate matrices, unique correct choices and optional solutions."
+      },
+      "variety": {
+        "status": "failed",
+        "evidence_paths": [
+          "delivery-selection.json",
+          "minimal-failing-batch.json",
+          "batch-shortcut-results.json"
+        ],
+        "details": "The catalogs retain all five target ranks per profile. However, three runner records are scaled q-73439 variants, all with the minimum candidate value correct."
+      },
+      "scope": {
+        "status": "passed",
+        "evidence_paths": [
+          "source-analysis.json",
+          "independent-records.json",
+          "math-results.json"
+        ],
+        "details": "Generated cases preserve the observed operators, representations, response contracts and reasoning stages."
+      },
+      "grading": {
+        "status": "passed",
+        "evidence_paths": [
+          "grader-final-input.json",
+          "grader-final-results.json"
+        ],
+        "details": "The native grader passed 755 submissions: 151 accepted and 604 rejected. All fields are radio; free-entry equivalence is inapplicable."
+      },
+      "rendering": {
+        "status": "passed",
+        "evidence_paths": [
+          "render-records.json",
+          "render/rendering.json",
+          "render-inspection.json"
+        ],
+        "details": "Thirteen records rendered through the actual UI. Inspected screenshots show readable matrices, fractions, controls and worked solutions."
+      },
+      "packaging": {
+        "status": "passed",
+        "evidence_paths": [
+          "packaging-results.json",
+          "retained-count-counterexample.json",
+          "package-unchanged.json",
+          "commands.json"
+        ],
+        "details": "Relocation, deterministic replay, exact requested counts, finite-limit rejection and installed dependencies passed. Both retained CLI defects reproduce on failing artifacts and are fixed currently. Package files remain unchanged."
+      },
+      "decision_variation": {
+        "status": "failed",
+        "evidence_paths": [
+          "pedagogical-variation.json",
+          "schema-validation.json",
+          "strict-shortcut-current.log",
+          "strict-shortcut-delivered.log",
+          "strict-shortcut-control.log",
+          "delivery-batch/delivery.json",
+          "inventory-selection.json",
+          "affected-inventory.json",
+          "generated-records.json"
+        ],
+        "details": "A first-pivot/candidate-rank strategy answers all five delivered records without elimination. Controlled target changes break the strategy, establishing a batch-specific incidental cue. All five records survive delivery. Three stored legacy generated records were separately reproduced with demonstrated historical shortcuts."
+      }
+    },
+    "findings": [
+      {
+        "kind": "decision_shortcut",
+        "description": "At seed 4258185931, choose the second-largest candidate lower-right value when input a11=1; otherwise choose the smallest. This answers all five delivered questions. Within q-73439, scales 2, 4 and 5 all select the minimum value, succeeding 3/3 versus a 1/5 guessing baseline. The finding concerns this exact batch, not every generator output.",
+        "source_refs": [
+          "9752715d-a11c-5d27-95dc-d20bec1117cb",
+          "dc5530a8-d7bb-5ee6-b842-11178cec4e06",
+          "8ad44012-c8dc-51b0-90ac-8e2b89d003b4"
+        ],
+        "reproduction": "From evidence_root run /home/jake/Developer/Course_Academy/.venv/bin/python -B reproduce_batch_shortcut.py. It reproduces current batch('easy',5,4258185931), reports 5/5 and exits 1. Repeat with --input delivery-batch/accepted.json. Minimal repeated-role pair: ['q-73439',2,0] and ['q-73439',4,0]. The first input is [[3,9,12],[2,7,6]], with correct REF [[1,3,4],[0,1,-2]] and solution x=10,y=-2.",
+        "requested_change": "Revise batch selection so repeated scaled members of a recognizable coefficient family do not preserve a fixed answer rank or this pivot/rank cue. Use the supported target roles, regenerate the five-item batch, and rerun the retained strict test on its actual delivered records. Preserve source families and the response contract."
+      }
+    ]
   },
-  "author_running": false,
+  "author_running": true,
   "batch_hash": "027e402f2d4c6740a3175ac55402c452e029061efd9294549346d6e1ba7a3d53",
   "runtime": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186059775/runtime-2",
   "engine_hash": "dc1e0a8583ca33c6028bc0a641128ecc8e7896742189dd42b292170c9726bad9",
   "assets": {},
-  "package_hash": "45755873c0d250a52e751ebf4020209b2a5e154fe89866dd037e5cadbf083f4c"
+  "package_hash": "45755873c0d250a52e751ebf4020209b2a5e154fe89866dd037e5cadbf083f4c",
+  "previous_review": {
+    "directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186059775/review-2-policy-2-4ea3e9df01325020",
+    "binding": {
+      "policy_version": 2,
+      "package_hash": "45755873c0d250a52e751ebf4020209b2a5e154fe89866dd037e5cadbf083f4c",
+      "batch_hash": "027e402f2d4c6740a3175ac55402c452e029061efd9294549346d6e1ba7a3d53",
+      "source_hash": "8b047c52499a110e01543680c6040b102a643231b57cebd87903c80c9c28452e",
+      "inventory_hash": "2ca46edb2ade278dd8313f38dcb1aa2d840e7717e29b05fe1db2f7c8334928b9",
+      "assets": {},
+      "effective_difficulty": "easy",
+      "engine_hash": "dc1e0a8583ca33c6028bc0a641128ecc8e7896742189dd42b292170c9726bad9"
+    }
+  },
+  "last_rejected_package": "45755873c0d250a52e751ebf4020209b2a5e154fe89866dd037e5cadbf083f4c",
+  "last_rejected_source": "8b047c52499a110e01543680c6040b102a643231b57cebd87903c80c9c28452e",
+  "last_rejected_engine": "dc1e0a8583ca33c6028bc0a641128ecc8e7896742189dd42b292170c9726bad9"
 }

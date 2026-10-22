@@ -1,0 +1,15 @@
+Preserved all completed runtime repairs. Read current feedback, every retained finding, the prior session state, supplied source questions, lesson context, and the required generation/validation documentation. No new generator-construction failure is demonstrated by the latest feedback.
+
+Reproduced finding 591f580cadb749294588 first using the declared strict inventory regression, then ran the four retained generator regressions, shared delivery checks, native grader, and relocation/dependency checks:
+
+`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/author-644`
+
+The command exits 1. Four generator finding checks pass; the historical inventory finding fails. All five captured generated records match their stored prompts, complete banks, keys, solutions and generation metadata. The sign-extremum shortcut succeeds on 5/5 historical records and 64/64 draws in the retained possible-history witness. All captured generated inventory was tested. This witness does not establish actual learner history or configured selection policy.
+
+Current-generator verification: 17 complete practice-bank replays and canonical replay; fractional/bare-parameter and zero-root boundaries; three finite CLI batches with 14 records retaining within-sign contrasts before and after shared delivery; relevant and irrelevant counterfactuals; native grading with 7 accepted and 28 rejected responses; exact pinned dependencies and relocated seeded execution. Protected runtime, manifest, source and inventory hashes match the retained evidence. Inspected both retained actual-UI screenshots and the source lesson diagram; no generated-layout defect observed. Unchanged runtime and rendered inputs do not justify another interchangeable render.
+
+The source still supports the intended learner operation: canonical f2c7cfd3-da43-5208-bd0e-21692357fabe eliminates x to obtain (k+4)y=-5 and identifies a contradiction; tutorial e0c85152-daea-5a87-a3ba-81870558c7a2 defines inconsistency as no solutions. Source 534e2a93-e71a-5475-894e-dfd5ca99a3a6 demonstrates an interior correct option. The existing instructional account, five-choice contract, source profiles and easy arithmetic remain intact.
+
+Root cause remaining: the learner selector reads stored historical banks independently of this generator. The requested separate inventory-remediation workflow is outside this workspace-only author task, which explicitly forbids database changes. The five complete replacements and identity mappings in evidence/repair-3/inventory-repair-proposal.json remain verified and unapplied. No generator edit can replace those stored banks. No acceptance criterion was weakened; the strict regression remains failing. No runtime, engine, source, database or publication change was made.
+
+Status: unsupported because the retained stored-pool defect remains unresolved. The concrete next step is separate authorized remediation using the staged proposal, followed by fresh inventory capture and the strict recheck. Repeating this author task with the same immutable inputs cannot complete that step.

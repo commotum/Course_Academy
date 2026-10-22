@@ -1,0 +1,186 @@
+{
+  "cwd": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186059775/review-2-policy-2-4ea3e9df01325020",
+  "runs": [
+    {
+      "argv": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "-B",
+        "audit.py"
+      ],
+      "exit_code": 0,
+      "results": [
+        "math-results.json",
+        "packaging-results.json",
+        "inventory-results.json"
+      ],
+      "log": "audit.log"
+    },
+    {
+      "argv": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "-B",
+        "decision_audit.py"
+      ],
+      "exit_code": 0,
+      "results": [
+        "delivery-selection.json",
+        "batch-shortcut-results.json"
+      ],
+      "log": "decision.log"
+    },
+    {
+      "argv": [
+        "/home/jake/Developer/Course_Academy/generate/runs/current/check-engine",
+        "grader-final-input.json",
+        "grader-final-results.json"
+      ],
+      "exit_code": 0,
+      "results": [
+        "grader-final-results.json"
+      ],
+      "log": "grader-final.log"
+    },
+    {
+      "argv": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "-B",
+        "/home/jake/Developer/Course_Academy/generate/pipeline/render_preview.py",
+        "--input",
+        "render-records.json",
+        "--output",
+        "render",
+        "--limit",
+        "13",
+        "--asset-root",
+        "runtime-assets",
+        "--math-root",
+        "/media/jake/SSD/EDB/math"
+      ],
+      "exit_code": 0,
+      "results": [
+        "render/rendering.json"
+      ],
+      "log": "render.log"
+    },
+    {
+      "argv": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "-B",
+        "reproduce_batch_shortcut.py"
+      ],
+      "exit_code": 1,
+      "expected": "strict acceptance test detects current batch defect",
+      "log": "strict-shortcut-current.log"
+    },
+    {
+      "argv": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "-B",
+        "reproduce_batch_shortcut.py",
+        "--input",
+        "delivery-batch/accepted.json"
+      ],
+      "exit_code": 1,
+      "expected": "same defect survives actual delivery",
+      "log": "strict-shortcut-delivered.log"
+    },
+    {
+      "argv": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "-B",
+        "reproduce_batch_shortcut.py",
+        "--input",
+        "strict-shortcut-control.json"
+      ],
+      "exit_code": 0,
+      "expected": "control with all five target roles is not perfectly predictable",
+      "log": "strict-shortcut-control.log"
+    },
+    {
+      "argv": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "-B",
+        "/home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py",
+        "--input",
+        "runner-batch.json",
+        "--source",
+        "../source/source.json",
+        "--inventory",
+        "../source/inventory.json",
+        "--difficulty",
+        "easy",
+        "--output",
+        "delivery-batch",
+        "--asset-root",
+        "runtime-assets",
+        "--math-root",
+        "/media/jake/SSD/EDB/math"
+      ],
+      "exit_code": 0,
+      "results": [
+        "delivery-batch/delivery.json",
+        "delivery-batch/accepted.json"
+      ],
+      "log": "delivery-batch.log"
+    },
+    {
+      "argv": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "-B",
+        "/home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py",
+        "--input",
+        "samples-easy.json",
+        "--source",
+        "../source/source.json",
+        "--inventory",
+        "../source/inventory.json",
+        "--difficulty",
+        "easy",
+        "--output",
+        "delivery-easy",
+        "--asset-root",
+        "runtime-assets",
+        "--math-root",
+        "/media/jake/SSD/EDB/math"
+      ],
+      "exit_code": 0,
+      "results": [
+        "delivery-easy/delivery.json",
+        "delivery-easy/accepted.json"
+      ],
+      "log": "delivery-easy.log"
+    },
+    {
+      "argv": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "-B",
+        "/home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py",
+        "--input",
+        "samples-moderate.json",
+        "--source",
+        "../source/source.json",
+        "--inventory",
+        "../source/inventory.json",
+        "--difficulty",
+        "moderate",
+        "--output",
+        "delivery-moderate",
+        "--asset-root",
+        "runtime-assets",
+        "--math-root",
+        "/media/jake/SSD/EDB/math"
+      ],
+      "exit_code": 0,
+      "results": [
+        "delivery-moderate/delivery.json",
+        "delivery-moderate/accepted.json"
+      ],
+      "log": "delivery-moderate.log"
+    }
+  ],
+  "notes": [
+    "Scripts, fixtures and reports reside only in evidence_root.",
+    "Renderer screenshot inputs include the eight easy target endpoints, one batch representative, one moderate target/permutation pair and two moderate endpoints.",
+    "Expected failing shortcut tests are retained unchanged; no generator repair was attempted."
+  ]
+}
