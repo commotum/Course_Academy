@@ -128,3 +128,20 @@ Feedback and the full repair history were read first. The exact current unchange
 The same lesson passages and source IDs above continue to support the repaired easy family. No mathematical, answer-role, workload, bank, or runtime change is warranted. Both retained finding regressions pass. The current runner still demands a new package digest for a review whose only finding is about evidence paths; returning unsupported restarts authoring indefinitely.
 
 Stage a patch here, without editing or executing the live runner. Permit an unchanged candidate to proceed only when the latest independently produced, structurally valid revise report contains exclusively evidence findings and its complete review binding still matches. Keep the unchanged-candidate rejection for mathematical, grading, scope, or shortcut findings, mixed findings, missing reports, and mismatched bindings. Retained regressions and sampling must run before a fresh independent review. Do not adopt the copied accepted report as new approval or install historical evidence. Test the actual original and patched sample-stage control flow offline, using temporary state and instrumented service boundaries. This makes the external correction concrete; applying it remains the runner owner's action outside this workspace.
+
+## Author-70 continuation before validation
+
+The latest installed-runner rejection reproduces with the unchanged runtime before
+regressions or sampling. Retained finding 9b8cb52352b8ca3e790e requests evidence-only
+repair; it supplies no basis to change the learner task. Preserve the five-radio
+easy elimination family and its repaired target assignments. Source question
+9752715d-a11c-5d27-95dc-d20bec1117cb and tutorial
+2112d3af-1fb0-5a70-ab99-59931db99930 support first-pivot normalization,
+lower-left elimination, second-pivot normalization and optional back substitution.
+The existing controlled five-target banks still exercise the decisive RHS while
+keeping coefficients, upper row, answer bank and workload fixed. No new variation
+or runtime change is justified. Recheck the real evidence contract, exact retained
+shortcut batch through delivery/native grading, relocated CLI and source/UI binding.
+Do not reinstall an external runner, weaken its strict check, or repeatedly test
+the unchanged proposed patch. The permitted write boundary prevents applying the
+identified runner correction to scripts/generator_pipeline.py.

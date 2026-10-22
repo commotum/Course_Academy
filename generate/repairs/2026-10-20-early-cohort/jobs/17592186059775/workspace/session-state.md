@@ -1,39 +1,37 @@
-# Current state — 2026-10-22, author-67
+# Current state — 2026-10-22, author-69
 
-Preserved repaired runtime, manifest, source banks, instructional account and
-strict registered regressions. Read feedback and repair history first. No new
-runtime defect is demonstrated by evidence-only finding 9b8cb52352b8ca3e790e.
+Feedback and repair history read first. Latest failure reproduced before other
+checks with the job Python and `-B checks/check_current_handoff.py`: exit 1.
+Installed `scripts/generator_pipeline.py` rejects the unchanged package at its
+sample gate, before regressions or sampling. Finding 9b8cb52352b8ca3e790e asks
+for evidence-only correction and runtime preservation. No new generator defect
+is demonstrated. Do not change runtime bytes solely to evade this gate.
 
-First reproduced the latest failure with the job Python:
-`python -B checks/check_current_handoff.py` exits 1. The installed runner rejects
-the unchanged package at scripts/generator_pipeline.py:723 before regressions or
-sampling. The retained independent finding explicitly requires runtime preservation.
-
-Affected checks, using the same Python with -B:
+Affected checks freshly executed (job Python, `-B`):
 - checks/check_evidence_contract.py: exit 1. Real bundle validation, relocation,
-  negative controls, current-record binding, 12 source captures and three
-  affected inventory bindings pass. Installed runner handoff alone fails.
-- checks/check_batch_selection.py: exit 0. Exact reported seed and controlled
-  answer roles pass; shortcut scores 1/5 before and after shared delivery.
-  Native grading accepts five correct responses and rejects twenty wrong ones.
-- checks/check_cli_contract.py: exit 0. Relocated counts, determinism,
-  supported bands and explicit finite-limit rejection pass.
+  negative controls, current record/source binding and three affected stored
+  generated records pass; installed runner handoff alone fails.
+- checks/check_batch_selection.py: exit 0. Exact seed 4258185931 scores 1/5
+  for the retained pivot/rank shortcut before and after shared delivery;
+  ten profiles pass controlled-role checks. Native grader: 5 accepted,
+  20 rejected, no unexpected results.
+- checks/check_runner_handoff.py: exit 0. Proposed external patch passes 23
+  offline cases. This does not repair installed runner control flow.
+- checks/check_cli_contract.py: exit 0. Runtime-only relocation, requested
+  counts, determinism and explicit finite-limit failure pass.
 - checks/check_render_binding.py: exit 0. Ten complete source banks replay;
-  two retained actual-UI inputs equal current delivered endpoints. Reinspected
-  question-001.png: readable matrices, choices and complete solution.
-- checks/check_runner_handoff.py: exit 0 for 23 offline original/patched cases.
-  This verifies the proposed patch, not an installed repair.
+  two retained UI inputs match fresh delivered records. Visually reinspected
+  evidence/author8-render/question-001.png: readable, no clipping observed.
 
-Commands, logs, results, versions and unchanged runtime hashes:
-evidence/current-verification.json. Broader retained checks were not repeated
-because no runtime code changed. All new evidence stays in this workspace.
-No publication, database changes, engine edits or external runner writes occurred.
+Exact commands, result paths, versions and unchanged runtime hashes are in
+`evidence/current-verification.json`. Existing strict regressions remain intact.
+No runtime, engine, external runner, publication, database or other-job edits.
+No unrelated bulk retesting or redundant rendering was performed.
 
-Next required action: the runner owner must resolve its evidence-only
-unchanged-package gate, then rerun strict handoff, registered regressions,
-sampling and fresh independent review. The concrete patch is already staged at
-runner-fix/evidence-only-rejection.patch. It remains uninstalled because its
-target is outside the authorized workspace. The corrected evidence bundle is
-validated at evidence/contract-correction; no external installation is claimed.
-Do not change runtime bytes merely to evade the gate or weaken the failing test.
-Status is unsupported for the unresolved handoff, not for the source skill.
+Unfinished: runner owner must apply the staged correction at
+`runner-fix/evidence-only-rejection.patch` to scripts/generator_pipeline.py,
+which is outside this workspace. Then rerun the actual handoff and retained
+regressions before fresh independent review. The corrected report bundle is
+validated at evidence/contract-correction; its installation is runner-owned.
+The proposed patch remains uninstalled. Status: unsupported for this boundary,
+not for the easy Gaussian-elimination skill.
