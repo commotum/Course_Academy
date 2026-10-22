@@ -10,13 +10,15 @@ function outcome(estimate, hasGoal = true) {
   if (!hasGoal) return node('span', 'forecast-status', 'No goal set');
   if (estimate.status === 'estimated') {
     const date = new Date(estimate.date);
-    const time = node('time', 'forecast-date', new Intl.DateTimeFormat(undefined,
-      { month: 'short', day: 'numeric', year: 'numeric' }).format(date));
+    const time = node('time', 'forecast-date', new Intl.DateTimeFormat('en-US',
+      { month: '2-digit', day: '2-digit', year: '2-digit' }).format(date));
     time.dateTime = estimate.date;
     return time;
   }
-  return node('span', 'forecast-status', ({ complete: 'Caught up', 'not-catching-up': 'Not catching up',
+  const status = node('span', 'forecast-status', ({ complete: 'Caught up', 'not-catching-up': '∞',
     'out-of-range': 'Too far ahead' })[estimate.status] || 'Unavailable');
+  if (estimate.status === 'not-catching-up') status.setAttribute('aria-label', 'Not catching up at this pace');
+  return status;
 }
 
 // Historical replay can take several seconds. Keep both the input read and
@@ -62,7 +64,7 @@ export function createForecastSidebar({ signal } = {}) {
     head.append(headings); table.append(head);
     const body = node('tbody', '');
     const rows = [
-      { label: 'All', currentPace: model.currentPace, goalPace: model.goalPace },
+      { label: 'All Courses', currentPace: model.currentPace, goalPace: model.goalPace },
       ...courseCompletionEstimates(model).map(course => ({ ...course, label: `MTH ${course.code}` })),
     ];
     for (const entry of rows) {

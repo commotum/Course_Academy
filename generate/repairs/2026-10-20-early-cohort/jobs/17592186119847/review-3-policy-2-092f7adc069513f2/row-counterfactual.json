@@ -1,0 +1,111 @@
+{
+  "before": {
+    "knowledge_point": {
+      "db_id": 17592186119847,
+      "id": "be3d5a74-259e-58b9-948d-47ba7412ab08",
+      "title": "Determining the Rank of a Matrix Given the Number of Pivot Columns"
+    },
+    "question": {
+      ":question/id": "05b8f0c8-4928-5e90-8ad8-4d68c0583be3",
+      ":question/problem": "If $B$ is a $5\\times 7$ matrix that has $3$ **non-pivot** columns, then $\\text{rank}(B)=$",
+      ":question/worked-solution": "We know that $\\text{rank}(B)$ is the number of pivot columns in $B.$ \n\nSince $B$ has $7$ columns and $3$ of them are non-pivots, then the number of pivot columns in $B$ is \n\n$$\n7-3=4.\n$$\n\nTherefore, $\\text{rank}(B)=4.$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "72022f66-11aa-52e4-98a4-ecd4ed0106c7",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "e57d05d0-7721-5946-82c4-4440d4b5603a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "4"
+            },
+            {
+              ":answer/id": "9d19e41d-e4e9-5f6e-be78-43a059a1f5bc",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "5"
+            },
+            {
+              ":answer/id": "11d8757e-59b2-5aaa-9ef3-215cc6cd3c04",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2"
+            },
+            {
+              ":answer/id": "7ad73542-28e2-5b0e-81ca-1b01648ebb79",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3"
+            },
+            {
+              ":answer/id": "c0f6b3d7-c755-51da-98ec-7cb888e6ac75",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "7"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "e57d05d0-7721-5946-82c4-4440d4b5603a"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "rank-count-v2",
+      "generator_id": "0ca56e1c-765c-56bb-9338-487d6907e8bc",
+      "seed": 921773,
+      "template": "moderate-rank-count",
+      "bank_profile": "q-79409",
+      "parameters": {
+        "name": "B",
+        "rows": 5,
+        "columns": 7,
+        "count": 3,
+        "kind": "non-pivot"
+      },
+      "parameter_fingerprint": "377f9c5a8e1f7f2861a10ca090119818a3d102a4a514890fabd8b3564f5b6aa3",
+      "dependencies": {
+        "sympy": "1.14.0"
+      },
+      "domain": "dimensions 3..15; positive rank <=12; non-pivot count positive; feasible rank <= min(rows,columns)",
+      "source_question": "q-79409",
+      "source_replay": true,
+      "bank_extension": "source"
+    }
+  },
+  "after_parameters": {
+    "name": "B",
+    "rows": 4,
+    "columns": 7,
+    "count": 3,
+    "kind": "non-pivot"
+  },
+  "expected": "rank remains 7-3=4; rows=4 is feasible, prompt and explanation should update only row dimension",
+  "observed": "No after record can be constructed under any bank profile",
+  "attempts": [
+    {
+      "profile": "q-34806",
+      "result": "Parameters outside supported profile domain"
+    },
+    {
+      "profile": "q-139953",
+      "result": "Parameters outside supported profile domain"
+    },
+    {
+      "profile": "q-34826",
+      "result": "Parameters outside supported profile domain"
+    },
+    {
+      "profile": "q-79408",
+      "result": "Parameters outside supported profile domain"
+    },
+    {
+      "profile": "q-79409",
+      "result": "Parameters outside supported profile domain"
+    },
+    {
+      "profile": "q-79407",
+      "result": "Parameters outside supported profile domain"
+    }
+  ],
+  "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B audit-row-counterfactual.py"
+}

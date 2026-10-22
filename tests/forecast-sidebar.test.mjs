@@ -8,7 +8,6 @@ process.env.TZ = 'America/Los_Angeles';
 const source = (await readFile(new URL('../ui/forecast-sidebar.js', import.meta.url), 'utf8'))
   .replace(/^import .*;\n/gm, '').replaceAll('export ', '');
 const origin = new Date(2026, 9, 21, 12).getTime();
-const formatDate = value => new Intl.DateTimeFormat(undefined, { month: 'short', day: 'numeric', year: 'numeric' }).format(new Date(value));
 function model() {
   const forecast = {
     capturedAt: new Date(origin).toISOString(), scope: { courses: ['255', '256', '341'] },
@@ -70,12 +69,12 @@ test('one completion table shows overall and course dates beneath dynamic full-p
   const tables = f.all().filter(node => node.tagName === 'table');
   assert.equal(tables.length, 1);
   assert.deepEqual(tables[0].children[0].children[0].children.map(cell => cell.textContent), ['', '120 XP/day', '240 XP/day']);
-  assert.deepEqual(tables[0].children[1].children.map(row => row.children[0].textContent), ['All', 'MTH 255', 'MTH 256', 'MTH 341']);
+  assert.deepEqual(tables[0].children[1].children.map(row => row.children[0].textContent), ['All Courses', 'MTH 255', 'MTH 256', 'MTH 341']);
   assert.doesNotMatch(f.text(), /Course catch-up|7-day average|Daily goal|One third|Based on your Targets filters|Catch-up includes|excludes today/);
   const courses = courseCompletionEstimates(f.data);
   const dates = [f.data.currentPace, f.data.goalPace, ...courses.flatMap(course => [course.currentPace, course.goalPace])];
   assert.deepEqual(f.times().map(time => time.dateTime), dates.map(estimate => estimate.date));
-  assert.deepEqual(f.times().map(time => time.textContent), dates.map(estimate => formatDate(estimate.date)));
+  assert.deepEqual(f.times().map(time => time.textContent), ['10/27/26', '10/24/26', '10/24/26', '10/23/26', '10/27/26', '10/24/26', '10/30/26', '10/26/26']);
   assert.equal(f.calls, 1);
   assert.deepEqual(Object.keys(f.workerScope), []);
   assert.equal(f.workers[0].terminated, true);
@@ -115,7 +114,9 @@ test('missing goal, insufficient pace and caught-up tracks have clear states', a
   f.data.courses[2].initialWorkBaseXp = null;
   await f.view.refresh();
   assert.match(f.text(), /No goal set/);
-  assert.match(f.text(), /Not catching up/);
+  assert.match(f.text(), /∞/);
+  assert.doesNotMatch(f.text(), /Not catching up/);
+  assert.equal(f.all().find(node => node.tagName === 'span' && node.textContent === '∞').attrs['aria-label'], 'Not catching up at this pace');
   assert.match(f.text(), /Caught up/);
   assert.match(f.text(), /Unavailable/);
   assert.equal(f.times().length, 0);

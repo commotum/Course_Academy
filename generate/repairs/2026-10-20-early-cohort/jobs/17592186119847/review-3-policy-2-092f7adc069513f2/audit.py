@@ -76,6 +76,8 @@ pth=C/'check_repair.py';pth.write_text(pth.read_text().replace('HERE=Path(__file
 cr=loadmod(C/'check_repair.py','retained');cr.HERE=W;cr.E=E/'retained-results';cr.E.mkdir(exist_ok=True)
 cc=sys.modules['check_cli_contract'];cc.ROOT=R;(R/'evidence').mkdir(exist_ok=True)
 # Its source path HERE.parent/source resolves correctly to captured source.
+import tempfile
+tempfile.tempdir=str(E)
 cr.main()
 # Demonstrate old output envelope and silent truncation faults fail its predicate.
 legacy=loadmod(W/'evidence/legacy-generator.py','legacy')
