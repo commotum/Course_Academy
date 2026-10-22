@@ -52,6 +52,23 @@
       "source_hash": "3cd73cb967e03612563d4e0b39954104a97675b48eaed18a095e4e8748765224",
       "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186119807/review-0-policy-2-a7f24163c8f738a6",
       "attempt": 0
+    },
+    {
+      "id": "a78c7e8e37b394728e63",
+      "finding": {
+        "kind": "decision_shortcut",
+        "description": "All three delivered items containing a nonpositive numeric option have No solution as their correct answer. Both positive-only banks are consistent. This lets learners answer the three-item subgroup without inspecting vector equations. The defect is specific to the exact batch.",
+        "source_refs": [
+          "a4963b43-3177-544a-ab68-1ea699a13395",
+          "13ebde04-8518-5837-9420-c9487debc562",
+          "generate/principles.md: examine incidental shortcuts within delivered subgroups."
+        ],
+        "reproduction": "Run the context Python on batch_regression.py: it fails on the delivered batch and passes with --records controlled-records.json. Minimal member: generate(\"moderate\",5888234723018271144,\"q-105166\",{\"translation\":-2,\"residual\":\"1\",\"rank\":4,\"gaps\":[4,4,4]}). Numeric choices are {-16,-12,-8,-4}; the correct answer is No solution. Complete records and the other two matching cases are retained in batch-sign-reproduction.json.",
+        "requested_change": "Revise batch selection and acceptance so delivered pools include counterexamples to the nonpositive-bank \u2192 No solution cue after normalization and deduplication. Preserve legitimate sign patterns and source families. Adopt the retained failing test and verify the replacement exact batch."
+      },
+      "source_hash": "3cd73cb967e03612563d4e0b39954104a97675b48eaed18a095e4e8748765224",
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186119807/review-1-policy-2-bc476fa1f6e925b4",
+      "attempt": 1
     }
   ],
   "events": [
@@ -202,6 +219,129 @@
         ]
       },
       "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186119807/review-0-policy-2-a7f24163c8f738a6"
+    },
+    {
+      "attempt": 1,
+      "package_hash": "5b779f904b1613c3619efff386604c3dcf13f60daf031eb73795e3be2d7c040a",
+      "reason": {
+        "verdict": "revise",
+        "summary": "Prior defects are repaired, but the exact delivered batch has a sign shortcut: choosing \u201cNo solution\u201d whenever a numeric option is nonpositive succeeds 3/3. This is a batch-selection failure. Package files remain unchanged.",
+        "source_analysis": {
+          "skill": "Solve for two coefficients in a three-dimensional vector equation, check consistency, and select their sum or No solution.",
+          "reasoning_steps": [
+            "Equate corresponding components.",
+            "Solve two independent component equations.",
+            "Check the remaining equation.",
+            "Select the coefficient sum or No solution."
+          ],
+          "invariants": [
+            "Two scalar coefficients and three components.",
+            "Elementary substitution or elimination.",
+            "One five-choice radio field."
+          ],
+          "permitted_variations": [
+            "Vary vector entries, coefficients and sums within comparable arithmetic.",
+            "Vary consistency independently of labels and answer-bank signs.",
+            "Vary correct numeric rank and choice order."
+          ],
+          "source_refs": [
+            "13ebde04-8518-5837-9420-c9487debc562: canonical component solve and consistency check.",
+            "14248ec5-b54c-565b-8b43-275a9e097f62: contradictory third equation.",
+            "Lesson step fd740ffd-227c-5f9c-9418-4c54bf1616ff."
+          ],
+          "evidence_paths": [
+            "source-analysis.json"
+          ]
+        },
+        "checks": {
+          "source_replay": {
+            "status": "passed",
+            "evidence_paths": [
+              "source-replay.json",
+              "source-records.json",
+              "source-math-results.json"
+            ],
+            "details": "All 14 complete exercise banks and worked methods replay, including the verified q-105163 arithmetic correction."
+          },
+          "math": {
+            "status": "passed",
+            "evidence_paths": [
+              "math-results.json",
+              "solution-math-results.json"
+            ],
+            "details": "Independent Fraction arithmetic verifies 199 records and 185 displayed-solution candidate/check sequences."
+          },
+          "variety": {
+            "status": "failed",
+            "evidence_paths": [
+              "coverage.json",
+              "shortcut-results.json",
+              "batch-sign-reproduction.json"
+            ],
+            "details": "Controlled profiles support both consistency branches and all four numeric ranks. The exact batch nevertheless aligns nonpositive option signs with No solution."
+          },
+          "scope": {
+            "status": "passed",
+            "evidence_paths": [
+              "scope-results.json",
+              "boundary-records.json"
+            ],
+            "details": "Variations preserve the moderate two-coefficient solving and consistency-checking workload."
+          },
+          "grading": {
+            "status": "passed",
+            "evidence_paths": [
+              "grader-input.json",
+              "grader-report.json"
+            ],
+            "details": "Native grading passes 199 accepted and 796 rejected radio responses, including controlled pairs and normalized batch records."
+          },
+          "rendering": {
+            "status": "passed",
+            "evidence_paths": [
+              "render-all/rendering.json",
+              "render-inspection.json"
+            ],
+            "details": "All 13 actual-UI renders pass; screenshots were inspected. Choice reordering preserves the sign cue."
+          },
+          "packaging": {
+            "status": "passed",
+            "evidence_paths": [
+              "packaging-results.json",
+              "relocation-records.json",
+              "resampling-results.json",
+              "package-integrity.json"
+            ],
+            "details": "Exact dependencies, determinism, relocation and invalid-input rejection pass. Every package file hash remains unchanged."
+          },
+          "decision_variation": {
+            "status": "failed",
+            "evidence_paths": [
+              "pedagogical-variation.json",
+              "selection-results.json",
+              "batch-regression.log",
+              "batch-regression-control.log",
+              "inventory-audit.json",
+              "affected-inventory.json"
+            ],
+            "details": "All five batch items survive delivery. The nonpositive-bank subgroup predicts No solution 3/3. Larger controls defeat this cue, establishing a batch-specific failure. Captured inventory contains only 14 source originals."
+          }
+        },
+        "findings": [
+          {
+            "kind": "decision_shortcut",
+            "description": "All three delivered items containing a nonpositive numeric option have No solution as their correct answer. Both positive-only banks are consistent. This lets learners answer the three-item subgroup without inspecting vector equations. The defect is specific to the exact batch.",
+            "source_refs": [
+              "a4963b43-3177-544a-ab68-1ea699a13395",
+              "13ebde04-8518-5837-9420-c9487debc562",
+              "generate/principles.md: examine incidental shortcuts within delivered subgroups."
+            ],
+            "reproduction": "Run the context Python on batch_regression.py: it fails on the delivered batch and passes with --records controlled-records.json. Minimal member: generate(\"moderate\",5888234723018271144,\"q-105166\",{\"translation\":-2,\"residual\":\"1\",\"rank\":4,\"gaps\":[4,4,4]}). Numeric choices are {-16,-12,-8,-4}; the correct answer is No solution. Complete records and the other two matching cases are retained in batch-sign-reproduction.json.",
+            "requested_change": "Revise batch selection and acceptance so delivered pools include counterexamples to the nonpositive-bank \u2192 No solution cue after normalization and deduplication. Preserve legitimate sign patterns and source families. Adopt the retained failing test and verify the replacement exact batch."
+          }
+        ]
+      },
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186119807/review-1-policy-2-bc476fa1f6e925b4"
     }
   ]
 }

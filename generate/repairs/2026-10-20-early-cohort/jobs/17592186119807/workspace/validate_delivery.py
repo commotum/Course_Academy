@@ -10,13 +10,17 @@ def main():
  batch=json.loads((E/'delivery-batch/accepted.json').read_text())
  extra=[c.g.generate('moderate',83,'q-34242',c.params(residual)) for residual in (0,1)]
  extra.append(c.g.generate('moderate',83,'q-105163',c.params(0,4,-2)))
- rs=replay+controls+batch+extra
+ sign_records=json.loads((E/'sign-repair/grading-records.json').read_text())
+ rs=replay+controls+batch+extra+sign_records
  cases=[{'label':f'{i} {r["generation"]["source_id"]}','record':r,'checks':[{'field_index':0,'submitted_answer_id':a[':answer/id'],'expected':'accepted' if c.canonical(a[':answer/value'])==c.expected(r) else 'rejected','purpose':'independent Fraction solve of visible system, all owned radio alternatives'} for a in c.choices(r)]} for i,r in enumerate(rs)]
  c.save('native-input.json',cases)
  native=subprocess.run([str(repo/'generate/runs/current/check-engine'),str(E/'native-input.json'),str(E/'native-report.json')],check=True,capture_output=True,text=True)
  # Both changes to consistency; fractional arithmetic; valid zero-row shortcut and consistent alternative; restored direct source method.
  render=controls[:2]+extra+[c.g.generate('moderate',83,'q-105165',c.params(0))]
  c.save('render-records.json',render)
+ # Inspect the exact replacement pool and the controlled negative-bank flip.
+ sign_render=batch+[sign_records[1]]
+ (E/'sign-repair/render-records.json').write_text(json.dumps(sign_render,indent=2)+'\n')
  # Retrospective weaknesses concern generated records. Inspect every inventory identity.
  inv=json.loads((H.parent/'source/inventory.json').read_text());source=json.loads((H.parent/'source/source.json').read_text())
  ids={q[':question/id'] for q in source['material']['kp'][':knowledge-point/questions']}

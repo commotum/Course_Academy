@@ -172,13 +172,61 @@ def catalog():
 def batch(level,count,seed=0):
     if level not in SUPPORTED_LEVELS:raise ValueError('Unsupported difficulty: '+level)
     if type(count) is not int or not 0<=count<=10000:raise ValueError('Count outside 0..10000')
-    rng=random.Random(seed);records=[];seen=set()
-    for _ in range(max(100,count*30)):
-        if len(records)==count:return records
-        rec=generate(level,rng.randrange(2**63))
-        fp=rec['generation']['mathematical_fingerprint']
-        if fp not in seen:seen.add(fp);records.append(rec)
-    raise ValueError('Requested count exceeds available semantic systems')
+    rng=random.Random(seed)
+    for _ in range(100):
+        records=[];seen=set()
+        # These are coverage witnesses against the reviewed sign shortcut.
+        # Item construction and every profile's supported domain stay intact.
+        roles=[(nonpositive,consistent) for nonpositive in (False,True)
+               for consistent in (False,True)] if count>=5 else []
+        rng.shuffle(roles)
+        for attempt in range(max(1000,count*100)):
+            if len(records)==count:break
+            rec=generate(level,rng.randrange(2**63))
+            fp=rec['generation']['mathematical_fingerprint']
+            if fp in seen:continue
+            if len(records)<len(roles):
+                sign,consistent=bank_case(rec)
+                if (sign,consistent)!=roles[len(records)]:continue
+            seen.add(fp);records.append(rec)
+        if len(records)!=count:
+            raise ValueError('Requested count exceeds available semantic systems')
+        if count<5 or pool_has_counterexamples(records):
+            rng.shuffle(records)
+            return records
+    raise ValueError('Unable to construct a pool with shortcut counterexamples')
+def bank_case(rec):
+    f=rec['question'][':question/answer-fields'][0]
+    numeric=[scalar(a[':answer/value']) for a in f[':answer-field/choices']
+             if a[':answer/type']==':answer.type/math']
+    key=next(a for a in f[':answer-field/choices']
+             if a[':answer/id']==f[':answer-field/correct'][1])
+    return any(v<=0 for v in numeric),key[':answer/value']!='No solution'
+def pool_has_counterexamples(records):
+    groups={};ranks=set()
+    for rec in records:
+        sign,consistent=bank_case(rec)
+        sid=rec['generation']['source_id']
+        name='a/b' if '{a}_{1}' in rec['question'][':question/problem'] else 'c/d'
+        for cue in (('sign',sign),('names',name),('profile',sid)):
+            groups.setdefault(cue,[]).append(consistent)
+        f=rec['question'][':question/answer-fields'][0]
+        nums=[scalar(a[':answer/value']) for a in f[':answer-field/choices']
+              if a[':answer/type']==':answer.type/math']
+        # Finer recognizable sign/exactness groups must not restore the cue.
+        features={'all_negative':max(nums)<0,'has_zero':0 in nums,
+                  'mixed_signs':min(nums)<0<max(nums),
+                  'fractional':any(v.q!=1 for v in nums)}
+        for feature,present in features.items():
+            if present:groups.setdefault(('bank',feature),[]).append(consistent)
+        if consistent:
+            values=sorted(nums)
+            key=next(a[':answer/value'] for a in f[':answer-field/choices']
+                     if a[':answer/id']==f[':answer-field/correct'][1])
+            ranks.add(values.index(scalar(key)))
+    return (all(set(groups.get(('sign',sign),[]))=={False,True} for sign in (False,True))
+            and all(len(v)<2 or set(v)=={False,True} for v in groups.values())
+            and len(ranks)>1)
 def markdown(rec):
     q=rec['question'];return q[':question/problem']+'\n\n'+'\n'.join(o[':answer/value'] for o in q[':question/answer-fields'][0][':answer-field/choices'])+'\n\n'+q[':question/worked-solution']
 if __name__=='__main__':

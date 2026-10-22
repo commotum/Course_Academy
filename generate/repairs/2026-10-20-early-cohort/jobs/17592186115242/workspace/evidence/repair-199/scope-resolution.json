@@ -1,0 +1,41 @@
+{
+  "finding_id": "591f580cadb749294588",
+  "status": "unsupported",
+  "root_cause": "Five historical v2 answer banks remain stored candidates. Native selection consumes stored entity IDs without invoking this generator.",
+  "selector_evidence": "engine/rust/question_selection.rs:125-197",
+  "first_reproduction": {
+    "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory",
+    "exit_code": 1,
+    "result": {
+      "finding": "591f580cadb749294588",
+      "passed": false,
+      "affected": 5,
+      "selection_successes": 64,
+      "draws": 64
+    },
+    "interpretation": "Possible captured-pool learner history; not observed learner usage."
+  },
+  "verification_command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/repair-199",
+  "verification_exit_code": 1,
+  "history_findings_read": 5,
+  "history_events_read": 199,
+  "current_generator_findings_passed": 4,
+  "affected_inventory": 5,
+  "untested_generated_inventory": 0,
+  "proposal_verified": true,
+  "proposal_applied": false,
+  "replacement_proposal": "evidence/repair-3/inventory-repair-proposal.json",
+  "required_external_change": "Apply separately reviewed inventory remediation for the five generated identities, preserve original source questions and learner history, then capture the updated inventory.",
+  "scope_constraint": "Workspace only; no database changes, publication, engine repair, or other-job edits.",
+  "runtime_changed": false,
+  "regressions_weakened": false,
+  "database_writes": 0,
+  "publication_performed": false,
+  "affected_evidence_paths_relative_to_author_199_verified": true,
+  "rendering": {
+    "retained": "evidence/repair-3/render/rendering.json",
+    "visually_reinspected": "evidence/repair-3/render/question-002.png",
+    "fresh_render": false,
+    "reason": "Unchanged runtime and records; prompt, choices, elimination matrices, (k-12)y=3 and k=12 conclusion visually inspected."
+  }
+}

@@ -1,0 +1,16 @@
+Review verdict: revise for exact-batch sign shortcut. All new files are under evidence_root. Package is unchanged; no assets published and no database writes.
+
+Use `/home/jake/Developer/Course_Academy/.venv/bin/python` (PY below), with PYTHONDONTWRITEBYTECODE=1.
+
+- `PY review.py`: source replays, independent Fraction checks, controlled/fresh/boundary samples, prior failing examples as negative controls, relocation, dependencies, inventory identities, integrity. It writes only evidence files.
+- `PY generate/pipeline/check_delivery.py --input raw-records.json --source <job>/source/source.json --inventory <job>/source/inventory.json --difficulty moderate --output delivery --asset-root relocated --math-root /media/jake/SSD/EDB/math`: run the script at repo_root. Repeat with batch.json and output delivery-batch. Observed counts180->178 and5->5.
+- `PY delivery-tests.py`: sign and numeric-rank probes, per-template probes, native-grader/render inputs and faithful selection-rule traces.
+- `<repo_root>/generate/runs/current/check-engine grader-input.json grader-report.json`: native learner grading;995 outcomes pass.
+- `PY <repo_root>/generate/pipeline/render_preview.py --input render-records.json --output render-all --limit 13 --asset-root delivery-batch/assets --asset-root relocated --math-root /media/jake/SSD/EDB/math`: actual unmodified UI. All13 screenshots inspected.
+- `PY finalize.py`: independent displayed-solution candidate/check math, requested-size retry trace, rendering evidence, pedagogical account and integrity. The system python3 has jsonschema for separate schema validation against <repo_root>/generate/pipeline/pedagogical-variation.schema.json.
+- `PY batch_regression.py`: strict acceptance currently fails: choosing No solution for each nonpositive-bank item is correct3/3. Positive control `PY batch_regression.py --records controlled-records.json` passes. See batch-sign-reproduction.json for all five complete delivered records and minimal generation parameters.
+- `PY write-report.py`: assembles report from completed evidence; does not rerun generator checks.
+
+Author preflight is a claim: its repair_checks.py was copied to author-check-rerun.py with H pointed to package_root and E to evidence_root/author-check-rerun. Run with PYTHONPATH=package_root; tests pass on their independently chosen replacement batch. The runner's actual batch differs; it is assessed separately here. See script-provenance.json and author-check-rerun.log. Previous independent cases are verified against the preserved old entrypoint in retained-regressions.json, which demonstrates old failures and current repaired behavior.
+
+Selection limits: no supplied actual learner history, policy weights, eventual entity IDs or top-level runner batch seed. Individual saved batch records replay exactly. All items are moderate, so positive moderate weights retain eligibility, zero weights exclude them, and history can only restrict the pool. Synthetic-ID traces reproduce native selection rules; no exact future learner draw is asserted. Publication preparation is absent; the actual shared read-only filter was used against captured inventory basis5400. Inventory contains14 original source IDs and no stored generated items, so affected-inventory.json is empty for a verified reason.

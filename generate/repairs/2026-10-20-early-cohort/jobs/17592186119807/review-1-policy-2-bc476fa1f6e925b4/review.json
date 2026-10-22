@@ -1,0 +1,138 @@
+{
+  "verdict": "revise",
+  "summary": "Prior defects are repaired, but the exact delivered batch leaks consistency through numeric-choice signs: choosing No solution whenever a bank contains a nonpositive numeric option succeeds 3/3. This is a batch-selection failure. Package unchanged.",
+  "source_analysis": {
+    "skill": "Solve for two scalar coefficients in a linear combination of two three-dimensional vectors, check all three component equations, and select the coefficient sum or No solution.",
+    "reasoning_steps": [
+      "Translate vector equality into three scalar equations in x1 and x2.",
+      "Use a convenient independent pair or isolated component to determine candidate coefficients.",
+      "Check remaining component(s); a contradiction means No solution.",
+      "If consistent, compute x1+x2 and select it from the five-choice radio bank."
+    ],
+    "invariants": [
+      "Two unknown scalar coefficients and two given 3-component vectors plus a target vector.",
+      "Independent coefficient columns in captured cases; unique solution or inconsistency, not general dependent infinite-solution cases.",
+      "Check consistency of all components; preserve radio selection and source bank profiles.",
+      "Worked solution must show component system, solve, check, and sum or contradiction."
+    ],
+    "permitted_variations": [
+      "Change small integer vector entries and target while maintaining comparable arithmetic and independent columns.",
+      "Change coefficients, signs, zeros, coefficient sum, consistency, contradiction row, and which component gives an easy substitution.",
+      "Reassign vector naming independently of consistency: a/b versus c/d names are incidental even though source often correlates them.",
+      "Permute component rows and choice positions; retain numeric-only and mixed No solution bank profiles.",
+      "Change a target component to move a consistent instance outside the column span; change labels or row order without changing its answer."
+    ],
+    "source_refs": [
+      "13ebde04-8518-5837-9420-c9487debc562: canonical solution equates corresponding components, obtains x1=5, x2=-15, verifies third equation, concludes -10.",
+      "b9323edd-e697-569c-8dd2-3fe5f9eed059: isolated third equation x2=2, candidate x1=-1, sum 1.",
+      "14248ec5-b54c-565b-8b43-275a9e097f62: elimination yields (1,1), third equation 7=5 contradicts.",
+      "8179ffc2-2381-5ec9-a386-111d6e4cae85: first component 0=4 immediately contradicts.",
+      "d5149dd7-ead1-5d7c-a754-e514e2e6e606 and 5a605eaf-55a3-544d-8186-239316368511: numeric-only five-choice banks.",
+      "f9fda870-d2c0-5b67-a720-dd733f4059b5: a/b labels with No solution; disproves any essential label-consistency link.",
+      "lesson step fd740ffd-227c-5f9c-9418-4c54bf1616ff repeats canonical e-4791; tutorial 229ae855-226b-5f95-b050-b98257747800 defines linear combination as a weighted sum with real coefficients.",
+      "prerequisite e9aae52c-65f3-5dff-bc6b-a530f8c7acc1: isolate a variable and substitute; pick the easiest equation.",
+      "lesson next step d59e4b4d-f7e2-5722-8cf4-a309ea8ac925 separately teaches solving for three coefficients."
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "source-replay.json",
+        "source-records.json",
+        "source-math-results.json"
+      ],
+      "details": "All 14 complete exercise banks, prompts and worked methods replay. q-105163 has a verified arithmetic correction. Canonical sum -10 independently verified; its answer field is absent from capture."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "solution-math-results.json",
+        "source-math-results.json",
+        "counterfactual-results.json"
+      ],
+      "details": "Fraction arithmetic verifies 199 records and 185 new displayed-solution candidate/check sequences. Both consistency branches, fractional cases and translation boundaries tested."
+    },
+    "variety": {
+      "status": "failed",
+      "evidence_paths": [
+        "coverage.json",
+        "shortcut-results.json",
+        "selection-results.json",
+        "batch-sign-reproduction.json"
+      ],
+      "details": "Generator controls cover both branches and four numeric ranks within all 14 profiles. Exact five-item pool nevertheless aligns nonpositive-bank signs with No solution for all three qualifying items; both remaining items have positive-only banks and numeric answers."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "scope-results.json",
+        "controlled-records.json",
+        "boundary-records.json",
+        "render-inspection.json"
+      ],
+      "details": "Moderate two-coefficient, three-component solving and checking workload is preserved; residual and bank changes add no operators, response formats or prerequisites."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-report.json",
+        "grader.log"
+      ],
+      "details": "Native learning::grade_field passes 199 accepted and 796 rejected radio responses, including all alternatives for controlled pairs and normalized actual batch. No free-entry fields occur."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render-records.json",
+        "render-all/rendering.json",
+        "render-inspection.json"
+      ],
+      "details": "All 13 actual-UI renders pass and screenshots were inspected: exact batch, relevant/irrelevant pair, restored source exercises and fractional boundary. UI reordering preserves numeric signs."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "relocation-records.json",
+        "resampling-results.json",
+        "package-integrity.json"
+      ],
+      "details": "Python 3.13.5 and SymPy 1.14.0 exactly match manifest. Determinism, item replay, relocation, bounded-invalid-input rejection and requested-size retry trace pass. Every package file hash unchanged."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "shortcut-results.json",
+        "batch-sign-reproduction.json",
+        "batch-regression.log",
+        "batch-regression-control.log",
+        "selection-results.json",
+        "affected-inventory.json",
+        "inventory-audit.json"
+      ],
+      "details": "Controlled role reassignment now works in every profile, confirmed by prompts, explanations, UI and grader. The actual post-filter batch retains a conditional sign shortcut (3/3 versus random-choice baseline 0.2; overall always-No-solution baseline 3/5). All five survive delivery and remain eligible under positive moderate weights. Captured inventory has 14 source originals and no demonstrated generated affected instances."
+    }
+  },
+  "findings": [
+    {
+      "kind": "decision_shortcut",
+      "description": "Exact batch selection leaves a recognizable answer-bank-sign shortcut: all three items containing a nonpositive numeric option have No solution as the correct choice; both positive-only banks are consistent. A learner can answer the three-item subgroup without inspecting vector equations. This is demonstrated for the exact batch, not universal to the generator: the 178-record delivered control set contains 56 consistent nonpositive-bank counterexamples.",
+      "source_refs": [
+        "a4963b43-3177-544a-ab68-1ea699a13395: q-105166 requires coefficient solving followed by third-component checking.",
+        "13ebde04-8518-5837-9420-c9487debc562: canonical solves coefficients and verifies consistency.",
+        "14248ec5-b54c-565b-8b43-275a9e097f62: contradiction determines No solution.",
+        "generate/principles.md: guard against incidental cues within recognizable subgroups and assess delivered coverage."
+      ],
+      "reproduction": "Run /home/jake/Developer/Course_Academy/.venv/bin/python batch_regression.py from evidence_root (fails); --records controlled-records.json passes. Minimal member 060cb12c-0c79-52b2-a304-5d2678c1c72b: generate(\"moderate\",5888234723018271144,\"q-105166\",{\"translation\":-2,\"residual\":\"1\",\"rank\":4,\"gaps\":[4,4,4]}), vectors (1,-2,3),(2,-3,5), target(-13,17,-29), numeric options {-16,-12,-8,-4}, correct No solution. Other exact-batch subgroup members q-34568 and q-73954 also return No solution. Complete records/seeds in batch-sign-reproduction.json; all five survive delivery-batch/accepted.json and native grading.",
+      "requested_change": "Revise batch selection/acceptance so eligible delivered practice pools contain counterexamples to the nonpositive-bank -> No solution cue, varying bank signs independently of consistency after normalization and deduplication. Preserve legitimate positive, negative and inconsistent systems. Adopt the retained failing batch test and recheck the replacement exact batch; the demonstrated failure does not require removing source profiles or restricting learner notation."
+    }
+  ]
+}
