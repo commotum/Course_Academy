@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { ForecastFacts, forecastGraph, knownPreparationTopics, calculateForecast, completionEstimate,
-  forecastDayStarts, savedForecastScope, readForecast, withForecastGoal, courseCompletionEstimates } from '../ui/forecast.js';
+  forecastDayStarts, readForecast, withForecastGoal, courseCompletionEstimates } from '../ui/forecast.js';
 import { projectTargetScope } from '../ui/target-scope.js';
 
 process.env.TZ = 'America/Los_Angeles';
@@ -287,19 +287,22 @@ test('growth ignores future changes and uses assignment dates even without retai
   assert.equal(result.growth.reason, null);
 });
 
-test('calendar windows use seven completed dates across DST and reuse the saved Targets filters', () => {
+test('calendar windows use seven completed dates across DST', () => {
   const boundaries = forecastDayStarts(new Date(2026, 10, 3, 12));
   assert.equal(boundaries.length, 8);
   assert.equal(new Date(boundaries[7]).getHours(), 0);
   assert.equal(boundaries[7] - boundaries[0], 7 * 86400000 + 3600000);
-  const prefs = new Map([['course-academy.graph-target-courses', '["255","341"]'],
-    ['course-academy.graph-target-queue', 'false'], ['course-academy.graph-target-weeks', '{"kind":"unscheduled"}']]);
-  assert.deepEqual(savedForecastScope({ getItem: key => prefs.get(key) }),
-    { courses: ['255', '341'], includeQueue: false, weekSelection: { kind: 'unscheduled' } });
 });
 
-test('readForecast calls the read-only input endpoint and returns calculated results without rendering', async () => {
+test('readForecast uses the full database scope regardless of saved graph course, Queue and week toggles', async () => {
   const original = globalThis.fetch;
+  const storage = Object.getOwnPropertyDescriptor(globalThis, 'localStorage');
+  let storageReads = 0;
+  const prefs = new Map([['course-academy.graph-target-courses', '[]'],
+    ['course-academy.graph-target-queue', 'false'], ['course-academy.graph-target-weeks', '{"kind":"unscheduled"}']]);
+  Object.defineProperty(globalThis, 'localStorage', { configurable: true, value: {
+    getItem(key) { storageReads++; return prefs.get(key); },
+  } });
   const inputs = fixture().inputs();
   inputs.capturedAt = new Date().toISOString();
   inputs.timing.days = forecastDayStarts().slice(0, 7).map(start => ({ start, workingSeconds: 0 }));
@@ -313,9 +316,17 @@ test('readForecast calls the read-only input endpoint and returns calculated res
     assert.match(requested.path, /^\/api\/forecast-inputs\?dayStarts=/);
     assert.equal(requested.options.method, undefined);
     assert.equal(result.inventory.selectedTopics, 5);
+    assert.deepEqual(result.scope.courses, ['255', '256', '341']);
+    assert.equal(result.scope.includeQueue, true);
+    assert.deepEqual(result.scope.weekSelection, { kind: 'all' });
+    assert.equal(storageReads, 0);
     assert.ok(result.currentPace);
     assert.ok(result.goalPace);
-  } finally { globalThis.fetch = original; }
+  } finally {
+    globalThis.fetch = original;
+    if (storage) Object.defineProperty(globalThis, 'localStorage', storage);
+    else delete globalThis.localStorage;
+  }
 });
 
 // Model an assignment imported together with its target. The original due date

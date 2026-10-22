@@ -178,3 +178,14 @@ test('saving the goal updates forecast dates immediately and sidebar replacement
   f.api.createStudySidebar();
   assert.equal(previous.aborted, true);
 });
+
+test('graph view toggles do not affect the independent forecast', async () => {
+  const f = fixture(); await flush();
+  for (const key of ['course-academy.graph-target-courses', 'course-academy.graph-target-queue', 'course-academy.graph-target-weeks']) {
+    const event = new Event('storage'); event.key = key;
+    f.window.dispatchEvent(event);
+  }
+  await flush();
+  assert.equal(f.forecastRefreshes, 1);
+  assert.equal(f.calls.length, 1);
+});

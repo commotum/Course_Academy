@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import { readFile } from 'node:fs/promises';
 import vm from 'node:vm';
-import { completionEstimate, withForecastGoal, courseCompletionEstimates, savedForecastScope } from '../ui/forecast.js';
+import { completionEstimate, withForecastGoal, courseCompletionEstimates } from '../ui/forecast.js';
 
 process.env.TZ = 'America/Los_Angeles';
 const source = (await readFile(new URL('../ui/forecast-sidebar.js', import.meta.url), 'utf8'))
@@ -51,7 +51,7 @@ function fixture() {
     terminate() { this.terminated = true; }
   }
   const context = vm.createContext({ document, Intl, Number, Date, AbortController,
-    completionEstimate, withForecastGoal, courseCompletionEstimates, savedForecastScope, Worker,
+    completionEstimate, withForecastGoal, courseCompletionEstimates, Worker,
   });
   const create = vm.runInContext(`(() => { ${source}; return createForecastSidebar; })()`, context);
   f.view = create({ signal: f.controller.signal }); document.body.append(...f.view.cards);
@@ -77,7 +77,7 @@ test('one completion table shows overall and course dates beneath dynamic full-p
   assert.deepEqual(f.times().map(time => time.dateTime), dates.map(estimate => estimate.date));
   assert.deepEqual(f.times().map(time => time.textContent), dates.map(estimate => formatDate(estimate.date)));
   assert.equal(f.calls, 1);
-  assert.deepEqual(f.workerScope.courses, ['255', '256', '341']);
+  assert.deepEqual(Object.keys(f.workerScope), []);
   assert.equal(f.workers[0].terminated, true);
 });
 
@@ -106,18 +106,18 @@ test('a goal changed during a read survives that response, but later fresh serve
   assert.doesNotMatch(f.text(), /480 XP\/day/);
 });
 
-test('missing goal, insufficient pace, caught-up and excluded tracks have clear states', async () => {
+test('missing goal, insufficient pace and caught-up tracks have clear states', async () => {
   const f = fixture();
   f.data = withForecastGoal(f.data, null);
   f.data.currentPace = { status: 'not-catching-up' };
   f.data.courses[0].remainingTopics = 0;
   f.data.courses[1].dailyDemandBaseXp = 100;
-  f.data.scope.courses = ['255', '256'];
+  f.data.courses[2].initialWorkBaseXp = null;
   await f.view.refresh();
   assert.match(f.text(), /No goal set/);
   assert.match(f.text(), /Not catching up/);
   assert.match(f.text(), /Caught up/);
-  assert.match(f.text(), /Not selected/);
+  assert.match(f.text(), /Unavailable/);
   assert.equal(f.times().length, 0);
 });
 

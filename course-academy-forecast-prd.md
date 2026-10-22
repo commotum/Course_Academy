@@ -6,9 +6,9 @@ Use **base XP** for work: 1 base XP is 1 estimated minute. Use actual active min
 
 ## 1. Today's backlog
 
-Match the Targets graph's final topic sets and course allocation: course/Queue/week filters, unassigned targets, prerequisite depth **2**, and displayed layers **L30+**. Each topic already appears once in one track. The forecast owns its projection; the graph page owns its filtering and placement code and does not import forecast modules.
+Read the database independently of the Targets page and its saved view settings. Include **all three courses, Queue, undated targets, and assignments due through the current local date**. Future-only assignment work stays outside today's backlog. Use the same topic eligibility and placement rules as the graph: unassigned targets, prerequisite depth **2**, displayed layers **L30+**, and one course track per topic. The forecast owns its projection; the graph page owns its filtering and placement code and does not import forecast modules. Browser course/week selections and Queue visibility never change forecast inventory, historical growth or dates.
 
-Within those selections, an assignment target becomes current on its **local due date**, including everything due today even if its deadline time is later today. Queue and targets without an applicable dated assignment are standing work and remain current. Prerequisites inherit the earliest date of a root that needs them. There is no current-week approximation.
+An assignment target becomes current on its **local due date**, including everything due today even if its deadline time is later today. Queue and targets without an applicable dated assignment are standing work and remain current. Prerequisites inherit the earliest date of a root that needs them. There is no current-week approximation.
 
 ```text
 L_c = unfinished lesson base XP needed through today in course track c
@@ -23,7 +23,7 @@ For each lesson's price, use a saved attempt's base first (prefer the active att
 
 Estimate growth from **assignment due dates from October 4, 2026 through today**, with an exponential **28-day half-life**. Future assignment dates never enter the historical numerator or denominator. The half-life is a weighting rule, not a trailing 28-day cutoff: retain every observation since October 4, with older dates receiving less weight.
 
-Use all available assignment dates, including those before October 4, to find when each physical topic was first required. Apply the same graph selection, layer cutoff, prerequisite depth and course tracks. Count it once, excluding repeats across assignments, targets, Queue, prerequisite paths or tracks. Topics first required before October 4 stay out of the growth sample even if later assignments need them again. Exclude topics already known at or before their first due date, before pricing them; topics learned afterward still count as historical additions. Current mappings/graph supply the prerequisite and track projection.
+Use all available assignment dates, including those before October 4, to find when each physical topic was first required. Apply the full forecast scope, layer cutoff, prerequisite depth and course tracks, independently of the graph view. Count it once, excluding repeats across assignments, targets, Queue, prerequisite paths or tracks. Topics first required before October 4 stay out of the growth sample even if later assignments need them again. Exclude topics already known at or before their first due date, before pricing them; topics learned afterward still count as historical additions. Current mappings/graph supply the prerequisite and track projection.
 
 ```text
 X_c(day) = new lesson base XP first required on that date in track c

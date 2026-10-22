@@ -1,4 +1,4 @@
-import { savedForecastScope, withForecastGoal, courseCompletionEstimates } from './forecast.js';
+import { withForecastGoal, courseCompletionEstimates } from './forecast.js';
 
 const number = value => Number(value).toLocaleString(undefined, { maximumFractionDigits: 1 });
 function node(tag, className, text) {
@@ -34,7 +34,7 @@ function readSidebarForecast(signal) {
       else resolve(event.data.forecast);
     };
     worker.onerror = () => { close(); reject(new Error('Unable to calculate forecast.')); };
-    worker.postMessage(savedForecastScope());
+    worker.postMessage({});
   });
 }
 
@@ -62,16 +62,15 @@ export function createForecastSidebar({ signal } = {}) {
     head.append(headings); table.append(head);
     const body = node('tbody', '');
     const rows = [
-      { label: 'All', currentPace: model.currentPace, goalPace: model.goalPace, selected: true },
-      ...courseCompletionEstimates(model).map(course => ({ ...course, label: `MTH ${course.code}`,
-        selected: model.scope.courses.includes(course.code) })),
+      { label: 'All', currentPace: model.currentPace, goalPace: model.goalPace },
+      ...courseCompletionEstimates(model).map(course => ({ ...course, label: `MTH ${course.code}` })),
     ];
     for (const entry of rows) {
       const row = node('tr', ''), label = node('th', '', entry.label); label.scope = 'row';
       row.append(label);
       for (const [estimate, available] of [[entry.currentPace, true], [entry.goalPace, hasGoal]]) {
         const cell = node('td', '');
-        cell.append(entry.selected ? outcome(estimate, available) : node('span', 'forecast-status', 'Not selected'));
+        cell.append(outcome(estimate, available));
         row.append(cell);
       }
       body.append(row);

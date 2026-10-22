@@ -1,8 +1,8 @@
 import { readForecast } from './forecast.js';
 
-self.onmessage = async event => {
+self.onmessage = async () => {
   try {
-    self.postMessage({ forecast: await readForecast(event.data) });
+    self.postMessage({ forecast: await readForecast() });
   } catch (error) {
     self.postMessage({ error: error.message || 'Unable to calculate forecast.' });
   }

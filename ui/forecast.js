@@ -551,21 +551,14 @@ export function forecastDayStarts(now = new Date()) {
   return Array.from({ length: 8 }, (_, i) => new Date(now.getFullYear(), now.getMonth(), now.getDate() - 7 + i).getTime());
 }
 
-export function savedForecastScope(storage) {
-  if (storage === undefined) { try { storage = globalThis.localStorage; } catch { /* Storage is optional. */ } }
-  const read = (key, fallback) => { try { return JSON.parse(storage?.getItem(key)) ?? fallback; } catch { return fallback; } };
-  const courses = read('course-academy.graph-target-courses', TARGET_COURSE_CODES);
-  return { courses: Array.isArray(courses) ? courses.filter(code => TARGET_COURSE_CODES.includes(code)) : TARGET_COURSE_CODES,
-    includeQueue: read('course-academy.graph-target-queue', true) !== false,
-    weekSelection: read('course-academy.graph-target-weeks', { kind: 'all' }) };
-}
-
-// Read the latest immutable inputs and calculate without rendering or writing.
+// Read database evidence independently of browser graph-view preferences.
+// Defaults cover all three courses and Queue. Assignment work enters the
+// current backlog only on its local due date; future-only work stays separate.
 export async function readForecast(options = {}) {
   const { signal, ...scope } = options;
   const boundaries = forecastDayStarts();
   const response = await readRequest('/api/forecast-inputs?dayStarts=' + boundaries.join(','), { signal });
   const inputs = await response.json();
   if (!response.ok) throw new Error(inputs.error || 'Unable to read forecast inputs.');
-  return calculateForecast(inputs, { ...savedForecastScope(), ...scope, windowEnd: boundaries[7] });
+  return calculateForecast(inputs, { ...scope, windowEnd: boundaries[7] });
 }

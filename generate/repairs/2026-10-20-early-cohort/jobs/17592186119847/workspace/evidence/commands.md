@@ -59,3 +59,31 @@ $PY evidence/verify-continuation.py
 ```
 
 Results: easy controls 3/3 and moderate controls 4/4 survive actual delivery; relevant count/column changes change rank, and irrelevant name/feasible-row changes preserve it. `verify-continuation.py` independently parses their visible records, replays them against the current generator, and tests every choice of those seven plus the exact requested five with the native grader: 12 accepted, 48 rejected, zero unresolved/mismatched. Runtime hashes, commands and results are in continuation-results.json. These are additional checks, separate from the earlier 30 accepted/120 rejected grader checks. No publication, database writes, or engine changes occurred.
+
+## Current repair: actual runner output contract
+
+This section supersedes the earlier continuation's conclusion that count feedback was already resolved. Source evidence and mathematical records did not change. The oversized count was a useful retained regression but was not the runner's reported failure: the requested count=5 emitted five records under `instances`, which `generator_pipeline.py:452-457` decodes as None. Before implementation, `check_cli_contract.py` exited 1 on exactly easy/count=5/seed=0 in a relocated runtime. See before-cli-contract.stderr, before-output-contract.json and latest-count5.json.
+
+Changed the CLI envelope to `records`; preserved all per-question content and identities. `output-only-change.json` verifies all five parsed records are identical before and after. The retained `legacy_packaging_or_sampling` executable regression now invokes the runner-compatible decoder and relocated CLI check. No numbered finding IDs exist in the supplied repair history.
+
+Commands run after repair:
+
+```sh
+$PY check_repair.py
+$REPO/generate/runs/current/check-engine evidence/grader-input.json evidence/grader-report.json
+$PY check_inventory.py
+$PY 17592186119847.py --difficulty easy --count 5 --seed 0 --format json > evidence/sample-output.json
+```
+
+Extract `records` (the current envelope) from sample-output.json into requested-five.json. Partition probe-records.json into easy-delivery-input.json and moderate-delivery-input.json using each record's question difficulty. Reran all three shared `check_delivery.py` commands above, then:
+
+```sh
+$PY check_variation.py
+$REPO/generate/runs/current/check-engine evidence/delivery-grader-input.json evidence/delivery-grader-report.json
+$PY evidence/verify-continuation.py
+$PY $REPO/generate/pipeline/render_preview.py --input evidence/render-records.json --output evidence/render --asset-root evidence/delivery-easy/assets --asset-root evidence/delivery-moderate/assets --math-root /media/jake/SSD/EDB/math
+```
+
+Results: relocated runner-compatible decoder passes easy=5, moderate=5, empty=0 with repeat determinism; retained CLI boundary tests pass for both finite catalogs. Source replay: 11 complete banks/55 options; one missing source key/solution is still explicitly repaired. Native checks: 26 accepted/104 rejected before delivery; 4/16 on representative filtered records; 12/48 on controls plus requested five, all with zero mismatches. Delivery: requested five 5/5; profile probes easy 200/200 and moderate 209/240 (31 duplicates), all 11 profiles retain variable correct positions and numerical order. Controls verify relevant changes alter rank and irrelevant name/feasible-row changes preserve it. Four current UI previews rerendered successfully and all four screenshots visually inspected: legible prompt/choices/complete solutions, no clipping or malformed math.
+
+The inventory evidence path `../workspace/evidence/generated-records.json` also resolves correctly from the current supplied evidence_root `author-3`. All 13 captured inventory entities were inspected, both historical generated records exactly reproduced, one retained legacy ordering weakness demonstrated; the JSON-envelope defect affects runner ingestion, not individual stored question mathematics. No database content, published images, other jobs or engine files were changed.

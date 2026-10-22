@@ -1,0 +1,1 @@
+Source replay, independent math, CLI/relocation and retained regressions completed. Restriction reproduced: moderate rows=3 columns=4 non-pivots=2 rejected by every profile. Next delivery/native grading/rendering and inventory. Package baseline package-before.json.

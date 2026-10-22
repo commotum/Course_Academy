@@ -73,8 +73,8 @@ report = {'status': 'pass', 'runtime_sha256': hashes,
           'requested_count': 5, 'delivered_count': 5,
           'controlled_changes_after_delivery': controls,
           'native_command': command, 'native_result': native.stdout.strip(),
-          'runtime_changes_this_continuation': False,
-          'rendering': 'Unchanged package: existing easy/moderate screenshots re-inspected; see render/rendering.json.',
+          'runtime_changes_this_continuation': 'CLI JSON envelope changed from instances to records; mathematical records unchanged.',
+          'rendering': 'Four current easy/moderate records rerendered and visually inspected; see render/rendering.json.',
           'limitations': ['Finite semantic capacities remain 12 easy and 91 moderate; oversized requests fail explicitly.',
                           'No live learner history or publication was exercised.']}
 (E / 'continuation-results.json').write_text(json.dumps(report, indent=2) + '\n')
