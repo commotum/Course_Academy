@@ -1,0 +1,67 @@
+{
+  "deterministic": true,
+  "invalid_inputs": [
+    {
+      "input": {
+        "level": "moderate"
+      },
+      "rejected": true,
+      "reason": "unsupported level: no validated moderate/hard source workload"
+    },
+    {
+      "input": {
+        "level": "hard"
+      },
+      "rejected": true,
+      "reason": "unsupported level: no validated moderate/hard source workload"
+    },
+    {
+      "input": {
+        "level": "easy",
+        "field_type": "free"
+      },
+      "rejected": true,
+      "reason": "radio required"
+    },
+    {
+      "input": {
+        "level": "easy",
+        "template": "rank",
+        "profile": "q-34931"
+      },
+      "rejected": true,
+      "reason": "profile/target mismatch"
+    },
+    {
+      "input": {
+        "level": "easy",
+        "template": "nullity",
+        "profile": "q-34931",
+        "parameters": {
+          "m": 2,
+          "n": 8,
+          "k": 5,
+          "target": "nullity"
+        }
+      },
+      "rejected": true,
+      "reason": "parameter/profile constraint"
+    },
+    {
+      "input": {
+        "level": "easy",
+        "template": "rank",
+        "profile": "q-34833",
+        "parameters": {
+          "m": 8,
+          "n": 8,
+          "k": true,
+          "target": "rank"
+        }
+      },
+      "rejected": true,
+      "reason": "parameter/profile constraint"
+    }
+  ],
+  "sampler": "Select target, eligible profile, then reject candidate triples for up to 2000 draws; every independent seed emitted. Rejection checks complete bank nonnegativity and matrix feasibility. Profile selection occurs before rejection."
+}
