@@ -1,0 +1,197 @@
+{
+  "skill": "Describe a square numeric matrix by inspecting zeros relative to the main diagonal and choosing the most specific supplied class.",
+  "reasoning_steps": [
+    "Locate the main diagonal; inspect all strictly upper and strictly lower entries.",
+    "Zeros below imply upper triangular; zeros above imply lower triangular. Both imply diagonal; use the best description rather than any true superclass.",
+    "For a strict triangular result, exhibit a nonzero on the permitted side to exclude diagonal and the opposite orientation."
+  ],
+  "response_contract": "One radio field, selection, with all five labels: Upper triangular matrix, Lower triangular matrix, Diagonal matrix, Identity matrix, Other. Source choice order varies.",
+  "difficulty": "Easy sources are strict upper/lower 2x2 and 3x3; moderate sources are nonidentity diagonal 3x3. Canonical has zeros on the permitted side and diagonal.",
+  "invariants": [
+    "Square matrix, direct classification, no operations or transformed matrices.",
+    "Definitions inspect zeros on an entire side, not a predetermined witness cell.",
+    "Best description resolves nesting: nonidentity diagonal precedes triangular.",
+    "Keep the five-label radio bank and short explanatory method."
+  ],
+  "permitted_variations": [
+    "Upper versus lower orientation, matrix letter, signs and magnitudes, diagonal entries including zero, placement and number of nonzeros on permitted side, 2x2 versus 3x3 within easy workload.",
+    "Moderate: diagonal values can vary while excluding identity unless explicitly supported as a conservative prerequisite-based extension.",
+    "Witness a21/a12 is incidental: any strictly lower/upper coordinate may carry the sole nonzero.",
+    "Bank order is incidental and may vary independently of correctness."
+  ],
+  "essential_vs_incidental": "Square shape and zero-side definitions are essential. A particular letter, size, sign, diagonal, witness coordinate or correct position is incidental. Transposing a strict triangular matrix must swap upper/lower; changing a diagonal value alone must preserve orientation.",
+  "source_refs": [
+    "fe3edf12-af5b-5bb0-b5b3-efb6cd809134",
+    "d6f9badf-44cd-56b4-946a-abae3220a5b7",
+    "85d9e5a4-7ab7-5f73-b6ee-269ec09e4301",
+    "2b95456b-3323-5d6f-9e68-2195aad3e714",
+    "527b33fb-f404-506c-9c40-f8d572226bac",
+    "789c23f5-4ec7-5dd8-a73d-e29f357b665e",
+    "9d80001e-8bbd-54a5-81c1-edecd202d3a8",
+    "6b9cc20f-f3d7-5598-82ca-1a091a22aee5",
+    "29fb2ef1-bd76-51ee-b276-e18fb578e191",
+    "552fb4e4-b661-5cca-ad8b-ad46afac0b42",
+    "ce57af24-7688-5285-99c2-a982d174d89c",
+    "5b8d0549-8a06-5a32-8cc6-861cdf3fc65b",
+    "tutorial 658a47dc-4d32-5d9d-a04c-82d683e87739: upper = all entries below diagonal zero; lower = all entries above diagonal zero; any number (including 0) on diagonal and permitted side."
+  ],
+  "source_gaps": [
+    "85d9e5a4-7ab7-5f73-b6ee-269ec09e4301 lacks correct key, worked solution and difficulty; lower triangular is independently inferred, not supplied.",
+    "Canonical example lacks answer fields; the common five-option response contract is supported by all 11 question records."
+  ],
+  "source_cases": [
+    {
+      "id": "fe3edf12-af5b-5bb0-b5b3-efb6cd809134",
+      "problem": "How can we best describe the following matrix? \n\n$$\nA = \\begin{bmatrix}-2 & 0 & 0 \\\\ 6 & -1 & 0 \\\\ 0 & 0 & 0\\end{bmatrix}\n$$",
+      "solution": "Notice that $A$ is a matrix for which all entries above the diagonal are $0$'s:\n\n$$\nA = \\begin{bmatrix}-2 & {\\color{blue}0} & {\\color{blue}0} \\\\ 6 & -1 & {\\color{blue}0} \\\\ 0 & 0 & 0\\end{bmatrix}\n$$\n\nTherefore, it is a lower triangular matrix.\n\nIt is not an upper triangular matrix or a diagonal matrix since there is a non-zero element below the diagonal: $a_{21}=6 \\neq 0.$",
+      "choices": [],
+      "correct": null
+    },
+    {
+      "id": "d6f9badf-44cd-56b4-946a-abae3220a5b7",
+      "problem": "How can we best describe the following matrix? \n\n$$\nA=\\begin{bmatrix}7 & 0 & 0 \\\\ 3 & -1 & 0 \\\\ 0 & 5 & 0\\end{bmatrix}\n$$",
+      "solution": "Notice that $A$ is a matrix for which all entries above the diagonal are $0$'s:\n\n$$\nA=\\begin{bmatrix}7 & 0 & 0 \\\\ 3 & -1 & 0 \\\\ 0 & 5 & 0\\end{bmatrix}\n$$\n\nTherefore, it is a lower triangular matrix.\n\nIt is not an upper triangular matrix or a diagonal matrix since there is a non-zero element below the diagonal: ${a}_{21}=3\\ne 0.$",
+      "choices": [
+        "Upper triangular matrix",
+        "Other",
+        "Lower triangular matrix",
+        "Identity matrix",
+        "Diagonal matrix"
+      ],
+      "correct": "Lower triangular matrix"
+    },
+    {
+      "id": "85d9e5a4-7ab7-5f73-b6ee-269ec09e4301",
+      "problem": "How can we best describe the following matrix?\n\n$A = \\begin{bmatrix}3 & 0 & 0 \\\\ 6 & 8 & 0 \\\\ 4 & 5 & 1\\end{bmatrix}$",
+      "solution": null,
+      "choices": [
+        "Diagonal matrix",
+        "Identity matrix",
+        "Lower triangular matrix",
+        "Upper triangular matrix",
+        "Other"
+      ],
+      "correct": null
+    },
+    {
+      "id": "2b95456b-3323-5d6f-9e68-2195aad3e714",
+      "problem": "How can we best describe the following matrix? \n\n$$\nC=\\begin{bmatrix}-1 & 0 \\\\ -5 & 3\\end{bmatrix}\n$$",
+      "solution": "Notice that $C$ is a matrix for which all entries above the diagonal are $0$'s:\n\n$$\nC=\\begin{bmatrix}-1 & 0 \\\\ -5 & 3\\end{bmatrix}\n$$\n\nTherefore, it is a lower triangular matrix.\n\nIt is not an upper triangular matrix or a diagonal matrix since there is a non-zero element below the diagonal: ${c}_{21}=-5\\ne 0.$",
+      "choices": [
+        "Diagonal matrix",
+        "Lower triangular matrix",
+        "Identity matrix",
+        "Upper triangular matrix",
+        "Other"
+      ],
+      "correct": "Lower triangular matrix"
+    },
+    {
+      "id": "527b33fb-f404-506c-9c40-f8d572226bac",
+      "problem": "How can we best describe the following matrix? \n\n$$\nC=\\begin{bmatrix}2 & 1 \\\\ 0 & -4\\end{bmatrix}\n$$",
+      "solution": "Notice that $C$ is a matrix for which all entries below the diagonal are $0$'s:\n\n$$\nC=\\begin{bmatrix}2 & 1 \\\\ 0 & -4\\end{bmatrix}\n$$\n\nTherefore, it is an upper triangular matrix.\n\nIt is not a lower triangular matrix or a diagonal matrix since there is a non-zero element above the diagonal: ${c}_{12}=1\\ne 0.$",
+      "choices": [
+        "Other",
+        "Lower triangular matrix",
+        "Upper triangular matrix",
+        "Diagonal matrix",
+        "Identity matrix"
+      ],
+      "correct": "Upper triangular matrix"
+    },
+    {
+      "id": "789c23f5-4ec7-5dd8-a73d-e29f357b665e",
+      "problem": "How can we best describe the following matrix? \n\n$$\nA=\\begin{bmatrix}3 & 0 & 0 \\\\ 0 & 2 & 0 \\\\ 0 & 0 & 3\\end{bmatrix}\n$$",
+      "solution": "Notice that $A$ is a matrix for which all entries above and below the diagonal are $0$'s:\n\n$$\nA=\\begin{bmatrix}3 & 0 & 0 \\\\ 0 & 2 & 0 \\\\ 0 & 0 & 3\\end{bmatrix}\n$$\n\nTherefore, it is a diagonal matrix.",
+      "choices": [
+        "Upper triangular matrix",
+        "Other",
+        "Diagonal matrix",
+        "Lower triangular matrix",
+        "Identity matrix"
+      ],
+      "correct": "Diagonal matrix"
+    },
+    {
+      "id": "9d80001e-8bbd-54a5-81c1-edecd202d3a8",
+      "problem": "How can we best describe the following matrix? \n\n$$\nA=\\begin{bmatrix}1 & 1 & 2 \\\\ 0 & 2 & 3 \\\\ 0 & 0 & 3\\end{bmatrix}\n$$",
+      "solution": "Notice that $A$ is a matrix for which all entries below the diagonal are $0$'s:\n\n$$\nA=\\begin{bmatrix}1 & 1 & 2 \\\\ 0 & 2 & 3 \\\\ 0 & 0 & 3\\end{bmatrix}\n$$\n\nTherefore, it is an upper triangular matrix.\n\nIt is not a lower triangular matrix or a diagonal matrix since there is a non-zero element above the diagonal: ${a}_{12}=1\\ne 0.$",
+      "choices": [
+        "Lower triangular matrix",
+        "Upper triangular matrix",
+        "Identity matrix",
+        "Diagonal matrix",
+        "Other"
+      ],
+      "correct": "Upper triangular matrix"
+    },
+    {
+      "id": "6b9cc20f-f3d7-5598-82ca-1a091a22aee5",
+      "problem": "How can we best describe the following matrix? \n\n$$\nA=\\begin{bmatrix}4 & 0 & 0 \\\\ 0 & 5 & 0 \\\\ 0 & 0 & -1\\end{bmatrix}\n$$",
+      "solution": "Notice that $A$ is a matrix for which all entries above and below the diagonal are $0$'s:\n\n$$\nA=\\begin{bmatrix}4 & 0 & 0 \\\\ 0 & 5 & 0 \\\\ 0 & 0 & -1\\end{bmatrix}\n$$\n\nTherefore, it is a diagonal matrix.",
+      "choices": [
+        "Identity matrix",
+        "Upper triangular matrix",
+        "Other",
+        "Diagonal matrix",
+        "Lower triangular matrix"
+      ],
+      "correct": "Diagonal matrix"
+    },
+    {
+      "id": "29fb2ef1-bd76-51ee-b276-e18fb578e191",
+      "problem": "How can we best describe the following matrix? \n\n$$\nA=\\begin{bmatrix}9 & 0 & 0 \\\\ 2 & 7 & 0 \\\\ 0 & 4 & 1\\end{bmatrix}\n$$",
+      "solution": "Notice that $A$ is a matrix for which all entries above the diagonal are $0$'s:\n\n$$\nA=\\begin{bmatrix}9 & 0 & 0 \\\\ 2 & 7 & 0 \\\\ 0 & 4 & 1\\end{bmatrix}\n$$\n\nTherefore, it is a lower triangular matrix.\n\nIt is not an upper triangular matrix or a diagonal matrix since there is a non-zero element below the diagonal: ${a}_{21}=2\\ne 0.$",
+      "choices": [
+        "Identity matrix",
+        "Upper triangular matrix",
+        "Other",
+        "Lower triangular matrix",
+        "Diagonal matrix"
+      ],
+      "correct": "Lower triangular matrix"
+    },
+    {
+      "id": "552fb4e4-b661-5cca-ad8b-ad46afac0b42",
+      "problem": "How can we best describe the following matrix? \n\n$$\nA=\\begin{bmatrix}-2 & 0 & 0 \\\\ 0 & 3 & 0 \\\\ 0 & 0 & 1\\end{bmatrix}\n$$",
+      "solution": "Notice that $A$ is a matrix for which all entries above and below the diagonal are $0$'s:\n\n$$\nA=\\begin{bmatrix}-2 & 0 & 0 \\\\ 0 & 3 & 0 \\\\ 0 & 0 & 1\\end{bmatrix}\n$$\n\nTherefore, it is a diagonal matrix.",
+      "choices": [
+        "Identity matrix",
+        "Upper triangular matrix",
+        "Other",
+        "Diagonal matrix",
+        "Lower triangular matrix"
+      ],
+      "correct": "Diagonal matrix"
+    },
+    {
+      "id": "ce57af24-7688-5285-99c2-a982d174d89c",
+      "problem": "How can we best describe the following matrix? \n\n$$\nA=\\begin{bmatrix}2 & 4 & 7 \\\\ 0 & 2 & 6 \\\\ 0 & 0 & 3\\end{bmatrix}\n$$",
+      "solution": "Notice that $A$ is a matrix for which all entries below the diagonal are $0$'s:\n\n$$\nA=\\begin{bmatrix}2 & 4 & 7 \\\\ 0 & 2 & 6 \\\\ 0 & 0 & 3\\end{bmatrix}\n$$\n\nTherefore, it is an upper triangular matrix.\n\nIt is not a lower triangular matrix or a diagonal matrix since there is a non-zero element above the diagonal: ${a}_{12}=4\\ne 0.$",
+      "choices": [
+        "Upper triangular matrix",
+        "Diagonal matrix",
+        "Lower triangular matrix",
+        "Other",
+        "Identity matrix"
+      ],
+      "correct": "Upper triangular matrix"
+    },
+    {
+      "id": "5b8d0549-8a06-5a32-8cc6-861cdf3fc65b",
+      "problem": "How can we best describe the following matrix? \n\n$$\nA=\\begin{bmatrix}4 & 10 & 1 \\\\ 0 & 2 & 3 \\\\ 0 & 0 & 4\\end{bmatrix}\n$$",
+      "solution": "Notice that $A$ is a matrix for which all entries below the diagonal are $0$'s:\n\n$$\nA=\\begin{bmatrix}4 & 10 & 1 \\\\ 0 & 2 & 3 \\\\ 0 & 0 & 4\\end{bmatrix}\n$$\n\nTherefore, it is an upper triangular matrix.\n\nIt is not a lower triangular matrix or a diagonal matrix since there is a non-zero element above the diagonal: ${a}_{12}=10\\ne 0.$",
+      "choices": [
+        "Upper triangular matrix",
+        "Identity matrix",
+        "Lower triangular matrix",
+        "Diagonal matrix",
+        "Other"
+      ],
+      "correct": "Upper triangular matrix"
+    }
+  ],
+  "evidence_paths": [
+    "source-analysis.json"
+  ]
+}

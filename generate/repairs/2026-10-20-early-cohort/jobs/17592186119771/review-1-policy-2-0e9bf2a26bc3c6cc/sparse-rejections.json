@@ -1,0 +1,87 @@
+{
+  "command": "/home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186119771/review-1-policy-2-0e9bf2a26bc3c6cc/review_checks.py",
+  "cases": [
+    {
+      "name": "canonical",
+      "parameters": {
+        "matrix": [
+          [
+            -2,
+            0,
+            0
+          ],
+          [
+            6,
+            -1,
+            0
+          ],
+          [
+            0,
+            0,
+            0
+          ]
+        ],
+        "letter": "A",
+        "layout": "bmatrix"
+      },
+      "expected": "Lower triangular matrix",
+      "accepted": false,
+      "error": "Normal triangular practice needs a substantial nonzero off-diagonal region"
+    },
+    {
+      "name": "sole_far_witness",
+      "parameters": {
+        "matrix": [
+          [
+            2,
+            0,
+            0
+          ],
+          [
+            0,
+            3,
+            0
+          ],
+          [
+            7,
+            0,
+            4
+          ]
+        ],
+        "letter": "A",
+        "layout": "bmatrix"
+      },
+      "expected": "Lower triangular matrix",
+      "accepted": false,
+      "error": "Normal triangular practice needs a substantial nonzero off-diagonal region"
+    },
+    {
+      "name": "upper_far_witness",
+      "parameters": {
+        "matrix": [
+          [
+            2,
+            0,
+            7
+          ],
+          [
+            0,
+            3,
+            0
+          ],
+          [
+            0,
+            0,
+            4
+          ]
+        ],
+        "letter": "A",
+        "layout": "bmatrix"
+      },
+      "expected": "Upper triangular matrix",
+      "accepted": false,
+      "error": "Normal triangular practice needs a substantial nonzero off-diagonal region"
+    }
+  ],
+  "rule": "level_guard and catalog require at least ceil(n(n-1)/4) nonzero off-diagonal entries; all sole-witness 3x3 triangular matrices excluded."
+}

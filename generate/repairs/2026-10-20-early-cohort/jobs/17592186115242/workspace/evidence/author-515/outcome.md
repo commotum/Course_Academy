@@ -1,0 +1,9 @@
+Preserved the repaired package and all five executable finding checks. Read latest feedback, the retained history, source lesson and all 17 practice questions; reused the existing instructional account. No new generator defect is demonstrated by the latest feedback.
+
+Command: `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/author-515`.
+
+Exit 1: the first check reproduces finding 591f580cadb749294588 on all five captured historical records, with 64/64 successes in the documented possible learner-history scenario. Four current-generator regressions pass. Source replay covers 17 complete banks; delivery retains 14/14 tested records with conditional rank/position contrasts. Native grading accepts 7 correct and rejects 28 wrong responses. Relocation, dependency pins, protected input/runtime hashes and the unapplied replacement mapping verify. Reinspected the retained actual-UI screenshot `evidence/repair-3/render/question-002.png`; equations, choices and worked solution have no visible clipping or overlap. Runtime is unchanged, so rendering was reused.
+
+The remaining failure is in already stored banks, which are read independently of this generator. Workspace code cannot change those stored candidates. The review explicitly requests a separate inventory-remediation workflow; this task prohibits database changes and publication. Five validated replacements remain staged in `evidence/repair-3/inventory-repair-proposal.json`. No captured inventory was substituted, no source question was tagged generated, and no strict check was weakened. All five generated inventory records were tested, rather than assuming an empty affected set.
+
+Status: unsupported for the unresolved stored-pool requirement. Separate remediation and a fresh inventory capture are required before that strict regression can pass. Further runtime edits would not address this failure.
