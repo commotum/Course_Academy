@@ -102,6 +102,7 @@ def main():
     assert [(v.matrix(r['question'][':question/problem']),v.key(r['question'])) for r in accepted] == [(v.matrix(r['question'][':question/problem']),v.key(r['question'])) for r in records]
     after = [inspect(accepted[i:i+5]) for i in range(0,len(accepted),5)]
     assert before == after
+    (out/'reviewed-seed-delivered.json').write_text(json.dumps(accepted[:5],indent=2)+'\n')
     # Exact review sign-change control, generated afresh with one entry changed.
     spec = importlib.util.spec_from_file_location('candidate',v.ROOT/'17592186119771.py')
     g = importlib.util.module_from_spec(spec);spec.loader.exec_module(g)

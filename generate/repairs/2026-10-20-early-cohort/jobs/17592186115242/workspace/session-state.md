@@ -1,27 +1,33 @@
 # Current state
 
-Author-528 preserved completed runtime repairs and all five strict regressions.
-Read latest feedback, retained history, source and instructional account. First
-executed `checks/batch_regressions.py --finding inventory`: exit 1, five
-historical banks affected, 64/64 possible-history shortcut successes.
+Author-531 verification milestone.
 
-Ran job Python with `-B checks/recheck_status.py --output evidence/author-528`:
-exit 1 solely for 591f580cadb749294588. Four generator findings pass; all 17
-practice banks and canonical replay, zero roots, controlled counterfactuals,
+Preserved the existing generator repairs. The first executed regression,
+job Python with `-B checks/batch_regressions.py --finding inventory`, exited 1:
+five historical banks remain affected, with 64/64 shortcut successes in the
+retained possible-history selection witness.
+
+`-B checks/recheck_status.py --output evidence/author-531` exited 1 solely for
+591f580cadb749294588. All four generator findings pass. All 17 practice banks
+and canonical replay pass, together with zero-root checks, counterfactuals,
 shared delivery (14 records), native grading (7 accepted/28 rejected), exact
-dependencies and relocation pass. Protected runtime/source/inventory/manifest
-hashes and five unapplied replacement mappings verify unchanged. Reinspected
-retained actual-UI screenshot `evidence/repair-3/render/question-002.png`:
-readable without clipping.
+dependencies and relocation. Protected hashes and five staged replacement
+mappings verify. No generated inventory remains untested in this captured pool.
 
-Evidence: evidence/author-528/commands.json, results.json, grader-report.json,
-outcome.md. Existing instructional account remains applicable. No runtime,
-engine, database, publication or other-job changes occurred.
+Reused unchanged rendering evidence and visually inspected
+evidence/repair-3/render/question-002.png: readable equations, choices and
+solution without clipping. No new rendering or runtime changes were needed.
 
-Unfinished: separate inventory remediation for the five generated identities in
+Status: unsupported. Finding 591f580cadb749294588 explicitly calls for separate
+inventory remediation. Database changes are prohibited in this author task.
+The existing proposal remains staged and unapplied at
+evidence/repair-3/inventory-repair-proposal.json. A fresh inventory capture and
+passing strict pool check remain necessary. No source questions were tagged as
+generated; no engine, database, publication or other-job files were changed.
+
+Evidence: evidence/author-531/commands.json, results.json, grader-report.json,
+outcome.md. Existing instructional account and strict regressions unchanged.
+
+Next unfinished step: separate inventory remediation of the five identities in
 affected-inventory.json, followed by fresh capture and strict pool recheck.
-Validated proposal: evidence/repair-3/inventory-repair-proposal.json.
-
-Status: unsupported for the unresolved stored-pool requirement. Latest feedback
-reports no new construction defect. Repeating identical author retries or
-editing this generator cannot alter the unchanged captured stored answer banks.
+Do not substitute hypothetical replacements for captured historical records.
