@@ -1,0 +1,1000 @@
+{
+  "learner_operation": "Apply the product rule, replace y/x by v (and x/y by 1/v), simplify F(v)-v, and recognize an equivalent separated equation among five choices.",
+  "fixed_features": [
+    {
+      "feature": "y=v(x)x and product-rule derivative",
+      "justification": "The prompt explicitly requests this substitution; tutorial 4107 derives xv′=F(v)-v."
+    },
+    {
+      "feature": "One radio field with five equation choices",
+      "justification": "Every supplied practice source uses this response contract; a target equation must be recognized, with no integration."
+    },
+    {
+      "feature": "Degree-zero homogeneous RHS and source-like nonlinear nesting/polynomial degrees",
+      "justification": "Tutorial 2106 defines homogeneity; restricting complexity preserves easy substitution and algebra workload."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Linear coefficient surviving subtraction of v",
+      "eligible_variation": "Cancellation, negative and positive residual contributions; do not fix the surviving equation.",
+      "observed": "Four nonzero shifts in each of eight identical complete banks select four different equations; zero shifts and three cancellation profiles also tested."
+    },
+    {
+      "role": "Coefficient or function-argument target inside cancellation bank",
+      "eligible_variation": "Each available coefficient/argument can occupy the correct role within an unchanged five-equation window.",
+      "observed": "Fresh seed 44219, window 2..6: five sec-argument targets and four nonsource sine/rational targets each; every tested target changes the correct choice."
+    },
+    {
+      "role": "Choice position",
+      "eligible_variation": "Incidental to mathematics; seeds and actual UI order may vary.",
+      "observed": "All five actual positions occur across 160 UI ordering contexts. Prompt math and key equation survive an irrelevant seed change."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "Exact supplied source practice",
+      "sample_refs": [
+        "source-replay.json",
+        "independent-records.json"
+      ],
+      "result": "Eight prompts, solutions, complete five-choice banks and keys replayed; 40 choices checked. Source copies are not treated as new inventory instances."
+    },
+    {
+      "case": "Authored role and boundary coverage",
+      "sample_refs": [
+        "independent-records.json",
+        "math-results.json",
+        "sampling.json",
+        "fixed-bank-results.json"
+      ],
+      "result": "Every family: five shifts at k=5, domain endpoints at shift=2, plus seed controls. Independent visible mathematics and solutions passed."
+    },
+    {
+      "case": "Cancellation coefficient/argument roles",
+      "sample_refs": [
+        "cancellation-records.json",
+        "cancellation-math.json",
+        "delivery-cancellation/accepted.json"
+      ],
+      "result": "13 fresh constant-window target assignments pass mathematics and delivery, with distinct keys in each unchanged bank."
+    },
+    {
+      "case": "Exact runner batch",
+      "sample_refs": [
+        "batch-records.json",
+        "delivery-batch-records/accepted.json",
+        "shortcut-results.json"
+      ],
+      "result": "All 5 survive actual filtering: four families, shifts -2,-1,0,+2; two exponential cases have different residuals/keys. Shortest, longest and lexicographically first choices each score 0/5; no fixed serialized position exceeds 2/5."
+    },
+    {
+      "case": "Fresh seeded CLI-equivalent sampler",
+      "sample_refs": [
+        "fresh-batch.json",
+        "fresh-math-results.json",
+        "delivery-fresh-batch/accepted.json"
+      ],
+      "result": "Seed 721097 produces 17 distinct mathematical prompts deterministically; all 17 pass delivery and independent math."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Hold family and k=5 fixed; change shift -1 to +1, hence only +2y/x evidence changes.",
+      "expected": "Derived v′ increases by 2v/x; the correct equation changes in the identical visible bank. Worked equations and native grading must follow.",
+      "observed": "All eight families pass the independently parsed rate-delta and bank checks. All five alternatives are graded per instance. q-14316 and q-90600 pairs visually inspected in actual UI.",
+      "status": "passed",
+      "justification": "Product-rule derivation in tutorial 4107 makes the linear coefficient answer-bearing rather than an essential source assignment.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "independent-records.json",
+        "math-results.json",
+        "grader-final-input.json",
+        "grader-final-report.json",
+        "rendering-inspection.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "Hold cancellation family, shift=0, and bank window 2..6 fixed; change k.",
+      "expected": "Correct equation must track the argument/coefficient, despite unchanged complete bank.",
+      "observed": "13 fresh assignments produce distinct keys within each fixed bank, with displayed equations and native grading checked.",
+      "status": "passed",
+      "justification": "Sources q-8745, q-90601 and q-90600 cancel the product-rule v; the remaining sec argument or scalar factor still determines the result.",
+      "sample_refs": [
+        "cancellation-records.json",
+        "cancellation-math.json",
+        "fixed-bank-results.json",
+        "grader-final-report.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Keep family,k,shift fixed and change seed 92831 to 184723.",
+      "expected": "Prompt, worked solution and correct mathematical response stay identical; incidental option order may change.",
+      "observed": "All eight families preserve prompt, solution, bank and key value. Every option checked in native grader for both seeds; q-14316 pair visually inspected.",
+      "status": "passed",
+      "justification": "The source method depends on the differential equation and substitution, not on an RNG seed or option order.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "independent-records.json",
+        "grader-final-report.json",
+        "rendering-inspection.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "shortest",
+      "subgroup": "runner batch: all",
+      "scope": "overall",
+      "strategy": "Choose shortest using only answer-bank text or serialized position.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 0.20. No overall tested cue solves the batch. Small template subgroups (one or two items) cannot establish a reproducible template rule. Serialized fourth position happens to hit 2/2 exponential items, but is not a learner-visible rule: actual UI reorders answers using item/field/answer IDs; 32 item contexts were tested separately.",
+      "sample_refs": [
+        "delivery-batch-records/accepted.json",
+        "shortcut-results.json",
+        "selection-analysis.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "runner batch: all",
+      "scope": "overall",
+      "strategy": "Choose longest using only answer-bank text or serialized position.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 0.20. No overall tested cue solves the batch. Small template subgroups (one or two items) cannot establish a reproducible template rule. Serialized fourth position happens to hit 2/2 exponential items, but is not a learner-visible rule: actual UI reorders answers using item/field/answer IDs; 32 item contexts were tested separately.",
+      "sample_refs": [
+        "delivery-batch-records/accepted.json",
+        "shortcut-results.json",
+        "selection-analysis.json"
+      ]
+    },
+    {
+      "cue": "lexicographically_first",
+      "subgroup": "runner batch: all",
+      "scope": "overall",
+      "strategy": "Choose lexicographically_first using only answer-bank text or serialized position.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 0.20. No overall tested cue solves the batch. Small template subgroups (one or two items) cannot establish a reproducible template rule. Serialized fourth position happens to hit 2/2 exponential items, but is not a learner-visible rule: actual UI reorders answers using item/field/answer IDs; 32 item contexts were tested separately.",
+      "sample_refs": [
+        "delivery-batch-records/accepted.json",
+        "shortcut-results.json",
+        "selection-analysis.json"
+      ]
+    },
+    {
+      "cue": "position_1",
+      "subgroup": "runner batch: all",
+      "scope": "overall",
+      "strategy": "Choose position_1 using only answer-bank text or serialized position.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 0.20. No overall tested cue solves the batch. Small template subgroups (one or two items) cannot establish a reproducible template rule. Serialized fourth position happens to hit 2/2 exponential items, but is not a learner-visible rule: actual UI reorders answers using item/field/answer IDs; 32 item contexts were tested separately.",
+      "sample_refs": [
+        "delivery-batch-records/accepted.json",
+        "shortcut-results.json",
+        "selection-analysis.json"
+      ]
+    },
+    {
+      "cue": "position_2",
+      "subgroup": "runner batch: all",
+      "scope": "overall",
+      "strategy": "Choose position_2 using only answer-bank text or serialized position.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 0.20. No overall tested cue solves the batch. Small template subgroups (one or two items) cannot establish a reproducible template rule. Serialized fourth position happens to hit 2/2 exponential items, but is not a learner-visible rule: actual UI reorders answers using item/field/answer IDs; 32 item contexts were tested separately.",
+      "sample_refs": [
+        "delivery-batch-records/accepted.json",
+        "shortcut-results.json",
+        "selection-analysis.json"
+      ]
+    },
+    {
+      "cue": "position_3",
+      "subgroup": "runner batch: all",
+      "scope": "overall",
+      "strategy": "Choose position_3 using only answer-bank text or serialized position.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 0.20. No overall tested cue solves the batch. Small template subgroups (one or two items) cannot establish a reproducible template rule. Serialized fourth position happens to hit 2/2 exponential items, but is not a learner-visible rule: actual UI reorders answers using item/field/answer IDs; 32 item contexts were tested separately.",
+      "sample_refs": [
+        "delivery-batch-records/accepted.json",
+        "shortcut-results.json",
+        "selection-analysis.json"
+      ]
+    },
+    {
+      "cue": "position_4",
+      "subgroup": "runner batch: all",
+      "scope": "overall",
+      "strategy": "Choose position_4 using only answer-bank text or serialized position.",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 0.20. No overall tested cue solves the batch. Small template subgroups (one or two items) cannot establish a reproducible template rule. Serialized fourth position happens to hit 2/2 exponential items, but is not a learner-visible rule: actual UI reorders answers using item/field/answer IDs; 32 item contexts were tested separately.",
+      "sample_refs": [
+        "delivery-batch-records/accepted.json",
+        "shortcut-results.json",
+        "selection-analysis.json"
+      ]
+    },
+    {
+      "cue": "position_5",
+      "subgroup": "runner batch: all",
+      "scope": "overall",
+      "strategy": "Choose position_5 using only answer-bank text or serialized position.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 0.20. No overall tested cue solves the batch. Small template subgroups (one or two items) cannot establish a reproducible template rule. Serialized fourth position happens to hit 2/2 exponential items, but is not a learner-visible rule: actual UI reorders answers using item/field/answer IDs; 32 item contexts were tested separately.",
+      "sample_refs": [
+        "delivery-batch-records/accepted.json",
+        "shortcut-results.json",
+        "selection-analysis.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "runner batch: q-14316",
+      "scope": "within_template",
+      "strategy": "Choose shortest using only answer-bank text or serialized position.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 0.20. No overall tested cue solves the batch. Small template subgroups (one or two items) cannot establish a reproducible template rule. Serialized fourth position happens to hit 2/2 exponential items, but is not a learner-visible rule: actual UI reorders answers using item/field/answer IDs; 32 item contexts were tested separately.",
+      "sample_refs": [
+        "delivery-batch-records/accepted.json",
+        "shortcut-results.json",
+        "selection-analysis.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "runner batch: q-14316",
+      "scope": "within_template",
+      "strategy": "Choose longest using only answer-bank text or serialized position.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 0.20. No overall tested cue solves the batch. Small template subgroups (one or two items) cannot establish a reproducible template rule. Serialized fourth position happens to hit 2/2 exponential items, but is not a learner-visible rule: actual UI reorders answers using item/field/answer IDs; 32 item contexts were tested separately.",
+      "sample_refs": [
+        "delivery-batch-records/accepted.json",
+        "shortcut-results.json",
+        "selection-analysis.json"
+      ]
+    },
+    {
+      "cue": "lexicographically_first",
+      "subgroup": "runner batch: q-14316",
+      "scope": "within_template",
+      "strategy": "Choose lexicographically_first using only answer-bank text or serialized position.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 0.20. No overall tested cue solves the batch. Small template subgroups (one or two items) cannot establish a reproducible template rule. Serialized fourth position happens to hit 2/2 exponential items, but is not a learner-visible rule: actual UI reorders answers using item/field/answer IDs; 32 item contexts were tested separately.",
+      "sample_refs": [
+        "delivery-batch-records/accepted.json",
+        "shortcut-results.json",
+        "selection-analysis.json"
+      ]
+    },
+    {
+      "cue": "position_1",
+      "subgroup": "runner batch: q-14316",
+      "scope": "within_template",
+      "strategy": "Choose position_1 using only answer-bank text or serialized position.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 0.20. No overall tested cue solves the batch. Small template subgroups (one or two items) cannot establish a reproducible template rule. Serialized fourth position happens to hit 2/2 exponential items, but is not a learner-visible rule: actual UI reorders answers using item/field/answer IDs; 32 item contexts were tested separately.",
+      "sample_refs": [
+        "delivery-batch-records/accepted.json",
+        "shortcut-results.json",
+        "selection-analysis.json"
+      ]
+    },
+    {
+      "cue": "position_2",
+      "subgroup": "runner batch: q-14316",
+      "scope": "within_template",
+      "strategy": "Choose position_2 using only answer-bank text or serialized position.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 0.20. No overall tested cue solves the batch. Small template subgroups (one or two items) cannot establish a reproducible template rule. Serialized fourth position happens to hit 2/2 exponential items, but is not a learner-visible rule: actual UI reorders answers using item/field/answer IDs; 32 item contexts were tested separately.",
+      "sample_refs": [
+        "delivery-batch-records/accepted.json",
+        "shortcut-results.json",
+        "selection-analysis.json"
+      ]
+    },
+    {
+      "cue": "position_3",
+      "subgroup": "runner batch: q-14316",
+      "scope": "within_template",
+      "strategy": "Choose position_3 using only answer-bank text or serialized position.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 0.20. No overall tested cue solves the batch. Small template subgroups (one or two items) cannot establish a reproducible template rule. Serialized fourth position happens to hit 2/2 exponential items, but is not a learner-visible rule: actual UI reorders answers using item/field/answer IDs; 32 item contexts were tested separately.",
+      "sample_refs": [
+        "delivery-batch-records/accepted.json",
+        "shortcut-results.json",
+        "selection-analysis.json"
+      ]
+    },
+    {
+      "cue": "position_4",
+      "subgroup": "runner batch: q-14316",
+      "scope": "within_template",
+      "strategy": "Choose position_4 using only answer-bank text or serialized position.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 0.20. No overall tested cue solves the batch. Small template subgroups (one or two items) cannot establish a reproducible template rule. Serialized fourth position happens to hit 2/2 exponential items, but is not a learner-visible rule: actual UI reorders answers using item/field/answer IDs; 32 item contexts were tested separately.",
+      "sample_refs": [
+        "delivery-batch-records/accepted.json",
+        "shortcut-results.json",
+        "selection-analysis.json"
+      ]
+    },
+    {
+      "cue": "position_5",
+      "subgroup": "runner batch: q-14316",
+      "scope": "within_template",
+      "strategy": "Choose position_5 using only answer-bank text or serialized position.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 0.20. No overall tested cue solves the batch. Small template subgroups (one or two items) cannot establish a reproducible template rule. Serialized fourth position happens to hit 2/2 exponential items, but is not a learner-visible rule: actual UI reorders answers using item/field/answer IDs; 32 item contexts were tested separately.",
+      "sample_refs": [
+        "delivery-batch-records/accepted.json",
+        "shortcut-results.json",
+        "selection-analysis.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "runner batch: q-8745",
+      "scope": "within_template",
+      "strategy": "Choose shortest using only answer-bank text or serialized position.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 0.20. No overall tested cue solves the batch. Small template subgroups (one or two items) cannot establish a reproducible template rule. Serialized fourth position happens to hit 2/2 exponential items, but is not a learner-visible rule: actual UI reorders answers using item/field/answer IDs; 32 item contexts were tested separately.",
+      "sample_refs": [
+        "delivery-batch-records/accepted.json",
+        "shortcut-results.json",
+        "selection-analysis.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "runner batch: q-8745",
+      "scope": "within_template",
+      "strategy": "Choose longest using only answer-bank text or serialized position.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 0.20. No overall tested cue solves the batch. Small template subgroups (one or two items) cannot establish a reproducible template rule. Serialized fourth position happens to hit 2/2 exponential items, but is not a learner-visible rule: actual UI reorders answers using item/field/answer IDs; 32 item contexts were tested separately.",
+      "sample_refs": [
+        "delivery-batch-records/accepted.json",
+        "shortcut-results.json",
+        "selection-analysis.json"
+      ]
+    },
+    {
+      "cue": "lexicographically_first",
+      "subgroup": "runner batch: q-8745",
+      "scope": "within_template",
+      "strategy": "Choose lexicographically_first using only answer-bank text or serialized position.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 0.20. No overall tested cue solves the batch. Small template subgroups (one or two items) cannot establish a reproducible template rule. Serialized fourth position happens to hit 2/2 exponential items, but is not a learner-visible rule: actual UI reorders answers using item/field/answer IDs; 32 item contexts were tested separately.",
+      "sample_refs": [
+        "delivery-batch-records/accepted.json",
+        "shortcut-results.json",
+        "selection-analysis.json"
+      ]
+    },
+    {
+      "cue": "position_1",
+      "subgroup": "runner batch: q-8745",
+      "scope": "within_template",
+      "strategy": "Choose position_1 using only answer-bank text or serialized position.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 0.20. No overall tested cue solves the batch. Small template subgroups (one or two items) cannot establish a reproducible template rule. Serialized fourth position happens to hit 2/2 exponential items, but is not a learner-visible rule: actual UI reorders answers using item/field/answer IDs; 32 item contexts were tested separately.",
+      "sample_refs": [
+        "delivery-batch-records/accepted.json",
+        "shortcut-results.json",
+        "selection-analysis.json"
+      ]
+    },
+    {
+      "cue": "position_2",
+      "subgroup": "runner batch: q-8745",
+      "scope": "within_template",
+      "strategy": "Choose position_2 using only answer-bank text or serialized position.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 0.20. No overall tested cue solves the batch. Small template subgroups (one or two items) cannot establish a reproducible template rule. Serialized fourth position happens to hit 2/2 exponential items, but is not a learner-visible rule: actual UI reorders answers using item/field/answer IDs; 32 item contexts were tested separately.",
+      "sample_refs": [
+        "delivery-batch-records/accepted.json",
+        "shortcut-results.json",
+        "selection-analysis.json"
+      ]
+    },
+    {
+      "cue": "position_3",
+      "subgroup": "runner batch: q-8745",
+      "scope": "within_template",
+      "strategy": "Choose position_3 using only answer-bank text or serialized position.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 0.20. No overall tested cue solves the batch. Small template subgroups (one or two items) cannot establish a reproducible template rule. Serialized fourth position happens to hit 2/2 exponential items, but is not a learner-visible rule: actual UI reorders answers using item/field/answer IDs; 32 item contexts were tested separately.",
+      "sample_refs": [
+        "delivery-batch-records/accepted.json",
+        "shortcut-results.json",
+        "selection-analysis.json"
+      ]
+    },
+    {
+      "cue": "position_4",
+      "subgroup": "runner batch: q-8745",
+      "scope": "within_template",
+      "strategy": "Choose position_4 using only answer-bank text or serialized position.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 0.20. No overall tested cue solves the batch. Small template subgroups (one or two items) cannot establish a reproducible template rule. Serialized fourth position happens to hit 2/2 exponential items, but is not a learner-visible rule: actual UI reorders answers using item/field/answer IDs; 32 item contexts were tested separately.",
+      "sample_refs": [
+        "delivery-batch-records/accepted.json",
+        "shortcut-results.json",
+        "selection-analysis.json"
+      ]
+    },
+    {
+      "cue": "position_5",
+      "subgroup": "runner batch: q-8745",
+      "scope": "within_template",
+      "strategy": "Choose position_5 using only answer-bank text or serialized position.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 0.20. No overall tested cue solves the batch. Small template subgroups (one or two items) cannot establish a reproducible template rule. Serialized fourth position happens to hit 2/2 exponential items, but is not a learner-visible rule: actual UI reorders answers using item/field/answer IDs; 32 item contexts were tested separately.",
+      "sample_refs": [
+        "delivery-batch-records/accepted.json",
+        "shortcut-results.json",
+        "selection-analysis.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "runner batch: q-8747",
+      "scope": "within_template",
+      "strategy": "Choose shortest using only answer-bank text or serialized position.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 0.20. No overall tested cue solves the batch. Small template subgroups (one or two items) cannot establish a reproducible template rule. Serialized fourth position happens to hit 2/2 exponential items, but is not a learner-visible rule: actual UI reorders answers using item/field/answer IDs; 32 item contexts were tested separately.",
+      "sample_refs": [
+        "delivery-batch-records/accepted.json",
+        "shortcut-results.json",
+        "selection-analysis.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "runner batch: q-8747",
+      "scope": "within_template",
+      "strategy": "Choose longest using only answer-bank text or serialized position.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 0.20. No overall tested cue solves the batch. Small template subgroups (one or two items) cannot establish a reproducible template rule. Serialized fourth position happens to hit 2/2 exponential items, but is not a learner-visible rule: actual UI reorders answers using item/field/answer IDs; 32 item contexts were tested separately.",
+      "sample_refs": [
+        "delivery-batch-records/accepted.json",
+        "shortcut-results.json",
+        "selection-analysis.json"
+      ]
+    },
+    {
+      "cue": "lexicographically_first",
+      "subgroup": "runner batch: q-8747",
+      "scope": "within_template",
+      "strategy": "Choose lexicographically_first using only answer-bank text or serialized position.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 0.20. No overall tested cue solves the batch. Small template subgroups (one or two items) cannot establish a reproducible template rule. Serialized fourth position happens to hit 2/2 exponential items, but is not a learner-visible rule: actual UI reorders answers using item/field/answer IDs; 32 item contexts were tested separately.",
+      "sample_refs": [
+        "delivery-batch-records/accepted.json",
+        "shortcut-results.json",
+        "selection-analysis.json"
+      ]
+    },
+    {
+      "cue": "position_1",
+      "subgroup": "runner batch: q-8747",
+      "scope": "within_template",
+      "strategy": "Choose position_1 using only answer-bank text or serialized position.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 0.20. No overall tested cue solves the batch. Small template subgroups (one or two items) cannot establish a reproducible template rule. Serialized fourth position happens to hit 2/2 exponential items, but is not a learner-visible rule: actual UI reorders answers using item/field/answer IDs; 32 item contexts were tested separately.",
+      "sample_refs": [
+        "delivery-batch-records/accepted.json",
+        "shortcut-results.json",
+        "selection-analysis.json"
+      ]
+    },
+    {
+      "cue": "position_2",
+      "subgroup": "runner batch: q-8747",
+      "scope": "within_template",
+      "strategy": "Choose position_2 using only answer-bank text or serialized position.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 0.20. No overall tested cue solves the batch. Small template subgroups (one or two items) cannot establish a reproducible template rule. Serialized fourth position happens to hit 2/2 exponential items, but is not a learner-visible rule: actual UI reorders answers using item/field/answer IDs; 32 item contexts were tested separately.",
+      "sample_refs": [
+        "delivery-batch-records/accepted.json",
+        "shortcut-results.json",
+        "selection-analysis.json"
+      ]
+    },
+    {
+      "cue": "position_3",
+      "subgroup": "runner batch: q-8747",
+      "scope": "within_template",
+      "strategy": "Choose position_3 using only answer-bank text or serialized position.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 0.20. No overall tested cue solves the batch. Small template subgroups (one or two items) cannot establish a reproducible template rule. Serialized fourth position happens to hit 2/2 exponential items, but is not a learner-visible rule: actual UI reorders answers using item/field/answer IDs; 32 item contexts were tested separately.",
+      "sample_refs": [
+        "delivery-batch-records/accepted.json",
+        "shortcut-results.json",
+        "selection-analysis.json"
+      ]
+    },
+    {
+      "cue": "position_4",
+      "subgroup": "runner batch: q-8747",
+      "scope": "within_template",
+      "strategy": "Choose position_4 using only answer-bank text or serialized position.",
+      "correct": 2,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 0.20. No overall tested cue solves the batch. Small template subgroups (one or two items) cannot establish a reproducible template rule. Serialized fourth position happens to hit 2/2 exponential items, but is not a learner-visible rule: actual UI reorders answers using item/field/answer IDs; 32 item contexts were tested separately.",
+      "sample_refs": [
+        "delivery-batch-records/accepted.json",
+        "shortcut-results.json",
+        "selection-analysis.json"
+      ]
+    },
+    {
+      "cue": "position_5",
+      "subgroup": "runner batch: q-8747",
+      "scope": "within_template",
+      "strategy": "Choose position_5 using only answer-bank text or serialized position.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 0.20. No overall tested cue solves the batch. Small template subgroups (one or two items) cannot establish a reproducible template rule. Serialized fourth position happens to hit 2/2 exponential items, but is not a learner-visible rule: actual UI reorders answers using item/field/answer IDs; 32 item contexts were tested separately.",
+      "sample_refs": [
+        "delivery-batch-records/accepted.json",
+        "shortcut-results.json",
+        "selection-analysis.json"
+      ]
+    },
+    {
+      "cue": "shortest",
+      "subgroup": "runner batch: q-90601",
+      "scope": "within_template",
+      "strategy": "Choose shortest using only answer-bank text or serialized position.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 0.20. No overall tested cue solves the batch. Small template subgroups (one or two items) cannot establish a reproducible template rule. Serialized fourth position happens to hit 2/2 exponential items, but is not a learner-visible rule: actual UI reorders answers using item/field/answer IDs; 32 item contexts were tested separately.",
+      "sample_refs": [
+        "delivery-batch-records/accepted.json",
+        "shortcut-results.json",
+        "selection-analysis.json"
+      ]
+    },
+    {
+      "cue": "longest",
+      "subgroup": "runner batch: q-90601",
+      "scope": "within_template",
+      "strategy": "Choose longest using only answer-bank text or serialized position.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 0.20. No overall tested cue solves the batch. Small template subgroups (one or two items) cannot establish a reproducible template rule. Serialized fourth position happens to hit 2/2 exponential items, but is not a learner-visible rule: actual UI reorders answers using item/field/answer IDs; 32 item contexts were tested separately.",
+      "sample_refs": [
+        "delivery-batch-records/accepted.json",
+        "shortcut-results.json",
+        "selection-analysis.json"
+      ]
+    },
+    {
+      "cue": "lexicographically_first",
+      "subgroup": "runner batch: q-90601",
+      "scope": "within_template",
+      "strategy": "Choose lexicographically_first using only answer-bank text or serialized position.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 0.20. No overall tested cue solves the batch. Small template subgroups (one or two items) cannot establish a reproducible template rule. Serialized fourth position happens to hit 2/2 exponential items, but is not a learner-visible rule: actual UI reorders answers using item/field/answer IDs; 32 item contexts were tested separately.",
+      "sample_refs": [
+        "delivery-batch-records/accepted.json",
+        "shortcut-results.json",
+        "selection-analysis.json"
+      ]
+    },
+    {
+      "cue": "position_1",
+      "subgroup": "runner batch: q-90601",
+      "scope": "within_template",
+      "strategy": "Choose position_1 using only answer-bank text or serialized position.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 0.20. No overall tested cue solves the batch. Small template subgroups (one or two items) cannot establish a reproducible template rule. Serialized fourth position happens to hit 2/2 exponential items, but is not a learner-visible rule: actual UI reorders answers using item/field/answer IDs; 32 item contexts were tested separately.",
+      "sample_refs": [
+        "delivery-batch-records/accepted.json",
+        "shortcut-results.json",
+        "selection-analysis.json"
+      ]
+    },
+    {
+      "cue": "position_2",
+      "subgroup": "runner batch: q-90601",
+      "scope": "within_template",
+      "strategy": "Choose position_2 using only answer-bank text or serialized position.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 0.20. No overall tested cue solves the batch. Small template subgroups (one or two items) cannot establish a reproducible template rule. Serialized fourth position happens to hit 2/2 exponential items, but is not a learner-visible rule: actual UI reorders answers using item/field/answer IDs; 32 item contexts were tested separately.",
+      "sample_refs": [
+        "delivery-batch-records/accepted.json",
+        "shortcut-results.json",
+        "selection-analysis.json"
+      ]
+    },
+    {
+      "cue": "position_3",
+      "subgroup": "runner batch: q-90601",
+      "scope": "within_template",
+      "strategy": "Choose position_3 using only answer-bank text or serialized position.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 0.20. No overall tested cue solves the batch. Small template subgroups (one or two items) cannot establish a reproducible template rule. Serialized fourth position happens to hit 2/2 exponential items, but is not a learner-visible rule: actual UI reorders answers using item/field/answer IDs; 32 item contexts were tested separately.",
+      "sample_refs": [
+        "delivery-batch-records/accepted.json",
+        "shortcut-results.json",
+        "selection-analysis.json"
+      ]
+    },
+    {
+      "cue": "position_4",
+      "subgroup": "runner batch: q-90601",
+      "scope": "within_template",
+      "strategy": "Choose position_4 using only answer-bank text or serialized position.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 0.20. No overall tested cue solves the batch. Small template subgroups (one or two items) cannot establish a reproducible template rule. Serialized fourth position happens to hit 2/2 exponential items, but is not a learner-visible rule: actual UI reorders answers using item/field/answer IDs; 32 item contexts were tested separately.",
+      "sample_refs": [
+        "delivery-batch-records/accepted.json",
+        "shortcut-results.json",
+        "selection-analysis.json"
+      ]
+    },
+    {
+      "cue": "position_5",
+      "subgroup": "runner batch: q-90601",
+      "scope": "within_template",
+      "strategy": "Choose position_5 using only answer-bank text or serialized position.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-choice baseline is 0.20. No overall tested cue solves the batch. Small template subgroups (one or two items) cannot establish a reproducible template rule. Serialized fourth position happens to hit 2/2 exponential items, but is not a learner-visible rule: actual UI reorders answers using item/field/answer IDs; 32 item contexts were tested separately.",
+      "sample_refs": [
+        "delivery-batch-records/accepted.json",
+        "shortcut-results.json",
+        "selection-analysis.json"
+      ]
+    },
+    {
+      "cue": "bank shape / length / fixed equation",
+      "subgroup": "q-14314:linear-role fixed bank",
+      "scope": "within_template",
+      "strategy": "Choose one particular equation using only the complete unchanged bank; this bounds any deterministic bank-only shape or length strategy.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Every sampled eligible assignment has a different correct equation while the visible bank is held fixed. The best bank-only action gets one hit, equal to uniform guessing among these controlled assignments. Prompt linear coefficients or nonlinear arguments must be read.",
+      "sample_refs": [
+        "delivery-independent-records/accepted.json",
+        "fixed-bank-results.json",
+        "counterfactuals.json",
+        "grader-final-report.json"
+      ]
+    },
+    {
+      "cue": "bank shape / length / fixed equation",
+      "subgroup": "q-14315:linear-role fixed bank",
+      "scope": "within_template",
+      "strategy": "Choose one particular equation using only the complete unchanged bank; this bounds any deterministic bank-only shape or length strategy.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Every sampled eligible assignment has a different correct equation while the visible bank is held fixed. The best bank-only action gets one hit, equal to uniform guessing among these controlled assignments. Prompt linear coefficients or nonlinear arguments must be read.",
+      "sample_refs": [
+        "delivery-independent-records/accepted.json",
+        "fixed-bank-results.json",
+        "counterfactuals.json",
+        "grader-final-report.json"
+      ]
+    },
+    {
+      "cue": "bank shape / length / fixed equation",
+      "subgroup": "q-14316:linear-role fixed bank",
+      "scope": "within_template",
+      "strategy": "Choose one particular equation using only the complete unchanged bank; this bounds any deterministic bank-only shape or length strategy.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Every sampled eligible assignment has a different correct equation while the visible bank is held fixed. The best bank-only action gets one hit, equal to uniform guessing among these controlled assignments. Prompt linear coefficients or nonlinear arguments must be read.",
+      "sample_refs": [
+        "delivery-independent-records/accepted.json",
+        "fixed-bank-results.json",
+        "counterfactuals.json",
+        "grader-final-report.json"
+      ]
+    },
+    {
+      "cue": "bank shape / length / fixed equation",
+      "subgroup": "q-14323:linear-role fixed bank",
+      "scope": "within_template",
+      "strategy": "Choose one particular equation using only the complete unchanged bank; this bounds any deterministic bank-only shape or length strategy.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Every sampled eligible assignment has a different correct equation while the visible bank is held fixed. The best bank-only action gets one hit, equal to uniform guessing among these controlled assignments. Prompt linear coefficients or nonlinear arguments must be read.",
+      "sample_refs": [
+        "delivery-independent-records/accepted.json",
+        "fixed-bank-results.json",
+        "counterfactuals.json",
+        "grader-final-report.json"
+      ]
+    },
+    {
+      "cue": "bank shape / length / fixed equation",
+      "subgroup": "q-8745:linear-role fixed bank",
+      "scope": "within_template",
+      "strategy": "Choose one particular equation using only the complete unchanged bank; this bounds any deterministic bank-only shape or length strategy.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Every sampled eligible assignment has a different correct equation while the visible bank is held fixed. The best bank-only action gets one hit, equal to uniform guessing among these controlled assignments. Prompt linear coefficients or nonlinear arguments must be read.",
+      "sample_refs": [
+        "delivery-independent-records/accepted.json",
+        "fixed-bank-results.json",
+        "counterfactuals.json",
+        "grader-final-report.json"
+      ]
+    },
+    {
+      "cue": "bank shape / length / fixed equation",
+      "subgroup": "q-8747:linear-role fixed bank",
+      "scope": "within_template",
+      "strategy": "Choose one particular equation using only the complete unchanged bank; this bounds any deterministic bank-only shape or length strategy.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Every sampled eligible assignment has a different correct equation while the visible bank is held fixed. The best bank-only action gets one hit, equal to uniform guessing among these controlled assignments. Prompt linear coefficients or nonlinear arguments must be read.",
+      "sample_refs": [
+        "delivery-independent-records/accepted.json",
+        "fixed-bank-results.json",
+        "counterfactuals.json",
+        "grader-final-report.json"
+      ]
+    },
+    {
+      "cue": "bank shape / length / fixed equation",
+      "subgroup": "q-90600:linear-role fixed bank",
+      "scope": "within_template",
+      "strategy": "Choose one particular equation using only the complete unchanged bank; this bounds any deterministic bank-only shape or length strategy.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Every sampled eligible assignment has a different correct equation while the visible bank is held fixed. The best bank-only action gets one hit, equal to uniform guessing among these controlled assignments. Prompt linear coefficients or nonlinear arguments must be read.",
+      "sample_refs": [
+        "delivery-independent-records/accepted.json",
+        "fixed-bank-results.json",
+        "counterfactuals.json",
+        "grader-final-report.json"
+      ]
+    },
+    {
+      "cue": "bank shape / length / fixed equation",
+      "subgroup": "q-90601:linear-role fixed bank",
+      "scope": "within_template",
+      "strategy": "Choose one particular equation using only the complete unchanged bank; this bounds any deterministic bank-only shape or length strategy.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Every sampled eligible assignment has a different correct equation while the visible bank is held fixed. The best bank-only action gets one hit, equal to uniform guessing among these controlled assignments. Prompt linear coefficients or nonlinear arguments must be read.",
+      "sample_refs": [
+        "delivery-independent-records/accepted.json",
+        "fixed-bank-results.json",
+        "counterfactuals.json",
+        "grader-final-report.json"
+      ]
+    },
+    {
+      "cue": "bank shape / length / fixed equation",
+      "subgroup": "q-8745:cancellation-constant fixed bank",
+      "scope": "within_template",
+      "strategy": "Choose one particular equation using only the complete unchanged bank; this bounds any deterministic bank-only shape or length strategy.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every sampled eligible assignment has a different correct equation while the visible bank is held fixed. The best bank-only action gets one hit, equal to uniform guessing among these controlled assignments. Prompt linear coefficients or nonlinear arguments must be read.",
+      "sample_refs": [
+        "delivery-cancellation/accepted.json",
+        "fixed-bank-results.json",
+        "counterfactuals.json",
+        "grader-final-report.json"
+      ]
+    },
+    {
+      "cue": "bank shape / length / fixed equation",
+      "subgroup": "q-90601:cancellation-constant fixed bank",
+      "scope": "within_template",
+      "strategy": "Choose one particular equation using only the complete unchanged bank; this bounds any deterministic bank-only shape or length strategy.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Every sampled eligible assignment has a different correct equation while the visible bank is held fixed. The best bank-only action gets one hit, equal to uniform guessing among these controlled assignments. Prompt linear coefficients or nonlinear arguments must be read.",
+      "sample_refs": [
+        "delivery-cancellation/accepted.json",
+        "fixed-bank-results.json",
+        "counterfactuals.json",
+        "grader-final-report.json"
+      ]
+    },
+    {
+      "cue": "bank shape / length / fixed equation",
+      "subgroup": "q-90600:cancellation-constant fixed bank",
+      "scope": "within_template",
+      "strategy": "Choose one particular equation using only the complete unchanged bank; this bounds any deterministic bank-only shape or length strategy.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "Every sampled eligible assignment has a different correct equation while the visible bank is held fixed. The best bank-only action gets one hit, equal to uniform guessing among these controlled assignments. Prompt linear coefficients or nonlinear arguments must be read.",
+      "sample_refs": [
+        "delivery-cancellation/accepted.json",
+        "fixed-bank-results.json",
+        "counterfactuals.json",
+        "grader-final-report.json"
+      ]
+    },
+    {
+      "cue": "actual UI first answer",
+      "subgroup": "five surviving runner records across 32 item contexts",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the first rendered answer after the actual learning.js FNV ordering.",
+      "correct": 32,
+      "total": 160,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform position baseline is 0.20. All five actual positions occur; the serialized position observation does not survive UI presentation. This uses the inspected UI ordering formula; task item IDs here are explicit test contexts, not actual live learner IDs.",
+      "sample_refs": [
+        "selection-analysis.json",
+        "delivery-batch-records/accepted.json",
+        "render/rendering.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "generator finite-domain sampling and semantic task deduplication",
+      "generator domain and profile rejection",
+      "requested easy difficulty",
+      "actual publisher normalization, identity and captured-inventory/within-input deduplication",
+      "native learner response validation",
+      "captured inventory and learner freshness exclusions",
+      "difficulty-first configured and unconfigured learner selection rules",
+      "actual UI choice ordering"
+    ],
+    "sample_refs": [
+      "sampling.json",
+      "delivery-batch-records/delivery.json",
+      "delivery-independent-records/delivery.json",
+      "delivery-fresh-batch/delivery.json",
+      "delivery-cancellation/delivery.json",
+      "selection-analysis.json",
+      "shortcut-results.json"
+    ],
+    "result": "Captured basis 5448. Runner 5->5; independent 72->56 (8 source replays and 8 irrelevant duplicates removed); fresh 17->17; cancellation 13->13. Fixed-bank decision variation remains after filtering. All records are easy, so a positive easy weight selects uniformly among fresh easy candidates; no template-specific selection exclusion. Unconfigured policy chooses first eligible entity and was examined separately."
+  },
+  "limitations": [
+    "Finite samples and fixed-bank arguments do not prove absence of every prompt-based shortcut.",
+    "Captured bank contains eight original source records and no generated records. All were independently checked; affected-inventory.json is empty for demonstrated generated defects, not a claim that original source banks lack recognizable distractor cues. Source status is preserved.",
+    "Live policy, learner histories, reservations and later inventory are unavailable; read-only selection analysis states explicit test contexts and does not claim an actual learner session.",
+    "UI rendering covers eleven representative records and desktop layout; no diagrams occur in the target questions."
+  ]
+}

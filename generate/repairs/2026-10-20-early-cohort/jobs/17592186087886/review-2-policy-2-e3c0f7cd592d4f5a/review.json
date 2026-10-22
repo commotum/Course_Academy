@@ -1,0 +1,128 @@
+{
+  "verdict": "accepted",
+  "summary": "No current failure demonstrated. All eight checks pass; both historical defects reproduce on negative controls and are fixed in the reviewed package. The package is unchanged.",
+  "source_analysis": {
+    "skill": "Transform a degree-zero homogeneous first-order ODE into a separable equation by y=v(x)x.",
+    "reasoning_steps": [
+      "Differentiate y=v(x)x to obtain y′=xv′+v.",
+      "Substitute into every occurrence of y and cancel common powers of x.",
+      "Subtract v from F(v).",
+      "Separate to A(v)v′=B(x), allowing constant factors on either side. No integration is required."
+    ],
+    "invariants": [
+      "Degree-zero homogeneous RHS.",
+      "Specified substitution y=v(x)x and product-rule derivative.",
+      "Separated equation must give v′=(F(v)-v)/x on its applicable domain.",
+      "One mathematically correct radio choice; distractors must be distinct and incorrect.",
+      "Comparable substitution, simplification and separation workload."
+    ],
+    "permitted_variations": [
+      "Small coefficients and signs in source-like homogeneous numerators/denominators.",
+      "Trig function, reciprocal versus direct and squared arguments within observed complexity.",
+      "Coefficient of y/x including cancellation and noncancellation with the product-rule v.",
+      "Correct option position and distractor error profile; these are incidental answer-bearing assignments, not instructional constants.",
+      "Constant placement between separated factors where equivalent."
+    ],
+    "source_refs": [
+      "695b49d1-9327-503a-b244-1f7f385f59ff (q-14315)",
+      "6aa0e045-65b8-5bd8-8a66-10e8e133beb0 (q-8745)",
+      "b4e19450-4e51-548d-b019-a1f8398b116f (q-14314)",
+      "f48980a9-f2e7-5b29-aaff-6351dbf19d07 (q-14316)",
+      "590e41cc-f7e5-52a9-8e4b-08ef663bf420 (q-14323)",
+      "6ed802b3-b056-5f83-8a03-3932e7ced220 (q-8747)",
+      "647415db-3b65-5b2e-8b3d-f70381af49e3 (q-90601)",
+      "e1385b74-52ff-53cd-91df-70b0f0ad6473 (q-90600)",
+      "34c357f1-505b-530f-8bb4-376eada248a9 (canonical e-2301)",
+      "tutorial fe0a9e9e-ab23-5364-99bb-cddbfd67a4a4 (4107): F(v)=f(1,v); xv′=F(v)-v; [1/(F(v)-v)]v′=1/x",
+      "tutorial d2f64582-8688-5882-baa3-8712370f1568 (2061): differentiate y=vx, then substitute and separate; subsequent integration belongs to adjacent solving topic",
+      "tutorial 53343733-c3a7-588a-88f5-5c46d4dab2a0 (2106): degree-zero definition f(tx,ty)=f(x,y)"
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "source-replay.json",
+        "independent-records.json"
+      ],
+      "details": "All eight supplied practice prompts, solutions, five-choice banks and correct equations replay exactly. Canonical derivation and lesson passages support the same method."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "independent_review.py",
+        "math-results.json",
+        "fresh-math-results.json",
+        "cancellation-math.json",
+        "negative-controls.json",
+        "inventory-audit.json"
+      ],
+      "details": "107 generated record observations checked from displayed mathematics, with every worked equation and all five alternatives; all eight stored originals also checked. Stale-solution and ungrouped-coefficient negative controls fail as intended."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "sampling.json",
+        "fresh-batch.json",
+        "fixed-bank-results.json",
+        "scope-review.json"
+      ],
+      "details": "All eight families, coefficient-domain boundaries, five residual roles, and three cancellation profiles exercised. Seeded batch is deterministic and contains distinct mathematical prompts; conservative finite domains preserve useful variation."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "scope-review.json",
+        "math-results.json"
+      ],
+      "details": "Easy homogeneous substitution and separation retained; no integration or new prerequisite method introduced. Added small linear terms use source-supported algebra."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-final-input.json",
+        "grader-final-report.json",
+        "grader-final-command.json"
+      ],
+      "details": "Native grade_field: 112 accepted correct radio choices and 448 rejected wrong choices, including publisher-normalized runner records. No unresolved checks. Free-entry notation is inapplicable to this radio-only contract."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "counterfactual-render/rendering.json",
+        "rendering-inspection.json"
+      ],
+      "details": "Actual unmodified learning UI rendered eleven records, including all five runner items and relevant/irrelevant pairs. Representative screenshots inspected; no math, image, font or JavaScript errors."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "package-final.json",
+        "package-before.json",
+        "retained-checks.json",
+        "regression-controls.json",
+        "author-regression.log",
+        "author-replay/workspace/evidence/package-regression.json"
+      ],
+      "details": "Exact Python 3.13.5 / SymPy 1.14.0 dependency contract matches. Declared-files-only relocation and deterministic CLI pass. Both historical event regressions fail their retained/recreated negative controls and pass current code. All 182 package files unchanged."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "fixed-bank-results.json",
+        "shortcut-results.json",
+        "selection-analysis.json",
+        "delivery-batch-records/delivery.json"
+      ],
+      "details": "Independent relevant and irrelevant counterfactuals, native grading and UI agree. Eleven fixed-bank groups have multiple eligible keys. No reproducible tested incidental cue solves the actual batch or authored families after filtering; selection rules and UI reordering examined with stated live-state limits."
+    }
+  },
+  "findings": []
+}
