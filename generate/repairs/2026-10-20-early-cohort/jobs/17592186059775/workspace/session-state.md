@@ -1,33 +1,30 @@
-# Current state — 2026-10-22, author-241
+# Current state — 2026-10-22, author-244
 
-Preserved the repaired generator, manifest, source banks, instructional account,
-registered regressions and existing staged runner patch. No runtime change is
-justified by the latest evidence-only feedback.
-
-First reproduced the exact latest failure:
+No runtime, manifest, instructional design or regression changes.
+Read feedback, retained findings and latest history events. First reproduced the
+installed runner rejection with:
 `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_current_handoff.py`
-Exit 1: installed runner rejects the unchanged package before regressions or
-sampling. This is still a failing acceptance check.
+Exit 1; calls `["repair"]`, before regressions or sampling.
 
-Fresh commands, exit codes, runtime hashes and evidence paths:
+Fresh verification commands, exit codes, logs and unchanged runtime hashes:
 `evidence/current-author-verification.json`.
-- Historical shortcut control exits 1, preserving the reported 5/5 failure.
-- Registered packaging/source/math/delivery/inventory check passes.
-- Registered batch-selection check passes: reported cue scores 1/5 raw and
-  delivered; all ten source-profile contrast sets pass; 25 batch native responses pass.
-- Registered evidence-contract check exits 1. Its corrected bundle and relocation,
-  wrong-root and missing-provenance controls pass; installed runner handoff fails.
-- Source/render binding passes for ten complete banks and 50 choices. Both retained
-  actual-UI screenshots reinspected and readable; their inputs match fresh delivery.
-- Runtime and manifest hashes unchanged. Installed Python/SymPy match manifest.
-- No publication, database writes, engine edits, external writes or services.
+- Historical shortcut remains a failing negative control (exit 1).
+- Registered generator and batch-selection suites pass.
+- Evidence bundle validation and relocation/negative controls pass, but its
+  registered check exits 1 because the installed handoff still fails.
+- Source/render binding passes. Reinspected the two retained actual-UI screenshots;
+  both remain readable and match the fresh delivered endpoints.
 
-Remaining root cause: `scripts/generator_pipeline.py:720-727` rejects unchanged
-package bytes even when the independent finding is evidence-only and explicitly
-requires preserving the package. The tested proposal remains staged at
-`runner-fix/evidence-only-rejection.patch`, not installed. The corrected evidence
-bundle is `evidence/contract-correction`; its map is
-`evidence/contract-installation.json`. Applying the runner fix and installing
-outside this workspace require the runner owner. Do not modify runtime bytes to
-evade the gate or weaken its strict regression. Another identical author retry
-cannot repair that external control flow under the workspace-only constraint.
+The proposed external patch remains staged at
+`runner-fix/evidence-only-rejection.patch`, with prior offline verification at
+`evidence/runner-handoff-regression.json`; it was not reinstalled or retested.
+The corrected evidence bundle is `evidence/contract-correction` and the installation
+map is `evidence/contract-installation.json`. Historical review copies do not grant
+fresh approval.
+
+Remaining action: repair the installed runner's identical-package gate and route
+the evidence-only correction to fresh independent review. This requires editing
+`scripts/generator_pipeline.py` outside the permitted workspace. No authorized
+workspace edit can install that repair. Preserve the strict failure and completed
+generator repairs; do not alter runtime bytes merely to evade the gate.
+No database, publication, engine, external runner or other-job content was changed.
