@@ -1,0 +1,4 @@
+exec(open('generate/scratch/17592186119806/read_source.py').read().split('r=subprocess.run')[0])
+import uuid
+U='''[:find ?q :in $ ?kp ?learner :where [?l :learner/id ?learner] [?kp :knowledge-point/questions ?q] (or-join [?q ?l] (and [?l :learner/activity ?t] [?t :learner-task/items ?i] [?i :task-item/content ?q]) (and [?l :learner/activity ?t] [?t :learner-task/status ?s] (or [?s :db/ident :learner-task.status/started] [?s :db/ident :learner-task.status/paused]) [?t :learner-task/activity ?a] [?a :activity/steps ?step] [?step :step/content ?q]))]'''
+b=D.basis();print(b,D.query(U,[17592186119806,'59d5cf13-351c-4114-be19-4c3bb64ee051'],H/'reference','unavailable',b));print('history',D.query(U,[17592186119806,'59d5cf13-351c-4114-be19-4c3bb64ee051'],H/'reference','unavailable-history',b,history=True))

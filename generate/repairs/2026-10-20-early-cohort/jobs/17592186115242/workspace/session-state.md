@@ -1,39 +1,20 @@
-# Current repair state — pass 217
+# Current repair state — pass 220
 
-Read feedback and all five retained findings. Reproduced the latest failure first:
-`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory`
-Exit 1: five captured historical generated banks retain the sign-extremum
-shortcut; the possible-history witness succeeds 64/64 times. All non-source
-inventory records were tested. Complete records: evidence/generated-records.json.
-Affected identities: affected-inventory.json.
+Read latest feedback and the complete five-finding history before testing.
+First test: `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory`.
+Exit 1: five affected historical records; 64/64 shortcut successes in the retained possible-history witness.
 
-Ran:
-`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/repair-217`
-Exit 1 only for historical inventory. Four current-generator regressions pass,
-including 17 complete source-bank replays and 14 delivery-filtered records with
-counterfactual and within-template shortcut checks. Native grading accepts 7
-correct responses and rejects 28 wrong responses. Dependency pins, relocation,
-input/runtime hashes and the five staged replacement mappings verify.
-Reinspected retained actual-UI screenshot
-`evidence/repair-3/render/question-001.png`: readable with no observed clipping.
+Ran `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/repair-220` once.
+Exit 1 solely for finding `591f580cadb749294588`. All four current-generator findings pass:
+17 source-bank replays, zero-root and fractional-bare cases, 14 delivered records with conditional shortcut and counterfactual probes.
+Native grading: 7 correct choices accepted, 28 incorrect choices rejected. Dependency pins and relocated replay pass.
+Five staged replacement mappings verify and remain unapplied. Runtime, manifest, source and inventory match protected hashes.
 
-No new runtime defect or source change was demonstrated. Preserved the repaired
-generator, all source families, complete banks and strict failing regression.
-No database, engine, source, other job or publication changes were made.
-Instructional scope remains as recorded in evidence/repair-216/instructional-scope.md.
-The existing instructional account and extraction remain applicable.
+Rechecked native selector lines 125–195: stored candidates are selected independently of the Python generator.
+Reinspected the lesson flowchart and retained actual-UI screenshot `evidence/repair-3/render/question-001.png`.
+No runtime implementation, database, engine, source, inventory or publication changes were made.
+All strict regressions remain intact. Current evidence is under `evidence/repair-220`.
 
-Finding 591f580cadb749294588 explicitly requests a separate inventory-remediation
-workflow followed by recapture. The selector consumes stored candidate entities
-independently of this Python package (engine/rust/question_selection.rs:125).
-Workspace edits cannot change their existing banks. Five complete replacements
-are staged in evidence/repair-3/inventory-repair-proposal.json, unapplied.
-Applying them requires database changes prohibited by this task.
-
-Next unfinished step: the external inventory-remediation workflow and fresh
-capture. Do not repeat unchanged repair cycles, weaken the strict regression,
-or substitute proposed records for captured inventory. Resume this repair only
-with changed evidence or scope. Status remains unsupported for the stored pool.
-Current commands and results: evidence/repair-217/.
-History contains 217 events; all five retained findings remain covered by
-executable checks. No new runtime defect or changed source evidence was found.
+Status: unsupported for the captured selectable pool. Required next action is the separate inventory-remediation workflow requested by finding 591f580cadb749294588, followed by a fresh inventory capture.
+The present task prohibits those database changes. Complete replacements are already staged in `evidence/repair-3/inventory-repair-proposal.json`.
+Do not replace captured evidence with proposed records, waive the failing regression, or rerun unchanged repair cycles.
