@@ -7,11 +7,12 @@ import json
 from math import isqrt
 from pathlib import Path
 import random
+import re
 import uuid
 
 from math_format import checked_math_content, normalize_prose, validate_generated_record
 
-VERSION = '1.0.0'
+VERSION = '1.0.1'
 DATA = json.loads(Path(__file__).with_name('source-cases.json').read_text())
 KP_UUID = uuid.UUID(DATA['kp_uuid'])
 IMAGE = 'images/67/67ef97be4b21a74feaae15f3ff30d5077fc1316874df8de79155316a621e4487.png'
@@ -47,7 +48,6 @@ def number(p):
     elif family == 'radical':
         n = p['n']; tex = rf'\sqrt{{{n}}}'
         if n < 0:
-            if isqrt(-n) ** 2 != -n: raise ValueError('nonreal replay uses square magnitudes')
             return tex, 'nonreal', None
         r = isqrt(n)
         if r * r != n: return tex, 'irrational', None
@@ -80,8 +80,10 @@ def solution(p):
     out = [f'![]({IMAGE})', 'Recall the following:', recall,
            'With that in mind, we note the following:']
     if case == 'nonreal':
-        coefficient = isqrt(-p['n'])
-        simplified = (str(coefficient) if coefficient != 1 else '') + r'\text{i}'
+        magnitude = -p['n']
+        root = isqrt(magnitude)
+        coefficient = str(root) if root * root == magnitude else rf'\sqrt{{{magnitude}}}'
+        simplified = (coefficient if coefficient != '1' else '') + r'\text{i}'
         out += [f'- First, we note that ${tex}={simplified}$ is a complex number. Therefore, we can write',
                 display(memberships(tex, inside, 'C')),
                 f'- Since the imaginary part of ${tex}$ is nonzero, it does *not* belong to $N,Z,Q,$ or $R.$ We can write',
@@ -181,7 +183,7 @@ def sample_parameters(rng):
     elif case == 'integer':
         p['n'] = 0  # sqrt(nonnegative integer) cannot be negative.
     elif case == 'nonreal':
-        p['n'] = -(rng.randint(1, 12) ** 2)
+        p['n'] = -rng.randint(1, 144)
     else:
         p['n'] = rng.choice([i for i in range(2, 151) if isqrt(i) ** 2 != i])
     assert number(p)[1] == case
@@ -209,16 +211,28 @@ def generate(difficulty='easy', count=5, seed=0):
     return records
 
 
-SOURCE_PARAMETERS = [
-    {'family': 'radical', 'n': -1}, {'family': 'integer', 'n': -5},
-    {'family': 'radical', 'n': 121}, {'family': 'radical', 'n': -4},
-    {'family': 'fraction', 'n': -27, 'd': 3}, {'family': 'pi', 'sign': 1}]
+SOURCE_PARAMETERS = {
+    'd88d3c9d-ec93-5bf2-a49b-0b326607c0ea': {'family': 'radical', 'n': -1},
+    'cb3a08e1-046c-5655-8701-2c4bac14eb96': {'family': 'integer', 'n': -5},
+    '4885004a-bb31-5ddf-a6ba-29e507c0a5c4': {'family': 'radical', 'n': 121},
+    'fcd97869-92b9-51fc-a566-7b09c1bf865d': {'family': 'radical', 'n': -4},
+    '39280445-a454-56b4-bdba-1c7ee371d8c7': {'family': 'fraction', 'n': -27, 'd': 3},
+    '3c87cce5-2762-52a9-b3ea-307f7f887046': {'family': 'pi', 'sign': 1},
+    '48a2ffd6-1280-5b24-8f5a-4c13ac5f0fae': {'family': 'integer', 'n': -18},
+    '5356b463-f0e3-5b2b-9ffc-35df47ad119b': {'family': 'radical', 'n': -2},
+}
+
+
+def radio_memberships(value):
+    """Read the named sets in a source choice, independent of TeX punctuation."""
+    return frozenset(re.findall(r'(?<![A-Za-z])[NZQRC](?![A-Za-z])', value))
 
 
 def replay_sources():
     """Original presentation/banks, computed keys; incomplete legacy item is archival."""
     records = []
-    for source, p in zip(DATA['questions'], SOURCE_PARAMETERS):
+    for source in DATA['questions']:
+        p = dict(SOURCE_PARAMETERS[source[':question/id']])
         rec = build(p)
         q = rec['question']; qid = uid('source-replay', source[':question/id'])
         q[':question/id'] = qid
@@ -233,7 +247,12 @@ def replay_sources():
                 s = label.split('($')[1][0]
                 correct = str(s in included).lower()
             else:
-                correct = '$N, Z, Q, R$, and $C$'
+                matches = [v for v in values if radio_memberships(v) == frozenset(included)]
+                if len(matches) != 1:
+                    raise ValueError('source radio bank must contain exactly one complete membership list')
+                correct = matches[0]
+                rec['generation'].update(template='special-sets-radio',
+                                         profile='source-bank-' + source[':question/id'])
             q[':question/answer-fields'].append(field(label, correct, qid, values, kind))
         if source.get(':question/worked-solution'):
             # Immutable replay wording is source evidence; all keys are recomputed.

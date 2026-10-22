@@ -1,0 +1,145 @@
+{
+  "verdict": "revise",
+  "summary": "Two demonstrated coverage defects: replay omits the supplied -18 and sqrt(-2) radio questions, and construction rejects sqrt(-2). Generated math, native grading, rendering and packaging checks passed. Package unchanged; no database writes.",
+  "source_analysis": {
+    "skill": "Identify every one of N, Z, Q, R, C containing a given number, by its value rather than its printed representation.",
+    "reasoning_steps": [
+      "Simplify a short fraction or square root when needed; determine whether the value is positive integer, nonpositive integer, noninteger rational, irrational real, or nonreal complex.",
+      "Apply N subset Z subset Q subset R subset C, with zero excluded from N.",
+      "Select each qualifying set in five checkbox fields, or choose the complete membership list from a radio bank."
+    ],
+    "invariants": [
+      "N contains positive whole numbers and excludes zero.",
+      "All five basic sets retain their mathematical meanings; no signed/subscripted sets required by this KP.",
+      "Selections and explanations must follow the mathematical value; full source banks must replay.",
+      "C is always true for all numbers in this scope, which is an essential mathematical constraint rather than an incidental shortcut."
+    ],
+    "permitted_variations": [
+      "Change the given value among all five membership classes, including zero; the lesson explicitly supports these classes.",
+      "Vary signs, small integer magnitudes, exact fractions that may or may not reduce to integers, and positive roots that may or may not be perfect squares. Negative roots remain nonreal except at zero.",
+      "Allow positive integers and noninteger rational values under both response formats; source bank membership or longest-answer status is not a reason to fix the correct list.",
+      "Reorder fields and choices without changing semantic answers; equivalent representations may preserve the value."
+    ],
+    "source_refs": [
+      "e557c534-7392-5c31-9e08-43347736716e",
+      "d88d3c9d-ec93-5bf2-a49b-0b326607c0ea",
+      "cb3a08e1-046c-5655-8701-2c4bac14eb96",
+      "4885004a-bb31-5ddf-a6ba-29e507c0a5c4",
+      "fcd97869-92b9-51fc-a566-7b09c1bf865d",
+      "39280445-a454-56b4-bdba-1c7ee371d8c7",
+      "3c87cce5-2762-52a9-b3ea-307f7f887046",
+      "48a2ffd6-1280-5b24-8f5a-4c13ac5f0fae",
+      "5356b463-f0e3-5b2b-9ffc-35df47ad119b",
+      "tutorial 2d61ed1f-938f-51f3-8f72-19f2a9db35ea, Introduction, lesson Special Sets"
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "failed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "source-replay-results.json",
+        "source-replay-records.json",
+        "source-acceptance-results.json"
+      ],
+      "details": "Six of eight supplied question cases replay with matching complete banks; the -18 and sqrt(-2) radio sources are absent. Canonical 3.25 classification verified. Missing legacy sqrt(121) key/solution independently inferred and documented."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "controlled-records.json",
+        "sample-records.json"
+      ],
+      "details": "112 generated records independently checked from prompt values using exact Fraction arithmetic and square tests; no incorrect membership keys found. Rejected unsupported construction is tracked separately."
+    },
+    "variety": {
+      "status": "failed",
+      "evidence_paths": [
+        "source-acceptance-results.json",
+        "coverage-results.json",
+        "inventory-analysis.json",
+        "affected-inventory.json"
+      ],
+      "details": "All five membership classes occur in fresh and filtered samples, but all sampled negative radicals have square magnitudes; supplied sqrt(-2) is rejected. No affected stored instance of these coverage defects demonstrated in captured inventory basis 5455."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "scope-results.json",
+        "source-analysis.json",
+        "controlled-records.json"
+      ],
+      "details": "Observed outputs preserve easy single-value classification, elementary simplification and the five unscripted sets; zero is excluded from N."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-results.json"
+      ],
+      "details": "Native learner grader: 556 accepted and 559 rejected choice submissions, including both boolean values for every checkbox and all replay radio choices. No free-entry field exists in this package."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render-records.json",
+        "render/rendering.json",
+        "visual-inspection.json",
+        "render/question-001.png",
+        "render/question-007.png",
+        "render/question-011.png"
+      ],
+      "details": "Actual unmodified UI rendered 11 records without reported errors. Screenshots inspected for controls, math, hierarchy image, solutions and controlled response changes."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "package-before.json",
+        "package-after.json",
+        "commands.md"
+      ],
+      "details": "Python 3.13.5 matches the exact manifest; standard-library-only dependencies correctly declared. Deterministic relocated execution and invalid request checks passed; package bytes unchanged."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "coverage-results.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "selection-results.json",
+        "delivery-batch/delivery.json",
+        "delivery-sample/delivery.json",
+        "evidence-validation.json"
+      ],
+      "details": "Observed checkbox family requires varying membership decisions, including within fraction/decimal/radical subgroups. Controlled relevant and irrelevant changes agree with prompts, explanations, native grading and rendered UI. Fresh delivery 80→77 retains five classes; exact batch 5→4 retains three classes and no tested complete-answer shortcut solves it. Learner selection examined conditionally from captured candidates and actual rules; live policy/history unavailable. This pass does not waive the separate omitted source families."
+    }
+  },
+  "findings": [
+    {
+      "kind": "source_fidelity",
+      "description": "The replay covers only six of the eight supplied source questions, omitting both complete easy radio sources: -18 and sqrt(-2). Its six-element positional mapping and hardcoded all-five radio key cannot faithfully recover the current source banks.",
+      "source_refs": [
+        "48a2ffd6-1280-5b24-8f5a-4c13ac5f0fae",
+        "5356b463-f0e3-5b2b-9ffc-35df47ad119b"
+      ],
+      "reproduction": "Run /home/jake/Developer/Course_Academy/.venv/bin/python -B source_acceptance.py from evidence_root. It exits 1 with both source IDs absent; source-acceptance-results.json and source-replay-results.json retain results. Minimal independent case: source -18 has a complete five-choice radio bank but no replay record.",
+      "requested_change": "Use source-indexed parameter and semantic-answer derivation for every supplied case instead of a six-element zip and fixed natural-number radio key. Replay both missing prompts, complete radio banks, correct keys and source solutions; retain strict source_acceptance.py regression checks."
+    },
+    {
+      "kind": "restriction",
+      "description": "The builder rejects the source-supported negative nonsquare radical sqrt(-2), and sampling only chooses negative perfect squares. This excludes a demonstrated representation family without an instructional reason.",
+      "source_refs": [
+        "5356b463-f0e3-5b2b-9ffc-35df47ad119b",
+        "tutorial 2d61ed1f-938f-51f3-8f72-19f2a9db35ea"
+      ],
+      "reproduction": "source_acceptance.py calls generator.build({\"family\":\"radical\",\"n\":-2}); current result is ValueError(\"nonreal replay uses square magnitudes\"). Exact minimal failing parameters and exception are in source-acceptance-results.json. Expected membership: C only, with sqrt(-2)=sqrt(2)i.",
+      "requested_change": "Support bounded negative nonsquare radicands in construction and sampling. Derive the exact imaginary coefficient and dependent solution instead of using integer isqrt as that coefficient; keep prompt, C-only key and explanation synchronized. Preserve the strict failing source test."
+    }
+  ]
+}

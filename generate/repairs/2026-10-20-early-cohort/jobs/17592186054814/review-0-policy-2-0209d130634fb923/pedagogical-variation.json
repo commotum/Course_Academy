@@ -1,0 +1,590 @@
+{
+  "learner_operation": "Determine the value class after at most one elementary simplification and select every containing set in N subset Z subset Q subset R subset C, excluding zero from N.",
+  "fixed_features": [
+    {
+      "feature": "The five basic sets and their nesting",
+      "justification": "Tutorial Introduction 2d61ed1f-938f-51f3-8f72-19f2a9db35ea and canonical example establish these objects as the classification targets. Scripted sets are the next KP."
+    },
+    {
+      "feature": "C always qualifies",
+      "justification": "Every offered real or nonreal number belongs to C by the lesson definition; this constraint is mathematical."
+    },
+    {
+      "feature": "One given value; short recognition/simplification",
+      "justification": "All source instances ask membership for one number at easy difficulty."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Smallest containing set and resulting selection count",
+      "eligible_variation": "N / Z / Q / R / C depending on value; all five are source- or lesson-supported.",
+      "observed": "All five in fresh sample and 77 survivors; batch survivors contain N,R,C. See per-stage exact counts."
+    },
+    {
+      "role": "Representation versus membership",
+      "eligible_variation": "Fraction and decimal may be integer or noninteger; positive root may be integer or irrational, with zero at the boundary.",
+      "observed": "Each fraction and decimal subgroup realizes three membership masks; radical four; conditional shortcut probes retained. Negative nonsquare roots are improperly excluded (separate restriction finding)."
+    },
+    {
+      "role": "Response format and complete radio bank",
+      "eligible_variation": "Preserve observed checkbox and radio contracts; do not fix a radio answer by bank shape.",
+      "observed": "Fresh generation uses only checkboxes; six-item archival replay contains only legacy positive-root radio. Two supplied source radio banks omitted (separate fidelity finding). No claim of radio-family decision coverage."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "raw_sample",
+      "sample_refs": [
+        "coverage-results.json",
+        "sample-records.json",
+        "batch-records.json",
+        "delivery-sample/accepted.json",
+        "delivery-batch/accepted.json"
+      ],
+      "result": "{\"count\": 80, \"memberships\": {\"QRC\": 23, \"C\": 11, \"RC\": 18, \"ZQRC\": 13, \"NZQRC\": 15}, \"family_memberships\": {\"fraction\": {\"QRC\": 4, \"ZQRC\": 4, \"NZQRC\": 4}, \"radical\": {\"C\": 11, \"RC\": 16, \"NZQRC\": 4, \"ZQRC\": 1}, \"integer\": {\"ZQRC\": 4, \"NZQRC\": 4}, \"decimal\": {\"NZQRC\": 3, \"QRC\": 19, \"ZQRC\": 4}, \"pi\": {\"RC\": 2}}, \"C_positions\": {\"3\": 24, \"4\": 13, \"0\": 16, \"1\": 13, \"2\": 14}}"
+    },
+    {
+      "case": "delivered_sample",
+      "sample_refs": [
+        "coverage-results.json",
+        "sample-records.json",
+        "batch-records.json",
+        "delivery-sample/accepted.json",
+        "delivery-batch/accepted.json"
+      ],
+      "result": "{\"count\": 77, \"memberships\": {\"QRC\": 23, \"C\": 9, \"RC\": 17, \"ZQRC\": 13, \"NZQRC\": 15}, \"family_memberships\": {\"fraction\": {\"QRC\": 4, \"ZQRC\": 4, \"NZQRC\": 4}, \"radical\": {\"C\": 9, \"RC\": 16, \"NZQRC\": 4, \"ZQRC\": 1}, \"integer\": {\"ZQRC\": 4, \"NZQRC\": 4}, \"decimal\": {\"NZQRC\": 3, \"QRC\": 19, \"ZQRC\": 4}, \"pi\": {\"RC\": 1}}, \"C_positions\": {\"3\": 23, \"4\": 12, \"0\": 16, \"1\": 13, \"2\": 13}}"
+    },
+    {
+      "case": "raw_batch",
+      "sample_refs": [
+        "coverage-results.json",
+        "sample-records.json",
+        "batch-records.json",
+        "delivery-sample/accepted.json",
+        "delivery-batch/accepted.json"
+      ],
+      "result": "{\"count\": 5, \"memberships\": {\"C\": 1, \"ZQRC\": 1, \"NZQRC\": 2, \"RC\": 1}, \"family_memberships\": {\"radical\": {\"C\": 1, \"NZQRC\": 1, \"RC\": 1}, \"integer\": {\"ZQRC\": 1, \"NZQRC\": 1}}, \"C_positions\": {\"2\": 3, \"3\": 1, \"4\": 1}}"
+    },
+    {
+      "case": "delivered_batch",
+      "sample_refs": [
+        "coverage-results.json",
+        "sample-records.json",
+        "batch-records.json",
+        "delivery-sample/accepted.json",
+        "delivery-batch/accepted.json"
+      ],
+      "result": "{\"count\": 4, \"memberships\": {\"C\": 1, \"NZQRC\": 2, \"RC\": 1}, \"family_memberships\": {\"radical\": {\"C\": 1, \"NZQRC\": 1, \"RC\": 1}, \"integer\": {\"NZQRC\": 1}}, \"C_positions\": {\"2\": 3, \"4\": 1}}"
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "sqrt(16) -> sqrt(17)",
+      "expected": "NZQRC -> RC",
+      "observed": "NZQRC -> RC; prompts/explanations viewed in render/question-006 through question-010; full boolean selections accepted and opposite selections rejected by native grader (labels 90,91,95,97,98).",
+      "status": "passed",
+      "justification": "Class membership depends on whether the value is integral/rational; sign of a noninteger rational is irrelevant to these five sets. Source fraction -27/3 and tutorial definitions support these controlled changes.",
+      "sample_refs": [
+        "controlled-records.json",
+        "counterfactual-results.json",
+        "grader-input.json",
+        "grader-results.json",
+        "render-records.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "6/3 -> 7/3",
+      "expected": "NZQRC -> QRC",
+      "observed": "NZQRC -> QRC; prompts/explanations viewed in render/question-006 through question-010; full boolean selections accepted and opposite selections rejected by native grader (labels 90,91,95,97,98).",
+      "status": "passed",
+      "justification": "Class membership depends on whether the value is integral/rational; sign of a noninteger rational is irrelevant to these five sets. Source fraction -27/3 and tutorial definitions support these controlled changes.",
+      "sample_refs": [
+        "controlled-records.json",
+        "counterfactual-results.json",
+        "grader-input.json",
+        "grader-results.json",
+        "render-records.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "-7/3 -> 7/3",
+      "expected": "QRC -> QRC",
+      "observed": "QRC -> QRC; prompts/explanations viewed in render/question-006 through question-010; full boolean selections accepted and opposite selections rejected by native grader (labels 90,91,95,97,98).",
+      "status": "passed",
+      "justification": "Class membership depends on whether the value is integral/rational; sign of a noninteger rational is irrelevant to these five sets. Source fraction -27/3 and tutorial definitions support these controlled changes.",
+      "sample_refs": [
+        "controlled-records.json",
+        "counterfactual-results.json",
+        "grader-input.json",
+        "grader-results.json",
+        "render-records.json",
+        "render/rendering.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "always_select_C_only",
+      "subgroup": "raw_sample/all",
+      "scope": "overall",
+      "strategy": "always_select_C_only",
+      "correct": 11,
+      "total": 80,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is a uniform guess over the five mathematically eligible full membership masks, not per-checkbox accuracy. Measured success does not solve the whole group; common class frequencies alone are not an incidental cue. No claim of exhaustive shortcut absence.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "sample-records.json"
+      ]
+    },
+    {
+      "cue": "always_select_everything",
+      "subgroup": "raw_sample/all",
+      "scope": "overall",
+      "strategy": "always_select_everything",
+      "correct": 15,
+      "total": 80,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is a uniform guess over the five mathematically eligible full membership masks, not per-checkbox accuracy. Measured success does not solve the whole group; common class frequencies alone are not an incidental cue. No claim of exhaustive shortcut absence.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "sample-records.json"
+      ]
+    },
+    {
+      "cue": "always_select_first_field_only",
+      "subgroup": "raw_sample/all",
+      "scope": "overall",
+      "strategy": "always_select_first_field_only",
+      "correct": 0,
+      "total": 80,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is a uniform guess over the five mathematically eligible full membership masks, not per-checkbox accuracy. Measured success does not solve the whole group; common class frequencies alone are not an incidental cue. No claim of exhaustive shortcut absence.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "sample-records.json"
+      ]
+    },
+    {
+      "cue": "always_select_C_only",
+      "subgroup": "delivered_sample/all",
+      "scope": "overall",
+      "strategy": "always_select_C_only",
+      "correct": 9,
+      "total": 77,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is a uniform guess over the five mathematically eligible full membership masks, not per-checkbox accuracy. Measured success does not solve the whole group; common class frequencies alone are not an incidental cue. No claim of exhaustive shortcut absence.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-sample/accepted.json"
+      ]
+    },
+    {
+      "cue": "always_select_everything",
+      "subgroup": "delivered_sample/all",
+      "scope": "overall",
+      "strategy": "always_select_everything",
+      "correct": 15,
+      "total": 77,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is a uniform guess over the five mathematically eligible full membership masks, not per-checkbox accuracy. Measured success does not solve the whole group; common class frequencies alone are not an incidental cue. No claim of exhaustive shortcut absence.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-sample/accepted.json"
+      ]
+    },
+    {
+      "cue": "always_select_first_field_only",
+      "subgroup": "delivered_sample/all",
+      "scope": "overall",
+      "strategy": "always_select_first_field_only",
+      "correct": 0,
+      "total": 77,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is a uniform guess over the five mathematically eligible full membership masks, not per-checkbox accuracy. Measured success does not solve the whole group; common class frequencies alone are not an incidental cue. No claim of exhaustive shortcut absence.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-sample/accepted.json"
+      ]
+    },
+    {
+      "cue": "always_select_C_only",
+      "subgroup": "delivered_sample/radical",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always_select_C_only",
+      "correct": 9,
+      "total": 30,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is a uniform guess over the five mathematically eligible full membership masks, not per-checkbox accuracy. Measured success does not solve the whole group; common class frequencies alone are not an incidental cue. No claim of exhaustive shortcut absence.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-sample/accepted.json"
+      ]
+    },
+    {
+      "cue": "always_select_everything",
+      "subgroup": "delivered_sample/radical",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always_select_everything",
+      "correct": 4,
+      "total": 30,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is a uniform guess over the five mathematically eligible full membership masks, not per-checkbox accuracy. Measured success does not solve the whole group; common class frequencies alone are not an incidental cue. No claim of exhaustive shortcut absence.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-sample/accepted.json"
+      ]
+    },
+    {
+      "cue": "always_select_first_field_only",
+      "subgroup": "delivered_sample/radical",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always_select_first_field_only",
+      "correct": 0,
+      "total": 30,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is a uniform guess over the five mathematically eligible full membership masks, not per-checkbox accuracy. Measured success does not solve the whole group; common class frequencies alone are not an incidental cue. No claim of exhaustive shortcut absence.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-sample/accepted.json"
+      ]
+    },
+    {
+      "cue": "always_select_C_only",
+      "subgroup": "delivered_sample/fraction",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always_select_C_only",
+      "correct": 0,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is a uniform guess over the five mathematically eligible full membership masks, not per-checkbox accuracy. Measured success does not solve the whole group; common class frequencies alone are not an incidental cue. No claim of exhaustive shortcut absence.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-sample/accepted.json"
+      ]
+    },
+    {
+      "cue": "always_select_everything",
+      "subgroup": "delivered_sample/fraction",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always_select_everything",
+      "correct": 4,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is a uniform guess over the five mathematically eligible full membership masks, not per-checkbox accuracy. Measured success does not solve the whole group; common class frequencies alone are not an incidental cue. No claim of exhaustive shortcut absence.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-sample/accepted.json"
+      ]
+    },
+    {
+      "cue": "always_select_first_field_only",
+      "subgroup": "delivered_sample/fraction",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always_select_first_field_only",
+      "correct": 0,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is a uniform guess over the five mathematically eligible full membership masks, not per-checkbox accuracy. Measured success does not solve the whole group; common class frequencies alone are not an incidental cue. No claim of exhaustive shortcut absence.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-sample/accepted.json"
+      ]
+    },
+    {
+      "cue": "always_select_C_only",
+      "subgroup": "delivered_sample/integer",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always_select_C_only",
+      "correct": 0,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is a uniform guess over the five mathematically eligible full membership masks, not per-checkbox accuracy. Measured success does not solve the whole group; common class frequencies alone are not an incidental cue. No claim of exhaustive shortcut absence.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-sample/accepted.json"
+      ]
+    },
+    {
+      "cue": "always_select_everything",
+      "subgroup": "delivered_sample/integer",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always_select_everything",
+      "correct": 4,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is a uniform guess over the five mathematically eligible full membership masks, not per-checkbox accuracy. Measured success does not solve the whole group; common class frequencies alone are not an incidental cue. No claim of exhaustive shortcut absence.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-sample/accepted.json"
+      ]
+    },
+    {
+      "cue": "always_select_first_field_only",
+      "subgroup": "delivered_sample/integer",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always_select_first_field_only",
+      "correct": 0,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is a uniform guess over the five mathematically eligible full membership masks, not per-checkbox accuracy. Measured success does not solve the whole group; common class frequencies alone are not an incidental cue. No claim of exhaustive shortcut absence.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-sample/accepted.json"
+      ]
+    },
+    {
+      "cue": "always_select_C_only",
+      "subgroup": "delivered_sample/decimal",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always_select_C_only",
+      "correct": 0,
+      "total": 26,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is a uniform guess over the five mathematically eligible full membership masks, not per-checkbox accuracy. Measured success does not solve the whole group; common class frequencies alone are not an incidental cue. No claim of exhaustive shortcut absence.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-sample/accepted.json"
+      ]
+    },
+    {
+      "cue": "always_select_everything",
+      "subgroup": "delivered_sample/decimal",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always_select_everything",
+      "correct": 3,
+      "total": 26,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is a uniform guess over the five mathematically eligible full membership masks, not per-checkbox accuracy. Measured success does not solve the whole group; common class frequencies alone are not an incidental cue. No claim of exhaustive shortcut absence.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-sample/accepted.json"
+      ]
+    },
+    {
+      "cue": "always_select_first_field_only",
+      "subgroup": "delivered_sample/decimal",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always_select_first_field_only",
+      "correct": 0,
+      "total": 26,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is a uniform guess over the five mathematically eligible full membership masks, not per-checkbox accuracy. Measured success does not solve the whole group; common class frequencies alone are not an incidental cue. No claim of exhaustive shortcut absence.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-sample/accepted.json"
+      ]
+    },
+    {
+      "cue": "always_select_C_only",
+      "subgroup": "raw_batch/all",
+      "scope": "overall",
+      "strategy": "always_select_C_only",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is a uniform guess over the five mathematically eligible full membership masks, not per-checkbox accuracy. Measured success does not solve the whole group; common class frequencies alone are not an incidental cue. No claim of exhaustive shortcut absence.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "batch-records.json"
+      ]
+    },
+    {
+      "cue": "always_select_everything",
+      "subgroup": "raw_batch/all",
+      "scope": "overall",
+      "strategy": "always_select_everything",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is a uniform guess over the five mathematically eligible full membership masks, not per-checkbox accuracy. Measured success does not solve the whole group; common class frequencies alone are not an incidental cue. No claim of exhaustive shortcut absence.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "batch-records.json"
+      ]
+    },
+    {
+      "cue": "always_select_first_field_only",
+      "subgroup": "raw_batch/all",
+      "scope": "overall",
+      "strategy": "always_select_first_field_only",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is a uniform guess over the five mathematically eligible full membership masks, not per-checkbox accuracy. Measured success does not solve the whole group; common class frequencies alone are not an incidental cue. No claim of exhaustive shortcut absence.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "batch-records.json"
+      ]
+    },
+    {
+      "cue": "always_select_C_only",
+      "subgroup": "delivered_batch/all",
+      "scope": "overall",
+      "strategy": "always_select_C_only",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is a uniform guess over the five mathematically eligible full membership masks, not per-checkbox accuracy. Measured success does not solve the whole group; common class frequencies alone are not an incidental cue. No claim of exhaustive shortcut absence.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "always_select_everything",
+      "subgroup": "delivered_batch/all",
+      "scope": "overall",
+      "strategy": "always_select_everything",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is a uniform guess over the five mathematically eligible full membership masks, not per-checkbox accuracy. Measured success does not solve the whole group; common class frequencies alone are not an incidental cue. No claim of exhaustive shortcut absence.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "always_select_first_field_only",
+      "subgroup": "delivered_batch/all",
+      "scope": "overall",
+      "strategy": "always_select_first_field_only",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is a uniform guess over the five mathematically eligible full membership masks, not per-checkbox accuracy. Measured success does not solve the whole group; common class frequencies alone are not an incidental cue. No claim of exhaustive shortcut absence.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "always_select_C_only",
+      "subgroup": "delivered_batch/radical",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always_select_C_only",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is a uniform guess over the five mathematically eligible full membership masks, not per-checkbox accuracy. Measured success does not solve the whole group; common class frequencies alone are not an incidental cue. No claim of exhaustive shortcut absence.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "always_select_everything",
+      "subgroup": "delivered_batch/radical",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always_select_everything",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is a uniform guess over the five mathematically eligible full membership masks, not per-checkbox accuracy. Measured success does not solve the whole group; common class frequencies alone are not an incidental cue. No claim of exhaustive shortcut absence.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "always_select_first_field_only",
+      "subgroup": "delivered_batch/radical",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "always_select_first_field_only",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is a uniform guess over the five mathematically eligible full membership masks, not per-checkbox accuracy. Measured success does not solve the whole group; common class frequencies alone are not an incidental cue. No claim of exhaustive shortcut absence.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "pi symbol",
+      "subgroup": "raw sample / pi",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select exactly R and C for either sign of pi.",
+      "correct": 2,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "intended_skill",
+      "conclusion": "A 0.2 uniform full-mask baseline is beaten perfectly, but knowing pi is irrational and hence real/complex is explicitly the source operation (3c87cce5-2762-52a9-b3ea-307f7f887046), not incidental formatting. Both signs retain this mathematical property.",
+      "sample_refs": [
+        "sample-records.json",
+        "coverage-results.json"
+      ]
+    },
+    {
+      "cue": "C label",
+      "subgroup": "all 80 fresh sample instances",
+      "scope": "within_template",
+      "strategy": "Always check C (partial action, not a complete answer).",
+      "correct": 80,
+      "total": 80,
+      "baseline": 0.5,
+      "disposition": "intended_skill",
+      "conclusion": "The comparison baseline is a random boolean on the C field. All values are complex by the source hierarchy, so fixed C membership is necessary; it does not determine the other four fields.",
+      "sample_refs": [
+        "sample-records.json",
+        "coverage-results.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "generator rejection/resampling: inspect sample_parameters, unique-TeX loop and nonempty policy; 80 accepted after 94 attempts; all C memberships nonempty",
+      "shared prepare_records validation and asset localization",
+      "captured inventory and within-batch deduplication",
+      "requested easy filtering",
+      "question_selection.rs weighted bands, ID order, seen-history exclusions: faithful conditional reproduction with captured candidates"
+    ],
+    "sample_refs": [
+      "packaging-results.json",
+      "coverage-results.json",
+      "delivery-sample/delivery.json",
+      "delivery-batch/delivery.json",
+      "selection-results.json",
+      "inventory-records.json"
+    ],
+    "result": "80 -> 77 independently sampled survivors preserve five masks; exact batch 5 -> 4 loses duplicate -5 (integer mask), retaining C=1,NZQRC=2,RC=1. No tested complete-answer cue solves all four. Captured-inventory selection can retain each fresh easy candidate under positive easy weight; actual learner policy/history absent and conclusions are conditional."
+  },
+  "limitations": [
+    "Finite sampled and specified simple shortcut probes only.",
+    "No live learner policy/history or publication: selection reproduction records conditions and synthetic post-publication entity ordering explicitly.",
+    "Replay omits two source radio banks; negative nonsquare root construction rejects supplied sqrt(-2). These demonstrated fidelity/restriction failures require revision even though observed checkbox decision variation is meaningful."
+  ]
+}
