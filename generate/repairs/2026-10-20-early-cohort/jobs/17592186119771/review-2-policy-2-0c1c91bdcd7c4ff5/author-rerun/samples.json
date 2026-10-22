@@ -1,0 +1,552 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186119771,
+      "id": "1cca9b7c-358a-5f62-9a53-a696df0dd0ff",
+      "title": "Describing a Triangular Matrix"
+    },
+    "question": {
+      ":question/problem": "How can we best describe the following matrix?\n\n$$\nC = \\begin{bmatrix}-7 & 0 & 0 \\\\ 0 & -8 & 0 \\\\ 0 & 0 & 0\\end{bmatrix}\n$$\n\nChoose the most specific listed description: identity before diagonal, and diagonal before upper or lower triangular. Choose Other only if none of these descriptions applies.",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/worked-solution": "Notice that $C$ is a matrix for which all entries above and below the diagonal are $0$'s:\n\n$$\nC = \\begin{bmatrix}-7 & 0 & 0 \\\\ 0 & -8 & 0 \\\\ 0 & 0 & 0\\end{bmatrix}\n$$\n\nTherefore, it is a diagonal matrix.",
+      ":question/id": "01122e88-a32c-5ad1-a15a-0e13df164087",
+      ":question/answer-fields": [
+        {
+          ":answer-field/key": "selection",
+          ":answer-field/id": "d33ed406-99d3-5056-886e-1afbde0e2413",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/correct": [
+            ":answer/id",
+            "95050dd3-eb65-584d-b9cf-281cf480dca5"
+          ],
+          ":answer-field/choices": [
+            {
+              ":answer/value": "Upper triangular matrix",
+              ":answer/id": "ba22b40d-ea26-5d8c-950d-d7aadd6c0ab2",
+              ":answer/type": ":answer.type/text"
+            },
+            {
+              ":answer/value": "Diagonal matrix",
+              ":answer/id": "95050dd3-eb65-584d-b9cf-281cf480dca5",
+              ":answer/type": ":answer.type/text"
+            },
+            {
+              ":answer/value": "Identity matrix",
+              ":answer/id": "3fb31448-9d5a-504a-95e9-e19048b5b345",
+              ":answer/type": ":answer.type/text"
+            },
+            {
+              ":answer/value": "Other",
+              ":answer/id": "4f8c1fc9-1460-5ed0-9de3-14f8fda28d86",
+              ":answer/type": ":answer.type/text"
+            },
+            {
+              ":answer/value": "Lower triangular matrix",
+              ":answer/id": "4c36297b-b57f-5f6f-9dbf-89c5580d20d1",
+              ":answer/type": ":answer.type/text"
+            }
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "triangular-description-3.2-all-nonempty-supports",
+      "python_version": "3.13.5",
+      "sympy_version": "1.14.0",
+      "seed": 0,
+      "template": "diagonal",
+      "parameters": {
+        "matrix": [
+          [
+            -7,
+            0,
+            0
+          ],
+          [
+            0,
+            -8,
+            0
+          ],
+          [
+            0,
+            0,
+            0
+          ]
+        ],
+        "letter": "C",
+        "layout": "bmatrix"
+      },
+      "bank_profile": "five-labels",
+      "recipes": [
+        "Identity matrix",
+        "Diagonal matrix",
+        "Upper triangular matrix",
+        "Lower triangular matrix",
+        "Other"
+      ],
+      "parameter_fingerprint": "a9f3ead26d66da427a04d8b44214608b1d8bb9b5bec4f7079a3708548c70f437",
+      "content_fingerprint": "adcd6bc554fea24036bc5e3c232ac9d54148c72336f6190f997849ec9322f2f4",
+      "domain": {
+        "entries": "integers -10..10 (bool excluded); diagonal entries may be zero",
+        "easy": "2x2 or 3x3 upper, lower, or nonidentity diagonal; eighteen finite structural cases",
+        "moderate": "3x3; every nonempty permitted-side support is eligible for upper/lower",
+        "hard": "4x4; every nonempty permitted-side support is eligible for upper/lower",
+        "families": "Independent draws: 40% lower, 40% upper, 20% diagonal. Finite batches balance upper/lower and prefer one diagonal contrast when supply permits; deduplication changes those proportions.",
+        "fingerprint": "dimension, family and off-diagonal support only; diagonal unit positions, values, signs, labels, layouts and choice order are incidental",
+        "criterion": "Identity > Diagonal > non-diagonal Upper/Lower > Other; normal generation excludes identity and Other"
+      },
+      "source_database": "math",
+      "source_basis": 5451,
+      "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+      "source_id": null,
+      "difficulty_origin": "source-observed 2x2/3x3 easy; 3x3 moderate; authored 4x4 hard scan workload",
+      "evidence_only": false,
+      "eligible_for_learning": true,
+      "plot_rating": "none",
+      "repairs": [
+        "explicit most-specific criterion"
+      ],
+      "catalog_count": 18
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186119771,
+      "id": "1cca9b7c-358a-5f62-9a53-a696df0dd0ff",
+      "title": "Describing a Triangular Matrix"
+    },
+    "question": {
+      ":question/problem": "How can we best describe the following matrix?\n\n$$\nC = \\begin{bmatrix}7 & 0 & -7 \\\\ 0 & 1 & 0 \\\\ 0 & 0 & 3\\end{bmatrix}\n$$\n\nChoose the most specific listed description: identity before diagonal, and diagonal before upper or lower triangular. Choose Other only if none of these descriptions applies.",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/worked-solution": "Notice that $C$ is a matrix for which all entries below the diagonal are $0$'s:\n\n$$\nC = \\begin{bmatrix}7 & 0 & -7 \\\\ 0 & 1 & 0 \\\\ 0 & 0 & 3\\end{bmatrix}\n$$\n\nTherefore, it is an upper triangular matrix.\n\nIt is not a lower triangular matrix or a diagonal matrix since there is a non-zero element above the diagonal: ${c}_{13}=-7\\ne 0.$",
+      ":question/id": "01b16760-c0f7-577e-b7fc-92d30f70694d",
+      ":question/answer-fields": [
+        {
+          ":answer-field/key": "selection",
+          ":answer-field/id": "c676215f-5466-5724-933f-6663aee3d50b",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/correct": [
+            ":answer/id",
+            "96410dcd-7c4b-50d8-8f0c-ab150bd0ef05"
+          ],
+          ":answer-field/choices": [
+            {
+              ":answer/value": "Upper triangular matrix",
+              ":answer/id": "96410dcd-7c4b-50d8-8f0c-ab150bd0ef05",
+              ":answer/type": ":answer.type/text"
+            },
+            {
+              ":answer/value": "Lower triangular matrix",
+              ":answer/id": "a4e39d9a-ba08-598c-9e1c-49014fb85035",
+              ":answer/type": ":answer.type/text"
+            },
+            {
+              ":answer/value": "Other",
+              ":answer/id": "8a5e8954-e290-530e-8eb9-07e37629c41c",
+              ":answer/type": ":answer.type/text"
+            },
+            {
+              ":answer/value": "Identity matrix",
+              ":answer/id": "5fcb5d5a-e869-5d78-ba35-b5a962200aaf",
+              ":answer/type": ":answer.type/text"
+            },
+            {
+              ":answer/value": "Diagonal matrix",
+              ":answer/id": "0046038f-94fa-5c66-ba49-963db371171e",
+              ":answer/type": ":answer.type/text"
+            }
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "triangular-description-3.2-all-nonempty-supports",
+      "python_version": "3.13.5",
+      "sympy_version": "1.14.0",
+      "seed": 1,
+      "template": "upper",
+      "parameters": {
+        "matrix": [
+          [
+            7,
+            0,
+            -7
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            3
+          ]
+        ],
+        "letter": "C",
+        "layout": "bmatrix"
+      },
+      "bank_profile": "five-labels",
+      "recipes": [
+        "Identity matrix",
+        "Diagonal matrix",
+        "Upper triangular matrix",
+        "Lower triangular matrix",
+        "Other"
+      ],
+      "parameter_fingerprint": "c4ac2651ef76b30589fff4f1c09f91a345790f5a7093e806827ffbcb08b959bb",
+      "content_fingerprint": "b25fe75b49b2a67e3f1efdddde939c5af54b60a4f149d8d85316f66a856be3df",
+      "domain": {
+        "entries": "integers -10..10 (bool excluded); diagonal entries may be zero",
+        "easy": "2x2 or 3x3 upper, lower, or nonidentity diagonal; eighteen finite structural cases",
+        "moderate": "3x3; every nonempty permitted-side support is eligible for upper/lower",
+        "hard": "4x4; every nonempty permitted-side support is eligible for upper/lower",
+        "families": "Independent draws: 40% lower, 40% upper, 20% diagonal. Finite batches balance upper/lower and prefer one diagonal contrast when supply permits; deduplication changes those proportions.",
+        "fingerprint": "dimension, family and off-diagonal support only; diagonal unit positions, values, signs, labels, layouts and choice order are incidental",
+        "criterion": "Identity > Diagonal > non-diagonal Upper/Lower > Other; normal generation excludes identity and Other"
+      },
+      "source_database": "math",
+      "source_basis": 5451,
+      "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+      "source_id": null,
+      "difficulty_origin": "source-observed 2x2/3x3 easy; 3x3 moderate; authored 4x4 hard scan workload",
+      "evidence_only": false,
+      "eligible_for_learning": true,
+      "plot_rating": "none",
+      "repairs": [
+        "explicit most-specific criterion"
+      ],
+      "catalog_count": 18
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186119771,
+      "id": "1cca9b7c-358a-5f62-9a53-a696df0dd0ff",
+      "title": "Describing a Triangular Matrix"
+    },
+    "question": {
+      ":question/problem": "How can we best describe the following matrix?\n\n$$\nC = \\begin{bmatrix}9 & 0 & 0 \\\\ 0 & 10 & 0 \\\\ -4 & 8 & 5\\end{bmatrix}\n$$\n\nChoose the most specific listed description: identity before diagonal, and diagonal before upper or lower triangular. Choose Other only if none of these descriptions applies.",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/worked-solution": "Notice that $C$ is a matrix for which all entries above the diagonal are $0$'s:\n\n$$\nC = \\begin{bmatrix}9 & 0 & 0 \\\\ 0 & 10 & 0 \\\\ -4 & 8 & 5\\end{bmatrix}\n$$\n\nTherefore, it is a lower triangular matrix.\n\nIt is not an upper triangular matrix or a diagonal matrix since there is a non-zero element below the diagonal: ${c}_{31}=-4\\ne 0.$",
+      ":question/id": "bc9e3a87-3c2d-5eb6-8d7c-11763a2444ea",
+      ":question/answer-fields": [
+        {
+          ":answer-field/key": "selection",
+          ":answer-field/id": "44971b73-f1a5-5555-b4af-0a8a2b096b21",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/correct": [
+            ":answer/id",
+            "44aec803-306e-56ba-9aa9-1caf4f62f3da"
+          ],
+          ":answer-field/choices": [
+            {
+              ":answer/value": "Upper triangular matrix",
+              ":answer/id": "c8ce3c60-5691-58ff-b597-f9bc875356f2",
+              ":answer/type": ":answer.type/text"
+            },
+            {
+              ":answer/value": "Diagonal matrix",
+              ":answer/id": "bdbe357c-5e2c-545a-927d-8b058f31dde2",
+              ":answer/type": ":answer.type/text"
+            },
+            {
+              ":answer/value": "Lower triangular matrix",
+              ":answer/id": "44aec803-306e-56ba-9aa9-1caf4f62f3da",
+              ":answer/type": ":answer.type/text"
+            },
+            {
+              ":answer/value": "Other",
+              ":answer/id": "615121ac-80aa-5779-84c1-dc57b231ef75",
+              ":answer/type": ":answer.type/text"
+            },
+            {
+              ":answer/value": "Identity matrix",
+              ":answer/id": "5043d68d-d15d-5b5d-b768-63f7ab2f165c",
+              ":answer/type": ":answer.type/text"
+            }
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "triangular-description-3.2-all-nonempty-supports",
+      "python_version": "3.13.5",
+      "sympy_version": "1.14.0",
+      "seed": 2,
+      "template": "lower",
+      "parameters": {
+        "matrix": [
+          [
+            9,
+            0,
+            0
+          ],
+          [
+            0,
+            10,
+            0
+          ],
+          [
+            -4,
+            8,
+            5
+          ]
+        ],
+        "letter": "C",
+        "layout": "bmatrix"
+      },
+      "bank_profile": "five-labels",
+      "recipes": [
+        "Identity matrix",
+        "Diagonal matrix",
+        "Upper triangular matrix",
+        "Lower triangular matrix",
+        "Other"
+      ],
+      "parameter_fingerprint": "a93899a1629f5fc64d27f3cd26637fe6056b665c200ea76ccc0b0e4077d14035",
+      "content_fingerprint": "933e9e2722154c961802e4a98e2c6ac8e9f96a98a0d0182d9e2d270a5ce28c1c",
+      "domain": {
+        "entries": "integers -10..10 (bool excluded); diagonal entries may be zero",
+        "easy": "2x2 or 3x3 upper, lower, or nonidentity diagonal; eighteen finite structural cases",
+        "moderate": "3x3; every nonempty permitted-side support is eligible for upper/lower",
+        "hard": "4x4; every nonempty permitted-side support is eligible for upper/lower",
+        "families": "Independent draws: 40% lower, 40% upper, 20% diagonal. Finite batches balance upper/lower and prefer one diagonal contrast when supply permits; deduplication changes those proportions.",
+        "fingerprint": "dimension, family and off-diagonal support only; diagonal unit positions, values, signs, labels, layouts and choice order are incidental",
+        "criterion": "Identity > Diagonal > non-diagonal Upper/Lower > Other; normal generation excludes identity and Other"
+      },
+      "source_database": "math",
+      "source_basis": 5451,
+      "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+      "source_id": null,
+      "difficulty_origin": "source-observed 2x2/3x3 easy; 3x3 moderate; authored 4x4 hard scan workload",
+      "evidence_only": false,
+      "eligible_for_learning": true,
+      "plot_rating": "none",
+      "repairs": [
+        "explicit most-specific criterion"
+      ],
+      "catalog_count": 18
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186119771,
+      "id": "1cca9b7c-358a-5f62-9a53-a696df0dd0ff",
+      "title": "Describing a Triangular Matrix"
+    },
+    "question": {
+      ":question/problem": "How can we best describe the following matrix?\n\n$$\nC = \\begin{bmatrix}6 & 0 & 0 \\\\ -2 & -9 & 0 \\\\ 8 & -10 & -8\\end{bmatrix}\n$$\n\nChoose the most specific listed description: identity before diagonal, and diagonal before upper or lower triangular. Choose Other only if none of these descriptions applies.",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/worked-solution": "Notice that $C$ is a matrix for which all entries above the diagonal are $0$'s:\n\n$$\nC = \\begin{bmatrix}6 & 0 & 0 \\\\ -2 & -9 & 0 \\\\ 8 & -10 & -8\\end{bmatrix}\n$$\n\nTherefore, it is a lower triangular matrix.\n\nIt is not an upper triangular matrix or a diagonal matrix since there is a non-zero element below the diagonal: ${c}_{21}=-2\\ne 0.$",
+      ":question/id": "76ad2214-f07d-5774-b872-ebc88a698b66",
+      ":question/answer-fields": [
+        {
+          ":answer-field/key": "selection",
+          ":answer-field/id": "f6579239-06b4-5f33-b59c-ed904dfa066d",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/correct": [
+            ":answer/id",
+            "3fd5782d-381f-502a-acf6-ceb6a5f2bf67"
+          ],
+          ":answer-field/choices": [
+            {
+              ":answer/value": "Identity matrix",
+              ":answer/id": "3db496f4-ab15-50c0-8d7f-b5604a11fec6",
+              ":answer/type": ":answer.type/text"
+            },
+            {
+              ":answer/value": "Upper triangular matrix",
+              ":answer/id": "1a08479e-b679-5043-a57c-3507690975cf",
+              ":answer/type": ":answer.type/text"
+            },
+            {
+              ":answer/value": "Lower triangular matrix",
+              ":answer/id": "3fd5782d-381f-502a-acf6-ceb6a5f2bf67",
+              ":answer/type": ":answer.type/text"
+            },
+            {
+              ":answer/value": "Other",
+              ":answer/id": "edf1076a-f2e8-5bc7-825c-506026564c4c",
+              ":answer/type": ":answer.type/text"
+            },
+            {
+              ":answer/value": "Diagonal matrix",
+              ":answer/id": "6069cb78-41e3-525d-85c3-c2e6994b6fe6",
+              ":answer/type": ":answer.type/text"
+            }
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "triangular-description-3.2-all-nonempty-supports",
+      "python_version": "3.13.5",
+      "sympy_version": "1.14.0",
+      "seed": 3,
+      "template": "lower",
+      "parameters": {
+        "matrix": [
+          [
+            6,
+            0,
+            0
+          ],
+          [
+            -2,
+            -9,
+            0
+          ],
+          [
+            8,
+            -10,
+            -8
+          ]
+        ],
+        "letter": "C",
+        "layout": "bmatrix"
+      },
+      "bank_profile": "five-labels",
+      "recipes": [
+        "Identity matrix",
+        "Diagonal matrix",
+        "Upper triangular matrix",
+        "Lower triangular matrix",
+        "Other"
+      ],
+      "parameter_fingerprint": "6191ad2621e8aed08acbf435c20d9e1437dc08d1cb437582af17f44308f8ef24",
+      "content_fingerprint": "a3438d7b6f1ea51e0ab707885c6b210b092e5e47181c4a339094f1adab1e3abb",
+      "domain": {
+        "entries": "integers -10..10 (bool excluded); diagonal entries may be zero",
+        "easy": "2x2 or 3x3 upper, lower, or nonidentity diagonal; eighteen finite structural cases",
+        "moderate": "3x3; every nonempty permitted-side support is eligible for upper/lower",
+        "hard": "4x4; every nonempty permitted-side support is eligible for upper/lower",
+        "families": "Independent draws: 40% lower, 40% upper, 20% diagonal. Finite batches balance upper/lower and prefer one diagonal contrast when supply permits; deduplication changes those proportions.",
+        "fingerprint": "dimension, family and off-diagonal support only; diagonal unit positions, values, signs, labels, layouts and choice order are incidental",
+        "criterion": "Identity > Diagonal > non-diagonal Upper/Lower > Other; normal generation excludes identity and Other"
+      },
+      "source_database": "math",
+      "source_basis": 5451,
+      "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+      "source_id": null,
+      "difficulty_origin": "source-observed 2x2/3x3 easy; 3x3 moderate; authored 4x4 hard scan workload",
+      "evidence_only": false,
+      "eligible_for_learning": true,
+      "plot_rating": "none",
+      "repairs": [
+        "explicit most-specific criterion"
+      ],
+      "catalog_count": 18
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186119771,
+      "id": "1cca9b7c-358a-5f62-9a53-a696df0dd0ff",
+      "title": "Describing a Triangular Matrix"
+    },
+    "question": {
+      ":question/problem": "How can we best describe the following matrix?\n\n$$\nC = \\begin{bmatrix}10 & -10 & 10 \\\\ 0 & 5 & 1 \\\\ 0 & 0 & -3\\end{bmatrix}\n$$\n\nChoose the most specific listed description: identity before diagonal, and diagonal before upper or lower triangular. Choose Other only if none of these descriptions applies.",
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/worked-solution": "Notice that $C$ is a matrix for which all entries below the diagonal are $0$'s:\n\n$$\nC = \\begin{bmatrix}10 & -10 & 10 \\\\ 0 & 5 & 1 \\\\ 0 & 0 & -3\\end{bmatrix}\n$$\n\nTherefore, it is an upper triangular matrix.\n\nIt is not a lower triangular matrix or a diagonal matrix since there is a non-zero element above the diagonal: ${c}_{12}=-10\\ne 0.$",
+      ":question/id": "a4c3c484-ef0d-5177-86e3-2decc58e6903",
+      ":question/answer-fields": [
+        {
+          ":answer-field/key": "selection",
+          ":answer-field/id": "9a6120dc-e9d2-5bcb-9fbb-36f422397a2b",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/correct": [
+            ":answer/id",
+            "a4d83412-e3db-566f-8a55-6e6591a89d69"
+          ],
+          ":answer-field/choices": [
+            {
+              ":answer/value": "Lower triangular matrix",
+              ":answer/id": "f90990c5-ad19-5c71-80ef-bb51c1e29d4e",
+              ":answer/type": ":answer.type/text"
+            },
+            {
+              ":answer/value": "Other",
+              ":answer/id": "0fb4e58b-f0b0-575c-b03c-22a0477fcd57",
+              ":answer/type": ":answer.type/text"
+            },
+            {
+              ":answer/value": "Identity matrix",
+              ":answer/id": "5460888a-b3f5-54c2-8046-717735e0eb04",
+              ":answer/type": ":answer.type/text"
+            },
+            {
+              ":answer/value": "Upper triangular matrix",
+              ":answer/id": "a4d83412-e3db-566f-8a55-6e6591a89d69",
+              ":answer/type": ":answer.type/text"
+            },
+            {
+              ":answer/value": "Diagonal matrix",
+              ":answer/id": "c840e22d-a736-5fae-8d68-bc6d2186dcb3",
+              ":answer/type": ":answer.type/text"
+            }
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "triangular-description-3.2-all-nonempty-supports",
+      "python_version": "3.13.5",
+      "sympy_version": "1.14.0",
+      "seed": 4,
+      "template": "upper",
+      "parameters": {
+        "matrix": [
+          [
+            10,
+            -10,
+            10
+          ],
+          [
+            0,
+            5,
+            1
+          ],
+          [
+            0,
+            0,
+            -3
+          ]
+        ],
+        "letter": "C",
+        "layout": "bmatrix"
+      },
+      "bank_profile": "five-labels",
+      "recipes": [
+        "Identity matrix",
+        "Diagonal matrix",
+        "Upper triangular matrix",
+        "Lower triangular matrix",
+        "Other"
+      ],
+      "parameter_fingerprint": "9186c6b9aa2d876bfb21dc8191e47abe6aabe58dc7ee84cb3cafef80f22bf0e4",
+      "content_fingerprint": "c0578b0ff424151378ff98cb672565282f607ee9a02e1db2d3f41f1f6f2502ad",
+      "domain": {
+        "entries": "integers -10..10 (bool excluded); diagonal entries may be zero",
+        "easy": "2x2 or 3x3 upper, lower, or nonidentity diagonal; eighteen finite structural cases",
+        "moderate": "3x3; every nonempty permitted-side support is eligible for upper/lower",
+        "hard": "4x4; every nonempty permitted-side support is eligible for upper/lower",
+        "families": "Independent draws: 40% lower, 40% upper, 20% diagonal. Finite batches balance upper/lower and prefer one diagonal contrast when supply permits; deduplication changes those proportions.",
+        "fingerprint": "dimension, family and off-diagonal support only; diagonal unit positions, values, signs, labels, layouts and choice order are incidental",
+        "criterion": "Identity > Diagonal > non-diagonal Upper/Lower > Other; normal generation excludes identity and Other"
+      },
+      "source_database": "math",
+      "source_basis": 5451,
+      "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+      "source_id": null,
+      "difficulty_origin": "source-observed 2x2/3x3 easy; 3x3 moderate; authored 4x4 hard scan workload",
+      "evidence_only": false,
+      "eligible_for_learning": true,
+      "plot_rating": "none",
+      "repairs": [
+        "explicit most-specific criterion"
+      ],
+      "catalog_count": 18
+    }
+  }
+]

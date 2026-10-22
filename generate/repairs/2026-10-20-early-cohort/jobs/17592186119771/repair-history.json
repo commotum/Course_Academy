@@ -17,6 +17,24 @@
       "source_hash": "881d4dc8b36490870b7cebfb5c96a03429cb7eac63298830d8038674cb0e34fa",
       "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186119771/review-1-policy-2-0e9bf2a26bc3c6cc",
       "attempt": 1
+    },
+    {
+      "id": "5ce68a5d357d6c68c196",
+      "finding": {
+        "kind": "decision_shortcut",
+        "description": "Batch-selection defect: both 3\u00d73 upper matrices have negative top-left entries (-9, -3), while both lower matrices have positive entries (9, 6). The sole 2\u00d72 matrix is diagonal. Consequently, size plus one diagonal sign answers every delivered member without inspecting off-diagonal zeros. This rule succeeds on only 15/30 independent controls, so the finding is batch-specific.",
+        "source_refs": [
+          "fe3edf12-af5b-5bb0-b5b3-efb6cd809134",
+          "527b33fb-f404-506c-9c40-f8d572226bac",
+          "tutorial 658a47dc-4d32-5d9d-a04c-82d683e87739",
+          "generate/principles.md: meaningful variety and conditional cue groups"
+        ],
+        "reproduction": "From evidence_root run /home/jake/Developer/Course_Academy/.venv/bin/python test_batch_shortcut.py. The strict acceptance test fails: choose Diagonal for 2\u00d72; otherwise choose Upper when the top-left entry is negative and Lower otherwise. Accuracy is 5/5 after delivery filtering, with all five submissions accepted by the native grader. Flipping only the first record\u2019s top-left value from -9 to 9 preserves Upper and causes the heuristic Lower response to be rejected.",
+        "requested_change": "Revise batch construction/selection and regenerate this pool so incidental size/sign cues retain counterexamples. Preserve independent diagonal values, all source families and restored sparse supports. Retain the strict batch test and native-graded sign-change control."
+      },
+      "source_hash": "881d4dc8b36490870b7cebfb5c96a03429cb7eac63298830d8038674cb0e34fa",
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186119771/review-2-policy-2-0c1c91bdcd7c4ff5",
+      "attempt": 2
     }
   ],
   "events": [
@@ -157,6 +175,137 @@
         ]
       },
       "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186119771/review-1-policy-2-0e9bf2a26bc3c6cc"
+    },
+    {
+      "attempt": 2,
+      "package_hash": "3f42f0123a6b800af862732046a30d31320ac1258dc39a53bb864fac342404e0",
+      "reason": {
+        "verdict": "revise",
+        "summary": "The sole-witness repair passes, but size and top-left diagonal sign predict all five delivered batch answers. This is a batch-selection defect; the broader generator produces counterexamples. Package files remained unchanged.",
+        "source_analysis": {
+          "skill": "Inspect zeros around the main diagonal and choose the most specific supplied matrix classification.",
+          "reasoning_steps": [
+            "Inspect entries above and below the diagonal.",
+            "Distinguish upper triangular, lower triangular and diagonal structure.",
+            "Use a nonzero witness to exclude competing classifications."
+          ],
+          "invariants": [
+            "Direct classification of a square numeric matrix.",
+            "One radio field with the complete five-label bank.",
+            "Diagonal signs do not determine triangular orientation."
+          ],
+          "permitted_variations": [
+            "Upper versus lower orientation and supported matrix size.",
+            "Every nonempty permitted-side support, including sole witnesses.",
+            "Diagonal values, signs, matrix letter and answer position."
+          ],
+          "source_refs": [
+            "fe3edf12-af5b-5bb0-b5b3-efb6cd809134",
+            "527b33fb-f404-506c-9c40-f8d572226bac",
+            "tutorial 658a47dc-4d32-5d9d-a04c-82d683e87739: any number, including zero, may occur on the diagonal"
+          ],
+          "evidence_paths": [
+            "source-analysis.json",
+            "provenance.json"
+          ]
+        },
+        "checks": {
+          "source_replay": {
+            "status": "passed",
+            "evidence_paths": [
+              "source-replay-results.json",
+              "source-replay-records.json",
+              "current-single-witness.json"
+            ],
+            "details": "All 11 captured questions replay their complete banks and available source content. Canonical normal generation now succeeds. Missing source fields remain documented."
+          },
+          "math": {
+            "status": "passed",
+            "evidence_paths": [
+              "math-results.json",
+              "focused-math-results.json",
+              "check_math_grading.py"
+            ],
+            "details": "Independent classification, repeated-matrix, conclusion and witness checks found no failures in the tested records."
+          },
+          "variety": {
+            "status": "failed",
+            "evidence_paths": [
+              "focused-support-results.json",
+              "support-coverage.json",
+              "shortcut-results.json",
+              "delivery-stage-results.json",
+              "inventory-audit.json",
+              "affected-inventory.json"
+            ],
+            "details": "All eligible supports are now reachable. The exact delivered batch nevertheless permits a perfect incidental shortcut. Captured inventory was inspected; no attributable stored generated cohort demonstrating this defect was established."
+          },
+          "scope": {
+            "status": "passed",
+            "evidence_paths": [
+              "source-analysis.json",
+              "scope-results.json"
+            ],
+            "details": "Easy outputs preserve direct square-matrix classification, the radio response contract and comparable workload."
+          },
+          "grading": {
+            "status": "passed",
+            "evidence_paths": [
+              "grader-input.json",
+              "grader-results.json",
+              "counterfactual-results.json"
+            ],
+            "details": "Native grader: 34 accepted, 116 rejected, zero unresolved. Tests include every choice for controlled cases and all five shortcut submissions."
+          },
+          "rendering": {
+            "status": "passed",
+            "evidence_paths": [
+              "render/rendering.json",
+              "render-inspection.json",
+              "rendered-batch-positions.json"
+            ],
+            "details": "Actual UI rendered ten records. Inspected screenshots show readable matrices, radio controls, witnesses and worked solutions."
+          },
+          "packaging": {
+            "status": "passed",
+            "evidence_paths": [
+              "packaging-results.json",
+              "package-integrity.json",
+              "regression.json",
+              "focused-support-results.json",
+              "boundary-results.json",
+              "author-preflight-rerun.json"
+            ],
+            "details": "Exact dependency versions, relocation, deterministic replay and boundary checks pass. Prior failure reproduced on old code and passes current code. Package unchanged."
+          },
+          "decision_variation": {
+            "status": "failed",
+            "evidence_paths": [
+              "pedagogical-variation.json",
+              "shortcut-results.json",
+              "batch-shortcut-test.json",
+              "batch-shortcut-counterfactual.json",
+              "selection-results.json"
+            ],
+            "details": "Size/sign predicts 5/5 delivered answers; within 3\u00d73, diagonal sign alone predicts 4/4. Filtering preserves the pool. Controlled sign changes confirm the cue is irrelevant to classification."
+          }
+        },
+        "findings": [
+          {
+            "kind": "decision_shortcut",
+            "description": "Batch-selection defect: both 3\u00d73 upper matrices have negative top-left entries (-9, -3), while both lower matrices have positive entries (9, 6). The sole 2\u00d72 matrix is diagonal. Consequently, size plus one diagonal sign answers every delivered member without inspecting off-diagonal zeros. This rule succeeds on only 15/30 independent controls, so the finding is batch-specific.",
+            "source_refs": [
+              "fe3edf12-af5b-5bb0-b5b3-efb6cd809134",
+              "527b33fb-f404-506c-9c40-f8d572226bac",
+              "tutorial 658a47dc-4d32-5d9d-a04c-82d683e87739",
+              "generate/principles.md: meaningful variety and conditional cue groups"
+            ],
+            "reproduction": "From evidence_root run /home/jake/Developer/Course_Academy/.venv/bin/python test_batch_shortcut.py. The strict acceptance test fails: choose Diagonal for 2\u00d72; otherwise choose Upper when the top-left entry is negative and Lower otherwise. Accuracy is 5/5 after delivery filtering, with all five submissions accepted by the native grader. Flipping only the first record\u2019s top-left value from -9 to 9 preserves Upper and causes the heuristic Lower response to be rejected.",
+            "requested_change": "Revise batch construction/selection and regenerate this pool so incidental size/sign cues retain counterexamples. Preserve independent diagonal values, all source families and restored sparse supports. Retain the strict batch test and native-graded sign-change control."
+          }
+        ]
+      },
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186119771/review-2-policy-2-0c1c91bdcd7c4ff5"
     }
   ]
 }

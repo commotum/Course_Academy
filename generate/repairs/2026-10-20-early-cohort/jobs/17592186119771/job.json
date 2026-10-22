@@ -6,11 +6,11 @@
     "existing_entrypoint": null,
     "job_kind": "build"
   },
-  "stage": "validate",
-  "attempt": 2,
+  "stage": "generate",
+  "attempt": 3,
   "seed": 4251183390,
   "created": 1792667709.3798783,
-  "updated": 1792668979.9657123,
+  "updated": 1792669358.3240225,
   "source_hash": "881d4dc8b36490870b7cebfb5c96a03429cb7eac63298830d8038674cb0e34fa",
   "inventory_hash": "41dc9a723561be621cd7c8d896c26bfac5624da4852a42d7d1ddc458b4c6b5cf",
   "manifest": "package.json",
@@ -20,62 +20,64 @@
   "needs_repair": true,
   "error": {
     "verdict": "revise",
-    "summary": "The five-question repair works, but normal generation rejects source-supported 3\u00d73 triangular matrices with a single nonzero witness, including the canonical example. Sampled mathematics, grading, delivery and rendering passed. Package files remained unchanged.",
+    "summary": "The sole-witness repair passes, but size and top-left diagonal sign predict all five delivered batch answers. This is a batch-selection defect; the broader generator produces counterexamples. Package files remained unchanged.",
     "source_analysis": {
       "skill": "Inspect zeros around the main diagonal and choose the most specific supplied matrix classification.",
       "reasoning_steps": [
-        "Inspect all entries strictly above and below the diagonal.",
+        "Inspect entries above and below the diagonal.",
         "Distinguish upper triangular, lower triangular and diagonal structure.",
-        "Use a nonzero witness to exclude diagonal and the opposite orientation."
+        "Use a nonzero witness to exclude competing classifications."
       ],
       "invariants": [
         "Direct classification of a square numeric matrix.",
         "One radio field with the complete five-label bank.",
-        "Classification depends on the entire zero region, not a predetermined witness cell."
+        "Diagonal signs do not determine triangular orientation."
       ],
       "permitted_variations": [
-        "Upper versus lower orientation, supported size, matrix letter and answer position.",
-        "Diagonal values, signs and magnitudes.",
-        "Any nonempty permitted-side support, including a single nonzero witness."
+        "Upper versus lower orientation and supported matrix size.",
+        "Every nonempty permitted-side support, including sole witnesses.",
+        "Diagonal values, signs, matrix letter and answer position."
       ],
       "source_refs": [
         "fe3edf12-af5b-5bb0-b5b3-efb6cd809134",
-        "2b95456b-3323-5d6f-9e68-2195aad3e714",
         "527b33fb-f404-506c-9c40-f8d572226bac",
-        "tutorial 658a47dc-4d32-5d9d-a04c-82d683e87739: any number, including zero, is allowed on the diagonal and permitted side"
+        "tutorial 658a47dc-4d32-5d9d-a04c-82d683e87739: any number, including zero, may occur on the diagonal"
       ],
       "evidence_paths": [
-        "source-analysis.json"
+        "source-analysis.json",
+        "provenance.json"
       ]
     },
     "checks": {
       "source_replay": {
-        "status": "failed",
+        "status": "passed",
         "evidence_paths": [
           "source-replay-results.json",
           "source-replay-records.json",
-          "single-witness-acceptance.json"
+          "current-single-witness.json"
         ],
-        "details": "All 11 captured questions replay their complete banks and available source content after harmless notation normalization. Normal generation rejects the canonical single-witness matrix. Missing source fields are documented."
+        "details": "All 11 captured questions replay their complete banks and available source content. Canonical normal generation now succeeds. Missing source fields remain documented."
       },
       "math": {
         "status": "passed",
         "evidence_paths": [
           "math-results.json",
-          "review_checks.py"
+          "focused-math-results.json",
+          "check_math_grading.py"
         ],
-        "details": "Independent checks of 69 normal records found correct classifications, repeated matrices, conclusions and nonzero witnesses."
+        "details": "Independent classification, repeated-matrix, conclusion and witness checks found no failures in the tested records."
       },
       "variety": {
         "status": "failed",
         "evidence_paths": [
+          "focused-support-results.json",
           "support-coverage.json",
-          "sparse-rejections.json",
+          "shortcut-results.json",
           "delivery-stage-results.json",
           "inventory-audit.json",
           "affected-inventory.json"
         ],
-        "details": "Construction excludes all six sole-witness 3\u00d73 support patterns. All 60 independent samples and five runner records survive publication filtering. The exact batch contains two upper, two lower and one diagonal. No sparse 3\u00d73 stored question was found among 16 captured records; generation provenance was unavailable."
+        "details": "All eligible supports are now reachable. The exact delivered batch nevertheless permits a perfect incidental shortcut. Captured inventory was inspected; no attributable stored generated cohort demonstrating this defect was established."
       },
       "scope": {
         "status": "passed",
@@ -83,7 +85,7 @@
           "source-analysis.json",
           "scope-results.json"
         ],
-        "details": "Requested easy outputs preserve direct square-matrix classification, the radio contract and comparable workload. The diagonal contrast and most-specific criterion introduce no additional mathematical operation."
+        "details": "Easy outputs preserve direct square-matrix classification, the radio response contract and comparable workload."
       },
       "grading": {
         "status": "passed",
@@ -92,17 +94,16 @@
           "grader-results.json",
           "counterfactual-results.json"
         ],
-        "details": "The native grader accepted 21 independently correct selections and rejected all 84 distractors, including the exact runner batch and controlled counterfactuals."
+        "details": "Native grader: 34 accepted, 116 rejected, zero unresolved. Tests include every choice for controlled cases and all five shortcut submissions."
       },
       "rendering": {
         "status": "passed",
         "evidence_paths": [
           "render/rendering.json",
-          "counterfactual-render/rendering.json",
           "render-inspection.json",
           "rendered-batch-positions.json"
         ],
-        "details": "The actual UI rendered all five runner records and four controls. Inspected screenshots show legible matrices, radio controls, witness notation and worked solutions."
+        "details": "Actual UI rendered ten records. Inspected screenshots show readable matrices, radio controls, witnesses and worked solutions."
       },
       "packaging": {
         "status": "passed",
@@ -110,48 +111,50 @@
           "packaging-results.json",
           "package-integrity.json",
           "regression.json",
-          "old-regression.json",
-          "author-check-results.json"
+          "focused-support-results.json",
+          "boundary-results.json",
+          "author-preflight-rerun.json"
         ],
-        "details": "Exact dependency versions match. Relocation and deterministic replay pass. The old five-question failure was reproduced on registered code and passes current code. All 41 package files remained unchanged."
+        "details": "Exact dependency versions, relocation, deterministic replay and boundary checks pass. Prior failure reproduced on old code and passes current code. Package unchanged."
       },
       "decision_variation": {
         "status": "failed",
         "evidence_paths": [
           "pedagogical-variation.json",
-          "counterfactual-results.json",
-          "selection-results.json",
-          "delivery-stage-results.json",
-          "evidence-contract.json"
+          "shortcut-results.json",
+          "batch-shortcut-test.json",
+          "batch-shortcut-counterfactual.json",
+          "selection-results.json"
         ],
-        "details": "Relevant and irrelevant controls behave correctly through prompts, solutions, native grading and rendering. Conditional probes found no demonstrated incidental shortcut. However, the density rule excludes eligible witness assignments. Selection rules were reproduced read-only, with future IDs, live history and policy limits recorded."
+        "details": "Size/sign predicts 5/5 delivered answers; within 3\u00d73, diagonal sign alone predicts 4/4. Filtering preserves the pool. Controlled sign changes confirm the cue is irrelevant to classification."
       }
     },
     "findings": [
       {
-        "kind": "restriction",
-        "description": "Both level_guard and catalog require at least ceil(n(n\u22121)/4) nonzero off-diagonal entries. For 3\u00d73 matrices, this excludes every sole-witness triangular case, including canonical A=[[-2,0,0],[6,-1,0],[0,0,0]]. Sparse cases require inspecting the same zero region, so the claimed scan-workload justification does not support excluding this source pattern.",
+        "kind": "decision_shortcut",
+        "description": "Batch-selection defect: both 3\u00d73 upper matrices have negative top-left entries (-9, -3), while both lower matrices have positive entries (9, 6). The sole 2\u00d72 matrix is diagonal. Consequently, size plus one diagonal sign answers every delivered member without inspecting off-diagonal zeros. This rule succeeds on only 15/30 independent controls, so the finding is batch-specific.",
         "source_refs": [
           "fe3edf12-af5b-5bb0-b5b3-efb6cd809134",
+          "527b33fb-f404-506c-9c40-f8d572226bac",
           "tutorial 658a47dc-4d32-5d9d-a04c-82d683e87739",
-          "generate/principles.md: establish fidelity first and vary eligible answer-bearing relationships"
+          "generate/principles.md: meaningful variety and conditional cue groups"
         ],
-        "reproduction": "From evidence_root run PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python test_single_witness.py. The strict acceptance test fails with ValueError: Normal triangular practice needs a substantial nonzero off-diagonal region. Exact parameters, command and stderr are retained in single-witness-acceptance.json.",
-        "requested_change": "Update catalog construction and parameter validation to admit every nonempty permitted-side support at source-supported sizes. Derive witnesses from the matrix. Retain the strict canonical acceptance test, cover each upper/lower sole-witness coordinate, and preserve the passing five-question regression."
+        "reproduction": "From evidence_root run /home/jake/Developer/Course_Academy/.venv/bin/python test_batch_shortcut.py. The strict acceptance test fails: choose Diagonal for 2\u00d72; otherwise choose Upper when the top-left entry is negative and Lower otherwise. Accuracy is 5/5 after delivery filtering, with all five submissions accepted by the native grader. Flipping only the first record\u2019s top-left value from -9 to 9 preserves Upper and causes the heuristic Lower response to be rejected.",
+        "requested_change": "Revise batch construction/selection and regenerate this pool so incidental size/sign cues retain counterexamples. Preserve independent diagonal values, all source families and restored sparse supports. Retain the strict batch test and native-graded sign-change control."
       }
     ]
   },
-  "author_running": false,
+  "author_running": true,
   "batch_hash": "d98484a0b73a5b61164cbc831c9eb1718cd4366ea2543f93854693a2c1556e74",
   "runtime": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186119771/runtime-2",
   "engine_hash": "dc1e0a8583ca33c6028bc0a641128ecc8e7896742189dd42b292170c9726bad9",
   "assets": {},
   "previous_review": {
-    "directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186119771/review-1-policy-2-0e9bf2a26bc3c6cc",
+    "directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186119771/review-2-policy-2-0c1c91bdcd7c4ff5",
     "binding": {
       "policy_version": 2,
-      "package_hash": "dfaebba00aa7f0e33a7f406c11ccc66130c9186c92cd453362dffeac20ff1666",
-      "batch_hash": "5b429d70d3cefed44b17b5cc45e019a0f2a3fe2aa01f0e63e25aea24395f9571",
+      "package_hash": "3f42f0123a6b800af862732046a30d31320ac1258dc39a53bb864fac342404e0",
+      "batch_hash": "d98484a0b73a5b61164cbc831c9eb1718cd4366ea2543f93854693a2c1556e74",
       "source_hash": "881d4dc8b36490870b7cebfb5c96a03429cb7eac63298830d8038674cb0e34fa",
       "inventory_hash": "41dc9a723561be621cd7c8d896c26bfac5624da4852a42d7d1ddc458b4c6b5cf",
       "assets": {},
@@ -159,7 +162,7 @@
       "engine_hash": "dc1e0a8583ca33c6028bc0a641128ecc8e7896742189dd42b292170c9726bad9"
     }
   },
-  "last_rejected_package": "dfaebba00aa7f0e33a7f406c11ccc66130c9186c92cd453362dffeac20ff1666",
+  "last_rejected_package": "3f42f0123a6b800af862732046a30d31320ac1258dc39a53bb864fac342404e0",
   "last_rejected_source": "881d4dc8b36490870b7cebfb5c96a03429cb7eac63298830d8038674cb0e34fa",
   "last_rejected_engine": "dc1e0a8583ca33c6028bc0a641128ecc8e7896742189dd42b292170c9726bad9"
 }

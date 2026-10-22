@@ -1,24 +1,24 @@
 # Current state
 
-Author-521 preserved completed runtime repairs and all five strict regressions.
-Read latest feedback, retained findings/history, original source questions and
-lesson context, required generation/validation docs and instructional account.
+Author-525 preserved all completed runtime repairs and five strict regressions.
+Read feedback/history and existing instructional/source evidence. First executed
+job Python `-B checks/batch_regressions.py --finding inventory`: exit 1, five
+historical banks affected, 64/64 possible-history shortcut successes.
 
-Ran `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/author-521`.
-Exit 1 solely for finding 591f580cadb749294588, reproduced first: five historical
-banks and 64/64 possible-history shortcut successes. Four generator regressions,
-17 source banks plus canonical replay, counterfactuals, shared delivery (14 records),
-native grading (7 accepted/28 rejected), dependencies and relocation pass.
-Protected hashes and five unapplied replacement mappings verify. Reinspected
-retained actual-UI screenshot question-002 without visible clipping or overlap.
+Then `-B checks/recheck_status.py --output evidence/author-525`: exit 1 solely
+for 591f580cadb749294588. Four generator regressions pass; 17 practice source
+banks plus canonical replay, controlled counterfactuals, shared delivery (14
+records), native grading (7 accepted/28 rejected), dependencies and relocation
+pass. Protected hashes and five unapplied replacements verify. Reinspected
+retained actual-UI question-002 screenshot: readable, no clipping.
+No runtime, source, engine, publication or database changes.
 
-Evidence: evidence/author-521/commands.json, results.json, outcome.md.
+Evidence: evidence/author-525/commands.json, results.json, grader-report.json,
+outcome.md. Existing instructional account remains applicable.
 
-Unfinished: separately remediate the five generated identities in
-affected-inventory.json, then provide a fresh inventory capture. Validated,
-unapplied proposal: evidence/repair-3/inventory-repair-proposal.json.
-Database changes and publication are prohibited here. Do not alter the capture,
-substitute proposed records, weaken strict regressions or discard repairs.
+Unfinished: separate inventory remediation for five generated identities in
+affected-inventory.json, followed by fresh capture and strict inventory recheck.
+Validated proposal: evidence/repair-3/inventory-repair-proposal.json.
 
-Status: unsupported for the unresolved stored-pool requirement. Further retries
-with unchanged inputs cannot complete this external inventory action.
+Status: unsupported for unresolved stored-pool requirement. Repeating unchanged
+checks cannot resolve it; a workspace generator edit cannot change stored banks.
