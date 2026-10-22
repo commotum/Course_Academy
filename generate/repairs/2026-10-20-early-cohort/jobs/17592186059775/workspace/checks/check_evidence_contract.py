@@ -132,10 +132,11 @@ def main():
         assert digest(path) == row['sha256'], row['workspace_source']
         assert path.relative_to(bundle).as_posix() == row['destination']
     assert plan['status'] == 'staged_not_installed'
-    # The concrete runner fix is staged for its owner, not installed by this
-    # author. Exercise its real sample control flow and strict negative cases.
-    subprocess.run([sys.executable, '-B', str(W/'checks/check_runner_handoff.py')], check=True)
-    result = {'finding_id': '9b8cb52352b8ca3e790e', 'passed': True,
+    # A proposed patch is not a resolved current failure. The registered check
+    # must also test installed control flow, and retain its failure until fixed.
+    handoff = subprocess.run([sys.executable, '-B', str(W/'checks/check_current_handoff.py')])
+    result = {'finding_id': '9b8cb52352b8ca3e790e',
+              'passed': handoff.returncode == 0, 'evidence_bundle_passed': True,
               'bundle_root': str(bundle.relative_to(W)),
               'real_review_validator': 'scripts/generator_review.py:validate_review',
               'missing_provenance_negative_control': negative,
@@ -150,10 +151,12 @@ def main():
               'runner_installation_files': len(plan['files']),
               'runner_destination_policy': plan['destination_policy'],
               'destination_installed': False,
-              'staged_runner_fix_regression': 'evidence/runner-handoff-regression.json',
-              'runner_fix_installed': False}
+              'current_runner_regression': 'evidence/current-handoff-regression.json',
+              'current_runner_exit_code': handoff.returncode}
     (W/'evidence/evidence-contract-validation.json').write_text(json.dumps(result, indent=2)+'\n')
     print(json.dumps(result))
+    if handoff.returncode:
+        raise SystemExit(handoff.returncode)
 
 
 if __name__ == '__main__':

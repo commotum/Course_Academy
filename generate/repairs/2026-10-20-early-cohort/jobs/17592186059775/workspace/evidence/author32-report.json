@@ -1,0 +1,185 @@
+{
+  "status": "unsupported",
+  "manifest": "package.json",
+  "changes": [
+    "Added checks/check_current_handoff.py to test the actual installed runner checkpoint without writes or services.",
+    "Registered evidence regression now propagates current handoff failure instead of treating an uninstalled patch as resolution.",
+    "Preserved the manifest and all runtime files byte for byte."
+  ],
+  "latest_failure": {
+    "finding_id": "9b8cb52352b8ca3e790e",
+    "passed": false,
+    "installed_runner_sha256": "6b5e606725c2b82f87212da3c0ec39da0231db0722cd440ef1d21e141d01deb2",
+    "package_hash": "38c685ce1e5bd4f89ac79b6ab3d31a4a81f2b77c9f4bb6f0abcab5c20640f626",
+    "engine_hash": "dc1e0a8583ca33c6028bc0a641128ecc8e7896742189dd42b292170c9726bad9",
+    "calls": [
+      "repair"
+    ],
+    "rejection": "{'error': 'Candidate is byte-identical to the rejected package. Apply and test the requested repair before another independent review.'}",
+    "next_stage": "sample",
+    "runtime_hashes_unchanged": {
+      "package.json": "663cb3294cd6832de919c9e21b569f271e63079f4cd4155486853d1c05434b23",
+      "17592186059775.py": "45ce3ee90e9c76d850d8f7e0d9c0851515a65a868264b79160260898c5eeb2ac",
+      "17592186059775/source.json": "936dc5c07130b5fabc5e453ac26efb90471b07c96bc0a904a214eca8494a4bfc",
+      "math_format.py": "734756ff87af508413171ebec82588a121ac9af7d85b454ac4137db41d23e5be",
+      "requirements.txt": "25f9f1fb1988b230147a1d3092d34e09c069eb7a6c6d6df46b3973b9f2d36efc",
+      "known-systems.json": "2492556950df4a1bb3622028c1d24fd72ff9ec82f76c19b8fe2bc6e74b80436f"
+    },
+    "patch_installed_by_check": false,
+    "scope": "Actual installed _run; mutations and execution boundaries instrumented. Generator, delivery and native-grader tests run separately."
+  },
+  "commands": [
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/reproduce_runner_boundary.py",
+      "exit_code": 1,
+      "log": "evidence/author32-boundary.log",
+      "meaning": "Exact historical wrong-root error and current unchanged-package gate reproduced."
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_evidence_contract.py",
+      "exit_code": 0,
+      "log": "evidence/author32-evidence.log",
+      "meaning": "Before correction: evidence bundle and uninstalled proposal passed, despite current runner rejection."
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_batch_selection.py",
+      "exit_code": 0,
+      "log": "evidence/author32-batch.log"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_all.py",
+      "exit_code": 0,
+      "log": "evidence/author32-retained.log"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_current_handoff.py",
+      "exit_code": 1,
+      "log": "evidence/author32-current-handoff.log",
+      "meaning": "Strict unresolved current-runner failure; not a passing check."
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_evidence_contract.py",
+      "exit_code": 1,
+      "log": "evidence/author32-evidence-strict.log",
+      "meaning": "After correction: bundle passes, installed runner failure correctly propagates."
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_render_binding.py",
+      "exit_code": 0,
+      "log": "evidence/author32-render-binding.log"
+    }
+  ],
+  "claims": {
+    "source_fidelity": {
+      "complete_banks": 10,
+      "matched_choices": 50,
+      "matched_distractors": 40,
+      "profiles": [
+        {
+          "source": "q-10329",
+          "question_id": "0bb40c20-00ba-542a-8a60-c0d7dc599925",
+          "complete_bank_matched": true,
+          "choices": 5,
+          "distractors": 4,
+          "legacy_ambiguity": false
+        },
+        {
+          "source": "q-1059",
+          "question_id": "8ad44012-c8dc-51b0-90ac-8e2b89d003b4",
+          "complete_bank_matched": true,
+          "choices": 5,
+          "distractors": 4,
+          "legacy_ambiguity": false
+        },
+        {
+          "source": "q-1060",
+          "question_id": "157d0b46-caa9-5e52-add3-341aa2ee9d01",
+          "complete_bank_matched": true,
+          "choices": 5,
+          "distractors": 4,
+          "legacy_ambiguity": false
+        },
+        {
+          "source": "q-130910",
+          "question_id": "e60da15e-4036-54d4-9450-3bb47096d6f6",
+          "complete_bank_matched": true,
+          "choices": 5,
+          "distractors": 4,
+          "legacy_ambiguity": false
+        },
+        {
+          "source": "q-20459",
+          "question_id": "2f7d8f30-0a86-56e1-866a-295695eb3958",
+          "complete_bank_matched": true,
+          "choices": 5,
+          "distractors": 4,
+          "legacy_ambiguity": false
+        },
+        {
+          "source": "q-20461",
+          "question_id": "33887d26-4540-5f7d-8312-2849fc1d5c71",
+          "complete_bank_matched": true,
+          "choices": 5,
+          "distractors": 4,
+          "legacy_ambiguity": false
+        },
+        {
+          "source": "q-10512",
+          "question_id": "97656c8d-f73c-5b5a-a5d7-69f60766b5eb",
+          "complete_bank_matched": true,
+          "choices": 5,
+          "distractors": 4,
+          "legacy_ambiguity": true
+        },
+        {
+          "source": "q-130909",
+          "question_id": "dc5530a8-d7bb-5ee6-b842-11178cec4e06",
+          "complete_bank_matched": true,
+          "choices": 5,
+          "distractors": 4,
+          "legacy_ambiguity": false
+        },
+        {
+          "source": "q-10509",
+          "question_id": "253dcdad-b456-5a05-a8b5-7ff5b06745e9",
+          "complete_bank_matched": true,
+          "choices": 5,
+          "distractors": 4,
+          "legacy_ambiguity": false
+        },
+        {
+          "source": "q-73439",
+          "question_id": "9752715d-a11c-5d27-95dc-d20bec1117cb",
+          "complete_bank_matched": true,
+          "choices": 5,
+          "distractors": 4,
+          "legacy_ambiguity": false
+        }
+      ]
+    },
+    "correctness": {
+      "passed": true,
+      "source_banks": 10,
+      "generated_readback_cases": 81,
+      "native_responses": 405,
+      "semantic_instances": 71
+    },
+    "grading": "Native grader: 81 accepted/324 rejected raw; 10/40 delivered regression responses; 5/20 exact-batch responses. No unexpected outcomes.",
+    "decision_variation": "All five target ranks retained within all ten supported profiles. Exact seed 4258185931 shortcut scores 1/5 before and after shared delivery. Catalog support remains 64 easy and 83 moderate semantic instances.",
+    "inventory": "All three stored generated records independently reproduced with historical shortcuts; twelve original source captures remain separate. Complete root-relative historical bundle: evidence/contract-correction/affected-inventory.json and generated-records.json.",
+    "rendering": "Prior actual-UI rendering reused because runtime/UI content is unchanged. Fresh check binds both endpoints to delivered records; question-001.png visually reinspected, readable matrices and worked stages.",
+    "evidence_bundle": "83-file historical correction validates at its actual root and two relocated roots; wrong-root and missing-provenance controls reject. No copied acceptance is claimed as fresh approval.",
+    "handoff": "Unresolved. Actual installed _run rejects before retained regressions, sampling or fresh independent review."
+  },
+  "package_hash": "38c685ce1e5bd4f89ac79b6ab3d31a4a81f2b77c9f4bb6f0abcab5c20640f626",
+  "runtime_hashes_unchanged": {
+    "package.json": "663cb3294cd6832de919c9e21b569f271e63079f4cd4155486853d1c05434b23",
+    "17592186059775.py": "45ce3ee90e9c76d850d8f7e0d9c0851515a65a868264b79160260898c5eeb2ac",
+    "17592186059775/source.json": "936dc5c07130b5fabc5e453ac26efb90471b07c96bc0a904a214eca8494a4bfc",
+    "math_format.py": "734756ff87af508413171ebec82588a121ac9af7d85b454ac4137db41d23e5be",
+    "requirements.txt": "25f9f1fb1988b230147a1d3092d34e09c069eb7a6c6d6df46b3973b9f2d36efc",
+    "known-systems.json": "2492556950df4a1bb3622028c1d24fd72ff9ec82f76c19b8fe2bc6e74b80436f"
+  },
+  "limitation": "The installed runner must be repaired outside the authorized workspace. A proposed patch already exists at runner-fix/evidence-only-rejection.patch; it was not installed. Runtime edits solely to change the package hash would not repair the evidence-path finding.",
+  "scope": "Only workspace checks, evidence and account/state documents changed. No engine, database, publication, services, other-job or outside-workspace writes."
+}

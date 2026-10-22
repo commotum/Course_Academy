@@ -3,18 +3,17 @@
   "error": {
     "status": "unsupported",
     "manifest": "package.json",
-    "summary": "Preserved completed generator repairs. All registered regressions pass; the exact runner handoff failure remains unresolved.",
+    "summary": "Preserved generator repairs; content checks pass. Corrected the handoff regression to expose the installed runner\u2019s unresolved rejection.",
     "evidence_paths": [
-      "evidence/author30-report.json",
-      "evidence/author30-boundary.log",
-      "evidence/author30-evidence.log",
-      "evidence/author30-batch.log",
-      "evidence/author30-retained.log",
-      "evidence/author30-binding.json",
-      "evidence/contract-installation.json"
+      "evidence/author32-report.json",
+      "evidence/current-handoff-regression.json",
+      "evidence/author32-evidence-strict.log",
+      "evidence/author32-batch.log",
+      "evidence/author32-retained.log",
+      "repair-regressions.json"
     ],
     "limitations": [
-      "The runner must install the staged evidence bundle and route the report-only correction through report-repair \u2192 validate. Both require changes outside the authorized workspace; its unchanged-package gate still rejects this handoff."
+      "The runner rejects unchanged runtime before validation. Fixing it requires changes outside the authorized workspace. The existing runner patch remains staged and uninstalled."
     ]
   },
   "instruction": "Fix the root cause, retain every earlier counterexample, and declare executable checks in repair-regressions.json. A failed check is another repair task, not permission to abandon the generator.",

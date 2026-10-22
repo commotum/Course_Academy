@@ -1,5 +1,28 @@
 # Instructional account (before repair)
 
+## Author-32: strict current-handoff regression (before edits)
+
+The current generator and source are unchanged. Source q-73439
+(9752715d-a11c-5d27-95dc-d20bec1117cb), q-130909
+(dc5530a8-d7bb-5ee6-b842-11178cec4e06), and tutorial
+2112d3af-1fb0-5a70-ab99-59931db99930 still support first-pivot
+normalization, lower-entry elimination, second-pivot normalization, and optional
+back substitution. Preserve the five-radio contract, easy/moderate workload,
+all candidate target assignments, and the completed source-bank repairs.
+
+Fresh reproduction establishes that the installed runner still rejects the
+unchanged package before retained regressions or sampling. The existing
+evidence regression passes because it validates a staged correction, including
+an uninstalled proposed runner patch. That establishes feasibility, not current
+resolution. For finding 9b8cb52352b8ca3e790e, add a strict test of the installed
+runner's actual sample-stage control flow with the actual package, source,
+engine, independent report, and binding. Instrument only writes, subprocess
+launches, sampling, and service boundaries; do not install the patch or consume
+historical acceptance as new approval. The registered check must fail until
+the installed runner permits retained regressions, sampling, and fresh review.
+No runtime change is justified by this evidence defect. A nonzero current
+handoff result is an unresolved limitation, not a successful repair.
+
 The learner must inspect a nonsingular 2-by-3 augmented matrix, normalize its first pivot when necessary, eliminate the lower-left entry, normalize the second pivot when necessary, and select its normalized forward-elimination result. Solve variants also translate the result into equations and back-substitute to obtain x and y. The response is one radio choice from five complete matrix objects, with an ordered x,y pair when requested. Easy is the requested band; the existing moderate support is retained. Hard is unsupported because there is no rated hard evidence.
 
 Source evidence: q-1059 (8ad44012-c8dc-51b0-90ac-8e2b89d003b4), q-130910 (e60da15e-4036-54d4-9450-3bb47096d6f6), q-130909 (dc5530a8-d7bb-5ee6-b842-11178cec4e06), and newly supplied q-73439 (9752715d-a11c-5d27-95dc-d20bec1117cb) establish the easy contracts. Moderate q-10329, q-1060, q-20459, q-20461, q-10512 and newly supplied q-10509 establish the same operation stages with fractional pivots. All ten complete source banks will replay at original parameters; two unrated records have no complete key/solution. The supplied snapshot has two more complete records than the older candidate snapshot; no original is marked as generated.

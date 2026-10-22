@@ -1,33 +1,29 @@
-# Author 703 — 2026-10-22
+# Author 706 — 2026-10-22
 
-Read latest feedback, all five retained findings and event history, prior state,
-required generator documents, source lesson/canonical and 17 full practice
-questions, and the existing instructional account. Preserved all completed
-runtime repairs and all strict regression declarations.
+Preserved the repaired candidate, all five strict regressions, and the staged
+replacement mapping. Read latest feedback and all five findings across 706
+history events. Rechecked all 17 complete source questions, lesson definitions,
+canonical example and contextual diagram. No new runtime defect is reported.
 
-First executed regression:
-`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory`
-Exit 1: five historical banks remain affected; 64/64 shortcut successes in the
-retained possible learner-history witness.
+Executed:
+`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/author-706`
 
-Verification:
-`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/author-703`
-Exit 1 solely for finding 591f580cadb749294588. Four current-generator findings
-pass; 17 source banks replay, 14 CLI records retain conditional contrasts after
-shared delivery, native grading accepts 7 correct and rejects 28 wrong choices,
-and relocation/dependency checks pass. Protected runtime/source/inventory and
-manifest hashes match retained evidence. Proposed replacements remain verified
-and unapplied. Reinspected the source flowchart and retained actual-UI screenshot.
+The first child command reproduced the exact latest inventory failure: five
+stored banks, 64/64 shortcut successes in the possible-history witness. The
+wrapper exits 1 solely for 591f580cadb749294588. All four current-generator
+regressions pass: 17 source banks, 14 records through shared delivery, native
+grading (7 accepted, 28 rejected), dependency and relocation checks. Protected
+runtime/source/inventory hashes match. Staged replacements remain unapplied.
+Reinspected evidence/repair-3/render/question-001.png; readable, no clipping.
 
-Root cause of the remaining failure: native selection uses stored entities and
-banks independently of this Python package. Workspace generator edits cannot
-alter those stored banks. The review explicitly requests separate inventory
-remediation; the user explicitly prohibits database changes/publication here.
-No runtime edit or further interchangeable verification is warranted.
+Next unfinished action is explicitly external to this author task: independently
+review the staged mapping, use the separate inventory-remediation workflow for
+the five generated entities, recapture inventory and rerun the strict check.
+Repeating generator edits or author validations cannot change stored banks.
+Database changes and publication remain prohibited. Status: unsupported.
 
-Next unfinished action: separately apply and recapture the staged inventory
-repair in evidence/repair-3/inventory-repair-proposal.json. Keep the inventory
-regression failing until supplied evidence changes. Status: unsupported.
-Current commands/results/disposition: evidence/author-703/. Affected inventory
-and complete reproduced historical records remain in affected-inventory.json
-and evidence/generated-records.json, with paths relative to author-703 root.
+Current evidence: evidence/author-706/commands.json, results.json,
+disposition.json, grader-report.json. Complete reproduced historical records:
+evidence/generated-records.json. All affected-inventory.json evidence paths
+resolve correctly relative to the supplied author-706 evidence root. No runtime,
+engine, database, source, image or publication changes made.
