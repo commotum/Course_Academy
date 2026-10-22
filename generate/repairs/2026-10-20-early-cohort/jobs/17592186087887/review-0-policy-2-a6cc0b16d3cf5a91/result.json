@@ -1,0 +1,118 @@
+{
+  "verdict": "revise",
+  "summary": "Answer-bank shortcuts solve all 54 easy instances, all 5 runner records, all 4 deduplicated survivors, and 5 reproduced stored questions. Package files remain unchanged.",
+  "source_analysis": {
+    "skill": "Use y=v(x)x to transform a homogeneous ODE, separate variables, integrate, substitute back, and select its general solution.",
+    "reasoning_steps": [
+      "Differentiate y=vx as y'=v+xv'.",
+      "Reduce to xv'=F(v)-v.",
+      "Separate, integrate, and substitute v=y/x.",
+      "Distinguish the solution from four incorrect candidates."
+    ],
+    "invariants": [
+      "Preserve the homogeneous equation, elementary integration workload, and five-choice radio response.",
+      "Keep prompts, answers, solutions, and domains consistent."
+    ],
+    "permitted_variations": [
+      "Vary small signed coefficients and supported integration branches.",
+      "Vary distractor relationships so candidate appearance alone does not reveal correctness."
+    ],
+    "source_refs": [
+      "2b4ed6f3-beb2-5be5-83cb-e8d41e7b8f3b",
+      "ed854c8a-5a47-5533-b48c-04deb7b81625",
+      "73b06f86-eb7f-5333-916f-45bb6952f791",
+      "Tutorial fe0a9e9e-ab23-5364-99bb-cddbfd67a4a4: xv'=F(v)-v"
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "source-images.png"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay.json",
+        "source-replay-records.json"
+      ],
+      "details": "All three easy sources reproduce their equations and complete answer banks. Nine implemented source cases replay mathematically; unsupported canonical and moderate families are documented."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math.json",
+        "counterfactual-results.json"
+      ],
+      "details": "Independent symbolic checks verify all 54 easy instances and five runner records, including uniqueness of the correct solution."
+    },
+    "variety": {
+      "status": "failed",
+      "evidence_paths": [
+        "independent-samples.json",
+        "shortcut-results.json",
+        "shortcut-regression.json"
+      ],
+      "details": "All coefficient slots are covered, but each recognizable family preserves a perfect answer-bank shortcut. The exact batch and its survivors remain entirely answerable using those shortcuts."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "scope.json"
+      ],
+      "details": "Easy variations preserve the substitution, integration techniques, workload, and response contract."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-final-input.json",
+        "grader-final-results.json"
+      ],
+      "details": "Native grader: 186 accepted and 276 rejected checks, zero unresolved. Tests include every alternative and shortcut predictions. Free-entry equivalence is inapplicable to radio questions."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-delivered/rendering.json",
+        "render-inspection.json"
+      ],
+      "details": "Actual UI rendered ten controlled instances and all four batch survivors. Representative screenshots were inspected; notation, controls, and solutions display correctly."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging.json",
+        "package-integrity.json",
+        "commands.json"
+      ],
+      "details": "Exact Python dependency matches. Determinism, relocation, invalid-input rejection, and JSON output pass. Package hashes are unchanged."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "counterfactual-results.json",
+        "shortcut-regression.json",
+        "selection.json",
+        "affected-inventory.json",
+        "generated-records.json"
+      ],
+      "details": "Each conditional shortcut scores 18/18 against a 0.2 random-choice baseline. Combined rules score 49/49 after delivery filtering. Five affected stored generated questions were reproduced with matching UUIDs and content fingerprints."
+    }
+  },
+  "findings": [
+    {
+      "kind": "decision_shortcut",
+      "description": "The answer banks reveal correctness without reading the ODE: choose the unique cube-root candidate; for linear-log banks, choose the sole candidate containing both x ln|x| and +Cx; for affine banks, choose the smaller absolute linear coefficient among the two Cx^2 candidates. These rules solve the entire easy domain and supplied batch. UI shuffling preserves these cues.",
+      "source_refs": [
+        "2b4ed6f3-beb2-5be5-83cb-e8d41e7b8f3b",
+        "ed854c8a-5a47-5533-b48c-04deb7b81625",
+        "73b06f86-eb7f-5333-916f-45bb6952f791",
+        "generate/principles.md: meaningful variety and incidental shortcuts"
+      ],
+      "reproduction": "Run PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python reproduce_shortcut.py from evidence_root; it exits 1. Minimal case: generate('cube_root', 2, seed=826033), retained in minimal-failing-record.json. For y'=(2x^3+y^3)/(xy^2), selecting the sole cube-root candidate yields the accepted answer without determining the integration coefficient. Changing a to -2 preserves the same successful shortcut.",
+      "requested_change": "Change extension-bank construction so candidate shapes and fixed coefficient comparisons cannot identify correctness. Use plausible same-shape distractors requiring the surviving term and integration coefficient to be calculated; vary affine distractor magnitudes. Preserve source replay and difficulty, regenerate the batch, and retain the strict shortcut regression."
+    }
+  ]
+}

@@ -1,0 +1,141 @@
+{
+  "verdict": "revise",
+  "summary": "Bank-only rules answer all 54 easy instances, all 5 runner records, all 4 deduplicated survivors, and 5 reproduced stored generated questions. Mathematics and native grading pass; the practice design permits bypassing the intended ODE reasoning. Package unchanged.",
+  "source_analysis": {
+    "skill": "Solve homogeneous first-order ODEs using y=v(x)x, reduce to x v'=F(v)-v, separate and integrate, substitute back, and select one general solution from five mathematical choices.",
+    "reasoning_steps": [
+      "Recognize or use degree-zero right-hand side F(y/x).",
+      "Differentiate y=vx as y'=v+xv'.",
+      "Substitute and cancel the v term; separate the resulting variables.",
+      "Integrate using elementary powers or logarithms at easy difficulty, absorb arbitrary constants, and replace v by y/x.",
+      "Distinguish the resulting solution from plausible incorrect integrations and substitutions."
+    ],
+    "invariants": [
+      "Homogeneous degree-zero first-order equation, x nonzero on an interval.",
+      "Substitution, separation, elementary integration and back-substitution remain the assessed operations.",
+      "Exactly one mathematically distinct correct solution in a five-choice radio bank.",
+      "Prompt, answer bank, worked solution and domains must describe the same equation."
+    ],
+    "permitted_variations": [
+      "Change nonzero small coefficients and signs in the easy affine or cancellation families while preserving comparable integration workload.",
+      "Change the coefficient of v in affine F(v); this legitimately changes logarithmic versus power integration when crossing coefficient 1.",
+      "Change the coefficient of the surviving inverse-square term in the cubic family; derive the logarithm multiplier and root expression from it.",
+      "Vary candidate position, distractor errors and mathematically eligible solution shapes so recognizing a template or lone root does not suffice.",
+      "Power-degree variations near observed easy powers may be defensible same-method extensions, but demand workload and domain review; arbitrary new operators are not justified."
+    ],
+    "source_refs": [
+      "2b4ed6f3-beb2-5be5-83cb-e8d41e7b8f3b (easy cubic)",
+      "ed854c8a-5a47-5533-b48c-04deb7b81625 (easy affine 2)",
+      "73b06f86-eb7f-5333-916f-45bb6952f791 (easy affine 1)",
+      "89b7276c-ef41-5123-ad31-b54753656111 (canonical image example)",
+      "ecc5b0a4-8e5a-5917-a8c3-d4ab3b2b520d (unlabelled quadratic question)",
+      "tutorial fe0a9e9e-ab23-5364-99bb-cddbfd67a4a4: 'x dv/dx = F(v)-v' and separation formula",
+      "tutorial d2f64582-8688-5882-baa3-8712370f1568: y'=(x+y)/x, v'=1/x, y=x ln|x|+Cx",
+      "tutorial 53343733-c3a7-588a-88f5-5c46d4dab2a0: f(tx,ty)=f(x,y)"
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "source-images.png"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "source-replay.json",
+        "source-replay-records.json",
+        "source-images.png"
+      ],
+      "details": "All three explicitly easy sources replay their equations and complete five-choice banks. Nine implemented source cases replay mathematically; original missing key and source typo are documented. Canonical quadratic and additional moderate arctangent cases are explicitly unsupported; this verdict concerns requested easy delivery."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math.json",
+        "counterfactual-results.json"
+      ],
+      "details": "Independent prompt parsing and symbolic directional derivatives verify all 54 easy instances and the exact 5-record runner batch; each bank has exactly one general solution. Relevant coefficient and integration-branch pairs update the solution correctly."
+    },
+    "variety": {
+      "status": "failed",
+      "evidence_paths": [
+        "packaging.json",
+        "independent-samples.json",
+        "shortcut-results.json",
+        "shortcut-regression.json",
+        "delivery-batch/delivery.json"
+      ],
+      "details": "All 54 finite coefficient slots and both signs are covered, but every recognizable family preserves an incidental bank-only answer rule. The exact runner batch scores 5/5 and its four deduplicated survivors score 4/4 using those rules; numeric uniqueness does not establish meaningful practice."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "scope.json",
+        "math.json"
+      ],
+      "details": "Easy variations preserve y=vx, separation, elementary integration and one radio response. Signed coefficients introduce no additional technique or reasoning stage."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-final-input.json",
+        "grader-final-results.json",
+        "math.json"
+      ],
+      "details": "Actual native learning::grade_field: 186 accepted and 276 rejected checks, zero unresolved. Every alternative is tested on sampled/runner records and controlled pairs; additional checks submit bank-only predictions on raw, delivered and reconstructed inventory records. Free-entry equivalence is inapplicable to this radio contract."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-delivered/rendering.json",
+        "render-inspection.json",
+        "render/question-001.png",
+        "render/question-005.png",
+        "render/question-006.png",
+        "render-delivered/question-004.png"
+      ],
+      "details": "Unmodified actual UI renders 10 controlled instances and all four runner survivors without reported errors. Representative full screenshots and the contact sheet were inspected; notation, controls and worked solutions display correctly. UI choice shuffling does not defeat shape cues."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging.json",
+        "package-integrity.json",
+        "commands.json"
+      ],
+      "details": "Installed Python exactly 3.13.5 matches manifest; third-party packages object is correctly empty. Deterministic replay, relocation, invalid-parameter rejection and JSON stdout pass. Package file hashes remain unchanged."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "counterfactuals.json",
+        "counterfactual-results.json",
+        "shortcut-regression.json",
+        "selection.json",
+        "affected-inventory.json",
+        "generated-records.json",
+        "inventory-assessment.json"
+      ],
+      "details": "Relevant and irrelevant counterfactual dependencies pass, but conditional bank-shape strategies each score 18/18, versus 0.2 random-choice baseline. Combined strategy scores 49/49 after actual delivery filtering. Captured basis-5449 inventory contains five exactly reproduced affected generated questions. Native selection rules do not remove these eligible easy cases; live learner proportions are not asserted."
+    }
+  },
+  "findings": [
+    {
+      "kind": "decision_shortcut",
+      "description": "The easy-family bank construction reveals the correct candidate without inspecting the differential equation: cube_root always has one cube-root candidate; linear_log has one candidate containing both x ln|x| and +Cx; affine always makes the smaller-magnitude linear coefficient among its two Cx^2 candidates correct. Each rule scores 18/18 across both coefficient signs. The combined rule answers the entire supplied batch and every survivor. Five stored generated questions reproduce the same defects with matching UUIDs and publisher fingerprints.",
+      "source_refs": [
+        "2b4ed6f3-beb2-5be5-83cb-e8d41e7b8f3b",
+        "ed854c8a-5a47-5533-b48c-04deb7b81625",
+        "73b06f86-eb7f-5333-916f-45bb6952f791",
+        "tutorial fe0a9e9e-ab23-5364-99bb-cddbfd67a4a4: x dv/dx=F(v)-v",
+        "generate/principles.md: meaningful variety and incidental shortcuts"
+      ],
+      "reproduction": "From evidence_root, run PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python reproduce_shortcut.py (expected exit 1). Minimal case: generator.generate('cube_root', 2, seed=826033), saved in minimal-failing-record.json. For y'=(2x^3+y^3)/(xy^2), select the sole cube-root candidate y=x sqrt[3](6 ln|x|+C) without reading the equation. With a=-2 the same action selects the new correct answer; the learner never needs to determine 3a. Native acceptance is retained in grader-final-results.json. Full reproduction commands are in commands.json.",
+      "requested_change": "Change the family-wide extension-bank rules so eligible correct-answer roles are not identifiable from candidate shapes or fixed coefficient comparisons. Include plausible same-shape distractors requiring calculation of the surviving term and integration coefficient; vary affine distractor magnitudes so choosing the smaller one is not sufficient. Preserve source replay and difficulty. Regenerate the supplied batch and retain the failing bank-only regression as an acceptance test; do not rely on position shuffling or remove source families."
+    }
+  ]
+}

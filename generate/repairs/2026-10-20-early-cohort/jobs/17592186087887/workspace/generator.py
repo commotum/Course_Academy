@@ -6,7 +6,7 @@ import random
 import uuid
 from math_format import checked_math_content, normalize_prose, normalize_tex
 
-VERSION = '1.1.0'
+VERSION = '1.2.0'
 KP = {'id': '49eaf082-07de-5468-a2d7-4cdfce27a553', 'db_id': 17592186087887,
       'title': 'Solving a Homogeneous Differential Equation'}
 SOURCES = {
@@ -173,12 +173,41 @@ def components(t, a):
             *([simplify_signs(row) for row in rows] for rows in (bank, sub, integ, back)),
             simplify_signs(note))
 
+EASY_TEMPLATES = ('cube_root', 'affine', 'linear_log')
+EASY_COEFFICIENTS = tuple(range(-9, 0)) + tuple(range(1, 10))
+
+def coefficient_bank(index):
+    """A bank is chosen before its answer-bearing prompt coefficient."""
+    if not isinstance(index, int) or not 0 <= index < len(EASY_COEFFICIENTS):
+        raise ValueError('Unsupported bank index')
+    return tuple(EASY_COEFFICIENTS[(index+i) % len(EASY_COEFFICIENTS)] for i in range(5))
+
+def easy_answer(template, a):
+    if template == 'cube_root':
+        return rf'y=x\sqrt[3]{{{3*a}{L}+C}}'
+    if template == 'affine':
+        return simplify_signs(rf'y=Cx^2-{coef(a)}x')
+    return rf'y={coef(a)}x{L}+Cx'
+
 @checked_math_content
-def generate(template, a, seed=0):
+def generate(template, a, seed=0, *, source_replay=False, bank_index=None):
     if template not in SOURCES or a not in values(template):
         raise ValueError('Unsupported template or parameter')
     source_name, source_id, difficulty, original_difficulty, correct = SOURCES[template]
     ode, bank, sub, integ, back, note = components(template, a)
+    if source_replay and (a != 1 or bank_index is not None):
+        raise ValueError('Source replay requires original parameters and bank')
+    if template in EASY_TEMPLATES and not source_replay:
+        if bank_index is None:
+            compatible = [i for i in range(len(EASY_COEFFICIENTS)) if a in coefficient_bank(i)]
+            bank_index = random.Random(f'{seed}:{template}:{a}:bank').choice(compatible)
+        candidates = coefficient_bank(bank_index)
+        if a not in candidates:
+            raise ValueError('Prompt coefficient must be in the selected bank')
+        bank = [easy_answer(template, b) for b in candidates]
+        # Independent of the target: controlled changes retain exactly the same bank.
+        random.Random(f'{seed}:{template}:{bank_index}:order').shuffle(bank)
+        correct = bank.index(easy_answer(template, a))
     prompt = ('Find the general solution of the following differential equation.' if template in ('square_log', 'factor_cancel')
               else 'Use the transformation $y=v(x)x$ to find the general solution of the following homogeneous differential equation.')
     if template in ('inverse_square', 'square_implicit'):
@@ -207,15 +236,21 @@ def generate(template, a, seed=0):
           ':answer-field/type': ':answer-field.type/radio', ':answer-field/choices': choices,
           ':answer-field/correct': [':answer/id', choices[correct][':answer/id']]}]},
       'generation': {'generator_version': VERSION, 'seed': seed, 'template': template,
-        'parameters': {'a': a}, 'profile': source_name+'-complete-bank', 'source_question_ids': [source_id],
+        'parameters': {'a': a},
+        'profile': ('coefficient-alternatives' if template in EASY_TEMPLATES and not source_replay else source_name+'-complete-bank'),
+        'bank_index': bank_index, 'source_replay': source_replay,
+        'source_question_ids': [source_id],
         'source_math_academy_id': source_name, 'original_difficulty': original_difficulty,
-        'source_basis': 2793, 'extension': a != 1, 'domain': domain(template),
+        'source_basis': 2793, 'extension': a != 1 or (template in EASY_TEMPLATES and not source_replay), 'domain': domain(template),
         'source_repair': template == 'power', 'dependencies': {'python': '3.13.5', 'packages': {}}}}
 
 def values(template):
     if template in ('cube_root', 'affine', 'linear_log'):
-        return tuple(range(-9, 0)) + tuple(range(1, 10))
+        return EASY_COEFFICIENTS
     return range(1, 5 if template == 'nested_log' else 10)
+
+def replay_source(template, seed=0):
+    return generate(template, 1, seed, source_replay=True)
 
 def generate_batch(difficulty='easy', count=5, seed=0):
     if difficulty == 'unclassified':
@@ -228,6 +263,17 @@ def generate_batch(difficulty='easy', count=5, seed=0):
     templates = [t for t, s in SOURCES.items() if s[2] == difficulty]
     # Each cycle covers every semantic instance. Interleave families for short batches.
     result = []
+    if difficulty == 'easy':
+        while len(result) < count:
+            order = list(EASY_TEMPLATES)
+            rng.shuffle(order)
+            for t in order:
+                if len(result) == count:
+                    break
+                bank_index = rng.randrange(len(EASY_COEFFICIENTS))
+                a = rng.choice(coefficient_bank(bank_index))
+                result.append(generate(t, a, seed, bank_index=bank_index))
+        return result
     while len(result) < count:
         slots = {t: list(values(t)) for t in templates}
         for v in slots.values():
