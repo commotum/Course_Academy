@@ -3,17 +3,15 @@
   "error": {
     "status": "unsupported",
     "manifest": "package.json",
-    "summary": "Preserved generator repairs; content checks pass. Corrected the handoff regression to expose the installed runner\u2019s unresolved rejection.",
+    "summary": "Preserved completed repairs. Batch, grading, CLI, and evidence validation pass; the strict runner handoff still fails.",
     "evidence_paths": [
-      "evidence/author32-report.json",
+      "evidence/author35-verification.json",
       "evidence/current-handoff-regression.json",
-      "evidence/author32-evidence-strict.log",
-      "evidence/author32-batch.log",
-      "evidence/author32-retained.log",
-      "repair-regressions.json"
+      "repair-regressions.json",
+      "runner-fix/evidence-only-rejection.patch"
     ],
     "limitations": [
-      "The runner rejects unchanged runtime before validation. Fixing it requires changes outside the authorized workspace. The existing runner patch remains staged and uninstalled."
+      "The installed runner rejects the unchanged package despite the evidence-only finding. Repair requires changes outside the authorized workspace. The staged patch passes 23 offline cases but remains uninstalled."
     ]
   },
   "instruction": "Fix the root cause, retain every earlier counterexample, and declare executable checks in repair-regressions.json. A failed check is another repair task, not permission to abandon the generator.",

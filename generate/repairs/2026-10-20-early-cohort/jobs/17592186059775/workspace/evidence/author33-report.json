@@ -1,0 +1,91 @@
+{
+  "status": "unsupported",
+  "manifest": "package.json",
+  "implementation_changes": [],
+  "preserved": "Manifest and all runtime files remain byte-identical to the reviewed repair.",
+  "first_reproduction": {
+    "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_current_handoff.py",
+    "exit_code": 1,
+    "log": "evidence/author33-handoff.log"
+  },
+  "registered_regressions": [
+    {
+      "finding_id": "legacy_packaging_or_sampling",
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "-B",
+        "checks/check_all.py"
+      ],
+      "exit_code": 0,
+      "log": "evidence/author33-legacy_packaging_or_sampling.log"
+    },
+    {
+      "finding_id": "9e827407d5429a1f8827",
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "-B",
+        "checks/check_batch_selection.py"
+      ],
+      "exit_code": 0,
+      "log": "evidence/author33-9e827407d5429a1f8827.log"
+    },
+    {
+      "finding_id": "9b8cb52352b8ca3e790e",
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "-B",
+        "checks/check_evidence_contract.py"
+      ],
+      "exit_code": 1,
+      "log": "evidence/author33-9b8cb52352b8ca3e790e.log"
+    }
+  ],
+  "current_failure": {
+    "finding_id": "9b8cb52352b8ca3e790e",
+    "passed": false,
+    "installed_runner_sha256": "6b5e606725c2b82f87212da3c0ec39da0231db0722cd440ef1d21e141d01deb2",
+    "package_hash": "38c685ce1e5bd4f89ac79b6ab3d31a4a81f2b77c9f4bb6f0abcab5c20640f626",
+    "engine_hash": "dc1e0a8583ca33c6028bc0a641128ecc8e7896742189dd42b292170c9726bad9",
+    "calls": [
+      "repair"
+    ],
+    "rejection": "{'error': 'Candidate is byte-identical to the rejected package. Apply and test the requested repair before another independent review.'}",
+    "next_stage": "sample",
+    "runtime_hashes_unchanged": {
+      "package.json": "663cb3294cd6832de919c9e21b569f271e63079f4cd4155486853d1c05434b23",
+      "17592186059775.py": "45ce3ee90e9c76d850d8f7e0d9c0851515a65a868264b79160260898c5eeb2ac",
+      "17592186059775/source.json": "936dc5c07130b5fabc5e453ac26efb90471b07c96bc0a904a214eca8494a4bfc",
+      "math_format.py": "734756ff87af508413171ebec82588a121ac9af7d85b454ac4137db41d23e5be",
+      "requirements.txt": "25f9f1fb1988b230147a1d3092d34e09c069eb7a6c6d6df46b3973b9f2d36efc",
+      "known-systems.json": "2492556950df4a1bb3622028c1d24fd72ff9ec82f76c19b8fe2bc6e74b80436f"
+    },
+    "patch_installed_by_check": false,
+    "scope": "Actual installed _run; mutations and execution boundaries instrumented. Generator, delivery and native-grader tests run separately."
+  },
+  "claims": {
+    "source_fidelity": "Ten complete source banks and 50 choices replay; retained regression passes.",
+    "correctness_and_grading": "Retained exact mathematical and native acceptance/rejection checks pass; see author33-legacy_packaging_or_sampling.log.",
+    "decision_variation": {
+      "raw_shortcut": {
+        "correct": 1,
+        "total": 5,
+        "random_baseline": 0.2
+      },
+      "delivered_shortcut": {
+        "correct": 1,
+        "total": 5,
+        "random_baseline": 0.2
+      },
+      "native_responses": 25
+    },
+    "evidence_bundle": "Real validator passes at the bundle root and relocated roots; wrong-root and missing-provenance negative controls reject.",
+    "handoff": "FAIL: installed runner rejects before retained regressions or sampling. The registered evidence check correctly exits 1."
+  },
+  "remaining_action": "Runner owner must repair evidence-only routing or install the staged correction outside this workspace, then rerun the strict installed-runner regression and obtain fresh independent review. Existing proposed patch is runner-fix/evidence-only-rejection.patch, uninstalled.",
+  "limits": [
+    "No runtime edit is justified by the retained evidence-only finding. A hash-only edit would conceal the runner defect.",
+    "Runner code, job state and supplied author evidence_root are outside the authorized writable workspace.",
+    "Prior UI screenshots are retained; no rendering or runtime change occurred in this continuation.",
+    "No database, engine, publication, service, other-job or outside-workspace writes."
+  ]
+}
