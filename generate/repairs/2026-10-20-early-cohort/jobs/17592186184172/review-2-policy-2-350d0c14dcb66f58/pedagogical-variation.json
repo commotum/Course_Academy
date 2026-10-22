@@ -1,0 +1,1311 @@
+{
+  "learner_operation": "Determine the dimension of the supplied null space or pivot count; derive the complementary rank/nullity; decide each statement independently and select the corresponding subset.",
+  "fixed_features": [
+    {
+      "feature": "Square matrices",
+      "justification": "The source applies invertibility equivalences for n by n matrices."
+    },
+    {
+      "feature": "Three candidate statements",
+      "justification": "Observed evaluation workload and response shape."
+    },
+    {
+      "feature": "Nonempty checkbox subsets",
+      "justification": "Preserves source select-all response and avoids a zero-selection submission without adding a new None option. Radio None remains supported where it occurs in a source bank."
+    },
+    {
+      "feature": "Singular vector profiles",
+      "justification": "Follows from displayed nonzero null-space vectors; concluding singularity is the intended theorem simplification. Full-rank/zero-rank decisions are exercised in direct-count profiles."
+    },
+    {
+      "feature": "Diagonal coefficients 1..3 and count dimension scale 1..3",
+      "justification": "Conservative finite same-method variation. Coordinate-hyperplane rescalings alone are not counted as new decisions; truth predicates vary independently."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Rank/nullity/count value and whether a numerical claim agrees",
+      "eligible_variation": "Change supplied count or compared number while preserving square-matrix theorem and three judgments.",
+      "observed": "Counts include zero and full n; controlled count3->4 flips fixed-claim response I/III to II."
+    },
+    {
+      "role": "Qualifying statement labels, positions and subset size",
+      "eligible_variation": "Any source-bank-supported subset, seven nonempty checkbox assignments, varied polarity.",
+      "observed": "Every fresh delivered template has multiple truth subsets; prior unchanged exhaustive assignment tests cover all bank outcomes. Exact batch has FFT, FTF, TFT, TFT, FTT."
+    },
+    {
+      "role": "Profile selected into normal five-question delivery",
+      "eligible_variation": "Every supported profile of requested difficulty is eligible across seeds.",
+      "observed": "Seeded permutation resolves the prior fixed-prefix omission; all eight moderate profiles survive shared delivery."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "normal_cli_raw",
+      "sample_refs": [
+        "fresh-cli-records.json",
+        "current-profile/profile-omission-records.json"
+      ],
+      "result": "{\"q-139986\": {\"count\": 3, \"dimensions\": [4], \"nullities\": [1], \"ranks\": [3], \"truth_subsets\": {\"II and III only\": 1, \"III only\": 2}}, \"q-142538\": {\"count\": 6, \"dimensions\": [5, 10, 15], \"nullities\": [0, 1, 2, 4, 6, 12], \"ranks\": [3, 4, 5, 6, 8, 9], \"truth_subsets\": {\"I only\": 2, \"II and III only\": 1, \"II only\": 1, \"III only\": 2}}, \"q-142542\": {\"count\": 1, \"dimensions\": [5], \"nullities\": [2], \"ranks\": [3], \"truth_subsets\": {\"I and II only\": 1}}, \"q-142544\": {\"count\": 7, \"dimensions\": [7, 14], \"nullities\": [1, 2, 4, 5, 6, 7], \"ranks\": [0, 1, 2, 3, 5, 6, 12], \"truth_subsets\": {\"I and II only\": 2, \"I and III only\": 3, \"II and III only\": 1, \"II only\": 1}}, \"q-143533\": {\"count\": 3, \"dimensions\": [3], \"nullities\": [2], \"ranks\": [1], \"truth_subsets\": {\"I and III only\": 1, \"II and III only\": 1, \"III only\": 1}}, \"q-34930\": {\"count\": 1, \"dimensions\": [4], \"nullities\": [2], \"ranks\": [2], \"truth_subsets\": {\"III only\": 1}}, \"q-34934\": {\"count\": 6, \"dimensions\": [8, 12], \"nullities\": [1, 3, 4, 8, 10], \"ranks\": [0, 2, 4, 5, 8, 11], \"truth_subsets\": {\"I and III only\": 2, \"I, II, and III\": 1, \"II only\": 2, \"III only\": 1}}, \"q-35424\": {\"count\": 1, \"dimensions\": [3], \"nullities\": [1], \"ranks\": [2], \"truth_subsets\": {\"I and II only\": 1}}, \"q-35435\": {\"count\": 3, \"dimensions\": [4], \"nullities\": [1], \"ranks\": [3], \"truth_subsets\": {\"I and II only\": 1, \"I and III only\": 2}}, \"q-79367\": {\"count\": 6, \"dimensions\": [5, 10, 15], \"nullities\": [0, 3, 5, 6, 8, 11], \"ranks\": [2, 4, 5, 7, 9], \"truth_subsets\": {\"I and II only\": 1, \"I and III only\": 1, \"I only\": 1, \"I, II, and III\": 1, \"II and III only\": 2}}, \"q-79410\": {\"count\": 3, \"dimensions\": [4], \"nullities\": [1], \"ranks\": [3], \"truth_subsets\": {\"I and II only\": 1, \"I and III only\": 1, \"II only\": 1}}, \"q-79411\": {\"count\": 7, \"dimensions\": [6, 12, 18], \"nullities\": [1, 4, 5, 6, 11], \"ranks\": [0, 1, 5, 8, 12], \"truth_subsets\": {\"I and II only\": 1, \"I only\": 2, \"II only\": 1, \"III only\": 3}}, \"q-79417\": {\"count\": 4, \"dimensions\": [10, 15], \"nullities\": [2, 7, 11], \"ranks\": [3, 4, 8, 13], \"truth_subsets\": {\"I only\": 1, \"I, II, and III\": 1, \"II only\": 1, \"III only\": 1}}, \"q-79420\": {\"count\": 6, \"dimensions\": [8, 12], \"nullities\": [2, 3, 4, 7, 8, 9], \"ranks\": [1, 3, 4, 6, 8, 9], \"truth_subsets\": {\"I and III only\": 3, \"I, II, and III\": 1, \"II only\": 1, \"III only\": 1}}, \"q-79423\": {\"count\": 3, \"dimensions\": [4], \"nullities\": [3], \"ranks\": [1], \"truth_subsets\": {\"I and III only\": 1, \"II and III only\": 1, \"III only\": 1}}}"
+    },
+    {
+      "case": "moderate_raw",
+      "sample_refs": [
+        "delivery-input-moderate.json"
+      ],
+      "result": "{\"q-142538\": {\"count\": 9, \"dimensions\": [5, 10, 15], \"nullities\": [0, 1, 2, 3, 4, 6, 12], \"ranks\": [1, 3, 4, 5, 6, 7, 8, 9], \"truth_subsets\": {\"I only\": 2, \"II and III only\": 2, \"II only\": 3, \"III only\": 2}}, \"q-142544\": {\"count\": 10, \"dimensions\": [7, 14], \"nullities\": [0, 1, 2, 4, 5, 6, 7], \"ranks\": [0, 1, 2, 3, 5, 6, 7, 12], \"truth_subsets\": {\"I and II only\": 2, \"I and III only\": 5, \"I, II, and III\": 1, \"II and III only\": 1, \"II only\": 1}}, \"q-143533\": {\"count\": 6, \"dimensions\": [3], \"nullities\": [2], \"ranks\": [1], \"truth_subsets\": {\"I and III only\": 2, \"I only\": 1, \"I, II, and III\": 1, \"II and III only\": 1, \"III only\": 1}}, \"q-34934\": {\"count\": 9, \"dimensions\": [4, 8, 12], \"nullities\": [1, 3, 4, 5, 8, 10], \"ranks\": [0, 1, 2, 3, 4, 5, 8, 11], \"truth_subsets\": {\"I and III only\": 4, \"I, II, and III\": 1, \"II only\": 2, \"III only\": 2}}, \"q-79367\": {\"count\": 9, \"dimensions\": [5, 10, 15], \"nullities\": [0, 3, 5, 6, 8, 9, 11], \"ranks\": [2, 4, 5, 6, 7, 9], \"truth_subsets\": {\"I and II only\": 1, \"I and III only\": 1, \"I only\": 2, \"I, II, and III\": 3, \"II and III only\": 2}}, \"q-79411\": {\"count\": 10, \"dimensions\": [6, 12, 18], \"nullities\": [1, 3, 4, 5, 6, 11, 17], \"ranks\": [0, 1, 3, 5, 8, 12], \"truth_subsets\": {\"I and II only\": 1, \"I and III only\": 1, \"I only\": 3, \"II only\": 1, \"III only\": 4}}, \"q-79417\": {\"count\": 7, \"dimensions\": [5, 10, 15], \"nullities\": [1, 2, 7, 10, 11], \"ranks\": [0, 3, 4, 8, 9, 13], \"truth_subsets\": {\"I and II only\": 1, \"I and III only\": 1, \"I only\": 1, \"I, II, and III\": 1, \"II only\": 1, \"III only\": 2}}, \"q-79420\": {\"count\": 9, \"dimensions\": [4, 8, 12], \"nullities\": [0, 2, 3, 4, 6, 7, 8, 9, 11], \"ranks\": [1, 2, 3, 4, 6, 8, 9], \"truth_subsets\": {\"I and II only\": 1, \"I and III only\": 4, \"I, II, and III\": 1, \"II only\": 1, \"III only\": 2}}}"
+    },
+    {
+      "case": "hard_raw",
+      "sample_refs": [
+        "delivery-input-hard.json"
+      ],
+      "result": "{\"q-139986\": {\"count\": 6, \"dimensions\": [4], \"nullities\": [1], \"ranks\": [3], \"truth_subsets\": {\"I, II, and III\": 2, \"II and III only\": 1, \"III only\": 3}}, \"q-142542\": {\"count\": 4, \"dimensions\": [5], \"nullities\": [2], \"ranks\": [3], \"truth_subsets\": {\"I and II only\": 1, \"I only\": 1, \"II only\": 1, \"III only\": 1}}, \"q-34930\": {\"count\": 4, \"dimensions\": [4], \"nullities\": [2], \"ranks\": [2], \"truth_subsets\": {\"I and II only\": 2, \"II only\": 1, \"III only\": 1}}, \"q-35424\": {\"count\": 4, \"dimensions\": [3], \"nullities\": [1], \"ranks\": [2], \"truth_subsets\": {\"I and II only\": 1, \"I and III only\": 1, \"II only\": 2}}, \"q-35435\": {\"count\": 6, \"dimensions\": [4], \"nullities\": [1], \"ranks\": [3], \"truth_subsets\": {\"I and II only\": 2, \"I and III only\": 3, \"I only\": 1}}, \"q-79410\": {\"count\": 6, \"dimensions\": [4], \"nullities\": [1], \"ranks\": [3], \"truth_subsets\": {\"I and II only\": 2, \"I and III only\": 1, \"II only\": 3}}, \"q-79423\": {\"count\": 6, \"dimensions\": [4], \"nullities\": [3], \"ranks\": [1], \"truth_subsets\": {\"I and III only\": 1, \"I only\": 1, \"II and III only\": 3, \"III only\": 1}}}"
+    },
+    {
+      "case": "moderate_delivered",
+      "sample_refs": [
+        "delivery-moderate/accepted.json"
+      ],
+      "result": "{\"q-142538\": {\"count\": 9, \"dimensions\": [5, 10, 15], \"nullities\": [0, 1, 2, 3, 4, 6, 12], \"ranks\": [1, 3, 4, 5, 6, 7, 8, 9], \"truth_subsets\": {\"I only\": 2, \"II and III only\": 2, \"II only\": 3, \"III only\": 2}}, \"q-142544\": {\"count\": 9, \"dimensions\": [7, 14], \"nullities\": [0, 1, 2, 4, 5, 6, 7], \"ranks\": [0, 1, 2, 3, 5, 6, 7, 12], \"truth_subsets\": {\"I and II only\": 2, \"I and III only\": 4, \"I, II, and III\": 1, \"II and III only\": 1, \"II only\": 1}}, \"q-143533\": {\"count\": 6, \"dimensions\": [3], \"nullities\": [2], \"ranks\": [1], \"truth_subsets\": {\"I and III only\": 2, \"I only\": 1, \"I, II, and III\": 1, \"II and III only\": 1, \"III only\": 1}}, \"q-34934\": {\"count\": 8, \"dimensions\": [4, 8, 12], \"nullities\": [1, 3, 4, 5, 8, 10], \"ranks\": [0, 1, 2, 3, 4, 5, 8, 11], \"truth_subsets\": {\"I and III only\": 3, \"I, II, and III\": 1, \"II only\": 2, \"III only\": 2}}, \"q-79367\": {\"count\": 9, \"dimensions\": [5, 10, 15], \"nullities\": [0, 3, 5, 6, 8, 9, 11], \"ranks\": [2, 4, 5, 6, 7, 9], \"truth_subsets\": {\"I and II only\": 1, \"I and III only\": 1, \"I only\": 2, \"I, II, and III\": 3, \"II and III only\": 2}}, \"q-79411\": {\"count\": 10, \"dimensions\": [6, 12, 18], \"nullities\": [1, 3, 4, 5, 6, 11, 17], \"ranks\": [0, 1, 3, 5, 8, 12], \"truth_subsets\": {\"I and II only\": 1, \"I and III only\": 1, \"I only\": 3, \"II only\": 1, \"III only\": 4}}, \"q-79417\": {\"count\": 7, \"dimensions\": [5, 10, 15], \"nullities\": [1, 2, 7, 10, 11], \"ranks\": [0, 3, 4, 8, 9, 13], \"truth_subsets\": {\"I and II only\": 1, \"I and III only\": 1, \"I only\": 1, \"I, II, and III\": 1, \"II only\": 1, \"III only\": 2}}, \"q-79420\": {\"count\": 9, \"dimensions\": [4, 8, 12], \"nullities\": [0, 2, 3, 4, 6, 7, 8, 9, 11], \"ranks\": [1, 2, 3, 4, 6, 8, 9], \"truth_subsets\": {\"I and II only\": 1, \"I and III only\": 4, \"I, II, and III\": 1, \"II only\": 1, \"III only\": 2}}}"
+    },
+    {
+      "case": "hard_delivered",
+      "sample_refs": [
+        "delivery-hard/accepted.json"
+      ],
+      "result": "{\"q-139986\": {\"count\": 5, \"dimensions\": [4], \"nullities\": [1], \"ranks\": [3], \"truth_subsets\": {\"I, II, and III\": 1, \"II and III only\": 1, \"III only\": 3}}, \"q-142542\": {\"count\": 4, \"dimensions\": [5], \"nullities\": [2], \"ranks\": [3], \"truth_subsets\": {\"I and II only\": 1, \"I only\": 1, \"II only\": 1, \"III only\": 1}}, \"q-34930\": {\"count\": 4, \"dimensions\": [4], \"nullities\": [2], \"ranks\": [2], \"truth_subsets\": {\"I and II only\": 2, \"II only\": 1, \"III only\": 1}}, \"q-35424\": {\"count\": 4, \"dimensions\": [3], \"nullities\": [1], \"ranks\": [2], \"truth_subsets\": {\"I and II only\": 1, \"I and III only\": 1, \"II only\": 2}}, \"q-35435\": {\"count\": 6, \"dimensions\": [4], \"nullities\": [1], \"ranks\": [3], \"truth_subsets\": {\"I and II only\": 2, \"I and III only\": 3, \"I only\": 1}}, \"q-79410\": {\"count\": 6, \"dimensions\": [4], \"nullities\": [1], \"ranks\": [3], \"truth_subsets\": {\"I and II only\": 2, \"I and III only\": 1, \"II only\": 3}}, \"q-79423\": {\"count\": 6, \"dimensions\": [4], \"nullities\": [3], \"ranks\": [1], \"truth_subsets\": {\"I and III only\": 1, \"I only\": 1, \"II and III only\": 3, \"III only\": 1}}}"
+    },
+    {
+      "case": "batch_raw",
+      "sample_refs": [
+        "runner-batch.json"
+      ],
+      "result": "{\"q-142544\": {\"count\": 1, \"dimensions\": [7], \"nullities\": [2], \"ranks\": [5], \"truth_subsets\": {\"I and III only\": 1}}, \"q-143533\": {\"count\": 1, \"dimensions\": [3], \"nullities\": [2], \"ranks\": [1], \"truth_subsets\": {\"I and III only\": 1}}, \"q-34934\": {\"count\": 1, \"dimensions\": [8], \"nullities\": [5], \"ranks\": [3], \"truth_subsets\": {\"II only\": 1}}, \"q-79367\": {\"count\": 1, \"dimensions\": [10], \"nullities\": [8], \"ranks\": [2], \"truth_subsets\": {\"II and III only\": 1}}, \"q-79417\": {\"count\": 1, \"dimensions\": [5], \"nullities\": [5], \"ranks\": [0], \"truth_subsets\": {\"III only\": 1}}}"
+    },
+    {
+      "case": "batch_delivered",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ],
+      "result": "{\"q-142544\": {\"count\": 1, \"dimensions\": [7], \"nullities\": [2], \"ranks\": [5], \"truth_subsets\": {\"I and III only\": 1}}, \"q-143533\": {\"count\": 1, \"dimensions\": [3], \"nullities\": [2], \"ranks\": [1], \"truth_subsets\": {\"I and III only\": 1}}, \"q-34934\": {\"count\": 1, \"dimensions\": [8], \"nullities\": [5], \"ranks\": [3], \"truth_subsets\": {\"II only\": 1}}, \"q-79367\": {\"count\": 1, \"dimensions\": [10], \"nullities\": [8], \"ranks\": [2], \"truth_subsets\": {\"II and III only\": 1}}, \"q-79417\": {\"count\": 1, \"dimensions\": [5], \"nullities\": [5], \"ranks\": [0], \"truth_subsets\": {\"III only\": 1}}}"
+    },
+    {
+      "case": "All supported source-bank truth outcomes, unchanged construction",
+      "sample_refs": [
+        "prior-decision-records.json",
+        "prior-decision-results.json",
+        "runtime-change.json"
+      ],
+      "result": "Reused independent exhaustive assignment evidence; finite bank restrictions preserve source response contract rather than fixing qualifying labels."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Hold all three claims fixed; pivot count 3 -> 4 at n=4",
+      "expected": "Only pivot count changes; answer I and III only -> II only.",
+      "observed": "Seed25 production outputs keep claims identical; explanations, rendered selections and all-choice native outcomes follow changed rank/nullity.",
+      "status": "passed",
+      "justification": "Rank-nullity and the invertible matrix theorem require reconsideration when the supplied count changes, as in source 50dd3dbf-46fe-5a60-971b-ec20882fc4a4.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "native-input.json",
+        "native-report.json",
+        "render-all/input.json",
+        "render-all/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Rescale coordinates (2a,a,b) -> (6a,2a,b), same independent dimension",
+      "expected": "Dimension and Boolean response remain invariant; displayed null-space basis changes.",
+      "observed": "Both outputs have nullity2/rank1 and TFT response, actual grader and UI agree.",
+      "status": "passed",
+      "justification": "Source 5342a760-4f6b-57f7-989c-35eadd9600b3 derives dimension from two independent directions; nonzero coordinate scaling preserves this fact.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "native-input.json",
+        "native-report.json",
+        "render-all/input.json",
+        "render-all/rendering.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "Recognizable source template",
+      "subgroup": "normal_cli_raw:q-79411",
+      "scope": "within_template",
+      "strategy": "Always return III only",
+      "correct": 3,
+      "total": 7,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Complete response success, not just number of checked boxes. Comparison is uniform five-choice radio or seven nonempty subsets. Sample-specific best constant is not perfect; no universal absence-of-shortcuts claim.",
+      "sample_refs": [
+        "fresh-cli-records.json",
+        "current-profile/profile-omission-records.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template",
+      "subgroup": "normal_cli_raw:q-79367",
+      "scope": "within_template",
+      "strategy": "Always return II and III only",
+      "correct": 2,
+      "total": 6,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Complete response success, not just number of checked boxes. Comparison is uniform five-choice radio or seven nonempty subsets. Sample-specific best constant is not perfect; no universal absence-of-shortcuts claim.",
+      "sample_refs": [
+        "fresh-cli-records.json",
+        "current-profile/profile-omission-records.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template",
+      "subgroup": "normal_cli_raw:q-79420",
+      "scope": "within_template",
+      "strategy": "Always return I and III only",
+      "correct": 3,
+      "total": 6,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Complete response success, not just number of checked boxes. Comparison is uniform five-choice radio or seven nonempty subsets. Sample-specific best constant is not perfect; no universal absence-of-shortcuts claim.",
+      "sample_refs": [
+        "fresh-cli-records.json",
+        "current-profile/profile-omission-records.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template",
+      "subgroup": "normal_cli_raw:q-143533",
+      "scope": "within_template",
+      "strategy": "Always return III only",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Complete response success, not just number of checked boxes. Comparison is uniform five-choice radio or seven nonempty subsets. Sample-specific best constant is not perfect; no universal absence-of-shortcuts claim.",
+      "sample_refs": [
+        "fresh-cli-records.json",
+        "current-profile/profile-omission-records.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template",
+      "subgroup": "normal_cli_raw:q-142538",
+      "scope": "within_template",
+      "strategy": "Always return III only",
+      "correct": 2,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Complete response success, not just number of checked boxes. Comparison is uniform five-choice radio or seven nonempty subsets. Sample-specific best constant is not perfect; no universal absence-of-shortcuts claim.",
+      "sample_refs": [
+        "fresh-cli-records.json",
+        "current-profile/profile-omission-records.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template",
+      "subgroup": "normal_cli_raw:q-142544",
+      "scope": "within_template",
+      "strategy": "Always return I and III only",
+      "correct": 3,
+      "total": 7,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Complete response success, not just number of checked boxes. Comparison is uniform five-choice radio or seven nonempty subsets. Sample-specific best constant is not perfect; no universal absence-of-shortcuts claim.",
+      "sample_refs": [
+        "fresh-cli-records.json",
+        "current-profile/profile-omission-records.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template",
+      "subgroup": "normal_cli_raw:q-34934",
+      "scope": "within_template",
+      "strategy": "Always return I and III only",
+      "correct": 2,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Complete response success, not just number of checked boxes. Comparison is uniform five-choice radio or seven nonempty subsets. Sample-specific best constant is not perfect; no universal absence-of-shortcuts claim.",
+      "sample_refs": [
+        "fresh-cli-records.json",
+        "current-profile/profile-omission-records.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template",
+      "subgroup": "normal_cli_raw:q-79417",
+      "scope": "within_template",
+      "strategy": "Always return III only",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Complete response success, not just number of checked boxes. Comparison is uniform five-choice radio or seven nonempty subsets. Sample-specific best constant is not perfect; no universal absence-of-shortcuts claim.",
+      "sample_refs": [
+        "fresh-cli-records.json",
+        "current-profile/profile-omission-records.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template",
+      "subgroup": "normal_cli_raw:q-35435",
+      "scope": "within_template",
+      "strategy": "Always return I and III only",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Complete response success, not just number of checked boxes. Comparison is uniform five-choice radio or seven nonempty subsets. Sample-specific best constant is not perfect; no universal absence-of-shortcuts claim.",
+      "sample_refs": [
+        "fresh-cli-records.json",
+        "current-profile/profile-omission-records.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template",
+      "subgroup": "normal_cli_raw:q-79410",
+      "scope": "within_template",
+      "strategy": "Always return I and II only",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Complete response success, not just number of checked boxes. Comparison is uniform five-choice radio or seven nonempty subsets. Sample-specific best constant is not perfect; no universal absence-of-shortcuts claim.",
+      "sample_refs": [
+        "fresh-cli-records.json",
+        "current-profile/profile-omission-records.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template",
+      "subgroup": "normal_cli_raw:q-139986",
+      "scope": "within_template",
+      "strategy": "Always return III only",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Complete response success, not just number of checked boxes. Comparison is uniform five-choice radio or seven nonempty subsets. Sample-specific best constant is not perfect; no universal absence-of-shortcuts claim.",
+      "sample_refs": [
+        "fresh-cli-records.json",
+        "current-profile/profile-omission-records.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template",
+      "subgroup": "normal_cli_raw:q-79423",
+      "scope": "within_template",
+      "strategy": "Always return II and III only",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Complete response success, not just number of checked boxes. Comparison is uniform five-choice radio or seven nonempty subsets. Sample-specific best constant is not perfect; no universal absence-of-shortcuts claim.",
+      "sample_refs": [
+        "fresh-cli-records.json",
+        "current-profile/profile-omission-records.json"
+      ]
+    },
+    {
+      "cue": "Rendered radio answer position",
+      "subgroup": "normal_cli_raw radio, task-item contexts 1..10",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose displayed position 5",
+      "correct": 64,
+      "total": 270,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Reproduces ui/learning.js choiceOrder exactly using explicit IDs; baseline 1/5. Future numeric field/entity/task IDs are not known, so this tests dependence on position, not the future order. The runner contains one radio record; ten contexts prevent mistaking its stored position for a fixed delivered cue.",
+      "sample_refs": [
+        "fresh-cli-records.json",
+        "current-profile/profile-omission-records.json"
+      ]
+    },
+    {
+      "cue": "Checkbox layout positions",
+      "subgroup": "normal_cli_raw checkbox",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always submit (True, False, True)",
+      "correct": 9,
+      "total": 33,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Full question success compared with uniform nonempty subset guessing (1/7). In the exact batch TFT solves 2/4 checkbox questions; selecting only the final field solves 1/4. All four last fields happen to be true, a partial correlation that does not solve the three-judgment tasks.",
+      "sample_refs": [
+        "fresh-cli-records.json",
+        "current-profile/profile-omission-records.json"
+      ]
+    },
+    {
+      "cue": "Fixed checkbox action within template",
+      "subgroup": "normal_cli_raw:q-79367",
+      "scope": "within_template",
+      "strategy": "Always select positions [2, 3]",
+      "correct": 2,
+      "total": 6,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison 1/7 over nonempty three-checkbox responses. Different exact masks occur inside this recognizable template; selection count alone does not determine which statements qualify.",
+      "sample_refs": [
+        "fresh-cli-records.json",
+        "current-profile/profile-omission-records.json"
+      ]
+    },
+    {
+      "cue": "Fixed checkbox action within template",
+      "subgroup": "normal_cli_raw:q-79420",
+      "scope": "within_template",
+      "strategy": "Always select positions [1, 3]",
+      "correct": 3,
+      "total": 6,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison 1/7 over nonempty three-checkbox responses. Different exact masks occur inside this recognizable template; selection count alone does not determine which statements qualify.",
+      "sample_refs": [
+        "fresh-cli-records.json",
+        "current-profile/profile-omission-records.json"
+      ]
+    },
+    {
+      "cue": "Fixed checkbox action within template",
+      "subgroup": "normal_cli_raw:q-143533",
+      "scope": "within_template",
+      "strategy": "Always select positions [3]",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison 1/7 over nonempty three-checkbox responses. Different exact masks occur inside this recognizable template; selection count alone does not determine which statements qualify.",
+      "sample_refs": [
+        "fresh-cli-records.json",
+        "current-profile/profile-omission-records.json"
+      ]
+    },
+    {
+      "cue": "Fixed checkbox action within template",
+      "subgroup": "normal_cli_raw:q-142544",
+      "scope": "within_template",
+      "strategy": "Always select positions [1, 3]",
+      "correct": 3,
+      "total": 7,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison 1/7 over nonempty three-checkbox responses. Different exact masks occur inside this recognizable template; selection count alone does not determine which statements qualify.",
+      "sample_refs": [
+        "fresh-cli-records.json",
+        "current-profile/profile-omission-records.json"
+      ]
+    },
+    {
+      "cue": "Fixed checkbox action within template",
+      "subgroup": "normal_cli_raw:q-79417",
+      "scope": "within_template",
+      "strategy": "Always select positions [3]",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison 1/7 over nonempty three-checkbox responses. Different exact masks occur inside this recognizable template; selection count alone does not determine which statements qualify.",
+      "sample_refs": [
+        "fresh-cli-records.json",
+        "current-profile/profile-omission-records.json"
+      ]
+    },
+    {
+      "cue": "Fixed checkbox action within template",
+      "subgroup": "normal_cli_raw:q-139986",
+      "scope": "within_template",
+      "strategy": "Always select positions [3]",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison 1/7 over nonempty three-checkbox responses. Different exact masks occur inside this recognizable template; selection count alone does not determine which statements qualify.",
+      "sample_refs": [
+        "fresh-cli-records.json",
+        "current-profile/profile-omission-records.json"
+      ]
+    },
+    {
+      "cue": "Fixed checkbox action within template",
+      "subgroup": "normal_cli_raw:q-79423",
+      "scope": "within_template",
+      "strategy": "Always select positions [2, 3]",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison 1/7 over nonempty three-checkbox responses. Different exact masks occur inside this recognizable template; selection count alone does not determine which statements qualify.",
+      "sample_refs": [
+        "fresh-cli-records.json",
+        "current-profile/profile-omission-records.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template",
+      "subgroup": "moderate_raw:q-34934",
+      "scope": "within_template",
+      "strategy": "Always return I and III only",
+      "correct": 4,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Complete response success, not just number of checked boxes. Comparison is uniform five-choice radio or seven nonempty subsets. Sample-specific best constant is not perfect; no universal absence-of-shortcuts claim.",
+      "sample_refs": [
+        "delivery-input-moderate.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template",
+      "subgroup": "moderate_raw:q-142544",
+      "scope": "within_template",
+      "strategy": "Always return I and III only",
+      "correct": 5,
+      "total": 10,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Complete response success, not just number of checked boxes. Comparison is uniform five-choice radio or seven nonempty subsets. Sample-specific best constant is not perfect; no universal absence-of-shortcuts claim.",
+      "sample_refs": [
+        "delivery-input-moderate.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template",
+      "subgroup": "moderate_raw:q-143533",
+      "scope": "within_template",
+      "strategy": "Always return I and III only",
+      "correct": 2,
+      "total": 6,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Complete response success, not just number of checked boxes. Comparison is uniform five-choice radio or seven nonempty subsets. Sample-specific best constant is not perfect; no universal absence-of-shortcuts claim.",
+      "sample_refs": [
+        "delivery-input-moderate.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template",
+      "subgroup": "moderate_raw:q-79417",
+      "scope": "within_template",
+      "strategy": "Always return III only",
+      "correct": 2,
+      "total": 7,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Complete response success, not just number of checked boxes. Comparison is uniform five-choice radio or seven nonempty subsets. Sample-specific best constant is not perfect; no universal absence-of-shortcuts claim.",
+      "sample_refs": [
+        "delivery-input-moderate.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template",
+      "subgroup": "moderate_raw:q-79420",
+      "scope": "within_template",
+      "strategy": "Always return I and III only",
+      "correct": 4,
+      "total": 9,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Complete response success, not just number of checked boxes. Comparison is uniform five-choice radio or seven nonempty subsets. Sample-specific best constant is not perfect; no universal absence-of-shortcuts claim.",
+      "sample_refs": [
+        "delivery-input-moderate.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template",
+      "subgroup": "moderate_raw:q-79367",
+      "scope": "within_template",
+      "strategy": "Always return I, II, and III",
+      "correct": 3,
+      "total": 9,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Complete response success, not just number of checked boxes. Comparison is uniform five-choice radio or seven nonempty subsets. Sample-specific best constant is not perfect; no universal absence-of-shortcuts claim.",
+      "sample_refs": [
+        "delivery-input-moderate.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template",
+      "subgroup": "moderate_raw:q-142538",
+      "scope": "within_template",
+      "strategy": "Always return II only",
+      "correct": 3,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Complete response success, not just number of checked boxes. Comparison is uniform five-choice radio or seven nonempty subsets. Sample-specific best constant is not perfect; no universal absence-of-shortcuts claim.",
+      "sample_refs": [
+        "delivery-input-moderate.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template",
+      "subgroup": "moderate_raw:q-79411",
+      "scope": "within_template",
+      "strategy": "Always return III only",
+      "correct": 4,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Complete response success, not just number of checked boxes. Comparison is uniform five-choice radio or seven nonempty subsets. Sample-specific best constant is not perfect; no universal absence-of-shortcuts claim.",
+      "sample_refs": [
+        "delivery-input-moderate.json"
+      ]
+    },
+    {
+      "cue": "Rendered radio answer position",
+      "subgroup": "moderate_raw radio, task-item contexts 1..10",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose displayed position 1",
+      "correct": 67,
+      "total": 280,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Reproduces ui/learning.js choiceOrder exactly using explicit IDs; baseline 1/5. Future numeric field/entity/task IDs are not known, so this tests dependence on position, not the future order. The runner contains one radio record; ten contexts prevent mistaking its stored position for a fixed delivered cue.",
+      "sample_refs": [
+        "delivery-input-moderate.json"
+      ]
+    },
+    {
+      "cue": "Checkbox layout positions",
+      "subgroup": "moderate_raw checkbox",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always submit (True, False, True)",
+      "correct": 13,
+      "total": 41,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Full question success compared with uniform nonempty subset guessing (1/7). In the exact batch TFT solves 2/4 checkbox questions; selecting only the final field solves 1/4. All four last fields happen to be true, a partial correlation that does not solve the three-judgment tasks.",
+      "sample_refs": [
+        "delivery-input-moderate.json"
+      ]
+    },
+    {
+      "cue": "Fixed checkbox action within template",
+      "subgroup": "moderate_raw:q-142544",
+      "scope": "within_template",
+      "strategy": "Always select positions [1, 3]",
+      "correct": 5,
+      "total": 10,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison 1/7 over nonempty three-checkbox responses. Different exact masks occur inside this recognizable template; selection count alone does not determine which statements qualify.",
+      "sample_refs": [
+        "delivery-input-moderate.json"
+      ]
+    },
+    {
+      "cue": "Fixed checkbox action within template",
+      "subgroup": "moderate_raw:q-143533",
+      "scope": "within_template",
+      "strategy": "Always select positions [1, 3]",
+      "correct": 2,
+      "total": 6,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison 1/7 over nonempty three-checkbox responses. Different exact masks occur inside this recognizable template; selection count alone does not determine which statements qualify.",
+      "sample_refs": [
+        "delivery-input-moderate.json"
+      ]
+    },
+    {
+      "cue": "Fixed checkbox action within template",
+      "subgroup": "moderate_raw:q-79417",
+      "scope": "within_template",
+      "strategy": "Always select positions [3]",
+      "correct": 2,
+      "total": 7,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison 1/7 over nonempty three-checkbox responses. Different exact masks occur inside this recognizable template; selection count alone does not determine which statements qualify.",
+      "sample_refs": [
+        "delivery-input-moderate.json"
+      ]
+    },
+    {
+      "cue": "Fixed checkbox action within template",
+      "subgroup": "moderate_raw:q-79420",
+      "scope": "within_template",
+      "strategy": "Always select positions [1, 3]",
+      "correct": 4,
+      "total": 9,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison 1/7 over nonempty three-checkbox responses. Different exact masks occur inside this recognizable template; selection count alone does not determine which statements qualify.",
+      "sample_refs": [
+        "delivery-input-moderate.json"
+      ]
+    },
+    {
+      "cue": "Fixed checkbox action within template",
+      "subgroup": "moderate_raw:q-79367",
+      "scope": "within_template",
+      "strategy": "Always select positions [1, 2, 3]",
+      "correct": 3,
+      "total": 9,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison 1/7 over nonempty three-checkbox responses. Different exact masks occur inside this recognizable template; selection count alone does not determine which statements qualify.",
+      "sample_refs": [
+        "delivery-input-moderate.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template",
+      "subgroup": "hard_raw:q-34930",
+      "scope": "within_template",
+      "strategy": "Always return I and II only",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Complete response success, not just number of checked boxes. Comparison is uniform five-choice radio or seven nonempty subsets. Sample-specific best constant is not perfect; no universal absence-of-shortcuts claim.",
+      "sample_refs": [
+        "delivery-input-hard.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template",
+      "subgroup": "hard_raw:q-79423",
+      "scope": "within_template",
+      "strategy": "Always return II and III only",
+      "correct": 3,
+      "total": 6,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Complete response success, not just number of checked boxes. Comparison is uniform five-choice radio or seven nonempty subsets. Sample-specific best constant is not perfect; no universal absence-of-shortcuts claim.",
+      "sample_refs": [
+        "delivery-input-hard.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template",
+      "subgroup": "hard_raw:q-139986",
+      "scope": "within_template",
+      "strategy": "Always return III only",
+      "correct": 3,
+      "total": 6,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Complete response success, not just number of checked boxes. Comparison is uniform five-choice radio or seven nonempty subsets. Sample-specific best constant is not perfect; no universal absence-of-shortcuts claim.",
+      "sample_refs": [
+        "delivery-input-hard.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template",
+      "subgroup": "hard_raw:q-142542",
+      "scope": "within_template",
+      "strategy": "Always return I only",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Complete response success, not just number of checked boxes. Comparison is uniform five-choice radio or seven nonempty subsets. Sample-specific best constant is not perfect; no universal absence-of-shortcuts claim.",
+      "sample_refs": [
+        "delivery-input-hard.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template",
+      "subgroup": "hard_raw:q-35435",
+      "scope": "within_template",
+      "strategy": "Always return I and III only",
+      "correct": 3,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Complete response success, not just number of checked boxes. Comparison is uniform five-choice radio or seven nonempty subsets. Sample-specific best constant is not perfect; no universal absence-of-shortcuts claim.",
+      "sample_refs": [
+        "delivery-input-hard.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template",
+      "subgroup": "hard_raw:q-79410",
+      "scope": "within_template",
+      "strategy": "Always return II only",
+      "correct": 3,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Complete response success, not just number of checked boxes. Comparison is uniform five-choice radio or seven nonempty subsets. Sample-specific best constant is not perfect; no universal absence-of-shortcuts claim.",
+      "sample_refs": [
+        "delivery-input-hard.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template",
+      "subgroup": "hard_raw:q-35424",
+      "scope": "within_template",
+      "strategy": "Always return II only",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Complete response success, not just number of checked boxes. Comparison is uniform five-choice radio or seven nonempty subsets. Sample-specific best constant is not perfect; no universal absence-of-shortcuts claim.",
+      "sample_refs": [
+        "delivery-input-hard.json"
+      ]
+    },
+    {
+      "cue": "Rendered radio answer position",
+      "subgroup": "hard_raw radio, task-item contexts 1..10",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose displayed position 1",
+      "correct": 48,
+      "total": 200,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Reproduces ui/learning.js choiceOrder exactly using explicit IDs; baseline 1/5. Future numeric field/entity/task IDs are not known, so this tests dependence on position, not the future order. The runner contains one radio record; ten contexts prevent mistaking its stored position for a fixed delivered cue.",
+      "sample_refs": [
+        "delivery-input-hard.json"
+      ]
+    },
+    {
+      "cue": "Checkbox layout positions",
+      "subgroup": "hard_raw checkbox",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always submit (False, False, True)",
+      "correct": 5,
+      "total": 16,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Full question success compared with uniform nonempty subset guessing (1/7). In the exact batch TFT solves 2/4 checkbox questions; selecting only the final field solves 1/4. All four last fields happen to be true, a partial correlation that does not solve the three-judgment tasks.",
+      "sample_refs": [
+        "delivery-input-hard.json"
+      ]
+    },
+    {
+      "cue": "Fixed checkbox action within template",
+      "subgroup": "hard_raw:q-79423",
+      "scope": "within_template",
+      "strategy": "Always select positions [2, 3]",
+      "correct": 3,
+      "total": 6,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison 1/7 over nonempty three-checkbox responses. Different exact masks occur inside this recognizable template; selection count alone does not determine which statements qualify.",
+      "sample_refs": [
+        "delivery-input-hard.json"
+      ]
+    },
+    {
+      "cue": "Fixed checkbox action within template",
+      "subgroup": "hard_raw:q-139986",
+      "scope": "within_template",
+      "strategy": "Always select positions [3]",
+      "correct": 3,
+      "total": 6,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison 1/7 over nonempty three-checkbox responses. Different exact masks occur inside this recognizable template; selection count alone does not determine which statements qualify.",
+      "sample_refs": [
+        "delivery-input-hard.json"
+      ]
+    },
+    {
+      "cue": "Fixed checkbox action within template",
+      "subgroup": "hard_raw:q-142542",
+      "scope": "within_template",
+      "strategy": "Always select positions [1]",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison 1/7 over nonempty three-checkbox responses. Different exact masks occur inside this recognizable template; selection count alone does not determine which statements qualify.",
+      "sample_refs": [
+        "delivery-input-hard.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template",
+      "subgroup": "moderate_delivered:q-34934",
+      "scope": "within_template",
+      "strategy": "Always return I and III only",
+      "correct": 3,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Complete response success, not just number of checked boxes. Comparison is uniform five-choice radio or seven nonempty subsets. Sample-specific best constant is not perfect; no universal absence-of-shortcuts claim.",
+      "sample_refs": [
+        "delivery-moderate/accepted.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template",
+      "subgroup": "moderate_delivered:q-142544",
+      "scope": "within_template",
+      "strategy": "Always return I and III only",
+      "correct": 4,
+      "total": 9,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Complete response success, not just number of checked boxes. Comparison is uniform five-choice radio or seven nonempty subsets. Sample-specific best constant is not perfect; no universal absence-of-shortcuts claim.",
+      "sample_refs": [
+        "delivery-moderate/accepted.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template",
+      "subgroup": "moderate_delivered:q-143533",
+      "scope": "within_template",
+      "strategy": "Always return I and III only",
+      "correct": 2,
+      "total": 6,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Complete response success, not just number of checked boxes. Comparison is uniform five-choice radio or seven nonempty subsets. Sample-specific best constant is not perfect; no universal absence-of-shortcuts claim.",
+      "sample_refs": [
+        "delivery-moderate/accepted.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template",
+      "subgroup": "moderate_delivered:q-79417",
+      "scope": "within_template",
+      "strategy": "Always return III only",
+      "correct": 2,
+      "total": 7,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Complete response success, not just number of checked boxes. Comparison is uniform five-choice radio or seven nonempty subsets. Sample-specific best constant is not perfect; no universal absence-of-shortcuts claim.",
+      "sample_refs": [
+        "delivery-moderate/accepted.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template",
+      "subgroup": "moderate_delivered:q-79420",
+      "scope": "within_template",
+      "strategy": "Always return I and III only",
+      "correct": 4,
+      "total": 9,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Complete response success, not just number of checked boxes. Comparison is uniform five-choice radio or seven nonempty subsets. Sample-specific best constant is not perfect; no universal absence-of-shortcuts claim.",
+      "sample_refs": [
+        "delivery-moderate/accepted.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template",
+      "subgroup": "moderate_delivered:q-79367",
+      "scope": "within_template",
+      "strategy": "Always return I, II, and III",
+      "correct": 3,
+      "total": 9,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Complete response success, not just number of checked boxes. Comparison is uniform five-choice radio or seven nonempty subsets. Sample-specific best constant is not perfect; no universal absence-of-shortcuts claim.",
+      "sample_refs": [
+        "delivery-moderate/accepted.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template",
+      "subgroup": "moderate_delivered:q-142538",
+      "scope": "within_template",
+      "strategy": "Always return II only",
+      "correct": 3,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Complete response success, not just number of checked boxes. Comparison is uniform five-choice radio or seven nonempty subsets. Sample-specific best constant is not perfect; no universal absence-of-shortcuts claim.",
+      "sample_refs": [
+        "delivery-moderate/accepted.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template",
+      "subgroup": "moderate_delivered:q-79411",
+      "scope": "within_template",
+      "strategy": "Always return III only",
+      "correct": 4,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Complete response success, not just number of checked boxes. Comparison is uniform five-choice radio or seven nonempty subsets. Sample-specific best constant is not perfect; no universal absence-of-shortcuts claim.",
+      "sample_refs": [
+        "delivery-moderate/accepted.json"
+      ]
+    },
+    {
+      "cue": "Rendered radio answer position",
+      "subgroup": "moderate_delivered radio, task-item contexts 1..10",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose displayed position 3",
+      "correct": 62,
+      "total": 270,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Reproduces ui/learning.js choiceOrder exactly using explicit IDs; baseline 1/5. Future numeric field/entity/task IDs are not known, so this tests dependence on position, not the future order. The runner contains one radio record; ten contexts prevent mistaking its stored position for a fixed delivered cue.",
+      "sample_refs": [
+        "delivery-moderate/accepted.json"
+      ]
+    },
+    {
+      "cue": "Checkbox layout positions",
+      "subgroup": "moderate_delivered checkbox",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always submit (True, False, True)",
+      "correct": 12,
+      "total": 40,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Full question success compared with uniform nonempty subset guessing (1/7). In the exact batch TFT solves 2/4 checkbox questions; selecting only the final field solves 1/4. All four last fields happen to be true, a partial correlation that does not solve the three-judgment tasks.",
+      "sample_refs": [
+        "delivery-moderate/accepted.json"
+      ]
+    },
+    {
+      "cue": "Fixed checkbox action within template",
+      "subgroup": "moderate_delivered:q-142544",
+      "scope": "within_template",
+      "strategy": "Always select positions [1, 3]",
+      "correct": 4,
+      "total": 9,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison 1/7 over nonempty three-checkbox responses. Different exact masks occur inside this recognizable template; selection count alone does not determine which statements qualify.",
+      "sample_refs": [
+        "delivery-moderate/accepted.json"
+      ]
+    },
+    {
+      "cue": "Fixed checkbox action within template",
+      "subgroup": "moderate_delivered:q-143533",
+      "scope": "within_template",
+      "strategy": "Always select positions [1, 3]",
+      "correct": 2,
+      "total": 6,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison 1/7 over nonempty three-checkbox responses. Different exact masks occur inside this recognizable template; selection count alone does not determine which statements qualify.",
+      "sample_refs": [
+        "delivery-moderate/accepted.json"
+      ]
+    },
+    {
+      "cue": "Fixed checkbox action within template",
+      "subgroup": "moderate_delivered:q-79417",
+      "scope": "within_template",
+      "strategy": "Always select positions [3]",
+      "correct": 2,
+      "total": 7,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison 1/7 over nonempty three-checkbox responses. Different exact masks occur inside this recognizable template; selection count alone does not determine which statements qualify.",
+      "sample_refs": [
+        "delivery-moderate/accepted.json"
+      ]
+    },
+    {
+      "cue": "Fixed checkbox action within template",
+      "subgroup": "moderate_delivered:q-79420",
+      "scope": "within_template",
+      "strategy": "Always select positions [1, 3]",
+      "correct": 4,
+      "total": 9,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison 1/7 over nonempty three-checkbox responses. Different exact masks occur inside this recognizable template; selection count alone does not determine which statements qualify.",
+      "sample_refs": [
+        "delivery-moderate/accepted.json"
+      ]
+    },
+    {
+      "cue": "Fixed checkbox action within template",
+      "subgroup": "moderate_delivered:q-79367",
+      "scope": "within_template",
+      "strategy": "Always select positions [1, 2, 3]",
+      "correct": 3,
+      "total": 9,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison 1/7 over nonempty three-checkbox responses. Different exact masks occur inside this recognizable template; selection count alone does not determine which statements qualify.",
+      "sample_refs": [
+        "delivery-moderate/accepted.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template",
+      "subgroup": "hard_delivered:q-34930",
+      "scope": "within_template",
+      "strategy": "Always return I and II only",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Complete response success, not just number of checked boxes. Comparison is uniform five-choice radio or seven nonempty subsets. Sample-specific best constant is not perfect; no universal absence-of-shortcuts claim.",
+      "sample_refs": [
+        "delivery-hard/accepted.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template",
+      "subgroup": "hard_delivered:q-79423",
+      "scope": "within_template",
+      "strategy": "Always return II and III only",
+      "correct": 3,
+      "total": 6,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Complete response success, not just number of checked boxes. Comparison is uniform five-choice radio or seven nonempty subsets. Sample-specific best constant is not perfect; no universal absence-of-shortcuts claim.",
+      "sample_refs": [
+        "delivery-hard/accepted.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template",
+      "subgroup": "hard_delivered:q-139986",
+      "scope": "within_template",
+      "strategy": "Always return III only",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Complete response success, not just number of checked boxes. Comparison is uniform five-choice radio or seven nonempty subsets. Sample-specific best constant is not perfect; no universal absence-of-shortcuts claim.",
+      "sample_refs": [
+        "delivery-hard/accepted.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template",
+      "subgroup": "hard_delivered:q-142542",
+      "scope": "within_template",
+      "strategy": "Always return I only",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Complete response success, not just number of checked boxes. Comparison is uniform five-choice radio or seven nonempty subsets. Sample-specific best constant is not perfect; no universal absence-of-shortcuts claim.",
+      "sample_refs": [
+        "delivery-hard/accepted.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template",
+      "subgroup": "hard_delivered:q-35435",
+      "scope": "within_template",
+      "strategy": "Always return I and III only",
+      "correct": 3,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Complete response success, not just number of checked boxes. Comparison is uniform five-choice radio or seven nonempty subsets. Sample-specific best constant is not perfect; no universal absence-of-shortcuts claim.",
+      "sample_refs": [
+        "delivery-hard/accepted.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template",
+      "subgroup": "hard_delivered:q-79410",
+      "scope": "within_template",
+      "strategy": "Always return II only",
+      "correct": 3,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Complete response success, not just number of checked boxes. Comparison is uniform five-choice radio or seven nonempty subsets. Sample-specific best constant is not perfect; no universal absence-of-shortcuts claim.",
+      "sample_refs": [
+        "delivery-hard/accepted.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template",
+      "subgroup": "hard_delivered:q-35424",
+      "scope": "within_template",
+      "strategy": "Always return II only",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Complete response success, not just number of checked boxes. Comparison is uniform five-choice radio or seven nonempty subsets. Sample-specific best constant is not perfect; no universal absence-of-shortcuts claim.",
+      "sample_refs": [
+        "delivery-hard/accepted.json"
+      ]
+    },
+    {
+      "cue": "Rendered radio answer position",
+      "subgroup": "hard_delivered radio, task-item contexts 1..10",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose displayed position 5",
+      "correct": 48,
+      "total": 200,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Reproduces ui/learning.js choiceOrder exactly using explicit IDs; baseline 1/5. Future numeric field/entity/task IDs are not known, so this tests dependence on position, not the future order. The runner contains one radio record; ten contexts prevent mistaking its stored position for a fixed delivered cue.",
+      "sample_refs": [
+        "delivery-hard/accepted.json"
+      ]
+    },
+    {
+      "cue": "Checkbox layout positions",
+      "subgroup": "hard_delivered checkbox",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always submit (False, False, True)",
+      "correct": 5,
+      "total": 15,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Full question success compared with uniform nonempty subset guessing (1/7). In the exact batch TFT solves 2/4 checkbox questions; selecting only the final field solves 1/4. All four last fields happen to be true, a partial correlation that does not solve the three-judgment tasks.",
+      "sample_refs": [
+        "delivery-hard/accepted.json"
+      ]
+    },
+    {
+      "cue": "Fixed checkbox action within template",
+      "subgroup": "hard_delivered:q-79423",
+      "scope": "within_template",
+      "strategy": "Always select positions [2, 3]",
+      "correct": 3,
+      "total": 6,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison 1/7 over nonempty three-checkbox responses. Different exact masks occur inside this recognizable template; selection count alone does not determine which statements qualify.",
+      "sample_refs": [
+        "delivery-hard/accepted.json"
+      ]
+    },
+    {
+      "cue": "Fixed checkbox action within template",
+      "subgroup": "hard_delivered:q-139986",
+      "scope": "within_template",
+      "strategy": "Always select positions [3]",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison 1/7 over nonempty three-checkbox responses. Different exact masks occur inside this recognizable template; selection count alone does not determine which statements qualify.",
+      "sample_refs": [
+        "delivery-hard/accepted.json"
+      ]
+    },
+    {
+      "cue": "Fixed checkbox action within template",
+      "subgroup": "hard_delivered:q-142542",
+      "scope": "within_template",
+      "strategy": "Always select positions [1]",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison 1/7 over nonempty three-checkbox responses. Different exact masks occur inside this recognizable template; selection count alone does not determine which statements qualify.",
+      "sample_refs": [
+        "delivery-hard/accepted.json"
+      ]
+    },
+    {
+      "cue": "Rendered radio answer position",
+      "subgroup": "batch_raw radio, task-item contexts 1..10",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose displayed position 1",
+      "correct": 3,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Reproduces ui/learning.js choiceOrder exactly using explicit IDs; baseline 1/5. Future numeric field/entity/task IDs are not known, so this tests dependence on position, not the future order. The runner contains one radio record; ten contexts prevent mistaking its stored position for a fixed delivered cue.",
+      "sample_refs": [
+        "runner-batch.json"
+      ]
+    },
+    {
+      "cue": "Checkbox layout positions",
+      "subgroup": "batch_raw checkbox",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always submit (True, False, True)",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Full question success compared with uniform nonempty subset guessing (1/7). In the exact batch TFT solves 2/4 checkbox questions; selecting only the final field solves 1/4. All four last fields happen to be true, a partial correlation that does not solve the three-judgment tasks.",
+      "sample_refs": [
+        "runner-batch.json"
+      ]
+    },
+    {
+      "cue": "Rendered radio answer position",
+      "subgroup": "batch_delivered radio, task-item contexts 1..10",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose displayed position 3",
+      "correct": 3,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Reproduces ui/learning.js choiceOrder exactly using explicit IDs; baseline 1/5. Future numeric field/entity/task IDs are not known, so this tests dependence on position, not the future order. The runner contains one radio record; ten contexts prevent mistaking its stored position for a fixed delivered cue.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "Checkbox layout positions",
+      "subgroup": "batch_delivered checkbox",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always submit (True, False, True)",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Full question success compared with uniform nonempty subset guessing (1/7). In the exact batch TFT solves 2/4 checkbox questions; selecting only the final field solves 1/4. All four last fields happen to be true, a partial correlation that does not solve the three-judgment tasks.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "Nonzero null-space generator",
+      "subgroup": "delivered vector profiles",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Infer singularity from a visible nonzero null vector",
+      "correct": 41,
+      "total": 41,
+      "baseline": 0.5,
+      "disposition": "intended_skill",
+      "conclusion": "Baseline is binary invertibility guessing. Nontrivial null space implies noninvertibility by the source theorem: this is intended knowledge. Other numerical claims still require rank/nullity and n. Count profiles additionally reach full rank.",
+      "sample_refs": [
+        "delivery-moderate/accepted.json",
+        "delivery-hard/accepted.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "Generator parameter rejection and nonempty-checkbox policy",
+      "Seeded profile selection and within-batch fingerprint deduplication",
+      "Shared publisher normalization, validation and captured inventory deduplication",
+      "Requested moderate/hard difficulty filtering",
+      "Learner history exclusion, rated-band weights and hash choice",
+      "Exact runner batch separate from broader controls"
+    ],
+    "sample_refs": [
+      "fresh-cli-records.json",
+      "fresh-cli-results.json",
+      "current-profile/profile-omission-records.json",
+      "rejection-results.json",
+      "delivery-batch/accepted.json",
+      "delivery-batch/delivery.json",
+      "delivery-moderate/accepted.json",
+      "delivery-moderate/delivery.json",
+      "delivery-hard/accepted.json",
+      "delivery-hard/delivery.json",
+      "selection-results.json",
+      "shortcut-results.json"
+    ],
+    "result": "Exact batch 5/5 accepted. Moderate controls69->67, hard36->35 after duplicates; all supported profiles and per-profile decision variation retained. Weighted learner selection has no truth-pattern filter; conditional selection evidence retains profiles in positively weighted bands."
+  },
+  "limitations": [
+    "No finite audit proves absence of all shortcuts.",
+    "Inventory basis5447 contains only the15 original source questions; no stored generated records were available or marked as generated. affected-inventory.json is verified empty for this capture.",
+    "Live policy, learner history, future entity/task IDs and concurrent inventory changes are unavailable; selection analysis is conditional on explicit scenarios.",
+    "Canonical example has no captured answer bank; easy difficulty is unsupported and rejected.",
+    "Exact batch has four checkbox last fields true, but this partial correlation alone solves only one of those four tasks; best constant full-checkbox response solves2/4. Larger controls show other masks in every profile."
+  ]
+}
