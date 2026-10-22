@@ -1,0 +1,9 @@
+Current generator repairs are preserved. No runtime files changed, no images published, and no database content changed.
+
+The latest failure was reproduced first: five captured historical records retain the sign-only extremum shortcut; the possible learner-history witness succeeds 64/64 times. All five are independently replayed from archival generation metadata and matched against complete stored prompts, solutions, banks and keys. All non-source inventory records were tested.
+
+Recheck command: `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/repair-290` (exit 1).
+
+Four current-generator finding regressions pass. Source replay covers 17 complete practice banks plus the canonical system. Three small batches retain contrasts before and after shared delivery filtering (14/14 accepted). Native grading accepts 7 correct choices and rejects 28 incorrect choices. Pinned dependencies and relocated CLI replay pass. Existing replacement records still match the generator and protected input hashes. Reinspected evidence/repair-3/render/question-002.png: equations, choices, matrix operations and solution are legible with no clipping.
+
+Unresolved: finding 591f580cadb749294588 concerns stored selectable content, not a demonstrated remaining generator construction defect. The staged replacement proposal is evidence/repair-3/inventory-repair-proposal.json. It has not been applied. The explicitly separate inventory-remediation workflow must resolve these five generated identities and provide a fresh captured pool. Changing this package cannot alter those stored banks. The strict executable regression remains failing; replacements are not substituted for actual inventory. No further unchanged-input generator-only retry can satisfy this criterion.

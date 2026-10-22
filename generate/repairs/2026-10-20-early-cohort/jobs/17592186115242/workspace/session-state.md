@@ -1,24 +1,22 @@
-# Current state — pass 287
+# Current state — pass 290
 
-Preserved the candidate runtime, manifest, source coverage, staged replacements,
-and all five strict executable regression declarations. No runtime change was
-justified by the unchanged feedback; no database or publication action occurred.
+Preserved completed runtime repairs, manifest, all five executable finding checks,
+and the verified replacement proposal. No runtime change, database write or publication.
 
-First reproduction:
+Latest failure reproduced first:
 `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory`
-Exit 1: five historical banks, 64/64 possible-history shortcut successes.
-See evidence/repair-287/initial-reproduction.json.
+Exit 1: five stored historical banks; possible-history shortcut witness 64/64.
 
-Validation:
-`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/repair-287`
-Exit 1 only for finding 591f580cadb749294588. Four current-generator regressions,
-17 complete source banks and canonical replay, delivery 14/14, native grading
-(7 correct accepted, 28 wrong rejected), exact pins and relocation pass.
-Protected hashes and staged replacement mapping verify. Reinspected retained
-actual-UI screenshot; no new render is needed for unchanged runtime.
+Retained recheck:
+`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/repair-290`
+Exit 1 solely for finding 591f580cadb749294588. Four current-generator regressions,
+17 complete source banks plus canonical replay, delivery 14/14, native grading
+(7 accepted, 28 rejected), exact dependencies, and relocation pass. Staged mapping
+and protected hashes verify. Reinspected retained UI screenshot.
+Commands and results: evidence/repair-290/{commands.json,results.json,outcome.md}.
 
-Next unfinished step: separate authorized inventory remediation of the five
-stored questions and fresh inventory capture. This task prohibits that database
-operation. Keep the strict historical regression; do not replace inventory with
-the unapplied proposal or weaken the check. No further generator-only repair is
-evidenced. Evidence: evidence/repair-287/{commands.json,results.json,outcome.md}.
+Next unfinished action belongs to the separate inventory-remediation workflow:
+resolve the five records in affected-inventory.json using the staged proposal,
+then recapture inventory and rerun the strict regression. That action is prohibited
+in this author task. Keep the failure explicit; do not modify the runtime or repeat
+unchanged-input author passes to conceal an immutable stored-pool defect.

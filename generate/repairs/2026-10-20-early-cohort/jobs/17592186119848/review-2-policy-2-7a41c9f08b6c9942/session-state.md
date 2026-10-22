@@ -1,1 +1,1 @@
-Completed source replay, Fraction-rank checking, grader input, controlled pair construction, declared-file relocation and retained regression positive/negative fixtures. Package unchanged. Next: actual delivery, native grader, renderer, shortcut measurements.
+Completed old failure reproduction, current batch pass, exact prefix repair, fresh sampler count/seed controls and independent math checks. Native main grader 337 checks passed. Delivery batch5/5, catalog39/39, fresh5/6 (one duplicate). Next targeted grader, actual UI inspection, evidence reports.
