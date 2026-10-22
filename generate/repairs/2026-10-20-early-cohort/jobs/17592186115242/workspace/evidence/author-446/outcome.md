@@ -1,0 +1,13 @@
+# Author 446 outcome
+
+Read current feedback and all five retained findings; latest history event is attempt 445. Reused the instructional account and completed construction repairs without editing runtime files.
+
+The learner eliminates x, solves the remaining affine coefficient for k, and interprets the residual equation. Canonical f2c7cfd3-da43-5208-bd0e-21692357fabe obtains `(k+4)y=-5`; tutorial e0c85152-daea-5a87-a3ba-81870558c7a2 defines inconsistency by no solutions. Source 534e2a93-e71a-5475-894e-dfd5ca99a3a6 has an interior correct option, so an extremum cue has no instructional justification. The existing rank-varying whole-bank construction and finite batch selection retain this method, easy arithmetic, and five-choice radio contract. Full scope, fixed-feature reasons, eligible roles and variations remain in instructional-account.md. No new construction defect is established by the latest feedback.
+
+Command: `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/author-446` (exit 1).
+
+The first subprocess reproduces finding 591f580cadb749294588 using the archived generator and captured complete stored records. Five of five historical generated records remain affected; no generated inventory record is untested. The retained possible-history witness has 64/64 sign-extremum successes. This is a possible conditional selection history, not a prediction of actual learner histories.
+
+All four current-generator findings pass. Seventeen complete source banks replay; three small batches preserve decision contrasts before and after shared delivery (14 accepted records). The native grader accepts 7 correct and rejects 28 incorrect submissions. Relocated replay and exact dependency checks pass. The existing five-record replacement proposal and protected hashes remain valid. Inspected the retained actual-UI screenshot; no runtime or presentation change warrants another render. The lesson's static classification flowchart supplies definitions and is not generated question content.
+
+Finding 591f580cadb749294588 cannot pass while the captured old banks remain selectable. The selector reads stored content independently of this generator. Database edits are explicitly prohibited, and publication belongs to the runner after review. The prepared reconciliation artifact remains unapplied; neither a new generator version nor a hypothetical replacement pool would prove this finding resolved. Preserve its strict failing regression. Status: unsupported pending separate inventory remediation and a fresh selectable-pool capture.
