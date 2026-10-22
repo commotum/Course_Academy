@@ -1,0 +1,237 @@
+{
+  "learner_operation": "Translate a linear combination of three R^3 vectors into three scalar equations, solve by Gaussian elimination/back substitution or identify inconsistency, then evaluate the requested signed sum of coefficients.",
+  "fixed_features": [
+    {
+      "feature": "Three vectors in R^3, three coefficient unknowns, one displayed RHS and one scalar target",
+      "justification": "The KP and e-6191 require component equations and 3x3 Gaussian elimination."
+    },
+    {
+      "feature": "Single five-choice radio response",
+      "justification": "All 15 source practice records use this contract."
+    },
+    {
+      "feature": "Bounded integer data and source-matched row operations",
+      "justification": "Keeps arithmetic workload in the demonstrated moderate/hard source range; does not justify fixed choice ranks."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Correct numeric choice",
+      "eligible_variation": "Numerical rank and bank position can vary independently of coefficient matrix. A particular rank is incidental to the source example.",
+      "observed": "Every supported moderate template fixes one numeric rank for all RHS values."
+    },
+    {
+      "role": "Target expression and coefficient signs",
+      "eligible_variation": "All-plus and signed sum are evidenced; the coefficient being subtracted is not inherently tied to a matrix.",
+      "observed": "q-74028 alone has a minus; target remains fixed by profile. No additional defect asserted solely from that conservative target limit."
+    },
+    {
+      "role": "Consistency classification",
+      "eligible_variation": "Moderate source systems uniquely solvable; hard examples inconsistent.",
+      "observed": "Retains difficulty split. Hard all-No-solution is a bounded source family; not counted as the demonstrated incidental shortcut."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "raw moderate",
+      "sample_refs": [
+        "samples-moderate.json",
+        "stage-results.json"
+      ],
+      "result": "42 records; fixed-rank strategy succeeds 42/42."
+    },
+    {
+      "case": "post delivery moderate",
+      "sample_refs": [
+        "delivery-moderate/accepted.json",
+        "stage-results.json"
+      ],
+      "result": "42 records; fixed-rank strategy succeeds 42/42."
+    },
+    {
+      "case": "raw runner batch",
+      "sample_refs": [
+        "runner-batch.json",
+        "stage-results.json"
+      ],
+      "result": "5 records; fixed-rank strategy succeeds 5/5."
+    },
+    {
+      "case": "post delivery runner batch",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "stage-results.json"
+      ],
+      "result": "5 records; fixed-rank strategy succeeds 5/5."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "q-73992: hold A and target fixed; b=(5,15,4) -> (7,20,5), from x=(1,2,3) to x=(1,2,4).",
+      "expected": "Target sum 6 -> 7; prompt, solution and grading follow.",
+      "observed": "6 -> 7 confirmed by exact solve, actual rendered prompts/solutions and native selection grading; minimum numeric choice stays correct in both.",
+      "status": "passed",
+      "justification": "Changing coefficient x3 changes the requested sum, so the full intended decision must be reconsidered. Passing dependency test does not defeat the rank shortcut.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "render-pairs-input.json",
+        "render-pairs/rendering.json",
+        "shortcut-native-results.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "q-73992: b=(5,15,4) -> (7,15,8), shifting x=(1,2,3) to (2,1,3).",
+      "expected": "Target sum stays 6 though the components and displayed solution change.",
+      "observed": "Sum stays 6; changed prompt and solution show the offsetting coefficient shift. Native grader accepts 6 in both and rejects other authored choices.",
+      "status": "passed",
+      "justification": "A*(1,-1,0) is irrelevant to the requested all-plus sum; it is not irrelevant to individual coefficients. This tests the source-implied target preservation dependency.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "render-pairs/rendering.json",
+        "shortcut-native-results.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "Fixed displayed coefficient matrix identifies bank profile; numeric choice rank",
+      "subgroup": "q-105168",
+      "scope": "within_template",
+      "strategy": "Ignore b and solve nothing; choose the 3th smallest numeric choice, ignoring No solution.",
+      "correct": 7,
+      "total": 7,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "7/7 correct. Baseline is uniform guessing among numeric choices (5 for q-105168, 4 otherwise), already granting knowledge that moderate is nonsingular. All numeric choices translate by the same target; rank is algebraically fixed. This is an answer-producing shortcut, independent of option shuffle.",
+      "sample_refs": [
+        "samples-moderate.json",
+        "coverage.json",
+        "shortcut-native-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed displayed coefficient matrix identifies bank profile; numeric choice rank",
+      "subgroup": "q-73992",
+      "scope": "within_template",
+      "strategy": "Ignore b and solve nothing; choose the 1th smallest numeric choice, ignoring No solution.",
+      "correct": 7,
+      "total": 7,
+      "baseline": 0.25,
+      "disposition": "defect",
+      "conclusion": "7/7 correct. Baseline is uniform guessing among numeric choices (5 for q-105168, 4 otherwise), already granting knowledge that moderate is nonsingular. All numeric choices translate by the same target; rank is algebraically fixed. This is an answer-producing shortcut, independent of option shuffle.",
+      "sample_refs": [
+        "samples-moderate.json",
+        "coverage.json",
+        "shortcut-native-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed displayed coefficient matrix identifies bank profile; numeric choice rank",
+      "subgroup": "q-74028",
+      "scope": "within_template",
+      "strategy": "Ignore b and solve nothing; choose the 3th smallest numeric choice, ignoring No solution.",
+      "correct": 7,
+      "total": 7,
+      "baseline": 0.25,
+      "disposition": "defect",
+      "conclusion": "7/7 correct. Baseline is uniform guessing among numeric choices (5 for q-105168, 4 otherwise), already granting knowledge that moderate is nonsingular. All numeric choices translate by the same target; rank is algebraically fixed. This is an answer-producing shortcut, independent of option shuffle.",
+      "sample_refs": [
+        "samples-moderate.json",
+        "coverage.json",
+        "shortcut-native-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed displayed coefficient matrix identifies bank profile; numeric choice rank",
+      "subgroup": "q-74032",
+      "scope": "within_template",
+      "strategy": "Ignore b and solve nothing; choose the 1th smallest numeric choice, ignoring No solution.",
+      "correct": 7,
+      "total": 7,
+      "baseline": 0.25,
+      "disposition": "defect",
+      "conclusion": "7/7 correct. Baseline is uniform guessing among numeric choices (5 for q-105168, 4 otherwise), already granting knowledge that moderate is nonsingular. All numeric choices translate by the same target; rank is algebraically fixed. This is an answer-producing shortcut, independent of option shuffle.",
+      "sample_refs": [
+        "samples-moderate.json",
+        "coverage.json",
+        "shortcut-native-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed displayed coefficient matrix identifies bank profile; numeric choice rank",
+      "subgroup": "q-74035",
+      "scope": "within_template",
+      "strategy": "Ignore b and solve nothing; choose the 2th smallest numeric choice, ignoring No solution.",
+      "correct": 7,
+      "total": 7,
+      "baseline": 0.25,
+      "disposition": "defect",
+      "conclusion": "7/7 correct. Baseline is uniform guessing among numeric choices (5 for q-105168, 4 otherwise), already granting knowledge that moderate is nonsingular. All numeric choices translate by the same target; rank is algebraically fixed. This is an answer-producing shortcut, independent of option shuffle.",
+      "sample_refs": [
+        "samples-moderate.json",
+        "coverage.json",
+        "shortcut-native-results.json"
+      ]
+    },
+    {
+      "cue": "Fixed displayed coefficient matrix identifies bank profile; numeric choice rank",
+      "subgroup": "q-74046",
+      "scope": "within_template",
+      "strategy": "Ignore b and solve nothing; choose the 2th smallest numeric choice, ignoring No solution.",
+      "correct": 7,
+      "total": 7,
+      "baseline": 0.25,
+      "disposition": "defect",
+      "conclusion": "7/7 correct. Baseline is uniform guessing among numeric choices (5 for q-105168, 4 otherwise), already granting knowledge that moderate is nonsingular. All numeric choices translate by the same target; rank is algebraically fixed. This is an answer-producing shortcut, independent of option shuffle.",
+      "sample_refs": [
+        "samples-moderate.json",
+        "coverage.json",
+        "shortcut-native-results.json"
+      ]
+    },
+    {
+      "cue": "Coefficient-matrix signature and fixed numeric rank map",
+      "subgroup": "Exact runner batch after shared delivery filtering",
+      "scope": "overall",
+      "strategy": "Apply the six-template rank map without using b or solving for coefficients.",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.24,
+      "disposition": "defect",
+      "conclusion": "5/5 accepted records answered correctly. Comparison 0.24 averages numeric-only random guessing: one 1/5 and four 1/4. Every published candidate remains vulnerable, even though the batch has five different templates.",
+      "sample_refs": [
+        "runner-batch.json",
+        "delivery-batch/accepted.json",
+        "shortcut-native-results.json",
+        "selection-results.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "generator rejection/resampling inspection and explicit consistent-hard rejection",
+      "shared publisher requested-difficulty validation",
+      "shared normalization and captured-inventory/within-batch deduplication",
+      "question_selection.rs weighted bands and history exclusion; conditional within-band reproduction for every generated-batch freshness subset"
+    ],
+    "sample_refs": [
+      "packaging.json",
+      "stage-results.json",
+      "delivery-batch/delivery.json",
+      "delivery-moderate/delivery.json",
+      "delivery-hard/delivery.json",
+      "selection-results.json"
+    ],
+    "result": "All 5 exact batch records and all 42 fresh moderate samples survive. Every fresh subset retains the record-wise shortcut. Captured inventory basis 5401 contains original source questions only; no generated stored instances demonstrated."
+  },
+  "limitations": [
+    "Finite tests do not prove absence of every shortcut. The fixed-rank defect also follows algebraically from bank() translating all numeric choices together.",
+    "Live learner history/weights and future inventory unavailable; selection conclusions are conditional on generated records being selected.",
+    "Source replay fails for three newly complete practice families and canonical example; author capture is basis 2584 whereas current source/inventory is basis 5401.",
+    "Initial mixed-difficulty delivery probe was correctly rejected. Properly separated moderate and hard probes then passed; that rejection is not a generator defect."
+  ]
+}
