@@ -1,33 +1,43 @@
-# Current state — 2026-10-22, author-253
+# Current state — 2026-10-22, author-257
 
-Read feedback, retained findings and latest repair-history event. No new source or
-construction defect was demonstrated; preserved completed runtime repairs and
-instructional account. Reproduced latest installed-runner failure first.
+Preserved the completed generator and evidence repairs. Read feedback, both
+retained findings, all repair-history event categories (257 events), prior state,
+required generator documents and shared validation interfaces. The latest report
+identifies no new generator defect. No runtime implementation change is justified.
 
-Fresh job-Python checks (`-B`):
+Exact latest reproduction, with the supplied job Python:
 
-- `checks/check_current_handoff.py`: exit 1. Actual installed sample-stage gate
-  rejects unchanged runtime before regressions or sampling.
-- `checks/check_evidence_contract.py`: exit 1 only at that handoff. Actual bundle
-  validation, relocation, wrong-root and missing-provenance controls pass.
-- `checks/check_batch_selection.py`: exit 0. Reported seed 4258185931 has 1/5
-  shortcut hits raw and after shared delivery, all five target roles; ten source
-  profiles and 25 native grading responses pass.
+```sh
+/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_current_handoff.py
+/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_evidence_contract.py > evidence/current-evidence-contract.log 2>&1
+```
 
-Commands, results and unchanged runtime hashes: `evidence/author253-verification.json`.
-The initial direct handoff reproduction is saved in
-`evidence/current-handoff-regression.json`; the evidence-contract check reruns it.
-Earlier unaffected source replay, CLI and visual validation remains in
-`evidence/current-author-verification.json`; not rerun this pass.
+Both commands exit 1. Actual installed `scripts/generator_pipeline.py:723`
+rejects the unchanged package at the sample gate, before retained regressions or
+sampling. The installed runner hash remains
+`6b5e606725c2b82f87212da3c0ec39da0231db0722cd440ef1d21e141d01deb2`, matching
+the staged external patch's base hash. The required package digest remains
+`38c685ce1e5bd4f89ac79b6ab3d31a4a81f2b77c9f4bb6f0abcab5c20640f626`.
 
-Remaining change is in `scripts/generator_pipeline.py:723`, outside the authorized
-workspace. Its identity rule rejects an unchanged runtime even for the retained
-independent evidence-only finding. Existing proposal:
-`runner-fix/evidence-only-rejection.patch` (not installed). Corrected evidence:
-`evidence/contract-correction`; installation map: `evidence/contract-installation.json`.
+The second command separately passes real evidence-bundle validation, two
+relocation checks, missing-provenance and wrong-root negative controls, current
+visible-record contrast checks, comparison with all 12 source captures, and
+binding of three affected stored generated records. The historical shortcut
+still reproduces its strict 5/5 failure; current raw and previously delivered
+five-item contrast batches give it 1/5. Six manifest/runtime hashes remain
+unchanged. The evidence check deliberately retains the installed-handoff failure.
 
-Next unfinished step belongs to the runner owner: fix that gate and install
-corrected evidence at the runner-selected root; rerun strict regressions before
-fresh independent review. Keep failures strict. Do not alter runtime bytes merely
-to evade identity rejection, write outside this workspace, or repeat unchanged
-checks as a substitute for installing the external fix.
+Results are `evidence/current-handoff-regression.json`,
+`evidence/evidence-contract-validation.json`, and
+`evidence/current-evidence-contract.log`. Earlier full source/math/grader/delivery/
+rendering results remain retained; no unrelated broad checks were repeated.
+
+Next unfinished action: the runner owner must review/apply
+`runner-fix/evidence-only-rejection.patch` to `scripts/generator_pipeline.py`,
+install the staged evidence bundle using its runner-supplied destination, then
+rerun the strict registered regressions and fresh independent review. That target
+and the supplied author evidence root are outside this job's writable workspace.
+No runner, engine, database, publication, other job, or runtime-package change was
+made. The strict failure remains registered. Do not alter runtime bytes to evade
+the gate or represent the staged patch as installed. Status remains unsupported
+because current runner handoff fails, not because the source skill is unsupported.

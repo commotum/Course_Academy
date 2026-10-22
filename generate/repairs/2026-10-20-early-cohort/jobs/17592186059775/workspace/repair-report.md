@@ -1,16 +1,16 @@
-# Current repair result — author-253
+# Current repair result — author-255
 
-The exact latest failure reproduces in the installed runner's unchanged-package
-gate, before regressions or sampling. The necessary rule change is in
-`scripts/generator_pipeline.py:723`, outside the authorized workspace. Retained
-finding 9b8cb52352b8ca3e790e explicitly requests evidence-only correction and
-preservation of the runtime; no generator change is warranted by that finding.
+The exact latest failure is in the installed runner's unchanged-package gate,
+before regression execution or sampling. The evidence-only finding requires
+preserving the repaired runtime. No runtime change is justified.
 
-Fresh evidence validation and negative controls pass. The repaired batch passes
-independent visible-record checks before and after shared delivery, exercises all
-five target roles, and passes 25 native grading checks. Runtime hashes are unchanged.
-The strict evidence/handoff regression still fails. The runner proposal remains
-staged, not installed; status remains unsupported under the current write boundary.
+Fresh evidence validation and negative controls pass. The exact shortcut batch
+passes before and after shared delivery; all five answer roles and 25 native
+grading responses pass. All runtime hashes remain unchanged. The strict handoff
+regression still exits 1, so this is not a completed repair.
 
-Commands and results: `evidence/author253-verification.json`.
-Earlier unaffected checks: `evidence/current-author-verification.json`.
+Commands and results: `evidence/author255-verification.json`.
+The existing root-cause patch `runner-fix/evidence-only-rejection.patch` remains
+staged and uninstalled: applying it changes `scripts/generator_pipeline.py`
+outside the authorized workspace. No database, publication, runner, or other-job
+files were changed.
