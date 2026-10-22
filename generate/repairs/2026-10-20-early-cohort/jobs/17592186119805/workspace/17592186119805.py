@@ -119,12 +119,13 @@ def sample_parameters(sid,rng):
         multipliers=[rng.choice((-2,-1,1,2) if abs(s.p)<=6 else (-1,1)) for _ in range(n)]
         u=[int(c*s.q*m) for m in multipliers]
         a=[int(-s.p*m) for m in multipliers]
-        # Zero coordinates remain eligible in every dimension. If only one nonzero
-        # component survives, a contradiction must be placed in the zero component.
-        zero=rng.randrange(n) if rng.randrange(3)==0 else None
-        if zero is not None:a[zero]=0;u[zero]=0
+        # Keep at least one informative component, allowing any coordinate to
+        # supply it. Contradictions may also occur in a zero unknown component.
+        zeros=rng.sample(range(n),rng.randrange(n))
+        for i in zeros:a[i]=0;u[i]=0
         if chosen=='No solution':
-            mismatch=zero if n==2 and zero is not None else rng.randrange(n)
+            nonzero=sum(x!=0 for x in u)
+            mismatch=rng.choice(zeros) if nonzero==1 else rng.randrange(n)
             a[mismatch]+=rng.choice((-1,1))
     else:
         a=[rng.randint(-4,4) for _ in range(n)]
