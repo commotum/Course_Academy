@@ -9,6 +9,17 @@ def main():
         raw+=json.loads((E/f'root-cause/{level}-delivery-input.json').read_text())
         accepted+=json.loads((E/f'root-cause/delivery-{level}/accepted.json').read_text())
     before=summarize(raw);after=summarize(accepted);assert set(before)==set(after)
+    surface_cues={}
+    for stage,records in [('before',raw),('after',accepted)]:
+        surface_cues[stage]={}
+        for profile in [p for ps in g.PROFILES.values() for p in ps]:
+            facts=[inspect(r) for r in records if r['generation']['bank_profile']==profile]
+            # Easy count=pivots is the instructional definition. On moderate,
+            # these isolated prompt numerals are insufficient answer rules.
+            cues={cue:sum(f['rank']==f[cue] for f in facts) for cue in ['rows','columns','count']}
+            if profile in g.PROFILES['moderate']:
+                assert all(hits<len(facts) for hits in cues.values()),(stage,profile,cues)
+            surface_cues[stage][profile]={'attempts':len(facts),'numeral_shortcut_successes':cues}
     subgroups={}
     for stage,records in [('before',raw),('after',accepted)]:
         collision=[r for r in records if r['generation']['bank_extension'].startswith('collision')]
@@ -68,7 +79,7 @@ def main():
              (inspect(r)['rows'],inspect(r)['columns'],inspect(r)['count'])==p) for p in [(4,7,3),(3,4,2)]]
     save('root-cause/render-records.json',render)
     save('root-cause/pedagogical-variation.json',{'status':'pass','before':before,'after':after,
-         'collision_subgroups':subgroups,'isolated_profile_delivery':isolated,'controls':controls,
+         'collision_subgroups':subgroups,'isolated_profile_delivery':isolated,'surface_cues':surface_cues,'controls':controls,
          'generator_rejection':'Only out-of-bounds or mathematically infeasible ranks are rejected; distinct banks constructed afterward.',
          'delivery_counts':{'input':len(raw),'accepted':len(accepted)},
          'limits':['Finite 12 easy/98 moderate semantic tasks; cosmetic differences excluded from capacity.',

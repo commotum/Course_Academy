@@ -1,0 +1,207 @@
+{
+  "skill": "Determine rank from a stated pivot-column count (easy) or subtract non-pivot count from total columns (moderate).",
+  "learner_operation": "Read which count is supplied; rank equals pivot count, or total columns minus non-pivot count. Select the unique matching integer from five radio choices.",
+  "reasoning_steps": [
+    "Identify matrix dimensions and whether stated columns are pivots or non-pivots.",
+    "For easy recall rank equals pivot count; for moderate compute columns minus non-pivots.",
+    "Select the matching integer."
+  ],
+  "invariants": [
+    "0 <= rank <= min(rows, columns); non-pivots = columns-rank.",
+    "Five distinct numeric radio options with exactly one correct answer.",
+    "Easy items give pivot count; moderate items give non-pivot count.",
+    "No row reduction or explicit matrix computation is needed."
+  ],
+  "permitted_variations": [
+    "Matrix name, dimensions, pivot count/rank and non-pivot count within feasible bounds.",
+    "Square, tall and wide dimensions; zero and full rank are mathematically valid conservative boundary extensions.",
+    "Correct-option location and distractor values/bank profiles may vary.",
+    "Dimensions are irrelevant to easy response once feasibility is assured; moderate column count and non-pivot count are relevant.",
+    "Fixed target rank(A) and one correct radio choice are essential; particular letter, dimensions, rank, answer position and source bank are incidental."
+  ],
+  "source_refs": [
+    "tutorial 6318f9cd-930b-5b7b-acc7-c27b5b241825: rank(A)=dim(Col(A)); two pivot columns imply dimension 2.",
+    "lesson step fd1734a2-5193-5182-9a6f-4a024ee32ce5 / canonical 7cce27e9-e2b2-599c-9f4e-437caf1a23ae: seven columns minus three non-pivots gives rank four.",
+    "tutorial c062d466-946c-526b-aba8-0a0895671218: rank is number of pivot columns, equivalently nonzero rows in echelon form.",
+    "b5549e3a-28d3-5fc9-95bb-dda91eedbf45",
+    "96a00a6f-154e-57db-9e06-bc987fab7496",
+    "c934bab9-e2a5-557f-b70a-32a46819ab48",
+    "9d3fee34-056d-53cd-a4aa-21cc533db201",
+    "aefee286-0658-5eaf-a083-c47c3412eef5",
+    "ba425c74-1df7-5b4c-b055-df4f66ee83a7",
+    "6826463c-847d-5512-b760-3fbeb596f635",
+    "d99c604a-a10b-57d3-8148-d6702b5326c3",
+    "e56cf627-f5bb-57b0-ae99-521a4ce7bf5a",
+    "186b4c12-6daf-5415-8147-526533c01a95",
+    "b89238c4-c724-5269-a873-19d3a331e580"
+  ],
+  "source_cases": [
+    {
+      "id": "b5549e3a-28d3-5fc9-95bb-dda91eedbf45",
+      "difficulty": "moderate",
+      "prompt": "If $A$ is a $6\\times 11$ matrix that has $8$ **non-pivot** columns, then $\\text{rank}(A)=$",
+      "bank": [
+        "11",
+        "8",
+        "3",
+        "6",
+        "7"
+      ],
+      "correct": "3",
+      "solution": "We know that $\\text{rank}(A)$ is the number of pivot columns in $A.$ \n\nSince $A$ has $11$ columns and $8$ of them are non-pivots, then the number of pivot columns in $A$ is \n\n$$\n11-8=3.\n$$\n\nTherefore, $\\text{rank}(A)=3.$"
+    },
+    {
+      "id": "96a00a6f-154e-57db-9e06-bc987fab7496",
+      "difficulty": "easy",
+      "prompt": "Let $P$ be a $5 \\cdot 7$ matrix that has $5$ **pivot** columns. What is the rank of the matrix?",
+      "bank": [
+        "3",
+        "5",
+        "7",
+        "2",
+        "4"
+      ],
+      "correct": null,
+      "solution": null
+    },
+    {
+      "id": "c934bab9-e2a5-557f-b70a-32a46819ab48",
+      "difficulty": "easy",
+      "prompt": "Let $T$ be a $8\\times 8$ matrix that has $7$ **pivot** columns. What is the rank of the matrix?",
+      "bank": [
+        "6",
+        "8",
+        "5",
+        "7",
+        "4"
+      ],
+      "correct": "7",
+      "solution": "We know that $\\text{rank}(T)$ is the number of pivot columns in $T.$ \n\nSince we are told that $T$ has $7$ pivot columns, we have \n\n$$\n\\text{rank}(T)=7.\n$$"
+    },
+    {
+      "id": "9d3fee34-056d-53cd-a4aa-21cc533db201",
+      "difficulty": "moderate",
+      "prompt": "If $A$ is a $6\\times 8$ matrix that has $3$ **non-pivot** columns, then $\\text{rank}(A)=$",
+      "bank": [
+        "8",
+        "3",
+        "7",
+        "5",
+        "6"
+      ],
+      "correct": "5",
+      "solution": "We know that $\\text{rank}(A)$ is the number of pivot columns in $A.$ \n\nSince $A$ has $8$ columns and $3$ of them are non-pivots, then the number of pivot columns in $A$ is \n\n$$\n8-3=5.\n$$\n\nTherefore, $\\text{rank}(A)=5.$"
+    },
+    {
+      "id": "aefee286-0658-5eaf-a083-c47c3412eef5",
+      "difficulty": "moderate",
+      "prompt": "If $P$ is a $9\\times 8$ matrix that has $2$ **non-pivot** columns, then $\\text{rank}(P)=$",
+      "bank": [
+        "9",
+        "8",
+        "2",
+        "7",
+        "6"
+      ],
+      "correct": "6",
+      "solution": "We know that $\\text{rank}(P)$ is the number of pivot columns in $P.$ \n\nSince $P$ has $8$ columns and $2$ of them are non-pivots, then the number of pivot columns in $P$ is \n\n$$\n8-2=6.\n$$\n\nTherefore, $\\text{rank}(P)=6.$"
+    },
+    {
+      "id": "ba425c74-1df7-5b4c-b055-df4f66ee83a7",
+      "difficulty": "moderate",
+      "prompt": "If $C$ is a $8\\times 6$ matrix that has $4$ **non-pivot** columns, then $\\text{rank}(C)=$",
+      "bank": [
+        "3",
+        "8",
+        "2",
+        "4",
+        "6"
+      ],
+      "correct": "2",
+      "solution": "We know that $\\text{rank}(C)$ is the number of pivot columns in $C.$ \n\nSince $C$ has $6$ columns and $4$ of them are non-pivots, then the number of pivot columns in $C$ is \n\n$$\n6-4=2.\n$$\n\nTherefore, $\\text{rank}(C)=2.$"
+    },
+    {
+      "id": "6826463c-847d-5512-b760-3fbeb596f635",
+      "difficulty": "easy",
+      "prompt": "Let $A$ be a $7\\times 12$ matrix that has $6$ **pivot** columns. What is the rank of the matrix?",
+      "bank": [
+        "7",
+        "6",
+        "4",
+        "1",
+        "12"
+      ],
+      "correct": "6",
+      "solution": "We know that $\\text{rank}(A)$ is the number of pivot columns in $A.$ \n\nSince we are told that $A$ has $6$ pivot columns, we have \n\n$$\n\\text{rank}(A)=6.\n$$"
+    },
+    {
+      "id": "d99c604a-a10b-57d3-8148-d6702b5326c3",
+      "difficulty": "easy",
+      "prompt": "Let $B$ be a $4\\times 5$ matrix that has $3$ **pivot** columns. What is the rank of the matrix?",
+      "bank": [
+        "3",
+        "4",
+        "2",
+        "1",
+        "5"
+      ],
+      "correct": "3",
+      "solution": "We know that $\\text{rank}(B)$ is the number of pivot columns in $B.$ \n\nSince we are told that $B$ has $3$ pivot columns, we have \n\n$$\n\\text{rank}(B)=3.\n$$"
+    },
+    {
+      "id": "e56cf627-f5bb-57b0-ae99-521a4ce7bf5a",
+      "difficulty": "easy",
+      "prompt": "Let $A$ be a $8\\times 9$ matrix that has $4$ **pivot** columns. What is the rank of the matrix?",
+      "bank": [
+        "3",
+        "9",
+        "4",
+        "5",
+        "8"
+      ],
+      "correct": "4",
+      "solution": "We know that $\\text{rank}(A)$ is the number of pivot columns in $A.$ \n\nSince we are told that $A$ has $4$ pivot columns, we have \n\n$$\n\\text{rank}(A)=4.\n$$"
+    },
+    {
+      "id": "186b4c12-6daf-5415-8147-526533c01a95",
+      "difficulty": "moderate",
+      "prompt": "If $B$ is a $5\\times 7$ matrix that has $3$ **non-pivot** columns, then $\\text{rank}(B)=$",
+      "bank": [
+        "4",
+        "5",
+        "2",
+        "3",
+        "7"
+      ],
+      "correct": "4",
+      "solution": "We know that $\\text{rank}(B)$ is the number of pivot columns in $B.$ \n\nSince $B$ has $7$ columns and $3$ of them are non-pivots, then the number of pivot columns in $B$ is \n\n$$\n7-3=4.\n$$\n\nTherefore, $\\text{rank}(B)=4.$"
+    },
+    {
+      "id": "b89238c4-c724-5269-a873-19d3a331e580",
+      "difficulty": "moderate",
+      "prompt": "If $A$ is a $7\\times 9$ matrix that has $3$ **non-pivot** columns, then $\\text{rank}(A)=$",
+      "bank": [
+        "6",
+        "4",
+        "3",
+        "9",
+        "7"
+      ],
+      "correct": "6",
+      "solution": "We know that $\\text{rank}(A)$ is the number of pivot columns in $A.$ \n\nSince $A$ has $9$ columns and $3$ of them are non-pivots, then the number of pivot columns in $A$ is \n\n$$\n9-3=6.\n$$\n\nTherefore, $\\text{rank}(A)=6.$"
+    }
+  ],
+  "evidence_gaps": [
+    "96a00a6f-154e-57db-9e06-bc987fab7496 has no stored correct answer or solution; mathematical reconstruction gives 5. Its dimension uses \\cdot instead of \\times; normalize presentation with this correction documented.",
+    "Canonical example has no answer field; cannot infer a source bank for it."
+  ],
+  "difficulty": "Requested easy is direct definition application. The non-pivot subtraction family is observed at moderate, not required in an easy batch.",
+  "evidence_paths": [
+    "source-analysis.json"
+  ],
+  "provenance": {
+    "reused_from": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186119847/review-3-policy-2-092f7adc069513f2/source-analysis.json",
+    "source_sha256": "b1a8a04ddc04064df9131f079c24824cb667e4fc7b5e2d5b17a3572e6c7dcf63",
+    "confirmation": "All eleven question prompts, full banks and solution presence/content reconfirmed; cited lesson tutorials and canonical step reread in current source. Principles reread before author material."
+  }
+}
