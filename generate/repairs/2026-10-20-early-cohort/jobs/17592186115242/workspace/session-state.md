@@ -1,13 +1,25 @@
-# Author-603 verification, 2026-10-22
+# Author-606 verification, 2026-10-22
 
-Read feedback, all five retained findings, latest history event, required generation documents, source practice questions and relevant lesson context. Preserved completed runtime repairs and the staged replacement proposal; instructional account remains in instructional-account.md.
+Feedback, all five retained findings, prior state, source, and required guidance
+read. Existing instructional account and completed runtime repairs preserved.
 
 First: job-python -B checks/batch_regressions.py --finding inventory
-Exit 1: five affected historical banks and 64/64 successes in the possible-history shortcut witness.
+Exit 1: five historical banks, 64/64 shortcut successes in the retained
+possible-history witness. Actual learner history is unavailable.
 
-Then: job-python -B checks/recheck_status.py --output evidence/author-603
-Exit 1 solely for 591f580cadb749294588. Four generator regressions, 17 complete source-bank replays, 14 delivered records, controlled variations, 35 native-grader checks and relocation pass. Protected hashes unchanged. Five staged replacements verified and unapplied. Retained actual-UI screenshot evidence/repair-3/render/question-002.png visually inspected.
+Then: job-python -B checks/recheck_status.py --output evidence/author-606
+Exit 1 solely for 591f580cadb749294588. Four current-generator regressions,
+17 complete source banks, 14 delivered records, controlled variations,
+35 native-grader checks, pinned dependencies, and relocation pass.
+Protected hashes unchanged. Five staged replacements verified and unapplied.
+Retained actual-UI screenshot evidence/repair-3/render/question-002.png inspected.
 
-Next unfinished action: the separate inventory-remediation workflow must resolve the five stored records identified by affected-inventory.json, then recapture and rerun the strict inventory check. Database changes and publication are prohibited in this author task. No workspace-only generator change can alter the captured stored banks. Do not replace captured inventory with a hypothetical pool or weaken the failing check.
+Next unfinished step is the separate inventory-remediation workflow, followed
+by fresh inventory capture and the strict inventory check. This author task
+prohibits database changes. The selector reads stored entities independently
+of this generator; no new runtime defect is demonstrated. Preserve the strict
+failure. Do not rerun unchanged author passes as if they could resolve external
+inventory state or substitute proposed replacements for captured inventory.
 
-Status unsupported. Evidence: evidence/author-603/commands.json, results.json and outcome.md.
+Status unsupported. Evidence: evidence/author-606/commands.json, results.json,
+and outcome.md. Existing replacement proposal remains in evidence/repair-3.

@@ -1,0 +1,11 @@
+Preserved the repaired runtime, manifest, captured source/inventory, replacement proposal, and all five executable finding checks.
+
+First reproduction: `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory` exited 1, reproducing five affected historical records and 64/64 sign-extremum successes in the retained possible-history witness.
+
+Verification: `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/author-603` exited 1 solely for finding 591f580cadb749294588. Four generator regressions pass, including 17 complete source-bank replays, 14 delivery-filtered records with conditional shortcut contrasts, relevant/irrelevant controlled variations, 35 native-grader checks (7 accepted and 28 rejected), and relocation. Protected file hashes match. All five generated inventory questions were tested; all five remain affected. Full commands and results are saved alongside this account.
+
+Source canonical example f2c7cfd3-da43-5208-bd0e-21692357fabe requires eliminating x and interpreting a contradiction. Tutorial e0c85152-daea-5a87-a3ba-81870558c7a2 defines inconsistency as no solutions. The existing instructional-account.md and repaired generator preserve this skill. No new source or construction defect is reported. The historical banks are stored selection candidates independent of the generator; changing runtime construction cannot update those stored records.
+
+Inspected retained actual-UI screenshot evidence/repair-3/render/question-002.png: equations, five choices, elimination matrices and full solution are readable without clipping. Source tutorial flowchart was also inspected. No runtime change warranted another interchangeable render.
+
+The existing five replacement records and their identity mapping remain verified in evidence/repair-3/inventory-repair-proposal.json, without applying them. The unresolved finding explicitly requests separate inventory remediation and recapture. This task prohibits database changes and publication. Status remains unsupported; the strict regression is retained and no captured inventory is substituted, source family removed, or acceptance criterion weakened.

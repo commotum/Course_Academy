@@ -1,0 +1,67 @@
+{
+  "runtime": "3.13.5 (main, Jul 11 2025, 22:43:46) [Clang 20.1.4 ]",
+  "manifest": {
+    "entrypoint": "generator.py",
+    "files": [
+      "generator.py",
+      "generator_policy.py",
+      "math_format.py",
+      "source-none-evidence.json",
+      "source_cases.json"
+    ],
+    "dependencies": {
+      "packages": {},
+      "python": "3.13.5"
+    },
+    "default_difficulty": "easy"
+  },
+  "checks": [
+    {
+      "name": "relocated deterministic CLI equals imported API",
+      "passed": true,
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186054816/review-0-policy-2-95271fa8a661a89b/relocated/generator.py",
+        "--seed",
+        "827461",
+        "--count",
+        "100",
+        "--format",
+        "json"
+      ]
+    },
+    {
+      "name": "CLI ['--difficulty', 'hard']",
+      "code": 2,
+      "stdout": "",
+      "stderr": "usage: generator.py [-h] [--difficulty DIFFICULTY] [--count COUNT]\n                    [--seed SEED] [--format {json}]\n                    [--replay-source {all,0,1,2,3,4,5,6,7,8,9}]\ngenerator.py: error: Only easy is supported\n"
+    },
+    {
+      "name": "CLI ['--count', '-1']",
+      "code": 2,
+      "stdout": "",
+      "stderr": "usage: generator.py [-h] [--difficulty DIFFICULTY] [--count COUNT]\n                    [--seed SEED] [--format {json}]\n                    [--replay-source {all,0,1,2,3,4,5,6,7,8,9}]\ngenerator.py: error: count must be nonnegative\n"
+    },
+    {
+      "name": "CLI ['--count', '0']",
+      "code": 0,
+      "stdout": "[]\n",
+      "stderr": ""
+    },
+    {
+      "name": "reject invalid root {'radicand': -1, 'sign': 1}",
+      "passed": true
+    },
+    {
+      "name": "reject invalid root {'radicand': 1, 'sign': 0}",
+      "passed": true
+    },
+    {
+      "name": "reject zero denominator",
+      "passed": true
+    }
+  ],
+  "no_assets": true,
+  "package_unchanged": true,
+  "external_output": "CLI writes JSON to stdout only; source fixture reads are package-relative; relocated execution succeeded."
+}
