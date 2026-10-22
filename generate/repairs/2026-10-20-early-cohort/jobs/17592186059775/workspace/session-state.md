@@ -1,29 +1,26 @@
-# Current state — 2026-10-22, author-151
+# Current state — 2026-10-22, author-155
 
-Read feedback and all retained history findings/events; preserved runtime package,
-manifest, instructional account, evidence bundle and strict regression registrations.
+Preserved runtime, manifest, completed repairs and strict regression registrations.
+Read feedback, retained findings and latest history; reused existing source analysis.
 
-Latest failure reproduced first with the job Python:
-`python -B checks/check_current_handoff.py` exits 1. The installed runner's
-`scripts/generator_pipeline.py:723` identity gate rejects the evidence-only
-correction before retained regressions or sampling. No generator defect is newly
-reported. Changing working runtime bytes to evade that gate is not a repair.
+Reproduced latest failure first:
+`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_current_handoff.py`
+exits 1: installed runner rejects unchanged package before regressions or sampling.
 
-Affected checks rerun with exact commands, exit codes and logs in
-`evidence/author151-verification.json`:
-- Evidence bundle validation, relocation and negative controls pass; its registered
-  check exits 1 because the installed handoff still fails.
-- Batch selection passes: raw/delivered shortcut 1/5, five delivered records,
-  ten profiles and 25 native acceptance/rejection responses.
-- Relocated CLI/count/determinism/finite-limit checks pass.
-- Ten complete source banks (50 choices) replay; two retained actual-UI endpoints
-  bind to current delivery. Re-inspected question-002.png; readable.
-- All six runtime/manifest hashes remain unchanged.
+Fresh commands, exit codes, logs and unchanged runtime hashes:
+`evidence/author155-verification.json`.
+- Evidence bundle validation, relocation, negative controls, current-record binding
+  and three affected inventory records pass. Strict installed-handoff check fails.
+- Batch-selection check passes ten profiles, seed 4258185931, shared delivery
+  (five accepted), and native grading (five accepted correct, twenty rejected wrong).
+  Retained shortcut scores 1/5 before and after delivery.
+- Relocated CLI check passes requested counts 0, 1 and 5, determinism and finite limits.
+- Source/UI binding passes ten complete banks (50 choices), with two rendered endpoints.
+  Re-inspected question-002.png; readable. No new render needed for unchanged output.
 
-Unfinished: the runner owner must correct the evidence-only identity gate and
-route the staged evidence. `runner-fix/evidence-only-rejection.patch` remains
-uninstalled. Strict failure is retained. The necessary runner edit and evidence
-installation are outside the authorized workspace. No engine, database,
-publication, service, other-job or external runner writes were made.
-Later inventory and live learner histories remain untested. No broad unchanged
-suite, new render, or offline patch test was repeated.
+Unfinished: authorized runner owner must assess/install staged patch
+`runner-fix/evidence-only-rejection.patch` and route the corrected evidence bundle.
+Neither the installed runner nor external evidence destination was modified.
+Changing runtime bytes solely to evade this gate would not fix the evidence finding.
+No publication, database, engine, service, other-job or external-runner writes.
+Further identical author retries cannot resolve the external write boundary.

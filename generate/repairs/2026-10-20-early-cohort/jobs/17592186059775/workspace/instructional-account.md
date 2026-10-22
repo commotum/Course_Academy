@@ -145,3 +145,7 @@ shortcut batch through delivery/native grading, relocated CLI and source/UI bind
 Do not reinstall an external runner, weaken its strict check, or repeatedly test
 the unchanged proposed patch. The permitted write boundary prevents applying the
 identified runner correction to scripts/generator_pipeline.py.
+
+## Author-155 continuation before verification
+
+The exact latest installed-runner rejection reproduces before retained checks or sampling. The retained evidence finding requires no runtime change. Preserve the source-supported five-radio Gaussian-elimination task, target variation and arithmetic workload justified by source 9752715d-a11c-5d27-95dc-d20bec1117cb, dc5530a8-d7bb-5ee6-b842-11178cec4e06 and tutorial 2112d3af-1fb0-5a70-ab99-59931db99930 (normalize first pivot, eliminate lower entry, normalize second pivot). No new instructional or construction defect is established. Reuse completed source analysis and strict checks; verify evidence-root handling, the reported seed before/after delivery and native grading, then source/UI binding. Do not alter package bytes to evade the runner gate. Its installed correction and external evidence installation remain outside authorized writes.

@@ -1,26 +1,21 @@
-# Verification result — author 830
+# Verification result — author 833
 
-Preserved candidate, completed repairs, instructional account and all five
-executable retained findings. Read latest feedback, retained history findings,
-source lesson/questions and required guidance. No runtime change was justified.
+Preserved the repaired runtime and all five executable finding checks.
+Read feedback/history and original lesson/questions. Reproduced the exact latest
+historical-pool failure before rerunning checks; five affected records, 64/64
+shortcut successes in the possible-history witness.
 
-First reproduction:
-`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory`
-Exit 1: five captured historical records; 64/64 shortcut successes in the retained
-possible learner-history witness.
+Command: `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/author-833`
+Exit 1 solely for historical inventory. Four generator regressions, 17 source
+banks, 14 delivered records, 35 native grades, dependency pins and relocation
+pass. Protected hashes and staged replacement mappings verified unchanged.
+Two retained actual-UI screenshots and source diagram visually inspected.
 
-Verification:
-`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/author-830`
-Exit 1 solely for historical inventory. Four generator findings, 17 source banks,
-14 delivery records, 35 native grading checks, relocation, pins, protected hashes
-and all five staged replacement mappings pass. Inspected two retained actual-UI
-screenshots; runtime unchanged.
+Unfinished: finding 591f580cadb749294588 requires separate inventory remediation
+and fresh capture. Database writes/publication are prohibited here. Keep its
+strict regression failing; staged replacements are not applied repairs.
+Another unchanged retry or generator patch cannot retire stored candidates.
 
-Unfinished: finding 591f580cadb749294588 requires the separate inventory-remediation
-workflow and fresh captured inventory. Database changes and publication are
-prohibited here. Preserve the strict failure and captured evidence; do not
-substitute proposed replacements or add another isolated generator patch.
-
-Evidence: evidence/author-830/commands.json, results.json, disposition.md,
-visual-inspection.json; repair-regressions.json; affected-inventory.json;
-evidence/generated-records.json; evidence/repair-3/inventory-repair-proposal.json.
+Evidence: evidence/author-833/commands.json, results.json, disposition.md,
+visual-inspection.json; affected-inventory.json; evidence/generated-records.json;
+evidence/repair-3/inventory-repair-proposal.json; repair-regressions.json.
