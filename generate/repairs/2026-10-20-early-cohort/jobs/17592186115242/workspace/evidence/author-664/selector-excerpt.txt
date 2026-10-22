@@ -1,0 +1,76 @@
+123: /// fallback only when no eligible, positively weighted rated band remains.
+124: /// Explicitly zero-weight rated bands are never used as that fallback.
+125: pub fn select(
+126:     s: &EntitySnapshot,
+127:     candidates: &[u64],
+128:     distribution: Option<[f64; 3]>,
+129:     seed: &str,
+130: ) -> Result<Option<u64>> {
+131:     let candidates: Vec<_> = candidates
+132:         .iter()
+133:         .copied()
+134:         .collect::<BTreeSet<_>>()
+135:         .into_iter()
+136:         .collect();
+137:     // Preserve old, unconfigured policies; the default policy supplies weights.
+138:     let Some(distribution) = distribution else {
+139:         return Ok(candidates.first().copied());
+140:     };
+141:     if distribution.iter().any(|w| !w.is_finite() || *w < 0.0)
+142:         || !distribution.iter().sum::<f64>().is_finite()
+143:         || distribution.iter().sum::<f64>() <= 0.0
+144:     {
+145:         return Err("invalid question-weight distribution".into());
+146:     }
+147:     let mut bands: [Vec<u64>; 3] = std::array::from_fn(|_| vec![]);
+148:     let mut unrated = vec![];
+149:     for q in candidates {
+150:         let Some(value) = s
+151:             .entity(q)?
+152:             .get("question/difficulty")
+153:             .filter(|v| !v.is_null())
+154:         else {
+155:             unrated.push(q);
+156:             continue;
+157:         };
+158:         let difficulty = s.ident(value)?;
+159:         let band = BANDS
+160:             .iter()
+161:             .position(|b| difficulty == format!("question.difficulty/{b}"))
+162:             .ok_or("question has an unsupported difficulty enum")?;
+163:         bands[band].push(q);
+164:     }
+165:     let digest = Sha256::digest(format!("course-academy/question-selection/v1/{seed}"));
+166:     let uniform = |offset| {
+167:         let bits = u64::from_be_bytes(digest[offset..offset + 8].try_into().unwrap()) >> 11;
+168:         bits as f64 / (1u64 << 53) as f64
+169:     };
+170:     let total: f64 = distribution
+171:         .iter()
+172:         .enumerate()
+173:         .filter(|(i, _)| !bands[*i].is_empty())
+174:         .map(|(_, w)| *w)
+175:         .sum();
+176:     let pool = if total > 0.0 {
+177:         let mut draw = uniform(0) * total;
+178:         let mut chosen = None;
+179:         for (i, w) in distribution.iter().enumerate() {
+180:             if bands[i].is_empty() || *w == 0.0 {
+181:                 continue;
+182:             }
+183:             chosen = Some(i);
+184:             if draw < *w {
+185:                 break;
+186:             }
+187:             draw -= *w;
+188:         }
+189:         &bands[chosen.unwrap()]
+190:     } else {
+191:         &unrated
+192:     };
+193:     Ok(if pool.is_empty() {
+194:         None
+195:     } else {
+196:         Some(pool[(uniform(8) * pool.len() as f64) as usize])
+197:     })
+198: }

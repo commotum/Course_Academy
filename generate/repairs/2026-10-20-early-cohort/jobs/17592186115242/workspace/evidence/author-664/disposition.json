@@ -1,0 +1,25 @@
+{
+  "status": "external_inventory_remediation_required",
+  "finding_id": "591f580cadb749294588",
+  "current_generator_regressions_passed": 4,
+  "strict_inventory_regression_exit_code": 1,
+  "captured_inventory_basis": 5379,
+  "captured_inventory_sha256": "26340274cc82273051805d7c57e6fbb79dc4898d54e5eee340645ac88a25af27",
+  "affected_count": 5,
+  "generator_repair_supported": true,
+  "separate_remediation_proposal": "evidence/repair-3/inventory-repair-proposal.json",
+  "historical_complete_records": "evidence/generated-records.json",
+  "strict_recheck": [
+    "checks/batch_regressions.py",
+    "--finding",
+    "inventory"
+  ],
+  "unblocking_condition": "Separate authorized inventory-remediation workflow resolves the five historical generated identities and supplies a fresh inventory capture that passes the retained strict check.",
+  "why_runtime_edits_do_not_resolve_it": "question_selection.rs selects persisted entity IDs from supplied candidates by difficulty and learner seed; it does not call the generator or replace stored answer banks.",
+  "selector_sha256": "d59dea58989cfe9f3cd49ed3b45199d4e7a12723c4d8eae999e495b9660dd760",
+  "scope_constraint": "User prohibits database changes, publication, engine repairs and writes outside this workspace.",
+  "runtime_changed": false,
+  "database_changed": false,
+  "publication_performed": false,
+  "retry_guidance": "Do not repeat the unchanged generator author pass as inventory remediation. Recheck after the captured pool changes; do not waive the failing historical regression."
+}

@@ -2,8 +2,7 @@
   "finding_id": "9b8cb52352b8ca3e790e",
   "status": "staged_not_installed",
   "bundle_root": "evidence/contract-correction",
-  "destination_evidence_root": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186059775/author-4",
-  "install_by": "runner only, outside this author session writable roots",
+  "install_by": "runner; copy the entire bundle into the chosen evidence root, then validate result.json using that same root",
   "files": [
     {
       "workspace_source": "evidence/contract-correction/accepted-review.json",
@@ -422,5 +421,11 @@
     }
   ],
   "post_install_validation": "Load result.json and call scripts/generator_review.py:validate_review(report, destination_evidence_root); keep pedagogical-variation.json at destination root.",
-  "scope": "Evidence only; no publication, runtime changes, database or engine writes. Historical independent acceptance retained; fresh reviewer still decides."
+  "scope": "Evidence only; no publication, runtime changes, database or engine writes. Historical independent acceptance retained; fresh reviewer still decides.",
+  "destination_policy": "runner_supplied_at_installation",
+  "validation": {
+    "report": "result.json",
+    "evidence_root": "."
+  },
+  "evidence_role": "Retained corrected historical review evidence; not a new independent approval."
 }

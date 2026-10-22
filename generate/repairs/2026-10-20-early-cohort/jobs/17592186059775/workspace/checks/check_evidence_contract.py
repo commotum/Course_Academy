@@ -1,7 +1,8 @@
 """Finding 9b8cb52352b8ca3e790e: real evidence paths and current-record binding.
 
 Read-only with respect to runtime files and original reviews. Writes evidence only.
-The bundle is staged for the runner; this check never installs outside workspace.
+The bundle is its own evidence root. The runner chooses a destination at copy
+time; no author attempt number belongs in the evidence contract.
 """
 import sys
 sys.dont_write_bytecode = True
@@ -30,7 +31,6 @@ def digest(p):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--bundle', type=Path, default=W/'evidence/contract-correction')
-    parser.add_argument('--expected-evidence-root', type=Path)
     args = parser.parse_args()
     bundle = args.bundle.resolve()
     spec = importlib.util.spec_from_file_location('review_validator', REPO/'scripts/generator_review.py')
@@ -51,9 +51,22 @@ def main():
     # Detect a missing file, with real validator behavior, rather than trusting a
     # previous successful validation report or a copied expected status.
     with tempfile.TemporaryDirectory() as td:
-        broken = Path(td)/'bundle'
-        shutil.copytree(bundle, broken)
-        validator.validate_review(report, broken)  # Simulated runner installation.
+        root = Path(td)
+        # A report's relative paths must survive arbitrary runner destinations.
+        relocated = []
+        for name in ('author-6', 'another-review-attempt'):
+            installed = root/name
+            shutil.copytree(bundle, installed)
+            validator.validate_review(load(installed/'result.json'), installed)
+            relocated.append(name)
+        broken = root/'author-6'
+        try:
+            validator.validate_review(report, root)
+        except ValueError as error:
+            wrong_root = str(error)
+            assert 'missing, empty, or escaping evidence' in wrong_root, wrong_root
+        else:
+            raise AssertionError('Report validated against its parent, not its evidence root')
         (broken/'correction-provenance.json').unlink()
         try:
             validator.validate_review(report, broken)
@@ -106,8 +119,13 @@ def main():
         assert row['evidence_path'] == 'generated-records.json'
 
     plan = load(W/'evidence/contract-installation.json')
-    if args.expected_evidence_root is not None:
-        assert Path(plan['destination_evidence_root']).resolve() == args.expected_evidence_root.resolve(), 'Stale runner evidence destination'
+    assert 'destination_evidence_root' not in plan, 'Attempt-specific evidence destination'
+    assert plan['destination_policy'] == 'runner_supplied_at_installation'
+    assert plan['validation'] == {'report': 'result.json', 'evidence_root': '.'}
+    assert (W/plan['bundle_root']).resolve() == bundle
+    assert {row['destination'] for row in plan['files']} == {
+        path.relative_to(bundle).as_posix() for path in bundle.rglob('*') if path.is_file()
+    }, 'Incomplete evidence bundle inventory'
     for row in plan['files']:
         path = (W/row['workspace_source']).resolve()
         assert path.is_relative_to(bundle)
@@ -118,7 +136,8 @@ def main():
               'bundle_root': str(bundle.relative_to(W)),
               'real_review_validator': 'scripts/generator_review.py:validate_review',
               'missing_provenance_negative_control': negative,
-              'relocated_bundle_root_validated': True,
+              'wrong_root_negative_control': wrong_root,
+              'relocated_bundle_roots_validated': relocated,
               'current_raw': raw['pivot_shortcut'],
               'current_delivered': delivered_check['pivot_shortcut'],
               'historical_control': 'strict check fails as required (5/5)',
@@ -126,7 +145,7 @@ def main():
               'affected_generated_records_bound': len(affected),
               'runtime_files_unchanged': len(before),
               'runner_installation_files': len(plan['files']),
-              'runner_destination': plan['destination_evidence_root'],
+              'runner_destination_policy': plan['destination_policy'],
               'destination_installed': False}
     (W/'evidence/evidence-contract-validation.json').write_text(json.dumps(result, indent=2)+'\n')
     print(json.dumps(result))
