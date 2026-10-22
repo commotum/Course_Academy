@@ -1,7 +1,20 @@
 # Current state
 
-Completed runtime repairs, manifest, five strict finding checks and the unapplied replacement proposal are preserved. No runtime, engine, database, source, publication or image changes.
+Completed generator repairs, manifest, all five strict finding checks, and the
+unapplied five-record replacement proposal are preserved. No runtime, database,
+engine, source, publication or image changes in this pass.
 
-Latest verification: evidence/repair-316/commands.json, results.json and outcome.md. First ran the strict inventory counterexample: exit 1, five reproduced historical banks, 64/64 shortcut successes in the retained possible-history witness. Then ran checks/recheck_status.py --output evidence/repair-316: exit 1 solely for finding 591f580cadb749294588. Four generator regressions, all 17 complete source banks plus canonical replay, delivery 14/14 with contrasts, counterfactual checks, native grading (7 accepted, 28 rejected), dependencies, relocation and proposal bindings pass. Protected runtime/source/inventory hashes remain unchanged. Retained rendering still applies; question-001.png was visually reinspected. Affected-inventory evidence references resolve from author-316.
+Latest verification: evidence/repair-320/commands.json, results.json and outcome.md.
+Command: job Python -B checks/recheck_status.py --output evidence/repair-320.
+The first executed check reproduced the inventory failure (exit 1): five historical
+banks; 64/64 successes in the retained possible-history witness. Four generator
+regressions pass. Source replay, shared delivery (14/14), counterfactual checks,
+native grading (7 accepted, 28 rejected), dependencies, relocation and proposal
+hash bindings pass. Existing rendering evidence is retained without rerendering.
+Affected-inventory references resolve relative to author-320.
 
-The selector reads stored candidate entities independently of the generator. Next unfinished action is the separate inventory-remediation workflow named by the finding: review/apply evidence/repair-3/inventory-repair-proposal.json, preserve source questions and learner history, recapture inventory, rerun the strict check. Database changes are prohibited here. Do not weaken the regression, substitute hypothetical inventory, or repeat unchanged author passes. Current status is unsupported.
+Next unfinished action is separate inventory remediation using
+ evidence/repair-3/inventory-repair-proposal.json, followed by fresh inventory
+capture and the strict regression. Database changes are prohibited here. Do not
+weaken tests, substitute hypothetical inventory, or repeat unchanged author passes.
+Current status: unsupported.

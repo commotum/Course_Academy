@@ -1,6 +1,118 @@
 {
-  "code": "legacy_packaging_or_sampling",
-  "error": "Undeclared/unresolved runtime import: scripts",
-  "instruction": "Fix the root cause, retain every earlier counterexample, and declare executable checks in repair-regressions.json. A failed check is another repair task, not permission to abandon the generator.",
-  "repair_history_file": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186124629/repair-history.json"
+  "verdict": "revise",
+  "summary": "The exact batch has a conditional shortcut: both determinant/column-space/pivot checkbox questions require selecting only column space. Broader generator samples vary this decision. Package files remain unchanged.",
+  "source_analysis": {
+    "skill": "Infer invertibility or singularity from a square-matrix premise, evaluate three conclusions using the invertible matrix theorem, and select the true subset.",
+    "reasoning_steps": [
+      "Determine whether the premise implies invertibility or singularity.",
+      "Evaluate each conclusion using determinant, rank, pivots, column space, null space and nullity relationships.",
+      "Select the qualifying conclusions."
+    ],
+    "invariants": [
+      "Real square matrix of positive dimension.",
+      "Three conceptual conclusions without matrix computation.",
+      "Keys and explanations must follow the premise and candidate propositions."
+    ],
+    "permitted_variations": [
+      "Vary equivalent premises and invertible versus singular status.",
+      "Vary conclusion polarity, qualifying labels and correct-selection count.",
+      "Vary dimensions and presentation while preserving the theorem and workload."
+    ],
+    "source_refs": [
+      "c1120305-c8cb-5f57-97b1-9b31dc059b4a",
+      "7f4e1182-d195-5cca-bb1a-601ea1f9c921",
+      "7036dc73-9ca4-59f2-b983-11eaacfb5a4b",
+      "tutorial 555ca00c-d37e-5c67-a658-69b087390920: zero nullity, full rank, pivot columns and full column space equivalence"
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replays.json",
+        "source-replay-report.json"
+      ],
+      "details": "All 15 complete source questions replay, including 81 bank choices and worked implication paragraphs. Source corrections and missing evidence are documented."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "audit.py",
+        "math-results.json"
+      ],
+      "details": "Independent visible-proposition checks found no key mismatch across 111 records."
+    },
+    "variety": {
+      "status": "failed",
+      "evidence_paths": [
+        "coverage-results.json",
+        "minimal-failing-case.json",
+        "failing-batch-execution.json"
+      ],
+      "details": "Controls cover every permitted response mask, but the delivered batch repeats middle-only selection throughout its two-item determinant/column-space/pivot subgroup."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "scope-results.json",
+        "independent-samples.json"
+      ],
+      "details": "Variations preserve moderate conceptual theorem application and the three-conclusion workload."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "native-input.json",
+        "native-report.json",
+        "counterfactual-results.json"
+      ],
+      "details": "Native grading passes 610 submissions: 221 accepted and 389 rejected. Correct and incorrect alternatives and controlled changes were exercised."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "visual-inspection.json"
+      ],
+      "details": "All 11 actual-UI renders pass; screenshots of the batch, controlled variants and source replays were inspected."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "runtime-results.json",
+        "boundary-results.json",
+        "package-integrity.json"
+      ],
+      "details": "Manifest-only relocation, deterministic replay, invalid-request rejection and exact Python 3.13.5 dependency checks pass. All 123 package files remain unchanged."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "minimal-failing-case.json",
+        "delivery-batch/accepted.json",
+        "selection-analysis.json",
+        "inventory-assessment.json",
+        "failing_batch_check.py"
+      ],
+      "details": "Column-space-only selection solves 2/2 surviving subgroup members, versus 2/14 fresh controls. Delivery filtering preserves the shortcut. Captured inventory contains only original sources; no affected generated instances were demonstrated."
+    }
+  },
+  "findings": [
+    {
+      "kind": "decision_shortcut",
+      "description": "Batch-selection defect: both surviving determinant/column-space/pivot checkbox questions have [false,true,false]. Selecting only column space answers both without evaluating the premise. This finding applies to the exact batch, not universally to the generator.",
+      "source_refs": [
+        "7f4e1182-d195-5cca-bb1a-601ea1f9c921 (q-47599)",
+        "7036dc73-9ca4-59f2-b983-11eaacfb5a4b (q-142476)"
+      ],
+      "reproduction": "Run /home/jake/Developer/Course_Academy/.venv/bin/python -B failing_batch_check.py from evidence_root; it exits 1. It regenerates batch(difficulty='moderate', count=5, seed=2086806769). Minimal complete records aa60eb69-461c-5c0c-a750-07393618ac40 and 63eaf48a-f80a-5b68-a3f9-e6daebbdc899 are retained in minimal-failing-case.json and survive delivery unchanged.",
+      "requested_change": "Change finite batch selection so repeated recognizable determinant/column-space/pivot checkbox questions retain different qualifying subsets, or avoid repeating that family in this batch. Regenerate the batch and rerun the retained strict test and delivery checks. Preserve the valid generator domain and source families."
+    }
+  ],
+  "repair_history_file": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186124629/repair-history.json",
+  "instruction": "Fix the root cause, retain every earlier counterexample, and declare executable checks in repair-regressions.json. A failed check is another repair task, not permission to abandon the generator."
 }

@@ -9,3 +9,10 @@ Validation milestone:
 No database writes or publication performed. Exact Python is /home/jake/Developer/Course_Academy/.venv/bin/python. Commands, inputs and results are under evidence/. Runtime manifest is package.json.
 
 Completed: package and evidence are ready for independent review. No unfinished author steps. Moderate only; incomplete q-47586 excluded and original q-141342 quotations corrected only in generated output. Captured inventory has no generated questions; affected-inventory.json is empty with scope documented separately.
+
+
+2026-10-21 targeted batch repair milestone:
+- Reproduced latest finding 7ce5456a67dba2e42f32 with the exact retained review script and seed 2086806769; exit 1 and complete before-generator snapshot saved in evidence/batch-repair/.
+- Added source-backed finite-selection account before implementation. Changed only batch ordering and version 2.0.1: defer repeated subsets by ordered concepts/response shape, ignoring incidental dimensions; later passes retain the full finite domain.
+- Exact strict regression now passes (one det/col/pivot member in the requested five). Relocation passes on Python 3.13.5.
+- Added check_batch_selection.py and registered the retained finding alongside the earlier relocation regression. Next: finish affected domain/delivery/native checks, render and visually inspect changed batch, then record final results.
