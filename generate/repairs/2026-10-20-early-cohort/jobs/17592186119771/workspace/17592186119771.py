@@ -13,6 +13,7 @@ eighteen structural cases; do not inflate that limit with cosmetic changes.
 """
 from __future__ import annotations
 import argparse, copy, hashlib, json, random, re, sys, uuid
+import itertools
 from functools import lru_cache
 from pathlib import Path
 import sympy as sp
@@ -20,7 +21,7 @@ import sympy as sp
 KP_ID=17592186119771
 KP_UUID='1cca9b7c-358a-5f62-9a53-a696df0dd0ff'
 TITLE='Describing a Triangular Matrix'
-VERSION='triangular-description-3.2-all-nonempty-supports'
+VERSION='triangular-description-3.3-batch-cue-counterexamples'
 HERE=Path(__file__).resolve().with_suffix('')
 SOURCE=json.loads((HERE/'source.json').read_text())
 SOURCES={q[':question/math-academy-id']:q for q in SOURCE['record'][':knowledge-point/questions']}
@@ -37,6 +38,7 @@ DOMAIN={'entries':'integers -10..10 (bool excluded); diagonal entries may be zer
  'families':'Independent draws: 40% lower, 40% upper, 20% diagonal. Finite batches balance upper/lower and prefer one diagonal contrast when supply permits; deduplication changes those proportions.',
  'fingerprint':'dimension, family and off-diagonal support only; diagonal unit positions, values, signs, labels, layouts and choice order are incidental',
  'criterion':'Identity > Diagonal > non-diagonal Upper/Lower > Other; normal generation excludes identity and Other'}
+DOMAIN['batch_selection']='Prefer cross-family contrasts at each represented size; independently draw incidental entries/letters/orders, rejecting batches with perfect sign/letter cues within a mixed-size group. Explicit tasks, single-family requests and forced finite remainders retain their full support.'
 
 
 def digest(obj): return hashlib.sha256(json.dumps(obj,sort_keys=True,separators=(',',':')).encode()).hexdigest()
@@ -220,6 +222,67 @@ def generate_moderate(seed=0,**kwargs): return generate('moderate',seed,**kwargs
 # HARD: authored 4x4 same recognition method, bounded longer region scan.
 def generate_hard(seed=0,**kwargs): return generate('hard',seed,**kwargs)
 
+def select_patterns(available,chosen,rng):
+    """Allocate sizes before supports, avoiding preventable size-only answers.
+
+    Easy has two dimensions and at most one 2x2 task per family, so this
+    enumeration is small. A forced finite remainder is retained in full.
+    """
+    dimensions=sorted({len(p) for pool in available.values() for p in pool})
+    counts={kind:chosen.count(kind) for kind in FAMILIES}
+    pools={(kind,n):[p for p in available[kind] if len(p)==n]
+           for kind in FAMILIES for n in dimensions}
+    allocations=[]
+    for kind in FAMILIES:
+        allocations.append([allocation for allocation in itertools.product(
+            *(range(min(counts[kind],len(pools[kind,n]))+1) for n in dimensions))
+            if sum(allocation)==counts[kind]])
+    plans=list(itertools.product(*allocations))
+    def score(plan):
+        # No arbitrary proportion: penalize a size that alone reveals its key.
+        return sum(sum(row[j]>0 for row in plan)==1 for j in range(len(dimensions)))
+    best=min(map(score,plans));plan=rng.choice([p for p in plans if score(p)==best])
+    selected=[]
+    for kind,allocation in zip(FAMILIES,plan):
+        for n,count in zip(dimensions,allocation):
+            selected.extend((kind,p) for p in rng.sample(pools[kind,n],count))
+    rng.shuffle(selected)
+    return selected
+
+def batch_has_counterexamples(records):
+    """Check joint incidental cues within every mixed-size practice group.
+
+    Conditioning selection on counterexamples does not assign a sign to a
+    family or remove any accepted parameter value. This is a batch property.
+    """
+    groups={}
+    positions=set()
+    size_positions={}
+    orientation_order={}
+    for r in records:
+        p=r['generation']['parameters'];m=p['matrix'];kind=r['generation']['template']
+        cue=((m[0][0]>0)-(m[0][0]<0),p['letter'])
+        groups.setdefault(len(m),[]).append((kind,cue))
+        f=r['question'][':question/answer-fields'][0]
+        position=next(i for i,a in enumerate(f[':answer-field/choices'])
+                      if a[':answer/id']==f[':answer-field/correct'][1])
+        positions.add(position)
+        size_positions.setdefault(len(m),set()).add(position)
+        if kind in ('upper','lower'):
+            first=next(a[':answer/value'] for a in f[':answer-field/choices']
+                       if a[':answer/value'] in (FAMILIES['upper'],FAMILIES['lower']))
+            orientation_order.setdefault(len(m),[]).append(first==FAMILIES[kind])
+    for n,group in groups.items():
+        kinds={kind for kind,cue in group}
+        if len(kinds)<2: continue  # Forced remainder or explicit family.
+        if len(size_positions[n])<2: return False
+        if {'upper','lower'}<=kinds and len(set(orientation_order[n]))<2: return False
+        contrast=[(kind,cue) for kind,cue in group if kind in ('upper','lower')]
+        if not {'upper','lower'}<=kinds: contrast=group
+        if not any(k1!=k2 and c1==c2 for k1,c1 in contrast for k2,c2 in contrast):
+            return False
+    return len({r['generation']['template'] for r in records})<2 or len(positions)>1
+
 def batch(level,count,seed=0,exclude_fingerprints=(),**kwargs):
     """Choose unique structures before incidental numbers and answer order.
 
@@ -259,13 +322,18 @@ def batch(level,count,seed=0,exclude_fingerprints=(),**kwargs):
         best=min(map(score,plans));plan=rng.choice([p for p in plans if score(p)==best])
         chosen=[kind for kind,n in zip(FAMILIES,plan) for _ in range(n)]
         rng.shuffle(chosen)
-    for pool in available.values(): rng.shuffle(pool)
-    result=[]
-    for offset,kind in enumerate(chosen):
-        p=fill_pattern(kind,available[kind].pop(),rng)
-        args={**kwargs,'template':kind,'parameters':p}
-        result.append(generate(level,seed+offset,**args))
-    return result
+    selected=select_patterns(available,chosen,rng)
+    for attempt in range(4096):
+        result=[]
+        for kind,pattern in selected:
+            p=fill_pattern(kind,pattern,rng)
+            args={**kwargs,'template':kind,'parameters':p}
+            record=generate(level,rng.getrandbits(64),**args)
+            record['generation']['batch_seed']=seed
+            record['generation']['batch_selection_attempt']=attempt
+            result.append(record)
+        if batch_has_counterexamples(result): return result
+    raise ValueError('Could not construct incidental-cue counterexamples for this batch')
 
 def markdown(record):
     q=record['question'];pieces=[q[':question/problem']]
