@@ -1,0 +1,9 @@
+Preserved completed generator repairs and all five executable finding declarations. No runtime, engine, source, database, or publication changes were made.
+
+First executed regression: `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory` exited 1: five reproduced stored records retain the shortcut, with 64/64 successes in the retained possible learner-history scenario.
+
+Verification: `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/author-589` exited 1 solely for finding 591f580cadb749294588. Four generator regressions pass; 17 complete source-bank replays, 14 records through shared delivery filtering, controlled relevant/irrelevant counterfactuals, 7 accepted and 28 rejected native-grader submissions, and relocated seeded replay pass. Runtime, source, inventory, and manifest hashes match retained evidence. No generated inventory records were left untested.
+
+Reused actual-UI screenshot `evidence/repair-3/render/question-002.png` was visually reinspected: system, five choices, matrix elimination, and contradiction explanation are legible, consistent, and unclipped. No runtime or presentation changes justify rerendering.
+
+The separate inventory-remediation workflow requested in finding 591f580cadb749294588 is still required. Five complete proposed replacement records and their one-to-one identity mapping are verified in `evidence/repair-3/inventory-repair-proposal.json`, but remain unapplied. A generator edit cannot change these captured stored banks or remove them from the database-backed selector. Database changes and publication are explicitly prohibited in this task. The strict historical regression remains failing; the proposal is not evidence of a repaired stored pool. Status: unsupported.
