@@ -1,3 +1,13 @@
+Current verification (author-791): no new construction defect is demonstrated.
+Retain the existing instructional specification and runtime repairs below. Source
+f2c7cfd3-da43-5208-bd0e-21692357fabe requires elimination to `(k+4)y=-5`;
+tutorial e0c85152-daea-5a87-a3ba-81870558c7a2 defines inconsistency by no
+solutions. Source 534e2a93-e71a-5475-894e-dfd5ca99a3a6 confirms that numeric
+extremity is not required for the correct choice. The current generator varies
+that role; the five captured historical banks do not. Preserve the exact failing
+inventory check and the staged replacement mapping. No runtime, database,
+engine, publication, or source changes are justified or performed in this pass.
+
 # Instructional account and targeted repair
 
 Current scope (author-366): preserve every runtime repair and the strict failing

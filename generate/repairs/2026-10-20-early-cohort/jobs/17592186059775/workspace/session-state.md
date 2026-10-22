@@ -1,39 +1,37 @@
-# Current state — 2026-10-22, author-110
+# Current state — 2026-10-22, author-113
 
-Read feedback, both retained findings and the latest of 110 history events.
-Preserved runtime, source families, answer contracts and regression scripts.
-Reproduced the latest failure first with job Python:
-`-B checks/check_current_handoff.py` exits 1. Actual installed runner control
-flow rejects unchanged runtime before retained regressions or sampling.
+Read feedback and retained findings; preserved completed generator repairs.
+Reproduced the latest failure first: job Python `-B checks/check_current_handoff.py`
+exits 1. The installed runner rejects the unchanged runtime before regressions
+or sampling. Finding 9b8cb52352b8ca3e790e explicitly requires evidence-only
+correction and preservation of the package.
 
-Targeted verification with `/home/jake/Developer/Course_Academy/.venv/bin/python`:
+Fresh targeted verification (job Python, `-B`):
 
-- `-B checks/check_evidence_contract.py`: exit 1 at installed handoff. The
-  83-file staged bundle validates against its own root and two relocated roots;
-  wrong-root and missing-provenance controls reject. Twelve source captures and
-  three historical generated inventory records remain bound.
-- `-B checks/check_batch_selection.py`: exit 0. Exact seed 4258185931 scores
-  1/5 on the reported shortcut before and after shared delivery. All five survive.
-  Ten profiles and 25 native responses pass (5 accepted, 20 rejected).
-- `-B checks/check_render_binding.py`: exit 0. Ten complete banks / 50 choices
-  replay; two retained UI records equal current delivered endpoints. Reinspected
-  evidence/author8-render/question-001.png: readable matrices, controls and full
-  solution. No runtime change warrants a fresh render.
-- `-B checks/check_cli_contract.py`: exit 0. Runtime-only relocation, exact
-  counts, determinism and explicit finite-limit rejection pass.
-- `-B checks/check_runner_handoff.py`: exit 0 for the proposed patch in a
-  disposable checkout: 23 cases, one permitted evidence-only path. The installed
-  runner remains unchanged. This does not resolve the current handoff failure.
+- `checks/check_evidence_contract.py`: exit 1. The 83-file staged bundle passes
+  real review validation and two relocated-root checks. Missing provenance and
+  wrong-root controls fail as expected. Current records, 12 source captures and
+  three affected inventory records are bound. Installed runner handoff fails.
+- `checks/check_batch_selection.py`: exit 0. Seed 4258185931 shortcut scores
+  1/5 raw and delivered; all five survive shared delivery. Ten profiles checked;
+  native grading accepts 5 correct responses and rejects 20 distractors.
+- `checks/check_render_binding.py`: exit 0. Ten complete source banks replay;
+  retained UI endpoints match current delivered records. Visually inspected
+  evidence/author8-render/question-001.png: readable matrices, choices and all
+  row operations. No runtime changes require another render.
+- `checks/check_cli_contract.py`: exit 0. Runtime-only relocation, deterministic
+  output, exact requested counts and explicit finite-limit rejection pass.
+- The proposed patch previously passed 23 offline cases. It and the installed
+  runner are unchanged, so that separate proposal test was not repeated.
 
-Commands, exit codes, logs and unchanged runtime hashes:
-evidence/current-verification.json. Strict installed failure:
-evidence/current-handoff-regression.json. Registered findings remain unchanged
-in repair-regressions.json. No check was weakened.
+Commands, exit codes, current evidence and unchanged runtime hashes are in
+`evidence/current-verification.json`. Strict failing regressions remain intact.
+No package, engine, external-file, publication or database changes occurred.
 
-Unfinished: the runner owner must resolve scripts/generator_pipeline.py:723–728
-outside this workspace. Staged runner-fix/evidence-only-rejection.patch is
-verified but uninstalled. Its route retains regressions, sampling and fresh
-independent review; historical acceptance does not grant approval.
-Do not change generator bytes to evade the digest gate. Repeating authoring
-under the same write boundary cannot install this external correction. No
-publication, database, engine or external-file changes occurred.
+Unfinished: runner owner must resolve scripts/generator_pipeline.py:723–728
+outside this workspace. The verified proposal is
+runner-fix/evidence-only-rejection.patch. It retains regressions, sampling and
+fresh independent review; historical acceptance is not new approval. The
+corrected evidence bundle remains staged at evidence/contract-correction.
+Do not modify generator bytes solely to evade the digest gate. Repeating this
+author task under the same write boundary cannot install the external fix.
