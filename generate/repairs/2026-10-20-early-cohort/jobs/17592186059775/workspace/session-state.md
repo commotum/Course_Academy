@@ -1,39 +1,31 @@
-# Current state — 2026-10-22, author-145
+# Current state — 2026-10-22, author-148
 
-Read latest feedback and repair history (2 findings, 145 events); reproduced the
-latest installed-runner rejection before validation. Preserved runtime, manifest,
-instructional account, registered regressions and staged runner patch. No runtime
-change is justified by the evidence-only finding.
+Preserved the completed generator repairs and strict regression registrations.
+Read feedback, both retained findings, and all 148 repair-history events (latest
+attempt 147). Reused the existing instructional account and source analysis.
+The remaining finding is evidence-only; no runtime change is justified.
 
-Fresh commands, exit codes, logs and unchanged runtime hashes:
-`evidence/author145-verification.json`. Commands used the pinned job Python.
+First reproduced the exact latest failure:
+`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_current_handoff.py`
+exits 1: installed runner rejects the unchanged package before checks/sampling.
 
-- `checks/check_current_handoff.py`: exit 1; actual installed runner rejects the
-  identical package before retained regressions or sampling.
-- `checks/check_evidence_contract.py`: exit 1 overall. Corrected bundle validation,
-  two relocations, missing-provenance/wrong-root negative controls, current-record
-  binding, 12 source captures and 3 generated inventory records pass. Installed
-  runner gate remains the failure.
-- `checks/check_batch_selection.py`: exit 0; seed 4258185931 shortcut scores 1/5
-  raw and delivered; 5 accepted, 0 duplicates; 10 profiles checked; 25 native
-  responses pass (5 accepted, 20 rejected).
-- `checks/check_render_binding.py`: exit 0; 10 source banks / 50 choices replay;
-  two retained actual-UI endpoints match fresh delivery. Visually re-inspected
-  `evidence/author8-render/question-002.png`: matrices, controls and full solution
-  are readable. No new render claimed.
+Targeted commands, exit codes and logs: `evidence/author148-verification.json`.
+- Evidence contract: corrected bundle, relocation, negative controls, 12 source
+  captures and three affected inventory records pass; installed handoff exits 1.
+- Batch selection: exact seed 4258185931 shortcut scores 1/5 raw and delivered;
+  five records survive shared delivery; ten profiles and 25 native grades pass.
+- CLI: relocation, deterministic exact counts and finite-limit rejection pass.
+- Source/UI binding: ten complete banks and two retained UI records match current
+  output. Re-inspected retained screenshot; no new render claimed.
 
-All six runtime/manifest file hashes remain unchanged; package digest remains
-`38c685ce1e5bd4f89ac79b6ab3d31a4a81f2b77c9f4bb6f0abcab5c20640f626`.
-No publication, database writes, engine changes or external runner edits.
+All six manifest/runtime hashes remain unchanged. No publication, database writes,
+engine edits, service calls or edits outside this workspace.
 
-Unresolved root cause: `scripts/generator_pipeline.py:725` demands changed runtime
-bytes although finding 9b8cb52352b8ca3e790e requires an evidence-only correction
-preserving the package. `runner-fix/evidence-only-rejection.patch` is uninstalled.
-Its retained 23 offline cases are not fresh results or an installed fix.
-
-Next unfinished step requires the runner owner to review/apply that correction
-outside this workspace, then run retained checks, sampling and fresh independent
-review. Repeating authoring cannot repair the external gate. Keep strict checks
-failing until installed behavior changes; do not alter package bytes to evade it.
-Status is unsupported for this handoff, not for the easy instructional family.
-Live learner history and later inventory remain untested.
+Unfinished: the runner owner must resolve the unchanged-package gate in
+`scripts/generator_pipeline.py` and install the corrected evidence bundle at the
+runner-supplied evidence root. A concrete patch already exists at
+`runner-fix/evidence-only-rejection.patch`, uninstalled. These changes are outside
+this session's workspace-only write scope. The strict regression remains failing;
+changing runtime bytes merely to evade the gate would not fix the cause.
+Do not repeat broad generator tests or alter source families for this handoff issue.
+Later inventory and live learner history remain untested.
