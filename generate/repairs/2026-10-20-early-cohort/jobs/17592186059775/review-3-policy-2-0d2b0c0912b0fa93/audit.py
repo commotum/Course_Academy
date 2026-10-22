@@ -104,7 +104,7 @@ for band,cnt,seed in [('easy',5,0),('easy',0,731),('easy',1,731),('moderate',5,9
 oldfile=W/'evidence/before-cli.json';oldout=json.load(open(oldfile));
 def decode(v):return v.get('records',v.get('questions',[v] if 'question' in v else None)) if isinstance(v,dict) else v
 assert decode(oldout) is None;save('retained-count-counterexample.json',oldout)
-cli.append({'retained_failure':'before-cli.json decodes to None (requested five)','current':'raw arrays above decode to exact counts','preflight':'Supplied repair-preflight.json absent','retained_findings':[],'history_events':json.load(open(J/'repair-history.json'))['events']})
+cli.append({'retained_failure':'before-cli.json decodes to None (requested five)','current':'raw arrays above decode to exact counts','preflight':json.load(open(J/'repair-preflight.json')),'retained_findings':json.load(open(J/'repair-history.json'))['findings'],'history_events':json.load(open(J/'repair-history.json'))['events']})
 legacy=loadmod('legacy',W/'evidence/legacy/17592186059775.py')
 p=subprocess.run([PY,'-B',str(W/'evidence/legacy/17592186059775.py'),'--format','json'],capture_output=True,text=True)
 assert p.returncode!=0 and 'unrecognized arguments: --format json' in p.stderr

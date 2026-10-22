@@ -11,7 +11,7 @@
     },
     {
       "feature": "A five-item batch initially shares coefficient block, upper input row and answer bank.",
-      "justification": "Controlled contrast holds incidental features fixed while the decisive lower RHS changes. All five candidate decisions occur once and all positions occur once, requiring reconsideration of lower RHS. Source Gaussian-elimination dependency is preserved; repeated bank alone is not sufficient evidence of an incidental predictor."
+      "justification": "Controlled contrast holds incidental features fixed while the decisive lower RHS changes. All five candidate decisions occur once and all positions occur once, requiring reconsideration of lower RHS. Source Gaussian-elimination dependency is preserved; repeated bank alone is not sufficient evidence of an incidental predictor. Identical stored answer order does not imply identical rendered order; the UI reorders by item and field identity."
     }
   ],
   "answer_roles": [
@@ -23,7 +23,7 @@
     {
       "role": "Correct radio position",
       "eligible_variation": "Permutation independent of mathematical instance.",
-      "observed": "Controlled seed permutations preserve response value; exact delivered batch has each of five positions correct once."
+      "observed": "Stored batch order gives each position correct once; actual preview UI order gives correct positions 1,2,3,1,4 (zero-based). No fixed rendered position answers all members. Controlled seed permutations preserve the correct mathematical value."
     }
   ],
   "coverage": [
@@ -58,7 +58,7 @@
   "counterfactuals": [
     {
       "kind": "relevant",
-      "change": "Hold profile, scale, seed, choice bank/order, input coefficient block and first row fixed; vary lower RHS across five targets.",
+      "change": "Hold profile, scale, seed, candidate values and stored bank order, coefficient block and first input row fixed; vary only lower input RHS across targets. UI ordering is incidental and applied separately.",
       "expected": "Every candidate becomes correct once; explanations and actual grading must follow the changed lower RHS.",
       "observed": "Exact parsed mathematics and native grading agree for all ten profile banks. Current batch is such a contrast bank. Representative rendered endpoint pairs show the changed RHS, output and explanation.",
       "status": "passed",
@@ -92,15 +92,15 @@
   ],
   "shortcut_probes": [
     {
-      "cue": "first position",
+      "cue": "first stored option",
       "subgroup": "actual delivered five-item batch",
       "scope": "overall",
-      "strategy": "Always click first radio choice.",
+      "strategy": "Always choose first option in the delivered JSON order.",
       "correct": 1,
       "total": 5,
       "baseline": 0.2,
       "disposition": "not_predictive",
-      "conclusion": "1/5; random choice among five has success 0.2. No universal rule in this tested subgroup. Input RHS still determines the keyed answer.",
+      "conclusion": "1/5; random choice among five has success 0.2. No universal rule in this tested subgroup. Input RHS still determines the keyed answer. The UI applies additional item-specific ordering; rendered positions are probed separately.",
       "sample_refs": [
         "runner-batch.json",
         "delivery-batch/accepted.json"
@@ -152,10 +152,332 @@
       ]
     },
     {
-      "cue": "first position",
+      "cue": "first stored option",
       "subgroup": "q-10329 catalog after known-system rejection",
       "scope": "within_template",
-      "strategy": "Always click first radio choice.",
+      "strategy": "Always choose first option in the delivered JSON order.",
+      "correct": 2,
+      "total": 14,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/14; random choice among five has success 0.2. No universal rule in this tested subgroup. Input RHS still determines the keyed answer. The UI applies additional item-specific ordering; rendered positions are probed separately.",
+      "sample_refs": [
+        "normal-catalog-records.json"
+      ]
+    },
+    {
+      "cue": "smallest candidate y",
+      "subgroup": "q-10329 catalog after known-system rejection",
+      "scope": "within_template",
+      "strategy": "Choose the smallest lower-right candidate value.",
+      "correct": 3,
+      "total": 14,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/14; random choice among five has success 0.2. No universal rule in this tested subgroup. Input RHS still determines the keyed answer.",
+      "sample_refs": [
+        "normal-catalog-records.json"
+      ]
+    },
+    {
+      "cue": "pivot/rank retained cue",
+      "subgroup": "q-10329 catalog after known-system rejection",
+      "scope": "within_template",
+      "strategy": "If input a11=1 choose second-largest candidate y; otherwise choose minimum.",
+      "correct": 3,
+      "total": 14,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/14; random choice among five has success 0.2. No universal rule in this tested subgroup. Input RHS still determines the keyed answer.",
+      "sample_refs": [
+        "normal-catalog-records.json"
+      ]
+    },
+    {
+      "cue": "nearest zero",
+      "subgroup": "q-10329 catalog after known-system rejection",
+      "scope": "within_template",
+      "strategy": "Choose candidate y with smallest absolute value; ties use displayed order.",
+      "correct": 3,
+      "total": 14,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/14; random choice among five has success 0.2. No universal rule in this tested subgroup. Input RHS still determines the keyed answer.",
+      "sample_refs": [
+        "normal-catalog-records.json"
+      ]
+    },
+    {
+      "cue": "first stored option",
+      "subgroup": "q-1059 catalog after known-system rejection",
+      "scope": "within_template",
+      "strategy": "Always choose first option in the delivered JSON order.",
+      "correct": 5,
+      "total": 22,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "5/22; random choice among five has success 0.2. No universal rule in this tested subgroup. Input RHS still determines the keyed answer. The UI applies additional item-specific ordering; rendered positions are probed separately.",
+      "sample_refs": [
+        "normal-catalog-records.json"
+      ]
+    },
+    {
+      "cue": "smallest candidate y",
+      "subgroup": "q-1059 catalog after known-system rejection",
+      "scope": "within_template",
+      "strategy": "Choose the smallest lower-right candidate value.",
+      "correct": 5,
+      "total": 22,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "5/22; random choice among five has success 0.2. No universal rule in this tested subgroup. Input RHS still determines the keyed answer.",
+      "sample_refs": [
+        "normal-catalog-records.json"
+      ]
+    },
+    {
+      "cue": "pivot/rank retained cue",
+      "subgroup": "q-1059 catalog after known-system rejection",
+      "scope": "within_template",
+      "strategy": "If input a11=1 choose second-largest candidate y; otherwise choose minimum.",
+      "correct": 5,
+      "total": 22,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "5/22; random choice among five has success 0.2. No universal rule in this tested subgroup. Input RHS still determines the keyed answer.",
+      "sample_refs": [
+        "normal-catalog-records.json"
+      ]
+    },
+    {
+      "cue": "nearest zero",
+      "subgroup": "q-1059 catalog after known-system rejection",
+      "scope": "within_template",
+      "strategy": "Choose candidate y with smallest absolute value; ties use displayed order.",
+      "correct": 5,
+      "total": 22,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "5/22; random choice among five has success 0.2. No universal rule in this tested subgroup. Input RHS still determines the keyed answer.",
+      "sample_refs": [
+        "normal-catalog-records.json"
+      ]
+    },
+    {
+      "cue": "first stored option",
+      "subgroup": "q-1060 catalog after known-system rejection",
+      "scope": "within_template",
+      "strategy": "Always choose first option in the delivered JSON order.",
+      "correct": 3,
+      "total": 13,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/13; random choice among five has success 0.2. No universal rule in this tested subgroup. Input RHS still determines the keyed answer. The UI applies additional item-specific ordering; rendered positions are probed separately.",
+      "sample_refs": [
+        "normal-catalog-records.json"
+      ]
+    },
+    {
+      "cue": "smallest candidate y",
+      "subgroup": "q-1060 catalog after known-system rejection",
+      "scope": "within_template",
+      "strategy": "Choose the smallest lower-right candidate value.",
+      "correct": 3,
+      "total": 13,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/13; random choice among five has success 0.2. No universal rule in this tested subgroup. Input RHS still determines the keyed answer.",
+      "sample_refs": [
+        "normal-catalog-records.json"
+      ]
+    },
+    {
+      "cue": "pivot/rank retained cue",
+      "subgroup": "q-1060 catalog after known-system rejection",
+      "scope": "within_template",
+      "strategy": "If input a11=1 choose second-largest candidate y; otherwise choose minimum.",
+      "correct": 3,
+      "total": 13,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/13; random choice among five has success 0.2. No universal rule in this tested subgroup. Input RHS still determines the keyed answer.",
+      "sample_refs": [
+        "normal-catalog-records.json"
+      ]
+    },
+    {
+      "cue": "nearest zero",
+      "subgroup": "q-1060 catalog after known-system rejection",
+      "scope": "within_template",
+      "strategy": "Choose candidate y with smallest absolute value; ties use displayed order.",
+      "correct": 3,
+      "total": 13,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/13; random choice among five has success 0.2. No universal rule in this tested subgroup. Input RHS still determines the keyed answer.",
+      "sample_refs": [
+        "normal-catalog-records.json"
+      ]
+    },
+    {
+      "cue": "first stored option",
+      "subgroup": "q-130910 catalog after known-system rejection",
+      "scope": "within_template",
+      "strategy": "Always choose first option in the delivered JSON order.",
+      "correct": 3,
+      "total": 14,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/14; random choice among five has success 0.2. No universal rule in this tested subgroup. Input RHS still determines the keyed answer. The UI applies additional item-specific ordering; rendered positions are probed separately.",
+      "sample_refs": [
+        "normal-catalog-records.json"
+      ]
+    },
+    {
+      "cue": "smallest candidate y",
+      "subgroup": "q-130910 catalog after known-system rejection",
+      "scope": "within_template",
+      "strategy": "Choose the smallest lower-right candidate value.",
+      "correct": 3,
+      "total": 14,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/14; random choice among five has success 0.2. No universal rule in this tested subgroup. Input RHS still determines the keyed answer.",
+      "sample_refs": [
+        "normal-catalog-records.json"
+      ]
+    },
+    {
+      "cue": "pivot/rank retained cue",
+      "subgroup": "q-130910 catalog after known-system rejection",
+      "scope": "within_template",
+      "strategy": "If input a11=1 choose second-largest candidate y; otherwise choose minimum.",
+      "correct": 3,
+      "total": 14,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/14; random choice among five has success 0.2. No universal rule in this tested subgroup. Input RHS still determines the keyed answer.",
+      "sample_refs": [
+        "normal-catalog-records.json"
+      ]
+    },
+    {
+      "cue": "nearest zero",
+      "subgroup": "q-130910 catalog after known-system rejection",
+      "scope": "within_template",
+      "strategy": "Choose candidate y with smallest absolute value; ties use displayed order.",
+      "correct": 3,
+      "total": 14,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/14; random choice among five has success 0.2. No universal rule in this tested subgroup. Input RHS still determines the keyed answer.",
+      "sample_refs": [
+        "normal-catalog-records.json"
+      ]
+    },
+    {
+      "cue": "first stored option",
+      "subgroup": "q-20459 catalog after known-system rejection",
+      "scope": "within_template",
+      "strategy": "Always choose first option in the delivered JSON order.",
+      "correct": 3,
+      "total": 19,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/19; random choice among five has success 0.2. No universal rule in this tested subgroup. Input RHS still determines the keyed answer. The UI applies additional item-specific ordering; rendered positions are probed separately.",
+      "sample_refs": [
+        "normal-catalog-records.json"
+      ]
+    },
+    {
+      "cue": "smallest candidate y",
+      "subgroup": "q-20459 catalog after known-system rejection",
+      "scope": "within_template",
+      "strategy": "Choose the smallest lower-right candidate value.",
+      "correct": 4,
+      "total": 19,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "4/19; random choice among five has success 0.2. No universal rule in this tested subgroup. Input RHS still determines the keyed answer.",
+      "sample_refs": [
+        "normal-catalog-records.json"
+      ]
+    },
+    {
+      "cue": "pivot/rank retained cue",
+      "subgroup": "q-20459 catalog after known-system rejection",
+      "scope": "within_template",
+      "strategy": "If input a11=1 choose second-largest candidate y; otherwise choose minimum.",
+      "correct": 4,
+      "total": 19,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "4/19; random choice among five has success 0.2. No universal rule in this tested subgroup. Input RHS still determines the keyed answer.",
+      "sample_refs": [
+        "normal-catalog-records.json"
+      ]
+    },
+    {
+      "cue": "nearest zero",
+      "subgroup": "q-20459 catalog after known-system rejection",
+      "scope": "within_template",
+      "strategy": "Choose candidate y with smallest absolute value; ties use displayed order.",
+      "correct": 4,
+      "total": 19,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "4/19; random choice among five has success 0.2. No universal rule in this tested subgroup. Input RHS still determines the keyed answer.",
+      "sample_refs": [
+        "normal-catalog-records.json"
+      ]
+    },
+    {
+      "cue": "first stored option",
+      "subgroup": "q-20461 catalog after known-system rejection",
+      "scope": "within_template",
+      "strategy": "Always choose first option in the delivered JSON order.",
+      "correct": 3,
+      "total": 14,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/14; random choice among five has success 0.2. No universal rule in this tested subgroup. Input RHS still determines the keyed answer. The UI applies additional item-specific ordering; rendered positions are probed separately.",
+      "sample_refs": [
+        "normal-catalog-records.json"
+      ]
+    },
+    {
+      "cue": "smallest candidate y",
+      "subgroup": "q-20461 catalog after known-system rejection",
+      "scope": "within_template",
+      "strategy": "Choose the smallest lower-right candidate value.",
+      "correct": 3,
+      "total": 14,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/14; random choice among five has success 0.2. No universal rule in this tested subgroup. Input RHS still determines the keyed answer.",
+      "sample_refs": [
+        "normal-catalog-records.json"
+      ]
+    },
+    {
+      "cue": "pivot/rank retained cue",
+      "subgroup": "q-20461 catalog after known-system rejection",
+      "scope": "within_template",
+      "strategy": "If input a11=1 choose second-largest candidate y; otherwise choose minimum.",
+      "correct": 3,
+      "total": 14,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/14; random choice among five has success 0.2. No universal rule in this tested subgroup. Input RHS still determines the keyed answer.",
+      "sample_refs": [
+        "normal-catalog-records.json"
+      ]
+    },
+    {
+      "cue": "nearest zero",
+      "subgroup": "q-20461 catalog after known-system rejection",
+      "scope": "within_template",
+      "strategy": "Choose candidate y with smallest absolute value; ties use displayed order.",
       "correct": 2,
       "total": 14,
       "baseline": 0.2,
@@ -166,337 +488,15 @@
       ]
     },
     {
-      "cue": "smallest candidate y",
-      "subgroup": "q-10329 catalog after known-system rejection",
-      "scope": "within_template",
-      "strategy": "Choose the smallest lower-right candidate value.",
-      "correct": 3,
-      "total": 14,
-      "baseline": 0.2,
-      "disposition": "not_predictive",
-      "conclusion": "3/14; random choice among five has success 0.2. No universal rule in this tested subgroup. Input RHS still determines the keyed answer.",
-      "sample_refs": [
-        "normal-catalog-records.json"
-      ]
-    },
-    {
-      "cue": "pivot/rank retained cue",
-      "subgroup": "q-10329 catalog after known-system rejection",
-      "scope": "within_template",
-      "strategy": "If input a11=1 choose second-largest candidate y; otherwise choose minimum.",
-      "correct": 3,
-      "total": 14,
-      "baseline": 0.2,
-      "disposition": "not_predictive",
-      "conclusion": "3/14; random choice among five has success 0.2. No universal rule in this tested subgroup. Input RHS still determines the keyed answer.",
-      "sample_refs": [
-        "normal-catalog-records.json"
-      ]
-    },
-    {
-      "cue": "nearest zero",
-      "subgroup": "q-10329 catalog after known-system rejection",
-      "scope": "within_template",
-      "strategy": "Choose candidate y with smallest absolute value; ties use displayed order.",
-      "correct": 3,
-      "total": 14,
-      "baseline": 0.2,
-      "disposition": "not_predictive",
-      "conclusion": "3/14; random choice among five has success 0.2. No universal rule in this tested subgroup. Input RHS still determines the keyed answer.",
-      "sample_refs": [
-        "normal-catalog-records.json"
-      ]
-    },
-    {
-      "cue": "first position",
-      "subgroup": "q-1059 catalog after known-system rejection",
-      "scope": "within_template",
-      "strategy": "Always click first radio choice.",
-      "correct": 5,
-      "total": 22,
-      "baseline": 0.2,
-      "disposition": "not_predictive",
-      "conclusion": "5/22; random choice among five has success 0.2. No universal rule in this tested subgroup. Input RHS still determines the keyed answer.",
-      "sample_refs": [
-        "normal-catalog-records.json"
-      ]
-    },
-    {
-      "cue": "smallest candidate y",
-      "subgroup": "q-1059 catalog after known-system rejection",
-      "scope": "within_template",
-      "strategy": "Choose the smallest lower-right candidate value.",
-      "correct": 5,
-      "total": 22,
-      "baseline": 0.2,
-      "disposition": "not_predictive",
-      "conclusion": "5/22; random choice among five has success 0.2. No universal rule in this tested subgroup. Input RHS still determines the keyed answer.",
-      "sample_refs": [
-        "normal-catalog-records.json"
-      ]
-    },
-    {
-      "cue": "pivot/rank retained cue",
-      "subgroup": "q-1059 catalog after known-system rejection",
-      "scope": "within_template",
-      "strategy": "If input a11=1 choose second-largest candidate y; otherwise choose minimum.",
-      "correct": 5,
-      "total": 22,
-      "baseline": 0.2,
-      "disposition": "not_predictive",
-      "conclusion": "5/22; random choice among five has success 0.2. No universal rule in this tested subgroup. Input RHS still determines the keyed answer.",
-      "sample_refs": [
-        "normal-catalog-records.json"
-      ]
-    },
-    {
-      "cue": "nearest zero",
-      "subgroup": "q-1059 catalog after known-system rejection",
-      "scope": "within_template",
-      "strategy": "Choose candidate y with smallest absolute value; ties use displayed order.",
-      "correct": 5,
-      "total": 22,
-      "baseline": 0.2,
-      "disposition": "not_predictive",
-      "conclusion": "5/22; random choice among five has success 0.2. No universal rule in this tested subgroup. Input RHS still determines the keyed answer.",
-      "sample_refs": [
-        "normal-catalog-records.json"
-      ]
-    },
-    {
-      "cue": "first position",
-      "subgroup": "q-1060 catalog after known-system rejection",
-      "scope": "within_template",
-      "strategy": "Always click first radio choice.",
-      "correct": 3,
-      "total": 13,
-      "baseline": 0.2,
-      "disposition": "not_predictive",
-      "conclusion": "3/13; random choice among five has success 0.2. No universal rule in this tested subgroup. Input RHS still determines the keyed answer.",
-      "sample_refs": [
-        "normal-catalog-records.json"
-      ]
-    },
-    {
-      "cue": "smallest candidate y",
-      "subgroup": "q-1060 catalog after known-system rejection",
-      "scope": "within_template",
-      "strategy": "Choose the smallest lower-right candidate value.",
-      "correct": 3,
-      "total": 13,
-      "baseline": 0.2,
-      "disposition": "not_predictive",
-      "conclusion": "3/13; random choice among five has success 0.2. No universal rule in this tested subgroup. Input RHS still determines the keyed answer.",
-      "sample_refs": [
-        "normal-catalog-records.json"
-      ]
-    },
-    {
-      "cue": "pivot/rank retained cue",
-      "subgroup": "q-1060 catalog after known-system rejection",
-      "scope": "within_template",
-      "strategy": "If input a11=1 choose second-largest candidate y; otherwise choose minimum.",
-      "correct": 3,
-      "total": 13,
-      "baseline": 0.2,
-      "disposition": "not_predictive",
-      "conclusion": "3/13; random choice among five has success 0.2. No universal rule in this tested subgroup. Input RHS still determines the keyed answer.",
-      "sample_refs": [
-        "normal-catalog-records.json"
-      ]
-    },
-    {
-      "cue": "nearest zero",
-      "subgroup": "q-1060 catalog after known-system rejection",
-      "scope": "within_template",
-      "strategy": "Choose candidate y with smallest absolute value; ties use displayed order.",
-      "correct": 3,
-      "total": 13,
-      "baseline": 0.2,
-      "disposition": "not_predictive",
-      "conclusion": "3/13; random choice among five has success 0.2. No universal rule in this tested subgroup. Input RHS still determines the keyed answer.",
-      "sample_refs": [
-        "normal-catalog-records.json"
-      ]
-    },
-    {
-      "cue": "first position",
-      "subgroup": "q-130910 catalog after known-system rejection",
-      "scope": "within_template",
-      "strategy": "Always click first radio choice.",
-      "correct": 3,
-      "total": 14,
-      "baseline": 0.2,
-      "disposition": "not_predictive",
-      "conclusion": "3/14; random choice among five has success 0.2. No universal rule in this tested subgroup. Input RHS still determines the keyed answer.",
-      "sample_refs": [
-        "normal-catalog-records.json"
-      ]
-    },
-    {
-      "cue": "smallest candidate y",
-      "subgroup": "q-130910 catalog after known-system rejection",
-      "scope": "within_template",
-      "strategy": "Choose the smallest lower-right candidate value.",
-      "correct": 3,
-      "total": 14,
-      "baseline": 0.2,
-      "disposition": "not_predictive",
-      "conclusion": "3/14; random choice among five has success 0.2. No universal rule in this tested subgroup. Input RHS still determines the keyed answer.",
-      "sample_refs": [
-        "normal-catalog-records.json"
-      ]
-    },
-    {
-      "cue": "pivot/rank retained cue",
-      "subgroup": "q-130910 catalog after known-system rejection",
-      "scope": "within_template",
-      "strategy": "If input a11=1 choose second-largest candidate y; otherwise choose minimum.",
-      "correct": 3,
-      "total": 14,
-      "baseline": 0.2,
-      "disposition": "not_predictive",
-      "conclusion": "3/14; random choice among five has success 0.2. No universal rule in this tested subgroup. Input RHS still determines the keyed answer.",
-      "sample_refs": [
-        "normal-catalog-records.json"
-      ]
-    },
-    {
-      "cue": "nearest zero",
-      "subgroup": "q-130910 catalog after known-system rejection",
-      "scope": "within_template",
-      "strategy": "Choose candidate y with smallest absolute value; ties use displayed order.",
-      "correct": 3,
-      "total": 14,
-      "baseline": 0.2,
-      "disposition": "not_predictive",
-      "conclusion": "3/14; random choice among five has success 0.2. No universal rule in this tested subgroup. Input RHS still determines the keyed answer.",
-      "sample_refs": [
-        "normal-catalog-records.json"
-      ]
-    },
-    {
-      "cue": "first position",
-      "subgroup": "q-20459 catalog after known-system rejection",
-      "scope": "within_template",
-      "strategy": "Always click first radio choice.",
-      "correct": 3,
-      "total": 19,
-      "baseline": 0.2,
-      "disposition": "not_predictive",
-      "conclusion": "3/19; random choice among five has success 0.2. No universal rule in this tested subgroup. Input RHS still determines the keyed answer.",
-      "sample_refs": [
-        "normal-catalog-records.json"
-      ]
-    },
-    {
-      "cue": "smallest candidate y",
-      "subgroup": "q-20459 catalog after known-system rejection",
-      "scope": "within_template",
-      "strategy": "Choose the smallest lower-right candidate value.",
-      "correct": 4,
-      "total": 19,
-      "baseline": 0.2,
-      "disposition": "not_predictive",
-      "conclusion": "4/19; random choice among five has success 0.2. No universal rule in this tested subgroup. Input RHS still determines the keyed answer.",
-      "sample_refs": [
-        "normal-catalog-records.json"
-      ]
-    },
-    {
-      "cue": "pivot/rank retained cue",
-      "subgroup": "q-20459 catalog after known-system rejection",
-      "scope": "within_template",
-      "strategy": "If input a11=1 choose second-largest candidate y; otherwise choose minimum.",
-      "correct": 4,
-      "total": 19,
-      "baseline": 0.2,
-      "disposition": "not_predictive",
-      "conclusion": "4/19; random choice among five has success 0.2. No universal rule in this tested subgroup. Input RHS still determines the keyed answer.",
-      "sample_refs": [
-        "normal-catalog-records.json"
-      ]
-    },
-    {
-      "cue": "nearest zero",
-      "subgroup": "q-20459 catalog after known-system rejection",
-      "scope": "within_template",
-      "strategy": "Choose candidate y with smallest absolute value; ties use displayed order.",
-      "correct": 4,
-      "total": 19,
-      "baseline": 0.2,
-      "disposition": "not_predictive",
-      "conclusion": "4/19; random choice among five has success 0.2. No universal rule in this tested subgroup. Input RHS still determines the keyed answer.",
-      "sample_refs": [
-        "normal-catalog-records.json"
-      ]
-    },
-    {
-      "cue": "first position",
-      "subgroup": "q-20461 catalog after known-system rejection",
-      "scope": "within_template",
-      "strategy": "Always click first radio choice.",
-      "correct": 3,
-      "total": 14,
-      "baseline": 0.2,
-      "disposition": "not_predictive",
-      "conclusion": "3/14; random choice among five has success 0.2. No universal rule in this tested subgroup. Input RHS still determines the keyed answer.",
-      "sample_refs": [
-        "normal-catalog-records.json"
-      ]
-    },
-    {
-      "cue": "smallest candidate y",
-      "subgroup": "q-20461 catalog after known-system rejection",
-      "scope": "within_template",
-      "strategy": "Choose the smallest lower-right candidate value.",
-      "correct": 3,
-      "total": 14,
-      "baseline": 0.2,
-      "disposition": "not_predictive",
-      "conclusion": "3/14; random choice among five has success 0.2. No universal rule in this tested subgroup. Input RHS still determines the keyed answer.",
-      "sample_refs": [
-        "normal-catalog-records.json"
-      ]
-    },
-    {
-      "cue": "pivot/rank retained cue",
-      "subgroup": "q-20461 catalog after known-system rejection",
-      "scope": "within_template",
-      "strategy": "If input a11=1 choose second-largest candidate y; otherwise choose minimum.",
-      "correct": 3,
-      "total": 14,
-      "baseline": 0.2,
-      "disposition": "not_predictive",
-      "conclusion": "3/14; random choice among five has success 0.2. No universal rule in this tested subgroup. Input RHS still determines the keyed answer.",
-      "sample_refs": [
-        "normal-catalog-records.json"
-      ]
-    },
-    {
-      "cue": "nearest zero",
-      "subgroup": "q-20461 catalog after known-system rejection",
-      "scope": "within_template",
-      "strategy": "Choose candidate y with smallest absolute value; ties use displayed order.",
-      "correct": 2,
-      "total": 14,
-      "baseline": 0.2,
-      "disposition": "not_predictive",
-      "conclusion": "2/14; random choice among five has success 0.2. No universal rule in this tested subgroup. Input RHS still determines the keyed answer.",
-      "sample_refs": [
-        "normal-catalog-records.json"
-      ]
-    },
-    {
-      "cue": "first position",
+      "cue": "first stored option",
       "subgroup": "q-10512 catalog after known-system rejection",
       "scope": "within_template",
-      "strategy": "Always click first radio choice.",
+      "strategy": "Always choose first option in the delivered JSON order.",
       "correct": 2,
       "total": 9,
       "baseline": 0.2,
       "disposition": "not_predictive",
-      "conclusion": "2/9; random choice among five has success 0.2. No universal rule in this tested subgroup. Input RHS still determines the keyed answer.",
+      "conclusion": "2/9; random choice among five has success 0.2. No universal rule in this tested subgroup. Input RHS still determines the keyed answer. The UI applies additional item-specific ordering; rendered positions are probed separately.",
       "sample_refs": [
         "normal-catalog-records.json"
       ]
@@ -544,15 +544,15 @@
       ]
     },
     {
-      "cue": "first position",
+      "cue": "first stored option",
       "subgroup": "q-130909 catalog after known-system rejection",
       "scope": "within_template",
-      "strategy": "Always click first radio choice.",
+      "strategy": "Always choose first option in the delivered JSON order.",
       "correct": 2,
       "total": 9,
       "baseline": 0.2,
       "disposition": "not_predictive",
-      "conclusion": "2/9; random choice among five has success 0.2. No universal rule in this tested subgroup. Input RHS still determines the keyed answer.",
+      "conclusion": "2/9; random choice among five has success 0.2. No universal rule in this tested subgroup. Input RHS still determines the keyed answer. The UI applies additional item-specific ordering; rendered positions are probed separately.",
       "sample_refs": [
         "normal-catalog-records.json"
       ]
@@ -600,15 +600,15 @@
       ]
     },
     {
-      "cue": "first position",
+      "cue": "first stored option",
       "subgroup": "q-10509 catalog after known-system rejection",
       "scope": "within_template",
-      "strategy": "Always click first radio choice.",
+      "strategy": "Always choose first option in the delivered JSON order.",
       "correct": 3,
       "total": 14,
       "baseline": 0.2,
       "disposition": "not_predictive",
-      "conclusion": "3/14; random choice among five has success 0.2. No universal rule in this tested subgroup. Input RHS still determines the keyed answer.",
+      "conclusion": "3/14; random choice among five has success 0.2. No universal rule in this tested subgroup. Input RHS still determines the keyed answer. The UI applies additional item-specific ordering; rendered positions are probed separately.",
       "sample_refs": [
         "normal-catalog-records.json"
       ]
@@ -656,15 +656,15 @@
       ]
     },
     {
-      "cue": "first position",
+      "cue": "first stored option",
       "subgroup": "q-73439 catalog after known-system rejection",
       "scope": "within_template",
-      "strategy": "Always click first radio choice.",
+      "strategy": "Always choose first option in the delivered JSON order.",
       "correct": 4,
       "total": 19,
       "baseline": 0.2,
       "disposition": "not_predictive",
-      "conclusion": "4/19; random choice among five has success 0.2. No universal rule in this tested subgroup. Input RHS still determines the keyed answer.",
+      "conclusion": "4/19; random choice among five has success 0.2. No universal rule in this tested subgroup. Input RHS still determines the keyed answer. The UI applies additional item-specific ordering; rendered positions are probed separately.",
       "sample_refs": [
         "normal-catalog-records.json"
       ]
@@ -712,15 +712,15 @@
       ]
     },
     {
-      "cue": "first position",
+      "cue": "first stored option",
       "subgroup": "visible coefficient block [[2,-8],[3,-7]], matrix-only, exact delivered batch",
       "scope": "within_template",
-      "strategy": "Always click the first radio choice.",
+      "strategy": "Always choose first option in the delivered JSON order.",
       "correct": 1,
       "total": 5,
       "baseline": 0.2,
       "disposition": "not_predictive",
-      "conclusion": "1/5; random choice among five has success 0.2. 1/5 within this family as well as overall; balancing is not hiding a constant family role.",
+      "conclusion": "1/5; random choice among five has success 0.2. 1/5 within this family as well as overall; balancing is not hiding a constant family role. The UI applies additional item-specific ordering; rendered positions are probed separately.",
       "sample_refs": [
         "delivery-batch/accepted.json",
         "batch-selection-regression.json"
@@ -830,6 +830,86 @@
         "previous-runner-batch.json",
         "retained-failing.log"
       ]
+    },
+    {
+      "cue": "rendered radio position 1",
+      "subgroup": "actual delivered batch, one visible coefficient family",
+      "scope": "within_template",
+      "strategy": "Always click rendered radio position 1.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/5 versus uniform five-choice baseline 0.2; no position answers this family. Preview item IDs differ from live IDs, whose ordering rule was inspected at ui/learning.js:690-701.",
+      "sample_refs": [
+        "ui-order-results.json",
+        "render-records.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "cue": "rendered radio position 2",
+      "subgroup": "actual delivered batch, one visible coefficient family",
+      "scope": "within_template",
+      "strategy": "Always click rendered radio position 2.",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/5 versus uniform five-choice baseline 0.2; no position answers this family. Preview item IDs differ from live IDs, whose ordering rule was inspected at ui/learning.js:690-701.",
+      "sample_refs": [
+        "ui-order-results.json",
+        "render-records.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "cue": "rendered radio position 3",
+      "subgroup": "actual delivered batch, one visible coefficient family",
+      "scope": "within_template",
+      "strategy": "Always click rendered radio position 3.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/5 versus uniform five-choice baseline 0.2; no position answers this family. Preview item IDs differ from live IDs, whose ordering rule was inspected at ui/learning.js:690-701.",
+      "sample_refs": [
+        "ui-order-results.json",
+        "render-records.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "cue": "rendered radio position 4",
+      "subgroup": "actual delivered batch, one visible coefficient family",
+      "scope": "within_template",
+      "strategy": "Always click rendered radio position 4.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/5 versus uniform five-choice baseline 0.2; no position answers this family. Preview item IDs differ from live IDs, whose ordering rule was inspected at ui/learning.js:690-701.",
+      "sample_refs": [
+        "ui-order-results.json",
+        "render-records.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "cue": "rendered radio position 5",
+      "subgroup": "actual delivered batch, one visible coefficient family",
+      "scope": "within_template",
+      "strategy": "Always click rendered radio position 5.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/5 versus uniform five-choice baseline 0.2; no position answers this family. Preview item IDs differ from live IDs, whose ordering rule was inspected at ui/learning.js:690-701.",
+      "sample_refs": [
+        "ui-order-results.json",
+        "render-records.json",
+        "render/rendering.json"
+      ]
     }
   ],
   "delivery": {
@@ -839,7 +919,8 @@
       "semantic deduplication and contrast-bank ordering",
       "requested difficulty",
       "actual publisher normalization/inventory and within-batch deduplication",
-      "learner selection with explicit positive-easy weights and empty versus captured-inventory-seen history"
+      "learner selection with explicit positive-easy weights and empty versus captured-inventory-seen history",
+      "actual UI stable-hash choice ordering; rendered batch positions"
     ],
     "sample_refs": [
       "packaging-results.json",
@@ -848,7 +929,8 @@
       "delivery-selection.json",
       "delivery-batch/delivery.json",
       "delivery-easy/delivery.json",
-      "delivery-moderate/delivery.json"
+      "delivery-moderate/delivery.json",
+      "ui-order-results.json"
     ],
     "result": "Actual batch retains five distinct answer ranks and positions after publication filters. Independent before/after samples preserve every profile and target. Explicit selection scenarios show all proposed ranks reachable; prior batch predictor fails currently. Historical inventory weaknesses remain documented separately."
   },
@@ -858,6 +940,7 @@
     "Live weights, histories and eventual proposed entity IDs unavailable. Positive-easy scenarios are read-only possible states, not observed learner schedules; an unconfigured policy selects minimum ID deterministically.",
     "Inventory captured at basis 5461; future concurrent publications may alter duplicates.",
     "Ten complete source banks replayed; two captures lack keys, rating and solutions and are not invented.",
-    "Historical control probe has disposition defect solely to verify sensitivity; it is not the current batch. Three affected stored legacy instances are reproduced in affected-inventory.json."
+    "Historical control probe has disposition defect solely to verify sensitivity; it is not the current batch. Three affected stored legacy instances are reproduced in affected-inventory.json.",
+    "Raw answer-array order differs from actual UI order. Rendered position counts describe the preview item IDs; numeric-rank probes remain invariant under UI permutations."
   ]
 }

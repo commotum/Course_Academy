@@ -1,0 +1,123 @@
+{
+  "verdict": "accepted",
+  "summary": "All eight checks pass for the unchanged current package and exact batch. Corrected report placement: the previous 5/5 failing control is retained separately; the current raw and delivered batches score 1/5. Three legacy inventory defects remain documented.",
+  "source_analysis": {
+    "skill": "Perform Gaussian elimination on a nonsingular 2\u00d72 system and optionally back-substitute.",
+    "reasoning_steps": [
+      "Normalize the first pivot.",
+      "Eliminate the lower-left entry.",
+      "Normalize the second pivot.",
+      "Optionally back-substitute and select the matching answer."
+    ],
+    "invariants": [
+      "Nonzero first pivot and nonsingular coefficient matrix.",
+      "Five radio choices.",
+      "Preserve source arithmetic workload and forward-elimination stages."
+    ],
+    "permitted_variations": [
+      "Vary coefficients and constants within supported arithmetic.",
+      "Vary which candidate qualifies and its position.",
+      "Derive prompts, answers and explanations consistently."
+    ],
+    "source_refs": [
+      "9752715d-a11c-5d27-95dc-d20bec1117cb",
+      "dc5530a8-d7bb-5ee6-b842-11178cec4e06",
+      "2112d3af-1fb0-5a70-ab99-59931db99930: three elimination steps",
+      "ee4b134d-2908-5930-86bb-32537e0d8347: REF nonuniqueness"
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "source-confirmation.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replays.json",
+        "source-replay-results.json"
+      ],
+      "details": "Ten complete source banks replay exactly. Two incomplete captures remain explicitly unsupported; source ambiguities are documented."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "audit.py",
+        "math-results.json",
+        "construction-regression.json",
+        "grader-final-input.json"
+      ],
+      "details": "Exact arithmetic verifies unique keys, intermediate row operations and optional solutions for raw, delivered and construction-regression records."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "changed-rules.diff",
+        "construction-regression.json",
+        "normal-catalog-records.json",
+        "delivery-selection.json"
+      ],
+      "details": "Revised ordering preserves 64 easy and 83 moderate surviving instances. The exact delivered batch covers all five answer ranks."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "independent-records.json",
+        "math-results.json"
+      ],
+      "details": "Observed representations, operations, response contract and arithmetic workload are preserved."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-final-input.json",
+        "grader-final-results.json",
+        "grader-final.log"
+      ],
+      "details": "Native grader passed 740 submissions: 148 accepted and 592 rejected. Every radio choice was tested."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render-records.json",
+        "render/rendering.json",
+        "render-inspection.json",
+        "ui-order-results.json"
+      ],
+      "details": "Sixteen actual-UI renders passed. Six representative screenshots were inspected, including counterfactual pairs and current batch endpoints."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "boundary-rejections.json",
+        "package-unchanged.json",
+        "retained-current.log",
+        "retained-failing.log",
+        "commands.json"
+      ],
+      "details": "Dependencies, relocation, deterministic replay, requested counts and boundary rejection passed. All 176 package-tree files remain unchanged."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "schema-validation.json",
+        "delivery-selection.json",
+        "delivery-batch/delivery.json",
+        "strict-current.log",
+        "strict-delivered.log",
+        "strict-control.log",
+        "ui-order-results.json",
+        "affected-inventory.json",
+        "generated-records.json",
+        "historical-control.json",
+        "correction-current-records.json",
+        "correction-validation.json"
+      ],
+      "details": "Controlled counterfactuals and conditional shortcut probes passed. All five current records survive delivery with distinct answer ranks. Tested learner-selection scenarios reach every rank. Historical inventory defects are separately reproduced. The historical 5/5 sensitivity control is separately retained in historical-control.json; fresh current and delivered reruns score 1/5. All 56 current probes remain unchanged."
+    }
+  },
+  "findings": []
+}

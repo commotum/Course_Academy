@@ -1,0 +1,53 @@
+{
+  "cwd": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186059775/review-3-policy-2-0d2b0c0912b0fa93",
+  "commands": [
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B audit.py",
+      "result": "audit.log",
+      "expected_exit": 0
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B decision_review.py",
+      "result": "decision.log",
+      "expected_exit": 0
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B retained-checks/check_batch_selection.py --input previous-runner-batch.json",
+      "result": "retained-failing.log",
+      "expected_exit": 1
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B retained-checks/check_batch_selection.py",
+      "result": "retained-current.log",
+      "expected_exit": 0
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/generate/runs/current/check-engine grader-final-input.json grader-final-results.json",
+      "result": "grader-final-results.json",
+      "expected_exit": 0
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B /home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py --input runner-batch.json --source ../source/source.json --inventory ../source/inventory.json --difficulty easy --output delivery-batch --asset-root runtime-assets --math-root /media/jake/SSD/EDB/math",
+      "result": "delivery-batch/delivery.json",
+      "expected_exit": 0
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B /home/jake/Developer/Course_Academy/generate/pipeline/render_preview.py --input render-records.json --output render --limit 16 --asset-root delivery-batch/assets --asset-root runtime-assets --math-root /media/jake/SSD/EDB/math",
+      "result": "render/rendering.json",
+      "expected_exit": 0
+    },
+    {
+      "command": "python3 inspect_ui.py",
+      "result": "ui-order-results.json",
+      "expected_exit": 0
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B write_variation.py && /home/jake/Developer/Course_Academy/.venv/bin/python -B finalize_review.py",
+      "result": "result.json",
+      "expected_exit": 0
+    }
+  ],
+  "retained_check_changes": "Copied check_repair.py only redirects W to supplied package and E to evidence_root. Test assertions unchanged.",
+  "package_changed": false,
+  "database_writes": 0
+}

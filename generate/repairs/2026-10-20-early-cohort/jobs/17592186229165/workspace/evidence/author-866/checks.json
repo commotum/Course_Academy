@@ -1,0 +1,44 @@
+{
+  "status": "unsupported",
+  "runtime_changed": false,
+  "commands": [
+    {
+      "argv": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "checks/check_report_installation.py"
+      ],
+      "exit_code": 1,
+      "evidence": "report-check.log"
+    },
+    {
+      "argv": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "checks/test_role_exchange.py",
+        "--output",
+        "evidence/author-866/role-regression"
+      ],
+      "exit_code": 0,
+      "evidence": "role-regression/results.json"
+    },
+    {
+      "argv": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "checks/verify_retained_state.py"
+      ],
+      "exit_code": 0,
+      "evidence": "retained-state.log"
+    }
+  ],
+  "blocking_finding": "645672a4cd3f9bf609ca",
+  "required_action": "Runner installs the already validated artifacts using evidence/review-installation-handoff.json at the required prior-review destination, then reruns the strict regression and fresh independent review. This is outside the authorized workspace.",
+  "before_delivery": {
+    "1": 19,
+    "2": 17,
+    "none": 5
+  },
+  "after_delivery": {
+    "1": 19,
+    "2": 17,
+    "none": 5
+  }
+}
