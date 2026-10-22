@@ -1,0 +1,27 @@
+{
+  "status": "unsupported",
+  "runtime_changed": false,
+  "findings": {
+    "efa97df560cec8fee6e1": "passed",
+    "645672a4cd3f9bf609ca": "unresolved: required external report remains stale"
+  },
+  "checks": [
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python checks/check_report_installation.py",
+      "exit_code": 1,
+      "evidence": "latest-failure.log"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python checks/test_role_exchange.py --output evidence/author-1051/role",
+      "exit_code": 0,
+      "evidence": "role/results.json"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python checks/verify_retained_state.py",
+      "exit_code": 0,
+      "evidence": "retained-state.log"
+    }
+  ],
+  "external_writes": false,
+  "next_required_action": "Runner installs checksummed staged report at required destination per evidence/review-installation-handoff.json, then reruns strict regression and fresh independent review."
+}

@@ -1,26 +1,31 @@
 {
-  "author_attempt": 120,
+  "author_attempt": 123,
   "status": "unsupported",
   "checks": [
     {
       "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_current_handoff.py",
       "exit_code": 1,
-      "log": "evidence/author120-handoff.log"
-    },
-    {
-      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_evidence_contract.py",
-      "exit_code": 1,
-      "log": "evidence/author120-evidence-contract.log"
+      "evidence": "evidence/current-handoff-regression.json"
     },
     {
       "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_batch_selection.py",
       "exit_code": 0,
-      "log": "evidence/author120-batch.log"
+      "evidence": "evidence/author123-batch.log"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_evidence_contract.py",
+      "exit_code": 1,
+      "evidence": "evidence/author123-evidence.log"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_all.py",
+      "exit_code": 0,
+      "evidence": "evidence/author123-retained.log"
     },
     {
       "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_render_binding.py",
       "exit_code": 0,
-      "log": "evidence/author120-source-binding.log"
+      "evidence": "evidence/author123-render-binding.log"
     }
   ],
   "runtime_hashes": {
@@ -36,8 +41,17 @@
   "generator_defect_demonstrated_this_pass": false,
   "remaining_failure": "{'error': 'Candidate is byte-identical to the rejected package. Apply and test the requested repair before another independent review.'}",
   "evidence_bundle_validates": true,
+  "original_evidence_failure_reproduced": "source_analysis.evidence_paths: missing, empty, or escaping evidence: correction-provenance.json",
   "external_patch": "runner-fix/evidence-only-rejection.patch",
   "external_patch_installed": false,
-  "required_external_action": "Runner owner must resolve scripts/generator_pipeline.py unchanged-package gate and install corrected evidence using evidence/contract-installation.json. No workspace runtime change is justified by this evidence-only finding.",
-  "scope": "Workspace evidence updates only; no publication, database writes, service calls, or external edits."
+  "required_external_action": "Resolve the unchanged-package gate in scripts/generator_pipeline.py so evidence-only repair can retain the reviewed runtime. Then rerun strict regressions and fresh independent review. The required runner edit is outside the authorized workspace.",
+  "claims": {
+    "fidelity": "10 complete source banks and 50 choices replay; two incomplete captures remain explicitly unsupported.",
+    "correctness": "81 independent mathematical readbacks pass.",
+    "grading": "405 raw, 50 delivered and 25 exact-batch native responses pass.",
+    "decision_variation": "All ten profiles retain variable ranks and positions; historical cue scores 1/5 raw and delivered.",
+    "inventory": "Three stored generated instances reproduced with historical defects; twelve original captures kept separate.",
+    "rendering": "Two retained actual-UI inputs equal current delivered endpoints; first screenshot visually inspected this pass."
+  },
+  "scope": "Workspace evidence updates only; no publication, database writes, services, external edits or runtime changes."
 }
