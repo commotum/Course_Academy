@@ -1,0 +1,170 @@
+{
+  "verdict": "revise",
+  "summary": "Revise: vector-blind cues solve all five delivered batch questions; homogeneous cases fix No solution; three source profiles are missing; explicit subtraction parameters can produce a wrong key. Package unchanged.",
+  "source_analysis": {
+    "skill": "Solving for one coefficient in a linear combination of two column vectors.",
+    "reasoning_steps": [
+      "Substitute the given vectors into c a1 +/- x a2 = b or 0.",
+      "Isolate x a2 by vector subtraction with the appropriate sign.",
+      "Read a candidate scalar from a nonzero component and verify all remaining components.",
+      "Choose exactly one scalar or No solution from the complete radio bank."
+    ],
+    "invariants": [
+      "One unknown scalar, two known equal-dimensional vectors, known scalar multiplier, vector addition/subtraction only.",
+      "Unique scalar or no solution; exclude all-zero unknown vector leading to infinitely many solutions unless source-supported.",
+      "Keep componentwise vector isolation and the source workload; do not introduce multi-unknown systems."
+    ],
+    "permitted_variations": [
+      "Change integer coordinates, dimension 2–4, known coefficient and sign, unknown symbol, and scalar answer including zero where unique.",
+      "Change the consistency-determining component, positions of zero entries, and which options represent the answer.",
+      "Homogeneous versus explicit-target form need not dictate consistency: consistent homogeneous and inconsistent nonzero-target instances are eligible same-method extensions, with difficulty justified by reasoning.",
+      "Permute choices and vary full bank profiles including observed banks without No solution."
+    ],
+    "source_refs": [
+      "4e441944-ad54-59d2-9897-793ac5452b92",
+      "ad60885f-7a0b-58e2-b4e4-f60e38dd9918",
+      "b99af0d8-b75f-54bf-9697-c5d904e35653",
+      "ab1a2dbb-2f20-5b38-9d5d-1509f7f1ce65",
+      "3910d8c3-7517-5b80-9efc-a8b60965d481",
+      "ce5d7202-47f0-50c1-9bc6-a025b8d27432",
+      "4eddae70-87f3-5f4b-9148-8e92a4a81ace",
+      "c8dd7df5-a62a-5efa-a6ef-0c480856813f",
+      "3695980d-a1ca-52c3-a275-096dc38f4d3e",
+      "80bf8c74-6292-5b04-9a45-fc39723fd232",
+      "1c4f9063-8349-57ea-b235-d134f5cba639",
+      "6154ace2-6af4-581c-9596-72c7ea4a622a",
+      "f6e40000-d3bb-5e63-9aa5-9e060c0e21d3",
+      "fd3cb5b1-f16e-5a52-82e4-25bbbd1c4fe7",
+      "lesson 17592186120045 step 17592186120673 (17458)"
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "failed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "source-replay-results.json",
+        "source-replay-records.json",
+        "acceptance-results.json"
+      ],
+      "details": "Nine supported profiles replay vector data, full mathematical banks, correct key and ordered solution matrices. Three complete rated source questions q-34572, q-105153, q-105156 have no profile. Unrated q-34250 is separately documented as incomplete."
+    },
+    "math": {
+      "status": "failed",
+      "evidence_paths": [
+        "math-results.json",
+        "rejection-results.json",
+        "boundary-subtraction-c2.json",
+        "grader-boundary-execution.json"
+      ],
+      "details": "54 fresh and 5 runner records pass independent Fraction-based component checks and solution residual checks. Direct subtraction parameters c=2 are accepted and emit an inconsistent prompt with stored key 2; native grader accepts that wrong key. Normal sampler excludes this parameter."
+    },
+    "variety": {
+      "status": "failed",
+      "evidence_paths": [
+        "coverage.json",
+        "independent-records.json",
+        "delivery-coverage.json",
+        "affected-inventory.json"
+      ],
+      "details": "Each easy bank fixes answer sign and numeric rank relationships; every homogeneous draw is inconsistent. Surface coordinate/coefficient variation preserves vector-blind response rules. Both fresh controls and exact delivered batch fail."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "scope-results.json",
+        "independent-records.json"
+      ],
+      "details": "Observed normal outputs retain one scalar, dimensions 2–4, basic vector operations and five-choice radio response; no unsupported prerequisites or added reasoning stages. Missing source families are recorded under source replay."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-valid-input.json",
+        "grader-valid-report.json",
+        "grader-valid-execution.json"
+      ],
+      "details": "Actual native grade_field: 123 accepted correct selections, 492 rejected distractors, no unresolved checks, no database writes. Includes delivered normalized records and applicable counterfactuals. Radio provides no free-entry equivalent notation. Separate boundary failure is a wrong authored key, not a native grading limitation."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-followup/rendering.json",
+        "render-observations.json"
+      ],
+      "details": "14 actual UI previews pass MathJax/fonts/images/JavaScript checks. Five representative screenshots visually inspected, including subtraction, inconsistent homogeneous and opposite-sign counterfactual cases."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "package-before.json",
+        "package-after.json",
+        "relocated-records.json",
+        "cli-output.json"
+      ],
+      "details": "Exact Python 3.13.5 and sympy 1.14.0 match nested manifest dependency contract. Deterministic replay, isolated relocation and --output match. All package file hashes unchanged."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "counterfactual-results.json",
+        "delivery-coverage.json",
+        "selection-results.json",
+        "acceptance-results.json"
+      ],
+      "details": "Visible symbol/bank/RHS cues predict all 54 fresh responses and all five runner responses, including after delivery. Controlled role reversal is valid but never normally sampled; homogeneous consistency reversal is rejected. Actual choice shuffling does not defeat value-based cues."
+    }
+  },
+  "findings": [
+    {
+      "kind": "decision_shortcut",
+      "description": "All five actual runner questions can be answered without reading vectors. In visible l plus No solution subgroup, the only negative option is always correct (2/2 runner, 6/6 independent). l numeric-only uses second-largest; h uses largest. Other easy label subgroups likewise have perfect numeric-rank rules. This is a family-wide construction defect and a demonstrated batch-selection failure.",
+      "source_refs": [
+        "4e441944-ad54-59d2-9897-793ac5452b92",
+        "b99af0d8-b75f-54bf-9697-c5d904e35653",
+        "c8dd7df5-a62a-5efa-a6ef-0c480856813f",
+        "lesson 17592186120045 step 17592186120673"
+      ],
+      "reproduction": "Run /home/jake/Developer/Course_Academy/.venv/bin/python audit.py then /home/jake/Developer/Course_Academy/.venv/bin/python acceptance-tests.py in evidence_root. Minimal runner b713577b-6986-5a32-9f22-4f4d35b1455e: l; choices 1,-1,1/2,0,No solution; choose the only negative -1. Seed 2406259497, q-34249, a=[9,-2,0,7],u=[-1,5,-2,8],c=5,s=-1. delivery-batch/accepted.json retains the normalized record; coverage.json measures all five.",
+      "requested_change": "Change normal scalar/sign domains and complete distractor-bank construction so label or bank-sign/rank signatures do not determine which value is correct. Retain exact source replay separately, add eligible opposite-sign and bank-role cases at the same workload, and regenerate a batch that passes subgroup probes. Option shuffling alone is insufficient."
+    },
+    {
+      "kind": "decision_shortcut",
+      "description": "Zero-RHS template always answers No solution, bypassing component consistency; 18/18 fresh raw and 17/17 delivered moderate controls. Both captured generated inventory questions reproduce this weakness.",
+      "source_refs": [
+        "4eddae70-87f3-5f4b-9148-8e92a4a81ace",
+        "3695980d-a1ca-52c3-a275-096dc38f4d3e",
+        "80bf8c74-6292-5b04-9a45-fc39723fd232"
+      ],
+      "reproduction": "Run /home/jake/Developer/Course_Academy/.venv/bin/python followup.py and /home/jake/Developer/Course_Academy/.venv/bin/python acceptance-tests.py. Minimal pair: q-34570, a=[2,4],c=3,u=[3,2] gives No solution; change only u[0] to 1 and k=-6 is valid, but generate(moderate,64193,q-34570,parameters) raises AssertionError. generated-records.json reproduces stored UUIDs 036a544e-adcf-5604-8565-d9b2d689152b and e5e9f97a-8dbd-5e5f-adc8-0ae163476518.",
+      "requested_change": "Decouple homogeneous wording from consistency. Permit justified same-method consistent homogeneous and inconsistent explicit-target cases, derive proofs and banks from component consistency, and ensure the delivered family does not make RHS alone a response rule. Preserve the source contradiction families."
+    },
+    {
+      "kind": "source_fidelity",
+      "description": "The package uses older source basis 2607 and omits three complete rated questions present in captured basis 5398: q-34572, q-105153 and q-105156. Their full banks cannot be replayed. This differs from the separately incomplete unrated q-34250.",
+      "source_refs": [
+        "1c4f9063-8349-57ea-b235-d134f5cba639",
+        "f6e40000-d3bb-5e63-9aa5-9e060c0e21d3",
+        "6154ace2-6af4-581c-9596-72c7ea4a622a"
+      ],
+      "reproduction": "Run /home/jake/Developer/Course_Academy/.venv/bin/python audit.py; source-replay-results.json lists three unavailable complete profiles. Minimal q-34572: 2a1+qa2=b, a1=[2,-3],a2=[7,5],b=[18,4], correct 2; source full bank [-1,4,2,-2,-5]. q-34572 absent from PROFILES and LEVELS.",
+      "requested_change": "Add replay support for all three captured complete source cases and their full answer banks and worked solutions; test their same-method variations independently. Keep the missing metadata of unrated q-34250 explicit."
+    },
+    {
+      "kind": "math",
+      "description": "Explicit parameters for the subtraction profile accept c=2 although rendering omits c. It computes b=2a-su, displays a-ju=b, and stores j=2 even though the displayed equation is inconsistent. This is outside the normal sampler but a concrete generator-rejection failure.",
+      "source_refs": [
+        "ce5d7202-47f0-50c1-9bc6-a025b8d27432"
+      ],
+      "reproduction": "Run /home/jake/Developer/Course_Academy/.venv/bin/python audit.py then /home/jake/Developer/Course_Academy/.venv/bin/python run-native.py. generate(easy,64193,q-34241,{a:[0,-1,1],u:[-2,1,0],c:2,s:2,letter:j}) returns b=[4,-4,2]. Third component demands 1=2, yet stored 2 is accepted by the native grader. boundary-subtraction-c2.json and grader-boundary-execution.json retain the record and failing rejection test.",
+      "requested_change": "Enforce c=1 inside subtraction parameter validation, as required by this source form, or render/solve the actual general coefficient consistently. Keep the strict rejection/correctness test; no engine change is needed."
+    }
+  ]
+}

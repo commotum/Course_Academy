@@ -1,0 +1,295 @@
+{
+  "learner_operation": "Isolate the unknown scalar-vector product, compute the residual componentwise, find a scalar from a nonzero component, and check all components agree; otherwise select No solution.",
+  "fixed_features": [
+    {
+      "feature": "One unknown scalar multiplying a nonzero column vector; componentwise arithmetic, dimensions 2–4.",
+      "justification": "Canonical example fd3cb5b1 and all rated source questions isolate one scalar-vector product; multiunknown systems are later lesson steps."
+    },
+    {
+      "feature": "Single radio field and five complete choices.",
+      "justification": "Every captured practice source uses this response contract."
+    },
+    {
+      "feature": "Homogeneous profiles currently always inconsistent; original symbols and sign neighborhoods fixed per bank.",
+      "justification": "Author chose to preserve observed assignments. Source examples explain consistency checks, not a reason to freeze these assignments. These fixed features are challenged and fail this review."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Numeric answer and qualifying bank member",
+      "eligible_variation": "Change scalar sign/magnitude/zero where unique, choose other valid answer-bank relationships and rename unknowns while deriving all dependent content.",
+      "observed": "Six normal easy domains restrict s to two or three nearby values of one fixed sign; each recognizable label/bank subgroup has a perfect non-vector selection rule."
+    },
+    {
+      "role": "Consistency of zero-RHS equation",
+      "eligible_variation": "Either consistent or inconsistent vector ratios, with source workload and justified difficulty retained.",
+      "observed": "All 61 normal moderate parameter tuples force inconsistency; consistent one-coordinate counterfactual is rejected."
+    },
+    {
+      "role": "Coordinate yielding candidate or contradiction",
+      "eligible_variation": "Move informative/contradictory coordinates without extra operations.",
+      "observed": "Moderate always uses first coordinate candidate and distinct second-coordinate ratio."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "Raw easy and moderate fresh samples",
+      "sample_refs": [
+        "independent-records.json",
+        "coverage.json"
+      ],
+      "result": "36 easy and 18 moderate; six seeds per each of nine profiles. Every subgroup shortcut succeeds."
+    },
+    {
+      "case": "Exact runner batch",
+      "sample_refs": [
+        "runner-batch.json",
+        "delivery-batch/accepted.json",
+        "delivery-coverage.json"
+      ],
+      "result": "5 input, 0 duplicates, 5 accepted. Cues succeed 2/2 l with text choice, 1/1 l numeric only, 2/2 h."
+    },
+    {
+      "case": "Delivery control and selector",
+      "sample_refs": [
+        "delivery-easy/accepted.json",
+        "delivery-moderate/accepted.json",
+        "selection-results.json"
+      ],
+      "result": "36/36 easy and 17/18 moderate survive (one moderate duplicate). All delivered records retain their subgroup shortcuts. Same-band selection and explicit freshness scenarios cannot remove a property true of every remaining member."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Hold q-34249 a,u,c,letter/profile fixed; set s=-2 then -3 and recompute b.",
+      "expected": "Answer changes -2 to -3, prompt target and explanation change together; native grader accepts only the corresponding option.",
+      "observed": "Correct independent math, native grading, rendered prompts and explanations; nevertheless only-negative cue still answers both.",
+      "status": "passed",
+      "justification": "Changing residual multiples changes the required scalar without changing the operation.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-valid-report.json",
+        "render/question-006.html",
+        "render-followup/question-001.html"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "Hold q-34249 vectors and known scalar fixed; flip answer-bearing scalar -2 to +2, rebuilding b.",
+      "expected": "A valid opposite-sign role assignment should be eligible, with answer +2 and matching worked solution/grading.",
+      "observed": "Explicit construction works, independent solve and native grader confirm +2, and UI shows it correctly; normal domain excludes it. The only-negative strategy instead predicts -2.",
+      "status": "failed",
+      "justification": "Nothing in scalar-vector isolation requires this source label/bank to have a negative answer. Source resemblance is not an instructional restriction.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-valid-report.json",
+        "render-followup/question-007.html"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "Homogeneous source q-34570: change u[0] 3 to 1; retain a=[2,4],u[1]=2,c=3.",
+      "expected": "Now k=-6, because 3[2,4]-6[1,2]=0; consistency must be reconsidered.",
+      "observed": "Generator raises AssertionError and excludes this case. No generated after-record is claimed; generator rejection prevents rendering/grading the pair. This is the demonstrated eligibility failure.",
+      "status": "failed",
+      "justification": "The source contradiction proof depends on incompatible ratios, not zero RHS alone. A single-coordinate change can make ratios agree.",
+      "sample_refs": [
+        "counterfactual-results.json",
+        "acceptance-results.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "q-34249: increase a[0] 9 to 10 and b[0] by 5 while u[0]=0.",
+      "expected": "Answer remains -2; first coordinate remains an identity. Prompt and solution update without changing relevant residual ratios.",
+      "observed": "Independent residual/answer, native all-choice grading and rendered updated vectors confirm preservation.",
+      "status": "passed",
+      "justification": "This compensating coordinate edit leaves b-c*a unchanged. The target scalar depends on that residual and u.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-valid-report.json",
+        "render-followup/question-002.html"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "l-with-No-solution",
+      "subgroup": "six fresh seeds per visible easy signature; 18 homogeneous questions for zero-target",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "For l with No solution in its bank, choose the only negative numeric value.",
+      "correct": 6,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "100% from label/bank sign or rank/RHS alone versus 20% uniform guessing among five choices. No vector component is inspected; this is incidental, not scalar isolation. Native grading checks every option; UI shuffling cannot remove a value-based predictor.",
+      "sample_refs": [
+        "independent-records.json",
+        "coverage.json",
+        "grader-valid-report.json"
+      ]
+    },
+    {
+      "cue": "h",
+      "subgroup": "six fresh seeds per visible easy signature; 18 homogeneous questions for zero-target",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "For h, choose the largest numeric value.",
+      "correct": 6,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "100% from label/bank sign or rank/RHS alone versus 20% uniform guessing among five choices. No vector component is inspected; this is incidental, not scalar isolation. Native grading checks every option; UI shuffling cannot remove a value-based predictor.",
+      "sample_refs": [
+        "independent-records.json",
+        "coverage.json",
+        "grader-valid-report.json"
+      ]
+    },
+    {
+      "cue": "m",
+      "subgroup": "six fresh seeds per visible easy signature; 18 homogeneous questions for zero-target",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "For m, choose the smallest numeric value.",
+      "correct": 6,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "100% from label/bank sign or rank/RHS alone versus 20% uniform guessing among five choices. No vector component is inspected; this is incidental, not scalar isolation. Native grading checks every option; UI shuffling cannot remove a value-based predictor.",
+      "sample_refs": [
+        "independent-records.json",
+        "coverage.json",
+        "grader-valid-report.json"
+      ]
+    },
+    {
+      "cue": "k-explicit-target",
+      "subgroup": "six fresh seeds per visible easy signature; 18 homogeneous questions for zero-target",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "For k with explicit b, choose the second-smallest numeric value.",
+      "correct": 6,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "100% from label/bank sign or rank/RHS alone versus 20% uniform guessing among five choices. No vector component is inspected; this is incidental, not scalar isolation. Native grading checks every option; UI shuffling cannot remove a value-based predictor.",
+      "sample_refs": [
+        "independent-records.json",
+        "coverage.json",
+        "grader-valid-report.json"
+      ]
+    },
+    {
+      "cue": "j-subtraction",
+      "subgroup": "six fresh seeds per visible easy signature; 18 homogeneous questions for zero-target",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "For j subtraction, choose the smallest positive numeric value.",
+      "correct": 6,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "100% from label/bank sign or rank/RHS alone versus 20% uniform guessing among five choices. No vector component is inspected; this is incidental, not scalar isolation. Native grading checks every option; UI shuffling cannot remove a value-based predictor.",
+      "sample_refs": [
+        "independent-records.json",
+        "coverage.json",
+        "grader-valid-report.json"
+      ]
+    },
+    {
+      "cue": "l-numeric-bank",
+      "subgroup": "six fresh seeds per visible easy signature; 18 homogeneous questions for zero-target",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "For l with no text choice, choose the second-largest numeric value.",
+      "correct": 6,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "100% from label/bank sign or rank/RHS alone versus 20% uniform guessing among five choices. No vector component is inspected; this is incidental, not scalar isolation. Native grading checks every option; UI shuffling cannot remove a value-based predictor.",
+      "sample_refs": [
+        "independent-records.json",
+        "coverage.json",
+        "grader-valid-report.json"
+      ]
+    },
+    {
+      "cue": "zero-target",
+      "subgroup": "six fresh seeds per visible easy signature; 18 homogeneous questions for zero-target",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "For an equation whose RHS is 0, choose No solution.",
+      "correct": 18,
+      "total": 18,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "100% from label/bank sign or rank/RHS alone versus 20% uniform guessing among five choices. No vector component is inspected; this is incidental, not scalar isolation. Native grading checks every option; UI shuffling cannot remove a value-based predictor.",
+      "sample_refs": [
+        "independent-records.json",
+        "coverage.json",
+        "grader-valid-report.json"
+      ]
+    },
+    {
+      "cue": "piecewise variable/bank signature",
+      "subgroup": "exact runner batch after actual normalization and inventory deduplication",
+      "scope": "overall",
+      "strategy": "Use the three l/No-solution, l/numeric-only and h strategies above.",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "All five actual runner records are solvable without vector reasoning; all five survive delivery. 20% baseline is uniform choice among five. This is a demonstrated batch failure as well as a construction-level weakness.",
+      "sample_refs": [
+        "runner-batch.json",
+        "delivery-batch/accepted.json",
+        "delivery-coverage.json",
+        "grader-valid-report.json"
+      ]
+    },
+    {
+      "cue": "authored correct slot",
+      "subgroup": "all raw profiles",
+      "scope": "overall",
+      "strategy": "Always choose the second authored option.",
+      "correct": 36,
+      "total": 54,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Raw profile slots are fixed, but actual ui/learning.js choiceOrder hashes item/field/answer IDs. This raw-slot cue is not claimed as a learner-visible defect; the value/rank and RHS probes remain valid after shuffling.",
+      "sample_refs": [
+        "coverage.json",
+        "render/rendering.json",
+        "render/question-001.html"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "domain validation and rejection conditions",
+      "finite batch fingerprint deduplication",
+      "requested difficulty",
+      "actual publisher normalization and inventory/batch deduplication at basis 5398",
+      "native radio grading",
+      "actual UI choice shuffling",
+      "fresh usable candidate and difficulty-first selector rules, with explicit same-band history assumptions"
+    ],
+    "sample_refs": [
+      "coverage.json",
+      "delivery-batch/delivery.json",
+      "delivery-easy/delivery.json",
+      "delivery-moderate/delivery.json",
+      "delivery-coverage.json",
+      "selection-results.json",
+      "generated-records.json"
+    ],
+    "result": "Defect survives exact runner delivery and each sampled control subgroup. Selector reproduction covers no-history and half-excluded candidates; because the cue succeeds for every generated candidate, ordering/positive weights/freshness cannot repair it. Two generated inventory questions independently reproduced with matching UUID, parameters and text. No publication or database write performed."
+  },
+  "limitations": [
+    "Captured basis 5398 only; later inventory can change. No publication preparation file exists.",
+    "No actual learner history, active policy weights or future numeric database IDs were captured. Selection scenarios use stated assumptions and synthetic ordered IDs; no claim about universal shortcut success on a mixed source/generated learner pool.",
+    "Inventory has no saved generation metadata. Two non-source records match stable current-generator UUIDs and exact prompts from inferred parameters. Reproduction seed 64193 is explicit and does not affect stable identities; it is not claimed to be their historical seed.",
+    "Finite independent sample is 54; all-domain inspection records answer domains and invariant rejection conditions, not an exhaustive math proof. No finite review proves absence of all shortcuts.",
+    "One incomplete unrated source lacks answer key/solution/difficulty; three other complete rated sources are absent from the package.",
+    "Boundary c=2 math defect requires direct generate(parameters=...) and is excluded by the normal subtraction domain; it does not invalidate the five runner questions."
+  ]
+}

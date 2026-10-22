@@ -1,28 +1,38 @@
-# Current repair state — pass 163
+# Current repair state — pass 167
 
-Preserved the repaired generator, source families, staged replacements and all
-five executable finding regressions. Read feedback and all retained findings;
-history contains five findings and 163 events. No new runtime defect is reported.
+Read latest feedback, all five retained findings, history (167 events), existing
+state and source lesson/questions. Preserved all runtime files, source families,
+completed repairs, manifest, strict regressions and staged replacements.
 
-Validation command:
-`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/repair-163`
+First executed check:
+`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory`
 
-First check reproduced finding 591f580cadb749294588: exit 1, five captured
-historical v2 records, 64/64 shortcut successes in a possible learner-history
-selection scenario (not observed usage). Four generator regressions pass,
-as do 17 source-bank replays, 14 records through shared delivery, controlled
-relevant/irrelevant changes, 7 accepted and 28 rejected native grader checks,
-relocation and exact dependency checks. All generated inventory was tested.
-Protected runtime, manifest, source and inventory hashes match. Replacement
-mapping and evidence paths relative to author-163 verify. Reinspected the retained
-actual UI screenshot and source flowchart; no new rendering was needed for
-unchanged runtime and records. The prior instructional account remains applicable.
+Exit 1: finding 591f580cadb749294588 remains reproducible against all five
+captured stored records. The sign-only extremum rule succeeds in all 64 draws
+of the retained possible learner-history witness; this is not observed usage.
 
-Evidence: evidence/repair-163/commands.json, results.json, grader-report.json,
-and scope-resolution.json. No runtime, engine, database, publication or other-job
-changes. No check was weakened. Recheck exits 1; status remains unsupported.
+Retained verification:
+`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/repair-167`
 
-Next required action: separate inventory remediation using
-`evidence/repair-3/inventory-repair-proposal.json`, followed by fresh inventory
-capture and the strict regression. Database changes are prohibited in this task.
-An identical generator-only retry cannot change the stored-record failure.
+Exit 1 overall. Four generator finding checks pass: 17 complete source banks,
+zero-root cases, source fractional bare-k case and finite CLI batch contrasts.
+Shared delivery accepts 14 records with contrasts retained. The native engine
+accepts 7 correct submissions and rejects 28 incorrect choices. Relevant and
+irrelevant counterfactuals, relocated CLI, pinned dependencies and protected
+runtime/source/inventory hashes pass. The five-record replacement mapping is
+verified but remains proposed only. All captured generated inventory was tested.
+Reinspected retained actual-UI screenshot; no runtime change warrants a new render.
+
+Evidence: `evidence/repair-167/commands.json`, `results.json`,
+`grader-report.json`, and `visual-inspection.json`.
+
+The remaining failure is in the captured stored candidate pool. The selector
+reads those stored questions independently of this generator. Workspace edits
+cannot retire them. Database changes and engine changes are prohibited by this
+job; none were made and nothing was published. Status remains unsupported.
+
+Next necessary action is the separately authorized inventory-remediation
+workflow using `evidence/repair-3/inventory-repair-proposal.json`, followed by
+fresh inventory capture and the strict historical regression. Repeating an
+identical generator-only pass cannot resolve unchanged stored content. Preserve
+the failing acceptance check; do not replace captured inventory with the proposal.
