@@ -1,13 +1,13 @@
-# Current state — author 656
+# Current state — author 657
 
-Read feedback, both retained findings, latest history event, prior session state, required generator documents, and the existing instructional account. Reproduced the strict external-report failure first. Preserved runtime files, source-supported families, completed repairs, and both strict regression declarations.
+Reproduced the latest failure first with the unchanged strict regression. Preserved all runtime files, completed repairs, and both finding declarations in repair-regressions.json.
 
 Commands use `/home/jake/Developer/Course_Academy/.venv/bin/python`:
 
-- `checks/check_report_installation.py` — exit 1: the required external report still fails with `decision_variation has an unresolved decision shortcut`. Local corrected report validates and 26 records replay against the current generator. Log: `evidence/author-656-report.log`.
-- `checks/test_role_exchange.py` — exit 0: controlled reorder/role transfer, visible math, delivery filtering, conditional shortcut probes and native acceptance/rejection pass. Log: `evidence/author-656-role.log`; complete results: `evidence/role-regression/results.json`.
-- `checks/verify_retained_state.py` — exit 0: runtime and source unchanged; 55 handoff artifacts verified; eight unaffected-family mathematical cases pass. Log: `evidence/author-656-retained.log`.
+- `checks/check_report_installation.py` — exit 1: required prior-review report still fails with `decision_variation has an unresolved decision shortcut`. Workspace correction validates against the actual contract/schema and replays 26 current-generator records. Log: `evidence/author-657-report.log`.
+- `checks/test_role_exchange.py` — exit 0: controlled reorder/transfer, visible mathematical checks, delivery and conditional shortcut probes pass. Native grader matched 11 acceptances and 19 rejections. Post-delivery positions: first 19, second 17, neither 5. Log: `evidence/author-657-role.log`; full results: `evidence/role-regression/results.json`.
+- `checks/verify_retained_state.py` — exit 0: unchanged runtime/source, 55 handoff artifacts verified, eight unaffected-family mathematical cases pass. Log: `evidence/author-657-retained.log`.
 
-Current commands/results: `evidence/current-validation.json`. Existing replay, rendering, and stored-instance reproductions are retained; no new rendering claim or external, database, engine, or publication changes.
+Current command results: `evidence/current-validation.json`. Existing source replay, UI rendering and inventory reproductions retained. No runtime, engine, external, database or publication changes.
 
-Unfinished: finding 645672a4cd3f9bf609ca requires installing the staged correction at `../review-1-policy-2-48d685555902faba`, outside the authorized workspace. The checksummed files and runner steps already exist in `evidence/review-installation-handoff.json`. The runner must install them, rerun the unchanged strict check, and obtain independent review. Further unchanged workspace-only author retries cannot perform this step. Status remains unsupported.
+Unfinished: finding 645672a4cd3f9bf609ca requires runner installation of the staged correction at `../review-1-policy-2-48d685555902faba`, outside this session's authorized write scope, then strict validation and fresh independent review. Exact artifact hashes and steps: `evidence/review-installation-handoff.json`. Further unchanged workspace-only author retries cannot perform that installation. Both strict regression declarations remain intact; status is unsupported.

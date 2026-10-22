@@ -129,10 +129,18 @@ def generate(difficulty='easy', seed=0, template=None, parameters=None, profile=
     elif 'bank_start' in parameters:
         raise ValueError('Bank window applies only to authored cancellation cases')
     expected = sp.cancel((rhs.subs(y,v*x)-v)/x)
-    # Correctness before rendering: identify exactly one equation equal to the transformed ODE.
     rates = [sp.cancel(b/a) for a,b in bank]
-    good = [i for i,r in enumerate(rates) if sp.simplify(r-expected)==0]
-    if len(good)!=1 or any(sp.simplify(a-b)==0 for i,a in enumerate(rates) for b in rates[:i]): raise ValueError('Colliding or ambiguous complete bank')
+    if replay:
+        good = [i for i,r in enumerate(rates) if sp.simplify(r-expected)==0]
+        if len(good)!=1 or any(sp.simplify(a-b)==0 for i,a in enumerate(rates) for b in rates[:i]): raise ValueError('Colliding or ambiguous complete bank')
+    else:
+        # Distinct linear-role rates differ by a nonzero multiple of v/x.
+        # Cancellation rates differ by d, or by sec(d/v). For distinct positive
+        # d the latter are distinct analytic functions (their quadratic Taylor
+        # coefficients at 1/v=0 are d**2/2). No multiple-angle expansion needed.
+        good = [k-start if cancellation else ROLES.index(shift)]
+        if sp.trigsimp(sp.cancel(rates[good[0]]-expected)) != 0:
+            raise ValueError('Constructed key disagrees with substitution')
     if replay:
         problem = src[':question/problem']; solution = src[':question/worked-solution']
     else:

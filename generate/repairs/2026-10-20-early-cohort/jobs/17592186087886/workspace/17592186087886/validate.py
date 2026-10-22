@@ -9,6 +9,15 @@ def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
 def save(name,value):(HERE/name).write_text(json.dumps(value,indent=2,default=str)+'\n')
 def equivalent(a,b):
     d=sp.cancel(a-b)
+    if d==0:return True
+    # A well-separated value at an ordinary rational point is an independent
+    # inequivalence witness, avoiding costly multiple-angle expansions for
+    # wrong trigonometric options. Positive equivalence still requires the
+    # exact symbolic reduction below; a small numerical value never passes.
+    if d.has(sp.sin,sp.cos,sp.tan,sp.sec):
+        for point in (sp.Rational(7,5),sp.Rational(9,7)):
+            value=d.subs({x:sp.Rational(11,10),v:point,y:point*sp.Rational(11,10)}).evalf(60)
+            if value.is_real and value.is_finite and abs(value)>sp.Float('1e-25',60):return False
     return d==0 or sp.trigsimp(d)==0
 
 def solution_check(q):
