@@ -1,17 +1,16 @@
 {
-  "author": 227,
+  "author": 230,
+  "history_read": {
+    "findings": [
+      "9e827407d5429a1f8827",
+      "9b8cb52352b8ca3e790e"
+    ],
+    "events": 230,
+    "latest": 229
+  },
   "commands": [
     {
-      "command": [
-        "/home/jake/Developer/Course_Academy/.venv/bin/python",
-        "-B",
-        "checks/check_current_handoff.py"
-      ],
-      "exit_code": 1,
-      "report": "evidence/current-handoff-regression.json",
-      "expected_historical_failure": false
-    },
-    {
+      "label": "historical-shortcut",
       "command": [
         "/home/jake/Developer/Course_Academy/.venv/bin/python",
         "-B",
@@ -20,48 +19,47 @@
         "evidence/batch-shortcut-before-records.json"
       ],
       "exit_code": 1,
-      "report": null,
-      "expected_historical_failure": true
+      "log": "evidence/author230-historical-shortcut.log"
     },
     {
-      "command": [
-        "/home/jake/Developer/Course_Academy/.venv/bin/python",
-        "-B",
-        "checks/check_evidence_contract.py"
-      ],
-      "exit_code": 1,
-      "report": "evidence/evidence-contract-validation.json",
-      "expected_historical_failure": false
-    },
-    {
+      "label": "current-shortcut-delivery-grading",
       "command": [
         "/home/jake/Developer/Course_Academy/.venv/bin/python",
         "-B",
         "checks/check_batch_selection.py"
       ],
       "exit_code": 0,
-      "report": "evidence/batch-selection-regression.json",
-      "expected_historical_failure": false
+      "log": "evidence/author230-current-shortcut-delivery-grading.log"
     },
     {
+      "label": "evidence-contract",
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "-B",
+        "checks/check_evidence_contract.py"
+      ],
+      "exit_code": 1,
+      "log": "evidence/author230-evidence-contract.log"
+    },
+    {
+      "label": "relocated-cli",
       "command": [
         "/home/jake/Developer/Course_Academy/.venv/bin/python",
         "-B",
         "checks/check_cli_contract.py"
       ],
       "exit_code": 0,
-      "report": "evidence/cli-contract.json",
-      "expected_historical_failure": false
+      "log": "evidence/author230-relocated-cli.log"
     },
     {
+      "label": "source-render-binding",
       "command": [
         "/home/jake/Developer/Course_Academy/.venv/bin/python",
         "-B",
         "checks/check_render_binding.py"
       ],
       "exit_code": 0,
-      "report": "evidence/current-render-binding.json",
-      "expected_historical_failure": false
+      "log": "evidence/author230-source-render-binding.log"
     }
   ],
   "runtime_hashes": {
@@ -72,7 +70,6 @@
     "requirements.txt": "25f9f1fb1988b230147a1d3092d34e09c069eb7a6c6d6df46b3973b9f2d36efc",
     "known-systems.json": "2492556950df4a1bb3622028c1d24fd72ff9ec82f76c19b8fe2bc6e74b80436f"
   },
-  "runtime_unchanged": true,
   "implementation_changed": false,
   "handoff": {
     "finding_id": "9b8cb52352b8ca3e790e",
@@ -128,12 +125,7 @@
     "current_runner_regression": "evidence/current-handoff-regression.json",
     "current_runner_exit_code": 1
   },
-  "visual_inspection": {
-    "screenshots": [
-      "evidence/author8-render/question-001.png",
-      "evidence/author8-render/question-002.png"
-    ],
-    "result": "Both retained actual-UI screenshots inspected; matrices, radio controls and row-operation solutions are readable. Binding check matches current delivered endpoints."
-  },
-  "unresolved": "Installed runner rejects unchanged package before retained regressions or sampling. Correcting scripts/generator_pipeline.py and installing evidence outside this workspace are not authorized. Existing strict failure and staged correction remain intact."
+  "runtime_unchanged": true,
+  "prior_full_regression": "Unchanged implementation: reuse prior passing checks/check_all.py recorded in evidence/author229-legacy_packaging_or_sampling.log; no repeat of hundreds of unrelated native responses.",
+  "unresolved": "Installed runner rejects byte-identical runtime before evidence validation. The required external runner repair is outside workspace-only authorization."
 }
