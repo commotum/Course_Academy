@@ -1,15 +1,16 @@
-This package repairs the legacy runtime closure and a displayed-equation grouping defect, but is **unsupported for handoff** because retained answer banks expose reliable answer-length shortcuts. See evidence/shortcut-regression.json and evidence/pedagogical-variation.json. The strict shortcut regression intentionally exits nonzero while this persists.
+Seeded easy-level generator for transforming a homogeneous ODE with y=vx. `package.json` declares the complete relocatable runtime package, including the local equation reader and exact dependency pins. All eight supplied questions replay with their complete original banks and solutions.
 
-The seeded entry point is `17592186087886.py`; `package.json` declares its complete runtime closure and easy default band. It preserves all eight supplied source questions and complete banks, with a finite 48-task coefficient/argument domain. The seven-family candidate implementation was retained and extended only to restore the missing supplied q-90600 source. No images or database content were published or changed.
+The repair replaces coefficient-only source-bank extensions with authored banks. Linear-role cases vary which term survives product-rule subtraction. Cancellation cases preserve cancellation and vary the source-supported coefficient or argument among same-shape options. Original source banks remain exact replay. Batch sampling deduplicates prompt mathematics, including overlapping tangent coefficients. There are 240 (family,k,shift) decompositions representing 220 distinct mathematical prompts; bank windows and answer ordering do not increase that count.
 
-Reproduce from this workspace with `/home/jake/Developer/Course_Academy/.venv/bin/python`:
+Run with `/home/jake/Developer/Course_Academy/.venv/bin/python 17592186087886.py --difficulty easy --count 5 --seed 71 --format json`. Moderate and hard are unsupported. No active question requires generated images.
 
-- `checks/check_package.py`: passing static closure, exact dependencies, isolated declared-files-only relocation, deterministic five-item CLI, immutable runtime files.
-- `checks/validate_math.py`: passing eight exact source prompt/solution replays and complete banks, 48 independently parsed banks and all worked algebra stages, boundary rejection, eight stale-solution negative controls, relevant parameter changes and irrelevant ordering changes.
-- `checks/check_shortcuts.py`: **failing** current-generator shortest-answer counterexample for all five fresh q-90600 parameter cases, after actual shared delivery filtering.
-- `checks/check_inventory_shortcuts.py`: read-only replay audit; four original source records exhibit demonstrated family cues. Their original identities and original-source status are retained in the audit evidence.
-- `checks/check_variation.py`: full before/after-delivery position/count/length probes; reports failures, and does not certify overall readiness.
+Reproducible validation:
 
-`evidence/commands.md` records the shared native grader, delivery and UI renderer commands and outcomes. The four screenshots under evidence/render were visually inspected for grouped coefficients, nested functions, fraction legibility and the full worked solutions. Mathematical and rendering success do not override the failed shortcut check.
+- `checks/check_package.py`: import closure, exact dependencies, declared-files-only relocation, deterministic five-item CLI and immutable runtime package.
+- `checks/check_repair.py`: exact earlier q-90600 mathematical prompts, strict shortcut checks, controlled role/window cases, complete source replay, independent visible mathematics, all displayed solution stages and retained grouping regression.
+- `checks/check_cli.py`: ordinary five-item sample, independent checks, actual delivery filtering and native grading.
+- `checks/check_inventory_shortcuts.py`: read-only inventory audit; four original source questions retain the historical cues. Their source status and identities are preserved in affected-inventory.json.
+- `checks/check_variation.py`: strict position/count/length checks before and after shared delivery; use evidence/role-regression.json for the stronger fixed-bank counterfactual witnesses.
+- `checks/prepare_preview.py`: regenerate the four nonzero-role and three cancellation-profile rendering inputs. Exact renderer commands and results are in evidence/commands.md.
 
-The directory `17592186087886/` also retains historical analyses and validation artifacts from basis 2418. Use the new instructional-account.md and evidence/ results for current claims; do not run the old database replenishment utility. Its runtime package is not declared, and it was not invoked in this repair.
+Current evidence is under evidence/. Historical analyses in 17592186087886/ and the previous command log are retained; the old replenishment utility is outside the runtime package and was not run. This is an author handoff for independent review. Nothing was published and no database or engine content was changed.

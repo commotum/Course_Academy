@@ -1,30 +1,34 @@
 # Current state
 
-Author-479 read feedback and all five retained findings. The latest failure was
-reproduced first with:
+Author-482 preserved the repaired runtime, manifest, instructional account and
+all five executable regressions. Read feedback and retained findings first.
+
+First reproduced the latest failure:
 `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory`
-Exit 1: five captured historical records remain affected; the retained possible
-learner-history witness succeeds 64/64. All generated inventory is audited.
+Exit 1: five captured stored banks retain the sign-only extremum shortcut;
+the retained possible learner-history witness succeeds 64/64.
 
 Then ran:
-`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/author-479`
-Exit 1 solely for inventory finding 591f580cadb749294588. All four generator
-findings pass, including 17 complete source-bank replays, zero-root cases,
-conditional shortcut probes and three delivered batches (14 records total).
-Native grading passes 7 acceptance and 28 rejection checks; relocation passes.
-Commands and results: evidence/author-479/commands.json and results.json.
+`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/author-482`
+Exit 1 solely for inventory finding 591f580cadb749294588. Four generator findings
+pass, including 17 complete source-bank replays, zero-root cases, conditional
+shortcut probes and three delivered batches (14 records). Native grading accepts
+7 correct and rejects 28 incorrect selections. Relocation and dependencies pass.
+Exact commands and results are in evidence/author-482/commands.json and results.json.
 
-Runtime, source, inventory and manifest hashes match the retained proposal.
-Five staged replacements still equal the current seeded batch and satisfy the
-independent printed-math and pre/post-delivery shortcut checks. Retained actual-UI
-screenshots evidence/repair-3/render/question-001.png and question-002.png were
-visually inspected again: systems, radio options and complete solutions are
-legible without clipping. No runtime or database changes were made.
+Runtime, manifest, source and inventory match protected hashes. Five staged
+replacements match the current seeded output, independent printed-math checks,
+and pre/post-delivery shortcut probes. Reused unchanged actual-UI render evidence;
+visually inspected evidence/repair-3/render/question-001.png: systems, choices,
+matrices and full solution are legible without clipping. All affected-inventory
+paths resolve relative to author-482 to workspace/evidence/generated-records.json.
+No generated inventory records remain untested.
 
-Unfinished: the separate inventory-remediation workflow must resolve exactly the
-five generated identities in affected-inventory.json, then recapture inventory
-and rerun the strict pool check. This session forbids database changes. The
-reviewable replacement mapping is
-evidence/repair-3/inventory-repair-proposal.json; it remains unapplied.
-Preserve the strict failure and all completed generator repairs. Another
-workspace-only recheck cannot change the captured stored pool.
+Unfinished: the separate inventory-remediation workflow must resolve the five
+generated identities in affected-inventory.json, recapture inventory, and rerun
+the strict pool regression. Verified replacements remain staged and unapplied in
+evidence/repair-3/inventory-repair-proposal.json. This job forbids database changes.
+The selector reads stored question identities, independently of the generator
+(engine/rust/question_selection.rs:125). No runtime construction defect remains
+demonstrated by current feedback. Preserve completed repairs and the strict failing
+check. Current status: unsupported.

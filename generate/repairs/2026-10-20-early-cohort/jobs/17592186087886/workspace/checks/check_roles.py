@@ -1,8 +1,8 @@
 """Strict cross-family regression for the answer-length construction failure.
 
 Parse the displayed mathematics, hold each bank fixed, and change only relevant
-linear-coefficient evidence. A bank-only function cannot identify the key across
-these counterfactuals, regardless of its text-length/shape implementation.
+linear-coefficient or cancellation-parameter evidence. A bank-only function cannot identify the key across
+each fixed-bank counterfactual group, regardless of its text-length/shape implementation.
 """
 import copy
 import importlib.util
