@@ -3,16 +3,17 @@
   "error": {
     "status": "unsupported",
     "manifest": "package.json",
-    "summary": "Preserved completed repairs. Corrected evidence validates and current shortcut checks pass; the strict runner handoff still fails.",
+    "summary": "Preserved completed repairs. Source replay, CLI, delivery, shortcut and 25 native grading checks pass. The strict runner handoff still fails.",
     "evidence_paths": [
       "evidence/current-handoff-regression.json",
       "evidence/evidence-contract-validation.json",
-      "repair-regressions.json",
+      "evidence/batch-selection-regression.json",
+      "evidence/current-render-binding.json",
       "runner-fix/evidence-only-rejection.patch",
       "session-state.md"
     ],
     "limitations": [
-      "The external runner rejects unchanged runtime although the retained review requires preserving it. Installing the staged runner correction requires writes outside the authorized workspace. The failing regression remains intact."
+      "The runner rejects unchanged runtime before regressions, while the retained finding requires evidence-only correction. Installing the staged correction requires writes outside the authorized workspace. No external files were changed; strict failing checks remain intact."
     ]
   },
   "instruction": "Fix the root cause, retain every earlier counterexample, and declare executable checks in repair-regressions.json. A failed check is another repair task, not permission to abandon the generator.",
