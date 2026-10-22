@@ -1,39 +1,38 @@
-# Current state — 2026-10-22, author-203
+# Current state — 2026-10-22, author-206
 
-Read latest feedback, both retained findings, the latest repair-history events
-(203 total), existing instructional account, and required generator guidance.
-Preserved the runtime, manifest, full source coverage and prior repairs. No new
-generator construction defect is demonstrated by the latest evidence-only report.
+Preserved completed generator repairs and every registered regression. Read
+feedback/history, the existing instructional account, supplied lesson, canonical
+example, and all 12 source banks. No new runtime defect was demonstrated.
 
-Reproduced the exact latest failure first:
+Latest failure reproduced first:
 `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_current_handoff.py`
-Exit 1: installed `scripts/generator_pipeline.py:723` rejects the unchanged
-package before regressions or sampling. This branch is outside authorized writes.
+exits 1. Actual installed sample-stage control flow calls only `repair`: the
+byte-identical-package gate at `scripts/generator_pipeline.py:723` runs before
+regressions or sampling. See `evidence/current-handoff-regression.json`.
 
-Targeted verification commands and full captured results:
-`evidence/current-author-verification.json`.
+Every registered regression rerun with the job Python; exact commands, exit codes
+and logs: `evidence/current-author-verification.json`.
 
-- `checks/check_evidence_contract.py`: exit 1 at that same installed gate.
-  The actual evidence validator, two relocation roots, missing-provenance and
-  wrong-root negative controls pass. All 12 source captures, 3 affected stored
-  records, 83 bundle files and current batch bindings remain verified.
-- `checks/check_batch_selection.py`: exit 0. Exact seed 4258185931 shortcut scores
-  1/5 before and after shared delivery; 5/5 records accepted. Ten profiles retain
-  all target roles; native grading passes 5 correct and 20 wrong submissions.
-- `checks/check_render_binding.py`: exit 0. Ten complete source banks replay
-  (50 choices); two actual-UI renders match current delivered endpoints. Both
-  retained screenshots visually inspected: readable matrices and row operations.
+- `checks/check_all.py`: exit 0. CLI counts/relocation, ten source banks, 81
+  mathematical readbacks, 405 raw and 50 delivered native responses, and three
+  stored generated-record reproductions pass.
+- `checks/check_batch_selection.py`: exit 0. Exact seed 4258185931 shortcut is
+  1/5 raw and delivered; all five records survive delivery. Ten profiles retain
+  all target roles. Native grading passes 25 responses.
+- `checks/check_evidence_contract.py`: exit 1. Real evidence validation,
+  relocation and missing-provenance/wrong-root negative controls pass; installed
+  runner handoff fails as above.
+- `checks/check_render_binding.py`: exit 0. Ten complete source banks and both
+  retained UI endpoints match current delivery. Both existing screenshots were
+  visually re-inspected: matrices, controls and solutions are readable.
 
-All six runtime/manifest hashes remain unchanged. Dependencies reconfirmed:
-Python 3.13.5, SymPy 1.14.0. Earlier relocation/CLI, full mathematics, source,
-inventory reconstruction and rendering evidence is retained. No unrelated broad
-suite or duplicate rendering was repeated. Both retained finding IDs still have
-strict executable regressions; no acceptance criterion was weakened.
+All runtime/manifest hashes remain unchanged. No engine, runner, database,
+published asset, original review or other-job edits occurred. No extra broad
+samples, duplicate renders or hash-only runtime changes were made.
 
-Unfinished: runner owner must correct the evidence-only unchanged-package gate,
-route the report together with its validated evidence root, and rerun the strict
-handoff regression before fresh independent review. The existing
-`runner-fix/evidence-only-rejection.patch` remains uninstalled. Installing it or
-copying into the supplied external evidence_root violates workspace-only scope.
-No engine, runner, database, published asset or other-job edits were made.
-The skill is supported; the unresolved failure is external runner integration.
+Unfinished external action: the runner owner must resolve its evidence-only
+unchanged-package rejection and resume sampling plus fresh independent review.
+The concrete proposal remains `runner-fix/evidence-only-rejection.patch` and is
+not installed. Workspace-only authorization excludes that runner file and the
+supplied external evidence root. Repeating authoring without an external state
+change cannot resolve this handoff failure.
