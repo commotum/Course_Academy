@@ -1,0 +1,108 @@
+{
+  "verdict": "accepted",
+  "summary": "The revision fixes all retained failures and passes all eight checks. Package files are unchanged. Three historical affected inventory records remain separately documented.",
+  "source_analysis": {
+    "skill": "Identify triangular matrices by checking every entry strictly above or below the main diagonal.",
+    "reasoning_steps": [
+      "Read the requested orientation.",
+      "Inspect all entries on the forbidden side.",
+      "Select exactly the qualifying matrices."
+    ],
+    "invariants": [
+      "Matrices are square.",
+      "Easy banks have five choices and exactly one qualifier.",
+      "Diagonal and unconstrained-side entries do not determine qualification."
+    ],
+    "permitted_variations": [
+      "Change qualifying labels, positions and target orientation.",
+      "Vary compatible dimensions, zero patterns and values.",
+      "Derive keys and explanations from matrix membership."
+    ],
+    "source_refs": [
+      "tutorial 658a47dc-4d32-5d9d-a04c-82d683e87739, Introduction",
+      "8edd360b-8c0f-5c8f-b5f1-4655b27f3fa4",
+      "e2e910d3-5a56-5ffe-990b-2c75157e1876"
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay.json",
+        "source-replay-records.json"
+      ],
+      "details": "All 13 source cases and 69 choices replay. Canonical missing-bank evidence is explicitly documented."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "audit.py",
+        "math-results.json"
+      ],
+      "details": "Independent exact checks pass for 192 records."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "slot-coverage.json",
+        "controlled-role-results.json",
+        "shortcut-results.json"
+      ],
+      "details": "All 70 controlled role assignments pass; ordinary answers vary within every source profile."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "scope-results.json"
+      ],
+      "details": "Requested easy questions preserve source sizes, response workload and zero-side inspection."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input-final.json",
+        "grader-report-final.json"
+      ],
+      "details": "Native grading passes 162 accepted and 369 rejected choice checks. Invalid literal-radio diagnostics are explicitly documented."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-delivered/rendering.json",
+        "visual-inspection.json",
+        "actual-ui-order.json"
+      ],
+      "details": "18 actual-UI cases render successfully; representative screenshots inspected."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "runtime-results.json",
+        "package-before.json",
+        "package-after.json"
+      ],
+      "details": "Exact dependencies, deterministic replay, boundaries and relocation pass. Package hashes are unchanged."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "retained-finding-regressions.json",
+        "author-preflight-verification.json",
+        "delivery-control/delivery.json",
+        "delivery-batch/delivery.json",
+        "selection-results.json",
+        "affected-inventory.json",
+        "generated-records.json",
+        "inventory-audit.json"
+      ],
+      "details": "Retained failures reproduce on old code and pass the revision. Counterfactuals agree across mathematics, grading and rendering. All 80 controls and five batch records survive delivery; tested shortcuts have counterexamples. Live selection conclusions remain conditional on captured rules."
+    }
+  },
+  "findings": []
+}

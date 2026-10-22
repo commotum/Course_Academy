@@ -1,11 +1,9 @@
-# Current state — author 764
+# Current state — author 768
 
-Reproduced the latest failure first: `/home/jake/Developer/Course_Academy/.venv/bin/python checks/check_report_installation.py` exits 1. The required original prior-review destination still fails `generator_review.validate_review` with `decision_variation has an unresolved decision shortcut`. The staged correction validates and replays 26 current-generator records; this does not close finding 645672a4cd3f9bf609ca.
+Read feedback, both retained findings, and the latest event (767) in the 768-event repair history. Reproduced the strict report-installation regression first: exit 1, `decision_variation has an unresolved decision shortcut` at the required prior-review destination. Workspace staged correction passes its contract and replays 26 current-generator records, but does not close the external-installation finding.
 
-`/home/jake/Developer/Course_Academy/.venv/bin/python checks/test_role_exchange.py --output evidence/author-764/role` exits 0. Nine controlled cases, 24 mixed samples, eight default hard samples; both resonance positions survive shared delivery and conditioned shortcut checks. All 30 native-grader expectations pass. `/home/jake/Developer/Course_Academy/.venv/bin/python checks/verify_retained_state.py` exits 0: unchanged runtime/source, 55 handoff artifacts, eight independent mathematical cases.
+Ran `checks/test_role_exchange.py --output evidence/author-768/role`: exit 0. Nine controlled cases, 24 mixed samples, eight default hard samples; both resonance positions survive delivery; all native-grader expectations pass. Ran `checks/verify_retained_state.py`: exit 0; unchanged runtime/source, 55 handoff artifacts, eight independent mathematical cases verified. Exact commands and results are in evidence/author-768/commands.json and results.json.
 
-Preserved the generator, instructional account, source replay/render evidence, affected-inventory reproduction and both strict regression declarations. No external write, database change, publication or engine change.
+Preserved the generator, instructional account, source replay, rendering, inventory evidence and both strict regression declarations. No implementation changes are justified by this evidence-only finding. No external writes, database changes, engine edits or publication.
 
-Evidence: evidence/author-764/commands.json, results.json, report.log, report-results.json, role/results.json, retained-state.log.
-
-Next unfinished action: runner installation of the staged correction at the original prior-review destination using evidence/review-installation-handoff.json, followed by the unchanged strict regression and fresh independent review. The destination is outside the authorized workspace. Another unchanged workspace-only author retry cannot perform this step. Status remains unsupported; the external requirement has not been replaced with local validation.
+Next unfinished action is runner installation of the already staged correction at the required original review destination, using evidence/review-installation-handoff.json; then rerun the strict regression and obtain fresh independent review. The destination is outside this workspace-only session. Repeating an unchanged author retry cannot perform that action. Status remains unsupported.
