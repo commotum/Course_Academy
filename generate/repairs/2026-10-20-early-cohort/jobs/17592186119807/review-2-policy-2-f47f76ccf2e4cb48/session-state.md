@@ -1,0 +1,1 @@
+Source replay14/14 and independent math157 pass. Shared delivery raw138->136 and exact5->5. New sign batch fixes old3/3 cue; strict original-fails/current-passes tests retained. Fresh requested-size traces and relevant/irrelevant sign pairs saved. Native/UI final run pending (17 records). Package remains unchanged.

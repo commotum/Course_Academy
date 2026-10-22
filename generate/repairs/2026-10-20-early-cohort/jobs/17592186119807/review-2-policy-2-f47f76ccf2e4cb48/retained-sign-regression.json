@@ -1,0 +1,41 @@
+[
+  {
+    "case": "original",
+    "command": [
+      "/home/jake/Developer/Course_Academy/.venv/bin/python",
+      "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186119807/review-2-policy-2-f47f76ccf2e4cb48/batch_regression.py",
+      "--records",
+      "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186119807/review-1-policy-2-bc476fa1f6e925b4/delivery-batch/accepted.json"
+    ],
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": "Traceback (most recent call last):\n  File \"/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186119807/review-2-policy-2-f47f76ccf2e4cb48/batch_regression.py\", line 15, in <module>\n    assert any(key(r)!='No solution' for r in sub), ('BATCH SHORTCUT: choose No solution for a bank containing a nonpositive numeric option: '+str(len(sub))+'/'+str(len(sub))+'. See batch-sign-reproduction.json for complete records and exact seeds/parameters.')\n           ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: BATCH SHORTCUT: choose No solution for a bank containing a nonpositive numeric option: 3/3. See batch-sign-reproduction.json for complete records and exact seeds/parameters.\n",
+    "expected_pass": false
+  },
+  {
+    "case": "current",
+    "command": [
+      "/home/jake/Developer/Course_Academy/.venv/bin/python",
+      "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186119807/review-2-policy-2-f47f76ccf2e4cb48/batch_regression.py",
+      "--records",
+      "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186119807/review-2-policy-2-f47f76ccf2e4cb48/delivery-batch/accepted.json"
+    ],
+    "exit_code": 0,
+    "stdout": "PASS: nonpositive numeric-bank subgroup contains a counterexample to the shortcut\n",
+    "stderr": "",
+    "expected_pass": true
+  },
+  {
+    "case": "control",
+    "command": [
+      "/home/jake/Developer/Course_Academy/.venv/bin/python",
+      "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186119807/review-2-policy-2-f47f76ccf2e4cb48/batch_regression.py",
+      "--records",
+      "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186119807/review-2-policy-2-f47f76ccf2e4cb48/sign-counterfactual-records.json"
+    ],
+    "exit_code": 0,
+    "stdout": "PASS: nonpositive numeric-bank subgroup contains a counterexample to the shortcut\n",
+    "stderr": "",
+    "expected_pass": true
+  }
+]

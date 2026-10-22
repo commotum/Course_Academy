@@ -1,27 +1,15 @@
-# Current repair state — pass 199
+# Current repair state — pass 202
 
-Read latest feedback and all five retained findings. First executed test:
+Read latest feedback and all five retained findings plus history events; inspected original lesson, prerequisite examples, diagram and all 17 complete source banks. Preserved completed repairs and runtime files.
+
+First command:
 `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory`
-Exit 1: all five historical banks retain the sign-extremum shortcut; 64/64
-successes describe a possible learner-history witness, not observed usage.
+Exit 1: five historical banks retain the sign-only extremum shortcut. The 64/64 selection result is a possible learner-history witness, not observed usage. Initial result: evidence/repair-202/initial-reproduction.json.
 
 Validation:
-`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/repair-199`
-Exit 1 solely for 591f580cadb749294588. Four generator regressions pass;
-17 complete source banks replay; 14 records survive shared delivery with
-conditional contrasts; native grading accepts 7 correct and rejects 28 wrong
-responses. Relocation, dependencies, protected hashes and staged replacement
-mapping pass. All five generated inventory records were reproduced; none are
-untested. Commands and results: evidence/repair-199.
+`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/repair-202`
+Exit 1 solely for 591f580cadb749294588. Four generator findings pass; 17 complete practice banks replay. Three CLI batches (14 records) retain conditional contrasts after shared delivery. Native grading accepts 7 correct and rejects 28 wrong responses. Relocation, pinned dependencies, protected hashes and five replacement mappings pass. All five generated inventory records reproduced; none untested.
 
-Reinspected unchanged actual-UI screenshot
-`evidence/repair-3/render/question-002.png`: prompt, choices, matrices,
-(k-12)y=3 and k=12 conclusion are legible and consistent. Retained prior
-rendering because runtime and records have not changed.
+Reinspected retained actual-UI screenshot evidence/repair-3/render/question-002.png: system, five choices, matrices, row operation, reduced equation and conclusion agree and remain legible. Runtime and render inputs are unchanged, so existing rendering evidence is reused.
 
-Next required state change: separate reviewed inventory remediation using
-`evidence/repair-3/inventory-repair-proposal.json`, then a fresh inventory
-capture. Native selection reads stored entity IDs independently of this
-entrypoint (question_selection.rs:125-197). Database changes, publication and
-engine edits are prohibited here. Preserve the strict failing regression and
-unsupported status; no additional runtime defect is demonstrated.
+Remaining action is external state remediation: independently review and apply evidence/repair-3/inventory-repair-proposal.json through the separate inventory-remediation workflow, then capture fresh inventory and rerun the strict check. Native question_selection.rs:125-197 reads stored entity IDs independently of Python generation. This task forbids database changes, publication and engine edits. No further current-generator defect is demonstrated. Do not weaken the strict failure or substitute hypothetical replacements for captured inventory. Status remains unsupported. Commands, results and scope resolution are in evidence/repair-202.

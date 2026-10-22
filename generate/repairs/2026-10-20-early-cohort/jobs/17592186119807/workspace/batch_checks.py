@@ -72,6 +72,14 @@ def main():
   controls+=group
   coverage.append({'profile':sid,'both_branches_under_both_sign_conditions':True,'bank_change_preserves_prompt_solution_and_truth':True})
  save('controlled-records.json',controls);save('controlled-coverage.json',coverage)
+ out=E/'delivery-controls'
+ subprocess.run([sys.executable,str(REPO/'generate/pipeline/check_delivery.py'),'--input',str(E/'controlled-records.json'),'--source',str(H.parent/'source/source.json'),'--inventory',str(H.parent/'source/inventory.json'),'--difficulty','moderate','--output',str(out),'--asset-root',str(E/'assets')],check=True,capture_output=True,text=True)
+ delivered_controls=json.loads((out/'accepted.json').read_text())
+ assert len(delivered_controls)==len(controls)
+ for sid in c.g.CASES:
+  group=[r for r in delivered_controls if r['generation']['source_id']==sid]
+  for sign in (False,True):
+   assert {c.expected(r)!='No solution' for r in group if features(r)['nonpositive']==sign}=={False,True}
  # Positive control adopted unchanged from reviewer except path/default.
  positive=subprocess.run([sys.executable,str(H/'batch_regression.py'),'--records',str(E/'controlled-records.json')],check=True,capture_output=True,text=True)
  batches=[];allrecords=[]
@@ -89,7 +97,16 @@ def main():
   strict=subprocess.run([sys.executable,str(H/'batch_regression.py'),'--records',str(out/'accepted.json')],check=True,capture_output=True,text=True)
   batches.append({'seed':seed,'command':['<context-python>','17592186119807.py','--difficulty','moderate','--count','5','--seed',str(seed),'--format','json'],'raw':raw,'accepted':post,'accepted_count':len(accepted),'reviewer_regression':strict.stdout.strip()})
   allrecords+=accepted
- save('batch-results.json',{'passed':True,'batches':batches,'source_evidence_changed':False,'original_regression_exit':old.returncode,'positive_control':positive.stdout.strip()})
+ save('batch-results.json',{'passed':True,'batches':batches,'source_evidence_changed':False,'original_regression_exit':old.returncode,'positive_control':positive.stdout.strip(),'controlled_raw':len(controls),'controlled_accepted':len(delivered_controls),'controlled_semantic_systems':len({tuple(c.vecs(r)) for r in controls}),'all_profiles_both_signs_both_branches_after_delivery':True})
  save('grading-records.json',controls[:2]+allrecords)
+ # Observe actual runtime resampling separately from publication normalization.
+ attempted=[];original_generate=c.g.generate
+ def trace(*args,**kwargs):
+  record=original_generate(*args,**kwargs);attempted.append(record);return record
+ c.g.generate=trace
+ try:traced=c.g.batch('moderate',5,119807)
+ finally:c.g.generate=original_generate
+ assert traced==json.loads((E/'batch-119807.json').read_text())
+ save('resampling.json',{'seed':119807,'attempts':len(attempted),'returned':len(traced),'attempted_sign_truth':dict(collections.Counter(str((features(r)['nonpositive'],c.expected(r)!='No solution')) for r in attempted)),'returned_sign_truth':dict(collections.Counter(str((features(r)['nonpositive'],c.expected(r)!='No solution')) for r in traced)),'attempted_profiles':dict(collections.Counter(r['generation']['source_id'] for r in attempted)),'limit':'Counts combine role-witness rejection, semantic deduplication and complete-pool acceptance. No publication or learner-history selection is included. Trace wraps generate only in memory and restores it; runtime files are untouched.'})
  print(json.dumps({'passed':True,'original_shortcut_reproduced':'3/3','profiles_both_signs_both_branches':len(coverage),'cli_batches_after_delivery':len(batches),'delivered_records':len(allrecords)}))
 if __name__=='__main__':main()
