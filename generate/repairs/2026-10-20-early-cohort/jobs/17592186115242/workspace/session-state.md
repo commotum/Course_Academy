@@ -1,25 +1,9 @@
-# Current state: author 934
+# Current state: author 938
 
-Latest failure reproduced first:
-`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory`
-Exit 1: five historical records, 64/64 shortcut successes in the retained possible-history scenario.
+Latest failure reproduced first: `checks/batch_regressions.py --finding inventory` exits 1 for five historical records and 64/64 shortcut successes in the retained possible-history scenario. Exact rerun command and output: evidence/author-938/initial-reproduction.json.
 
-Verification milestone:
-`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/author-934`
-Exit 1 solely for finding 591f580cadb749294588. Four generator regressions pass;
-17 complete source banks plus canonical replay, zero-root support, conditional
-contrasts before/after delivery (14 records), 35 native-grader checks and package
-relocation/dependencies/hashes pass. Replacement mapping verified, not applied.
-Visually inspected both retained actual-UI screenshots and original flowchart.
+Validation milestone: `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/author-938` exits 1 solely for finding 591f580cadb749294588. Four current-generator regressions pass: 17 complete source banks plus canonical replay, zero-root support, 14 delivered records, 35 native grading checks, relocation and pinned dependencies. Existing five-replacement mapping verified and not applied. Both retained UI screenshots visually inspected.
 
-Preserved runtime, manifest, instructional account and every executable retained
-finding. No engine, database, source or publication changes. Evidence:
-`evidence/author-934/initial-reproduction.json`, `commands.json`, `results.json`,
-and `disposition.md` in that directory.
+Runtime, manifest, instructional account and strict executable regressions preserved. No database, engine, publication, source or other-job changes. Commands/results/disposition: evidence/author-938. All five generated inventory records tested.
 
-Next unfinished step: separately authorized inventory remediation must resolve
-the five stored identities in affected-inventory.json and provide fresh inventory,
-then rerun the strict check. The proposal is already staged at
-`evidence/repair-3/inventory-repair-proposal.json`. This author task explicitly
-prohibits database changes and publication. Further identical generator edits
-or verification passes cannot resolve stored state. Status remains unsupported.
+Next required step: separate inventory remediation for the five identities in affected-inventory.json, followed by fresh capture and the strict check. Existing proposal: evidence/repair-3/inventory-repair-proposal.json. Applying it requires database changes prohibited here. Status remains unsupported; unchanged feedback demonstrates no further generator construction defect.

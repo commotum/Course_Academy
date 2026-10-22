@@ -1,0 +1,8 @@
+The latest failure was reproduced first: checks/batch_regressions.py --finding inventory exits 1 on five captured historical questions, with 64/64 shortcut successes in the retained possible-history witness. No new construction defect is established.
+
+The retained instructional account applies: canonical f2c7cfd3-da43-5208-bd0e-21692357fabe requires elimination followed by interpreting (k+4)y=-5; tutorial e0c85152-daea-5a87-a3ba-81870558c7a2 distinguishes no solutions from infinitely many. Source 534e2a93-e71a-5475-894e-dfd5ca99a3a6 demonstrates that the correct option need not be extreme. Preserve these operations, easy workload, five-choice response and completed family repairs.
+
+Command: /home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/author-938
+Result: exit 1 solely for 591f580cadb749294588. Four current-generator regressions pass, including 17 complete practice banks and canonical replay, zero-root support, 14 records before/after shared delivery, native acceptance of 7 correct and rejection of 28 wrong responses, pinned dependencies and relocation. Relevant/irrelevant counterfactuals remain checked. All five generated inventory records are reproduced; none is untested. The existing replacement mapping and protected source/runtime hashes verify. Two retained actual-UI screenshots were visually inspected.
+
+No runtime change can alter banks already stored in the independent captured inventory. The existing proposal at evidence/repair-3/inventory-repair-proposal.json remains staged and unapplied. Separate inventory remediation and fresh capture are required. The strict regression remains failing. No database, engine, publication, source or other-job changes were performed. Status: unsupported.
