@@ -14,7 +14,7 @@ from unittest.mock import patch
 
 from validate_content import ROOT, JOB, REPO, g, inspect, visible_bank, fidelity
 
-E = ROOT/'evidence/repair-2'
+E = ROOT/'evidence/repair-3/retained-first'
 
 def save(name, value):
     (E/name).write_text(json.dumps(value, indent=2)+'\n')
@@ -78,8 +78,8 @@ def main():
         print(json.dumps({'passed':report['passed'], 'failures':len(report['failures'])}))
         raise SystemExit(0 if report['passed'] else 1)
 
-    E.mkdir(exist_ok=True)
-    old=json.loads((E/'previous-batch.json').read_text())
+    E.mkdir(parents=True,exist_ok=True)
+    old=json.loads((ROOT/'evidence/repair-2/previous-batch.json').read_text())
     old_audit=audit(old)
     assert not old_audit['passed'], 'Negative control lost the reported failure'
     save('previous-batch-audit.json', old_audit)
@@ -90,13 +90,13 @@ def main():
     assert all(live[r['question'][':question/id']]==r for r in old)
     def replay_shuffle(_rng, rows):
         indexed={r['question'][':question/id']:r for r in rows}
-        rows[:]=[indexed[k] for k in old_ids]+[r for r in rows if r['question'][':question/id'] not in old_ids]
+        rows[:]=[indexed[k] for k in old_ids if k in indexed]+[r for r in rows if r['question'][':question/id'] not in old_ids]
     with patch.object(g.random.Random, 'shuffle', replay_shuffle):
         repaired=g.batch('easy',5,0)
     # Non-vacuous: same repeated subgroup remains; C-only must defeat A-always.
     affected=[r for r in repaired if r['generation']['source_id']=='q-139965']
-    assert len(affected)==2
-    assert {tuple(inspect(r)[0]['truth']) for r in affected}=={('A',),('C',)}
+    assert len(affected)==3
+    assert {tuple(inspect(r)[0]['truth']) for r in affected}=={('A',),('C',),('A','C')}
     assert all('B' not in inspect(r)[0]['truth'] for r in affected)
     accepted, replay_report=delivery('replayed-prefix-repaired',repaired)
 

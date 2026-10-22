@@ -112,3 +112,42 @@ then run the actual delivery filter and repeat visible-matrix shortcut probes.
 Native grading must reject the hardcoded-A strategy on a delivered C-only
 case. Inspect the captured inventory without relabeling original sources as
 generated. This repair changes no mathematical or instructional workload.
+
+## Repair of complete decision-case allocation, 2026-10-21
+
+Latest finding `e00c00847a8d35dee226` reproduces on the exact review-2
+accepted batch: the two rank-3 q-139965 items with B excluded answer A-only
+and C-only. The earlier requirement that each eligible label both qualify and
+fail in a two-item group mathematically forces singleton answers. The previous
+paragraph's claim that this pair suffices is superseded. This also removes the
+joint outcome explicitly observed in q-139965
+(`27db2f89-f211-5a22-8370-a36f3eeeed25`), whose solution concludes A and B
+both have three pivots. Tutorial 4151's pivot-count definition and e-5417's
+separate inspection of both eligible matrices still determine the method.
+
+Before implementation: change allocation rather than any matrix, response bank,
+or supported answer. When a source profile repeats in a batch, allocate its
+complete semantic decision set in one visible dimension/bank subgroup. Thus
+nonempty two-candidate subset profiles receive both singletons AND their pair
+(three records); q-34823 also receives None (four records). Five-matrix radio
+receives both eligible singleton winners (two records); its fixed correct-count
+is required by its singular response contract. Checkbox receives the eligible
+matrix and explicit None cases (two records). Incidental scaling and label
+permutations cannot pay for these allocations. This is a finite case-coverage
+obligation, not an equal-frequency quota on learners. Profile allocation may
+change to fit the requested count. A singleton profile in a short batch makes
+no within-profile coverage claim; complete blocks are preferred when they fit.
+All profiles and all 24 semantic instances remain available through the same
+runtime catalog and source replay. Preserve the current seed-independent IDs.
+
+Check the original fixed-A counterexample and the latest exclusive-subset
+counterexample as failing negative controls. Replaying each exact candidate
+prefix must now deliver all three outcomes in its affected subgroup. In general,
+for each eligible matrix in subset profiles, require two delivered records
+agreeing on all OTHER matrices' qualifying statuses but disagreeing on that
+matrix. This independent witness detects both old shortcuts, and also their
+symmetric variants. A controlled A-only to A+C change must keep the actual A
+and excluded B entries fixed, change C, change the solution/key, and defeat
+inspection of A alone in the native grader. Repeat the probes after actual
+read-only delivery filtering. Audit captured inventory for generated examples;
+original source examples must not be described as generated defects.
