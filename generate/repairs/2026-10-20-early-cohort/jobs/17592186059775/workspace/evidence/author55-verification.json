@@ -1,0 +1,42 @@
+{
+  "author_attempt": 55,
+  "runtime_changed": false,
+  "checks": [
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_current_handoff.py",
+      "exit_code": 1,
+      "result": "evidence/current-handoff-regression.json"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_evidence_contract.py",
+      "exit_code": 1,
+      "log": "evidence/author55-evidence-contract.log",
+      "result": "evidence/evidence-contract-validation.json"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_batch_selection.py",
+      "exit_code": 0,
+      "log": "evidence/author55-batch-selection.log",
+      "result": "evidence/batch-selection-regression.json"
+    }
+  ],
+  "evidence_bundle_valid": true,
+  "raw_shortcut": {
+    "correct": 1,
+    "total": 5,
+    "random_baseline": 0.2
+  },
+  "delivered_shortcut": {
+    "correct": 1,
+    "total": 5,
+    "random_baseline": 0.2
+  },
+  "native_responses": 25,
+  "unresolved": "Installed runner rejects the unchanged candidate before retained regressions or sampling. Its source is outside the authorized workspace.",
+  "external_target": "scripts/generator_pipeline.py",
+  "reviewable_patch": "runner-fix/evidence-only-rejection.patch",
+  "patch_installed": false,
+  "retained_regressions_weakened": false,
+  "publication_or_database_writes": false,
+  "prior_evidence_reused": "Runtime unchanged: retained source replay, CLI and actual-UI evidence are not claimed as newly rerun."
+}

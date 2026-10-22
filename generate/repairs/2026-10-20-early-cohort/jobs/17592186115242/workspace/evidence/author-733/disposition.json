@@ -1,0 +1,21 @@
+{
+  "status": "unsupported",
+  "generator_supported": true,
+  "runtime_changes": false,
+  "preserved_findings": 5,
+  "generator_findings_passed": 4,
+  "unresolved_finding": "591f580cadb749294588",
+  "root_cause": "The selector can still choose five historical v2 questions whose stored banks pair t,-t,b,-b,0 with |t|>|b|. Generator v3 construction and finite-batch selection repairs do not rewrite these stored banks.",
+  "why_no_additional_runtime_patch": "The exact stored records are independently replayed from their archived generator and match captured inventory. Altering the current generator cannot alter those identities or banks. Hiding their failure or substituting the proposed inventory for the supplied capture would invalidate the regression.",
+  "source_scope_preserved": true,
+  "proposal": "evidence/repair-3/inventory-repair-proposal.json",
+  "proposal_applied": false,
+  "required_external_step": "Separate inventory-remediation workflow must resolve the five listed identities, then supply a fresh inventory capture for the strict regression.",
+  "prohibited_actions_performed": [],
+  "evidence_paths_resolve_relative_to_supplied_evidence_root": true,
+  "rendering": {
+    "reused": "evidence/repair-3/render/rendering.json",
+    "visually_inspected": "evidence/repair-3/render/question-001.png",
+    "reason": "Runtime and render input records unchanged; no new rendering defect reported. Prompt, five choices, row operation, reduced system, and conclusion are legible and consistent."
+  }
+}

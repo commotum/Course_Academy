@@ -1,49 +1,7 @@
 {
-  "author_attempt": 53,
-  "status": "unsupported",
+  "author_attempt": 54,
   "runtime_changed": false,
-  "fidelity": {
-    "complete_banks": 10,
-    "source_choices": 50,
-    "source_capture_prompts_and_fields_reconfirmed": 12
-  },
-  "correctness": "Independent parsed-matrix elimination, intermediate matrices and unique-key checks passed in retained batch regression.",
-  "grading": {
-    "native_responses": 25,
-    "accepted": 5,
-    "rejected": 20
-  },
-  "decision_variation": {
-    "raw": {
-      "correct": 1,
-      "total": 5,
-      "random_baseline": 0.2
-    },
-    "delivered": {
-      "correct": 1,
-      "total": 5,
-      "random_baseline": 0.2
-    },
-    "all_five_ranks_and_positions_survive": true,
-    "historical_control": "strict check fails as required (5/5)"
-  },
-  "rendering": {
-    "fresh_render": false,
-    "retained_render_binding_passed": true,
-    "visually_reinspected": "evidence/author8-render/question-002.png",
-    "inspection": "Readable prompt, five matrix choices and row-operation solution; no clipping or exposed TeX."
-  },
-  "evidence_contract": {
-    "bundle_passed": true,
-    "negative_controls": [
-      "missing provenance",
-      "wrong root"
-    ],
-    "installed_runner_passed": false
-  },
-  "scope": "Workspace evidence only; no package, database, engine, publication, or external runner changes.",
-  "limitation": "Installed runner rejects preserved runtime before regressions or sampling. The retained finding requires an evidence-only correction. Fixing the runner gate and installing the staged bundle require writes outside this workspace.",
-  "staged_correction": "runner-fix/evidence-only-rejection.patch",
+  "status": "unsupported",
   "checks": [
     {
       "name": "latest-failure",
@@ -55,29 +13,42 @@
       "name": "evidence-contract",
       "cmd": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_evidence_contract.py",
       "exit_code": 1,
-      "log": "evidence/author53-evidence-contract.log",
       "result_file": "evidence/evidence-contract-validation.json"
     },
     {
       "name": "cli",
       "cmd": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_cli_contract.py",
       "exit_code": 0,
-      "log": "evidence/author53-cli.log",
       "result_file": "evidence/cli-contract.json"
     },
     {
       "name": "retained-batch",
       "cmd": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_batch_selection.py",
       "exit_code": 0,
-      "log": "evidence/author53-retained-batch.log",
       "result_file": "evidence/batch-selection-regression.json"
     },
     {
       "name": "source-render-binding",
       "cmd": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_render_binding.py",
       "exit_code": 0,
-      "log": "evidence/author53-source-render.log",
       "result_file": "evidence/current-render-binding.json"
     }
-  ]
+  ],
+  "claims": {
+    "source_fidelity": "10 complete banks and 50 choices replayed by check_render_binding.py",
+    "correctness": "Independent visible-record checks in retained batch regression pass",
+    "grading": "25 native responses: 5 accepted, 20 rejected",
+    "decision_variation": "All five ranks and positions survive delivery; pivot/rank shortcut scores 1/5 raw and delivered; ten source profiles checked",
+    "evidence": "Bundle passes real validator at original and two relocated roots, with missing-file and wrong-root negative controls",
+    "rendering": "Reused two bound actual-UI records; question-002.png visually reinspected, readable without clipping or exposed TeX"
+  },
+  "unresolved": "Installed runner rejects the unchanged runtime before regressions or sampling. Evidence-only finding requires runtime preservation. Runner changes and evidence installation are outside workspace authorization.",
+  "preserved": [
+    "Runtime package",
+    "repair-regressions.json including strict failure",
+    "runner-fix/evidence-only-rejection.patch",
+    "evidence/contract-correction"
+  ],
+  "published": false,
+  "database_modified": false
 }

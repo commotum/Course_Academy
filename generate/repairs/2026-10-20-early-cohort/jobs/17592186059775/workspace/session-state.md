@@ -1,35 +1,35 @@
-# Current state — 2026-10-22, author-53
+# Current state — 2026-10-22, author-56
 
-Feedback and retained repair history read first. Preserved all runtime files,
-manifest, instructional account, completed repairs and strict regressions.
-No new generator defect was reported; no implementation change was warranted.
+Read feedback, repair history, prior state and required generator/validation docs.
+Preserved runtime, package manifest, completed repairs and strict regressions.
+No new source or generator defect is demonstrated; no runtime edit is warranted.
 
-Exact latest reproduction:
+Latest failure reproduced first:
 `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_current_handoff.py`
-exits 1. Installed runner rejects the identical package before regressions or
-sampling. Finding 9b8cb52352b8ca3e790e requires an evidence-only correction and
-preserving the runtime. The strict failure remains intact.
+exits 1. Installed `scripts/generator_pipeline.py` rejects the byte-identical
+candidate before retained regressions or sampling. Finding 9b8cb52352b8ca3e790e
+requires an evidence-only correction while preserving runtime.
 
-Targeted validation completed:
-- Evidence bundle validates at its own root and two relocated roots; missing-file
-  and wrong-root controls fail correctly. Registered evidence check remains exit 1
-  because the current runner handoff fails.
-- Relocated CLI, determinism, exact counts and finite limit pass.
-- Retained batch regression passes across ten source profiles. Five records survive
-  shared delivery with all five ranks/positions; shortcut scores 1/5 raw/delivered.
-- Native grading: 25 responses, 5 accepted and 20 rejected, as expected.
-- Ten complete source banks / 50 choices replay. Two retained UI endpoints bind
-  to current delivered records. Reinspected question-002.png; readable matrices,
-  controls and worked solution without clipping or exposed TeX.
-- Six manifest/runtime hashes unchanged. No DB writes or publication.
+Affected checks rerun:
+- `checks/check_evidence_contract.py`: bundle validates at its actual root and two
+  relocated roots; missing-provenance and wrong-root controls reject. Overall exit
+  1 preserves the actual runner failure.
+- `checks/check_batch_selection.py`: exit 0; ten source profiles retain all target
+  ranks; five records survive shared delivery; shortcut scores 1/5 raw/delivered;
+  25 native grades pass (5 accepted, 20 rejected).
+Commands/results: `evidence/author56-verification.json`. Unchanged source replay,
+CLI and inspected UI evidence remain available; these were not rerun unnecessarily.
+The staged runner patch also passes all 23 offline control-flow cases in
+`checks/check_runner_handoff.py`; it remains uninstalled. Its passing proposal
+check does not resolve the strict installed-runner failure.
 
-Commands/results: evidence/current-check-commands.json and
- evidence/current-verification.json. Reused completed checks; no unrelated large
-suite or new rendering run was needed because runtime and UI records are unchanged.
+Unfinished action is external: apply the reviewable runner correction at
+`runner-fix/evidence-only-rejection.patch` to `scripts/generator_pipeline.py`, then
+run the strict handoff and retained regressions before fresh independent review.
+The proposed patch is NOT installed. Its target is outside authorized writes.
+The evidence bundle is `evidence/contract-correction`, with relative-root mapping
+in `evidence/contract-installation.json`. No publication or database writes.
 
-Unfinished: runner owner must resolve its evidence-only identical-package gate
-and install the validated bundle at its chosen evidence root. Staged patch:
-runner-fix/evidence-only-rejection.patch (uninstalled). Bundle:
-evidence/contract-correction, installation map: evidence/contract-installation.json.
-Required external destinations are outside this workspace. Do not change runtime
-bytes to bypass the gate or treat historical review evidence as fresh approval.
+Further author-only retries with identical authorization cannot install this fix.
+Do not change generator bytes merely to evade the runner hash gate, weaken its
+strict failing regression, or present historical review acceptance as new approval.

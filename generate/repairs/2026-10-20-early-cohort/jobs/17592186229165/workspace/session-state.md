@@ -1,9 +1,12 @@
-# Current state — author 964
+# Current state — author 968
 
-Latest feedback and complete retained findings read; required generation docs, instructional account, prior state, and handoff inspected. No changed source or new generator defect is reported. All runtime files and completed repairs preserved.
+Reproduced latest failure first and preserved the completed generator repair, source scope, runtime files, and both strict regression declarations. No implementation change is indicated by the retained evidence-only finding.
 
-Strict latest failure reproduced first: `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_report_installation.py` exits 1: `decision_variation has an unresolved decision shortcut` at the original prior-review destination outside this workspace. The staged correction passes the actual contract and 26 current-record replays. Evidence: `evidence/author-964/report-regression.log`, `report-results.json`.
+Commands and results: `evidence/author-968/commands.json` and `results.json`.
+- `python -B checks/check_report_installation.py`: exit 1, required external report still raises `decision_variation has an unresolved decision shortcut`. The local correction validates; 26 complete records replay against the current generator. See `report-regression.log` and `report-results.json`.
+- `python -B checks/test_role_exchange.py --output evidence/author-968/role`: exit 0. Original reorder counterexample, controlled transfers, independent visible math, conditional shortcut probes, delivery and native acceptance/rejection checks pass. See `role/results.json`.
+- `python -B checks/verify_retained_state.py`: exit 0. Eight unaffected mathematical cases, unchanged runtime/source, and 55 staged handoff artifacts verified.
 
-Retained generator regression passes: `checks/test_role_exchange.py --output evidence/author-964/role`, including independent math, reorder/transfer counterfactuals, conditional shortcut probes, shared delivery and native grading. `checks/verify_retained_state.py` passes eight unaffected records and 55 handoff checksums. Commands and results: `evidence/author-964/results.json`.
+Earlier source replay and UI rendering evidence remain applicable to unchanged runtime. Four historical affected inventory records remain preserved. No external write, publication, database or engine change occurred.
 
-Next unfinished action: runner installs corrected artifacts from `evidence/review-installation-handoff.json` at the original external destination, reruns the unchanged strict regression, and obtains fresh independent review. Workspace-only authorization does not permit installation there. Another unchanged workspace-only author retry cannot perform this action. Do not weaken the regression or recreate the generator. No external write, publication, database write or engine change occurred.
+Next unfinished action: runner installation of the artifacts listed in `evidence/review-installation-handoff.json` at its declared original review destination, followed by the strict regression and fresh independent review. This destination is outside the authorized workspace. Finding 645672a4cd3f9bf609ca remains open; status is unsupported. Another unchanged workspace-only author retry cannot perform that installation.

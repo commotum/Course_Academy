@@ -1,0 +1,48 @@
+{
+  "status": "unsupported",
+  "attempt": 56,
+  "runtime_modified": false,
+  "checks": [
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_current_handoff.py",
+      "exit_code": 1,
+      "result": "Actual installed runner rejects unchanged candidate before regressions or sampling",
+      "evidence": "evidence/current-handoff-regression.json"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_evidence_contract.py",
+      "exit_code": 1,
+      "result": "Evidence bundle, source/current-record binding, relocation and negative controls pass; strict installed-runner subcheck fails",
+      "evidence": "evidence/author56-evidence-contract.log"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_batch_selection.py",
+      "exit_code": 0,
+      "result": "Ten profiles; five of five delivered; cue 1/5 raw and delivered; 25 native responses pass",
+      "evidence": "evidence/author56-batch-selection.log"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_runner_handoff.py",
+      "exit_code": 0,
+      "result": "23 offline proposed-patch cases pass; patch remains uninstalled",
+      "evidence": "evidence/author56-proposed-fix.log"
+    }
+  ],
+  "retained_evidence": "Existing source-replay, CLI and visually inspected UI checks reused; runtime and generated content design unchanged.",
+  "remaining_action": {
+    "target": "/home/jake/Developer/Course_Academy/scripts/generator_pipeline.py",
+    "proposed_patch": "runner-fix/evidence-only-rejection.patch",
+    "reason_not_installed": "Target is outside authorized writable workspace",
+    "next_verification": "Run strict installed-runner and registered regressions after runner owner applies correction, then fresh independent review"
+  },
+  "package_hash": "38c685ce1e5bd4f89ac79b6ab3d31a4a81f2b77c9f4bb6f0abcab5c20640f626",
+  "runtime_sha256": {
+    "package.json": "663cb3294cd6832de919c9e21b569f271e63079f4cd4155486853d1c05434b23",
+    "17592186059775.py": "45ce3ee90e9c76d850d8f7e0d9c0851515a65a868264b79160260898c5eeb2ac",
+    "17592186059775/source.json": "936dc5c07130b5fabc5e453ac26efb90471b07c96bc0a904a214eca8494a4bfc",
+    "math_format.py": "734756ff87af508413171ebec82588a121ac9af7d85b454ac4137db41d23e5be",
+    "requirements.txt": "25f9f1fb1988b230147a1d3092d34e09c069eb7a6c6d6df46b3973b9f2d36efc",
+    "known-systems.json": "2492556950df4a1bb3622028c1d24fd72ff9ec82f76c19b8fe2bc6e74b80436f"
+  },
+  "no_publication_or_database_writes": true
+}
