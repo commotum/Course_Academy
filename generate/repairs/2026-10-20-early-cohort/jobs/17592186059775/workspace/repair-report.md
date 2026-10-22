@@ -1,5 +1,7 @@
 # Repair result
 
+Author-8: the preserved package passes all registered checks, including the actual delivery filter and native grader. Two fresh actual-UI renders were visually inspected. The historical missing-provenance error and unchanged-package gate were reproduced again. The author handoff is `ready` for independent review because the requested easy skill and package are supported; runner routing and installation outside this workspace remain explicitly unresolved. No runtime bytes changed. Fresh commands, results and artifact roots are in `evidence/author8-report.json`; the corrected historical bundle remains `evidence/contract-correction`, validated against that directory itself. It is not fresh independent approval.
+
 The seeded entry point now emits a raw JSON array and accepts `--difficulty easy --count 5 --seed 0 --format json`, runs from a relocated runtime-only package, and produces five deliverable questions. Runtime dependencies are Python 3.13.5 and SymPy 1.14.0. The manifest bundles the entry point, source snapshot, shared math-format helper, captured-inventory fingerprints and pinned requirements only.
 
 The reported CLI failure was reproduced before editing (`evidence/before-cli.json`). The repair history has an empty findings array and two events; the first is identified by code `legacy_packaging_or_sampling`; that event code is used in `repair-regressions.json`. Its executable suite also retains the concrete shortcut and source-ambiguity checks discovered during this repair.
