@@ -1,0 +1,50 @@
+{
+  "python_actual": "3.13.5",
+  "manifest": {
+    "entrypoint": "generator.py",
+    "files": [
+      "generator.py",
+      "generator_policy.py",
+      "math_format.py",
+      "source-none-evidence.json",
+      "source_cases.json"
+    ],
+    "dependencies": {
+      "packages": {},
+      "python": "3.13.5"
+    },
+    "default_difficulty": "easy"
+  },
+  "determinism": true,
+  "relocation": true,
+  "boundaries": [
+    {
+      "args": [
+        "--difficulty",
+        "hard"
+      ],
+      "exit_code": 2,
+      "stdout": "",
+      "stderr": "usage: generator.py [-h] [--difficulty {easy,moderate,hard}] [--count COUNT]\n                    [--seed SEED] [--format {json}] [--replay-source]\ngenerator.py: error: Only source-supported easy difficulty is available\n"
+    },
+    {
+      "args": [
+        "--count",
+        "-1"
+      ],
+      "exit_code": 2,
+      "stdout": "",
+      "stderr": "usage: generator.py [-h] [--difficulty {easy,moderate,hard}] [--count COUNT]\n                    [--seed SEED] [--format {json}] [--replay-source]\ngenerator.py: error: count must be nonnegative\n"
+    },
+    {
+      "args": [
+        "--count",
+        "0"
+      ],
+      "exit_code": 0,
+      "stdout": "[]\n",
+      "stderr": ""
+    }
+  ],
+  "runtime": "stdlib only; JSON stdout; no assets or external outputs; only declared files copied for relocation"
+}
