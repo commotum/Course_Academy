@@ -1,0 +1,410 @@
+{
+  "learner_operation": "Identify rank from the column-space basis or nullity from independent coefficient vectors; determine column count n; compute its complementary dimension using rank + nullity = n; select that integer.",
+  "fixed_features": [
+    {
+      "feature": "Five-option single radio response",
+      "justification": "All 15 supplied practice questions use this contract."
+    },
+    {
+      "feature": "Easy column-basis-to-nullity vs moderate null-space-to-rank",
+      "justification": "Observed source difficulty split supports these inference paths."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "n and column-basis cardinality k",
+      "eligible_variation": "Vary independently within feasibility; m can vary without affecting answer.",
+      "observed": "Easy samples change n,k and answers. Counterfactuals verify relevant vs irrelevant dependence."
+    },
+    {
+      "role": "Which numeric choice qualifies",
+      "eligible_variation": "Correct numeric rank within a recognizable bank should not be fixed without instructional reason.",
+      "observed": "offset-minus2 recognizable gap shape always makes the second-smallest correct; all batch records admit a bank-only strategy."
+    },
+    {
+      "role": "Moderate ambient dimension and parameter supports",
+      "eligible_variation": "n=4 and n=5 and indices [2,3], [1,2], [1,2,3] are source-supported.",
+      "observed": "valid() fixes n=4 and permits only [2,3] or [1,2,3]; three supplied n=5 cases are rejected."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "raw",
+      "sample_refs": [
+        "shortcut-results.json",
+        "sample-easy.json"
+      ],
+      "result": "{\"n\": 64, \"answers\": {\"3\": 9, \"4\": 14, \"2\": 6, \"1\": 4, \"8\": 6, \"9\": 14, \"10\": 4, \"5\": 6, \"7\": 1}, \"profiles\": {\"small\": 16, \"offset-minus1\": 16, \"offset-minus2\": 16, \"dimensions\": 16}}"
+    },
+    {
+      "case": "delivered",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-sample/accepted.json"
+      ],
+      "result": "{\"n\": 56, \"answers\": {\"3\": 8, \"4\": 13, \"2\": 5, \"1\": 2, \"8\": 6, \"9\": 14, \"10\": 4, \"5\": 3, \"7\": 1}, \"profiles\": {\"small\": 13, \"offset-minus1\": 13, \"offset-minus2\": 15, \"dimensions\": 15}}"
+    },
+    {
+      "case": "batch_raw",
+      "sample_refs": [
+        "shortcut-results.json",
+        "batch-records.json"
+      ],
+      "result": "{\"n\": 5, \"answers\": {\"5\": 1, \"4\": 1, \"2\": 1, \"8\": 1, \"6\": 1}, \"profiles\": {\"offset-minus1\": 3, \"offset-minus2\": 1, \"dimensions\": 1}}"
+    },
+    {
+      "case": "batch_delivered",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json"
+      ],
+      "result": "{\"n\": 5, \"answers\": {\"5\": 1, \"4\": 1, \"2\": 1, \"8\": 1, \"6\": 1}, \"profiles\": {\"offset-minus1\": 3, \"offset-minus2\": 1, \"dimensions\": 1}}"
+    },
+    {
+      "case": "source families",
+      "sample_refs": [
+        "source-replay.json"
+      ],
+      "result": "12/15 parameter/bank replays; three n=5 moderate cases rejected. One replay reorders x2-x1 as -x1+x2, an algebraically faithful normalization."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "increase column count",
+      "expected": "3 -> 4",
+      "observed": "[3, 4]; all choices independently graded, prompt/solution dependencies compared and actual UI rendered.",
+      "status": "passed",
+      "justification": "Rank-nullity depends on n and the inferred dimension; row count and coefficient changes preserving dimension leave the response unchanged. Source canonical and tutorial establish these dependencies.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-report.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "increase irrelevant row count",
+      "expected": "3 -> 3",
+      "observed": "[3, 3]; all choices independently graded, prompt/solution dependencies compared and actual UI rendered.",
+      "status": "passed",
+      "justification": "Rank-nullity depends on n and the inferred dimension; row count and coefficient changes preserving dimension leave the response unchanged. Source canonical and tutorial establish these dependencies.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-report.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "decrease basis cardinality",
+      "expected": "3 -> 4",
+      "observed": "[3, 4]; all choices independently graded, prompt/solution dependencies compared and actual UI rendered.",
+      "status": "passed",
+      "justification": "Rank-nullity depends on n and the inferred dimension; row count and coefficient changes preserving dimension leave the response unchanged. Source canonical and tutorial establish these dependencies.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-report.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "change coefficient without changing span dimension",
+      "expected": "2 -> 2",
+      "observed": "[2, 2]; all choices independently graded, prompt/solution dependencies compared and actual UI rendered.",
+      "status": "passed",
+      "justification": "Rank-nullity depends on n and the inferred dimension; row count and coefficient changes preserving dimension leave the response unchanged. Source canonical and tutorial establish these dependencies.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-report.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "increase independent parameter count",
+      "expected": "2 -> 1",
+      "observed": "[2, 1]; all choices independently graded, prompt/solution dependencies compared and actual UI rendered.",
+      "status": "passed",
+      "justification": "Rank-nullity depends on n and the inferred dimension; row count and coefficient changes preserving dimension leave the response unchanged. Source canonical and tutorial establish these dependencies.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-report.json",
+        "render/rendering.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "numeric answer-bank shape",
+      "subgroup": "raw: entire easy set",
+      "scope": "overall",
+      "strategy": "Bank only: first gap 2 then three gaps 1, or bank lacks zero -> second-smallest; other nonconsecutive bank -> second-largest; otherwise choose 2.",
+      "correct": 49,
+      "total": 64,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Baseline 0.2 is uniform selection among five choices. Bank-only cue avoids identifying column count and rank; this is incidental answer leakage. Conditional rules are supported by construction, not solely this finite sample. Overall rule is not claimed perfect for all generated questions.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "sample-easy.json"
+      ]
+    },
+    {
+      "cue": "numeric answer-bank shape",
+      "subgroup": "raw: gap pattern 2,1,1,1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the second-smallest numeric option, ignoring the prompt.",
+      "correct": 16,
+      "total": 16,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Baseline 0.2 is uniform selection among five choices. Bank-only cue avoids identifying column count and rank; this is incidental answer leakage. Conditional rules are supported by construction, not solely this finite sample. Overall rule is not claimed perfect for all generated questions.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "sample-easy.json"
+      ]
+    },
+    {
+      "cue": "numeric answer-bank shape",
+      "subgroup": "raw: consecutive bank with minimum at least 1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the second-smallest numeric option, ignoring the prompt.",
+      "correct": 14,
+      "total": 14,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Baseline 0.2 is uniform selection among five choices. Bank-only cue avoids identifying column count and rank; this is incidental answer leakage. Conditional rules are supported by construction, not solely this finite sample. Overall rule is not claimed perfect for all generated questions.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "sample-easy.json"
+      ]
+    },
+    {
+      "cue": "numeric answer-bank shape",
+      "subgroup": "raw: zero present and bank nonconsecutive, excluding gap 2,1,1,1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the second-largest numeric option, ignoring the prompt.",
+      "correct": 15,
+      "total": 15,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Baseline 0.2 is uniform selection among five choices. Bank-only cue avoids identifying column count and rank; this is incidental answer leakage. Conditional rules are supported by construction, not solely this finite sample. Overall rule is not claimed perfect for all generated questions.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "sample-easy.json"
+      ]
+    },
+    {
+      "cue": "numeric answer-bank shape",
+      "subgroup": "delivered: entire easy set",
+      "scope": "overall",
+      "strategy": "Bank only: first gap 2 then three gaps 1, or bank lacks zero -> second-smallest; other nonconsecutive bank -> second-largest; otherwise choose 2.",
+      "correct": 45,
+      "total": 56,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Baseline 0.2 is uniform selection among five choices. Bank-only cue avoids identifying column count and rank; this is incidental answer leakage. Conditional rules are supported by construction, not solely this finite sample. Overall rule is not claimed perfect for all generated questions.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "sample-easy.json"
+      ]
+    },
+    {
+      "cue": "numeric answer-bank shape",
+      "subgroup": "delivered: gap pattern 2,1,1,1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the second-smallest numeric option, ignoring the prompt.",
+      "correct": 15,
+      "total": 15,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Baseline 0.2 is uniform selection among five choices. Bank-only cue avoids identifying column count and rank; this is incidental answer leakage. Conditional rules are supported by construction, not solely this finite sample. Overall rule is not claimed perfect for all generated questions.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "sample-easy.json"
+      ]
+    },
+    {
+      "cue": "numeric answer-bank shape",
+      "subgroup": "delivered: consecutive bank with minimum at least 1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the second-smallest numeric option, ignoring the prompt.",
+      "correct": 13,
+      "total": 13,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Baseline 0.2 is uniform selection among five choices. Bank-only cue avoids identifying column count and rank; this is incidental answer leakage. Conditional rules are supported by construction, not solely this finite sample. Overall rule is not claimed perfect for all generated questions.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "sample-easy.json"
+      ]
+    },
+    {
+      "cue": "numeric answer-bank shape",
+      "subgroup": "delivered: zero present and bank nonconsecutive, excluding gap 2,1,1,1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the second-largest numeric option, ignoring the prompt.",
+      "correct": 14,
+      "total": 14,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Baseline 0.2 is uniform selection among five choices. Bank-only cue avoids identifying column count and rank; this is incidental answer leakage. Conditional rules are supported by construction, not solely this finite sample. Overall rule is not claimed perfect for all generated questions.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "sample-easy.json"
+      ]
+    },
+    {
+      "cue": "numeric answer-bank shape",
+      "subgroup": "batch_raw: entire easy set",
+      "scope": "overall",
+      "strategy": "Bank only: first gap 2 then three gaps 1, or bank lacks zero -> second-smallest; other nonconsecutive bank -> second-largest; otherwise choose 2.",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Baseline 0.2 is uniform selection among five choices. Bank-only cue avoids identifying column count and rank; this is incidental answer leakage. Conditional rules are supported by construction, not solely this finite sample. Overall rule is not claimed perfect for all generated questions.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "batch-records.json"
+      ]
+    },
+    {
+      "cue": "numeric answer-bank shape",
+      "subgroup": "batch_raw: gap pattern 2,1,1,1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the second-smallest numeric option, ignoring the prompt.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Baseline 0.2 is uniform selection among five choices. Bank-only cue avoids identifying column count and rank; this is incidental answer leakage. Conditional rules are supported by construction, not solely this finite sample. Overall rule is not claimed perfect for all generated questions.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "batch-records.json"
+      ]
+    },
+    {
+      "cue": "numeric answer-bank shape",
+      "subgroup": "batch_raw: consecutive bank with minimum at least 1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the second-smallest numeric option, ignoring the prompt.",
+      "correct": 3,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Baseline 0.2 is uniform selection among five choices. Bank-only cue avoids identifying column count and rank; this is incidental answer leakage. Conditional rules are supported by construction, not solely this finite sample. Overall rule is not claimed perfect for all generated questions.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "batch-records.json"
+      ]
+    },
+    {
+      "cue": "numeric answer-bank shape",
+      "subgroup": "batch_raw: zero present and bank nonconsecutive, excluding gap 2,1,1,1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the second-largest numeric option, ignoring the prompt.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Baseline 0.2 is uniform selection among five choices. Bank-only cue avoids identifying column count and rank; this is incidental answer leakage. Conditional rules are supported by construction, not solely this finite sample. Overall rule is not claimed perfect for all generated questions.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "batch-records.json"
+      ]
+    },
+    {
+      "cue": "numeric answer-bank shape",
+      "subgroup": "batch_delivered: entire easy set",
+      "scope": "overall",
+      "strategy": "Bank only: first gap 2 then three gaps 1, or bank lacks zero -> second-smallest; other nonconsecutive bank -> second-largest; otherwise choose 2.",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Baseline 0.2 is uniform selection among five choices. Bank-only cue avoids identifying column count and rank; this is incidental answer leakage. Conditional rules are supported by construction, not solely this finite sample. Overall rule is not claimed perfect for all generated questions.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "batch-records.json"
+      ]
+    },
+    {
+      "cue": "numeric answer-bank shape",
+      "subgroup": "batch_delivered: gap pattern 2,1,1,1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the second-smallest numeric option, ignoring the prompt.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Baseline 0.2 is uniform selection among five choices. Bank-only cue avoids identifying column count and rank; this is incidental answer leakage. Conditional rules are supported by construction, not solely this finite sample. Overall rule is not claimed perfect for all generated questions.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "batch-records.json"
+      ]
+    },
+    {
+      "cue": "numeric answer-bank shape",
+      "subgroup": "batch_delivered: consecutive bank with minimum at least 1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the second-smallest numeric option, ignoring the prompt.",
+      "correct": 3,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Baseline 0.2 is uniform selection among five choices. Bank-only cue avoids identifying column count and rank; this is incidental answer leakage. Conditional rules are supported by construction, not solely this finite sample. Overall rule is not claimed perfect for all generated questions.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "batch-records.json"
+      ]
+    },
+    {
+      "cue": "numeric answer-bank shape",
+      "subgroup": "batch_delivered: zero present and bank nonconsecutive, excluding gap 2,1,1,1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose the second-largest numeric option, ignoring the prompt.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Baseline 0.2 is uniform selection among five choices. Bank-only cue avoids identifying column count and rank; this is incidental answer leakage. Conditional rules are supported by construction, not solely this finite sample. Overall rule is not claimed perfect for all generated questions.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "batch-records.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "generator valid() rejection and seeded sampling",
+      "requested-difficulty filtering",
+      "publisher normalization and inventory/within-batch deduplication",
+      "captured source inventory",
+      "learner difficulty-first selection and seen-history scenarios",
+      "actual UI option shuffling"
+    ],
+    "sample_refs": [
+      "rejection-replay.json",
+      "delivery-sample/delivery.json",
+      "delivery-batch/delivery.json",
+      "selection-results.json",
+      "shortcut-results.json",
+      "render/rendering.json"
+    ],
+    "result": "64 raw easy -> 56 accepted; exact batch 5 -> 5. Bank-shape leakage survives, and the exact batch rule scores 5/5 before/after delivery. Every selected staged batch record is bypassable in the simulated positive-easy selection scenarios."
+  },
+  "limitations": [
+    "Finite audit, not an exhaustive search for every shortcut.",
+    "Live policy, learner history and future generated entity IDs were not captured; selection support is conditional on stated scenarios.",
+    "Publication preparation absent; shared read-only filtering used with basis 5443.",
+    "UI shuffles positions; numeric-order strategies remain applicable."
+  ]
+}
