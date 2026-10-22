@@ -40,9 +40,10 @@ def flags(q):
 
 @lru_cache(maxsize=4096)
 def parse(text):
-    text=text.replace('\u2061','').replace('{cos}',r'\cos')
+    text=text.replace('\u2061','')
     text=re.sub(r'\{?y\}?\^\{[′\u2032]\}|y[\u2032\x27]', 'D',text)
     text=re.sub(r'\\operatorname\{?(sin|cos|tan|ln|sec)\}?',r'\\\1 ',text)
+    text=text.replace('{cos}',r'\cos')
     result=parse_latex(text,strict=True)
     return result.xreplace({s:({'x':g.x,'y':g.y,'D':g.D,'e':sp.E}.get(str(s),s)) for s in result.free_symbols})
 

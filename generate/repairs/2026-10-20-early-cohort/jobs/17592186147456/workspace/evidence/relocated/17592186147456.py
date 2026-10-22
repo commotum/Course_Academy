@@ -142,7 +142,6 @@ def generate(level,seed=0,template=None,parameters=None,profile=None,replay=Fals
     problem='Which of the following equations is a Bernoulli differential equation?\n\nWork on intervals where $x>0$ and $y>0$, and where the displayed coefficients are defined.\n\n'
     problem+='\n'.join('- **'+label+'.** $'+equation_text(*eqn)+'$' for label,eqn in zip(LABELS,eqns))
     if bank['type']=='checkbox':problem+='\n\nSelect all that apply.'
-    else:problem+='\n\n{{selection}}'
     solution=render_solution(eqns)
     fp=fingerprint(eqns);qid=uid('question:'+fp+':'+profile+':'+str(replay));fields=[]
     for label,eqn in zip(LABELS,eqns):

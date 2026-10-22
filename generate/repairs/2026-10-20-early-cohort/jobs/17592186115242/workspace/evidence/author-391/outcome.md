@@ -1,0 +1,11 @@
+The first executed test reproduced finding 591f580cadb749294588: five historical stored records, 64/64 shortcut successes in the retained possible-history scenario. The strict regression exits 1.
+
+The reusable recheck verifies all four current-generator repairs, 17 complete source banks and canonical replay, zero roots, independent printed mathematics, counterfactuals and shortcut probes before/after shared delivery (14 records), native grading (7 accepted/28 rejected), pinned dependencies and relocated deterministic execution. Protected runtime, manifest, source and inventory hashes are unchanged. The five existing proposed replacement mappings remain verified and unapplied. All generated inventory records were tested; affected evidence paths resolve relative to the supplied author-391 evidence root.
+
+Reused unchanged actual-UI rendering; visually inspected evidence/repair-3/render/question-002.png. The prompt, five choices, elimination and explanation are legible without clipping. No new rendering was necessary because runtime and records are unchanged.
+
+The source still supports the intended skill: canonical f2c7cfd3-da43-5208-bd0e-21692357fabe eliminates x and checks a contradiction; tutorial e0c85152-daea-5a87-a3ba-81870558c7a2 defines inconsistency as no solutions. No source family or valid learner response has been removed. Source 534e2a93-e71a-5475-894e-dfd5ca99a3a6 demonstrates an interior correct option.
+
+The remaining failure is a stored-content state defect. engine/rust/question_selection.rs:125 reads candidate entity identities and difficulties from the snapshot; it does not invoke the generator to replace old banks. A workspace runtime edit cannot retire those stored candidates. The retained finding explicitly requests separate inventory remediation. Database and engine changes are prohibited here. No new generator construction defect is supplied. Do not waive the strict regression or substitute a hypothetical pool.
+
+Status: unsupported pending separate inventory remediation and fresh capture. No publication or database writes performed. Commands/results are in this directory; the existing replacement proposal is evidence/repair-3/inventory-repair-proposal.json.
