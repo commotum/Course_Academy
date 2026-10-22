@@ -1,32 +1,24 @@
 # Current state
 
-Author-535 verification milestone, 2026-10-22.
+Author-538 milestone, 2026-10-22. Preserved all completed repairs.
 
-Preserved all existing runtime repairs. Reproduced latest failure first:
-`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory`
-exits 1: five historical banks affected; retained possible-history witness
-has 64/64 shortcut successes.
+First test: `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory`
+exits 1: five historical banks; 64/64 retained possible-history shortcut successes.
 
-`-B checks/recheck_status.py --output evidence/author-535` exits 1 solely
-for 591f580cadb749294588. All four generator regressions pass: source replay,
-zero roots, construction and finite-batch counterfactual/shortcut checks,
-shared delivery (14 records), native grading (7 accepted/28 rejected), exact
-dependencies and relocation. All five staged replacement mappings and
-protected input/runtime hashes verify. Captured generated inventory is fully
-tested. Reused unchanged actual-UI rendering; visually inspected question-002.
-No runtime, engine, database, source, publication or other-job edits.
+`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/author-538`
+exits 1 solely for 591f580cadb749294588. All four generator regressions pass:
+17 complete source banks, zero roots, construction, finite batches,
+counterfactuals and shared delivery (14 records). Native grading: 7 accepted,
+28 rejected. Exact dependencies, relocation, protected hashes and five staged
+replacement mappings verify. All captured generated inventory was tested.
+Reused unchanged rendering; visually inspected question-002 and the source classification flowchart. No runtime,
+engine, database, source, publication or other-job edits.
 
-Status: unsupported because the required captured-pool regression fails.
-Historical banks are selected from stored inventory independently of this
-package. The retained review requires separate inventory remediation, while
-this author task explicitly prohibits database changes. Five complete reviewed
-proposal records remain staged and unapplied; the strict check is preserved.
+Status: unsupported. Keep the strict inventory failure. The next unfinished
+step is the separate inventory-remediation workflow, then fresh capture and
+strict pool recheck. Database changes are prohibited in this author task;
+repeating unchanged author passes cannot resolve the stored pool.
 
-Evidence: `evidence/author-535/commands.json`, `results.json`, `outcome.md`;
-`affected-inventory.json`, `evidence/generated-records.json`,
-`evidence/repair-3/inventory-repair-proposal.json`.
-
-Next unfinished step: separately authorized remediation of the five generated
-identities, fresh inventory capture, then strict pool recheck. Do not repeat
-unchanged author passes, weaken the regression, or substitute hypothetical
-replacements for captured records. No additional runtime defect is demonstrated.
+Evidence: evidence/author-538/commands.json, results.json, outcome.md;
+affected-inventory.json; evidence/generated-records.json;
+evidence/repair-3/inventory-repair-proposal.json.

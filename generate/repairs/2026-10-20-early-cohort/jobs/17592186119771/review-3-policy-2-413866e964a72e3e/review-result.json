@@ -1,0 +1,130 @@
+{
+  "verdict": "accepted",
+  "summary": "Both retained failures reproduce on old examples and pass on the revision. All eight checks pass for the current package and exact batch. No demonstrated current defect; package unchanged.",
+  "source_analysis": {
+    "skill": "Describe a square numeric matrix by inspecting zeros relative to the main diagonal and choosing the most specific supplied class.",
+    "reasoning_steps": [
+      "Locate the main diagonal; inspect all strictly upper and strictly lower entries.",
+      "Zeros below imply upper triangular; zeros above imply lower triangular. Both imply diagonal; use the best description rather than any true superclass.",
+      "For a strict triangular result, exhibit a nonzero on the permitted side to exclude diagonal and the opposite orientation."
+    ],
+    "invariants": [
+      "Square matrix, direct classification, no operations or transformed matrices.",
+      "Definitions inspect zeros on an entire side, not a predetermined witness cell.",
+      "Best description resolves nesting: nonidentity diagonal precedes triangular.",
+      "Keep the five-label radio bank and short explanatory method."
+    ],
+    "permitted_variations": [
+      "Upper versus lower orientation, matrix letter, signs and magnitudes, diagonal entries including zero, placement and number of nonzeros on permitted side, 2x2 versus 3x3 within easy workload.",
+      "Moderate: diagonal values can vary while excluding identity unless explicitly supported as a conservative prerequisite-based extension.",
+      "Witness a21/a12 is incidental: any strictly lower/upper coordinate may carry the sole nonzero.",
+      "Bank order is incidental and may vary independently of correctness."
+    ],
+    "source_refs": [
+      "fe3edf12-af5b-5bb0-b5b3-efb6cd809134",
+      "d6f9badf-44cd-56b4-946a-abae3220a5b7",
+      "85d9e5a4-7ab7-5f73-b6ee-269ec09e4301",
+      "2b95456b-3323-5d6f-9e68-2195aad3e714",
+      "527b33fb-f404-506c-9c40-f8d572226bac",
+      "789c23f5-4ec7-5dd8-a73d-e29f357b665e",
+      "9d80001e-8bbd-54a5-81c1-edecd202d3a8",
+      "6b9cc20f-f3d7-5598-82ca-1a091a22aee5",
+      "29fb2ef1-bd76-51ee-b276-e18fb578e191",
+      "552fb4e4-b661-5cca-ad8b-ad46afac0b42",
+      "ce57af24-7688-5285-99c2-a982d174d89c",
+      "5b8d0549-8a06-5a32-8cc6-861cdf3fc65b",
+      "tutorial 658a47dc-4d32-5d9d-a04c-82d683e87739: upper = all entries below diagonal zero; lower = all entries above diagonal zero; any number (including 0) on diagonal and permitted side."
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "provenance.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "source-replay-records.json",
+        "source-replay-results.json",
+        "single-witness-acceptance.json"
+      ],
+      "details": "All 11 captured prompts, available solutions, complete banks, keys and rating presence replay. Canonical is accepted normally; original missing evidence is documented."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "focused-results.json",
+        "review_checks.py",
+        "audit_focus.py"
+      ],
+      "details": "Independent entrywise classification, repeated-matrix, conclusion and witness checks pass on 39 primary records; classifications also checked for 15 fresh batch and six sparse boundary records."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "support-coverage.json",
+        "focused-results.json",
+        "fresh-batches.json",
+        "delivery-stage-results.json",
+        "inventory-audit.json",
+        "affected-inventory.json"
+      ],
+      "details": "All 18 easy supports observed and all six 3x3 sole-witness cases accepted. Exact batch has 2 lower,2 upper,1 diagonal. Old size/sign rule now gets 1/5; fresh batch controls and captured-inventory limits retained."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "scope-results.json"
+      ],
+      "details": "Requested easy records preserve direct square-matrix classification, a full radio bank and comparable scan workload; authored extensions and source gaps are explicit."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-results.json",
+        "ui-order-grader-input.json",
+        "ui-order-grader-results.json"
+      ],
+      "details": "Native grader: primary 21 accepted/84 rejected, plus 4 accepted/4 rejected task-order strategy controls. All choices tested for selected controls and exact batch. Free-entry notation is inapplicable to the source radio contract."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "counterfactual-render/rendering.json",
+        "render-inspection.json",
+        "rendered-batch-positions.json"
+      ],
+      "details": "Actual UI screenshots inspected for all five runner records, canonical and all four controls. Matrices, choices, witness subscripts, inequalities and solutions display correctly."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "package-integrity.json",
+        "regression.json",
+        "retained-regression-results.json",
+        "focused-results.json",
+        "commands.json"
+      ],
+      "details": "Exact Python 3.13.5/SymPy 1.14.0 match nested manifest dependencies. Relocation, deterministic replay, boundary rejection and finite remainder pass. Both old defects reproduced, current checks pass; all 96 package files unchanged."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "rejection-results.json",
+        "selection-results.json",
+        "focused-shortcuts.json",
+        "ui-order-results.json",
+        "evidence-contract.json"
+      ],
+      "details": "Relevant/irrelevant controls follow prompts, solutions, native grading and rendering. Current exact pool defeats tested stable size/sign/letter/position cues. A 4/4 synthetic-preview order coincidence varies with actual task-ID ordering and is explicitly scoped; real future IDs/history remain unknown."
+    }
+  },
+  "findings": []
+}

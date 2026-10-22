@@ -1,0 +1,402 @@
+{
+  "learner_operation": "Locate the main diagonal, inspect zeros on both sides, distinguish upper/lower/diagonal, and select the most specific supplied class. A witness may be anywhere on the permitted side.",
+  "fixed_features": [
+    {
+      "feature": "Square numeric matrix and direct classification",
+      "justification": "Tutorial 658a47dc-4d32-5d9d-a04c-82d683e87739 defines triangularity for square matrices; observed questions require no transformations or arithmetic."
+    },
+    {
+      "feature": "One radio field with five full labels",
+      "justification": "All eleven source questions supply this response bank; most-specific wording resolves class nesting."
+    },
+    {
+      "feature": "Normal classes upper, lower and nonidentity diagonal",
+      "justification": "These are the three observed source families. Identity and Other are distractors here, not a promise to teach arbitrary matrix classification."
+    },
+    {
+      "feature": "Easy sizes 2x2/3x3; bounded integers",
+      "justification": "Observed easy source questions support both sizes and values through 10; conservative bounds retain the source workload. Eighteen support patterns are a finite classification family; number changes do not manufacture new structures."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "All-zero side and class label",
+      "eligible_variation": "Either upper or lower region can vanish; both can vanish for diagonal.",
+      "observed": "All three classes occur at both easy sizes in the full-catalog sample. Exact batch has two lower, two upper, one diagonal, all 3x3."
+    },
+    {
+      "role": "Nonzero witness coordinate and count",
+      "eligible_variation": "Every nonempty subset of the permitted side; no fixed first witness or density threshold.",
+      "observed": "All 18 easy supports appear; all six 3x3 sole-witness coordinates accepted, including far coordinates. Canonical accepted normally."
+    },
+    {
+      "role": "Incidental entries and matrix letter",
+      "eligible_variation": "Diagonal values including zero, signs, nonzero magnitudes, A/C may change without changing zero support/class.",
+      "observed": "Independent draws and controlled irrelevant changes preserve class; the batch rejection conditions joint cue collisions without forbidding any single parameter value."
+    },
+    {
+      "role": "Correct radio position",
+      "eligible_variation": "Presentation order may vary independently of class.",
+      "observed": "Raw correct positions vary. Actual UI reorders by task-item/field/choice IDs; fixed preview positions 5,2,4,3,4. Fixture-only later-orientation coincidence separately investigated."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "All eligible easy structural patterns and sparse witnesses",
+      "sample_refs": [
+        "independent-records.json",
+        "sparse-records.json",
+        "focused-results.json"
+      ],
+      "result": "18/18 support patterns observed, with every 3x3 sole witness accepted."
+    },
+    {
+      "case": "Exact runner batch before/after rejection and delivery",
+      "sample_refs": [
+        "rejection-attempts.json",
+        "runner-batch.json",
+        "batch-delivery/accepted.json"
+      ],
+      "result": "Two rejected incidental redraws, then exact batch replayed; all five delivered without difficulty removal or deduplication."
+    },
+    {
+      "case": "Fresh construction-rule regressions",
+      "sample_refs": [
+        "fresh-batches.json",
+        "fresh-delivery/accepted.json",
+        "focused-results.json"
+      ],
+      "result": "Seeds 263,1227,40291 each yield five distinct structures with 2 lower,2 upper,1 diagonal; 15/15 survive delivery."
+    },
+    {
+      "case": "All original supported source cases and complete banks",
+      "sample_refs": [
+        "source-replay-records.json",
+        "source-replay-results.json",
+        "single-witness-acceptance.json"
+      ],
+      "result": "11 raw question replays pass; canonical normally accepted. Missing fields are preserved, not invented as source evidence."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Transpose the canonical nonzero support with diagonal fixed; then clear that witness.",
+      "expected": "Lower changes to upper; clearing changes lower to diagonal.",
+      "observed": "Records 0/1/2 render lower/upper/diagonal matrices and matching conclusions; all five labels for each were native graded correctly.",
+      "status": "passed",
+      "justification": "Lesson definitions depend on which complete off-diagonal region vanishes, not a fixed source label.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "grader-input.json",
+        "grader-results.json",
+        "counterfactual-render/input.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Change diagonal values and flip the sign of the sole nonzero, preserving support.",
+      "expected": "Lower remains lower, with updated printed matrix and witness.",
+      "observed": "Records 0/3 both classify lower; updated values and witness rendered correctly. Native grader accepts lower and rejects every distractor.",
+      "status": "passed",
+      "justification": "Tutorial explicitly permits any number, including zero, on the diagonal and permitted side. Only off-diagonal zero support matters.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "grader-input.json",
+        "grader-results.json",
+        "counterfactual-render/input.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "size and top-left diagonal sign",
+      "subgroup": "exact delivered batch",
+      "scope": "overall",
+      "strategy": "2x2 => diagonal; otherwise negative a11 => upper, nonnegative => lower",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is uniform guessing over five labels. Strict old rule has counterexamples; no longer a perfect predictor.",
+      "sample_refs": [
+        "runner-batch.json",
+        "batch-delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "top-left sign plus matrix letter",
+      "subgroup": "exact delivered batch:size=3",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Best fitted label lookup per sign/letter group",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is uniform five-label guessing. Fitted resubstitution rate, not held-out prediction. Opposite orientations share cues, so the combined lookup leaves counterexamples.",
+      "sample_refs": [
+        "runner-batch.json",
+        "batch-delivery/accepted.json",
+        "focused-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "raw option position",
+      "subgroup": "exact delivered batch:Upper triangular matrix",
+      "scope": "within_template",
+      "strategy": "Always choose raw position 4",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is uniform position guessing. Small single-template samples are descriptive; template class itself requires the intended mathematics. Raw order is independently reordered by actual UI task IDs. Exact UI examined separately.",
+      "sample_refs": [
+        "runner-batch.json",
+        "batch-delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "raw option position",
+      "subgroup": "exact delivered batch:Lower triangular matrix",
+      "scope": "within_template",
+      "strategy": "Always choose raw position 4",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is uniform position guessing. Small single-template samples are descriptive; template class itself requires the intended mathematics. Raw order is independently reordered by actual UI task IDs. Exact UI examined separately.",
+      "sample_refs": [
+        "runner-batch.json",
+        "batch-delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "raw option position",
+      "subgroup": "exact delivered batch:Diagonal matrix",
+      "scope": "within_template",
+      "strategy": "Always choose raw position 4",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is uniform position guessing. Small single-template samples are descriptive; template class itself requires the intended mathematics. Raw order is independently reordered by actual UI task IDs. Exact UI examined separately.",
+      "sample_refs": [
+        "runner-batch.json",
+        "batch-delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "size and top-left diagonal sign",
+      "subgroup": "independent easy controls",
+      "scope": "overall",
+      "strategy": "2x2 => diagonal; otherwise negative a11 => upper, nonnegative => lower",
+      "correct": 16,
+      "total": 30,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is uniform guessing over five labels. Strict old rule has counterexamples; no longer a perfect predictor.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "top-left sign plus matrix letter",
+      "subgroup": "independent easy controls:size=2",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Best fitted label lookup per sign/letter group",
+      "correct": 3,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is uniform five-label guessing. Fitted resubstitution rate, not held-out prediction. Opposite orientations share cues, so the combined lookup leaves counterexamples.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery/accepted.json",
+        "focused-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "top-left sign plus matrix letter",
+      "subgroup": "independent easy controls:size=3",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Best fitted label lookup per sign/letter group",
+      "correct": 17,
+      "total": 26,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is uniform five-label guessing. Fitted resubstitution rate, not held-out prediction. Opposite orientations share cues, so the combined lookup leaves counterexamples.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery/accepted.json",
+        "focused-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "raw option position",
+      "subgroup": "independent easy controls:Upper triangular matrix",
+      "scope": "within_template",
+      "strategy": "Always choose raw position 3",
+      "correct": 5,
+      "total": 14,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is uniform position guessing. Small single-template samples are descriptive; template class itself requires the intended mathematics. Raw order is independently reordered by actual UI task IDs. Exact UI examined separately.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "raw option position",
+      "subgroup": "independent easy controls:Lower triangular matrix",
+      "scope": "within_template",
+      "strategy": "Always choose raw position 2",
+      "correct": 4,
+      "total": 13,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is uniform position guessing. Small single-template samples are descriptive; template class itself requires the intended mathematics. Raw order is independently reordered by actual UI task IDs. Exact UI examined separately.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "raw option position",
+      "subgroup": "independent easy controls:Diagonal matrix",
+      "scope": "within_template",
+      "strategy": "Always choose raw position 4",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is uniform position guessing. Small single-template samples are descriptive; template class itself requires the intended mathematics. Raw order is independently reordered by actual UI task IDs. Exact UI examined separately.",
+      "sample_refs": [
+        "independent-records.json",
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "all diagonal signs",
+      "subgroup": "exact batch:3x3",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Best fitted lookup from the three diagonal signs",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-label baseline .2. Matching (-,-,-) diagonal signs occur in both lower and upper; (-,+,-) occurs in lower and diagonal. The cue cannot classify this pool.",
+      "sample_refs": [
+        "runner-batch.json",
+        "focused-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "order of upper/lower options",
+      "subgroup": "exact batch:non-diagonal triangular cases",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose first among the upper/lower raw options",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .5 chooses randomly between the two orientations after identifying non-diagonal triangular structure. First gets 1/4 and last 3/4; neither bypasses orientation on all raw records. Actual UI order is examined separately.",
+      "sample_refs": [
+        "runner-batch.json",
+        "focused-shortcuts.json"
+      ]
+    },
+    {
+      "cue": "actual rendered correct position",
+      "subgroup": "exact batch in fixed preview fixture",
+      "scope": "overall",
+      "strategy": "Always choose displayed position 4",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-position baseline .2; preview positions [5,2,4,3,4] give at most 2/5. Live task IDs can change these positions.",
+      "sample_refs": [
+        "runner-batch.json",
+        "rendered-batch-positions.json"
+      ]
+    },
+    {
+      "cue": "later upper/lower option",
+      "subgroup": "fixed preview content IDs 1..5: four triangular cases",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose later upper/lower option",
+      "correct": 4,
+      "total": 4,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .5 over two orientations. A 4/4 preview-fixture coincidence was investigated, not suppressed: exact UI choiceOrder depends on task-item ID. Each record yields both orders across IDs 100000..100127; native grading accepts the four preview actions and rejects four alternate-ID actions. No stable generator or actual delivered-cohort predictor established.",
+      "sample_refs": [
+        "runner-batch.json",
+        "ui-order-cases.json",
+        "ui-order-grader-input.json",
+        "ui-order-grader-results.json"
+      ]
+    },
+    {
+      "cue": "later upper/lower option after diagonal detection",
+      "subgroup": "same five records over 128 alternative task-ID seeds",
+      "scope": "overall",
+      "strategy": "If all off-diagonal entries are zero choose diagonal; otherwise choose later orientation",
+      "correct": 405,
+      "total": 640,
+      "baseline": 0.6,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .6 = one certainly recognized diagonal plus random orientation on four triangular records, averaged across five. The 405/640 rate has many failures. Uses exact extracted unmodified UI function, confirmed against rendered HTML; future real item IDs unknown.",
+      "sample_refs": [
+        "runner-batch.json",
+        "ui-order-cases.json",
+        "ui-order-results.json"
+      ]
+    },
+    {
+      "cue": "nonzero location relative to main diagonal",
+      "subgroup": "exact batch",
+      "scope": "overall",
+      "strategy": "Inspect off-diagonal support and select the most specific class",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "intended_skill",
+      "conclusion": "Uniform five-label baseline .2. This 5/5 rule IS the intended skill, because the lesson defines classes by those zero regions.",
+      "sample_refs": [
+        "runner-batch.json",
+        "grader-input.json",
+        "grader-results.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "Structural catalog and batch selection",
+      "Exact rejection/resampling loop",
+      "Requested-difficulty filtering",
+      "KP identity and question validation",
+      "Stable identity and captured-inventory/batch deduplication",
+      "Difficulty-weighted learner selection and seen-prefix exclusion, read-only reproduction",
+      "Actual UI task-ID-dependent choice ordering"
+    ],
+    "sample_refs": [
+      "rejection-attempts.json",
+      "runner-batch.json",
+      "batch-delivery/accepted.json",
+      "delivery-stage-results.json",
+      "selection-results.json",
+      "ui-order-cases.json"
+    ],
+    "result": "No tested stable incidental predictor survives the current exact pool. 30/30 independent, 5/5 runner and 15/15 fresh records survive shared delivery. Actual selection rules leave every fresh easy member reachable under positive easy weight; both rank orders and seen-prefix exclusions tested."
+  },
+  "limitations": [
+    "Captured inventory basis 5451 may change after review. No database accessed or assets published.",
+    "Real future task-item IDs, numeric question entities, learner histories and policy weights are unavailable; selection and UI order were reproduced read-only with explicit synthetic IDs and scoped conclusions.",
+    "Fixed preview IDs create a later-orientation coincidence (4/4), but it is not invariant under actual UI task-ID ordering. No attributable stored generated cohort demonstrates this coincidence.",
+    "Sixteen inventory matrices inspected; 15 available keys agree. Missing generation/batch provenance prevents historical batch-shortcut incidence testing. Empty affected_questions is not a verified absence.",
+    "Finite tests cannot rule out every shortcut. No second exhaustive audit of unchanged 4x4 content was performed; requested easy and changed construction rules were tested."
+  ]
+}

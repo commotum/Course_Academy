@@ -1,0 +1,32 @@
+{
+  "python": "/home/jake/Developer/Course_Academy/.venv/bin/python",
+  "report_command": [
+    "/usr/bin/python3",
+    "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186119771/review-3-policy-2-413866e964a72e3e/finalize_review.py"
+  ],
+  "report_dependency": "System Python supplies jsonschema for report validation only; generator dependency versions were checked with the supplied context Python.",
+  "environment": {
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "cwd": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186119771/review-3-policy-2-413866e964a72e3e",
+  "independent_scripts": [
+    "review_checks.py",
+    "run_retained.py",
+    "audit_focus.py",
+    "audit_rejection.py",
+    "analyze_delivery.py",
+    "audit_ui_order.py",
+    "finalize_review.py"
+  ],
+  "shared_commands": [
+    "/home/jake/Developer/Course_Academy/generate/runs/current/check-engine grader-input.json grader-results.json",
+    "/home/jake/Developer/Course_Academy/generate/runs/current/check-engine ui-order-grader-input.json ui-order-grader-results.json",
+    "/home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py --input independent-records.json --source ../source/source.json --inventory ../source/inventory.json --difficulty easy --output delivery --asset-root . --math-root /media/jake/SSD/EDB/math",
+    "/home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py --input runner-batch.json --source ../source/source.json --inventory ../source/inventory.json --difficulty easy --output batch-delivery --asset-root . --math-root /media/jake/SSD/EDB/math",
+    "/home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py --input fresh-batches.json --source ../source/source.json --inventory ../source/inventory.json --difficulty easy --output fresh-delivery --asset-root . --math-root /media/jake/SSD/EDB/math"
+  ],
+  "render_commands": [
+    "/home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/render_preview.py --input render-records.json --output render --asset-root . --math-root /media/jake/SSD/EDB/math",
+    "/home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/render_preview.py --input counterfactual-records.json --output counterfactual-render --asset-root . --math-root /media/jake/SSD/EDB/math --limit 4"
+  ]
+}
