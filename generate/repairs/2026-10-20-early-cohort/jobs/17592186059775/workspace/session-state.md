@@ -1,40 +1,39 @@
-# Current state — 2026-10-22, author-64
+# Current state — 2026-10-22, author-67
 
-Preserved repaired runtime, manifest, instructional account and regression scripts.
-Read feedback/history first. Reproduced the exact latest failure before validation:
-`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_current_handoff.py`
-Exit 1: installed runner rejects unchanged runtime before regressions and sampling.
-Confirmed the cause at scripts/generator_pipeline.py:723. The evidence-only
-finding explicitly requires preserving runtime; changing package bytes solely
-for a new hash would not repair that control flow.
+Preserved repaired runtime, manifest, source banks, instructional account and
+strict registered regressions. Read feedback and repair history first. No new
+runtime defect is demonstrated by evidence-only finding 9b8cb52352b8ca3e790e.
 
-Commands, logs, results and unchanged runtime hashes:
-`evidence/author64-verification.json`.
+First reproduced the latest failure with the job Python:
+`python -B checks/check_current_handoff.py` exits 1. The installed runner rejects
+the unchanged package at scripts/generator_pipeline.py:723 before regressions or
+sampling. The retained independent finding explicitly requires runtime preservation.
 
-- checks/check_all.py: exit 0; source replay (10 complete banks), mathematical
-  readback (81 cases), native grading (405 responses), CLI, shared delivery and
-  inventory reproduction pass.
-- checks/check_batch_selection.py: exit 0; exact reported seed, ten profiles,
-  controlled target variation, raw/delivered shortcut 1/5 and 25 native responses.
-- checks/check_evidence_contract.py: exit 1; corrected bundle validation,
-  source/current-record binding, relocation and negative controls pass.
-  Installed runner handoff alone remains failing.
-- checks/check_render_binding.py: exit 0; ten source banks and two retained
-  actual-UI records bind to current output. Visually reinspected
-  evidence/author8-render/question-001.png: readable matrices, controls and
-  row-operation solution, with no clipping or exposed TeX. Existing rendering
-  reused because runtime and its inputs are unchanged.
+Affected checks, using the same Python with -B:
+- checks/check_evidence_contract.py: exit 1. Real bundle validation, relocation,
+  negative controls, current-record binding, 12 source captures and three
+  affected inventory bindings pass. Installed runner handoff alone fails.
+- checks/check_batch_selection.py: exit 0. Exact reported seed and controlled
+  answer roles pass; shortcut scores 1/5 before and after shared delivery.
+  Native grading accepts five correct responses and rejects twenty wrong ones.
+- checks/check_cli_contract.py: exit 0. Relocated counts, determinism,
+  supported bands and explicit finite-limit rejection pass.
+- checks/check_render_binding.py: exit 0. Ten complete source banks replay;
+  two retained actual-UI inputs equal current delivered endpoints. Reinspected
+  question-001.png: readable matrices, choices and complete solution.
+- checks/check_runner_handoff.py: exit 0 for 23 offline original/patched cases.
+  This verifies the proposed patch, not an installed repair.
 
-All six runtime/manifest hashes remain unchanged. Installed Python 3.13.5 and
-SymPy 1.14.0 match manifest pins. Three affected generated inventory records
-remain reproduced under evidence/contract-correction; source captures remain
-separate. No publication, services, database writes, engine edits or edits
-outside the workspace occurred. Strict failures remain registered.
+Commands, logs, results, versions and unchanged runtime hashes:
+evidence/current-verification.json. Broader retained checks were not repeated
+because no runtime code changed. All new evidence stays in this workspace.
+No publication, database changes, engine edits or external runner writes occurred.
 
-Unfinished step: runner owner must resolve the evidence-only equality gate in
-/home/jake/Developer/Course_Academy/scripts/generator_pipeline.py, then rerun
-strict installed handoff and registered regressions before fresh independent
-review. The existing runner-fix/evidence-only-rejection.patch remains a proposal,
-not an installed fix. Its target and the supplied author evidence root are
-outside this session's authorized writable workspace. Final status: unsupported
-for this unresolved handoff, with source-supported generator repairs preserved.
+Next required action: the runner owner must resolve its evidence-only
+unchanged-package gate, then rerun strict handoff, registered regressions,
+sampling and fresh independent review. The concrete patch is already staged at
+runner-fix/evidence-only-rejection.patch. It remains uninstalled because its
+target is outside the authorized workspace. The corrected evidence bundle is
+validated at evidence/contract-correction; no external installation is claimed.
+Do not change runtime bytes merely to evade the gate or weaken the failing test.
+Status is unsupported for the unresolved handoff, not for the source skill.

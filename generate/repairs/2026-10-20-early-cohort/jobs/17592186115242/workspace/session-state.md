@@ -1,22 +1,23 @@
-# Author 741 — 2026-10-22
+# Author 745 — 2026-10-22
 
-Preserved runtime, manifest, completed repairs and all five strict regressions.
-Read feedback, retained findings, source questions and lesson context.
+Preserved all runtime repairs and the five strict finding declarations.
+Read feedback, the five retained findings and latest history event; reused
+source analysis, complete source banks and staged replacement proposal.
 
 First command: job Python -B checks/batch_regressions.py --finding inventory.
-Exit 1: five affected historical records; 64/64 retained shortcut witness.
-Then: job Python -B checks/recheck_status.py --output evidence/author-741.
-Exit 1 solely for finding 591f580cadb749294588. Four current-generator findings
-pass; 17 complete source banks replay; 14 records retain delivery contrasts;
-native grading accepts 7 and rejects 28; package relocation passes.
-Retained repair-3 UI screenshots visually reinspected and readable.
+Exit 1: five affected historical banks; 64/64 shortcut successes in the retained
+possible learner-history witness.
+Then: job Python -B checks/recheck_status.py --output evidence/author-745.
+Exit 1 solely for finding 591f580cadb749294588. Four generator regressions pass;
+17 source banks replay; 14 records survive delivery with contrasts; native
+grading accepts 7 and rejects 28; relocation and protected hashes pass.
+Reinspected retained repair-3 UI question-001.png. No runtime, database or
+publication changes.
 
-Evidence: evidence/author-741/commands.json, results.json, inventory-results.json,
-grader-report.json, disposition.md.
+Current commands/results: evidence/author-745/commands.json, results.json,
+inventory-results.json, grader-report.json and disposition.md.
 
-Next unfinished action: separate inventory-remediation workflow specified by
-finding 591f580cadb749294588, fresh inventory capture, then strict recheck.
-Verified mapping: evidence/repair-3/inventory-repair-proposal.json. Applying it
-requires database changes prohibited by this task. Retrying the unchanged
-workspace cannot change captured historical banks. Keep the strict failure.
-No runtime, engine, database, publication or other-job changes made.
+Next unfinished step: separate inventory remediation using the already verified
+proposal, then fresh capture and strict recheck. Database changes are prohibited
+in this author task. Preserve the strict failure while captured state is unchanged;
+do not weaken it or repeat unchanged construction work to claim readiness.
