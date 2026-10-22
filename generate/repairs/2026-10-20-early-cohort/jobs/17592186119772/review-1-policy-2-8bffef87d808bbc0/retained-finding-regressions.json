@@ -1,0 +1,159 @@
+{
+  "findings": [
+    "4cfeb732d33d8901bfa9",
+    "825ba0a702632506887a",
+    "2b73f7881477cedd3b7c"
+  ],
+  "preflight_claim": {
+    "passed": true,
+    "finding_ids": [
+      "4cfeb732d33d8901bfa9",
+      "825ba0a702632506887a",
+      "2b73f7881477cedd3b7c"
+    ],
+    "checks": [
+      {
+        "script": "checks/repair_regressions.py",
+        "args": [],
+        "sha256": "84e4b3e3d376d6b862fac6dd4130f0782ae45d0ffbfdfe9edd3f4a757a1717fc",
+        "exit_code": 0,
+        "stdout": "{\"passed\": true, \"source_banks\": 13, \"source_choices\": 69, \"normal_records\": 120, \"controlled_records\": 73, \"delivery\": 96, \"batch_answers\": [[\"B\"], [\"A\"], [\"B\"], [\"D\"], [\"A\"]]}\n",
+        "stderr": ""
+      }
+    ]
+  },
+  "method": "Independently rerun exact retained failing input, every omitted source profile and exact old/current batch assertions. Old executable is retained manifest-only relocation from previous review. No author checks executed because their output directory is inside the protected package.",
+  "cases": [
+    {
+      "version": "old",
+      "case": "role_swap",
+      "accepted": false,
+      "error": "complete profile support counts must be preserved"
+    },
+    {
+      "version": "old",
+      "case": "missing_easy_68743",
+      "accepted": false,
+      "error": "profile/level mismatch"
+    },
+    {
+      "version": "old",
+      "case": "missing_easy_68748",
+      "accepted": false,
+      "error": "profile/level mismatch"
+    },
+    {
+      "version": "old",
+      "case": "missing_decimal",
+      "accepted": false,
+      "error": "profile/level mismatch"
+    },
+    {
+      "version": "old",
+      "case": "missing_mixed",
+      "accepted": false,
+      "error": "profile/level mismatch"
+    },
+    {
+      "version": "old",
+      "case": "missing_subset_radio",
+      "accepted": false,
+      "error": "profile/level mismatch"
+    },
+    {
+      "version": "current",
+      "case": "role_swap",
+      "accepted": true,
+      "good": [
+        "A"
+      ]
+    },
+    {
+      "version": "current",
+      "case": "missing_easy_68743",
+      "accepted": true,
+      "good": [
+        "D"
+      ]
+    },
+    {
+      "version": "current",
+      "case": "missing_easy_68748",
+      "accepted": true,
+      "good": [
+        "E"
+      ]
+    },
+    {
+      "version": "current",
+      "case": "missing_decimal",
+      "accepted": true,
+      "good": [
+        "B",
+        "C"
+      ]
+    },
+    {
+      "version": "current",
+      "case": "missing_mixed",
+      "accepted": true,
+      "good": [
+        "A"
+      ]
+    },
+    {
+      "version": "current",
+      "case": "missing_subset_radio",
+      "accepted": true,
+      "good": [
+        "A",
+        "C"
+      ]
+    },
+    {
+      "version": "old",
+      "case": "batch_has_multiple_qualifying_labels",
+      "passed": false,
+      "labels": [
+        [
+          "D"
+        ],
+        [
+          "D"
+        ],
+        [
+          "D"
+        ],
+        [
+          "D"
+        ],
+        [
+          "D"
+        ]
+      ]
+    },
+    {
+      "version": "current",
+      "case": "batch_has_multiple_qualifying_labels",
+      "passed": true,
+      "labels": [
+        [
+          "B"
+        ],
+        [
+          "A"
+        ],
+        [
+          "B"
+        ],
+        [
+          "D"
+        ],
+        [
+          "A"
+        ]
+      ]
+    }
+  ],
+  "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B audit.py"
+}

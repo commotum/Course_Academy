@@ -1,0 +1,1 @@
+Source verification, exact retained failures on old/current executables, 13 source banks/69 choices, 100 fresh instances, 70 controlled role assignments, target/irrelevant counterfactuals, invalid/boundary cases and manifest relocation completed. Package hashes unchanged. Next: delivery, native grader, renderer/visual inspection, stage and shortcut reports.
