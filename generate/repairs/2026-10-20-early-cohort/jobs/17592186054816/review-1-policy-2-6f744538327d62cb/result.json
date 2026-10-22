@@ -1,0 +1,106 @@
+{
+  "verdict": "accepted",
+  "summary": "The current generator and five-record batch pass all eight checks. Prior failures are repaired. One historical inventory defect remains documented and excluded by current selection rules. Package files are unchanged; no publishing or database writes occurred.",
+  "source_analysis": {
+    "skill": "Classify numbers or determine containment of named number sets.",
+    "reasoning_steps": [
+      "Simplify and classify the target.",
+      "Determine sign, zero status, integrality and rationality.",
+      "Evaluate each candidate set and select the exact qualifying subset."
+    ],
+    "invariants": [
+      "Natural numbers exclude zero.",
+      "Sign superscripts are strict; zero subscripts include zero.",
+      "Preserve elementary workload and complete response banks."
+    ],
+    "permitted_variations": [
+      "Vary elementary representations, signs, zero cases and target classes.",
+      "Vary candidate sets, qualifying positions and feasible selection counts.",
+      "Derive answers and explanations from the visible instance."
+    ],
+    "source_refs": [
+      "Tutorial 8214: number-set definitions and hierarchy.",
+      "Tutorial 8215: sign and zero notation.",
+      "f51862bd-578b-533f-86e5-e297bb989e9a: explicit None response.",
+      "fbe70e06-2b02-5b5d-9ff3-573e87348689: terminating decimal.",
+      "17cf8bd5-1b50-5ea6-9196-c8cc3bb865c7: containment with radio bank."
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay-results.json",
+        "source-replays.json"
+      ],
+      "details": "All eleven complete source banks replay. Missing source keys and solutions were independently reconstructed."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "retained-regression-results.json"
+      ],
+      "details": "136 records independently checked. Seven retained regressions fail the baseline and pass the revision."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "coverage-results.json",
+        "stage-analysis.json"
+      ],
+      "details": "All six profiles and four radio banks are sampled. All 90 fresh records and five batch records survive delivery."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "scope-results.json",
+        "boundary-records.json"
+      ],
+      "details": "Variations preserve taught notation, elementary reasoning and comparable workload."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-results.json"
+      ],
+      "details": "Native grader passed 882 checks: 300 accepted, 582 rejected, none unresolved."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-pairs/rendering.json",
+        "render-inspection.json"
+      ],
+      "details": "18 actual-UI previews passed, covering the exact batch and all controlled pairs; representative screenshots inspected."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "rejection-boundaries.json",
+        "package-hashes-before.json",
+        "package-hashes-after.json"
+      ],
+      "details": "Exact runtime contract, relocation, determinism, rejection boundaries and invalid inputs checked. All 54 package files remain unchanged."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "counterfactual-verification.json",
+        "shortcut-results.json",
+        "stage-analysis.json",
+        "affected-inventory.json",
+        "generated-records.json"
+      ],
+      "details": "Relevant and irrelevant interventions propagate through explanations, grading and rendering. No tested incidental action solves the delivered batch. Selection assumptions and historical inventory limits are disclosed."
+    }
+  },
+  "findings": []
+}

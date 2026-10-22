@@ -1,27 +1,26 @@
-# Author 623 — 2026-10-22
+# Author 626 — 2026-10-22
 
-Read feedback, all five retained findings, history summary (623 events), prior
-session state, instructional account, and required generator/validation docs.
-Preserved completed implementation repairs and all strict regressions.
+Preserved completed runtime repairs, source coverage, manifest and all five
+strict finding regressions. Read feedback, all cumulative findings, source lesson,
+all 17 complete practice records, source flowchart, instructional account and
+required generator documents. Latest history event 625 repeats the same blocker.
 
-Ran job Python with `-B checks/recheck_status.py --output evidence/author-623`.
-It first reproduced the latest historical inventory failure, then verified all
-four generator regressions. Overall exit 1 solely for finding
-591f580cadb749294588: five captured stored questions retain the shortcut;
-the possible-history selection witness succeeds 64/64 times.
+First test: job Python -B checks/batch_regressions.py --finding inventory.
+The recorded replay confirms exit 1: five historical banks retain the shortcut;
+the possible-history witness succeeds 64/64 times.
 
-Passed: 17 source-bank replays, shared delivery of 14 records, counterfactual
-and within-template shortcut probes, native grading (7 accept / 28 reject),
-relocation, dependencies, and staged replacement mapping. Protected runtime,
-manifest, source and inventory hashes are unchanged. Visually inspected retained
-UI screenshot evidence/repair-3/render/question-002.png; no fresh render claimed.
+Then: job Python -B checks/recheck_status.py --output evidence/author-626.
+Exit 1 solely for finding 591f580cadb749294588. Four generator regressions pass;
+17 source banks replay; 14 records retain contrasts after shared delivery;
+controlled counterfactuals pass. Native grading accepts 7 correct and rejects
+28 wrong responses. Relocation and exact dependencies pass. Protected runtime,
+manifest, source and inventory hashes remain unchanged. Five staged replacements
+and their identity mapping remain verified and unapplied. Visually inspected
+retained evidence/repair-3/render/question-002.png: equations, choices, augmented
+matrices and solution are readable without clipping.
 
-Evidence: evidence/author-623/commands.json, results.json, grader-report.json,
-outcome.md; affected-inventory.json; evidence/generated-records.json;
-evidence/repair-3/inventory-repair-proposal.json.
-
-Next unfinished step: the separate inventory-remediation workflow specified by
-the retained finding, then fresh capture and strict regression. Database changes
-and publication are prohibited in this task. Another workspace generator edit
-cannot change the stored candidate banks. Five verified replacements remain
-staged and unapplied. Status: unsupported for the historical selectable pool.
+Evidence: evidence/author-626/commands.json, results.json and outcome.md.
+Next unfinished step: separate inventory remediation for 591f580cadb749294588,
+then fresh capture and strict recheck. User prohibits database changes and
+publication. No workspace-only generator edit can change captured stored banks.
+Preserve the strict failure and staged replacements. Status: unsupported.

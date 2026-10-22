@@ -86,7 +86,7 @@ pair('root rationality radio',root(2),root(121),['Q+','R','Q','Z'],'radio-0')
 pair('root magnitude radio',root(121),root(144),['Q+','R','Q','Z'],'radio-0',True)
 pair('decimal zero and positive fraction',g.number_instance('decimal',value='0.0'),g.number_instance('decimal',value='0.25'),['Z','Q+','Q-','R'],'radio-10')
 pair('decimal magnitude preservation',g.number_instance('decimal',value='0.25'),g.number_instance('decimal',value='0.75'),['Z','Q+','Q-','R'],'radio-10',True)
-pair('universal target sign',{'profile':'universal','group':'natural numbers'},{'profile':'universal','group':'negative integers'},['Z+','Z-','Q+','Q-'],'radio-10')
+pair('universal target sign',{'profile':'universal','group':'natural numbers'},{'profile':'universal','group':'negative integers'},['Z-','Q+','Z+','Q-'],'radio-10')
 save('counterfactual-records.json',pairs);save('counterfactual-results.json',pair_specs)
 # Boundary targets covering old classification rules, newly sampled finite decimals and all four bank profiles.
 bounds=[]
