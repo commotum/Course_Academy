@@ -1,0 +1,635 @@
+{
+  "learner_operation": "Inspect zero and nonzero entries relative to the main diagonal, distinguish upper/lower/diagonal, and choose the most specific bank label.",
+  "fixed_features": [
+    {
+      "feature": "Square numeric matrix, direct classification, one five-label radio field",
+      "justification": "All source prompts ask best description; lesson defines upper/lower only for square matrices."
+    },
+    {
+      "feature": "Identity and Other remain distractors",
+      "justification": "All supported source correct classes are strict upper/lower or nonidentity diagonal. No broader classification mastery claimed; this finite family is defensible."
+    },
+    {
+      "feature": "At least half the permitted triangle must be nonzero",
+      "justification": "Author claims scan workload, but this excludes the canonical one-witness matrix and the lesson explicitly permits any number including zero on the permitted side. This constraint fails independent review."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "All-zero side / correct upper versus lower label",
+      "eligible_variation": "Either side can be the zero side at either supported size.",
+      "observed": "Both sides and diagonal appear in 60 sampled and 5 runner records; delivered counts preserved."
+    },
+    {
+      "role": "Nonzero witness support",
+      "eligible_variation": "Any nonempty subset of the permitted side, including one nonzero in any of the three 3x3 coordinates.",
+      "observed": "All six 3x3 sole-witness masks excluded by catalog and explicit parameter guard; canonical rejected."
+    },
+    {
+      "role": "Correct choice position and incidental letter",
+      "eligible_variation": "Vary independently of class.",
+      "observed": "Independent conditional probes and actual rendered batch positions saved; no demonstrated fixed incidental rule."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "Eligible support masks across 2x2/3x3",
+      "sample_refs": [
+        "support-coverage.json",
+        "independent-records.json",
+        "sparse-rejections.json"
+      ],
+      "result": "12 observed masks; six source-supported sole-witness 3x3 cases excluded by construction."
+    },
+    {
+      "case": "Exact runner batch separately after delivery",
+      "sample_refs": [
+        "runner-batch.json",
+        "batch-delivery/accepted.json",
+        "delivery-stage-results.json"
+      ],
+      "result": "All five survive: two upper, two lower, one diagonal, four 3x3 and one 2x2. No demonstrated batch-wide answer shortcut; small conditional groups underpowered."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Hold diagonal, size, letter and seed fixed; transpose base strict lower, then clear its off-diagonal entries.",
+      "expected": "Lower becomes upper on transpose and diagonal on clearing; prompts, solutions and native choices follow.",
+      "observed": "Independent exact prompt/solution checks, all five native choices per record, and actual UI rendering establish the expected three responses.",
+      "status": "passed",
+      "justification": "Directly changes the zero-side evidence that determines the description.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-input.json",
+        "grader-results.json",
+        "counterfactual-render/input.json",
+        "counterfactual-render/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Keep support fixed and change nonzero signs and diagonal values only.",
+      "expected": "Lower classification preserved, with new entries in prompt and explanation.",
+      "observed": "Lower response preserved; native grader accepts lower and rejects all other labels; UI and repeated matrix checked.",
+      "status": "passed",
+      "justification": "Lesson explicitly permits any diagonal values and permitted-side values; nonzero signs do not decide triangularity.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-input.json",
+        "grader-results.json",
+        "counterfactual-render/input.json",
+        "counterfactual-render/rendering.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "matrix size and letter only",
+      "subgroup": "independent_before:all",
+      "scope": "overall",
+      "strategy": "Always select Upper triangular matrix",
+      "correct": 25,
+      "total": 60,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing over all five radio labels. Majority label fit on this sample, not held-out accuracy. 25/60; No universal label-only rule in this subgroup.",
+      "sample_refs": [
+        "independent-records.json"
+      ]
+    },
+    {
+      "cue": "matrix size and letter only",
+      "subgroup": "independent_before:size=2",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select Lower triangular matrix",
+      "correct": 6,
+      "total": 16,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing over all five radio labels. Majority label fit on this sample, not held-out accuracy. 6/16; No universal label-only rule in this subgroup.",
+      "sample_refs": [
+        "independent-records.json"
+      ]
+    },
+    {
+      "cue": "matrix size and letter only",
+      "subgroup": "independent_before:size=2,letter=A",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select Upper triangular matrix",
+      "correct": 3,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing over all five radio labels. Majority label fit on this sample, not held-out accuracy. 3/8; No universal label-only rule in this subgroup.",
+      "sample_refs": [
+        "independent-records.json"
+      ]
+    },
+    {
+      "cue": "matrix size and letter only",
+      "subgroup": "independent_before:size=2,letter=C",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select Diagonal matrix",
+      "correct": 4,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing over all five radio labels. Majority label fit on this sample, not held-out accuracy. 4/8; No universal label-only rule in this subgroup.",
+      "sample_refs": [
+        "independent-records.json"
+      ]
+    },
+    {
+      "cue": "matrix size and letter only",
+      "subgroup": "independent_before:size=3",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select Upper triangular matrix",
+      "correct": 21,
+      "total": 44,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing over all five radio labels. Majority label fit on this sample, not held-out accuracy. 21/44; No universal label-only rule in this subgroup.",
+      "sample_refs": [
+        "independent-records.json"
+      ]
+    },
+    {
+      "cue": "matrix size and letter only",
+      "subgroup": "independent_before:size=3,letter=A",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select Lower triangular matrix",
+      "correct": 11,
+      "total": 21,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing over all five radio labels. Majority label fit on this sample, not held-out accuracy. 11/21; No universal label-only rule in this subgroup.",
+      "sample_refs": [
+        "independent-records.json"
+      ]
+    },
+    {
+      "cue": "matrix size and letter only",
+      "subgroup": "independent_before:size=3,letter=C",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select Upper triangular matrix",
+      "correct": 13,
+      "total": 23,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing over all five radio labels. Majority label fit on this sample, not held-out accuracy. 13/23; No universal label-only rule in this subgroup.",
+      "sample_refs": [
+        "independent-records.json"
+      ]
+    },
+    {
+      "cue": "raw option position within construction family",
+      "subgroup": "independent_before:lower",
+      "scope": "within_template",
+      "strategy": "Select raw option 3",
+      "correct": 6,
+      "total": 23,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is uniform five-position guessing. Best raw position succeeds 6/23; family requires reading the zero pattern and is not itself a superficial prompt label. UI reorders choices further; native rendered batch positions examined separately. Tiny batch groups do not establish fixed rules.",
+      "sample_refs": [
+        "independent-records.json"
+      ]
+    },
+    {
+      "cue": "raw option position within construction family",
+      "subgroup": "independent_before:upper",
+      "scope": "within_template",
+      "strategy": "Select raw option 2",
+      "correct": 8,
+      "total": 25,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is uniform five-position guessing. Best raw position succeeds 8/25; family requires reading the zero pattern and is not itself a superficial prompt label. UI reorders choices further; native rendered batch positions examined separately. Tiny batch groups do not establish fixed rules.",
+      "sample_refs": [
+        "independent-records.json"
+      ]
+    },
+    {
+      "cue": "raw option position within construction family",
+      "subgroup": "independent_before:diagonal",
+      "scope": "within_template",
+      "strategy": "Select raw option 4",
+      "correct": 5,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is uniform five-position guessing. Best raw position succeeds 5/12; family requires reading the zero pattern and is not itself a superficial prompt label. UI reorders choices further; native rendered batch positions examined separately. Tiny batch groups do not establish fixed rules.",
+      "sample_refs": [
+        "independent-records.json"
+      ]
+    },
+    {
+      "cue": "matrix size and letter only",
+      "subgroup": "independent_after:all",
+      "scope": "overall",
+      "strategy": "Always select Upper triangular matrix",
+      "correct": 25,
+      "total": 60,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing over all five radio labels. Majority label fit on this sample, not held-out accuracy. 25/60; No universal label-only rule in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "matrix size and letter only",
+      "subgroup": "independent_after:size=2",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select Lower triangular matrix",
+      "correct": 6,
+      "total": 16,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing over all five radio labels. Majority label fit on this sample, not held-out accuracy. 6/16; No universal label-only rule in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "matrix size and letter only",
+      "subgroup": "independent_after:size=2,letter=A",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select Upper triangular matrix",
+      "correct": 3,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing over all five radio labels. Majority label fit on this sample, not held-out accuracy. 3/8; No universal label-only rule in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "matrix size and letter only",
+      "subgroup": "independent_after:size=2,letter=C",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select Diagonal matrix",
+      "correct": 4,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing over all five radio labels. Majority label fit on this sample, not held-out accuracy. 4/8; No universal label-only rule in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "matrix size and letter only",
+      "subgroup": "independent_after:size=3",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select Upper triangular matrix",
+      "correct": 21,
+      "total": 44,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing over all five radio labels. Majority label fit on this sample, not held-out accuracy. 21/44; No universal label-only rule in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "matrix size and letter only",
+      "subgroup": "independent_after:size=3,letter=A",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select Lower triangular matrix",
+      "correct": 11,
+      "total": 21,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing over all five radio labels. Majority label fit on this sample, not held-out accuracy. 11/21; No universal label-only rule in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "matrix size and letter only",
+      "subgroup": "independent_after:size=3,letter=C",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select Upper triangular matrix",
+      "correct": 13,
+      "total": 23,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing over all five radio labels. Majority label fit on this sample, not held-out accuracy. 13/23; No universal label-only rule in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "raw option position within construction family",
+      "subgroup": "independent_after:lower",
+      "scope": "within_template",
+      "strategy": "Select raw option 3",
+      "correct": 6,
+      "total": 23,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is uniform five-position guessing. Best raw position succeeds 6/23; family requires reading the zero pattern and is not itself a superficial prompt label. UI reorders choices further; native rendered batch positions examined separately. Tiny batch groups do not establish fixed rules.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "raw option position within construction family",
+      "subgroup": "independent_after:upper",
+      "scope": "within_template",
+      "strategy": "Select raw option 2",
+      "correct": 8,
+      "total": 25,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is uniform five-position guessing. Best raw position succeeds 8/25; family requires reading the zero pattern and is not itself a superficial prompt label. UI reorders choices further; native rendered batch positions examined separately. Tiny batch groups do not establish fixed rules.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "raw option position within construction family",
+      "subgroup": "independent_after:diagonal",
+      "scope": "within_template",
+      "strategy": "Select raw option 4",
+      "correct": 5,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is uniform five-position guessing. Best raw position succeeds 5/12; family requires reading the zero pattern and is not itself a superficial prompt label. UI reorders choices further; native rendered batch positions examined separately. Tiny batch groups do not establish fixed rules.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "matrix size and letter only",
+      "subgroup": "runner_batch:all",
+      "scope": "overall",
+      "strategy": "Always select Upper triangular matrix",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing over all five radio labels. Majority label fit on this sample, not held-out accuracy. 2/5; No universal label-only rule in this subgroup.",
+      "sample_refs": [
+        "runner-batch.json"
+      ]
+    },
+    {
+      "cue": "matrix size and letter only",
+      "subgroup": "runner_batch:size=2",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select Lower triangular matrix",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing over all five radio labels. Majority label fit on this sample, not held-out accuracy. 1/1; singleton subgroup is underpowered; independent controls vary both orientations at both dimensions, so this batch coincidence is not a demonstrated generator rule.",
+      "sample_refs": [
+        "runner-batch.json"
+      ]
+    },
+    {
+      "cue": "matrix size and letter only",
+      "subgroup": "runner_batch:size=2,letter=C",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select Lower triangular matrix",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing over all five radio labels. Majority label fit on this sample, not held-out accuracy. 1/1; singleton subgroup is underpowered; independent controls vary both orientations at both dimensions, so this batch coincidence is not a demonstrated generator rule.",
+      "sample_refs": [
+        "runner-batch.json"
+      ]
+    },
+    {
+      "cue": "matrix size and letter only",
+      "subgroup": "runner_batch:size=3",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select Upper triangular matrix",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing over all five radio labels. Majority label fit on this sample, not held-out accuracy. 2/4; No universal label-only rule in this subgroup.",
+      "sample_refs": [
+        "runner-batch.json"
+      ]
+    },
+    {
+      "cue": "matrix size and letter only",
+      "subgroup": "runner_batch:size=3,letter=A",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select Upper triangular matrix",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing over all five radio labels. Majority label fit on this sample, not held-out accuracy. 2/4; No universal label-only rule in this subgroup.",
+      "sample_refs": [
+        "runner-batch.json"
+      ]
+    },
+    {
+      "cue": "raw option position within construction family",
+      "subgroup": "runner_batch:lower",
+      "scope": "within_template",
+      "strategy": "Select raw option 1",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is uniform five-position guessing. Best raw position succeeds 1/2; family requires reading the zero pattern and is not itself a superficial prompt label. UI reorders choices further; native rendered batch positions examined separately. Tiny batch groups do not establish fixed rules.",
+      "sample_refs": [
+        "runner-batch.json"
+      ]
+    },
+    {
+      "cue": "raw option position within construction family",
+      "subgroup": "runner_batch:upper",
+      "scope": "within_template",
+      "strategy": "Select raw option 2",
+      "correct": 2,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is uniform five-position guessing. Best raw position succeeds 2/2; family requires reading the zero pattern and is not itself a superficial prompt label. UI reorders choices further; native rendered batch positions examined separately. Tiny batch groups do not establish fixed rules.",
+      "sample_refs": [
+        "runner-batch.json"
+      ]
+    },
+    {
+      "cue": "raw option position within construction family",
+      "subgroup": "runner_batch:diagonal",
+      "scope": "within_template",
+      "strategy": "Select raw option 3",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is uniform five-position guessing. Best raw position succeeds 1/1; family requires reading the zero pattern and is not itself a superficial prompt label. UI reorders choices further; native rendered batch positions examined separately. Tiny batch groups do not establish fixed rules.",
+      "sample_refs": [
+        "runner-batch.json"
+      ]
+    },
+    {
+      "cue": "matrix size and letter only",
+      "subgroup": "runner_batch_after:all",
+      "scope": "overall",
+      "strategy": "Always select Upper triangular matrix",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing over all five radio labels. Majority label fit on this sample, not held-out accuracy. 2/5; No universal label-only rule in this subgroup.",
+      "sample_refs": [
+        "batch-delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "matrix size and letter only",
+      "subgroup": "runner_batch_after:size=2",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select Lower triangular matrix",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing over all five radio labels. Majority label fit on this sample, not held-out accuracy. 1/1; singleton subgroup is underpowered; independent controls vary both orientations at both dimensions, so this batch coincidence is not a demonstrated generator rule.",
+      "sample_refs": [
+        "batch-delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "matrix size and letter only",
+      "subgroup": "runner_batch_after:size=2,letter=C",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select Lower triangular matrix",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing over all five radio labels. Majority label fit on this sample, not held-out accuracy. 1/1; singleton subgroup is underpowered; independent controls vary both orientations at both dimensions, so this batch coincidence is not a demonstrated generator rule.",
+      "sample_refs": [
+        "batch-delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "matrix size and letter only",
+      "subgroup": "runner_batch_after:size=3",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select Upper triangular matrix",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing over all five radio labels. Majority label fit on this sample, not held-out accuracy. 2/4; No universal label-only rule in this subgroup.",
+      "sample_refs": [
+        "batch-delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "matrix size and letter only",
+      "subgroup": "runner_batch_after:size=3,letter=A",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select Upper triangular matrix",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 0.2 is uniform guessing over all five radio labels. Majority label fit on this sample, not held-out accuracy. 2/4; No universal label-only rule in this subgroup.",
+      "sample_refs": [
+        "batch-delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "raw option position within construction family",
+      "subgroup": "runner_batch_after:lower",
+      "scope": "within_template",
+      "strategy": "Select raw option 1",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is uniform five-position guessing. Best raw position succeeds 1/2; family requires reading the zero pattern and is not itself a superficial prompt label. UI reorders choices further; native rendered batch positions examined separately. Tiny batch groups do not establish fixed rules.",
+      "sample_refs": [
+        "batch-delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "raw option position within construction family",
+      "subgroup": "runner_batch_after:upper",
+      "scope": "within_template",
+      "strategy": "Select raw option 2",
+      "correct": 2,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is uniform five-position guessing. Best raw position succeeds 2/2; family requires reading the zero pattern and is not itself a superficial prompt label. UI reorders choices further; native rendered batch positions examined separately. Tiny batch groups do not establish fixed rules.",
+      "sample_refs": [
+        "batch-delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "raw option position within construction family",
+      "subgroup": "runner_batch_after:diagonal",
+      "scope": "within_template",
+      "strategy": "Select raw option 3",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline .2 is uniform five-position guessing. Best raw position succeeds 1/1; family requires reading the zero pattern and is not itself a superficial prompt label. UI reorders choices further; native rendered batch positions examined separately. Tiny batch groups do not establish fixed rules.",
+      "sample_refs": [
+        "batch-delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "actual UI answer position",
+      "subgroup": "exact runner batch in actual preview UI",
+      "scope": "overall",
+      "strategy": "Always choose displayed position 1",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform five-position baseline .2; best displayed position 1 gets 2/5. Real task-item IDs can alter the UI hash ordering; preview results are scoped to this fixture.",
+      "sample_refs": [
+        "rendered-batch-positions.json",
+        "render/input.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "generator catalog and guard rejection",
+      "batch quotas and finite support selection",
+      "diagonal identity resampling",
+      "requested difficulty",
+      "KP and question validation",
+      "actual publication normalization/deduplication against captured inventory",
+      "learner seen/current-prefix and difficulty-first selection rules",
+      "actual UI radio choice ordering"
+    ],
+    "sample_refs": [
+      "delivery/delivery.json",
+      "batch-delivery/delivery.json",
+      "delivery-stage-results.json",
+      "selection-results.json",
+      "rendered-batch-positions.json"
+    ],
+    "result": "All 60 independent and all 5 runner records survive; selection does not restore excluded sparse cases. Positive easy-weight selection retains support under any future ID permutation; live histories/weights unavailable."
+  },
+  "limitations": [
+    "No finite audit proves every shortcut absent.",
+    "Batch has a singleton C/2x2 subgroup; one coincidental label is not a demonstrated shortcut.",
+    "Future inventory, numeric IDs, actual policy and learner history unavailable; scope is captured basis 5451 and faithfully reproduced selection rules.",
+    "Source q-13769 missing key/solution/rating preserved in raw replay; inferred answer distinguished."
+  ]
+}

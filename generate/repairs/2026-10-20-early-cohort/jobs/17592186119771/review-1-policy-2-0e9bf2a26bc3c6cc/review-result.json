@@ -1,0 +1,134 @@
+{
+  "verdict": "revise",
+  "summary": "The repaired five-question batch works, but normal generation excludes all sole-witness 3×3 triangular matrices, including the canonical example. Sampled mathematics, native grading, delivery and rendering passed. Package unchanged.",
+  "source_analysis": {
+    "skill": "Describe a square numeric matrix by inspecting zeros relative to the main diagonal and choosing the most specific supplied class.",
+    "reasoning_steps": [
+      "Locate the main diagonal; inspect all strictly upper and strictly lower entries.",
+      "Zeros below imply upper triangular; zeros above imply lower triangular. Both imply diagonal; use the best description rather than any true superclass.",
+      "For a strict triangular result, exhibit a nonzero on the permitted side to exclude diagonal and the opposite orientation."
+    ],
+    "invariants": [
+      "Square matrix, direct classification, no operations or transformed matrices.",
+      "Definitions inspect zeros on an entire side, not a predetermined witness cell.",
+      "Best description resolves nesting: nonidentity diagonal precedes triangular.",
+      "Keep the five-label radio bank and short explanatory method."
+    ],
+    "permitted_variations": [
+      "Upper versus lower orientation, matrix letter, signs and magnitudes, diagonal entries including zero, placement and number of nonzeros on permitted side, 2x2 versus 3x3 within easy workload.",
+      "Moderate: diagonal values can vary while excluding identity unless explicitly supported as a conservative prerequisite-based extension.",
+      "Witness a21/a12 is incidental: any strictly lower/upper coordinate may carry the sole nonzero.",
+      "Bank order is incidental and may vary independently of correctness."
+    ],
+    "source_refs": [
+      "fe3edf12-af5b-5bb0-b5b3-efb6cd809134",
+      "d6f9badf-44cd-56b4-946a-abae3220a5b7",
+      "85d9e5a4-7ab7-5f73-b6ee-269ec09e4301",
+      "2b95456b-3323-5d6f-9e68-2195aad3e714",
+      "527b33fb-f404-506c-9c40-f8d572226bac",
+      "789c23f5-4ec7-5dd8-a73d-e29f357b665e",
+      "9d80001e-8bbd-54a5-81c1-edecd202d3a8",
+      "6b9cc20f-f3d7-5598-82ca-1a091a22aee5",
+      "29fb2ef1-bd76-51ee-b276-e18fb578e191",
+      "552fb4e4-b661-5cca-ad8b-ad46afac0b42",
+      "ce57af24-7688-5285-99c2-a982d174d89c",
+      "5b8d0549-8a06-5a32-8cc6-861cdf3fc65b",
+      "tutorial 658a47dc-4d32-5d9d-a04c-82d683e87739: upper = all entries below diagonal zero; lower = all entries above diagonal zero; any number (including 0) on diagonal and permitted side."
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "failed",
+      "evidence_paths": [
+        "source-replay-results.json",
+        "source-replay-records.json",
+        "single-witness-acceptance.json"
+      ],
+      "details": "All 11 captured question prompts, complete banks, available keys, solutions and ratings replay after harmless notation normalization. Canonical fe3edf12-af5b-5bb0-b5b3-efb6cd809134 is rejected by normal generation. Missing source fields are documented rather than invented."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "review_checks.py"
+      ],
+      "details": "69 normal records checked independently from displayed matrices: classification, repeated solution matrix, conclusion and nonzero witness all correct, including the exact five-record batch."
+    },
+    "variety": {
+      "status": "failed",
+      "evidence_paths": [
+        "support-coverage.json",
+        "sparse-rejections.json",
+        "delivery-stage-results.json",
+        "inventory-audit.json",
+        "affected-inventory.json"
+      ],
+      "details": "The guard and catalog exclude six legitimate sole-witness 3×3 support patterns. All 60 independent samples and five runner records survive actual publication filtering. The exact batch contains two upper, two lower and one diagonal; no batch-specific shortcut demonstrated. No sparse 3×3 stored question found among 16 captured records; no generated provenance supplied."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "scope-results.json"
+      ],
+      "details": "Requested easy outputs retain direct square-matrix classification, the five-label radio contract and comparable workload. The source-backed diagonal contrast and explicit most-specific criterion add no operator or reasoning stage. Unsupported density restriction is assessed separately."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-results.json",
+        "counterfactual-results.json"
+      ],
+      "details": "Native grade_field accepted 21 independently correct radio selections and rejected all 84 alternatives. Tests cover the exact runner batch and relevant/irrelevant controls. Free-entry equivalence is inapplicable to this radio contract."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "counterfactual-render/rendering.json",
+        "render-inspection.json",
+        "rendered-batch-positions.json"
+      ],
+      "details": "Actual unmodified UI rendered all five runner records and four controlled records. Screenshots inspected for 2×2/3×3 matrices, radio controls, notation and worked solutions; no defects observed. UI option ordering assessed separately from raw order."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "package-integrity.json",
+        "regression.json",
+        "old-regression.json",
+        "author-check-results.json"
+      ],
+      "details": "Exact installed Python 3.13.5 and SymPy 1.14.0 match the manifest. Declared-file relocation and deterministic CLI replay pass. Old count=5/seed=0 failure independently reproduced on registered code and passes current code. All 41 package files unchanged; preflight absent and no retained findings."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "counterfactual-results.json",
+        "selection-results.json",
+        "delivery-stage-results.json",
+        "evidence-contract.json"
+      ],
+      "details": "Transpose, off-diagonal clearing and irrelevant sign/diagonal controls behave correctly through prompts, explanations, native grading and actual rendering. Conditional label/size/position probes reveal no demonstrated incidental shortcut. However, sole-witness eligibility is unjustifiably fixed by density. Selection rules reproduced read-only; future entity IDs, live histories and policy weights remain explicit limits."
+    }
+  },
+  "findings": [
+    {
+      "kind": "restriction",
+      "description": "level_guard and catalog require at least ceil(n(n−1)/4) nonzero off-diagonal entries. For 3×3 this rejects every strict triangular matrix with one witness, including canonical A=[[-2,0,0],[6,-1,0],[0,0,0]]. Such matrices still require inspecting the same zero region; the claimed scan-workload reason does not justify excluding the canonical pattern. This is a generator-domain defect, not incorrect sampled answers or a demonstrated stored-instance defect.",
+      "source_refs": [
+        "fe3edf12-af5b-5bb0-b5b3-efb6cd809134",
+        "tutorial 658a47dc-4d32-5d9d-a04c-82d683e87739: any number (including 0) is permitted on the diagonal and permitted side",
+        "generate/principles.md: establish fidelity first; vary eligible answer-bearing relationships"
+      ],
+      "reproduction": "From evidence_root run PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python test_single_witness.py. The strict acceptance test fails because the generator raises ValueError: Normal triangular practice needs a substantial nonzero off-diagonal region. Exact CLI command, parameters and stderr are in single-witness-acceptance.json; two further witness locations are in sparse-rejections.json.",
+      "requested_change": "Change both catalog construction and parameter validation to admit every nonempty permitted-side support at source-supported sizes, retaining diagonal as the empty-support case. Derive witnesses from the actual matrix. Preserve the strict failing canonical test, add sole-witness cases at every upper/lower 3×3 coordinate, and retain the now-passing five-question regression."
+    }
+  ]
+}
