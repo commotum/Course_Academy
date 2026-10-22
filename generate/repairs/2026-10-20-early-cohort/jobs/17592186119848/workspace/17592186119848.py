@@ -6,7 +6,7 @@ exactly (apart from canonical math formatting and one documented spelling fix).
 Authored variants change pivot ranks within the same shapes and field contract.
 Moderate/hard remain unsupported pending evidence. See adjacent extraction.
 """
-import argparse, hashlib, itertools, json, random, re, sys, uuid
+import argparse, copy, hashlib, itertools, json, random, re, sys, uuid
 from pathlib import Path
 import sympy as sp
 from math_format import matrix_tex,normalize_prose,normalize_tex,checked_math_content
@@ -32,15 +32,19 @@ def kind(sid):
     old=CASES[sid];f=old[':question/answer-fields'][0]
     if f[':answer-field/type'][':db/ident']==':answer-field.type/checkbox':return 'three-matrix-checkbox'
     return 'five-matrix-radio' if f[':answer-field/choices'][0][':answer/type'][':db/ident']==':answer.type/math' else 'three-matrix-subset-radio'
-def eligible(sid):
+def assignments(sid):
+    # q-139965's literal bank lacks A-only, which otherwise freezes B true.
+    return list(itertools.permutations('ABC')) if sid=='q-139965' else [tuple(sorted(matrices(CASES[sid])))]
+def eligible(sid,assignment=None):
     q=CASES[sid];r=target(q)
-    return [label for label,m in sorted(matrices(q).items()) if min(m.shape)>=r]
+    labels=sorted(matrices(q));mapping=dict(zip(labels,assignment or labels))
+    return sorted(mapping[label] for label,m in sorted(matrices(q).items()) if min(m.shape)>=r)
 def original_matches(sid):
     q=CASES[sid];r=target(q)
     return tuple(k for k,m in sorted(matrices(q).items()) if m.rank()==r)
 def subset(value):return tuple(sorted(set(re.findall(r'\$([A-E])\$',value))))
-def domain(sid):
-    q=CASES[sid];typ=kind(sid);labels=eligible(sid)
+def domain(sid,assignment=None):
+    q=CASES[sid];typ=kind(sid);labels=eligible(sid,assignment)
     if typ=='five-matrix-radio':return [(label,) for label in labels]
     if typ=='three-matrix-checkbox':return sorted({original_matches(sid), ()})
     f=q[':question/answer-fields'][0]
@@ -76,6 +80,11 @@ def structure(q):
 def fingerprint(q):return hashlib.sha256(json.dumps(structure(q),sort_keys=True).encode()).hexdigest()
 def render_matrices(text,bank):
     return MATRIX.sub(lambda m:m[1]+'='+matrix_tex([list(bank[m[1]].row(i)) for i in range(bank[m[1]].rows)]),text)
+def reassign_text(text,mapping):
+    return re.sub(r'\b([A-E])(?=\s*=)|(?<=\$)([A-E])(?=\$|\.)|(?<=\()([A-E])(?=\))',lambda m:mapping[next(x for x in m.groups() if x)],text)
+def order_prompt_matrices(text):
+    ordered=iter(sorted((m[1],m[0]) for m in MATRIX.finditer(text)))
+    return MATRIX.sub(lambda _:next(ordered)[1],text)
 def variant_solution(old,bank,r):
     labels=sorted(bank);excluded=[k for k in labels if min(bank[k].shape)<r];valid=[k for k in labels if k not in excluded]
     matches=[k for k in valid if bank[k].rank()==r]
@@ -94,18 +103,27 @@ def variant_solution(old,bank,r):
 def generate(level,seed=0,profile=None,parameters=None,source_replay=False):
     if level not in SUPPORTED_LEVELS:raise ValueError('Unsupported difficulty: '+level)
     rng=random.Random(seed);sid=profile or rng.choice(sorted(CASES));old=CASES[sid]
-    desired=tuple(parameters['matches']) if parameters is not None else rng.choice(domain(sid))
-    if parameters is not None and set(parameters)!={'matches'}:raise ValueError('Exactly matches required')
-    if desired not in domain(sid):raise ValueError('Unsupported match subset')
-    r=target(old);bank=matrices(old);original=original_matches(sid)
+    labels=sorted(matrices(old))
+    assignment=tuple(parameters.get('assignment',labels)) if parameters is not None else rng.choice(assignments(sid))
+    scale=parameters.get('scale',1 if source_replay else 2) if parameters is not None else 1 if source_replay else 2
+    if type(scale) is not int or scale not in (1,2):raise ValueError('Supported coefficient scales: 1 and 2')
+    if assignment not in assignments(sid):raise ValueError('Unsupported role assignment')
+    mapping=dict(zip(labels,assignment))
+    desired=tuple(parameters['matches']) if parameters is not None else rng.choice(domain(sid,assignment))
+    if parameters is not None and not {'matches'}<=set(parameters)<= {'matches','assignment','scale'}:raise ValueError('Expected matches, optional assignment and scale')
+    if desired not in domain(sid,assignment):raise ValueError('Unsupported match subset')
+    r=target(old);bank={mapping[k]:m for k,m in matrices(old).items()};original=tuple(sorted(mapping[k] for k in original_matches(sid)))
+    old=copy.deepcopy(old)
+    for key in (':question/problem',':question/worked-solution'):old[key]=reassign_text(old[key],mapping)
     if desired!=original:
         # Only dimension-eligible candidates can change rank. Deficient candidates
         # retain their observed rank unless they need to become correct.
-        for label in eligible(sid):
+        for label in eligible(sid,assignment):
             rank=int(bank[label].rank())
             wanted=r if label in desired else r-1 if rank==r else rank
             bank[label]=rank_adjust(bank[label],wanted)
-    problem=render_matrices(normalize_prose(old[':question/problem']),bank)
+    bank={k:m*scale for k,m in bank.items()}
+    problem=order_prompt_matrices(render_matrices(normalize_prose(old[':question/problem']),bank))
     solution=normalize_prose(old[':question/worked-solution']).replace('coumns','columns') if desired==original else variant_solution(old,bank,r)
     rawfields=[]
     for f in old[':question/answer-fields']:
@@ -132,7 +150,7 @@ def generate(level,seed=0,profile=None,parameters=None,source_replay=False):
             if extra in f:field[extra]=f[extra]
         fields.append(field)
     question={':question/id':uid('question'),':question/difficulty':':question.difficulty/easy',':question/problem':problem,':question/worked-solution':solution,':question/answer-fields':fields}
-    record={'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':SOURCE['record'][':knowledge-point/title']},'question':question,'generation':{'version':VERSION,'seed':seed,'template':kind(sid),'bank_profile':sid,'source_id':sid,'source_replay':source_replay,'parameters':{'matches':list(desired)},'mathematical_fingerprint':fingerprint(question),'content_fingerprint':content,'assets':[],'source':{'basis':SOURCE['basis'],'lineage':SOURCE['lineage']},'dependencies':{'sympy':sp.__version__},'ranks':{k:int(m.rank()) for k,m in bank.items()},'extension':desired!=original}}
+    record={'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':SOURCE['record'][':knowledge-point/title']},'question':question,'generation':{'version':VERSION,'seed':seed,'template':kind(sid),'bank_profile':sid,'source_id':sid,'source_replay':source_replay,'parameters':{'matches':list(desired),'assignment':list(assignment),'scale':scale},'mathematical_fingerprint':fingerprint(question),'content_fingerprint':content,'assets':[],'source':{'basis':SOURCE['basis'],'lineage':SOURCE['lineage']},'dependencies':{'sympy':sp.__version__},'ranks':{k:int(m.rank()) for k,m in bank.items()},'extension':desired!=original or assignment!=tuple(labels) or scale!=1}}
     # q-35283 supplies family evidence for a visible None option. Exact replay
     # of q-79568 keeps its original three fields; new practice uses both cases.
     if kind(sid)=='three-matrix-checkbox' and not source_replay:
@@ -141,13 +159,19 @@ def generate(level,seed=0,profile=None,parameters=None,source_replay=False):
 def catalog():
     result=[];seen=set()
     for sid in sorted(CASES):
-        for matches in domain(sid):
-            rec=generate('easy',0,sid,{'matches':list(matches)});fp=rec['generation']['mathematical_fingerprint']
-            if fp not in seen:seen.add(fp);result.append(rec)
+        for assignment in assignments(sid):
+            for matches in domain(sid,assignment):
+                rec=generate('easy',0,sid,{'matches':list(matches),'assignment':list(assignment)});fp=rec['question'][':question/id']
+                if fp not in seen:seen.add(fp);result.append(rec)
     return result
 def batch(level,count,seed=0):
     if level not in SUPPORTED_LEVELS:raise ValueError('Unsupported difficulty: '+level)
-    records=catalog();random.Random(seed).shuffle(records)
+    candidates=catalog();random.Random(seed).shuffle(candidates)
+    # Role reassignment removes label cues, but does not inflate semantic capacity.
+    records=[];seen=set()
+    for rec in candidates:
+        fp=rec['generation']['mathematical_fingerprint']
+        if fp not in seen:seen.add(fp);records.append(rec)
     if type(count) is not int or count<0 or count>len(records):raise ValueError('Finite variant limit: '+str(len(records)))
     return records[:count]
 def markdown(rec):

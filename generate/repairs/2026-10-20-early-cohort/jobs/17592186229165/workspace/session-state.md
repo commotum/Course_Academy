@@ -1,13 +1,13 @@
-# Current state — author 340
+# Current state — author 343
 
-Read feedback, both retained findings and the latest event from the 340-event repair history. Reused the existing instructional account and unchanged source analysis. No runtime or regression criteria changed.
+Read feedback and repair history (343 events, latest attempt 342; both retained findings). The latest report requests correction of external review evidence and explicitly requests no generator authoring. Preserved all runtime files and both strict regression declarations.
 
-Commands from this workspace with `/home/jake/Developer/Course_Academy/.venv/bin/python`:
+Validation commands used `/home/jake/Developer/Course_Academy/.venv/bin/python`:
 
-1. `checks/check_report_installation.py > evidence/report-repair/current-reproduction.log 2>&1` — reproduced first; assertion failure. The required external report still fails `decision_variation has an unresolved decision shortcut`. The staged local correction passes the real contract/schema and replays 26 complete records against the current generator.
-2. `checks/test_role_exchange.py > evidence/current-role-regression.log 2>&1` — exit 0. Exact reorder counterexample, controlled resonance transfer, within-template shortcut checks and shared delivery pass. Delivered roles: 19 first-resonant, 17 second-resonant, five both nonresonant. Native grader: 11 acceptance and 19 rejection expectations pass.
-3. `checks/verify_retained_state.py > evidence/retained-state-current.log 2>&1` — exit 0. Verified 55 staged artifact hashes, unchanged runtime/source hashes and eight independently parsed mathematical records. Existing source replay, affected-inventory reproductions and actual-UI rendering evidence remain applicable.
+1. `checks/check_report_installation.py > evidence/report-repair/current-reproduction.log 2>&1` — reproduced first, fails with `decision_variation has an unresolved decision shortcut` at the required prior-review destination. Local real-contract/schema checks and 26 current-record replays pass.
+2. `checks/test_role_exchange.py > evidence/current-role-regression.log 2>&1` — exit 0. Exact reorder, resonance-transfer and conditional shortcut probes pass. Shared delivery retains 19 first-resonant, 17 second-resonant and five both-nonresonant records. Native grading matches all 30 expectations (11 acceptance, 19 rejection).
+3. `checks/verify_retained_state.py > evidence/retained-state-current.log 2>&1` — exit 0. All 55 staged artifacts, unchanged runtime/source hashes and eight independently parsed mathematical cases pass. Completed source replay, inventory reproductions and actual-UI evidence retained; no runtime change warrants unrelated reruns.
 
-Results: `evidence/current-validation.json`. No external writes, publication, database changes or engine changes.
+Results: `evidence/current-validation.json`. No runtime, engine, database, publication or external file changes.
 
-Unfinished: finding 645672a4cd3f9bf609ca requests installation of corrected artifacts at the required prior-review destination outside this workspace. Its retained request explicitly says no generator authoring is needed. Workspace-only authorization cannot perform that installation. `evidence/review-installation-handoff.json` already identifies the destination and all 55 staged artifact checksums. The strict regression remains failing; local validation is not external installation or independent approval. The runner must install the staged artifacts and rerun the strict check before another author retry. Preserve the repaired generator and both regression declarations.
+Unfinished finding: 645672a4cd3f9bf609ca. Its required installation destination is the prior-review directory outside the supplied workspace. The user explicitly permits writes only in this workspace. The saved `evidence/review-installation-handoff.json` already lists the 55 corrected artifacts, destination and checksums. Only the runner can install them within the stated authorization, then rerun the strict regression and obtain fresh independent review. A local substitute cannot close this external installation finding. Repeating workspace-only author retries or altering working generator content cannot resolve it.

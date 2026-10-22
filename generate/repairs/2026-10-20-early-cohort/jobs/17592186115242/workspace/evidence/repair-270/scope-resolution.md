@@ -1,0 +1,13 @@
+# Scope and instructional decision
+
+Canonical f2c7cfd3-da43-5208-bd0e-21692357fabe eliminates x to obtain `(k+4)y=-5`, then chooses k=-4 to produce a contradiction. Tutorial e0c85152-daea-5a87-a3ba-81870558c7a2 defines inconsistency by no solutions and dependence by infinitely many solutions. Practice 534e2a93-e71a-5475-894e-dfd5ca99a3a6 supplies the complete five-radio-choice contract; 113efc76-e9d2-549d-b33e-b8de028f7ba5 supports fractional elimination with bare k.
+
+Preserve the current instructional account, source banks and construction repairs. The learner inspects coefficients, eliminates x, solves the surviving affine coefficient, and interprets the residual equation. Easy retains one integer elimination and a bare k coefficient. Eligible singular values, bank ranks and positions vary; no source family or valid response is removed. The existing rank-first bank rule and finite batch selection address the demonstrated current-generator shortcuts.
+
+Latest failure reproduced first: finding 591f580cadb749294588 concerns five captured historical generated questions. The strict test exits 1 and the retained possible learner-history witness scores 64/64 using the sign-extremum shortcut. All generated inventory records were reproduced against complete captured fields; none are untested. The current source and inventory hashes are unchanged, so the counterexample still applies.
+
+The retained finding explicitly requests the separate inventory-remediation workflow. This task explicitly prohibits database changes and publication, and disallows engine repairs. The current package does not participate in selecting or rewriting those stored banks. A workspace generator change cannot reconcile their stored identities. Keep all five executable regressions, the exact affected identities, complete reproductions, and the validated one-to-one replacement proposal. No acceptance condition is weakened and no hypothetical replacement pool is represented as live state.
+
+Current rerun: four generator finding checks pass; inventory finding fails. Source replay, delivery, native grading, dependency pins and relocation were rerun by checks/recheck_status.py. Actual-UI rendering evidence is reused because runtime and replacement records are hash-verified unchanged; question-001.png was visually inspected again and is readable without clipping. No new interchangeable render or unrelated sampling was warranted.
+
+Next required action is externally authorized inventory reconciliation of the five generated identities, followed by fresh inventory capture and the same strict check. Author status remains unsupported.

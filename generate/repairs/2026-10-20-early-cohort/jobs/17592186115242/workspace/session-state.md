@@ -1,15 +1,17 @@
-# Current repair state — pass 268
+# Current repair state — pass 270
 
-Feedback and all five retained findings read; history contains 268 events. No new generator construction failure is reported. Preserved completed runtime repairs, instructional account, strict regressions, and staged replacement proposal.
+Read latest feedback, all five retained findings and the full history structure (270 events), existing instructional analysis, original source cases and lesson context. Preserve completed runtime repairs and the five-record replacement proposal.
 
-First check: `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory`
-Exit 1: five historical banks remain affected; the possible new-seen learner-history witness gives 64/64 shortcut successes. Evidence: evidence/repair-268/initial-reproduction.json.
+First executed regression:
+`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory`
+Exit 1: five captured historical banks remain affected; retained possible learner-history witness scores 64/64 using the sign-extremum shortcut. Evidence: evidence/repair-270/initial-reproduction.json.
 
-Validation: `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/repair-268`
-Exit 1 solely for finding 591f580cadb749294588. Four current-generator regressions pass: 17 complete practice-source banks, fractional bare-k and zero-root support, within-sign shortcut checks, three finite batches (14/14 delivered), relevant/irrelevant counterfactuals, native grading (7 accepted/28 rejected), exact dependencies, and relocated seeded CLI. Protected runtime/source/inventory hashes and staged five-record proposal verify. All generated inventory records were reproduced; none remain untested.
+Validation:
+`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/repair-270`
+Exit 1 solely for finding 591f580cadb749294588. Four current-generator regressions pass, including 17 complete practice-source banks, bare-k fractional and zero-root support, within-sign shortcut checks, three finite batches (14/14 delivered), relevant/irrelevant counterfactuals, 35 native grading checks (7 accepted, 28 rejected), dependency pins and relocated seeded CLI. Protected runtime/source/inventory hashes and five staged replacements verify. All generated inventory records were reproduced; none remain untested. Commands and results: evidence/repair-270/{commands,results}.json.
 
-Reinspected evidence/repair-3/render/question-001.png; prompt, banks, matrices and solution are readable without clipping. Rendering was reused on unchanged runtime rather than producing interchangeable screenshots.
+Reinspected evidence/repair-3/render/question-001.png; no clipping or readability defect. Reuse actual-UI render because runtime and replacement inputs are unchanged. Review: evidence/repair-270/visual-review.json.
 
-Next unfinished action is the separate inventory-remediation workflow requested by review finding 591f580cadb749294588: reconcile the five generated identities using evidence/repair-3/inventory-repair-proposal.json, capture fresh inventory, and rerun the strict inventory regression. This task prohibits the required database changes. Do not modify source questions, replace captured inventory with a hypothetical pool, weaken the regression, or rerun unchanged author attempts expecting stored records to change. Further generator edits are not justified by the retained evidence. Final delivery remains unsupported pending that external state change; the source-supported mathematical families remain implemented.
+Next unfinished action: separate inventory remediation of the five generated identities using evidence/repair-3/inventory-repair-proposal.json, fresh inventory capture, then rerun strict regression. This task prohibits those database changes and publication. The current generator cannot rewrite stored banks. Preserve captured records, source identities and acceptance criteria. Do not repeat unchanged author attempts expecting external state to change.
 
-No database, publication, engine, source, runtime or other-job changes made. Current evidence: evidence/repair-268/{initial-reproduction,commands,results,grader-report,visual-review}.json; repair-regressions.json; affected-inventory.json; evidence/generated-records.json; evidence/repair-3/inventory-repair-proposal.json.
+Status remains unsupported. No database, engine, runtime, source, publication or other-job changes. Scope decision and source citations: evidence/repair-270/scope-resolution.md. Retained regressions: repair-regressions.json. Historical records: evidence/generated-records.json; exact affected identities: affected-inventory.json.

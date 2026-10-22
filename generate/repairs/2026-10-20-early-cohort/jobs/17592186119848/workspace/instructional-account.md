@@ -65,3 +65,30 @@ rank, and variants must preserve inspection-level sparsity. No database content,
 publication, images or other jobs may be changed. Inventory audit will distinguish
 runtime packaging failures (not stored item defects) from any reproduced content
 defects. Learner history and live weighted selection remain inaccessible offline.
+
+During the initial shortcut probe, q-139965's source bank supported only B or
+A-and-B when the source dimension assignment stayed fixed. B was therefore
+always a member. For this profile, allow the same three physical matrix roles to
+be assigned to A/B/C, then choose a representable qualifying subset and adjust
+pivots. The dimension exclusion and two pivot inspections remain the same; the
+literal five-choice bank remains complete. All six assignments and their
+representable single/pair subsets are checked. This repairs a label cue, not a
+claim of sixfold mathematical novelty. `batch` groups by the existing structural
+fingerprint and chooses one seeded presentation per group before taking items.
+The old statement that shapes are fixed **per label** is superseded for this
+profile; the multiset of shapes and exclusion count stays fixed.
+
+The actual delivery filter removed exact source items at inventory basis 5415,
+leaving six radio/checkbox profiles with only an alternative answer case in the
+newly accepted pool (evidence/delivery-shortcut-before-repair.json). Normal
+practice therefore multiplies all entries by 2, after pivot construction. Exact
+source replay uses scale 1. Nonzero uniform scaling preserves rank, visible zero
+patterns, dependence and all pivot-count reasoning, and requires no extra
+learner arithmetic. It does not count as additional semantic capacity. This
+conservative numeric extension retains both answer cases after inventory
+filtering rather than silently discarding the original qualifying assignment.
+Scale 1 remains supported for explicit source parameters. Entries remain small
+integers; no image assets are generated. Both scale values are verified to give
+the same response with different numeric evidence. Scale 2 is a finite policy
+for this captured inventory, not a claim that future inventories cannot exhaust
+this catalog.
