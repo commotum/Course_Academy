@@ -1,0 +1,13 @@
+# Author 770 disposition
+
+Status: unsupported. Preserved completed runtime repairs and the strict historical-pool failure.
+
+Instructional scope remains instructional-account.md: eliminate x, solve the surviving y coefficient for k, and distinguish contradiction from redundancy. Canonical f2c7cfd3-da43-5208-bd0e-21692357fabe obtains (k+4)y=-5; tutorial e0c85152-daea-5a87-a3ba-81870558c7a2 defines inconsistency as no solutions and dependence as infinitely many solutions. Source 534e2a93-e71a-5475-894e-dfd5ca99a3a6 has an interior correct option, so extremal bank position is not an instructional constraint. Preserve easy arithmetic, five radio options, eligible singular values and bank roles, all source families, and the repaired fractional and zero-root cases. No new construction change follows from the latest finding.
+
+Reproduced the latest failure first with job Python -B checks/batch_regressions.py --finding inventory: exit 1, five affected historical records, 64/64 shortcut successes in a possible new-seen history. This is not a prediction of every learner history.
+
+Ran job Python -B checks/recheck_status.py --output evidence/author-770: exit 1 solely for finding 591f580cadb749294588. Four current-generator regressions pass, 17 complete practice banks replay, and 14 records pass shared delivery with tested within-sign contrasts intact. Controlled relevant and irrelevant changes pass printed-record checks. Native grading accepts 7 correct choices and rejects 28 wrong choices. Relocated execution, installed dependency versions, protected input/runtime hashes, and five staged replacement mappings verify. Visually inspected retained actual-UI screenshot evidence/repair-3/render/question-001.png; prompt, choices, matrices, and solution are readable. Runtime and render inputs are unchanged.
+
+The remaining action is the separate inventory-remediation workflow named in the review: retire only the five affected generated identities from future selection, publish independently reviewed replacements, recapture inventory, and rerun strict checks. This session forbids database changes and publication. A generator edit cannot rewrite stored banks read independently by the selector. The staged proposal remains unapplied; passing proposal checks do not establish a repaired stored pool. No engine defect is implicated and no source family or valid response was removed.
+
+All writes stayed in the workspace. No database, published image, source capture, engine file, or other job was changed. All five generated inventory records were audited and original sources were not tagged generated. Repeating this unchanged author pass cannot replace the separate remediation step.

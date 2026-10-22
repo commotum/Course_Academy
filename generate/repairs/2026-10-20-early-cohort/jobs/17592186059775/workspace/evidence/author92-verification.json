@@ -1,0 +1,45 @@
+{
+  "status": "blocked_outside_workspace",
+  "runtime_unchanged": true,
+  "commands": [
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_current_handoff.py",
+      "exit_code": 1,
+      "report": "evidence/current-handoff-regression.json"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_evidence_contract.py",
+      "exit_code": 1,
+      "log": "evidence/author92-evidence-check.log",
+      "detail": "83-file evidence bundle validates; failure is installed runner handoff only."
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_batch_selection.py",
+      "exit_code": 0,
+      "log": "evidence/author92-batch-check.log"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_render_binding.py",
+      "exit_code": 0,
+      "report": "evidence/current-render-binding.json"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_cli_contract.py",
+      "exit_code": 0,
+      "report": "evidence/cli-contract.json"
+    }
+  ],
+  "visual_inspection": {
+    "path": "evidence/author8-render/question-001.png",
+    "result": "Readable prompt, five matrix choices and complete elimination solution; bound to fresh delivered output."
+  },
+  "blocker": {
+    "file": "/home/jake/Developer/Course_Academy/scripts/generator_pipeline.py",
+    "line": 723,
+    "behavior": "Rejects byte-identical package before regressions and sampling. Retained evidence-only finding requires preserving runtime.",
+    "proposed_patch": "runner-fix/evidence-only-rejection.patch",
+    "installed": false
+  },
+  "writes_outside_workspace": false,
+  "publication_or_database_writes": false
+}
