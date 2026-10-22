@@ -1,15 +1,15 @@
-# Current state — author 614
+# Current state — author 618
 
-Read feedback and retained repair history: two findings, 614 events through attempt 613. Reproduced the latest strict report failure first. No new generator defect was reported or demonstrated. Runtime, source, instructional account, historical inventory evidence and regression declarations remain unchanged.
+Read feedback, both retained findings, and all 618 history events through attempt 617. Reproduced the latest strict report failure first. No new generator defect is reported or demonstrated; runtime files, source analysis, instructional account, historical inventory evidence, and strict regressions are preserved.
 
 Commands use `/home/jake/Developer/Course_Academy/.venv/bin/python`:
 
-- `checks/check_report_installation.py` — exit 1: required external report still raises `decision_variation has an unresolved decision shortcut`. Log: `evidence/report-repair/author-614-reproduction.log`. The staged correction passes the actual schema/contract and replays 26 complete records against the current generator. Finding 645672a4cd3f9bf609ca remains unresolved.
-- `checks/test_role_exchange.py` — exit 0: controlled reorder/role transfer, conditional shortcut probes, shared delivery filtering and 30 native-grader expectations pass. Delivered cases: 19 first-position resonance, 17 second-position resonance, five both-nonresonant. Results: `evidence/role-regression/results.json`.
-- `checks/verify_retained_state.py` — exit 0: 55 staged artifact hashes, unchanged runtime/source and eight independent mathematical cases pass. Log: `evidence/current-retained-state.log`.
+- `checks/check_report_installation.py` — exit 1. Required external report still fails the actual contract with `decision_variation has an unresolved decision shortcut`. Log: `evidence/report-repair/author-618-reproduction.log`. Staged correction passes schema/contract checks and replays 26 complete records against the current generator.
+- `checks/test_role_exchange.py` — exit 0. Controlled reorder, role transfer, within-template shortcut probes, shared delivery filtering and 30 native-grader expectations pass. Delivered positions: 19 first, 17 second, five both-nonresonant. Results: `evidence/role-regression/results.json`.
+- `checks/verify_retained_state.py` — exit 0. Runtime/source hashes, 55 handoff artifact hashes and eight independently parsed mathematical cases pass. Log: `evidence/current-retained-state.log`.
 
-Commands/results: `evidence/current-validation.json`. Existing source replay and actual UI evidence retained because runtime/source are unchanged; no new rendering claim.
+Commands and results: `evidence/current-validation.json`. Existing source replay and actual UI evidence are retained because runtime and source are unchanged; no new rendering claim.
 
-Next required state change: runner installation of the staged correction at `../review-1-policy-2-48d685555902faba` using `evidence/review-installation-handoff.json`, followed by the unchanged strict regression and fresh independent review. That destination is outside the authorized workspace. The retained finding explicitly requests evidence-root write access and says no generator authoring is needed. An unchanged workspace-only author retry cannot complete this installation. Preserve the strict failure rather than substituting validation of the local snapshot.
+Unfinished action: the runner must install the validated staged correction at `../review-1-policy-2-48d685555902faba` using `evidence/review-installation-handoff.json`, then run the unchanged strict report regression and fresh independent review. That destination is outside the authorized workspace and filesystem write roots. No external write was attempted. The finding explicitly requests no generator authoring. Repeating this unchanged author session cannot install the report; preserve the strict failure rather than substituting local staging for closure.
 
-No external writes, publication, database changes, engine changes, runtime edits or regression weakening.
+No runtime, engine, database, publication or external report changes.

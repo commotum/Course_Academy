@@ -6,25 +6,154 @@
     "existing_entrypoint": "/home/jake/Developer/Course_Academy/generate/scratch/17592186184172.py",
     "job_kind": "build"
   },
-  "stage": "validate",
-  "attempt": 1,
+  "stage": "generate",
+  "attempt": 2,
   "seed": 158291772,
   "created": 1792659056.960523,
-  "updated": 1792660226.1678963,
+  "updated": 1792661078.937378,
   "source_hash": "4bb038a2a4d929340f15834033a1f21f09750edfa5ca42786419ca3b7517ae61",
   "inventory_hash": "36107dd66820c5e65aa77d762f0284b469f0cc930bb8a445d0bd12c4d0301912",
   "needs_repair": true,
   "error": {
-    "code": "legacy_packaging_or_sampling",
-    "error": "Undeclared/unresolved runtime import: scripts",
-    "instruction": "Repair the existing runtime closure or concrete sample failure. Preserve the original assessed skill."
+    "verdict": "revise",
+    "summary": "Normal five-question batches always select the same template prefix, excluding three supported moderate profiles. The package was not changed.",
+    "source_analysis": {
+      "skill": "Infer rank and nullity, apply the invertible matrix theorem, and evaluate three statements.",
+      "reasoning_steps": [
+        "Extract rank or nullity from the supplied counts or null space.",
+        "Apply rank + nullity = n.",
+        "Evaluate each statement and select the correct subset."
+      ],
+      "invariants": [
+        "Square matrices support the invertibility equivalences.",
+        "Keys and explanations must follow the displayed mathematics.",
+        "Preserve each source response format and complete answer bank."
+      ],
+      "permitted_variations": [
+        "Matrix dimensions, pivot counts and null-space coordinates.",
+        "Claimed numerical values and statement polarity.",
+        "Truth subsets and supported source profiles."
+      ],
+      "source_refs": [
+        "78547385-d46f-5a2a-bfc1-39e040208ca0",
+        "e3a4804f-9ed9-56b0-80c9-162f94bd57af",
+        "322fb855-3d8d-59e6-ba9e-0f5421e84a86",
+        "251cb9e2-c851-5082-b166-e39206cbabf3",
+        "Tutorial 0728c510-110b-5bde-93ea-9050a87a6ecc: rank-nullity theorem"
+      ],
+      "evidence_paths": [
+        "source-analysis.json",
+        "scope-assessment.json"
+      ]
+    },
+    "checks": {
+      "source_replay": {
+        "status": "passed",
+        "evidence_paths": [
+          "source-replay-results.json",
+          "replay-records.json"
+        ],
+        "details": "All 15 supported stored sources replay exactly, including complete banks and solutions. The canonical example\u2019s absent answer bank is documented."
+      },
+      "math": {
+        "status": "passed",
+        "evidence_paths": [
+          "extended-math-results.json",
+          "decision-results.json"
+        ],
+        "details": "No mathematical mismatches in 508 record evaluations, including boundaries and all runner records."
+      },
+      "variety": {
+        "status": "failed",
+        "evidence_paths": [
+          "profile-omission-results.json",
+          "profile-omission-records.json",
+          "delivery-profile-omission/delivery.json"
+        ],
+        "details": "Six fresh CLI runs at count=5 omit q-79411, q-79417 and q-79420. All 30 records survive delivery filtering."
+      },
+      "scope": {
+        "status": "passed",
+        "evidence_paths": [
+          "scope-assessment.json",
+          "rejection-results.json"
+        ],
+        "details": "Tested variations preserve the source methods, response formats and workload."
+      },
+      "grading": {
+        "status": "passed",
+        "evidence_paths": [
+          "native-input.json",
+          "native-report.json"
+        ],
+        "details": "Actual native grader: 1064 accepted responses, 1754 rejected responses, zero unresolved. Every offered response was tested against independently derived truths."
+      },
+      "rendering": {
+        "status": "passed",
+        "evidence_paths": [
+          "render-all/rendering.json",
+          "visual-inspection.json"
+        ],
+        "details": "Actual UI rendered 13 cases, including all five runner records and controlled pairs. Inspected screenshots show readable mathematics, controls and solutions."
+      },
+      "packaging": {
+        "status": "passed",
+        "evidence_paths": [
+          "packaging-results.json",
+          "legacy-failure-reproduced.json",
+          "runtime-file-hashes.json",
+          "determinism.json"
+        ],
+        "details": "Declared runtime relocation and deterministic replay pass. Installed dependency versions match the manifest. The original undeclared dependency failure was reproduced with external repository discovery hidden."
+      },
+      "decision_variation": {
+        "status": "failed",
+        "evidence_paths": [
+          "pedagogical-variation.json",
+          "counterfactual-results.json",
+          "shortcut-results.json",
+          "selection-results.json"
+        ],
+        "details": "Controlled decision changes and shortcut probes pass within accessible profiles. Delivered coverage still excludes three eligible source-bank profiles through the fixed-prefix sampling rule."
+      }
+    },
+    "findings": [
+      {
+        "kind": "restriction",
+        "description": "batch() restarts its sorted template cycle at index zero for every seed. Normal moderate count=5 batches therefore exclude three supported profiles, including the radio non-pivot-count family. This concerns reachability across batches, not requiring eight profiles in five records.",
+        "source_refs": [
+          "e3a4804f-9ed9-56b0-80c9-162f94bd57af (q-79411)",
+          "322fb855-3d8d-59e6-ba9e-0f5421e84a86 (q-79417)",
+          "251cb9e2-c851-5082-b166-e39206cbabf3 (q-79420)",
+          "generate/principles.md: meaningful variety"
+        ],
+        "reproduction": "From evidence_root, run /home/jake/Developer/Course_Academy/.venv/bin/python reproduce_profile_omission.py --assert-coverage. It exits 1. Production calls with --difficulty moderate --count 5 --seed 17 and seed 43 return the same five profiles; six complete runs are retained.",
+        "requested_change": "Make profile ordering or the cycle starting point depend on the seed before truncating to count. Preserve all supported profiles and retain the failing CLI reachability test. Verify the omitted profiles can survive delivery at count=5."
+      }
+    ]
   },
-  "author_running": false,
+  "author_running": true,
   "manifest": "package.json",
   "effective_difficulty": "moderate",
   "batch_hash": "4dd7d4437af568322dcdc7d29fbf27df8d4a0e7bf755cb2fa35afc9438d5d81f",
   "runtime": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186184172/runtime-1",
   "engine_hash": "dc1e0a8583ca33c6028bc0a641128ecc8e7896742189dd42b292170c9726bad9",
   "assets": {},
-  "package_hash": "5406039e76aba13f3ef7aee508b38687843d75cfb8aab140972cf79541f8aa83"
+  "package_hash": "5406039e76aba13f3ef7aee508b38687843d75cfb8aab140972cf79541f8aa83",
+  "previous_review": {
+    "directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186184172/review-1-policy-2-45a9ed86924bfc07",
+    "binding": {
+      "policy_version": 2,
+      "package_hash": "5406039e76aba13f3ef7aee508b38687843d75cfb8aab140972cf79541f8aa83",
+      "batch_hash": "4dd7d4437af568322dcdc7d29fbf27df8d4a0e7bf755cb2fa35afc9438d5d81f",
+      "source_hash": "4bb038a2a4d929340f15834033a1f21f09750edfa5ca42786419ca3b7517ae61",
+      "inventory_hash": "36107dd66820c5e65aa77d762f0284b469f0cc930bb8a445d0bd12c4d0301912",
+      "assets": {},
+      "effective_difficulty": "moderate",
+      "engine_hash": "dc1e0a8583ca33c6028bc0a641128ecc8e7896742189dd42b292170c9726bad9"
+    }
+  },
+  "last_rejected_package": "5406039e76aba13f3ef7aee508b38687843d75cfb8aab140972cf79541f8aa83",
+  "last_rejected_source": "4bb038a2a4d929340f15834033a1f21f09750edfa5ca42786419ca3b7517ae61",
+  "last_rejected_engine": "dc1e0a8583ca33c6028bc0a641128ecc8e7896742189dd42b292170c9726bad9"
 }

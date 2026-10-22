@@ -1,0 +1,943 @@
+{
+  "learner_operation": "Determine the dimension of the supplied null space or pivot count; derive the complementary rank/nullity; decide each statement independently and select the corresponding subset.",
+  "fixed_features": [
+    {
+      "feature": "Square matrices",
+      "justification": "The source applies invertibility equivalences for n by n matrices."
+    },
+    {
+      "feature": "Three candidate statements",
+      "justification": "Observed evaluation workload and response shape."
+    },
+    {
+      "feature": "Source radio bank size five and three Boolean checkbox fields",
+      "justification": "Preserve observed response contract and three-statement workload; correct roles may vary among the actual offered bank labels."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Truth status of each displayed mathematical statement",
+      "eligible_variation": "Change numerical claims, equality/inequality and invertibility polarity while deriving truth from visible rank/nullity.",
+      "observed": "91 controlled cases exercise every offered source radio label and all seven nonempty checkbox subsets across 15 profiles; independent visible math and native grading agree."
+    },
+    {
+      "role": "Rank/nullity and invertibility status of supplied matrix",
+      "eligible_variation": "Vary pivot/non-pivot count 0..n at fixed dimension; change irrelevant coordinates while preserving dimension.",
+      "observed": "Boundary cases include 0 and n counts; full-rank and singular situations have matching facts, explanations and keys."
+    },
+    {
+      "role": "Source bank / input representation reaching normal delivered practice",
+      "eligible_variation": "All supported moderate source profiles should have a route into ordinary count=5 batches across seeds.",
+      "observed": "FAIL: the sorted cycle always starts at index zero. q-79411, q-79417 and q-79420 are supported and replayable but absent from six normal runs and the exact runner batch."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "Supported source replay",
+      "sample_refs": [
+        "replay-records.json",
+        "source-replay-results.json"
+      ],
+      "result": "15 exact prompts, full ordered banks, keys and worked solutions replay. Canonical missing bank documented."
+    },
+    {
+      "case": "Every eligible truth subset per profile",
+      "sample_refs": [
+        "decision-records.json",
+        "decision-results.json",
+        "native-input.json",
+        "native-report.json"
+      ],
+      "result": "91 explicit cases, all five offered radio labels or seven nonempty checkbox subsets for each profile; no math/key errors."
+    },
+    {
+      "case": "Requested batch independently assessed",
+      "sample_refs": [
+        "runner-batch.json",
+        "delivery-batch/accepted.json",
+        "shortcut-results.json"
+      ],
+      "result": "5/5 survive. Radio answers are III only and I, II, and III; checkbox masks are TFF, TFT and FTT. No constant answer/selection-count shortcut demonstrated; only five of eight moderate profiles occur."
+    },
+    {
+      "case": "Normal CLI profile reachability",
+      "sample_refs": [
+        "profile-omission-records.json",
+        "profile-omission-results.json",
+        "delivery-profile-omission/accepted.json"
+      ],
+      "result": "FAIL: all 30 records survive, with exactly the same five profiles in each count=5 batch. Missing q-79411, q-79417, q-79420."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "At fixed n=4 change pivot count 3 to 4, holding requested truth subset TFT.",
+      "expected": "Rank/nullity become 4/0 and invertibility wording flips; same requested subset remains correct through derived claims.",
+      "observed": "Visible facts and solution change 3/1 -> 4/0; radio remains I and III only.",
+      "status": "passed",
+      "justification": "The source derives all statements from pivot counts or null-space dimension, not coordinate scale or a fixed label. Rendered prompt, explanation and native learner-grade results were checked together.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "render-all/input.json",
+        "render-all/rendering.json",
+        "native-input.json",
+        "native-report.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "At fixed 4 by 4 matrix with three pivots, change claim truth assignment TFT to TTF.",
+      "expected": "Rank statement remains true; invertibility claim becomes true and nullity claim false; selected label changes I/III -> I/II.",
+      "observed": "Rendered prompts and correct controls change I/III -> I/II. Native grader accepts each new label and rejects every alternative.",
+      "status": "passed",
+      "justification": "The source derives all statements from pivot counts or null-space dimension, not coordinate scale or a fixed label. Rendered prompt, explanation and native learner-grade results were checked together.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "render-all/input.json",
+        "render-all/rendering.json",
+        "native-input.json",
+        "native-report.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Change null-space coordinates (2a,a,b) to (6a,2a,b), holding n and truth assignment.",
+      "expected": "Nullity stays 2, rank stays 1, same Boolean selection and reasoning; displayed prompt and basis vectors change.",
+      "observed": "Rendered vector and basis change, both prompt oracles give rank 1/nullity 2; Boolean TFT accepted in both and all opposite states rejected.",
+      "status": "passed",
+      "justification": "The source derives all statements from pivot counts or null-space dimension, not coordinate scale or a fixed label. Rendered prompt, explanation and native learner-grade results were checked together.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "render-all/input.json",
+        "render-all/rendering.json",
+        "native-input.json",
+        "native-report.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "Recognizable source template / fixed subset",
+      "subgroup": "fresh_raw:q-139986",
+      "scope": "within_template",
+      "strategy": "Always return I and III only",
+      "correct": 4,
+      "total": 12,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best constant subset succeeds 4/12. Comparison: uniform guessing among five bank labels (radio) or seven nonempty checkbox subsets. This sample tests constancy, not a universal absence of predictors.",
+      "sample_refs": [
+        "fresh-records.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template / fixed subset",
+      "subgroup": "fresh_raw:q-142538",
+      "scope": "within_template",
+      "strategy": "Always return II only",
+      "correct": 5,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best constant subset succeeds 5/12. Comparison: uniform guessing among five bank labels (radio) or seven nonempty checkbox subsets. This sample tests constancy, not a universal absence of predictors.",
+      "sample_refs": [
+        "fresh-records.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template / fixed subset",
+      "subgroup": "fresh_raw:q-142542",
+      "scope": "within_template",
+      "strategy": "Always return II and III only",
+      "correct": 4,
+      "total": 12,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best constant subset succeeds 4/12. Comparison: uniform guessing among five bank labels (radio) or seven nonempty checkbox subsets. This sample tests constancy, not a universal absence of predictors.",
+      "sample_refs": [
+        "fresh-records.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template / fixed subset",
+      "subgroup": "fresh_raw:q-142544",
+      "scope": "within_template",
+      "strategy": "Always return I, II, and III",
+      "correct": 4,
+      "total": 12,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best constant subset succeeds 4/12. Comparison: uniform guessing among five bank labels (radio) or seven nonempty checkbox subsets. This sample tests constancy, not a universal absence of predictors.",
+      "sample_refs": [
+        "fresh-records.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template / fixed subset",
+      "subgroup": "fresh_raw:q-143533",
+      "scope": "within_template",
+      "strategy": "Always return II only",
+      "correct": 5,
+      "total": 12,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best constant subset succeeds 5/12. Comparison: uniform guessing among five bank labels (radio) or seven nonempty checkbox subsets. This sample tests constancy, not a universal absence of predictors.",
+      "sample_refs": [
+        "fresh-records.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template / fixed subset",
+      "subgroup": "fresh_raw:q-34930",
+      "scope": "within_template",
+      "strategy": "Always return III only",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best constant subset succeeds 3/12. Comparison: uniform guessing among five bank labels (radio) or seven nonempty checkbox subsets. This sample tests constancy, not a universal absence of predictors.",
+      "sample_refs": [
+        "fresh-records.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template / fixed subset",
+      "subgroup": "fresh_raw:q-34934",
+      "scope": "within_template",
+      "strategy": "Always return I and III only",
+      "correct": 4,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best constant subset succeeds 4/12. Comparison: uniform guessing among five bank labels (radio) or seven nonempty checkbox subsets. This sample tests constancy, not a universal absence of predictors.",
+      "sample_refs": [
+        "fresh-records.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template / fixed subset",
+      "subgroup": "fresh_raw:q-35424",
+      "scope": "within_template",
+      "strategy": "Always return II only",
+      "correct": 4,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best constant subset succeeds 4/12. Comparison: uniform guessing among five bank labels (radio) or seven nonempty checkbox subsets. This sample tests constancy, not a universal absence of predictors.",
+      "sample_refs": [
+        "fresh-records.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template / fixed subset",
+      "subgroup": "fresh_raw:q-35435",
+      "scope": "within_template",
+      "strategy": "Always return II and III only",
+      "correct": 4,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best constant subset succeeds 4/12. Comparison: uniform guessing among five bank labels (radio) or seven nonempty checkbox subsets. This sample tests constancy, not a universal absence of predictors.",
+      "sample_refs": [
+        "fresh-records.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template / fixed subset",
+      "subgroup": "fresh_raw:q-79367",
+      "scope": "within_template",
+      "strategy": "Always return III only",
+      "correct": 4,
+      "total": 12,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best constant subset succeeds 4/12. Comparison: uniform guessing among five bank labels (radio) or seven nonempty checkbox subsets. This sample tests constancy, not a universal absence of predictors.",
+      "sample_refs": [
+        "fresh-records.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template / fixed subset",
+      "subgroup": "fresh_raw:q-79410",
+      "scope": "within_template",
+      "strategy": "Always return II only",
+      "correct": 4,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best constant subset succeeds 4/12. Comparison: uniform guessing among five bank labels (radio) or seven nonempty checkbox subsets. This sample tests constancy, not a universal absence of predictors.",
+      "sample_refs": [
+        "fresh-records.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template / fixed subset",
+      "subgroup": "fresh_raw:q-79411",
+      "scope": "within_template",
+      "strategy": "Always return I and III only",
+      "correct": 4,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best constant subset succeeds 4/12. Comparison: uniform guessing among five bank labels (radio) or seven nonempty checkbox subsets. This sample tests constancy, not a universal absence of predictors.",
+      "sample_refs": [
+        "fresh-records.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template / fixed subset",
+      "subgroup": "fresh_raw:q-79417",
+      "scope": "within_template",
+      "strategy": "Always return II and III only",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best constant subset succeeds 3/12. Comparison: uniform guessing among five bank labels (radio) or seven nonempty checkbox subsets. This sample tests constancy, not a universal absence of predictors.",
+      "sample_refs": [
+        "fresh-records.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template / fixed subset",
+      "subgroup": "fresh_raw:q-79420",
+      "scope": "within_template",
+      "strategy": "Always return I and III only",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best constant subset succeeds 3/12. Comparison: uniform guessing among five bank labels (radio) or seven nonempty checkbox subsets. This sample tests constancy, not a universal absence of predictors.",
+      "sample_refs": [
+        "fresh-records.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template / fixed subset",
+      "subgroup": "fresh_raw:q-79423",
+      "scope": "within_template",
+      "strategy": "Always return II only",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best constant subset succeeds 3/12. Comparison: uniform guessing among five bank labels (radio) or seven nonempty checkbox subsets. This sample tests constancy, not a universal absence of predictors.",
+      "sample_refs": [
+        "fresh-records.json"
+      ]
+    },
+    {
+      "cue": "Stored bank position",
+      "subgroup": "fresh_raw radio",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose stored index 2",
+      "correct": 21,
+      "total": 84,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "21/84 complete questions solved. Baseline is uniform bank/subset guessing. Stored order is additionally permuted by learning.js for radio; measured separately below.",
+      "sample_refs": [
+        "fresh-records.json"
+      ]
+    },
+    {
+      "cue": "Fixed checkbox positions",
+      "subgroup": "fresh_raw checkbox",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always submit (False, True, True)",
+      "correct": 18,
+      "total": 96,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "18/96 complete questions solved. Baseline is uniform bank/subset guessing. Stored order is additionally permuted by learning.js for radio; measured separately below.",
+      "sample_refs": [
+        "fresh-records.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template / fixed subset",
+      "subgroup": "fresh_delivered:q-142538",
+      "scope": "within_template",
+      "strategy": "Always return II only",
+      "correct": 5,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best constant subset succeeds 5/12. Comparison: uniform guessing among five bank labels (radio) or seven nonempty checkbox subsets. This sample tests constancy, not a universal absence of predictors.",
+      "sample_refs": [
+        "delivery-moderate/accepted.json",
+        "delivery-hard/accepted.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template / fixed subset",
+      "subgroup": "fresh_delivered:q-142544",
+      "scope": "within_template",
+      "strategy": "Always return I, II, and III",
+      "correct": 4,
+      "total": 12,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best constant subset succeeds 4/12. Comparison: uniform guessing among five bank labels (radio) or seven nonempty checkbox subsets. This sample tests constancy, not a universal absence of predictors.",
+      "sample_refs": [
+        "delivery-moderate/accepted.json",
+        "delivery-hard/accepted.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template / fixed subset",
+      "subgroup": "fresh_delivered:q-143533",
+      "scope": "within_template",
+      "strategy": "Always return II only",
+      "correct": 5,
+      "total": 11,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best constant subset succeeds 5/11. Comparison: uniform guessing among five bank labels (radio) or seven nonempty checkbox subsets. This sample tests constancy, not a universal absence of predictors.",
+      "sample_refs": [
+        "delivery-moderate/accepted.json",
+        "delivery-hard/accepted.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template / fixed subset",
+      "subgroup": "fresh_delivered:q-34934",
+      "scope": "within_template",
+      "strategy": "Always return I and III only",
+      "correct": 4,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best constant subset succeeds 4/12. Comparison: uniform guessing among five bank labels (radio) or seven nonempty checkbox subsets. This sample tests constancy, not a universal absence of predictors.",
+      "sample_refs": [
+        "delivery-moderate/accepted.json",
+        "delivery-hard/accepted.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template / fixed subset",
+      "subgroup": "fresh_delivered:q-79367",
+      "scope": "within_template",
+      "strategy": "Always return III only",
+      "correct": 4,
+      "total": 12,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best constant subset succeeds 4/12. Comparison: uniform guessing among five bank labels (radio) or seven nonempty checkbox subsets. This sample tests constancy, not a universal absence of predictors.",
+      "sample_refs": [
+        "delivery-moderate/accepted.json",
+        "delivery-hard/accepted.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template / fixed subset",
+      "subgroup": "fresh_delivered:q-79411",
+      "scope": "within_template",
+      "strategy": "Always return I and III only",
+      "correct": 4,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best constant subset succeeds 4/12. Comparison: uniform guessing among five bank labels (radio) or seven nonempty checkbox subsets. This sample tests constancy, not a universal absence of predictors.",
+      "sample_refs": [
+        "delivery-moderate/accepted.json",
+        "delivery-hard/accepted.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template / fixed subset",
+      "subgroup": "fresh_delivered:q-79417",
+      "scope": "within_template",
+      "strategy": "Always return II and III only",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best constant subset succeeds 3/12. Comparison: uniform guessing among five bank labels (radio) or seven nonempty checkbox subsets. This sample tests constancy, not a universal absence of predictors.",
+      "sample_refs": [
+        "delivery-moderate/accepted.json",
+        "delivery-hard/accepted.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template / fixed subset",
+      "subgroup": "fresh_delivered:q-79420",
+      "scope": "within_template",
+      "strategy": "Always return I and III only",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best constant subset succeeds 3/12. Comparison: uniform guessing among five bank labels (radio) or seven nonempty checkbox subsets. This sample tests constancy, not a universal absence of predictors.",
+      "sample_refs": [
+        "delivery-moderate/accepted.json",
+        "delivery-hard/accepted.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template / fixed subset",
+      "subgroup": "fresh_delivered:q-139986",
+      "scope": "within_template",
+      "strategy": "Always return I and III only",
+      "correct": 4,
+      "total": 12,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best constant subset succeeds 4/12. Comparison: uniform guessing among five bank labels (radio) or seven nonempty checkbox subsets. This sample tests constancy, not a universal absence of predictors.",
+      "sample_refs": [
+        "delivery-moderate/accepted.json",
+        "delivery-hard/accepted.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template / fixed subset",
+      "subgroup": "fresh_delivered:q-142542",
+      "scope": "within_template",
+      "strategy": "Always return II and III only",
+      "correct": 4,
+      "total": 12,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best constant subset succeeds 4/12. Comparison: uniform guessing among five bank labels (radio) or seven nonempty checkbox subsets. This sample tests constancy, not a universal absence of predictors.",
+      "sample_refs": [
+        "delivery-moderate/accepted.json",
+        "delivery-hard/accepted.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template / fixed subset",
+      "subgroup": "fresh_delivered:q-34930",
+      "scope": "within_template",
+      "strategy": "Always return III only",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best constant subset succeeds 3/12. Comparison: uniform guessing among five bank labels (radio) or seven nonempty checkbox subsets. This sample tests constancy, not a universal absence of predictors.",
+      "sample_refs": [
+        "delivery-moderate/accepted.json",
+        "delivery-hard/accepted.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template / fixed subset",
+      "subgroup": "fresh_delivered:q-35424",
+      "scope": "within_template",
+      "strategy": "Always return II only",
+      "correct": 4,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best constant subset succeeds 4/12. Comparison: uniform guessing among five bank labels (radio) or seven nonempty checkbox subsets. This sample tests constancy, not a universal absence of predictors.",
+      "sample_refs": [
+        "delivery-moderate/accepted.json",
+        "delivery-hard/accepted.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template / fixed subset",
+      "subgroup": "fresh_delivered:q-35435",
+      "scope": "within_template",
+      "strategy": "Always return II and III only",
+      "correct": 4,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best constant subset succeeds 4/12. Comparison: uniform guessing among five bank labels (radio) or seven nonempty checkbox subsets. This sample tests constancy, not a universal absence of predictors.",
+      "sample_refs": [
+        "delivery-moderate/accepted.json",
+        "delivery-hard/accepted.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template / fixed subset",
+      "subgroup": "fresh_delivered:q-79410",
+      "scope": "within_template",
+      "strategy": "Always return II only",
+      "correct": 4,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best constant subset succeeds 4/12. Comparison: uniform guessing among five bank labels (radio) or seven nonempty checkbox subsets. This sample tests constancy, not a universal absence of predictors.",
+      "sample_refs": [
+        "delivery-moderate/accepted.json",
+        "delivery-hard/accepted.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template / fixed subset",
+      "subgroup": "fresh_delivered:q-79423",
+      "scope": "within_template",
+      "strategy": "Always return II only",
+      "correct": 3,
+      "total": 11,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best constant subset succeeds 3/11. Comparison: uniform guessing among five bank labels (radio) or seven nonempty checkbox subsets. This sample tests constancy, not a universal absence of predictors.",
+      "sample_refs": [
+        "delivery-moderate/accepted.json",
+        "delivery-hard/accepted.json"
+      ]
+    },
+    {
+      "cue": "Stored bank position",
+      "subgroup": "fresh_delivered radio",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose stored index 2",
+      "correct": 21,
+      "total": 84,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "21/84 complete questions solved. Baseline is uniform bank/subset guessing. Stored order is additionally permuted by learning.js for radio; measured separately below.",
+      "sample_refs": [
+        "delivery-moderate/accepted.json",
+        "delivery-hard/accepted.json"
+      ]
+    },
+    {
+      "cue": "Fixed checkbox positions",
+      "subgroup": "fresh_delivered checkbox",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always submit (False, True, True)",
+      "correct": 17,
+      "total": 94,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "17/94 complete questions solved. Baseline is uniform bank/subset guessing. Stored order is additionally permuted by learning.js for radio; measured separately below.",
+      "sample_refs": [
+        "delivery-moderate/accepted.json",
+        "delivery-hard/accepted.json"
+      ]
+    },
+    {
+      "cue": "Stored bank position",
+      "subgroup": "runner_raw radio",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose stored index 3",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/2 complete questions solved. Baseline is uniform bank/subset guessing. Stored order is additionally permuted by learning.js for radio; measured separately below.",
+      "sample_refs": [
+        "runner-batch.json"
+      ]
+    },
+    {
+      "cue": "Fixed checkbox positions",
+      "subgroup": "runner_raw checkbox",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always submit (True, False, False)",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "1/3 complete questions solved. Baseline is uniform bank/subset guessing. Stored order is additionally permuted by learning.js for radio; measured separately below.",
+      "sample_refs": [
+        "runner-batch.json"
+      ]
+    },
+    {
+      "cue": "Stored bank position",
+      "subgroup": "runner_delivered radio",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose stored index 3",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/2 complete questions solved. Baseline is uniform bank/subset guessing. Stored order is additionally permuted by learning.js for radio; measured separately below.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "Fixed checkbox positions",
+      "subgroup": "runner_delivered checkbox",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always submit (True, False, False)",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "1/3 complete questions solved. Baseline is uniform bank/subset guessing. Stored order is additionally permuted by learning.js for radio; measured separately below.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template / fixed subset",
+      "subgroup": "normal_cli_raw:q-142538",
+      "scope": "within_template",
+      "strategy": "Always return I only",
+      "correct": 3,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best constant subset succeeds 3/6. Comparison: uniform guessing among five bank labels (radio) or seven nonempty checkbox subsets. This sample tests constancy, not a universal absence of predictors.",
+      "sample_refs": [
+        "profile-omission-records.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template / fixed subset",
+      "subgroup": "normal_cli_raw:q-142544",
+      "scope": "within_template",
+      "strategy": "Always return II only",
+      "correct": 2,
+      "total": 6,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best constant subset succeeds 2/6. Comparison: uniform guessing among five bank labels (radio) or seven nonempty checkbox subsets. This sample tests constancy, not a universal absence of predictors.",
+      "sample_refs": [
+        "profile-omission-records.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template / fixed subset",
+      "subgroup": "normal_cli_raw:q-143533",
+      "scope": "within_template",
+      "strategy": "Always return II and III only",
+      "correct": 3,
+      "total": 6,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best constant subset succeeds 3/6. Comparison: uniform guessing among five bank labels (radio) or seven nonempty checkbox subsets. This sample tests constancy, not a universal absence of predictors.",
+      "sample_refs": [
+        "profile-omission-records.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template / fixed subset",
+      "subgroup": "normal_cli_raw:q-34934",
+      "scope": "within_template",
+      "strategy": "Always return II only",
+      "correct": 3,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best constant subset succeeds 3/6. Comparison: uniform guessing among five bank labels (radio) or seven nonempty checkbox subsets. This sample tests constancy, not a universal absence of predictors.",
+      "sample_refs": [
+        "profile-omission-records.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template / fixed subset",
+      "subgroup": "normal_cli_raw:q-79367",
+      "scope": "within_template",
+      "strategy": "Always return I and III only",
+      "correct": 2,
+      "total": 6,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best constant subset succeeds 2/6. Comparison: uniform guessing among five bank labels (radio) or seven nonempty checkbox subsets. This sample tests constancy, not a universal absence of predictors.",
+      "sample_refs": [
+        "profile-omission-records.json"
+      ]
+    },
+    {
+      "cue": "Stored bank position",
+      "subgroup": "normal_cli_raw radio",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose stored index 4",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/12 complete questions solved. Baseline is uniform bank/subset guessing. Stored order is additionally permuted by learning.js for radio; measured separately below.",
+      "sample_refs": [
+        "profile-omission-records.json"
+      ]
+    },
+    {
+      "cue": "Fixed checkbox positions",
+      "subgroup": "normal_cli_raw checkbox",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always submit (False, True, True)",
+      "correct": 5,
+      "total": 18,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "5/18 complete questions solved. Baseline is uniform bank/subset guessing. Stored order is additionally permuted by learning.js for radio; measured separately below.",
+      "sample_refs": [
+        "profile-omission-records.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template / fixed subset",
+      "subgroup": "normal_cli_delivered:q-142538",
+      "scope": "within_template",
+      "strategy": "Always return I only",
+      "correct": 3,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best constant subset succeeds 3/6. Comparison: uniform guessing among five bank labels (radio) or seven nonempty checkbox subsets. This sample tests constancy, not a universal absence of predictors.",
+      "sample_refs": [
+        "delivery-profile-omission/accepted.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template / fixed subset",
+      "subgroup": "normal_cli_delivered:q-142544",
+      "scope": "within_template",
+      "strategy": "Always return II only",
+      "correct": 2,
+      "total": 6,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best constant subset succeeds 2/6. Comparison: uniform guessing among five bank labels (radio) or seven nonempty checkbox subsets. This sample tests constancy, not a universal absence of predictors.",
+      "sample_refs": [
+        "delivery-profile-omission/accepted.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template / fixed subset",
+      "subgroup": "normal_cli_delivered:q-143533",
+      "scope": "within_template",
+      "strategy": "Always return II and III only",
+      "correct": 3,
+      "total": 6,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best constant subset succeeds 3/6. Comparison: uniform guessing among five bank labels (radio) or seven nonempty checkbox subsets. This sample tests constancy, not a universal absence of predictors.",
+      "sample_refs": [
+        "delivery-profile-omission/accepted.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template / fixed subset",
+      "subgroup": "normal_cli_delivered:q-34934",
+      "scope": "within_template",
+      "strategy": "Always return II only",
+      "correct": 3,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best constant subset succeeds 3/6. Comparison: uniform guessing among five bank labels (radio) or seven nonempty checkbox subsets. This sample tests constancy, not a universal absence of predictors.",
+      "sample_refs": [
+        "delivery-profile-omission/accepted.json"
+      ]
+    },
+    {
+      "cue": "Recognizable source template / fixed subset",
+      "subgroup": "normal_cli_delivered:q-79367",
+      "scope": "within_template",
+      "strategy": "Always return I and III only",
+      "correct": 2,
+      "total": 6,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best constant subset succeeds 2/6. Comparison: uniform guessing among five bank labels (radio) or seven nonempty checkbox subsets. This sample tests constancy, not a universal absence of predictors.",
+      "sample_refs": [
+        "delivery-profile-omission/accepted.json"
+      ]
+    },
+    {
+      "cue": "Stored bank position",
+      "subgroup": "normal_cli_delivered radio",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose stored index 4",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/12 complete questions solved. Baseline is uniform bank/subset guessing. Stored order is additionally permuted by learning.js for radio; measured separately below.",
+      "sample_refs": [
+        "delivery-profile-omission/accepted.json"
+      ]
+    },
+    {
+      "cue": "Fixed checkbox positions",
+      "subgroup": "normal_cli_delivered checkbox",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always submit (False, True, True)",
+      "correct": 5,
+      "total": 18,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "5/18 complete questions solved. Baseline is uniform bank/subset guessing. Stored order is additionally permuted by learning.js for radio; measured separately below.",
+      "sample_refs": [
+        "delivery-profile-omission/accepted.json"
+      ]
+    },
+    {
+      "cue": "Actual learning.js radio position",
+      "subgroup": "fresh_delivered; task-item contexts 1..10",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose rendered index 1",
+      "correct": 188,
+      "total": 840,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Actual FNV choiceOrder reproduced from ui/learning.js:690-692. Best fixed position 188/840, against 1/5 guessing. Actual future task-item IDs are unavailable; ten explicit contexts test position dependence.",
+      "sample_refs": [
+        "delivery-moderate/accepted.json",
+        "shortcut-results.json",
+        "delivery-hard/accepted.json"
+      ]
+    },
+    {
+      "cue": "Actual learning.js radio position",
+      "subgroup": "runner_delivered; task-item contexts 1..10",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose rendered index 1",
+      "correct": 6,
+      "total": 20,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Actual FNV choiceOrder reproduced from ui/learning.js:690-692. Best fixed position 6/20, against 1/5 guessing. Actual future task-item IDs are unavailable; ten explicit contexts test position dependence.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Visible nonzero null-space generator",
+      "subgroup": "fresh delivered vector templates",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Conclude A is singular from the displayed nonzero null vector",
+      "correct": 94,
+      "total": 94,
+      "baseline": 0.5,
+      "disposition": "intended_skill",
+      "conclusion": "A perfect predictor here is the invertible matrix theorem itself, not an incidental template label. Comparison baseline is a fair binary invertibility guess. The source worked solutions explicitly use nonzero nullity to conclude singularity. Numeric rank/column-dimension claims still require the nullity and n.",
+      "sample_refs": [
+        "delivery-moderate/accepted.json",
+        "delivery-hard/accepted.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "Generator explicit invalid-parameter rejection and nonempty-checkbox policy",
+      "Generator CLI profile selection, uniqueness filtering and bounded retries",
+      "Actual prepare_records requested difficulty, normalization, identity validation and deduplication",
+      "Captured original inventory provenance, basis 5447",
+      "Difficulty-first learner selection, unseen-item exclusion, configured positive/zero weights and legacy fallback",
+      "Actual UI choice ordering across explicit task-item contexts"
+    ],
+    "sample_refs": [
+      "rejection-results.json",
+      "cli-sampling-results.json",
+      "profile-omission-results.json",
+      "delivery-batch/delivery.json",
+      "delivery-moderate/delivery.json",
+      "delivery-hard/delivery.json",
+      "delivery-profile-omission/delivery.json",
+      "selection-results.json",
+      "shortcut-results.json"
+    ],
+    "result": "Direct per-profile sampling exposes all 15 profiles and delivery retains them (96->95 moderate, 84->83 hard). Normal count=5 CLI and exact runner batch reach five of eight moderate profiles. Deduplication and selection cannot replenish missing new profiles. Captured inventory holds original source questions only, so originals can temporarily provide missing cases until seen."
+  },
+  "limitations": [
+    "No live learner history or configured policy weights are in the capture; selection analysis is conditional on explicit weight/history scenarios and symbolic prospective entity IDs. Support within a positive band follows the actual algorithm.",
+    "Captured inventory basis 5447 may change later; this review performs no publication or database writes.",
+    "No finite probe set proves absence of all shortcuts; one-record runner profile groups cannot establish within-profile diversity. Fresh and explicit cases establish generator capability separately from the failed normal delivery coverage.",
+    "Original canonical bank is absent; no hypothetical options were invented."
+  ]
+}
