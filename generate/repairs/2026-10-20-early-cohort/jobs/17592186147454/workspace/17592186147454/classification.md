@@ -1,16 +1,9 @@
-# Solving a Bernoulli Differential Equation
+# Solving a Bernoulli differential equation
 
-Captured live math basis 2280; lineage 01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1. Eleven practice sources and a separate canonical example are retained in source.json and reference/source.edn.
+The supplied source has eleven practice questions and a separate canonical example. Ten complete banks contain one five-choice radio field: six moderate profiles (q-106073, q-109026, q-109027, q-109028, q-109029, q-109154) and four hard profiles (q-109170, q-109172, q-109177, q-109158). Moderate prompts start in standard Bernoulli form. Hard prompts require normalization first. No diagrams occur.
 
-| Difficulty | Fields | Complete templates/profiles | Plots | Source IDs |
-|---|---|---|---|---|
-| Moderate | one radio selection, five equation values | 6 / 6 | none | q-106073, q-109026, q-109027, q-109028, q-109029, q-109154 |
-| Hard | one radio selection, five equation values | 4 / 4 | none | q-109170, q-109172, q-109177, q-109158 |
-| Unrated | incomplete radio selection | 1 unresolved | none | q-106074 |
-| Easy | no observed full-solution template | unsupported | none | none |
+The repaired generator supports all ten complete profiles in ordinary practice. Coefficients, forcing signs, and the correct formula within a fixed bank vary together with the equation and solution; coordinate shifts supply additional mathematical variation where meaningful. The autonomous family varies its coefficients, not its coordinate. Original banks remain available through explicit original-parameter replay. The current specification and source references are in ../instructional-account.md; executable evidence is in ../evidence/.
 
-Each complete source has a distinct supplied ODE structure/exponent or rearrangement and retains its own five-choice bank. Moderate starts in standard Bernoulli form; hard first rearranges a nonstandard equation. Exponent, supplied operator structure, substitution, and integrating-factor solution stages remain fixed. Translation h is a conservative same-method generalization, not an observed source parameter: d(x+h)/dx=1, so the existing antiderivatives and entire banks translate exactly. It changes the ODE coefficients in nine templates. The autonomous q-109029 is replay-only because translation changes neither its ODE nor its arbitrary-constant family.
+q-106074 is labeled hard in the source, correcting the old classification's claim that it was unrated. Its captured bank has no key or worked solution, and the retained independent derivation shows that none of its five choices solves the supplied equation. It remains unresolved. No easy full-solution source supports an easy band.
 
-Source prompts call their nonzero families “general solutions.” New prompts explicitly ask for nonzero real solutions and provide interval/branch restrictions. This avoids claiming omitted equilibrium solutions and excludes extraneous even-power branches. Source facts remain unchanged. q-106074 has no recorded correct value, solution, or rating; it cannot count as validated inventory.
-
-The source integrating-factor expressions `(1/4x)` (q-109170) and `(3/2x)` (q-109177) are ambiguous. Their displayed P(x) values and logarithmic antiderivatives establish reciprocal intent. Normal generated solutions use explicit fractions 1/(4(x+h)) and 3/(2(x+h)); original source replay keeps the literal text.
+New prompts explicitly request nonzero real families and state interval/branch restrictions. This preserves the earlier repair for Bernoulli division and real inverses. Ambiguous reciprocal integrands in two source worked solutions remain unchanged in replay; new solutions use unambiguous fractions.

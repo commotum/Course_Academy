@@ -63,7 +63,7 @@ def verify(r,stages=True):
   solution=q[':question/worked-solution'];p,qq,n=ode(q[':question/problem'],h)
   zz=re.findall(r'\$\$z=([\s\S]*?)\$\$',solution);assert len(zz)==1
   z=parse(zz[0]).subs(x,x-h);assert residual(z,p,qq,n)==0
-  given=re.search(r'\$\$p\(x\)=([\s\S]*?),\\quad q\(x\)=([\s\S]*?),\\quad n=([\s\S]*?)\$\$',solution);assert given
+  given=re.search(r'p\(x\)&=([\s\S]*?)\\\\ q\(x\)&=([\s\S]*?)\\\\ n&=([\s\S]*?)\\end\{aligned\}',solution);assert given
   assert S.simplify(parse(given[1]).subs(x,x-h)-p)==0
   assert S.simplify(parse(given[2]).subs(x,x-h)-qq)==0
   assert S.simplify(parse(given[3])-n)==0
@@ -99,10 +99,10 @@ def main():
  ordinary=[g.generate('moderate',seed) for seed in range(24)]
  assert any(r['generation']['template']=='q-109029' for r in ordinary), 'Autonomous family unavailable in normal generation'
  records=controlled()
- math=[verify(r) for r in records+scaled+[focused[0],autonomous]]
+ math=[verify(r) for r in records+scaled+[focused[g.SHIFTS.index(1)],autonomous]]
  irrelevant=g.generate('moderate',73429,'q-109154',records[25]['generation']['parameters'])
  assert irrelevant['question']==records[25]['question'], 'Seed changes fully specified instance'
- save('controlled-records.json',records);save('focused-records.json',focused);save('ordinary-records.json',ordinary);save('coefficient-counterfactual.json',scaled)
+ save('controlled-records.json',records);save('focused-records.json',focused);save('ordinary-records.json',ordinary);save('coefficient-counterfactual.json',scaled);save('autonomous-counterexample.json',[autonomous])
  save('regression-math.json',math)
  summary={'finding_ids':['1388ffc008aaf44c1904','0d445813c431c607edbe'],'exact_old_cue':{'successes':sum(map(old_cue,focused)),'attempts':len(focused)},'controlled_templates':len(g.FAMILIES),'fixed_banks':10,'eligible_correct_formulas_per_fixed_bank':5,'independent_math_records':len(math),'ordinary_autonomous_count':sum(r['generation']['template']=='q-109029' for r in ordinary),'irrelevant_seed_preserves_question':True,'status':'passed'}
  save('regression-results.json',summary);print(json.dumps(summary))

@@ -181,7 +181,7 @@ def generate(difficulty,seed=0,template=None,parameters=None,profile=None):
  problem+=' Choose constants and intervals on which the displayed expressions are real and finite.\n\n{{selection}}'
  solution=''
  if difficulty=='hard':solution+='First, rearrange and divide by the coefficient of the derivative:\n\n$$'+dy+'+'+T(p*xY)+'='+T(q*xY**n)+'. $$\n\n'
- solution+='This is a Bernoulli equation with\n\n$$p(x)='+T(p)+r',\quad q(x)='+T(q)+r',\quad n='+T(n)+'.$$\n\n'
+ solution+='This is a Bernoulli equation with\n\n$$'+r'\begin{aligned}p(x)&='+T(p)+r'\\ q(x)&='+T(q)+r'\\ n&='+T(n)+r'.\end{aligned}$$'+'\n\n'
  solution+='Divide by $y^{'+T(n)+'}$ and set $z=y^{'+T(m)+'}$. The chain rule gives\n\n$$'+r'\frac{\mathrm{d}z}{\mathrm{d}x}='+T(m*xY**(-n))+r'\frac{\mathrm{d}y}{\mathrm{d}x}'+'.$$\n\n'
  solution+='Hence the linear equation in standard form is\n\n$$'+r'\frac{\mathrm{d}z}{\mathrm{d}x}+\left('+T(m*p)+r'\right)z='+T(m*q)+'.$$\n\n'
  solution+='An integrating factor is\n\n$$I(x)=e^{'+r'\int '+T(m*p)+r'\,\mathrm{d}x}='+T(mu)+'.$$\n\n'

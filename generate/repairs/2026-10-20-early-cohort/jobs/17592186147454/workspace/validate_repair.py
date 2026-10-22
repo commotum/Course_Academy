@@ -37,7 +37,7 @@ def main():
  c.save('boundary-records.json',boundaries);c.save('boundary-math.json',checked)
  # A small ordinary sample checks runtime sampling, rather than only explicit APIs.
  sampled=[c.verify(r) for r in ordinary];c.save('ordinary-math.json',sampled)
- all_records=replays+controlled+boundaries+batch+ordinary+load(E/'coefficient-counterfactual.json')
+ all_records=replays+controlled+boundaries+batch+ordinary+load(E/'coefficient-counterfactual.json')+[load(E/'focused-records.json')[g.SHIFTS.index(1)]]+[g.generate('moderate',0,'q-109029',{'shift':1})]
  c.save('grader-input.json',[{'label':r['question'][':question/id'],'record':r,'checks':[{'field_index':0,'submitted_answer_id':a[':answer/id'],'expected':'accepted' if a[':answer/id']==c.key(r) else 'rejected','purpose':'Independently residual-checked radio option'} for a in c.field(r)[':answer-field/choices']]} for r in all_records])
  run('grader',[R/'generate/runs/current/check-engine',E/'grader-input.json',E/'grader-report.json'])
  delivery={}

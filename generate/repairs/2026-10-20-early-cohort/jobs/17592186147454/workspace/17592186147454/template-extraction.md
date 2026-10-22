@@ -1,3 +1,5 @@
+> Historical extraction retained for the exact observed source banks. Its translation-only production policy has been replaced by the coefficient-role specification in [instructional-account.md](../instructional-account.md). In particular, q-109029 is now generated normally, and numerical coefficients and the qualifying formula are no longer fixed. The original per-choice mapping in template-extraction.json is still used for exact replay.
+
 # Parameterized source banks
 
 The complete specific descriptions, original equations, original worked solutions, every source answer ID/value/designation, and slot dependencies are in template-extraction.json. Every profile maps all five expressions, with four distractors and one key. The recipe is the observed complete expression evaluated at u=x+h; no distractor interpretation or mixed bank is invented.
