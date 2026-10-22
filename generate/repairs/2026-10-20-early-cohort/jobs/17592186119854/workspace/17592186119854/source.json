@@ -1,43 +1,171 @@
 {
-  "database": "math",
-  "basis": 2584,
-  "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
   "record": {
     ":db/id": 17592186119854,
     ":knowledge-point/canonical-example": {
       ":db/id": 17592186119669,
-      ":knowledge-point/_canonical-example": [
-        {
-          ":knowledge-point/id": "13a44dc8-4699-519f-8cb1-87ad77471ebe",
-          ":knowledge-point/title": "Solving for Three Coefficients in a Linear Combination"
-        }
-      ],
       ":question/id": "d9beff9d-db58-540f-811e-a07fb77d3d92",
       ":question/math-academy-id": "e-6191",
-      ":question/problem": "Consider the vectors\n\n![](images/16/1687c0a08fedfd90a26481007bb9bf56263edf67574fd690662064ef0341c86c.svg)\n\nIf $x_1 \\mathbf{a}_1 + x_2\\mathbf{a}_2 + x_3\\mathbf{a}_3 = \\mathbf b,$ then what is $x_1+x_2+x_3?$",
-      ":question/worked-solution": "Since $\\mathbf{b}$ is a linear combination of vectors $\\mathbf{a_1}, \\,\\mathbf{a_2}$ and $\\mathbf{a_3}$ with coefficients $x_1,\\, x_2$ and $x_3,$ respectively, we have\n\n$$\n\\begin{aligned}{x}_{1}{a}_{1}+{x}_{2}{a}_{2}+{x}_{3}{a}_{3} & =b \\\\ {x}_{1}\\begin{bmatrix}0 \\\\ 1 \\\\ 0\\end{bmatrix}+{x}_{2}\\begin{bmatrix}1 \\\\ 0 \\\\ -1\\end{bmatrix}+{x}_{3}\\begin{bmatrix}1 \\\\ 2 \\\\ 3\\end{bmatrix} & =\\begin{bmatrix}1 \\\\ 1 \\\\ 7\\end{bmatrix} \\\\ \\begin{bmatrix}0 \\\\ {x}_{1} \\\\ 0\\end{bmatrix}+\\begin{bmatrix}{x}_{2} \\\\ 0 \\\\ -{x}_{2}\\end{bmatrix}+\\begin{bmatrix}{x}_{3} \\\\ 2{x}_{3} \\\\ 3{x}_{3}\\end{bmatrix} & =\\begin{bmatrix}1 \\\\ 1 \\\\ 7\\end{bmatrix} \\\\ \\begin{bmatrix}{x}_{2}+{x}_{3} \\\\ {x}_{1}+2{x}_{3} \\\\ -{x}_{2}+3{x}_{3}\\end{bmatrix} & =\\begin{bmatrix}1 \\\\ 1 \\\\ 7\\end{bmatrix}.\\end{aligned}\n$$\n\nEquating the corresponding components, we get the following system:\n\n$$\n\\left\\{\\begin{aligned}{x}_{2}+{x}_{3} &=1 \\\\ {x}_{1}+2{x}_{3} &=1 \\\\ -{x}_{2}+3{x}_{3} &=7\\end{aligned}\\right.\n$$\n\nWe will solve this system using Gaussian elimination. First, we write the augmented matrix for this system:\n\n![](images/9b/9bf913744317fab321cf9f2e01da732853a52a4fd7948c65da596ae4706f6dce.svg)\n\nRow-reducing the augmented matrix, we get\n\n$$\n\\begin{aligned}M & =\\begin{bmatrix}0 & 1 & 1 & 1 \\\\ 1 & 0 & 2 & 1 \\\\ 0 & -1 & 3 & 7\\end{bmatrix} & {R}_{1} & \u2194{R}_{2} \\\\  & \u223c\\begin{bmatrix}1 & 0 & 2 & 1 \\\\ 0 & 1 & 1 & 1 \\\\ 0 & -1 & 3 & 7\\end{bmatrix} & {R}_{3} & :={R}_{3}+{R}_{2} \\\\  & \u223c\\begin{bmatrix}1 & 0 & 2 & 1 \\\\ 0 & 1 & 1 & 1 \\\\ 0 & 0 & 4 & 8\\end{bmatrix} & {R}_{3} & :=\\frac{1}{4}{R}_{3} \\\\  & \u223c\\begin{bmatrix}1 & 0 & 2 & 1 \\\\ 0 & 1 & 1 & 1 \\\\ 0 & 0 & 1 & 2\\end{bmatrix}.\\end{aligned}\n$$\n\nThe system is now \n\n$$\n\\left\\{\\begin{aligned}{x}_{1}+2{x}_{3} &=1 \\\\ {x}_{2}+{x}_{3} &=1 \\\\ {x}_{3} &=2.\\end{aligned}\\right.\n$$\n\nFrom the third equation, we get $x_3 = 2.$ Substituting this into the second equation, we get\n\n$$\nx_2+(2) = 1 \\quad\\Rightarrow\\quad x_2 = -1,\n$$\n\nand substituting $x_3=2$ into the first equation, we get\n\n$$\nx_1+2(2) = 1 \\quad\\Rightarrow\\quad x_1 = -3.\n$$\n\nSo the solution of the system is $x_1=-3, x_2=-1, x_3=2,$ which means\n\n$$\n-3 \\mathbf{a_1}- \\mathbf{a_2} +2 \\mathbf{a_3}= \\mathbf{b}.\n$$\n\nConsequently,\n\n$$\nx_1+x_2+x_3=-3-1+2=-2.\n$$"
+      ":question/problem": "Consider the vectors\n\n\n\n$$\n\\mathbf{a_1}=\\begin{bmatrix}0 \\\\ 1 \\\\ 0\\end{bmatrix}, \\quad \\mathbf{a_2}=\\begin{bmatrix}1 \\\\ 0 \\\\ -1\\end{bmatrix}, \\quad \\mathbf{a_3}=\\begin{bmatrix}1 \\\\ 2 \\\\ 3\\end{bmatrix}, \\quad \\mathbf{b}=\\begin{bmatrix}1 \\\\ 1 \\\\ 7\\end{bmatrix}.\n$$\n\n\n\nIf $x_1 \\mathbf{a}_1 + x_2\\mathbf{a}_2 + x_3\\mathbf{a}_3 = \\mathbf b,$ then what is $x_1+x_2+x_3?$",
+      ":question/worked-solution": "Since $\\mathbf{b}$ is a linear combination of vectors $\\mathbf{a_1}, \\,\\mathbf{a_2}$ and $\\mathbf{a_3}$ with coefficients $x_1,\\, x_2$ and $x_3,$ respectively, we have\n\n$$\n\\begin{aligned}{x}_{1}{a}_{1}+{x}_{2}{a}_{2}+{x}_{3}{a}_{3} & =b \\\\ {x}_{1}\\begin{bmatrix}0 \\\\ 1 \\\\ 0\\end{bmatrix}+{x}_{2}\\begin{bmatrix}1 \\\\ 0 \\\\ -1\\end{bmatrix}+{x}_{3}\\begin{bmatrix}1 \\\\ 2 \\\\ 3\\end{bmatrix} & =\\begin{bmatrix}1 \\\\ 1 \\\\ 7\\end{bmatrix} \\\\ \\begin{bmatrix}0 \\\\ {x}_{1} \\\\ 0\\end{bmatrix}+\\begin{bmatrix}{x}_{2} \\\\ 0 \\\\ -{x}_{2}\\end{bmatrix}+\\begin{bmatrix}{x}_{3} \\\\ 2{x}_{3} \\\\ 3{x}_{3}\\end{bmatrix} & =\\begin{bmatrix}1 \\\\ 1 \\\\ 7\\end{bmatrix} \\\\ \\begin{bmatrix}{x}_{2}+{x}_{3} \\\\ {x}_{1}+2{x}_{3} \\\\ -{x}_{2}+3{x}_{3}\\end{bmatrix} & =\\begin{bmatrix}1 \\\\ 1 \\\\ 7\\end{bmatrix}.\\end{aligned}\n$$\n\nEquating the corresponding components, we get the following system:\n\n$$\n\\left\\{\\begin{aligned}{x}_{2}+{x}_{3} &=1 \\\\ {x}_{1}+2{x}_{3} &=1 \\\\ -{x}_{2}+3{x}_{3} &=7\\end{aligned}\\right.\n$$\n\nWe will solve this system using Gaussian elimination. First, we write the augmented matrix for this system:\n\n\n\n$$\nM= \\left[ \\begin{array}{ccc|c}0 & 1 & 1 & 1 \\\\ 1 & 0 & 2 & 1 \\\\ 0 & -1 & 3 & 7\\end{array} \\right]\n$$\n\n\n\nRow-reducing the augmented matrix, we get\n\n$$\n\\begin{aligned}M & =\\begin{bmatrix}0 & 1 & 1 & 1 \\\\ 1 & 0 & 2 & 1 \\\\ 0 & -1 & 3 & 7\\end{bmatrix} & {R}_{1} & \u2194{R}_{2} \\\\  & \u223c\\begin{bmatrix}1 & 0 & 2 & 1 \\\\ 0 & 1 & 1 & 1 \\\\ 0 & -1 & 3 & 7\\end{bmatrix} & {R}_{3} & :={R}_{3}+{R}_{2} \\\\  & \u223c\\begin{bmatrix}1 & 0 & 2 & 1 \\\\ 0 & 1 & 1 & 1 \\\\ 0 & 0 & 4 & 8\\end{bmatrix} & {R}_{3} & :=\\frac{1}{4}{R}_{3} \\\\  & \u223c\\begin{bmatrix}1 & 0 & 2 & 1 \\\\ 0 & 1 & 1 & 1 \\\\ 0 & 0 & 1 & 2\\end{bmatrix}.\\end{aligned}\n$$\n\nThe system is now \n\n$$\n\\left\\{\\begin{aligned}{x}_{1}+2{x}_{3} &=1 \\\\ {x}_{2}+{x}_{3} &=1 \\\\ {x}_{3} &=2.\\end{aligned}\\right.\n$$\n\nFrom the third equation, we get $x_3 = 2.$ Substituting this into the second equation, we get\n\n$$\nx_2+(2) = 1 \\quad\\Rightarrow\\quad x_2 = -1,\n$$\n\nand substituting $x_3=2$ into the first equation, we get\n\n$$\nx_1+2(2) = 1 \\quad\\Rightarrow\\quad x_1 = -3.\n$$\n\nSo the solution of the system is $x_1=-3, x_2=-1, x_3=2,$ which means\n\n$$\n-3 \\mathbf{a_1}- \\mathbf{a_2} +2 \\mathbf{a_3}= \\mathbf{b}.\n$$\n\nConsequently,\n\n$$\nx_1+x_2+x_3=-3-1+2=-2.\n$$"
     },
     ":knowledge-point/id": "13a44dc8-4699-519f-8cb1-87ad77471ebe",
     ":knowledge-point/key-prerequisites": [
       {
-        ":db/id": 17592186049058
+        ":db/id": 17592186049058,
+        ":topic/difficulty": 0.9585750007816604,
+        ":topic/encompasses": [
+          {
+            ":db/id": 17592186428063,
+            ":encompassing/rationale": "Initial Codex estimate from captured target-band crossing frequency. Selected account foundations: 1 rises / 2 eligible passed source activities = 0.500000; nearest selected fraction = 1/2. Crossing activity numbers [2]; waits [2]. Separate account estimates: differential=1 (1/1); foundations=1/2 (1/2). Selection: most observations, then lower weight, then account name; no averaging. Single-activity estimates included. Intervening target updates: True. Crossing frequency is the chosen practical estimate of encompassing coverage; a multi-band rise counts once. This does not interpret color steps as physical repetition units. Method: encompassing-report.md. Evidence: reference/mathacademy/encompassing-analysis-2026-10-11/frequency-fractions/foundations-frequency-estimates.json, pair 1048->1047. All account evidence retained in the prepared import's selected-relationships.json.",
+            ":encompassing/topic": {
+              ":db/id": 17592186050267
+            },
+            ":encompassing/weight": 0.5
+          },
+          {
+            ":db/id": 17592186428064,
+            ":encompassing/rationale": "Initial Codex estimate from captured target-band crossing frequency. Selected account foundations: 1 rises / 1 eligible passed source activities = 1.000000; nearest selected fraction = 1. Crossing activity numbers [1]; waits [1]. Separate account estimates: foundations=1 (1/1); linear=1 (1/1). Selection: most observations, then lower weight, then account name; no averaging. Single-activity estimates included. Intervening target updates: False. Crossing frequency is the chosen practical estimate of encompassing coverage; a multi-band rise counts once. This does not interpret color steps as physical repetition units. Method: encompassing-report.md. Evidence: reference/mathacademy/encompassing-analysis-2026-10-11/frequency-fractions/foundations-frequency-estimates.json, pair 1048->149. All account evidence retained in the prepared import's selected-relationships.json.",
+            ":encompassing/topic": {
+              ":db/id": 17592186049120
+            },
+            ":encompassing/weight": 1.0
+          },
+          {
+            ":db/id": 17592186428065,
+            ":encompassing/rationale": "Initial Codex estimate from captured target-band crossing frequency. Selected account foundations: 1 rises / 2 eligible passed source activities = 0.500000; nearest selected fraction = 1/2. Crossing activity numbers [2]; waits [2]. Separate account estimates: differential=1 (1/1); foundations=1/2 (1/2). Selection: most observations, then lower weight, then account name; no averaging. Single-activity estimates included. Intervening target updates: True. Crossing frequency is the chosen practical estimate of encompassing coverage; a multi-band rise counts once. This does not interpret color steps as physical repetition units. Method: encompassing-report.md. Evidence: reference/mathacademy/encompassing-analysis-2026-10-11/frequency-fractions/foundations-frequency-estimates.json, pair 1048->151. All account evidence retained in the prepared import's selected-relationships.json.",
+            ":encompassing/topic": {
+              ":db/id": 17592186049422
+            },
+            ":encompassing/weight": 0.5
+          },
+          {
+            ":db/id": 17592186428066,
+            ":encompassing/rationale": "Initial Codex estimate from captured target-band crossing frequency. Selected account differential: 1 rises / 1 eligible passed source activities = 1.000000; nearest selected fraction = 1. Crossing activity numbers [1]; waits [1]. Separate account estimates: differential=1 (1/1). Selection: most observations, then lower weight, then account name; no averaging. Single-activity estimates included. Intervening target updates: False. Crossing frequency is the chosen practical estimate of encompassing coverage; a multi-band rise counts once. This does not interpret color steps as physical repetition units. Method: encompassing-report.md. Evidence: reference/mathacademy/encompassing-analysis-2026-10-11/frequency-fractions/differential-frequency-estimates.json, pair 1048->2083. All account evidence retained in the prepared import's selected-relationships.json.",
+            ":encompassing/topic": {
+              ":db/id": 17592186048980
+            },
+            ":encompassing/weight": 1.0
+          },
+          {
+            ":db/id": 17592186428067,
+            ":encompassing/rationale": "Initial Codex estimate from captured target-band crossing frequency. Selected account foundations: 1 rises / 2 eligible passed source activities = 0.500000; nearest selected fraction = 1/2. Crossing activity numbers [2]; waits [2]. Separate account estimates: foundations=1/2 (1/2). Selection: most observations, then lower weight, then account name; no averaging. Single-activity estimates included. Intervening target updates: True. Crossing frequency is the chosen practical estimate of encompassing coverage; a multi-band rise counts once. This does not interpret color steps as physical repetition units. Method: encompassing-report.md. Evidence: reference/mathacademy/encompassing-analysis-2026-10-11/frequency-fractions/foundations-frequency-estimates.json, pair 1048->3029. All account evidence retained in the prepared import's selected-relationships.json.",
+            ":encompassing/topic": {
+              ":db/id": 17592186050527
+            },
+            ":encompassing/weight": 0.5
+          }
+        ],
+        ":topic/id": "d6879e2a-6593-5a32-bdad-609e580b017a",
+        ":topic/knowledge-points": [
+          {
+            ":db/id": 17592186096672
+          },
+          {
+            ":db/id": 17592186096673
+          }
+        ],
+        ":topic/math-academy-id": 1048,
+        ":topic/next": [
+          {
+            ":db/id": 17592186049723
+          }
+        ],
+        ":topic/title": "Solving 3x3 Systems of Equations Using Gaussian Elimination"
       },
       {
-        ":db/id": 17592186050178
+        ":db/id": 17592186050178,
+        ":topic/difficulty": 0.7261066881298396,
+        ":topic/encompasses": [
+          {
+            ":db/id": 17592186428229,
+            ":encompassing/rationale": "Initial Codex estimate from captured target-band crossing frequency. Selected account foundations: 1 rises / 3 eligible passed source activities = 0.333333; nearest selected fraction = 1/3. Crossing activity numbers [2]; waits [2]. Separate account estimates: foundations=1/3 (1/3). Selection: most observations, then lower weight, then account name; no averaging. Single-activity estimates included. Intervening target updates: True. Crossing frequency is the chosen practical estimate of encompassing coverage; a multi-band rise counts once. This does not interpret color steps as physical repetition units. Method: encompassing-report.md. Evidence: reference/mathacademy/encompassing-analysis-2026-10-11/frequency-fractions/foundations-frequency-estimates.json, pair 1374->1047. All account evidence retained in the prepared import's selected-relationships.json.",
+            ":encompassing/topic": {
+              ":db/id": 17592186050267
+            },
+            ":encompassing/weight": 0.3333333333333333
+          },
+          {
+            ":db/id": 17592186428230,
+            ":encompassing/rationale": "Initial Codex estimate from captured target-band crossing frequency. Selected account foundations: 1 rises / 3 eligible passed source activities = 0.333333; nearest selected fraction = 1/3. Crossing activity numbers [2]; waits [2]. Separate account estimates: differential=1 (1/1); foundations=1/3 (1/3). Selection: most observations, then lower weight, then account name; no averaging. Single-activity estimates included. Intervening target updates: True. Crossing frequency is the chosen practical estimate of encompassing coverage; a multi-band rise counts once. This does not interpret color steps as physical repetition units. Method: encompassing-report.md. Evidence: reference/mathacademy/encompassing-analysis-2026-10-11/frequency-fractions/foundations-frequency-estimates.json, pair 1374->1048. All account evidence retained in the prepared import's selected-relationships.json.",
+            ":encompassing/topic": {
+              ":db/id": 17592186049058
+            },
+            ":encompassing/weight": 0.3333333333333333
+          },
+          {
+            ":db/id": 17592186428231,
+            ":encompassing/rationale": "Initial Codex estimate from captured target-band crossing frequency. Selected account foundations: 1 rises / 3 eligible passed source activities = 0.333333; nearest selected fraction = 1/3. Crossing activity numbers [2]; waits [2]. Separate account estimates: foundations=1/3 (1/3). Selection: most observations, then lower weight, then account name; no averaging. Single-activity estimates included. Intervening target updates: True. Crossing frequency is the chosen practical estimate of encompassing coverage; a multi-band rise counts once. This does not interpret color steps as physical repetition units. Method: encompassing-report.md. Evidence: reference/mathacademy/encompassing-analysis-2026-10-11/frequency-fractions/foundations-frequency-estimates.json, pair 1374->151. All account evidence retained in the prepared import's selected-relationships.json.",
+            ":encompassing/topic": {
+              ":db/id": 17592186049422
+            },
+            ":encompassing/weight": 0.3333333333333333
+          },
+          {
+            ":db/id": 17592186428232,
+            ":encompassing/rationale": "Initial Codex estimate from captured target-band crossing frequency. Selected account foundations: 1 rises / 3 eligible passed source activities = 0.333333; nearest selected fraction = 1/3. Crossing activity numbers [2]; waits [2]. Separate account estimates: differential=1 (1/1); foundations=1/3 (1/3). Selection: most observations, then lower weight, then account name; no averaging. Single-activity estimates included. Intervening target updates: True. Crossing frequency is the chosen practical estimate of encompassing coverage; a multi-band rise counts once. This does not interpret color steps as physical repetition units. Method: encompassing-report.md. Evidence: reference/mathacademy/encompassing-analysis-2026-10-11/frequency-fractions/foundations-frequency-estimates.json, pair 1374->2083. All account evidence retained in the prepared import's selected-relationships.json.",
+            ":encompassing/topic": {
+              ":db/id": 17592186048980
+            },
+            ":encompassing/weight": 0.3333333333333333
+          },
+          {
+            ":db/id": 17592186428233,
+            ":encompassing/rationale": "Initial Codex estimate from captured target-band crossing frequency. Selected account foundations: 1 rises / 3 eligible passed source activities = 0.333333; nearest selected fraction = 1/3. Crossing activity numbers [2]; waits [2]. Separate account estimates: foundations=1/3 (1/3). Selection: most observations, then lower weight, then account name; no averaging. Single-activity estimates included. Intervening target updates: True. Crossing frequency is the chosen practical estimate of encompassing coverage; a multi-band rise counts once. This does not interpret color steps as physical repetition units. Method: encompassing-report.md. Evidence: reference/mathacademy/encompassing-analysis-2026-10-11/frequency-fractions/foundations-frequency-estimates.json, pair 1374->3029. All account evidence retained in the prepared import's selected-relationships.json.",
+            ":encompassing/topic": {
+              ":db/id": 17592186050527
+            },
+            ":encompassing/weight": 0.3333333333333333
+          }
+        ],
+        ":topic/id": "340f0f9d-19b0-5cff-abb5-75d2e7e75aa9",
+        ":topic/knowledge-points": [
+          {
+            ":db/id": 17592186105747
+          },
+          {
+            ":db/id": 17592186105748
+          },
+          {
+            ":db/id": 17592186105809
+          }
+        ],
+        ":topic/math-academy-id": 1374,
+        ":topic/next": [
+          {
+            ":db/id": 17592186048393
+          },
+          {
+            ":db/id": 17592186048499
+          },
+          {
+            ":db/id": 17592186048742
+          }
+        ],
+        ":topic/title": "Solving 3x3 Singular Systems of Equations Using Gaussian Elimination"
       }
     ],
     ":knowledge-point/questions": [
       {
         ":db/id": 17592186120309,
-        ":knowledge-point/_questions": [
-          {
-            ":knowledge-point/id": "13a44dc8-4699-519f-8cb1-87ad77471ebe",
-            ":knowledge-point/title": "Solving for Three Coefficients in a Linear Combination"
-          }
-        ],
         ":question/answer-fields": [
           {
             ":answer-field/choices": [
+              {
+                ":answer/id": "5599f481-dd85-552e-af10-eea6867254c4",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/text"
+                },
+                ":answer/value": "No solution",
+                ":db/id": 17592186117997
+              },
+              {
+                ":answer/id": "71e2eba5-06c7-50b6-88b0-7ea8c256dfb9",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "11",
+                ":db/id": 17592186117998
+              },
               {
                 ":answer/id": "8747e1ec-5bdc-5604-985b-58468728da61",
                 ":answer/type": {
@@ -61,24 +189,16 @@
                 },
                 ":answer/value": "17",
                 ":db/id": 17592186117996
-              },
-              {
-                ":answer/id": "5599f481-dd85-552e-af10-eea6867254c4",
-                ":answer/type": {
-                  ":db/ident": ":answer.type/text"
-                },
-                ":answer/value": "No solution",
-                ":db/id": 17592186117997
-              },
-              {
-                ":answer/id": "71e2eba5-06c7-50b6-88b0-7ea8c256dfb9",
-                ":answer/type": {
-                  ":db/ident": ":answer.type/math"
-                },
-                ":answer/value": "11",
-                ":db/id": 17592186117998
               }
             ],
+            ":answer-field/correct": {
+              ":answer/id": "71e2eba5-06c7-50b6-88b0-7ea8c256dfb9",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "11",
+              ":db/id": 17592186117998
+            },
             ":answer-field/id": "c343bbfd-7cc0-5884-946e-aa6090814a96",
             ":answer-field/key": "selection",
             ":answer-field/type": {
@@ -87,18 +207,16 @@
             ":db/id": 17592186117993
           }
         ],
+        ":question/difficulty": {
+          ":db/ident": ":question.difficulty/moderate"
+        },
         ":question/id": "6f395246-75c5-52ab-b275-6f768034cd27",
         ":question/math-academy-id": "q-34243",
-        ":question/problem": "Consider the vectors\n$a_{1} = \\begin{bmatrix}1 \\\\ 0 \\\\ 1\\end{bmatrix}, a_{2} = \\begin{bmatrix}-1 \\\\ 1 \\\\ 1\\end{bmatrix}, a_{3} = \\begin{bmatrix}2 \\\\ 0 \\\\ 5\\end{bmatrix}, b = \\begin{bmatrix}2 \\\\ 3 \\\\ -1\\end{bmatrix}$.\n\nIf $x_{1}a_{1} + x_{2}a_{2} + x_{3}a_{3} = b$, then what is $x_{1} + x_{2} + x_{3}$?"
+        ":question/problem": "Consider the vectors\n\n$$\n{a}_{1}=\\begin{bmatrix}1 \\\\ 0 \\\\ 1\\end{bmatrix},\\,{a}_{2}=\\begin{bmatrix}-1 \\\\ 1 \\\\ 1\\end{bmatrix},\\,{a}_{3}=\\begin{bmatrix}2 \\\\ 0 \\\\ 5\\end{bmatrix},\\,b=\\begin{bmatrix}2 \\\\ 3 \\\\ -1\\end{bmatrix}.\n$$\n\nIf ${x}_{1}{a}_{1}+{x}_{2}{a}_{2}+{x}_{3}{a}_{3}=b,$ then what is ${x}_{1}+{x}_{2}+{x}_{3}?$",
+        ":question/worked-solution": "If ${x}_{1}{a}_{1}+{x}_{2}{a}_{2}+{x}_{3}{a}_{3}=b$, then we have  \n\n$$\n\\begin{aligned}{x}_{1}\\begin{bmatrix}1 \\\\ 0 \\\\ 1\\end{bmatrix}+{x}_{2}\\begin{bmatrix}-1 \\\\ 1 \\\\ 1\\end{bmatrix}+{x}_{3}\\begin{bmatrix}2 \\\\ 0 \\\\ 5\\end{bmatrix} & =\\begin{bmatrix}2 \\\\ 3 \\\\ -1\\end{bmatrix} \\\\ \\begin{bmatrix}{x}_{1} \\\\ 0 \\\\ {x}_{1}\\end{bmatrix}+\\begin{bmatrix}-{x}_{2} \\\\ {x}_{2} \\\\ {x}_{2}\\end{bmatrix}+\\begin{bmatrix}2{x}_{3} \\\\ 0 \\\\ 5{x}_{3}\\end{bmatrix} & =\\begin{bmatrix}2 \\\\ 3 \\\\ -1\\end{bmatrix} \\\\ \\begin{bmatrix}{x}_{1}-{x}_{2}+2{x}_{3} \\\\ {x}_{2} \\\\ {x}_{1}+{x}_{2}+5{x}_{3}\\end{bmatrix} & =\\begin{bmatrix}2 \\\\ 3 \\\\ -1\\end{bmatrix}.\\end{aligned}\n$$\n\nEquating the corresponding components, we get the following system:\n\n$$\n\\left\\{\\begin{aligned}{x}_{1}-{x}_{2}+2{x}_{3} &=2 \\\\ {x}_{2} &=3 \\\\ {x}_{1}+{x}_{2}+5{x}_{3} &=-1\\end{aligned}\\right.\n$$\n\nWe will solve this system using Gaussian elimination. First, we write the augmented matrix for this system:\n\n$$\nM=\\begin{bmatrix}1 & -1 & 2 & 2 \\\\ 0 & 1 & 0 & 3 \\\\ 1 & 1 & 5 & -1\\end{bmatrix}\n$$\n\nRow-reducing the augmented matrix, we get\n\n$$\n\\begin{aligned}M & =\\begin{bmatrix}1 & -1 & 2 & 2 \\\\ 0 & 1 & 0 & 3 \\\\ 1 & 1 & 5 & -1\\end{bmatrix} & {R}_{3} & :={R}_{3}-{R}_{1} \\\\  & \u223c\\begin{bmatrix}1 & -1 & 2 & 2 \\\\ 0 & 1 & 0 & 3 \\\\ 0 & 2 & 3 & -3\\end{bmatrix} & {R}_{3} & :={R}_{3}-2{R}_{2} \\\\  & \u223c\\begin{bmatrix}1 & -1 & 2 & 2 \\\\ 0 & 1 & 0 & 3 \\\\ 0 & 0 & 3 & -9\\end{bmatrix} & {R}_{3} & :=\\frac{1}{3}{R}_{3} \\\\  & \u223c\\begin{bmatrix}1 & -1 & 2 & 2 \\\\ 0 & 1 & 0 & 3 \\\\ 0 & 0 & 1 & -3\\end{bmatrix}.\\end{aligned}\n$$\n\nThe system is now \n\n$$\n\\left\\{\\begin{aligned}{x}_{1}-{x}_{2}+2{x}_{3} &=2 \\\\ {x}_{2} &=3 \\\\ {x}_{3} &=-3.\\end{aligned}\\right.\n$$\n\nFrom the third equation, we get ${x}_{3}=-3$ and from the second equation we get ${x}_{2}=3.$ Substituting these into the first equation, we obtain\n\n$$\n{x}_{1}-3+2(-3)=2\\,\u27f9\\,{x}_{1}=11.\n$$\n\nSo, the solution of the system is ${x}_{1}=11$, ${x}_{2}=3$, and ${x}_{3}=-3,$ which means \n\n$$\n11{a}_{1}+3{a}_{2}-3{a}_{3}=b.\n$$\n\nConsequently, \n\n$$\n{x}_{1}+{x}_{2}+{x}_{3}=11+3-3=11.\n$$"
       },
       {
         ":db/id": 17592186120349,
-        ":knowledge-point/_questions": [
-          {
-            ":knowledge-point/id": "13a44dc8-4699-519f-8cb1-87ad77471ebe",
-            ":knowledge-point/title": "Solving for Three Coefficients in a Linear Combination"
-          }
-        ],
         ":question/answer-fields": [
           {
             ":answer-field/choices": [
@@ -160,7 +278,6 @@
           }
         ],
         ":question/difficulty": {
-          ":db/id": 17592186045486,
           ":db/ident": ":question.difficulty/hard"
         },
         ":question/id": "04e10334-4152-5cfe-aad7-249b23effb61",
@@ -170,12 +287,6 @@
       },
       {
         ":db/id": 17592186240992,
-        ":knowledge-point/_questions": [
-          {
-            ":knowledge-point/id": "13a44dc8-4699-519f-8cb1-87ad77471ebe",
-            ":knowledge-point/title": "Solving for Three Coefficients in a Linear Combination"
-          }
-        ],
         ":question/answer-fields": [
           {
             ":answer-field/choices": [
@@ -237,7 +348,6 @@
           }
         ],
         ":question/difficulty": {
-          ":db/id": 17592186045487,
           ":db/ident": ":question.difficulty/moderate"
         },
         ":question/id": "0d52be40-210e-5024-9a79-b6ca4323223c",
@@ -247,12 +357,6 @@
       },
       {
         ":db/id": 17592186240993,
-        ":knowledge-point/_questions": [
-          {
-            ":knowledge-point/id": "13a44dc8-4699-519f-8cb1-87ad77471ebe",
-            ":knowledge-point/title": "Solving for Three Coefficients in a Linear Combination"
-          }
-        ],
         ":question/answer-fields": [
           {
             ":answer-field/choices": [
@@ -314,7 +418,6 @@
           }
         ],
         ":question/difficulty": {
-          ":db/id": 17592186045486,
           ":db/ident": ":question.difficulty/hard"
         },
         ":question/id": "2b7aaa73-fdec-536a-866a-953c6856f39f",
@@ -324,12 +427,6 @@
       },
       {
         ":db/id": 17592186240994,
-        ":knowledge-point/_questions": [
-          {
-            ":knowledge-point/id": "13a44dc8-4699-519f-8cb1-87ad77471ebe",
-            ":knowledge-point/title": "Solving for Three Coefficients in a Linear Combination"
-          }
-        ],
         ":question/answer-fields": [
           {
             ":answer-field/choices": [
@@ -391,7 +488,6 @@
           }
         ],
         ":question/difficulty": {
-          ":db/id": 17592186045486,
           ":db/ident": ":question.difficulty/hard"
         },
         ":question/id": "e2bdebea-6388-5baf-ba9f-1fbe0535b5cc",
@@ -401,12 +497,6 @@
       },
       {
         ":db/id": 17592186240995,
-        ":knowledge-point/_questions": [
-          {
-            ":knowledge-point/id": "13a44dc8-4699-519f-8cb1-87ad77471ebe",
-            ":knowledge-point/title": "Solving for Three Coefficients in a Linear Combination"
-          }
-        ],
         ":question/answer-fields": [
           {
             ":answer-field/choices": [
@@ -468,7 +558,6 @@
           }
         ],
         ":question/difficulty": {
-          ":db/id": 17592186045486,
           ":db/ident": ":question.difficulty/hard"
         },
         ":question/id": "e25147c5-4650-58c3-bac2-7139801cca6b",
@@ -478,12 +567,6 @@
       },
       {
         ":db/id": 17592186342126,
-        ":knowledge-point/_questions": [
-          {
-            ":knowledge-point/id": "13a44dc8-4699-519f-8cb1-87ad77471ebe",
-            ":knowledge-point/title": "Solving for Three Coefficients in a Linear Combination"
-          }
-        ],
         ":question/answer-fields": [
           {
             ":answer-field/choices": [
@@ -545,7 +628,6 @@
           }
         ],
         ":question/difficulty": {
-          ":db/id": 17592186045487,
           ":db/ident": ":question.difficulty/moderate"
         },
         ":question/id": "33debd45-f90c-578d-9c6b-11c54937ac6b",
@@ -555,12 +637,6 @@
       },
       {
         ":db/id": 17592186342130,
-        ":knowledge-point/_questions": [
-          {
-            ":knowledge-point/id": "13a44dc8-4699-519f-8cb1-87ad77471ebe",
-            ":knowledge-point/title": "Solving for Three Coefficients in a Linear Combination"
-          }
-        ],
         ":question/answer-fields": [
           {
             ":answer-field/choices": [
@@ -622,7 +698,6 @@
           }
         ],
         ":question/difficulty": {
-          ":db/id": 17592186045486,
           ":db/ident": ":question.difficulty/hard"
         },
         ":question/id": "ff5142a4-ab7b-5300-baa5-14f6253ed7fa",
@@ -632,12 +707,6 @@
       },
       {
         ":db/id": 17592186342132,
-        ":knowledge-point/_questions": [
-          {
-            ":knowledge-point/id": "13a44dc8-4699-519f-8cb1-87ad77471ebe",
-            ":knowledge-point/title": "Solving for Three Coefficients in a Linear Combination"
-          }
-        ],
         ":question/answer-fields": [
           {
             ":answer-field/choices": [
@@ -699,7 +768,6 @@
           }
         ],
         ":question/difficulty": {
-          ":db/id": 17592186045487,
           ":db/ident": ":question.difficulty/moderate"
         },
         ":question/id": "6ca28715-77ca-55f5-9aad-4851b6f70f79",
@@ -709,12 +777,6 @@
       },
       {
         ":db/id": 17592186342133,
-        ":knowledge-point/_questions": [
-          {
-            ":knowledge-point/id": "13a44dc8-4699-519f-8cb1-87ad77471ebe",
-            ":knowledge-point/title": "Solving for Three Coefficients in a Linear Combination"
-          }
-        ],
         ":question/answer-fields": [
           {
             ":answer-field/choices": [
@@ -776,7 +838,6 @@
           }
         ],
         ":question/difficulty": {
-          ":db/id": 17592186045487,
           ":db/ident": ":question.difficulty/moderate"
         },
         ":question/id": "237520c7-3369-5c34-87a7-ba4be3c9b705",
@@ -786,12 +847,6 @@
       },
       {
         ":db/id": 17592186342134,
-        ":knowledge-point/_questions": [
-          {
-            ":knowledge-point/id": "13a44dc8-4699-519f-8cb1-87ad77471ebe",
-            ":knowledge-point/title": "Solving for Three Coefficients in a Linear Combination"
-          }
-        ],
         ":question/answer-fields": [
           {
             ":answer-field/choices": [
@@ -853,7 +908,6 @@
           }
         ],
         ":question/difficulty": {
-          ":db/id": 17592186045487,
           ":db/ident": ":question.difficulty/moderate"
         },
         ":question/id": "118e9ea0-84b3-5e8f-866f-104da032b6d7",
@@ -863,12 +917,6 @@
       },
       {
         ":db/id": 17592186342138,
-        ":knowledge-point/_questions": [
-          {
-            ":knowledge-point/id": "13a44dc8-4699-519f-8cb1-87ad77471ebe",
-            ":knowledge-point/title": "Solving for Three Coefficients in a Linear Combination"
-          }
-        ],
         ":question/answer-fields": [
           {
             ":answer-field/choices": [
@@ -930,7 +978,6 @@
           }
         ],
         ":question/difficulty": {
-          ":db/id": 17592186045487,
           ":db/ident": ":question.difficulty/moderate"
         },
         ":question/id": "a8d414ab-92e5-5218-83d9-6fd3ed558d87",
@@ -940,15 +987,17 @@
       },
       {
         ":db/id": 17592186371499,
-        ":knowledge-point/_questions": [
-          {
-            ":knowledge-point/id": "13a44dc8-4699-519f-8cb1-87ad77471ebe",
-            ":knowledge-point/title": "Solving for Three Coefficients in a Linear Combination"
-          }
-        ],
         ":question/answer-fields": [
           {
             ":answer-field/choices": [
+              {
+                ":answer/id": "9fc31602-b9d2-56f8-a57a-90749cf42c78",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/text"
+                },
+                ":answer/value": "No solution",
+                ":db/id": 17592186371503
+              },
               {
                 ":answer/id": "bf8efcb6-f1b1-576a-a750-35914835105a",
                 ":answer/type": {
@@ -958,20 +1007,12 @@
                 ":db/id": 17592186371501
               },
               {
-                ":answer/id": "f03805a7-390e-5218-9aba-0d3067bb4713",
+                ":answer/id": "c15415b1-26d3-51b7-9cfa-09a0452f811d",
                 ":answer/type": {
                   ":db/ident": ":answer.type/math"
                 },
-                ":answer/value": "-10",
-                ":db/id": 17592186371502
-              },
-              {
-                ":answer/id": "9fc31602-b9d2-56f8-a57a-90749cf42c78",
-                ":answer/type": {
-                  ":db/ident": ":answer.type/text"
-                },
-                ":answer/value": "No solution",
-                ":db/id": 17592186371503
+                ":answer/value": "-6",
+                ":db/id": 17592186371505
               },
               {
                 ":answer/id": "ea94efc8-3987-5798-8f16-29bc2348a033",
@@ -982,12 +1023,12 @@
                 ":db/id": 17592186371504
               },
               {
-                ":answer/id": "c15415b1-26d3-51b7-9cfa-09a0452f811d",
+                ":answer/id": "f03805a7-390e-5218-9aba-0d3067bb4713",
                 ":answer/type": {
                   ":db/ident": ":answer.type/math"
                 },
-                ":answer/value": "-6",
-                ":db/id": 17592186371505
+                ":answer/value": "-10",
+                ":db/id": 17592186371502
               }
             ],
             ":answer-field/correct": {
@@ -1007,15 +1048,157 @@
           }
         ],
         ":question/difficulty": {
-          ":db/id": 17592186045486,
           ":db/ident": ":question.difficulty/hard"
         },
         ":question/id": "1eebc51b-6af1-57eb-9255-9e266158abc7",
         ":question/math-academy-id": "q-105171",
         ":question/problem": "Consider the vectors\n\n$$\n{a}_{1}=\\begin{bmatrix}1 \\\\ 2 \\\\ -1\\end{bmatrix},\\,{a}_{2}=\\begin{bmatrix}-5 \\\\ -8 \\\\ 5\\end{bmatrix},\\,{a}_{3}=\\begin{bmatrix}-1 \\\\ 2 \\\\ 1\\end{bmatrix},\\,b=\\begin{bmatrix}1 \\\\ 9 \\\\ 1\\end{bmatrix}.\n$$\n\nIf ${x}_{1}{a}_{1}+{x}_{2}{a}_{2}+{x}_{3}{a}_{3}=b,$ then what is ${x}_{1}+{x}_{2}+{x}_{3}?$",
         ":question/worked-solution": "If ${x}_{1}{a}_{1}+{x}_{2}{a}_{2}+{x}_{3}{a}_{3}=b$, then we have\n\n$$\n\\begin{aligned}{x}_{1}\\begin{bmatrix}1 \\\\ 2 \\\\ -1\\end{bmatrix}+{x}_{2}\\begin{bmatrix}-5 \\\\ -8 \\\\ 5\\end{bmatrix}+{x}_{3}\\begin{bmatrix}-1 \\\\ 2 \\\\ 1\\end{bmatrix} & =\\begin{bmatrix}1 \\\\ 9 \\\\ 1\\end{bmatrix} \\\\ \\begin{bmatrix}{x}_{1} \\\\ 2{x}_{1} \\\\ -{x}_{1}\\end{bmatrix}+\\begin{bmatrix}-5{x}_{2} \\\\ -8{x}_{2} \\\\ 5{x}_{2}\\end{bmatrix}+\\begin{bmatrix}-{x}_{3} \\\\ 2{x}_{3} \\\\ {x}_{3}\\end{bmatrix} & =\\begin{bmatrix}1 \\\\ 9 \\\\ 1\\end{bmatrix} \\\\ \\begin{bmatrix}{x}_{1}-5{x}_{2}-{x}_{3} \\\\ 2{x}_{1}-8{x}_{2}+2{x}_{3} \\\\ -{x}_{1}+5{x}_{2}+{x}_{3}\\end{bmatrix} & =\\begin{bmatrix}1 \\\\ 9 \\\\ 1\\end{bmatrix}.\\end{aligned}\n$$\n\nEquating the corresponding components, we get the following system:\n\n$$\n\\left\\{\\begin{aligned}{x}_{1}-5{x}_{2}-{x}_{3} &=1 \\\\ 2{x}_{1}-8{x}_{2}+2{x}_{3} &=9 \\\\ -{x}_{1}+5{x}_{2}+{x}_{3} &=1\\end{aligned}\\right.\n$$\n\nWe will solve this system using Gaussian elimination. First, we write the augmented matrix for this system:\n\n$$\nM=\\begin{bmatrix}1 & -5 & -1 & 1 \\\\ 2 & -8 & 2 & 9 \\\\ -1 & 5 & 1 & 1\\end{bmatrix}.\n$$\n\nRow-reducing the augmented matrix, we get\n\n$$\n\\begin{aligned}M & =\\begin{bmatrix}1 & -5 & -1 & 1 \\\\ 2 & -8 & 2 & 9 \\\\ -1 & 5 & 1 & 1\\end{bmatrix} & {R}_{2} & :={R}_{2}+(-2){R}_{1} \\\\  & \u223c\\begin{bmatrix}1 & -5 & -1 & 1 \\\\ 0 & 2 & 4 & 7 \\\\ -1 & 5 & 1 & 1\\end{bmatrix} & {R}_{3} & :={R}_{3}+{R}_{1} \\\\  & \u223c\\begin{bmatrix}1 & -5 & -1 & 1 \\\\ 0 & 2 & 4 & 7 \\\\ 0 & 0 & 0 & 2\\end{bmatrix}.\\end{aligned}\n$$\n\nThe system is now \n\n$$\n\\left\\{\\begin{aligned}{x}_{1}-5{x}_{2}-{x}_{3} &=1 \\\\ 2{x}_{2}+4{x}_{3} &=7 \\\\ 0 &=2.\\end{aligned}\\right.\n$$\n\nHowever, the final equation $0=2$  gives a false statement. So the system has no solution."
+      },
+      {
+        ":db/id": 17592186573926,
+        ":question/answer-fields": [
+          {
+            ":answer-field/choices": [
+              {
+                ":answer/id": "20fa005b-1cd6-5081-9086-3952281151c8",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "5",
+                ":db/id": 17592186573461
+              },
+              {
+                ":answer/id": "57674894-26ce-5222-bc39-0cec6a625ee3",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "4",
+                ":db/id": 17592186573535
+              },
+              {
+                ":answer/id": "893ad3db-46c5-5114-a0bf-164fbc2e553c",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "-3",
+                ":db/id": 17592186573603
+              },
+              {
+                ":answer/id": "b1679c37-12a9-5a57-8ad6-19234d8f62c4",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "6",
+                ":db/id": 17592186573655
+              },
+              {
+                ":answer/id": "e47ed6c4-56c5-56bd-aece-e96f46748978",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/text"
+                },
+                ":answer/value": "No solution",
+                ":db/id": 17592186573723
+              }
+            ],
+            ":answer-field/correct": {
+              ":answer/id": "e47ed6c4-56c5-56bd-aece-e96f46748978",
+              ":answer/type": {
+                ":db/ident": ":answer.type/text"
+              },
+              ":answer/value": "No solution",
+              ":db/id": 17592186573723
+            },
+            ":answer-field/id": "2e982092-3b3a-580a-859e-11cdf69c0b10",
+            ":answer-field/key": "selection",
+            ":answer-field/type": {
+              ":db/ident": ":answer-field.type/radio"
+            },
+            ":db/id": 17592186573788
+          }
+        ],
+        ":question/difficulty": {
+          ":db/ident": ":question.difficulty/hard"
+        },
+        ":question/id": "cc7e6aad-0683-5027-b3d4-db532b43dae8",
+        ":question/math-academy-id": "q-74011",
+        ":question/problem": "Consider the vectors\n\n$$\n{a}_{1}=\\begin{bmatrix}1 \\\\ -1 \\\\ 0\\end{bmatrix},\\,{a}_{2}=\\begin{bmatrix}-2 \\\\ 3 \\\\ -1\\end{bmatrix},\\,{a}_{3}=\\begin{bmatrix}2 \\\\ 1 \\\\ -3\\end{bmatrix},\\,b=\\begin{bmatrix}1 \\\\ 0 \\\\ 1\\end{bmatrix}.\n$$\n\nIf ${x}_{1}{a}_{1}+{x}_{2}{a}_{2}+{x}_{3}{a}_{3}=b,$ then what is ${x}_{1}+{x}_{2}+{x}_{3}?$",
+        ":question/worked-solution": "If ${x}_{1}{a}_{1}+{x}_{2}{a}_{2}+{x}_{3}{a}_{3}=b$, then we have\n\n$$\n\\begin{aligned}{x}_{1}\\begin{bmatrix}1 \\\\ -1 \\\\ 0\\end{bmatrix}+{x}_{2}\\begin{bmatrix}-2 \\\\ 3 \\\\ -1\\end{bmatrix}+{x}_{3}\\begin{bmatrix}2 \\\\ 1 \\\\ -3\\end{bmatrix} & =\\begin{bmatrix}1 \\\\ 0 \\\\ 1\\end{bmatrix} \\\\ \\begin{bmatrix}{x}_{1} \\\\ -{x}_{1} \\\\ 0\\end{bmatrix}+\\begin{bmatrix}-2{x}_{2} \\\\ 3{x}_{2} \\\\ -{x}_{2}\\end{bmatrix}+\\begin{bmatrix}2{x}_{3} \\\\ {x}_{3} \\\\ -3{x}_{3}\\end{bmatrix} & =\\begin{bmatrix}1 \\\\ 0 \\\\ 1\\end{bmatrix} \\\\ \\begin{bmatrix}{x}_{1}-2{x}_{2}+2{x}_{3} \\\\ -{x}_{1}+3{x}_{2}+{x}_{3} \\\\ -{x}_{2}-3{x}_{3}\\end{bmatrix} & =\\begin{bmatrix}1 \\\\ 0 \\\\ 1\\end{bmatrix}.\\end{aligned}\n$$\n\nEquating the corresponding components, we get the following system:\n\n$$\n\\left\\{\\begin{aligned}{x}_{1}-2{x}_{2}+2{x}_{3} &=1 \\\\ -{x}_{1}+3{x}_{2}+{x}_{3} &=0 \\\\ -{x}_{2}-3{x}_{3} &=1\\end{aligned}\\right.\n$$\n\nWe will solve this system using Gaussian elimination. First, we write the augmented matrix for this system:\n\n$$\nM=\\begin{bmatrix}1 & -2 & 2 & 1 \\\\ -1 & 3 & 1 & 0 \\\\ 0 & -1 & -3 & 1\\end{bmatrix}.\n$$\n\nRow-reducing the augmented matrix, we get\n\n$$\n\\begin{aligned}M & =\\begin{bmatrix}1 & -2 & 2 & 1 \\\\ -1 & 3 & 1 & 0 \\\\ 0 & -1 & -3 & 1\\end{bmatrix} & {R}_{2} & :={R}_{2}+{R}_{1} \\\\  & \u223c\\begin{bmatrix}1 & -2 & 2 & 1 \\\\ 0 & 1 & 3 & 1 \\\\ 0 & -1 & -3 & 1\\end{bmatrix} & {R}_{3} & :={R}_{3}+{R}_{2} \\\\  & \u223c\\begin{bmatrix}1 & -2 & 2 & 1 \\\\ 0 & 1 & 3 & 1 \\\\ 0 & 0 & 0 & 2\\end{bmatrix}.\\end{aligned}\n$$\n\nThe system is now \n\n$$\n\\left\\{\\begin{aligned}{x}_{1}-2{x}_{2}+2{x}_{3} &=1 \\\\ {x}_{2}+3{x}_{3} &=1 \\\\ 0 &=2.\\end{aligned}\\right.\n$$\n\n \n\nHowever, the final equation $0=2$  gives a false statement. So the system has no solution."
+      },
+      {
+        ":db/id": 17592186573932,
+        ":question/answer-fields": [
+          {
+            ":answer-field/choices": [
+              {
+                ":answer/id": "3612f42b-0a38-5946-b9e8-052f69ef6865",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "8",
+                ":db/id": 17592186573492
+              },
+              {
+                ":answer/id": "6951f3cf-b1cc-52f0-8053-481a177d156d",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "9",
+                ":db/id": 17592186573552
+              },
+              {
+                ":answer/id": "80af8001-4176-59b0-a320-b4d9c58112b5",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "10",
+                ":db/id": 17592186573593
+              },
+              {
+                ":answer/id": "95896ab6-b57c-5779-a69a-7fc7f0cae1d6",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/text"
+                },
+                ":answer/value": "No solution",
+                ":db/id": 17592186573618
+              },
+              {
+                ":answer/id": "dbe12096-f5e1-5d5a-bc70-4e3a5e7b7b3e",
+                ":answer/type": {
+                  ":db/ident": ":answer.type/math"
+                },
+                ":answer/value": "7",
+                ":db/id": 17592186573712
+              }
+            ],
+            ":answer-field/correct": {
+              ":answer/id": "6951f3cf-b1cc-52f0-8053-481a177d156d",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "9",
+              ":db/id": 17592186573552
+            },
+            ":answer-field/id": "cea41100-341d-5e9c-b722-4fac6c11f9fa",
+            ":answer-field/key": "selection",
+            ":answer-field/type": {
+              ":db/ident": ":answer-field.type/radio"
+            },
+            ":db/id": 17592186573847
+          }
+        ],
+        ":question/difficulty": {
+          ":db/ident": ":question.difficulty/moderate"
+        },
+        ":question/id": "d6a42f32-3ff1-5799-9155-413fd42c36ff",
+        ":question/math-academy-id": "q-74043",
+        ":question/problem": "Consider the vectors\n\n$$\n{a}_{1}=\\begin{bmatrix}1 \\\\ 0 \\\\ 4\\end{bmatrix},\\,{a}_{2}=\\begin{bmatrix}-2 \\\\ -5 \\\\ -1\\end{bmatrix},\\,{a}_{3}=\\begin{bmatrix}3 \\\\ 11 \\\\ -2\\end{bmatrix},\\,b=\\begin{bmatrix}2 \\\\ -4 \\\\ 15\\end{bmatrix}.\n$$\n\nIf ${x}_{1}{a}_{1}+{x}_{2}{a}_{2}+{x}_{3}{a}_{3}=b,$ then what is ${x}_{1}+{x}_{2}+{x}_{3}?$",
+        ":question/worked-solution": "If ${x}_{1}{a}_{1}+{x}_{2}{a}_{2}+{x}_{3}{a}_{3}=b$, then we have\n\n$$\n\\begin{aligned}{x}_{1}\\begin{bmatrix}1 \\\\ 0 \\\\ 4\\end{bmatrix}+{x}_{2}\\begin{bmatrix}-2 \\\\ -5 \\\\ -1\\end{bmatrix}+{x}_{3}\\begin{bmatrix}3 \\\\ 11 \\\\ -2\\end{bmatrix} & =\\begin{bmatrix}2 \\\\ -4 \\\\ 15\\end{bmatrix} \\\\ \\begin{bmatrix}{x}_{1} \\\\ 0 \\\\ 4{x}_{1}\\end{bmatrix}+\\begin{bmatrix}-2{x}_{2} \\\\ -5{x}_{2} \\\\ -{x}_{2}\\end{bmatrix}+\\begin{bmatrix}3{x}_{3} \\\\ 11{x}_{3} \\\\ -2{x}_{3}\\end{bmatrix} & =\\begin{bmatrix}2 \\\\ -4 \\\\ 15\\end{bmatrix} \\\\ \\begin{bmatrix}{x}_{1}-2{x}_{2}+3{x}_{3} \\\\ -5{x}_{2}+11{x}_{3} \\\\ 4{x}_{1}-{x}_{2}-2{x}_{3}\\end{bmatrix} & =\\begin{bmatrix}2 \\\\ -4 \\\\ 15\\end{bmatrix}.\\end{aligned}\n$$\n\nEquating the corresponding components, we get the following system:\n\n$$\n\\left\\{\\begin{aligned}{x}_{1}-2{x}_{2}+3{x}_{3} &=2 \\\\ -5{x}_{2}+11{x}_{3} &=-4 \\\\ 4{x}_{1}-{x}_{2}-2{x}_{3} &=15\\end{aligned}\\right.\n$$\n\nWe will solve this system using Gaussian elimination. First, we write the augmented matrix for this system:\n\n$$\nM=\\begin{bmatrix}1 & -2 & 3 & 2 \\\\ 0 & -5 & 11 & -4 \\\\ 4 & -1 & -2 & 15\\end{bmatrix}\n$$\n\nRow-reducing the augmented matrix, we get\n\n$$\n\\begin{aligned}M & =\\begin{bmatrix}1 & -2 & 3 & 2 \\\\ 0 & -5 & 11 & -4 \\\\ 4 & -1 & -2 & 15\\end{bmatrix} & {R}_{3} & :={R}_{3}-4{R}_{1} \\\\  & \u223c\\begin{bmatrix}1 & -2 & 3 & 2 \\\\ 0 & -5 & 11 & -4 \\\\ 0 & 7 & -14 & -7\\end{bmatrix} & {R}_{3} & \u2194{R}_{2} \\\\  & \u223c\\begin{bmatrix}1 & -2 & 3 & 2 \\\\ 0 & 7 & -14 & -7 \\\\ 0 & -5 & 11 & -4\\end{bmatrix} & {R}_{2} & :=\\frac{1}{7}{R}_{2} \\\\  & \u223c\\begin{bmatrix}1 & -2 & 3 & 2 \\\\ 0 & 1 & -2 & 1 \\\\ 0 & -5 & 11 & -4\\end{bmatrix} & {R}_{3} & :={R}_{3}+5{R}_{2} \\\\  & \u223c\\begin{bmatrix}1 & -2 & 3 & 2 \\\\ 0 & 1 & -2 & 1 \\\\ 0 & 0 & 1 & 1\\end{bmatrix}.\\end{aligned}\n$$\n\nSo, the system is now \n\n$$\n\\left\\{\\begin{aligned}{x}_{1}-2{x}_{2}+3{x}_{3} &=2 \\\\ {x}_{2}-2{x}_{3} &=1 \\\\ {x}_{3} &=1.\\end{aligned}\\right.\n$$\n\nFrom the third equation, we get ${x}_{3}=1.$ Substituting this value into the second equation, we get\n\n$$\n{x}_{2}-2(1)=1\\,\u27f9\\,{x}_{2}=3.\n$$\n\nFinally, by substituting ${x}_{2}=3$ and ${x}_{3}=1$  into the first equation, we obtain\n\n$$\n{x}_{1}-2(3)+3(1)=2\\,\u27f9\\,{x}_{1}=5.\n$$\n\nSo, the solution of the system is ${x}_{1}=5$, ${x}_{2}=3$, and ${x}_{3}=1,$ which means \n\n$$\n5{a}_{1}+3{a}_{2}+{a}_{3}=b.\n$$\n\nConsequently, \n\n$$\n{x}_{1}+{x}_{2}+{x}_{3}=5+3+1=9.\n$$"
       }
     ],
     ":knowledge-point/title": "Solving for Three Coefficients in a Linear Combination"
-  }
+  },
+  "basis": 5401,
+  "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+  "source_sha256": "3b83619557109ce6a3d15f1bcc4381ce58421618947b5773d82ca431cc86da2c"
 }

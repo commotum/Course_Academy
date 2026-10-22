@@ -6,19 +6,21 @@ source replay, bounded capability exceptions, and native learner grading evidenc
 """
 import argparse,hashlib,json,random,re,sys,uuid
 from pathlib import Path
-try:import sympy as sp
-except ModuleNotFoundError:
- import os
- os.execv(str(Path(__file__).resolve().parents[2]/'.venv/bin/python'),['python',str(Path(__file__).resolve()),*sys.argv[1:]])
-ROOT=Path(__file__).resolve().parents[2];HERE=Path(__file__).with_suffix('')
-sys.path.insert(0,str(ROOT/'scripts/question_capture'))
+import sympy as sp
+HERE=Path(__file__).with_suffix('')
 from math_format import matrix_tex,system_tex,normalize_prose,normalize_tex,checked_math_content
 SOURCE=json.loads((HERE/'source.json').read_text());RAW=SOURCE['record'];KP_ID=17592186119854;KP_UUID=RAW[':knowledge-point/id']
 GENERATOR_UUID=str(uuid.uuid5(uuid.NAMESPACE_URL,'course-academy:generator:'+str(KP_ID)))
-VERSION='three-coefficient-rhs-1';SUPPORTED_LEVELS=('moderate','hard')
+VERSION='three-coefficient-rhs-2';SUPPORTED_LEVELS=('moderate','hard')
 CASES={q[':question/math-academy-id']:q for q in RAW[':knowledge-point/questions'] if q.get(':question/difficulty') and q.get(':question/worked-solution') and all(':answer-field/correct' in f for f in q[':question/answer-fields'])}
+EXAMPLE=RAW[':knowledge-point/canonical-example']
+CASES[EXAMPLE[':question/math-academy-id']]=EXAMPLE
 # Operations are replayed in source order; add means Ri := Ri + c Rj.
 OPS={
+'e-6191':[('swap',0,1),('add',2,1,1),('scale',2,sp.Rational(1,4))],
+'q-34243':[('add',2,0,-1),('add',2,1,-2),('scale',2,sp.Rational(1,3))],
+'q-74011':[('add',1,0,1),('add',2,1,1)],
+'q-74043':[('add',2,0,-4),('swap',1,2),('scale',1,sp.Rational(1,7)),('add',2,1,5)],
 'q-34566':[('add',1,0,-2),('add',2,0,-3)],
 'q-105168':[('add',1,0,-3),('add',2,0,2)],
 'q-105169':[('add',1,0,-5),('add',2,0,2)],
@@ -38,7 +40,7 @@ def parse(q):
  assert len(vs)==4 and all(v.shape==(3,1) for v in vs)
  return sp.Matrix.hstack(*vs[:3]),vs[3]
 def target(sid):return (1,1,-1) if sid=='q-74028' else (1,1,1)
-def level(sid):return CASES[sid][':question/difficulty'][':db/ident'].split('/')[-1]
+def level(sid):return 'moderate' if sid=='e-6191' else CASES[sid][':question/difficulty'][':db/ident'].split('/')[-1]
 def states(sid,A,b):
  m=A.row_join(b);out=[m.copy()];labels=[]
  for op in OPS[sid]:
@@ -58,10 +60,15 @@ def calc(sid,b):
   x=None;value=None;assert list(steps[-1][2,:3])==[0,0,0] and steps[-1][2,3]!=0
  return A,b,steps,labels,x,value
 
-def bank(sid,b):
+def bank(sid,b,numeric_rank=None):
+ if sid=='e-6191':return []
  A,b0=parse(CASES[sid]);_,_,_,_,x0,z0=calc(sid,b0);_,_,ss,_,x,z=calc(sid,b)
  origin=z0 if level(sid)=='moderate' else states(sid,A,b0)[0][-1][2,3]
  anchor=z if level(sid)=='moderate' else ss[-1][2,3]
+ if level(sid)=='moderate' and numeric_rank is not None:
+  values=sorted(sp.Integer(a[':answer/value']) for a in CASES[sid][':question/answer-fields'][0][':answer-field/choices'] if a[':answer/type'][':db/ident']==':answer.type/math')
+  if not 1<=numeric_rank<=len(values):raise ValueError('Invalid numeric rank')
+  origin=values[numeric_rank-1]
  out=[]
  for a in CASES[sid][':question/answer-fields'][0][':answer-field/choices']:
   value=a[':answer/value'];typ=a[':answer/type'][':db/ident']
@@ -115,8 +122,11 @@ def fingerprint(sid,b):return hashlib.sha256(json.dumps(structure(sid,b)).encode
 @checked_math_content
 def generate(difficulty,seed=0,template=None,parameters=None):
  if difficulty not in SUPPORTED_LEVELS:raise ValueError('Unsupported difficulty: '+difficulty+'; see capabilities.json')
- rng=random.Random(seed);sid=template or rng.choice(sorted(s for s in CASES if level(s)==difficulty));assert level(sid)==difficulty
+ rng=random.Random(seed);sid=template or rng.choice(sorted(s for s in CASES if s.startswith('q-') and level(s)==difficulty));assert level(sid)==difficulty
  A,b0=parse(CASES[sid])
+ # Decide the answer-bearing bank role before incidental coefficient values.
+ numeric_count=sum(a[':answer/type'][':db/ident']==':answer.type/math' for f in CASES[sid].get(':question/answer-fields',[]) for a in f[':answer-field/choices'])
+ numeric_rank=rng.randint(1,numeric_count) if difficulty=='moderate' and numeric_count else None
  if parameters is None:
   for _ in range(100):
    if difficulty=='moderate':b=A*sp.Matrix([rng.randint(-7,7) for _ in range(3)])
@@ -125,19 +135,27 @@ def generate(difficulty,seed=0,template=None,parameters=None):
    except (AssertionError,ValueError):continue
    if b!=b0:break
   else:raise ValueError('Bounded sampler exhausted')
- else:b=sp.Matrix(parameters['b'])
- A,b,ss,labels,x,z=calc(sid,b);options=bank(sid,b);p,s=content(sid,b);fp=fingerprint(sid,b)
+ else:
+  b=sp.Matrix(parameters['b'])
+  bank_rng=random.Random(hashlib.sha256(json.dumps([seed,sid,list(map(str,b))]).encode()).hexdigest())
+  numeric_rank=parameters.get('numeric_rank',bank_rng.randint(1,numeric_count)) if numeric_count and difficulty=='moderate' else None
+ # Original parameters replay the entire observed bank unless an extension is explicitly requested.
+ if b==b0 and (parameters is None or 'numeric_rank' not in parameters):numeric_rank=None
+ A,b,ss,labels,x,z=calc(sid,b);options=bank(sid,b,numeric_rank);p,s=content(sid,b);fp=fingerprint(sid,b)
+ rng.shuffle(options)
  ident=lambda name:str(uuid.uuid5(uuid.UUID(GENERATOR_UUID),name))
- qid=ident(VERSION+':'+sid+':'+fp);fid=ident(qid+':selection');answers=[];correct=None
+ bank_key=json.dumps(sorted((o['type'],o['value']) for o in options))
+ qid=ident(VERSION+':'+sid+':'+fp+':'+bank_key);fid=ident(qid+':selection');answers=[];correct=None
  for o in options:
   aid=ident(fid+':'+o['type']+':'+o['value']);answers.append({':answer/id':aid,':answer/type':o['type'],':answer/value':normalize_tex(o['value']) if o['type']==':answer.type/math' else o['value']})
   if (difficulty=='hard' and o['type']==':answer.type/text') or (difficulty=='moderate' and o['type']==':answer.type/math' and sp.Rational(o['value'])==z):correct=aid
- assert correct is not None
- return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':RAW[':knowledge-point/title']},'question':{':question/id':qid,':question/problem':p,':question/worked-solution':s,':question/difficulty':':question.difficulty/'+difficulty,':question/answer-fields':[{':answer-field/id':fid,':answer-field/key':'selection',':answer-field/type':':answer-field.type/radio',':answer-field/choices':answers,':answer-field/correct':[':answer/id',correct]}]},'generation':{'version':VERSION,'generator_id':GENERATOR_UUID,'seed':seed,'template':sid,'bank_profile':sid,'parameters':{'b':list(map(int,b))},'domain':'fixed observed coefficient matrix; integer RHS; moderate integer solution coordinates in [-7,7], hard inconsistent b in [-9,9]^3','source_basis':SOURCE['basis'],'lineage':SOURCE['lineage'],'source_question_id':CASES[sid][':question/id'],'mathematical_fingerprint':fp,'recipes':[o['recipe'] for o in options],'sympy':sp.__version__,'assets':[]}}
+ assert correct is not None or sid=='e-6191'
+ return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':RAW[':knowledge-point/title']},'question':{':question/id':qid,':question/problem':p,':question/worked-solution':s,':question/difficulty':':question.difficulty/'+difficulty,':question/answer-fields':[] if sid=='e-6191' else [{':answer-field/id':fid,':answer-field/key':'selection',':answer-field/type':':answer-field.type/radio',':answer-field/choices':answers,':answer-field/correct':[':answer/id',correct]}]},'generation':{'version':VERSION,'generator_id':GENERATOR_UUID,'seed':seed,'template':sid,'bank_profile':sid+(':source-replay' if numeric_rank is None else ':reanchored'), 'numeric_rank':numeric_rank, 'source_kind':'worked-example' if sid=='e-6191' else 'practice','parameters':{'b':list(map(int,b)),**({'numeric_rank':numeric_rank} if numeric_rank is not None else {})},'domain':'fixed observed coefficient matrix; integer RHS; moderate integer solution coordinates in [-7,7], hard inconsistent b in [-9,9]^3','source_basis':SOURCE['basis'],'lineage':SOURCE['lineage'],'source_question_id':CASES[sid][':question/id'],'mathematical_fingerprint':fp,'recipes':[o['recipe'] for o in options],'sympy':sp.__version__,'assets':[]}}
 
 def batch(difficulty,count,seed):
  if difficulty not in SUPPORTED_LEVELS:raise ValueError('Unsupported level')
- out=[];seen=set();templates=sorted(s for s in CASES if level(s)==difficulty)
+ if count<1:raise ValueError('Count must be positive')
+ out=[];seen=set();templates=sorted(s for s in CASES if s.startswith('q-') and level(s)==difficulty)
  for i in range(max(100,count*20)):
   r=generate(difficulty,seed+i,templates[i%len(templates)]);fp=r['generation']['mathematical_fingerprint']
   if fp not in seen:out.append(r);seen.add(fp)

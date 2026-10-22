@@ -1,0 +1,167 @@
+{
+  "verdict": "revise",
+  "summary": "Fixed per-matrix numeric answer ranks bypass solving in all 42 fresh moderate samples and all five delivered batch records. Three complete current source families are missing. Tested mathematics, native grading, UI rendering and package runtime checks passed; package files remain unchanged.",
+  "source_analysis": {
+    "skill": "Translate a linear combination of three R^3 vectors into three scalar equations, solve by Gaussian elimination/back substitution or identify inconsistency, then evaluate the requested signed sum of coefficients.",
+    "reasoning_steps": [
+      "Interpret each displayed vector as a column of A in Ax=b.",
+      "Equate corresponding components and form the augmented matrix.",
+      "Use elementary row operations, including exchanges as needed, to find coefficients or a contradiction.",
+      "Evaluate the specified x1+x2+x3 or x1+x2-x3 and choose its value from the complete five-choice radio bank."
+    ],
+    "invariants": [
+      "Three coefficient unknowns multiplying three displayed vectors in R^3; supplied right-hand vector.",
+      "Component equality and standard Gaussian elimination remain the method and workload.",
+      "One scalar target built from coefficient sums/differences, or No solution if inconsistent.",
+      "Complete radio banks and worked explanations must agree with the vectors and target."
+    ],
+    "permitted_variations": [
+      "Vary small integer vector components and compatible right-hand vectors while controlling elimination workload.",
+      "Vary solved coefficients, signs and zero values; their particular answers are incidental.",
+      "Change which coefficient is subtracted, or retain the all-plus target, deriving the answer and solution accordingly; q-74028 explicitly establishes a signed target.",
+      "Vary pivot rows/exchanges and placement of easy component equations without increasing system size.",
+      "Vary complete source bank profiles, distractor numbers and correct option position; presence of No solution must not disclose the outcome.",
+      "Hard inconsistency can use different row dependencies and contradictory right-hand entries. Consistent underdetermined systems requiring an undetermined sum are not evidenced by this KP."
+    ],
+    "source_refs": [
+      "d9beff9d-db58-540f-811e-a07fb77d3d92",
+      "6f395246-75c5-52ab-b275-6f768034cd27",
+      "04e10334-4152-5cfe-aad7-249b23effb61",
+      "0d52be40-210e-5024-9a79-b6ca4323223c",
+      "2b7aaa73-fdec-536a-866a-953c6856f39f",
+      "e2bdebea-6388-5baf-ba9f-1fbe0535b5cc",
+      "e25147c5-4650-58c3-bac2-7139801cca6b",
+      "33debd45-f90c-578d-9c6b-11c54937ac6b",
+      "ff5142a4-ab7b-5300-baa5-14f6253ed7fa",
+      "6ca28715-77ca-55f5-9aad-4851b6f70f79",
+      "237520c7-3369-5c34-87a7-ba4be3c9b705",
+      "118e9ea0-84b3-5e8f-866f-104da032b6d7",
+      "a8d414ab-92e5-5218-83d9-6fd3ed558d87",
+      "1eebc51b-6af1-57eb-9255-9e266158abc7",
+      "cc7e6aad-0683-5027-b3d4-db532b43dae8",
+      "d6a42f32-3ff1-5799-9155-413fd42c36ff",
+      "tutorial 229ae855-226b-5f95-b050-b98257747800, step b14c637b-1418-59f5-9ac3-37a07d6ad580",
+      "lesson target step d59e4b4d-f7e2-5722-8cf4-a309ea8ac925"
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "failed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "source-replay.json",
+        "source-replay-records.json",
+        "source-corrections.json",
+        "minimal-failing-cases.json"
+      ],
+      "details": "12 supported practice profiles replay original vectors, answers and complete banks. Current complete q-34243, q-74011 and q-74043 fail with KeyError; canonical e-6191 is also unimplemented. The author basis-2584 capture is incomplete relative to current basis 5401. Supported q-74032 arithmetic correction verified."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "audit.py",
+        "math-results.json",
+        "counterfactual-results.json"
+      ],
+      "details": "86 complete generated records independently checked from displayed vectors using exact arithmetic; all answers, augmented-matrix row equivalences and final solution values pass. Includes 66 fresh/boundary samples, 12 source replays, exact five-record batch and three controlled records."
+    },
+    "variety": {
+      "status": "failed",
+      "evidence_paths": [
+        "coverage.json",
+        "stage-results.json",
+        "minimal-failing-cases.json"
+      ],
+      "details": "RHS and solved coefficients vary meaningfully, including signs, zeros and boundaries. However all six moderate templates preserve the correct numeric rank; fixed source matrices identify the applicable rank. Three current complete source profiles are omitted."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "scope-results.json",
+        "independent-samples.json",
+        "source-analysis.json"
+      ],
+      "details": "Emitted records preserve the source 3x3 linear-combination skill, five-choice radio response, scalar signed-sum target and demonstrated difficulty split. No unsupported prerequisite or additional reasoning stage observed. Missing profiles are separate source-fidelity failures."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-results.json",
+        "shortcut-native-results.json"
+      ],
+      "details": "Actual learning::grade_field accepts 86 independently verified correct selections and rejects 344 incorrect selections, with no unresolved outcomes. Every authored choice exercised; fields are radio, so free-entry equivalence is inapplicable. Native outcomes also confirm shortcut-selected choices and controlled pairs."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-pairs/rendering.json",
+        "render-inspection.json",
+        "render/question-002.png",
+        "render/question-003.png",
+        "render-pairs/question-001.png",
+        "render-pairs/question-002.png",
+        "render-pairs/question-003.png",
+        "render-pairs/question-005.png"
+      ],
+      "details": "Actual unmodified learning UI rendered all five batch records, controlled pairs and hard representative. Inspected screenshots show legible vectors, signed targets, controls, fractions, augmented matrices and worked solutions; no reported math/image/font errors."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging.json",
+        "package-hashes-before.json",
+        "package-hashes-after.json",
+        "relocated-samples.json"
+      ],
+      "details": "Exact installed Python 3.13.5 and SymPy 1.14.0 match nested manifest contract. Deterministic replay, unsupported/mismatched difficulty and consistent-hard rejection, and relocated CLI generation pass. All package file hashes unchanged; no generator asset outputs or database writes."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "shortcut-native-results.json",
+        "delivery-batch/delivery.json",
+        "delivery-moderate/delivery.json",
+        "delivery-hard/delivery.json",
+        "selection-results.json"
+      ],
+      "details": "Relevant RHS change correctly updates answer 6 to 7 and irrelevant offsetting coefficient change preserves 6, with rendered solutions and native grading verified. Nevertheless a matrix-signature/numeric-rank strategy solves 42/42 fresh moderate and 5/5 exact batch records. Shared delivery keeps every batch record. Conditional selection reproduction across all 31 nonempty freshness subsets preserves this defect; live policy/history unavailable and not asserted."
+    }
+  },
+  "findings": [
+    {
+      "kind": "decision_shortcut",
+      "description": "The bank() rule translates every numeric source option by the same target delta while each displayed coefficient matrix fixes the bank profile. Thus q-73992 and q-74032 always require the smallest numeric choice, q-105168 the third of five, q-74028 the third of four, and q-74035/q-74046 the second of four. This survives shuffled controls and bypasses solving Ax=b. The exact runner batch is affected 5/5 after delivery; this is both a family-wide construction defect and a defective current batch, not a finite-sample balance concern.",
+      "source_refs": [
+        "33debd45-f90c-578d-9c6b-11c54937ac6b",
+        "0d52be40-210e-5024-9a79-b6ca4323223c",
+        "6ca28715-77ca-55f5-9aad-4851b6f70f79",
+        "237520c7-3369-5c34-87a7-ba4be3c9b705",
+        "118e9ea0-84b3-5e8f-866f-104da032b6d7",
+        "a8d414ab-92e5-5218-83d9-6fd3ed558d87",
+        "generate/principles.md: Provide meaningful variety"
+      ],
+      "reproduction": "Run PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python regressions.py from evidence_root (expected exit 1). Minimal q-73992 seed 613, b=[5,15,4]: x=[1,2,3], answer 6, numbers 6,7,8,9. Change only b to [7,20,5]: x=[1,2,4], answer 7, numbers 7,8,9,10. Choose-smallest-number succeeds on both without using b. Complete records are in minimal-failing-cases.json; actual native outcomes in shortcut-native-results.json.",
+      "requested_change": "Change the family-wide bank construction so a recognizable coefficient matrix does not fix the correct numeric rank or answer-producing action. Preserve source replay and full bank contracts while independently varying eligible answer-bearing bank relationships for generated practice. Retain conditional shortcut tests across every matrix profile, then regenerate and review the exact five-record batch after delivery filtering. Option shuffling alone cannot repair this."
+    },
+    {
+      "kind": "source_fidelity",
+      "description": "The package uses an older source capture and excludes three now-complete source questions: moderate q-34243 and q-74043, and hard q-74011. All three have full answer banks, correct answers and worked solutions in the supplied source; explicit template calls raise KeyError. Canonical e-6191 also has no replay profile, although its absent answer bank must not be fabricated.",
+      "source_refs": [
+        "6f395246-75c5-52ab-b275-6f768034cd27",
+        "cc7e6aad-0683-5027-b3d4-db532b43dae8",
+        "d6a42f32-3ff1-5799-9155-413fd42c36ff",
+        "d9beff9d-db58-540f-811e-a07fb77d3d92"
+      ],
+      "reproduction": "Run regressions.py as above, or generate(\"moderate\",901,template=\"q-34243\",parameters={\"b\":[2,3,-1]}); current code raises KeyError. source-replay.json records exact attempts for all 15 practice sources. q-74043 b=[2,-4,15] has independently verified x=[5,3,1], target 9; q-74011 b=[1,0,1] is inconsistent.",
+      "requested_change": "Refresh the captured source and add all three complete matrix/operation/bank profiles; reproduce their original parameters and complete banks before extending them. Correct q-74043 intermediate row arithmetic (15-4*2=7) while preserving its correct final answer. Replay the canonical example mathematical content without inventing a missing answer bank."
+    }
+  ]
+}
