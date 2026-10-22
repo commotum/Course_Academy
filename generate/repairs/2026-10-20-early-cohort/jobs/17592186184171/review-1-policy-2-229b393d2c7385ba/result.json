@@ -1,0 +1,106 @@
+{
+  "verdict": "accepted",
+  "summary": "Both retained defects are resolved. All eight checks pass, including the exact five-question batch. Package files remain unchanged.",
+  "source_analysis": {
+    "skill": "Identify rank or nullity from the supplied space description, determine the column count, and apply rank + nullity = n.",
+    "reasoning_steps": [
+      "Easy: count column-space basis vectors and subtract from the column count.",
+      "Moderate: identify the independent coefficient-vector count and subtract from the component count.",
+      "Select the resulting integer from five radio choices."
+    ],
+    "invariants": [
+      "Rank-nullity uses column count.",
+      "Basis cardinality must be feasible.",
+      "Null-space dimension equals coefficient-matrix rank.",
+      "Prompt, answer and worked solution must agree."
+    ],
+    "permitted_variations": [
+      "Vary feasible dimensions and basis cardinality.",
+      "Vary source-supported component counts, coefficients and parameter labels.",
+      "Vary which numeric option qualifies within recognizable bank shapes."
+    ],
+    "source_refs": [
+      "Canonical 10cc01a6-af19-5340-9743-ade4d5e252dc",
+      "Tutorial 0728c510-110b-5bde-93ea-9050a87a6ecc: rank(A) + nullity(A) = n",
+      "5e7c8be1-d271-506d-bfc9-fbf1881a88d8",
+      "7663d433-7983-5195-82f9-f8b3b6b0d6aa",
+      "1b45e803-c138-5bcf-9207-424394814f56"
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay.json",
+        "canonical-replay.json",
+        "retained-failure-replay.json"
+      ],
+      "details": "All 15 supplied practice cases replay with complete banks, including the three previously rejected cases."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "boundary-records.json"
+      ],
+      "details": "134 independent prompt, answer and solution checks pass; 20 boundary/profile cases also pass."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "construction-domain.json",
+        "shortcut-results.json"
+      ],
+      "details": "All profiles and source representation families are covered. Correct numeric positions vary before and after filtering."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "scope-analysis.json",
+        "source-analysis.json"
+      ],
+      "details": "Tested outputs retain the source inference methods, response contract and comparable workload."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-report.json"
+      ],
+      "details": "Native grading accepts 19 independently correct selections and rejects 76 distractors, including controlled before/after cases."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "visual-inspection.json",
+        "scroll-results.json"
+      ],
+      "details": "19 actual-UI cases pass screenshot inspection. Wide solution expressions remain reachable through horizontal scrolling."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging.json",
+        "package-integrity.json"
+      ],
+      "details": "Exact dependencies, deterministic replay, relocation and invalid-input rejection pass. All 196 package files remain byte-unchanged."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "counterfactual-results.json",
+        "batch-assessment.json",
+        "delivery-batch/delivery.json",
+        "selection-results.json",
+        "inventory-audit.json"
+      ],
+      "details": "Controlled changes agree across prompts, solutions, grading and rendering. All five batch records survive delivery; the old bank-only rule scores 2/5. No tested nonsingleton subgroup has a perfect incidental predictor. Captured-inventory and learner-selection limits are documented."
+    }
+  },
+  "findings": []
+}
