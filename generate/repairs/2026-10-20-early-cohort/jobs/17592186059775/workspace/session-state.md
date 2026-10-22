@@ -1,34 +1,37 @@
-# Current state — 2026-10-22, author-161
+# Current state — 2026-10-22, author-164
 
-Preserved runtime files, manifest, instructional account and completed repairs.
-Read latest feedback and retained history; no new generator defect was demonstrated.
+Preserved completed repairs, runtime bytes, manifest and strict finding checks.
+Read feedback, full history, required documentation, source questions and lessons.
+Existing instructional account applies; no runtime change is justified by the
+retained evidence-only finding.
 
-Reproduced latest failure first:
+Latest failure reproduced first:
 `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_current_handoff.py`
-exits 1. Installed `scripts/generator_pipeline.py:723` rejects the unchanged package
-before regressions or sampling, including for the retained evidence-only finding.
+exits 1. Installed `scripts/generator_pipeline.py` rejects unchanged runtime
+before regressions or sampling. The retained finding explicitly requests no
+runtime change. Changing bytes solely to change the digest would not fix it.
 
-Fresh commands, exit codes and unchanged runtime hashes:
-`evidence/author161-verification.json`.
-- `checks/check_batch_selection.py`: 0. Seed 4258185931 passes shared delivery,
-  independent matrix checks and 25 native grader responses. Shortcut scores 1/5
-  both raw and delivered; ten source profiles remain covered.
-- `checks/check_evidence_contract.py`: 1. Corrected bundle, real evidence validator,
-  relocated roots, missing-provenance/wrong-root controls, source binding and three
-  affected inventory records pass. Installed runner handoff remains blocked.
-- `checks/check_cli_contract.py`: 0. Relocation, exact counts, determinism and
-  finite-limit rejection pass.
-- `checks/check_render_binding.py`: 0. Ten complete source banks / fifty choices
-  replay; retained actual-UI inputs match current delivered endpoints. Inspected
-  question-002.png: prompt, choices and elimination solution are readable.
+Fresh commands, results and unchanged runtime hashes:
+`evidence/author164-verification.json`.
+- Batch: seed 4258185931 passes; shortcut 1/5 raw and delivered; five accepted;
+  ten profiles; 25 native grading responses pass.
+- Evidence bundle, root relocation, missing-provenance/wrong-root negative
+  controls and three affected inventory identities pass. Overall exit 1 retains
+  the installed-runner failure; staged evidence is not an installed repair.
+- CLI: runtime-only relocation, deterministic counts 5/0/1/5 and finite-limit
+  rejection pass.
+- Source/UI binding: ten complete banks, fifty choices, two retained actual-UI
+  endpoints match current delivered records. Reinspected question-002.png:
+  readable matrices, five controls and complete elimination solution.
 
-No runtime, database, publication, engine, service, external runner or other-job
-writes occurred. No new broad sampling or interchangeable rendering was needed.
-All strict regression registrations remain intact.
+No runtime, engine, database, publication, service, other-job or external runner
+writes occurred. No redundant render or proposed-patch tests were run. The staged
+`runner-fix/evidence-only-rejection.patch` remains uninstalled; earlier offline
+patch evidence is retained without claiming fresh execution.
 
-Next unfinished action is outside the authorized workspace: the runner owner must
-assess/install `runner-fix/evidence-only-rejection.patch`, install the relative
-corrected evidence bundle, then execute regressions, sampling and fresh independent
-review. The patch remains uninstalled. Changing generator bytes solely to bypass
-this gate would not repair its evidence-only handling. Identical author retries
-cannot resolve this external condition.
+Next required action is external: runner owner applies and verifies the routing
+correction, installs the staged bundle per `evidence/contract-installation.json`,
+then runs retained regressions, sampling and fresh independent review. Those
+writes are outside authorized scope. Do not repeat unchanged authoring until
+runner state changes. Keep the strict failing regression intact.
+No complete repair or independent approval is claimed.
