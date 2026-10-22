@@ -1,26 +1,14 @@
-# Author 626 — 2026-10-22
+# Author 629 — 2026-10-22
 
-Preserved completed runtime repairs, source coverage, manifest and all five
-strict finding regressions. Read feedback, all cumulative findings, source lesson,
-all 17 complete practice records, source flowchart, instructional account and
-required generator documents. Latest history event 625 repeats the same blocker.
+Preserved the candidate, manifest, completed construction repairs and all five strict regressions. Read latest feedback, all retained findings and original source/lesson material.
 
-First test: job Python -B checks/batch_regressions.py --finding inventory.
-The recorded replay confirms exit 1: five historical banks retain the shortcut;
-the possible-history witness succeeds 64/64 times.
+First executed regression: job Python -B checks/batch_regressions.py --finding inventory.
+Exit 1: five historical stored banks retain the sign-only extremum shortcut; retained possible-history selection gives 64/64 successes.
 
-Then: job Python -B checks/recheck_status.py --output evidence/author-626.
-Exit 1 solely for finding 591f580cadb749294588. Four generator regressions pass;
-17 source banks replay; 14 records retain contrasts after shared delivery;
-controlled counterfactuals pass. Native grading accepts 7 correct and rejects
-28 wrong responses. Relocation and exact dependencies pass. Protected runtime,
-manifest, source and inventory hashes remain unchanged. Five staged replacements
-and their identity mapping remain verified and unapplied. Visually inspected
-retained evidence/repair-3/render/question-002.png: equations, choices, augmented
-matrices and solution are readable without clipping.
+Validation: job Python -B checks/recheck_status.py --output evidence/author-629.
+Exit 1 solely for 591f580cadb749294588. Four current-generator regressions pass; 17 complete practice banks and canonical replay pass; 14 delivered records retain contrasts; relevant/irrelevant counterfactuals pass. Native grading accepts 7 correct and rejects 28 incorrect choices. Relocation, exact dependency versions, protected hashes and five unapplied staged replacements pass. Visually inspected unchanged repair-3/render/question-002.png and the source tutorial diagram.
 
-Evidence: evidence/author-626/commands.json, results.json and outcome.md.
-Next unfinished step: separate inventory remediation for 591f580cadb749294588,
-then fresh capture and strict recheck. User prohibits database changes and
-publication. No workspace-only generator edit can change captured stored banks.
-Preserve the strict failure and staged replacements. Status: unsupported.
+Evidence: evidence/author-629/commands.json, results.json, outcome.md.
+Status remains unsupported because the strict stored-pool criterion fails.
+
+Next unfinished action is the separate inventory-remediation workflow explicitly requested by finding 591f580cadb749294588, then fresh inventory capture and validation. Database edits/publication are prohibited here. The selector reads stored banks and never invokes this generator to repair them. Do not change runtime, drop families or weaken tests to manufacture a pass against immutable captured records. Preserve the verified proposal in evidence/repair-3/inventory-repair-proposal.json. No new runtime construction defect is reported.

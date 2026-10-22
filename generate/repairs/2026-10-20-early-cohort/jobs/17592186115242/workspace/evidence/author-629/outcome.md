@@ -1,0 +1,13 @@
+# Author 629 outcome
+
+Status: unsupported. The candidate remains intact; no new generator defect was demonstrated.
+
+Read the latest feedback, all five retained findings and the latest history event before testing. First test: `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory`. Exit 1: five historical generated records match the captured inventory and retain the sign-only extremum shortcut; the retained possible learner-history scenario yields 64/64 successes. Full reproduced records remain in `evidence/generated-records.json` and identities in `affected-inventory.json`.
+
+Ran `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/author-629`. Exit 1 solely for finding 591f580cadb749294588. All four current-generator regressions pass. The check replays 17 complete practice banks plus the canonical case, verifies 14 delivered items across three finite batches and controlled relevant/irrelevant changes, and runs native grading: 7 correct choices accepted, 28 incorrect choices rejected. Package relocation, pinned dependencies, runtime/source/inventory hashes and five staged replacements pass. Commands and results are adjacent JSON files.
+
+Reused unchanged actual-UI rendering evidence and visually inspected `evidence/repair-3/render/question-002.png`: equations, all five choices, row operation, reduced system and conclusion are readable and agree. Also inspected the original tutorial classification diagram. No new interchangeable renders were needed.
+
+The remaining failure depends on stored question banks. `engine/rust/question_selection.rs:125` selects from supplied stored candidates using difficulty and seen state; it does not regenerate their banks through this Python package. Runtime changes cannot change the captured five records. No source evidence changed, so the old counterexample remains applicable. Narrowing source families, changing the grader, replacing the captured inventory locally or weakening the strict test would not repair this failure.
+
+The existing `evidence/repair-3/inventory-repair-proposal.json` contains five verified replacement records and exact old/new identity mappings. It remains proposed and unapplied. Required next action is the separate inventory-remediation workflow named by the retained finding, followed by fresh inventory capture and the strict selection regression. The user's prohibition on database edits and publication prevents that action here. No service, database, publication, engine or runtime changes were made. Do not retry an unchanged generator as though it could retire stored candidates.

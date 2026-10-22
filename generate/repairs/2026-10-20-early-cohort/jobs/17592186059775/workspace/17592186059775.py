@@ -1,9 +1,8 @@
-"""Bounded, faithful Gaussian elimination variants for this KP only.
+"""Seeded Gaussian elimination; exact source replay and authored decision banks.
 
-The sole slot multiplies the augmented (right-hand-side) column by k=1..5.
-Coefficient columns, pivot order, complete source banks and solution stages stay
-fixed. k is coprime to observed denominators, so fractional workload is retained.
-This changes both the system and its solution, unlike whole-row rescaling.
+Normal samples choose a decisive second-row constant before constructing the
+input. All five alternatives are internally consistent normalized REF objects.
+Legacy source banks remain available through source_replay for fidelity audits.
 """
 import argparse
 import hashlib
@@ -14,22 +13,23 @@ import re
 import uuid
 from pathlib import Path
 import sympy as sp
+from math_format import matrix_tex, system_tex, normalize_prose, normalize_tex, checked_math_content
 
 KP_ID = 17592186059775
 KP_UUID = 'a10cafc6-9da7-5ffc-a0c7-686a7638fbd9'
 GENERATOR_UUID = str(uuid.uuid5(uuid.UUID(KP_UUID), 'gaussian-elimination-generator-v1'))
-VERSION = '1.0.0'
+VERSION = '1.1.0'
 SUPPORTED_LEVELS = ('easy', 'moderate')
 EXCLUDED_PROFILES = ('q-10512',)
 HERE = Path(__file__).with_suffix('')
 SOURCE = json.loads((HERE / 'source.json').read_text())
-SOURCE_BASIS = json.loads((HERE / 'reference/initial/inventory.json').read_text())['basis']
+SOURCE_BASIS = 5461
 CASES = {q[':question/math-academy-id']: q for q in SOURCE[':knowledge-point/questions']
          if q.get(':question/difficulty') and q.get(':question/worked-solution')
          and q[':question/answer-fields'][0].get(':answer-field/correct')}
 DEFAULTS = {sid: [sid, 1] for sid in CASES}
 NUMBER = r'-?(?:\\frac\{-?\d+\}\{\d+\}|\d+)'
-MAT = re.compile(r'\\left\[\\begin\{array\}\{cc\|c\}(.*?)\\end\{array\}\\right\]', re.S)
+MAT = re.compile(r'(?:\\left\[\\begin\{array\}\{cc\|c\}|\\begin\{bmatrix\})(.*?)(?:\\end\{array\}\\right\]|\\end\{bmatrix\})', re.S)
 
 def scalar(text):
     text = re.sub(r'\\frac\{(-?\d+)\}\{(\d+)\}', r'(\1/\2)', text.strip())
@@ -136,28 +136,128 @@ def _render(difficulty='easy', seed=0, template=None, parameters=None):
     q = {':question/id': qid, ':question/problem': problem, ':question/worked-solution': solution(sid, k), ':question/difficulty': ':question.difficulty/' + difficulty, ':question/answer-fields': [field]}
     return {'knowledge_point': {'db_id': KP_ID, 'id': KP_UUID, 'title': SOURCE[':knowledge-point/title']}, 'question': q, 'generation': {'generator_id': GENERATOR_UUID, 'generator_version': VERSION, 'seed': seed, 'parameters': parameters, 'template': sid, 'bank_profile': sid, 'source_question_id': old[':question/id'], 'source_basis': SOURCE_BASIS, 'dependencies': {'sympy': sp.__version__}, 'assets': [], 'mathematical_fingerprint': fingerprint(q)}}
 
-def generate(difficulty='easy', seed=0, template=None, parameters=None):
-    if template in EXCLUDED_PROFILES or parameters and parameters[0] in EXCLUDED_PROFILES:
-        raise ValueError('Ambiguous source bank excluded: q-10512')
-    return _render(difficulty, seed, template, parameters)
-
 def source_replay(sid):
-    """Audit-only source reconstruction, including excluded evidence."""
+    """Audit-only reconstruction of the complete captured bank, including errors."""
     return _render(level(sid), template=sid, parameters=DEFAULTS[sid])
+
+
+def replace_rhs(text, point):
+    """Transport each printed matrix using its own coefficient block."""
+    def change(match):
+        rows = [[scalar(c) for c in row.split('&')]
+                for row in match[1].split(r'\\')]
+        for row in rows:
+            row[2] = row[0]*point[0] + row[1]*point[1]
+        return matrix_tex([[tex(c) for c in row] for row in rows], augmented=True)
+    return MAT.sub(change, text)
+
+
+def solve_tail(ref):
+    b, c, y = ref[0, 1], ref[0, 2], ref[1, 2]
+    x = c-b*y
+    coefficient = ('+' if b >= 0 else '-') + ('' if abs(b) == 1 else tex(abs(b)))
+    lhs = 'x' + coefficient + 'y'
+    system = system_tex([lhs+'='+tex(c), 'y='+tex(y)])
+    contribution = -b*y
+    addition = ('+' if contribution >= 0 else '-') + tex(abs(contribution))
+    body = ('x'+coefficient+r'\left('+tex(y)+r'\right)='+tex(c)
+            +r'\,\Rightarrow\,x='+tex(c)+addition+'='+tex(x)+'.')
+    return ('\n\nThe system is now\n\n$$\n'+system+'\n$$\n\n'
+            'and we can apply back substitution. The final equation $y='+tex(y)
+            +'$ tells us the value of $y.$ Substituting this value into the first equation, we get\n\n'
+            '$$\n'+body+'\n$$\n\nTherefore, the solution is $x='+tex(x)+'$ and $y='+tex(y)+'.$')
+
+
+@checked_math_content
+def decision_instance(difficulty, seed, sid, k, target):
+    if (difficulty not in SUPPORTED_LEVELS or sid not in CASES
+            or level(sid) != difficulty or [sid, k] not in domain(sid)
+            or type(target) is not int or target not in range(5)):
+        raise ValueError('Parameters outside the supported decision profile')
+    old = CASES[sid]
+    final = matrices(old[':question/worked-solution'])[-1]
+    b, c, base_y = final[0, 1], k*final[0, 2], final[1, 2]
+    ys = [k*(base_y+d) for d in range(-2, 3)]
+    point = (c-b*ys[target], ys[target])
+    problem = normalize_prose(replace_rhs(old[':question/problem'], point))
+    solution_text = replace_rhs(old[':question/worked-solution'], point)
+    solve = 'and then solve' in problem
+    if solve:
+        prefix = solution_text.split('The system is now', 1)[0].rstrip()
+        ref = sp.Matrix([[1, b, c], [0, 1, ys[target]]])
+        solution_text = prefix + solve_tail(ref)
+    solution_text = normalize_prose(solution_text)
+    values = []
+    for y in ys:
+        mat = matrix_tex([['1', tex(b), tex(c)], ['0', '1', tex(y)]], augmented=True)
+        if solve:
+            value = '$$\nM∼'+mat+',\n$$\n$\\,x='+tex(c-b*y)+'$ and $y='+tex(y)+'$'
+            values.append(normalize_prose(value))
+        else:
+            values.append(normalize_tex('M∼'+mat))
+    correct = values[target]
+    # Content identities include the entire bank; seed and order are incidental.
+    qid = str(uuid.uuid5(uuid.UUID(GENERATOR_UUID), json.dumps([problem, values, correct])))
+    fid = str(uuid.uuid5(uuid.UUID(qid), 'selection'))
+    answers = [{':answer/id': str(uuid.uuid5(uuid.UUID(fid), value)),
+                ':answer/type': ':answer.type/text' if solve else ':answer.type/math',
+                ':answer/value': value} for value in values]
+    correct_id = answers[target][':answer/id']
+    random.Random(str(seed)+':'+sid+':'+str(k)+':'+str(target)).shuffle(answers)
+    field = {':answer-field/id': fid, ':answer-field/key': 'selection',
+             ':answer-field/type': ':answer-field.type/radio',
+             ':answer-field/choices': answers,
+             ':answer-field/correct': [':answer/id', correct_id]}
+    q = {':question/id': qid, ':question/problem': problem,
+         ':question/worked-solution': solution_text,
+         ':question/difficulty': ':question.difficulty/'+difficulty,
+         ':question/answer-fields': [field]}
+    return {'knowledge_point': {'db_id': KP_ID, 'id': KP_UUID, 'title': SOURCE[':knowledge-point/title']},
+            'question': q,
+            'generation': {'generator_id': GENERATOR_UUID, 'generator_version': VERSION,
+                           'seed': seed, 'parameters': [sid, k, target], 'template': sid,
+                           'bank_profile': 'common-coefficient-candidates-v1',
+                           'source_question_id': old[':question/id'], 'source_basis': SOURCE_BASIS,
+                           'dependencies': {'sympy': sp.__version__}, 'assets': [],
+                           'mathematical_fingerprint': fingerprint(q)}}
+
+
+def generate(difficulty='easy', seed=0, template=None, parameters=None):
+    """Normal generation. Two-element legacy parameters remain audit-compatible."""
+    if difficulty not in SUPPORTED_LEVELS:
+        raise ValueError('Unsupported difficulty: '+difficulty)
+    if parameters is not None and len(parameters) == 2:
+        if parameters[0] in EXCLUDED_PROFILES:
+            raise ValueError('Ambiguous legacy source bank excluded: q-10512')
+        return _render(difficulty, seed, template, parameters)
+    rng = random.Random(seed)
+    if parameters is None:
+        sid = template or rng.choice([s for s in CASES if level(s) == difficulty])
+        target = rng.randrange(5)
+        k = rng.choice(domain(sid))[1]
+    else:
+        sid, k, target = parameters
+        if template not in (None, sid):
+            raise ValueError('Conflicting template and parameters')
+    return decision_instance(difficulty, seed, sid, k, target)
+
 
 def candidates(difficulty, seed=0):
     if difficulty not in SUPPORTED_LEVELS:
-        raise ValueError('Unsupported difficulty: ' + difficulty)
-    parameters = [p for sid in CASES if sid not in EXCLUDED_PROFILES and level(sid) == difficulty for p in domain(sid)]
+        raise ValueError('Unsupported difficulty: '+difficulty)
+    parameters = [[sid, k, t] for sid in CASES if level(sid) == difficulty
+                  for _, k in domain(sid) for t in range(5)]
     random.Random(seed).shuffle(parameters)
     return [generate(difficulty, seed, parameters=p) for p in parameters]
+
 
 def batch(difficulty, count, seed=0):
     records = candidates(difficulty, seed)
     unique = {fingerprint(r['question']): r for r in records}
     if count < 0 or count > len(unique):
-        raise ValueError('Finite variant limit: ' + str(len(unique)))
+        raise ValueError('Finite variant limit: '+str(len(unique)))
     return list(unique.values())[:count]
+
 
 def markdown(rec):
     q = rec['question']
@@ -166,5 +266,6 @@ def markdown(rec):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--difficulty', default='easy'); parser.add_argument('--seed', type=int, default=59775); parser.add_argument('--count', type=int, default=5)
+    parser.add_argument('--format', choices=['json'], default='json')
     args = parser.parse_args()
     print(json.dumps({'instances': batch(args.difficulty, args.count, args.seed)}, indent=2))

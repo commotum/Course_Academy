@@ -7,7 +7,7 @@ import subprocess
 from pathlib import Path
 import sympy as sp
 HERE = Path(__file__).resolve().parent
-ROOT = HERE.parents[2]
+ROOT = Path('/home/jake/Developer/Course_Academy')
 spec = importlib.util.spec_from_file_location('gaussian_generator', HERE.with_suffix('.py'))
 g = importlib.util.module_from_spec(spec); spec.loader.exec_module(g)
 
@@ -25,7 +25,7 @@ def number(text):
 def printed_matrices(text):
     if r'\\begin' in text:
         text = text.replace('\\\\', '\\')
-    raw = re.findall(r'\\begin\{array\}\{cc\|c\}(.*?)\\end\{array\}', text, re.S)
+    raw = re.findall(r'(?:\\begin\{array\}\{cc\|c\}|\\begin\{bmatrix\})(.*?)(?:\\end\{array\}|\\end\{bmatrix\})', text, re.S)
     return [sp.Matrix([[number(cell) for cell in row.split('&')] for row in body.split(r'\\')]) for body in raw]
 
 def pair(text):
@@ -54,7 +54,8 @@ def apply_operation(matrix, row, expression):
 def independent(rec):
     q = rec['question']; meta = rec['generation']
     assert rec['knowledge_point']['db_id'] == g.KP_ID
-    sid, k = meta['parameters']; assert meta['bank_profile'] == sid
+    sid, k, *target = meta['parameters']
+    assert meta['bank_profile'] == ('common-coefficient-candidates-v1' if target else sid)
     assert rec == g.generate(q[':question/difficulty'].split('/')[-1], meta['seed'], sid, meta['parameters'])
     a, = printed_matrices(q[':question/problem']); assert a.shape == (2, 3)
     assert a[:, :2].det() != 0 and a[0, 0] != 0
@@ -90,6 +91,7 @@ def independent(rec):
         # Verify the substituted value, constant RHS, collected contribution and
         # final x in the actual displayed back-substitution line.
         block = re.findall(r'\$\$\n(.*?)\n\$\$', tail, re.S)[-1]
+        block = block.replace(r'\left', '').replace(r'\right', '').replace(r'\Rightarrow', '⇒')
         left, rest = block.split('=', 1)
         substituted = re.search(r'\((' + g.NUMBER + r')\)', left)
         assert substituted and number(substituted[1]) == values[y]
