@@ -1,0 +1,15 @@
+# Author 948 disposition
+
+Preserved the existing runtime, manifest, instructional account and all five strict regression declarations. Read current feedback, all five retained findings and the existing session state; reproduced the latest failure before other checks. No newly demonstrated generator construction defect justifies another runtime change.
+
+Instructional scope remains the account in `instructional-account.md`: eliminate x, solve the remaining affine y coefficient for k, and distinguish a contradiction from a redundant equation. Canonical source f2c7cfd3-da43-5208-bd0e-21692357fabe reduces to `(k+4)y=-5`; tutorial e0c85152-daea-5a87-a3ba-81870558c7a2 defines no solutions versus infinitely many. Source 534e2a93-e71a-5475-894e-dfd5ca99a3a6 places the correct value inside its bank. The current rank-first authored banks preserve the five-choice workload and defeat the reported extremum cue; complete source profiles remain replayable.
+
+Recheck command: `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/author-948` (exit 1). Four generator findings pass. Source fidelity: 17 complete banks. Correctness: independent printed-system and matrix witnesses plus zero-root boundaries. Grading: 7 accepted and 28 rejected native checks. Decision variation: 14 records across three finite batches retain within-sign-group root/rank/position contrasts through shared delivery; relevant and irrelevant counterfactuals pass. Manifest versions and relocated seeded output pass.
+
+Finding 591f580cadb749294588 remains failed: all five historical generated inventory records reproduce exactly, and the possible-history selection witness gives 64/64 shortcut successes. All generated inventory records were tested; no untested generated inventory remains. `affected-inventory.json` lists only those historical generated identities, with paths resolving relative to the supplied author-948 evidence root. The five-record replacement proposal in `evidence/repair-3/inventory-repair-proposal.json` still verifies and remains unapplied.
+
+Reused unchanged actual-UI evidence after verifying protected input/runtime hashes. Visually inspected `evidence/repair-3/render/question-001.png`: equations, five radio choices, elimination matrices and conclusion are legible without clipping. Also inspected the source tutorial flowchart; no generated diagram is needed. No repeated rendering was warranted for unchanged records.
+
+The remaining review request explicitly requires the separate inventory-remediation workflow, followed by fresh capture. Workspace-only generator edits cannot alter stored selector candidates. Database changes and publication are prohibited here, so no such action was taken. Strict acceptance remains unchanged. Status: unsupported for the combined selectable-pool requirement; no claim of a repaired historical pool.
+
+Applied skill: [just-say-no-to-process-porn-and-ceremony](/home/jake/.codex/skills/just-say-no-to-process-porn-and-ceremony/SKILL.md). Stopped after the required targeted checks; did not create another replacement plan or rerun unrelated broad investigations.
