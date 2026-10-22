@@ -1,0 +1,184 @@
+{
+  "format": 1,
+  "findings": [
+    {
+      "id": "1388ffc008aaf44c1904",
+      "finding": {
+        "kind": "decision_shortcut",
+        "description": "Within q-109154, choosing the sole denominator containing C-2u^(5/2), where u=x+h, selects the accepted answer without Bernoulli reduction or integration. This succeeds on all 12 production translations and both matching batch items. The entire delivered batch also preserves recognizable source-bank/key signatures.",
+        "source_refs": [
+          "48fa1d56-7545-55a4-8175-861ef17502b3",
+          "ad4ebdc1-705f-579a-b327-9d9638977692",
+          "generate/principles.md: meaningful variety and answer-bearing roles"
+        ],
+        "reproduction": "Run PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python variation-audit.py; the retained acceptance test exits 1. Minimal case: generate('moderate',98301,'q-109154',{'shift':1}) keys y=5(x+1)/(C-2(x+1)^(5/2)), the sole option containing the cue. Native outcomes are in grader-report.json. Stored affected question 4c866423-3d16-5bfb-95b6-2aad67327bbd, entity 17592186520734, is reproduced with matching generation metadata in generated-records.json.",
+        "requested_change": "Vary eligible coefficients/signs and derive banks that let different formula patterns qualify within recognizable profiles. For example, doubling q preserves the method but changes the denominator coefficient from 2 to 4 after rescaling C. Retain strict math/grader checks and regenerate the batch with cases defeating the cue."
+      },
+      "source_hash": "b5a1f569b76f9f537b98d0dc874f7abdd6d4b0c1df0740a9e6764f49f1453de4",
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186147454/review-0-policy-2-6ca8b422a4136178",
+      "attempt": 0
+    },
+    {
+      "id": "0d445813c431c607edbe",
+      "finding": {
+        "kind": "restriction",
+        "description": "The complete moderate source y'-y=sqrt(y) is excluded from normal generation because translation cannot vary its autonomous equation. That implementation restriction does not justify dropping its supported substitution and inversion family.",
+        "source_refs": [
+          "f2cab3ea-07f6-5b6d-87cc-2af665f5707a",
+          "tutorial 238cafad-c43b-5970-af70-5ce0cab5442c"
+        ],
+        "reproduction": "workspace/17592186147454.py:53 excludes q-109029 from eligible profiles; line 58 permits only shift=0 evidence replay. generate('moderate',0,'q-109029',{'shift':1}) raises AssertionError, recorded in packaging-results.json. No CLI seed can emit this profile.",
+        "requested_change": "Restore ordinary practice using conservative coefficient variation such as y'-a*y=b*sqrt(y), retaining positive-square-root branch restrictions, elementary integrating factors and varied answer banks."
+      },
+      "source_hash": "b5a1f569b76f9f537b98d0dc874f7abdd6d4b0c1df0740a9e6764f49f1453de4",
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186147454/review-0-policy-2-6ca8b422a4136178",
+      "attempt": 0
+    }
+  ],
+  "events": [
+    {
+      "attempt": 0,
+      "package_hash": "284944b04e8aa13addd25e08bcffd4963edb378c8662230e60155247482ea276",
+      "reason": {
+        "verdict": "revise",
+        "summary": "Two demonstrated failures: translation-only variation preserves answer-predicting formula cues, and normal generation excludes a complete source family. The exact delivered batch remains vulnerable. Mathematics, native grading, rendering and packaging passed. Package files remained unchanged.",
+        "source_analysis": {
+          "skill": "Solve a Bernoulli differential equation by substitution, integrating factors and recovery of the original dependent variable; select its general solution.",
+          "reasoning_steps": [
+            "Normalize the equation and identify p(x), q(x) and n.",
+            "Set z=y^(1-n) and derive the first-order linear equation.",
+            "Apply an integrating factor and integrate.",
+            "Substitute back, respect real branches and distinguish the solution from distractors."
+          ],
+          "invariants": [
+            "Preserve the Bernoulli reduction and elementary integration workload.",
+            "Retain the observed five-choice radio response contract.",
+            "Keep prompts, solution branches, choices and keys mathematically consistent."
+          ],
+          "permitted_variations": [
+            "Change eligible coefficients and signs while keeping integration elementary.",
+            "Retain complete source families with comparable workload.",
+            "Vary which formula patterns qualify; source-specific constants and answer positions are incidental."
+          ],
+          "source_refs": [
+            "047ea3c1-8ebf-5e26-9f28-c5a87e7cf997",
+            "48fa1d56-7545-55a4-8175-861ef17502b3",
+            "f2cab3ea-07f6-5b6d-87cc-2af665f5707a",
+            "tutorial 238cafad-c43b-5970-af70-5ce0cab5442c: substitution z=y^(1-n), followed by integrating factors"
+          ],
+          "evidence_paths": [
+            "source-analysis.json",
+            "source-gap-results.json"
+          ]
+        },
+        "checks": {
+          "source_replay": {
+            "status": "passed",
+            "evidence_paths": [
+              "source-replays.json",
+              "source-replay-results.json",
+              "source-gap-results.json"
+            ],
+            "details": "Ten complete source banks reproduce all 50 choices, keys and solution stages after presentation normalization. Unsupported cases are documented; independent derivation confirms the incomplete hard source has no valid captured choice."
+          },
+          "math": {
+            "status": "passed",
+            "evidence_paths": [
+              "review.py",
+              "math-results.json",
+              "counterfactual-results.json"
+            ],
+            "details": "Independent parsing and exact differential residuals verified 46 source/control/batch records, including every choice and the unique keyed solution."
+          },
+          "variety": {
+            "status": "failed",
+            "evidence_paths": [
+              "restriction-results.json",
+              "shortcut-results.json",
+              "selection-results.json"
+            ],
+            "details": "Only coordinate translation varies within profiles. Answer-bearing formula patterns remain fixed, and complete source q-109029 is excluded from production."
+          },
+          "scope": {
+            "status": "passed",
+            "evidence_paths": [
+              "source-analysis.json",
+              "scope-results.json"
+            ],
+            "details": "Sampled production records preserve source methods, response format and moderate/hard workload."
+          },
+          "grading": {
+            "status": "passed",
+            "evidence_paths": [
+              "grader-input.json",
+              "grader-report.json",
+              "grader-execution.json"
+            ],
+            "details": "Actual native grader checked 59 complete banks: 59 accepted choices, 236 rejected choices, zero unresolved outcomes and zero database writes."
+          },
+          "rendering": {
+            "status": "passed",
+            "evidence_paths": [
+              "render/rendering.json",
+              "render-inspection.json",
+              "render/inspection-1.png",
+              "render/inspection-2.png",
+              "render/inspection-3.png",
+              "render/solution-inspection.png"
+            ],
+            "details": "Inspected actual-UI screenshots for all five batch records, controlled counterfactuals and a hard case. Nine records rendered without reported MathJax errors or broken images."
+          },
+          "packaging": {
+            "status": "passed",
+            "evidence_paths": [
+              "packaging-results.json",
+              "package-before.json",
+              "package-after.json",
+              "contract-check.json"
+            ],
+            "details": "Declared runtime versions match installation. Relocation, deterministic replay and boundary rejection passed. All 72 package file hashes remained unchanged."
+          },
+          "decision_variation": {
+            "status": "failed",
+            "evidence_paths": [
+              "pedagogical-variation.json",
+              "variation-audit.py",
+              "focused-shortcut-records.json",
+              "shortcut-results.json",
+              "counterfactual-results.json",
+              "delivery-batch/accepted.json",
+              "selection-results.json",
+              "affected-inventory.json",
+              "generated-records.json"
+            ],
+            "details": "A formula cue answers 12/12 q-109154 variants and both occurrences in the delivered batch. Source-bank recognition answers all five delivered records. UI shuffling defeats position cues but preserves formula cues. One stored generated item reproduces an analogous weakness. Actual learner histories were unavailable; selector rules and explicit modeled histories were examined."
+          }
+        },
+        "findings": [
+          {
+            "kind": "decision_shortcut",
+            "description": "Within q-109154, choosing the sole denominator containing C-2u^(5/2), where u=x+h, selects the accepted answer without Bernoulli reduction or integration. This succeeds on all 12 production translations and both matching batch items. The entire delivered batch also preserves recognizable source-bank/key signatures.",
+            "source_refs": [
+              "48fa1d56-7545-55a4-8175-861ef17502b3",
+              "ad4ebdc1-705f-579a-b327-9d9638977692",
+              "generate/principles.md: meaningful variety and answer-bearing roles"
+            ],
+            "reproduction": "Run PYTHONDONTWRITEBYTECODE=1 /home/jake/Developer/Course_Academy/.venv/bin/python variation-audit.py; the retained acceptance test exits 1. Minimal case: generate('moderate',98301,'q-109154',{'shift':1}) keys y=5(x+1)/(C-2(x+1)^(5/2)), the sole option containing the cue. Native outcomes are in grader-report.json. Stored affected question 4c866423-3d16-5bfb-95b6-2aad67327bbd, entity 17592186520734, is reproduced with matching generation metadata in generated-records.json.",
+            "requested_change": "Vary eligible coefficients/signs and derive banks that let different formula patterns qualify within recognizable profiles. For example, doubling q preserves the method but changes the denominator coefficient from 2 to 4 after rescaling C. Retain strict math/grader checks and regenerate the batch with cases defeating the cue."
+          },
+          {
+            "kind": "restriction",
+            "description": "The complete moderate source y'-y=sqrt(y) is excluded from normal generation because translation cannot vary its autonomous equation. That implementation restriction does not justify dropping its supported substitution and inversion family.",
+            "source_refs": [
+              "f2cab3ea-07f6-5b6d-87cc-2af665f5707a",
+              "tutorial 238cafad-c43b-5970-af70-5ce0cab5442c"
+            ],
+            "reproduction": "workspace/17592186147454.py:53 excludes q-109029 from eligible profiles; line 58 permits only shift=0 evidence replay. generate('moderate',0,'q-109029',{'shift':1}) raises AssertionError, recorded in packaging-results.json. No CLI seed can emit this profile.",
+            "requested_change": "Restore ordinary practice using conservative coefficient variation such as y'-a*y=b*sqrt(y), retaining positive-square-root branch restrictions, elementary integrating factors and varied answer banks."
+          }
+        ]
+      },
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186147454/review-0-policy-2-6ca8b422a4136178"
+    }
+  ]
+}

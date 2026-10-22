@@ -1,13 +1,13 @@
-# Current state — author 489
+# Current state — author 493
 
-Read latest feedback and both retained findings; inspected the latest of 489 history events. No new generator defect is demonstrated. Preserved runtime and strict regressions.
+Read feedback and the complete structured history: two retained findings, 493 events. No new generator defect is reported. Preserved the existing construction repair, instructional account, runtime package and both strict regression declarations.
 
 Commands (job Python):
 
-- `checks/check_report_installation.py > evidence/report-repair/author-489-reproduction.log 2>&1` — exit 1: required prior-review report fails `decision_variation has an unresolved decision shortcut`. Local correction passes actual contract/schema checks and 26 current-record replays.
-- `checks/test_role_exchange.py > evidence/author-489-role-regression.log 2>&1` — exit 0: reorder and resonance-transfer counterexamples, conditional shortcut probes, shared delivery and 30 native-grader expectations pass. Post-delivery resonance positions: 19 first, 17 second; five both-nonresonant.
-- `checks/verify_retained_state.py > evidence/author-489-retained-state.log 2>&1` — exit 0: 55 staged artifact hashes, unchanged runtime/source and eight independently parsed mathematical cases verified.
+- `checks/check_report_installation.py > evidence/report-repair/author-493-reproduction.log 2>&1` — exit 1. Exact required-destination contract failure remains: `decision_variation has an unresolved decision shortcut`. The staged workspace correction passes the actual contract/schema and 26 current-record replays. No external installation was attempted because the required destination is outside the authorized workspace.
+- `checks/test_role_exchange.py > evidence/author-493-role-regression.log 2>&1` — exit 0. Exact reorder and resonance-transfer cases, conditional shortcut probes, shared delivery and 30 native-grader expectations pass. Before/after delivery: 19 first-position resonance, 17 second, five both-nonresonant.
+- `checks/verify_retained_state.py > evidence/author-493-retained-state.log 2>&1` — exit 0. All 55 staged artifact hashes, unchanged source/runtime and eight independently parsed mathematical cases verified. Prior source replay, inventory, relocation and actual-UI visual evidence retained because runtime content is unchanged.
 
-Results: `evidence/current-validation.json`. Prior source replay, inventory reproduction, relocation and rendering retained; no new rendering or independent approval claimed. No external writes, publication, database or engine changes.
+Results: `evidence/current-validation.json`. No runtime, database, engine, publication or external-file changes. No new independent review claimed.
 
-Unfinished: finding `645672a4cd3f9bf609ca` requires installation into `../review-1-policy-2-48d685555902faba`, outside authorized write scope. Existing `evidence/review-installation-handoff.json` contains the 55 artifacts and checksums. The runner must install them, rerun the strict regression and obtain fresh independent review. Another unchanged workspace-only retry cannot perform this step. Status: unsupported.
+Unfinished: finding `645672a4cd3f9bf609ca` requires installation into `../review-1-policy-2-48d685555902faba`, outside this session's authorized workspace. `evidence/review-installation-handoff.json` identifies the 55 staged files and their checksums. The runner must install them at that destination, rerun the default strict regression, and obtain fresh independent review. The regression remains nonzero; neither a writable substitute nor another unchanged author retry closes it. Status: unsupported.
