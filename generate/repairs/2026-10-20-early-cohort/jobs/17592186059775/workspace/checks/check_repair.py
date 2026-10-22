@@ -102,10 +102,12 @@ def main():
         level=g.level(sid); ks=[p[1] for p in g.domain(sid)]
         family=[g.generate(level,31,parameters=[sid,ks[0],t]) for t in range(5)]
         common_bank = {a[':answer/value'] for a in family[0]['question'][':question/answer-fields'][0][':answer-field/choices']}
+        ordered_bank = [a[':answer/value'] for a in family[0]['question'][':question/answer-fields'][0][':answer-field/choices']]
         top=None; bottoms=[]; keys=[]
         for r in family:
             v.independent(r)
             assert common_bank=={a[':answer/value'] for a in r['question'][':question/answer-fields'][0][':answer-field/choices']}
+            assert ordered_bank==[a[':answer/value'] for a in r['question'][':question/answer-fields'][0][':answer-field/choices']]
             m=v.printed_matrices(r['question'][':question/problem'])[0]
             if top is None: top=tuple(m[0,:])
             assert top==tuple(m[0,:]), 'Controlled upper row changed'

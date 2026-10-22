@@ -203,7 +203,7 @@ def decision_instance(difficulty, seed, sid, k, target):
                 ':answer/type': ':answer.type/text' if solve else ':answer.type/math',
                 ':answer/value': value} for value in values]
     correct_id = answers[target][':answer/id']
-    random.Random(str(seed)+':'+sid+':'+str(k)+':'+str(target)).shuffle(answers)
+    random.Random(str(seed)+':'+sid+':'+str(k)).shuffle(answers)
     field = {':answer-field/id': fid, ':answer-field/key': 'selection',
              ':answer-field/type': ':answer-field.type/radio',
              ':answer-field/choices': answers,
@@ -223,13 +223,11 @@ def decision_instance(difficulty, seed, sid, k, target):
 
 
 def generate(difficulty='easy', seed=0, template=None, parameters=None):
-    """Normal generation. Two-element legacy parameters remain audit-compatible."""
+    """Normal generation; use source_replay for captured source banks."""
     if difficulty not in SUPPORTED_LEVELS:
         raise ValueError('Unsupported difficulty: '+difficulty)
-    if parameters is not None and len(parameters) == 2:
-        if parameters[0] in EXCLUDED_PROFILES:
-            raise ValueError('Ambiguous legacy source bank excluded: q-10512')
-        return _render(difficulty, seed, template, parameters)
+    if parameters is not None and len(parameters) != 3:
+        raise ValueError('Decision parameters require [source_profile, scale, target_rank]; use source_replay for source audits')
     rng = random.Random(seed)
     if parameters is None:
         sid = template or rng.choice([s for s in CASES if level(s) == difficulty])

@@ -56,7 +56,10 @@ def independent(rec):
     assert rec['knowledge_point']['db_id'] == g.KP_ID
     sid, k, *target = meta['parameters']
     assert meta['bank_profile'] == ('common-coefficient-candidates-v1' if target else sid)
-    assert rec == g.generate(q[':question/difficulty'].split('/')[-1], meta['seed'], sid, meta['parameters'])
+    if target:
+        assert rec == g.generate(q[':question/difficulty'].split('/')[-1], meta['seed'], sid, meta['parameters'])
+    else:
+        assert rec == g._render(q[':question/difficulty'].split('/')[-1], meta['seed'], sid, meta['parameters'])
     a, = printed_matrices(q[':question/problem']); assert a.shape == (2, 3)
     assert a[:, :2].det() != 0 and a[0, 0] != 0
     normalized = a.copy(); normalized[0, :] /= a[0, 0]
@@ -154,4 +157,7 @@ def main():
     save('previews.json', [item['record'] for item in inputs])
     save('validation.json', {'status': 'pass', 'passed': True, 'exhaustive_instances': len(inputs), 'distinct_numeric_tasks': {l:len(s) for l,s in distinct.items()}, 'supported_levels': list(g.SUPPORTED_LEVELS), 'fidelity': '8/8 exact prompt/solution and complete banks; 32/32 distractors', 'correctness': 'independent printed equations, elimination algorithm, every displayed row operation, complete matrix/solution choice objects, system and back substitution', 'grading': 'every option at every eligible scale/profile through application grade_field', 'hashes': {str(p.relative_to(ROOT)): hashlib.sha256(p.read_bytes()).hexdigest() for p in (HERE.with_suffix('.py'), HERE/'source.json', HERE/'validate.py', HERE/'replenish.py', HERE/'capabilities.json', ROOT/'generate/runs/current/check-engine')}})
 
-if __name__ == '__main__': main()
+if __name__ == '__main__':
+    # The repaired suite retains the printed-math witnesses above and also tests
+    # the relocated runtime, supplied source snapshot, and decision counterfactuals.
+    subprocess.run([__import__('sys').executable, str(HERE.parent/'checks/check_repair.py')], check=True)
