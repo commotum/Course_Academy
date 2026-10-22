@@ -1,13 +1,13 @@
-# Current state — author 396
+# Current state — author 400
 
-Read feedback and all retained findings/history (396 events, latest attempt 395). The remaining finding is external evidence installation; no new generator defect or source change is reported. Runtime and both strict regression declarations are preserved.
+Read feedback and repair history: two retained findings, 400 events, latest attempt 399. No new generator defect or source change. Preserved runtime and both strict regression declarations.
 
-Reproduced the latest failure first with the job Python:
+Reproduced the latest failure first using the job Python:
 
-- `checks/check_report_installation.py > evidence/report-repair/current-reproduction.log 2>&1` — exit 1. Workspace correction passes actual review contract/schema validation and 26 current-generator record replays. Required external report still fails: `decision_variation has an unresolved decision shortcut`.
-- `checks/test_role_exchange.py > evidence/current-role-regression.log 2>&1` — exit 0. Exact reorder, resonance transfer, conditional shortcut probes, shared delivery and all 30 native-grader expectations pass. Delivered mixed resonance positions: 19 first, 17 second.
-- `checks/verify_retained_state.py > evidence/retained-state-current.log 2>&1` — exit 0. Verified 55 staged artifact hashes, unchanged runtime/source hashes and eight independent mathematical cases. Existing replay, inventory reproduction, relocation and actual-UI rendering evidence remains applicable.
+- `checks/check_report_installation.py > evidence/report-repair/current-reproduction.log 2>&1` — exit 1. Staged report schema/contract validation and 26 current-generator record replays pass. Required external report remains stale: `decision_variation has an unresolved decision shortcut`.
+- `checks/test_role_exchange.py > evidence/current-role-regression.log 2>&1` — exit 0. Reorder, resonance transfer, within-template shortcut probes, shared delivery, and 30 native-grader expectations pass.
+- `checks/verify_retained_state.py > evidence/retained-state-current.log 2>&1` — exit 0. Verified 55 staged artifact hashes, unchanged runtime/source hashes, and eight independent mathematical cases.
 
-Results and commands: `evidence/current-validation.json`. No runtime edits, external writes, publication, database changes, engine changes or weakened checks.
+Commands and results: `evidence/current-validation.json`. Completed source replay, inventory reproduction, relocation, and actual-UI rendering evidence remains applicable to unchanged files. No runtime edits or external writes were made.
 
-Unfinished finding 645672a4cd3f9bf609ca requires installation at `../review-1-policy-2-48d685555902faba`, outside authorized workspace writes. Validated artifacts and checksums are in `evidence/review-installation-handoff.json`. The runner must install them, rerun the strict regression, and obtain fresh independent review. Another workspace-only retry cannot perform that step. Status remains unsupported.
+Finding 645672a4cd3f9bf609ca remains open. Its required destination is the prior review directory outside this workspace. Installing the validated artifacts in `evidence/review-installation-handoff.json` requires a runner with authority to write there, followed by the unchanged strict regression and fresh independent review. Another identical workspace-only retry cannot change this state. Status remains unsupported; do not weaken the regression or alter the generator to conceal an evidence installation failure.
