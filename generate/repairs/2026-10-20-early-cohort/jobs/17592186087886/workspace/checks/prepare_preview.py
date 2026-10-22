@@ -10,4 +10,6 @@ for t,shift in [('q-90600',-2),('q-14316',-2),('q-14323',-2),('q-8747',2)]:
     k=next(k for k in g.DOMAINS[t] if k!=g.ORIGINAL[t])
     selected.append(g.generate('easy',37,t,{'k':k,'shift':shift}))
 (ROOT/'evidence/role-render-records.json').write_text(json.dumps(selected,indent=2)+'\n')
-print('Prepared four current representative records')
+cancellation=[g.generate('easy',37,t,{'k':next(k for k in g.DOMAINS[t] if k!=g.ORIGINAL[t]),'shift':0,'bank_start':1}) for t in g.CANCELLATION]
+(ROOT/'evidence/cancellation-render-records.json').write_text(json.dumps(cancellation,indent=2)+'\n')
+print('Prepared four role records and three cancellation-profile records')

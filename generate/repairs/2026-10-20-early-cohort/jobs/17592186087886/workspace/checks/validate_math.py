@@ -81,7 +81,7 @@ def main():
     # Key from a changed coefficient is wrong for the otherwise same family source instance.
     # Submitting that old-key choice in each changed instance must be rejected if still present.
     save('grader-input.json',cases)
-    selected=[next(r for r in records if r['generation']['template']==t and r['generation']['parameters']=={'k':k,'shift':0}) for t,k in [('q-14315',2),('q-8747',3),('q-14314',4),('q-90600',6)]]
+    selected=[next(r for r in records if r['generation']['template']==t and r['generation']['parameters']['k']==k and r['generation']['parameters']['shift']==0) for t,k in [('q-14315',2),('q-8747',3),('q-14314',4),('q-90600',6)]]
     save('render-records.json',selected)
     source_path=Path('/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186087886/source')
     inventory=json.loads((source_path/'inventory.json').read_text());inspected=[]

@@ -26,12 +26,13 @@ def key(r):
     return next(a[':answer/value'] for a in choices(r) if a[':answer/id']==f[':answer-field/correct'][1])
 def audit(rows,stage):
     groups=defaultdict(list)
-    for r in rows:groups[r['generation']['template']].append(r)
+    for r in rows:
+        signature=tuple(sorted(a[':answer/value'] for a in choices(r)))
+        groups[(r['generation']['template'],signature)].append(r)
     result={}
-    assert len(groups)==8
-    for t,rs in groups.items():
-        banks={tuple(sorted(a[':answer/value'] for a in choices(r))) for r in rs}
-        assert len(banks)==1,(stage,t,'bank changed with the target')
+    assert len({t for t,_ in groups})==8
+    for (t,signature),rs in groups.items():
+        assert len(rs)>=4,(stage,t,'Insufficient controlled target assignments')
         keys=[key(r) for r in rs]
         assert len(set(keys))==len(rs),(stage,t,'fixed answer role')
         positions=Counter();probes=Counter();witnesses=[]
@@ -48,10 +49,10 @@ def audit(rows,stage):
             witnesses.append({'parameters':r['generation']['parameters'],'question_id':q[':question/id'],'parsed_correct_rate':str(actual[matches[0]]),'lengths':sizes,'correct_position':matches[0]})
         assert max(positions.values())<len(rs),(stage,t,'fixed position shortcut')
         assert all(probes[n]<len(rs) for n in ['shortest','longest'])
-        # This is a mathematical impossibility witness for ANY deterministic
-        # choice-value function of this full bank, not a chosen heuristic.
         assert max(Counter(keys).values())==1
-        result[t]={'records':len(rs),'identical_complete_visible_bank':True,'different_keys':len(set(keys)), 'bank_only_strategy_max_hits':1,'bank_only_strategy_max_rate':1/len(rs),'correct_positions':dict(positions),'unique_extreme_length_hits':dict(probes),'witnesses':witnesses}
+        label=t+':'+rs[0]['generation']['bank_profile']
+        if 'bank_start' in rs[0]['generation']['parameters']:label+=':'+str(rs[0]['generation']['parameters']['bank_start'])
+        result[label]={'records':len(rs),'identical_complete_visible_bank':True,'different_keys':len(set(keys)), 'bank_only_strategy_max_hits':1,'bank_only_strategy_max_rate':1/len(rs),'correct_positions':dict(positions),'unique_extreme_length_hits':dict(probes),'witnesses':witnesses}
     return result
 
 def main():
@@ -76,11 +77,20 @@ def main():
                 else:raise AssertionError('Stale role solution escaped validation')
         rows+=family
         counterfactuals.append({'template':t,'fixed_k':k,'role_values':[-2,-1,0,1,2],'visible_prompt_delta':'s*y/x','independent_correct_rate_delta':'s*v/x','all_worked_stages_checked':True,'seed_preserves_math':True})
+    for t in g.CANCELLATION:
+        for start in [1,2]:
+            for k in range(start,start+5):
+                if k==g.ORIGINAL[t]:continue
+                r=g.generate('easy',37,t,{'k':k,'shift':0,'bank_start':start})
+                c.solution_check(r['question']);rows.append(r)
+    rows=list({r['question'][':question/id']:r for r in rows}.values())
     save('role-records.json',rows)
+    save('role-grader-input.json',[{'label':'controlled '+str(i),'record':r,'checks':c.checks(r)} for i,r in enumerate(rows)])
+    subprocess.run([str(REPO/'generate/runs/current/check-engine'),str(OUT/'role-grader-input.json'),str(OUT/'role-grader-report.json')],check=True,capture_output=True,text=True)
     command=[sys.executable,str(REPO/'generate/pipeline/check_delivery.py'),'--input',str(OUT/'role-records.json'),'--source',str(ROOT.parent/'source/source.json'),'--inventory',str(ROOT.parent/'source/inventory.json'),'--difficulty','easy','--output',str(OUT/'role-delivery'),'--asset-root',str(OUT),'--math-root','/media/jake/SSD/EDB/math']
     subprocess.run(command,capture_output=True,text=True,check=True)
     accepted=json.loads((OUT/'role-delivery/accepted.json').read_text())
-    report={'status':'pass','before_delivery':audit(rows,'raw'),'after_delivery':audit(accepted,'delivered'),'counterfactuals':counterfactuals,'stale_solution_negative_controls':negative,'delivery_command':command,'generator_rejection':'No rejection sampler. Five mathematical role cases are chosen before k. Batch deduplicates prompt mathematics, then samples without replacement. Invalid k, shift and difficulty raise ValueError.', 'limits':'Fixed-bank proof applies to authored profiles at controlled fixed k, with all role assignments present; original source banks remain exact replay. It proves absence of bank-only predictors for these cases, not universal mastery or absence of all possible prompt-based shortcuts. Learner history/reservations/live policy selection are unavailable.'}
+    report={'status':'pass','before_delivery':audit(rows,'raw'),'after_delivery':audit(accepted,'delivered'),'counterfactuals':counterfactuals,'stale_solution_negative_controls':negative,'delivery_command':command,'generator_rejection':'No rejection sampler. Five mathematical role cases are chosen before k. Batch deduplicates prompt mathematics, then samples without replacement. Invalid k, shift and difficulty raise ValueError.', 'limits':'Fixed-bank proof applies to controlled authored role groups: at fixed k for nonzero linear shifts, and at fixed k-window for cancellation targets. Source replay members are excluded from authored groups. It proves absence of bank-only predictors for these cases, not universal mastery or absence of all possible prompt-based shortcuts. Learner history/reservations/live policy selection are unavailable.'}
     save('role-regression.json',report)
-    print(json.dumps({'status':'pass','families':8,'raw_records':len(rows),'delivered_records':len(accepted),'negative_controls':negative,'max_bank_only_hits_per_family':1}))
+    print(json.dumps({'status':'pass','families':8,'raw_records':len(rows),'delivered_records':len(accepted),'negative_controls':negative,'max_bank_only_hits_per_fixed_bank':1}))
 if __name__=='__main__':main()

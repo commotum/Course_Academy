@@ -15,6 +15,7 @@ SOURCES = {q[':question/math-academy-id']:q for q in json.loads((HERE/'source.js
 ORIGINAL = {'q-14315':3, 'q-8745':1, 'q-14314':3, 'q-14316':1, 'q-14323':1, 'q-8747':1, 'q-90601':2, 'q-90600':3}
 DOMAINS = {t:list(range(2,8)) if t in ('q-14315','q-14314') else list(range(1,7)) for t in ORIGINAL}
 ROLES = (-2, -1, 0, 1, 2)
+CANCELLATION = ('q-8745', 'q-90601', 'q-90600')
 
 def mathematics(t, k):
     if t == 'q-14315':
@@ -80,6 +81,12 @@ def role_instance(t, k, shift):
     bank = [(sp.cancel(1/(transformed+(j-1)*v)), 1/x) for j in ROLES]
     return rhs, bank
 
+def cancellation_bank(t, start):
+    if t == 'q-8745': return [(sp.cos(d/v),1/x) for d in range(start,start+5)]
+    if t == 'q-90601': return [(1/sp.sin(v),-sp.Integer(d)/x) for d in range(start,start+5)]
+    if t == 'q-90600': return [(v,sp.Integer(d)/x) for d in range(start,start+5)]
+    raise ValueError('No source cancellation shape for this family')
+
 def role_text(src, rhs, shift):
     problem = src[':question/problem'].split('$$')
     problem[1] = '\n'+DY+'='+sp.latex(rhs)+'.\n'
@@ -107,10 +114,20 @@ def generate(difficulty='easy', seed=0, template=None, parameters=None, profile=
     if type(k) is not int or k not in DOMAINS[t]: raise ValueError('Outside certified parameter domain')
     if type(shift) is not int or shift not in ROLES: raise ValueError('Outside certified linear-role domain')
     replay = k == ORIGINAL[t] and shift == 0
-    bank_profile = t if replay else 'linear-role'
+    cancellation = not replay and t in CANCELLATION and shift == 0
+    instance_parameters = {'k':k,'shift':shift}
+    bank_profile = t if replay else 'cancellation-constant' if cancellation else 'linear-role'
     if profile not in (None,bank_profile): raise ValueError('Profile does not match source replay / authored role case')
     src = SOURCES[t]
     rhs, bank = mathematics(t,k) if replay else role_instance(t,k,shift)
+    if cancellation:
+        eligible=[start for start in (1,2) if start<=k<=start+4]
+        start=parameters.get('bank_start',rng.choice(eligible))
+        if type(start) is not int or start not in eligible: raise ValueError('Invalid cancellation bank window')
+        instance_parameters['bank_start']=start
+        bank=cancellation_bank(t,start)
+    elif 'bank_start' in parameters:
+        raise ValueError('Bank window applies only to authored cancellation cases')
     expected = sp.cancel((rhs.subs(y,v*x)-v)/x)
     # Correctness before rendering: identify exactly one equation equal to the transformed ODE.
     rates = [sp.cancel(b/a) for a,b in bank]
@@ -132,7 +149,7 @@ def generate(difficulty='easy', seed=0, template=None, parameters=None, profile=
     correct_id = answers[good[0]][':answer/id']
     random.Random(f'{seed}:{t}:{k}:{shift}:choice-order').shuffle(answers)
     question = {':question/id':qid,':question/problem':problem,':question/worked-solution':solution,':question/difficulty':':question.difficulty/easy',':question/answer-fields':[{':answer-field/id':fid,':answer-field/key':'selection',':answer-field/type':':answer-field.type/radio',':answer-field/choices':answers,':answer-field/correct':[':answer/id',correct_id]}]}
-    return {'question':question,'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':'Transforming a Homogeneous Differential Equation into a Separable Equation Using a Substitution'},'generation':{'version':VERSION,'seed':seed,'template':t,'bank_profile':bank_profile,'parameters':{'k':k,'shift':shift},'source_question_id':src[':question/id'],'source_db_id':src[':db/id'],'parameter_fingerprint':fp,'domains':'x != 0; original RHS defined; separated coefficient defined; exclude equilibria where F(v)-v=0 when dividing. Transformation does not assert equivalence across excluded branches.','dependencies':{'sympy':sp.__version__}}}
+    return {'question':question,'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':'Transforming a Homogeneous Differential Equation into a Separable Equation Using a Substitution'},'generation':{'version':VERSION,'seed':seed,'template':t,'bank_profile':bank_profile,'parameters':instance_parameters,'source_question_id':src[':question/id'],'source_db_id':src[':db/id'],'parameter_fingerprint':fp,'domains':'x != 0; original RHS defined; separated coefficient defined; exclude equilibria where F(v)-v=0 when dividing. Transformation does not assert equivalence across excluded branches.','dependencies':{'sympy':sp.__version__}}}
 
 def batch(difficulty,count,seed=0,template=None):
     if difficulty not in SUPPORTED_LEVELS: raise ValueError('Unsupported difficulty')
