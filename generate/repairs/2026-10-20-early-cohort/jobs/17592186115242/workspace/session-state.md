@@ -1,12 +1,25 @@
-# Verification result — author 814
+# Verification result — author 817
 
-Read feedback and all five retained findings, summarized all 814 history events, and read original lesson, complete source questions, banks and solutions. Latest failure reproduced first:
-`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory`
-Exit 1: five historical records; 64/64 possible-history shortcut successes.
+Preserved completed repairs. Read feedback, five retained findings, latest
+history event, source evidence and the existing instructional account.
 
-`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/author-814`
-Exit 1 solely for finding 591f580cadb749294588. Four generator regressions, 17 source banks, 14 delivery records, 35 native grading checks, relocation, dependency pins, protected hashes and five staged replacements pass. Inspected two retained actual-UI screenshots and the source flowchart. Runtime and strict tests remain unchanged.
+First: job Python -B checks/batch_regressions.py --finding inventory.
+Exit 1: five historical records, 64/64 shortcut successes in a possible-history
+selection witness.
 
-Next unfinished step: separate inventory remediation of the five affected generated entities, followed by fresh inventory capture and strict recheck. Database changes and publication are prohibited here. No new generator construction failure is demonstrated. Do not substitute staged replacements for captured inventory or waive the failing regression.
+Then: job Python -B checks/recheck_status.py --output evidence/author-817.
+Exit 1 solely for historical inventory. Four generator regressions, 17 complete
+source-bank replays, 14 delivery records, 35 native grading cases, relocation,
+dependency pins, protected hashes and five staged replacements pass.
+Visually inspected retained UI screenshot evidence/repair-3/render/question-001.png.
+No runtime changes or new rendering run.
 
-Evidence: evidence/author-814/{commands.json,results.json,grader-report.json,disposition.md,visual-inspection.json}; repair-regressions.json; affected-inventory.json; evidence/generated-records.json; evidence/repair-3/inventory-repair-proposal.json.
+Next unfinished step: separate inventory remediation must resolve the five
+affected generated entities and supply a fresh capture. Database changes and
+publication are prohibited here. Do not substitute proposed replacements for
+captured inventory, waive the strict failure, or repeat unchanged verification
+as a claimed repair.
+
+Evidence: evidence/author-817/{commands.json,results.json,grader-report.json,disposition.md};
+repair-regressions.json; affected-inventory.json; evidence/generated-records.json;
+evidence/repair-3/inventory-repair-proposal.json.
