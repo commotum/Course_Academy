@@ -1,35 +1,7 @@
 {
-  "author_attempt": 48,
-  "checks": [
-    {
-      "command": [
-        "/home/jake/Developer/Course_Academy/.venv/bin/python",
-        "-B",
-        "checks/check_evidence_contract.py"
-      ],
-      "exit_code": 1,
-      "log": "evidence/author48-evidence.log"
-    },
-    {
-      "command": [
-        "/home/jake/Developer/Course_Academy/.venv/bin/python",
-        "-B",
-        "checks/check_cli_contract.py"
-      ],
-      "exit_code": 0,
-      "log": "evidence/author48-cli.log"
-    },
-    {
-      "command": [
-        "/home/jake/Developer/Course_Academy/.venv/bin/python",
-        "-B",
-        "checks/check_render_binding.py"
-      ],
-      "exit_code": 0,
-      "log": "evidence/author48-source-ui.log"
-    }
-  ],
-  "runtime_hashes_unchanged": {
+  "attempt": "author-50",
+  "status": "unsupported",
+  "runtime_hashes": {
     "package.json": "663cb3294cd6832de919c9e21b569f271e63079f4cd4155486853d1c05434b23",
     "17592186059775.py": "45ce3ee90e9c76d850d8f7e0d9c0851515a65a868264b79160260898c5eeb2ac",
     "17592186059775/source.json": "936dc5c07130b5fabc5e453ac26efb90471b07c96bc0a904a214eca8494a4bfc",
@@ -37,28 +9,48 @@
     "requirements.txt": "25f9f1fb1988b230147a1d3092d34e09c069eb7a6c6d6df46b3973b9f2d36efc",
     "known-systems.json": "2492556950df4a1bb3622028c1d24fd72ff9ec82f76c19b8fe2bc6e74b80436f"
   },
-  "package_modified": false,
-  "external_writes": false,
-  "status": "unsupported",
-  "unresolved": "Installed sample-stage gate rejects the unchanged runtime before regressions and sampling, despite the retained evidence-only finding requiring runtime preservation. Its correction and evidence installation are outside the authorized workspace.",
-  "runner_source": "scripts/generator_pipeline.py:723",
-  "strict_handoff": "evidence/current-handoff-regression.json",
-  "validated_correction_bundle": "evidence/contract-correction",
-  "affected_inventory": "evidence/contract-correction/affected-inventory.json",
-  "reused_rendering": {
-    "binding_check": "evidence/current-render-binding.json",
-    "screenshots": [
-      "evidence/author8-render/question-001.png",
-      "evidence/author8-render/question-002.png"
-    ],
-    "visually_reinspected": "evidence/author8-render/question-002.png"
+  "runtime_changed": false,
+  "exact_latest_reproduction": {
+    "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_current_handoff.py",
+    "exit_code": 1,
+    "report": "evidence/current-handoff-regression.json"
   },
-  "prior_staged_patch": "runner-fix/evidence-only-rejection.patch",
-  "prior_patch_not_retested": "Unchanged proposal; existing 23-case offline verification retained. Installing the patch is outside scope.",
-  "runtime_versions": {
-    "python": "3.13.5",
-    "packages": {
-      "sympy": "1.14.0"
+  "checks": {
+    "evidence_contract": {
+      "exit_code": 1,
+      "report": "evidence/evidence-contract-validation.json",
+      "reason": "bundle checks pass; installed handoff fails"
+    },
+    "cli": {
+      "exit_code": 0,
+      "report": "evidence/cli-contract.json"
+    },
+    "source_replay_and_render_binding": {
+      "exit_code": 0,
+      "report": "evidence/current-render-binding.json"
+    },
+    "current_sample": {
+      "exit_code": 0,
+      "report": "evidence/current-sample-validation.json",
+      "reproducer": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_batch_selection.py"
+    },
+    "historical_shortcut_control": {
+      "exit_code": 1,
+      "expected_failure": true,
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_batch_selection.py --input evidence/batch-shortcut-before-records.json"
     }
-  }
+  },
+  "visual_inspection": {
+    "screenshot": "evidence/author8-render/question-002.png",
+    "fresh_render": false,
+    "current_delivered_endpoints_equal_retained_render_input": true,
+    "observation": "Readable prompt, matrices, five choices and worked operations; no visible clipping or exposed TeX."
+  },
+  "unresolved": "Installed runner rejects unchanged runtime before testing the evidence-only repair. Its correction and evidence installation require writes outside the authorized workspace.",
+  "proposed_fix": "runner-fix/evidence-only-rejection.patch",
+  "proposed_fix_installed": false,
+  "limitations": [
+    "No live inventory or learner history selection tested.",
+    "Preserved two incomplete source captures without fabricated keys or ratings."
+  ]
 }

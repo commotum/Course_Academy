@@ -1,43 +1,35 @@
-# Current state — 2026-10-22, author-47
+# Current state — 2026-10-22, author-50
 
-Preserved all runtime files, manifest, source families and strict regressions.
-Read feedback, both retained findings, the repair history, source evidence,
-existing instructional account and required generator documentation. No new
-instructional or generator defect was demonstrated.
+Preserved repaired runtime, manifest, source families and strict regressions.
+Read feedback and retained history before validation. No new generator defect
+was reported; finding 9b8cb52352b8ca3e790e remains evidence-only and explicitly
+requires preserving runtime. The existing instructional account still applies.
 
-Exact latest reproduction:
+First reproduction:
 `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_current_handoff.py`
-exits 1. The installed `scripts/generator_pipeline.py:723` identical-package
-gate calls repair before regressions or sampling. Finding 9b8cb52352b8ca3e790e
-requests evidence-only correction and runtime preservation. Changing runtime
-bytes to evade that gate would not repair the finding.
+exits 1. The installed runner rejects the identical package before regressions
+or sampling. Its strict regression remains intact.
 
-Fresh targeted commands and exit codes are in
-`evidence/current-check-commands.json`; results and unchanged runtime hashes
-are in `evidence/current-verification.json`.
+Fresh validation:
+- Bundle validation, two relocated roots, missing-provenance and wrong-root
+  controls pass. The registered evidence check exits 1 on installed handoff.
+- CLI relocation, determinism, exact counts and finite limits pass.
+- Ten complete source banks / 50 choices replay. Retained UI endpoints equal
+  current delivered records. Reinspected question-002.png: readable prompt,
+  matrices, controls and row operations without clipping or exposed TeX.
+- Five records pass exact mathematical readback and shared delivery. All five
+  target ranks and positions survive; fixed bank and upper row contrast with
+  changed decisive lower RHS. Pivot/rank cue scores 1/5 raw and delivered;
+  the archived 5/5 failure still fails its strict check as expected.
+- Native grader passes 25 delivered submissions: 5 accepted, 20 rejected.
 
-- `checks/check_evidence_contract.py`: exit 1. The corrected 83-file bundle,
-  two arbitrary relocations, missing-provenance and wrong-root negative controls,
-  12 source captures, three affected stored generated records and current batch
-  binding pass. The required installed-runner handoff fails.
-- `checks/check_batch_selection.py`: exit 0. Exact seed 4258185931 shortcut
-  scores 1/5 raw and delivered; all five survive actual delivery filters.
-  Ten profiles and 25 native learner-grading responses pass.
-- `checks/check_cli_contract.py`: exit 0. Runtime-only relocation, deterministic
-  replay, requested counts and finite-limit rejection pass.
-- `checks/check_render_binding.py`: exit 0. Ten complete source banks and 50
-  choices replay; retained UI inputs equal current delivered endpoints.
-  Reinspected `evidence/author8-render/question-002.png`: all five choices and
-  row-operation stages remain readable and consistent. No render-affecting edit.
-- All six manifest/runtime hashes remain unchanged. Installed dependency
-  versions match the manifest. No publication, database or external file writes.
+Commands/results: evidence/current-check-commands.json,
+evidence/current-sample-validation.json, evidence/current-verification.json.
+No runtime/engine edits, database writes, publication or other-job writes.
 
-Unfinished: runner owner must correct evidence-only identical-package routing
-and install the evidence correction at the runner-chosen evidence root. Both
-locations are outside the authorized workspace. The complete validated bundle
-is `evidence/contract-correction`; copy map `evidence/contract-installation.json`;
-proposed runner patch `runner-fix/evidence-only-rejection.patch`. The unchanged
-patch retains its existing 23-case offline results; those do not establish that
-it is installed. Keep the current failure strict, then rerun it and retained
-regressions after an external correction. Historical acceptance is not fresh
-approval. Author status is unsupported because the strict handoff fails.
+Unfinished: the runner owner must resolve evidence-only identical-package routing
+and install the validated bundle at its chosen evidence root. Proposed patch:
+runner-fix/evidence-only-rejection.patch; bundle: evidence/contract-correction;
+installation map: evidence/contract-installation.json. Both required writes
+are outside this workspace. The proposed patch is not installed. Handoff remains
+unsupported; the easy source skill is supported.
