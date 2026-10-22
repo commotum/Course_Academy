@@ -1,0 +1,36 @@
+{
+  "finding": "591f580cadb749294588",
+  "root_cause": "Five stored v2 question entities retain sign-only extremum answer banks; candidate generation does not change stored entities.",
+  "reproduction": {
+    "command": [
+      "/home/jake/Developer/Course_Academy/.venv/bin/python",
+      "-B",
+      "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186115242/workspace/checks/batch_regressions.py",
+      "--finding",
+      "inventory"
+    ],
+    "exit_code": 1,
+    "stdout": "{\"finding\": \"591f580cadb749294588\", \"passed\": false, \"affected\": 5, \"selection_successes\": 64, \"draws\": 64}\n",
+    "stderr": ""
+  },
+  "selector_evidence": "engine/rust/question_selection.rs:125-195 selects stored candidate entities by difficulty independently of generator execution.",
+  "current_generator_findings_passed": 4,
+  "affected_generated_inventory": 5,
+  "untested_generated_inventory": 0,
+  "runtime_changed": false,
+  "source_changed": false,
+  "database_writes": false,
+  "publication_performed": false,
+  "engine_changed": false,
+  "old_counterexample_still_applies": true,
+  "evidence_paths_resolve_from_requested_author_231_root": true,
+  "proposal": "evidence/repair-3/inventory-repair-proposal.json",
+  "required_external_action": "Apply the staged mapping through the separate inventory-remediation workflow, recapture inventory, and rerun checks/batch_regressions.py --finding inventory.",
+  "constraint": "This author task explicitly prohibits database changes and engine repair. No workspace-only generator change can retire stored banks.",
+  "visual_inspection": {
+    "screenshot": "evidence/repair-3/render/question-001.png",
+    "observed": "Prompt, all five choices, matrices, row operation, and conclusion are readable; no clipping observed.",
+    "reused_reason": "Runtime files and input bindings remain unchanged."
+  },
+  "status": "unsupported"
+}

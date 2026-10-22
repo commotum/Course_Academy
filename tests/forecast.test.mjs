@@ -512,6 +512,8 @@ test('clock time within today does not change the daily growth rate', () => {
 test('a growth window without elapsed days does not invent a rate', () => {
   const inputs = fixture({ tasks: false }).inputs();
   inputs.capturedAt = iso(4);
+  inputs.timing.days = forecastDayStarts(new Date(inputs.capturedAt)).slice(0, 7)
+    .map(start => ({ start, workingSeconds: 0 }));
   const r = calculateForecast(inputs);
   assert.equal(r.growth.observedDays, 0);
   assert.equal(r.growth.weightSum, 0);

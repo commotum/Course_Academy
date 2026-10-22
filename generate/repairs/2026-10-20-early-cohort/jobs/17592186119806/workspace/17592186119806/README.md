@@ -1,21 +1,12 @@
 # KP 17592186119806 generator
 
-Run from the repository root:
+The current package entry point is `../17592186119806.py`; its runtime file list and exact Python/SymPy versions are in `../package.json`. From the supplied workspace, use the declared Python environment:
 
 ```sh
-python3 generate/scratch/17592186119806.py --difficulty easy --count 5 --seed 119806 --format json
-.venv/bin/python generate/scratch/17592186119806/validate.py
-.venv/bin/python generate/scratch/17592186119806/replenish.py
+/home/jake/Developer/Course_Academy/.venv/bin/python 17592186119806.py --difficulty easy --count 5 --seed 48291 --format json
+/home/jake/Developer/Course_Academy/.venv/bin/python checks/validate_repair.py
 ```
 
-The CLI uses the project's existing .venv if the application interpreter lacks
-SymPy. Python/SymPy versions and immutable source basis are saved in generation
-metadata. The generator has no database writes. Replenishment validates supplied
-instances, rechecks inventory and basis while holding the application's api.lock,
-previews original typed EDN with native ensures, saves an exact durable request,
-submits with the basis guard, and verifies exact-basis readback and provenance.
-Registration alone never certifies arbitrary future generated content.
+The repaired v2 design is specified in `../instructional-account.md`. Current checks and evidence live in `../checks/` and `../evidence/`; `../repair-regressions.json` binds both retained findings to executable checks. The capture now includes all 14 complete easy source banks, including q-105158, at basis 5402. Exact source replay uses `generate('easy', seed, profile, {'scale': 1, 'target': original_target})`. Normal sampling uses authored interchangeable candidate banks and derives compatible vector data, replacing the old fixed affine bank transformation. Only easy is supported.
 
-Read capabilities.json for explicit moderate/hard exceptions and finite capacity.
-Review.md shows source and variant presentations for every complete profile.
-Only this KP's package and generated content may be changed by this workflow.
+The other extraction notes, validation reports, and maintenance helpers in this subdirectory are retained historical v1 material. In particular, old finite-capacity and affine-bank claims are superseded by the current instructional account. They are excluded from the runtime package. Publication is reserved for the runner after independent review; legacy replenishment helpers were not used in this repair.
