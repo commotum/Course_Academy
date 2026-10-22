@@ -1,0 +1,254 @@
+{
+  "learner_operation": "Read target r; reject matrices with fewer than r rows or columns; distinguish remaining matrices with exactly r independent pivots from rank-deficient alternatives; encode the qualifying labels in the supplied radio or checkbox contract.",
+  "fixed_features": [
+    {
+      "feature": "Small integer inspection-friendly matrices and source-backed radio/checkbox response contracts",
+      "justification": "e-5417 uses dimensions then pivot columns. Tutorial 4151 defines rank using row echelon pivots; subsequent e-5418 assesses row reduction separately."
+    },
+    {
+      "feature": "Exactly one qualifying matrix in five-matrix radio; dimension-ineligible candidates cannot qualify",
+      "justification": "Singular radio response and rank <= min(rows,columns) are essential constraints."
+    },
+    {
+      "feature": "Per-profile target and shape multiset; finite coefficient scaffolds",
+      "justification": "These conservatively retain source inspection workload. Across profiles targets 3\u20136 and multiple shapes are present; rank-role changes, not a diversity quota or scalar changes, support the tested finite practice domain. They do not justify fixing an eligible winner in the delivered conditional subgroup."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "q-139958 excluded=A,B,D",
+      "eligible_variation": "For every dimension-eligible candidate, qualify or fail by its independent pivot structure, subject to one correct matrix for singular radio and representable subsets for subset radio.",
+      "observed": "{\"count\": 2, \"outcomes\": {\"C\": 1, \"E\": 1}}"
+    },
+    {
+      "role": "q-139965 excluded=C",
+      "eligible_variation": "For every dimension-eligible candidate, qualify or fail by its independent pivot structure, subject to one correct matrix for singular radio and representable subsets for subset radio.",
+      "observed": "{\"count\": 6, \"outcomes\": {\"A\": 2, \"A,B\": 2, \"B\": 2}}"
+    },
+    {
+      "role": "q-139965 excluded=B",
+      "eligible_variation": "For every dimension-eligible candidate, qualify or fail by its independent pivot structure, subject to one correct matrix for singular radio and representable subsets for subset radio.",
+      "observed": "{\"count\": 6, \"outcomes\": {\"A\": 2, \"A,C\": 2, \"C\": 2}}"
+    },
+    {
+      "role": "q-139965 excluded=A",
+      "eligible_variation": "For every dimension-eligible candidate, qualify or fail by its independent pivot structure, subject to one correct matrix for singular radio and representable subsets for subset radio.",
+      "observed": "{\"count\": 6, \"outcomes\": {\"B\": 2, \"B,C\": 2, \"C\": 2}}"
+    },
+    {
+      "role": "q-34823 excluded=B",
+      "eligible_variation": "For every dimension-eligible candidate, qualify or fail by its independent pivot structure, subject to one correct matrix for singular radio and representable subsets for subset radio.",
+      "observed": "{\"count\": 4, \"outcomes\": {\"A\": 1, \"A,C\": 1, \"C\": 1, \"None\": 1}}"
+    },
+    {
+      "role": "q-34824 excluded=B,D,E",
+      "eligible_variation": "For every dimension-eligible candidate, qualify or fail by its independent pivot structure, subject to one correct matrix for singular radio and representable subsets for subset radio.",
+      "observed": "{\"count\": 2, \"outcomes\": {\"A\": 1, \"C\": 1}}"
+    },
+    {
+      "role": "q-35283 excluded=A,B",
+      "eligible_variation": "For every dimension-eligible candidate, qualify or fail by its independent pivot structure, subject to one correct matrix for singular radio and representable subsets for subset radio.",
+      "observed": "{\"count\": 2, \"outcomes\": {\"C\": 1, \"None\": 1}}"
+    },
+    {
+      "role": "q-79559 excluded=B,C,D",
+      "eligible_variation": "For every dimension-eligible candidate, qualify or fail by its independent pivot structure, subject to one correct matrix for singular radio and representable subsets for subset radio.",
+      "observed": "{\"count\": 2, \"outcomes\": {\"A\": 1, \"E\": 1}}"
+    },
+    {
+      "role": "q-79560 excluded=A,B,E",
+      "eligible_variation": "For every dimension-eligible candidate, qualify or fail by its independent pivot structure, subject to one correct matrix for singular radio and representable subsets for subset radio.",
+      "observed": "{\"count\": 2, \"outcomes\": {\"C\": 1, \"D\": 1}}"
+    },
+    {
+      "role": "q-79561 excluded=A,C,D",
+      "eligible_variation": "For every dimension-eligible candidate, qualify or fail by its independent pivot structure, subject to one correct matrix for singular radio and representable subsets for subset radio.",
+      "observed": "{\"count\": 2, \"outcomes\": {\"B\": 1, \"E\": 1}}"
+    },
+    {
+      "role": "q-79562 excluded=C",
+      "eligible_variation": "For every dimension-eligible candidate, qualify or fail by its independent pivot structure, subject to one correct matrix for singular radio and representable subsets for subset radio.",
+      "observed": "{\"count\": 3, \"outcomes\": {\"A\": 1, \"A,B\": 1, \"B\": 1}}"
+    },
+    {
+      "role": "q-79568 excluded=A,C",
+      "eligible_variation": "For every dimension-eligible candidate, qualify or fail by its independent pivot structure, subject to one correct matrix for singular radio and representable subsets for subset radio.",
+      "observed": "{\"count\": 2, \"outcomes\": {\"B\": 1, \"None\": 1}}"
+    }
+  ],
+  "coverage": [
+    {
+      "case": "All construction branches and ten complete source profiles",
+      "sample_refs": [
+        "catalog.json",
+        "coverage-results.json",
+        "source-replay.json"
+      ],
+      "result": "39 concrete presentations, 24 declared structural semantic classes; target ranks 3\u20136; qualifying singletons, pairs, and source-backed None. Role coverage inspected by profile and excluded-label subgroup."
+    },
+    {
+      "case": "Exact runner batch",
+      "sample_refs": [
+        "batch.json",
+        "delivery-batch/accepted.json",
+        "batch-regression.json"
+      ],
+      "result": "5/5 survive normalization and captured inventory deduplication. Two q-139965 members both exclude B and require A; C varies. The fixed-A shortcut is demonstrated only for this delivered subgroup."
+    },
+    {
+      "case": "Delivery control",
+      "sample_refs": [
+        "fresh.json",
+        "delivery-fresh/accepted.json",
+        "delivery-fresh/delivery.json",
+        "delivery-catalog/delivery.json",
+        "coverage-results.json"
+      ],
+      "result": "Fresh seeds: 12 input, 3 duplicate, 9 survive. Catalog:39/39 survive. Conditional catalog control retains C-only outcomes absent in the runner batch."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "q-34823 scale1: replace matches A with matches C while keeping dimensions and excluded B unchanged; visible A pivot removed and C pivot restored.",
+      "expected": "A-only becomes C-only; prompt matrices and solution change; old choice rejected and new choice accepted by native grader.",
+      "observed": "Fraction ranks change A5,C4 -> A4,C5, B stays2 and identical. Solution and correct subset follow. All five radio alternatives were checked by the actual grader in each record. Actual UI screenshots render the changed entries and answers.",
+      "status": "passed",
+      "justification": "e-5417 and q-34823 require the answer to depend on which eligible matrix has exactly the requested number of pivots.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-input.json",
+        "grader-results.json",
+        "render-more/input.json",
+        "render-more/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Multiply every entry of the A-only q-34823 instance by 2.",
+      "expected": "All ranks and the A-only response stay the same; changed coefficients render correctly; same solution and native acceptance/rejection outcomes.",
+      "observed": "Ranks, response and solution are preserved; matrices change visibly. Native grading accepts A-only and rejects the other four in both cases. Rendered before/after records inspected.",
+      "status": "passed",
+      "justification": "Nonzero scalar multiplication preserves linear dependence, dimensions and pivot count, the quantities defined in tutorial 4151.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-input.json",
+        "grader-results.json",
+        "render-more/input.json",
+        "render-more/rendering.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "B is dimension-excluded in rank-3 three-matrix family with shape multiset {2x4,3x4,5x5}",
+      "subgroup": "Exact runner batch after delivery filtering: q-139965, eligible A and C",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always include A; inspect only C for rank 3, then choose the encoded subset. Never inspect A.",
+      "correct": 2,
+      "total": 2,
+      "baseline": 0.6666666666666666,
+      "disposition": "defect",
+      "conclusion": "The full catalog has three eligible nonempty subsets A, C, AC, so hardcoding A would succeed in 2/3 of those decision cases (observed 4/6 in this same subgroup). The exact delivered batch reaches 2/2, skipping A inspection in every subgroup member. Native learner grader accepts both shortcut responses. This is a finite batch-selection defect, not a universal generator defect and not a demand to realize every subset.",
+      "sample_refs": [
+        "minimal-failing-batch.json",
+        "shortcut-grader-input.json",
+        "shortcut-grader-results.json",
+        "batch-regression.json",
+        "render-more/input.json"
+      ]
+    },
+    {
+      "cue": "Same recognizable dimension-excluded-B subgroup in larger catalog",
+      "subgroup": "All six catalog records, post-delivery",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always include A; inspect only C.",
+      "correct": 4,
+      "total": 6,
+      "baseline": 0.6666666666666666,
+      "disposition": "not_predictive",
+      "conclusion": "Comparison baseline 2/3 over the three nonempty subsets. Two C-only controls defeat this strategy; larger sampler coverage cannot waive the batch defect.",
+      "sample_refs": [
+        "catalog.json",
+        "coverage-results.json",
+        "shortcut-grader-input.json",
+        "shortcut-grader-results.json"
+      ]
+    },
+    {
+      "cue": "First displayed radio option",
+      "subgroup": "Entire exact runner batch (three radio records; two checkbox records excluded)",
+      "scope": "overall",
+      "strategy": "Choose the first radio option.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Uniform guessing among five displayed options gives baseline 0.2. None of the three radio records succeeds in the actual rendered DOM; no first-position predictor established.",
+      "sample_refs": [
+        "batch.json",
+        "shortcut-probes.json",
+        "rendered-position-probe.json"
+      ]
+    },
+    {
+      "cue": "Matrix identity in the five-matrix q-139958 presentation",
+      "subgroup": "Both catalog outcomes for q-139958",
+      "scope": "within_template",
+      "strategy": "Always choose C, the source winner.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is uniform five-choice guessing. C and E both qualify in different records, so the source winner is not universally predictive. The runner batch contains only one such record; that singleton alone is not treated as a new defect.",
+      "sample_refs": [
+        "catalog.json",
+        "coverage-results.json",
+        "shortcut-probes.json"
+      ]
+    },
+    {
+      "cue": "Visible independent pivots in triangular/echelon matrices",
+      "subgroup": "q-34823 relevant controlled pair",
+      "scope": "within_template",
+      "strategy": "Reject B by dimensions; count A and C independent pivots and compare with 5.",
+      "correct": 2,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "intended_skill",
+      "conclusion": "Baseline is random choice among the five radio options. Inspecting the pivot structure is the lesson operation, not an incidental shortcut.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-input.json",
+        "grader-results.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "finite generator catalog, shuffle and mathematical-fingerprint selection",
+      "nonempty-checkbox policy and explicit None",
+      "requested easy difficulty",
+      "publisher normalization, stable identities, inventory and within-batch deduplication",
+      "learner practice validity, seen filtering and difficulty-first selection rules; captured-input scenarios"
+    ],
+    "sample_refs": [
+      "batch.json",
+      "catalog.json",
+      "delivery-batch/delivery.json",
+      "delivery-catalog/delivery.json",
+      "delivery-fresh/delivery.json",
+      "coverage-results.json",
+      "learner-selection.json"
+    ],
+    "result": "Batch5->5, catalog39->39, fresh12->9. Neither publisher filtering nor uniform selection within the fresh easy band repairs the conditional delivered shortcut. Read-only selection scenarios state hypothetical IDs and history assumptions; no live selection or publication was claimed."
+  },
+  "limitations": [
+    "This is a captured-basis5415 review; live history, reservations, policy and future inventory were not supplied. Read-only selection scenarios do not claim actual future entity IDs.",
+    "Two source questions lack keys and solutions and canonical example lacks bank; no invented exact replay is asserted for them.",
+    "Finite tests do not prove absence of every shortcut. The demonstrated defect concerns the exact runner batch, while the larger current generator contains counterexamples."
+  ]
+}
