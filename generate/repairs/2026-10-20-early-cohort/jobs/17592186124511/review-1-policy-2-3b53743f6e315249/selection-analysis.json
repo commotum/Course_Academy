@@ -1,0 +1,97 @@
+{
+  "implementation": "engine/rust/question_selection.rs select(), seen_before_task()",
+  "implementation_sha256": "d59dea58989cfe9f3cd49ed3b45199d4e7a12723c4d8eae999e495b9660dd760",
+  "captured_basis": 5437,
+  "captured_existing_inventory": {
+    "moderate": 17,
+    "generated": 0
+  },
+  "accepted_runner_pool": {
+    "moderate": 5
+  },
+  "rules": [
+    "Generator batch: template order shuffled; bounded max(200,50*count) attempts deduplicate mathematical fingerprints. Nonempty policy accepts source-backed None; no empty ordinary subsets without None.",
+    "Delivery: requested difficulty and captured-inventory/content deduplication (480 to 455, runner 5 to 5).",
+    "Learner: exclude previously seen content/current prefix; split by difficulty; configured positive moderate weight makes all surviving moderate candidates equiprobable within band. Zero moderate weight excludes rated moderate candidates. No truth-mask/claim/template balancing.",
+    "Without configured distribution choose lowest fresh entity ID."
+  ],
+  "simulation": [
+    {
+      "seen_surrogate_ids": [],
+      "eligible_surrogate_ids": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "configured_draw_counts": {
+        "1": 182,
+        "3": 214,
+        "4": 203,
+        "2": 203,
+        "5": 198
+      },
+      "legacy_unconfigured_first": 1
+    },
+    {
+      "seen_surrogate_ids": [
+        1
+      ],
+      "eligible_surrogate_ids": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "configured_draw_counts": {
+        "2": 230,
+        "3": 262,
+        "4": 270,
+        "5": 238
+      },
+      "legacy_unconfigured_first": 2
+    },
+    {
+      "seen_surrogate_ids": [
+        2
+      ],
+      "eligible_surrogate_ids": [
+        1,
+        3,
+        4,
+        5
+      ],
+      "configured_draw_counts": {
+        "1": 230,
+        "3": 262,
+        "4": 270,
+        "5": 238
+      },
+      "legacy_unconfigured_first": 1
+    },
+    {
+      "seen_surrogate_ids": [
+        1,
+        2,
+        3
+      ],
+      "eligible_surrogate_ids": [
+        4,
+        5
+      ],
+      "configured_draw_counts": {
+        "4": 492,
+        "5": 508
+      },
+      "legacy_unconfigured_first": 4
+    }
+  ],
+  "simulation_basis": "Surrogate IDs 1..5 model accepted runner records in file order; numbers do not predict future assigned EDB IDs. The same selector formula is evaluated exactly; all candidates share one rated band.",
+  "limits": [
+    "No policy or learner history was included in the captured inventory; no live learner draw claimed.",
+    "Entity-identity collision validation requires live database access and was not invoked.",
+    "Future inventory may change duplicates or eligible pools."
+  ],
+  "conclusion": "No selector rule repairs a perfect content-based cue within the two three-option checkbox questions: if either is eligible and drawn, selecting the invertibility claim succeeds. History can remove either item but cannot supply a counterexample."
+}

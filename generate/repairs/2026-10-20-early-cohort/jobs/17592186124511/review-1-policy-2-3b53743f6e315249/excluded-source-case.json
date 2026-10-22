@@ -1,0 +1,81 @@
+{
+  "source": {
+    ":db/id": 17592186426076,
+    ":question/answer-fields": [
+      {
+        ":answer-field/choices": [
+          {
+            ":answer/id": "13e3d0a6-c269-5dde-bafd-a91861927c14",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "II and III only",
+            ":db/id": 17592186426036
+          },
+          {
+            ":answer/id": "1848f756-51a0-5639-8084-5aa59abdaebf",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "III only",
+            ":db/id": 17592186426037
+          },
+          {
+            ":answer/id": "562361ed-d031-5fb2-9175-4571a3994648",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "I and II only",
+            ":db/id": 17592186426047
+          },
+          {
+            ":answer/id": "8a7285e7-4a5d-5073-aa0f-ffd3853ddc65",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "lI only",
+            ":db/id": 17592186426054
+          },
+          {
+            ":answer/id": "f1d58843-37c3-5988-8dac-72db97dcd1cf",
+            ":answer/type": {
+              ":db/ident": ":answer.type/text"
+            },
+            ":answer/value": "I only",
+            ":db/id": 17592186426064
+          }
+        ],
+        ":answer-field/correct": {
+          ":answer/id": "f1d58843-37c3-5988-8dac-72db97dcd1cf",
+          ":answer/type": {
+            ":db/ident": ":answer.type/text"
+          },
+          ":answer/value": "I only",
+          ":db/id": 17592186426064
+        },
+        ":answer-field/id": "fec9750c-eaeb-571d-b465-6fa1ab05e88d",
+        ":answer-field/key": "selection",
+        ":answer-field/type": {
+          ":db/ident": ":answer-field.type/radio"
+        },
+        ":db/id": 17592186426071
+      }
+    ],
+    ":question/difficulty": {
+      ":db/ident": ":question.difficulty/moderate"
+    },
+    ":question/id": "9fbccd10-1c43-51a4-ad8b-36063e11427d",
+    ":question/math-academy-id": "q-142367",
+    ":question/problem": "Which of the following statements are true, given that $A$ is a $4\\times 4$ matrix and $v=\\begin{bmatrix}1 \\\\ 0 \\\\ 1 \\\\ -1\\end{bmatrix}$ is a solution of the equation $Ax=0?$\n\nI. $\\text{dim(Null}(A))\\ne 0$\n\nII. $A$  is  invertible\n\nIII. $\\text{Col}(A)={R}^{4}$",
+    ":question/worked-solution": "Since $A$ is a $4\\times 4$ matrix, the invertible matrix theorem states the following:\n\n$A$ is invertible $\\,\u21d4\\,\\left\\{\\begin{aligned}\\text{Col}(A) &={R}^{4} \\\\ \\text{dim(Col}(A)) &=4=\\text{rank}(A) \\\\ \\text{Null}(A) &=\\{0\\} \\\\ \\text{dim(Null}(A)) &=0=\\text{nullity}(A)\\end{aligned}\\right.$ \n\nWith that in mind, let's examine each statement in turn. \n\n- Statement I is true. Since $v\\ne 0$ and $Av=0,$ \nthen $v\\in \\text{Null}(A)$ and, therefore, $\\text{dim(Null}(A))\\ne 0.$\n\n- Statement II is false. Since $\\text{dim(Null}(A))\\ne 0,$ then according to the invertible matrix theorem, the matrix $A$ can't be invertible.\n\n- Statement III is false. Since $A$ is not invertible, then by the invertible matrix theorem, we must have $\\text{Col}(A)\\ne {R}^{4}.$\n\nTherefore, the correct answer is \"I only.\""
+  },
+  "independent_analysis": "v=(1,0,1,-1) is nonzero and Av=0, so nullity>0, A is singular, and Col(A) != R^4. Thus exactly I is true. Captured correct answer I only and solution both confirm this. The malformed distractor lI only does not make the correct subset ambiguous.",
+  "proposed_supported_correction": {
+    "from": "lI only",
+    "to": "II only",
+    "reason": "The other four bank members use Roman numerals, II is a valid statement, and the captured five-member bank otherwise omits the II singleton. Record the typographic correction rather than dropping the entire complete source case."
+  },
+  "package_behavior": "generate(template=\"q-142367\", replay=True) raises ValueError: Unsupported template: q-142367",
+  "reproduction": "python regression.py source",
+  "scope": "Source replay/profile omission; q-34936 separately lacks key/solution and remains an evidence gap, not alleged wrong content."
+}
