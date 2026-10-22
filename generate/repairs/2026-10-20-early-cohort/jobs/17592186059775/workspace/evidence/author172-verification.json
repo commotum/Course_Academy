@@ -1,0 +1,50 @@
+{
+  "author": 172,
+  "status": "unsupported",
+  "runtime_hashes_unchanged": {
+    "package.json": "663cb3294cd6832de919c9e21b569f271e63079f4cd4155486853d1c05434b23",
+    "17592186059775.py": "45ce3ee90e9c76d850d8f7e0d9c0851515a65a868264b79160260898c5eeb2ac",
+    "17592186059775/source.json": "936dc5c07130b5fabc5e453ac26efb90471b07c96bc0a904a214eca8494a4bfc",
+    "math_format.py": "734756ff87af508413171ebec82588a121ac9af7d85b454ac4137db41d23e5be",
+    "requirements.txt": "25f9f1fb1988b230147a1d3092d34e09c069eb7a6c6d6df46b3973b9f2d36efc",
+    "known-systems.json": "2492556950df4a1bb3622028c1d24fd72ff9ec82f76c19b8fe2bc6e74b80436f"
+  },
+  "checks": [
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_current_handoff.py",
+      "exit_code": 1,
+      "result": "Exact latest failure reproduced first; installed runner rejects byte-identical package before regressions or sampling.",
+      "evidence": "evidence/current-handoff-regression.json"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_evidence_contract.py",
+      "exit_code": 1,
+      "result": "Bundle, arbitrary-root relocation, negative controls, 12 source captures and 3 affected generated inventory bindings pass; installed handoff fails.",
+      "log": "evidence/author172-evidence-contract.log",
+      "evidence": "evidence/evidence-contract-validation.json"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_batch_selection.py",
+      "exit_code": 0,
+      "result": "Reported seed shortcut 1/5 raw and delivered; ten source profiles retain target-role coverage; 25 native responses pass.",
+      "log": "evidence/author172-batch-selection.log",
+      "evidence": "evidence/batch-selection-regression.json"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_render_binding.py",
+      "exit_code": 0,
+      "result": "Ten complete source banks replay; two retained rendered inputs match freshly delivered endpoints. No new render or screenshot inspection.",
+      "log": "evidence/author172-render-binding.log",
+      "evidence": "evidence/current-render-binding.json"
+    }
+  ],
+  "implementation_changes": [],
+  "blocking_component": "/home/jake/Developer/Course_Academy/scripts/generator_pipeline.py",
+  "proposed_external_fix": "runner-fix/evidence-only-rejection.patch",
+  "external_fix_installed": false,
+  "limits": [
+    "Workspace-only write scope excludes installed runner and external evidence destination.",
+    "Live learner history and changed inventory remain untested."
+  ],
+  "next_action": "Runner owner applies and verifies the staged evidence-only gate correction, then resumes retained checks, sampling and fresh independent review."
+}

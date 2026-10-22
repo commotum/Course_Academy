@@ -1,37 +1,33 @@
-# Current state — 2026-10-22, author-171
+# Current state — 2026-10-22, author-175
 
-Feedback, retained findings, history and prior session state were read first.
-The original instructional account, completed repairs, runtime and manifest are
-unchanged. No new generator defect is demonstrated by the evidence-only finding.
+Read latest feedback, both retained findings, 175 history events (latest event and
+retained finding details), prior session state, required generator documents,
+and supplied source material. No runtime or instructional changes are justified
+by the evidence-only finding. All six manifest/runtime hashes equal author-174.
 
 Exact latest failure reproduced first:
 `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_current_handoff.py`
-exits 1. Installed runner rejects the byte-identical package before regressions
-or sampling. Strict failure remains registered through the evidence-contract check.
+exits 1: installed runner rejects unchanged candidate before checks or sampling.
 
-Affected checks and small regression verification:
-
-- `checks/check_evidence_contract.py`: exit 1 at installed handoff only. Real
-  evidence validation, two arbitrary-root relocations, missing-provenance and
-  wrong-root negative controls pass. Twelve source captures and three affected
-  generated inventory records are bound. The 83-file bundle remains staged.
-- `checks/check_batch_selection.py`: exit 0. Seed 4258185931 shortcut scores 1/5
-  both raw and after shared delivery; ten profiles and 25 native responses pass.
-- `checks/check_cli_contract.py`: exit 0. Runtime-only relocation, deterministic
-  output, counts 0/1/5, easy/moderate and explicit finite-limit handling pass.
+Affected checks and small regression:
+- `checks/check_evidence_contract.py`: exit 1 solely at installed handoff.
+  Corrected bundle, root relocation, missing-file controls, 12 source captures,
+  and 3 affected generated inventory bindings pass.
+- `checks/check_batch_selection.py`: exit 0. Reported shortcut scores 1/5 raw
+  and delivered; ten profiles checked; all 25 native grading responses pass.
 - `checks/check_render_binding.py`: exit 0. Ten complete source banks replay;
-  two retained UI inputs equal freshly delivered endpoints. No new rendering or
-  visual inspection was performed.
+  two retained render inputs equal current delivered endpoints. No fresh render.
+- `checks/check_cli_contract.py`: exit 0. Runtime-only relocation, exact counts,
+  deterministic replay and explicit finite-limit error pass.
 
-Commands, logs, exit codes and unchanged runtime hashes:
-`evidence/author171-verification.json`.
+Commands, exit codes, evidence and unchanged hashes:
+`evidence/author175-verification.json`.
 
-Unfinished external action: fix `scripts/generator_pipeline.py` using the staged
-`runner-fix/evidence-only-rejection.patch`, then install corrected evidence using
-`evidence/contract-installation.json` and request fresh independent review.
-Both actions require writes outside the authorized workspace. No runner, engine,
-publication, database, service, other-job or external evidence writes occurred.
-The source supports easy; unsupported here reports an unresolved handoff boundary,
-not an unsupported mathematical skill. Do not alter runtime bytes merely to evade
-its identity gate or weaken the strict regression. Resume after the runner or
-permitted write scope changes; repeating unchanged authoring cannot install it.
+Remaining action is outside authorized workspace writes: runner owner applies
+and verifies `runner-fix/evidence-only-rejection.patch` to
+`scripts/generator_pipeline.py`, installs the corrected evidence bundle using
+`evidence/contract-installation.json`, and resumes fresh independent review.
+No external writes, runtime edits, engine edits, publishing or database writes
+occurred. Strict failing regressions remain unchanged. Do not alter runtime bytes
+to evade the runner gate or repeat identical author attempts to install an
+external fix. Resume substantive repair when the runner or write scope changes.
