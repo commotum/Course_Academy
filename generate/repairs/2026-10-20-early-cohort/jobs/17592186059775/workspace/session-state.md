@@ -1,40 +1,35 @@
-# Current state — 2026-10-22, author-78
+# Current state — 2026-10-22, author-80
 
-Read feedback and repair history (two findings, 78 events) before work. Reused
-source analysis, instructional account, repaired runtime and existing tests.
-No implementation change is warranted by the evidence-only finding.
+Read feedback and repair history first; reused completed runtime repairs,
+instructional account, source analysis and executable regressions. No new source
+or generator defect demonstrated. Runtime files remain unchanged.
 
-Reproduced the exact latest failure first:
+Exact latest reproduction, run first:
 `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_current_handoff.py`
-exits 1. The installed `scripts/generator_pipeline.py:723` rejects the unchanged
-package before regression execution or sampling. Runtime digest remains
-`38c685ce1e5bd4f89ac79b6ab3d31a4a81f2b77c9f4bb6f0abcab5c20640f626`.
-Finding 9b8cb52352b8ca3e790e explicitly requires preserving the runtime.
+exits 1. Installed external runner rejects the byte-identical package before
+retained regressions or sampling. Finding 9b8cb52352b8ca3e790e requires evidence-only
+correction and runtime preservation. Its strict failing check remains intact.
 
-Bounded verification commands, logs, exit codes and runtime hashes are in
-`evidence/author78-verification.json`:
+Commands, logs, exit codes and runtime hashes: `evidence/author80-verification.json`.
 
-- Evidence contract: exits 1 solely at the installed runner handoff. Real bundle
-  validation, arbitrary-root relocation, missing-provenance and wrong-root
-  negative controls, source and current-record bindings pass.
-- Batch selection: passes exact seed 4258185931, independent visible-matrix
-  witnesses, controlled target changes, ten source profiles, shared delivery,
-  and 25 native submissions. Reported shortcut succeeds 1/5 both before and
-  after delivery; all five survive.
-- CLI: relocation, exact counts, determinism and finite-limit rejection pass.
-- Source/render binding: ten complete source banks and two retained UI records
-  match current output. Reinspected `evidence/author8-render/question-001.png`;
-  matrices, choices, key and complete solution are readable. Reused rendering
-  for unchanged runtime.
+- Historical shortcut negative control exits 1, reproducing the archived 5/5 cue.
+- Corrected evidence bundle, relocation and negative controls pass; evidence
+  regression exits 1 at the installed runner handoff only.
+- Batch regression passes exact seed 4258185931, independent visible-matrix
+  checks, controlled target changes, ten profiles, shared delivery and 25 native
+  responses. Shortcut scores 1/5 raw and delivered; all five records survive.
+- CLI checks pass exact counts, relocation, determinism and finite-limit rejection.
+- Source/render binding passes ten banks / 50 choices. Retained UI records equal
+  current delivery endpoints. Reinspected question-001.png: readable matrices,
+  choices, row operations and complete solution. Unchanged runtime; render reused.
 
 No runtime, engine, external runner, publication, database or other-job edits.
-Strict failing regressions remain intact. The concrete external correction is
-already staged at `runner-fix/evidence-only-rejection.patch`; evidence installation
-is mapped by `evidence/contract-installation.json`. Neither is installed.
+Regression registrations remain intact. Validated bundle remains
+`evidence/contract-correction`, mapped by `evidence/contract-installation.json`.
+Runner fix remains staged at `runner-fix/evidence-only-rejection.patch`, uninstalled.
 
-Next unfinished action belongs to the runner owner: resolve the identical-package
-gate for the evidence-only finding and install the validated bundle at the runner
-selected evidence root. Both require writes outside this workspace. This author
-cannot complete that action under the explicit workspace-only authorization.
-Do not repeat broad authoring or alter runtime bytes to evade the gate. A new
-source-supported question-generator defect has not been demonstrated.
+Unfinished action: runner owner must resolve its unchanged-package gate for the
+evidence-only finding and install the corrected bundle at its selected evidence
+root. Both destinations are outside this session's authorized workspace. Do not
+alter runtime bytes to bypass the gate or weaken the strict failing regression.
+Repeating authoring cannot install that external repair under this write boundary.
