@@ -1,0 +1,59 @@
+{
+  "findings": [
+    {
+      "id": "efa97df560cec8fee6e1",
+      "finding": {
+        "kind": "decision_shortcut",
+        "description": "Hard mixed questions always place resonance first. Consequently, the learner can assign an ordinary exponential trial to the last forcing term without comparing its exponent with the complementary exponent. Four stored mixed instances are affected; their individual mathematical keys remain correct.",
+        "source_refs": [
+          "tutorial e6655774-c9ab-58c6-bfec-5013b08b7918: exponent overlap determines multiplication by x",
+          "1ea06d66-de30-514a-817f-8749abb4ab25: mixed forcing example",
+          "generate/principles.md: vary eligible answer-bearing roles"
+        ],
+        "reproduction": "Run /home/jake/Developer/Course_Academy/.venv/bin/python test_role_exchange.py; it exits 1. Accepted mixed parameters are h=1,k=1,f=1,k2=2,f2=1,v=0,seed=90211. Swapping k=2,k2=1 preserves the IVP and solution (x-1)e^x+e^(2x), but raises 'Mixed requires first component resonant, second nonresonant'.",
+        "requested_change": "Allow and sample either resonant position in the mixed family. Derive trial forms, derivatives, coefficient equations and explanations from each component's exponent equality to h. Retain the legitimate both-nonresonant and observed easy/moderate families. Adopt the strict reorder test and verify both positions survive delivery."
+      },
+      "source_hash": "e44bd770b14fc33a90b79bea01b5860e53653c10a82f579d7710228d8996a02c",
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186229165/review-0-policy-2-8d63f2e6b23f8ebd",
+      "attempt": 0
+    },
+    {
+      "id": "645672a4cd3f9bf609ca",
+      "finding": {
+        "kind": "evidence",
+        "description": "The validated correction cannot replace the required evidence-root report because that destination is read-only.",
+        "source_refs": [
+          "review_contract_feedback",
+          "scripts/generator_review.py:_decision_evidence"
+        ],
+        "reproduction": "Run python3 contract-repair/correct_report.py --install from evidence_root. Replacing pedagogical-variation.json raises OSError [Errno 30] Read-only file system.",
+        "requested_change": "Install the saved corrected artifacts with evidence-root write access and rerun validate_review. Use contract-repair/corrected-accepted-result.json as the acceptance candidate. Preserve historical inventory evidence; no generator authoring is needed."
+      },
+      "source_hash": "e44bd770b14fc33a90b79bea01b5860e53653c10a82f579d7710228d8996a02c",
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186229165/review-1-policy-2-48d685555902faba",
+      "attempt": 1
+    }
+  ],
+  "events_read": 919,
+  "latest_attempt": 918,
+  "latest_reason": {
+    "code": "author_reported_limitation",
+    "error": {
+      "status": "unsupported",
+      "manifest": "package.json",
+      "summary": "Preserved the repaired generator. Role variation, delivery, mathematical and native grading checks pass. The strict report-installation check still fails.",
+      "evidence_paths": [
+        "evidence/author-918/checks.json",
+        "evidence/author-918/summary.json",
+        "evidence/author-918/report-results.json",
+        "evidence/author-918/role-regression/results.json",
+        "evidence/review-installation-handoff.json",
+        "repair-regressions.json"
+      ],
+      "limitations": [
+        "Finding 645672a4cd3f9bf609ca requires the runner to install the staged corrected report outside the authorized workspace, rerun strict validation and obtain fresh independent review. Workspace-only edits cannot complete that installation."
+      ]
+    },
+    "instruction": "The source supports this skill. Diagnose and repair the limitation; do not drop source families or valid responses."
+  }
+}

@@ -1,0 +1,186 @@
+{
+  "status": "unsupported",
+  "summary": "Existing repaired easy generator preserved. All three registered regressions pass; exact runner handoff failure still reproduces.",
+  "changes": "Validation evidence and session-state only; runtime, manifest, generator scope and response contract unchanged.",
+  "commands": [
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_evidence_contract.py",
+      "exit_code": 0,
+      "log": "evidence/author26-evidence.log"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_batch_selection.py",
+      "exit_code": 0,
+      "log": "evidence/author26-batch.log"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_all.py",
+      "exit_code": 0,
+      "log": "evidence/author26-retained.log"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/reproduce_runner_boundary.py",
+      "exit_code": 1,
+      "log": "evidence/author26-boundary.log"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_batch_selection.py --input evidence/batch-shortcut-before-records.json",
+      "exit_code": 1,
+      "log": "evidence/author26-historical-control.log"
+    }
+  ],
+  "fidelity": {
+    "complete_source_banks": 10,
+    "source_choices": 50,
+    "source_cases": [
+      {
+        "source_id": "q-10329",
+        "question_id": "0bb40c20-00ba-542a-8a60-c0d7dc599925",
+        "choices": 5
+      },
+      {
+        "source_id": "q-1059",
+        "question_id": "8ad44012-c8dc-51b0-90ac-8e2b89d003b4",
+        "choices": 5
+      },
+      {
+        "source_id": "q-1060",
+        "question_id": "157d0b46-caa9-5e52-add3-341aa2ee9d01",
+        "choices": 5
+      },
+      {
+        "source_id": "q-130910",
+        "question_id": "e60da15e-4036-54d4-9450-3bb47096d6f6",
+        "choices": 5
+      },
+      {
+        "source_id": "q-20459",
+        "question_id": "2f7d8f30-0a86-56e1-866a-295695eb3958",
+        "choices": 5
+      },
+      {
+        "source_id": "q-20461",
+        "question_id": "33887d26-4540-5f7d-8312-2849fc1d5c71",
+        "choices": 5
+      },
+      {
+        "source_id": "q-10512",
+        "question_id": "97656c8d-f73c-5b5a-a5d7-69f60766b5eb",
+        "choices": 5
+      },
+      {
+        "source_id": "q-130909",
+        "question_id": "dc5530a8-d7bb-5ee6-b842-11178cec4e06",
+        "choices": 5
+      },
+      {
+        "source_id": "q-10509",
+        "question_id": "253dcdad-b456-5a05-a8b5-7ff5b06745e9",
+        "choices": 5
+      },
+      {
+        "source_id": "q-73439",
+        "question_id": "9752715d-a11c-5d27-95dc-d20bec1117cb",
+        "choices": 5
+      }
+    ],
+    "ui_records_equal_current_delivered_endpoints": true,
+    "render_input": "evidence/author8-render-records.json",
+    "render_report": "evidence/author8-render/rendering.json",
+    "visual_inspection": "Both screenshots reinspected: matrices, augmentation bars, signs, row operations, controls and solutions are readable; no clipping observed.",
+    "runtime_hashes_unchanged": {
+      "package.json": "663cb3294cd6832de919c9e21b569f271e63079f4cd4155486853d1c05434b23",
+      "17592186059775.py": "45ce3ee90e9c76d850d8f7e0d9c0851515a65a868264b79160260898c5eeb2ac",
+      "17592186059775/source.json": "936dc5c07130b5fabc5e453ac26efb90471b07c96bc0a904a214eca8494a4bfc",
+      "math_format.py": "734756ff87af508413171ebec82588a121ac9af7d85b454ac4137db41d23e5be",
+      "requirements.txt": "25f9f1fb1988b230147a1d3092d34e09c069eb7a6c6d6df46b3973b9f2d36efc",
+      "known-systems.json": "2492556950df4a1bb3622028c1d24fd72ff9ec82f76c19b8fe2bc6e74b80436f"
+    }
+  },
+  "correctness": {
+    "visible_generated_records_checked": 81,
+    "semantic_instances_checked": 71,
+    "result": "Independent mathematical readback passes; evidence/author26-retained.log"
+  },
+  "grading": {
+    "retained_math_batch": {
+      "accepted": 81,
+      "rejected": 324
+    },
+    "delivery_batch": {
+      "accepted": 5,
+      "rejected": 20
+    },
+    "unexpected": 0
+  },
+  "decision_variation": {
+    "profiles": 10,
+    "raw_latest_cue": "1/5",
+    "delivered_latest_cue": "1/5",
+    "original_control": "strict regression exits 1 on archived 5/5 shortcut",
+    "current_delivery_count": 5,
+    "within_profile_controlled_target_changes": "pass"
+  },
+  "evidence_contract": {
+    "finding_id": "9b8cb52352b8ca3e790e",
+    "passed": true,
+    "bundle_root": "evidence/contract-correction",
+    "real_review_validator": "scripts/generator_review.py:validate_review",
+    "missing_provenance_negative_control": "source_analysis.evidence_paths: missing, empty, or escaping evidence: correction-provenance.json",
+    "wrong_root_negative_control": "source_analysis.evidence_paths: missing, empty, or escaping evidence: source-analysis.json",
+    "relocated_bundle_roots_validated": [
+      "author-6",
+      "another-review-attempt"
+    ],
+    "current_raw": {
+      "correct": 1,
+      "total": 5,
+      "random_baseline": 0.2
+    },
+    "current_delivered": {
+      "correct": 1,
+      "total": 5,
+      "random_baseline": 0.2
+    },
+    "historical_control": "strict check fails as required (5/5)",
+    "source_capture_prompts_and_fields_reconfirmed": 12,
+    "affected_generated_records_bound": 3,
+    "runtime_files_unchanged": 6,
+    "runner_installation_files": 83,
+    "runner_destination_policy": "runner_supplied_at_installation",
+    "destination_installed": false
+  },
+  "inventory": {
+    "generated_records_reproduced": 3,
+    "historical_affected": 3,
+    "original_sources_kept_separate": 12,
+    "report": "affected-inventory.json",
+    "record_evidence": "evidence/inventory-generated-records.json"
+  },
+  "boundary": {
+    "current_package_hash": "38c685ce1e5bd4f89ac79b6ab3d31a4a81f2b77c9f4bb6f0abcab5c20640f626",
+    "rejected_package_hash": "38c685ce1e5bd4f89ac79b6ab3d31a4a81f2b77c9f4bb6f0abcab5c20640f626",
+    "source_hash_matches_rejected_binding": true,
+    "engine_hash_matches_rejected_binding": true,
+    "unchanged_candidate_gate_reproduced": true,
+    "runner_stage_at_read": "generate",
+    "historical_wrong_root_error": "source_analysis.evidence_paths: missing, empty, or escaping evidence: correction-provenance.json",
+    "corrected_bundle_validates_at": "evidence/contract-correction",
+    "runtime_hashes": {
+      "package.json": "663cb3294cd6832de919c9e21b569f271e63079f4cd4155486853d1c05434b23",
+      "17592186059775.py": "45ce3ee90e9c76d850d8f7e0d9c0851515a65a868264b79160260898c5eeb2ac",
+      "17592186059775/source.json": "936dc5c07130b5fabc5e453ac26efb90471b07c96bc0a904a214eca8494a4bfc",
+      "math_format.py": "734756ff87af508413171ebec82588a121ac9af7d85b454ac4137db41d23e5be",
+      "requirements.txt": "25f9f1fb1988b230147a1d3092d34e09c069eb7a6c6d6df46b3973b9f2d36efc",
+      "known-systems.json": "2492556950df4a1bb3622028c1d24fd72ff9ec82f76c19b8fe2bc6e74b80436f"
+    },
+    "scope": "Read-only runner diagnosis; no installation or approval."
+  },
+  "root_cause": "Evidence-only finding 9b8cb52352b8ca3e790e remains routed through generate/sample. The three-way unchanged package/source/engine gate rejects before registered checks or fresh review.",
+  "required_runner_action": "Install the complete evidence/contract-correction bundle using evidence/contract-installation.json and validate result.json with that installed directory as evidence root; resume the existing report-repair -> validate route. Preserve repaired runtime.",
+  "limitations": [
+    "Evidence installation and runner routing require writes outside the authorized workspace. They were not performed.",
+    "No fresh independent approval is claimed. Live learner history and later inventory are untested."
+  ],
+  "skill_applied": "/home/jake/.codex/skills/just-say-no-to-process-porn-and-ceremony/SKILL.md"
+}

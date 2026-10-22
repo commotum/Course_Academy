@@ -1,11 +1,11 @@
-# Current state — author 917
+# Current state — author 921
 
-Read feedback and both retained findings. Reproduced the exact latest strict report failure first. No new generator authoring is requested by the evidence finding. Runtime, source, instructional account, affected-inventory evidence and strict regression declarations remain unchanged.
+Read feedback first and parsed the complete repair history (921 events, two retained findings). Reused the instructional account and prior source analysis. No generator authoring is requested by the latest finding; preserved runtime and both strict regression declarations.
 
-Commands and exit codes: `evidence/author-917/checks.json`. Results: `evidence/author-917/summary.json`.
+Commands and actual exit codes: `evidence/author-921/checks.json`. Results: `evidence/author-921/summary.json`.
 
-- Strict report regression exits 1: the required external report still raises `decision_variation has an unresolved decision shortcut`. The workspace correction passes the real contract/schema and 26 current-generator record replays.
-- Role regression exits 0: nine controlled cases, 24 mixed samples and eight default hard cases pass visible mathematical checks, shared delivery and native grading. Both resonance positions survive delivery and conditional shortcut probes.
-- Retained-state check exits 0: unchanged source/runtime, 55 handoff artifacts verified and eight unaffected math cases pass. Reinspected `evidence/render/question-002.png`; no new runtime change requires rendering again.
+- Strict report regression exits 1: the original prior-review destination still fails with `decision_variation has an unresolved decision shortcut`. The staged correction passes the real contract/schema and 26 current-generator record replays.
+- Role regression exits 0: nine controlled cases, 24 mixed samples and eight default hard samples pass math, shared delivery, and native acceptance/rejection checks. Resonance occurs in both positions before and after delivery and in every tested conditional cue group.
+- Retained-state check exits 0: source/runtime unchanged, 55 staged artifacts and eight unaffected mathematical cases verified. Existing actual-UI screenshot `evidence/render/question-002.png` visually reinspected; second-position resonance, trial and equations are legible.
 
-Next unfinished action: the runner installs the staged corrected artifacts at the original prior-review destination specified in `evidence/review-installation-handoff.json`, reruns the unchanged strict regression and obtains fresh independent review. The destination is outside the user-authorized workspace. No external write, publication or database change was attempted, and the failed criterion was not weakened. Status remains unsupported; an unchanged workspace-only retry cannot perform the required installation.
+Next unfinished action: the runner installs staged corrected artifacts at the original prior-review destination specified in `evidence/review-installation-handoff.json`, reruns the unchanged strict regression and obtains fresh independent review. This destination is outside the user-authorized workspace. No external write, publication, database change or engine modification was attempted. An unchanged workspace-only retry cannot perform this installation.
