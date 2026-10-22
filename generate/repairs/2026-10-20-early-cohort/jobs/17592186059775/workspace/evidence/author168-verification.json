@@ -1,0 +1,56 @@
+{
+  "attempt": 168,
+  "status": "unsupported",
+  "latest_failure_reproduced_first": true,
+  "commands": [
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_current_handoff.py",
+      "exit_code": 1,
+      "report": "evidence/current-handoff-regression.json"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_evidence_contract.py",
+      "exit_code": 1,
+      "report": "evidence/evidence-contract-validation.json"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_batch_selection.py",
+      "exit_code": 0,
+      "log": "evidence/author168-check_batch_selection.log"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_cli_contract.py",
+      "exit_code": 0,
+      "log": "evidence/author168-check_cli_contract.log"
+    }
+  ],
+  "runtime_hashes_unchanged": {
+    "package.json": "663cb3294cd6832de919c9e21b569f271e63079f4cd4155486853d1c05434b23",
+    "17592186059775.py": "45ce3ee90e9c76d850d8f7e0d9c0851515a65a868264b79160260898c5eeb2ac",
+    "17592186059775/source.json": "936dc5c07130b5fabc5e453ac26efb90471b07c96bc0a904a214eca8494a4bfc",
+    "math_format.py": "734756ff87af508413171ebec82588a121ac9af7d85b454ac4137db41d23e5be",
+    "requirements.txt": "25f9f1fb1988b230147a1d3092d34e09c069eb7a6c6d6df46b3973b9f2d36efc",
+    "known-systems.json": "2492556950df4a1bb3622028c1d24fd72ff9ec82f76c19b8fe2bc6e74b80436f"
+  },
+  "evidence_bundle_passed": true,
+  "current_record_binding": {
+    "records": 5,
+    "shortcut_correct_raw": 1,
+    "shortcut_correct_delivered": 1,
+    "source_captures_reconfirmed": 12,
+    "affected_inventory_bound": 3
+  },
+  "retained_validation": "evidence/author166-verification.json",
+  "validation_scope": "Fresh exact runner failure and evidence regression, reported-seed decision/delivery/native-grader regression, and relocated CLI check. Earlier source replay and UI inspection retained for unchanged runtime.",
+  "unresolved": {
+    "finding_id": "9b8cb52352b8ca3e790e",
+    "target": "/home/jake/Developer/Course_Academy/scripts/generator_pipeline.py",
+    "reason": "Installed runner rejects the unchanged candidate before retained regressions or sampling, although the independent finding is evidence-only.",
+    "patch": "runner-fix/evidence-only-rejection.patch",
+    "installed": false,
+    "authorized_write_scope": "workspace only",
+    "required_external_action": "Runner owner applies and verifies the staged runner fix and installs the evidence bundle using evidence/contract-installation.json, then executes retained regressions, sampling and fresh independent review."
+  },
+  "scope": "No runtime, engine, database, publication, service, other-job or external runner changes. Strict failing regression preserved.",
+  "installed_runner_sha256": "6b5e606725c2b82f87212da3c0ec39da0231db0722cd440ef1d21e141d01deb2"
+}

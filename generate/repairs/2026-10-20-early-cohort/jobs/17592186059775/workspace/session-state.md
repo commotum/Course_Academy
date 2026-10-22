@@ -1,37 +1,31 @@
-# Current state — 2026-10-22, author-164
+# Current state — 2026-10-22, author-168
 
-Preserved completed repairs, runtime bytes, manifest and strict finding checks.
-Read feedback, full history, required documentation, source questions and lessons.
-Existing instructional account applies; no runtime change is justified by the
-retained evidence-only finding.
+Read latest feedback, retained history and prior state before acting. Preserved
+completed runtime repairs, manifest, instructional account and strict regressions.
 
-Latest failure reproduced first:
+The exact latest failure reproduces:
 `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_current_handoff.py`
-exits 1. Installed `scripts/generator_pipeline.py` rejects unchanged runtime
-before regressions or sampling. The retained finding explicitly requests no
-runtime change. Changing bytes solely to change the digest would not fix it.
+exits 1: installed `scripts/generator_pipeline.py` rejects the byte-identical
+candidate before regression checks or sampling. The remaining independent finding
+is evidence-only; no new generator defect was demonstrated.
 
-Fresh commands, results and unchanged runtime hashes:
-`evidence/author164-verification.json`.
-- Batch: seed 4258185931 passes; shortcut 1/5 raw and delivered; five accepted;
-  ten profiles; 25 native grading responses pass.
-- Evidence bundle, root relocation, missing-provenance/wrong-root negative
-  controls and three affected inventory identities pass. Overall exit 1 retains
-  the installed-runner failure; staged evidence is not an installed repair.
-- CLI: runtime-only relocation, deterministic counts 5/0/1/5 and finite-limit
-  rejection pass.
-- Source/UI binding: ten complete banks, fifty choices, two retained actual-UI
-  endpoints match current delivered records. Reinspected question-002.png:
-  readable matrices, five controls and complete elimination solution.
+Affected `checks/check_evidence_contract.py` also exits 1 at that runner gate.
+Its actual evidence validation passes, including arbitrary-root relocation,
+missing-provenance/wrong-root controls, current raw/delivered record binding,
+historical shortcut reproduction, 12 source captures and 3 affected inventory
+records. Complete 83-file corrected bundle remains staged inside the workspace.
+
+Fresh targeted generator/CLI command results and runtime hashes:
+`evidence/author168-verification.json`. Earlier full source replay and visual
+rendering evidence remain retained for unchanged runtime; no new UI render is
+claimed. All runtime files and package.json remain identical to author-167.
+
+Unfinished action is outside authorized writes: the runner owner must repair
+`scripts/generator_pipeline.py` (reviewable proposal:
+`runner-fix/evidence-only-rejection.patch`) and handle the staged evidence bundle,
+then run strict retained regressions, sampling and fresh independent review.
+Do not change runtime bytes merely to evade that gate or treat the uninstalled
+patch as a completed fix. Repeated authoring cannot resolve this external gate.
 
 No runtime, engine, database, publication, service, other-job or external runner
-writes occurred. No redundant render or proposed-patch tests were run. The staged
-`runner-fix/evidence-only-rejection.patch` remains uninstalled; earlier offline
-patch evidence is retained without claiming fresh execution.
-
-Next required action is external: runner owner applies and verifies the routing
-correction, installs the staged bundle per `evidence/contract-installation.json`,
-then runs retained regressions, sampling and fresh independent review. Those
-writes are outside authorized scope. Do not repeat unchanged authoring until
-runner state changes. Keep the strict failing regression intact.
-No complete repair or independent approval is claimed.
+writes occurred. Strict failure is retained; complete repair is not claimed.
