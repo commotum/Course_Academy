@@ -1,5 +1,29 @@
 # Session state
 
+2026-10-21 targeted repair completed: read feedback and all repair history.
+Exact previous review batch fails the original check (2 repeated rank-3 items,
+A forced true); saved evidence/latest-failure-reproduced.json. Catalog reproduces
+every old record exactly. Added source-cited repair account before runtime edit.
+Changed only batch selection to keep repeated profile decisions within a shared
+visible subgroup and choose contrasting eligible-label outcomes, retaining
+semantic uniqueness and source workload counts. New retained finding is
+6900891930e4bdc756fa; executable regression declared beside the import regression.
+
+Latest validation: checks/check_batch_decisions.py passed the exact reviewed
+candidate-prefix replay, seven sampler controls and actual delivery filters.
+Old fixture still fails; revised same subgroup contains A-only and C-only.
+10 source replays passed; controlled pivot/scale probes passed. Native grading
+accepted 31/rejected 76, no unresolved. All 44 records across five delivery runs
+survive actual filtering. Two affected actual-UI screenshots rendered and were
+visually inspected. Declared-only runtime relocation passed twice deterministically.
+Full catalog equality against retained evidence passed (39 presentations,
+24 semantic classes). See evidence/repair-2/verification.md and batch-regression.json.
+Inventory audit: 12 original sources, 10 complete checked, 2 incomplete;
+verified no stored generated records. No database or publication writes.
+No unfinished author work; ready for independent review. No publication performed.
+
+Earlier completed repairs and reports below remain retained history.
+
 Runtime repaired in place and declared in package.json. External helper/interpreter
 path discovery removed; shared policy bundled unchanged. Current source snapshot
 is bundled, including matrix-bearing checkbox keys and visible None evidence.

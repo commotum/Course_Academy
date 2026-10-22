@@ -1,0 +1,52 @@
+--- previous/17592186119848.py
++++ current/17592186119848.py
+@@ -181,6 +181,19 @@
+                 rec=generate('easy',0,sid,{'matches':list(matches),'assignment':list(assignment)});fp=rec['question'][':question/id']
+                 if fp not in seen:seen.add(fp);result.append(rec)
+     return result
++def decision_group(rec):
++    """Visible workload and exclusions within one complete source bank."""
++    q=rec['question'];bank=matrices(q);r=target(q)
++    return (rec['generation']['bank_profile'],r,
++            tuple(sorted(m.shape for m in bank.values())),
++            tuple(k for k,m in sorted(bank.items()) if min(m.shape)<r),
++            len(q[':question/answer-fields']),rec['generation']['choice_profile'])
++def contrasting_subset(rows):
++    if len(rows)<2:return True
++    q=rows[0]['question'];r=target(q)
++    labels=[k for k,m in matrices(q).items() if min(m.shape)>=r]
++    truths=[{k for k,m in matrices(row['question']).items() if m.rank()==r} for row in rows]
++    return all({k in truth for truth in truths}=={False,True} for k in labels)
+ def batch(level,count,seed=0):
+     if level not in SUPPORTED_LEVELS:raise ValueError('Unsupported difficulty: '+level)
+     candidates=catalog();random.Random(seed).shuffle(candidates)
+@@ -190,7 +203,28 @@
+         fp=rec['generation']['mathematical_fingerprint']
+         if fp not in seen:seen.add(fp);records.append(rec)
+     if type(count) is not int or count<0 or count>len(records):raise ValueError('Finite variant limit: '+str(len(records)))
+-    return records[:count]
++    selected=records[:count]
++    # A shuffled prefix can lose the catalog's counterexamples. Choose repeated
++    # decisions together, keeping the source workload counts and semantic limit.
++    # Cosmetic role permutations must not split one profile into cue subgroups
++    # whose eligible labels are then accidentally fixed.
++    by_profile={}
++    for rec in selected:by_profile.setdefault(rec['generation']['bank_profile'],[]).append(rec)
++    replacements={}
++    for sid,old in by_profile.items():
++        group=decision_group(old[0])
++        pool=[rec for rec in candidates if decision_group(rec)==group]
++        choices=[]
++        for combo in itertools.combinations(pool,len(old)):
++            if len({r['generation']['mathematical_fingerprint'] for r in combo})!=len(combo):continue
++            if not contrasting_subset(combo):continue
++            choices.append(combo)
++        if not choices:raise ValueError('No contrasting batch subset for '+sid)
++        old_ids={rec['question'][':question/id'] for rec in old}
++        # Seeded candidate order breaks ties; prefer retaining the prior prefix.
++        best=max(choices,key=lambda combo:sum(r['question'][':question/id'] in old_ids for r in combo))
++        replacements[sid]=iter(best)
++    return [next(replacements[rec['generation']['bank_profile']]) for rec in selected]
+ def markdown(rec):
+     q=rec['question'];return q[':question/problem']+'\n\n'+'\n\n'.join(f[':answer-field/key']+': '+', '.join(a[':answer/value'] for a in f[':answer-field/choices']) for f in q[':question/answer-fields'])+'\n\n'+q[':question/worked-solution']
+ 

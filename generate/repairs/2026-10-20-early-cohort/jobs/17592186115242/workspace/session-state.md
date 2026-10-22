@@ -1,24 +1,24 @@
-# Current state — pass 284
+# Current state — pass 287
 
-Preserved the repaired runtime package, all source families, staged replacement
-records, and all five strict executable regression declarations.
+Preserved the candidate runtime, manifest, source coverage, staged replacements,
+and all five strict executable regression declarations. No runtime change was
+justified by the unchanged feedback; no database or publication action occurred.
 
-First validation: `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory`
-Exit 1: five historical banks; 64/64 shortcut successes for the retained
-possible-history witness. Evidence: evidence/repair-284/initial-command.json
-and initial-reproduction.json.
+First reproduction:
+`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory`
+Exit 1: five historical banks, 64/64 possible-history shortcut successes.
+See evidence/repair-287/initial-reproduction.json.
 
-Retained validation: `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/repair-284`
-Exit 1 solely for finding 591f580cadb749294588. Four current-generator
-regressions pass; 17 source banks plus canonical replay, delivery 14/14,
-native grading 7 correct accepted/28 wrong rejected, exact pins and relocation
-pass. Protected hashes and proposal mapping verify. All generated inventory
-was audited. Retained actual UI screenshot and source flowchart inspected.
+Validation:
+`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/repair-287`
+Exit 1 only for finding 591f580cadb749294588. Four current-generator regressions,
+17 complete source banks and canonical replay, delivery 14/14, native grading
+(7 correct accepted, 28 wrong rejected), exact pins and relocation pass.
+Protected hashes and staged replacement mapping verify. Reinspected retained
+actual-UI screenshot; no new render is needed for unchanged runtime.
 
-Unfinished: apply separate inventory remediation using the verified proposal
-at evidence/repair-3/inventory-repair-proposal.json, capture fresh inventory,
-and run the strict regression. Database writes and publication are prohibited
-in this author task. No generator-only change can alter stored banks; do not
-repeat unrelated validation or weaken the inventory regression.
-
-Current evidence: evidence/repair-284/commands.json, results.json and outcome.md.
+Next unfinished step: separate authorized inventory remediation of the five
+stored questions and fresh inventory capture. This task prohibits that database
+operation. Keep the strict historical regression; do not replace inventory with
+the unapplied proposal or weaken the check. No further generator-only repair is
+evidenced. Evidence: evidence/repair-287/{commands.json,results.json,outcome.md}.

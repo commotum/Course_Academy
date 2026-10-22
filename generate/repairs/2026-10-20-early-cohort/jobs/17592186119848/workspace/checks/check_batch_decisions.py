@@ -88,7 +88,7 @@ def main():
     # Preserve source/identity evidence, rather than silently replacing the old
     # counterexample with a new question. The unchanged catalog reproduces it.
     assert all(live[r['question'][':question/id']]==r for r in old)
-    def replay_shuffle(rows):
+    def replay_shuffle(_rng, rows):
         indexed={r['question'][':question/id']:r for r in rows}
         rows[:]=[indexed[k] for k in old_ids]+[r for r in rows if r['question'][':question/id'] not in old_ids]
     with patch.object(g.random.Random, 'shuffle', replay_shuffle):
@@ -120,13 +120,33 @@ def main():
     # Source replay plus affected current items, all selectable answers; batch
     # correct and wrong responses through the real native learner grader once.
     native=[];replays=[];choices=0
+    supplied=json.loads((JOB/'source/source.json').read_text())
+    originals={q[':question/math-academy-id']:q for q in supplied['material']['kp'][':knowledge-point/questions']}
     for sid,source in sorted(g.CASES.items()):
+        assert source==originals[sid], 'Bundled source differs from supplied evidence'
         rec=g.generate('easy',0,sid,{'matches':list(g.original_matches(sid))},source_replay=True)
         choices+=fidelity(source,rec);_,checks=inspect(rec);replays.append(rec)
         native.append({'label':'source '+sid,'record':rec,'checks':checks})
     for rec in accepted:
         _,checks=inspect(rec)
         native.append({'label':'repaired prefix','record':rec,'checks':checks})
+    # Hold labels, shapes, coefficients and dimension-excluded B fixed; only
+    # qualifying pivot evidence changes. Also retain an irrelevant scale control.
+    controlled=[g.generate('easy',0,'q-139965',{'matches':m,'assignment':['C','A','B']})
+                for m in [['A'],['C'],['A','C']]]
+    banks=[visible_bank(r['question']) for r in controlled]
+    assert all(b['B']==banks[0]['B'] for b in banks)
+    assert all(inspect(r)[0]['truth']==m for r,m in zip(controlled,[['A'],['C'],['A','C']]))
+    for rec in controlled:
+        _,checks=inspect(rec)
+        native.append({'label':'controlled pivot evidence','record':rec,'checks':checks})
+    scaled=g.generate('easy',0,'q-139965',{'matches':['C'],'assignment':['C','A','B'],'scale':1})
+    assert inspect(scaled)[0]['truth']==inspect(controlled[1])[0]['truth']
+    assert visible_bank(scaled['question'])!=banks[1]
+    _,checks=inspect(scaled)
+    native.append({'label':'irrelevant nonzero scale','record':scaled,'checks':checks})
+    save('counterfactual-records.json',controlled+[scaled])
+    save('render-records.json',controlled[:2])
     shortcuts=[]
     for rec in affected:
         w,_=inspect(rec)
