@@ -6,6 +6,9 @@ claimed dimensions and counts (k=1..3). The theorem's zero stays fixed.
 Vector templates: invertible diagonal coordinate map with entries 1..3,
 applied to every prompt/solution vector. A subspace RREF fingerprint rejects
 basis-rescalings that do not change the task. Field layouts/banks stay fixed.
+Normal practice selects an eligible truth subset before values, then derives
+numeric comparisons and theorem-claim polarity. Explicit original parameters
+without a truth subset replay the captured source.
 """
 import argparse,copy,hashlib,json,random,re,sys,uuid
 from pathlib import Path
@@ -137,6 +140,11 @@ def apply_decisions(q,truths,rng):
    f[':answer-field/correct']=[':answer/id',next(a[':answer/id'] for a in f[':answer-field/choices'] if a[':answer/value']==str(b).lower())]
  # Preserve the source theorem exposition, then derive a concrete solution.
  intro=q[':question/worked-solution'].split("With that in mind, let's examine each statement in turn.")[0]
+ # The captured checkbox theorem is too wide for the learning card. Keep its
+ # mathematical exposition but put the left side on its own paragraph.
+ wide=r'A\text{ is }\text{invertible}\quad\Longleftrightarrow\quad'
+ if wide in intro:
+  intro=intro.replace('$$\n'+wide,'$A$ is invertible\n\n$$\n'+r'\Longleftrightarrow\quad')
  n,r,u=t['n'],t['rank'],t['nullity']
  if t['given'][0]=='null-space':
   prefix=q[':question/problem'].split('Select all that apply.')[0].split('\n\nI.')[0]
@@ -151,7 +159,7 @@ def apply_decisions(q,truths,rng):
  calc=f'\n\nBy the rank-nullity theorem,\n\n$$\n\\text{{rank}}(A)+\\text{{nullity}}(A)=n,\\qquad {r}+{u}={n}.\n$$\n\n'
  calc+=f'Hence $\\text{{rank}}(A)={r}$ and $\\text{{nullity}}(A)={u}$. '
  calc+=('Since rank equals the number of columns, $A$ is invertible and $\\det(A)\\ne 0$.' if r==n else 'Since rank is less than the number of columns, $A$ is not invertible and $\\det(A)=0$.')
- calc+=f' Also, $\\text{{Col}}(A)$ has dimension {r}, there are {r} pivot columns, and there are {u} non-pivot columns.\n\n'
+ calc+=f' Also, $\\text{{Col}}(A)$ has dimension {r}. The number of pivot columns is {r}, and the number of non-pivot columns is {u}.\n\n'
  evaluations='\n\n'.join('- Statement '+(('I','II','III')[i] if radio else '“'+s+'”')+' is '+str(b).lower()+'.' for i,(s,b) in enumerate(zip(new,truths)))
  conclusion=subset_label(truths) if radio else '; '.join(s for s,b in zip(new,truths) if b)
  q[':question/worked-solution']=intro+given+calc+evaluations+'\n\nTherefore, the correct answer is '+conclusion+'.'
