@@ -68,7 +68,7 @@ def visible(r):
   # Check the displayed concrete solution, independently of generation metadata.
   facts=re.search(r'Hence \$\\text\{rank\}\(A\)=(\d+)\$ and \$\\text\{nullity\}\(A\)=(\d+)\$',sol)
   assert facts and tuple(map(int,facts.groups()))==(rank,u)
-  assert f'{rank}+{u}={n}' in sol
+  assert f'={n}-{rank}={u}' in sol or f'={n}-{u}={rank}' in sol
   for j,(s,b) in enumerate(zip(statements,truths)):
    target=['I','II','III'][j] if len(fs)==1 else '“'+s+'”'
    assert '- Statement '+target+' is '+str(b).lower()+'.' in sol
@@ -170,6 +170,29 @@ def main():
  assert base['question'][':question/problem'].replace('$3$ pivot columns','$4$ pivot columns')==changed['question'][':question/problem']
  save(E/'count-counterfactual-records.json',[base,changed])
  cases.extend([native(base,'fixed claims pivot count 3'),native(changed,'fixed claims pivot count 4')])
+ # Close only coordinate-factor values missed by the small normal sample.
+ def slots(records):
+  out={}
+  for r in records:
+   k=r['generation']['template'];p=r['generation']['parameters'];c=out.setdefault(k,{})
+   for name,v in p.items():
+    if name=='diagonal':
+     for i,x in enumerate(v):c.setdefault('diagonal_'+str(i),set()).add(x)
+    elif name=='scale':c.setdefault('scale',set()).add(v)
+  return out
+ coverage=slots([c['record'] for c in cases])
+ for key,fields in coverage.items():
+  missing={slot:sorted({1,2,3}-vs) for slot,vs in fields.items() if vs!={1,2,3}}
+  if not missing:continue
+  assert g.is_vector(key)
+  d=[1]*g.n_of(g.Q[key][':question/problem'])
+  for slot,values in missing.items():
+   assert len(values)==1
+   d[int(slot.split('_')[1])]=values[0]
+  z=g.generate(g.level_of(key),seed=91,template=key,parameters={'diagonal':d,'truths':g.allowed_truths(key)[-1]})
+  cases.append(native(z,key+' missing coordinate-factor value'))
+ coverage=slots([c['record'] for c in cases]);assert all(v=={1,2,3} for c in coverage.values() for v in c.values())
+ save(E/'parameter-coverage.json',{k:{s:sorted(v) for s,v in c.items()} for k,c in coverage.items()})
  save(E/'source-replay-current.json',replay);save(E/'counterfactuals.json',counterfactuals)
  save(E/'boundary-cases.json',boundaries);save(E/'normal-sample.json',sampled)
  save(E/'controlled-records.json',rows)

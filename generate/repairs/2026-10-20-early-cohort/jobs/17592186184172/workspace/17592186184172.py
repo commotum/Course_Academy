@@ -145,6 +145,8 @@ def apply_decisions(q,truths,rng):
  wide=r'A\text{ is }\text{invertible}\quad\Longleftrightarrow\quad'
  if wide in intro:
   intro=intro.replace('$$\n'+wide,'$A$ is invertible\n\n$$\n'+r'\Longleftrightarrow\quad')
+ # One additional source has the whole theorem in a single inline formula.
+ intro=intro.replace('$A$ is invertible $\\,⇔\\,', '$A$ is invertible\n\n$\\,⇔\\,')
  n,r,u=t['n'],t['rank'],t['nullity']
  if t['given'][0]=='null-space':
   prefix=q[':question/problem'].split('Select all that apply.')[0].split('\n\nI.')[0]
@@ -156,11 +158,24 @@ def apply_decisions(q,truths,rng):
   given='The supplied null space has the independent spanning vectors\n\n$$\n'+shown+'\n$$\n\nThus $\\text{nullity}(A)='+str(u)+'.$'
  else:
   kind,count=t['given'];given=f'The {count} '+('non-pivot columns give $\\text{nullity}(A)='+str(u) if kind.startswith('non') else 'pivot columns give $\\text{rank}(A)='+str(r))+'.$'
- calc=f'\n\nBy the rank-nullity theorem,\n\n$$\n\\text{{rank}}(A)+\\text{{nullity}}(A)=n,\\qquad {r}+{u}={n}.\n$$\n\n'
+ if t['given'][0]=='pivot-columns':
+  substitution=f'{r}+\\text{{nullity}}(A)={n},\\qquad \\text{{nullity}}(A)={n}-{r}={u}.'
+ else:
+  substitution=f'\\text{{rank}}(A)+{u}={n},\\qquad \\text{{rank}}(A)={n}-{u}={r}.'
+ calc='\n\nBy the rank-nullity theorem,\n\n$$\n\\text{rank}(A)+\\text{nullity}(A)=n.\n$$\n\n$$\n'+substitution+'\n$$\n\n'
  calc+=f'Hence $\\text{{rank}}(A)={r}$ and $\\text{{nullity}}(A)={u}$. '
  calc+=('Since rank equals the number of columns, $A$ is invertible and $\\det(A)\\ne 0$.' if r==n else 'Since rank is less than the number of columns, $A$ is not invertible and $\\det(A)=0$.')
  calc+=f' Also, $\\text{{Col}}(A)$ has dimension {r}. The number of pivot columns is {r}, and the number of non-pivot columns is {u}.\n\n'
- evaluations='\n\n'.join('- Statement '+(('I','II','III')[i] if radio else '“'+s+'”')+' is '+str(b).lower()+'.' for i,(s,b) in enumerate(zip(new,truths)))
+ def reason(s):
+  if 'rank}' in s:return f'$\\text{{rank}}(A)={r}$.'
+  if 'nullity}' in s:return f'$\\text{{nullity}}(A)={u}$.'
+  if '-dimensional' in s:return f'$\\dim(\\text{{Col}}(A))={r}$.'
+  if 'non-pivot columns' in s:return f'The number of non-pivot columns is {u}.'
+  if 'pivot col' in s:return f'The number of pivot columns is {r}.'
+  if 'invertible' in s:return 'The rank '+('equals' if r==n else 'is less than')+' the number of columns.'
+  if 'det(A)' in s:return '$A$ is '+('invertible, so $\\det(A)\\ne 0$.' if r==n else 'not invertible, so $\\det(A)=0$.')
+  return f'The column-space dimension is {r}, '+('equal to' if r==n else 'less than')+f' {n}.'
+ evaluations='\n\n'.join('- Statement '+(('I','II','III')[i] if radio else '“'+s+'”')+' is '+str(b).lower()+'. '+reason(s) for i,(s,b) in enumerate(zip(new,truths)))
  conclusion=subset_label(truths) if radio else '; '.join(s for s,b in zip(new,truths) if b)
  q[':question/worked-solution']=intro+given+calc+evaluations+'\n\nTherefore, the correct answer is '+conclusion+'.'
 
