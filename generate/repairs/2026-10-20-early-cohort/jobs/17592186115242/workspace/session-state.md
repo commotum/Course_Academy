@@ -1,20 +1,20 @@
-# Verification result — author 889
+# Verification result — author 893
 
-Read feedback and retained history; preserved candidate and instructional account.
-First test:
-`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory`.
-Exit 1: finding 591f580cadb749294588 still fails for five captured stored records;
-exact seed 2712914515 reproduced, possible-history shortcut witness 64/64.
-Then ran `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/author-889` (exit 1 for that same finding).
-Four generator regressions, 17 complete source-bank replays, 14 delivery records,
-35 native grading responses, counterfactuals and relocated replay pass.
-Protected hashes match; staged replacement proposal verifies. Two retained UI
-screenshots and source flowchart inspected. Runtime and completed repairs preserved.
-Evidence: evidence/author-889/commands.json, results.json, disposition.md.
+Preserved runtime, manifest, instructional account and all five retained regressions.
+Read feedback, all retained findings and latest history event, original lesson,
+17 complete practice questions, prerequisite examples and required generator docs.
 
-Next unfinished step: separately remediate the five stored questions using
- evidence/repair-3/inventory-repair-proposal.json, recapture inventory, then rerun
- the strict check. Database changes and publication are prohibited in this job.
-Do not weaken the failure or substitute proposed state for captured state.
-No new runtime defect is demonstrated; unchanged generator-only passes cannot
-alter persisted answer banks.
+First command: job Python -B checks/batch_regressions.py --finding inventory.
+Exit 1: five captured historical banks and 64/64 possible-history shortcut witness.
+
+Then: job Python -B checks/recheck_status.py --output evidence/author-893.
+Exit 1 solely for 591f580cadb749294588. Four generator regressions, 17 source-bank
+replays, delivery checks on 14 records, 35 native grading responses and relocation
+pass. Protected hashes and staged replacement mapping verify. Both retained
+repair-3 UI screenshots and source flowchart visually inspected.
+
+Evidence: evidence/author-893/commands.json, results.json, disposition.md.
+Next unfinished step: separate inventory remediation of the five identities in
+affected-inventory.json, fresh capture, then strict stored-pool regression.
+No database changes or publication are allowed in this job. No additional runtime
+change can alter the captured stored banks; keep the failure explicit.

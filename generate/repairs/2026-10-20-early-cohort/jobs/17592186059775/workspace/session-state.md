@@ -1,38 +1,39 @@
-# Current state — 2026-10-22, author-206
+# Current state — 2026-10-22, author-210
 
-Preserved completed generator repairs and every registered regression. Read
-feedback/history, the existing instructional account, supplied lesson, canonical
-example, and all 12 source banks. No new runtime defect was demonstrated.
+Read feedback, both retained findings, latest history event, existing instructional
+account, checks, and previous state. Preserved the runtime and completed repairs.
 
-Latest failure reproduced first:
+Reproduced the latest failure first:
 `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_current_handoff.py`
-exits 1. Actual installed sample-stage control flow calls only `repair`: the
-byte-identical-package gate at `scripts/generator_pipeline.py:723` runs before
-regressions or sampling. See `evidence/current-handoff-regression.json`.
+Exit 1: actual installed runner calls only `repair`; it rejects the unchanged
+package before retained checks or sampling. The rule is at external
+`scripts/generator_pipeline.py:723`.
 
-Every registered regression rerun with the job Python; exact commands, exit codes
-and logs: `evidence/current-author-verification.json`.
+Affected validation and a retained regression sample were rerun:
+- `checks/check_evidence_contract.py`: exit 1. Corrected bundle validation,
+  relocation, missing-provenance and wrong-root negative controls pass. Current
+  source binding (12 captures), records, and three affected stored generated
+  records pass. The strict installed-runner check remains failing.
+- `checks/check_batch_selection.py`: exit 0. Exact seed 4258185931, supported
+  family/rank coverage, preserved finite catalogs, independent mathematics,
+  actual delivery filters and 25 native grader responses pass. The reported
+  shortcut gets 1/5 on both raw and delivered records; its historical 5/5
+  counterexample remains a required failing control.
 
-- `checks/check_all.py`: exit 0. CLI counts/relocation, ten source banks, 81
-  mathematical readbacks, 405 raw and 50 delivered native responses, and three
-  stored generated-record reproductions pass.
-- `checks/check_batch_selection.py`: exit 0. Exact seed 4258185931 shortcut is
-  1/5 raw and delivered; all five records survive delivery. Ten profiles retain
-  all target roles. Native grading passes 25 responses.
-- `checks/check_evidence_contract.py`: exit 1. Real evidence validation,
-  relocation and missing-provenance/wrong-root negative controls pass; installed
-  runner handoff fails as above.
-- `checks/check_render_binding.py`: exit 0. Ten complete source banks and both
-  retained UI endpoints match current delivery. Both existing screenshots were
-  visually re-inspected: matrices, controls and solutions are readable.
+Commands, exit codes and logs: `evidence/current-author-verification.json`.
+Unchanged source/CLI/render evidence from preceding passes remains available;
+no unrelated broad tests or new renders were repeated. All registered strict
+checks remain intact in `repair-regressions.json`.
 
-All runtime/manifest hashes remain unchanged. No engine, runner, database,
-published asset, original review or other-job edits occurred. No extra broad
-samples, duplicate renders or hash-only runtime changes were made.
+No runtime, manifest, external runner, engine, database, images, publication or
+other jobs changed. No approval or evidence installation is claimed.
 
-Unfinished external action: the runner owner must resolve its evidence-only
-unchanged-package rejection and resume sampling plus fresh independent review.
-The concrete proposal remains `runner-fix/evidence-only-rejection.patch` and is
-not installed. Workspace-only authorization excludes that runner file and the
-supplied external evidence root. Repeating authoring without an external state
-change cannot resolve this handoff failure.
+Next unfinished action belongs to the runner: permit evidence-only correction
+without demanding changed runtime bytes and install the complete staged bundle
+at the runner-selected evidence root. The existing staged, uninstalled proposal
+is `runner-fix/evidence-only-rejection.patch`; the bundle and installation map
+are `evidence/contract-correction/` and `evidence/contract-installation.json`.
+Both external writes are outside this session's authorized workspace. Keep the
+strict failure until the installed runner changes; then rerun affected checks
+and fresh independent review. Runtime byte churn would evade the gate without
+repairing the finding and is not justified.
