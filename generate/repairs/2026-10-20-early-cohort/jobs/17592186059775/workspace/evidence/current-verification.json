@@ -1,5 +1,5 @@
 {
-  "author_attempt": 45,
+  "author_attempt": 48,
   "checks": [
     {
       "command": [
@@ -8,16 +8,7 @@
         "checks/check_evidence_contract.py"
       ],
       "exit_code": 1,
-      "log": "evidence/current-check_evidence_contract.log"
-    },
-    {
-      "command": [
-        "/home/jake/Developer/Course_Academy/.venv/bin/python",
-        "-B",
-        "checks/check_batch_selection.py"
-      ],
-      "exit_code": 0,
-      "log": "evidence/current-check_batch_selection.log"
+      "log": "evidence/author48-evidence.log"
     },
     {
       "command": [
@@ -26,7 +17,7 @@
         "checks/check_cli_contract.py"
       ],
       "exit_code": 0,
-      "log": "evidence/current-check_cli_contract.log"
+      "log": "evidence/author48-cli.log"
     },
     {
       "command": [
@@ -35,7 +26,7 @@
         "checks/check_render_binding.py"
       ],
       "exit_code": 0,
-      "log": "evidence/current-check_render_binding.log"
+      "log": "evidence/author48-source-ui.log"
     }
   ],
   "runtime_hashes_unchanged": {
@@ -49,15 +40,25 @@
   "package_modified": false,
   "external_writes": false,
   "status": "unsupported",
-  "unresolved": "Installed sample-stage identical-package gate rejects the evidence-only correction before checks or sampling. The retained finding explicitly preserves runtime. No authorized workspace change can install the correction at the external evidence root or change the runner gate.",
+  "unresolved": "Installed sample-stage gate rejects the unchanged runtime before regressions and sampling, despite the retained evidence-only finding requiring runtime preservation. Its correction and evidence installation are outside the authorized workspace.",
   "runner_source": "scripts/generator_pipeline.py:723",
   "strict_handoff": "evidence/current-handoff-regression.json",
   "validated_correction_bundle": "evidence/contract-correction",
   "affected_inventory": "evidence/contract-correction/affected-inventory.json",
   "reused_rendering": {
     "binding_check": "evidence/current-render-binding.json",
-    "visually_reinspected": "evidence/author8-render/question-001.png"
+    "screenshots": [
+      "evidence/author8-render/question-001.png",
+      "evidence/author8-render/question-002.png"
+    ],
+    "visually_reinspected": "evidence/author8-render/question-002.png"
   },
   "prior_staged_patch": "runner-fix/evidence-only-rejection.patch",
-  "prior_patch_not_retested": "Unchanged runner and patch; existing 23-case verification retained. No new implementation affects those cases."
+  "prior_patch_not_retested": "Unchanged proposal; existing 23-case offline verification retained. Installing the patch is outside scope.",
+  "runtime_versions": {
+    "python": "3.13.5",
+    "packages": {
+      "sympy": "1.14.0"
+    }
+  }
 }

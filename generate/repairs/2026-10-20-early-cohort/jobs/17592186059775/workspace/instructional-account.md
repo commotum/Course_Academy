@@ -1,8 +1,8 @@
 # Instructional account (before repair)
 
-## Author-43 continuation, before validation
+## Author-47 continuation, before validation
 
-The latest failure again reproduces in the installed runner's identical-package
+The latest failure reproduces in the installed runner's identical-package
 gate before regression execution or sampling. Finding 9b8cb52352b8ca3e790e is
 evidence-only and explicitly preserves runtime. Source q-73439
 (9752715d-a11c-5d27-95dc-d20bec1117cb), q-130909
@@ -12,7 +12,8 @@ elimination, second-pivot normalization and optional back substitution. Keep the
 existing easy five-radio contract, full source banks, and variable answer ranks
 and positions. No instructional or runtime change follows from an evidence-path
 defect. Recheck the actual evidence contract and retained batch/CLI/source/UI
-bindings; verify the staged runner correction offline without installing it.
+bindings. The unchanged staged runner correction retains its earlier offline
+verification; repeating it cannot establish that the installed runner is fixed.
 Keep the installed-runner failure strict. The workspace-only constraint forbids
 the external runner change required to resolve it.
 
