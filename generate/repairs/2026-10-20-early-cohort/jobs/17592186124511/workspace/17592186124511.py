@@ -14,10 +14,10 @@ import uuid
 import sympy as sp
 
 HERE = Path(__file__).with_suffix('')
-S = json.loads((HERE/'source.json').read_text())
+S = json.loads((HERE/'source-current.json').read_text())
 KP_ID = 17592186124511
 KP_UUID = S['record'][':knowledge-point/id']
-VERSION = 'imt-1.0.0'
+VERSION = 'imt-2.0.0'
 SOURCES = {q[':question/math-academy-id']:q for q in S['record'][':knowledge-point/questions']}
 EXCLUDED = {'q-34936':'Unrated, absent canonical answer and solution.',
             'q-142367':'Malformed radio label lI only; intended subset is unresolved. Preserved but excluded.'}
@@ -30,6 +30,7 @@ SPEC = {
  'q-139977':('nullspace',4,1), 'q-79349':('det',5,0),
  'q-141201':('rank',4,0), 'q-34929':('vector',4,1),
  'q-141198':('det',5,0), 'q-141196':('nullspace',4,2),
+ 'q-142472':('det',3,0), 'q-142473':('det',4,0), 'q-141197':('col',5,0),
 }
 
 def digest(obj):
@@ -54,7 +55,7 @@ def original(t):
 
 def sample(t,rng):
  kind,n,k=SPEC[t];p=original(t)
- if kind in ('det','rank'):
+ if kind in ('det','rank','col'):
   p['n']=rng.randint(3,7)
   if kind=='det' and p['det']!=0:p['det']=rng.choice([-4,-3,-2,-1,1,2,3,4])
  else:
@@ -103,7 +104,7 @@ def render(t,p,text):
 
 def domain(t,p):
  kind,n,k=SPEC[t];assert type(p['n']) is int
- if kind in ('det','rank'):
+ if kind in ('det','rank','col'):
   assert 3<=p['n']<=7
   if kind=='det':assert p['det']==0 if original(t)['det']==0 else p['det'] in [-4,-3,-2,-1,1,2,3,4]
  else:
@@ -156,6 +157,9 @@ CLAIMS = {
  'q-34929':('nullity-nonzero','invertible','rank-n'),
  'q-141198':('not-invertible','rank-not-n','nullzero'),
  'q-141196':('nullity-nonzero','invertible','col-full'),
+ 'q-142472':('not-invertible','rank-n','n-pivots'),
+ 'q-142473':('invertible','not-col-full','nullzero'),
+ 'q-141197':('invertible','rank-n','nullity-nonzero'),
 }
 def compute_truths(t,p):
  kind,_,_=SPEC[t];n=p['n'];rank=nullity=None
@@ -171,31 +175,162 @@ def compute_truths(t,p):
 def correct_subset(truths):
  return ' and '.join(k for k,b in zip(('I','II','III'),truths) if b)+' only'
 
+def _field(qid,key,values,correct,kind):
+ fid=ident(qid,'field:'+key)
+ return {':answer-field/id':fid,':answer-field/key':key,':answer-field/type':kind,
+         ':answer-field/choices':[{':answer/id':ident(fid,'answer:'+v),':answer/type':':answer.type/text',':answer/value':v} for v in values],
+         ':answer-field/correct':[':answer/id',ident(fid,'answer:'+correct)]}
+
+def _record(t,p,seed,prompt,solution,definitions,replay):
+ qid=ident(KP_UUID,VERSION+':'+digest([prompt,solution,definitions]))
+ fs=[_field(qid,*d) for d in definitions]
+ q={':question/id':qid,':question/problem':prompt,':question/worked-solution':solution,
+    ':question/difficulty':':question.difficulty/moderate',':question/answer-fields':fs}
+ return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':S['record'][':knowledge-point/title']},
+         'question':q,'generation':{'version':VERSION,'seed':seed,'template':t,'profile':t,'parameters':p,
+         'replay':replay,'source':SOURCES[t][':db/id'],'source_basis':S['basis'],
+         'dependency_versions':{'sympy':sp.__version__},'mathematical_fingerprint':fingerprint(q),'assets':[]}}
+
+def fingerprint(q):
+ # Canonicalize givens, discard choice order and source identity, include all claims.
+ text=q[':question/problem'];head=text.split('I.')[0].split('Select all')[0]
+ mats=MATRIX.findall(head)
+ if mats:
+  raw=mats[0].split(r'\\');xs=sp.symbols('x1 x2');a=[]
+  for row in raw:
+   v=sp.sympify(re.sub(r'(\d)(x)',r'\1*\2',re.sub(r'\{x\}_\{([12])\}',r'x\1',row.strip())))
+   a.append([v.coeff(x) for x in xs] if v.free_symbols else [v])
+  # Numeric zeros in a symbolic column still need the common width.
+  if any('x' in row for row in raw):
+   a=[]
+   for row in raw:
+    v=sp.sympify(re.sub(r'(\d)(x)',r'\1*\2',re.sub(r'\{x\}_\{([12])\}',r'x\1',row.strip())))
+    a.append([v.coeff(x) for x in xs])
+  canonical=str(sp.Matrix(a).T.rref()[0].tolist())
+  head=MATRIX.sub(canonical,head)
+ head=re.sub(r'det\(A\)=(-?\d+)',lambda m:'det(A)='+('zero' if int(m[1])==0 else 'nonzero'),head)
+ claims=re.findall(r'(?:^|\n)(?:III|II|I)\. ([^\n]+)',text)
+ if not claims:claims=[f[':answer-field/key'] for f in q[':question/answer-fields']]
+ return digest([re.sub(r'\s','',head),sorted(re.sub(r'\s','',c) for c in claims)])
+
+def _facts(t,p):
+ kind,_,_=SPEC[t];n=p['n']
+ if kind=='nullspace':k=sp.Matrix(p['matrix']).rank();return False,n-k,k
+ if kind=='vector':return False,None,None
+ if kind=='det':return (True,n,0) if p['det'] else (False,None,None)
+ return True,n,0
+
+def claim_pool(role,n,inv,rank,k):
+ # All proposed comparisons are determined by the supplied evidence.
+ if role in ('invertible','not-invertible'):
+  return [(r'A\text{ is invertible}',inv),(r'A\text{ is not invertible}',not inv)]
+ if role in ('nullzero',):
+  return [(r'\text{Null}(A)'+op+r'\{0\}', inv if op=='=' else not inv) for op in ('=',r'\ne ')]
+ if role in ('col-full','not-col-full','col-zero'):
+  return [(r'\text{Col}(A)'+op+'{R}^{'+str(n)+'}',inv if op=='=' else not inv) for op in ('=',r'\ne ')]
+ if role=='n-pivots':
+  # In singular cases only n pivots can be decided, and negation supplies its complement.
+  return [(r'A\text{ has }'+str(n)+r'\text{ pivot columns}',inv),(r'A\text{ does not have }'+str(n)+r'\text{ pivot columns}',not inv)]
+ if role.startswith('rank-'):
+  pool=[(r'\text{rank}(A)='+str(n),inv),(r'\text{rank}(A)\ne '+str(n),not inv),(r'\text{rank}(A)<'+str(n),not inv)]
+  if rank is not None:pool.extend((r'\text{rank}(A)='+str(v),rank==v) for v in (n-1,n+1))
+  return pool
+ # Nullity comparisons: known k supports numerical claims; unknown k only zero/nonzero.
+ values=sorted({0,1,n,k} - {None}) if k is not None else [0]
+ return [(r'\text{dim(Null}(A))'+op+str(v), (k==v if k is not None else inv) if op=='=' else (k!=v if k is not None else not inv)) for v in values for op in ('=',r'\ne ')]
+
 def generate(difficulty='moderate',seed=0,template=None,parameters=None,replay=False):
- if difficulty!='moderate':raise ValueError('Unsupported difficulty: '+difficulty+'; no validated source-backed template')
- rng=random.Random(seed);t=template or rng.choice(TEMPLATES);assert t in TEMPLATES
- p=parameters if parameters is not None else sample(t,rng);domain(t,p)
- truths=compute_truths(t,p)
- source=SOURCES[t];prompt=render(t,p,source[':question/problem']);solution=render(t,p,source[':question/worked-solution'])
- # At original parameters this preserves every instructional sentence and bank.
- proto={':question/problem':prompt};fp=semantic(proto)
- qid=ident(KP_UUID,VERSION+':'+digest([t,prompt,solution]));fields=[]
- for sf in source[':question/answer-fields']:
-  key=sf[':answer-field/key'];fid=ident(qid,'field:'+key);answers=[]
-  for sa in sf[':answer-field/choices']:
-   value=sa[':answer/value'];aid=ident(fid,'answer:'+value)
-   answers.append({':answer/id':aid,':answer/type':':answer.type/text',':answer/value':value})
-  correct=str(truths[('I','II','III').index(key)]).lower() if sf[':answer-field/type'][':db/ident'].endswith('/checkbox') else correct_subset(truths)
-  assert correct in [a[':answer/value'] for a in answers]
-  fields.append({':answer-field/id':fid,':answer-field/key':key,':answer-field/type':sf[':answer-field/type'][':db/ident'],':answer-field/choices':answers,':answer-field/correct':[':answer/id',ident(fid,'answer:'+correct)]})
- return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':S['record'][':knowledge-point/title']},'question':{':question/id':qid,':question/problem':prompt,':question/worked-solution':solution,':question/difficulty':':question.difficulty/moderate',':question/answer-fields':fields},'generation':{'version':VERSION,'seed':seed,'template':t,'profile':t,'parameters':p,'replay':replay,'source':source[':db/id'],'source_basis':S['basis'],'dependency_versions':{'sympy':sp.__version__},'mathematical_fingerprint':fp,'assets':[]}}
+ if difficulty!='moderate':raise ValueError('Unsupported difficulty: '+difficulty)
+ rng=random.Random(seed);t=template or rng.choice(TEMPLATES)
+ if t not in TEMPLATES:raise ValueError('Unsupported template: '+t)
+ source=SOURCES[t];kind,n,k=SPEC[t]
+ if replay:
+  p=original(t) if parameters is None else parameters
+  if p!=original(t):raise ValueError('Replay requires original parameters')
+  ds=[]
+  for f in source[':question/answer-fields']:
+   ds.append((f[':answer-field/key'],[a[':answer/value'] for a in f[':answer-field/choices']],f[':answer-field/correct'][':answer/value'],f[':answer-field/type'][':db/ident']))
+  return _record(t,p,seed,source[':question/problem'],source[':question/worked-solution'],ds,True)
+ isradio=source[':question/answer-fields'][0][':answer-field/type'][':db/ident'].endswith('/radio')
+ hasnone=any(f[':answer-field/key']=='None of the above' for f in source[':question/answer-fields'])
+ bank=[a[':answer/value'] for a in source[':question/answer-fields'][0][':answer-field/choices']] if isradio else None
+ if parameters is None:
+  # Choose decision assignment before compatible givens and statement relations.
+  if isradio:
+   target=rng.choice(bank);mask=[label in target.split(' only')[0].split(' and ') for label in ('I','II','III')]
+  else:
+   bits=rng.randint(0 if hasnone else 1,7);mask=[bool(bits&(1<<j)) for j in range(3)]
+  p=sample(t,rng)
+  if kind=='det':p['det']=rng.choice([0,-4,-1,1,3])
+  if kind=='nullspace':
+   # Coordinate assignment is incidental; preserve immediate independence/counting.
+   rng.shuffle(p['matrix'])
+  inv,rank,nullity=_facts(t,p)
+  p['claims']=[rng.choice([text for text,b in claim_pool(c,p['n'],inv,rank,nullity) if bool(b)==mask[i]]) for i,c in enumerate(CLAIMS[t])]
+ else:
+  p=json.loads(json.dumps(parameters));inv,rank,nullity=_facts(t,p)
+  if 'claims' not in p:raise ValueError('Explicit parameters require three visible claims')
+  mask=[]
+  for c,text in zip(CLAIMS[t],p['claims']):
+   matches=[b for txt,b in claim_pool(c,p['n'],inv,rank,nullity) if txt==text]
+   if len(matches)!=1:raise ValueError('Undetermined or unsupported claim: '+text)
+   mask.append(bool(matches[0]))
+ if len(p['claims'])!=3:raise ValueError('Three claims required')
+ if type(p['n']) is not int or not 3<=p['n']<=7:raise ValueError('Dimension outside domain')
+ if kind in ('vector','nullspace'):
+  a=sp.Matrix(p['matrix'])
+  if a.shape!=(n,k) or a.rank()!=k or p['n']!=n:raise ValueError('Invalid nonzero independent vector data')
+  if any(type(v) is not int or not -4<=v<=4 for row in p['matrix'] for v in row):raise ValueError('Coefficient outside domain')
+ inv,rank,nullity=_facts(t,p);n=p['n'];claims=p['claims'];ds=[]
+ target=correct_subset(mask) if any(mask) else 'None of the above'
+ if isradio and target not in bank:raise ValueError('Subset absent from complete source bank')
+ if not isradio and not any(mask) and not hasnone:raise ValueError('No correct selectable option')
+ if kind=='vector':given='$v='+numeric_matrix([r[0] for r in p['matrix']])+r'$ is a solution of $Ax=0$'
+ elif kind=='nullspace':given='$$\n'+r'\text{Null}(A)=\{'+symbolic_matrix(p['matrix'])+r'\mid '+','.join('{x}_{'+str(j+1)+'}' for j in range(k))+r'\in\mathbb{R}\}?'+ '\n$$'
+ elif kind=='det':given='$det(A)='+str(p['det'])+'$'
+ elif kind=='rank':given=r'$\text{rank}(A)='+str(n)+'$'
+ else:given=r'$\text{Col}(A)={R}^{'+str(n)+'}$'
+ prompt='Which of the following statements are true, given that $A$ is a $'+str(n)+r'\times '+str(n)+'$ matrix and '+given+('' if kind=='nullspace' else '?')
+ if isradio:
+  prompt+='\n\n'+'\n\n'.join(label+'. $'+c+'$' for label,c in zip(('I','II','III'),claims))
+  values=bank[:];rng.shuffle(values);ds=[('selection',values,target,':answer-field.type/radio')]
+ else:
+  prompt+='\n\nSelect all that apply.'
+  ds=[('$'+c+'$',['false','true'],str(b).lower(),':answer-field.type/checkbox') for c,b in zip(claims,mask)]
+  rng.shuffle(ds)
+  if hasnone:ds.append(('None of the above',['false','true'],str(not any(mask)).lower(),':answer-field.type/checkbox'))
+ theorem=(r'$$ A\text{ is invertible}\quad\Longleftrightarrow\quad\left\{\begin{aligned}'
+          +r'\text{Col}(A)&=\mathbb{R}^{'+str(n)+r'} \\ \text{rank}(A)&='+str(n)
+          +r' \\ \text{Null}(A)&=\{0\} \\ \text{nullity}(A)&=0\end{aligned}\right. $$')
+ solution='Since $A$ is a $'+str(n)+r'\times '+str(n)+'$ matrix, the invertible matrix theorem states the following:\n\n'+theorem+'\n\n'
+ if kind=='nullspace':
+  basis=' + '.join('{x}_{'+str(j+1)+'}'+numeric_matrix([row[j] for row in p['matrix']]) for j in range(k))
+  solution+='The supplied nullspace can be written as the span of the independent vectors in\n\n$$'+basis+'$$\n\nHence '+r'$\text{dim(Null}(A))='+str(k)+'$, so $A$ is not invertible.\n\n'
+ elif kind=='vector':solution+=r'Since $v\ne 0$ and $Av=0$, the nullspace contains a nonzero vector. Thus $A$ is not invertible. This does not determine its exact rank or nullity.'+'\n\n'
+ elif kind=='det':solution+='$det(A)='+str(p['det'])+'$, so $A$ is '+('invertible' if inv else 'not invertible')+'.\n\n'
+ else:solution+='The given full '+('rank' if kind=='rank' else 'column space')+' implies that $A$ is invertible.\n\n'
+ consequence=(r'We have $\text{rank}(A)='+str(n)+r'$, $\text{nullity}(A)=0$, $\text{Null}(A)=\{0\}$, and $\text{Col}(A)=\mathbb{R}^{'+str(n)+'}$.' if inv else r'We have $\text{rank}(A)<'+str(n)+r'$, $\text{nullity}(A)>0$, $\text{Null}(A)\ne\{0\}$, and $\text{Col}(A)\ne\mathbb{R}^{'+str(n)+'}$.')
+ if kind=='nullspace':consequence+=' In particular, '+r'$\text{rank}(A)='+str(rank)+r'$ and $\text{nullity}(A)='+str(nullity)+'$.'
+ solution+=consequence+"\n\nWith that in mind, let's examine each statement in turn.\n\n"
+ for label,c,b,role in zip(('I','II','III'),claims,mask,CLAIMS[t]):
+  if role in ('invertible','not-invertible'):reason='$A$ is '+('invertible' if inv else 'not invertible')+'.'
+  elif role=='nullzero':reason=r'$\text{Null}(A)'+('=' if inv else r'\ne ')+r'\{0\}$.'
+  elif role in ('col-full','not-col-full','col-zero'):reason=r'$\text{Col}(A)'+('=' if inv else r'\ne ')+r'\mathbb{R}^{'+str(n)+'}$.'
+  elif role.startswith('rank-') or role=='n-pivots':reason=r'$\text{rank}(A)'+('='+str(rank) if rank is not None else '<'+str(n))+'$; the rank counts pivot columns.'
+  else:reason=r'$\text{nullity}(A)'+('='+str(nullity) if nullity is not None else '>0')+'$.'
+  judgment=('- Statement '+label+' is '+str(b).lower()+': $'+c+'$.' if isradio else '- Statement $'+c+'$ is '+str(b).lower()+'.')
+  solution+=judgment+' '+reason+'\n\n'
+
+ displayed_target=target if isradio or not any(mask) else '; '.join('$'+c+'$' for c,b in zip(claims,mask) if b)+' only'
+ solution+='Therefore, the correct answer is '+displayed_target+'.'
+ return _record(t,p,seed,prompt,solution,ds,False)
 
 def batch(difficulty,count,seed):
  if difficulty!='moderate':raise ValueError('Unsupported difficulty: '+difficulty)
  if count<1:raise ValueError('count must be positive')
- found=[];used=set()
+ found=[];used=set();order=list(TEMPLATES);random.Random(seed).shuffle(order)
  for offset in range(max(200,50*count)):
-  r=generate(difficulty,seed+offset,TEMPLATES[offset%len(TEMPLATES)]);fp=r['generation']['mathematical_fingerprint']
+  r=generate(difficulty,seed+offset,order[offset%len(order)]);fp=r['generation']['mathematical_fingerprint']
   if fp not in used:found.append(r);used.add(fp)
   if len(found)==count:return found
  raise ValueError('Finite sampling capability: '+str(len(found))+' distinct tasks found; requested '+str(count))
@@ -210,12 +345,9 @@ def main():
  except ValueError as e:ap.exit(2,str(e)+'\n')
  print(json.dumps(records,indent=2) if args.format=='json' else '\n\n---\n\n'.join(markdown(r) for r in records))
 
-# Every learner-facing checkbox question has a nonempty correct selection.
-import sys as _policy_sys
-from pathlib import Path as _PolicyPath
-_policy_sys.path.insert(0, str(next(p for p in _PolicyPath(__file__).resolve().parents if (p / "scripts/generator_policy.py").is_file())))
-from scripts.generator_policy import nonempty_checkbox as _nonempty_checkbox
-for _policy_name in ['batch', 'generate']:
-    globals()[_policy_name] = _nonempty_checkbox(globals()[_policy_name], none_label='None of the above')
+# Bundle the shared policy, with source-backed None already constructed explicitly.
+from generator_policy import nonempty_checkbox as _nonempty_checkbox
+for _policy_name in ('batch','generate'):
+ globals()[_policy_name]=_nonempty_checkbox(globals()[_policy_name])
 
 if __name__=='__main__':main()
