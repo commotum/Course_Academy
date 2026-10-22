@@ -1,4 +1,4 @@
-Current verification (author-791): no new construction defect is demonstrated.
+Current verification (author-805): no new construction defect is demonstrated.
 Retain the existing instructional specification and runtime repairs below. Source
 f2c7cfd3-da43-5208-bd0e-21692357fabe requires elimination to `(k+4)y=-5`;
 tutorial e0c85152-daea-5a87-a3ba-81870558c7a2 defines inconsistency by no

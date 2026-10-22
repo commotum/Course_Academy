@@ -1,33 +1,44 @@
 {
-  "author_attempt": 123,
-  "status": "unsupported",
+  "attempt": 126,
   "checks": [
     {
-      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_current_handoff.py",
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "-B",
+        "checks/check_batch_selection.py"
+      ],
+      "exit_code": 0,
+      "result": "evidence/batch-selection-regression.json"
+    },
+    {
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "-B",
+        "checks/check_evidence_contract.py"
+      ],
       "exit_code": 1,
-      "evidence": "evidence/current-handoff-regression.json"
+      "log": "evidence/author126-check_evidence_contract.log"
     },
     {
-      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_batch_selection.py",
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "-B",
+        "checks/check_cli_contract.py"
+      ],
       "exit_code": 0,
-      "evidence": "evidence/author123-batch.log"
+      "log": "evidence/author126-check_cli_contract.log"
     },
     {
-      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_evidence_contract.py",
-      "exit_code": 1,
-      "evidence": "evidence/author123-evidence.log"
-    },
-    {
-      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_all.py",
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "-B",
+        "checks/check_render_binding.py"
+      ],
       "exit_code": 0,
-      "evidence": "evidence/author123-retained.log"
-    },
-    {
-      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_render_binding.py",
-      "exit_code": 0,
-      "evidence": "evidence/author123-render-binding.log"
+      "log": "evidence/author126-check_render_binding.log"
     }
   ],
+  "runtime_unchanged": true,
   "runtime_hashes": {
     "package.json": "663cb3294cd6832de919c9e21b569f271e63079f4cd4155486853d1c05434b23",
     "17592186059775.py": "45ce3ee90e9c76d850d8f7e0d9c0851515a65a868264b79160260898c5eeb2ac",
@@ -36,22 +47,20 @@
     "requirements.txt": "25f9f1fb1988b230147a1d3092d34e09c069eb7a6c6d6df46b3973b9f2d36efc",
     "known-systems.json": "2492556950df4a1bb3622028c1d24fd72ff9ec82f76c19b8fe2bc6e74b80436f"
   },
-  "runtime_preserved": true,
-  "source_supported": true,
-  "generator_defect_demonstrated_this_pass": false,
-  "remaining_failure": "{'error': 'Candidate is byte-identical to the rejected package. Apply and test the requested repair before another independent review.'}",
-  "evidence_bundle_validates": true,
-  "original_evidence_failure_reproduced": "source_analysis.evidence_paths: missing, empty, or escaping evidence: correction-provenance.json",
-  "external_patch": "runner-fix/evidence-only-rejection.patch",
-  "external_patch_installed": false,
-  "required_external_action": "Resolve the unchanged-package gate in scripts/generator_pipeline.py so evidence-only repair can retain the reviewed runtime. Then rerun strict regressions and fresh independent review. The required runner edit is outside the authorized workspace.",
-  "claims": {
-    "fidelity": "10 complete source banks and 50 choices replay; two incomplete captures remain explicitly unsupported.",
-    "correctness": "81 independent mathematical readbacks pass.",
-    "grading": "405 raw, 50 delivered and 25 exact-batch native responses pass.",
-    "decision_variation": "All ten profiles retain variable ranks and positions; historical cue scores 1/5 raw and delivered.",
-    "inventory": "Three stored generated instances reproduced with historical defects; twelve original captures kept separate.",
-    "rendering": "Two retained actual-UI inputs equal current delivered endpoints; first screenshot visually inspected this pass."
+  "current_runner_regression": "evidence/current-handoff-regression.json",
+  "outcome": "Installed runner still rejects unchanged package before retained regressions and sampling. No new generator failure demonstrated.",
+  "previous_broader_checks": "evidence/author123-retained.log",
+  "unresolved": {
+    "location": "scripts/generator_pipeline.py:722",
+    "failure": "Byte-identical rejection before retained regressions and sampling",
+    "permitted_write_scope": "workspace only",
+    "required_external_action": "Resolve evidence-only rejection gate and install corrected evidence bundle at runner-supplied root; obtain fresh independent review.",
+    "staged_patch": "runner-fix/evidence-only-rejection.patch",
+    "staged_evidence": "evidence/contract-installation.json",
+    "not_a_source_or_grading_limitation": true
   },
-  "scope": "Workspace evidence updates only; no publication, database writes, services, external edits or runtime changes."
+  "visual_inspection": {
+    "screenshot": "evidence/author8-render/question-001.png",
+    "result": "Re-inspected retained actual UI screenshot: prompt, five matrix choices, key, and complete row-operation solution readable without clipping; current record binding freshly passed."
+  }
 }
