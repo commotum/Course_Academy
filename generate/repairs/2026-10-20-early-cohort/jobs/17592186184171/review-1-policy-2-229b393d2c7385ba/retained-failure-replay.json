@@ -1,0 +1,40 @@
+{
+  "provenance": "Previous independent reproduce.py copied unchanged; old relocated generator retained in previous review, matched original binding.",
+  "old_runs": [
+    {
+      "case": "source",
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "-B",
+        "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186184171/review-1-policy-2-229b393d2c7385ba/old-counterexamples/reproduce.py",
+        "source",
+        "--package",
+        "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186184171/review-0-policy-2-7c4a527c23b0b64b/relocated"
+      ],
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186184171/review-1-policy-2-229b393d2c7385ba/old-counterexamples/reproduce.py\", line 16, in <module>\n    try:r=g.generate('moderate',seed=63271,profile='one-through5',parameters=p)\n          ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186184171/review-0-policy-2-7c4a527c23b0b64b/relocated/math_format.py\", line 626, in checked\n    return validate_generated_record(generator(*args, **kwargs))\n                                     ~~~~~~~~~^^^^^^^^^^^^^^^^^\n  File \"/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186184171/review-0-policy-2-7c4a527c23b0b64b/relocated/17592186184171.py\", line 116, in generate\n    if not valid(level,p,profile):raise ValueError('parameter/profile constraint')\n                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: parameter/profile constraint\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186184171/review-1-policy-2-229b393d2c7385ba/old-counterexamples/reproduce.py\", line 19, in <module>\n    raise AssertionError('Supplied q-142489 must replay: five-component null-space vector in x1,x2, rank 3, complete bank 1..5.') from ex\nAssertionError: Supplied q-142489 must replay: five-component null-space vector in x1,x2, rank 3, complete bank 1..5.\n"
+    },
+    {
+      "case": "shortcut",
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "-B",
+        "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186184171/review-1-policy-2-229b393d2c7385ba/old-counterexamples/reproduce.py",
+        "shortcut",
+        "--package",
+        "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186184171/review-0-policy-2-7c4a527c23b0b64b/relocated"
+      ],
+      "returncode": 1,
+      "stdout": "{\"values\": [0, 2, 3, 4, 5], \"actual\": 2, \"bank_only_prediction\": 2}\n",
+      "stderr": "Traceback (most recent call last):\n  File \"/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186184171/review-1-policy-2-229b393d2c7385ba/old-counterexamples/reproduce.py\", line 13, in <module>\n    assert [b-a for a,b in zip(vs,vs[1:])]!=[2,1,1,1] or actual!=vs[1], 'Incidental bank gap pattern predicts the second-smallest option without reading matrix dimensions or basis.'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: Incidental bank gap pattern predicts the second-smallest option without reading matrix dimensions or basis.\n"
+    }
+  ],
+  "current_source_cases": [
+    "q-142489",
+    "q-79350",
+    "q-79351"
+  ],
+  "current_shortcut_witness": "minimal-pair.json",
+  "interpretation": "The old single-record shortcut assertion also fails on a correct new record with answer 2; it alone is not a valid repaired-family test. Fixed-bank role intervention now changes the correct numeric position, while original mathematics stays correct."
+}

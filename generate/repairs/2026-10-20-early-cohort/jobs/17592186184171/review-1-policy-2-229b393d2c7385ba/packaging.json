@@ -1,0 +1,79 @@
+{
+  "command": [
+    "/home/jake/Developer/Course_Academy/.venv/bin/python",
+    "-B",
+    "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186184171/review-1-policy-2-229b393d2c7385ba/relocated/17592186184171.py",
+    "--difficulty",
+    "all",
+    "--seed",
+    "751908",
+    "--count",
+    "3"
+  ],
+  "relocation": true,
+  "deterministic_replay": true,
+  "exact_dependencies": {
+    "python": "3.13.5",
+    "packages": {
+      "sympy": "1.14.0"
+    }
+  },
+  "rejections": [
+    {
+      "case": "infeasible basis",
+      "parameters": {
+        "m": 2,
+        "n": 4,
+        "k": 3
+      },
+      "error": "parameter/profile constraint",
+      "passed": true
+    },
+    {
+      "case": "noninteger",
+      "parameters": {
+        "m": 3,
+        "n": 5,
+        "k": 1.5
+      },
+      "error": "parameter/profile constraint",
+      "passed": true
+    },
+    {
+      "case": "dependent parameters",
+      "parameters": {
+        "matrix": [
+          [
+            1,
+            2
+          ],
+          [
+            2,
+            4
+          ],
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            0
+          ]
+        ],
+        "indices": [
+          1,
+          2
+        ]
+      },
+      "error": "parameter/profile constraint",
+      "passed": true
+    }
+  ],
+  "boundary_checks": 20,
+  "external_output": "Stdout JSON only; no asset or database writes; no external files needed beyond declared files. No replenishment script executed.",
+  "sampler": "Easy chooses bank with >=2 feasible values then selects qualifying value uniformly. Moderate retries until full column rank (10000 bound); 4/5 rows, 2/3 independent columns; no answer-based rejection."
+}

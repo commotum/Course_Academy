@@ -1,0 +1,7 @@
+Four current-generator findings pass their retained executable regressions. Source replay covers 17 complete practice banks and the canonical case; three delivery-filtered batches retain the required contrasts (14 records). Native grading accepts 7 correct responses and rejects 28 wrong responses. Dependency, deterministic replay, relocation and protected-input checks pass.
+
+Finding 591f580cadb749294588 still fails: five captured historical v2 records retain the sign-only extremum shortcut. The 64/64 witness describes one possible learner-history scenario, not every learner. All five generated inventory records were audited; none remain untested. The exact records and proposed replacements remain preserved.
+
+No new runtime defect is established. Source, inventory, runtime and manifest hashes are unchanged. The verified replacement proposal is unapplied. Changing this package cannot change the existing stored banks; the review explicitly requires the separate inventory-remediation workflow, followed by fresh inventory capture. This job prohibits database changes. The strict regression remains failing; final status is unsupported. No publication or database changes were performed.
+
+Reproduction: initial-reproduction.json. Full rerun commands and results: commands.json and results.json. Preserved instructional specification: ../../instructional-account.md. Proposed remediation: ../repair-3/inventory-repair-proposal.json.

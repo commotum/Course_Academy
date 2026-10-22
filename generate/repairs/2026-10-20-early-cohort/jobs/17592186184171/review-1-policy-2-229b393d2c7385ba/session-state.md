@@ -1,1 +1,1 @@
-Source account confirmed and saved before package inspection. No package files modified.
+Current source replay, 134 independent math checks, old failure replays, packaging pass. Native grader passed 95 selections (19 correct, 76 wrong). Actual delivery: easy60->35, moderate24->24, exact batch5->5; controlled same-bank alternatives survive. Conditional shortcut, full changed construction-domain feasibility and selection scenario evidence saved. Rendering explicit 19-case run and visual QA pending finalization. Package unchanged so far.
