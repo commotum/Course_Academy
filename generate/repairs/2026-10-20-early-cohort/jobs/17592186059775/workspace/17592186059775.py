@@ -24,6 +24,7 @@ EXCLUDED_PROFILES = ('q-10512',)
 HERE = Path(__file__).with_suffix('')
 SOURCE = json.loads((HERE / 'source.json').read_text())
 SOURCE_BASIS = 5461
+KNOWN_SYSTEMS = set(json.loads(Path(__file__).with_name('known-systems.json').read_text())['fingerprints'])
 CASES = {q[':question/math-academy-id']: q for q in SOURCE[':knowledge-point/questions']
          if q.get(':question/difficulty') and q.get(':question/worked-solution')
          and q[':question/answer-fields'][0].get(':answer-field/correct')}
@@ -246,7 +247,9 @@ def candidates(difficulty, seed=0):
     parameters = [[sid, k, t] for sid in CASES if level(sid) == difficulty
                   for _, k in domain(sid) for t in range(5)]
     random.Random(seed).shuffle(parameters)
-    return [generate(difficulty, seed, parameters=p) for p in parameters]
+    records = [generate(difficulty, seed, parameters=p) for p in parameters]
+    # Revised answer banks do not make an already stored system new practice.
+    return [r for r in records if fingerprint(r['question']) not in KNOWN_SYSTEMS]
 
 
 def batch(difficulty, count, seed=0):

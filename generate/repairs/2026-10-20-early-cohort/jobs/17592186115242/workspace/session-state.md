@@ -1,19 +1,11 @@
-# Author 632 — 2026-10-22
+# Author 635 — 2026-10-22
 
-Existing runtime, manifest, completed repairs and all five strict regression declarations preserved. Feedback, retained findings and latest history event read; bindings unchanged.
+Read feedback, all five retained findings and latest history event; reused source analysis, instructional account and validation scripts. Preserved runtime and completed repairs.
 
-First executed check:
-`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory`
-Exit 1: five historical records still have the shortcut; retained possible-history witness succeeds 64/64 times.
+First command: `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory` exited 1: five affected historical records, 64/64 possible-history shortcut successes.
 
-Validation:
-`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/author-632`
-Exit 1 solely for finding 591f580cadb749294588. Four current-generator regressions pass; 17 complete practice banks and canonical system replay; finite delivery and counterfactual checks pass. Native grading: 7 correct accepted, 28 wrong rejected. Relocation and protected hashes pass. Five replacements and mapping verified, unapplied.
+Validation: `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/author-635` exited 1 solely for finding 591f580cadb749294588. Four current-generator findings pass; 17 complete source banks and canonical replay, finite delivery and counterfactual checks pass. Native grader: seven accepted and 28 rejected. Relocation and protected hashes pass. Existing five-replacement proposal verified, unapplied. Inspected retained actual-UI screenshot question-001.png.
 
-Visually inspected retained actual-UI screenshot `evidence/repair-3/render/question-002.png` and source tutorial flowchart. No runtime change or new rendering.
+Result: unsupported. Next unfinished step is the separate inventory-remediation workflow requested by the review, followed by fresh capture and strict regression. Database changes are explicitly prohibited in this author task. Do not weaken the historical test, edit captured inputs, or treat proposed replacements as applied inventory. No new generator failure is demonstrated by the unchanged latest feedback.
 
-Result: unsupported. Separate inventory remediation and fresh capture remain necessary; database changes and publication are prohibited here. Do not weaken the strict regression or substitute a proposed pool for actual inventory.
-
-Evidence: `evidence/author-632/commands.json`, `results.json`, `grader-report.json`, `outcome.md`; `affected-inventory.json`; `evidence/generated-records.json`; `evidence/repair-3/inventory-repair-proposal.json`.
-
-Next unfinished step: separate inventory remediation, outside this task's permitted writes. Do not repeat identical author passes on unchanged bindings.
+Evidence: evidence/author-635/commands.json, results.json, grader-report.json, outcome.md; affected-inventory.json; evidence/generated-records.json; evidence/repair-3/inventory-repair-proposal.json.

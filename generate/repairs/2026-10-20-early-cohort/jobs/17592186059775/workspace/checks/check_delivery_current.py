@@ -28,7 +28,7 @@ for difficulty in ('easy','moderate'):
  # profile and one moderate profile. Raw native checks already cover all rows.
  sid='q-1059' if difficulty=='easy' else 'q-1060'
  for r in accepted:
-  if r['generation']['template']==sid and r['generation']['parameters'][1]==1:
+  if r['generation']['template']==sid and r['generation']['parameters'][1]==(4 if sid=='q-1059' else 5):
    native.append({'label':'delivered '+str(r['generation']['parameters']),'record':r,'checks':v.checks(r)})
 save('native-delivered-input.json',native)
 subprocess.run([str(REPO/'generate/runs/current/check-engine'),str(E/'native-delivered-input.json'),str(E/'native-delivered-report.json')],check=True)
@@ -36,5 +36,23 @@ subprocess.run([str(REPO/'generate/runs/current/check-engine'),str(E/'native-del
 cmd=[sys.executable,str(REPO/'generate/pipeline/check_delivery.py'),'--input',str(E/'runner-sample.json'),'--source',str(JOB/'source/source.json'),'--inventory',str(JOB/'source/inventory.json'),'--difficulty','easy','--output',str(E/'delivery-runner'),'--asset-root',str(E/'assets'),'--math-root','/media/jake/SSD/EDB/math']
 subprocess.run(cmd,check=True)
 runner=json.loads((E/'delivery-runner/delivery.json').read_text());assert runner['accepted_count']==5
-save('delivery-variation.json',{'bands':reports,'runner_sample':runner,'native_delivered_responses':sum(len(c['checks']) for c in native),'generator_rejection':'No rejection/resampling in the normal catalog. Finite explicit domains, validated parameter rejection, semantic fingerprint dedup in batch.','learner_selection':'Read question_selection.rs: configured weights select a difficulty then uniformly select fresh candidates in that band; no content rank/position filter. Live learner history and policy weights are unavailable; no live selection claim.'})
+normal={}
+def system_signature(q):
+ matrix,=v.printed_matrices(q[':question/problem'])
+ rows=[]
+ for i in range(2):
+  row=list(matrix[i,:]);first=next(x for x in row if x)
+  rows.append(tuple(str(x/first) for x in row))
+ return ('and then solve' in q[':question/problem'],tuple(sorted(rows)))
+inventory=json.loads((JOB/'source/inventory.json').read_text())['questions']
+stored_systems={system_signature(q) for q in inventory}
+for difficulty in ('easy','moderate'):
+ catalog=g.candidates(difficulty,31)
+ assert all(g.fingerprint(r['question']) not in g.KNOWN_SYSTEMS for r in catalog)
+ assert all(system_signature(r['question']) not in stored_systems for r in catalog), 'Stored system bypassed generator deduplication'
+ if difficulty=='easy':
+  assert all(system_signature(r['question']) not in stored_systems for r in json.loads((E/'runner-sample.json').read_text()))
+ normal[difficulty]={'records':len(catalog),'semantic_instances':len({g.fingerprint(r['question']) for r in catalog}),'probes':probes(catalog)}
+ for p in normal[difficulty]['probes'].values():assert set(map(int,p['correct_numeric_ranks']))==set(range(5))
+save('delivery-variation.json',{'bands':reports,'runner_sample':runner,'normal_sampler':normal,'native_delivered_responses':sum(len(c['checks']) for c in native),'generator_rejection':'Finite explicit domains; semantic fingerprint dedup removes captured-inventory systems before batch selection. No resampling. Every target rank remains in every source profile.','learner_selection':'Read question_selection.rs: configured weights select a difficulty then uniformly select fresh candidates in that band; no content rank/position filter. Live learner history and policy weights are unavailable; no live selection claim.'})
 print('PASS: all five target ranks survive each profile; runner sample accepts 5/5')

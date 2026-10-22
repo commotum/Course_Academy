@@ -100,7 +100,12 @@ def main():
     records=[]; counterfactual=[]; permutation=[]; coverage={}
     for sid in g.CASES:
         level=g.level(sid); ks=[p[1] for p in g.domain(sid)]
-        family=[g.generate(level,31,parameters=[sid,ks[0],t]) for t in range(5)]
+        # Find an entire counterfactual bank that survives captured-inventory
+        # semantic deduplication, not just publication's content identities.
+        viable=[k for k in ks if all(g.fingerprint(g.generate(level,31,parameters=[sid,k,t])['question']) not in g.KNOWN_SYSTEMS for t in range(5))]
+        assert viable, (sid, 'No complete bank survives semantic inventory selection')
+        family_k=viable[-1]
+        family=[g.generate(level,31,parameters=[sid,family_k,t]) for t in range(5)]
         common_bank = {a[':answer/value'] for a in family[0]['question'][':question/answer-fields'][0][':answer-field/choices']}
         ordered_bank = [a[':answer/value'] for a in family[0]['question'][':question/answer-fields'][0][':answer-field/choices']]
         top=None; bottoms=[]; keys=[]
@@ -115,7 +120,7 @@ def main():
         assert len(set(bottoms))==len(set(keys))==5
         counterfactual.append({'profile':sid,'parameters':[r['generation']['parameters'] for r in family], 'fixed_bank':True,'fixed_upper_row':list(map(str,top)),'decisive_input_rhs':bottoms,'distinct_correct_objects':len(set(keys))})
         # Irrelevant seed changes only order; input, solution and key object stay fixed.
-        before=family[2];after=g.generate(level,32,parameters=[sid,ks[0],2])
+        before=family[2];after=g.generate(level,32,parameters=[sid,family_k,2])
         assert before['question'][':question/problem']==after['question'][':question/problem']
         assert before['question'][':question/worked-solution']==after['question'][':question/worked-solution']
         assert key(before)==key(after)
@@ -123,9 +128,11 @@ def main():
         permutation.append({'profile':sid,'seed_pair':[31,32],'preserved_answer':True})
         records.extend(family)
         for target in (0,4):
-            r=g.generate(level,31,parameters=[sid,ks[-1],target]);v.independent(r);records.append(r)
+            r=g.generate(level,31,parameters=[sid,ks[0],target]);v.independent(r);records.append(r)
+        if family_k!=ks[-1]:
+            r=g.generate(level,31,parameters=[sid,ks[-1],0]);v.independent(r);records.append(r)
         records.append(after)
-        coverage[sid]={'eligible_k':ks,'tested_k':[ks[0],ks[-1]],'candidate_ranks':list(range(5)),'response':'REF-and-solution' if 'and then solve' in family[0]['question'][':question/problem'] else 'REF'}
+        coverage[sid]={'eligible_k':ks,'tested_k':sorted({ks[0],family_k,ks[-1]}),'candidate_ranks':list(range(5)),'response':'REF-and-solution' if 'and then solve' in family[0]['question'][':question/problem'] else 'REF'}
     for level in ('hard','unclassified'):
         try: g.generate(level)
         except ValueError:pass
