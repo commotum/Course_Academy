@@ -2,23 +2,17 @@
 """Bounded, source-replayed homogeneous-ODE substitution generator (easy only)."""
 import argparse, json, random, sys, uuid
 from pathlib import Path
-try:
-    import sympy as sp
-except ModuleNotFoundError:
-    import os
-    interpreter = Path(__file__).resolve().parents[2] / '.venv/bin/python'
-    os.execv(str(interpreter), [str(interpreter), str(Path(__file__).resolve()), *sys.argv[1:]])
+import sympy as sp
 HERE = Path(__file__).with_suffix('')
-sys.path.insert(0, str(HERE))
 from math_reader import x, y, v, D, fingerprint
 KP_ID = 17592186087886
 KP_UUID = 'a8edbecf-59d3-5f32-a0ac-d6e8f2128dc0'
 GENERATOR_UUID = str(uuid.uuid5(uuid.UUID(KP_UUID), 'question-generator'))
-VERSION = '1.0.0'
+VERSION = '1.1.0'
 SUPPORTED_LEVELS = ('easy',)
 SOURCES = {q[':question/math-academy-id']:q for q in json.loads((HERE/'source.json').read_text())['record'][':knowledge-point/questions']}
 # Each source owns one complete bank. No pooled or inferred replacement banks.
-ORIGINAL = {'q-14315':3, 'q-8745':1, 'q-14314':3, 'q-14316':1, 'q-14323':1, 'q-8747':1, 'q-90601':2}
+ORIGINAL = {'q-14315':3, 'q-8745':1, 'q-14314':3, 'q-14316':1, 'q-14323':1, 'q-8747':1, 'q-90601':2, 'q-90600':3}
 DOMAINS = {t:list(range(2,8)) if t in ('q-14315','q-14314') else list(range(1,7)) for t in ORIGINAL}
 
 def mathematics(t, k):
@@ -43,6 +37,9 @@ def mathematics(t, k):
     elif t == 'q-90601':
         rhs = y/x-k*sp.sin(y/x)
         bank = [(sp.sin(1/v),-k/x),(1/sp.sin(v),-k/x),(1/sp.sin(v),1/x**2),(1/(v-k*sp.sin(v)),1/x),(k*v-sp.sin(1/v),1/x)]
+    elif t == 'q-90600':
+        rhs = (y**2+k*x**2)/(x*y)
+        bank = [(v/(v**2+k),1/x),(v,k/x),(v/(v+1),k/x),((v+1)/(k*v**2),1/x),(k*v,1/x**2)]
     else: raise ValueError('Unknown source template')
     return rhs, bank
 
@@ -67,6 +64,8 @@ def render_source(text, t, k):
         text = text.replace('⁡v', '⁡('+str(k)+'v)')
     elif t == 'q-90601':
         text = text.replace('-2', '-'+str(k)).replace(r'-\frac{2}{x}',r'-\frac{'+str(k)+r'}{x}')
+    elif t == 'q-90600':
+        text = text.replace('3',str(k))
     return text
 
 def generate(difficulty='easy', seed=0, template=None, parameters=None, profile=None):
@@ -82,7 +81,7 @@ def generate(difficulty='easy', seed=0, template=None, parameters=None, profile=
     if len(good)!=1 or any(sp.simplify(a-b)==0 for i,a in enumerate(rates) for b in rates[:i]): raise ValueError('Colliding or ambiguous complete bank')
     problem = render_source(src[':question/problem'],t,k); solution = render_source(src[':question/worked-solution'],t,k)
     # Equations retain derivative notation, source answer shape, and five choices.
-    values = [sp.latex(a)+D+'='+sp.latex(b) for a,b in bank]
+    values = [r'\left('+sp.latex(a)+r'\right)'+D+'='+sp.latex(b) for a,b in bank]
     if k == ORIGINAL[t]:
         values = [a[':answer/value'] for a in src[':question/answer-fields'][0][':answer-field/choices']]
     fp = fingerprint(problem)
@@ -90,7 +89,9 @@ def generate(difficulty='easy', seed=0, template=None, parameters=None, profile=
     qid = str(uuid.uuid5(uuid.UUID(KP_UUID),json.dumps([VERSION,fp,sorted(sp.srepr(r) for r in rates)])))
     fid = str(uuid.uuid5(uuid.UUID(qid),'field:selection'))
     answers = [{':answer/id':str(uuid.uuid5(uuid.UUID(fid),'recipe:'+str(i))),':answer/type':':answer.type/math',':answer/value':value} for i,value in enumerate(values)]
-    question = {':question/id':qid,':question/problem':problem,':question/worked-solution':solution,':question/difficulty':':question.difficulty/easy',':question/answer-fields':[{':answer-field/id':fid,':answer-field/key':'selection',':answer-field/type':':answer-field.type/radio',':answer-field/choices':answers,':answer-field/correct':[':answer/id',answers[good[0]][':answer/id']]}]}
+    correct_id = answers[good[0]][':answer/id']
+    random.Random(f'{seed}:{t}:{k}:choice-order').shuffle(answers)
+    question = {':question/id':qid,':question/problem':problem,':question/worked-solution':solution,':question/difficulty':':question.difficulty/easy',':question/answer-fields':[{':answer-field/id':fid,':answer-field/key':'selection',':answer-field/type':':answer-field.type/radio',':answer-field/choices':answers,':answer-field/correct':[':answer/id',correct_id]}]}
     return {'question':question,'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':'Transforming a Homogeneous Differential Equation into a Separable Equation Using a Substitution'},'generation':{'version':VERSION,'seed':seed,'template':t,'bank_profile':t,'parameters':{'k':k},'source_question_id':src[':question/id'],'source_db_id':src[':db/id'],'parameter_fingerprint':fp,'domains':'x != 0; original RHS defined; separated coefficient defined; exclude equilibria where F(v)-v=0 when dividing. Transformation does not assert equivalence across excluded branches.','dependencies':{'sympy':sp.__version__}}}
 
 def batch(difficulty,count,seed=0,template=None):
