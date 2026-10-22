@@ -1,0 +1,21 @@
+All commands run from the supplied workspace. PY below is /home/jake/Developer/Course_Academy/.venv/bin/python.
+
+Before runtime repair (reviewed entrypoint SHA256 0a0cea68a7af2518a91985ff4710935500515ac32406209990259c3511aa0d95):
+$PY checks/reproduce_profile_omission.py --assert-coverage
+Exit 1. Six reported count=5 CLI seeds omitted q-79411, q-79417, q-79420. Full original records and report: ../profile-omission-before/. Console: ../profile-omission-before-console.txt. The script's default evidence destination was changed to profile-omission-after after preserving these original artifacts.
+
+After runtime repair:
+$PY checks/reproduce_profile_omission.py --assert-coverage
+Exit 0. Same six reported seeds reach all eight moderate source profiles. Full CLI records and commands: ../profile-omission-after/.
+$PY checks/packaging.py
+Exit 0. Manifest-only relocated moderate/hard count=5 runs are deterministic.
+$PY checks/validate_sampling.py
+Exit 0. 15 exact source replays and 83 complete choices; 60 normal five-question CLI records; 58 controlled records; count=1 and full cycles for both bands; 668 native grader checks. All normal records survive shared delivery. One source-identical controlled record is correctly deduplicated; its truth case remains reachable in the normal sample. Results include raw/accepted shortcut metrics, source replay records, all shared delivery and native grader inputs, commands and reports. Unchanged construction retains earlier boundary/hard-profile evidence without repeating it.
+$PY checks/inventory.py
+Exit 0. All 15 captured inventory records match original source questions and complete banks; zero generated entries found. affected-inventory.json is empty. This tests captured inventory, not historical or live exposure.
+$PY /home/jake/Developer/Course_Academy/generate/pipeline/render_preview.py --input evidence/sampling-repair/render-records.json --output evidence/sampling-repair/render --asset-root evidence/sampling-repair/assets --math-root /media/jake/SSD/EDB/math
+Exit 0. All three previously omitted moderate profiles rendered. All screenshots visually inspected; see visual-inspection.json.
+$PY checks/summarize_sampling.py
+Exit 0. 116 distinct delivered semantic instances; 265 accepted and 403 rejected native checks, zero unresolved. Tested runtime hashes verified. Reversing the exact version/order change matches the independently reviewed prior entrypoint hash. All other declared runtime files retain their prior reviewed hashes.
+
+The shared delivery checks use only captured source/inventory. No publication, database writes, service calls, engine edits, or changes outside the workspace were performed. Actual live learner history and weighted selection were not simulated; question_selection.rs was inspected read-only. Tests assert sampled reachability and decision support, not statistical balance or absence of every possible shortcut.
