@@ -1,7 +1,7 @@
-# Determining rank from column counts
+# Rank from column counts
 
-Generator: ../17592186119847.py. Validation: validate.py. Run with the repository .venv/bin/python. CLI supports --difficulty easy|moderate, --seed, --count and --format json|markdown. JSON emits an instances array. The package uses SymPy exact integers; no plots.
+Use `17592186119847.py --difficulty easy --count 5 --seed 0 --format json` with the pinned interpreter/dependencies. The package contains only the entry point, source data and requirements. No assets or external runtime files are required.
 
-Run validate.py before replenish.py. The publisher rechecks current and historical inventory, deduplicates by mathematical input, validates all retained/generated instances, then previews and submits an additive transaction under the application api.lock with a basis guard. It keeps exact requests, receipts and exact-basis readback under reference/replenishment. No source or learner record is edited.
+Finite semantic capacity: easy 12; moderate 91. Requests above the capacity or below zero fail explicitly with a nonzero exit and no JSON. Returned batches contain exactly the requested number of distinct semantic tasks. Hard is unsupported. Source replay is available through `generate(..., parameters=..., bank_profile=...)`.
 
-See template-extraction.md, classification.json, capabilities.json, source-bank-replay.json, slot-coverage.json, review.md and validation.json for the source contract and bounded support. Hard is unsupported; q-34825 remains incomplete and unrated.
+The current repair is described in `../instructional-account.md`; validation starts with `../check_repair.py`, then `../check_variation.py` after the documented delivery commands, and `../check_inventory.py`. The old validate.py/replenish.py and historical reports remain as provenance; they are outside the package and are superseded for this repair. Do not use the historical publication workflow.

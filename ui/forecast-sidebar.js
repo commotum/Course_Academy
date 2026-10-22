@@ -40,11 +40,8 @@ function readSidebarForecast(signal) {
 
 export function createForecastSidebar({ signal } = {}) {
   const overall = node('section', 'study-stat-card forecast-overall');
-  const courses = node('section', 'study-stat-card forecast-courses');
-  for (const [card, heading] of [[overall, 'Estimated completion'], [courses, 'Course catch-up']]) {
-    card.setAttribute('aria-live', 'polite');
-    card.append(node('h2', 'stat-heading', heading), node('p', 'stat-note', 'Calculating…'));
-  }
+  overall.setAttribute('aria-live', 'polite');
+  overall.append(node('h2', 'stat-heading', 'Estimated completion'), node('p', 'stat-note', 'Calculating…'));
   let model, request, revision = 0, goalRevision = 0, latestGoal;
   signal?.addEventListener('abort', () => { revision++; request?.abort(); }, { once: true });
 
@@ -54,42 +51,33 @@ export function createForecastSidebar({ signal } = {}) {
     // attempted base XP using the same measured earned/base ratio.
     const average = p.observedDays ? p.earnedXp / p.observedDays : null;
     const rate = value => Number.isFinite(value) ? `${number(value)} XP/day` : 'No pace history';
-    const averageLabel = p.observedDays < 7 ? `${p.observedDays}-day average` : '7-day average';
     overall.replaceChildren(node('h2', 'stat-heading', 'Estimated completion'));
-    const list = node('dl', 'forecast-summary');
-    for (const [label, value, estimate, available] of [
-      [averageLabel, average, model.currentPace, true],
-      ['Daily goal', p.dailyEarnedXpGoal, model.goalPace, hasGoal],
-    ]) {
-      const row = node('div', 'forecast-row'), term = node('dt', 'forecast-label', label);
-      term.append(node('span', 'forecast-rate', available ? rate(value) : 'Set in Profile'));
-      const detail = node('dd', 'forecast-result'); detail.append(outcome(estimate, available));
-      row.append(term, detail); list.append(row);
-    }
-    overall.append(list, node('p', 'stat-note', 'Catch-up includes projected new work. Average excludes today.'));
-
-    courses.replaceChildren(node('h2', 'stat-heading', 'Course catch-up'));
     const table = node('table', 'forecast-course-table');
     const head = node('thead', ''), headings = node('tr', '');
-    for (const [label, value] of [['Course', null], [averageLabel, average], ['Daily goal', p.dailyEarnedXpGoal]]) {
+    for (const label of ['', rate(average), hasGoal ? rate(p.dailyEarnedXpGoal) : 'No goal set']) {
       const cell = node('th', '', label); cell.scope = 'col';
-      if (label !== 'Course') cell.append(node('span', 'forecast-rate', label === 'Daily goal' && !hasGoal ? 'Not set' : rate(Number.isFinite(value) ? value / 3 : null)));
+      if (!label) cell.setAttribute('aria-label', 'Course');
       headings.append(cell);
     }
     head.append(headings); table.append(head);
     const body = node('tbody', '');
-    for (const course of courseCompletionEstimates(model)) {
-      const row = node('tr', ''), label = node('th', '', `MTH ${course.code}`); label.scope = 'row';
+    const rows = [
+      { label: 'All', currentPace: model.currentPace, goalPace: model.goalPace, selected: true },
+      ...courseCompletionEstimates(model).map(course => ({ ...course, label: `MTH ${course.code}`,
+        selected: model.scope.courses.includes(course.code) })),
+    ];
+    for (const entry of rows) {
+      const row = node('tr', ''), label = node('th', '', entry.label); label.scope = 'row';
       row.append(label);
-      for (const [estimate, available] of [[course.currentPace, true], [course.goalPace, hasGoal]]) {
+      for (const [estimate, available] of [[entry.currentPace, true], [entry.goalPace, hasGoal]]) {
         const cell = node('td', '');
-        cell.append(model.scope.courses.includes(course.code) ? outcome(estimate, available) : node('span', 'forecast-status', 'Not selected'));
+        cell.append(entry.selected ? outcome(estimate, available) : node('span', 'forecast-status', 'Not selected'));
         row.append(cell);
       }
       body.append(row);
     }
     table.append(body);
-    courses.append(table, node('p', 'stat-note', 'One third of each pace per course; each uses its own workload and growth. Based on your Targets filters.'));
+    overall.append(table);
     if (model.inventory.estimatedTopics.length || model.growth.total.estimatedTopics.length) {
       overall.append(node('p', 'stat-note', 'Includes estimated lesson XP.'));
     }
@@ -108,9 +96,7 @@ export function createForecastSidebar({ signal } = {}) {
       render();
     } catch (error) {
       if (current !== revision || signal?.aborted || !overall.isConnected) return;
-      for (const [card, heading] of [[overall, 'Estimated completion'], [courses, 'Course catch-up']]) {
-        card.replaceChildren(node('h2', 'stat-heading', heading), node('p', 'stat-note', 'Estimates unavailable.'));
-      }
+      overall.replaceChildren(node('h2', 'stat-heading', 'Estimated completion'), node('p', 'stat-note', 'Estimates unavailable.'));
       const retry = node('button', 'small-button', 'Try again'); retry.type = 'button';
       retry.addEventListener('click', refresh); overall.append(retry);
     }
@@ -119,5 +105,5 @@ export function createForecastSidebar({ signal } = {}) {
     latestGoal = goal; goalRevision++;
     if (model) { model = withForecastGoal(model, goal); render(); }
   }
-  return { cards: [overall, courses], refresh, updateGoal };
+  return { cards: [overall], refresh, updateGoal };
 }

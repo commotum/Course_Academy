@@ -61,18 +61,21 @@ function fixture() {
   return f;
 }
 
-test('sidebar shows overall dates, three course date pairs, and earned XP rates split equally', async () => {
+test('one completion table shows overall and course dates beneath dynamic full-pace headers', async () => {
   const f = fixture();
   assert.match(f.text(), /Calculating/);
   await f.view.refresh();
-  assert.match(f.text(), /Estimated completion/);
-  assert.match(f.text(), /Course catch-up/);
-  for (const text of ['7-day average', '120 XP/day', '240 XP/day', '40 XP/day', '80 XP/day', 'MTH 255', 'MTH 256', 'MTH 341']) assert.ok(f.text().includes(text), text);
+  assert.equal(f.view.cards.length, 1);
+  assert.deepEqual(f.all().filter(node => node.tagName === 'h2').map(node => node.textContent), ['Estimated completion']);
+  const tables = f.all().filter(node => node.tagName === 'table');
+  assert.equal(tables.length, 1);
+  assert.deepEqual(tables[0].children[0].children[0].children.map(cell => cell.textContent), ['', '120 XP/day', '240 XP/day']);
+  assert.deepEqual(tables[0].children[1].children.map(row => row.children[0].textContent), ['All', 'MTH 255', 'MTH 256', 'MTH 341']);
+  assert.doesNotMatch(f.text(), /Course catch-up|7-day average|Daily goal|One third|Based on your Targets filters|Catch-up includes|excludes today/);
   const courses = courseCompletionEstimates(f.data);
   const dates = [f.data.currentPace, f.data.goalPace, ...courses.flatMap(course => [course.currentPace, course.goalPace])];
   assert.deepEqual(f.times().map(time => time.dateTime), dates.map(estimate => estimate.date));
   assert.deepEqual(f.times().map(time => time.textContent), dates.map(estimate => formatDate(estimate.date)));
-  assert.match(f.text(), /excludes today/);
   assert.equal(f.calls, 1);
   assert.deepEqual(f.workerScope.courses, ['255', '256', '341']);
   assert.equal(f.workers[0].terminated, true);
@@ -88,7 +91,7 @@ test('changing a goal updates all goal dates without fetching and preserves curr
     else assert.ok(Date.parse(after[i]) < Date.parse(before[i]));
   }
   assert.match(f.text(), /480 XP\/day/);
-  assert.match(f.text(), /160 XP\/day/);
+  assert.doesNotMatch(f.text(), /160 XP\/day/);
   assert.equal(f.calls, 1);
 });
 
