@@ -1,0 +1,16 @@
+{
+  "command": [
+    "/home/jake/Developer/Course_Academy/.venv/bin/python",
+    "-I",
+    "-c",
+    "from pathlib import Path;original_is_file=Path.is_file;Path.is_file=lambda p: False if str(p).endswith('scripts/generator_policy.py') else original_is_file(p);import runpy,sys;sys.dont_write_bytecode=True;sys.path.insert(0,sys.argv.pop(1));runpy.run_path(sys.argv.pop(1),run_name='__main__')",
+    "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186124511/review-1-policy-2-3b53743f6e315249/legacy-failing",
+    "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186124511/review-1-policy-2-3b53743f6e315249/legacy-failing/17592186124511.py",
+    "--count",
+    "1"
+  ],
+  "returncode": 1,
+  "stderr": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n    from pathlib import Path;original_is_file=Path.is_file;Path.is_file=lambda p: False if str(p).endswith('scripts/generator_policy.py') else original_is_file(p);import runpy,sys;sys.dont_write_bytecode=True;sys.path.insert(0,sys.argv.pop(1));runpy.run_path(sys.argv.pop(1),run_name='__main__')\n                                                                                                                                                                                                                                                    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<frozen runpy>\", line 287, in run_path\n  File \"<frozen runpy>\", line 98, in _run_module_code\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186124511/review-1-policy-2-3b53743f6e315249/legacy-failing/17592186124511.py\", line 216, in <module>\n    _policy_sys.path.insert(0, str(next(p for p in _PolicyPath(__file__).resolve().parents if (p / \"scripts/generator_policy.py\").is_file())))\n                                   ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nStopIteration\n",
+  "reason": "legacy code searches ancestors for scripts/generator_policy.py; relocated closure has none",
+  "code_sha256": "e808e59954b383dbf822b78756ff92bdcd13f4e52a25621df98693ff74ff08ae"
+}

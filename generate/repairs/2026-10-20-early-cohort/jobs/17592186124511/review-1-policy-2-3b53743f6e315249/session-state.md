@@ -1,0 +1,1 @@
+Source analysis verified before package access. Independent oracle completed: 480 fresh samples, exact runner batch, six public batches, 15 source replays, six controlled records; two source exclusions retained. Native grader, delivery, rendering and relocated runtime still to run. See audit.py and audit-milestone.json.
