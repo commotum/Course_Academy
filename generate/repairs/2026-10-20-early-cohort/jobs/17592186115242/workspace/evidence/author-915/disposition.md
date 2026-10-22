@@ -1,0 +1,9 @@
+# Verified disposition
+
+The first executed test reproduced finding 591f580cadb749294588: five captured historical banks and 64/64 sign-extremum successes in the retained possible learner-history scenario. Source and inventory are unchanged; the old counterexample still applies.
+
+All four current-generator findings pass. The retained suite replays 17 complete source banks, checks zero-root and bare-k fractional families, tests printed mathematical witnesses and relevant/irrelevant counterfactuals, and runs three CLI batches through the shared delivery filter (14 accepted records). Native grading accepts seven correct choices and rejects 28 incorrect choices. Package relocation and pinned dependencies pass. Runtime/source/inventory/manifest hashes match retained protected hashes. The five-record replacement proposal matches the current generated and delivery-filtered records and remains unapplied.
+
+Reinspected evidence/repair-3/render/question-001.png from the actual UI: prompt, five choices, augmented matrices, row operation and conclusion are readable and mathematically consistent. Reused rendering because the runtime and replacement records are unchanged. Inspected the source tutorial flowchart; it confirms the no-solution/unique-solution/infinite-solution distinction and is not an instance asset.
+
+No new construction defect is demonstrated. No runtime, engine, database, publication or other-job changes were made. The strict historical failure remains declared in repair-regressions.json. Status remains unsupported because the required inventory remediation cannot be performed under this task's explicit prohibition on database changes. The runner's separate remediation step can use evidence/repair-3/inventory-repair-proposal.json; a fresh capture and strict inventory recheck are still required. A hypothetical replacement pool is not a passing actual-pool result.

@@ -1,11 +1,11 @@
-# Author 914: retained repairs pass; stored-pool finding remains
+# Author 917: strict historical failure reproduced; repairs preserved
 
-Read latest feedback, all five retained findings, existing session state, source lesson/questions and required generator/validation documents. Preserved runtime, source families, manifest, replacement proposal and strict regressions.
+Read feedback, all five retained findings, latest history event and existing state.
+First test: `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory`.
+Exit 1: five captured historical records, 64/64 sign-extremum successes in the retained possible learner-history witness.
 
-First executed test: job Python -B checks/batch_regressions.py --finding inventory. Exit 1: five stored historical banks reproduced; 64/64 sign-extremum successes in the retained possible-history witness. Evidence: evidence/author-914/initial-reproduction.json.
+Verification: `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/author-917`.
+Exit 1 solely for finding 591f580cadb749294588. Four generator regressions pass; 17 source banks replay; 14 delivered records preserve contrasts; native grader accepts 7 correct and rejects 28 wrong choices; relocation, dependencies, protected hashes and replacement binding pass. Reinspected retained UI screenshot and source flowchart. Runtime and external state unchanged.
 
-Then: job Python -B checks/recheck_status.py --output evidence/author-914. Exit 1 solely for 591f580cadb749294588. Four current-generator findings pass; 17 source banks replay; 14 shared-delivery records retain contrast; native grader accepts 7 correct and rejects 28 wrong responses; relocation, dependencies and replacement binding pass. Protected runtime/source/inventory hashes unchanged. Visually reinspected retained actual-UI screenshot; readable.
-
-No runtime, engine, database, publication or other-job edits. Evidence: evidence/author-914/commands.json, results.json and disposition.md.
-
-Next unfinished action requires separate inventory remediation using evidence/repair-3/inventory-repair-proposal.json, followed by fresh inventory capture and strict inventory recheck. Workspace generator edits cannot alter stored selector candidates. Keep the strict failure. Final status: unsupported.
+Evidence: evidence/author-917/commands.json, results.json, disposition.md.
+Status unsupported. Next unfinished action is separate inventory remediation using evidence/repair-3/inventory-repair-proposal.json, followed by fresh capture and the strict check. Database changes and publication are explicitly prohibited here. Repeating unchanged author checks cannot change stored banks; do not weaken the regression or substitute proposals for captured inventory.
