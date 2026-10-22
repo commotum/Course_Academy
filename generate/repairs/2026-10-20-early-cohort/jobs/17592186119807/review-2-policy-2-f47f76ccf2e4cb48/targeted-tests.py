@@ -45,7 +45,7 @@ save('sign-counterfactual-records.json',pairs)
 save('sign-counterfactual-results.json',{'command':str(PY)+' targeted-tests.py','relevant':'Original q-105166 failing record retained. Change only decisive RHS residual1->0, holding bank fixed: No solution -> -4.','irrelevant':'q-105165 at t1: change only bank rank1->4, making positive-only bank mixed-sign; vectors, solution and answer10 unchanged.','records':'sign-counterfactual-records.json','passed':True})
 # Strict regression must fail original batch and pass current batch and controls.
 checks=[]
-for name,records,expected in [('original',J/'review-1-policy-2-bc476fa1f6e925b4/delivery-batch/accepted.json',False),('current',E/'delivery-batch/accepted.json',True),('control',E/'sign-counterfactual-records.json',True)]:
+for name,records,expected in [('original',E/'original-sign-batch.json',False),('current',E/'delivery-batch/accepted.json',True),('control',E/'sign-counterfactual-records.json',True)]:
  cmd=[str(PY),str(E/'batch_regression.py'),'--records',str(records)];r=subprocess.run(cmd,capture_output=True,text=True)
  assert (r.returncode==0)==expected
  if not expected:assert '3/3' in r.stderr

@@ -6,11 +6,11 @@
     "existing_entrypoint": "/home/jake/Developer/Course_Academy/generate/scratch/17592186119807.py",
     "job_kind": "build"
   },
-  "stage": "validate",
+  "stage": "verified",
   "attempt": 2,
   "seed": 1457261298,
   "created": 1792629602.7831593,
-  "updated": 1792631578.2908566,
+  "updated": 1792632044.5058835,
   "source_hash": "3cd73cb967e03612563d4e0b39954104a97675b48eaed18a095e4e8748765224",
   "inventory_hash": "2c9a3473838ed2ff3ec306a15664c2bd2cde60d999218bf4d08e5bb6a9fca535",
   "manifest": "package.json",
@@ -22,11 +22,11 @@
   "assets": {},
   "package_hash": "4606a2ad29de149fe347662787fb0e2b356e433ec1ba73d399c6e787ce9a63e9",
   "previous_review": {
-    "directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186119807/review-1-policy-2-bc476fa1f6e925b4",
+    "directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186119807/review-2-policy-2-f47f76ccf2e4cb48",
     "binding": {
       "policy_version": 2,
-      "package_hash": "5b779f904b1613c3619efff386604c3dcf13f60daf031eb73795e3be2d7c040a",
-      "batch_hash": "cca59f88ed00e6f0b1e948272268e39fcdbcd25e33025881a8a761d223f1b444",
+      "package_hash": "4606a2ad29de149fe347662787fb0e2b356e433ec1ba73d399c6e787ce9a63e9",
+      "batch_hash": "70305c694366f365232e3c81cbb2439209424a556c67dba5c20794ee83ef5fce",
       "source_hash": "3cd73cb967e03612563d4e0b39954104a97675b48eaed18a095e4e8748765224",
       "inventory_hash": "2c9a3473838ed2ff3ec306a15664c2bd2cde60d999218bf4d08e5bb6a9fca535",
       "assets": {},
@@ -34,127 +34,28 @@
       "engine_hash": "dc1e0a8583ca33c6028bc0a641128ecc8e7896742189dd42b292170c9726bad9"
     }
   },
-  "needs_repair": true,
-  "error": {
-    "verdict": "revise",
-    "summary": "Prior defects are repaired, but the exact delivered batch has a sign shortcut: choosing \u201cNo solution\u201d whenever a numeric option is nonpositive succeeds 3/3. This is a batch-selection failure. Package files remain unchanged.",
-    "source_analysis": {
-      "skill": "Solve for two coefficients in a three-dimensional vector equation, check consistency, and select their sum or No solution.",
-      "reasoning_steps": [
-        "Equate corresponding components.",
-        "Solve two independent component equations.",
-        "Check the remaining equation.",
-        "Select the coefficient sum or No solution."
-      ],
-      "invariants": [
-        "Two scalar coefficients and three components.",
-        "Elementary substitution or elimination.",
-        "One five-choice radio field."
-      ],
-      "permitted_variations": [
-        "Vary vector entries, coefficients and sums within comparable arithmetic.",
-        "Vary consistency independently of labels and answer-bank signs.",
-        "Vary correct numeric rank and choice order."
-      ],
-      "source_refs": [
-        "13ebde04-8518-5837-9420-c9487debc562: canonical component solve and consistency check.",
-        "14248ec5-b54c-565b-8b43-275a9e097f62: contradictory third equation.",
-        "Lesson step fd740ffd-227c-5f9c-9418-4c54bf1616ff."
-      ],
-      "evidence_paths": [
-        "source-analysis.json"
-      ]
-    },
-    "checks": {
-      "source_replay": {
-        "status": "passed",
-        "evidence_paths": [
-          "source-replay.json",
-          "source-records.json",
-          "source-math-results.json"
-        ],
-        "details": "All 14 complete exercise banks and worked methods replay, including the verified q-105163 arithmetic correction."
-      },
-      "math": {
-        "status": "passed",
-        "evidence_paths": [
-          "math-results.json",
-          "solution-math-results.json"
-        ],
-        "details": "Independent Fraction arithmetic verifies 199 records and 185 displayed-solution candidate/check sequences."
-      },
-      "variety": {
-        "status": "failed",
-        "evidence_paths": [
-          "coverage.json",
-          "shortcut-results.json",
-          "batch-sign-reproduction.json"
-        ],
-        "details": "Controlled profiles support both consistency branches and all four numeric ranks. The exact batch nevertheless aligns nonpositive option signs with No solution."
-      },
-      "scope": {
-        "status": "passed",
-        "evidence_paths": [
-          "scope-results.json",
-          "boundary-records.json"
-        ],
-        "details": "Variations preserve the moderate two-coefficient solving and consistency-checking workload."
-      },
-      "grading": {
-        "status": "passed",
-        "evidence_paths": [
-          "grader-input.json",
-          "grader-report.json"
-        ],
-        "details": "Native grading passes 199 accepted and 796 rejected radio responses, including controlled pairs and normalized batch records."
-      },
-      "rendering": {
-        "status": "passed",
-        "evidence_paths": [
-          "render-all/rendering.json",
-          "render-inspection.json"
-        ],
-        "details": "All 13 actual-UI renders pass; screenshots were inspected. Choice reordering preserves the sign cue."
-      },
-      "packaging": {
-        "status": "passed",
-        "evidence_paths": [
-          "packaging-results.json",
-          "relocation-records.json",
-          "resampling-results.json",
-          "package-integrity.json"
-        ],
-        "details": "Exact dependencies, determinism, relocation and invalid-input rejection pass. Every package file hash remains unchanged."
-      },
-      "decision_variation": {
-        "status": "failed",
-        "evidence_paths": [
-          "pedagogical-variation.json",
-          "selection-results.json",
-          "batch-regression.log",
-          "batch-regression-control.log",
-          "inventory-audit.json",
-          "affected-inventory.json"
-        ],
-        "details": "All five batch items survive delivery. The nonpositive-bank subgroup predicts No solution 3/3. Larger controls defeat this cue, establishing a batch-specific failure. Captured inventory contains only 14 source originals."
-      }
-    },
-    "findings": [
-      {
-        "kind": "decision_shortcut",
-        "description": "All three delivered items containing a nonpositive numeric option have No solution as their correct answer. Both positive-only banks are consistent. This lets learners answer the three-item subgroup without inspecting vector equations. The defect is specific to the exact batch.",
-        "source_refs": [
-          "a4963b43-3177-544a-ab68-1ea699a13395",
-          "13ebde04-8518-5837-9420-c9487debc562",
-          "generate/principles.md: examine incidental shortcuts within delivered subgroups."
-        ],
-        "reproduction": "Run the context Python on batch_regression.py: it fails on the delivered batch and passes with --records controlled-records.json. Minimal member: generate(\"moderate\",5888234723018271144,\"q-105166\",{\"translation\":-2,\"residual\":\"1\",\"rank\":4,\"gaps\":[4,4,4]}). Numeric choices are {-16,-12,-8,-4}; the correct answer is No solution. Complete records and the other two matching cases are retained in batch-sign-reproduction.json.",
-        "requested_change": "Revise batch selection and acceptance so delivered pools include counterexamples to the nonpositive-bank \u2192 No solution cue after normalization and deduplication. Preserve legitimate sign patterns and source families. Adopt the retained failing test and verify the replacement exact batch."
-      }
-    ]
-  },
+  "needs_repair": false,
+  "error": null,
   "last_rejected_package": "5b779f904b1613c3619efff386604c3dcf13f60daf031eb73795e3be2d7c040a",
   "last_rejected_source": "3cd73cb967e03612563d4e0b39954104a97675b48eaed18a095e4e8748765224",
   "last_rejected_engine": "dc1e0a8583ca33c6028bc0a641128ecc8e7896742189dd42b292170c9726bad9",
-  "author_running": false
+  "author_running": false,
+  "review": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186119807/review-2-policy-2-f47f76ccf2e4cb48/result.json",
+  "review_policy_version": 2,
+  "review_binding": "f47f76ccf2e4cb4879a8de3c5b892019937453801d643713b2400d02e4605630",
+  "approval_recorded": true,
+  "registration": "generators/46/4606a2ad29de149fe347662787fb0e2b356e433ec1ba73d399c6e787ce9a63e9/17592186119807.py",
+  "publication": {
+    "status": "verified",
+    "passed": true,
+    "basis_before": 5400,
+    "basis_after": 5401,
+    "new_questions": 5,
+    "package_sha256": "4606a2ad29de149fe347662787fb0e2b356e433ec1ba73d399c6e787ce9a63e9",
+    "preparation_sha256": "0c0b1399a1b668a66a4cb21bfb73fabc855355047f71a7832eb0e10b51d2aad9",
+    "request_key": "capture-281b71a1-fdfc-421e-bbf5-570d3ae2ea0d",
+    "generator_registration_verified": true,
+    "learner_and_engine_facts_unchanged": true
+  },
+  "completed": 1792632044.3421974
 }

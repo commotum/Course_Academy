@@ -1,0 +1,5009 @@
+{
+  "learner_operation": "Solve for two scalar coefficients in a linear combination of two three-dimensional vectors, check all three component equations, and select the coefficient sum or No solution.",
+  "fixed_features": [
+    {
+      "feature": "Target x1+x2",
+      "justification": "Every captured task and canonical example asks the sum; different target operations would change the response task."
+    },
+    {
+      "feature": "3 components, 2 coefficients",
+      "justification": "This is the observed checking-consistency workload; next lesson separately covers three coefficients."
+    },
+    {
+      "feature": "Finite source coefficient-column and substitution/elimination profiles",
+      "justification": "Conservative moderate family preserves small arithmetic and source methods. Columns do not fix consistency, coefficient sum or correct numeric rank; every profile has controlled counterexamples. This is practice of the stated finite family, not a claim to all real systems."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Target membership in span",
+      "eligible_variation": "Change decisive target component to allow consistent or contradictory equations within each profile and label family.",
+      "observed": "All14 profiles support both; relevant pairs update written checks and native accepted choice."
+    },
+    {
+      "role": "Coefficient sum and numeric key rank",
+      "eligible_variation": "Vary bounded candidate translations and independent distractor gaps/rank, retaining x1+x2 as the response target.",
+      "observed": "All four numeric ranks at fixed evidence in each controlled profile. Exact batch numeric keys10 and-2 occupy ranks1 and3."
+    },
+    {
+      "role": "Incidental answer-bank signs and labels",
+      "eligible_variation": "Signs or names cannot replace consistency checks; changing irrelevant distractors must preserve truth.",
+      "observed": "Exact batch has both outcomes under both sign cases. q-105165 distractor-only pair preserves10 across positive-only and mixed-sign banks. Finite label groups controlled separately."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "All complete source exercises",
+      "sample_refs": [
+        "source-records.json",
+        "source-replay.json",
+        "source-math-results.json"
+      ],
+      "result": "14/14 complete five-choice banks and ordered worked solutions reproduced, with verified q-105163 arithmetic correction; canonical sum-10 independently confirmed."
+    },
+    {
+      "case": "Both outcomes and four numeric ranks in every source coefficient profile",
+      "sample_refs": [
+        "controlled-records.json",
+        "counterfactual-results.json",
+        "delivery/accepted.json"
+      ],
+      "result": "Observed before/after delivery; raw138->136 preserves both branches and ranks in all14 profiles."
+    },
+    {
+      "case": "Runner exact delivered batch",
+      "sample_refs": [
+        "batch.json",
+        "delivery-batch/accepted.json",
+        "shortcut-results.json"
+      ],
+      "result": "5->5. Nonpositive banks:2 No solution and1 numeric; positive-only banks:1 No solution and1 numeric. Earlier sign strategy fails on a counterexample; second-largest succeeds1/5."
+    },
+    {
+      "case": "Fresh requested-size batch resampling and delivery",
+      "sample_refs": [
+        "resampling-results.json",
+        "trace-104729-attempts.json",
+        "trace-20261021-attempts.json",
+        "delivery-fresh-104729/accepted.json",
+        "delivery-fresh-20261021/accepted.json"
+      ],
+      "result": "21 and192 generated attempts respectively produce5 accepted records; each has all four sign/consistency cases after delivery. Retrying changes distribution but retains relevant cases."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "q-34568 seed509: hold columns, t0/rank2/gaps[1,2,3] fixed; residual-2->0 changes d=(3,4,5)->(3,4,7).",
+      "expected": "No solution->2; prompt and final7=5->7=7 check and accepted radio choice follow.",
+      "observed": "Exact relationship holds in prompts, written checks, native grading of all five choices and actual UI questions6/7.",
+      "status": "passed",
+      "justification": "Source q-34568 checks contradiction; canonical e-4791 is a consistent c/d case. Labels are incidental.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-report.json",
+        "render-final/rendering.json",
+        "solution-math-results.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "q-34568 seed509->510 with explicit parameters fixed.",
+      "expected": "Choice order changes, truth2 and prompt/solution stay the same.",
+      "observed": "Preserved in text, actual UI questions7/8 and native grading.",
+      "status": "passed",
+      "justification": "Radio order does not change vector equality or coefficient sum.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-report.json",
+        "render-final/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "Retained q-105166 t-2/rank4/gaps[4,4,4], seed5888234723018271144: residual1->0.",
+      "expected": "Only final target component-29->-30 changes; identical all-negative bank must change No solution->-4.",
+      "observed": "Native grader accepts the new mathematical key in each and rejects all alternatives; actual UI questions14/15 and written checks show-30=-29 vs-30=-30.",
+      "status": "passed",
+      "justification": "This is the exact retained minimal sign-shortcut member; membership, not bank signs, decides the response.",
+      "sample_refs": [
+        "sign-counterfactual-records.json",
+        "sign-counterfactual-results.json",
+        "grader-report.json",
+        "render-final/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "q-105165 seed104729,t1,residual0,gaps[5,5,5]: rank1->4 changes only numeric distractors and their order/signs.",
+      "expected": "Prompt, solution and accepted sum10 stay fixed across positive-only and mixed-sign banks.",
+      "observed": "Native grader and actual UI questions16/17 preserve accepted10 and identical solution.",
+      "status": "passed",
+      "justification": "Source asks coefficient sum; irrelevant distractor signs cannot determine consistency.",
+      "sample_refs": [
+        "sign-counterfactual-records.json",
+        "sign-counterfactual-results.json",
+        "grader-report.json",
+        "render-final/rendering.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "overall",
+      "subgroup": "raw raw",
+      "scope": "overall",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 80,
+      "total": 138,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "80/138; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "overall",
+      "subgroup": "raw raw",
+      "scope": "overall",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 14,
+      "total": 138,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "14/138; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "overall",
+      "subgroup": "raw raw",
+      "scope": "overall",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 14,
+      "total": 138,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "14/138; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "overall",
+      "subgroup": "raw raw",
+      "scope": "overall",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 14,
+      "total": 138,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "14/138; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "overall",
+      "subgroup": "raw raw",
+      "scope": "overall",
+      "strategy": "Select raw position 1 without vector solving.",
+      "correct": 23,
+      "total": 138,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "23/138; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "overall",
+      "subgroup": "raw raw",
+      "scope": "overall",
+      "strategy": "Select raw position 2 without vector solving.",
+      "correct": 57,
+      "total": 138,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "57/138; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "overall",
+      "subgroup": "raw raw",
+      "scope": "overall",
+      "strategy": "Select raw position 3 without vector solving.",
+      "correct": 16,
+      "total": 138,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "16/138; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "overall",
+      "subgroup": "raw raw",
+      "scope": "overall",
+      "strategy": "Select raw position 4 without vector solving.",
+      "correct": 14,
+      "total": 138,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "14/138; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "overall",
+      "subgroup": "raw raw",
+      "scope": "overall",
+      "strategy": "Select raw position 5 without vector solving.",
+      "correct": 28,
+      "total": 138,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "28/138; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "raw q-105163",
+      "scope": "within_template",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 8,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "8/12; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "raw q-105163",
+      "scope": "within_template",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 1,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/12; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "raw q-105163",
+      "scope": "within_template",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 1,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/12; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "raw q-105163",
+      "scope": "within_template",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 1,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/12; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "names",
+      "subgroup": "raw a/b",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 61,
+      "total": 105,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "61/105; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "names",
+      "subgroup": "raw a/b",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 11,
+      "total": 105,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "11/105; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "names",
+      "subgroup": "raw a/b",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 11,
+      "total": 105,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "11/105; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "names",
+      "subgroup": "raw a/b",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 11,
+      "total": 105,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "11/105; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "nonpositive",
+      "subgroup": "raw True",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 44,
+      "total": 72,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "44/72; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "nonpositive",
+      "subgroup": "raw True",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 2,
+      "total": 72,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/72; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "nonpositive",
+      "subgroup": "raw True",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 10,
+      "total": 72,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "10/72; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "nonpositive",
+      "subgroup": "raw True",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 10,
+      "total": 72,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "10/72; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "bank",
+      "subgroup": "raw mixed_signs",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 34,
+      "total": 55,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "34/55; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "bank",
+      "subgroup": "raw mixed_signs",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 2,
+      "total": 55,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/55; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "bank",
+      "subgroup": "raw mixed_signs",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 8,
+      "total": 55,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "8/55; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "bank",
+      "subgroup": "raw mixed_signs",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 9,
+      "total": 55,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "9/55; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "bank",
+      "subgroup": "raw fractional",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 8,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "8/12; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "bank",
+      "subgroup": "raw fractional",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 1,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/12; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "bank",
+      "subgroup": "raw fractional",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 1,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/12; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "bank",
+      "subgroup": "raw fractional",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 1,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/12; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "bank",
+      "subgroup": "raw all_negative",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 5,
+      "total": 7,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "5/7; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "bank",
+      "subgroup": "raw all_negative",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 0,
+      "total": 7,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/7; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "bank",
+      "subgroup": "raw all_negative",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 2,
+      "total": 7,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/7; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "bank",
+      "subgroup": "raw all_negative",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 0,
+      "total": 7,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/7; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "raw q-105164",
+      "scope": "within_template",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 5,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "5/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "raw q-105164",
+      "scope": "within_template",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 1,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "raw q-105164",
+      "scope": "within_template",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 1,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "raw q-105164",
+      "scope": "within_template",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 1,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "nonpositive",
+      "subgroup": "raw False",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 36,
+      "total": 66,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "36/66; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "nonpositive",
+      "subgroup": "raw False",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 12,
+      "total": 66,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "12/66; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "nonpositive",
+      "subgroup": "raw False",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 4,
+      "total": 66,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "4/66; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "nonpositive",
+      "subgroup": "raw False",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 4,
+      "total": 66,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "4/66; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "bank",
+      "subgroup": "raw zero",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 13,
+      "total": 23,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "13/23; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "bank",
+      "subgroup": "raw zero",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 1,
+      "total": 23,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/23; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "bank",
+      "subgroup": "raw zero",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 1,
+      "total": 23,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/23; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "bank",
+      "subgroup": "raw zero",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 4,
+      "total": 23,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "4/23; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "raw q-105165",
+      "scope": "within_template",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 8,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "8/12; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "raw q-105165",
+      "scope": "within_template",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 1,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/12; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "raw q-105165",
+      "scope": "within_template",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 1,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/12; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "raw q-105165",
+      "scope": "within_template",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 1,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/12; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "raw q-105166",
+      "scope": "within_template",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 5,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "5/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "raw q-105166",
+      "scope": "within_template",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 1,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "raw q-105166",
+      "scope": "within_template",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 1,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "raw q-105166",
+      "scope": "within_template",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 1,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "raw q-105167",
+      "scope": "within_template",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 5,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "5/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "raw q-105167",
+      "scope": "within_template",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 1,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "raw q-105167",
+      "scope": "within_template",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 1,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "raw q-105167",
+      "scope": "within_template",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 1,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "raw q-34054",
+      "scope": "within_template",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 5,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "5/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "raw q-34054",
+      "scope": "within_template",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 1,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "raw q-34054",
+      "scope": "within_template",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 1,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "raw q-34054",
+      "scope": "within_template",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 1,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "raw q-34242",
+      "scope": "within_template",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 8,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "8/12; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "raw q-34242",
+      "scope": "within_template",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 1,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/12; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "raw q-34242",
+      "scope": "within_template",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 1,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/12; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "raw q-34242",
+      "scope": "within_template",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 1,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/12; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "names",
+      "subgroup": "raw c/d",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 19,
+      "total": 33,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "19/33; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "names",
+      "subgroup": "raw c/d",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 3,
+      "total": 33,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/33; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "names",
+      "subgroup": "raw c/d",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 3,
+      "total": 33,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/33; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "names",
+      "subgroup": "raw c/d",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 3,
+      "total": 33,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/33; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "raw q-34568",
+      "scope": "within_template",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 6,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "6/12; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "raw q-34568",
+      "scope": "within_template",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 1,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/12; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "raw q-34568",
+      "scope": "within_template",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 1,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/12; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "raw q-34568",
+      "scope": "within_template",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 1,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/12; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "raw q-73950",
+      "scope": "within_template",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 5,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "5/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "raw q-73950",
+      "scope": "within_template",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 1,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "raw q-73950",
+      "scope": "within_template",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 1,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "raw q-73950",
+      "scope": "within_template",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 1,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "raw q-73951",
+      "scope": "within_template",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 5,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "5/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "raw q-73951",
+      "scope": "within_template",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 1,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "raw q-73951",
+      "scope": "within_template",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 1,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "raw q-73951",
+      "scope": "within_template",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 1,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "raw q-73952",
+      "scope": "within_template",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 5,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "5/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "raw q-73952",
+      "scope": "within_template",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 1,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "raw q-73952",
+      "scope": "within_template",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 1,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "raw q-73952",
+      "scope": "within_template",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 1,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "raw q-73954",
+      "scope": "within_template",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 5,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "5/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "raw q-73954",
+      "scope": "within_template",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 1,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "raw q-73954",
+      "scope": "within_template",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 1,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "raw q-73954",
+      "scope": "within_template",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 1,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "raw q-73957",
+      "scope": "within_template",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 5,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "5/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "raw q-73957",
+      "scope": "within_template",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 1,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "raw q-73957",
+      "scope": "within_template",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 1,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "raw q-73957",
+      "scope": "within_template",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 1,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "raw q-73981",
+      "scope": "within_template",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 5,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "5/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "raw q-73981",
+      "scope": "within_template",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 1,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "raw q-73981",
+      "scope": "within_template",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 1,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "raw q-73981",
+      "scope": "within_template",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 1,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "raw-records.json"
+      ]
+    },
+    {
+      "cue": "overall",
+      "subgroup": "post-filter post-filter",
+      "scope": "overall",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 80,
+      "total": 136,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "80/136; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "overall",
+      "subgroup": "post-filter post-filter",
+      "scope": "overall",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 14,
+      "total": 136,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "14/136; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "overall",
+      "subgroup": "post-filter post-filter",
+      "scope": "overall",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 14,
+      "total": 136,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "14/136; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "overall",
+      "subgroup": "post-filter post-filter",
+      "scope": "overall",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 14,
+      "total": 136,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "14/136; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "overall",
+      "subgroup": "post-filter post-filter",
+      "scope": "overall",
+      "strategy": "Select raw position 1 without vector solving.",
+      "correct": 23,
+      "total": 136,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "23/136; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "overall",
+      "subgroup": "post-filter post-filter",
+      "scope": "overall",
+      "strategy": "Select raw position 2 without vector solving.",
+      "correct": 57,
+      "total": 136,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "57/136; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "overall",
+      "subgroup": "post-filter post-filter",
+      "scope": "overall",
+      "strategy": "Select raw position 3 without vector solving.",
+      "correct": 14,
+      "total": 136,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "14/136; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "overall",
+      "subgroup": "post-filter post-filter",
+      "scope": "overall",
+      "strategy": "Select raw position 4 without vector solving.",
+      "correct": 14,
+      "total": 136,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "14/136; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "overall",
+      "subgroup": "post-filter post-filter",
+      "scope": "overall",
+      "strategy": "Select raw position 5 without vector solving.",
+      "correct": 28,
+      "total": 136,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "28/136; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "post-filter q-105163",
+      "scope": "within_template",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 8,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "8/12; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "post-filter q-105163",
+      "scope": "within_template",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 1,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/12; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "post-filter q-105163",
+      "scope": "within_template",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 1,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/12; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "post-filter q-105163",
+      "scope": "within_template",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 1,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/12; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "names",
+      "subgroup": "post-filter a/b",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 61,
+      "total": 105,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "61/105; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "names",
+      "subgroup": "post-filter a/b",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 11,
+      "total": 105,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "11/105; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "names",
+      "subgroup": "post-filter a/b",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 11,
+      "total": 105,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "11/105; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "names",
+      "subgroup": "post-filter a/b",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 11,
+      "total": 105,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "11/105; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "nonpositive",
+      "subgroup": "post-filter True",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 44,
+      "total": 72,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "44/72; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "nonpositive",
+      "subgroup": "post-filter True",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 2,
+      "total": 72,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/72; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "nonpositive",
+      "subgroup": "post-filter True",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 10,
+      "total": 72,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "10/72; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "nonpositive",
+      "subgroup": "post-filter True",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 10,
+      "total": 72,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "10/72; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "bank",
+      "subgroup": "post-filter mixed_signs",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 34,
+      "total": 55,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "34/55; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "bank",
+      "subgroup": "post-filter mixed_signs",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 2,
+      "total": 55,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/55; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "bank",
+      "subgroup": "post-filter mixed_signs",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 8,
+      "total": 55,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "8/55; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "bank",
+      "subgroup": "post-filter mixed_signs",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 9,
+      "total": 55,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "9/55; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "bank",
+      "subgroup": "post-filter fractional",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 8,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "8/12; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "bank",
+      "subgroup": "post-filter fractional",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 1,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/12; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "bank",
+      "subgroup": "post-filter fractional",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 1,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/12; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "bank",
+      "subgroup": "post-filter fractional",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 1,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/12; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "bank",
+      "subgroup": "post-filter all_negative",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 5,
+      "total": 7,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "5/7; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "bank",
+      "subgroup": "post-filter all_negative",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 0,
+      "total": 7,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/7; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "bank",
+      "subgroup": "post-filter all_negative",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 2,
+      "total": 7,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/7; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "bank",
+      "subgroup": "post-filter all_negative",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 0,
+      "total": 7,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/7; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "post-filter q-105164",
+      "scope": "within_template",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 5,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "5/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "post-filter q-105164",
+      "scope": "within_template",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 1,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "post-filter q-105164",
+      "scope": "within_template",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 1,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "post-filter q-105164",
+      "scope": "within_template",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 1,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "nonpositive",
+      "subgroup": "post-filter False",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 36,
+      "total": 64,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "36/64; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "nonpositive",
+      "subgroup": "post-filter False",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 12,
+      "total": 64,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "12/64; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "nonpositive",
+      "subgroup": "post-filter False",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 4,
+      "total": 64,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "4/64; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "nonpositive",
+      "subgroup": "post-filter False",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 4,
+      "total": 64,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "4/64; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "bank",
+      "subgroup": "post-filter zero",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 13,
+      "total": 23,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "13/23; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "bank",
+      "subgroup": "post-filter zero",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 1,
+      "total": 23,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/23; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "bank",
+      "subgroup": "post-filter zero",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 1,
+      "total": 23,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/23; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "bank",
+      "subgroup": "post-filter zero",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 4,
+      "total": 23,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "4/23; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "post-filter q-105165",
+      "scope": "within_template",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 8,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "8/12; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "post-filter q-105165",
+      "scope": "within_template",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 1,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/12; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "post-filter q-105165",
+      "scope": "within_template",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 1,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/12; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "post-filter q-105165",
+      "scope": "within_template",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 1,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/12; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "post-filter q-105166",
+      "scope": "within_template",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 5,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "5/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "post-filter q-105166",
+      "scope": "within_template",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 1,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "post-filter q-105166",
+      "scope": "within_template",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 1,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "post-filter q-105166",
+      "scope": "within_template",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 1,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "post-filter q-105167",
+      "scope": "within_template",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 5,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "5/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "post-filter q-105167",
+      "scope": "within_template",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 1,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "post-filter q-105167",
+      "scope": "within_template",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 1,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "post-filter q-105167",
+      "scope": "within_template",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 1,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "post-filter q-34054",
+      "scope": "within_template",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 5,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "5/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "post-filter q-34054",
+      "scope": "within_template",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 1,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "post-filter q-34054",
+      "scope": "within_template",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 1,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "post-filter q-34054",
+      "scope": "within_template",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 1,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "post-filter q-34242",
+      "scope": "within_template",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 8,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "8/12; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "post-filter q-34242",
+      "scope": "within_template",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 1,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/12; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "post-filter q-34242",
+      "scope": "within_template",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 1,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/12; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "post-filter q-34242",
+      "scope": "within_template",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 1,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/12; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "names",
+      "subgroup": "post-filter c/d",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 19,
+      "total": 31,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "19/31; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "names",
+      "subgroup": "post-filter c/d",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 3,
+      "total": 31,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/31; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "names",
+      "subgroup": "post-filter c/d",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 3,
+      "total": 31,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/31; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "names",
+      "subgroup": "post-filter c/d",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 3,
+      "total": 31,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/31; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "post-filter q-34568",
+      "scope": "within_template",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 6,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "6/10; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "post-filter q-34568",
+      "scope": "within_template",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/10; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "post-filter q-34568",
+      "scope": "within_template",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/10; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "post-filter q-34568",
+      "scope": "within_template",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/10; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "post-filter q-73950",
+      "scope": "within_template",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 5,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "5/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "post-filter q-73950",
+      "scope": "within_template",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 1,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "post-filter q-73950",
+      "scope": "within_template",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 1,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "post-filter q-73950",
+      "scope": "within_template",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 1,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "post-filter q-73951",
+      "scope": "within_template",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 5,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "5/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "post-filter q-73951",
+      "scope": "within_template",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 1,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "post-filter q-73951",
+      "scope": "within_template",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 1,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "post-filter q-73951",
+      "scope": "within_template",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 1,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "post-filter q-73952",
+      "scope": "within_template",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 5,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "5/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "post-filter q-73952",
+      "scope": "within_template",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 1,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "post-filter q-73952",
+      "scope": "within_template",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 1,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "post-filter q-73952",
+      "scope": "within_template",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 1,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "post-filter q-73954",
+      "scope": "within_template",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 5,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "5/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "post-filter q-73954",
+      "scope": "within_template",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 1,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "post-filter q-73954",
+      "scope": "within_template",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 1,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "post-filter q-73954",
+      "scope": "within_template",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 1,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "post-filter q-73957",
+      "scope": "within_template",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 5,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "5/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "post-filter q-73957",
+      "scope": "within_template",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 1,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "post-filter q-73957",
+      "scope": "within_template",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 1,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "post-filter q-73957",
+      "scope": "within_template",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 1,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "post-filter q-73981",
+      "scope": "within_template",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 5,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "5/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "post-filter q-73981",
+      "scope": "within_template",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 1,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "post-filter q-73981",
+      "scope": "within_template",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 1,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "post-filter q-73981",
+      "scope": "within_template",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 1,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/9; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery/accepted.json"
+      ]
+    },
+    {
+      "cue": "overall",
+      "subgroup": "exact batch exact batch",
+      "scope": "overall",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/5; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "overall",
+      "subgroup": "exact batch exact batch",
+      "scope": "overall",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/5; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "overall",
+      "subgroup": "exact batch exact batch",
+      "scope": "overall",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/5; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "overall",
+      "subgroup": "exact batch exact batch",
+      "scope": "overall",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/5; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "overall",
+      "subgroup": "exact batch exact batch",
+      "scope": "overall",
+      "strategy": "Select raw position 1 without vector solving.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/5; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "overall",
+      "subgroup": "exact batch exact batch",
+      "scope": "overall",
+      "strategy": "Select raw position 2 without vector solving.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/5; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "overall",
+      "subgroup": "exact batch exact batch",
+      "scope": "overall",
+      "strategy": "Select raw position 3 without vector solving.",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/5; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "overall",
+      "subgroup": "exact batch exact batch",
+      "scope": "overall",
+      "strategy": "Select raw position 4 without vector solving.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/5; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "overall",
+      "subgroup": "exact batch exact batch",
+      "scope": "overall",
+      "strategy": "Select raw position 5 without vector solving.",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/5; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "exact batch q-73951",
+      "scope": "within_template",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/1; baseline .2 is uniform choice among five radio alternatives. Singleton is not diagnostic; no absence claim for this small subgroup. Controlled per-template pairs test the dependency.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "exact batch q-73951",
+      "scope": "within_template",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "exact batch q-73951",
+      "scope": "within_template",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "exact batch q-73951",
+      "scope": "within_template",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "names",
+      "subgroup": "exact batch c/d",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/1; baseline .2 is uniform choice among five radio alternatives. Singleton is not diagnostic; no absence claim for this small subgroup. Controlled per-template pairs test the dependency.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "names",
+      "subgroup": "exact batch c/d",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "names",
+      "subgroup": "exact batch c/d",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "names",
+      "subgroup": "exact batch c/d",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "nonpositive",
+      "subgroup": "exact batch True",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/3; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "nonpositive",
+      "subgroup": "exact batch True",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/3; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "nonpositive",
+      "subgroup": "exact batch True",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/3; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "nonpositive",
+      "subgroup": "exact batch True",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/3; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "bank",
+      "subgroup": "exact batch all_negative",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/2; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "bank",
+      "subgroup": "exact batch all_negative",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/2; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "bank",
+      "subgroup": "exact batch all_negative",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/2; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "bank",
+      "subgroup": "exact batch all_negative",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/2; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "exact batch q-73952",
+      "scope": "within_template",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/2; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "exact batch q-73952",
+      "scope": "within_template",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/2; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "exact batch q-73952",
+      "scope": "within_template",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/2; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "exact batch q-73952",
+      "scope": "within_template",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/2; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "names",
+      "subgroup": "exact batch a/b",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/4; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "names",
+      "subgroup": "exact batch a/b",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/4; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "names",
+      "subgroup": "exact batch a/b",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/4; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "names",
+      "subgroup": "exact batch a/b",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/4; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "nonpositive",
+      "subgroup": "exact batch False",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/2; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "nonpositive",
+      "subgroup": "exact batch False",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/2; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "nonpositive",
+      "subgroup": "exact batch False",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/2; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "nonpositive",
+      "subgroup": "exact batch False",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/2; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "exact batch q-105165",
+      "scope": "within_template",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "exact batch q-105165",
+      "scope": "within_template",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/1; baseline .2 is uniform choice among five radio alternatives. Singleton is not diagnostic; no absence claim for this small subgroup. Controlled per-template pairs test the dependency.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "exact batch q-105165",
+      "scope": "within_template",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "exact batch q-105165",
+      "scope": "within_template",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "exact batch q-34054",
+      "scope": "within_template",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/1; baseline .2 is uniform choice among five radio alternatives. Singleton is not diagnostic; no absence claim for this small subgroup. Controlled per-template pairs test the dependency.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "exact batch q-34054",
+      "scope": "within_template",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "exact batch q-34054",
+      "scope": "within_template",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "exact batch q-34054",
+      "scope": "within_template",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "bank",
+      "subgroup": "exact batch mixed_signs",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/1; baseline .2 is uniform choice among five radio alternatives. Singleton is not diagnostic; no absence claim for this small subgroup. Controlled per-template pairs test the dependency.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "bank",
+      "subgroup": "exact batch mixed_signs",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "bank",
+      "subgroup": "exact batch mixed_signs",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "bank",
+      "subgroup": "exact batch mixed_signs",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "overall",
+      "subgroup": "fresh104729 fresh104729",
+      "scope": "overall",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/5; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-104729/accepted.json"
+      ]
+    },
+    {
+      "cue": "overall",
+      "subgroup": "fresh104729 fresh104729",
+      "scope": "overall",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/5; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-104729/accepted.json"
+      ]
+    },
+    {
+      "cue": "overall",
+      "subgroup": "fresh104729 fresh104729",
+      "scope": "overall",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/5; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-104729/accepted.json"
+      ]
+    },
+    {
+      "cue": "overall",
+      "subgroup": "fresh104729 fresh104729",
+      "scope": "overall",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/5; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-104729/accepted.json"
+      ]
+    },
+    {
+      "cue": "overall",
+      "subgroup": "fresh104729 fresh104729",
+      "scope": "overall",
+      "strategy": "Select raw position 1 without vector solving.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/5; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-104729/accepted.json"
+      ]
+    },
+    {
+      "cue": "overall",
+      "subgroup": "fresh104729 fresh104729",
+      "scope": "overall",
+      "strategy": "Select raw position 2 without vector solving.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/5; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-104729/accepted.json"
+      ]
+    },
+    {
+      "cue": "overall",
+      "subgroup": "fresh104729 fresh104729",
+      "scope": "overall",
+      "strategy": "Select raw position 3 without vector solving.",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/5; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-104729/accepted.json"
+      ]
+    },
+    {
+      "cue": "overall",
+      "subgroup": "fresh104729 fresh104729",
+      "scope": "overall",
+      "strategy": "Select raw position 4 without vector solving.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/5; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-104729/accepted.json"
+      ]
+    },
+    {
+      "cue": "overall",
+      "subgroup": "fresh104729 fresh104729",
+      "scope": "overall",
+      "strategy": "Select raw position 5 without vector solving.",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/5; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-104729/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "fresh104729 q-105167",
+      "scope": "within_template",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-104729/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "fresh104729 q-105167",
+      "scope": "within_template",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-104729/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "fresh104729 q-105167",
+      "scope": "within_template",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-104729/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "fresh104729 q-105167",
+      "scope": "within_template",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-104729/accepted.json"
+      ]
+    },
+    {
+      "cue": "names",
+      "subgroup": "fresh104729 a/b",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/3; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-104729/accepted.json"
+      ]
+    },
+    {
+      "cue": "names",
+      "subgroup": "fresh104729 a/b",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/3; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-104729/accepted.json"
+      ]
+    },
+    {
+      "cue": "names",
+      "subgroup": "fresh104729 a/b",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/3; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-104729/accepted.json"
+      ]
+    },
+    {
+      "cue": "names",
+      "subgroup": "fresh104729 a/b",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/3; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-104729/accepted.json"
+      ]
+    },
+    {
+      "cue": "nonpositive",
+      "subgroup": "fresh104729 False",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/3; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-104729/accepted.json"
+      ]
+    },
+    {
+      "cue": "nonpositive",
+      "subgroup": "fresh104729 False",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/3; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-104729/accepted.json"
+      ]
+    },
+    {
+      "cue": "nonpositive",
+      "subgroup": "fresh104729 False",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/3; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-104729/accepted.json"
+      ]
+    },
+    {
+      "cue": "nonpositive",
+      "subgroup": "fresh104729 False",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/3; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-104729/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "fresh104729 q-73950",
+      "scope": "within_template",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/1; baseline .2 is uniform choice among five radio alternatives. Singleton is not diagnostic; no absence claim for this small subgroup. Controlled per-template pairs test the dependency.",
+      "sample_refs": [
+        "delivery-fresh-104729/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "fresh104729 q-73950",
+      "scope": "within_template",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-104729/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "fresh104729 q-73950",
+      "scope": "within_template",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-104729/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "fresh104729 q-73950",
+      "scope": "within_template",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-104729/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "fresh104729 q-73951",
+      "scope": "within_template",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/1; baseline .2 is uniform choice among five radio alternatives. Singleton is not diagnostic; no absence claim for this small subgroup. Controlled per-template pairs test the dependency.",
+      "sample_refs": [
+        "delivery-fresh-104729/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "fresh104729 q-73951",
+      "scope": "within_template",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-104729/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "fresh104729 q-73951",
+      "scope": "within_template",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-104729/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "fresh104729 q-73951",
+      "scope": "within_template",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-104729/accepted.json"
+      ]
+    },
+    {
+      "cue": "names",
+      "subgroup": "fresh104729 c/d",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/2; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-104729/accepted.json"
+      ]
+    },
+    {
+      "cue": "names",
+      "subgroup": "fresh104729 c/d",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/2; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-104729/accepted.json"
+      ]
+    },
+    {
+      "cue": "names",
+      "subgroup": "fresh104729 c/d",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/2; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-104729/accepted.json"
+      ]
+    },
+    {
+      "cue": "names",
+      "subgroup": "fresh104729 c/d",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/2; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-104729/accepted.json"
+      ]
+    },
+    {
+      "cue": "nonpositive",
+      "subgroup": "fresh104729 True",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/2; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-104729/accepted.json"
+      ]
+    },
+    {
+      "cue": "nonpositive",
+      "subgroup": "fresh104729 True",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/2; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-104729/accepted.json"
+      ]
+    },
+    {
+      "cue": "nonpositive",
+      "subgroup": "fresh104729 True",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/2; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-104729/accepted.json"
+      ]
+    },
+    {
+      "cue": "nonpositive",
+      "subgroup": "fresh104729 True",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/2; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-104729/accepted.json"
+      ]
+    },
+    {
+      "cue": "bank",
+      "subgroup": "fresh104729 all_negative",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/1; baseline .2 is uniform choice among five radio alternatives. Singleton is not diagnostic; no absence claim for this small subgroup. Controlled per-template pairs test the dependency.",
+      "sample_refs": [
+        "delivery-fresh-104729/accepted.json"
+      ]
+    },
+    {
+      "cue": "bank",
+      "subgroup": "fresh104729 all_negative",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-104729/accepted.json"
+      ]
+    },
+    {
+      "cue": "bank",
+      "subgroup": "fresh104729 all_negative",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-104729/accepted.json"
+      ]
+    },
+    {
+      "cue": "bank",
+      "subgroup": "fresh104729 all_negative",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-104729/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "fresh104729 q-34242",
+      "scope": "within_template",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-104729/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "fresh104729 q-34242",
+      "scope": "within_template",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-104729/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "fresh104729 q-34242",
+      "scope": "within_template",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-104729/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "fresh104729 q-34242",
+      "scope": "within_template",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-104729/accepted.json"
+      ]
+    },
+    {
+      "cue": "bank",
+      "subgroup": "fresh104729 mixed_signs",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-104729/accepted.json"
+      ]
+    },
+    {
+      "cue": "bank",
+      "subgroup": "fresh104729 mixed_signs",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-104729/accepted.json"
+      ]
+    },
+    {
+      "cue": "bank",
+      "subgroup": "fresh104729 mixed_signs",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-104729/accepted.json"
+      ]
+    },
+    {
+      "cue": "bank",
+      "subgroup": "fresh104729 mixed_signs",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-104729/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "fresh104729 q-105164",
+      "scope": "within_template",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-104729/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "fresh104729 q-105164",
+      "scope": "within_template",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/1; baseline .2 is uniform choice among five radio alternatives. Singleton is not diagnostic; no absence claim for this small subgroup. Controlled per-template pairs test the dependency.",
+      "sample_refs": [
+        "delivery-fresh-104729/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "fresh104729 q-105164",
+      "scope": "within_template",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-104729/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "fresh104729 q-105164",
+      "scope": "within_template",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-104729/accepted.json"
+      ]
+    },
+    {
+      "cue": "overall",
+      "subgroup": "fresh20261021 fresh20261021",
+      "scope": "overall",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/5; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-20261021/accepted.json"
+      ]
+    },
+    {
+      "cue": "overall",
+      "subgroup": "fresh20261021 fresh20261021",
+      "scope": "overall",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/5; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-20261021/accepted.json"
+      ]
+    },
+    {
+      "cue": "overall",
+      "subgroup": "fresh20261021 fresh20261021",
+      "scope": "overall",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/5; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-20261021/accepted.json"
+      ]
+    },
+    {
+      "cue": "overall",
+      "subgroup": "fresh20261021 fresh20261021",
+      "scope": "overall",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/5; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-20261021/accepted.json"
+      ]
+    },
+    {
+      "cue": "overall",
+      "subgroup": "fresh20261021 fresh20261021",
+      "scope": "overall",
+      "strategy": "Select raw position 1 without vector solving.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/5; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-20261021/accepted.json"
+      ]
+    },
+    {
+      "cue": "overall",
+      "subgroup": "fresh20261021 fresh20261021",
+      "scope": "overall",
+      "strategy": "Select raw position 2 without vector solving.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/5; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-20261021/accepted.json"
+      ]
+    },
+    {
+      "cue": "overall",
+      "subgroup": "fresh20261021 fresh20261021",
+      "scope": "overall",
+      "strategy": "Select raw position 3 without vector solving.",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/5; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-20261021/accepted.json"
+      ]
+    },
+    {
+      "cue": "overall",
+      "subgroup": "fresh20261021 fresh20261021",
+      "scope": "overall",
+      "strategy": "Select raw position 4 without vector solving.",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/5; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-20261021/accepted.json"
+      ]
+    },
+    {
+      "cue": "overall",
+      "subgroup": "fresh20261021 fresh20261021",
+      "scope": "overall",
+      "strategy": "Select raw position 5 without vector solving.",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/5; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-20261021/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "fresh20261021 q-34242",
+      "scope": "within_template",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/2; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-20261021/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "fresh20261021 q-34242",
+      "scope": "within_template",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/2; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-20261021/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "fresh20261021 q-34242",
+      "scope": "within_template",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/2; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-20261021/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "fresh20261021 q-34242",
+      "scope": "within_template",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/2; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-20261021/accepted.json"
+      ]
+    },
+    {
+      "cue": "names",
+      "subgroup": "fresh20261021 c/d",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/3; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-20261021/accepted.json"
+      ]
+    },
+    {
+      "cue": "names",
+      "subgroup": "fresh20261021 c/d",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/3; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-20261021/accepted.json"
+      ]
+    },
+    {
+      "cue": "names",
+      "subgroup": "fresh20261021 c/d",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/3; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-20261021/accepted.json"
+      ]
+    },
+    {
+      "cue": "names",
+      "subgroup": "fresh20261021 c/d",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/3; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-20261021/accepted.json"
+      ]
+    },
+    {
+      "cue": "nonpositive",
+      "subgroup": "fresh20261021 False",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/3; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-20261021/accepted.json"
+      ]
+    },
+    {
+      "cue": "nonpositive",
+      "subgroup": "fresh20261021 False",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/3; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-20261021/accepted.json"
+      ]
+    },
+    {
+      "cue": "nonpositive",
+      "subgroup": "fresh20261021 False",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/3; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-20261021/accepted.json"
+      ]
+    },
+    {
+      "cue": "nonpositive",
+      "subgroup": "fresh20261021 False",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 0,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/3; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-20261021/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "fresh20261021 q-73952",
+      "scope": "within_template",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-20261021/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "fresh20261021 q-73952",
+      "scope": "within_template",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-20261021/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "fresh20261021 q-73952",
+      "scope": "within_template",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-20261021/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "fresh20261021 q-73952",
+      "scope": "within_template",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-20261021/accepted.json"
+      ]
+    },
+    {
+      "cue": "names",
+      "subgroup": "fresh20261021 a/b",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/2; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-20261021/accepted.json"
+      ]
+    },
+    {
+      "cue": "names",
+      "subgroup": "fresh20261021 a/b",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/2; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-20261021/accepted.json"
+      ]
+    },
+    {
+      "cue": "names",
+      "subgroup": "fresh20261021 a/b",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/2; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-20261021/accepted.json"
+      ]
+    },
+    {
+      "cue": "names",
+      "subgroup": "fresh20261021 a/b",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/2; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-20261021/accepted.json"
+      ]
+    },
+    {
+      "cue": "nonpositive",
+      "subgroup": "fresh20261021 True",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/2; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-20261021/accepted.json"
+      ]
+    },
+    {
+      "cue": "nonpositive",
+      "subgroup": "fresh20261021 True",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/2; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-20261021/accepted.json"
+      ]
+    },
+    {
+      "cue": "nonpositive",
+      "subgroup": "fresh20261021 True",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/2; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-20261021/accepted.json"
+      ]
+    },
+    {
+      "cue": "nonpositive",
+      "subgroup": "fresh20261021 True",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/2; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-20261021/accepted.json"
+      ]
+    },
+    {
+      "cue": "bank",
+      "subgroup": "fresh20261021 all_negative",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-20261021/accepted.json"
+      ]
+    },
+    {
+      "cue": "bank",
+      "subgroup": "fresh20261021 all_negative",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-20261021/accepted.json"
+      ]
+    },
+    {
+      "cue": "bank",
+      "subgroup": "fresh20261021 all_negative",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-20261021/accepted.json"
+      ]
+    },
+    {
+      "cue": "bank",
+      "subgroup": "fresh20261021 all_negative",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-20261021/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "fresh20261021 q-105164",
+      "scope": "within_template",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/1; baseline .2 is uniform choice among five radio alternatives. Singleton is not diagnostic; no absence claim for this small subgroup. Controlled per-template pairs test the dependency.",
+      "sample_refs": [
+        "delivery-fresh-20261021/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "fresh20261021 q-105164",
+      "scope": "within_template",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-20261021/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "fresh20261021 q-105164",
+      "scope": "within_template",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-20261021/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "fresh20261021 q-105164",
+      "scope": "within_template",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-20261021/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "fresh20261021 q-73951",
+      "scope": "within_template",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/1; baseline .2 is uniform choice among five radio alternatives. Singleton is not diagnostic; no absence claim for this small subgroup. Controlled per-template pairs test the dependency.",
+      "sample_refs": [
+        "delivery-fresh-20261021/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "fresh20261021 q-73951",
+      "scope": "within_template",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-20261021/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "fresh20261021 q-73951",
+      "scope": "within_template",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-20261021/accepted.json"
+      ]
+    },
+    {
+      "cue": "profile",
+      "subgroup": "fresh20261021 q-73951",
+      "scope": "within_template",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-20261021/accepted.json"
+      ]
+    },
+    {
+      "cue": "bank",
+      "subgroup": "fresh20261021 mixed_signs",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select No solution without vector solving.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/1; baseline .2 is uniform choice among five radio alternatives. Singleton is not diagnostic; no absence claim for this small subgroup. Controlled per-template pairs test the dependency.",
+      "sample_refs": [
+        "delivery-fresh-20261021/accepted.json"
+      ]
+    },
+    {
+      "cue": "bank",
+      "subgroup": "fresh20261021 mixed_signs",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select smallest numeric without vector solving.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-20261021/accepted.json"
+      ]
+    },
+    {
+      "cue": "bank",
+      "subgroup": "fresh20261021 mixed_signs",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select largest numeric without vector solving.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-20261021/accepted.json"
+      ]
+    },
+    {
+      "cue": "bank",
+      "subgroup": "fresh20261021 mixed_signs",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select second-largest numeric without vector solving.",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/1; baseline .2 is uniform choice among five radio alternatives. Counterexamples observed in this subgroup.",
+      "sample_refs": [
+        "delivery-fresh-20261021/accepted.json"
+      ]
+    },
+    {
+      "cue": "zero coefficient row with nonzero target",
+      "subgroup": "controlled q-34242 contradiction",
+      "scope": "within_template",
+      "strategy": "Select No solution from 0 = nonzero.",
+      "correct": 4,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "intended_skill",
+      "conclusion": "Direct component contradiction is the source-supported mathematical decision in 8179ffc2-2381-5ec9-a386-111d6e4cae85; baseline .2 is random among five choices.",
+      "sample_refs": [
+        "controlled-records.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "ordinary slot validation",
+      "new batch role rejection, semantic deduplication and whole-pool retries",
+      "requested moderate difficulty",
+      "actual publisher normalization/identity validation",
+      "captured-inventory and within-batch deduplication",
+      "learner difficulty-band weighting and history exclusion",
+      "UI option reordering",
+      "native learner grading"
+    ],
+    "sample_refs": [
+      "resampling-results.json",
+      "delivery/delivery.json",
+      "delivery/accepted.json",
+      "delivery-batch/delivery.json",
+      "delivery-batch/accepted.json",
+      "selection-results.json",
+      "grader-report.json",
+      "render-final/rendering.json"
+    ],
+    "result": "All applicable read-only stages examined. Exact5->5, controls138->136, fresh batches5->5 each. Both sign branches survive. Publication preparation is absent; shared actual prepare_records adapter used. Learner draws are conditional on fresh moderate eligibility and supplied histories are absent."
+  },
+  "limitations": [
+    "Captured inventory basis5400 contains only14 original source questions; no stored generated records are available to reproduce. Originals were not marked generated.",
+    "Top-level runner batch seed is unavailable; each exact saved item replays from complete generation metadata. Fresh traces exercise batch rejection directly.",
+    "Future entity IDs, learner history and configured policy weights unavailable; rules and conditional synthetic-ID selection checked, exact future sequences unknown.",
+    "Finite source coefficient profiles are conservative; no claim to every real-valued vector system or every possible shortcut. Singleton surface groups in five-item pools are not independent evidence of defects.",
+    "Canonical lacks a captured answer field; the14 exercises supply the five-choice radio contract. Numeric-only source banks are reproduced in replay; the normal sampler adds a No solution distractor to both branches."
+  ]
+}
