@@ -1,0 +1,2834 @@
+{
+  "implementation": "engine/rust/question_selection.rs select; read-only faithful reproduction for one rated band with positive weight",
+  "rules": [
+    "Fresh usable candidates exclude history/current prefix before select.",
+    "Numeric entity IDs sorted/deduplicated.",
+    "First SHA256 uniform chooses nonempty positively weighted band.",
+    "Second uniform chooses candidate in that band.",
+    "Unconfigured weights choose first candidate; no positive rated band uses unrated fallback."
+  ],
+  "assumptions": [
+    "No learner histories/policy weights captured; tested no-history and half-excluded scenarios.",
+    "New questions have no database entity IDs; assign synthetic numeric IDs in UUID order, state no actual future ordering claim.",
+    "Captured inventory includes 13 original source and 2 historical generated questions; source questions are not relabeled.",
+    "Positive requested-band weights leave all fresh same-band cases eligible; arbitrary histories can shrink any finite pool, so no guarantee for every possible history."
+  ],
+  "scenarios": [
+    {
+      "pool": "easy",
+      "scenario": "no_history",
+      "candidate_count": 128,
+      "draws": [
+        {
+          "seed": "independent-review/kp17592186119805/task0/prefix0",
+          "synthetic_entity_id": 1000111,
+          "question_id": "dc9f0fb4-87fa-5279-8026-0748ca080c63",
+          "answer": "-3",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task1/prefix0",
+          "synthetic_entity_id": 1000010,
+          "question_id": "137fcb38-a305-5fb4-96e1-5e3db3030670",
+          "answer": "0",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task2/prefix0",
+          "synthetic_entity_id": 1000071,
+          "question_id": "7a6e906d-46e2-569d-8a02-3ae567b7b1b8",
+          "answer": "0",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task3/prefix0",
+          "synthetic_entity_id": 1000059,
+          "question_id": "682009a8-514d-576a-a435-76361d2366f3",
+          "answer": "3",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task4/prefix0",
+          "synthetic_entity_id": 1000099,
+          "question_id": "ce8fcd4f-2dd4-52eb-8d59-e5c495eeb264",
+          "answer": "-6",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task5/prefix0",
+          "synthetic_entity_id": 1000088,
+          "question_id": "aee23d12-f292-5746-88ef-91590906fd80",
+          "answer": "0",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task6/prefix0",
+          "synthetic_entity_id": 1000032,
+          "question_id": "39f02f61-a248-5e6e-8e07-926c70a556c6",
+          "answer": "-2",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task7/prefix0",
+          "synthetic_entity_id": 1000104,
+          "question_id": "d6d14738-ef32-537e-bb86-1822eded4b31",
+          "answer": "2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task8/prefix0",
+          "synthetic_entity_id": 1000108,
+          "question_id": "dbc14478-f67f-5140-a77c-1af1b1bc2158",
+          "answer": "6",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task9/prefix0",
+          "synthetic_entity_id": 1000031,
+          "question_id": "3898a425-aed1-57ab-baee-c10222518e88",
+          "answer": "2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task10/prefix0",
+          "synthetic_entity_id": 1000083,
+          "question_id": "a6f3b51e-1228-56c8-8b40-dacbe14f658f",
+          "answer": "1",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task11/prefix0",
+          "synthetic_entity_id": 1000116,
+          "question_id": "e766f570-a4a5-5c53-b109-14fb01959ef7",
+          "answer": "3",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task12/prefix0",
+          "synthetic_entity_id": 1000075,
+          "question_id": "882b6a81-bcc8-5d83-b190-0d5e23d7ac30",
+          "answer": "-2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task13/prefix0",
+          "synthetic_entity_id": 1000001,
+          "question_id": "04a9447d-9a02-5c89-9296-cc42d0928911",
+          "answer": "1",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task14/prefix0",
+          "synthetic_entity_id": 1000095,
+          "question_id": "c50a0512-60b6-5adc-ad5b-66a2f3add8ff",
+          "answer": "0",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task15/prefix0",
+          "synthetic_entity_id": 1000103,
+          "question_id": "d633551f-672e-52b2-903a-461974e55ff3",
+          "answer": "1",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task16/prefix0",
+          "synthetic_entity_id": 1000110,
+          "question_id": "dc45b1ea-1cf3-5746-81af-795a4ac1ab34",
+          "answer": "-2",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task17/prefix0",
+          "synthetic_entity_id": 1000000,
+          "question_id": "0489c23f-4ec1-5647-a312-fb1917079fec",
+          "answer": "-2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task18/prefix0",
+          "synthetic_entity_id": 1000007,
+          "question_id": "0c04c51a-250b-53bd-93dd-f97860f6bf08",
+          "answer": "3",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task19/prefix0",
+          "synthetic_entity_id": 1000006,
+          "question_id": "0bfaf0c9-9498-54ab-8824-f8fa329decea",
+          "answer": "2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task20/prefix0",
+          "synthetic_entity_id": 1000070,
+          "question_id": "798f5c0c-20f4-5bc4-b83c-5133c323bef1",
+          "answer": "2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task21/prefix0",
+          "synthetic_entity_id": 1000092,
+          "question_id": "bcf75554-3d75-5ace-b8ad-01888cb4fff3",
+          "answer": "-5",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task22/prefix0",
+          "synthetic_entity_id": 1000056,
+          "question_id": "6279155a-0435-5f08-ac56-57d8b2e457b5",
+          "answer": "2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task23/prefix0",
+          "synthetic_entity_id": 1000083,
+          "question_id": "a6f3b51e-1228-56c8-8b40-dacbe14f658f",
+          "answer": "1",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task24/prefix0",
+          "synthetic_entity_id": 1000002,
+          "question_id": "04e13780-ec0d-50b0-b482-f56ccc6b1250",
+          "answer": "-3",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task25/prefix0",
+          "synthetic_entity_id": 1000062,
+          "question_id": "6fa03857-1041-5636-8ac3-baa313cb9cb7",
+          "answer": "-2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task26/prefix0",
+          "synthetic_entity_id": 1000126,
+          "question_id": "fd979cb1-1150-575f-b90c-3174f301430b",
+          "answer": "1",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task27/prefix0",
+          "synthetic_entity_id": 1000014,
+          "question_id": "17f414e7-7ba7-552e-8c29-93207cf6c3bc",
+          "answer": "-3",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task28/prefix0",
+          "synthetic_entity_id": 1000107,
+          "question_id": "db956bc6-67c5-5a0c-946d-6a6e244c63c6",
+          "answer": "1",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task29/prefix0",
+          "synthetic_entity_id": 1000105,
+          "question_id": "d8bc3c84-d87b-5098-9894-bdbe3470f42c",
+          "answer": "-3",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task30/prefix0",
+          "synthetic_entity_id": 1000053,
+          "question_id": "5ec8874a-74eb-53f4-94ab-c41335818c46",
+          "answer": "-2",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task31/prefix0",
+          "synthetic_entity_id": 1000016,
+          "question_id": "1a260f26-cb5e-51c4-a57c-79aeae081f6c",
+          "answer": "0",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task32/prefix0",
+          "synthetic_entity_id": 1000044,
+          "question_id": "5232d215-d442-5216-b9cb-e3afdebbf969",
+          "answer": "-6",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task33/prefix0",
+          "synthetic_entity_id": 1000103,
+          "question_id": "d633551f-672e-52b2-903a-461974e55ff3",
+          "answer": "1",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task34/prefix0",
+          "synthetic_entity_id": 1000049,
+          "question_id": "58bd576a-4c15-55d3-aba0-3617646450a7",
+          "answer": "2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task35/prefix0",
+          "synthetic_entity_id": 1000043,
+          "question_id": "50f08926-9f93-5393-89d0-e9ab33f966d3",
+          "answer": "-4",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task36/prefix0",
+          "synthetic_entity_id": 1000077,
+          "question_id": "8b7c17e3-a236-51e7-a7c4-c9f5ad14975d",
+          "answer": "0",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task37/prefix0",
+          "synthetic_entity_id": 1000072,
+          "question_id": "7b9c443c-b69a-56d9-b9bb-ba188fe1116e",
+          "answer": "4",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task38/prefix0",
+          "synthetic_entity_id": 1000026,
+          "question_id": "2b925a69-707b-5200-bdee-0454ff4cd626",
+          "answer": "0",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task39/prefix0",
+          "synthetic_entity_id": 1000008,
+          "question_id": "0dc95d5b-8b98-52fa-a737-c4081c7d84c2",
+          "answer": "4",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task40/prefix0",
+          "synthetic_entity_id": 1000095,
+          "question_id": "c50a0512-60b6-5adc-ad5b-66a2f3add8ff",
+          "answer": "0",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task41/prefix0",
+          "synthetic_entity_id": 1000019,
+          "question_id": "20df8b86-f187-5c9b-bff7-6d0450ce2592",
+          "answer": "1",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task42/prefix0",
+          "synthetic_entity_id": 1000013,
+          "question_id": "17b9222b-662d-534a-a442-c8203923ec25",
+          "answer": "-3",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task43/prefix0",
+          "synthetic_entity_id": 1000046,
+          "question_id": "573f95ea-578b-568e-b0c1-87c99e954778",
+          "answer": "0",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task44/prefix0",
+          "synthetic_entity_id": 1000069,
+          "question_id": "785cfda7-92fd-5b0c-91e7-5e848c59327b",
+          "answer": "-3",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task45/prefix0",
+          "synthetic_entity_id": 1000039,
+          "question_id": "4c4fbedb-8788-53c5-ac23-cb752a89b6d6",
+          "answer": "4",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task46/prefix0",
+          "synthetic_entity_id": 1000124,
+          "question_id": "f78d1b29-d334-5167-975e-78e6e690251a",
+          "answer": "3",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task47/prefix0",
+          "synthetic_entity_id": 1000057,
+          "question_id": "6307cbac-3749-56da-a914-b54cafcfc5c9",
+          "answer": "3",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task48/prefix0",
+          "synthetic_entity_id": 1000003,
+          "question_id": "086ca057-4593-50f8-b927-4716458900be",
+          "answer": "-2",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task49/prefix0",
+          "synthetic_entity_id": 1000063,
+          "question_id": "71f0f1d8-0c7a-5023-9bf1-6210ccec3365",
+          "answer": "5",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task50/prefix0",
+          "synthetic_entity_id": 1000066,
+          "question_id": "74d7f335-7cdb-5668-b476-003a5d1c9039",
+          "answer": "0",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task51/prefix0",
+          "synthetic_entity_id": 1000052,
+          "question_id": "5a5d5723-a665-58b9-a9c4-23976bb2886d",
+          "answer": "3",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task52/prefix0",
+          "synthetic_entity_id": 1000104,
+          "question_id": "d6d14738-ef32-537e-bb86-1822eded4b31",
+          "answer": "2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task53/prefix0",
+          "synthetic_entity_id": 1000008,
+          "question_id": "0dc95d5b-8b98-52fa-a737-c4081c7d84c2",
+          "answer": "4",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task54/prefix0",
+          "synthetic_entity_id": 1000123,
+          "question_id": "f75e5bea-1a39-541b-be94-92270377852b",
+          "answer": "2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task55/prefix0",
+          "synthetic_entity_id": 1000045,
+          "question_id": "54743640-795e-599f-bbce-04593030741e",
+          "answer": "3",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task56/prefix0",
+          "synthetic_entity_id": 1000096,
+          "question_id": "c626d22b-1ee3-57bb-b1e2-b10b6f95d29d",
+          "answer": "2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task57/prefix0",
+          "synthetic_entity_id": 1000101,
+          "question_id": "d5955afa-9a11-5145-97f6-2fdf0b6fa38b",
+          "answer": "-4",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task58/prefix0",
+          "synthetic_entity_id": 1000072,
+          "question_id": "7b9c443c-b69a-56d9-b9bb-ba188fe1116e",
+          "answer": "4",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task59/prefix0",
+          "synthetic_entity_id": 1000110,
+          "question_id": "dc45b1ea-1cf3-5746-81af-795a4ac1ab34",
+          "answer": "-2",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task60/prefix0",
+          "synthetic_entity_id": 1000046,
+          "question_id": "573f95ea-578b-568e-b0c1-87c99e954778",
+          "answer": "0",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task61/prefix0",
+          "synthetic_entity_id": 1000096,
+          "question_id": "c626d22b-1ee3-57bb-b1e2-b10b6f95d29d",
+          "answer": "2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task62/prefix0",
+          "synthetic_entity_id": 1000009,
+          "question_id": "0e4ef9d9-2a39-5a8c-9bbd-5b6c0227d949",
+          "answer": "-2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task63/prefix0",
+          "synthetic_entity_id": 1000010,
+          "question_id": "137fcb38-a305-5fb4-96e1-5e3db3030670",
+          "answer": "0",
+          "old_shortcut_correct": false
+        }
+      ],
+      "answer_set": [
+        "-2",
+        "-3",
+        "-4",
+        "-5",
+        "-6",
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
+      "old_shortcut_correct": 10,
+      "total": 64
+    },
+    {
+      "pool": "easy",
+      "scenario": "exclude_first_half",
+      "candidate_count": 64,
+      "draws": [
+        {
+          "seed": "independent-review/kp17592186119805/task0/prefix0",
+          "synthetic_entity_id": 1000055,
+          "question_id": "d8bc3c84-d87b-5098-9894-bdbe3470f42c",
+          "answer": "-3",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task1/prefix0",
+          "synthetic_entity_id": 1000005,
+          "question_id": "14155d1f-33b9-5119-be17-8ec314343cef",
+          "answer": "3",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task2/prefix0",
+          "synthetic_entity_id": 1000035,
+          "question_id": "74d7f335-7cdb-5668-b476-003a5d1c9039",
+          "answer": "0",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task3/prefix0",
+          "synthetic_entity_id": 1000029,
+          "question_id": "5ec8874a-74eb-53f4-94ab-c41335818c46",
+          "answer": "-2",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task4/prefix0",
+          "synthetic_entity_id": 1000049,
+          "question_id": "beff49dd-02ce-55c4-a3cb-9d96fcbeeee5",
+          "answer": "1",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task5/prefix0",
+          "synthetic_entity_id": 1000044,
+          "question_id": "a8f4e936-0ea0-5685-bc1c-605be68fda2e",
+          "answer": "2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task6/prefix0",
+          "synthetic_entity_id": 1000016,
+          "question_id": "2b035fc8-7ac1-5aa5-9a95-b84a0db966eb",
+          "answer": "2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task7/prefix0",
+          "synthetic_entity_id": 1000052,
+          "question_id": "d5955afa-9a11-5145-97f6-2fdf0b6fa38b",
+          "answer": "-4",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task8/prefix0",
+          "synthetic_entity_id": 1000054,
+          "question_id": "d633551f-672e-52b2-903a-461974e55ff3",
+          "answer": "1",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task9/prefix0",
+          "synthetic_entity_id": 1000015,
+          "question_id": "29a984a8-2d46-55b9-b432-7efef60bd14e",
+          "answer": "1",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task10/prefix0",
+          "synthetic_entity_id": 1000041,
+          "question_id": "8b7c17e3-a236-51e7-a7c4-c9f5ad14975d",
+          "answer": "0",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task11/prefix0",
+          "synthetic_entity_id": 1000058,
+          "question_id": "dc9f0fb4-87fa-5279-8026-0748ca080c63",
+          "answer": "-3",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task12/prefix0",
+          "synthetic_entity_id": 1000037,
+          "question_id": "798f5c0c-20f4-5bc4-b83c-5133c323bef1",
+          "answer": "2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task13/prefix0",
+          "synthetic_entity_id": 1000000,
+          "question_id": "0489c23f-4ec1-5647-a312-fb1917079fec",
+          "answer": "-2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task14/prefix0",
+          "synthetic_entity_id": 1000047,
+          "question_id": "afc4c379-103d-5324-b84d-4d3e68719ae0",
+          "answer": "-2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task15/prefix0",
+          "synthetic_entity_id": 1000051,
+          "question_id": "c626d22b-1ee3-57bb-b1e2-b10b6f95d29d",
+          "answer": "2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task16/prefix0",
+          "synthetic_entity_id": 1000055,
+          "question_id": "d8bc3c84-d87b-5098-9894-bdbe3470f42c",
+          "answer": "-3",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task17/prefix0",
+          "synthetic_entity_id": 1000000,
+          "question_id": "0489c23f-4ec1-5647-a312-fb1917079fec",
+          "answer": "-2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task18/prefix0",
+          "synthetic_entity_id": 1000003,
+          "question_id": "09b0a470-1f85-5e2d-8b1c-bd250a1e1ce4",
+          "answer": "0",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task19/prefix0",
+          "synthetic_entity_id": 1000003,
+          "question_id": "09b0a470-1f85-5e2d-8b1c-bd250a1e1ce4",
+          "answer": "0",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task20/prefix0",
+          "synthetic_entity_id": 1000035,
+          "question_id": "74d7f335-7cdb-5668-b476-003a5d1c9039",
+          "answer": "0",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task21/prefix0",
+          "synthetic_entity_id": 1000046,
+          "question_id": "acb8cfdf-10a2-5418-9ab7-a4254f39efee",
+          "answer": "3",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task22/prefix0",
+          "synthetic_entity_id": 1000028,
+          "question_id": "5a5d5723-a665-58b9-a9c4-23976bb2886d",
+          "answer": "3",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task23/prefix0",
+          "synthetic_entity_id": 1000041,
+          "question_id": "8b7c17e3-a236-51e7-a7c4-c9f5ad14975d",
+          "answer": "0",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task24/prefix0",
+          "synthetic_entity_id": 1000001,
+          "question_id": "04a9447d-9a02-5c89-9296-cc42d0928911",
+          "answer": "1",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task25/prefix0",
+          "synthetic_entity_id": 1000031,
+          "question_id": "613df758-a57a-50b9-bce8-8762dae26cd5",
+          "answer": "-6",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task26/prefix0",
+          "synthetic_entity_id": 1000063,
+          "question_id": "fec64f8b-04d8-5bf6-b74e-e1c90f210a12",
+          "answer": "-2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task27/prefix0",
+          "synthetic_entity_id": 1000007,
+          "question_id": "17b9222b-662d-534a-a442-c8203923ec25",
+          "answer": "-3",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task28/prefix0",
+          "synthetic_entity_id": 1000053,
+          "question_id": "d6063604-054a-5abf-9ddf-c276fcd8f0ea",
+          "answer": "-5",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task29/prefix0",
+          "synthetic_entity_id": 1000052,
+          "question_id": "d5955afa-9a11-5145-97f6-2fdf0b6fa38b",
+          "answer": "-4",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task30/prefix0",
+          "synthetic_entity_id": 1000026,
+          "question_id": "597e7eee-685f-52d3-a5d6-464ae0862910",
+          "answer": "-2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task31/prefix0",
+          "synthetic_entity_id": 1000008,
+          "question_id": "17f414e7-7ba7-552e-8c29-93207cf6c3bc",
+          "answer": "-3",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task32/prefix0",
+          "synthetic_entity_id": 1000022,
+          "question_id": "4e66fa7e-3c09-5f2b-9c8a-0b738e10fa92",
+          "answer": "1",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task33/prefix0",
+          "synthetic_entity_id": 1000051,
+          "question_id": "c626d22b-1ee3-57bb-b1e2-b10b6f95d29d",
+          "answer": "2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task34/prefix0",
+          "synthetic_entity_id": 1000024,
+          "question_id": "5893af6c-635f-54bb-aa8b-c8b67da30142",
+          "answer": "0",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task35/prefix0",
+          "synthetic_entity_id": 1000021,
+          "question_id": "4c4fbedb-8788-53c5-ac23-cb752a89b6d6",
+          "answer": "4",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task36/prefix0",
+          "synthetic_entity_id": 1000038,
+          "question_id": "7b9c443c-b69a-56d9-b9bb-ba188fe1116e",
+          "answer": "4",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task37/prefix0",
+          "synthetic_entity_id": 1000036,
+          "question_id": "75ac92f8-f4df-578b-b2fe-5a18f920225c",
+          "answer": "-4",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task38/prefix0",
+          "synthetic_entity_id": 1000013,
+          "question_id": "23140824-b9b3-541f-97d6-b7d508f3e982",
+          "answer": "-3",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task39/prefix0",
+          "synthetic_entity_id": 1000004,
+          "question_id": "0b766fcc-2939-5549-ae3d-766b81eeb31e",
+          "answer": "5",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task40/prefix0",
+          "synthetic_entity_id": 1000047,
+          "question_id": "afc4c379-103d-5324-b84d-4d3e68719ae0",
+          "answer": "-2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task41/prefix0",
+          "synthetic_entity_id": 1000009,
+          "question_id": "2010550d-d987-55e9-9b07-c80e52a8eb1c",
+          "answer": "-3",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task42/prefix0",
+          "synthetic_entity_id": 1000006,
+          "question_id": "175169a6-0e4d-5505-bebd-7dd88fea9d81",
+          "answer": "2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task43/prefix0",
+          "synthetic_entity_id": 1000023,
+          "question_id": "54743640-795e-599f-bbce-04593030741e",
+          "answer": "3",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task44/prefix0",
+          "synthetic_entity_id": 1000034,
+          "question_id": "6ac09468-08cc-5a2c-afac-58e348446ab3",
+          "answer": "-4",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task45/prefix0",
+          "synthetic_entity_id": 1000019,
+          "question_id": "43982446-7592-543b-ab5d-851b0d48e4e8",
+          "answer": "-1",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task46/prefix0",
+          "synthetic_entity_id": 1000062,
+          "question_id": "fd979cb1-1150-575f-b90c-3174f301430b",
+          "answer": "1",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task47/prefix0",
+          "synthetic_entity_id": 1000028,
+          "question_id": "5a5d5723-a665-58b9-a9c4-23976bb2886d",
+          "answer": "3",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task48/prefix0",
+          "synthetic_entity_id": 1000001,
+          "question_id": "04a9447d-9a02-5c89-9296-cc42d0928911",
+          "answer": "1",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task49/prefix0",
+          "synthetic_entity_id": 1000031,
+          "question_id": "613df758-a57a-50b9-bce8-8762dae26cd5",
+          "answer": "-6",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task50/prefix0",
+          "synthetic_entity_id": 1000033,
+          "question_id": "682009a8-514d-576a-a435-76361d2366f3",
+          "answer": "3",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task51/prefix0",
+          "synthetic_entity_id": 1000026,
+          "question_id": "597e7eee-685f-52d3-a5d6-464ae0862910",
+          "answer": "-2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task52/prefix0",
+          "synthetic_entity_id": 1000052,
+          "question_id": "d5955afa-9a11-5145-97f6-2fdf0b6fa38b",
+          "answer": "-4",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task53/prefix0",
+          "synthetic_entity_id": 1000004,
+          "question_id": "0b766fcc-2939-5549-ae3d-766b81eeb31e",
+          "answer": "5",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task54/prefix0",
+          "synthetic_entity_id": 1000061,
+          "question_id": "f3b9db98-e0ea-5a90-b7d2-794ef39ece6f",
+          "answer": "1",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task55/prefix0",
+          "synthetic_entity_id": 1000022,
+          "question_id": "4e66fa7e-3c09-5f2b-9c8a-0b738e10fa92",
+          "answer": "1",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task56/prefix0",
+          "synthetic_entity_id": 1000048,
+          "question_id": "b2643795-420f-5a91-b854-f776a8c0be91",
+          "answer": "0",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task57/prefix0",
+          "synthetic_entity_id": 1000050,
+          "question_id": "bf2a6479-3370-5904-97df-f4ac38c077dc",
+          "answer": "3",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task58/prefix0",
+          "synthetic_entity_id": 1000036,
+          "question_id": "75ac92f8-f4df-578b-b2fe-5a18f920225c",
+          "answer": "-4",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task59/prefix0",
+          "synthetic_entity_id": 1000055,
+          "question_id": "d8bc3c84-d87b-5098-9894-bdbe3470f42c",
+          "answer": "-3",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task60/prefix0",
+          "synthetic_entity_id": 1000023,
+          "question_id": "54743640-795e-599f-bbce-04593030741e",
+          "answer": "3",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task61/prefix0",
+          "synthetic_entity_id": 1000048,
+          "question_id": "b2643795-420f-5a91-b854-f776a8c0be91",
+          "answer": "0",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task62/prefix0",
+          "synthetic_entity_id": 1000004,
+          "question_id": "0b766fcc-2939-5549-ae3d-766b81eeb31e",
+          "answer": "5",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task63/prefix0",
+          "synthetic_entity_id": 1000005,
+          "question_id": "14155d1f-33b9-5119-be17-8ec314343cef",
+          "answer": "3",
+          "old_shortcut_correct": false
+        }
+      ],
+      "answer_set": [
+        "-1",
+        "-2",
+        "-3",
+        "-4",
+        "-5",
+        "-6",
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "old_shortcut_correct": 7,
+      "total": 64
+    },
+    {
+      "pool": "moderate",
+      "scenario": "no_history",
+      "candidate_count": 64,
+      "draws": [
+        {
+          "seed": "independent-review/kp17592186119805/task0/prefix0",
+          "synthetic_entity_id": 1000055,
+          "question_id": "ec873023-96ba-5346-8589-d4a1866eeb3a",
+          "answer": "No solution",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task1/prefix0",
+          "synthetic_entity_id": 1000005,
+          "question_id": "19df746a-0c6f-5760-a821-8c3f286c2a7a",
+          "answer": "-1",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task2/prefix0",
+          "synthetic_entity_id": 1000035,
+          "question_id": "9d63965c-14b8-512f-866c-443c875b1d0a",
+          "answer": "-4",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task3/prefix0",
+          "synthetic_entity_id": 1000029,
+          "question_id": "867c2825-1f3f-58c1-a2d7-c0ae5d4515db",
+          "answer": "2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task4/prefix0",
+          "synthetic_entity_id": 1000049,
+          "question_id": "ba2ffa41-ec9d-5df6-8f48-444926b5fe72",
+          "answer": "6",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task5/prefix0",
+          "synthetic_entity_id": 1000044,
+          "question_id": "b31e5f93-1a44-5f4f-887b-aa37e152aafa",
+          "answer": "No solution",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task6/prefix0",
+          "synthetic_entity_id": 1000016,
+          "question_id": "56cc14b2-8712-5a78-b89a-6f6774716289",
+          "answer": "-3",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task7/prefix0",
+          "synthetic_entity_id": 1000052,
+          "question_id": "cd39b6f9-1a1f-5d16-a3fe-50ee711ce98d",
+          "answer": "4",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task8/prefix0",
+          "synthetic_entity_id": 1000054,
+          "question_id": "e383f11b-6f67-59b6-8666-d7824650fb81",
+          "answer": "No solution",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task9/prefix0",
+          "synthetic_entity_id": 1000015,
+          "question_id": "5508a7a2-1ecd-580f-a064-54a3a42ec67c",
+          "answer": "-3",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task10/prefix0",
+          "synthetic_entity_id": 1000041,
+          "question_id": "a7f85b02-e42c-5c49-8b45-ff8403f31acb",
+          "answer": "No solution",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task11/prefix0",
+          "synthetic_entity_id": 1000058,
+          "question_id": "f0fd12ee-7fc0-54a7-ab28-44351c20695d",
+          "answer": "-2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task12/prefix0",
+          "synthetic_entity_id": 1000037,
+          "question_id": "a0b34f62-04a6-530e-97a0-4fceeaf9fc32",
+          "answer": "1",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task13/prefix0",
+          "synthetic_entity_id": 1000000,
+          "question_id": "056ad270-7620-5051-acc1-4c261e4397ad",
+          "answer": "-10/3",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task14/prefix0",
+          "synthetic_entity_id": 1000047,
+          "question_id": "b9de0419-e6ad-524c-8fd2-fffbfcfebd0a",
+          "answer": "4",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task15/prefix0",
+          "synthetic_entity_id": 1000051,
+          "question_id": "c7e59ede-7848-5f7a-9c13-2a73f218441b",
+          "answer": "No solution",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task16/prefix0",
+          "synthetic_entity_id": 1000055,
+          "question_id": "ec873023-96ba-5346-8589-d4a1866eeb3a",
+          "answer": "No solution",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task17/prefix0",
+          "synthetic_entity_id": 1000000,
+          "question_id": "056ad270-7620-5051-acc1-4c261e4397ad",
+          "answer": "-10/3",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task18/prefix0",
+          "synthetic_entity_id": 1000003,
+          "question_id": "116dc242-069f-55eb-b915-7b548f3cf770",
+          "answer": "-11",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task19/prefix0",
+          "synthetic_entity_id": 1000003,
+          "question_id": "116dc242-069f-55eb-b915-7b548f3cf770",
+          "answer": "-11",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task20/prefix0",
+          "synthetic_entity_id": 1000035,
+          "question_id": "9d63965c-14b8-512f-866c-443c875b1d0a",
+          "answer": "-4",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task21/prefix0",
+          "synthetic_entity_id": 1000046,
+          "question_id": "b89453c7-e4b2-5e41-82de-5f1a38929b9e",
+          "answer": "6",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task22/prefix0",
+          "synthetic_entity_id": 1000028,
+          "question_id": "864c7540-a3dd-5d0c-8dfb-c13472ca07df",
+          "answer": "3",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task23/prefix0",
+          "synthetic_entity_id": 1000041,
+          "question_id": "a7f85b02-e42c-5c49-8b45-ff8403f31acb",
+          "answer": "No solution",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task24/prefix0",
+          "synthetic_entity_id": 1000001,
+          "question_id": "0929d102-ff5b-51e5-bae4-17191fc8bed3",
+          "answer": "7",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task25/prefix0",
+          "synthetic_entity_id": 1000031,
+          "question_id": "8b9848f0-8884-5ef8-ab3e-aeb450d4d88d",
+          "answer": "3",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task26/prefix0",
+          "synthetic_entity_id": 1000063,
+          "question_id": "fe6049e0-7d3c-5877-998f-0e2aa5bf5f15",
+          "answer": "-7",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task27/prefix0",
+          "synthetic_entity_id": 1000007,
+          "question_id": "1f41185d-f526-5ea6-9056-39362a7bbffe",
+          "answer": "-7",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task28/prefix0",
+          "synthetic_entity_id": 1000053,
+          "question_id": "cebed8f0-6a9d-5925-98fd-de68dc92a7b9",
+          "answer": "No solution",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task29/prefix0",
+          "synthetic_entity_id": 1000052,
+          "question_id": "cd39b6f9-1a1f-5d16-a3fe-50ee711ce98d",
+          "answer": "4",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task30/prefix0",
+          "synthetic_entity_id": 1000026,
+          "question_id": "7c0e582b-33a1-5e87-ba5a-7c4dd5b21c3d",
+          "answer": "2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task31/prefix0",
+          "synthetic_entity_id": 1000008,
+          "question_id": "2000cf15-cefb-5f3c-af7a-395b6c6ac734",
+          "answer": "No solution",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task32/prefix0",
+          "synthetic_entity_id": 1000022,
+          "question_id": "6b23e05f-d96f-5192-a04c-a2ebc2d95d2f",
+          "answer": "2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task33/prefix0",
+          "synthetic_entity_id": 1000051,
+          "question_id": "c7e59ede-7848-5f7a-9c13-2a73f218441b",
+          "answer": "No solution",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task34/prefix0",
+          "synthetic_entity_id": 1000024,
+          "question_id": "70bcbc9b-1d6e-53b7-96d1-32953bc2b661",
+          "answer": "-3",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task35/prefix0",
+          "synthetic_entity_id": 1000021,
+          "question_id": "6b074e8c-8243-5fa5-a5b1-5a18c7371ad9",
+          "answer": "-4",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task36/prefix0",
+          "synthetic_entity_id": 1000038,
+          "question_id": "a1bbace0-5a1d-592f-a7db-cc27c8984f04",
+          "answer": "8",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task37/prefix0",
+          "synthetic_entity_id": 1000036,
+          "question_id": "9d6c6ae7-c551-50dc-8936-66aa27e4adec",
+          "answer": "-4",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task38/prefix0",
+          "synthetic_entity_id": 1000013,
+          "question_id": "44c22944-faf6-58ef-88a8-9d2846a940b6",
+          "answer": "5",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task39/prefix0",
+          "synthetic_entity_id": 1000004,
+          "question_id": "15ab7d2c-bbc3-57fe-abb6-e0b2e8b6ae06",
+          "answer": "2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task40/prefix0",
+          "synthetic_entity_id": 1000047,
+          "question_id": "b9de0419-e6ad-524c-8fd2-fffbfcfebd0a",
+          "answer": "4",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task41/prefix0",
+          "synthetic_entity_id": 1000009,
+          "question_id": "266a25c2-f37b-53d4-b0fd-c08abf0cdcc2",
+          "answer": "-8",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task42/prefix0",
+          "synthetic_entity_id": 1000006,
+          "question_id": "1c764540-cd1a-5a32-808b-03f21805b220",
+          "answer": "No solution",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task43/prefix0",
+          "synthetic_entity_id": 1000023,
+          "question_id": "6cc77d2b-f15e-5038-8741-ea5e40dfd399",
+          "answer": "12",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task44/prefix0",
+          "synthetic_entity_id": 1000034,
+          "question_id": "9cd05b83-97ae-5f27-93fa-a69890e6e117",
+          "answer": "8",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task45/prefix0",
+          "synthetic_entity_id": 1000019,
+          "question_id": "5b931d42-82a5-5c6e-b9c0-5ade943bb100",
+          "answer": "-4",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task46/prefix0",
+          "synthetic_entity_id": 1000062,
+          "question_id": "fe26cb87-3fd8-542c-98c3-56de5aa54a30",
+          "answer": "No solution",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task47/prefix0",
+          "synthetic_entity_id": 1000028,
+          "question_id": "864c7540-a3dd-5d0c-8dfb-c13472ca07df",
+          "answer": "3",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task48/prefix0",
+          "synthetic_entity_id": 1000001,
+          "question_id": "0929d102-ff5b-51e5-bae4-17191fc8bed3",
+          "answer": "7",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task49/prefix0",
+          "synthetic_entity_id": 1000031,
+          "question_id": "8b9848f0-8884-5ef8-ab3e-aeb450d4d88d",
+          "answer": "3",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task50/prefix0",
+          "synthetic_entity_id": 1000033,
+          "question_id": "9c16aad2-3b78-5013-aaa8-fc3629dfa941",
+          "answer": "7/3",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task51/prefix0",
+          "synthetic_entity_id": 1000026,
+          "question_id": "7c0e582b-33a1-5e87-ba5a-7c4dd5b21c3d",
+          "answer": "2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task52/prefix0",
+          "synthetic_entity_id": 1000052,
+          "question_id": "cd39b6f9-1a1f-5d16-a3fe-50ee711ce98d",
+          "answer": "4",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task53/prefix0",
+          "synthetic_entity_id": 1000004,
+          "question_id": "15ab7d2c-bbc3-57fe-abb6-e0b2e8b6ae06",
+          "answer": "2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task54/prefix0",
+          "synthetic_entity_id": 1000061,
+          "question_id": "fa1e9fa4-1482-5d72-93f2-b2a6f4ed2a36",
+          "answer": "3",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task55/prefix0",
+          "synthetic_entity_id": 1000022,
+          "question_id": "6b23e05f-d96f-5192-a04c-a2ebc2d95d2f",
+          "answer": "2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task56/prefix0",
+          "synthetic_entity_id": 1000048,
+          "question_id": "b9e18fa2-1284-5723-9606-8cce114f9572",
+          "answer": "No solution",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task57/prefix0",
+          "synthetic_entity_id": 1000050,
+          "question_id": "c306780a-5ad2-5206-af5c-df3a50baa224",
+          "answer": "-7",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task58/prefix0",
+          "synthetic_entity_id": 1000036,
+          "question_id": "9d6c6ae7-c551-50dc-8936-66aa27e4adec",
+          "answer": "-4",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task59/prefix0",
+          "synthetic_entity_id": 1000055,
+          "question_id": "ec873023-96ba-5346-8589-d4a1866eeb3a",
+          "answer": "No solution",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task60/prefix0",
+          "synthetic_entity_id": 1000023,
+          "question_id": "6cc77d2b-f15e-5038-8741-ea5e40dfd399",
+          "answer": "12",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task61/prefix0",
+          "synthetic_entity_id": 1000048,
+          "question_id": "b9e18fa2-1284-5723-9606-8cce114f9572",
+          "answer": "No solution",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task62/prefix0",
+          "synthetic_entity_id": 1000004,
+          "question_id": "15ab7d2c-bbc3-57fe-abb6-e0b2e8b6ae06",
+          "answer": "2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task63/prefix0",
+          "synthetic_entity_id": 1000005,
+          "question_id": "19df746a-0c6f-5760-a821-8c3f286c2a7a",
+          "answer": "-1",
+          "old_shortcut_correct": false
+        }
+      ],
+      "answer_set": [
+        "-1",
+        "-10/3",
+        "-11",
+        "-2",
+        "-3",
+        "-4",
+        "-7",
+        "-8",
+        "1",
+        "12",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "7/3",
+        "8",
+        "No solution"
+      ],
+      "old_shortcut_correct": 15,
+      "total": 64
+    },
+    {
+      "pool": "moderate",
+      "scenario": "exclude_first_half",
+      "candidate_count": 32,
+      "draws": [
+        {
+          "seed": "independent-review/kp17592186119805/task0/prefix0",
+          "synthetic_entity_id": 1000027,
+          "question_id": "ec873023-96ba-5346-8589-d4a1866eeb3a",
+          "answer": "No solution",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task1/prefix0",
+          "synthetic_entity_id": 1000002,
+          "question_id": "2000cf15-cefb-5f3c-af7a-395b6c6ac734",
+          "answer": "No solution",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task2/prefix0",
+          "synthetic_entity_id": 1000017,
+          "question_id": "864c7540-a3dd-5d0c-8dfb-c13472ca07df",
+          "answer": "3",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task3/prefix0",
+          "synthetic_entity_id": 1000014,
+          "question_id": "70c91f1d-5ee3-5e5a-9693-8dfa0affe75b",
+          "answer": "No solution",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task4/prefix0",
+          "synthetic_entity_id": 1000024,
+          "question_id": "c306780a-5ad2-5206-af5c-df3a50baa224",
+          "answer": "-7",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task5/prefix0",
+          "synthetic_entity_id": 1000022,
+          "question_id": "b9e18fa2-1284-5723-9606-8cce114f9572",
+          "answer": "No solution",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task6/prefix0",
+          "synthetic_entity_id": 1000008,
+          "question_id": "56cc14b2-8712-5a78-b89a-6f6774716289",
+          "answer": "-3",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task7/prefix0",
+          "synthetic_entity_id": 1000026,
+          "question_id": "cebed8f0-6a9d-5925-98fd-de68dc92a7b9",
+          "answer": "No solution",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task8/prefix0",
+          "synthetic_entity_id": 1000027,
+          "question_id": "ec873023-96ba-5346-8589-d4a1866eeb3a",
+          "answer": "No solution",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task9/prefix0",
+          "synthetic_entity_id": 1000007,
+          "question_id": "5508a7a2-1ecd-580f-a064-54a3a42ec67c",
+          "answer": "-3",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task10/prefix0",
+          "synthetic_entity_id": 1000020,
+          "question_id": "b31e5f93-1a44-5f4f-887b-aa37e152aafa",
+          "answer": "No solution",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task11/prefix0",
+          "synthetic_entity_id": 1000029,
+          "question_id": "f2af3586-96fb-50dd-ae7c-4513571f0b4c",
+          "answer": "6",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task12/prefix0",
+          "synthetic_entity_id": 1000018,
+          "question_id": "9c16aad2-3b78-5013-aaa8-fc3629dfa941",
+          "answer": "7/3",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task13/prefix0",
+          "synthetic_entity_id": 1000000,
+          "question_id": "056ad270-7620-5051-acc1-4c261e4397ad",
+          "answer": "-10/3",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task14/prefix0",
+          "synthetic_entity_id": 1000023,
+          "question_id": "ba2ffa41-ec9d-5df6-8f48-444926b5fe72",
+          "answer": "6",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task15/prefix0",
+          "synthetic_entity_id": 1000025,
+          "question_id": "cd39b6f9-1a1f-5d16-a3fe-50ee711ce98d",
+          "answer": "4",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task16/prefix0",
+          "synthetic_entity_id": 1000027,
+          "question_id": "ec873023-96ba-5346-8589-d4a1866eeb3a",
+          "answer": "No solution",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task17/prefix0",
+          "synthetic_entity_id": 1000000,
+          "question_id": "056ad270-7620-5051-acc1-4c261e4397ad",
+          "answer": "-10/3",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task18/prefix0",
+          "synthetic_entity_id": 1000001,
+          "question_id": "0c7fa017-a116-5d32-b61d-86305f248091",
+          "answer": "4",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task19/prefix0",
+          "synthetic_entity_id": 1000001,
+          "question_id": "0c7fa017-a116-5d32-b61d-86305f248091",
+          "answer": "4",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task20/prefix0",
+          "synthetic_entity_id": 1000017,
+          "question_id": "864c7540-a3dd-5d0c-8dfb-c13472ca07df",
+          "answer": "3",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task21/prefix0",
+          "synthetic_entity_id": 1000023,
+          "question_id": "ba2ffa41-ec9d-5df6-8f48-444926b5fe72",
+          "answer": "6",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task22/prefix0",
+          "synthetic_entity_id": 1000014,
+          "question_id": "70c91f1d-5ee3-5e5a-9693-8dfa0affe75b",
+          "answer": "No solution",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task23/prefix0",
+          "synthetic_entity_id": 1000020,
+          "question_id": "b31e5f93-1a44-5f4f-887b-aa37e152aafa",
+          "answer": "No solution",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task24/prefix0",
+          "synthetic_entity_id": 1000000,
+          "question_id": "056ad270-7620-5051-acc1-4c261e4397ad",
+          "answer": "-10/3",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task25/prefix0",
+          "synthetic_entity_id": 1000015,
+          "question_id": "7c0e582b-33a1-5e87-ba5a-7c4dd5b21c3d",
+          "answer": "2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task26/prefix0",
+          "synthetic_entity_id": 1000031,
+          "question_id": "fe6049e0-7d3c-5877-998f-0e2aa5bf5f15",
+          "answer": "-7",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task27/prefix0",
+          "synthetic_entity_id": 1000003,
+          "question_id": "26c87d1a-cf26-5654-8809-34268d7a392f",
+          "answer": "-6",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task28/prefix0",
+          "synthetic_entity_id": 1000026,
+          "question_id": "cebed8f0-6a9d-5925-98fd-de68dc92a7b9",
+          "answer": "No solution",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task29/prefix0",
+          "synthetic_entity_id": 1000026,
+          "question_id": "cebed8f0-6a9d-5925-98fd-de68dc92a7b9",
+          "answer": "No solution",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task30/prefix0",
+          "synthetic_entity_id": 1000013,
+          "question_id": "6b074e8c-8243-5fa5-a5b1-5a18c7371ad9",
+          "answer": "-4",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task31/prefix0",
+          "synthetic_entity_id": 1000004,
+          "question_id": "3daf3a07-6474-5866-ba4e-b3e07ce6ecf3",
+          "answer": "-2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task32/prefix0",
+          "synthetic_entity_id": 1000011,
+          "question_id": "5b931d42-82a5-5c6e-b9c0-5ade943bb100",
+          "answer": "-4",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task33/prefix0",
+          "synthetic_entity_id": 1000025,
+          "question_id": "cd39b6f9-1a1f-5d16-a3fe-50ee711ce98d",
+          "answer": "4",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task34/prefix0",
+          "synthetic_entity_id": 1000012,
+          "question_id": "64ba7ef0-9570-5d58-9697-f6755ae4838c",
+          "answer": "-7",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task35/prefix0",
+          "synthetic_entity_id": 1000010,
+          "question_id": "58068d80-9c52-5c0a-8603-b8d5e0b3f43a",
+          "answer": "-7/3",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task36/prefix0",
+          "synthetic_entity_id": 1000019,
+          "question_id": "9d63965c-14b8-512f-866c-443c875b1d0a",
+          "answer": "-4",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task37/prefix0",
+          "synthetic_entity_id": 1000018,
+          "question_id": "9c16aad2-3b78-5013-aaa8-fc3629dfa941",
+          "answer": "7/3",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task38/prefix0",
+          "synthetic_entity_id": 1000006,
+          "question_id": "54c6e4b5-04cf-592a-962e-de9c8e17324e",
+          "answer": "3",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task39/prefix0",
+          "synthetic_entity_id": 1000002,
+          "question_id": "2000cf15-cefb-5f3c-af7a-395b6c6ac734",
+          "answer": "No solution",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task40/prefix0",
+          "synthetic_entity_id": 1000023,
+          "question_id": "ba2ffa41-ec9d-5df6-8f48-444926b5fe72",
+          "answer": "6",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task41/prefix0",
+          "synthetic_entity_id": 1000004,
+          "question_id": "3daf3a07-6474-5866-ba4e-b3e07ce6ecf3",
+          "answer": "-2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task42/prefix0",
+          "synthetic_entity_id": 1000003,
+          "question_id": "26c87d1a-cf26-5654-8809-34268d7a392f",
+          "answer": "-6",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task43/prefix0",
+          "synthetic_entity_id": 1000011,
+          "question_id": "5b931d42-82a5-5c6e-b9c0-5ade943bb100",
+          "answer": "-4",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task44/prefix0",
+          "synthetic_entity_id": 1000017,
+          "question_id": "864c7540-a3dd-5d0c-8dfb-c13472ca07df",
+          "answer": "3",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task45/prefix0",
+          "synthetic_entity_id": 1000009,
+          "question_id": "57b5f6d5-64e3-599d-ac21-1763c6421dff",
+          "answer": "-6",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task46/prefix0",
+          "synthetic_entity_id": 1000031,
+          "question_id": "fe6049e0-7d3c-5877-998f-0e2aa5bf5f15",
+          "answer": "-7",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task47/prefix0",
+          "synthetic_entity_id": 1000014,
+          "question_id": "70c91f1d-5ee3-5e5a-9693-8dfa0affe75b",
+          "answer": "No solution",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task48/prefix0",
+          "synthetic_entity_id": 1000000,
+          "question_id": "056ad270-7620-5051-acc1-4c261e4397ad",
+          "answer": "-10/3",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task49/prefix0",
+          "synthetic_entity_id": 1000015,
+          "question_id": "7c0e582b-33a1-5e87-ba5a-7c4dd5b21c3d",
+          "answer": "2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task50/prefix0",
+          "synthetic_entity_id": 1000016,
+          "question_id": "83b00656-11aa-5ac2-be10-1e8fb88ac87a",
+          "answer": "-5",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task51/prefix0",
+          "synthetic_entity_id": 1000013,
+          "question_id": "6b074e8c-8243-5fa5-a5b1-5a18c7371ad9",
+          "answer": "-4",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task52/prefix0",
+          "synthetic_entity_id": 1000026,
+          "question_id": "cebed8f0-6a9d-5925-98fd-de68dc92a7b9",
+          "answer": "No solution",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task53/prefix0",
+          "synthetic_entity_id": 1000002,
+          "question_id": "2000cf15-cefb-5f3c-af7a-395b6c6ac734",
+          "answer": "No solution",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task54/prefix0",
+          "synthetic_entity_id": 1000030,
+          "question_id": "fa1e9fa4-1482-5d72-93f2-b2a6f4ed2a36",
+          "answer": "3",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task55/prefix0",
+          "synthetic_entity_id": 1000011,
+          "question_id": "5b931d42-82a5-5c6e-b9c0-5ade943bb100",
+          "answer": "-4",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task56/prefix0",
+          "synthetic_entity_id": 1000024,
+          "question_id": "c306780a-5ad2-5206-af5c-df3a50baa224",
+          "answer": "-7",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task57/prefix0",
+          "synthetic_entity_id": 1000025,
+          "question_id": "cd39b6f9-1a1f-5d16-a3fe-50ee711ce98d",
+          "answer": "4",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task58/prefix0",
+          "synthetic_entity_id": 1000018,
+          "question_id": "9c16aad2-3b78-5013-aaa8-fc3629dfa941",
+          "answer": "7/3",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task59/prefix0",
+          "synthetic_entity_id": 1000027,
+          "question_id": "ec873023-96ba-5346-8589-d4a1866eeb3a",
+          "answer": "No solution",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task60/prefix0",
+          "synthetic_entity_id": 1000011,
+          "question_id": "5b931d42-82a5-5c6e-b9c0-5ade943bb100",
+          "answer": "-4",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task61/prefix0",
+          "synthetic_entity_id": 1000024,
+          "question_id": "c306780a-5ad2-5206-af5c-df3a50baa224",
+          "answer": "-7",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task62/prefix0",
+          "synthetic_entity_id": 1000002,
+          "question_id": "2000cf15-cefb-5f3c-af7a-395b6c6ac734",
+          "answer": "No solution",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task63/prefix0",
+          "synthetic_entity_id": 1000002,
+          "question_id": "2000cf15-cefb-5f3c-af7a-395b6c6ac734",
+          "answer": "No solution",
+          "old_shortcut_correct": true
+        }
+      ],
+      "answer_set": [
+        "-10/3",
+        "-2",
+        "-3",
+        "-4",
+        "-5",
+        "-6",
+        "-7",
+        "-7/3",
+        "2",
+        "3",
+        "4",
+        "6",
+        "7/3",
+        "No solution"
+      ],
+      "old_shortcut_correct": 19,
+      "total": 64
+    },
+    {
+      "pool": "batch",
+      "scenario": "no_history",
+      "candidate_count": 5,
+      "draws": [
+        {
+          "seed": "independent-review/kp17592186119805/task0/prefix0",
+          "synthetic_entity_id": 1000004,
+          "question_id": "ec60821f-06f7-5e61-a406-3f44101d96fa",
+          "answer": "-2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task1/prefix0",
+          "synthetic_entity_id": 1000000,
+          "question_id": "3a9b157b-a2cc-5c3c-94ba-fefc43ff6027",
+          "answer": "-2",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task2/prefix0",
+          "synthetic_entity_id": 1000002,
+          "question_id": "b96f1363-dda9-567b-812a-57d61f053ef8",
+          "answer": "-2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task3/prefix0",
+          "synthetic_entity_id": 1000002,
+          "question_id": "b96f1363-dda9-567b-812a-57d61f053ef8",
+          "answer": "-2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task4/prefix0",
+          "synthetic_entity_id": 1000003,
+          "question_id": "d52e64aa-81c4-5ae1-ae3a-74d96e9f177f",
+          "answer": "-1",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task5/prefix0",
+          "synthetic_entity_id": 1000003,
+          "question_id": "d52e64aa-81c4-5ae1-ae3a-74d96e9f177f",
+          "answer": "-1",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task6/prefix0",
+          "synthetic_entity_id": 1000001,
+          "question_id": "8df737ca-89f5-51b3-bdc0-3e391ed913df",
+          "answer": "-7",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task7/prefix0",
+          "synthetic_entity_id": 1000004,
+          "question_id": "ec60821f-06f7-5e61-a406-3f44101d96fa",
+          "answer": "-2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task8/prefix0",
+          "synthetic_entity_id": 1000004,
+          "question_id": "ec60821f-06f7-5e61-a406-3f44101d96fa",
+          "answer": "-2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task9/prefix0",
+          "synthetic_entity_id": 1000001,
+          "question_id": "8df737ca-89f5-51b3-bdc0-3e391ed913df",
+          "answer": "-7",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task10/prefix0",
+          "synthetic_entity_id": 1000003,
+          "question_id": "d52e64aa-81c4-5ae1-ae3a-74d96e9f177f",
+          "answer": "-1",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task11/prefix0",
+          "synthetic_entity_id": 1000004,
+          "question_id": "ec60821f-06f7-5e61-a406-3f44101d96fa",
+          "answer": "-2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task12/prefix0",
+          "synthetic_entity_id": 1000002,
+          "question_id": "b96f1363-dda9-567b-812a-57d61f053ef8",
+          "answer": "-2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task13/prefix0",
+          "synthetic_entity_id": 1000000,
+          "question_id": "3a9b157b-a2cc-5c3c-94ba-fefc43ff6027",
+          "answer": "-2",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task14/prefix0",
+          "synthetic_entity_id": 1000003,
+          "question_id": "d52e64aa-81c4-5ae1-ae3a-74d96e9f177f",
+          "answer": "-1",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task15/prefix0",
+          "synthetic_entity_id": 1000004,
+          "question_id": "ec60821f-06f7-5e61-a406-3f44101d96fa",
+          "answer": "-2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task16/prefix0",
+          "synthetic_entity_id": 1000004,
+          "question_id": "ec60821f-06f7-5e61-a406-3f44101d96fa",
+          "answer": "-2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task17/prefix0",
+          "synthetic_entity_id": 1000000,
+          "question_id": "3a9b157b-a2cc-5c3c-94ba-fefc43ff6027",
+          "answer": "-2",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task18/prefix0",
+          "synthetic_entity_id": 1000000,
+          "question_id": "3a9b157b-a2cc-5c3c-94ba-fefc43ff6027",
+          "answer": "-2",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task19/prefix0",
+          "synthetic_entity_id": 1000000,
+          "question_id": "3a9b157b-a2cc-5c3c-94ba-fefc43ff6027",
+          "answer": "-2",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task20/prefix0",
+          "synthetic_entity_id": 1000002,
+          "question_id": "b96f1363-dda9-567b-812a-57d61f053ef8",
+          "answer": "-2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task21/prefix0",
+          "synthetic_entity_id": 1000003,
+          "question_id": "d52e64aa-81c4-5ae1-ae3a-74d96e9f177f",
+          "answer": "-1",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task22/prefix0",
+          "synthetic_entity_id": 1000002,
+          "question_id": "b96f1363-dda9-567b-812a-57d61f053ef8",
+          "answer": "-2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task23/prefix0",
+          "synthetic_entity_id": 1000003,
+          "question_id": "d52e64aa-81c4-5ae1-ae3a-74d96e9f177f",
+          "answer": "-1",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task24/prefix0",
+          "synthetic_entity_id": 1000000,
+          "question_id": "3a9b157b-a2cc-5c3c-94ba-fefc43ff6027",
+          "answer": "-2",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task25/prefix0",
+          "synthetic_entity_id": 1000002,
+          "question_id": "b96f1363-dda9-567b-812a-57d61f053ef8",
+          "answer": "-2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task26/prefix0",
+          "synthetic_entity_id": 1000004,
+          "question_id": "ec60821f-06f7-5e61-a406-3f44101d96fa",
+          "answer": "-2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task27/prefix0",
+          "synthetic_entity_id": 1000000,
+          "question_id": "3a9b157b-a2cc-5c3c-94ba-fefc43ff6027",
+          "answer": "-2",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task28/prefix0",
+          "synthetic_entity_id": 1000004,
+          "question_id": "ec60821f-06f7-5e61-a406-3f44101d96fa",
+          "answer": "-2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task29/prefix0",
+          "synthetic_entity_id": 1000004,
+          "question_id": "ec60821f-06f7-5e61-a406-3f44101d96fa",
+          "answer": "-2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task30/prefix0",
+          "synthetic_entity_id": 1000002,
+          "question_id": "b96f1363-dda9-567b-812a-57d61f053ef8",
+          "answer": "-2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task31/prefix0",
+          "synthetic_entity_id": 1000000,
+          "question_id": "3a9b157b-a2cc-5c3c-94ba-fefc43ff6027",
+          "answer": "-2",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task32/prefix0",
+          "synthetic_entity_id": 1000001,
+          "question_id": "8df737ca-89f5-51b3-bdc0-3e391ed913df",
+          "answer": "-7",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task33/prefix0",
+          "synthetic_entity_id": 1000004,
+          "question_id": "ec60821f-06f7-5e61-a406-3f44101d96fa",
+          "answer": "-2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task34/prefix0",
+          "synthetic_entity_id": 1000001,
+          "question_id": "8df737ca-89f5-51b3-bdc0-3e391ed913df",
+          "answer": "-7",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task35/prefix0",
+          "synthetic_entity_id": 1000001,
+          "question_id": "8df737ca-89f5-51b3-bdc0-3e391ed913df",
+          "answer": "-7",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task36/prefix0",
+          "synthetic_entity_id": 1000003,
+          "question_id": "d52e64aa-81c4-5ae1-ae3a-74d96e9f177f",
+          "answer": "-1",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task37/prefix0",
+          "synthetic_entity_id": 1000002,
+          "question_id": "b96f1363-dda9-567b-812a-57d61f053ef8",
+          "answer": "-2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task38/prefix0",
+          "synthetic_entity_id": 1000001,
+          "question_id": "8df737ca-89f5-51b3-bdc0-3e391ed913df",
+          "answer": "-7",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task39/prefix0",
+          "synthetic_entity_id": 1000000,
+          "question_id": "3a9b157b-a2cc-5c3c-94ba-fefc43ff6027",
+          "answer": "-2",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task40/prefix0",
+          "synthetic_entity_id": 1000003,
+          "question_id": "d52e64aa-81c4-5ae1-ae3a-74d96e9f177f",
+          "answer": "-1",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task41/prefix0",
+          "synthetic_entity_id": 1000000,
+          "question_id": "3a9b157b-a2cc-5c3c-94ba-fefc43ff6027",
+          "answer": "-2",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task42/prefix0",
+          "synthetic_entity_id": 1000000,
+          "question_id": "3a9b157b-a2cc-5c3c-94ba-fefc43ff6027",
+          "answer": "-2",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task43/prefix0",
+          "synthetic_entity_id": 1000001,
+          "question_id": "8df737ca-89f5-51b3-bdc0-3e391ed913df",
+          "answer": "-7",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task44/prefix0",
+          "synthetic_entity_id": 1000002,
+          "question_id": "b96f1363-dda9-567b-812a-57d61f053ef8",
+          "answer": "-2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task45/prefix0",
+          "synthetic_entity_id": 1000001,
+          "question_id": "8df737ca-89f5-51b3-bdc0-3e391ed913df",
+          "answer": "-7",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task46/prefix0",
+          "synthetic_entity_id": 1000004,
+          "question_id": "ec60821f-06f7-5e61-a406-3f44101d96fa",
+          "answer": "-2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task47/prefix0",
+          "synthetic_entity_id": 1000002,
+          "question_id": "b96f1363-dda9-567b-812a-57d61f053ef8",
+          "answer": "-2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task48/prefix0",
+          "synthetic_entity_id": 1000000,
+          "question_id": "3a9b157b-a2cc-5c3c-94ba-fefc43ff6027",
+          "answer": "-2",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task49/prefix0",
+          "synthetic_entity_id": 1000002,
+          "question_id": "b96f1363-dda9-567b-812a-57d61f053ef8",
+          "answer": "-2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task50/prefix0",
+          "synthetic_entity_id": 1000002,
+          "question_id": "b96f1363-dda9-567b-812a-57d61f053ef8",
+          "answer": "-2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task51/prefix0",
+          "synthetic_entity_id": 1000002,
+          "question_id": "b96f1363-dda9-567b-812a-57d61f053ef8",
+          "answer": "-2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task52/prefix0",
+          "synthetic_entity_id": 1000004,
+          "question_id": "ec60821f-06f7-5e61-a406-3f44101d96fa",
+          "answer": "-2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task53/prefix0",
+          "synthetic_entity_id": 1000000,
+          "question_id": "3a9b157b-a2cc-5c3c-94ba-fefc43ff6027",
+          "answer": "-2",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task54/prefix0",
+          "synthetic_entity_id": 1000004,
+          "question_id": "ec60821f-06f7-5e61-a406-3f44101d96fa",
+          "answer": "-2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task55/prefix0",
+          "synthetic_entity_id": 1000001,
+          "question_id": "8df737ca-89f5-51b3-bdc0-3e391ed913df",
+          "answer": "-7",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task56/prefix0",
+          "synthetic_entity_id": 1000003,
+          "question_id": "d52e64aa-81c4-5ae1-ae3a-74d96e9f177f",
+          "answer": "-1",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task57/prefix0",
+          "synthetic_entity_id": 1000003,
+          "question_id": "d52e64aa-81c4-5ae1-ae3a-74d96e9f177f",
+          "answer": "-1",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task58/prefix0",
+          "synthetic_entity_id": 1000002,
+          "question_id": "b96f1363-dda9-567b-812a-57d61f053ef8",
+          "answer": "-2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task59/prefix0",
+          "synthetic_entity_id": 1000004,
+          "question_id": "ec60821f-06f7-5e61-a406-3f44101d96fa",
+          "answer": "-2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task60/prefix0",
+          "synthetic_entity_id": 1000001,
+          "question_id": "8df737ca-89f5-51b3-bdc0-3e391ed913df",
+          "answer": "-7",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task61/prefix0",
+          "synthetic_entity_id": 1000003,
+          "question_id": "d52e64aa-81c4-5ae1-ae3a-74d96e9f177f",
+          "answer": "-1",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task62/prefix0",
+          "synthetic_entity_id": 1000000,
+          "question_id": "3a9b157b-a2cc-5c3c-94ba-fefc43ff6027",
+          "answer": "-2",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task63/prefix0",
+          "synthetic_entity_id": 1000000,
+          "question_id": "3a9b157b-a2cc-5c3c-94ba-fefc43ff6027",
+          "answer": "-2",
+          "old_shortcut_correct": true
+        }
+      ],
+      "answer_set": [
+        "-1",
+        "-2",
+        "-7"
+      ],
+      "old_shortcut_correct": 15,
+      "total": 64
+    },
+    {
+      "pool": "batch",
+      "scenario": "exclude_first_half",
+      "candidate_count": 3,
+      "draws": [
+        {
+          "seed": "independent-review/kp17592186119805/task0/prefix0",
+          "synthetic_entity_id": 1000002,
+          "question_id": "b96f1363-dda9-567b-812a-57d61f053ef8",
+          "answer": "-2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task1/prefix0",
+          "synthetic_entity_id": 1000000,
+          "question_id": "3a9b157b-a2cc-5c3c-94ba-fefc43ff6027",
+          "answer": "-2",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task2/prefix0",
+          "synthetic_entity_id": 1000001,
+          "question_id": "8df737ca-89f5-51b3-bdc0-3e391ed913df",
+          "answer": "-7",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task3/prefix0",
+          "synthetic_entity_id": 1000001,
+          "question_id": "8df737ca-89f5-51b3-bdc0-3e391ed913df",
+          "answer": "-7",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task4/prefix0",
+          "synthetic_entity_id": 1000002,
+          "question_id": "b96f1363-dda9-567b-812a-57d61f053ef8",
+          "answer": "-2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task5/prefix0",
+          "synthetic_entity_id": 1000002,
+          "question_id": "b96f1363-dda9-567b-812a-57d61f053ef8",
+          "answer": "-2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task6/prefix0",
+          "synthetic_entity_id": 1000000,
+          "question_id": "3a9b157b-a2cc-5c3c-94ba-fefc43ff6027",
+          "answer": "-2",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task7/prefix0",
+          "synthetic_entity_id": 1000002,
+          "question_id": "b96f1363-dda9-567b-812a-57d61f053ef8",
+          "answer": "-2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task8/prefix0",
+          "synthetic_entity_id": 1000002,
+          "question_id": "b96f1363-dda9-567b-812a-57d61f053ef8",
+          "answer": "-2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task9/prefix0",
+          "synthetic_entity_id": 1000000,
+          "question_id": "3a9b157b-a2cc-5c3c-94ba-fefc43ff6027",
+          "answer": "-2",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task10/prefix0",
+          "synthetic_entity_id": 1000001,
+          "question_id": "8df737ca-89f5-51b3-bdc0-3e391ed913df",
+          "answer": "-7",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task11/prefix0",
+          "synthetic_entity_id": 1000002,
+          "question_id": "b96f1363-dda9-567b-812a-57d61f053ef8",
+          "answer": "-2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task12/prefix0",
+          "synthetic_entity_id": 1000001,
+          "question_id": "8df737ca-89f5-51b3-bdc0-3e391ed913df",
+          "answer": "-7",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task13/prefix0",
+          "synthetic_entity_id": 1000000,
+          "question_id": "3a9b157b-a2cc-5c3c-94ba-fefc43ff6027",
+          "answer": "-2",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task14/prefix0",
+          "synthetic_entity_id": 1000002,
+          "question_id": "b96f1363-dda9-567b-812a-57d61f053ef8",
+          "answer": "-2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task15/prefix0",
+          "synthetic_entity_id": 1000002,
+          "question_id": "b96f1363-dda9-567b-812a-57d61f053ef8",
+          "answer": "-2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task16/prefix0",
+          "synthetic_entity_id": 1000002,
+          "question_id": "b96f1363-dda9-567b-812a-57d61f053ef8",
+          "answer": "-2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task17/prefix0",
+          "synthetic_entity_id": 1000000,
+          "question_id": "3a9b157b-a2cc-5c3c-94ba-fefc43ff6027",
+          "answer": "-2",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task18/prefix0",
+          "synthetic_entity_id": 1000000,
+          "question_id": "3a9b157b-a2cc-5c3c-94ba-fefc43ff6027",
+          "answer": "-2",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task19/prefix0",
+          "synthetic_entity_id": 1000000,
+          "question_id": "3a9b157b-a2cc-5c3c-94ba-fefc43ff6027",
+          "answer": "-2",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task20/prefix0",
+          "synthetic_entity_id": 1000001,
+          "question_id": "8df737ca-89f5-51b3-bdc0-3e391ed913df",
+          "answer": "-7",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task21/prefix0",
+          "synthetic_entity_id": 1000002,
+          "question_id": "b96f1363-dda9-567b-812a-57d61f053ef8",
+          "answer": "-2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task22/prefix0",
+          "synthetic_entity_id": 1000001,
+          "question_id": "8df737ca-89f5-51b3-bdc0-3e391ed913df",
+          "answer": "-7",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task23/prefix0",
+          "synthetic_entity_id": 1000001,
+          "question_id": "8df737ca-89f5-51b3-bdc0-3e391ed913df",
+          "answer": "-7",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task24/prefix0",
+          "synthetic_entity_id": 1000000,
+          "question_id": "3a9b157b-a2cc-5c3c-94ba-fefc43ff6027",
+          "answer": "-2",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task25/prefix0",
+          "synthetic_entity_id": 1000001,
+          "question_id": "8df737ca-89f5-51b3-bdc0-3e391ed913df",
+          "answer": "-7",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task26/prefix0",
+          "synthetic_entity_id": 1000002,
+          "question_id": "b96f1363-dda9-567b-812a-57d61f053ef8",
+          "answer": "-2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task27/prefix0",
+          "synthetic_entity_id": 1000000,
+          "question_id": "3a9b157b-a2cc-5c3c-94ba-fefc43ff6027",
+          "answer": "-2",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task28/prefix0",
+          "synthetic_entity_id": 1000002,
+          "question_id": "b96f1363-dda9-567b-812a-57d61f053ef8",
+          "answer": "-2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task29/prefix0",
+          "synthetic_entity_id": 1000002,
+          "question_id": "b96f1363-dda9-567b-812a-57d61f053ef8",
+          "answer": "-2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task30/prefix0",
+          "synthetic_entity_id": 1000001,
+          "question_id": "8df737ca-89f5-51b3-bdc0-3e391ed913df",
+          "answer": "-7",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task31/prefix0",
+          "synthetic_entity_id": 1000000,
+          "question_id": "3a9b157b-a2cc-5c3c-94ba-fefc43ff6027",
+          "answer": "-2",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task32/prefix0",
+          "synthetic_entity_id": 1000001,
+          "question_id": "8df737ca-89f5-51b3-bdc0-3e391ed913df",
+          "answer": "-7",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task33/prefix0",
+          "synthetic_entity_id": 1000002,
+          "question_id": "b96f1363-dda9-567b-812a-57d61f053ef8",
+          "answer": "-2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task34/prefix0",
+          "synthetic_entity_id": 1000001,
+          "question_id": "8df737ca-89f5-51b3-bdc0-3e391ed913df",
+          "answer": "-7",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task35/prefix0",
+          "synthetic_entity_id": 1000001,
+          "question_id": "8df737ca-89f5-51b3-bdc0-3e391ed913df",
+          "answer": "-7",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task36/prefix0",
+          "synthetic_entity_id": 1000001,
+          "question_id": "8df737ca-89f5-51b3-bdc0-3e391ed913df",
+          "answer": "-7",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task37/prefix0",
+          "synthetic_entity_id": 1000001,
+          "question_id": "8df737ca-89f5-51b3-bdc0-3e391ed913df",
+          "answer": "-7",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task38/prefix0",
+          "synthetic_entity_id": 1000000,
+          "question_id": "3a9b157b-a2cc-5c3c-94ba-fefc43ff6027",
+          "answer": "-2",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task39/prefix0",
+          "synthetic_entity_id": 1000000,
+          "question_id": "3a9b157b-a2cc-5c3c-94ba-fefc43ff6027",
+          "answer": "-2",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task40/prefix0",
+          "synthetic_entity_id": 1000002,
+          "question_id": "b96f1363-dda9-567b-812a-57d61f053ef8",
+          "answer": "-2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task41/prefix0",
+          "synthetic_entity_id": 1000000,
+          "question_id": "3a9b157b-a2cc-5c3c-94ba-fefc43ff6027",
+          "answer": "-2",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task42/prefix0",
+          "synthetic_entity_id": 1000000,
+          "question_id": "3a9b157b-a2cc-5c3c-94ba-fefc43ff6027",
+          "answer": "-2",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task43/prefix0",
+          "synthetic_entity_id": 1000001,
+          "question_id": "8df737ca-89f5-51b3-bdc0-3e391ed913df",
+          "answer": "-7",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task44/prefix0",
+          "synthetic_entity_id": 1000001,
+          "question_id": "8df737ca-89f5-51b3-bdc0-3e391ed913df",
+          "answer": "-7",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task45/prefix0",
+          "synthetic_entity_id": 1000000,
+          "question_id": "3a9b157b-a2cc-5c3c-94ba-fefc43ff6027",
+          "answer": "-2",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task46/prefix0",
+          "synthetic_entity_id": 1000002,
+          "question_id": "b96f1363-dda9-567b-812a-57d61f053ef8",
+          "answer": "-2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task47/prefix0",
+          "synthetic_entity_id": 1000001,
+          "question_id": "8df737ca-89f5-51b3-bdc0-3e391ed913df",
+          "answer": "-7",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task48/prefix0",
+          "synthetic_entity_id": 1000000,
+          "question_id": "3a9b157b-a2cc-5c3c-94ba-fefc43ff6027",
+          "answer": "-2",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task49/prefix0",
+          "synthetic_entity_id": 1000001,
+          "question_id": "8df737ca-89f5-51b3-bdc0-3e391ed913df",
+          "answer": "-7",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task50/prefix0",
+          "synthetic_entity_id": 1000001,
+          "question_id": "8df737ca-89f5-51b3-bdc0-3e391ed913df",
+          "answer": "-7",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task51/prefix0",
+          "synthetic_entity_id": 1000001,
+          "question_id": "8df737ca-89f5-51b3-bdc0-3e391ed913df",
+          "answer": "-7",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task52/prefix0",
+          "synthetic_entity_id": 1000002,
+          "question_id": "b96f1363-dda9-567b-812a-57d61f053ef8",
+          "answer": "-2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task53/prefix0",
+          "synthetic_entity_id": 1000000,
+          "question_id": "3a9b157b-a2cc-5c3c-94ba-fefc43ff6027",
+          "answer": "-2",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task54/prefix0",
+          "synthetic_entity_id": 1000002,
+          "question_id": "b96f1363-dda9-567b-812a-57d61f053ef8",
+          "answer": "-2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task55/prefix0",
+          "synthetic_entity_id": 1000001,
+          "question_id": "8df737ca-89f5-51b3-bdc0-3e391ed913df",
+          "answer": "-7",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task56/prefix0",
+          "synthetic_entity_id": 1000002,
+          "question_id": "b96f1363-dda9-567b-812a-57d61f053ef8",
+          "answer": "-2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task57/prefix0",
+          "synthetic_entity_id": 1000002,
+          "question_id": "b96f1363-dda9-567b-812a-57d61f053ef8",
+          "answer": "-2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task58/prefix0",
+          "synthetic_entity_id": 1000001,
+          "question_id": "8df737ca-89f5-51b3-bdc0-3e391ed913df",
+          "answer": "-7",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task59/prefix0",
+          "synthetic_entity_id": 1000002,
+          "question_id": "b96f1363-dda9-567b-812a-57d61f053ef8",
+          "answer": "-2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task60/prefix0",
+          "synthetic_entity_id": 1000001,
+          "question_id": "8df737ca-89f5-51b3-bdc0-3e391ed913df",
+          "answer": "-7",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task61/prefix0",
+          "synthetic_entity_id": 1000002,
+          "question_id": "b96f1363-dda9-567b-812a-57d61f053ef8",
+          "answer": "-2",
+          "old_shortcut_correct": false
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task62/prefix0",
+          "synthetic_entity_id": 1000000,
+          "question_id": "3a9b157b-a2cc-5c3c-94ba-fefc43ff6027",
+          "answer": "-2",
+          "old_shortcut_correct": true
+        },
+        {
+          "seed": "independent-review/kp17592186119805/task63/prefix0",
+          "synthetic_entity_id": 1000000,
+          "question_id": "3a9b157b-a2cc-5c3c-94ba-fefc43ff6027",
+          "answer": "-2",
+          "old_shortcut_correct": true
+        }
+      ],
+      "answer_set": [
+        "-2",
+        "-7"
+      ],
+      "old_shortcut_correct": 19,
+      "total": 64
+    }
+  ]
+}

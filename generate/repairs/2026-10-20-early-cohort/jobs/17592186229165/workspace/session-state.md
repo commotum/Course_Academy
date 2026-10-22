@@ -1,21 +1,20 @@
-# Current state — author 198
+# Current state — author 203
 
-Read feedback, both retained findings and the latest of 198 history events. No new generator defect is reported. Preserved runtime files and both strict regression declarations.
+Read feedback, both retained findings, prior session state and required generator documentation. No new generator defect is reported. Preserved all runtime files, source analysis and both strict regression declarations.
 
-Reproduced latest failure first:
+Reproduced the latest failure first:
 `/home/jake/Developer/Course_Academy/.venv/bin/python checks/check_report_installation.py`
-exits 1: required external report has `decision_variation has an unresolved decision shortcut`. The staged correction passes the actual contract/schema and 26 current-record replays, but does not close external installation finding 645672a4cd3f9bf609ca.
+Exit 1: required external report still raises `decision_variation has an unresolved decision shortcut`. Local corrected report passes the actual contract/schema and 26 current-record replays. Finding 645672a4cd3f9bf609ca remains open.
 
 Retained regression:
 `/home/jake/Developer/Course_Academy/.venv/bin/python checks/test_role_exchange.py`
-exits 0. Shared delivery preserves 19 first-resonant, 17 second-resonant and five both-nonresonant records. Controlled reorder, changed-exponent and within-template shortcut checks pass, as do 11 native acceptance and 19 rejection checks.
+Exit 0. Shared delivery preserves 19 first-resonant, 17 second-resonant and five both-nonresonant records. Controlled reorder, changed-exponent, conditional shortcut checks and 30 native-grader checks pass (11 acceptance, 19 rejection).
 
 Small regression:
 `/home/jake/Developer/Course_Academy/.venv/bin/python checks/verify_retained_state.py`
-exits 0: 55 staged artifact hashes, unchanged runtime/source hashes, eight independently parsed mathematical records. Completed source replay, inventory reproduction and inspected UI evidence remain applicable because runtime and source are unchanged.
+Exit 0. Verified 55 staged artifact hashes, unchanged runtime/source hashes, and eight independently parsed mathematical records. Completed source replay, inventory reproductions and inspected UI evidence remain applicable because runtime and source are unchanged.
 
-Commands/results: `evidence/current-validation.json`.
-Strict failure: `evidence/report-repair/current-reproduction.log`.
-No runtime change, external write, database write, engine change or image publication occurred.
+Current commands, samples and results: `evidence/current-validation.json`.
+No external writes, runtime changes, database writes, engine changes or image publication occurred.
 
-Next unfinished step: the runner installs the staged correction at the external destination specified in `evidence/review-installation-handoff.json`, reruns the unchanged strict regression, and obtains fresh independent review. That destination is outside the workspace-only authorization. Another identical author retry cannot perform the installation. Status remains unsupported; do not weaken the regression or alter the generator to mask this evidence-installation failure.
+Next unfinished step: runner installs the staged correction at the original review destination listed in `evidence/review-installation-handoff.json`, reruns the unchanged strict regression, and obtains fresh independent review. That destination is outside workspace-only authorization. Keep the regression strict and author status unsupported; an identical workspace-only retry cannot install the external report.
