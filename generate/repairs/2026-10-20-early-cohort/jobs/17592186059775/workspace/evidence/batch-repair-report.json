@@ -1,0 +1,140 @@
+{
+  "finding": "9e827407d5429a1f8827",
+  "runtime_version": "1.1.1",
+  "manifest": "package.json",
+  "source_changed": false,
+  "root_cause": "Uniform shuffled catalog prefixes can repeat scaled copies of the same qualifying rank in a recognizable coefficient family.",
+  "change": "Select intact five-target contrast banks first; rotate shuffled source families, retain fragmented banks and all semantic instances. No instance-construction or engine changes.",
+  "claims": {
+    "fidelity": {
+      "complete_source_banks": 10,
+      "choices_matched": 50,
+      "distractors_matched": 40,
+      "evidence": "source-replay-current.json"
+    },
+    "correctness": {
+      "retained_readback_records": 81,
+      "evidence": "check-summary.json",
+      "additional_selection_checks": "batch-selection-regression.json"
+    },
+    "grading": {
+      "retained_raw_responses": 405,
+      "retained_delivered_responses": 50,
+      "repaired_actual_batch_responses": 25,
+      "unexpected_results": 0
+    },
+    "decision_variation": {
+      "before_pivot_rank_hits": [
+        5,
+        5
+      ],
+      "after_pivot_rank_hits": [
+        1,
+        5
+      ],
+      "after_delivery_pivot_rank_hits": [
+        1,
+        5
+      ],
+      "correct_numeric_ranks": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "generated_choice_positions": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "profiles_checked": 10,
+      "semantic_catalog_sizes": {
+        "easy": 64,
+        "moderate": 83
+      }
+    },
+    "rendering": {
+      "actual_ui": true,
+      "screenshots_inspected": [
+        "batch-repair-render/question-001.png",
+        "batch-repair-render/question-002.png"
+      ],
+      "observed": "Both endpoint matrices, five radio choices, augmented separators and all row-operation stages are readable with no clipping. UI shuffles choice display independently; selected positions differ in the two inspected cases.",
+      "passed": true
+    },
+    "inventory": {
+      "generated_instances_reproduced": 3,
+      "earlier_affected_instances_retained": 3,
+      "latest_exact_pivot_cue_hits": 0,
+      "latest_exact_pivot_cue_tested": 3,
+      "source_captures_not_marked_generated": 12,
+      "evidence": "../affected-inventory.json"
+    }
+  },
+  "commands": [
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B ../review-2-policy-2-4ea3e9df01325020/reproduce_batch_shortcut.py",
+      "stage": "before",
+      "exit_code": 1,
+      "log": "batch-shortcut-before.log"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_batch_selection.py --input evidence/batch-shortcut-before-records.json",
+      "stage": "strict retained counterexample",
+      "exit_code": 1,
+      "log": "strict-retained-failure.log"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_all.py",
+      "stage": "before",
+      "exit_code": 0,
+      "log": "before-batch-repair-regressions.log"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_all.py",
+      "stage": "after",
+      "exit_code": 0,
+      "log": "after-batch-repair-regressions.log"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_batch_selection.py",
+      "stage": "after",
+      "exit_code": 0,
+      "log": "batch-selection-regression.log"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_inventory.py",
+      "stage": "latest inventory cue extension",
+      "exit_code": 0,
+      "log": "inventory-batch-cue.log"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B ../review-2-policy-2-4ea3e9df01325020/reproduce_batch_shortcut.py --input evidence/delivery-batch-repair/accepted.json",
+      "stage": "after actual delivery",
+      "exit_code": 0,
+      "log": "reviewer-strict-delivered.log"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/render_preview.py --input evidence/batch-repair-render-records.json --output evidence/batch-repair-render --asset-root evidence/delivery-batch-repair/assets --math-root /media/jake/SSD/EDB/math",
+      "stage": "render current delivered endpoints",
+      "exit_code": 0,
+      "log": "batch-repair-render.log"
+    }
+  ],
+  "limitations": [
+    "Finite conservative RHS families with fixed source coefficient profiles; no broad arbitrary-coefficient transfer claim.",
+    "Two source captures lack rating, key and worked solution and remain unsupported; ten complete source banks preserved.",
+    "Delivery uses captured inventory basis 5461; live inventory, learner histories and configured weights are not available. Native selection may reorder or subset the contrast bank.",
+    "One-item samples cannot establish within-batch variation; no finite audit rules out every conceivable strategy."
+  ],
+  "runtime_hashes": {
+    "17592186059775.py": "45ce3ee90e9c76d850d8f7e0d9c0851515a65a868264b79160260898c5eeb2ac",
+    "17592186059775/source.json": "936dc5c07130b5fabc5e453ac26efb90471b07c96bc0a904a214eca8494a4bfc",
+    "math_format.py": "734756ff87af508413171ebec82588a121ac9af7d85b454ac4137db41d23e5be",
+    "requirements.txt": "25f9f1fb1988b230147a1d3092d34e09c069eb7a6c6d6df46b3973b9f2d36efc",
+    "known-systems.json": "2492556950df4a1bb3622028c1d24fd72ff9ec82f76c19b8fe2bc6e74b80436f"
+  }
+}

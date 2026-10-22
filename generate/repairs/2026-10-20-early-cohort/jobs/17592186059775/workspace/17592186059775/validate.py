@@ -51,15 +51,18 @@ def apply_operation(matrix, row, expression):
         out[row, column] = sp.sympify(expression, locals={'r1': matrix[0, column], 'r2': matrix[1, column]})
     return out
 
-def independent(rec):
+def independent(rec, *, replay=True):
     q = rec['question']; meta = rec['generation']
     assert rec['knowledge_point']['db_id'] == g.KP_ID
     sid, k, *target = meta['parameters']
     assert meta['bank_profile'] == ('common-coefficient-candidates-v1' if target else sid)
-    if target:
-        assert rec == g.generate(q[':question/difficulty'].split('/')[-1], meta['seed'], sid, meta['parameters'])
-    else:
-        assert rec == g._render(q[':question/difficulty'].split('/')[-1], meta['seed'], sid, meta['parameters'])
+    # Publication assigns stable content-owned UUIDs. Its delivered records
+    # still undergo every printed-math check below, independently of raw IDs.
+    if replay:
+        if target:
+            assert rec == g.generate(q[':question/difficulty'].split('/')[-1], meta['seed'], sid, meta['parameters'])
+        else:
+            assert rec == g._render(q[':question/difficulty'].split('/')[-1], meta['seed'], sid, meta['parameters'])
     a, = printed_matrices(q[':question/problem']); assert a.shape == (2, 3)
     assert a[:, :2].det() != 0 and a[0, 0] != 0
     normalized = a.copy(); normalized[0, :] /= a[0, 0]

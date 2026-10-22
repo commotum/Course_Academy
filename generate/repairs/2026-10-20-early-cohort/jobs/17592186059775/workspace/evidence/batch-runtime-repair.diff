@@ -1,0 +1,48 @@
+--- before/17592186059775.py
++++ after/17592186059775.py
+@@ -18,7 +18,7 @@
+ KP_ID = 17592186059775
+ KP_UUID = 'a10cafc6-9da7-5ffc-a0c7-686a7638fbd9'
+ GENERATOR_UUID = str(uuid.uuid5(uuid.UUID(KP_UUID), 'gaussian-elimination-generator-v1'))
+-VERSION = '1.1.0'
++VERSION = '1.1.1'
+ SUPPORTED_LEVELS = ('easy', 'moderate')
+ EXCLUDED_PROFILES = ('q-10512',)
+ HERE = Path(__file__).with_suffix('')
+@@ -257,7 +257,35 @@
+     unique = {fingerprint(r['question']): r for r in records}
+     if count < 0 or count > len(unique):
+         raise ValueError('Finite variant limit: '+str(len(unique)))
+-    return list(unique.values())[:count]
++    # A shuffled catalog prefix can repeat scaled copies of one target role.
++    # Prefer intact contrast banks: same coefficient family, scale and choices,
++    # different decisive lower RHS. Inventory exclusions may fragment a bank;
++    # retain those instances after the intact banks rather than dropping them.
++    banks = {}
++    for record in unique.values():
++        sid, k, target = record['generation']['parameters']
++        banks.setdefault((sid, k), []).append(record)
++    rng = random.Random('contrast-banks:'+str(seed))
++    families = {}
++    fragments = []
++    for (sid, k), bank in banks.items():
++        if len(bank) == 5:
++            rng.shuffle(bank)
++            families.setdefault(sid, []).append(bank)
++        else:
++            fragments.extend(bank)
++    profiles = sorted(families)
++    rng.shuffle(profiles)
++    for profile in profiles:
++        rng.shuffle(families[profile])
++    ordered = []
++    while any(families.values()):
++        for profile in profiles:
++            if families[profile]:
++                ordered.extend(families[profile].pop())
++    rng.shuffle(fragments)
++    ordered.extend(fragments)
++    return ordered[:count]
+ 
+ 
+ def markdown(rec):

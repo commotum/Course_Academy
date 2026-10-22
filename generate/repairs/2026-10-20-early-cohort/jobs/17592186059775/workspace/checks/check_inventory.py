@@ -12,7 +12,7 @@ def load(name,path):
 v=load('readback',W/'17592186059775/validate.py');old=load('legacy',W/'evidence/legacy/17592186059775.py')
 inventory=json.loads((JOB/'source/inventory.json').read_text())
 archived=json.loads((W/'17592186059775/reference/replenishment/basis-2480/generated.json').read_text())
-records=[];affected=[];observations=[]
+records=[];affected=[];observations=[];latest_cue=[]
 for stored in inventory['questions']:
  if ':question/math-academy-id' in stored:
   # Original captures remain original; never fabricate generation metadata.
@@ -51,8 +51,13 @@ for stored in inventory['questions']:
   assert set(ranks)=={2}
   finding='Key is always the median second-row constant in this recognizable source profile, at every supported RHS scale.'
  records.append(r)
+ ordered=sorted(bank,key=lambda a:v.printed_matrices(a[':answer/value'])[0][1,2])
+ pivot=v.printed_matrices(q[':question/problem'])[0][0,0]
+ guessed=ordered[3 if pivot==1 else 0]
+ latest_cue.append({'question_id':q[':question/id'],'parameters':meta['parameters'],
+                    'pivot_rank_strategy_hit':guessed[':answer/id']==f[':answer-field/correct'][1]})
  affected.append({'question_id':stored[':question/id'],'entity_id':stored[':db/id'],'finding':finding,'reproduction':f'python checks/check_inventory.py # legacy.generate({old.level(sid)!r}, {meta["seed"]}, {sid!r}, {meta["parameters"]!r})','evidence_path':'../workspace/evidence/inventory-generated-records.json'})
 (W/'evidence/inventory-generated-records.json').write_text(json.dumps(records,indent=2)+'\n')
-report={'affected_questions':affected,'inventory_basis':inventory['basis'],'generated_records_tested':len(records),'original_source_records':observations,'scope':'All three stored generated instances reproduced with exact archived generation metadata; source captures kept separate, not marked generated. CLI failure is a package defect and has no stored-record manifestation.'}
+report={'affected_questions':affected,'inventory_basis':inventory['basis'],'generated_records_tested':len(records),'original_source_records':observations,'latest_batch_finding':{'id':'9e827407d5429a1f8827','stored_generated_records':latest_cue,'hits':sum(x['pivot_rank_strategy_hit'] for x in latest_cue),'tested':len(latest_cue),'scope':'Exact pivot/rank cue tested on every stored generated record. The five-item q-73439 scaled-role batch is not stored here; older demonstrated shortcuts remain affected below. Source captures were inspected as sources, not fabricated as generated records.'},'scope':'All three stored generated instances reproduced with exact archived generation metadata; source captures kept separate, not marked generated. CLI failure is a package defect and has no stored-record manifestation.'}
 (W/'affected-inventory.json').write_text(json.dumps(report,indent=2)+'\n')
 print(json.dumps({'generated_tested':len(records),'demonstrated_affected':len(affected),'original_sources_separate':len(observations)}))

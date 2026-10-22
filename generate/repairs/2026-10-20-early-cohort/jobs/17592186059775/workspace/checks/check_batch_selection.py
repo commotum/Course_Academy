@@ -45,7 +45,7 @@ def strict_shortcut(records):
     return {'correct': hits, 'total': len(rows), 'random_baseline': 0.2}
 
 
-def contrast_bank(records):
+def contrast_bank(records, *, delivered=False):
     rows = inspect(records)
     assert len(rows) == 5
     assert len({r['family'] for r in rows}) == 1
@@ -55,7 +55,7 @@ def contrast_bank(records):
     assert {r['rank'] for r in rows} == set(range(5)), 'Fixed-rank family shortcut'
     assert {r['position'] for r in rows} == set(range(5)), 'Fixed-position family shortcut'
     for r in records:
-        v.independent(r)  # Exact elimination, every intermediate and unique key.
+        v.independent(r, replay=not delivered)  # Every intermediate and unique key.
     return {'family': rows[0]['family'], 'ranks': [r['rank'] for r in rows],
             'positions': [r['position'] for r in rows],
             'lower_rhs': [r['lower_rhs'] for r in rows],
@@ -113,7 +113,7 @@ def main():
                '--math-root', '/media/jake/SSD/EDB/math']
     subprocess.run(command, check=True)
     accepted = json.loads((out/'accepted.json').read_text())
-    report['delivered_exact_batch'] = contrast_bank(accepted)
+    report['delivered_exact_batch'] = contrast_bank(accepted, delivered=True)
     report['delivery_command'] = command
     report['delivery'] = json.loads((out/'delivery.json').read_text())
     native = [{'label': 'actual delivered batch '+str(i), 'record': r,

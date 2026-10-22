@@ -1,13 +1,15 @@
-# Current state — author 857
+# Current state — author 860
 
-Read feedback and repair history, both retained findings, the existing instructional account and session state, and the required generator and validation documentation. Preserved runtime and completed repairs.
+Read latest feedback, both retained findings, prior session state, required generator documentation and existing instructional account. Preserve the repaired runtime and strict regression contract. No new generator defect or source change is demonstrated.
 
-Latest failure reproduced first: `/home/jake/Developer/Course_Academy/.venv/bin/python checks/check_report_installation.py` exits 1 with `decision_variation has an unresolved decision shortcut` at the original required prior-review destination. The staged correction validates locally and replays 26 current records; this does not complete external installation.
+Reproduced the exact latest failure first:
+`/home/jake/Developer/Course_Academy/.venv/bin/python checks/check_report_installation.py`
+exits 1: `decision_variation has an unresolved decision shortcut` at the original required prior-review destination outside the writable workspace. The same check validates the staged correction and replays 26 current records before this strict external-destination assertion fails.
 
-Retained checks rerun:
-- `checks/test_role_exchange.py`: exit 0. Exact reorder and controlled resonance-transfer cases, conditional shortcut probes, shared delivery filtering and 30 native acceptance/rejection checks pass. Delivered records retain 19 first-position and 17 second-position resonant cases plus five both-nonresonant cases.
-- `checks/verify_retained_state.py`: exit 0. Runtime and source unchanged; 55 handoff artifacts and eight independently parsed mathematical cases verified.
+Then ran:
+- `checks/test_role_exchange.py --output evidence/author-860/role-regression`: exit 0. Controlled reorder, resonance transfer, conditional shortcut probes, shared delivery and native grading pass.
+- `checks/verify_retained_state.py`: exit 0. Runtime/source unchanged, 55 handoff artifacts verified, eight independently parsed math cases pass.
 
-Commands, exit codes and logs: `evidence/author-857/checks.json`. Full report evidence remains in `evidence/report-repair/results.json` and role evidence in `evidence/role-regression/results.json`. Strict regression declarations remain unchanged. Existing rendering evidence is retained because runtime and source are unchanged.
+Exact commands, exit codes and logs: `evidence/author-860/checks.json`. Source replay, UI rendering and affected-inventory evidence remain applicable to unchanged runtime. No publication, external writes, database changes, engine changes or runtime edits occurred.
 
-Unfinished: an authorized runner must install the staged correction at the external destination listed in `evidence/review-installation-handoff.json`, rerun the strict default report check, and obtain fresh independent review. That destination is outside this workspace. No external writes, publication, database changes, engine changes or runtime edits were made. An unchanged workspace-only author retry cannot resolve this installation failure. Author status remains unsupported.
+Unfinished: authorized runner installation described in `evidence/review-installation-handoff.json`, followed by the unchanged strict default regression and fresh independent review. The retained finding explicitly requests this installation and says no generator authoring is needed. The user restricts this author to workspace writes; do not attempt the external replacement or weaken the regression to test a substitute destination. Another unchanged workspace-only retry cannot perform this step. Status remains unsupported.
