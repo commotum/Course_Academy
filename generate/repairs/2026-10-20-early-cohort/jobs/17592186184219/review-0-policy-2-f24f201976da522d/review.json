@@ -1,0 +1,169 @@
+{
+  "verdict": "revise",
+  "summary": "Two demonstrated defects: translated answer banks expose a perfect prompt-blind shortcut, including all five delivered batch questions; three current source banks cannot be reproduced. Independent math, native grading, rendering and packaging checks pass. Package unchanged; no database writes or asset publication.",
+  "source_analysis": {
+    "skill": "Use rank(A)+nullity(A)=number of columns to recover one missing dimension from the other, for an explicitly sized matrix.",
+    "reasoning_steps": [
+      "Read m by n in the stated order.",
+      "Identify whether rank or nullity is supplied and which is requested.",
+      "Apply rank+nullity=n and solve by one integer subtraction.",
+      "Select the matching value from five math radio choices."
+    ],
+    "invariants": [
+      "m,n positive integers; 0 <= rank <= min(m,n); nullity=n-rank.",
+      "One supplied dimension, one requested dimension; no extra matrix calculation.",
+      "Solution states theorem, identifies n, substitutes, subtracts and gives answer.",
+      "Rows may affect feasibility but do not replace columns in the theorem."
+    ],
+    "permitted_variations": [
+      "Vary row and column counts, including tall, wide and square matrices, while preserving feasibility and small arithmetic.",
+      "Vary feasible rank, hence nullity, including full-rank or zero boundaries as conservative same-method extensions.",
+      "Vary target rank versus nullity; target is an eligible answer-bearing role, not fixed by incidental source arrangement.",
+      "Vary correct numerical value, distractor values and answer positions while retaining five distinct choices.",
+      "Hold n and supplied value fixed and vary feasible m: answer should remain fixed. Hold shape and target fixed and vary given dimension: answer must change."
+    ],
+    "source_refs": [
+      "a05d1874-f484-5b03-a7ba-b2697b84a74b",
+      "245a8171-aeb5-5caf-950d-44cbb3c0aece",
+      "e9ab814e-2358-5160-95c5-d43671e5affe",
+      "43f25379-6ec0-5f21-88fe-048499052abb",
+      "0934aa4b-cfbc-551f-aede-b568683fcc43",
+      "c3ee4195-fbf7-5133-aa9f-68dff638a011",
+      "ce93ec7a-fcc3-5848-bb9c-a5b8e16bd97c",
+      "fa527559-21f3-5088-ac1e-a7d1439bef18",
+      "fb06ba3d-1b9f-5681-af01-0922516167aa",
+      "b1b6e064-faca-5061-955a-61c19c8be97d",
+      "e3fc6c03-9e92-5752-b628-3af41a4a428b",
+      "14361c6d-cac3-5b4d-b77b-8d67c1c14fc6",
+      "419374b5-8846-5602-9c56-203ab6362cc4",
+      "7e28e70a-8db7-56d6-8e9d-6424a558b67a",
+      "9615d8af-b005-5449-be4b-a7487375c98f",
+      "tutorial 0728c510-110b-5bde-93ea-9050a87a6ecc, Introduction: \u201cLet A be a matrix (not necessarily square) with n columns\u201d; \u201crank(A) + nullity(A) = n.\u201d",
+      "lesson 45b54b13-346d-538c-876e-285764d59813, target step 3c8115af-900b-592a-a3df-6c126d87446c"
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "failed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "source-replay.json",
+        "source-replay-records.json",
+        "missing-bank-exhaustion.json",
+        "regression-output.txt"
+      ],
+      "details": "11 of 14 current source questions reproduce their prompts, worked solutions and complete banks. q-141221, q-142482 and q-141190 are absent; none of the supported profiles reproduces their full banks at original parameters. Canonical example has no supplied answer bank."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "review_generator.py",
+        "math-and-coverage.json",
+        "boundary-tests.json",
+        "counterfactual-results.json"
+      ],
+      "details": "Independent prompt parsing verifies matrix feasibility, answer n minus supplied dimension, five distinct nonnegative options, and concrete theorem/substitution/subtraction in 269 sampled/batch records plus 10 controlled records. Both targets and tall, wide, square shapes tested."
+    },
+    "variety": {
+      "status": "failed",
+      "evidence_paths": [
+        "math-and-coverage.json",
+        "missing-bank-exhaustion.json",
+        "rejection-and-replay.json",
+        "delivery-shortcut-results.json"
+      ],
+      "details": "Both targets and broad numerical/shape variation survive resampling and delivery, but only 11 of 14 observed bank profiles are supported. Missing complete banks are a demonstrated source-family coverage restriction. Incidental decision cues are assessed separately below."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "math-and-coverage.json",
+        "counterfactual-results.json",
+        "rejection-and-replay.json"
+      ],
+      "details": "Supported outputs retain easy, one-step rank-nullity substitution with one five-choice radio response. No row reduction, basis extraction or extra theorem introduced. Unsupported moderate/hard levels and invalid field/parameter combinations reject explicitly."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-report.json",
+        "counterfactual-results.json"
+      ],
+      "details": "Actual learning::grade_field: 83 accepted, 164 rejected, zero unresolved. Includes all five choices for 41 records, both counterfactual types, all surviving batch records, and the exact minimal shortcut action. Equivalent free-entry notation is inapplicable to the source radio contract."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render-records.json",
+        "render/rendering.json",
+        "render-inspection.json",
+        "render/question-001.png",
+        "render/question-004.png",
+        "render/question-007.png",
+        "render/question-008.png",
+        "render/question-011.png",
+        "render/question-012.png"
+      ],
+      "details": "Actual unmodified UI renders all five normalized batch records and ten controlled records: 15/15 pass. Screenshots inspected for readable prompts, shuffled radio choices and aligned worked solutions. Rendered text also independently checked against each changed parameter."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-tests.json",
+        "relocation-stdout.json",
+        "rejection-and-replay.json",
+        "package-integrity.json",
+        "package-before.json",
+        "package-after.json"
+      ],
+      "details": "Relocated manifest package reproduces the public CLI output. Exact installed dependencies match manifest: Python 3.13.5, sympy 1.14.0. Seed replay and rejection checks pass. All declared package files and manifest remain byte-identical."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "evidence-contract.json",
+        "shortcut-rules.json",
+        "shortcut-results-raw.json",
+        "delivery-shortcut-results.json",
+        "minimal-shortcut-record.json",
+        "grader-report.json",
+        "learner-selection.json",
+        "inventory-audit.json",
+        "affected-inventory.json",
+        "regression_tests.py"
+      ],
+      "details": "Target plus sorted answer gaps determines the correct numerical rank: 264/264 raw controls, 257/257 post-deduplication controls and 5/5 exact surviving batch records, versus 20% guessing. Every recognizable signature is also perfect conditionally. Relevant and irrelevant counterfactual dependencies pass, but do not remove this bypass. Read-only selection reproduction and freshness exclusions cannot break a per-record perfect rule; actual policy/history and future entity IDs are unavailable. Captured inventory basis 5446 has only 14 original source questions and zero stored generated questions."
+    }
+  },
+  "findings": [
+    {
+      "kind": "decision_shortcut",
+      "description": "Every generalized bank is a fixed translation of a source offset vector. Consequently the visible target and sorted option-gap pattern identify which numerical order statistic is correct without reading columns or the supplied dimension. Minimal example: seed 829013 yields a 9\u00d712 matrix with nullity 7, asks rank, and offers [2,3,4,5,6]; selecting the second-largest value 5 succeeds. Within this recognizable rank/consecutive-bank subgroup the shortcut is 34/34 in fresh controls (32/32 after delivery). The exact runner batch also fails: the target/gap lookup answers all five surviving members. UI shuffling does not alter numerical ranks.",
+      "source_refs": [
+        "e9ab814e-2358-5160-95c5-d43671e5affe (q-141220)",
+        "tutorial 0728c510-110b-5bde-93ea-9050a87a6ecc: rank(A)+nullity(A)=n, with n columns",
+        "generate/principles.md: meaningful variety and fixed decision structure"
+      ],
+      "reproduction": "/home/jake/Developer/Course_Academy/.venv/bin/python -B /home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186184219/workspace/17592186184219.py --difficulty easy --seed 829013 --count 1. Complete case: minimal-shortcut-record.json. Native acceptance: grader-input.json label minimal-shortcut-seed-829013. Strict failing regression: /home/jake/Developer/Course_Academy/.venv/bin/python -B /home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186184219/review-0-policy-2-f24f201976da522d/regression_tests.py GeneratorRegressions.test_rank_consecutive_bank_does_not_fix_correct_role. Full strategy and delivered measurements: shortcut-rules.json and delivery-shortcut-results.json.",
+      "requested_change": "Change the family-wide distractor construction rule so recognizable bank signatures do not permanently assign the correct numerical role. Preserve original complete banks for explicit source replay, while generating same-skill variants with counterexamples to these cue rules. Rebuild the five-question batch and rerun conditional shortcut tests after delivery; option shuffling or more translations alone cannot fix this defect."
+    },
+    {
+      "kind": "source_fidelity",
+      "description": "The package snapshot and PROFILES contain 11 practice questions, whereas the supplied current source contains 14. Missing q-141221, q-142482 and q-141190 cannot replay with any supported profile. Minimal q-141221 case: 4\u00d75 matrix, supplied rank 4, requested nullity 1, complete bank {0,1,2,4,5}. Direct template replay raises unsupported target; all current eligible profile banks at these same parameters either reject or differ from the source bank.",
+      "source_refs": [
+        "14361c6d-cac3-5b4d-b77b-8d67c1c14fc6 (q-141221)",
+        "419374b5-8846-5602-9c56-203ab6362cc4 (q-142482)",
+        "7e28e70a-8db7-56d6-8e9d-6424a558b67a (q-141190)",
+        "generate/principles.md: reproduce complete answer banks before extending"
+      ],
+      "reproduction": "/home/jake/Developer/Course_Academy/.venv/bin/python -B /home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186184219/review-0-policy-2-f24f201976da522d/verify_source_banks.py saves all eligible-profile trials in missing-bank-exhaustion.json. Strict failing regression: /home/jake/Developer/Course_Academy/.venv/bin/python -B /home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186184219/review-0-policy-2-f24f201976da522d/regression_tests.py GeneratorRegressions.test_all_current_source_banks_replay. Exact original parameters and errors are in source-replay.json.",
+      "requested_change": "Refresh the supported source cases and add explicit replay support for all three complete banks, preserving their prompts, correct values and worked-solution stages. Keep generated bank variation subject to the independent shortcut regression; adding three more permanently translated profiles would leave the first defect unresolved."
+    }
+  ]
+}
