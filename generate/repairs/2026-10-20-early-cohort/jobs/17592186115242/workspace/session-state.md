@@ -1,27 +1,15 @@
-# Author 640 — 2026-10-22
+# Author 643 — 2026-10-22
 
-Preserved completed runtime repairs. Read feedback and all five retained findings;
-640 history events retain the same unresolved stored-inventory limitation.
-Reused instructional/source analysis and visually inspected the retained actual-UI
-screenshots and source tutorial flowchart.
+Preserved all completed generator repairs. Reproduced the latest inventory failure first, then ran the retained executable regressions with:
 
-Command:
-`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/author-640`
+`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/author-643`
 
-Exit 1: five historical stored banks remain affected, with 64/64 shortcut
-successes in the possible-history witness. Four current-generator findings,
-17 complete source banks plus canonical replay, shared delivery contrasts,
-controlled counterfactuals, native grading (7 accepted, 28 rejected), relocation
-and protected hashes pass. Five staged replacements remain verified and unapplied.
-No runtime, source, engine, database or publication changes.
+Exit 1: finding 591f580cadb749294588 persists in five captured historical records. Complete prompts, solutions, banks, keys, identities and generation metadata match the inventory. All captured generated inventory was tested. The sign-only extremum shortcut answers 5/5 records and 64/64 draws in the retained possible learner-history witness; actual learner history and configured policy are unavailable.
 
-Status: unsupported for delivered-pool certification. The next unfinished step is
-the separate inventory-remediation workflow named by finding 591f580cadb749294588,
-then fresh inventory capture and the strict check. This author task explicitly
-forbids database changes. A runtime edit cannot alter stored banks. Preserve the
-strict failure and existing repairs; no additional interchangeable validation
-is useful until inventory changes or new concrete feedback arrives.
+The other four finding checks pass: 17 complete source-bank replays and canonical replay, fractional/bare-parameter and zero-root coverage, and within-sign contrasts in three batches before and after shared delivery (14 accepted records). Relevant and irrelevant counterfactuals pass. Native grading accepts 7 correct responses and rejects 28 wrong ones. Exact dependencies and relocated seeded execution pass. Protected hashes match. Visually inspected both retained actual-UI screenshots: no layout defect observed. No runtime change justified rerendering unchanged content.
 
-Evidence: evidence/author-640/commands.json, results.json, outcome.md;
-affected-inventory.json; evidence/generated-records.json;
-evidence/repair-3/inventory-repair-proposal.json.
+Root cause remaining: stored historical banks are selector candidates independently of the current generator. Five replacements and their identity mappings in evidence/repair-3/inventory-repair-proposal.json were verified and remain unapplied. A workspace generator edit cannot replace those stored records. The explicit ban on database changes prevents completing the requested separate inventory remediation here. The strict regression remains failing; no acceptance criterion was weakened. No runtime, engine, source, database or publication changes were made.
+
+Status: unsupported for delivered-pool certification. Next required action is separate authorized inventory remediation followed by fresh inventory capture and the strict recheck. Repeating this author job against unchanged inventory cannot resolve that finding.
+
+Current evidence: evidence/author-643/commands.json, results.json, outcome.md.

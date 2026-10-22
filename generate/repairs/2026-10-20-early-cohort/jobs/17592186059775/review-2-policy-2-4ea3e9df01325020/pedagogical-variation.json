@@ -1,0 +1,474 @@
+{
+  "learner_operation": "Normalize the first pivot of a nonsingular 2x2 augmented matrix, eliminate its lower-left entry, normalize the second pivot, and optionally back-substitute to solve x,y.",
+  "fixed_features": [
+    {
+      "feature": "Nonsingular 2x3 augmented matrix, nonzero first pivot, normalized forward REF, optional solve and five radio choices",
+      "justification": "Canonical 0a9e6824 and tutorial 2112d3af establish pivot normalization, elimination and back substitution; complete source banks have five choices."
+    },
+    {
+      "feature": "Ten coefficient profiles, bounded RHS scaling and target shifts",
+      "justification": "Conservative finite same-operation arithmetic family preserves source denominator workload; supports focused practice, not arbitrary-matrix transfer. Nothing in the source fixes candidate rank in a delivered subgroup."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Correct lower-right value, corresponding x,y and radio option",
+      "eligible_variation": "Each candidate may qualify when the lower input RHS changes; option order can independently permute.",
+      "observed": "All five ranks per profile before/after catalog rejection; actual batch q-73439 retains rank zero exclusively, 3/3."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "easy catalog rejection and uniqueness",
+      "sample_refs": [
+        "normal-catalog-records.json",
+        "delivery-selection.json"
+      ],
+      "result": "{'band': 'easy', 'raw_count': 70, 'inventory_rejected': 6, 'unique_survivors': 64, 'surviving_ranks': {'q-1059': [0, 1, 2, 3, 4], 'q-130910': [0, 1, 2, 3, 4], 'q-130909': [0, 1, 2, 3, 4], 'q-73439': [0, 1, 2, 3, 4]}}"
+    },
+    {
+      "case": "moderate catalog rejection and uniqueness",
+      "sample_refs": [
+        "normal-catalog-records.json",
+        "delivery-selection.json"
+      ],
+      "result": "{'band': 'moderate', 'raw_count': 90, 'inventory_rejected': 7, 'unique_survivors': 83, 'surviving_ranks': {'q-10329': [0, 1, 2, 3, 4], 'q-1060': [0, 1, 2, 3, 4], 'q-20459': [0, 1, 2, 3, 4], 'q-20461': [0, 1, 2, 3, 4], 'q-10512': [0, 1, 2, 3, 4], 'q-10509': [0, 1, 2, 3, 4]}}"
+    },
+    {
+      "case": "Exact runner batch before and after delivery",
+      "sample_refs": [
+        "runner-batch.json",
+        "delivery-batch/accepted.json",
+        "delivery-selection.json"
+      ],
+      "result": "5/5 accepted; three scaled q-73439 instances all select minimum lower-right value."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Hold profile, scale, bank/order, first input row and coefficients fixed; change lower input RHS across targets 0 through 4.",
+      "expected": "Each of five different choices becomes correct; prompt, solution and native acceptance follow.",
+      "observed": "Ten profiles each reach five different answers; exact readbacks and native grader agree. Actual-UI renders include easy endpoint pairs and a moderate pair.",
+      "status": "passed",
+      "justification": "Tutorial 2112d3af Step 2 changes the augmented column along with coefficient columns; lower RHS determines normalized y.",
+      "sample_refs": [
+        "independent-records.json",
+        "counterfactual-results.json",
+        "math-results.json",
+        "grader-results.json",
+        "render-records.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Change seed to permute options while profile, scale and target stay fixed.",
+      "expected": "Same matrix, solution and mathematical key; native acceptance follows choice identity.",
+      "observed": "Ten permutations preserve prompt and key value; every option checked in native grader. Representative permutation rendered.",
+      "status": "passed",
+      "justification": "Choice order is incidental to Gaussian elimination and the one-choice radio contract.",
+      "sample_refs": [
+        "independent-records.json",
+        "counterfactual-results.json",
+        "grader-results.json",
+        "render-records.json",
+        "render/rendering.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "whether first input pivot is 1",
+      "subgroup": "nonunit first-pivot subgroup, exact runner batch",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "If input a11=1 choose second-largest candidate lower-right value; otherwise choose smallest. Ignore input RHS and row elimination.",
+      "correct": 4,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "4/4 versus random radio baseline 1/5. This is an incidental batch-only cue: fixing pivot and changing lower RHS across the controlled targets makes every candidate correct in turn. Small pool supports this specific exposure defect, not a claim about arbitrary future batches.",
+      "sample_refs": [
+        "runner-batch.json",
+        "delivery-batch/accepted.json",
+        "batch-shortcut-results.json",
+        "strict-shortcut-current.log",
+        "independent-records.json"
+      ]
+    },
+    {
+      "cue": "whether first input pivot is 1",
+      "subgroup": "exact runner batch",
+      "scope": "overall",
+      "strategy": "If input a11=1 choose second-largest candidate lower-right value; otherwise choose smallest. Ignore input RHS and row elimination.",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "5/5 versus random radio baseline 1/5. This is an incidental batch-only cue: fixing pivot and changing lower RHS across the controlled targets makes every candidate correct in turn. Small pool supports this specific exposure defect, not a claim about arbitrary future batches.",
+      "sample_refs": [
+        "runner-batch.json",
+        "delivery-batch/accepted.json",
+        "batch-shortcut-results.json",
+        "strict-shortcut-current.log",
+        "independent-records.json"
+      ]
+    },
+    {
+      "cue": "minimum lower-right matrix entry",
+      "subgroup": "exact runner batch",
+      "scope": "overall",
+      "strategy": "Choose smallest lower-right value without using input RHS.",
+      "correct": 4,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "4/5 versus random five-choice baseline 1/5. Not a universal answer rule across this tested group.",
+      "sample_refs": [
+        "runner-batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "minimum lower-right matrix entry",
+      "subgroup": "coefficient block [[3,9],[2,7]], exact runner batch",
+      "scope": "within_template",
+      "strategy": "Choose smallest lower-right value without using input RHS.",
+      "correct": 3,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "3/3 versus random five-choice baseline 1/5. Batch-only incidental predictor; broader generator has counterexamples.",
+      "sample_refs": [
+        "minimal-failing-batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "minimum lower-right matrix entry",
+      "subgroup": "q-10329 controlled common-bank targets",
+      "scope": "within_template",
+      "strategy": "Choose smallest lower-right value without using input RHS.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/5 versus random five-choice baseline 1/5. Not a universal answer rule across this tested group.",
+      "sample_refs": [
+        "independent-records.json",
+        "counterfactual-results.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer",
+      "subgroup": "q-10329 common-bank targets",
+      "scope": "within_template",
+      "strategy": "Always click first radio option.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/5 equals random five-choice baseline 0.2. Same bank/order, each option correct once.",
+      "sample_refs": [
+        "independent-records.json",
+        "grader-results.json"
+      ]
+    },
+    {
+      "cue": "minimum lower-right matrix entry",
+      "subgroup": "q-1059 controlled common-bank targets",
+      "scope": "within_template",
+      "strategy": "Choose smallest lower-right value without using input RHS.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/5 versus random five-choice baseline 1/5. Not a universal answer rule across this tested group.",
+      "sample_refs": [
+        "independent-records.json",
+        "counterfactual-results.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer",
+      "subgroup": "q-1059 common-bank targets",
+      "scope": "within_template",
+      "strategy": "Always click first radio option.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/5 equals random five-choice baseline 0.2. Same bank/order, each option correct once.",
+      "sample_refs": [
+        "independent-records.json",
+        "grader-results.json"
+      ]
+    },
+    {
+      "cue": "minimum lower-right matrix entry",
+      "subgroup": "q-1060 controlled common-bank targets",
+      "scope": "within_template",
+      "strategy": "Choose smallest lower-right value without using input RHS.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/5 versus random five-choice baseline 1/5. Not a universal answer rule across this tested group.",
+      "sample_refs": [
+        "independent-records.json",
+        "counterfactual-results.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer",
+      "subgroup": "q-1060 common-bank targets",
+      "scope": "within_template",
+      "strategy": "Always click first radio option.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/5 equals random five-choice baseline 0.2. Same bank/order, each option correct once.",
+      "sample_refs": [
+        "independent-records.json",
+        "grader-results.json"
+      ]
+    },
+    {
+      "cue": "minimum lower-right matrix entry",
+      "subgroup": "q-130910 controlled common-bank targets",
+      "scope": "within_template",
+      "strategy": "Choose smallest lower-right value without using input RHS.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/5 versus random five-choice baseline 1/5. Not a universal answer rule across this tested group.",
+      "sample_refs": [
+        "independent-records.json",
+        "counterfactual-results.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer",
+      "subgroup": "q-130910 common-bank targets",
+      "scope": "within_template",
+      "strategy": "Always click first radio option.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/5 equals random five-choice baseline 0.2. Same bank/order, each option correct once.",
+      "sample_refs": [
+        "independent-records.json",
+        "grader-results.json"
+      ]
+    },
+    {
+      "cue": "minimum lower-right matrix entry",
+      "subgroup": "q-20459 controlled common-bank targets",
+      "scope": "within_template",
+      "strategy": "Choose smallest lower-right value without using input RHS.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/5 versus random five-choice baseline 1/5. Not a universal answer rule across this tested group.",
+      "sample_refs": [
+        "independent-records.json",
+        "counterfactual-results.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer",
+      "subgroup": "q-20459 common-bank targets",
+      "scope": "within_template",
+      "strategy": "Always click first radio option.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/5 equals random five-choice baseline 0.2. Same bank/order, each option correct once.",
+      "sample_refs": [
+        "independent-records.json",
+        "grader-results.json"
+      ]
+    },
+    {
+      "cue": "minimum lower-right matrix entry",
+      "subgroup": "q-20461 controlled common-bank targets",
+      "scope": "within_template",
+      "strategy": "Choose smallest lower-right value without using input RHS.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/5 versus random five-choice baseline 1/5. Not a universal answer rule across this tested group.",
+      "sample_refs": [
+        "independent-records.json",
+        "counterfactual-results.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer",
+      "subgroup": "q-20461 common-bank targets",
+      "scope": "within_template",
+      "strategy": "Always click first radio option.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/5 equals random five-choice baseline 0.2. Same bank/order, each option correct once.",
+      "sample_refs": [
+        "independent-records.json",
+        "grader-results.json"
+      ]
+    },
+    {
+      "cue": "minimum lower-right matrix entry",
+      "subgroup": "q-10512 controlled common-bank targets",
+      "scope": "within_template",
+      "strategy": "Choose smallest lower-right value without using input RHS.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/5 versus random five-choice baseline 1/5. Not a universal answer rule across this tested group.",
+      "sample_refs": [
+        "independent-records.json",
+        "counterfactual-results.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer",
+      "subgroup": "q-10512 common-bank targets",
+      "scope": "within_template",
+      "strategy": "Always click first radio option.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/5 equals random five-choice baseline 0.2. Same bank/order, each option correct once.",
+      "sample_refs": [
+        "independent-records.json",
+        "grader-results.json"
+      ]
+    },
+    {
+      "cue": "minimum lower-right matrix entry",
+      "subgroup": "q-130909 controlled common-bank targets",
+      "scope": "within_template",
+      "strategy": "Choose smallest lower-right value without using input RHS.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/5 versus random five-choice baseline 1/5. Not a universal answer rule across this tested group.",
+      "sample_refs": [
+        "independent-records.json",
+        "counterfactual-results.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer",
+      "subgroup": "q-130909 common-bank targets",
+      "scope": "within_template",
+      "strategy": "Always click first radio option.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/5 equals random five-choice baseline 0.2. Same bank/order, each option correct once.",
+      "sample_refs": [
+        "independent-records.json",
+        "grader-results.json"
+      ]
+    },
+    {
+      "cue": "minimum lower-right matrix entry",
+      "subgroup": "q-10509 controlled common-bank targets",
+      "scope": "within_template",
+      "strategy": "Choose smallest lower-right value without using input RHS.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/5 versus random five-choice baseline 1/5. Not a universal answer rule across this tested group.",
+      "sample_refs": [
+        "independent-records.json",
+        "counterfactual-results.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer",
+      "subgroup": "q-10509 common-bank targets",
+      "scope": "within_template",
+      "strategy": "Always click first radio option.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/5 equals random five-choice baseline 0.2. Same bank/order, each option correct once.",
+      "sample_refs": [
+        "independent-records.json",
+        "grader-results.json"
+      ]
+    },
+    {
+      "cue": "minimum lower-right matrix entry",
+      "subgroup": "q-73439 controlled common-bank targets",
+      "scope": "within_template",
+      "strategy": "Choose smallest lower-right value without using input RHS.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/5 versus random five-choice baseline 1/5. Not a universal answer rule across this tested group.",
+      "sample_refs": [
+        "independent-records.json",
+        "counterfactual-results.json"
+      ]
+    },
+    {
+      "cue": "first displayed answer",
+      "subgroup": "q-73439 common-bank targets",
+      "scope": "within_template",
+      "strategy": "Always click first radio option.",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/5 equals random five-choice baseline 0.2. Same bank/order, each option correct once.",
+      "sample_refs": [
+        "independent-records.json",
+        "grader-results.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "deterministic generation and parameter rejection",
+      "captured-system rejection in candidates",
+      "semantic uniqueness in batch",
+      "requested difficulty",
+      "actual publisher normalization and inventory/batch deduplication",
+      "fresh rated learner-selection rule, read-only positive-easy empty-history scenario"
+    ],
+    "sample_refs": [
+      "packaging-results.json",
+      "normal-catalog-records.json",
+      "delivery-selection.json",
+      "delivery-batch/delivery.json",
+      "delivery-easy/delivery.json",
+      "delivery-moderate/delivery.json",
+      "inventory-selection.json"
+    ],
+    "result": "5/5 batch records survive, retaining conditional minimum-choice shortcut. Independent samples accept 28/36 easy and 37/45 moderate. Selection cannot supply absent target ranks within this subgroup. Unit-pivot branch plus minimum/second-largest rule answers all five delivered items. Captured-plus-proposed pool and old-seen/new-fresh scenarios analyzed; the latter leaves this exact five-question pool. No claim of a universal shortcut over the mixed old inventory."
+  },
+  "limitations": [
+    "Demonstrated batch-selection defect, not a universal decision_instance defect; controlled ranks refute a universal minimum rule.",
+    "No finite audit excludes every possible cue.",
+    "Live selection weights/history unavailable; inventory fixed at basis 5461.",
+    "Two incomplete captures not invented; ten complete banks tested."
+  ]
+}
