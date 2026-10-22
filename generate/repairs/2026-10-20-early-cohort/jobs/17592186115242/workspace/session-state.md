@@ -1,25 +1,11 @@
-# Current verification — author 760
+# Current verification — author 763
 
-Runtime, manifest, source families, staged replacements, and all five regressions
-preserved. Read latest feedback and all retained findings; reused prior source
-analysis rather than rebuilding the package.
+Preserved completed runtime repairs, manifest, all five executable regression declarations, and staged replacement proposal. Read latest feedback and all retained findings before testing.
 
-First test: `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory`.
-Exit 1: five captured historical banks; 64/64 possible-history shortcut successes.
+First command: `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory`. Exit 1: five captured historical banks; possible-history witness 64/64 shortcut successes.
 
-Then: `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/author-760`.
-Exit 1 only for 591f580cadb749294588. Four generator regressions pass; 17 source
-banks replay; 14 records retain contrasts after shared delivery; native grading
-accepts 7 correct and rejects 28 wrong choices. Relocation, exact dependencies,
-protected hashes and staged replacement proposal verify.
+Retained recheck: `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/author-763`. Exit 1 solely for historical finding 591f580cadb749294588. Four current-generator findings pass; 17 complete source banks replay; 14 records preserve contrasts after shared delivery. Native grading: 7 accepted, 28 rejected. Relocation and exact dependency checks pass. Runtime/source/inventory/manifest bindings unchanged. Retained actual UI screenshot visually re-inspected; readable prompt, choices, matrices, solution.
 
-Evidence: evidence/author-760/{first-command,commands,results,grader-report}.json,
-initial-reproduction.txt and disposition.md. Full inventory witness remains at
-evidence/repair-2/inventory-results.json; complete records are in
-evidence/generated-records.json.
+Evidence: evidence/author-763/{commands,results,grader-report}.json, scope.md and disposition.md. Historical complete records: evidence/generated-records.json. Replacement proposal: evidence/repair-3/inventory-repair-proposal.json (verified, not applied). Retained render: evidence/repair-3/render/rendering.json.
 
-Next unfinished step: separate inventory remediation and fresh capture, then the
-strict inventory check. Database changes are expressly forbidden here. Do not
-weaken the regression, substitute the proposal for captured inventory, or repeat
-unchanged author passes. The reviewed proposal remains
-`evidence/repair-3/inventory-repair-proposal.json`.
+Next unfinished step: the separate inventory-remediation workflow named in the retained finding, followed by fresh capture and strict inventory recheck. This task forbids database changes. Do not weaken the test, alter source questions, substitute hypothetical inventory, or recreate completed generator repairs. No runtime change was justified by the unchanged evidence. Final status remains unsupported.
