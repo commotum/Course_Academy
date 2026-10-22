@@ -1,4 +1,4 @@
-import { readForecast, withForecastGoal, courseCompletionEstimates } from './forecast.js';
+import { savedForecastScope, withForecastGoal, courseCompletionEstimates } from './forecast.js';
 
 const number = value => Number(value).toLocaleString(undefined, { maximumFractionDigits: 1 });
 function node(tag, className, text) {
@@ -19,6 +19,25 @@ function outcome(estimate, hasGoal = true) {
     'out-of-range': 'Too far ahead' })[estimate.status] || 'Unavailable');
 }
 
+// Historical replay can take several seconds. Keep both the input read and
+// calculation off the UI thread; terminating a replaced read cancels its work.
+function readSidebarForecast(signal) {
+  return new Promise((resolve, reject) => {
+    if (signal.aborted) { reject(new Error('Forecast cancelled.')); return; }
+    const worker = new Worker('/ui/forecast-worker.js', { type: 'module' });
+    const close = () => { worker.terminate(); signal.removeEventListener('abort', abort); };
+    const abort = () => { close(); reject(new Error('Forecast cancelled.')); };
+    signal.addEventListener('abort', abort, { once: true });
+    worker.onmessage = event => {
+      close();
+      if (event.data.error) reject(new Error(event.data.error));
+      else resolve(event.data.forecast);
+    };
+    worker.onerror = () => { close(); reject(new Error('Unable to calculate forecast.')); };
+    worker.postMessage(savedForecastScope());
+  });
+}
+
 export function createForecastSidebar({ signal } = {}) {
   const overall = node('section', 'study-stat-card forecast-overall');
   const courses = node('section', 'study-stat-card forecast-courses');
@@ -26,7 +45,7 @@ export function createForecastSidebar({ signal } = {}) {
     card.setAttribute('aria-live', 'polite');
     card.append(node('h2', 'stat-heading', heading), node('p', 'stat-note', 'Calculating…'));
   }
-  let model, request, revision = 0, goalOverride;
+  let model, request, revision = 0, goalRevision = 0, latestGoal;
   signal?.addEventListener('abort', () => { revision++; request?.abort(); }, { once: true });
 
   function render() {
@@ -80,12 +99,12 @@ export function createForecastSidebar({ signal } = {}) {
   async function refresh() {
     if (signal?.aborted) return;
     const current = ++revision;
+    const goalAtStart = goalRevision;
     request?.abort(); request = new AbortController();
     try {
-      const forecast = await readForecast({ signal: request.signal });
+      const forecast = await readSidebarForecast(request.signal);
       if (current !== revision || signal?.aborted || !overall.isConnected) return;
-      model = goalOverride === undefined ? forecast : withForecastGoal(forecast, goalOverride);
-      goalOverride = undefined;
+      model = goalAtStart === goalRevision ? forecast : withForecastGoal(forecast, latestGoal);
       render();
     } catch (error) {
       if (current !== revision || signal?.aborted || !overall.isConnected) return;
@@ -97,7 +116,7 @@ export function createForecastSidebar({ signal } = {}) {
     }
   }
   function updateGoal(goal) {
-    goalOverride = goal;
+    latestGoal = goal; goalRevision++;
     if (model) { model = withForecastGoal(model, goal); render(); }
   }
   return { cards: [overall, courses], refresh, updateGoal };

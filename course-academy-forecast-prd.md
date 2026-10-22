@@ -2,7 +2,7 @@
 
 Show two estimated catch-up dates: **at the current seven-day average pace** and **at the daily earned-XP goal**. Catch-up means closing today's overdue/current backlog while average workload growth continues. It does not mean completing every preloaded future assignment.
 
-Use **base XP** for work: 1 base XP is 1 estimated minute. Use actual active minutes to measure personal time efficiency. Reviews, quizzes, and failed attempts all count toward attempted base XP. No schema changes or display layout changes are required. [estimate-forecast.md](estimate-forecast.md) contains the schema and engine details.
+Use **base XP** for work: 1 base XP is 1 estimated minute. Use actual active minutes to measure personal time efficiency. Reviews, quizzes, and failed attempts all count toward attempted base XP. No schema changes are required. The Study sidebar displays overall and per-course dates at both paces. [estimate-forecast.md](estimate-forecast.md) contains the schema and engine details.
 
 ## 1. Today's backlog
 
@@ -95,6 +95,8 @@ catch-up date = now + T days
 These are the first intersections of the average cumulative curves. If today's backlog is already satisfied, return caught up now even if more assignments are due tomorrow. For positive backlog, a pace at or below `k` does not catch up under the assumed averages. Include fallback lesson prices in both inventory and growth, with a simple label such as “3 lessons use fallback XP estimates.” Only costs still unknown after the fallback prevent a full-backlog date; unresolved historical costs give a labeled lower-bound growth rate and an optimistic date. Both scenarios use the same workload, growth and overhead assumptions.
 
 Allocate review/other overhead to course tracks where attributable and split global overhead by observed non-quiz shares. Course `B_c` and `k_c` use the same formulas with `L_c`, `g_c`, and `r_c`; they sum to the overall values. Use one shared study budget, not the full daily pace independently for each course.
+
+For the sidebar's course catch-up estimates, split each pace evenly across the three courses: `T_current,c = B_c / (s/3 - k_c)` and `T_goal,c = B_c / (s_goal/3 - k_c)`. Apply the same complete/unavailable/not-catching-up rules per course. Keep each share fixed rather than redistributing it when another course finishes. Display rates in earned XP/day; retain base XP for all calculations. Changing the saved daily goal updates both goal-date displays.
 
 ## 6. Database inputs and code
 

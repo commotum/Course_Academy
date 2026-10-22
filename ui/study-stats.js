@@ -31,11 +31,12 @@ export function createStudySidebar() {
   let generation = 0, midnightTimer;
   releaseSidebar = () => { events.abort(); generation++; clearTimeout(midnightTimer); };
   async function load({ refreshForecast = true } = {}) {
-    if (refreshForecast) void forecast.refresh();
     const revision = ++generation;
     const boundaries = lastSevenDays();
     try {
-      const response = await readRequest('/api/study-stats?dayStarts=' + boundaries.join(','));
+      const progress = readRequest('/api/study-stats?dayStarts=' + boundaries.join(','));
+      if (refreshForecast) void forecast.refresh();
+      const response = await progress;
       const data = await response.json();
       if (!response.ok || !Array.isArray(data.days) || data.days.length !== 7) throw new Error(data.error || 'Statistics are unavailable.');
       if (revision !== generation || !sidebar.isConnected) return;

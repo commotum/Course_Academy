@@ -6,7 +6,7 @@ import vm from 'node:vm';
 const source = (await readFile(new URL('../ui/study-stats.js', import.meta.url), 'utf8')).replace(/^import .*;\n/gm, '').replaceAll('export ', '');
 const flush = () => new Promise(resolve => setImmediate(resolve));
 function fixture(goal = 200, at = new Date(2026, 9, 14, 12)) {
-  const f = { calls: [], data: null, timers: new Map() };
+  const f = { calls: [], data: null, timers: new Map(), forecastRefreshes: 0, goals: [] };
   class Element extends EventTarget {
     constructor(tag) { super(); this.tagName = tag; this.children = []; this.dataset = {}; this.attrs = {}; this.style = {}; }
     append(...nodes) { for (const node of nodes) { node.parent = this; this.children.push(node); } }
@@ -20,8 +20,10 @@ function fixture(goal = 200, at = new Date(2026, 9, 14, 12)) {
   const document = new EventTarget(); document.body = new Element('body'); document.createElement = tag => new Element(tag);
   let now = at.getTime(), timerId = 0;
   f.setNow = date => { now = date.getTime(); };
-  const context = vm.createContext({ document, window: new EventTarget(), Intl, Number, AbortController, crypto,
-    createForecastSidebar: () => ({ cards: [], refresh() {}, updateGoal() {} }),
+  f.window = new EventTarget();
+  const context = vm.createContext({ document, window: f.window, Intl, Number, AbortController, crypto,
+    createForecastSidebar: ({ signal }) => { f.forecastSignal = signal; return { cards: [],
+      refresh() { f.forecastRefreshes++; }, updateGoal(goal) { f.goals.push(goal); } }; },
     Date: class extends Date { constructor(...args) { super(...(args.length ? args : [now])); } static now() { return now; } },
     setTimeout: (callback, delay) => { f.timers.set(++timerId, { callback, delay }); return timerId; },
     clearTimeout: id => f.timers.delete(id),
@@ -162,4 +164,17 @@ test('Sunday to Monday resets only Monday and refreshes an open sidebar at midni
   assert.equal(f.find('stat-xp-summary').children[1].children[1].textContent, '0');
   assert.equal(f.calls.length, 2);
   assert.equal(f.timers.size, 1);
+  assert.equal(f.forecastRefreshes, 2);
+});
+
+test('saving the goal updates forecast dates immediately and sidebar replacement disposes its reads', async () => {
+  const f = fixture(); await flush();
+  assert.equal(f.forecastRefreshes, 1);
+  const event = new Event('course-academy:daily-xp-goal-changed'); event.detail = { dailyXpGoal: 400 };
+  f.window.dispatchEvent(event); await flush();
+  assert.deepEqual(f.goals, [400]);
+  assert.equal(f.forecastRefreshes, 1);
+  const previous = f.forecastSignal;
+  f.api.createStudySidebar();
+  assert.equal(previous.aborted, true);
 });

@@ -1,0 +1,16 @@
+{
+  "cwd": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186119806/review-1-policy-2-796ebe68aca55ef0",
+  "commands": [
+    "/home/jake/Developer/Course_Academy/.venv/bin/python review.py",
+    "/home/jake/Developer/Course_Academy/.venv/bin/python post_delivery.py",
+    "/home/jake/Developer/Course_Academy/.venv/bin/python prior-regression_test.py --package ../workspace --output strict-regressions.json",
+    "/home/jake/Developer/Course_Academy/.venv/bin/python prior-regression_test.py --package ../review-0-policy-2-903865075bf272e6/relocated --output legacy-strict-regressions.json",
+    "/home/jake/Developer/Course_Academy/.venv/bin/python author-preflight/checks/validate_repair.py",
+    "/home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py --input fresh-records.json --source ../source/source.json --inventory ../source/inventory.json --difficulty easy --output delivery-fresh --math-root /media/jake/SSD/EDB/math",
+    "/home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py --input batch-records.json --source ../source/source.json --inventory ../source/inventory.json --difficulty easy --output delivery-batch --math-root /media/jake/SSD/EDB/math",
+    "/home/jake/Developer/Course_Academy/generate/runs/current/check-engine grader-input.json grader-report.json",
+    "/home/jake/Developer/Course_Academy/generate/runs/current/check-engine delivered-grader-input.json delivered-grader-report.json",
+    "/home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/render_preview.py --input render-records.json --output render --limit 12 --math-root /media/jake/SSD/EDB/math"
+  ],
+  "write_policy": "Only evidence_root writes. Author checks run in evidence-local complete copy to avoid their hardcoded evidence directory touching the original package."
+}

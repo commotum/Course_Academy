@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { ForecastFacts, forecastGraph, knownPreparationTopics, calculateForecast, completionEstimate,
-  forecastDayStarts, savedForecastScope, readForecast, withForecastGoal } from '../ui/forecast.js';
+  forecastDayStarts, savedForecastScope, readForecast, withForecastGoal, courseCompletionEstimates } from '../ui/forecast.js';
 import { projectTargetScope } from '../ui/target-scope.js';
 
 process.env.TZ = 'America/Los_Angeles';
@@ -61,6 +61,42 @@ function fixture({ tasks = true } = {}) {
 }
 
 function close(actual, expected) { assert.ok(Math.abs(actual - expected) < 1e-8, `${actual} != ${expected}`); }
+
+test('course dates split both pace budgets three ways and use only each course workload and growth', () => {
+  const result = calculateForecast(fixture().inputs());
+  result.pace.baseXpPerDay = 150;
+  result.pace.goalBaseXpPerDay = 300;
+  result.courses = [
+    { code: '255', remainingTopics: 10, initialWorkBaseXp: 100, dailyDemandBaseXp: 10 },
+    { code: '256', remainingTopics: 20, initialWorkBaseXp: 200, dailyDemandBaseXp: 20 },
+    { code: '341', remainingTopics: 30, initialWorkBaseXp: 300, dailyDemandBaseXp: 60 },
+  ];
+  const before = structuredClone(result), courses = courseCompletionEstimates(result);
+  assert.deepEqual(result, before);
+  close(courses[0].currentPace.days, 100 / (50 - 10));
+  close(courses[1].currentPace.days, 200 / (50 - 20));
+  assert.equal(courses[2].currentPace.status, 'not-catching-up');
+  close(courses[0].goalPace.days, 100 / (100 - 10));
+  close(courses[1].goalPace.days, 200 / (100 - 20));
+  close(courses[2].goalPace.days, 300 / (100 - 60));
+  close(courses.reduce((sum, course) => sum + course.currentPace.baseXpPerDay, 0), 150);
+  close(courses.reduce((sum, course) => sum + course.goalPace.baseXpPerDay, 0), 300);
+});
+
+test('course dates respond to saved goal conversion and isolate complete or unknown-cost tracks', () => {
+  const original = calculateForecast(fixture().inputs());
+  const higher = withForecastGoal(original, 400);
+  const courses = courseCompletionEstimates(higher);
+  for (const course of courses) close(course.goalPace.baseXpPerDay, 400 / original.pace.earnedToBaseFactor / 3);
+  higher.courses[0] = { ...higher.courses[0], remainingTopics: 0, initialWorkBaseXp: null, dailyDemandBaseXp: null };
+  higher.courses[1] = { ...higher.courses[1], remainingTopics: 1, initialWorkBaseXp: null };
+  const changed = courseCompletionEstimates(higher);
+  assert.equal(changed[0].currentPace.status, 'complete');
+  assert.equal(changed[0].goalPace.status, 'complete');
+  assert.equal(changed[1].currentPace.status, 'unavailable');
+  assert.equal(changed[1].goalPace.status, 'unavailable');
+  assert.deepEqual(changed[2], courses[2]);
+});
 
 test('base throughput includes failed lessons, reviews and quizzes; the earned goal is converted by paired totals', () => {
   const x = fixture(), result = calculateForecast(x.inputs());
