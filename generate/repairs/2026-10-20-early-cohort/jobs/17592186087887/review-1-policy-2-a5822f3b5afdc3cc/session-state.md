@@ -1,0 +1,1 @@
+Completed: confirmed source account; nine exact mathematical source replays; changed-bank window/boundary/role samples; independent symbolic correctness; cross-response counterfactual inputs; supplied regression fails old and passes new; packaging, inventory legacy reproduction. Next: native grader, delivery, current shortcut and selection assessment, actual UI rendering.

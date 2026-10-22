@@ -261,7 +261,7 @@ def generate_batch(difficulty='easy', count=5, seed=0):
         raise ValueError('Count must be nonnegative')
     rng = random.Random(seed)
     templates = [t for t, s in SOURCES.items() if s[2] == difficulty]
-    # Each cycle covers every semantic instance. Interleave families for short batches.
+    # Interleave families for short batches.
     result = []
     if difficulty == 'easy':
         while len(result) < count:
@@ -274,6 +274,7 @@ def generate_batch(difficulty='easy', count=5, seed=0):
                 a = rng.choice(coefficient_bank(bank_index))
                 result.append(generate(t, a, seed, bank_index=bank_index))
         return result
+    # Retain exhaustive coefficient cycles for the unchanged moderate sampler.
     while len(result) < count:
         slots = {t: list(values(t)) for t in templates}
         for v in slots.values():

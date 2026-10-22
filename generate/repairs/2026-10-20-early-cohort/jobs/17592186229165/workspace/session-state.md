@@ -1,15 +1,13 @@
-# Current state — author 686
+# Current state — author 690
 
-Preserved the repaired generator, manifest, instructional account, historical inventory evidence, corrected review candidate, and both strict regression declarations. Latest feedback and both retained findings were read; history has 686 events through attempt 685. The evidence finding explicitly requests no generator authoring.
+Read feedback and both retained findings, latest history event, existing instructional/source analysis, and required generation/validation documentation. Preserved completed repairs. No new runtime defect or changed source evidence was demonstrated.
 
-Reproduced the strict latest failure first:
+Reproduced the exact latest failure first: `/home/jake/Developer/Course_Academy/.venv/bin/python checks/check_report_installation.py` exited 1. The required external report still fails with `decision_variation has an unresolved decision shortcut`. Local staged contract/schema validation and 26 current-generator complete-record replays pass. The staged report does not close the original installation finding.
 
-- `checks/check_report_installation.py` — exit 1: required external review still fails with `decision_variation has an unresolved decision shortcut`. The staged corrected report passes actual contract/schema validation and 26 complete current-generator record replays.
-- `checks/test_role_exchange.py --output evidence/author-686/role` — exit 0: exact reorder and resonance-transfer cases, visible mathematical checks, conditional shortcut probes, shared delivery, and native acceptance/rejection checks pass. Delivery retains both resonance positions (19 first, 17 second), plus five both-nonresonant cases.
-- `checks/verify_retained_state.py` — exit 0: all 55 staged artifacts, source/runtime hashes, and eight unchanged-family mathematical cases verified.
+Then ran `/home/jake/Developer/Course_Academy/.venv/bin/python checks/test_role_exchange.py --output evidence/author-690/role`: exit 0. Nine controlled cases, 24 mixed samples, eight default-hard samples, visible independent mathematical witnesses, reorder/transfer counterfactuals, conditioned shortcuts, shared delivery, and 30 native acceptance/rejection checks pass. After delivery, resonance occurs first in 19 cases and second in 17, with five both-nonresonant cases. `/home/jake/Developer/Course_Academy/.venv/bin/python checks/verify_retained_state.py` exited 0: 55 staged artifacts, unchanged runtime/source hashes, and eight unchanged-family mathematical cases verified. Reused prior source-replay and rendering evidence for unchanged bytes; no unrelated bulk tests or new renders.
 
-Commands/results: `evidence/author-686/commands.json`, `evidence/author-686/results.json`. Existing source replay/rendering evidence remains applicable because runtime/source content is unchanged. No redundant broad testing or rendering was performed.
+Commands: `evidence/author-690/commands.json`. Results: `evidence/author-690/results.json`. Latest failure: `evidence/author-690/report-results.json` and `report-installation.log`. Passing role evidence: `evidence/author-690/role/results.json`.
 
-Unfinished: finding 645672a4cd3f9bf609ca requires runner installation at `../review-1-policy-2-48d685555902faba`, outside this session's authorized workspace. Exact artifacts, checksums, and destination remain in `evidence/review-installation-handoff.json`. Runner must install those artifacts, rerun the strict check, and obtain independent review. Another unchanged workspace-only author retry cannot complete that action. Preserve the failing regression; local staged validation is not external installation.
+Unfinished finding `645672a4cd3f9bf609ca`: the requested installation destination is `../review-1-policy-2-48d685555902faba`, outside the authorized workspace. Runner steps, staged paths and checksums remain in `evidence/review-installation-handoff.json`. Authorized runner installation followed by the unchanged strict regression and fresh independent review is required. Another unchanged workspace-only author retry cannot perform this external operation. Both executable regression declarations remain intact; the strict report check remains failing.
 
-No runtime, engine, external-file, database, or publication changes were made. No source families or valid responses were removed.
+No runtime, engine, external-file, database, or publication changes. No family or valid learner response was removed. Status: unsupported because required external-report validation remains failing.

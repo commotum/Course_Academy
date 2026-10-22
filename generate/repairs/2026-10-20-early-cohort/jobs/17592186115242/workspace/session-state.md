@@ -1,13 +1,13 @@
 # Current state
 
-Author-501 preserved runtime, manifest, and all five executable finding regressions. Read feedback and repair history (five retained findings; latest event attempt 500). No new current-generator defect is reported.
+Author-505 read feedback, all five retained findings and latest history event (attempt 504). Preserved runtime repairs, source families, manifest, executable regressions and staged replacements.
 
-Reproduced latest failure first: `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory` exits 1 for five stored historical banks; the possible-history shortcut witness succeeds 64/64. All five records reproduce complete captured prompts, solutions, choices, keys, and generation metadata; none are untested.
+First test: `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory`; exit 1, five historical banks affected, 64/64 possible-history shortcut successes.
 
-Ran `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/author-501`: exit 1 solely for finding 591f580cadb749294588. Four current-generator regressions pass: 17 complete source banks and canonical system, zero/fractional cases, shortcut/counterfactual checks, shared delivery (14 records), native grading (7 accepted/28 rejected), versions, and relocation. Protected hashes match. Five staged replacements and mappings verify and remain unapplied. Existing actual-UI screenshot was visually inspected; no layout defect observed.
+Verification: `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/author-505`; exit 1 solely for finding 591f580cadb749294588. Four current-generator regressions pass, including 17 source banks plus canonical system, fractional/zero-root cases, shortcut/counterfactual checks, shared delivery (14 records), native grading (7 accepted/28 rejected), exact dependencies and relocation. Protected hashes and five staged replacement mappings verify. Reinspected retained actual-UI screenshot question-002; no observed clipping or overlap.
 
-Evidence: `evidence/author-501/commands.json`, `results.json`, `outcome.md`.
+Evidence: `evidence/author-505/commands.json`, `results.json`, `outcome.md`, `visual-inspection.json`.
 
-Unfinished: the separate inventory-remediation workflow named in the retained review must resolve the five generated identities in `affected-inventory.json` and provide a fresh capture. Proposal: `evidence/repair-3/inventory-repair-proposal.json`. Database changes and publication are prohibited here. Do not edit the capture, substitute proposed records, weaken the strict failure, or overwrite completed repairs. Repeating generator-only verification against unchanged inputs cannot complete this external step.
+Unfinished: separately remediate the five generated identities in `affected-inventory.json`, then supply a fresh inventory capture. Proposal: `evidence/repair-3/inventory-repair-proposal.json`, verified and unapplied. Database changes and publication are prohibited here. The selector consumes stored candidates independently of this generator. Do not edit the capture, substitute proposed records, weaken the strict failure, or discard completed repairs.
 
-Status: unsupported for the unresolved stored-pool requirement.
+Status: unsupported for the unresolved stored-pool requirement. No new current-generator construction defect is demonstrated. Repeating tests on unchanged captures cannot complete the external inventory action.
