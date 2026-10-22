@@ -1,37 +1,47 @@
-# Current state — 2026-10-22, author-69
+# Current state — 2026-10-22, author-72
 
-Feedback and repair history read first. Latest failure reproduced before other
-checks with the job Python and `-B checks/check_current_handoff.py`: exit 1.
-Installed `scripts/generator_pipeline.py` rejects the unchanged package at its
-sample gate, before regressions or sampling. Finding 9b8cb52352b8ca3e790e asks
-for evidence-only correction and runtime preservation. No new generator defect
-is demonstrated. Do not change runtime bytes solely to evade this gate.
+Read feedback and the complete repair history first (two retained findings,
+72 events through attempt 71). Read existing implementation account and required
+generation/validation guidance. No new generator defect is demonstrated.
 
-Affected checks freshly executed (job Python, `-B`):
-- checks/check_evidence_contract.py: exit 1. Real bundle validation, relocation,
-  negative controls, current record/source binding and three affected stored
-  generated records pass; installed runner handoff alone fails.
-- checks/check_batch_selection.py: exit 0. Exact seed 4258185931 scores 1/5
-  for the retained pivot/rank shortcut before and after shared delivery;
-  ten profiles pass controlled-role checks. Native grader: 5 accepted,
-  20 rejected, no unexpected results.
-- checks/check_runner_handoff.py: exit 0. Proposed external patch passes 23
-  offline cases. This does not repair installed runner control flow.
-- checks/check_cli_contract.py: exit 0. Runtime-only relocation, requested
-  counts, determinism and explicit finite-limit failure pass.
-- checks/check_render_binding.py: exit 0. Ten complete source banks replay;
-  two retained UI inputs match fresh delivered records. Visually reinspected
-  evidence/author8-render/question-001.png: readable, no clipping observed.
+Exact latest failure reproduced first:
+`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_current_handoff.py`
+exits 1. Installed runner rejects the byte-identical package before retained
+regressions or sampling. Current package hash remains
+38c685ce1e5bd4f89ac79b6ab3d31a4a81f2b77c9f4bb6f0abcab5c20640f626.
+Finding 9b8cb52352b8ca3e790e explicitly requires evidence-only correction and
+runtime preservation. Changing runtime solely to evade this gate is not a repair.
+The responsible installed rule is scripts/generator_pipeline.py:723-727: unchanged
+package, source and engine always trigger rejection without considering an
+evidence-only finding. No new generator defect was demonstrated.
 
-Exact commands, result paths, versions and unchanged runtime hashes are in
-`evidence/current-verification.json`. Existing strict regressions remain intact.
-No runtime, engine, external runner, publication, database or other-job edits.
-No unrelated bulk retesting or redundant rendering was performed.
+Affected checks freshly executed; exact commands, exits and logs are in
+`evidence/current-verification.json`:
+- check_evidence_contract.py: exit 1. The corrected evidence bundle validates,
+  relocates, detects missing provenance, binds current records and three stored
+  generated records; installed runner handoff alone remains failing.
+- check_batch_selection.py: exit 0. Exact seed 4258185931 shortcut scores 1/5
+  before and after actual delivery. Ten profiles retain controlled target banks;
+  25 native responses pass (5 accepted, 20 rejected).
+- check_cli_contract.py: exit 0. Relocated runtime, exact counts, determinism and
+  explicit finite-limit rejection pass.
+- check_render_binding.py: exit 0. Ten complete source banks replay; retained
+  shared-UI render inputs equal current delivered endpoints. Visually reinspected
+  evidence/author8-render/question-001.png: readable matrices, choices and worked
+  elimination stages, with no clipping observed. No new rendering was necessary.
 
-Unfinished: runner owner must apply the staged correction at
-`runner-fix/evidence-only-rejection.patch` to scripts/generator_pipeline.py,
-which is outside this workspace. Then rerun the actual handoff and retained
-regressions before fresh independent review. The corrected report bundle is
-validated at evidence/contract-correction; its installation is runner-owned.
-The proposed patch remains uninstalled. Status: unsupported for this boundary,
-not for the easy Gaussian-elimination skill.
+All declared runtime files and package.json remain byte-identical. No generator,
+source, engine, external runner, database, publication or other-job edits.
+Existing strict registered regressions remain intact. Historical broader checks
+and the staged patch's offline tests were retained rather than repeated.
+
+Unfinished: runner owner must resolve the identical-package gate in
+scripts/generator_pipeline.py for validated evidence-only corrections. The
+existing proposal is runner-fix/evidence-only-rejection.patch; it is uninstalled
+and outside authorized write scope. Corrected evidence remains staged at
+evidence/contract-correction with evidence/contract-installation.json describing
+its attempt-independent installation contract. Installation is runner-owned.
+Then rerun installed handoff and registered regressions before fresh independent
+review. Status remains unsupported because handoff is unresolved, not because
+the easy Gaussian-elimination skill lacks source support.
+Another author rerun with unchanged runner inputs cannot resolve this failure.
