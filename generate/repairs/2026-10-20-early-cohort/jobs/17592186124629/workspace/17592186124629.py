@@ -81,11 +81,11 @@ def proposition(concept, positive, n):
 
 def theorem(n):
     return ("The invertible matrix theorem states the following:\n\n"
-     r'$$A\text{ is invertible}\quad\Longleftrightarrow\quad\left\{\begin{aligned}'
+     r'$$\begin{gathered}A\text{ is invertible}\\\Updownarrow\\\begin{aligned}'
      + rf'\operatorname{{Col}}(A)&=\mathbb{{R}}^{{{n}}}\\'
      + rf'\dim(\operatorname{{Col}}(A))&={n}=\operatorname{{rank}}(A)\\'
      + r'\operatorname{Null}(A)&=\{0\}\\'
-     + r'\dim(\operatorname{Null}(A))&=0=\operatorname{nullity}(A)\end{aligned}\right.$$')
+     + r'\dim(\operatorname{Null}(A))&=0=\operatorname{nullity}(A)\end{aligned}\end{gathered}$$')
 
 def assemble(sid, prompt, solution, specs, parameters, seed):
     q = {':question/problem': normalize_prose(prompt), ':question/worked-solution': normalize_prose(solution),
@@ -118,6 +118,9 @@ def replay(sid, seed=0, premise='replay'):
         if any(c in ' '.join(f[':answer-field/key'] for f in old[':question/answer-fields']) for c in (replacement,)):
             raise ValueError('Hypothesis would copy a conclusion')
         prompt, sol = prompt.replace(ORIGINAL, replacement), sol.replace(ORIGINAL, replacement)
+    # The source's side-by-side equivalence clips in the real UI. Reflow only
+    # the recalled theorem; retain all three source implication paragraphs.
+    sol = theorem(DIMENSIONS.get(sid, 'n')) + '\n\nWith that in mind' + sol.split('With that in mind', 1)[1]
     specs = [(f[':answer-field/key'], f[':answer-field/type'][':db/ident'],
               [a[':answer/value'] for a in f[':answer-field/choices']], f[':answer-field/correct'][':answer/value'])
               for f in old[':question/answer-fields']]

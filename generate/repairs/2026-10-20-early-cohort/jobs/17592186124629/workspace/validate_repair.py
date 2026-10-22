@@ -104,6 +104,7 @@ def native_checks(r):
 
 def cues(rows):
     groups=collections.defaultdict(list)
+    premise_groups=collections.defaultdict(list)
     for r in rows:
         p=r['question'][':question/problem']
         fs=r['question'][':question/answer-fields']
@@ -112,6 +113,7 @@ def cues(rows):
         expected=decode(r)
         correct_positions=tuple(i for i,f in enumerate(fs) if len(fs)==3 and expected[i]) if len(fs)==3 else tuple(i for i,a in enumerate(fs[0][':answer-field/choices']) if a[':answer/id']==fs[0][':answer-field/correct'][1])
         groups[key].append((expected,correct_positions,r['generation']['parameters'].get('invertible')))
+        premise_groups[(key,plain(p.split('then',1)[0]))].append((expected,correct_positions))
     report=[]
     for key,rows2 in groups.items():
         answers=collections.Counter(b for b,_,_ in rows2);positions=collections.Counter(p for _,p,_ in rows2)
@@ -125,7 +127,16 @@ def cues(rows):
           'correct_counts':dict(counts),'best_constant_answer_successes':max(answers.values()),
           'best_constant_position_successes':max(positions.values()),'attempts':len(rows2),
           'uniform_response_baseline':1/(7 if key[-1]==3 else 5),'answers_by_matrix_status':by_state})
-    return report
+    within=[]
+    for (key,hyp),values in premise_groups.items():
+        vectors=collections.Counter(b for b,_ in values)
+        positions=collections.Counter(p for _,p in values)
+        counts=collections.Counter(sum(b) for b,_ in values)
+        assert len(vectors)>1 and len(positions)>1 and len(counts)>1,('Hypothesis shortcut',key,hyp,values)
+        within.append({'recognizable_profile':str(key),'printed_hypothesis':hyp,'records':len(values),
+          'answer_vectors':len(vectors),'counts':sorted(counts),'best_constant_answer_successes':max(vectors.values()),
+          'best_constant_position_successes':max(positions.values()),'attempts':len(values)})
+    return {'profiles':report,'within_identical_hypothesis':within}
 
 def main():
     replays=[]; rows=[]; controls=[]
@@ -135,7 +146,15 @@ def main():
         assert q[':question/problem']==g.normalize_prose(old[':question/problem'])
         expected=old[':question/worked-solution']
         if sid=='q-141342':expected=expected.replace(g.ORIGINAL+',$ then',r'\text{nullity}(A)\ne 0,$ then')
-        assert q[':question/worked-solution']==g.normalize_prose(expected)
+        assert q[':question/worked-solution'].split('With that in mind',1)[1]==g.normalize_prose(expected).split('With that in mind',1)[1]
+        intro=q[':question/worked-solution'].split('With that in mind',1)[0]
+        # Independently verify every mathematical identity retained by the reflow.
+        n=g.DIMENSIONS.get(sid,'n');p=plain(intro)
+        assert r'Col(A)&=R^{'+n+'}' in p
+        assert 'dim(Col(A))&='+n+'=rank(A)' in p
+        assert r'Null(A)&=\{0\}' in p
+        assert 'dim(Null(A))&=0=nullity(A)' in p
+        assert 'isinvertible' in p and r'\Updownarrow' in p
         assert len(q[':question/answer-fields'])==len(old[':question/answer-fields'])
         for f,of in zip(q[':question/answer-fields'],old[':question/answer-fields']):
             assert f[':answer-field/key']==of[':answer-field/key']
@@ -143,11 +162,20 @@ def main():
             assert next(a[':answer/value'] for a in f[':answer-field/choices'] if a[':answer/id']==f[':answer-field/correct'][1])==of[':answer-field/correct'][':answer/value']
         replays.append(r)
         hyps=g.hypothesis_concepts(sid)
-        # Cover each outcome in both rule cases; cycle all noncopying hypotheses.
+        # Every outcome under one unchanged hypothesis, in both rule cases.
         for index,bits in enumerate(g.masks(sid)):
             for state in (False,True):
-                p={'premise':'decision','invertible':state,'hypothesis':hyps[index%len(hyps)],'truths':bits}
+                p={'premise':'decision','invertible':state,'hypothesis':hyps[0],'truths':bits}
                 rows.append(g.generate(seed=index,template=sid,parameters=p))
+        # For each alternate hypothesis/status, test two different correct
+        # counts while holding that printed hypothesis and all concepts fixed.
+        first=g.masks(sid)[0]
+        different=next(bits for bits in g.masks(sid) if sum(bits)!=sum(first))
+        for hyp in hyps[1:]:
+            for state in (False,True):
+                for bits in (first,different):
+                    rows.append(g.generate(seed=77,template=sid,parameters={
+                      'premise':'decision','invertible':state,'hypothesis':hyp,'truths':bits}))
         bits=g.masks(sid)[0]
         # Controlled status change, same proposition polarity: complements keys.
         # Radio source banks may not contain the complement; use legal polarity changes there.
@@ -193,7 +221,9 @@ def main():
     save('source-replays.json',replays);save('test-records.json',rows);save('legacy-premise-records.json',legacy);save('counterfactuals.json',controls)
     save('source-replay-report.json',{'status':'pass','complete_banks':len(replays),'source_total':16,
       'choices_matched':sum(len(f[':answer-field/choices']) for r in replays for f in r['question'][':question/answer-fields']),
-      'corrected_solution':'q-141342 three premise quotations','excluded':g.EXCLUDED})
+      'corrected_solution':'q-141342 three premise quotations',
+      'presentation':'Theorem equivalence stacked vertically; all four identities and equivalence independently checked. Remaining source solution text exact after canonical normalization.',
+      'excluded':g.EXCLUDED})
     checks=[{'label':r['generation']['template']+' '+str(i),'record':r,'checks':native_checks(r)} for i,r in enumerate(replays+rows+legacy)]
     save('native-input.json',checks)
     subprocess.run([str(REPO/'generate/runs/current/check-engine'),str(E/'native-input.json'),str(E/'native-report.json')],check=True,stdout=subprocess.DEVNULL)

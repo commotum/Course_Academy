@@ -1,0 +1,9 @@
+The latest retained counterexample was reproduced first. Finding 591f580cadb749294588 still fails: five captured historical banks match their original prompts, complete choices, keys, solutions and generation metadata; the retained possible learner-history witness has 64/64 sign-extremum successes. All generated inventory records were audited; none remain untested.
+
+The four current-generator regressions pass. Source replay covers all 17 complete banks and the canonical example. Three finite batches retain contrasts before and after shared delivery filtering (14/14 records accepted). Controlled coefficient/residual changes pass. The real native grader accepts 7 correct responses and rejects 28 incorrect ones. Exact dependencies and relocation pass. Runtime, manifest, source and inventory hashes match the preserved proposal bindings.
+
+No runtime change is justified by this latest finding: the selector reads stored banks independently of this entrypoint. The review explicitly requests a separate inventory-remediation workflow. Its five replacement records and identity mapping remain staged in evidence/repair-3/inventory-repair-proposal.json, verified and unapplied. Changing those stored questions is prohibited by this job. The strict regression remains failing; no hypothetical replacement pool was substituted. Status is unsupported.
+
+The retained actual-UI screenshot evidence/repair-3/render/question-002.png was visually reinspected: system, five choices, augmented matrices, row operation, reduced equation and conclusion are readable and consistent. No new rendering was necessary because runtime and content are unchanged. The lesson classification flowchart was also inspected; no generated question requires a diagram.
+
+Reproduction and all check commands, exit codes and output: commands.json. Consolidated results: results.json. No database, engine, publication, source or image changes were made.
