@@ -1,11 +1,13 @@
-# Current state — author 694
+# Current state — author 698
 
-Read feedback and both retained findings plus latest history event. Reproduced the exact outstanding report failure first. No new generator defect or changed source evidence is reported. Preserved runtime and both strict regression declarations.
+Read feedback and both retained findings; history has 698 events through attempt 697. Read required generator documentation and reused the existing instructional account and source analysis. No changed source evidence or new generator failure is reported. Runtime files, source and both regression declarations are preserved.
 
-Commands and results: `evidence/author-694/commands.json` and `results.json`.
+Reproduced the exact latest failure first. Commands, logs and exit codes are in `evidence/author-698/results.json` and `commands.json`.
 
-- `checks/check_report_installation.py` fails: the required external report still raises `decision_variation has an unresolved decision shortcut`. The staged correction passes the actual contract/schema and 26 complete current-generator record replays.
-- `checks/test_role_exchange.py --output evidence/author-694/role` passes: nine controlled cases, 24 sampled mixed cases, eight default-hard cases, shared delivery, counterfactual/conditional shortcut checks, and 30 native-grader expectations. Delivered resonance positions: first 19, second 17; five both-nonresonant cases.
-- `checks/verify_retained_state.py` passes: 55 handoff artifacts, runtime and source hashes unchanged; eight unaffected mathematical cases pass. Prior source replay and inspected UI rendering remain applicable to unchanged runtime bytes.
+- `checks/check_report_installation.py`: exit 1. The staged report passes the actual contract/schema and replays 26 visible records against the current generator. The required prior-review destination still fails with `decision_variation has an unresolved decision shortcut`. See `evidence/author-698/report-results.json`.
+- `checks/test_role_exchange.py --output evidence/author-698/role`: exit 0. Controlled reorder and resonance transfer, sampling, within-template shortcut probes, shared delivery filtering, and native-grader acceptance/rejection pass. See `evidence/author-698/role/results.json`.
+- `checks/verify_retained_state.py`: exit 0. All 55 staged handoff artifacts and unchanged runtime/source hashes verify; eight independently parsed unaffected mathematical cases pass. Prior source replay and actual UI rendering remain applicable to identical runtime bytes.
 
-Unfinished finding `645672a4cd3f9bf609ca` requires installation in `../review-1-policy-2-48d685555902faba`, outside the authorized workspace. Existing exact files/checksums and runner steps are in `evidence/review-installation-handoff.json`. Do not schedule another identical workspace-only author retry: it cannot perform this external action. The runner must install the existing correction, rerun the strict regression, and obtain independent review. No external report, runtime, engine, database or publication changes. Status unsupported while the strict regression fails.
+Unfinished finding `645672a4cd3f9bf609ca` requires runner installation of the staged corrected report at `../review-1-policy-2-48d685555902faba`, outside authorized workspace writes. Existing exact artifact paths, SHA256 values and runner steps remain in `evidence/review-installation-handoff.json`. No external installation was attempted. No database, publication, engine or runtime content was changed.
+
+Next unfinished action: runner installs the staged correction at the required destination, reruns the unchanged strict regression, then obtains fresh independent review. Another unchanged workspace-only author retry cannot resolve that operation. Status remains unsupported while this required check fails.

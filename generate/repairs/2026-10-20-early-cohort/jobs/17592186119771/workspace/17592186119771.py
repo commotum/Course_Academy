@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 """Recognize triangular structure with substantial nonzero regions.
 
-Normal difficulty follows size: 2x2 easy, 3x3 moderate, 4x4 hard. Every
-diagonal entry is nonzero; non-diagonal triangular matrices have at least
+Normal difficulty permits source-observed 2x2 and 3x3 easy, 3x3 moderate,
+and authored 4x4 hard. Non-diagonal triangular matrices have at least
 half their permitted off-diagonal region nonzero. Diagonal contrasts remain
 a minority independently of difficulty. Raw source replay preserves original
 ratings, fields and prose, is exact-parameter-only, and is evidence-only.
 
 The finite catalog counts dimension and off-diagonal support. Changing
 diagonal values, signs, labels or layout never creates another task. Easy has
-only three structural cases; do not inflate that limit with cosmetic changes.
+twelve structural cases; do not inflate that limit with cosmetic changes.
 """
 from __future__ import annotations
 import argparse, copy, hashlib, json, random, re, sys, uuid
@@ -20,7 +20,7 @@ import sympy as sp
 KP_ID=17592186119771
 KP_UUID='1cca9b7c-358a-5f62-9a53-a696df0dd0ff'
 TITLE='Describing a Triangular Matrix'
-VERSION='triangular-description-3.0-dense-balanced'
+VERSION='triangular-description-3.1-source-easy-sizes'
 HERE=Path(__file__).resolve().with_suffix('')
 SOURCE=json.loads((HERE/'source.json').read_text())
 SOURCES={q[':question/math-academy-id']:q for q in SOURCE['record'][':knowledge-point/questions']}
@@ -28,13 +28,13 @@ SUPPORTED_LEVELS=('easy','moderate','hard')
 LABELS=('Identity matrix','Diagonal matrix','Upper triangular matrix','Lower triangular matrix','Other')
 FAMILIES={'lower':'Lower triangular matrix','upper':'Upper triangular matrix','diagonal':'Diagonal matrix'}
 CRITERION='Choose the most specific listed description: identity before diagonal, and diagonal before upper or lower triangular. Choose Other only if none of these descriptions applies.'
-SIZES={'easy':2,'moderate':3,'hard':4}
+SIZES={'easy':(2,3),'moderate':(3,),'hard':(4,)}
 FAMILY_WEIGHTS={'lower':2,'upper':2,'diagonal':1}
-DOMAIN={'entries':'integers -9..9 (bool excluded); every diagonal entry nonzero',
- 'easy':'2x2 upper, lower, or nonidentity diagonal; three finite structural cases',
+DOMAIN={'entries':'integers -10..10 (bool excluded); diagonal entries may be zero',
+ 'easy':'2x2 or 3x3 upper, lower, or nonidentity diagonal; twelve finite structural cases',
  'moderate':'3x3; upper/lower have at least two nonzero off-diagonal entries',
  'hard':'4x4; upper/lower have at least three nonzero off-diagonal entries',
- 'families':'Independent draws: 40% lower, 40% upper, 20% diagonal. Finite batches balance upper/lower with at most one diagonal contrast; deduplication changes those proportions.',
+ 'families':'Independent draws: 40% lower, 40% upper, 20% diagonal. Finite batches balance upper/lower and prefer one diagonal contrast when supply permits; deduplication changes those proportions.',
  'fingerprint':'dimension, family and off-diagonal support only; diagonal unit positions, values, signs, labels, layouts and choice order are incidental',
  'criterion':'Identity > Diagonal > non-diagonal Upper/Lower > Other; normal generation excludes identity and Other'}
 
@@ -68,15 +68,14 @@ def validate_parameters(parameters):
     if not isinstance(matrix,(list,tuple)) or len(matrix) not in (2,3,4): raise ValueError('Square size 2, 3 or 4 required')
     n=len(matrix)
     if any(not isinstance(row,(list,tuple)) or len(row)!=n for row in matrix): raise ValueError('Nonsquare matrix')
-    if any(type(v)!=int or abs(v)>9 for row in matrix for v in row): raise ValueError('Bounded integer entries required')
+    if any(type(v)!=int or abs(v)>10 for row in matrix for v in row): raise ValueError('Bounded integer entries required')
     if parameters['letter'] not in ('A','C') or parameters['layout'] not in ('aligned','bmatrix'): raise ValueError('Unknown letter/layout')
     return {'matrix':[list(row) for row in matrix],'letter':parameters['letter'],'layout':parameters['layout']}
 
 def level_guard(level,p,template):
     n=len(p['matrix']); actual=family(p['matrix'])
     if template!=actual: raise ValueError('Requested family differs from the actual matrix')
-    if n!=SIZES[level]: raise ValueError(f'{level} requires a {SIZES[level]}x{SIZES[level]} matrix')
-    if any(p['matrix'][i][i]==0 for i in range(n)): raise ValueError('Normal practice requires every diagonal entry nonzero')
+    if n not in SIZES[level]: raise ValueError(f'{level} requires a square size in {SIZES[level]}')
     off_diagonal=sum(v!=0 for i,row in enumerate(p['matrix']) for j,v in enumerate(row) if i!=j)
     if actual!='diagonal' and off_diagonal < (n*(n-1)+3)//4:
         raise ValueError('Normal triangular practice needs a substantial nonzero off-diagonal region')
@@ -97,7 +96,7 @@ def catalog(level,template=None):
     if template is not None:
         if template not in families: raise ValueError('Template outside level')
         families=(template,)
-    dimensions=(SIZES[level],)
+    dimensions=SIZES[level]
     result=[]
     for n in dimensions:
         for kind in families:
@@ -117,10 +116,11 @@ def sample_parameters(level,template,rng):
     return kind,fill_pattern(kind,pattern,rng)
 
 def fill_pattern(kind,pattern,rng):
-    nonzero=tuple(v for v in range(-9,10) if v!=0)
-    matrix=[[rng.choice(nonzero) if v else 0 for v in row] for row in pattern]
+    nonzero=tuple(v for v in range(-10,11) if v!=0)
+    matrix=[[rng.randint(-10,10) if i==j else rng.choice(nonzero) if v else 0
+             for j,v in enumerate(row)] for i,row in enumerate(pattern)]
     while kind=='diagonal' and all(matrix[i][i]==1 for i in range(len(matrix))):
-        matrix=[[rng.choice(nonzero) if v else 0 for v in row] for row in pattern]
+        for i in range(len(matrix)): matrix[i][i]=rng.randint(-10,10)
     return {'matrix':matrix,'letter':rng.choice(('A','C')),'layout':'bmatrix'}
 
 def render(p,display=False):
@@ -210,12 +210,12 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
         'version':VERSION,'python_version':sys.version.split()[0],'sympy_version':sp.__version__,'seed':seed,'template':template,'parameters':p,
         'bank_profile':profile,'recipes':list(LABELS),'parameter_fingerprint':task_key(p['matrix']),'content_fingerprint':content,
         'domain':DOMAIN,'source_database':SOURCE['database'],'source_basis':SOURCE['basis'],'source_lineage':SOURCE['lineage'],
-        'source_id':source_id,'difficulty_origin':'original captured rating' if raw else 'authored dimension-based scan workload: 2x2 easy, 3x3 moderate, 4x4 hard',
+        'source_id':source_id,'difficulty_origin':'original captured rating or absence' if raw else 'source-observed 2x2/3x3 easy; 3x3 moderate; authored 4x4 hard scan workload',
         'evidence_only':raw,'eligible_for_learning':not raw,'plot_rating':'none',
         'repairs':[] if raw else ['explicit most-specific criterion']+(['single radio field confirmed by authoritative MA widget'] if source_id=='q-13759' else ['inferred correct ref and authored solution/rating'] if source_id=='q-13769' else []),
         'catalog_count':len(catalog(level))}}
 
-# EASY: 2x2, all three classification families, three structural cases.
+# EASY: source-observed 2x2 and 3x3, twelve structural cases.
 def generate_easy(seed=0,**kwargs): return generate('easy',seed,**kwargs)
 # MODERATE: 3x3, all three families, with a substantial triangular region.
 def generate_moderate(seed=0,**kwargs): return generate('moderate',seed,**kwargs)

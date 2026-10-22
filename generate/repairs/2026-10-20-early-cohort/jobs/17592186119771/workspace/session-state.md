@@ -1,0 +1,9 @@
+# Session state
+
+Implementation milestone: repaired the reported easy count=5 failure by restoring source-observed 3×3 easy matrices alongside 2×2. Kept finite support-pattern uniqueness and the existing radio bank, classification families, criterion and solution stages. Permitted diagonal zeros per lesson, expanded the integer bound to include source entry 10, and refreshed bundled source evidence (11 questions rather than 10). Added pinned requirements. No database/image publication or files in another job were changed.
+
+Validation milestone: `.../.venv/bin/python checks/validate.py` passes: 12 easy structural cases, 11 source banks/55 choices, 11 normal source-parameter replays, 24 controlled records, 16 inventory records inspected (one source lacks a stored key). `check-engine evidence/grader-input.json evidence/grader-report.json` passes 44 valid and 176 invalid selections. Shared `check_delivery.py` accepts all 36 audit records with no duplicates. Package relocation using only manifest files produces the identical five-record batch.
+
+Feedback/history have no entries in `findings`; the sole retained event is `legacy_packaging_or_sampling`. The regression declaration uses that event's concrete code as its identifier. The original traceback is saved in evidence/before.stderr. There are no earlier repair findings to discard.
+
+Next: finish the in-progress render preview, inspect screenshots, save reproducible final commands and bounded conclusions, and verify delivered sample and post-delivery cue probes. Engine files are unchanged. Live learner history/selection and inventory generation attribution cannot be tested from the supplied snapshot.

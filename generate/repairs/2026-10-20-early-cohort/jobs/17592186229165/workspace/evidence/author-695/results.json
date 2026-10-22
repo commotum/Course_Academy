@@ -1,0 +1,38 @@
+{
+  "status": "unsupported",
+  "checks": [
+    {
+      "check": "report-installation",
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "checks/check_report_installation.py"
+      ],
+      "exit_code": 1,
+      "log": "evidence/author-695/report-installation.log"
+    },
+    {
+      "check": "role-regression",
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "checks/test_role_exchange.py",
+        "--output",
+        "evidence/author-695/role"
+      ],
+      "exit_code": 0,
+      "log": "evidence/author-695/role-regression.log"
+    },
+    {
+      "check": "retained-state",
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "checks/verify_retained_state.py"
+      ],
+      "exit_code": 0,
+      "log": "evidence/author-695/retained-state.log"
+    }
+  ],
+  "runtime_modified": false,
+  "blocker_finding": "645672a4cd3f9bf609ca",
+  "blocker": "Required prior-review destination remains uncorrected and is outside authorized workspace.",
+  "next_action": "Runner installs the existing staged corrected evidence using evidence/review-installation-handoff.json, reruns both strict regressions, then obtains independent review."
+}
