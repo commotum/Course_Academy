@@ -1,0 +1,7 @@
+Preserved the completed generator repairs and all five strict regressions. No runtime, source, inventory, database, engine, publication or image changes were made.
+
+First executed check: `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory` exited 1, reproducing five captured defective banks and the 64/64 possible-history shortcut witness.
+
+Then `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/current-verification` exited 1 solely for finding 591f580cadb749294588. Four generator findings pass; 17 complete practice banks and the canonical system replay; 14/14 records survive delivery with within-sign contrasts; native grading accepts 7 correct choices and rejects 28 wrong choices; exact dependencies and relocated execution pass. Runtime/source/inventory hashes and the unapplied five-record proposal match retained evidence. Reinspected retained actual-UI screenshot evidence/repair-3/render/question-002.png: readable systems, choices, row reduction and conclusion, without clipping.
+
+The remaining failure is stored content consumed independently by the learner selector. A workspace generator edit cannot retire those entities. The separate remediation workflow must review/apply the existing proposal and capture fresh inventory before the strict stored-pool regression can pass. Do not waive that test, alter source evidence, or repeat unchanged author retries as a substitute for the external action. No new construction defect was demonstrated.

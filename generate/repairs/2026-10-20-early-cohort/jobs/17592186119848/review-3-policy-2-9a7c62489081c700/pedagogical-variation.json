@@ -1,0 +1,2035 @@
+{
+  "learner_operation": "Read target r; reject matrices with fewer than r rows or columns; distinguish remaining matrices with exactly r independent pivots from rank-deficient alternatives; encode the qualifying labels in the supplied radio or checkbox contract.",
+  "fixed_features": [
+    {
+      "feature": "Small matrices and inspection-friendly structure",
+      "justification": "Target KP is inspection; row-reduction KP is a subsequent distinct lesson step 19981."
+    },
+    {
+      "feature": "One correct choice for singular matrix radio",
+      "justification": "The wording asks which matrix has the given rank and the answer field is radio."
+    },
+    {
+      "feature": "Profile-associated target and small sparse dimension pattern",
+      "justification": "Source inspection workloads use targets3/4/5/6 with the shown shapes. Keeping these coupled preserves dimension exclusion plus pivot inspection, rather than introducing arbitrary row reduction. Correct eligible labels and their joint qualification remain mutable."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Qualifying matrix labels",
+      "eligible_variation": "Any dimension-eligible candidate can qualify or fail, constrained by singular radio versus supplied subset bank.",
+      "observed": "Unchanged catalog39 and structural classes24. Current rank3 batch group contains A-only,C-only,A+C with identical label shapes."
+    },
+    {
+      "role": "Correct subset cardinality",
+      "eligible_variation": "Joint and singleton subsets; empty where complete bank supports it. Singular radio remains exactly one.",
+      "observed": "Current subset block counts1,1,2; checkbox B or None. q-34823 catalog retains empty,singletons,pair. This avoids the prior forced-exclusive allocation."
+    },
+    {
+      "role": "Physical shape assigned to a label",
+      "eligible_variation": "Relabel source physical roles conservatively using complete compatible bank; retain rank bound.",
+      "observed": "q-139965 six role assignments remain in catalog, while repeated delivered blocks hold the labeled layout fixed to expose independent pivot decisions."
+    },
+    {
+      "role": "Target rank",
+      "eligible_variation": "Source-backed profile ranks3,4,5,6 with matching dimensions and workload.",
+      "observed": "Targets vary across profiles; no independent target parameter. Pivot roles, rather than unsupported arbitrary targets, supply controlled decision interventions."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "Exact runner batch after delivery",
+      "sample_refs": [
+        "batch.json",
+        "delivery-batch/accepted.json",
+        "decision-stage-results.json"
+      ],
+      "result": "All five survive; three identical-layout rank3 subset decisions C,A,A+C and two rank5 checkbox decisions B,None."
+    },
+    {
+      "case": "Changed allocator and finite domain boundaries",
+      "sample_refs": [
+        "sampler-results.json",
+        "decision-stage-results.json",
+        "sampler-57209-24.json",
+        "packaging-results.json"
+      ],
+      "result": "Nine fresh deterministic count/seed runs include0,1,2,3,4,5,23,24. Repeated subset groups have independent decision witnesses for each eligible label; singular whole-matrix counts remain required by contract."
+    },
+    {
+      "case": "Both retained failures and exact previous candidate prefix",
+      "sample_refs": [
+        "first-failing-batch.json",
+        "previous-batch.json",
+        "retained-checks.json",
+        "exact-prefix-repaired.json"
+      ],
+      "result": "Both old negative examples fail both original and retained executable checks. Current runner batch passes all four. Exact previous prefix now allocates full decision set."
+    },
+    {
+      "case": "Catalog and source scope",
+      "sample_refs": [
+        "unchanged-construction.json",
+        "catalog.json",
+        "prior/source-replay.json",
+        "prior/scope-results.json"
+      ],
+      "result": "Current catalog and ten complete source replays identical to earlier independent results; incomplete source key/solution/bank evidence remains documented rather than invented."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "q-139965 seed60217 assignment[C,A,B],scale2: A-only -> A+C by altering C alone; C-only -> A+C by altering A alone.",
+      "expected": "Other matrices remain physically fixed; qualifying subset, key and solution must follow the changed pivot; transferred old answer must be rejected.",
+      "observed": "Exact matrices and rendered prompts follow these relationships; native grader rejects both transferred old choices and accepts every independently derived new choice. Stale-key and stale-solution negative controls fail.",
+      "status": "passed",
+      "justification": "Canonical e-5417 inspects every eligible matrix. q-139965 explicitly supports joint qualification; each eligible pivot decision is material.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-input.json",
+        "grader-results.json",
+        "render/input.json",
+        "render-inspection.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Hold q-139965 A+C roles and shapes fixed; change scale2 to scale1.",
+      "expected": "Prompt entries change, but ranks and subset response remain; same rank explanation remains correct.",
+      "observed": "Entries halve and native grader accepts transferred A+C choice. Both rendered instances show the same correct subset and rank explanation.",
+      "status": "passed",
+      "justification": "Nonzero scalar rescaling preserves independent pivots and rank; tutorial4151 defines rank via pivots, not magnitudes.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-results.json",
+        "render-scale-record.json",
+        "render-scale/rendering.json",
+        "render-inspection.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "template and labeled dimensions",
+      "subgroup": "batch raw ('q-79568', 5, (('A', (3, 5)), ('B', (5, 5)), ('C', (5, 4))), ('A', 'C'), 4, 'q-79568')",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select B",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "No constant full response answers this repeated subgroup. Baseline is uniform over the observed permitted semantic outcomes; no significance claim from small samples.",
+      "sample_refs": [
+        "batch.json"
+      ]
+    },
+    {
+      "cue": "template and qualifying-count",
+      "subgroup": "batch raw ('q-79568', 5, (('A', (3, 5)), ('B', (5, 5)), ('C', (5, 4))), ('A', 'C'), 4, 'q-79568')",
+      "scope": "within_template",
+      "strategy": "Assume the modal number of qualifying matrices",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Subset count is not fixed; joint and singleton decisions survive. Baseline is the observed modal cardinality rate; cardinality success alone does not select the labels.",
+      "sample_refs": [
+        "batch.json"
+      ]
+    },
+    {
+      "cue": "template and labeled dimensions",
+      "subgroup": "batch raw ('q-139965', 3, (('A', (5, 5)), ('B', (2, 4)), ('C', (3, 4))), ('B',), 1, 'q-79562-reassigned')",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select C",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "No constant full response answers this repeated subgroup. Baseline is uniform over the observed permitted semantic outcomes; no significance claim from small samples.",
+      "sample_refs": [
+        "batch.json"
+      ]
+    },
+    {
+      "cue": "template and qualifying-count",
+      "subgroup": "batch raw ('q-139965', 3, (('A', (5, 5)), ('B', (2, 4)), ('C', (3, 4))), ('B',), 1, 'q-79562-reassigned')",
+      "scope": "within_template",
+      "strategy": "Assume the modal number of qualifying matrices",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.6666666666666666,
+      "disposition": "not_predictive",
+      "conclusion": "Subset count is not fixed; joint and singleton decisions survive. Baseline is the observed modal cardinality rate; cardinality success alone does not select the labels.",
+      "sample_refs": [
+        "batch.json"
+      ]
+    },
+    {
+      "cue": "template and labeled dimensions",
+      "subgroup": "batch surviving ('q-79568', 5, (('A', (3, 5)), ('B', (5, 5)), ('C', (5, 4))), ('A', 'C'), 4, 'q-79568')",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select B",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "No constant full response answers this repeated subgroup. Baseline is uniform over the observed permitted semantic outcomes; no significance claim from small samples.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "template and qualifying-count",
+      "subgroup": "batch surviving ('q-79568', 5, (('A', (3, 5)), ('B', (5, 5)), ('C', (5, 4))), ('A', 'C'), 4, 'q-79568')",
+      "scope": "within_template",
+      "strategy": "Assume the modal number of qualifying matrices",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Subset count is not fixed; joint and singleton decisions survive. Baseline is the observed modal cardinality rate; cardinality success alone does not select the labels.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "template and labeled dimensions",
+      "subgroup": "batch surviving ('q-139965', 3, (('A', (5, 5)), ('B', (2, 4)), ('C', (3, 4))), ('B',), 1, 'q-79562-reassigned')",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select C",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "No constant full response answers this repeated subgroup. Baseline is uniform over the observed permitted semantic outcomes; no significance claim from small samples.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "template and qualifying-count",
+      "subgroup": "batch surviving ('q-139965', 3, (('A', (5, 5)), ('B', (2, 4)), ('C', (3, 4))), ('B',), 1, 'q-79562-reassigned')",
+      "scope": "within_template",
+      "strategy": "Assume the modal number of qualifying matrices",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.6666666666666666,
+      "disposition": "not_predictive",
+      "conclusion": "Subset count is not fixed; joint and singleton decisions survive. Baseline is the observed modal cardinality rate; cardinality success alone does not select the labels.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "template and labeled dimensions",
+      "subgroup": "catalog raw ('q-139958', 4, (('A', (2, 5)), ('B', (3, 4)), ('C', (4, 5)), ('D', (5, 3)), ('E', (4, 4))), ('A', 'B', 'D'), 1, 'q-139958')",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select C",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "No constant full response answers this repeated subgroup. Baseline is uniform over the observed permitted semantic outcomes; no significance claim from small samples.",
+      "sample_refs": [
+        "catalog.json"
+      ]
+    },
+    {
+      "cue": "template and qualifying-count",
+      "subgroup": "catalog raw ('q-139958', 4, (('A', (2, 5)), ('B', (3, 4)), ('C', (4, 5)), ('D', (5, 3)), ('E', (4, 4))), ('A', 'B', 'D'), 1, 'q-139958')",
+      "scope": "within_template",
+      "strategy": "Assume the modal number of qualifying matrices",
+      "correct": 2,
+      "total": 2,
+      "baseline": 1.0,
+      "disposition": "intended_skill",
+      "conclusion": "Singular matrix-radio requires exactly one by its stated response contract. Baseline is the observed modal cardinality rate; cardinality success alone does not select the labels.",
+      "sample_refs": [
+        "catalog.json"
+      ]
+    },
+    {
+      "cue": "template and labeled dimensions",
+      "subgroup": "catalog raw ('q-139965', 3, (('A', (3, 4)), ('B', (5, 5)), ('C', (2, 4))), ('C',), 1, 'q-79562-reassigned')",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select A",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "No constant full response answers this repeated subgroup. Baseline is uniform over the observed permitted semantic outcomes; no significance claim from small samples.",
+      "sample_refs": [
+        "catalog.json"
+      ]
+    },
+    {
+      "cue": "template and qualifying-count",
+      "subgroup": "catalog raw ('q-139965', 3, (('A', (3, 4)), ('B', (5, 5)), ('C', (2, 4))), ('C',), 1, 'q-79562-reassigned')",
+      "scope": "within_template",
+      "strategy": "Assume the modal number of qualifying matrices",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.6666666666666666,
+      "disposition": "not_predictive",
+      "conclusion": "Subset count is not fixed; joint and singleton decisions survive. Baseline is the observed modal cardinality rate; cardinality success alone does not select the labels.",
+      "sample_refs": [
+        "catalog.json"
+      ]
+    },
+    {
+      "cue": "template and labeled dimensions",
+      "subgroup": "catalog raw ('q-139965', 3, (('A', (3, 4)), ('B', (2, 4)), ('C', (5, 5))), ('B',), 1, 'q-79562-reassigned')",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select A",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "No constant full response answers this repeated subgroup. Baseline is uniform over the observed permitted semantic outcomes; no significance claim from small samples.",
+      "sample_refs": [
+        "catalog.json"
+      ]
+    },
+    {
+      "cue": "template and qualifying-count",
+      "subgroup": "catalog raw ('q-139965', 3, (('A', (3, 4)), ('B', (2, 4)), ('C', (5, 5))), ('B',), 1, 'q-79562-reassigned')",
+      "scope": "within_template",
+      "strategy": "Assume the modal number of qualifying matrices",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.6666666666666666,
+      "disposition": "not_predictive",
+      "conclusion": "Subset count is not fixed; joint and singleton decisions survive. Baseline is the observed modal cardinality rate; cardinality success alone does not select the labels.",
+      "sample_refs": [
+        "catalog.json"
+      ]
+    },
+    {
+      "cue": "template and labeled dimensions",
+      "subgroup": "catalog raw ('q-139965', 3, (('A', (5, 5)), ('B', (3, 4)), ('C', (2, 4))), ('C',), 1, 'q-79562-reassigned')",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select A",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "No constant full response answers this repeated subgroup. Baseline is uniform over the observed permitted semantic outcomes; no significance claim from small samples.",
+      "sample_refs": [
+        "catalog.json"
+      ]
+    },
+    {
+      "cue": "template and qualifying-count",
+      "subgroup": "catalog raw ('q-139965', 3, (('A', (5, 5)), ('B', (3, 4)), ('C', (2, 4))), ('C',), 1, 'q-79562-reassigned')",
+      "scope": "within_template",
+      "strategy": "Assume the modal number of qualifying matrices",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.6666666666666666,
+      "disposition": "not_predictive",
+      "conclusion": "Subset count is not fixed; joint and singleton decisions survive. Baseline is the observed modal cardinality rate; cardinality success alone does not select the labels.",
+      "sample_refs": [
+        "catalog.json"
+      ]
+    },
+    {
+      "cue": "template and labeled dimensions",
+      "subgroup": "catalog raw ('q-139965', 3, (('A', (2, 4)), ('B', (3, 4)), ('C', (5, 5))), ('A',), 1, 'q-139965')",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select B",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "No constant full response answers this repeated subgroup. Baseline is uniform over the observed permitted semantic outcomes; no significance claim from small samples.",
+      "sample_refs": [
+        "catalog.json"
+      ]
+    },
+    {
+      "cue": "template and qualifying-count",
+      "subgroup": "catalog raw ('q-139965', 3, (('A', (2, 4)), ('B', (3, 4)), ('C', (5, 5))), ('A',), 1, 'q-139965')",
+      "scope": "within_template",
+      "strategy": "Assume the modal number of qualifying matrices",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.6666666666666666,
+      "disposition": "not_predictive",
+      "conclusion": "Subset count is not fixed; joint and singleton decisions survive. Baseline is the observed modal cardinality rate; cardinality success alone does not select the labels.",
+      "sample_refs": [
+        "catalog.json"
+      ]
+    },
+    {
+      "cue": "template and labeled dimensions",
+      "subgroup": "catalog raw ('q-139965', 3, (('A', (5, 5)), ('B', (2, 4)), ('C', (3, 4))), ('B',), 1, 'q-79562-reassigned')",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select A",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "No constant full response answers this repeated subgroup. Baseline is uniform over the observed permitted semantic outcomes; no significance claim from small samples.",
+      "sample_refs": [
+        "catalog.json"
+      ]
+    },
+    {
+      "cue": "template and qualifying-count",
+      "subgroup": "catalog raw ('q-139965', 3, (('A', (5, 5)), ('B', (2, 4)), ('C', (3, 4))), ('B',), 1, 'q-79562-reassigned')",
+      "scope": "within_template",
+      "strategy": "Assume the modal number of qualifying matrices",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.6666666666666666,
+      "disposition": "not_predictive",
+      "conclusion": "Subset count is not fixed; joint and singleton decisions survive. Baseline is the observed modal cardinality rate; cardinality success alone does not select the labels.",
+      "sample_refs": [
+        "catalog.json"
+      ]
+    },
+    {
+      "cue": "template and labeled dimensions",
+      "subgroup": "catalog raw ('q-139965', 3, (('A', (2, 4)), ('B', (5, 5)), ('C', (3, 4))), ('A',), 1, 'q-139965')",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select B",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "No constant full response answers this repeated subgroup. Baseline is uniform over the observed permitted semantic outcomes; no significance claim from small samples.",
+      "sample_refs": [
+        "catalog.json"
+      ]
+    },
+    {
+      "cue": "template and qualifying-count",
+      "subgroup": "catalog raw ('q-139965', 3, (('A', (2, 4)), ('B', (5, 5)), ('C', (3, 4))), ('A',), 1, 'q-139965')",
+      "scope": "within_template",
+      "strategy": "Assume the modal number of qualifying matrices",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.6666666666666666,
+      "disposition": "not_predictive",
+      "conclusion": "Subset count is not fixed; joint and singleton decisions survive. Baseline is the observed modal cardinality rate; cardinality success alone does not select the labels.",
+      "sample_refs": [
+        "catalog.json"
+      ]
+    },
+    {
+      "cue": "template and labeled dimensions",
+      "subgroup": "catalog raw ('q-34823', 5, (('A', (5, 5)), ('B', (2, 5)), ('C', (5, 5))), ('B',), 1, 'q-34823')",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select None",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "No constant full response answers this repeated subgroup. Baseline is uniform over the observed permitted semantic outcomes; no significance claim from small samples.",
+      "sample_refs": [
+        "catalog.json"
+      ]
+    },
+    {
+      "cue": "template and qualifying-count",
+      "subgroup": "catalog raw ('q-34823', 5, (('A', (5, 5)), ('B', (2, 5)), ('C', (5, 5))), ('B',), 1, 'q-34823')",
+      "scope": "within_template",
+      "strategy": "Assume the modal number of qualifying matrices",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Subset count is not fixed; joint and singleton decisions survive. Baseline is the observed modal cardinality rate; cardinality success alone does not select the labels.",
+      "sample_refs": [
+        "catalog.json"
+      ]
+    },
+    {
+      "cue": "template and labeled dimensions",
+      "subgroup": "catalog raw ('q-34824', 4, (('A', (4, 4)), ('B', (3, 5)), ('C', (5, 5)), ('D', (3, 3)), ('E', (4, 3))), ('B', 'D', 'E'), 1, 'q-34824')",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select A",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "No constant full response answers this repeated subgroup. Baseline is uniform over the observed permitted semantic outcomes; no significance claim from small samples.",
+      "sample_refs": [
+        "catalog.json"
+      ]
+    },
+    {
+      "cue": "template and qualifying-count",
+      "subgroup": "catalog raw ('q-34824', 4, (('A', (4, 4)), ('B', (3, 5)), ('C', (5, 5)), ('D', (3, 3)), ('E', (4, 3))), ('B', 'D', 'E'), 1, 'q-34824')",
+      "scope": "within_template",
+      "strategy": "Assume the modal number of qualifying matrices",
+      "correct": 2,
+      "total": 2,
+      "baseline": 1.0,
+      "disposition": "intended_skill",
+      "conclusion": "Singular matrix-radio requires exactly one by its stated response contract. Baseline is the observed modal cardinality rate; cardinality success alone does not select the labels.",
+      "sample_refs": [
+        "catalog.json"
+      ]
+    },
+    {
+      "cue": "template and labeled dimensions",
+      "subgroup": "catalog raw ('q-35283', 6, (('A', (6, 5)), ('B', (6, 4)), ('C', (6, 6))), ('A', 'B'), 4, 'q-35283')",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select None",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "No constant full response answers this repeated subgroup. Baseline is uniform over the observed permitted semantic outcomes; no significance claim from small samples.",
+      "sample_refs": [
+        "catalog.json"
+      ]
+    },
+    {
+      "cue": "template and qualifying-count",
+      "subgroup": "catalog raw ('q-35283', 6, (('A', (6, 5)), ('B', (6, 4)), ('C', (6, 6))), ('A', 'B'), 4, 'q-35283')",
+      "scope": "within_template",
+      "strategy": "Assume the modal number of qualifying matrices",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Subset count is not fixed; joint and singleton decisions survive. Baseline is the observed modal cardinality rate; cardinality success alone does not select the labels.",
+      "sample_refs": [
+        "catalog.json"
+      ]
+    },
+    {
+      "cue": "template and labeled dimensions",
+      "subgroup": "catalog raw ('q-79559', 5, (('A', (5, 5)), ('B', (2, 5)), ('C', (5, 3)), ('D', (3, 3)), ('E', (5, 5))), ('B', 'C', 'D'), 1, 'q-79559')",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select A",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "No constant full response answers this repeated subgroup. Baseline is uniform over the observed permitted semantic outcomes; no significance claim from small samples.",
+      "sample_refs": [
+        "catalog.json"
+      ]
+    },
+    {
+      "cue": "template and qualifying-count",
+      "subgroup": "catalog raw ('q-79559', 5, (('A', (5, 5)), ('B', (2, 5)), ('C', (5, 3)), ('D', (3, 3)), ('E', (5, 5))), ('B', 'C', 'D'), 1, 'q-79559')",
+      "scope": "within_template",
+      "strategy": "Assume the modal number of qualifying matrices",
+      "correct": 2,
+      "total": 2,
+      "baseline": 1.0,
+      "disposition": "intended_skill",
+      "conclusion": "Singular matrix-radio requires exactly one by its stated response contract. Baseline is the observed modal cardinality rate; cardinality success alone does not select the labels.",
+      "sample_refs": [
+        "catalog.json"
+      ]
+    },
+    {
+      "cue": "template and labeled dimensions",
+      "subgroup": "catalog raw ('q-79560', 3, (('A', (2, 5)), ('B', (2, 2)), ('C', (4, 5)), ('D', (4, 3)), ('E', (4, 2))), ('A', 'B', 'E'), 1, 'q-79560')",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select C",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "No constant full response answers this repeated subgroup. Baseline is uniform over the observed permitted semantic outcomes; no significance claim from small samples.",
+      "sample_refs": [
+        "catalog.json"
+      ]
+    },
+    {
+      "cue": "template and qualifying-count",
+      "subgroup": "catalog raw ('q-79560', 3, (('A', (2, 5)), ('B', (2, 2)), ('C', (4, 5)), ('D', (4, 3)), ('E', (4, 2))), ('A', 'B', 'E'), 1, 'q-79560')",
+      "scope": "within_template",
+      "strategy": "Assume the modal number of qualifying matrices",
+      "correct": 2,
+      "total": 2,
+      "baseline": 1.0,
+      "disposition": "intended_skill",
+      "conclusion": "Singular matrix-radio requires exactly one by its stated response contract. Baseline is the observed modal cardinality rate; cardinality success alone does not select the labels.",
+      "sample_refs": [
+        "catalog.json"
+      ]
+    },
+    {
+      "cue": "template and labeled dimensions",
+      "subgroup": "catalog raw ('q-79561', 4, (('A', (3, 3)), ('B', (4, 4)), ('C', (4, 3)), ('D', (3, 5)), ('E', (4, 5))), ('A', 'C', 'D'), 1, 'q-79561')",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select B",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "No constant full response answers this repeated subgroup. Baseline is uniform over the observed permitted semantic outcomes; no significance claim from small samples.",
+      "sample_refs": [
+        "catalog.json"
+      ]
+    },
+    {
+      "cue": "template and qualifying-count",
+      "subgroup": "catalog raw ('q-79561', 4, (('A', (3, 3)), ('B', (4, 4)), ('C', (4, 3)), ('D', (3, 5)), ('E', (4, 5))), ('A', 'C', 'D'), 1, 'q-79561')",
+      "scope": "within_template",
+      "strategy": "Assume the modal number of qualifying matrices",
+      "correct": 2,
+      "total": 2,
+      "baseline": 1.0,
+      "disposition": "intended_skill",
+      "conclusion": "Singular matrix-radio requires exactly one by its stated response contract. Baseline is the observed modal cardinality rate; cardinality success alone does not select the labels.",
+      "sample_refs": [
+        "catalog.json"
+      ]
+    },
+    {
+      "cue": "template and labeled dimensions",
+      "subgroup": "catalog raw ('q-79562', 3, (('A', (3, 4)), ('B', (4, 5)), ('C', (4, 2))), ('C',), 1, 'q-79562')",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select A",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "No constant full response answers this repeated subgroup. Baseline is uniform over the observed permitted semantic outcomes; no significance claim from small samples.",
+      "sample_refs": [
+        "catalog.json"
+      ]
+    },
+    {
+      "cue": "template and qualifying-count",
+      "subgroup": "catalog raw ('q-79562', 3, (('A', (3, 4)), ('B', (4, 5)), ('C', (4, 2))), ('C',), 1, 'q-79562')",
+      "scope": "within_template",
+      "strategy": "Assume the modal number of qualifying matrices",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.6666666666666666,
+      "disposition": "not_predictive",
+      "conclusion": "Subset count is not fixed; joint and singleton decisions survive. Baseline is the observed modal cardinality rate; cardinality success alone does not select the labels.",
+      "sample_refs": [
+        "catalog.json"
+      ]
+    },
+    {
+      "cue": "template and labeled dimensions",
+      "subgroup": "catalog raw ('q-79568', 5, (('A', (3, 5)), ('B', (5, 5)), ('C', (5, 4))), ('A', 'C'), 4, 'q-79568')",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select None",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "No constant full response answers this repeated subgroup. Baseline is uniform over the observed permitted semantic outcomes; no significance claim from small samples.",
+      "sample_refs": [
+        "catalog.json"
+      ]
+    },
+    {
+      "cue": "template and qualifying-count",
+      "subgroup": "catalog raw ('q-79568', 5, (('A', (3, 5)), ('B', (5, 5)), ('C', (5, 4))), ('A', 'C'), 4, 'q-79568')",
+      "scope": "within_template",
+      "strategy": "Assume the modal number of qualifying matrices",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Subset count is not fixed; joint and singleton decisions survive. Baseline is the observed modal cardinality rate; cardinality success alone does not select the labels.",
+      "sample_refs": [
+        "catalog.json"
+      ]
+    },
+    {
+      "cue": "template and labeled dimensions",
+      "subgroup": "catalog surviving ('q-139958', 4, (('A', (2, 5)), ('B', (3, 4)), ('C', (4, 5)), ('D', (5, 3)), ('E', (4, 4))), ('A', 'B', 'D'), 1, 'q-139958')",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select C",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "No constant full response answers this repeated subgroup. Baseline is uniform over the observed permitted semantic outcomes; no significance claim from small samples.",
+      "sample_refs": [
+        "delivery-catalog/accepted.json"
+      ]
+    },
+    {
+      "cue": "template and qualifying-count",
+      "subgroup": "catalog surviving ('q-139958', 4, (('A', (2, 5)), ('B', (3, 4)), ('C', (4, 5)), ('D', (5, 3)), ('E', (4, 4))), ('A', 'B', 'D'), 1, 'q-139958')",
+      "scope": "within_template",
+      "strategy": "Assume the modal number of qualifying matrices",
+      "correct": 2,
+      "total": 2,
+      "baseline": 1.0,
+      "disposition": "intended_skill",
+      "conclusion": "Singular matrix-radio requires exactly one by its stated response contract. Baseline is the observed modal cardinality rate; cardinality success alone does not select the labels.",
+      "sample_refs": [
+        "delivery-catalog/accepted.json"
+      ]
+    },
+    {
+      "cue": "template and labeled dimensions",
+      "subgroup": "catalog surviving ('q-139965', 3, (('A', (3, 4)), ('B', (5, 5)), ('C', (2, 4))), ('C',), 1, 'q-79562-reassigned')",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select A",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "No constant full response answers this repeated subgroup. Baseline is uniform over the observed permitted semantic outcomes; no significance claim from small samples.",
+      "sample_refs": [
+        "delivery-catalog/accepted.json"
+      ]
+    },
+    {
+      "cue": "template and qualifying-count",
+      "subgroup": "catalog surviving ('q-139965', 3, (('A', (3, 4)), ('B', (5, 5)), ('C', (2, 4))), ('C',), 1, 'q-79562-reassigned')",
+      "scope": "within_template",
+      "strategy": "Assume the modal number of qualifying matrices",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.6666666666666666,
+      "disposition": "not_predictive",
+      "conclusion": "Subset count is not fixed; joint and singleton decisions survive. Baseline is the observed modal cardinality rate; cardinality success alone does not select the labels.",
+      "sample_refs": [
+        "delivery-catalog/accepted.json"
+      ]
+    },
+    {
+      "cue": "template and labeled dimensions",
+      "subgroup": "catalog surviving ('q-139965', 3, (('A', (3, 4)), ('B', (2, 4)), ('C', (5, 5))), ('B',), 1, 'q-79562-reassigned')",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select A",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "No constant full response answers this repeated subgroup. Baseline is uniform over the observed permitted semantic outcomes; no significance claim from small samples.",
+      "sample_refs": [
+        "delivery-catalog/accepted.json"
+      ]
+    },
+    {
+      "cue": "template and qualifying-count",
+      "subgroup": "catalog surviving ('q-139965', 3, (('A', (3, 4)), ('B', (2, 4)), ('C', (5, 5))), ('B',), 1, 'q-79562-reassigned')",
+      "scope": "within_template",
+      "strategy": "Assume the modal number of qualifying matrices",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.6666666666666666,
+      "disposition": "not_predictive",
+      "conclusion": "Subset count is not fixed; joint and singleton decisions survive. Baseline is the observed modal cardinality rate; cardinality success alone does not select the labels.",
+      "sample_refs": [
+        "delivery-catalog/accepted.json"
+      ]
+    },
+    {
+      "cue": "template and labeled dimensions",
+      "subgroup": "catalog surviving ('q-139965', 3, (('A', (5, 5)), ('B', (3, 4)), ('C', (2, 4))), ('C',), 1, 'q-79562-reassigned')",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select A",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "No constant full response answers this repeated subgroup. Baseline is uniform over the observed permitted semantic outcomes; no significance claim from small samples.",
+      "sample_refs": [
+        "delivery-catalog/accepted.json"
+      ]
+    },
+    {
+      "cue": "template and qualifying-count",
+      "subgroup": "catalog surviving ('q-139965', 3, (('A', (5, 5)), ('B', (3, 4)), ('C', (2, 4))), ('C',), 1, 'q-79562-reassigned')",
+      "scope": "within_template",
+      "strategy": "Assume the modal number of qualifying matrices",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.6666666666666666,
+      "disposition": "not_predictive",
+      "conclusion": "Subset count is not fixed; joint and singleton decisions survive. Baseline is the observed modal cardinality rate; cardinality success alone does not select the labels.",
+      "sample_refs": [
+        "delivery-catalog/accepted.json"
+      ]
+    },
+    {
+      "cue": "template and labeled dimensions",
+      "subgroup": "catalog surviving ('q-139965', 3, (('A', (2, 4)), ('B', (3, 4)), ('C', (5, 5))), ('A',), 1, 'q-139965')",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select B",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "No constant full response answers this repeated subgroup. Baseline is uniform over the observed permitted semantic outcomes; no significance claim from small samples.",
+      "sample_refs": [
+        "delivery-catalog/accepted.json"
+      ]
+    },
+    {
+      "cue": "template and qualifying-count",
+      "subgroup": "catalog surviving ('q-139965', 3, (('A', (2, 4)), ('B', (3, 4)), ('C', (5, 5))), ('A',), 1, 'q-139965')",
+      "scope": "within_template",
+      "strategy": "Assume the modal number of qualifying matrices",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.6666666666666666,
+      "disposition": "not_predictive",
+      "conclusion": "Subset count is not fixed; joint and singleton decisions survive. Baseline is the observed modal cardinality rate; cardinality success alone does not select the labels.",
+      "sample_refs": [
+        "delivery-catalog/accepted.json"
+      ]
+    },
+    {
+      "cue": "template and labeled dimensions",
+      "subgroup": "catalog surviving ('q-139965', 3, (('A', (5, 5)), ('B', (2, 4)), ('C', (3, 4))), ('B',), 1, 'q-79562-reassigned')",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select A",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "No constant full response answers this repeated subgroup. Baseline is uniform over the observed permitted semantic outcomes; no significance claim from small samples.",
+      "sample_refs": [
+        "delivery-catalog/accepted.json"
+      ]
+    },
+    {
+      "cue": "template and qualifying-count",
+      "subgroup": "catalog surviving ('q-139965', 3, (('A', (5, 5)), ('B', (2, 4)), ('C', (3, 4))), ('B',), 1, 'q-79562-reassigned')",
+      "scope": "within_template",
+      "strategy": "Assume the modal number of qualifying matrices",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.6666666666666666,
+      "disposition": "not_predictive",
+      "conclusion": "Subset count is not fixed; joint and singleton decisions survive. Baseline is the observed modal cardinality rate; cardinality success alone does not select the labels.",
+      "sample_refs": [
+        "delivery-catalog/accepted.json"
+      ]
+    },
+    {
+      "cue": "template and labeled dimensions",
+      "subgroup": "catalog surviving ('q-139965', 3, (('A', (2, 4)), ('B', (5, 5)), ('C', (3, 4))), ('A',), 1, 'q-139965')",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select B",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "No constant full response answers this repeated subgroup. Baseline is uniform over the observed permitted semantic outcomes; no significance claim from small samples.",
+      "sample_refs": [
+        "delivery-catalog/accepted.json"
+      ]
+    },
+    {
+      "cue": "template and qualifying-count",
+      "subgroup": "catalog surviving ('q-139965', 3, (('A', (2, 4)), ('B', (5, 5)), ('C', (3, 4))), ('A',), 1, 'q-139965')",
+      "scope": "within_template",
+      "strategy": "Assume the modal number of qualifying matrices",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.6666666666666666,
+      "disposition": "not_predictive",
+      "conclusion": "Subset count is not fixed; joint and singleton decisions survive. Baseline is the observed modal cardinality rate; cardinality success alone does not select the labels.",
+      "sample_refs": [
+        "delivery-catalog/accepted.json"
+      ]
+    },
+    {
+      "cue": "template and labeled dimensions",
+      "subgroup": "catalog surviving ('q-34823', 5, (('A', (5, 5)), ('B', (2, 5)), ('C', (5, 5))), ('B',), 1, 'q-34823')",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select None",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "No constant full response answers this repeated subgroup. Baseline is uniform over the observed permitted semantic outcomes; no significance claim from small samples.",
+      "sample_refs": [
+        "delivery-catalog/accepted.json"
+      ]
+    },
+    {
+      "cue": "template and qualifying-count",
+      "subgroup": "catalog surviving ('q-34823', 5, (('A', (5, 5)), ('B', (2, 5)), ('C', (5, 5))), ('B',), 1, 'q-34823')",
+      "scope": "within_template",
+      "strategy": "Assume the modal number of qualifying matrices",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Subset count is not fixed; joint and singleton decisions survive. Baseline is the observed modal cardinality rate; cardinality success alone does not select the labels.",
+      "sample_refs": [
+        "delivery-catalog/accepted.json"
+      ]
+    },
+    {
+      "cue": "template and labeled dimensions",
+      "subgroup": "catalog surviving ('q-34824', 4, (('A', (4, 4)), ('B', (3, 5)), ('C', (5, 5)), ('D', (3, 3)), ('E', (4, 3))), ('B', 'D', 'E'), 1, 'q-34824')",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select A",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "No constant full response answers this repeated subgroup. Baseline is uniform over the observed permitted semantic outcomes; no significance claim from small samples.",
+      "sample_refs": [
+        "delivery-catalog/accepted.json"
+      ]
+    },
+    {
+      "cue": "template and qualifying-count",
+      "subgroup": "catalog surviving ('q-34824', 4, (('A', (4, 4)), ('B', (3, 5)), ('C', (5, 5)), ('D', (3, 3)), ('E', (4, 3))), ('B', 'D', 'E'), 1, 'q-34824')",
+      "scope": "within_template",
+      "strategy": "Assume the modal number of qualifying matrices",
+      "correct": 2,
+      "total": 2,
+      "baseline": 1.0,
+      "disposition": "intended_skill",
+      "conclusion": "Singular matrix-radio requires exactly one by its stated response contract. Baseline is the observed modal cardinality rate; cardinality success alone does not select the labels.",
+      "sample_refs": [
+        "delivery-catalog/accepted.json"
+      ]
+    },
+    {
+      "cue": "template and labeled dimensions",
+      "subgroup": "catalog surviving ('q-35283', 6, (('A', (6, 5)), ('B', (6, 4)), ('C', (6, 6))), ('A', 'B'), 4, 'q-35283')",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select None",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "No constant full response answers this repeated subgroup. Baseline is uniform over the observed permitted semantic outcomes; no significance claim from small samples.",
+      "sample_refs": [
+        "delivery-catalog/accepted.json"
+      ]
+    },
+    {
+      "cue": "template and qualifying-count",
+      "subgroup": "catalog surviving ('q-35283', 6, (('A', (6, 5)), ('B', (6, 4)), ('C', (6, 6))), ('A', 'B'), 4, 'q-35283')",
+      "scope": "within_template",
+      "strategy": "Assume the modal number of qualifying matrices",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Subset count is not fixed; joint and singleton decisions survive. Baseline is the observed modal cardinality rate; cardinality success alone does not select the labels.",
+      "sample_refs": [
+        "delivery-catalog/accepted.json"
+      ]
+    },
+    {
+      "cue": "template and labeled dimensions",
+      "subgroup": "catalog surviving ('q-79559', 5, (('A', (5, 5)), ('B', (2, 5)), ('C', (5, 3)), ('D', (3, 3)), ('E', (5, 5))), ('B', 'C', 'D'), 1, 'q-79559')",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select A",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "No constant full response answers this repeated subgroup. Baseline is uniform over the observed permitted semantic outcomes; no significance claim from small samples.",
+      "sample_refs": [
+        "delivery-catalog/accepted.json"
+      ]
+    },
+    {
+      "cue": "template and qualifying-count",
+      "subgroup": "catalog surviving ('q-79559', 5, (('A', (5, 5)), ('B', (2, 5)), ('C', (5, 3)), ('D', (3, 3)), ('E', (5, 5))), ('B', 'C', 'D'), 1, 'q-79559')",
+      "scope": "within_template",
+      "strategy": "Assume the modal number of qualifying matrices",
+      "correct": 2,
+      "total": 2,
+      "baseline": 1.0,
+      "disposition": "intended_skill",
+      "conclusion": "Singular matrix-radio requires exactly one by its stated response contract. Baseline is the observed modal cardinality rate; cardinality success alone does not select the labels.",
+      "sample_refs": [
+        "delivery-catalog/accepted.json"
+      ]
+    },
+    {
+      "cue": "template and labeled dimensions",
+      "subgroup": "catalog surviving ('q-79560', 3, (('A', (2, 5)), ('B', (2, 2)), ('C', (4, 5)), ('D', (4, 3)), ('E', (4, 2))), ('A', 'B', 'E'), 1, 'q-79560')",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select C",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "No constant full response answers this repeated subgroup. Baseline is uniform over the observed permitted semantic outcomes; no significance claim from small samples.",
+      "sample_refs": [
+        "delivery-catalog/accepted.json"
+      ]
+    },
+    {
+      "cue": "template and qualifying-count",
+      "subgroup": "catalog surviving ('q-79560', 3, (('A', (2, 5)), ('B', (2, 2)), ('C', (4, 5)), ('D', (4, 3)), ('E', (4, 2))), ('A', 'B', 'E'), 1, 'q-79560')",
+      "scope": "within_template",
+      "strategy": "Assume the modal number of qualifying matrices",
+      "correct": 2,
+      "total": 2,
+      "baseline": 1.0,
+      "disposition": "intended_skill",
+      "conclusion": "Singular matrix-radio requires exactly one by its stated response contract. Baseline is the observed modal cardinality rate; cardinality success alone does not select the labels.",
+      "sample_refs": [
+        "delivery-catalog/accepted.json"
+      ]
+    },
+    {
+      "cue": "template and labeled dimensions",
+      "subgroup": "catalog surviving ('q-79561', 4, (('A', (3, 3)), ('B', (4, 4)), ('C', (4, 3)), ('D', (3, 5)), ('E', (4, 5))), ('A', 'C', 'D'), 1, 'q-79561')",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select B",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "No constant full response answers this repeated subgroup. Baseline is uniform over the observed permitted semantic outcomes; no significance claim from small samples.",
+      "sample_refs": [
+        "delivery-catalog/accepted.json"
+      ]
+    },
+    {
+      "cue": "template and qualifying-count",
+      "subgroup": "catalog surviving ('q-79561', 4, (('A', (3, 3)), ('B', (4, 4)), ('C', (4, 3)), ('D', (3, 5)), ('E', (4, 5))), ('A', 'C', 'D'), 1, 'q-79561')",
+      "scope": "within_template",
+      "strategy": "Assume the modal number of qualifying matrices",
+      "correct": 2,
+      "total": 2,
+      "baseline": 1.0,
+      "disposition": "intended_skill",
+      "conclusion": "Singular matrix-radio requires exactly one by its stated response contract. Baseline is the observed modal cardinality rate; cardinality success alone does not select the labels.",
+      "sample_refs": [
+        "delivery-catalog/accepted.json"
+      ]
+    },
+    {
+      "cue": "template and labeled dimensions",
+      "subgroup": "catalog surviving ('q-79562', 3, (('A', (3, 4)), ('B', (4, 5)), ('C', (4, 2))), ('C',), 1, 'q-79562')",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select A",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "No constant full response answers this repeated subgroup. Baseline is uniform over the observed permitted semantic outcomes; no significance claim from small samples.",
+      "sample_refs": [
+        "delivery-catalog/accepted.json"
+      ]
+    },
+    {
+      "cue": "template and qualifying-count",
+      "subgroup": "catalog surviving ('q-79562', 3, (('A', (3, 4)), ('B', (4, 5)), ('C', (4, 2))), ('C',), 1, 'q-79562')",
+      "scope": "within_template",
+      "strategy": "Assume the modal number of qualifying matrices",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.6666666666666666,
+      "disposition": "not_predictive",
+      "conclusion": "Subset count is not fixed; joint and singleton decisions survive. Baseline is the observed modal cardinality rate; cardinality success alone does not select the labels.",
+      "sample_refs": [
+        "delivery-catalog/accepted.json"
+      ]
+    },
+    {
+      "cue": "template and labeled dimensions",
+      "subgroup": "catalog surviving ('q-79568', 5, (('A', (3, 5)), ('B', (5, 5)), ('C', (5, 4))), ('A', 'C'), 4, 'q-79568')",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select None",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "No constant full response answers this repeated subgroup. Baseline is uniform over the observed permitted semantic outcomes; no significance claim from small samples.",
+      "sample_refs": [
+        "delivery-catalog/accepted.json"
+      ]
+    },
+    {
+      "cue": "template and qualifying-count",
+      "subgroup": "catalog surviving ('q-79568', 5, (('A', (3, 5)), ('B', (5, 5)), ('C', (5, 4))), ('A', 'C'), 4, 'q-79568')",
+      "scope": "within_template",
+      "strategy": "Assume the modal number of qualifying matrices",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Subset count is not fixed; joint and singleton decisions survive. Baseline is the observed modal cardinality rate; cardinality success alone does not select the labels.",
+      "sample_refs": [
+        "delivery-catalog/accepted.json"
+      ]
+    },
+    {
+      "cue": "template and labeled dimensions",
+      "subgroup": "sampler-93827-5 raw ('q-139965', 3, (('A', (3, 4)), ('B', (5, 5)), ('C', (2, 4))), ('C',), 1, 'q-79562-reassigned')",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select A,B",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "No constant full response answers this repeated subgroup. Baseline is uniform over the observed permitted semantic outcomes; no significance claim from small samples.",
+      "sample_refs": [
+        "sampler-93827-5.json"
+      ]
+    },
+    {
+      "cue": "template and qualifying-count",
+      "subgroup": "sampler-93827-5 raw ('q-139965', 3, (('A', (3, 4)), ('B', (5, 5)), ('C', (2, 4))), ('C',), 1, 'q-79562-reassigned')",
+      "scope": "within_template",
+      "strategy": "Assume the modal number of qualifying matrices",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.6666666666666666,
+      "disposition": "not_predictive",
+      "conclusion": "Subset count is not fixed; joint and singleton decisions survive. Baseline is the observed modal cardinality rate; cardinality success alone does not select the labels.",
+      "sample_refs": [
+        "sampler-93827-5.json"
+      ]
+    },
+    {
+      "cue": "template and labeled dimensions",
+      "subgroup": "sampler-93827-5 surviving ('q-139965', 3, (('A', (3, 4)), ('B', (5, 5)), ('C', (2, 4))), ('C',), 1, 'q-79562-reassigned')",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select A,B",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "No constant full response answers this repeated subgroup. Baseline is uniform over the observed permitted semantic outcomes; no significance claim from small samples.",
+      "sample_refs": [
+        "delivery-sampler-93827-5/accepted.json"
+      ]
+    },
+    {
+      "cue": "template and qualifying-count",
+      "subgroup": "sampler-93827-5 surviving ('q-139965', 3, (('A', (3, 4)), ('B', (5, 5)), ('C', (2, 4))), ('C',), 1, 'q-79562-reassigned')",
+      "scope": "within_template",
+      "strategy": "Assume the modal number of qualifying matrices",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.6666666666666666,
+      "disposition": "not_predictive",
+      "conclusion": "Subset count is not fixed; joint and singleton decisions survive. Baseline is the observed modal cardinality rate; cardinality success alone does not select the labels.",
+      "sample_refs": [
+        "delivery-sampler-93827-5/accepted.json"
+      ]
+    },
+    {
+      "cue": "template and labeled dimensions",
+      "subgroup": "sampler-57209-5 raw ('q-79568', 5, (('A', (3, 5)), ('B', (5, 5)), ('C', (5, 4))), ('A', 'C'), 4, 'q-79568')",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select None",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "No constant full response answers this repeated subgroup. Baseline is uniform over the observed permitted semantic outcomes; no significance claim from small samples.",
+      "sample_refs": [
+        "sampler-57209-5.json"
+      ]
+    },
+    {
+      "cue": "template and qualifying-count",
+      "subgroup": "sampler-57209-5 raw ('q-79568', 5, (('A', (3, 5)), ('B', (5, 5)), ('C', (5, 4))), ('A', 'C'), 4, 'q-79568')",
+      "scope": "within_template",
+      "strategy": "Assume the modal number of qualifying matrices",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Subset count is not fixed; joint and singleton decisions survive. Baseline is the observed modal cardinality rate; cardinality success alone does not select the labels.",
+      "sample_refs": [
+        "sampler-57209-5.json"
+      ]
+    },
+    {
+      "cue": "template and labeled dimensions",
+      "subgroup": "sampler-57209-5 raw ('q-139965', 3, (('A', (2, 4)), ('B', (5, 5)), ('C', (3, 4))), ('A',), 1, 'q-139965')",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select B,C",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "No constant full response answers this repeated subgroup. Baseline is uniform over the observed permitted semantic outcomes; no significance claim from small samples.",
+      "sample_refs": [
+        "sampler-57209-5.json"
+      ]
+    },
+    {
+      "cue": "template and qualifying-count",
+      "subgroup": "sampler-57209-5 raw ('q-139965', 3, (('A', (2, 4)), ('B', (5, 5)), ('C', (3, 4))), ('A',), 1, 'q-139965')",
+      "scope": "within_template",
+      "strategy": "Assume the modal number of qualifying matrices",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.6666666666666666,
+      "disposition": "not_predictive",
+      "conclusion": "Subset count is not fixed; joint and singleton decisions survive. Baseline is the observed modal cardinality rate; cardinality success alone does not select the labels.",
+      "sample_refs": [
+        "sampler-57209-5.json"
+      ]
+    },
+    {
+      "cue": "template and labeled dimensions",
+      "subgroup": "sampler-57209-5 surviving ('q-79568', 5, (('A', (3, 5)), ('B', (5, 5)), ('C', (5, 4))), ('A', 'C'), 4, 'q-79568')",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select None",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "No constant full response answers this repeated subgroup. Baseline is uniform over the observed permitted semantic outcomes; no significance claim from small samples.",
+      "sample_refs": [
+        "delivery-sampler-57209-5/accepted.json"
+      ]
+    },
+    {
+      "cue": "template and qualifying-count",
+      "subgroup": "sampler-57209-5 surviving ('q-79568', 5, (('A', (3, 5)), ('B', (5, 5)), ('C', (5, 4))), ('A', 'C'), 4, 'q-79568')",
+      "scope": "within_template",
+      "strategy": "Assume the modal number of qualifying matrices",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Subset count is not fixed; joint and singleton decisions survive. Baseline is the observed modal cardinality rate; cardinality success alone does not select the labels.",
+      "sample_refs": [
+        "delivery-sampler-57209-5/accepted.json"
+      ]
+    },
+    {
+      "cue": "template and labeled dimensions",
+      "subgroup": "sampler-57209-5 surviving ('q-139965', 3, (('A', (2, 4)), ('B', (5, 5)), ('C', (3, 4))), ('A',), 1, 'q-139965')",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select B,C",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "No constant full response answers this repeated subgroup. Baseline is uniform over the observed permitted semantic outcomes; no significance claim from small samples.",
+      "sample_refs": [
+        "delivery-sampler-57209-5/accepted.json"
+      ]
+    },
+    {
+      "cue": "template and qualifying-count",
+      "subgroup": "sampler-57209-5 surviving ('q-139965', 3, (('A', (2, 4)), ('B', (5, 5)), ('C', (3, 4))), ('A',), 1, 'q-139965')",
+      "scope": "within_template",
+      "strategy": "Assume the modal number of qualifying matrices",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.6666666666666666,
+      "disposition": "not_predictive",
+      "conclusion": "Subset count is not fixed; joint and singleton decisions survive. Baseline is the observed modal cardinality rate; cardinality success alone does not select the labels.",
+      "sample_refs": [
+        "delivery-sampler-57209-5/accepted.json"
+      ]
+    },
+    {
+      "cue": "template and labeled dimensions",
+      "subgroup": "sampler-57209-24 raw ('q-34823', 5, (('A', (5, 5)), ('B', (2, 5)), ('C', (5, 5))), ('B',), 1, 'q-34823')",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select A",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "No constant full response answers this repeated subgroup. Baseline is uniform over the observed permitted semantic outcomes; no significance claim from small samples.",
+      "sample_refs": [
+        "sampler-57209-24.json"
+      ]
+    },
+    {
+      "cue": "template and qualifying-count",
+      "subgroup": "sampler-57209-24 raw ('q-34823', 5, (('A', (5, 5)), ('B', (2, 5)), ('C', (5, 5))), ('B',), 1, 'q-34823')",
+      "scope": "within_template",
+      "strategy": "Assume the modal number of qualifying matrices",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Subset count is not fixed; joint and singleton decisions survive. Baseline is the observed modal cardinality rate; cardinality success alone does not select the labels.",
+      "sample_refs": [
+        "sampler-57209-24.json"
+      ]
+    },
+    {
+      "cue": "template and labeled dimensions",
+      "subgroup": "sampler-57209-24 raw ('q-139958', 4, (('A', (2, 5)), ('B', (3, 4)), ('C', (4, 5)), ('D', (5, 3)), ('E', (4, 4))), ('A', 'B', 'D'), 1, 'q-139958')",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select E",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "No constant full response answers this repeated subgroup. Baseline is uniform over the observed permitted semantic outcomes; no significance claim from small samples.",
+      "sample_refs": [
+        "sampler-57209-24.json"
+      ]
+    },
+    {
+      "cue": "template and qualifying-count",
+      "subgroup": "sampler-57209-24 raw ('q-139958', 4, (('A', (2, 5)), ('B', (3, 4)), ('C', (4, 5)), ('D', (5, 3)), ('E', (4, 4))), ('A', 'B', 'D'), 1, 'q-139958')",
+      "scope": "within_template",
+      "strategy": "Assume the modal number of qualifying matrices",
+      "correct": 2,
+      "total": 2,
+      "baseline": 1.0,
+      "disposition": "intended_skill",
+      "conclusion": "Singular matrix-radio requires exactly one by its stated response contract. Baseline is the observed modal cardinality rate; cardinality success alone does not select the labels.",
+      "sample_refs": [
+        "sampler-57209-24.json"
+      ]
+    },
+    {
+      "cue": "template and labeled dimensions",
+      "subgroup": "sampler-57209-24 raw ('q-79560', 3, (('A', (2, 5)), ('B', (2, 2)), ('C', (4, 5)), ('D', (4, 3)), ('E', (4, 2))), ('A', 'B', 'E'), 1, 'q-79560')",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select C",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "No constant full response answers this repeated subgroup. Baseline is uniform over the observed permitted semantic outcomes; no significance claim from small samples.",
+      "sample_refs": [
+        "sampler-57209-24.json"
+      ]
+    },
+    {
+      "cue": "template and qualifying-count",
+      "subgroup": "sampler-57209-24 raw ('q-79560', 3, (('A', (2, 5)), ('B', (2, 2)), ('C', (4, 5)), ('D', (4, 3)), ('E', (4, 2))), ('A', 'B', 'E'), 1, 'q-79560')",
+      "scope": "within_template",
+      "strategy": "Assume the modal number of qualifying matrices",
+      "correct": 2,
+      "total": 2,
+      "baseline": 1.0,
+      "disposition": "intended_skill",
+      "conclusion": "Singular matrix-radio requires exactly one by its stated response contract. Baseline is the observed modal cardinality rate; cardinality success alone does not select the labels.",
+      "sample_refs": [
+        "sampler-57209-24.json"
+      ]
+    },
+    {
+      "cue": "template and labeled dimensions",
+      "subgroup": "sampler-57209-24 raw ('q-79561', 4, (('A', (3, 3)), ('B', (4, 4)), ('C', (4, 3)), ('D', (3, 5)), ('E', (4, 5))), ('A', 'C', 'D'), 1, 'q-79561')",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select B",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "No constant full response answers this repeated subgroup. Baseline is uniform over the observed permitted semantic outcomes; no significance claim from small samples.",
+      "sample_refs": [
+        "sampler-57209-24.json"
+      ]
+    },
+    {
+      "cue": "template and qualifying-count",
+      "subgroup": "sampler-57209-24 raw ('q-79561', 4, (('A', (3, 3)), ('B', (4, 4)), ('C', (4, 3)), ('D', (3, 5)), ('E', (4, 5))), ('A', 'C', 'D'), 1, 'q-79561')",
+      "scope": "within_template",
+      "strategy": "Assume the modal number of qualifying matrices",
+      "correct": 2,
+      "total": 2,
+      "baseline": 1.0,
+      "disposition": "intended_skill",
+      "conclusion": "Singular matrix-radio requires exactly one by its stated response contract. Baseline is the observed modal cardinality rate; cardinality success alone does not select the labels.",
+      "sample_refs": [
+        "sampler-57209-24.json"
+      ]
+    },
+    {
+      "cue": "template and labeled dimensions",
+      "subgroup": "sampler-57209-24 raw ('q-79562', 3, (('A', (3, 4)), ('B', (4, 5)), ('C', (4, 2))), ('C',), 1, 'q-79562')",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select A,B",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "No constant full response answers this repeated subgroup. Baseline is uniform over the observed permitted semantic outcomes; no significance claim from small samples.",
+      "sample_refs": [
+        "sampler-57209-24.json"
+      ]
+    },
+    {
+      "cue": "template and qualifying-count",
+      "subgroup": "sampler-57209-24 raw ('q-79562', 3, (('A', (3, 4)), ('B', (4, 5)), ('C', (4, 2))), ('C',), 1, 'q-79562')",
+      "scope": "within_template",
+      "strategy": "Assume the modal number of qualifying matrices",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.6666666666666666,
+      "disposition": "not_predictive",
+      "conclusion": "Subset count is not fixed; joint and singleton decisions survive. Baseline is the observed modal cardinality rate; cardinality success alone does not select the labels.",
+      "sample_refs": [
+        "sampler-57209-24.json"
+      ]
+    },
+    {
+      "cue": "template and labeled dimensions",
+      "subgroup": "sampler-57209-24 raw ('q-79568', 5, (('A', (3, 5)), ('B', (5, 5)), ('C', (5, 4))), ('A', 'C'), 4, 'q-79568')",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select B",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "No constant full response answers this repeated subgroup. Baseline is uniform over the observed permitted semantic outcomes; no significance claim from small samples.",
+      "sample_refs": [
+        "sampler-57209-24.json"
+      ]
+    },
+    {
+      "cue": "template and qualifying-count",
+      "subgroup": "sampler-57209-24 raw ('q-79568', 5, (('A', (3, 5)), ('B', (5, 5)), ('C', (5, 4))), ('A', 'C'), 4, 'q-79568')",
+      "scope": "within_template",
+      "strategy": "Assume the modal number of qualifying matrices",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Subset count is not fixed; joint and singleton decisions survive. Baseline is the observed modal cardinality rate; cardinality success alone does not select the labels.",
+      "sample_refs": [
+        "sampler-57209-24.json"
+      ]
+    },
+    {
+      "cue": "template and labeled dimensions",
+      "subgroup": "sampler-57209-24 raw ('q-139965', 3, (('A', (2, 4)), ('B', (5, 5)), ('C', (3, 4))), ('A',), 1, 'q-139965')",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select B,C",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "No constant full response answers this repeated subgroup. Baseline is uniform over the observed permitted semantic outcomes; no significance claim from small samples.",
+      "sample_refs": [
+        "sampler-57209-24.json"
+      ]
+    },
+    {
+      "cue": "template and qualifying-count",
+      "subgroup": "sampler-57209-24 raw ('q-139965', 3, (('A', (2, 4)), ('B', (5, 5)), ('C', (3, 4))), ('A',), 1, 'q-139965')",
+      "scope": "within_template",
+      "strategy": "Assume the modal number of qualifying matrices",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.6666666666666666,
+      "disposition": "not_predictive",
+      "conclusion": "Subset count is not fixed; joint and singleton decisions survive. Baseline is the observed modal cardinality rate; cardinality success alone does not select the labels.",
+      "sample_refs": [
+        "sampler-57209-24.json"
+      ]
+    },
+    {
+      "cue": "template and labeled dimensions",
+      "subgroup": "sampler-57209-24 raw ('q-79559', 5, (('A', (5, 5)), ('B', (2, 5)), ('C', (5, 3)), ('D', (3, 3)), ('E', (5, 5))), ('B', 'C', 'D'), 1, 'q-79559')",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select A",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "No constant full response answers this repeated subgroup. Baseline is uniform over the observed permitted semantic outcomes; no significance claim from small samples.",
+      "sample_refs": [
+        "sampler-57209-24.json"
+      ]
+    },
+    {
+      "cue": "template and qualifying-count",
+      "subgroup": "sampler-57209-24 raw ('q-79559', 5, (('A', (5, 5)), ('B', (2, 5)), ('C', (5, 3)), ('D', (3, 3)), ('E', (5, 5))), ('B', 'C', 'D'), 1, 'q-79559')",
+      "scope": "within_template",
+      "strategy": "Assume the modal number of qualifying matrices",
+      "correct": 2,
+      "total": 2,
+      "baseline": 1.0,
+      "disposition": "intended_skill",
+      "conclusion": "Singular matrix-radio requires exactly one by its stated response contract. Baseline is the observed modal cardinality rate; cardinality success alone does not select the labels.",
+      "sample_refs": [
+        "sampler-57209-24.json"
+      ]
+    },
+    {
+      "cue": "template and labeled dimensions",
+      "subgroup": "sampler-57209-24 raw ('q-35283', 6, (('A', (6, 5)), ('B', (6, 4)), ('C', (6, 6))), ('A', 'B'), 4, 'q-35283')",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select None",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "No constant full response answers this repeated subgroup. Baseline is uniform over the observed permitted semantic outcomes; no significance claim from small samples.",
+      "sample_refs": [
+        "sampler-57209-24.json"
+      ]
+    },
+    {
+      "cue": "template and qualifying-count",
+      "subgroup": "sampler-57209-24 raw ('q-35283', 6, (('A', (6, 5)), ('B', (6, 4)), ('C', (6, 6))), ('A', 'B'), 4, 'q-35283')",
+      "scope": "within_template",
+      "strategy": "Assume the modal number of qualifying matrices",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Subset count is not fixed; joint and singleton decisions survive. Baseline is the observed modal cardinality rate; cardinality success alone does not select the labels.",
+      "sample_refs": [
+        "sampler-57209-24.json"
+      ]
+    },
+    {
+      "cue": "template and labeled dimensions",
+      "subgroup": "sampler-57209-24 raw ('q-34824', 4, (('A', (4, 4)), ('B', (3, 5)), ('C', (5, 5)), ('D', (3, 3)), ('E', (4, 3))), ('B', 'D', 'E'), 1, 'q-34824')",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select A",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "No constant full response answers this repeated subgroup. Baseline is uniform over the observed permitted semantic outcomes; no significance claim from small samples.",
+      "sample_refs": [
+        "sampler-57209-24.json"
+      ]
+    },
+    {
+      "cue": "template and qualifying-count",
+      "subgroup": "sampler-57209-24 raw ('q-34824', 4, (('A', (4, 4)), ('B', (3, 5)), ('C', (5, 5)), ('D', (3, 3)), ('E', (4, 3))), ('B', 'D', 'E'), 1, 'q-34824')",
+      "scope": "within_template",
+      "strategy": "Assume the modal number of qualifying matrices",
+      "correct": 2,
+      "total": 2,
+      "baseline": 1.0,
+      "disposition": "intended_skill",
+      "conclusion": "Singular matrix-radio requires exactly one by its stated response contract. Baseline is the observed modal cardinality rate; cardinality success alone does not select the labels.",
+      "sample_refs": [
+        "sampler-57209-24.json"
+      ]
+    },
+    {
+      "cue": "template and labeled dimensions",
+      "subgroup": "sampler-57209-24 surviving ('q-34823', 5, (('A', (5, 5)), ('B', (2, 5)), ('C', (5, 5))), ('B',), 1, 'q-34823')",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select A",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.25,
+      "disposition": "not_predictive",
+      "conclusion": "No constant full response answers this repeated subgroup. Baseline is uniform over the observed permitted semantic outcomes; no significance claim from small samples.",
+      "sample_refs": [
+        "delivery-sampler-57209-24/accepted.json"
+      ]
+    },
+    {
+      "cue": "template and qualifying-count",
+      "subgroup": "sampler-57209-24 surviving ('q-34823', 5, (('A', (5, 5)), ('B', (2, 5)), ('C', (5, 5))), ('B',), 1, 'q-34823')",
+      "scope": "within_template",
+      "strategy": "Assume the modal number of qualifying matrices",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Subset count is not fixed; joint and singleton decisions survive. Baseline is the observed modal cardinality rate; cardinality success alone does not select the labels.",
+      "sample_refs": [
+        "delivery-sampler-57209-24/accepted.json"
+      ]
+    },
+    {
+      "cue": "template and labeled dimensions",
+      "subgroup": "sampler-57209-24 surviving ('q-139958', 4, (('A', (2, 5)), ('B', (3, 4)), ('C', (4, 5)), ('D', (5, 3)), ('E', (4, 4))), ('A', 'B', 'D'), 1, 'q-139958')",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select E",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "No constant full response answers this repeated subgroup. Baseline is uniform over the observed permitted semantic outcomes; no significance claim from small samples.",
+      "sample_refs": [
+        "delivery-sampler-57209-24/accepted.json"
+      ]
+    },
+    {
+      "cue": "template and qualifying-count",
+      "subgroup": "sampler-57209-24 surviving ('q-139958', 4, (('A', (2, 5)), ('B', (3, 4)), ('C', (4, 5)), ('D', (5, 3)), ('E', (4, 4))), ('A', 'B', 'D'), 1, 'q-139958')",
+      "scope": "within_template",
+      "strategy": "Assume the modal number of qualifying matrices",
+      "correct": 2,
+      "total": 2,
+      "baseline": 1.0,
+      "disposition": "intended_skill",
+      "conclusion": "Singular matrix-radio requires exactly one by its stated response contract. Baseline is the observed modal cardinality rate; cardinality success alone does not select the labels.",
+      "sample_refs": [
+        "delivery-sampler-57209-24/accepted.json"
+      ]
+    },
+    {
+      "cue": "template and labeled dimensions",
+      "subgroup": "sampler-57209-24 surviving ('q-79560', 3, (('A', (2, 5)), ('B', (2, 2)), ('C', (4, 5)), ('D', (4, 3)), ('E', (4, 2))), ('A', 'B', 'E'), 1, 'q-79560')",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select C",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "No constant full response answers this repeated subgroup. Baseline is uniform over the observed permitted semantic outcomes; no significance claim from small samples.",
+      "sample_refs": [
+        "delivery-sampler-57209-24/accepted.json"
+      ]
+    },
+    {
+      "cue": "template and qualifying-count",
+      "subgroup": "sampler-57209-24 surviving ('q-79560', 3, (('A', (2, 5)), ('B', (2, 2)), ('C', (4, 5)), ('D', (4, 3)), ('E', (4, 2))), ('A', 'B', 'E'), 1, 'q-79560')",
+      "scope": "within_template",
+      "strategy": "Assume the modal number of qualifying matrices",
+      "correct": 2,
+      "total": 2,
+      "baseline": 1.0,
+      "disposition": "intended_skill",
+      "conclusion": "Singular matrix-radio requires exactly one by its stated response contract. Baseline is the observed modal cardinality rate; cardinality success alone does not select the labels.",
+      "sample_refs": [
+        "delivery-sampler-57209-24/accepted.json"
+      ]
+    },
+    {
+      "cue": "template and labeled dimensions",
+      "subgroup": "sampler-57209-24 surviving ('q-79561', 4, (('A', (3, 3)), ('B', (4, 4)), ('C', (4, 3)), ('D', (3, 5)), ('E', (4, 5))), ('A', 'C', 'D'), 1, 'q-79561')",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select B",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "No constant full response answers this repeated subgroup. Baseline is uniform over the observed permitted semantic outcomes; no significance claim from small samples.",
+      "sample_refs": [
+        "delivery-sampler-57209-24/accepted.json"
+      ]
+    },
+    {
+      "cue": "template and qualifying-count",
+      "subgroup": "sampler-57209-24 surviving ('q-79561', 4, (('A', (3, 3)), ('B', (4, 4)), ('C', (4, 3)), ('D', (3, 5)), ('E', (4, 5))), ('A', 'C', 'D'), 1, 'q-79561')",
+      "scope": "within_template",
+      "strategy": "Assume the modal number of qualifying matrices",
+      "correct": 2,
+      "total": 2,
+      "baseline": 1.0,
+      "disposition": "intended_skill",
+      "conclusion": "Singular matrix-radio requires exactly one by its stated response contract. Baseline is the observed modal cardinality rate; cardinality success alone does not select the labels.",
+      "sample_refs": [
+        "delivery-sampler-57209-24/accepted.json"
+      ]
+    },
+    {
+      "cue": "template and labeled dimensions",
+      "subgroup": "sampler-57209-24 surviving ('q-79562', 3, (('A', (3, 4)), ('B', (4, 5)), ('C', (4, 2))), ('C',), 1, 'q-79562')",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select A,B",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "No constant full response answers this repeated subgroup. Baseline is uniform over the observed permitted semantic outcomes; no significance claim from small samples.",
+      "sample_refs": [
+        "delivery-sampler-57209-24/accepted.json"
+      ]
+    },
+    {
+      "cue": "template and qualifying-count",
+      "subgroup": "sampler-57209-24 surviving ('q-79562', 3, (('A', (3, 4)), ('B', (4, 5)), ('C', (4, 2))), ('C',), 1, 'q-79562')",
+      "scope": "within_template",
+      "strategy": "Assume the modal number of qualifying matrices",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.6666666666666666,
+      "disposition": "not_predictive",
+      "conclusion": "Subset count is not fixed; joint and singleton decisions survive. Baseline is the observed modal cardinality rate; cardinality success alone does not select the labels.",
+      "sample_refs": [
+        "delivery-sampler-57209-24/accepted.json"
+      ]
+    },
+    {
+      "cue": "template and labeled dimensions",
+      "subgroup": "sampler-57209-24 surviving ('q-79568', 5, (('A', (3, 5)), ('B', (5, 5)), ('C', (5, 4))), ('A', 'C'), 4, 'q-79568')",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select B",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "No constant full response answers this repeated subgroup. Baseline is uniform over the observed permitted semantic outcomes; no significance claim from small samples.",
+      "sample_refs": [
+        "delivery-sampler-57209-24/accepted.json"
+      ]
+    },
+    {
+      "cue": "template and qualifying-count",
+      "subgroup": "sampler-57209-24 surviving ('q-79568', 5, (('A', (3, 5)), ('B', (5, 5)), ('C', (5, 4))), ('A', 'C'), 4, 'q-79568')",
+      "scope": "within_template",
+      "strategy": "Assume the modal number of qualifying matrices",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Subset count is not fixed; joint and singleton decisions survive. Baseline is the observed modal cardinality rate; cardinality success alone does not select the labels.",
+      "sample_refs": [
+        "delivery-sampler-57209-24/accepted.json"
+      ]
+    },
+    {
+      "cue": "template and labeled dimensions",
+      "subgroup": "sampler-57209-24 surviving ('q-139965', 3, (('A', (2, 4)), ('B', (5, 5)), ('C', (3, 4))), ('A',), 1, 'q-139965')",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select B,C",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "No constant full response answers this repeated subgroup. Baseline is uniform over the observed permitted semantic outcomes; no significance claim from small samples.",
+      "sample_refs": [
+        "delivery-sampler-57209-24/accepted.json"
+      ]
+    },
+    {
+      "cue": "template and qualifying-count",
+      "subgroup": "sampler-57209-24 surviving ('q-139965', 3, (('A', (2, 4)), ('B', (5, 5)), ('C', (3, 4))), ('A',), 1, 'q-139965')",
+      "scope": "within_template",
+      "strategy": "Assume the modal number of qualifying matrices",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.6666666666666666,
+      "disposition": "not_predictive",
+      "conclusion": "Subset count is not fixed; joint and singleton decisions survive. Baseline is the observed modal cardinality rate; cardinality success alone does not select the labels.",
+      "sample_refs": [
+        "delivery-sampler-57209-24/accepted.json"
+      ]
+    },
+    {
+      "cue": "template and labeled dimensions",
+      "subgroup": "sampler-57209-24 surviving ('q-79559', 5, (('A', (5, 5)), ('B', (2, 5)), ('C', (5, 3)), ('D', (3, 3)), ('E', (5, 5))), ('B', 'C', 'D'), 1, 'q-79559')",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select A",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "No constant full response answers this repeated subgroup. Baseline is uniform over the observed permitted semantic outcomes; no significance claim from small samples.",
+      "sample_refs": [
+        "delivery-sampler-57209-24/accepted.json"
+      ]
+    },
+    {
+      "cue": "template and qualifying-count",
+      "subgroup": "sampler-57209-24 surviving ('q-79559', 5, (('A', (5, 5)), ('B', (2, 5)), ('C', (5, 3)), ('D', (3, 3)), ('E', (5, 5))), ('B', 'C', 'D'), 1, 'q-79559')",
+      "scope": "within_template",
+      "strategy": "Assume the modal number of qualifying matrices",
+      "correct": 2,
+      "total": 2,
+      "baseline": 1.0,
+      "disposition": "intended_skill",
+      "conclusion": "Singular matrix-radio requires exactly one by its stated response contract. Baseline is the observed modal cardinality rate; cardinality success alone does not select the labels.",
+      "sample_refs": [
+        "delivery-sampler-57209-24/accepted.json"
+      ]
+    },
+    {
+      "cue": "template and labeled dimensions",
+      "subgroup": "sampler-57209-24 surviving ('q-35283', 6, (('A', (6, 5)), ('B', (6, 4)), ('C', (6, 6))), ('A', 'B'), 4, 'q-35283')",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select None",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "No constant full response answers this repeated subgroup. Baseline is uniform over the observed permitted semantic outcomes; no significance claim from small samples.",
+      "sample_refs": [
+        "delivery-sampler-57209-24/accepted.json"
+      ]
+    },
+    {
+      "cue": "template and qualifying-count",
+      "subgroup": "sampler-57209-24 surviving ('q-35283', 6, (('A', (6, 5)), ('B', (6, 4)), ('C', (6, 6))), ('A', 'B'), 4, 'q-35283')",
+      "scope": "within_template",
+      "strategy": "Assume the modal number of qualifying matrices",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Subset count is not fixed; joint and singleton decisions survive. Baseline is the observed modal cardinality rate; cardinality success alone does not select the labels.",
+      "sample_refs": [
+        "delivery-sampler-57209-24/accepted.json"
+      ]
+    },
+    {
+      "cue": "template and labeled dimensions",
+      "subgroup": "sampler-57209-24 surviving ('q-34824', 4, (('A', (4, 4)), ('B', (3, 5)), ('C', (5, 5)), ('D', (3, 3)), ('E', (4, 3))), ('B', 'D', 'E'), 1, 'q-34824')",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select A",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "No constant full response answers this repeated subgroup. Baseline is uniform over the observed permitted semantic outcomes; no significance claim from small samples.",
+      "sample_refs": [
+        "delivery-sampler-57209-24/accepted.json"
+      ]
+    },
+    {
+      "cue": "template and qualifying-count",
+      "subgroup": "sampler-57209-24 surviving ('q-34824', 4, (('A', (4, 4)), ('B', (3, 5)), ('C', (5, 5)), ('D', (3, 3)), ('E', (4, 3))), ('B', 'D', 'E'), 1, 'q-34824')",
+      "scope": "within_template",
+      "strategy": "Assume the modal number of qualifying matrices",
+      "correct": 2,
+      "total": 2,
+      "baseline": 1.0,
+      "disposition": "intended_skill",
+      "conclusion": "Singular matrix-radio requires exactly one by its stated response contract. Baseline is the observed modal cardinality rate; cardinality success alone does not select the labels.",
+      "sample_refs": [
+        "delivery-sampler-57209-24/accepted.json"
+      ]
+    },
+    {
+      "cue": "template and labeled dimensions",
+      "subgroup": "exact-prefix-repaired raw ('q-79568', 5, (('A', (3, 5)), ('B', (5, 5)), ('C', (5, 4))), ('A', 'C'), 4, 'q-79568')",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select None",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "No constant full response answers this repeated subgroup. Baseline is uniform over the observed permitted semantic outcomes; no significance claim from small samples.",
+      "sample_refs": [
+        "exact-prefix-repaired.json"
+      ]
+    },
+    {
+      "cue": "template and qualifying-count",
+      "subgroup": "exact-prefix-repaired raw ('q-79568', 5, (('A', (3, 5)), ('B', (5, 5)), ('C', (5, 4))), ('A', 'C'), 4, 'q-79568')",
+      "scope": "within_template",
+      "strategy": "Assume the modal number of qualifying matrices",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Subset count is not fixed; joint and singleton decisions survive. Baseline is the observed modal cardinality rate; cardinality success alone does not select the labels.",
+      "sample_refs": [
+        "exact-prefix-repaired.json"
+      ]
+    },
+    {
+      "cue": "template and labeled dimensions",
+      "subgroup": "exact-prefix-repaired raw ('q-139965', 3, (('A', (5, 5)), ('B', (2, 4)), ('C', (3, 4))), ('B',), 1, 'q-79562-reassigned')",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select A",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "No constant full response answers this repeated subgroup. Baseline is uniform over the observed permitted semantic outcomes; no significance claim from small samples.",
+      "sample_refs": [
+        "exact-prefix-repaired.json"
+      ]
+    },
+    {
+      "cue": "template and qualifying-count",
+      "subgroup": "exact-prefix-repaired raw ('q-139965', 3, (('A', (5, 5)), ('B', (2, 4)), ('C', (3, 4))), ('B',), 1, 'q-79562-reassigned')",
+      "scope": "within_template",
+      "strategy": "Assume the modal number of qualifying matrices",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.6666666666666666,
+      "disposition": "not_predictive",
+      "conclusion": "Subset count is not fixed; joint and singleton decisions survive. Baseline is the observed modal cardinality rate; cardinality success alone does not select the labels.",
+      "sample_refs": [
+        "exact-prefix-repaired.json"
+      ]
+    },
+    {
+      "cue": "template and labeled dimensions",
+      "subgroup": "exact-prefix-repaired surviving ('q-79568', 5, (('A', (3, 5)), ('B', (5, 5)), ('C', (5, 4))), ('A', 'C'), 4, 'q-79568')",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select None",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "No constant full response answers this repeated subgroup. Baseline is uniform over the observed permitted semantic outcomes; no significance claim from small samples.",
+      "sample_refs": [
+        "delivery-exact-prefix-repaired/accepted.json"
+      ]
+    },
+    {
+      "cue": "template and qualifying-count",
+      "subgroup": "exact-prefix-repaired surviving ('q-79568', 5, (('A', (3, 5)), ('B', (5, 5)), ('C', (5, 4))), ('A', 'C'), 4, 'q-79568')",
+      "scope": "within_template",
+      "strategy": "Assume the modal number of qualifying matrices",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.5,
+      "disposition": "not_predictive",
+      "conclusion": "Subset count is not fixed; joint and singleton decisions survive. Baseline is the observed modal cardinality rate; cardinality success alone does not select the labels.",
+      "sample_refs": [
+        "delivery-exact-prefix-repaired/accepted.json"
+      ]
+    },
+    {
+      "cue": "template and labeled dimensions",
+      "subgroup": "exact-prefix-repaired surviving ('q-139965', 3, (('A', (5, 5)), ('B', (2, 4)), ('C', (3, 4))), ('B',), 1, 'q-79562-reassigned')",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always select A",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.3333333333333333,
+      "disposition": "not_predictive",
+      "conclusion": "No constant full response answers this repeated subgroup. Baseline is uniform over the observed permitted semantic outcomes; no significance claim from small samples.",
+      "sample_refs": [
+        "delivery-exact-prefix-repaired/accepted.json"
+      ]
+    },
+    {
+      "cue": "template and qualifying-count",
+      "subgroup": "exact-prefix-repaired surviving ('q-139965', 3, (('A', (5, 5)), ('B', (2, 4)), ('C', (3, 4))), ('B',), 1, 'q-79562-reassigned')",
+      "scope": "within_template",
+      "strategy": "Assume the modal number of qualifying matrices",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.6666666666666666,
+      "disposition": "not_predictive",
+      "conclusion": "Subset count is not fixed; joint and singleton decisions survive. Baseline is the observed modal cardinality rate; cardinality success alone does not select the labels.",
+      "sample_refs": [
+        "delivery-exact-prefix-repaired/accepted.json"
+      ]
+    },
+    {
+      "cue": "rank3; shapes2x4,3x4,5x5; B dimension-excluded",
+      "subgroup": "batch q-139965",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "hardcode_A_inspect_C",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.6666666666666666,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 2/3 is success on the two supported singleton outcomes for exclusivity, or two outcomes containing A for hardcoding A, out of three distinct rank-role cases. The delivered omitted-pivot counterexample defeats each strategy.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "rank3; shapes2x4,3x4,5x5; B dimension-excluded",
+      "subgroup": "batch q-139965",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "inspect_A_assume_exclusive",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.6666666666666666,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 2/3 is success on the two supported singleton outcomes for exclusivity, or two outcomes containing A for hardcoding A, out of three distinct rank-role cases. The delivered omitted-pivot counterexample defeats each strategy.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "rank3; shapes2x4,3x4,5x5; B dimension-excluded",
+      "subgroup": "batch q-139965",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "inspect_C_assume_exclusive",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.6666666666666666,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 2/3 is success on the two supported singleton outcomes for exclusivity, or two outcomes containing A for hardcoding A, out of three distinct rank-role cases. The delivered omitted-pivot counterexample defeats each strategy.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "rank3; shapes2x4,3x4,5x5; B dimension-excluded",
+      "subgroup": "control_catalog q-139965",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "hardcode_A_inspect_C",
+      "correct": 4,
+      "total": 6,
+      "baseline": 0.6666666666666666,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 2/3 is success on the two supported singleton outcomes for exclusivity, or two outcomes containing A for hardcoding A, out of three distinct rank-role cases. The delivered omitted-pivot counterexample defeats each strategy.",
+      "sample_refs": [
+        "delivery-catalog/accepted.json"
+      ]
+    },
+    {
+      "cue": "rank3; shapes2x4,3x4,5x5; B dimension-excluded",
+      "subgroup": "control_catalog q-139965",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "inspect_A_assume_exclusive",
+      "correct": 4,
+      "total": 6,
+      "baseline": 0.6666666666666666,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 2/3 is success on the two supported singleton outcomes for exclusivity, or two outcomes containing A for hardcoding A, out of three distinct rank-role cases. The delivered omitted-pivot counterexample defeats each strategy.",
+      "sample_refs": [
+        "delivery-catalog/accepted.json"
+      ]
+    },
+    {
+      "cue": "rank3; shapes2x4,3x4,5x5; B dimension-excluded",
+      "subgroup": "control_catalog q-139965",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "inspect_C_assume_exclusive",
+      "correct": 4,
+      "total": 6,
+      "baseline": 0.6666666666666666,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline 2/3 is success on the two supported singleton outcomes for exclusivity, or two outcomes containing A for hardcoding A, out of three distinct rank-role cases. The delivered omitted-pivot counterexample defeats each strategy.",
+      "sample_refs": [
+        "delivery-catalog/accepted.json"
+      ]
+    },
+    {
+      "cue": "first displayed radio position",
+      "subgroup": "actual delivered rank3 q-139965 subset group",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose first displayed radio option",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Observed UI correct positions differ across the three decision cases. Baseline .2 is random choice among five options; finite sample does not establish uniformity. Stored bank order is not learner order.",
+      "sample_refs": [
+        "render/input.json",
+        "rendered-position-probe.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "generator validity and finite capacity rejection",
+      "structural deduplication39 to24",
+      "complete repeated-profile decision block allocation",
+      "actual requested-easy filtering",
+      "actual captured-inventory and within-batch deduplication",
+      "usable/fresh candidate selection and easy-band weights read-only reproduction",
+      "actual UI answer order"
+    ],
+    "sample_refs": [
+      "sampler-results.json",
+      "decision-stage-results.json",
+      "delivery-execution.json",
+      "delivery-batch/delivery.json",
+      "delivery-catalog/delivery.json",
+      "learner-selection.json",
+      "rendered-position-probe.json"
+    ],
+    "result": "Current batch5/5, catalog39/39, fresh batches5/5 and full capacity24/24 survive. The repaired rank3 block retains both singleton and joint cases; no tested cue answers all members. Positive easy-weight selection can reach every fresh retained case; history sensitivity and unconfigured policy branch are documented."
+  },
+  "limitations": [
+    "Source q-34807 and q-35270 lack keys and worked solutions; canonical e-5417 lacks bank. No invented full replay.",
+    "Finite catalog24 structural classes is explicitly bounded; magnitude changes and relabelings do not inflate semantic capacity.",
+    "Small/singleton delivered groups cannot establish absence of conditional cues; complete catalog supplies same-profile controls.",
+    "No finite audit proves absence of every shortcut. Probes target retained failures, labels, qualifying counts and actual displayed positions.",
+    "No database/publication; captured inventory basis5415 contains only twelve original sources. Future inventory, actual entity allocation, learner history and policy remain unavailable."
+  ]
+}

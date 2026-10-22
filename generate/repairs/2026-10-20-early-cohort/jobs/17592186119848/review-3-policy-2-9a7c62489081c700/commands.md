@@ -1,0 +1,14 @@
+All commands run from this evidence directory. Python imports use `-B` to avoid package bytecode writes. No database or publishing command ran.
+
+1. `python3 -B setup_review.py` — copy prior independent evidence and scripts with provenance; snapshot package; isolate manifest runtime.
+2. `/home/jake/Developer/Course_Academy/.venv/bin/python -B focused_review.py` — compare unchanged catalog/source replays, fresh seeds93827/57209/32843 and count boundaries, explicit seed60217 pivot/scale interventions, exact Fraction math, relocation and retained runtime negative fixture.
+3. `/home/jake/Developer/Course_Academy/.venv/bin/python -B retained_review.py` — both retained findings against original failing examples and current batch; both author-retained and original independent scripts. Exact command arrays and exit codes: retained-checks.json.
+4. `/home/jake/Developer/Course_Academy/.venv/bin/python -B delivery_review.py` — actual check_delivery.py on runner batch, independently chosen fresh batches, capacity sample, restored prefix, catalog and controlled cases. Exact command arrays: delivery-execution.json.
+5. `/home/jake/Developer/Course_Academy/generate/runs/current/check-engine grader-input.json grader-results.json` — 453 expected native outcomes, including response transfers.
+6. `/home/jake/Developer/Course_Academy/.venv/bin/python -B decision_review.py` — before/after delivery subgroup witnesses and shortcut actions; inventory identity check; read-only selection reproduction.
+7. `/home/jake/Developer/Course_Academy/generate/runs/current/check-engine shortcut-grader-input.json shortcut-grader-results.json` — 27 shortcut outcomes.
+8. `/home/jake/Developer/Course_Academy/.venv/bin/python -B /home/jake/Developer/Course_Academy/generate/pipeline/render_preview.py --input render-records.json --output render --math-root /media/jake/SSD/EDB/math` — default limit6 includes all five runner questions and one repeated control.
+9. `/home/jake/Developer/Course_Academy/.venv/bin/python -B /home/jake/Developer/Course_Academy/generate/pipeline/render_preview.py --input render-scale-record.json --output render-scale --math-root /media/jake/SSD/EDB/math` — explicit extra run covers irrelevant scale1 counterfactual omitted by default render limit. Screenshots visually inspected, including prior unchanged matrix-radio fixture with matching UI hashes.
+10. `/home/jake/Developer/Course_Academy/.venv/bin/python -B finish_review.py` — actual DOM positions, evidence/report assembly, unchanged package check, required reference checks.
+
+The setup step copies the read-only package to relocated/. Retained author checks run only in that evidence copy. The runtime negative control temporarily prepends unresolved `import scripts` only to relocated/17592186119848.py, tests that the checker fails, and restores it. Original package snapshots package-before.json and package-final.json match.

@@ -1,0 +1,7 @@
+# Scope of this verification
+
+Preserve the construction and selection repairs described in instructional-account.md. Canonical f2c7cfd3-da43-5208-bd0e-21692357fabe eliminates x to obtain (k+4)y=-5. Tutorial e0c85152-daea-5a87-a3ba-81870558c7a2 defines inconsistency by no solutions and dependence by infinitely many solutions. Source 534e2a93-e71a-5475-894e-dfd5ca99a3a6 makes an interior bank value correct, so extremal rank is not a skill constraint.
+
+The learner eliminates x, solves the remaining affine coefficient for k, and tests contradiction or redundancy before selecting one of five radio choices. Easy retains small integer elimination; other source profiles and original difficulty labels remain supported. Signs, singular value, numeric answer rank and position may vary while two equations and the residual criterion preserve method and workload. Existing decision-case obligations and controlled relevant/irrelevant changes remain unchanged.
+
+First reproduction: the strict inventory test exits 1 for five historical banks and the 64/64 possible-history shortcut witness. The latest feedback reports no new candidate construction failure. No runtime implementation change is justified by that stored-state failure. Verify retained checks, delivery contrasts, native grading and replacement bindings; keep the historical regression strict. Proposed records cannot alter captured selectable inventory. Separate inventory remediation and a new capture are necessary; database changes and publication are prohibited in this job.

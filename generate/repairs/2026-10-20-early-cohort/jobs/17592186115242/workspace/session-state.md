@@ -1,24 +1,7 @@
-# Current state — pass 299
+# Current state
 
-Preserved completed runtime repairs, manifest, all five strict finding checks,
-and the unapplied replacement proposal. No runtime, engine, database, source,
-publication or image changes.
+Preserved all completed runtime repairs, package manifest, five strict finding checks and the unapplied replacement proposal. No runtime, engine, database, source, publication or image changes.
 
-First test: job Python `-B checks/batch_regressions.py --finding inventory`.
-Exit 1: five historical banks; possible-history shortcut witness 64/64.
+Latest verification: evidence/repair-302/commands.json and results.json. First test reproduced five historical banks and 64/64 possible-history shortcut successes (initial-reproduction.json). Status verification exited 1 solely for finding 591f580cadb749294588. Four generator regressions, all 17 complete source banks plus canonical replay, delivery 14/14, native grading (7 accepted, 28 rejected), dependencies, relocation and proposal bindings pass. Retained actual-UI question-002.png was visually reinspected; source/runtime hashes remain unchanged.
 
-Verification: job Python `-B checks/recheck_status.py --output evidence/repair-299`.
-Exit 1 solely for finding 591f580cadb749294588. Four generator regressions,
-17 complete source banks and canonical replay, delivery 14/14, native grading
-(7 accepted, 28 rejected), exact dependencies, relocation and replacement
-bindings pass. Commands/results/outcome: evidence/repair-299/.
-
-Visually reinspected retained actual-UI question-002.png. Bound runtime,
-source and inventory hashes remain unchanged, so retained rendering applies.
-
-Next unfinished step requires the separate inventory-remediation workflow named
-by the finding: remediate five stored generated records, capture fresh inventory,
-then rerun the strict regression. This task prohibits database changes. Selector
-reads stored entities independently of generator output. Do not weaken the
-regression or substitute hypothetical replacements for captured inventory.
-Repeated unchanged author retries cannot resolve this external-state condition.
+Next unfinished action: the separate inventory-remediation workflow must review/apply evidence/repair-3/inventory-repair-proposal.json, preserve source questions and learner history, recapture inventory, then rerun the strict stored-pool check. Database changes are prohibited here. Do not weaken the regression, substitute hypothetical inventory, or repeat unchanged author passes. Current status is unsupported.

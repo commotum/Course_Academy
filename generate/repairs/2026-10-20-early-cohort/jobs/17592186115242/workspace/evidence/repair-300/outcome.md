@@ -1,0 +1,11 @@
+# Outcome
+
+Unsupported: finding 591f580cadb749294588 still fails on five reproduced stored generated records. The possible new-seen learner-history witness yields 64/64 sign-extremum shortcut successes. All five non-source generated inventory records were tested; this is a demonstrated failure, not untested inventory. Live learner history is unknown.
+
+First executed test: job Python -B checks/batch_regressions.py --finding inventory (exit 1). Retained verification: job Python -B checks/recheck_status.py --output evidence/repair-300 (exit 1 solely for the inventory finding). Commands and individual outcomes are in commands.json. Four candidate regressions pass, including 17 complete source banks and canonical replay. Three finite batches deliver 14/14 records with within-sign answer contrasts after shared filtering. Native grading accepts 7 correct choices and rejects 28 wrong choices. Exact dependency versions, deterministic relocation, and staged replacement bindings pass.
+
+Runtime package, captured source, captured inventory, and manifest are unchanged. Reinspected the retained actual-UI evidence/repair-3/render/question-002.png: prompt, all five choices, matrices, row operation and residual contradiction are legible and agree. Also inspected the original tutorial classification diagram. Existing rendered evidence remains applicable to the unchanged bound records and runtime.
+
+The selector reads stored candidate entities (engine/rust/question_selection.rs:125); it does not invoke this Python entrypoint to replace their banks. The review explicitly requests a separate inventory-remediation workflow. Five complete replacements and old/new identity mappings already exist in evidence/repair-3/inventory-repair-proposal.json. They remain proposed and unapplied. A package edit cannot remove stored candidates. Database changes and publication are prohibited in this task. Preserve the strict failing regression until authorized remediation and fresh inventory capture occur. No runtime, engine, database, publication or image changes were made.
+
+The affected-inventory.json evidence paths were checked against the requested author-300 evidence root and resolve to workspace/evidence/generated-records.json. Do not mistake the replacement proposal for an already repaired selectable pool.
