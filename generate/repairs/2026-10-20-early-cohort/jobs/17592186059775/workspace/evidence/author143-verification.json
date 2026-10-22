@@ -1,0 +1,45 @@
+{
+  "attempt": 143,
+  "interpreter": "/home/jake/Developer/Course_Academy/.venv/bin/python",
+  "command_prefix": "-B",
+  "commands": [
+    {
+      "command": "checks/check_current_handoff.py",
+      "exit_code": 1,
+      "result": "Reproduced exact byte-identical rejection before regressions and sampling."
+    },
+    {
+      "command": "checks/check_evidence_contract.py",
+      "exit_code": 1,
+      "result": "Bundle, two relocated roots, missing-provenance and wrong-root controls pass; installed-runner handoff fails."
+    },
+    {
+      "command": "checks/check_batch_selection.py",
+      "exit_code": 0,
+      "result": "Shortcut 1/5 raw and delivered; 5 accepted, 0 duplicates; 10 source profiles; native grader 5 accepted and 20 rejected."
+    },
+    {
+      "command": "checks/check_render_binding.py",
+      "exit_code": 0,
+      "result": "10 complete source banks and 2 current UI endpoint bindings pass."
+    }
+  ],
+  "reports": {
+    "evidence/current-handoff-regression.json": "e60bb4ba8b00fc7610d754c12c8a7fb78fbf389ffb1325a7d0ffc1121aedd5c9",
+    "evidence/evidence-contract-validation.json": "b5f1dc221d2055b49feec6b69ce9760f0b9e08cd366b7638f9242e558c7d1ed8",
+    "evidence/batch-selection-regression.json": "a5e6268c8a278f6d89fde33bfb813311e795d34c564bb50251f7a54cc1b77bf3",
+    "evidence/current-render-binding.json": "a3982e12adb45a3250c05114ad38adb48b8b9ba4f92a4a3f4f3024e49164a745"
+  },
+  "runtime_changed": false,
+  "visual_inspection": {
+    "path": "evidence/author8-render/question-002.png",
+    "result": "Readable supplied matrix, five radio choices, correct selected matrix and full elimination solution."
+  },
+  "blocking_rule": "scripts/generator_pipeline.py:722-727 rejects unchanged package/source/engine before retained checks, even for evidence-only review.",
+  "permitted_fix_available": false,
+  "reason": "Workspace-only writes exclude the runner and external evidence roots. No runtime defect justifies changing package identity.",
+  "proposed_fix": "runner-fix/evidence-only-rejection.patch",
+  "patch_installed": false,
+  "prior_offline_patch_tests": "23 cases retained; not rerun because runner and proposal are unchanged.",
+  "scope": "Read-only runner reproduction, local evidence writes and offline generator/delivery/native-grader checks. No publication, service calls or database writes."
+}
