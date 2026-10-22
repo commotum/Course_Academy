@@ -1,45 +1,39 @@
-# Current state — 2026-10-22, author-199
+# Current state — 2026-10-22, author-203
 
-Feedback and repair history read before work. Exact latest failure reproduced
-first with `checks/check_current_handoff.py`: exit 1, installed runner invokes
-`repair` before retained checks or sampling. The external gate remains unchanged.
+Read latest feedback, both retained findings, the latest repair-history events
+(203 total), existing instructional account, and required generator guidance.
+Preserved the runtime, manifest, full source coverage and prior repairs. No new
+generator construction defect is demonstrated by the latest evidence-only report.
 
-Fresh commands and results: `evidence/current-author-verification.json`.
+Reproduced the exact latest failure first:
+`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_current_handoff.py`
+Exit 1: installed `scripts/generator_pipeline.py:723` rejects the unchanged
+package before regressions or sampling. This branch is outside authorized writes.
 
-- Evidence contract: exit 1 solely at installed handoff. Actual bundle validation,
-  two relocated roots, historical failure controls, source records and affected
-  inventory bindings pass.
-- Exact shortcut batch: exit 0. Seed 4258185931 scores 1/5 raw and delivered;
-  five records survive shared delivery; ten profiles and 25 native responses pass.
-- CLI: exit 0; relocated runtime, exact counts, determinism and finite-limit checks.
-- Source/UI binding: exit 0; ten complete source banks/fifty choices replay and
-  two retained UI inputs match current delivered endpoints. Both retained
-  screenshots were visually inspected again: readable matrices, choices and
-  elimination stages. No fresh render run.
-- Inventory: exit 0; all three stored generated records reproduced with their
-  archived identities and generation metadata; original captures stay source-only.
-- Runtime and manifest hashes unchanged. Existing instructional account applies;
-  no new source, mathematical or generator defect was demonstrated.
+Targeted verification commands and full captured results:
+`evidence/current-author-verification.json`.
 
-Both retained IDs remain executable in `repair-regressions.json`; the unresolved
-handoff regression remains strict. No runtime change is justified by an evidence-
-path finding. Changing package bytes solely to evade the gate is not a repair.
+- `checks/check_evidence_contract.py`: exit 1 at that same installed gate.
+  The actual evidence validator, two relocation roots, missing-provenance and
+  wrong-root negative controls pass. All 12 source captures, 3 affected stored
+  records, 83 bundle files and current batch bindings remain verified.
+- `checks/check_batch_selection.py`: exit 0. Exact seed 4258185931 shortcut scores
+  1/5 before and after shared delivery; 5/5 records accepted. Ten profiles retain
+  all target roles; native grading passes 5 correct and 20 wrong submissions.
+- `checks/check_render_binding.py`: exit 0. Ten complete source banks replay
+  (50 choices); two actual-UI renders match current delivered endpoints. Both
+  retained screenshots visually inspected: readable matrices and row operations.
 
-Required next action is outside the authorized workspace: the runner owner must
-resolve the evidence-only unchanged-package gate in
-`scripts/generator_pipeline.py:723`, then rerun strict checks and fresh independent
-review. Existing concrete correction: `runner-fix/evidence-only-rejection.patch`,
-uninstalled. Its earlier offline verification is retained, not rerun or claimed
-as an installed fix. Do not repeat unchanged authoring or install copied historical
-acceptance as fresh approval.
+All six runtime/manifest hashes remain unchanged. Dependencies reconfirmed:
+Python 3.13.5, SymPy 1.14.0. Earlier relocation/CLI, full mathematics, source,
+inventory reconstruction and rendering evidence is retained. No unrelated broad
+suite or duplicate rendering was repeated. Both retained finding IDs still have
+strict executable regressions; no acceptance criterion was weakened.
 
-The history contains 199 events and two retained findings. Inspection of the
-installed runner confirms the cycle: an `unsupported` author result for a
-source-supported band restarts repair, while an unchanged `ready` candidate is
-rejected at the sample gate before retained checks. Neither changing the author
-status nor repeating generator authoring resolves that control-flow defect.
-The strict failing test and concrete uninstalled patch remain available; no
-additional generator or test changes are warranted by the current evidence.
-
-Only workspace evidence and this state file were written. No runner, engine,
-database, published image or other-job changes.
+Unfinished: runner owner must correct the evidence-only unchanged-package gate,
+route the report together with its validated evidence root, and rerun the strict
+handoff regression before fresh independent review. The existing
+`runner-fix/evidence-only-rejection.patch` remains uninstalled. Installing it or
+copying into the supplied external evidence_root violates workspace-only scope.
+No engine, runner, database, published asset or other-job edits were made.
+The skill is supported; the unresolved failure is external runner integration.

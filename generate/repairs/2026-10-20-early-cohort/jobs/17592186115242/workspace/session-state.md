@@ -1,22 +1,18 @@
-# Verification result — author 882
+# Verification result — author 886
 
-Preserved completed repairs. Read feedback, all five retained findings and history,
-source lesson context, required generator docs and existing validation scripts.
+Read feedback, retained history, source and current candidate. First test:
+`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/author-886`.
+Exit 1: finding 591f580cadb749294588 still fails for five captured stored records;
+exact seed 2712914515 reproduced, possible-history shortcut witness 64/64.
+Four generator regressions, 17 complete source-bank replays, 14 delivery records,
+35 native grading responses, counterfactuals and relocated replay pass.
+Protected hashes match; staged replacement proposal verifies. Two retained UI
+screenshots and source flowchart inspected. Runtime and completed repairs preserved.
+Evidence: evidence/author-886/commands.json, results.json, disposition.md.
 
-First test: job Python -B checks/batch_regressions.py --finding inventory.
-Exit 1: five historical banks reproduce the shortcut; possible-history witness 64/64.
-
-Then: job Python -B checks/recheck_status.py --output evidence/author-882.
-Four generator regressions pass: 17 source-bank replays, 14 shared-delivery records,
-35 native grading cases and relocated replay. Protected package/source/inventory hashes
-unchanged. Inspected both retained actual-UI screenshots. No runtime, engine,
-source, database or publication changes.
-
-Evidence: evidence/author-882/commands.json, results.json, disposition.md,
-visual-inspection.json. Strict inventory failure preserved.
-
-Next unfinished step: the separate inventory-remediation workflow explicitly requested
-by finding 591f580cadb749294588, followed by fresh inventory capture. Complete unapplied
-proposal: evidence/repair-3/inventory-repair-proposal.json. Database changes and publication
-are prohibited in this author task. Repeating unchanged author verification cannot repair
-stored banks. Do not erase the failure or substitute the proposed pool for captured state.
+Next unfinished step: separately remediate the five stored questions using
+evidence/repair-3/inventory-repair-proposal.json, recapture inventory, then rerun
+the strict check. Database changes and publication are prohibited in this job.
+Do not weaken the failure or substitute proposed state for captured state.
+No new runtime defect is demonstrated; unchanged generator-only passes cannot
+alter persisted answer banks.
