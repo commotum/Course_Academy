@@ -1,36 +1,26 @@
-# Author-609 verification, 2026-10-22
+# Author 612 verification, 2026-10-22
 
-Preserved the repaired runtime, manifest, instructional account, five executable
-finding declarations, and staged inventory replacement proposal. Read feedback,
-all retained findings, latest history event, source lesson and prior session state.
-No new generator defect is demonstrated by the latest feedback.
+Preserved completed repairs. Read feedback, five retained findings, original
+lesson and all 17 complete source questions. Instructional specification remains
+instructional-account.md; no further runtime defect is demonstrated.
 
-First reproduction:
+First reproduced the latest failure with:
 `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory`
-exited 1: five historical banks retain the sign-only extremum shortcut, with
-64/64 successes under the retained possible learner-history scenario. This is
-not a prediction about unknown actual learner history.
+Exit 1: five historical banks affected; 64/64 possible-history shortcut witness.
 
-Validation:
-`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/author-609`
-exited 1 solely for finding 591f580cadb749294588. Four generator findings pass:
-17 complete source banks, 14 records through shared delivery, controlled relevant
-and irrelevant changes, 7 accepted and 28 rejected native-grader responses,
-exact dependency versions and relocated execution. Protected hashes unchanged;
-five proposed replacements verified, none applied. Reinspected the retained
-actual UI screenshot `evidence/repair-3/render/question-002.png` and original
-lesson classification flowchart; math and choices are readable without clipping.
-Unchanged runtime and records did not require another render.
+Ran:
+`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/author-612`
+Exit 1 only for finding 591f580cadb749294588. Four generator regressions pass;
+17 complete source banks; 14 delivered records with preserved contrasts;
+7 correct accepted and 28 wrong rejected by native grader; relocation and exact
+dependencies pass. Reinspected retained UI screenshot question-002.png.
 
-The strict historical-pool regression remains failing. The retained finding
-explicitly requests the separate inventory-remediation workflow, while this
-user request prohibits database changes and publication. A generator edit cannot
-change captured stored question banks. Source-supported scope and valid answers
-remain intact. No source, inventory, engine, database or publication edits made.
+Runtime/source/inventory hashes are unchanged. Five staged replacements remain
+verified and unapplied. No generated inventory remains untested. Commands,
+results and explanation: evidence/author-612/{commands.json,results.json,outcome.md}.
 
-Next unfinished step: separately remediate the five stored generated identities
-listed in `affected-inventory.json`, preserve source questions and learner history,
-capture fresh inventory, then rerun the strict pool check. Reviewable unapplied
-mapping: `evidence/repair-3/inventory-repair-proposal.json`.
-
-Status: unsupported. Commands and results: `evidence/author-609/`.
+Next unresolved action is external inventory remediation for the five identities
+in affected-inventory.json using the existing reviewable mapping at
+evidence/repair-3/inventory-repair-proposal.json, followed by fresh inventory
+capture and strict regression rerun. Database changes and publication are
+prohibited in this author session; retain the strict failure. Status unsupported.

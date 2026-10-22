@@ -48,5 +48,6 @@ for n,rr in stages.items():
 save('coverage-results.json',cov)
 # Strict failing regression (does not pass by asserting that the defect exists).
 save('strict-test-context.json',{'failure_record':'minimal-cli.json','source_regression':'Full source bank equality in source-replay-results.json; three omissions and one missing source.'})
-pathlib.Path('strict-regression.py').write_text('''import json\nr=json.load(open("minimal-cli.json"))[0]\nq=r["question"]\nf=q[":question/answer-fields"][-1]\nassert f[":answer-field/key"]=="None of the above"\nassert "leave every box unchecked" not in q[":question/worked-solution"], "Explicit None must be selected, but solution tells learner to leave every box unchecked"\n''')
+# Standalone strict-regression.py executes the current package, not a saved snapshot.
+
 print(json.dumps({'stages':stage_results,'affected_inventory':old['question'][':question/id'],'max_constant_strategy_rates':maxima},indent=2))

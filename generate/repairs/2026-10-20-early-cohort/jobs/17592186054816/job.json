@@ -6,11 +6,11 @@
     "existing_entrypoint": null,
     "job_kind": "build"
   },
-  "stage": "validate",
-  "attempt": 0,
+  "stage": "generate",
+  "attempt": 1,
   "seed": 2437540099,
   "created": 1792677946.7502062,
-  "updated": 1792677947.002923,
+  "updated": 1792678920.118407,
   "source_hash": "08b5852c18a6293181ef01174c36912c6f44b66ee7db059a6060a13b3f1f4bb8",
   "inventory_hash": "fced59269462a72bcd3da5984cd59234feb17a3ddd2cef604aed6c04e16e58f6",
   "manifest": "package.json",
@@ -20,5 +20,183 @@
   "batch_hash": "68659d1b79ad3db7231a0f9505216cbf4db745f2979a8415fc61708e89275035",
   "runtime": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186054816/runtime-0",
   "engine_hash": "dc1e0a8583ca33c6028bc0a641128ecc8e7896742189dd42b292170c9726bad9",
-  "assets": {}
+  "assets": {},
+  "previous_review": {
+    "directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186054816/review-0-policy-2-95271fa8a661a89b",
+    "binding": {
+      "policy_version": 2,
+      "package_hash": "f5099546aed26437cde4ee08fa9b81d03d518cba42fc76c1f9ba4da13ab9b196",
+      "batch_hash": "68659d1b79ad3db7231a0f9505216cbf4db745f2979a8415fc61708e89275035",
+      "source_hash": "08b5852c18a6293181ef01174c36912c6f44b66ee7db059a6060a13b3f1f4bb8",
+      "inventory_hash": "fced59269462a72bcd3da5984cd59234feb17a3ddd2cef604aed6c04e16e58f6",
+      "assets": {},
+      "effective_difficulty": "easy",
+      "engine_hash": "dc1e0a8583ca33c6028bc0a641128ecc8e7896742189dd42b292170c9726bad9"
+    }
+  },
+  "needs_repair": true,
+  "error": {
+    "verdict": "revise",
+    "summary": "The generator produces contradictory worked solutions, including one record in the actual five-question batch. Source replay is incomplete, and normal sampling excludes observed source profiles. Evidence and runnable regressions are saved in result.json. Package files remain unchanged; no database writes or publishing occurred.",
+    "source_analysis": {
+      "skill": "Classify an individual number or determine universal containment among scripted special number sets.",
+      "reasoning_steps": [
+        "Simplify or classify the target number, or identify the entire target class.",
+        "Determine sign, integrality, rationality, and zero membership.",
+        "Evaluate each candidate set and report the precise qualifying subset."
+      ],
+      "invariants": [
+        "Natural numbers exclude zero.",
+        "Strict positive and negative sets exclude zero; a zero subscript includes it.",
+        "Preserve the observed response contract and elementary workload."
+      ],
+      "permitted_variations": [
+        "Vary elementary numeric representations, signs, zero cases, and named target sets.",
+        "Vary candidate sets, qualifying positions, and correct-selection counts.",
+        "Derive keys and explanations from the final visible answer bank."
+      ],
+      "source_refs": [
+        "Tutorial 8214: definitions and hierarchy; natural numbers exclude zero.",
+        "Tutorial 8215: sign superscripts and zero subscripts.",
+        "f51862bd-578b-533f-86e5-e297bb989e9a: zero qualifying candidates requires explicit None.",
+        "fbe70e06-2b02-5b5d-9ff3-573e87348689: terminating-decimal classification.",
+        "17cf8bd5-1b50-5ea6-9196-c8cc3bb865c7: universal containment with a five-choice radio bank."
+      ],
+      "evidence_paths": [
+        "source-analysis.json"
+      ]
+    },
+    "checks": {
+      "source_replay": {
+        "status": "failed",
+        "evidence_paths": [
+          "source-replay-results.json",
+          "strict-source-regression.py",
+          "strict-source-regression-result.txt",
+          "delivery-source-none-result.txt"
+        ],
+        "details": "Three replay banks omit captured None options. The eleventh source question is missing. Replay index 6 fails actual delivery validation."
+      },
+      "math": {
+        "status": "failed",
+        "evidence_paths": [
+          "math-results.json",
+          "minimal-cli.json",
+          "strict-regression.py",
+          "strict-regression-result.txt"
+        ],
+        "details": "Independent classifications agree with the tested keys, but zero-match solutions instruct learners to leave every box unchecked while None must be checked. This affects 23/100 fresh records and batch index 1."
+      },
+      "variety": {
+        "status": "failed",
+        "evidence_paths": [
+          "coverage-results.json",
+          "stage-analysis.json",
+          "shortcut-results.json"
+        ],
+        "details": "All 16 ordinary truth patterns survive delivery, but terminating decimals and radio combination-bank profiles are excluded from production. No batch-wide constant-action shortcut was demonstrated."
+      },
+      "scope": {
+        "status": "passed",
+        "evidence_paths": [
+          "scope-results.json",
+          "boundary-records.json",
+          "source-analysis.json"
+        ],
+        "details": "Implemented variations preserve elementary classification, taught notation, and comparable workload."
+      },
+      "grading": {
+        "status": "passed",
+        "evidence_paths": [
+          "grader-results.json",
+          "counterfactual-none-grader-results.json",
+          "grader-input.json"
+        ],
+        "details": "The prescribed native grader passed 1,322 field checks: 656 accepted and 666 rejected, with no unresolved outcomes. It correctly rejects the response recommended by the defective solution."
+      },
+      "rendering": {
+        "status": "passed",
+        "evidence_paths": [
+          "render/rendering.json",
+          "render-none-pair/rendering.json",
+          "render-inspection.json",
+          "render/question-002.png",
+          "render-none-pair/question-002.png"
+        ],
+        "details": "Sixteen actual-UI previews rendered successfully. Inspected screenshots show readable mathematics and controls, including the contradictory solution."
+      },
+      "packaging": {
+        "status": "passed",
+        "evidence_paths": [
+          "packaging-results.json",
+          "package-hashes-before.json",
+          "package-hashes-after.json",
+          "commands.md"
+        ],
+        "details": "Python 3.13.5 matches the standard-library-only manifest. Relocation, deterministic replay, invalid-input rejection, and output handling passed. Package hashes are unchanged."
+      },
+      "decision_variation": {
+        "status": "failed",
+        "evidence_paths": [
+          "pedagogical-variation.json",
+          "counterfactual-none-result.json",
+          "shortcut-results.json",
+          "stage-analysis.json",
+          "affected-inventory.json",
+          "generated-records.json",
+          "selection-limits.json"
+        ],
+        "details": "Relevant and irrelevant interventions generally propagate correctly, but the zero-boundary intervention leaves a stale explanation. Delivery retains this defect. Current-source selection excludes one historical empty-selection record; live policy/history are unavailable, and the cached eligibility library predates that restriction."
+      }
+    },
+    "findings": [
+      {
+        "kind": "math",
+        "description": "The explicit None key contradicts the instruction to leave every box unchecked. The actual batch contains this defect at index 1, surviving delivery as UUID 2d1cea9b-2a10-5675-94d1-43fa0a7492c7.",
+        "source_refs": [
+          "f51862bd-578b-533f-86e5-e297bb989e9a",
+          "Tutorials 8214 and 8215"
+        ],
+        "reproduction": "Run strict-regression.py against the current package. Minimal generator parameters: --seed 827461 --count 1 --format json. The target is sqrt(0), candidates are Z+, Q-, Z-, N, and None is correctly true. See minimal-cli.json and strict-regression-result.txt.",
+        "requested_change": "Derive the concluding instruction from the final answer bank after explicit-None adaptation. Every zero-match case must instruct selecting None. Preserve zero-match practice and retain the strict regression."
+      },
+      {
+        "kind": "source_fidelity",
+        "description": "Replay indices 3, 6, and 7 omit captured None checkboxes, and the eleventh source radio question has no replay.",
+        "source_refs": [
+          "1da25f7d-182b-5d2d-b5c8-9d3f66bb445c",
+          "f51862bd-578b-533f-86e5-e297bb989e9a",
+          "4fc9ff9e-591c-5172-b83a-e2856d63bd94",
+          "17cf8bd5-1b50-5ea6-9196-c8cc3bb865c7"
+        ],
+        "reproduction": "Run strict-source-regression.py; the first failure is replay index 3. Actual check_delivery.py rejects source-replay-none.json because every remaining checkbox is false. Commands and captured errors are retained.",
+        "requested_change": "Restore complete captured banks and replay all eleven supplied questions. Associate replay truths with their candidate fields rather than indexing a bank after deleting options."
+      },
+      {
+        "kind": "restriction",
+        "description": "Production excludes terminating decimals and all radio combination-bank profiles despite their presence in the source.",
+        "source_refs": [
+          "fbe70e06-2b02-5b5d-9ff3-573e87348689",
+          "a3dec5c5-6226-58b5-981a-1d9be8ed928c",
+          "17cf8bd5-1b50-5ea6-9196-c8cc3bb865c7"
+        ],
+        "reproduction": "Inspect generator.py PROFILES, sample_instance, and make_record: decimal support is replay-only and production fields are always checkboxes. coverage-results.json records the implemented sampling domain.",
+        "requested_change": "Include source-supported finite-decimal and complete radio-bank profiles in normal easy sampling, deriving answers from varied eligible assignments."
+      },
+      {
+        "kind": "source_fidelity",
+        "description": "Historical generated UUID 6e7f7e59-12b8-5d8f-a27b-48f0bd02db19, entity 17592186624696, has four false checkboxes and no None option. Current fresh-practice source rules exclude it. This is separate from the current solution defect.",
+        "source_refs": [
+          "f51862bd-578b-533f-86e5-e297bb989e9a",
+          "engine/rust/learning.rs:149-171"
+        ],
+        "reproduction": "Run followup.py and analyze-delivery.py. Explicit instance: all real numbers; candidates N, Z, Q-, R0-. generated-records.json reproduces the captured content fingerprint and publisher UUID. selection-limits.json discloses the cached-library discrepancy and unavailable historical seed.",
+        "requested_change": "After correcting the solution rule, prepare a separately authorized replacement with the source-backed explicit None option. Preserve the zero-qualifying case; do not conceal it through sampling restrictions."
+      }
+    ]
+  },
+  "last_rejected_package": "f5099546aed26437cde4ee08fa9b81d03d518cba42fc76c1f9ba4da13ab9b196",
+  "last_rejected_source": "08b5852c18a6293181ef01174c36912c6f44b66ee7db059a6060a13b3f1f4bb8",
+  "last_rejected_engine": "dc1e0a8583ca33c6028bc0a641128ecc8e7896742189dd42b292170c9726bad9",
+  "author_running": true
 }
