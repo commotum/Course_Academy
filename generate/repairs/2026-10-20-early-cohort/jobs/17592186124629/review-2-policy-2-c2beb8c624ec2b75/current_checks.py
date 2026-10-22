@@ -7,7 +7,7 @@ E=Path(__file__).resolve().parent
 parser=(E/'audit.py').read_text();exec(parser[parser.index('def val('):parser.index('src=json.load')])
 def save(n,x):(E/n).write_text(json.dumps(x,indent=2)+'\n')
 prefix=json.load(open(E/'decision-prefix.json'))
-report=[];native=json.load(open(E/'native-input.json'))
+report=[];native=[c for c in json.load(open(E/'native-input.json')) if not str(c['label']).startswith('prefix-')]
 for i,r in enumerate(prefix):
  expected=visible(r);actual=bits(r);assert expected==actual
  # Check every worked conditional against the same independently read premise

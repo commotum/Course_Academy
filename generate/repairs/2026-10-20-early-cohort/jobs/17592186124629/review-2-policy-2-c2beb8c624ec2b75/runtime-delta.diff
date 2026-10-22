@@ -1,0 +1,43 @@
+--- prior-reviewed/17592186124629.py
++++ current/17592186124629.py
+@@ -14,7 +14,7 @@
+ KP_ID = 17592186124629
+ KP_UUID = 'bb90e5b9-03fe-51cf-bc16-a293befacebc'
+ GENERATOR_UUID = str(uuid.uuid5(uuid.UUID(KP_UUID), 'question-generator'))
+-VERSION = '2.0.0'
++VERSION = '2.0.1'
+ SUPPORTED_LEVELS = ('moderate',)
+ CASES = {q[':question/math-academy-id']: q for q in SOURCE[':knowledge-point/questions']
+          if q.get(':question/difficulty') and q.get(':question/worked-solution')}
+@@ -175,13 +175,24 @@
+     candidates = [(sid, p) for sid in sorted(CASES) for p in domain(sid)]
+     rng.shuffle(candidates)
+     rows, seen = [], set()
+-    for sid, p in candidates:
+-        if len(rows) >= count: break
+-        r = generate(difficulty, seed, sid, p)
+-        q = r['question']
+-        semantic = (q[':question/problem'], tuple(sorted(f[':answer-field/key'] for f in q[':question/answer-fields'])))
+-        if semantic in seen: continue
+-        rows.append(r); seen.add(semantic)
++    while candidates and len(rows) < count:
++        assigned, deferred = set(), []
++        for sid, p in candidates:
++            if len(rows) >= count: break
++            # Dimensions are incidental here: the same concept triplet should
++            # not always ask for the same subset in a short practice batch.
++            decision = (SLOTS[sid], checkbox(sid), tuple(p['truths']))
++            if decision in assigned:
++                deferred.append((sid, p))
++                continue
++            r = generate(difficulty, seed, sid, p)
++            q = r['question']
++            semantic = (q[':question/problem'], tuple(sorted(f[':answer-field/key'] for f in q[':question/answer-fields'])))
++            if semantic in seen: continue
++            rows.append(r); seen.add(semantic); assigned.add(decision)
++        # Keep all compatible values and premise cases available after the
++        # first pass; this changes order, never the supported finite domain.
++        candidates = deferred
+     return rows
+ 
+ def markdown(rec):

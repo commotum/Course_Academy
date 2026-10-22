@@ -1,0 +1,871 @@
+{
+  "learner_operation": "Infer invertibility versus singularity from a real square-matrix premise, evaluate each of three theorem conclusions, and select exactly the true subset.",
+  "fixed_features": [
+    {
+      "feature": "Real square matrix, positive dimension, one premise and three conclusions",
+      "justification": "The lesson theorem and every target source question share this conceptual workload; rectangular matrices require different implications."
+    },
+    {
+      "feature": "Moderate band and observed radio/checkbox response shapes",
+      "justification": "Only moderate is supported. Keeping source bank shapes preserves response workload; correctness still varies across five radio subsets or seven nonempty checkbox subsets."
+    },
+    {
+      "feature": "Source-profile dimensions remain n,3,5,6,7,8",
+      "justification": "Conservative context within a finite family; these constants do not justify fixing truth assignments, and are not counted as meaningful variation."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Premise implying invertible or singular state",
+      "eligible_variation": "Equivalent determinant, rank, column-space, null-space, or nullity premise; both statuses.",
+      "observed": "Both premise states occur in the independent controls and exact current batch. Controlled full-rank/deficient-rank premise changes hold all conclusion strings fixed and complement every field action."
+    },
+    {
+      "role": "Qualifying conclusion labels, count and position",
+      "eligible_variation": "Change conclusion polarity and premise state; vary which and how many conclusions qualify. Source examples include one, two and three true conclusions.",
+      "observed": "87 fresh independently parameterized controls cover every bank mask in each source profile. Changed selection pass has 73 records: each of the seven nonempty checkbox masks or five source-radio masks occurs once in every recognizable concept/response family. Exact batch contains five different families; retained repeated-family shortcut is absent."
+    },
+    {
+      "role": "Radio choice order and equivalent premise wording",
+      "eligible_variation": "Shuffle alternatives without changing mathematics; change to an equivalent premise without changing the conclusion subset.",
+      "observed": "Radio alternatives are seeded and vary in position. Equivalent-premise control preserves all conclusion strings, keys and native semantic field actions. Position shuffling alone is not counted as meaningful variation."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "Complete supported source replay",
+      "sample_refs": [
+        "source-replays.json",
+        "source-replay-report.json"
+      ],
+      "result": "15 complete moderate source banks and 81 choices replay; every normalized prompt and worked implication paragraph matches after documented source correction. Missing q-47586 evidence and canonical fields remain explicit."
+    },
+    {
+      "case": "Source-profile construction slots",
+      "sample_refs": [
+        "independent-samples.json",
+        "slot-coverage.json"
+      ],
+      "result": "87 independently chosen records, seed 763019, cover all bank masks per source profile. Status and hypothesis-slot frequencies recorded; cross-product coverage is not asserted."
+    },
+    {
+      "case": "Changed batch selection, prior failure and controls",
+      "sample_refs": [
+        "runner-batch.json",
+        "before-batch.json",
+        "retained-regression-results.json",
+        "sampling-results.json",
+        "small-regression-batches.json"
+      ],
+      "result": "Strict retained regression fails old version and passes current. Exact five-record runner batch matches seed 2086806769, with no repeated family. Three fresh five-record batches pass distinct subsets for repeated families."
+    },
+    {
+      "case": "Complete first selection pass and domain preservation",
+      "sample_refs": [
+        "decision-prefix.json",
+        "sampling-results.json",
+        "domain-preservation.json",
+        "delivery-prefix/accepted.json"
+      ],
+      "result": "73 records cover 13 visible concept/response families; each mask appears once per family and survives delivery. Reordering retains all 606 prior semantic instances."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "For q-47599 at seed 319, flip only the determinant conclusion from nonzero to zero.",
+      "expected": "[true,false,true] becomes [false,false,true]; prompt, first implication and grader must change together.",
+      "observed": "Independent visible-proposition check and native field grading agree; screenshots 006 and 007 show the changed determinant proposition and solution.",
+      "status": "passed",
+      "justification": "Determinant is a theorem consequence and its polarity changes whether that conclusion follows.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "native-report.json",
+        "render/question-006.html",
+        "render/question-007.html"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "Hold all three printed conclusions fixed; change rank(A)=7 to rank(A)<7.",
+      "expected": "Invertible becomes singular and the full selection vector complements from [true,false,true] to [false,true,false].",
+      "observed": "The two records retain identical conclusion strings; solution rank/nullity fact, three truth labels and native accepted selections all complement. Screenshots 006 and 009 inspected.",
+      "status": "passed",
+      "justification": "The premise determines which side of the invertible matrix theorem applies.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "native-report.json",
+        "render/question-006.html",
+        "render/question-009.html"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Replace the full-rank premise rank(A)=7 with the equivalent nullity(A)=0, retaining the three conclusions.",
+      "expected": "Selection vector [true,false,true] remains correct; equivalent new conditional appears in the solution.",
+      "observed": "Both keys and all native field outcomes preserve the same semantic selections; screenshots 006 and 008 display the new premise and unchanged conclusions.",
+      "status": "passed",
+      "justification": "Lesson tutorial 555ca00c-d37e-5c67-a658-69b087390920 makes these premises equivalent for square matrices.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "native-report.json",
+        "render/question-006.html",
+        "render/question-008.html"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "Visible source-profile concept triplet and dimension",
+      "subgroup": "q-139978",
+      "scope": "within_template",
+      "strategy": "Always answer subset (False, False, True)",
+      "correct": 1,
+      "total": 7,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Every eligible source-bank subset occurs once here. Comparison is uniform guessing over the seven nonempty checkbox subsets or five authored radio subsets; no perfect conditional fixed-subset predictor remains.",
+      "sample_refs": [
+        "independent-samples.json",
+        "slot-coverage.json"
+      ]
+    },
+    {
+      "cue": "Authored answer-control position",
+      "subgroup": "q-139978",
+      "scope": "within_template",
+      "strategy": "Always use position set (2,)",
+      "correct": 1,
+      "total": 7,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Measured before UI radio shuffling. Correct positions vary; no perfect fixed-position predictor in this profile. Baseline is uniform choice over valid subset actions (checkbox) or five radio alternatives.",
+      "sample_refs": [
+        "independent-samples.json",
+        "slot-coverage.json"
+      ]
+    },
+    {
+      "cue": "Visible source-profile concept triplet and dimension",
+      "subgroup": "q-141205",
+      "scope": "within_template",
+      "strategy": "Always answer subset (False, True, False)",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every eligible source-bank subset occurs once here. Comparison is uniform guessing over the seven nonempty checkbox subsets or five authored radio subsets; no perfect conditional fixed-subset predictor remains.",
+      "sample_refs": [
+        "independent-samples.json",
+        "slot-coverage.json"
+      ]
+    },
+    {
+      "cue": "Authored answer-control position",
+      "subgroup": "q-141205",
+      "scope": "within_template",
+      "strategy": "Always use position set (0,)",
+      "correct": 4,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Measured before UI radio shuffling. Correct positions vary; no perfect fixed-position predictor in this profile. Baseline is uniform choice over valid subset actions (checkbox) or five radio alternatives.",
+      "sample_refs": [
+        "independent-samples.json",
+        "slot-coverage.json"
+      ]
+    },
+    {
+      "cue": "Visible source-profile concept triplet and dimension",
+      "subgroup": "q-141214",
+      "scope": "within_template",
+      "strategy": "Always answer subset (False, True, True)",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every eligible source-bank subset occurs once here. Comparison is uniform guessing over the seven nonempty checkbox subsets or five authored radio subsets; no perfect conditional fixed-subset predictor remains.",
+      "sample_refs": [
+        "independent-samples.json",
+        "slot-coverage.json"
+      ]
+    },
+    {
+      "cue": "Authored answer-control position",
+      "subgroup": "q-141214",
+      "scope": "within_template",
+      "strategy": "Always use position set (2,)",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Measured before UI radio shuffling. Correct positions vary; no perfect fixed-position predictor in this profile. Baseline is uniform choice over valid subset actions (checkbox) or five radio alternatives.",
+      "sample_refs": [
+        "independent-samples.json",
+        "slot-coverage.json"
+      ]
+    },
+    {
+      "cue": "Visible source-profile concept triplet and dimension",
+      "subgroup": "q-141215",
+      "scope": "within_template",
+      "strategy": "Always answer subset (False, True, False)",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every eligible source-bank subset occurs once here. Comparison is uniform guessing over the seven nonempty checkbox subsets or five authored radio subsets; no perfect conditional fixed-subset predictor remains.",
+      "sample_refs": [
+        "independent-samples.json",
+        "slot-coverage.json"
+      ]
+    },
+    {
+      "cue": "Authored answer-control position",
+      "subgroup": "q-141215",
+      "scope": "within_template",
+      "strategy": "Always use position set (1,)",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Measured before UI radio shuffling. Correct positions vary; no perfect fixed-position predictor in this profile. Baseline is uniform choice over valid subset actions (checkbox) or five radio alternatives.",
+      "sample_refs": [
+        "independent-samples.json",
+        "slot-coverage.json"
+      ]
+    },
+    {
+      "cue": "Visible source-profile concept triplet and dimension",
+      "subgroup": "q-141217",
+      "scope": "within_template",
+      "strategy": "Always answer subset (True, False, False)",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every eligible source-bank subset occurs once here. Comparison is uniform guessing over the seven nonempty checkbox subsets or five authored radio subsets; no perfect conditional fixed-subset predictor remains.",
+      "sample_refs": [
+        "independent-samples.json",
+        "slot-coverage.json"
+      ]
+    },
+    {
+      "cue": "Authored answer-control position",
+      "subgroup": "q-141217",
+      "scope": "within_template",
+      "strategy": "Always use position set (0,)",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Measured before UI radio shuffling. Correct positions vary; no perfect fixed-position predictor in this profile. Baseline is uniform choice over valid subset actions (checkbox) or five radio alternatives.",
+      "sample_refs": [
+        "independent-samples.json",
+        "slot-coverage.json"
+      ]
+    },
+    {
+      "cue": "Visible source-profile concept triplet and dimension",
+      "subgroup": "q-141341",
+      "scope": "within_template",
+      "strategy": "Always answer subset (True, True, False)",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every eligible source-bank subset occurs once here. Comparison is uniform guessing over the seven nonempty checkbox subsets or five authored radio subsets; no perfect conditional fixed-subset predictor remains.",
+      "sample_refs": [
+        "independent-samples.json",
+        "slot-coverage.json"
+      ]
+    },
+    {
+      "cue": "Authored answer-control position",
+      "subgroup": "q-141341",
+      "scope": "within_template",
+      "strategy": "Always use position set (2,)",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Measured before UI radio shuffling. Correct positions vary; no perfect fixed-position predictor in this profile. Baseline is uniform choice over valid subset actions (checkbox) or five radio alternatives.",
+      "sample_refs": [
+        "independent-samples.json",
+        "slot-coverage.json"
+      ]
+    },
+    {
+      "cue": "Visible source-profile concept triplet and dimension",
+      "subgroup": "q-141342",
+      "scope": "within_template",
+      "strategy": "Always answer subset (False, True, False)",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every eligible source-bank subset occurs once here. Comparison is uniform guessing over the seven nonempty checkbox subsets or five authored radio subsets; no perfect conditional fixed-subset predictor remains.",
+      "sample_refs": [
+        "independent-samples.json",
+        "slot-coverage.json"
+      ]
+    },
+    {
+      "cue": "Authored answer-control position",
+      "subgroup": "q-141342",
+      "scope": "within_template",
+      "strategy": "Always use position set (0,)",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Measured before UI radio shuffling. Correct positions vary; no perfect fixed-position predictor in this profile. Baseline is uniform choice over valid subset actions (checkbox) or five radio alternatives.",
+      "sample_refs": [
+        "independent-samples.json",
+        "slot-coverage.json"
+      ]
+    },
+    {
+      "cue": "Visible source-profile concept triplet and dimension",
+      "subgroup": "q-142475",
+      "scope": "within_template",
+      "strategy": "Always answer subset (False, False, True)",
+      "correct": 1,
+      "total": 7,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Every eligible source-bank subset occurs once here. Comparison is uniform guessing over the seven nonempty checkbox subsets or five authored radio subsets; no perfect conditional fixed-subset predictor remains.",
+      "sample_refs": [
+        "independent-samples.json",
+        "slot-coverage.json"
+      ]
+    },
+    {
+      "cue": "Authored answer-control position",
+      "subgroup": "q-142475",
+      "scope": "within_template",
+      "strategy": "Always use position set (2,)",
+      "correct": 1,
+      "total": 7,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Measured before UI radio shuffling. Correct positions vary; no perfect fixed-position predictor in this profile. Baseline is uniform choice over valid subset actions (checkbox) or five radio alternatives.",
+      "sample_refs": [
+        "independent-samples.json",
+        "slot-coverage.json"
+      ]
+    },
+    {
+      "cue": "Visible source-profile concept triplet and dimension",
+      "subgroup": "q-142476",
+      "scope": "within_template",
+      "strategy": "Always answer subset (False, False, True)",
+      "correct": 1,
+      "total": 7,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Every eligible source-bank subset occurs once here. Comparison is uniform guessing over the seven nonempty checkbox subsets or five authored radio subsets; no perfect conditional fixed-subset predictor remains.",
+      "sample_refs": [
+        "independent-samples.json",
+        "slot-coverage.json"
+      ]
+    },
+    {
+      "cue": "Authored answer-control position",
+      "subgroup": "q-142476",
+      "scope": "within_template",
+      "strategy": "Always use position set (2,)",
+      "correct": 1,
+      "total": 7,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Measured before UI radio shuffling. Correct positions vary; no perfect fixed-position predictor in this profile. Baseline is uniform choice over valid subset actions (checkbox) or five radio alternatives.",
+      "sample_refs": [
+        "independent-samples.json",
+        "slot-coverage.json"
+      ]
+    },
+    {
+      "cue": "Visible source-profile concept triplet and dimension",
+      "subgroup": "q-142478",
+      "scope": "within_template",
+      "strategy": "Always answer subset (False, True, True)",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every eligible source-bank subset occurs once here. Comparison is uniform guessing over the seven nonempty checkbox subsets or five authored radio subsets; no perfect conditional fixed-subset predictor remains.",
+      "sample_refs": [
+        "independent-samples.json",
+        "slot-coverage.json"
+      ]
+    },
+    {
+      "cue": "Authored answer-control position",
+      "subgroup": "q-142478",
+      "scope": "within_template",
+      "strategy": "Always use position set (1,)",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Measured before UI radio shuffling. Correct positions vary; no perfect fixed-position predictor in this profile. Baseline is uniform choice over valid subset actions (checkbox) or five radio alternatives.",
+      "sample_refs": [
+        "independent-samples.json",
+        "slot-coverage.json"
+      ]
+    },
+    {
+      "cue": "Visible source-profile concept triplet and dimension",
+      "subgroup": "q-142479",
+      "scope": "within_template",
+      "strategy": "Always answer subset (False, False, True)",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every eligible source-bank subset occurs once here. Comparison is uniform guessing over the seven nonempty checkbox subsets or five authored radio subsets; no perfect conditional fixed-subset predictor remains.",
+      "sample_refs": [
+        "independent-samples.json",
+        "slot-coverage.json"
+      ]
+    },
+    {
+      "cue": "Authored answer-control position",
+      "subgroup": "q-142479",
+      "scope": "within_template",
+      "strategy": "Always use position set (1,)",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Measured before UI radio shuffling. Correct positions vary; no perfect fixed-position predictor in this profile. Baseline is uniform choice over valid subset actions (checkbox) or five radio alternatives.",
+      "sample_refs": [
+        "independent-samples.json",
+        "slot-coverage.json"
+      ]
+    },
+    {
+      "cue": "Visible source-profile concept triplet and dimension",
+      "subgroup": "q-47587",
+      "scope": "within_template",
+      "strategy": "Always answer subset (False, False, True)",
+      "correct": 1,
+      "total": 7,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Every eligible source-bank subset occurs once here. Comparison is uniform guessing over the seven nonempty checkbox subsets or five authored radio subsets; no perfect conditional fixed-subset predictor remains.",
+      "sample_refs": [
+        "independent-samples.json",
+        "slot-coverage.json"
+      ]
+    },
+    {
+      "cue": "Authored answer-control position",
+      "subgroup": "q-47587",
+      "scope": "within_template",
+      "strategy": "Always use position set (2,)",
+      "correct": 1,
+      "total": 7,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Measured before UI radio shuffling. Correct positions vary; no perfect fixed-position predictor in this profile. Baseline is uniform choice over valid subset actions (checkbox) or five radio alternatives.",
+      "sample_refs": [
+        "independent-samples.json",
+        "slot-coverage.json"
+      ]
+    },
+    {
+      "cue": "Visible source-profile concept triplet and dimension",
+      "subgroup": "q-47599",
+      "scope": "within_template",
+      "strategy": "Always answer subset (False, False, True)",
+      "correct": 1,
+      "total": 7,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Every eligible source-bank subset occurs once here. Comparison is uniform guessing over the seven nonempty checkbox subsets or five authored radio subsets; no perfect conditional fixed-subset predictor remains.",
+      "sample_refs": [
+        "independent-samples.json",
+        "slot-coverage.json"
+      ]
+    },
+    {
+      "cue": "Authored answer-control position",
+      "subgroup": "q-47599",
+      "scope": "within_template",
+      "strategy": "Always use position set (2,)",
+      "correct": 1,
+      "total": 7,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Measured before UI radio shuffling. Correct positions vary; no perfect fixed-position predictor in this profile. Baseline is uniform choice over valid subset actions (checkbox) or five radio alternatives.",
+      "sample_refs": [
+        "independent-samples.json",
+        "slot-coverage.json"
+      ]
+    },
+    {
+      "cue": "Visible source-profile concept triplet and dimension",
+      "subgroup": "q-47604",
+      "scope": "within_template",
+      "strategy": "Always answer subset (False, True, False)",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every eligible source-bank subset occurs once here. Comparison is uniform guessing over the seven nonempty checkbox subsets or five authored radio subsets; no perfect conditional fixed-subset predictor remains.",
+      "sample_refs": [
+        "independent-samples.json",
+        "slot-coverage.json"
+      ]
+    },
+    {
+      "cue": "Authored answer-control position",
+      "subgroup": "q-47604",
+      "scope": "within_template",
+      "strategy": "Always use position set (4,)",
+      "correct": 4,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Measured before UI radio shuffling. Correct positions vary; no perfect fixed-position predictor in this profile. Baseline is uniform choice over valid subset actions (checkbox) or five radio alternatives.",
+      "sample_refs": [
+        "independent-samples.json",
+        "slot-coverage.json"
+      ]
+    },
+    {
+      "cue": "Visible source-profile concept triplet and dimension",
+      "subgroup": "q-79334",
+      "scope": "within_template",
+      "strategy": "Always answer subset (False, False, True)",
+      "correct": 1,
+      "total": 7,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Every eligible source-bank subset occurs once here. Comparison is uniform guessing over the seven nonempty checkbox subsets or five authored radio subsets; no perfect conditional fixed-subset predictor remains.",
+      "sample_refs": [
+        "independent-samples.json",
+        "slot-coverage.json"
+      ]
+    },
+    {
+      "cue": "Authored answer-control position",
+      "subgroup": "q-79334",
+      "scope": "within_template",
+      "strategy": "Always use position set (2,)",
+      "correct": 1,
+      "total": 7,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Measured before UI radio shuffling. Correct positions vary; no perfect fixed-position predictor in this profile. Baseline is uniform choice over valid subset actions (checkbox) or five radio alternatives.",
+      "sample_refs": [
+        "independent-samples.json",
+        "slot-coverage.json"
+      ]
+    },
+    {
+      "cue": "Ordered conclusion concepts and response shape",
+      "subgroup": "checkbox:det,col,pivot",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Use the most common constant qualifying subset in this first selection pass",
+      "correct": 1,
+      "total": 7,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Every eligible subset occurs once after generator rejection/deduplication and actual publication delivery. Baseline is 1/7 nonempty checkbox actions or 1/5 radio alternatives. Dimensions are ignored, so changing 7 to 8 cannot hide the old shortcut.",
+      "sample_refs": [
+        "decision-prefix.json",
+        "sampling-results.json",
+        "delivery-prefix/accepted.json"
+      ]
+    },
+    {
+      "cue": "Ordered conclusion concepts and response shape",
+      "subgroup": "checkbox:inv,nullity,pivot",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Use the most common constant qualifying subset in this first selection pass",
+      "correct": 1,
+      "total": 7,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Every eligible subset occurs once after generator rejection/deduplication and actual publication delivery. Baseline is 1/7 nonempty checkbox actions or 1/5 radio alternatives. Dimensions are ignored, so changing 7 to 8 cannot hide the old shortcut.",
+      "sample_refs": [
+        "decision-prefix.json",
+        "sampling-results.json",
+        "delivery-prefix/accepted.json"
+      ]
+    },
+    {
+      "cue": "Ordered conclusion concepts and response shape",
+      "subgroup": "checkbox:inv,rank,col",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Use the most common constant qualifying subset in this first selection pass",
+      "correct": 1,
+      "total": 7,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Every eligible subset occurs once after generator rejection/deduplication and actual publication delivery. Baseline is 1/7 nonempty checkbox actions or 1/5 radio alternatives. Dimensions are ignored, so changing 7 to 8 cannot hide the old shortcut.",
+      "sample_refs": [
+        "decision-prefix.json",
+        "sampling-results.json",
+        "delivery-prefix/accepted.json"
+      ]
+    },
+    {
+      "cue": "Ordered conclusion concepts and response shape",
+      "subgroup": "checkbox:inv,rank,pivot",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Use the most common constant qualifying subset in this first selection pass",
+      "correct": 1,
+      "total": 7,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Every eligible subset occurs once after generator rejection/deduplication and actual publication delivery. Baseline is 1/7 nonempty checkbox actions or 1/5 radio alternatives. Dimensions are ignored, so changing 7 to 8 cannot hide the old shortcut.",
+      "sample_refs": [
+        "decision-prefix.json",
+        "sampling-results.json",
+        "delivery-prefix/accepted.json"
+      ]
+    },
+    {
+      "cue": "Ordered conclusion concepts and response shape",
+      "subgroup": "radio:basis,col,nullity",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Use the most common constant qualifying subset in this first selection pass",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every eligible subset occurs once after generator rejection/deduplication and actual publication delivery. Baseline is 1/7 nonempty checkbox actions or 1/5 radio alternatives. Dimensions are ignored, so changing 7 to 8 cannot hide the old shortcut.",
+      "sample_refs": [
+        "decision-prefix.json",
+        "sampling-results.json",
+        "delivery-prefix/accepted.json"
+      ]
+    },
+    {
+      "cue": "Ordered conclusion concepts and response shape",
+      "subgroup": "radio:basis,inv,pivot",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Use the most common constant qualifying subset in this first selection pass",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every eligible subset occurs once after generator rejection/deduplication and actual publication delivery. Baseline is 1/7 nonempty checkbox actions or 1/5 radio alternatives. Dimensions are ignored, so changing 7 to 8 cannot hide the old shortcut.",
+      "sample_refs": [
+        "decision-prefix.json",
+        "sampling-results.json",
+        "delivery-prefix/accepted.json"
+      ]
+    },
+    {
+      "cue": "Ordered conclusion concepts and response shape",
+      "subgroup": "radio:det,null,rank",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Use the most common constant qualifying subset in this first selection pass",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every eligible subset occurs once after generator rejection/deduplication and actual publication delivery. Baseline is 1/7 nonempty checkbox actions or 1/5 radio alternatives. Dimensions are ignored, so changing 7 to 8 cannot hide the old shortcut.",
+      "sample_refs": [
+        "decision-prefix.json",
+        "sampling-results.json",
+        "delivery-prefix/accepted.json"
+      ]
+    },
+    {
+      "cue": "Ordered conclusion concepts and response shape",
+      "subgroup": "radio:inv,basis,det",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Use the most common constant qualifying subset in this first selection pass",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every eligible subset occurs once after generator rejection/deduplication and actual publication delivery. Baseline is 1/7 nonempty checkbox actions or 1/5 radio alternatives. Dimensions are ignored, so changing 7 to 8 cannot hide the old shortcut.",
+      "sample_refs": [
+        "decision-prefix.json",
+        "sampling-results.json",
+        "delivery-prefix/accepted.json"
+      ]
+    },
+    {
+      "cue": "Ordered conclusion concepts and response shape",
+      "subgroup": "radio:inv,det,rank",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Use the most common constant qualifying subset in this first selection pass",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every eligible subset occurs once after generator rejection/deduplication and actual publication delivery. Baseline is 1/7 nonempty checkbox actions or 1/5 radio alternatives. Dimensions are ignored, so changing 7 to 8 cannot hide the old shortcut.",
+      "sample_refs": [
+        "decision-prefix.json",
+        "sampling-results.json",
+        "delivery-prefix/accepted.json"
+      ]
+    },
+    {
+      "cue": "Ordered conclusion concepts and response shape",
+      "subgroup": "radio:inv,pivot,null",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Use the most common constant qualifying subset in this first selection pass",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every eligible subset occurs once after generator rejection/deduplication and actual publication delivery. Baseline is 1/7 nonempty checkbox actions or 1/5 radio alternatives. Dimensions are ignored, so changing 7 to 8 cannot hide the old shortcut.",
+      "sample_refs": [
+        "decision-prefix.json",
+        "sampling-results.json",
+        "delivery-prefix/accepted.json"
+      ]
+    },
+    {
+      "cue": "Ordered conclusion concepts and response shape",
+      "subgroup": "radio:null,rank,null-solution",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Use the most common constant qualifying subset in this first selection pass",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every eligible subset occurs once after generator rejection/deduplication and actual publication delivery. Baseline is 1/7 nonempty checkbox actions or 1/5 radio alternatives. Dimensions are ignored, so changing 7 to 8 cannot hide the old shortcut.",
+      "sample_refs": [
+        "decision-prefix.json",
+        "sampling-results.json",
+        "delivery-prefix/accepted.json"
+      ]
+    },
+    {
+      "cue": "Ordered conclusion concepts and response shape",
+      "subgroup": "radio:nullity,null,det",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Use the most common constant qualifying subset in this first selection pass",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every eligible subset occurs once after generator rejection/deduplication and actual publication delivery. Baseline is 1/7 nonempty checkbox actions or 1/5 radio alternatives. Dimensions are ignored, so changing 7 to 8 cannot hide the old shortcut.",
+      "sample_refs": [
+        "decision-prefix.json",
+        "sampling-results.json",
+        "delivery-prefix/accepted.json"
+      ]
+    },
+    {
+      "cue": "Ordered conclusion concepts and response shape",
+      "subgroup": "radio:rank,nullity,pivot",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Use the most common constant qualifying subset in this first selection pass",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Every eligible subset occurs once after generator rejection/deduplication and actual publication delivery. Baseline is 1/7 nonempty checkbox actions or 1/5 radio alternatives. Dimensions are ignored, so changing 7 to 8 cannot hide the old shortcut.",
+      "sample_refs": [
+        "decision-prefix.json",
+        "sampling-results.json",
+        "delivery-prefix/accepted.json"
+      ]
+    },
+    {
+      "cue": "Determinant, column-space, pivot checkbox concepts",
+      "subgroup": "Exact current five-record batch",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select only column space",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "One current member; a singleton cannot establish within-family variety or a repeated shortcut. Old batch had 2/2, strict regression fails there; current selection pass is 1/7 for this family. Baseline is uniform nonempty subset choice.",
+      "sample_refs": [
+        "runner-batch.json",
+        "retained-regression-results.json",
+        "sampling-results.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "Checkbox response shape",
+      "subgroup": "Two current batch checkbox members",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Predict exactly one selected statement (partial action only)",
+      "correct": 2,
+      "total": 2,
+      "baseline": 0.42857142857142855,
+      "disposition": "not_predictive",
+      "conclusion": "2/2 happen to be singletons, across two different families. This does not determine which box; their correct positions differ. The complete first-pass family controls vary count and position, and the entire batch also has a two-statement radio answer. Baseline 3/7 is the singleton share of seven valid masks. This limited count coincidence does not reproduce the old full-answer shortcut.",
+      "sample_refs": [
+        "runner-batch.json",
+        "sampling-results.json",
+        "render-records.json"
+      ]
+    },
+    {
+      "cue": "Roman label / checkbox position without mathematical evidence",
+      "subgroup": "Exact current five-record batch",
+      "scope": "overall",
+      "strategy": "Always choose subset (False, False, True)",
+      "correct": 3,
+      "total": 5,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Only 3/5 match; the exact batch has three distinct full answer subsets and five different recognizable families. Baseline 1/7 uses the conservative common space of seven nonempty subsets; radio banks may further restrict which action can be entered.",
+      "sample_refs": [
+        "runner-batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "Has a basis / has no basis wording",
+      "subgroup": "All independent basis assertions",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Accept has-basis and reject no-basis",
+      "correct": 15,
+      "total": 15,
+      "baseline": 0.5,
+      "disposition": "intended_skill",
+      "conclusion": "Every finite-dimensional null space has a basis, including the empty basis of {0}. This is the mathematical proposition being assessed (source q-142479 and q-141214), not an incidental cue. Baseline is a random Boolean answer.",
+      "sample_refs": [
+        "independent-samples.json",
+        "math-results.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "Validated nonempty decision domain and explicit rejection boundaries; no eligible all-false checkbox cases to resample",
+      "Changed seeded batch deferral, semantic deduplication and requested-count truncation",
+      "Actual publisher prepare_records identity, normalization, captured-inventory/within-batch deduplication and moderate filter",
+      "Native learner selection freshness, difficulty weights and within-band uniform selection, read-only source analysis",
+      "Actual UI choice controls, premise/solution dependency and theorem rendering"
+    ],
+    "sample_refs": [
+      "boundary-results.json",
+      "runtime-results.json",
+      "sampling-results.json",
+      "domain-preservation.json",
+      "delivery-comparison.json",
+      "delivery-batch/delivery.json",
+      "delivery-samples/delivery.json",
+      "delivery-prefix/delivery.json",
+      "selection-analysis.json",
+      "render/rendering.json"
+    ],
+    "result": "All 5 exact batch records, 87 independent controls and 73 first-pass records survive normalization/deduplication/difficulty filtering with identical prompt/answer decisions. Selection can only remove eligible first-pass records and cannot recreate duplicate family masks. Positive moderate weight and fresh history retain current survivors; live order and combined-pool distribution remain unclaimed."
+  },
+  "limitations": [
+    "Captured inventory basis 5418 only. Live learner histories, combined future inventory and active policy weights were not supplied; no exact live order or probabilities claimed. Applicable selection rules were examined read-only.",
+    "The exact batch has one member per recognizable family and cannot alone prove within-family breadth; first-pass and independently parameterized controls supply that evidence.",
+    "One incomplete source (q-47586) has no key/solution/difficulty and lacks its mathematically correct III-only bank choice; canonical example has no captured fields. No answer bank was invented.",
+    "No finite audit proves absence of every shortcut. Unchanged construction was checked by reused independent source/parser tests; fresh focus was changed selection, prior counterexamples and three small regression batches. Full domain comparison checks preservation only."
+  ]
+}

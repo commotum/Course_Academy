@@ -42,9 +42,7 @@ executions=[]
 for label,entry in [('failing',None),('current',W/'17592186124629.py')]:
  if entry is None:
   # Load retained code with original source path: no changes to construction.
-  code="import sys,types;from pathlib import Path;sys.dont_write_bytecode=True;sys.path.insert(0,sys.argv[1]);m=types.ModuleType('old');m.__file__=sys.argv[2];exec(compile(Path(sys.argv[3]).read_text(),'retained-before-generator.py','exec'),m.__dict__);import importlib.util;original=importlib.util.module_from_spec;importlib.util.module_from_spec=lambda spec:m;exec(Path(sys.argv[4]).read_text())"
   # spec loader would reload current; use a local verbatim strict test with injected old g.
-  strict=(E/'failing_batch_check.py').read_text();tail=strict[strict.index('rows=g.batch'):]
   command=[sys.executable,'-B','-c',"import sys,types,json;from pathlib import Path;from collections import defaultdict;sys.path.insert(0,sys.argv[1]);g=types.ModuleType('old');g.__file__=sys.argv[2];exec(compile(Path(sys.argv[3]).read_text(),'retained-before-generator.py','exec'),g.__dict__);exec(Path(sys.argv[4]).read_text().split('rows=g.batch',1)[1].join(['rows=g.batch','']))",str(W),str(W/'17592186124629.py'),str(W/'evidence/batch-repair/before-generator.py'),str(E/'failing_batch_check.py')]
  else:command=[sys.executable,'-B',str(E/'failing_batch_check.py'),str(entry)]
  p=subprocess.run(command,capture_output=True,text=True)

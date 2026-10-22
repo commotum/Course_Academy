@@ -4,9 +4,9 @@ Completed generator repairs, manifest, all five strict finding checks, and the
 unapplied five-record replacement proposal are preserved. No runtime, database,
 engine, source, publication or image changes in this pass.
 
-Latest verification: evidence/repair-324/commands.json and results.json.
+Latest verification: evidence/repair-328/commands.json and results.json.
 Commands: job Python -B checks/batch_regressions.py --finding inventory (first,
-exit 1), then job Python -B checks/recheck_status.py --output evidence/repair-324
+exit 1), then job Python -B checks/recheck_status.py --output evidence/repair-328
 (exit 1). The inventory regression reproduces five historical banks and the
 64/64 possible-history shortcut witness. Four current-generator regressions pass.
 Source replay, shared delivery (14/14), counterfactual checks, native grading
@@ -14,7 +14,7 @@ Source replay, shared delivery (14/14), counterfactual checks, native grading
 bindings pass. Existing render evidence is retained; no new render was needed
 because runtime and presentation are unchanged. All five generated inventory
 records are audited; original source questions are excluded from affected IDs.
-Affected-inventory evidence paths resolve relative to the requested author-324.
+Affected-inventory evidence paths resolve relative to the requested author-328.
 Re-read all source practice prompts, banks, keys and worked solutions, the lesson
 and prerequisite worked examples, and the tutorial classification flowchart.
 Inspected retained actual-UI screenshots question-001.png and question-002.png
