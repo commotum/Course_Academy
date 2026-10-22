@@ -1,31 +1,29 @@
-# Current state — 2026-10-22, author-148
+# Current state — 2026-10-22, author-151
 
-Preserved the completed generator repairs and strict regression registrations.
-Read feedback, both retained findings, and all 148 repair-history events (latest
-attempt 147). Reused the existing instructional account and source analysis.
-The remaining finding is evidence-only; no runtime change is justified.
+Read feedback and all retained history findings/events; preserved runtime package,
+manifest, instructional account, evidence bundle and strict regression registrations.
 
-First reproduced the exact latest failure:
-`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_current_handoff.py`
-exits 1: installed runner rejects the unchanged package before checks/sampling.
+Latest failure reproduced first with the job Python:
+`python -B checks/check_current_handoff.py` exits 1. The installed runner's
+`scripts/generator_pipeline.py:723` identity gate rejects the evidence-only
+correction before retained regressions or sampling. No generator defect is newly
+reported. Changing working runtime bytes to evade that gate is not a repair.
 
-Targeted commands, exit codes and logs: `evidence/author148-verification.json`.
-- Evidence contract: corrected bundle, relocation, negative controls, 12 source
-  captures and three affected inventory records pass; installed handoff exits 1.
-- Batch selection: exact seed 4258185931 shortcut scores 1/5 raw and delivered;
-  five records survive shared delivery; ten profiles and 25 native grades pass.
-- CLI: relocation, deterministic exact counts and finite-limit rejection pass.
-- Source/UI binding: ten complete banks and two retained UI records match current
-  output. Re-inspected retained screenshot; no new render claimed.
+Affected checks rerun with exact commands, exit codes and logs in
+`evidence/author151-verification.json`:
+- Evidence bundle validation, relocation and negative controls pass; its registered
+  check exits 1 because the installed handoff still fails.
+- Batch selection passes: raw/delivered shortcut 1/5, five delivered records,
+  ten profiles and 25 native acceptance/rejection responses.
+- Relocated CLI/count/determinism/finite-limit checks pass.
+- Ten complete source banks (50 choices) replay; two retained actual-UI endpoints
+  bind to current delivery. Re-inspected question-002.png; readable.
+- All six runtime/manifest hashes remain unchanged.
 
-All six manifest/runtime hashes remain unchanged. No publication, database writes,
-engine edits, service calls or edits outside this workspace.
-
-Unfinished: the runner owner must resolve the unchanged-package gate in
-`scripts/generator_pipeline.py` and install the corrected evidence bundle at the
-runner-supplied evidence root. A concrete patch already exists at
-`runner-fix/evidence-only-rejection.patch`, uninstalled. These changes are outside
-this session's workspace-only write scope. The strict regression remains failing;
-changing runtime bytes merely to evade the gate would not fix the cause.
-Do not repeat broad generator tests or alter source families for this handoff issue.
-Later inventory and live learner history remain untested.
+Unfinished: the runner owner must correct the evidence-only identity gate and
+route the staged evidence. `runner-fix/evidence-only-rejection.patch` remains
+uninstalled. Strict failure is retained. The necessary runner edit and evidence
+installation are outside the authorized workspace. No engine, database,
+publication, service, other-job or external runner writes were made.
+Later inventory and live learner histories remain untested. No broad unchanged
+suite, new render, or offline patch test was repeated.
