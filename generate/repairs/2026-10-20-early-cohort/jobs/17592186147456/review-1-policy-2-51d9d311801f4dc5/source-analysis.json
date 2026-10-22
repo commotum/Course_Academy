@@ -1,0 +1,48 @@
+{
+  "skill": "Identify Bernoulli differential equations by normalizing the derivative coefficient and checking for a linear-in-y term and one power-of-y term with x-only coefficients, using the source convention requiring the linear term.",
+  "reasoning_steps": [
+    "Divide by any displayed coefficient of y prime, including powers of y, on a suitable nonzero domain.",
+    "Inspect normalized dependence on y: the left nonderivative term must be p(x)y and the right term q(x)y^n for a real constant n.",
+    "Distinguish x-functions from nonpower functions of y and compare powers after normalization.",
+    "Classify every offered equation, then select its subset through the original radio bank or independent checkbox fields. No solving or integrating is required."
+  ],
+  "response_contract": {
+    "radio": "One text-valued subset choice from the complete observed bank.",
+    "checkbox": "Boolean choice for each displayed equation; None of the above, where present, is true exactly when no equation qualifies."
+  },
+  "difficulty": "Easy examples already have unit derivative coefficient; moderate includes division by y powers. Canonical example also illustrates division by x and y. Preserve simple recognition workload, not ODE solving.",
+  "invariants": [
+    "Three candidate equations in observed questions.",
+    "The Bernoulli classification depends on normalized y dependence, not label, position, sign, or x coefficient.",
+    "Use source convention that absence of p(x)y makes a candidate nonqualifying, even though the broader mathematical definition can allow p=0.",
+    "n is any real number in the lesson; no evidence supports imposing n != 0,1 as an instructional requirement.",
+    "Retain radio and checkbox source families with complete banks and None-of-above semantics."
+  ],
+  "permitted_variations": [
+    "Vary x-only coefficient functions, signs, simple real powers of y, and nonpower distractors within observed complexity.",
+    "Change which candidate positions qualify and how many qualify, including none and all where the response bank supports it.",
+    "For a fixed representation, change an exponent or y-dependence so the classification changes, then derive key and explanation.",
+    "Reorder candidates and choice-bank positions without changing the underlying equation classification."
+  ],
+  "source_refs": [
+    "lesson tutorial 238cafad-c43b-5970-af70-5ce0cab5442c: p(x),q(x) continuous; n any real; z=y^(1-n) discussion is context, not assessed operation",
+    "canonical b5189ec2-ea1c-5036-9543-b963bd072ab7: normalize y*yprime and x*yprime; correct I and II",
+    "7b913b73-c105-5ba7-b06a-20d353f239e0: inferred I and III; key and solution absent",
+    "5064d2f0-3231-54a8-845d-9b0beda86f87: inferred II only after division by y^2; key and solution absent",
+    "f464429f-4905-5c37-b6cf-d2ce0cb09dd7: negative and fractional n, two true checkbox fields",
+    "bc73c612-2a32-5b85-8989-8b463754a48c and e63ce1e7-0f23-5c8c-a5ed-4ae3fc1a265b: one true with None-of-above false",
+    "c444e682-8c21-501d-82e3-dbe63de4e200: all false, None-of-above true; solution duplicates first equation name in second bullet (source typo)",
+    "d4b7e54f-2216-5cba-ba81-1d5ec0ebc609: y^3 normalization to exponent -5/2",
+    "475ec933-a0ab-5502-8d71-18daebe8d811: moderate radio, III only",
+    "4f7e2f8a-878c-5113-9ed6-0f29f8e5fa1e: easy radio I only",
+    "e0290e80-a1be-52e2-9a1f-466e9d58d7c6: easy radio all three"
+  ],
+  "gaps": [
+    "Canonical example has no answer fields in captured source.",
+    "Two legacy questions lack keys and worked solutions; inferred classifications above are independent mathematical inferences.",
+    "Source rejects missing linear term although lesson formula admits zero coefficient; audit follows explicit classification examples and records this ambiguity."
+  ],
+  "evidence_paths": [
+    "source-analysis.json"
+  ]
+}

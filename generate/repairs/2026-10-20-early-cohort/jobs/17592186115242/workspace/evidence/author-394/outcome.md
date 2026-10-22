@@ -1,0 +1,9 @@
+The retained inventory failure was reproduced before validation: five complete historical v2 records match captured question IDs, generation metadata, prompts, solutions, choices and keys. All five preserve the sign-only extremum shortcut. The retained possible learner-history scenario gives 64/64 successes; actual learner history was not supplied.
+
+All four current-generator regressions pass. Validation replayed 17 source banks and the canonical example, checked zero roots and printed mathematics, tested relevant and irrelevant counterfactuals, and retained the required within-sign-group contrasts through shared delivery (14 records). Native grading accepted 7 correct responses and rejected 28 incorrect choices. Exact dependency pins, deterministic relocated CLI output, and all five staged replacement mappings were verified.
+
+No runtime change is justified by the unchanged latest evidence. The remaining finding 591f580cadb749294588 explicitly requests the separate inventory-remediation workflow. The selector consumes stored candidates and does not call this generator to reconstruct their banks. The user prohibits database and publication changes, and engine repair is disabled. Proposed replacements remain in evidence/repair-3/inventory-repair-proposal.json; they were verified, not applied. The strict failing check is preserved in repair-regressions.json. Source questions were not tagged as generated.
+
+Unchanged actual UI rendering is reused from evidence/repair-3/render/rendering.json. Visually inspected question-002.png: system, all choices, augmented matrices, elimination and conclusion are readable without observed clipping. No new render was needed because runtime and records remain unchanged.
+
+Status: unsupported pending separate inventory remediation and fresh inventory capture. No images published, database content changed, or other job edited.
