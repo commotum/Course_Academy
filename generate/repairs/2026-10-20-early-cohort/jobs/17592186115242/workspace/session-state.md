@@ -1,30 +1,27 @@
-# Author 637 — 2026-10-22
+# Author 640 — 2026-10-22
 
-Preserved runtime and completed repairs. Read feedback, retained history,
-instructional account, all supplied source questions with complete banks and
-solutions, lesson context and tutorial diagram.
+Preserved completed runtime repairs. Read feedback and all five retained findings;
+640 history events retain the same unresolved stored-inventory limitation.
+Reused instructional/source analysis and visually inspected the retained actual-UI
+screenshots and source tutorial flowchart.
 
-First reproduction:
-`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory`
-exited 1: five affected historical records and 64/64 possible-history shortcut
-successes.
+Command:
+`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/author-640`
 
-Validation:
-`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/author-637`
-exited 1 solely for finding 591f580cadb749294588. Four current-generator findings,
-17 complete source banks and canonical replay, delivery contrasts, counterfactuals,
-native grading (7 accepted, 28 rejected), relocation and protected hashes pass.
-Existing five replacements remain verified and unapplied. Visually inspected
-the retained actual-UI screenshot question-001.png; no fresh render was necessary.
+Exit 1: five historical stored banks remain affected, with 64/64 shortcut
+successes in the possible-history witness. Four current-generator findings,
+17 complete source banks plus canonical replay, shared delivery contrasts,
+controlled counterfactuals, native grading (7 accepted, 28 rejected), relocation
+and protected hashes pass. Five staged replacements remain verified and unapplied.
+No runtime, source, engine, database or publication changes.
 
-Result: unsupported. The next unfinished step is the separate inventory-remediation
-workflow requested by review, then fresh capture and the strict regression.
-Database changes are prohibited in this author task. No workspace generator edit
-can change the selector's stored banks. Preserve the strict test and captured
-inputs. No new current-generator failure is demonstrated by unchanged feedback.
+Status: unsupported for delivered-pool certification. The next unfinished step is
+the separate inventory-remediation workflow named by finding 591f580cadb749294588,
+then fresh inventory capture and the strict check. This author task explicitly
+forbids database changes. A runtime edit cannot alter stored banks. Preserve the
+strict failure and existing repairs; no additional interchangeable validation
+is useful until inventory changes or new concrete feedback arrives.
 
-Evidence: evidence/author-637/commands.json, results.json, grader-report.json,
-outcome.md; affected-inventory.json; evidence/generated-records.json;
-evidence/repair-3/inventory-repair-proposal.json. Do not repeat interchangeable
-checks on unchanged inputs; the required state change belongs to the separately
-authorized inventory workflow.
+Evidence: evidence/author-640/commands.json, results.json, outcome.md;
+affected-inventory.json; evidence/generated-records.json;
+evidence/repair-3/inventory-repair-proposal.json.
