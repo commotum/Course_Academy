@@ -1,0 +1,1128 @@
+{
+  "method": "Parse coefficients and family from actual rendered-source prompt; independently differentiate implicit solution along ODE; test all five solution candidates. Symbolic x,y positive avoids absolute-log branch ambiguity; d ln|x|/dx=1/x holds on either nonzero interval. Cube root treated via real implicit y^3 relation.",
+  "sympy": "1.14.0",
+  "checks": [
+    {
+      "group": "independent",
+      "index": 0,
+      "question_id": "33894105-e586-5169-885e-ed9619b07b7c",
+      "parsed_prompt_coefficient": 3,
+      "family": "linear_log",
+      "expected_correct_tex": "y=3x\\ln|x|+Cx",
+      "actual_correct_tex": "y=3x\\ln|x|+Cx",
+      "implicit_solution": "-C - 3*log(x) + y/x",
+      "directional_derivative": "0",
+      "candidate_directional_derivatives": [
+        "(3*x - y + 6*log(x) - 3)/x",
+        "3*(x + log(x) - 1)/x",
+        "0",
+        "-(3*x*log(x) - y)/x",
+        "(6*x*log(x) - 3*x - y)/x"
+      ],
+      "passed": true
+    },
+    {
+      "group": "independent",
+      "index": 1,
+      "question_id": "89120e52-c879-598c-abdc-259406a646c5",
+      "parsed_prompt_coefficient": -2,
+      "family": "cube_root",
+      "expected_correct_tex": "y=x\\sqrt[3]{-6\\ln|x|+C}",
+      "actual_correct_tex": "y=x\\sqrt[3]{-6\\ln|x|+C}",
+      "implicit_solution": "-C + 6*log(x) + y**3/x**3",
+      "directional_derivative": "0",
+      "candidate_directional_derivatives": [
+        "-2*(x**2 - 3*y**2)/(x*y**2)",
+        "-2*(2*x - y)/(x*y)",
+        "-2*(x**(5/2) + 4*y**(5/2))/(x**(3/2)*y**2)",
+        "0",
+        "-(2*x**3 - 6*x**2*y**2 + y**3)/(x**3*y**2)"
+      ],
+      "passed": true
+    },
+    {
+      "group": "independent",
+      "index": 2,
+      "question_id": "30ff2e87-0618-5ac7-9dcf-1105f5435092",
+      "parsed_prompt_coefficient": -9,
+      "family": "affine",
+      "expected_correct_tex": "y=Cx^2+9x",
+      "actual_correct_tex": "y=Cx^2+9x",
+      "implicit_solution": "-C + (-9*x + y)/x**2",
+      "directional_derivative": "0",
+      "candidate_directional_derivatives": [
+        "(9*x**2 - 9*x - y)/x**4",
+        "(27*x - y)/x**4",
+        "-(27*x + y)/x**4",
+        "0",
+        "-27/x**2"
+      ],
+      "passed": true
+    },
+    {
+      "group": "independent",
+      "index": 3,
+      "question_id": "d4def6ae-723c-55cf-933a-b013dac00090",
+      "parsed_prompt_coefficient": 4,
+      "family": "cube_root",
+      "expected_correct_tex": "y=x\\sqrt[3]{12\\ln|x|+C}",
+      "actual_correct_tex": "y=x\\sqrt[3]{12\\ln|x|+C}",
+      "implicit_solution": "-C - 12*log(x) + y**3/x**3",
+      "directional_derivative": "0",
+      "candidate_directional_derivatives": [
+        "4*(x**2 - 3*y**2)/(x*y**2)",
+        "4*(2*x - y)/(x*y)",
+        "4*(x**(5/2) + 4*y**(5/2))/(x**(3/2)*y**2)",
+        "0",
+        "(4*x**3 - 12*x**2*y**2 - y**3)/(x**3*y**2)"
+      ],
+      "passed": true
+    },
+    {
+      "group": "independent",
+      "index": 4,
+      "question_id": "48b9c193-99ef-5d35-bbc4-dff40f1a2e65",
+      "parsed_prompt_coefficient": -1,
+      "family": "linear_log",
+      "expected_correct_tex": "y=-x\\ln|x|+Cx",
+      "actual_correct_tex": "y=-x\\ln|x|+Cx",
+      "implicit_solution": "-C + log(x) + y/x",
+      "directional_derivative": "0",
+      "candidate_directional_derivatives": [
+        "-(x + y + 2*log(x) - 1)/x",
+        "-(x + log(x) - 1)/x",
+        "0",
+        "(x*log(x) + y)/x",
+        "-(2*x*log(x) - x + y)/x"
+      ],
+      "passed": true
+    },
+    {
+      "group": "independent",
+      "index": 5,
+      "question_id": "367c1bf7-69f3-5729-ad51-f34810e730a0",
+      "parsed_prompt_coefficient": 6,
+      "family": "affine",
+      "expected_correct_tex": "y=Cx^2-6x",
+      "actual_correct_tex": "y=Cx^2-6x",
+      "implicit_solution": "-C + (6*x + y)/x**2",
+      "directional_derivative": "0",
+      "candidate_directional_derivatives": [
+        "-(6*x**2 - 6*x + y)/x**4",
+        "-(18*x + y)/x**4",
+        "(18*x - y)/x**4",
+        "0",
+        "18/x**2"
+      ],
+      "passed": true
+    },
+    {
+      "group": "independent",
+      "index": 6,
+      "question_id": "d878aec9-1ace-58aa-b652-7c1f1ffa7292",
+      "parsed_prompt_coefficient": 7,
+      "family": "cube_root",
+      "expected_correct_tex": "y=x\\sqrt[3]{21\\ln|x|+C}",
+      "actual_correct_tex": "y=x\\sqrt[3]{21\\ln|x|+C}",
+      "implicit_solution": "-C - 21*log(x) + y**3/x**3",
+      "directional_derivative": "0",
+      "candidate_directional_derivatives": [
+        "7*(x**2 - 3*y**2)/(x*y**2)",
+        "7*(2*x - y)/(x*y)",
+        "7*(x**(5/2) + 4*y**(5/2))/(x**(3/2)*y**2)",
+        "0",
+        "(7*x**3 - 21*x**2*y**2 - y**3)/(x**3*y**2)"
+      ],
+      "passed": true
+    },
+    {
+      "group": "independent",
+      "index": 7,
+      "question_id": "e34a0f27-c245-5caf-bc5f-c69f1f0c9d9f",
+      "parsed_prompt_coefficient": 9,
+      "family": "affine",
+      "expected_correct_tex": "y=Cx^2-9x",
+      "actual_correct_tex": "y=Cx^2-9x",
+      "implicit_solution": "-C + (9*x + y)/x**2",
+      "directional_derivative": "0",
+      "candidate_directional_derivatives": [
+        "-(9*x**2 - 9*x + y)/x**4",
+        "-(27*x + y)/x**4",
+        "(27*x - y)/x**4",
+        "0",
+        "27/x**2"
+      ],
+      "passed": true
+    },
+    {
+      "group": "independent",
+      "index": 8,
+      "question_id": "eb62cb6c-0775-549c-a91c-c79ab1239791",
+      "parsed_prompt_coefficient": 9,
+      "family": "linear_log",
+      "expected_correct_tex": "y=9x\\ln|x|+Cx",
+      "actual_correct_tex": "y=9x\\ln|x|+Cx",
+      "implicit_solution": "-C - 9*log(x) + y/x",
+      "directional_derivative": "0",
+      "candidate_directional_derivatives": [
+        "(9*x - y + 18*log(x) - 9)/x",
+        "9*(x + log(x) - 1)/x",
+        "0",
+        "-(9*x*log(x) - y)/x",
+        "(18*x*log(x) - 9*x - y)/x"
+      ],
+      "passed": true
+    },
+    {
+      "group": "independent",
+      "index": 9,
+      "question_id": "05b4f870-72f6-56cc-95fa-ee65dac8fec3",
+      "parsed_prompt_coefficient": -5,
+      "family": "affine",
+      "expected_correct_tex": "y=Cx^2+5x",
+      "actual_correct_tex": "y=Cx^2+5x",
+      "implicit_solution": "-C + (-5*x + y)/x**2",
+      "directional_derivative": "0",
+      "candidate_directional_derivatives": [
+        "(5*x**2 - 5*x - y)/x**4",
+        "(15*x - y)/x**4",
+        "-(15*x + y)/x**4",
+        "0",
+        "-15/x**2"
+      ],
+      "passed": true
+    },
+    {
+      "group": "independent",
+      "index": 10,
+      "question_id": "a5ba7bac-5b62-5f9b-a77d-f942df2a81a2",
+      "parsed_prompt_coefficient": 1,
+      "family": "cube_root",
+      "expected_correct_tex": "y=x\\sqrt[3]{3\\ln|x|+C}",
+      "actual_correct_tex": "y=x\\sqrt[3]{3\\ln|x|+C}",
+      "implicit_solution": "-C - 3*log(x) + y**3/x**3",
+      "directional_derivative": "0",
+      "candidate_directional_derivatives": [
+        "(x**2 - 3*y**2)/(x*y**2)",
+        "(2*x - y)/(x*y)",
+        "(x**(5/2) + 4*y**(5/2))/(x**(3/2)*y**2)",
+        "0",
+        "(x**3 - 3*x**2*y**2 - y**3)/(x**3*y**2)"
+      ],
+      "passed": true
+    },
+    {
+      "group": "independent",
+      "index": 11,
+      "question_id": "cd525481-68dc-5f08-a4bd-4646cdc6695f",
+      "parsed_prompt_coefficient": 1,
+      "family": "linear_log",
+      "expected_correct_tex": "y=x\\ln|x|+Cx",
+      "actual_correct_tex": "y=x\\ln|x|+Cx",
+      "implicit_solution": "-C - log(x) + y/x",
+      "directional_derivative": "0",
+      "candidate_directional_derivatives": [
+        "(x - y + 2*log(x) - 1)/x",
+        "(x + log(x) - 1)/x",
+        "0",
+        "-(x*log(x) - y)/x",
+        "(2*x*log(x) - x - y)/x"
+      ],
+      "passed": true
+    },
+    {
+      "group": "independent",
+      "index": 12,
+      "question_id": "10b24289-0317-56e8-b65f-0fcaf141c532",
+      "parsed_prompt_coefficient": 2,
+      "family": "linear_log",
+      "expected_correct_tex": "y=2x\\ln|x|+Cx",
+      "actual_correct_tex": "y=2x\\ln|x|+Cx",
+      "implicit_solution": "-C - 2*log(x) + y/x",
+      "directional_derivative": "0",
+      "candidate_directional_derivatives": [
+        "(2*x - y + 4*log(x) - 2)/x",
+        "2*(x + log(x) - 1)/x",
+        "0",
+        "-(2*x*log(x) - y)/x",
+        "(4*x*log(x) - 2*x - y)/x"
+      ],
+      "passed": true
+    },
+    {
+      "group": "independent",
+      "index": 13,
+      "question_id": "36d4dd9d-8f0a-54ef-9976-39f032a1a377",
+      "parsed_prompt_coefficient": -3,
+      "family": "cube_root",
+      "expected_correct_tex": "y=x\\sqrt[3]{-9\\ln|x|+C}",
+      "actual_correct_tex": "y=x\\sqrt[3]{-9\\ln|x|+C}",
+      "implicit_solution": "-C + 9*log(x) + y**3/x**3",
+      "directional_derivative": "0",
+      "candidate_directional_derivatives": [
+        "-3*(x**2 - 3*y**2)/(x*y**2)",
+        "-3*(2*x - y)/(x*y)",
+        "-3*(x**(5/2) + 4*y**(5/2))/(x**(3/2)*y**2)",
+        "0",
+        "-(3*x**3 - 9*x**2*y**2 + y**3)/(x**3*y**2)"
+      ],
+      "passed": true
+    },
+    {
+      "group": "independent",
+      "index": 14,
+      "question_id": "ba58e6c3-9dc9-5217-b040-6a978b162d73",
+      "parsed_prompt_coefficient": -2,
+      "family": "affine",
+      "expected_correct_tex": "y=Cx^2+2x",
+      "actual_correct_tex": "y=Cx^2+2x",
+      "implicit_solution": "-C + (-2*x + y)/x**2",
+      "directional_derivative": "0",
+      "candidate_directional_derivatives": [
+        "(2*x**2 - 2*x - y)/x**4",
+        "(6*x - y)/x**4",
+        "-(6*x + y)/x**4",
+        "0",
+        "-6/x**2"
+      ],
+      "passed": true
+    },
+    {
+      "group": "independent",
+      "index": 15,
+      "question_id": "f0b44edc-f188-53e3-82c7-a97c220ad7ae",
+      "parsed_prompt_coefficient": -3,
+      "family": "linear_log",
+      "expected_correct_tex": "y=-3x\\ln|x|+Cx",
+      "actual_correct_tex": "y=-3x\\ln|x|+Cx",
+      "implicit_solution": "-C + 3*log(x) + y/x",
+      "directional_derivative": "0",
+      "candidate_directional_derivatives": [
+        "-(3*x + y + 6*log(x) - 3)/x",
+        "-3*(x + log(x) - 1)/x",
+        "0",
+        "(3*x*log(x) + y)/x",
+        "-(6*x*log(x) - 3*x + y)/x"
+      ],
+      "passed": true
+    },
+    {
+      "group": "independent",
+      "index": 16,
+      "question_id": "2a737bb4-e6ff-5677-bd90-d34b81b64896",
+      "parsed_prompt_coefficient": 2,
+      "family": "cube_root",
+      "expected_correct_tex": "y=x\\sqrt[3]{6\\ln|x|+C}",
+      "actual_correct_tex": "y=x\\sqrt[3]{6\\ln|x|+C}",
+      "implicit_solution": "-C - 6*log(x) + y**3/x**3",
+      "directional_derivative": "0",
+      "candidate_directional_derivatives": [
+        "2*(x**2 - 3*y**2)/(x*y**2)",
+        "2*(2*x - y)/(x*y)",
+        "2*(x**(5/2) + 4*y**(5/2))/(x**(3/2)*y**2)",
+        "0",
+        "(2*x**3 - 6*x**2*y**2 - y**3)/(x**3*y**2)"
+      ],
+      "passed": true
+    },
+    {
+      "group": "independent",
+      "index": 17,
+      "question_id": "59d56d47-2f1c-534c-b667-b39ecc6b15a0",
+      "parsed_prompt_coefficient": 4,
+      "family": "affine",
+      "expected_correct_tex": "y=Cx^2-4x",
+      "actual_correct_tex": "y=Cx^2-4x",
+      "implicit_solution": "-C + (4*x + y)/x**2",
+      "directional_derivative": "0",
+      "candidate_directional_derivatives": [
+        "-(4*x**2 - 4*x + y)/x**4",
+        "-(12*x + y)/x**4",
+        "(12*x - y)/x**4",
+        "0",
+        "12/x**2"
+      ],
+      "passed": true
+    },
+    {
+      "group": "independent",
+      "index": 18,
+      "question_id": "3cfad6cb-3878-5a0c-86d9-a436523ea643",
+      "parsed_prompt_coefficient": -8,
+      "family": "affine",
+      "expected_correct_tex": "y=Cx^2+8x",
+      "actual_correct_tex": "y=Cx^2+8x",
+      "implicit_solution": "-C + (-8*x + y)/x**2",
+      "directional_derivative": "0",
+      "candidate_directional_derivatives": [
+        "(8*x**2 - 8*x - y)/x**4",
+        "(24*x - y)/x**4",
+        "-(24*x + y)/x**4",
+        "0",
+        "-24/x**2"
+      ],
+      "passed": true
+    },
+    {
+      "group": "independent",
+      "index": 19,
+      "question_id": "c625473b-67e2-50b8-a0f5-43397f3b160d",
+      "parsed_prompt_coefficient": 9,
+      "family": "cube_root",
+      "expected_correct_tex": "y=x\\sqrt[3]{27\\ln|x|+C}",
+      "actual_correct_tex": "y=x\\sqrt[3]{27\\ln|x|+C}",
+      "implicit_solution": "-C - 27*log(x) + y**3/x**3",
+      "directional_derivative": "0",
+      "candidate_directional_derivatives": [
+        "9*(x**2 - 3*y**2)/(x*y**2)",
+        "9*(2*x - y)/(x*y)",
+        "9*(x**(5/2) + 4*y**(5/2))/(x**(3/2)*y**2)",
+        "0",
+        "(9*x**3 - 27*x**2*y**2 - y**3)/(x**3*y**2)"
+      ],
+      "passed": true
+    },
+    {
+      "group": "independent",
+      "index": 20,
+      "question_id": "152f8c92-e64b-5826-912e-e071d5e98e8f",
+      "parsed_prompt_coefficient": -9,
+      "family": "linear_log",
+      "expected_correct_tex": "y=-9x\\ln|x|+Cx",
+      "actual_correct_tex": "y=-9x\\ln|x|+Cx",
+      "implicit_solution": "-C + 9*log(x) + y/x",
+      "directional_derivative": "0",
+      "candidate_directional_derivatives": [
+        "-(9*x + y + 18*log(x) - 9)/x",
+        "-9*(x + log(x) - 1)/x",
+        "0",
+        "(9*x*log(x) + y)/x",
+        "-(18*x*log(x) - 9*x + y)/x"
+      ],
+      "passed": true
+    },
+    {
+      "group": "independent",
+      "index": 21,
+      "question_id": "1082f231-d7ca-58d9-9084-d54ad763e126",
+      "parsed_prompt_coefficient": -3,
+      "family": "affine",
+      "expected_correct_tex": "y=Cx^2+3x",
+      "actual_correct_tex": "y=Cx^2+3x",
+      "implicit_solution": "-C + (-3*x + y)/x**2",
+      "directional_derivative": "0",
+      "candidate_directional_derivatives": [
+        "(3*x**2 - 3*x - y)/x**4",
+        "(9*x - y)/x**4",
+        "-(9*x + y)/x**4",
+        "0",
+        "-9/x**2"
+      ],
+      "passed": true
+    },
+    {
+      "group": "independent",
+      "index": 22,
+      "question_id": "1ab28f55-8201-556c-b16a-91c068204e4e",
+      "parsed_prompt_coefficient": 8,
+      "family": "cube_root",
+      "expected_correct_tex": "y=x\\sqrt[3]{24\\ln|x|+C}",
+      "actual_correct_tex": "y=x\\sqrt[3]{24\\ln|x|+C}",
+      "implicit_solution": "-C - 24*log(x) + y**3/x**3",
+      "directional_derivative": "0",
+      "candidate_directional_derivatives": [
+        "8*(x**2 - 3*y**2)/(x*y**2)",
+        "8*(2*x - y)/(x*y)",
+        "8*(x**(5/2) + 4*y**(5/2))/(x**(3/2)*y**2)",
+        "0",
+        "(8*x**3 - 24*x**2*y**2 - y**3)/(x**3*y**2)"
+      ],
+      "passed": true
+    },
+    {
+      "group": "independent",
+      "index": 23,
+      "question_id": "7813592d-c504-531a-80ab-c26243dea24d",
+      "parsed_prompt_coefficient": 7,
+      "family": "linear_log",
+      "expected_correct_tex": "y=7x\\ln|x|+Cx",
+      "actual_correct_tex": "y=7x\\ln|x|+Cx",
+      "implicit_solution": "-C - 7*log(x) + y/x",
+      "directional_derivative": "0",
+      "candidate_directional_derivatives": [
+        "(7*x - y + 14*log(x) - 7)/x",
+        "7*(x + log(x) - 1)/x",
+        "0",
+        "-(7*x*log(x) - y)/x",
+        "(14*x*log(x) - 7*x - y)/x"
+      ],
+      "passed": true
+    },
+    {
+      "group": "independent",
+      "index": 24,
+      "question_id": "436112c3-109b-5d00-aca4-efe61197561f",
+      "parsed_prompt_coefficient": -6,
+      "family": "linear_log",
+      "expected_correct_tex": "y=-6x\\ln|x|+Cx",
+      "actual_correct_tex": "y=-6x\\ln|x|+Cx",
+      "implicit_solution": "-C + 6*log(x) + y/x",
+      "directional_derivative": "0",
+      "candidate_directional_derivatives": [
+        "-(6*x + y + 12*log(x) - 6)/x",
+        "-6*(x + log(x) - 1)/x",
+        "0",
+        "(6*x*log(x) + y)/x",
+        "-(12*x*log(x) - 6*x + y)/x"
+      ],
+      "passed": true
+    },
+    {
+      "group": "independent",
+      "index": 25,
+      "question_id": "5e168616-85c4-5d13-bcfd-3d2cc3fbd756",
+      "parsed_prompt_coefficient": 2,
+      "family": "affine",
+      "expected_correct_tex": "y=Cx^2-2x",
+      "actual_correct_tex": "y=Cx^2-2x",
+      "implicit_solution": "-C + (2*x + y)/x**2",
+      "directional_derivative": "0",
+      "candidate_directional_derivatives": [
+        "-(2*x**2 - 2*x + y)/x**4",
+        "-(6*x + y)/x**4",
+        "(6*x - y)/x**4",
+        "0",
+        "6/x**2"
+      ],
+      "passed": true
+    },
+    {
+      "group": "independent",
+      "index": 26,
+      "question_id": "acf5541f-558d-511d-92e6-b0ff3c973b8c",
+      "parsed_prompt_coefficient": 5,
+      "family": "cube_root",
+      "expected_correct_tex": "y=x\\sqrt[3]{15\\ln|x|+C}",
+      "actual_correct_tex": "y=x\\sqrt[3]{15\\ln|x|+C}",
+      "implicit_solution": "-C - 15*log(x) + y**3/x**3",
+      "directional_derivative": "0",
+      "candidate_directional_derivatives": [
+        "5*(x**2 - 3*y**2)/(x*y**2)",
+        "5*(2*x - y)/(x*y)",
+        "5*(x**(5/2) + 4*y**(5/2))/(x**(3/2)*y**2)",
+        "0",
+        "(5*x**3 - 15*x**2*y**2 - y**3)/(x**3*y**2)"
+      ],
+      "passed": true
+    },
+    {
+      "group": "independent",
+      "index": 27,
+      "question_id": "054969cc-c3d9-58c1-8dc2-a4b095c8920c",
+      "parsed_prompt_coefficient": -5,
+      "family": "cube_root",
+      "expected_correct_tex": "y=x\\sqrt[3]{-15\\ln|x|+C}",
+      "actual_correct_tex": "y=x\\sqrt[3]{-15\\ln|x|+C}",
+      "implicit_solution": "-C + 15*log(x) + y**3/x**3",
+      "directional_derivative": "0",
+      "candidate_directional_derivatives": [
+        "-5*(x**2 - 3*y**2)/(x*y**2)",
+        "-5*(2*x - y)/(x*y)",
+        "-5*(x**(5/2) + 4*y**(5/2))/(x**(3/2)*y**2)",
+        "0",
+        "-(5*x**3 - 15*x**2*y**2 + y**3)/(x**3*y**2)"
+      ],
+      "passed": true
+    },
+    {
+      "group": "independent",
+      "index": 28,
+      "question_id": "a335f918-113f-59fa-a600-f1ebc09e9692",
+      "parsed_prompt_coefficient": -7,
+      "family": "affine",
+      "expected_correct_tex": "y=Cx^2+7x",
+      "actual_correct_tex": "y=Cx^2+7x",
+      "implicit_solution": "-C + (-7*x + y)/x**2",
+      "directional_derivative": "0",
+      "candidate_directional_derivatives": [
+        "(7*x**2 - 7*x - y)/x**4",
+        "(21*x - y)/x**4",
+        "-(21*x + y)/x**4",
+        "0",
+        "-21/x**2"
+      ],
+      "passed": true
+    },
+    {
+      "group": "independent",
+      "index": 29,
+      "question_id": "83d5ccd6-fa21-505a-90ea-46ca0ef2915b",
+      "parsed_prompt_coefficient": 8,
+      "family": "linear_log",
+      "expected_correct_tex": "y=8x\\ln|x|+Cx",
+      "actual_correct_tex": "y=8x\\ln|x|+Cx",
+      "implicit_solution": "-C - 8*log(x) + y/x",
+      "directional_derivative": "0",
+      "candidate_directional_derivatives": [
+        "(8*x - y + 16*log(x) - 8)/x",
+        "8*(x + log(x) - 1)/x",
+        "0",
+        "-(8*x*log(x) - y)/x",
+        "(16*x*log(x) - 8*x - y)/x"
+      ],
+      "passed": true
+    },
+    {
+      "group": "independent",
+      "index": 30,
+      "question_id": "9c907d4d-61fc-5e91-8512-ec0f4cc50d0c",
+      "parsed_prompt_coefficient": 5,
+      "family": "linear_log",
+      "expected_correct_tex": "y=5x\\ln|x|+Cx",
+      "actual_correct_tex": "y=5x\\ln|x|+Cx",
+      "implicit_solution": "-C - 5*log(x) + y/x",
+      "directional_derivative": "0",
+      "candidate_directional_derivatives": [
+        "(5*x - y + 10*log(x) - 5)/x",
+        "5*(x + log(x) - 1)/x",
+        "0",
+        "-(5*x*log(x) - y)/x",
+        "(10*x*log(x) - 5*x - y)/x"
+      ],
+      "passed": true
+    },
+    {
+      "group": "independent",
+      "index": 31,
+      "question_id": "454b9a42-8988-5f81-ad62-a4ba8c43eb66",
+      "parsed_prompt_coefficient": -9,
+      "family": "cube_root",
+      "expected_correct_tex": "y=x\\sqrt[3]{-27\\ln|x|+C}",
+      "actual_correct_tex": "y=x\\sqrt[3]{-27\\ln|x|+C}",
+      "implicit_solution": "-C + 27*log(x) + y**3/x**3",
+      "directional_derivative": "0",
+      "candidate_directional_derivatives": [
+        "-9*(x**2 - 3*y**2)/(x*y**2)",
+        "-9*(2*x - y)/(x*y)",
+        "-9*(x**(5/2) + 4*y**(5/2))/(x**(3/2)*y**2)",
+        "0",
+        "-(9*x**3 - 27*x**2*y**2 + y**3)/(x**3*y**2)"
+      ],
+      "passed": true
+    },
+    {
+      "group": "independent",
+      "index": 32,
+      "question_id": "b4a674b7-a3b7-5523-a62a-d78debea27d6",
+      "parsed_prompt_coefficient": 8,
+      "family": "affine",
+      "expected_correct_tex": "y=Cx^2-8x",
+      "actual_correct_tex": "y=Cx^2-8x",
+      "implicit_solution": "-C + (8*x + y)/x**2",
+      "directional_derivative": "0",
+      "candidate_directional_derivatives": [
+        "-(8*x**2 - 8*x + y)/x**4",
+        "-(24*x + y)/x**4",
+        "(24*x - y)/x**4",
+        "0",
+        "24/x**2"
+      ],
+      "passed": true
+    },
+    {
+      "group": "independent",
+      "index": 33,
+      "question_id": "e465211e-11d4-5390-90f3-87ea976c339e",
+      "parsed_prompt_coefficient": -8,
+      "family": "cube_root",
+      "expected_correct_tex": "y=x\\sqrt[3]{-24\\ln|x|+C}",
+      "actual_correct_tex": "y=x\\sqrt[3]{-24\\ln|x|+C}",
+      "implicit_solution": "-C + 24*log(x) + y**3/x**3",
+      "directional_derivative": "0",
+      "candidate_directional_derivatives": [
+        "-8*(x**2 - 3*y**2)/(x*y**2)",
+        "-8*(2*x - y)/(x*y)",
+        "-8*(x**(5/2) + 4*y**(5/2))/(x**(3/2)*y**2)",
+        "0",
+        "-(8*x**3 - 24*x**2*y**2 + y**3)/(x**3*y**2)"
+      ],
+      "passed": true
+    },
+    {
+      "group": "independent",
+      "index": 34,
+      "question_id": "1e03d6b5-f045-5ea1-a7be-4444d43c7453",
+      "parsed_prompt_coefficient": 5,
+      "family": "affine",
+      "expected_correct_tex": "y=Cx^2-5x",
+      "actual_correct_tex": "y=Cx^2-5x",
+      "implicit_solution": "-C + (5*x + y)/x**2",
+      "directional_derivative": "0",
+      "candidate_directional_derivatives": [
+        "-(5*x**2 - 5*x + y)/x**4",
+        "-(15*x + y)/x**4",
+        "(15*x - y)/x**4",
+        "0",
+        "15/x**2"
+      ],
+      "passed": true
+    },
+    {
+      "group": "independent",
+      "index": 35,
+      "question_id": "8a23c67b-3003-5c25-a7d4-5b30988016c6",
+      "parsed_prompt_coefficient": 4,
+      "family": "linear_log",
+      "expected_correct_tex": "y=4x\\ln|x|+Cx",
+      "actual_correct_tex": "y=4x\\ln|x|+Cx",
+      "implicit_solution": "-C - 4*log(x) + y/x",
+      "directional_derivative": "0",
+      "candidate_directional_derivatives": [
+        "(4*x - y + 8*log(x) - 4)/x",
+        "4*(x + log(x) - 1)/x",
+        "0",
+        "-(4*x*log(x) - y)/x",
+        "(8*x*log(x) - 4*x - y)/x"
+      ],
+      "passed": true
+    },
+    {
+      "group": "independent",
+      "index": 36,
+      "question_id": "ebebb17c-960e-56cd-a836-d375d10da59a",
+      "parsed_prompt_coefficient": -5,
+      "family": "linear_log",
+      "expected_correct_tex": "y=-5x\\ln|x|+Cx",
+      "actual_correct_tex": "y=-5x\\ln|x|+Cx",
+      "implicit_solution": "-C + 5*log(x) + y/x",
+      "directional_derivative": "0",
+      "candidate_directional_derivatives": [
+        "-(5*x + y + 10*log(x) - 5)/x",
+        "-5*(x + log(x) - 1)/x",
+        "0",
+        "(5*x*log(x) + y)/x",
+        "-(10*x*log(x) - 5*x + y)/x"
+      ],
+      "passed": true
+    },
+    {
+      "group": "independent",
+      "index": 37,
+      "question_id": "1beda20a-8894-56db-af08-5d1b5e1da3ed",
+      "parsed_prompt_coefficient": 3,
+      "family": "cube_root",
+      "expected_correct_tex": "y=x\\sqrt[3]{9\\ln|x|+C}",
+      "actual_correct_tex": "y=x\\sqrt[3]{9\\ln|x|+C}",
+      "implicit_solution": "-C - 9*log(x) + y**3/x**3",
+      "directional_derivative": "0",
+      "candidate_directional_derivatives": [
+        "3*(x**2 - 3*y**2)/(x*y**2)",
+        "3*(2*x - y)/(x*y)",
+        "3*(x**(5/2) + 4*y**(5/2))/(x**(3/2)*y**2)",
+        "0",
+        "(3*x**3 - 9*x**2*y**2 - y**3)/(x**3*y**2)"
+      ],
+      "passed": true
+    },
+    {
+      "group": "independent",
+      "index": 38,
+      "question_id": "c4e13e63-b5b5-5027-b549-1cd83d18ccc2",
+      "parsed_prompt_coefficient": -6,
+      "family": "affine",
+      "expected_correct_tex": "y=Cx^2+6x",
+      "actual_correct_tex": "y=Cx^2+6x",
+      "implicit_solution": "-C + (-6*x + y)/x**2",
+      "directional_derivative": "0",
+      "candidate_directional_derivatives": [
+        "(6*x**2 - 6*x - y)/x**4",
+        "(18*x - y)/x**4",
+        "-(18*x + y)/x**4",
+        "0",
+        "-18/x**2"
+      ],
+      "passed": true
+    },
+    {
+      "group": "independent",
+      "index": 39,
+      "question_id": "2ed4a643-8269-581f-a60b-2672ab40a834",
+      "parsed_prompt_coefficient": -1,
+      "family": "affine",
+      "expected_correct_tex": "y=Cx^2+x",
+      "actual_correct_tex": "y=Cx^2+x",
+      "implicit_solution": "-C + (-x + y)/x**2",
+      "directional_derivative": "0",
+      "candidate_directional_derivatives": [
+        "(x**2 - x - y)/x**4",
+        "(3*x - y)/x**4",
+        "-(3*x + y)/x**4",
+        "0",
+        "-3/x**2"
+      ],
+      "passed": true
+    },
+    {
+      "group": "independent",
+      "index": 40,
+      "question_id": "21a26af4-da31-5ac8-a2fe-e623bcd1f01c",
+      "parsed_prompt_coefficient": -7,
+      "family": "cube_root",
+      "expected_correct_tex": "y=x\\sqrt[3]{-21\\ln|x|+C}",
+      "actual_correct_tex": "y=x\\sqrt[3]{-21\\ln|x|+C}",
+      "implicit_solution": "-C + 21*log(x) + y**3/x**3",
+      "directional_derivative": "0",
+      "candidate_directional_derivatives": [
+        "-7*(x**2 - 3*y**2)/(x*y**2)",
+        "-7*(2*x - y)/(x*y)",
+        "-7*(x**(5/2) + 4*y**(5/2))/(x**(3/2)*y**2)",
+        "0",
+        "-(7*x**3 - 21*x**2*y**2 + y**3)/(x**3*y**2)"
+      ],
+      "passed": true
+    },
+    {
+      "group": "independent",
+      "index": 41,
+      "question_id": "3f7f3fd8-f21c-51f0-8d52-4d166c659a6b",
+      "parsed_prompt_coefficient": -2,
+      "family": "linear_log",
+      "expected_correct_tex": "y=-2x\\ln|x|+Cx",
+      "actual_correct_tex": "y=-2x\\ln|x|+Cx",
+      "implicit_solution": "-C + 2*log(x) + y/x",
+      "directional_derivative": "0",
+      "candidate_directional_derivatives": [
+        "-(2*x + y + 4*log(x) - 2)/x",
+        "-2*(x + log(x) - 1)/x",
+        "0",
+        "(2*x*log(x) + y)/x",
+        "-(4*x*log(x) - 2*x + y)/x"
+      ],
+      "passed": true
+    },
+    {
+      "group": "independent",
+      "index": 42,
+      "question_id": "115dbfdb-7504-5f86-982a-f0c2199971ed",
+      "parsed_prompt_coefficient": -6,
+      "family": "cube_root",
+      "expected_correct_tex": "y=x\\sqrt[3]{-18\\ln|x|+C}",
+      "actual_correct_tex": "y=x\\sqrt[3]{-18\\ln|x|+C}",
+      "implicit_solution": "-C + 18*log(x) + y**3/x**3",
+      "directional_derivative": "0",
+      "candidate_directional_derivatives": [
+        "-6*(x**2 - 3*y**2)/(x*y**2)",
+        "-6*(2*x - y)/(x*y)",
+        "-6*(x**(5/2) + 4*y**(5/2))/(x**(3/2)*y**2)",
+        "0",
+        "-(6*x**3 - 18*x**2*y**2 + y**3)/(x**3*y**2)"
+      ],
+      "passed": true
+    },
+    {
+      "group": "independent",
+      "index": 43,
+      "question_id": "b8e25c5a-870d-518e-80dd-0d62c7c05492",
+      "parsed_prompt_coefficient": 3,
+      "family": "affine",
+      "expected_correct_tex": "y=Cx^2-3x",
+      "actual_correct_tex": "y=Cx^2-3x",
+      "implicit_solution": "-C + (3*x + y)/x**2",
+      "directional_derivative": "0",
+      "candidate_directional_derivatives": [
+        "-(3*x**2 - 3*x + y)/x**4",
+        "-(9*x + y)/x**4",
+        "(9*x - y)/x**4",
+        "0",
+        "9/x**2"
+      ],
+      "passed": true
+    },
+    {
+      "group": "independent",
+      "index": 44,
+      "question_id": "a7bdf6f0-abf5-5212-a4ab-b262b0cb38b4",
+      "parsed_prompt_coefficient": -4,
+      "family": "linear_log",
+      "expected_correct_tex": "y=-4x\\ln|x|+Cx",
+      "actual_correct_tex": "y=-4x\\ln|x|+Cx",
+      "implicit_solution": "-C + 4*log(x) + y/x",
+      "directional_derivative": "0",
+      "candidate_directional_derivatives": [
+        "-(4*x + y + 8*log(x) - 4)/x",
+        "-4*(x + log(x) - 1)/x",
+        "0",
+        "(4*x*log(x) + y)/x",
+        "-(8*x*log(x) - 4*x + y)/x"
+      ],
+      "passed": true
+    },
+    {
+      "group": "independent",
+      "index": 45,
+      "question_id": "39192008-08c7-5a83-9dfd-7446bd962410",
+      "parsed_prompt_coefficient": -7,
+      "family": "linear_log",
+      "expected_correct_tex": "y=-7x\\ln|x|+Cx",
+      "actual_correct_tex": "y=-7x\\ln|x|+Cx",
+      "implicit_solution": "-C + 7*log(x) + y/x",
+      "directional_derivative": "0",
+      "candidate_directional_derivatives": [
+        "-(7*x + y + 14*log(x) - 7)/x",
+        "-7*(x + log(x) - 1)/x",
+        "0",
+        "(7*x*log(x) + y)/x",
+        "-(14*x*log(x) - 7*x + y)/x"
+      ],
+      "passed": true
+    },
+    {
+      "group": "independent",
+      "index": 46,
+      "question_id": "b14aa4da-b0d2-57d6-a8bd-6d9675b24d94",
+      "parsed_prompt_coefficient": 1,
+      "family": "affine",
+      "expected_correct_tex": "y=Cx^2-x",
+      "actual_correct_tex": "y=Cx^2-x",
+      "implicit_solution": "-C + (x + y)/x**2",
+      "directional_derivative": "0",
+      "candidate_directional_derivatives": [
+        "-(x**2 - x + y)/x**4",
+        "-(3*x + y)/x**4",
+        "(3*x - y)/x**4",
+        "0",
+        "3/x**2"
+      ],
+      "passed": true
+    },
+    {
+      "group": "independent",
+      "index": 47,
+      "question_id": "9df186a2-d667-5f86-8d4a-eacdc41860d1",
+      "parsed_prompt_coefficient": -1,
+      "family": "cube_root",
+      "expected_correct_tex": "y=x\\sqrt[3]{-3\\ln|x|+C}",
+      "actual_correct_tex": "y=x\\sqrt[3]{-3\\ln|x|+C}",
+      "implicit_solution": "-C + 3*log(x) + y**3/x**3",
+      "directional_derivative": "0",
+      "candidate_directional_derivatives": [
+        "-(x**2 - 3*y**2)/(x*y**2)",
+        "-(2*x - y)/(x*y)",
+        "-(x**(5/2) + 4*y**(5/2))/(x**(3/2)*y**2)",
+        "0",
+        "-(x**3 - 3*x**2*y**2 + y**3)/(x**3*y**2)"
+      ],
+      "passed": true
+    },
+    {
+      "group": "independent",
+      "index": 48,
+      "question_id": "12ab8547-1960-5284-8190-0a6f91b57964",
+      "parsed_prompt_coefficient": 6,
+      "family": "linear_log",
+      "expected_correct_tex": "y=6x\\ln|x|+Cx",
+      "actual_correct_tex": "y=6x\\ln|x|+Cx",
+      "implicit_solution": "-C - 6*log(x) + y/x",
+      "directional_derivative": "0",
+      "candidate_directional_derivatives": [
+        "(6*x - y + 12*log(x) - 6)/x",
+        "6*(x + log(x) - 1)/x",
+        "0",
+        "-(6*x*log(x) - y)/x",
+        "(12*x*log(x) - 6*x - y)/x"
+      ],
+      "passed": true
+    },
+    {
+      "group": "independent",
+      "index": 49,
+      "question_id": "eeb64895-f2b9-56c1-a0f9-192f70ef71a5",
+      "parsed_prompt_coefficient": -4,
+      "family": "affine",
+      "expected_correct_tex": "y=Cx^2+4x",
+      "actual_correct_tex": "y=Cx^2+4x",
+      "implicit_solution": "-C + (-4*x + y)/x**2",
+      "directional_derivative": "0",
+      "candidate_directional_derivatives": [
+        "(4*x**2 - 4*x - y)/x**4",
+        "(12*x - y)/x**4",
+        "-(12*x + y)/x**4",
+        "0",
+        "-12/x**2"
+      ],
+      "passed": true
+    },
+    {
+      "group": "independent",
+      "index": 50,
+      "question_id": "d24c2c09-b663-5f3d-8545-2b09b8ea9bda",
+      "parsed_prompt_coefficient": -4,
+      "family": "cube_root",
+      "expected_correct_tex": "y=x\\sqrt[3]{-12\\ln|x|+C}",
+      "actual_correct_tex": "y=x\\sqrt[3]{-12\\ln|x|+C}",
+      "implicit_solution": "-C + 12*log(x) + y**3/x**3",
+      "directional_derivative": "0",
+      "candidate_directional_derivatives": [
+        "-4*(x**2 - 3*y**2)/(x*y**2)",
+        "-4*(2*x - y)/(x*y)",
+        "-4*(x**(5/2) + 4*y**(5/2))/(x**(3/2)*y**2)",
+        "0",
+        "-(4*x**3 - 12*x**2*y**2 + y**3)/(x**3*y**2)"
+      ],
+      "passed": true
+    },
+    {
+      "group": "independent",
+      "index": 51,
+      "question_id": "1d185fa3-50e0-506a-aa2e-30f55dd061d0",
+      "parsed_prompt_coefficient": 6,
+      "family": "cube_root",
+      "expected_correct_tex": "y=x\\sqrt[3]{18\\ln|x|+C}",
+      "actual_correct_tex": "y=x\\sqrt[3]{18\\ln|x|+C}",
+      "implicit_solution": "-C - 18*log(x) + y**3/x**3",
+      "directional_derivative": "0",
+      "candidate_directional_derivatives": [
+        "6*(x**2 - 3*y**2)/(x*y**2)",
+        "6*(2*x - y)/(x*y)",
+        "6*(x**(5/2) + 4*y**(5/2))/(x**(3/2)*y**2)",
+        "0",
+        "(6*x**3 - 18*x**2*y**2 - y**3)/(x**3*y**2)"
+      ],
+      "passed": true
+    },
+    {
+      "group": "independent",
+      "index": 52,
+      "question_id": "ef7ef738-19f0-5a25-9062-1ad0ac2e6b9c",
+      "parsed_prompt_coefficient": -8,
+      "family": "linear_log",
+      "expected_correct_tex": "y=-8x\\ln|x|+Cx",
+      "actual_correct_tex": "y=-8x\\ln|x|+Cx",
+      "implicit_solution": "-C + 8*log(x) + y/x",
+      "directional_derivative": "0",
+      "candidate_directional_derivatives": [
+        "-(8*x + y + 16*log(x) - 8)/x",
+        "-8*(x + log(x) - 1)/x",
+        "0",
+        "(8*x*log(x) + y)/x",
+        "-(16*x*log(x) - 8*x + y)/x"
+      ],
+      "passed": true
+    },
+    {
+      "group": "independent",
+      "index": 53,
+      "question_id": "144b11c4-1e25-526f-9fda-bcd19f1ec86b",
+      "parsed_prompt_coefficient": 7,
+      "family": "affine",
+      "expected_correct_tex": "y=Cx^2-7x",
+      "actual_correct_tex": "y=Cx^2-7x",
+      "implicit_solution": "-C + (7*x + y)/x**2",
+      "directional_derivative": "0",
+      "candidate_directional_derivatives": [
+        "-(7*x**2 - 7*x + y)/x**4",
+        "-(21*x + y)/x**4",
+        "(21*x - y)/x**4",
+        "0",
+        "21/x**2"
+      ],
+      "passed": true
+    },
+    {
+      "group": "runner",
+      "index": 0,
+      "question_id": "10b24289-0317-56e8-b65f-0fcaf141c532",
+      "parsed_prompt_coefficient": 2,
+      "family": "linear_log",
+      "expected_correct_tex": "y=2x\\ln|x|+Cx",
+      "actual_correct_tex": "y=2x\\ln|x|+Cx",
+      "implicit_solution": "-C - 2*log(x) + y/x",
+      "directional_derivative": "0",
+      "candidate_directional_derivatives": [
+        "(2*x - y + 4*log(x) - 2)/x",
+        "2*(x + log(x) - 1)/x",
+        "0",
+        "-(2*x*log(x) - y)/x",
+        "(4*x*log(x) - 2*x - y)/x"
+      ],
+      "passed": true
+    },
+    {
+      "group": "runner",
+      "index": 1,
+      "question_id": "89120e52-c879-598c-abdc-259406a646c5",
+      "parsed_prompt_coefficient": -2,
+      "family": "cube_root",
+      "expected_correct_tex": "y=x\\sqrt[3]{-6\\ln|x|+C}",
+      "actual_correct_tex": "y=x\\sqrt[3]{-6\\ln|x|+C}",
+      "implicit_solution": "-C + 6*log(x) + y**3/x**3",
+      "directional_derivative": "0",
+      "candidate_directional_derivatives": [
+        "-2*(x**2 - 3*y**2)/(x*y**2)",
+        "-2*(2*x - y)/(x*y)",
+        "-2*(x**(5/2) + 4*y**(5/2))/(x**(3/2)*y**2)",
+        "0",
+        "-(2*x**3 - 6*x**2*y**2 + y**3)/(x**3*y**2)"
+      ],
+      "passed": true
+    },
+    {
+      "group": "runner",
+      "index": 2,
+      "question_id": "59d56d47-2f1c-534c-b667-b39ecc6b15a0",
+      "parsed_prompt_coefficient": 4,
+      "family": "affine",
+      "expected_correct_tex": "y=Cx^2-4x",
+      "actual_correct_tex": "y=Cx^2-4x",
+      "implicit_solution": "-C + (4*x + y)/x**2",
+      "directional_derivative": "0",
+      "candidate_directional_derivatives": [
+        "-(4*x**2 - 4*x + y)/x**4",
+        "-(12*x + y)/x**4",
+        "(12*x - y)/x**4",
+        "0",
+        "12/x**2"
+      ],
+      "passed": true
+    },
+    {
+      "group": "runner",
+      "index": 3,
+      "question_id": "33894105-e586-5169-885e-ed9619b07b7c",
+      "parsed_prompt_coefficient": 3,
+      "family": "linear_log",
+      "expected_correct_tex": "y=3x\\ln|x|+Cx",
+      "actual_correct_tex": "y=3x\\ln|x|+Cx",
+      "implicit_solution": "-C - 3*log(x) + y/x",
+      "directional_derivative": "0",
+      "candidate_directional_derivatives": [
+        "(3*x - y + 6*log(x) - 3)/x",
+        "3*(x + log(x) - 1)/x",
+        "0",
+        "-(3*x*log(x) - y)/x",
+        "(6*x*log(x) - 3*x - y)/x"
+      ],
+      "passed": true
+    },
+    {
+      "group": "runner",
+      "index": 4,
+      "question_id": "c625473b-67e2-50b8-a0f5-43397f3b160d",
+      "parsed_prompt_coefficient": 9,
+      "family": "cube_root",
+      "expected_correct_tex": "y=x\\sqrt[3]{27\\ln|x|+C}",
+      "actual_correct_tex": "y=x\\sqrt[3]{27\\ln|x|+C}",
+      "implicit_solution": "-C - 27*log(x) + y**3/x**3",
+      "directional_derivative": "0",
+      "candidate_directional_derivatives": [
+        "9*(x**2 - 3*y**2)/(x*y**2)",
+        "9*(2*x - y)/(x*y)",
+        "9*(x**(5/2) + 4*y**(5/2))/(x**(3/2)*y**2)",
+        "0",
+        "(9*x**3 - 27*x**2*y**2 - y**3)/(x**3*y**2)"
+      ],
+      "passed": true
+    }
+  ],
+  "failures": []
+}

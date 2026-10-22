@@ -1,0 +1,117 @@
+{
+  "verdict": "accepted",
+  "summary": "No current defect demonstrated. All eight checks pass. Historical failures reproduce on negative controls and pass against current code. All 182 package files remain unchanged.",
+  "source_analysis": {
+    "skill": "Transform a homogeneous first-order ODE into a separable equation using y=v(x)x.",
+    "reasoning_steps": [
+      "Differentiate using the product rule.",
+      "Substitute y=vx and simplify to F(v).",
+      "Subtract v and separate variables.",
+      "Recognize the equivalent equation among five choices."
+    ],
+    "invariants": [
+      "Degree-zero homogeneous right-hand side.",
+      "Specified substitution and product-rule derivative.",
+      "Correct transformed rate is (F(v)-v)/x.",
+      "One correct equation among five radio choices; no integration required."
+    ],
+    "permitted_variations": [
+      "Small source-like coefficients and signs.",
+      "Cancellation and noncancellation of the linear v term.",
+      "Eligible coefficient, argument, correct-equation and option-position assignments."
+    ],
+    "source_refs": [
+      "695b49d1-9327-503a-b244-1f7f385f59ff",
+      "6aa0e045-65b8-5bd8-8a66-10e8e133beb0",
+      "b4e19450-4e51-548d-b019-a1f8398b116f",
+      "f48980a9-f2e7-5b29-aaff-6351dbf19d07",
+      "590e41cc-f7e5-52a9-8e4b-08ef663bf420",
+      "6ed802b3-b056-5f83-8a03-3932e7ced220",
+      "647415db-3b65-5b2e-8b3d-f70381af49e3",
+      "e1385b74-52ff-53cd-91df-70b0f0ad6473",
+      "Canonical example 34c357f1-505b-530f-8bb4-376eada248a9",
+      "Tutorial fe0a9e9e-ab23-5364-99bb-cddbfd67a4a4: xv\u2032=F(v)-v and separation"
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay.json",
+        "independent-records.json"
+      ],
+      "details": "All eight practice prompts, solutions, complete five-choice banks and correct equations replay."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "fresh-math-results.json",
+        "cancellation-math.json",
+        "negative-controls.json",
+        "inventory-audit.json"
+      ],
+      "details": "Independently checked 107 generated record observations and all eight stored originals. Displayed answers and worked equations pass; stale and ungrouped negative controls fail."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "sampling.json",
+        "fixed-bank-results.json",
+        "fresh-batch.json"
+      ],
+      "details": "All families, coefficient boundaries, residual roles and cancellation profiles exercised. Fresh sampling is deterministic with distinct mathematical prompts."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "scope-review.json"
+      ],
+      "details": "Variations preserve easy substitution, algebra and separation without introducing integration."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-final-input.json",
+        "grader-final-report.json",
+        "grader-final-command.json"
+      ],
+      "details": "Native grader correctly accepted 112 selections and rejected 448, including normalized delivery records. No unresolved checks."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "counterfactual-render/rendering.json",
+        "rendering-inspection.json"
+      ],
+      "details": "Eleven actual-UI renders pass, including the complete runner batch and counterfactuals. Representative screenshots inspected."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "package-final.json",
+        "regression-controls.json",
+        "retained-checks.json",
+        "author-regression.log"
+      ],
+      "details": "Exact dependencies match. Declared-file relocation and replay pass. Historical failing controls reproduce. Package hashes remain unchanged."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "fixed-bank-results.json",
+        "shortcut-results.json",
+        "selection-analysis.json",
+        "delivery-batch-records/delivery.json"
+      ],
+      "details": "Counterfactuals change or preserve responses as expected. Eleven fixed-bank groups have multiple eligible keys. All five runner records survive filtering; shortest and longest strategies each score 0/5. Selection and UI ordering rules examined with explicit limits for unavailable live learner state."
+    }
+  },
+  "findings": []
+}
