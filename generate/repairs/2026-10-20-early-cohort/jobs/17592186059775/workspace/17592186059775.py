@@ -269,4 +269,4 @@ if __name__ == '__main__':
     parser.add_argument('--difficulty', default='easy'); parser.add_argument('--seed', type=int, default=59775); parser.add_argument('--count', type=int, default=5)
     parser.add_argument('--format', choices=['json'], default='json')
     args = parser.parse_args()
-    print(json.dumps({'instances': batch(args.difficulty, args.count, args.seed)}, indent=2))
+    print(json.dumps(batch(args.difficulty, args.count, args.seed), indent=2))

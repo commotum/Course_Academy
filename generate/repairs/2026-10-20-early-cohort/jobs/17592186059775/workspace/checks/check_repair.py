@@ -73,7 +73,7 @@ def main():
         cmd = [sys.executable,str(dest/manifest['entrypoint']),'--difficulty','easy','--count','5','--seed','0','--format','json']
         run = subprocess.run(cmd, cwd=td, env={**os.environ,'COURSE_ACADEMY_GENERATOR_OUTPUT_DIR':str(dest/'assets')},capture_output=True,text=True)
         assert run.returncode==0,run.stderr
-        batch=json.loads(run.stdout)['instances']; assert len(batch)==5
+        batch=json.loads(run.stdout); assert isinstance(batch,list) and len(batch)==5
         repeat=subprocess.run(cmd,cwd=td,capture_output=True,text=True,check=True)
         assert repeat.stdout==run.stdout,'Seeded CLI replay mismatch'
         for r in batch: v.independent(r)
