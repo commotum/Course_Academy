@@ -1,0 +1,224 @@
+{
+  "learner_operation": "Solving for a vector in a linear combination: isolate x in p a + q x = b, subtract the known scaled vector, divide componentwise by nonzero q, and return x or a requested sum/difference of two components.",
+  "fixed_features": [
+    {
+      "feature": "one unknown vector and linear equation",
+      "justification": "Defines the knowledge point and isolation method."
+    },
+    {
+      "feature": "integer components and 3D/4D workload",
+      "justification": "Observed easy examples uniformly use these; fractional and larger-dimensional workload not established."
+    },
+    {
+      "feature": "radio with five choices",
+      "justification": "Every captured practice answer contract has this form."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Signed coefficient and supplied coordinates",
+      "eligible_variation": "Coefficients, signs, and coordinate values may change independently within easy integer arithmetic, maintaining a unique solution. Fixed original rays are incidental.",
+      "observed": "Each profile fixes coefficients and scales all coordinates together by 1,2,3; no single-coordinate perturbation is representable."
+    },
+    {
+      "role": "Requested component positions/order",
+      "eligible_variation": "Distinct index pairs for the demonstrated sum/difference; vector targets remain full vectors.",
+      "observed": "All permitted pairs supported; q-34601 reversal and retarget tests recompute the actual prompt, explanation and native correct option."
+    },
+    {
+      "role": "Which option satisfies the equation",
+      "eligible_variation": "Correct choice value/rank and distractor relationships may vary without changing the solution method or five-choice contract.",
+      "observed": "Positive affine transformation of each original bank fixes correct scalar rank. q-34601 always rank 2, q-105161 always rank 1; this is not required by vector isolation."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "Supported source families and full five-answer banks",
+      "sample_refs": [
+        "source-replay-records.json",
+        "source-replay.json"
+      ],
+      "result": "13 complete package profiles replay exactly after captured answer escaping normalization. Captured complete q-105158 is missing; q-34574 lacks original solution/key, and canonical lacks original bank."
+    },
+    {
+      "case": "Finite construction domain and fresh random seeds",
+      "sample_refs": [
+        "domain-records.json",
+        "fresh-records.json",
+        "math.json",
+        "shortcut-results.json"
+      ],
+      "result": "156 finite tasks and independently chosen seeds 88421..88460 checked. All allowed target pairs and scales appear; exact math correct. Fixed scalar ranks persist despite changing targets."
+    },
+    {
+      "case": "Requested easy batch before/after actual publisher filtering",
+      "sample_refs": [
+        "batch-records.json",
+        "delivery-batch/accepted.json",
+        "delivery-batch/delivery.json",
+        "shortcut-results.json"
+      ],
+      "result": "5 raw records -> 4 accepted, 1 original duplicate removed; two q-34601, one q-105161, one q-73933 remain. A three-rule bank-only strategy answers all four."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "q-34601 seed 48291 scale 2 target [2,1,\"-\"] -> [1,2,\"-\"]; a/b held fixed.",
+      "expected": "Target and answer negate (54 -> -54); bank/explanation and accepted radio choice follow new target.",
+      "observed": "Prompt x3-x2 becomes x2-x3, final solution -6-48=-54 and actual native acceptance follows -54. Screenshots inspected. Both remain second-smallest bank choice.",
+      "status": "passed",
+      "justification": "Ordered component subtraction is explicitly demonstrated by sources q-105161/q-34601; changing which components are requested is eligible same-method variation.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-input.json",
+        "grader-report.json",
+        "render-counterfactual/rendering.json",
+        "render-counterfactual/question-002.png"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "Same supplied vectors, q-34601 seed 48291 scale 2 target [2,1,\"-\"] -> [0,2,\"-\"].",
+      "expected": "Recompute 16-48=-32, replacing 48-(-6)=54; prompt, key and explanation agree.",
+      "observed": "Correct -32 and x1-x3 displayed; all options native-graded with the independently derived result. Screenshot inspected.",
+      "status": "passed",
+      "justification": "Target indices are not essential source-example constraints.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-report.json",
+        "render-counterfactual/question-003.png"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Keep q-34601 target x3-x2 and every used coordinate fixed; perturb unused b1=16 to 14, updating x1 and its solution arithmetic coherently.",
+      "expected": "Only unused x1 changes 16 -> 17; target, correct answer 54 and learner acceptance preserved.",
+      "observed": "Independently authored coherent control fixture: actual UI displays changed b1 and x1, final target 54 unchanged; native grader accepts 54 and rejects four wrong alternatives in both halves. Current generator cannot sample this single-coordinate control; no claim of supported generator perturbation.",
+      "status": "passed",
+      "justification": "Source scalar questions name two components among 3/4. Coordinates outside those indices cannot affect that target; this is a meaningful source-based irrelevant-evidence dependency.",
+      "sample_refs": [
+        "irrelevant-records.json",
+        "irrelevant-results.json",
+        "irrelevant-grader-input.json",
+        "irrelevant-grader-report.json",
+        "render-irrelevant/rendering.json",
+        "render-irrelevant/question-002.png"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Seed 48291 -> 48292 at identical explicit scale/target, changing authored option ordering.",
+      "expected": "Same prompt, solution, correct value and accepted mathematical choice.",
+      "observed": "Identical content identity and answer 54; both record variants graded correctly. UI may further reorder choices; rank cue is order-independent.",
+      "status": "passed",
+      "justification": "Display order is not part of solving a vector equation.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-report.json",
+        "render-counterfactual/rendering.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "Visible 6a-2x=b scalar template",
+      "subgroup": "q-34601 after captured-inventory deduplication",
+      "scope": "within_template",
+      "strategy": "Choose second-smallest scalar answer",
+      "correct": 35,
+      "total": 35,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "All tested members satisfy this cue. Baseline is uniform choice among five answers (20%). It requires no use of supplied a/b entries or vector equation arithmetic; positive dilation and translated fixed offsets preserve it. Source examples alone do not justify this role assignment.",
+      "sample_refs": [
+        "delivery-domain/accepted.json",
+        "shortcut-results.json",
+        "strict-regressions.json"
+      ]
+    },
+    {
+      "cue": "Visible 7a+4x=b scalar template",
+      "subgroup": "q-105161 after captured-inventory deduplication",
+      "scope": "within_template",
+      "strategy": "Choose smallest scalar answer",
+      "correct": 35,
+      "total": 35,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "All tested members satisfy this cue. Baseline is uniform choice among five answers (20%). It requires no use of supplied a/b entries or vector equation arithmetic; positive dilation and translated fixed offsets preserve it. Source examples alone do not justify this role assignment.",
+      "sample_refs": [
+        "delivery-domain/accepted.json",
+        "shortcut-results.json",
+        "strict-regressions.json"
+      ]
+    },
+    {
+      "cue": "Visible 5a-3x=b full-vector template",
+      "subgroup": "q-73933 after captured-inventory deduplication",
+      "scope": "within_template",
+      "strategy": "Choose vector with largest third component",
+      "correct": 2,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "All tested members satisfy this cue. Baseline is uniform choice among five answers (20%). It requires no use of supplied a/b entries or vector equation arithmetic; positive dilation and translated fixed offsets preserve it. Source examples alone do not justify this role assignment.",
+      "sample_refs": [
+        "delivery-domain/accepted.json",
+        "shortcut-results.json",
+        "strict-regressions.json"
+      ]
+    },
+    {
+      "cue": "Recognizable equation signature in exact surviving batch",
+      "subgroup": "All four surviving runner records",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "6a-2x: second-smallest scalar; 7a+4x: smallest scalar; 5a-3x: vector with largest third component",
+      "correct": 4,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "These three source/code-derived simple rules solve every surviving member, versus uniform 1/5 baseline. This is an exact batch defect as well as conditional generator invariants. All four submissions accepted by actual native grader; no claim that this three-rule program covers the other generator profiles.",
+      "sample_refs": [
+        "batch-records.json",
+        "delivery-batch/accepted.json",
+        "shortcut-results.json",
+        "shortcut-grader-input.json",
+        "shortcut-grader-report.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "Generator finite catalog and sampling/rejection (assertions, explicit invalid level/scale/target/count boundaries; no stochastic resampling loop)",
+      "Actual publisher requested-difficulty filter, validation, stable identities, inventory and batch deduplication at basis 5402",
+      "Actual learner native radio grading on raw/counterfactual records and delivery-normalized shortcut cases",
+      "Learner-selection code inspection and faithful read-only all-easy SHA256/freshness scenarios with explicit surrogate entity mapping",
+      "Actual UI rendering and option presentation"
+    ],
+    "sample_refs": [
+      "packaging.json",
+      "domain-records.json",
+      "delivery-domain/delivery.json",
+      "delivery-domain/accepted.json",
+      "delivery-batch/delivery.json",
+      "delivery-batch/accepted.json",
+      "shortcut-results.json",
+      "learner-selection.json",
+      "shortcut-grader-report.json",
+      "render-delivered/rendering.json"
+    ],
+    "result": "156 -> 143 accepted domain records; q-34601 rank-2 cue 36/36 raw and 35/35 after filtering, q-105161 minimum cue 36/36 raw and 35/35 after filtering. Batch 5 -> 4 accepted; bank-only rules 4/4 accepted natively. All records are easy; any positive easy band weight samples uniformly among fresh eligible easy entities. Freshness cannot cure item-wise cues. Live learner histories/policy/entity assignments not captured; read-only scenarios do not claim exact production frequencies."
+  },
+  "limitations": [
+    "No finite audit proves every shortcut absent. Demonstrated invariants suffice for revise.",
+    "Captured inventory basis 5402 contains original source questions only, with no stored generated-record provenance; affected-inventory.json empty after inspecting all 15, not an untested-inventory claim. Later changing inventory not covered.",
+    "No publication/preparation file present; actual shared read-only publisher normalization/deduplication used. No database writes.",
+    "Canonical e-4790 has no captured answer fields. q-34574 lacks a captured solution/key; derived -1 is independent arithmetic, not claimed source evidence. Complete q-105158 is absent from the package and remains a replay defect.",
+    "Unused-coordinate control is independently authored because the generator only supports scale/target slots; it validates learner response dependency, not a generator capability.",
+    "Actual live policy/history and generated DB entity IDs do not exist in this read-only prepublication context; explicit conditional all-easy selection scenarios and code invariance delimit conclusions."
+  ]
+}

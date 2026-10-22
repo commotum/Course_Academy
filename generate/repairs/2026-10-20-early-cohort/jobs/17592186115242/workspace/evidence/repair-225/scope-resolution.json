@@ -1,0 +1,24 @@
+{
+  "unresolved_finding": "591f580cadb749294588",
+  "latest_failure_reproduced_first": true,
+  "reproduction": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory",
+  "reproduction_exit_code": 1,
+  "affected_records": 5,
+  "selection_witness": "64/64 shortcut successes under the retained possible new-seen learner history; not an estimate of all learner histories.",
+  "cause": "The five captured historical v2 answer banks are stored selection candidates. engine/rust/question_selection.rs:125-195 selects stored entities independently of this Python generator.",
+  "current_generator_findings_passed": 4,
+  "runtime_source_inventory_manifest_unchanged": true,
+  "proposal_verified": true,
+  "proposal_applied": false,
+  "replacement_proposal": "evidence/repair-3/inventory-repair-proposal.json",
+  "affected_evidence_paths_verified_relative_to": "author-225",
+  "visual_review": {
+    "reused_existing_render": true,
+    "screenshot": "evidence/repair-3/render/question-001.png",
+    "reinspected": true,
+    "observation": "System, five radio choices, elimination matrices and full solution are readable without observed clipping. Source flowchart also inspected; it supplies classification definitions only."
+  },
+  "scope": "Only workspace evidence updated. No runtime changes, publication, database writes, source edits, engine changes or out-of-workspace edits.",
+  "required_resolution": "Separate inventory remediation must retire or replace the five affected generated records and supply a fresh capture. Then rerun the strict inventory check. Current-generator changes cannot alter those stored banks.",
+  "status": "unsupported"
+}

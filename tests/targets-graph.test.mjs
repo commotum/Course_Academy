@@ -6,7 +6,7 @@ import vm from 'node:vm';
 // Exercise the actual graph scope and URL code with fixtures, without a server or DB.
 const html = await readFile(new URL('../ui/Math-Academy-Graph-Explorer.html', import.meta.url), 'utf8');
 const weekSource = (await readFile(new URL('../ui/target-weeks.js', import.meta.url), 'utf8')).replaceAll('export ', '');
-const targetScopeSource = (await readFile(new URL('../ui/target-scope.js', import.meta.url), 'utf8')).replace(/^import .*;\n/gm, '').replaceAll('export ', '');
+const targetScopeSource = html.slice(html.indexOf('  // Graph-owned filtering and placement;'), html.indexOf('  // End graph-owned filtering and placement.'));
 const scopeSource = html.slice(html.indexOf('  function selectedCourse()'), html.indexOf('  const coursePicker ='));
 const activeSource = html.slice(html.indexOf('  function buildActiveSet()'), html.indexOf('  // Keep dependency columns fixed.'));
 const helperSource = html.slice(html.indexOf('  function isScoped()'), html.indexOf('  function titleWrap('));

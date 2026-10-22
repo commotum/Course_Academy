@@ -1,4 +1,5 @@
-// The Targets viewer and forecasting use this same scope and track allocation.
+// Forecast-owned projection of the Targets selection and course placement rules.
+// The graph page keeps its own implementation, independent of this module.
 import { buildTargetCalendar, filterScheduledTargets } from './target-weeks.js';
 
 export const TARGET_COURSE_CODES = ['255','256','341'];
