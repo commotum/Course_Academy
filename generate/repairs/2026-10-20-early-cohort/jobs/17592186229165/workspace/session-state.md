@@ -1,15 +1,11 @@
-# Current state — author 908
+# Current state — author 913
 
-Read current feedback and both retained findings; history contains 908 events. No new source or runtime defect is reported. Preserved the repaired generator, manifest, instructional account and strict regression declarations. No runtime, engine, publication, database, original review report or other-job changes.
+Read feedback and both retained findings; history has 913 events, latest attempt 912. Reproduced the exact latest failure first. No new generator defect is reported; preserved the repaired construction rule, package, instructional account, affected inventory and strict regression declarations.
 
-Reproduced latest failure first:
-`/home/jake/Developer/Course_Academy/.venv/bin/python checks/check_report_installation.py`
-Exit 1: `decision_variation has an unresolved decision shortcut` at the required original review destination. Local corrected evidence passes real contract/schema validation and 26 current-generator record replays. Results: `evidence/author-908/report-results.json`.
+Commands and observed results: `evidence/author-913/checks.json`.
 
-Retained checks:
-- `/home/jake/Developer/Course_Academy/.venv/bin/python checks/test_role_exchange.py --output evidence/author-908/role-regression`: exit 0. Nine controlled cases, 24 mixed samples, eight default hard records; visible math, shared delivery and native grading pass. Both positions survive delivery (19 first, 17 second), including conditioned cue checks; five both-nonresonant records remain.
-- `/home/jake/Developer/Course_Academy/.venv/bin/python checks/verify_retained_state.py`: exit 0. Runtime/source unchanged, 55 staged artifacts verified, eight unaffected mathematical cases pass. Existing source replay and actual UI evidence remain applicable to unchanged runtime/source.
+- Strict report-installation check fails: required external report still raises `decision_variation has an unresolved decision shortcut`. The local corrected report passes contract/schema and 26 current-generator record replays. Traceback and results saved in `evidence/author-913/`.
+- Retained role regression exits 0: nine controlled cases, 24 sampled mixed cases and eight default hard cases; delivery preserves 19 first-position and 17 second-position resonance cases plus five nonresonant cases. Native grader matches 11 acceptances and 19 rejections.
+- Retained-state check exits 0: source/runtime hashes unchanged, 55 staged artifacts verified, eight unaffected mathematical cases pass. Reinspected retained actual-UI screenshot; no runtime change requiring fresh rendering.
 
-Commands, results and logs: `evidence/author-908/checks.json`.
-
-Next unfinished action: the runner installs the correction listed in `evidence/review-installation-handoff.json` at the required prior-review destination, then reruns the strict default regression and obtains fresh independent review. That destination is outside the authorized workspace. Finding 645672a4cd3f9bf609ca explicitly requires destination write access and no generator authoring. Further unchanged workspace-only author retries cannot complete the installation. Status remains unsupported, with the strict failure preserved.
+Next unfinished action: runner installs the staged correction at the prior-review destination listed in `evidence/review-installation-handoff.json`, reruns the unchanged strict default check, and obtains fresh independent review. The destination is outside authorized workspace writes. Finding 645672a4cd3f9bf609ca explicitly requests destination write access and no generator authoring. Another unchanged workspace-only author retry cannot complete this installation. Status remains unsupported; no failed acceptance criterion was weakened.

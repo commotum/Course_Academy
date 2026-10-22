@@ -1,0 +1,42 @@
+{
+  "status": "unsupported",
+  "runtime_changed": false,
+  "commands": [
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python checks/check_report_installation.py",
+      "exit_code": 1,
+      "log": "evidence/author-911/report-regression.log",
+      "result": "evidence/author-911/results.json"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python checks/test_role_exchange.py --output evidence/author-911/role-regression",
+      "exit_code": 0,
+      "log": "evidence/author-911/role-regression.log",
+      "result": "evidence/author-911/role-regression/results.json"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python checks/verify_retained_state.py",
+      "exit_code": 0,
+      "log": "evidence/author-911/retained-state.log"
+    }
+  ],
+  "role_regression_summary": {
+    "status": "passed",
+    "controlled": 9,
+    "sampled": 24,
+    "default_hard": 8,
+    "pre_delivery": {
+      "1": 19,
+      "2": 17,
+      "none": 5
+    },
+    "post_delivery": {
+      "1": 19,
+      "2": 17,
+      "none": 5
+    }
+  },
+  "unresolved_finding": "645672a4cd3f9bf609ca",
+  "reason": "Required corrected-review installation is outside the authorized workspace; the strict check still rejects that destination. Local staged evidence passes schema, contract, and 26 current-record replays.",
+  "next_action": "Runner installs staged artifacts using evidence/review-installation-handoff.json, then reruns the strict check and obtains fresh independent review."
+}
