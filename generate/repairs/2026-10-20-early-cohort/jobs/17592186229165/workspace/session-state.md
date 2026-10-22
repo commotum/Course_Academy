@@ -1,13 +1,11 @@
-# Current state — author 936
+# Current state — author 940
 
-Feedback and both retained findings read; history has 936 prior events. Existing repaired runtime, instructional account, manifest, regression declarations and historical inventory evidence preserved. No new generator defect or source change is demonstrated.
+Read feedback, both retained findings and latest history. Runtime, manifest, instructional account, historical inventory evidence and strict regression declarations remain unchanged.
 
-Reproduced latest strict failure first with `/home/jake/Developer/Course_Academy/.venv/bin/python checks/check_report_installation.py`: exit 1, `decision_variation has an unresolved decision shortcut` at the required external report. Saved exact output and results under `evidence/author-936/`. Local staged contract/schema validation and 26 current-record replays pass.
+Reproduced latest failure first: `/home/jake/Developer/Course_Academy/.venv/bin/python checks/check_report_installation.py` exits 1. Original external report still fails with `decision_variation has an unresolved decision shortcut`. Local correction passes the actual contract/schema; 26 records replay against current runtime. See `evidence/report-repair/results.json` and `evidence/author-940-report.log`.
 
-`/home/jake/Developer/Course_Academy/.venv/bin/python checks/test_role_exchange.py --output evidence/author-936/role-regression`: exit 0. Controlled reorders and resonance transfers, ordinary mixed sampling, conditional shortcuts, independent visible mathematics, shared delivery filtering and all 30 native grader expectations pass. Both resonance positions survive delivery.
+`/home/jake/Developer/Course_Academy/.venv/bin/python checks/test_role_exchange.py --output evidence/role-regression` exits 0: controlled reorder and resonance transfer, visible mathematics, conditional shortcut checks, shared delivery, and 30 native-grader expectations pass. Delivered mixed resonance positions: 19 first, 17 second; five both-nonresonant cases pass.
 
-`/home/jake/Developer/Course_Academy/.venv/bin/python checks/verify_retained_state.py`: exit 0. All 55 staged artifact hashes, unchanged runtime/source, and eight unaffected mathematical records pass. Reinspected `evidence/render/question-002.png`: second-position resonance and full solution remain readable and consistent. No runtime edit warrants new rendering or unrelated validation.
+`/home/jake/Developer/Course_Academy/.venv/bin/python checks/verify_retained_state.py` exits 0: 55 handoff artifacts, unchanged runtime/source and eight unaffected mathematical records verified. Prior source replay, packaging and rendering evidence remains applicable; no runtime change warrants rerendering.
 
-Evidence: `evidence/author-936/checks.json`, `summary.json`, `report-results.json`, `report-check.log`, `report-staged-validation.json`, `role-regression/results.json`.
-
-Next unfinished action: runner installation at the original prior-review destination using `evidence/review-installation-handoff.json`, then unchanged default regression and fresh independent review. Destination is outside workspace-only authorization. Preserve the strict failing regression. Another unchanged author retry cannot complete the external installation; do not substitute a writable destination or claim closure.
+Commands/results: `evidence/author-940.json`. Next required action: runner installation using existing `evidence/review-installation-handoff.json`, then unchanged strict default regression and fresh independent review. Required destination is outside workspace-only authorization. No external write, database change, engine change or publication attempted. Do not weaken the failing regression. Resume author work when external state or authorization changes; another identical retry cannot complete that installation.

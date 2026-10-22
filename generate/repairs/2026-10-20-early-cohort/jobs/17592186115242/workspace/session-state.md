@@ -1,33 +1,28 @@
-# Author 710 — 2026-10-22
+# Author 713 — 2026-10-22
 
-Preserved completed runtime repairs and all five strict regression declarations.
-Read feedback and retained finding history, required generator/plot/validation
-instructions, original lesson, canonical example and all 17 complete source
-questions. Reused the existing instructional account and prior source analysis.
-No new generator construction defect is demonstrated; no runtime patch was made.
+Preserved the repaired runtime, source coverage, regression declarations, and
+staged inventory replacement proposal. Read feedback, retained findings, source
+lesson and questions, prior account, and shared validation instructions.
 
-Latest failure reproduced first:
+First test:
 `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory`
-Exit 1: five historical banks retain the shortcut; the possible-history witness
-succeeds 64/64.
+Exit 1: all five captured historical banks affected; retained possible-history
+shortcut succeeds 64/64. This remains a failure.
 
-Retained verification:
-`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/author-710`
-Exit 1 solely for the retained inventory finding. Four current-generator
-regressions pass: 17 source banks, construction shortcuts, zero-root cases,
-three batches/14 delivered records and controlled counterfactuals. Native grader:
-7 accepted, 28 rejected. Relocation and protected hashes pass. Reinspected unchanged
-actual-UI screenshot evidence/repair-3/render/question-001.png; readable prompt,
-choices and solution. Affected-inventory evidence paths resolve from the supplied
-author-710 evidence root. All five captured generated inventory questions tested.
+Validation:
+`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/author-713`
+Exit 1 solely for finding 591f580cadb749294588. All four current-generator
+regressions pass: 17 source banks, construction shortcuts, zero roots, three
+batches / 14 delivered records, and relevant/irrelevant counterfactuals. Native
+grading accepts 7 correct and rejects 28 wrong submissions. Relocation, exact
+dependencies, protected input/runtime hashes, and replacement mapping pass.
+Reinspected retained actual-UI screenshot and the source tutorial flowchart.
+All five generated inventory records tested; none untested.
 
-Status: unsupported because finding 591f580cadb749294588 remains unresolved.
-No database, engine, runtime, source, publication or other-job changes were made.
-Evidence: evidence/author-710/{commands,results,inventory-results,disposition}.json.
-Verified replacements: evidence/repair-3/inventory-repair-proposal.json (unapplied).
+Status unsupported. No runtime, database, engine, source, publication, or other-job
+changes. Next unfinished action requires the separate inventory-remediation
+workflow, followed by fresh capture and the unchanged strict pool check. Applying
+that proposal is prohibited by this author task's no-database-change instruction.
+Do not substitute staged records for captured inventory or weaken that check.
 
-Next unfinished step: separate inventory-remediation workflow explicitly requested
-by the retained finding, followed by fresh capture and strict pool recheck.
-This task prohibits that database change. Workspace generator edits cannot alter
-stored answer banks. Keep the strict check; proposed replacements are not actual
-inventory. Repeating the same pass without changed inventory cannot resolve it.
+Evidence: evidence/author-713/{commands,results,inventory-results,disposition}.json.
