@@ -1,24 +1,32 @@
 # Current state
 
-Author-355 reproduced the latest failure first, then ran:
-`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/author-355`.
-Exit 1 solely for finding 591f580cadb749294588: all five captured historical
-banks still exhibit the sign-extremum shortcut (64/64 possible-history witness).
-None of the generated inventory is untested.
+Author-358 read feedback and all five retained findings; the history contains
+358 events repeating the unresolved inventory limitation. Preserved the candidate.
 
-Four current-generator regressions pass: 17 complete source banks and canonical
-replay, zero roots, source family coverage, shortcut/counterfactual checks,
-14 records after shared delivery, native grading (7 accepted / 28 rejected),
-dependency pins and relocated seeded CLI. Replacement mapping and protected
-source/inventory/runtime/manifest hashes verified. Inspected retained actual-UI
-screenshots and tutorial flowchart. No implementation change was justified by
-the unchanged feedback. Completed repairs and strict failing check preserved.
+Executed:
+`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/author-358`
 
-Evidence: evidence/author-355/commands.json, results.json, outcome.md.
+The script runs the latest inventory failure first. It exits 1 solely for
+591f580cadb749294588: five captured historical banks retain the sign-extremum
+shortcut, with a 64/64 possible-history selection witness. No generated inventory
+is untested. The four current-generator regressions pass: complete source replay,
+zero roots, construction shortcuts and finite delivery/counterfactual checks.
+Fourteen records survived shared delivery; native grading accepted 7 correct
+and rejected 28 incorrect submissions. Dependency pins and relocated seeded CLI
+passed. Protected runtime, source, inventory and manifest hashes remain unchanged.
+The existing five-replacement proposal was verified and remains unapplied.
+
+Visually inspected both retained actual-UI screenshots in
+evidence/repair-3/render. Prompt, banks, augmented matrices and worked solutions
+are readable, with no visible clipping or math errors. No new rendering was
+needed because the verified runtime and replacement records are unchanged.
+
+Evidence: evidence/author-358/commands.json, results.json, outcome.md.
 Status unsupported; no runtime, engine, database, publication or image changes.
 
-Next unfinished action is separate inventory remediation, fresh capture, and
-strict recheck. Existing concrete proposal:
-evidence/repair-3/inventory-repair-proposal.json.
-This author job prohibits the database change required to apply it. Repeating
-unchanged author validation cannot alter stored banks.
+Next unfinished action: separately authorized inventory remediation of the five
+affected generated records, followed by fresh inventory capture and strict
+recheck. Concrete proposal: evidence/repair-3/inventory-repair-proposal.json.
+This job prohibits the required database changes. Repeating the unchanged author
+job cannot change stored banks; the feedback demonstrates no new construction
+failure in the current generator.

@@ -1,0 +1,60 @@
+{
+  "command": [
+    "targeted_tests.py"
+  ],
+  "results": [
+    {
+      "finding": "source",
+      "stage": "historical",
+      "passed": false,
+      "error": "ValueError: Unsupported template: q-142367"
+    },
+    {
+      "finding": "source",
+      "stage": "current",
+      "passed": true
+    },
+    {
+      "finding": "batch",
+      "stage": "historical",
+      "passed": false,
+      "error": "AssertionError: Select only the invertibility claim solves all recurring three-checkbox items."
+    },
+    {
+      "finding": "batch",
+      "stage": "current",
+      "passed": true
+    }
+  ],
+  "preflight": {
+    "passed": true,
+    "finding_ids": [
+      "466f48f3b6d8040e8a8c",
+      "aaadd64925a7d245df1d"
+    ],
+    "checks": [
+      {
+        "script": "checks/check_repairs.py",
+        "args": [
+          "source"
+        ],
+        "sha256": "f600f0450604bb62f12011fb3214467c149631344779928e3bc224f646084a58",
+        "exit_code": 0,
+        "stdout": "Source regression passed: 16 complete replays; 11 restored-profile samples; four retained controlled pairs.\n",
+        "stderr": ""
+      },
+      {
+        "script": "checks/check_repairs.py",
+        "args": [
+          "batch"
+        ],
+        "sha256": "f600f0450604bb62f12011fb3214467c149631344779928e3bc224f646084a58",
+        "exit_code": 0,
+        "stdout": "Batch regression passed: exact original order plus five CLI batches; all 30 delivery survivors retain contrasting recurring checkbox decisions.\n",
+        "stderr": ""
+      }
+    ]
+  },
+  "historical_source": "historical-package/17592186124511.py",
+  "historical_batch": "historical-batch.json"
+}

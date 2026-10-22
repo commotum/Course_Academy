@@ -1,0 +1,249 @@
+{
+  "command": "python audit.py",
+  "scope": "runner batch, three-field checkbox subgroup",
+  "strategy": "leave first two unchecked; check only third",
+  "correct": 1,
+  "total": 2,
+  "baseline": 0.14285714285714285,
+  "baseline_explanation": "uniform among seven nonempty subsets of three ordinary options",
+  "records": [
+    {
+      "knowledge_point": {
+        "db_id": 17592186124511,
+        "id": "084a0a83-5ce6-5184-beb7-8ae7b4f1a799",
+        "title": "Identifying True Statements Using the Invertible Matrix Theorem"
+      },
+      "question": {
+        ":question/id": "74fd50f1-e491-56e1-b2b3-6340897b277d",
+        ":question/problem": "Which of the following statements are true, given that $A$ is a $4\\times 4$ matrix and $$\n\\text{Null}(A)=\\{\\begin{bmatrix}-2{x}_{1} \\\\ 0 \\\\ -3{x}_{1} \\\\ 4{x}_{2}\\end{bmatrix}\\mid {x}_{1},{x}_{2}\\in\\mathbb{R}\\}?\n$$\n\nSelect all that apply.",
+        ":question/worked-solution": "Since $A$ is a $4\\times 4$ matrix, the invertible matrix theorem states the following:\n\n$$ A\\text{ is invertible}\\quad\\Longleftrightarrow\\quad\\left\\{\\begin{aligned}\\text{Col}(A)&=\\mathbb{R}^{4} \\\\ \\text{rank}(A)&=4 \\\\ \\text{Null}(A)&=\\{0\\} \\\\ \\text{nullity}(A)&=0\\end{aligned}\\right. $$\n\nThe supplied nullspace can be written as the span of the independent vectors in\n\n$${x}_{1}\\begin{bmatrix}-2 \\\\ 0 \\\\ -3 \\\\ 0\\end{bmatrix} + {x}_{2}\\begin{bmatrix}0 \\\\ 0 \\\\ 0 \\\\ 4\\end{bmatrix}$$\n\nHence $\\text{dim(Null}(A))=2$, so $A$ is not invertible.\n\nWe have $\\text{rank}(A)<4$, $\\text{nullity}(A)>0$, $\\text{Null}(A)\\ne\\{0\\}$, and $\\text{Col}(A)\\ne\\mathbb{R}^{4}$. In particular, $\\text{rank}(A)=2$ and $\\text{nullity}(A)=2$.\n\nWith that in mind, let's examine each statement in turn.\n\n- Statement $\\text{dim(Null}(A))=1$ is false. $\\text{nullity}(A)=2$.\n\n- Statement $A\\text{ is not invertible}$ is true. $A$ is not invertible.\n\n- Statement $\\text{rank}(A)=5$ is false. $\\text{rank}(A)=2$; the rank counts pivot columns.\n\nTherefore, the correct answer is $A\\text{ is not invertible}$ only.",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "a17a9709-219e-57d2-91ae-fa4f604f66d9",
+            ":answer-field/key": "$\\text{rank}(A)=5$",
+            ":answer-field/type": ":answer-field.type/checkbox",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "ea5d5c58-8c63-5028-b620-8b562b6a7491",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "false"
+              },
+              {
+                ":answer/id": "e65deecb-e740-504f-8c19-c90dc44bec06",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "true"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "ea5d5c58-8c63-5028-b620-8b562b6a7491"
+            ]
+          },
+          {
+            ":answer-field/id": "9adffb40-28d2-5805-b941-d376e2bb42a2",
+            ":answer-field/key": "$\\text{dim(Null}(A))=1$",
+            ":answer-field/type": ":answer-field.type/checkbox",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "d7e74cab-4a73-535a-9691-3d1dd605d6d2",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "false"
+              },
+              {
+                ":answer/id": "e8a2ec8f-64cd-5270-9605-3579253b13c3",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "true"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "d7e74cab-4a73-535a-9691-3d1dd605d6d2"
+            ]
+          },
+          {
+            ":answer-field/id": "20917023-794a-5dfd-8423-9faddd9af0ee",
+            ":answer-field/key": "$A\\text{ is not invertible}$",
+            ":answer-field/type": ":answer-field.type/checkbox",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "91fe31d9-93ea-5c5e-890b-50e8cf106895",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "false"
+              },
+              {
+                ":answer/id": "6d63c93a-4016-5a53-bfdb-859c208ed9b3",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "true"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "6d63c93a-4016-5a53-bfdb-859c208ed9b3"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "imt-2.1.0",
+        "seed": 4126872123,
+        "template": "q-142474",
+        "profile": "q-142474",
+        "parameters": {
+          "n": 4,
+          "matrix": [
+            [
+              -2,
+              0
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              -3,
+              0
+            ],
+            [
+              0,
+              4
+            ]
+          ],
+          "claims": [
+            "\\text{dim(Null}(A))=1",
+            "A\\text{ is not invertible}",
+            "\\text{rank}(A)=5"
+          ]
+        },
+        "replay": false,
+        "source": 17592186272347,
+        "source_basis": 5437,
+        "dependency_versions": {
+          "sympy": "1.14.0"
+        },
+        "mathematical_fingerprint": "15726ebe1c1a0b99e2db5555448827fa09ef97486fc37b0635f564db463148d3",
+        "assets": [],
+        "checkbox_selection_policy": "nonempty-checkbox-v1"
+      }
+    },
+    {
+      "knowledge_point": {
+        "db_id": 17592186124511,
+        "id": "084a0a83-5ce6-5184-beb7-8ae7b4f1a799",
+        "title": "Identifying True Statements Using the Invertible Matrix Theorem"
+      },
+      "question": {
+        ":question/id": "6eb67719-0e37-53ed-b4ea-5b0ad9eb65da",
+        ":question/problem": "Which of the following statements are true, given that $A$ is a $4\\times 4$ matrix and $$\n\\text{Null}(A)=\\{\\begin{bmatrix}-4{x}_{1} \\\\ 0 \\\\ 0 \\\\ 3{x}_{1}\\end{bmatrix}\\mid {x}_{1}\\in\\mathbb{R}\\}?\n$$\n\nSelect all that apply.",
+        ":question/worked-solution": "Since $A$ is a $4\\times 4$ matrix, the invertible matrix theorem states the following:\n\n$$ A\\text{ is invertible}\\quad\\Longleftrightarrow\\quad\\left\\{\\begin{aligned}\\text{Col}(A)&=\\mathbb{R}^{4} \\\\ \\text{rank}(A)&=4 \\\\ \\text{Null}(A)&=\\{0\\} \\\\ \\text{nullity}(A)&=0\\end{aligned}\\right. $$\n\nThe supplied nullspace can be written as the span of the independent vectors in\n\n$${x}_{1}\\begin{bmatrix}-4 \\\\ 0 \\\\ 0 \\\\ 3\\end{bmatrix}$$\n\nHence $\\text{dim(Null}(A))=1$, so $A$ is not invertible.\n\nWe have $\\text{rank}(A)<4$, $\\text{nullity}(A)>0$, $\\text{Null}(A)\\ne\\{0\\}$, and $\\text{Col}(A)\\ne\\mathbb{R}^{4}$. In particular, $\\text{rank}(A)=3$ and $\\text{nullity}(A)=1$.\n\nWith that in mind, let's examine each statement in turn.\n\n- Statement $\\text{dim(Null}(A))=1$ is true. $\\text{nullity}(A)=1$.\n\n- Statement $A\\text{ is invertible}$ is false. $A$ is not invertible.\n\n- Statement $\\text{rank}(A)\\ne 4$ is true. $\\text{rank}(A)=3$; the rank counts pivot columns.\n\nTherefore, the correct answer is $\\text{dim(Null}(A))=1$; $\\text{rank}(A)\\ne 4$ only.",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "1b4ea67c-3ab7-566f-9bb5-33779b40208b",
+            ":answer-field/key": "$\\text{dim(Null}(A))=1$",
+            ":answer-field/type": ":answer-field.type/checkbox",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "38c6b9e7-cf46-559b-bae8-ccc1551bd818",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "false"
+              },
+              {
+                ":answer/id": "be954c45-c5f8-5ff6-b152-49c76484c055",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "true"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "be954c45-c5f8-5ff6-b152-49c76484c055"
+            ]
+          },
+          {
+            ":answer-field/id": "44e9b2be-12c0-5354-8f94-1cb3a843b1ed",
+            ":answer-field/key": "$A\\text{ is invertible}$",
+            ":answer-field/type": ":answer-field.type/checkbox",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "ccf75d2d-71f4-5a82-b4b8-a830b0923cdd",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "false"
+              },
+              {
+                ":answer/id": "a570dfe4-89d0-5577-af38-108f567033b7",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "true"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "ccf75d2d-71f4-5a82-b4b8-a830b0923cdd"
+            ]
+          },
+          {
+            ":answer-field/id": "941a5f6b-deda-5422-a827-1b1d951f0a6e",
+            ":answer-field/key": "$\\text{rank}(A)\\ne 4$",
+            ":answer-field/type": ":answer-field.type/checkbox",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "1530ee10-1263-58d8-8ee9-332fa174cb7e",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "false"
+              },
+              {
+                ":answer/id": "39652187-5037-5de8-be0c-b11ad400aa7c",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "true"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "39652187-5037-5de8-be0c-b11ad400aa7c"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "imt-2.1.0",
+        "seed": 4126872126,
+        "template": "q-139977",
+        "profile": "q-139977",
+        "parameters": {
+          "n": 4,
+          "matrix": [
+            [
+              -4
+            ],
+            [
+              0
+            ],
+            [
+              0
+            ],
+            [
+              3
+            ]
+          ],
+          "claims": [
+            "\\text{dim(Null}(A))=1",
+            "A\\text{ is invertible}",
+            "\\text{rank}(A)\\ne 4"
+          ]
+        },
+        "replay": false,
+        "source": 17592186426077,
+        "source_basis": 5437,
+        "dependency_versions": {
+          "sympy": "1.14.0"
+        },
+        "mathematical_fingerprint": "b970c9b0b73243bf512c4881bf281233c59a037f8f10717a844ffa6025f77061",
+        "assets": [],
+        "checkbox_selection_policy": "nonempty-checkbox-v1"
+      }
+    }
+  ],
+  "control": {
+    "correct": 6,
+    "total": 72
+  }
+}
