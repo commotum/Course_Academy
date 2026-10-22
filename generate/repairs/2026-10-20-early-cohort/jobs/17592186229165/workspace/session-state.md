@@ -1,12 +1,10 @@
-# Current state — author 1213
+# Current state — author 1218
 
-Preserved repaired runtime, instructional account, historical inventory evidence and both strict regression declarations. Read feedback and all retained findings; source unchanged.
+Preserved the repaired generator, instructional account, inventory evidence, staged correction, and both strict regression declarations. No runtime changes, external writes, publication, or database changes.
 
-Commands/results: `evidence/author-1213-results.json`.
-- Latest failure reproduced first: strict report check exits 1, `decision_variation has an unresolved decision shortcut` at required external prior-review root. Local correction validates and 26 complete records replay.
-- Role regression exits 0: exact reorder/transfer, signed cases, shared delivery and 30 native-grader checks. Delivered mixed roles: 19 first, 17 second.
-- Retained-state check exits 0: runtime/source unchanged, 55 staged artifact hashes and eight mathematical cases verified.
-- Shortcut comparison exits 0: previous positional strategy 24/24, current 14/24; both roles in every tested cue group.
-- Retained actual UI screenshot `evidence/render/question-002.png` visually inspected; legible.
+Commands and exit codes: `evidence/author-1218/results.json`.
+- Reproduced latest failure first: `checks/check_report_installation.py` exits 1. Required external report still triggers `decision_variation has an unresolved decision shortcut`. Local contract/schema and 26 current-record replays pass.
+- `checks/test_role_exchange.py --output evidence/author-1218/role` exits 0: exact reorder and role transfer, signed boundaries, shared delivery, native acceptance/rejection, and conditional shortcut probes pass.
+- `checks/verify_retained_state.py` exits 0: 55 handoff hashes, unchanged runtime/source and eight independent mathematical cases pass.
 
-Unfinished: runner installation outside authorized workspace at the destination specified in `evidence/review-installation-handoff.json`, strict regression, independent review. No external write attempted. Status unsupported; preserve the failing check. Another unchanged workspace-only author retry cannot install the external report. No new generator defect demonstrated and no runtime edit justified.
+Unfinished finding: 645672a4cd3f9bf609ca. Runner must install the existing staged correction at the external destination listed in `evidence/review-installation-handoff.json`, then rerun the unchanged strict check and obtain independent review. That write is outside this session's authorized workspace. Keep the check failing until installation occurs. Status unsupported. No further generator authoring is requested or justified by this finding; unchanged workspace-only retries cannot close it.
