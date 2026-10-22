@@ -1,0 +1,812 @@
+{
+  "basis": 2418,
+  "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+  "templates": [
+    {
+      "template": "q-14315",
+      "difficulty": "easy",
+      "representative_source_db_ids": [
+        17592186088008
+      ],
+      "source_question_uuid": "695b49d1-9327-503a-b244-1f7f385f59ff",
+      "source_prompt": "Consider the differential equation\n\n$$\n\\frac{\\text{d}y}{\\text{d}x}=\\frac{3{y}^{3}}{x{y}^{2}+y{x}^{2}}.\n$$\n\nIf the transformation $y=v(x)x$ is applied to the differential equation, what is the resulting equation?",
+      "source_worked_solution": "Using the transformation $y=vx$ (where $v=v(x)$), we have\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}x} & =x\\frac{\\text{d}v}{\\text{d}x}+v\\frac{\\text{d}}{\\text{d}x}(x) \\\\  & =x\\frac{\\text{d}v}{\\text{d}x}+v.\\end{aligned}\n$$\n\nSubstituting the above into the given differential equation, we get\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}x} & =\\frac{3{y}^{3}}{x{y}^{2}+y{x}^{2}} \\\\ x\\frac{\\text{d}v}{\\text{d}x}+v & =\\frac{3(vx)^{3}}{x(vx)^{2}+(vx){x}^{2}} \\\\ x\\frac{\\text{d}v}{\\text{d}x}+v & =\\frac{3{v}^{3}{x}^{3}}{v{x}^{3}(v+1)} \\\\ x\\frac{\\text{d}v}{\\text{d}x}+v & =\\frac{3{v}^{3}\\cancel{{x}^{3}}}{v\\cancel{{x}^{3}}(v+1)} \\\\ x\\frac{\\text{d}v}{\\text{d}x} & =\\frac{3{v}^{2}}{v+1}-v \\\\ x\\frac{\\text{d}v}{\\text{d}x} & =\\frac{3{v}^{2}}{v+1}-\\frac{v(v+1)}{v+1} \\\\ x\\frac{\\text{d}v}{\\text{d}x} & =\\frac{3{v}^{2}-{v}^{2}-v}{v+1} \\\\ x\\frac{\\text{d}v}{\\text{d}x} & =\\frac{2{v}^{2}-v}{v+1} \\\\ (\\frac{v+1}{2{v}^{2}-v})\\frac{\\text{d}v}{\\text{d}x} & =\\frac{1}{x}.\\end{aligned}\n$$",
+      "field_key": "selection",
+      "field_type": "radio",
+      "choice_count": 5,
+      "response_shape": "complete separable ODE in v and x, exactly one selection",
+      "source_rhs": "3*y**3/(x**2*y + x*y**2)",
+      "source_features": "All numerical coefficients are integers; x is nonzero; nonlinear operator inputs, homogeneous degrees and term signs are fixed as observed.",
+      "backbone": "numerator coefficient of cubic y term; preserve degree-three homogeneous rational quotient and cancellation of x cubed",
+      "ordered_solution_stages": "Product rule; original equation; substitute y=vx; cancel powers or arguments; subtract v; source-specific common-denominator or reciprocal identity stages; separate. Exact stages preserved by render_source.",
+      "plot_rating": "none",
+      "plots": [],
+      "slots": [
+        {
+          "name": "k",
+          "role": "numerator coefficient of cubic y term; preserve degree-three homogeneous rational quotient and cancellation of x cubed",
+          "observed_values": [
+            3
+          ],
+          "proposed_and_validated_domain": [
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "generalization": "Conservative same-method integer coefficient or argument-scale generalization. No evidence for other bands.",
+          "dependent_components": [
+            "prompt",
+            "all substitution and simplification stages",
+            "correct complete equation",
+            "source bank recipes"
+          ],
+          "fixed_components": "Variables x,y,v; derivative order; y=v(x)x; queried whole ODE; operator nesting; polynomial exponents; all other coefficients; five options; selection field; ordered source solution backbone"
+        }
+      ],
+      "profiles": [
+        {
+          "id": "q-14315",
+          "source_assignments": [
+            17592186088008
+          ],
+          "source_choices": [
+            {
+              "index": 0,
+              "source_answer_uuid": "4514e843-dc0c-5be5-9e96-42ad1bfc870e",
+              "source_exact_value": "(\\frac{v+1}{{v}^{2}+1})\\frac{\\text{d}v}{\\text{d}x}=\\frac{1}{x}",
+              "source_is_correct": false,
+              "parameterized_coefficient": "(v + 1)/(v**2*(k - 2) + 1)",
+              "parameterized_rhs": "1/x",
+              "recipe_contract": "coefficient * dv/dx = rhs; compare full ODE as dv/dx = rhs/coefficient",
+              "source_replay_complete_value": true,
+              "interpretation": "Observed expression pattern; coefficient co-variation is an explicitly bounded inference; no unverified cognitive error claim"
+            },
+            {
+              "index": 1,
+              "source_answer_uuid": "680783c7-a79b-52f6-8c63-e5a4705ea03c",
+              "source_exact_value": "(\\frac{v+1}{2{v}^{2}-v})\\frac{\\text{d}v}{\\text{d}x}=\\frac{1}{x}",
+              "source_is_correct": true,
+              "parameterized_coefficient": "(v + 1)/(v**2*(k - 1) - v)",
+              "parameterized_rhs": "1/x",
+              "recipe_contract": "coefficient * dv/dx = rhs; compare full ODE as dv/dx = rhs/coefficient",
+              "source_replay_complete_value": true,
+              "interpretation": "Observed expression pattern; coefficient co-variation is an explicitly bounded inference; no unverified cognitive error claim"
+            },
+            {
+              "index": 2,
+              "source_answer_uuid": "7a0d77cc-d328-5023-810b-e3a1f565a8d7",
+              "source_exact_value": "(\\frac{2{v}^{2}-v}{v+1})\\frac{\\text{d}v}{\\text{d}x}=x",
+              "source_is_correct": false,
+              "parameterized_coefficient": "(v**2*(k - 1) - v)/(v + 1)",
+              "parameterized_rhs": "x",
+              "recipe_contract": "coefficient * dv/dx = rhs; compare full ODE as dv/dx = rhs/coefficient",
+              "source_replay_complete_value": true,
+              "interpretation": "Observed expression pattern; coefficient co-variation is an explicitly bounded inference; no unverified cognitive error claim"
+            },
+            {
+              "index": 3,
+              "source_answer_uuid": "b9914a60-1aeb-5bf6-9bfb-f20416011265",
+              "source_exact_value": "(\\frac{v+1}{2{v}^{3}-{v}^{2}})\\frac{\\text{d}v}{\\text{d}x}=x",
+              "source_is_correct": false,
+              "parameterized_coefficient": "(v + 1)/(v*(v**2*(k - 1) - v))",
+              "parameterized_rhs": "x",
+              "recipe_contract": "coefficient * dv/dx = rhs; compare full ODE as dv/dx = rhs/coefficient",
+              "source_replay_complete_value": true,
+              "interpretation": "Observed expression pattern; coefficient co-variation is an explicitly bounded inference; no unverified cognitive error claim"
+            },
+            {
+              "index": 4,
+              "source_answer_uuid": "f794ae15-8082-5a6e-b5d7-76a88fb45ece",
+              "source_exact_value": "(\\frac{{v}^{2}+v}{3{v}^{2}-v})\\frac{\\text{d}v}{\\text{d}x}=\\frac{1}{x}",
+              "source_is_correct": false,
+              "parameterized_coefficient": "(v**2 + v)/(k*v**2 - v)",
+              "parameterized_rhs": "1/x",
+              "recipe_contract": "coefficient * dv/dx = rhs; compare full ODE as dv/dx = rhs/coefficient",
+              "source_replay_complete_value": true,
+              "interpretation": "Observed expression pattern; coefficient co-variation is an explicitly bounded inference; no unverified cognitive error claim"
+            }
+          ]
+        }
+      ],
+      "parameterized_rhs": "k*y**3/(x**2*y + x*y**2)",
+      "domains": "x!=0; original RHS denominator and trigonometric poles excluded; when dividing F(v)-v, restrict away from its zeros. Stationary ratios remain solutions of the original ODE and are not claimed equivalent through separation.",
+      "unresolved_differences": [],
+      "source_errors": [],
+      "conditional_components": "At k=2, the first distractor of q-14315 and the second distractor of q-14314 have a zero k-2 coefficient and simplify. The prompt, correct answer method and solution backbone remain unchanged. Complete banks were validated at this boundary; no new operation or mixed profile is introduced."
+    },
+    {
+      "template": "q-8745",
+      "difficulty": "easy",
+      "representative_source_db_ids": [
+        17592186088439
+      ],
+      "source_question_uuid": "6aa0e045-65b8-5bd8-8a66-10e8e133beb0",
+      "source_prompt": "Consider the differential equation\n\n$$\n\\frac{\\text{d}y}{\\text{d}x}=\\operatorname{sec}\u2061(\\frac{x}{y})+\\frac{y}{x}.\n$$\n\nIf the transformation $y=v(x)x$ is applied to the differential equation, what is the resulting equation?",
+      "source_worked_solution": "Using the transformation $y=vx$ (where $v=v(x)$), we have\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}x} & =x\\frac{\\text{d}v}{\\text{d}x}+v\\frac{\\text{d}}{\\text{d}x}(x) \\\\  & =x\\frac{\\text{d}v}{\\text{d}x}+v.\\end{aligned}\n$$\n\nSubstituting the above into the given differential equation, we get\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}x} & =\\operatorname{sec}\u2061(\\frac{x}{y})+\\frac{y}{x} \\\\ x\\frac{\\text{d}v}{\\text{d}x}+v & =\\operatorname{sec}\u2061(\\frac{x}{vx})+\\frac{vx}{x} \\\\ x\\frac{\\text{d}v}{\\text{d}x}+v & =\\operatorname{sec}\u2061(\\frac{1}{v})+v \\\\ x\\frac{\\text{d}v}{\\text{d}x} & =\\operatorname{sec}\u2061(\\frac{1}{v}) \\\\ x\\frac{\\text{d}v}{\\text{d}x} & =\\frac{1}{\\operatorname{cos}\u2061(\\frac{1}{v})} \\\\ \\operatorname{cos}\u2061(\\frac{1}{v})\\frac{\\text{d}v}{\\text{d}x} & =\\frac{1}{x}.\\end{aligned}\n$$",
+      "field_key": "selection",
+      "field_type": "radio",
+      "choice_count": 5,
+      "response_shape": "complete separable ODE in v and x, exactly one selection",
+      "source_rhs": "sec(x/y) + y/x",
+      "source_features": "All numerical coefficients are integers; x is nonzero; nonlinear operator inputs, homogeneous degrees and term signs are fixed as observed.",
+      "backbone": "scale of reciprocal argument k*x/y; preserve sec plus y/x and cosine reciprocal identity",
+      "ordered_solution_stages": "Product rule; original equation; substitute y=vx; cancel powers or arguments; subtract v; source-specific common-denominator or reciprocal identity stages; separate. Exact stages preserved by render_source.",
+      "plot_rating": "none",
+      "plots": [],
+      "slots": [
+        {
+          "name": "k",
+          "role": "scale of reciprocal argument k*x/y; preserve sec plus y/x and cosine reciprocal identity",
+          "observed_values": [
+            1
+          ],
+          "proposed_and_validated_domain": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "generalization": "Conservative same-method integer coefficient or argument-scale generalization. No evidence for other bands.",
+          "dependent_components": [
+            "prompt",
+            "all substitution and simplification stages",
+            "correct complete equation",
+            "source bank recipes"
+          ],
+          "fixed_components": "Variables x,y,v; derivative order; y=v(x)x; queried whole ODE; operator nesting; polynomial exponents; all other coefficients; five options; selection field; ordered source solution backbone"
+        }
+      ],
+      "profiles": [
+        {
+          "id": "q-8745",
+          "source_assignments": [
+            17592186088439
+          ],
+          "source_choices": [
+            {
+              "index": 0,
+              "source_answer_uuid": "0fb6dd3b-cac4-56a1-b66d-59181029c178",
+              "source_exact_value": "\\operatorname{cos}\u2061(\\frac{1}{v})\\frac{\\text{d}v}{\\text{d}x}=\\frac{1}{x}",
+              "source_is_correct": true,
+              "parameterized_coefficient": "cos(k/v)",
+              "parameterized_rhs": "1/x",
+              "recipe_contract": "coefficient * dv/dx = rhs; compare full ODE as dv/dx = rhs/coefficient",
+              "source_replay_complete_value": true,
+              "interpretation": "Observed expression pattern; coefficient co-variation is an explicitly bounded inference; no unverified cognitive error claim"
+            },
+            {
+              "index": 1,
+              "source_answer_uuid": "6c07fbd9-126c-50e4-9dbf-421b28f03956",
+              "source_exact_value": "\\frac{1}{2v+\\operatorname{sec}\u2061(\\frac{1}{v})}\\frac{\\text{d}v}{\\text{d}x}=\\frac{1}{x}",
+              "source_is_correct": false,
+              "parameterized_coefficient": "1/(2*v + sec(k/v))",
+              "parameterized_rhs": "1/x",
+              "recipe_contract": "coefficient * dv/dx = rhs; compare full ODE as dv/dx = rhs/coefficient",
+              "source_replay_complete_value": true,
+              "interpretation": "Observed expression pattern; coefficient co-variation is an explicitly bounded inference; no unverified cognitive error claim"
+            },
+            {
+              "index": 2,
+              "source_answer_uuid": "b595eb22-625b-5bb1-8e42-847d5c60fc39",
+              "source_exact_value": "\\frac{1}{\\operatorname{cos}\u2061(\\frac{1}{v})}\\frac{\\text{d}v}{\\text{d}x}=x",
+              "source_is_correct": false,
+              "parameterized_coefficient": "1/cos(k/v)",
+              "parameterized_rhs": "x",
+              "recipe_contract": "coefficient * dv/dx = rhs; compare full ODE as dv/dx = rhs/coefficient",
+              "source_replay_complete_value": true,
+              "interpretation": "Observed expression pattern; coefficient co-variation is an explicitly bounded inference; no unverified cognitive error claim"
+            },
+            {
+              "index": 3,
+              "source_answer_uuid": "d4a7e3b8-ab6a-52d1-a9b2-9dae8f6322f4",
+              "source_exact_value": "\\operatorname{cos}\u2061(\\frac{1}{v})\\frac{\\text{d}v}{\\text{d}x}=1",
+              "source_is_correct": false,
+              "parameterized_coefficient": "cos(k/v)",
+              "parameterized_rhs": "1",
+              "recipe_contract": "coefficient * dv/dx = rhs; compare full ODE as dv/dx = rhs/coefficient",
+              "source_replay_complete_value": true,
+              "interpretation": "Observed expression pattern; coefficient co-variation is an explicitly bounded inference; no unverified cognitive error claim"
+            },
+            {
+              "index": 4,
+              "source_answer_uuid": "d6351ed0-f215-5d36-b70b-cf1350e332e5",
+              "source_exact_value": "\\frac{1}{v+\\operatorname{sec}\u2061(\\frac{1}{v})}\\frac{\\text{d}v}{\\text{d}x}=\\frac{1}{x}",
+              "source_is_correct": false,
+              "parameterized_coefficient": "1/(v + sec(k/v))",
+              "parameterized_rhs": "1/x",
+              "recipe_contract": "coefficient * dv/dx = rhs; compare full ODE as dv/dx = rhs/coefficient",
+              "source_replay_complete_value": true,
+              "interpretation": "Observed expression pattern; coefficient co-variation is an explicitly bounded inference; no unverified cognitive error claim"
+            }
+          ]
+        }
+      ],
+      "parameterized_rhs": "sec(k*x/y) + y/x",
+      "domains": "x!=0; original RHS denominator and trigonometric poles excluded; when dividing F(v)-v, restrict away from its zeros. Stationary ratios remain solutions of the original ODE and are not claimed equivalent through separation.",
+      "unresolved_differences": [],
+      "source_errors": [],
+      "conditional_components": "No conditional structure beyond coefficient 1 being conventionally omitted in source TeX; algebraic expressions remain exact."
+    },
+    {
+      "template": "q-14314",
+      "difficulty": "easy",
+      "representative_source_db_ids": [
+        17592186275106
+      ],
+      "source_question_uuid": "b4e19450-4e51-548d-b019-a1f8398b116f",
+      "source_prompt": "Consider the differential equation\n\n$$\n\\frac{\\text{d}y}{\\text{d}x}=\\operatorname{tan}\u2061(\\frac{{x}^{2}}{{y}^{2}})+\\frac{3y}{x}.\n$$\n\nIf the transformation $y=v(x)x$ is applied to the differential equation, what is the resulting equation?",
+      "source_worked_solution": "Using the transformation $y=vx$ (where $v=v(x)$), we have\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}x} & =x\\frac{\\text{d}v}{\\text{d}x}+v\\frac{\\text{d}}{\\text{d}x}(x) \\\\  & =x\\frac{\\text{d}v}{\\text{d}x}+v.\\end{aligned}\n$$\n\nSubstituting the above into the given differential equation, we get\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}x} & =\\operatorname{tan}\u2061(\\frac{{x}^{2}}{{y}^{2}})+\\frac{3y}{x} \\\\ x\\frac{\\text{d}v}{\\text{d}x}+v & =\\operatorname{tan}\u2061(\\frac{{x}^{2}}{{v}^{2}{x}^{2}})+\\frac{3vx}{x} \\\\ x\\frac{\\text{d}v}{\\text{d}x}+v & =\\operatorname{tan}\u2061(\\frac{1}{{v}^{2}})+3v \\\\ x\\frac{\\text{d}v}{\\text{d}x} & =\\operatorname{tan}\u2061(\\frac{1}{{v}^{2}})+2v \\\\ (\\frac{1}{\\operatorname{tan}\u2061(\\frac{1}{{v}^{2}})+2v})\\frac{\\text{d}v}{\\text{d}x} & =\\frac{1}{x}.\\end{aligned}\n$$",
+      "field_key": "selection",
+      "field_type": "radio",
+      "choice_count": 5,
+      "response_shape": "complete separable ODE in v and x, exactly one selection",
+      "source_rhs": "tan(x**2/y**2) + 3*y/x",
+      "source_features": "All numerical coefficients are integers; x is nonzero; nonlinear operator inputs, homogeneous degrees and term signs are fixed as observed.",
+      "backbone": "coefficient of y/x outside tangent of x squared/y squared; preserve exponent two and subtract one v",
+      "ordered_solution_stages": "Product rule; original equation; substitute y=vx; cancel powers or arguments; subtract v; source-specific common-denominator or reciprocal identity stages; separate. Exact stages preserved by render_source.",
+      "plot_rating": "none",
+      "plots": [],
+      "slots": [
+        {
+          "name": "k",
+          "role": "coefficient of y/x outside tangent of x squared/y squared; preserve exponent two and subtract one v",
+          "observed_values": [
+            3
+          ],
+          "proposed_and_validated_domain": [
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "generalization": "Conservative same-method integer coefficient or argument-scale generalization. No evidence for other bands.",
+          "dependent_components": [
+            "prompt",
+            "all substitution and simplification stages",
+            "correct complete equation",
+            "source bank recipes"
+          ],
+          "fixed_components": "Variables x,y,v; derivative order; y=v(x)x; queried whole ODE; operator nesting; polynomial exponents; all other coefficients; five options; selection field; ordered source solution backbone"
+        }
+      ],
+      "profiles": [
+        {
+          "id": "q-14314",
+          "source_assignments": [
+            17592186275106
+          ],
+          "source_choices": [
+            {
+              "index": 0,
+              "source_answer_uuid": "38a63a78-d8f8-520d-9e1a-a547cbc802ca",
+              "source_exact_value": "(\\operatorname{tan}\u2061(\\frac{1}{{v}^{2}})+2v)\\frac{\\text{d}v}{\\text{d}x}=x",
+              "source_is_correct": false,
+              "parameterized_coefficient": "v*(k - 1) + tan(v**(-2))",
+              "parameterized_rhs": "x",
+              "recipe_contract": "coefficient * dv/dx = rhs; compare full ODE as dv/dx = rhs/coefficient",
+              "source_replay_complete_value": true,
+              "interpretation": "Observed expression pattern; coefficient co-variation is an explicitly bounded inference; no unverified cognitive error claim"
+            },
+            {
+              "index": 1,
+              "source_answer_uuid": "5798a05b-9e8b-5365-ba0d-17eaf8a8607b",
+              "source_exact_value": "(\\frac{1}{\\operatorname{tan}\u2061(\\frac{1}{v})+v})\\frac{\\text{d}v}{\\text{d}x}=\\frac{1}{x}",
+              "source_is_correct": false,
+              "parameterized_coefficient": "1/(v*(k - 2) + tan(1/v))",
+              "parameterized_rhs": "1/x",
+              "recipe_contract": "coefficient * dv/dx = rhs; compare full ODE as dv/dx = rhs/coefficient",
+              "source_replay_complete_value": true,
+              "interpretation": "Observed expression pattern; coefficient co-variation is an explicitly bounded inference; no unverified cognitive error claim"
+            },
+            {
+              "index": 2,
+              "source_answer_uuid": "610c7517-5cb8-53dc-8041-977fdbde02dd",
+              "source_exact_value": "(\\frac{1}{\\operatorname{tan}\u2061(\\frac{1}{{v}^{2}})+2v})\\frac{\\text{d}v}{\\text{d}x}=\\frac{1}{x}",
+              "source_is_correct": true,
+              "parameterized_coefficient": "1/(v*(k - 1) + tan(v**(-2)))",
+              "parameterized_rhs": "1/x",
+              "recipe_contract": "coefficient * dv/dx = rhs; compare full ODE as dv/dx = rhs/coefficient",
+              "source_replay_complete_value": true,
+              "interpretation": "Observed expression pattern; coefficient co-variation is an explicitly bounded inference; no unverified cognitive error claim"
+            },
+            {
+              "index": 3,
+              "source_answer_uuid": "6dd95ac9-8774-563b-bda6-a758e1302a3e",
+              "source_exact_value": "(\\operatorname{tan}\u2061(\\frac{1}{v})+2{v}^{2})\\frac{\\text{d}v}{\\text{d}x}=\\frac{1}{x}",
+              "source_is_correct": false,
+              "parameterized_coefficient": "v**2*(k - 1) + tan(1/v)",
+              "parameterized_rhs": "1/x",
+              "recipe_contract": "coefficient * dv/dx = rhs; compare full ODE as dv/dx = rhs/coefficient",
+              "source_replay_complete_value": true,
+              "interpretation": "Observed expression pattern; coefficient co-variation is an explicitly bounded inference; no unverified cognitive error claim"
+            },
+            {
+              "index": 4,
+              "source_answer_uuid": "df13e973-3a12-5311-937b-d3dcae4d2226",
+              "source_exact_value": "(\\operatorname{tan}\u2061(\\frac{1}{{v}^{2}}))\\frac{\\text{d}v}{\\text{d}x}=x",
+              "source_is_correct": false,
+              "parameterized_coefficient": "tan(v**(-2))",
+              "parameterized_rhs": "x",
+              "recipe_contract": "coefficient * dv/dx = rhs; compare full ODE as dv/dx = rhs/coefficient",
+              "source_replay_complete_value": true,
+              "interpretation": "Observed expression pattern; coefficient co-variation is an explicitly bounded inference; no unverified cognitive error claim"
+            }
+          ]
+        }
+      ],
+      "parameterized_rhs": "k*y/x + tan(x**2/y**2)",
+      "domains": "x!=0; original RHS denominator and trigonometric poles excluded; when dividing F(v)-v, restrict away from its zeros. Stationary ratios remain solutions of the original ODE and are not claimed equivalent through separation.",
+      "unresolved_differences": [],
+      "source_errors": [],
+      "conditional_components": "At k=2, the first distractor of q-14315 and the second distractor of q-14314 have a zero k-2 coefficient and simplify. The prompt, correct answer method and solution backbone remain unchanged. Complete banks were validated at this boundary; no new operation or mixed profile is introduced."
+    },
+    {
+      "template": "q-14316",
+      "difficulty": "easy",
+      "representative_source_db_ids": [
+        17592186275107
+      ],
+      "source_question_uuid": "f48980a9-f2e7-5b29-aaff-6351dbf19d07",
+      "source_prompt": "Consider the differential equation\n\n$$\n\\frac{\\text{d}y}{\\text{d}x}=\\frac{{x}^{2}-xy+{y}^{2}}{{y}^{2}+{x}^{2}}.\n$$\n\nIf the transformation $y=v(x)x$ is applied to the differential equation, what is the resulting equation?",
+      "source_worked_solution": "Using the transformation $y=vx$ (where $v=v(x)$), we have\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}x} & =x\\frac{\\text{d}v}{\\text{d}x}+v\\frac{\\text{d}}{\\text{d}x}(x) \\\\  & =x\\frac{\\text{d}v}{\\text{d}x}+v.\\end{aligned}\n$$\n\nSubstituting the above into the given differential equation, we get\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}x} & =\\frac{{x}^{2}-xy+{y}^{2}}{{y}^{2}+{x}^{2}} \\\\ x\\frac{\\text{d}v}{\\text{d}x}+v & =\\frac{{x}^{2}-x(vx)+(vx)^{2}}{(vx)^{2}+{x}^{2}} \\\\ x\\frac{\\text{d}v}{\\text{d}x}+v & =\\frac{{x}^{2}(1-v+{v}^{2})}{{x}^{2}({v}^{2}+1)} \\\\ x\\frac{\\text{d}v}{\\text{d}x}+v & =\\frac{1-v+{v}^{2}}{{v}^{2}+1} \\\\ x\\frac{\\text{d}v}{\\text{d}x} & =\\frac{1-v+{v}^{2}}{{v}^{2}+1}-v \\\\ x\\frac{\\text{d}v}{\\text{d}x} & =\\frac{1-v+{v}^{2}-{v}^{3}-v}{{v}^{2}+1} \\\\ x\\frac{\\text{d}v}{\\text{d}x} & =\\frac{1-2v+{v}^{2}-{v}^{3}}{{v}^{2}+1} \\\\ \\frac{{v}^{2}+1}{1-2v+{v}^{2}-{v}^{3}}\\frac{\\text{d}v}{\\text{d}x} & =\\frac{1}{x}.\\end{aligned}\n$$",
+      "field_key": "selection",
+      "field_type": "radio",
+      "choice_count": 5,
+      "response_shape": "complete separable ODE in v and x, exactly one selection",
+      "source_rhs": "(x**2 - x*y + y**2)/(x**2 + y**2)",
+      "source_features": "All numerical coefficients are integers; x is nonzero; nonlinear operator inputs, homogeneous degrees and term signs are fixed as observed.",
+      "backbone": "coefficient of x squared in numerator; preserve degree-two quotient, denominator y squared+x squared and combine over that denominator",
+      "ordered_solution_stages": "Product rule; original equation; substitute y=vx; cancel powers or arguments; subtract v; source-specific common-denominator or reciprocal identity stages; separate. Exact stages preserved by render_source.",
+      "plot_rating": "none",
+      "plots": [],
+      "slots": [
+        {
+          "name": "k",
+          "role": "coefficient of x squared in numerator; preserve degree-two quotient, denominator y squared+x squared and combine over that denominator",
+          "observed_values": [
+            1
+          ],
+          "proposed_and_validated_domain": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "generalization": "Conservative same-method integer coefficient or argument-scale generalization. No evidence for other bands.",
+          "dependent_components": [
+            "prompt",
+            "all substitution and simplification stages",
+            "correct complete equation",
+            "source bank recipes"
+          ],
+          "fixed_components": "Variables x,y,v; derivative order; y=v(x)x; queried whole ODE; operator nesting; polynomial exponents; all other coefficients; five options; selection field; ordered source solution backbone"
+        }
+      ],
+      "profiles": [
+        {
+          "id": "q-14316",
+          "source_assignments": [
+            17592186275107
+          ],
+          "source_choices": [
+            {
+              "index": 0,
+              "source_answer_uuid": "03125177-b036-57f5-a72a-3f4420748f87",
+              "source_exact_value": "\\frac{{v}^{2}+1}{1+v+4{v}^{2}}\\frac{\\text{d}v}{\\text{d}x}=\\frac{1}{x}",
+              "source_is_correct": false,
+              "parameterized_coefficient": "(v**2 + 1)/(k + 4*v**2 + v)",
+              "parameterized_rhs": "1/x",
+              "recipe_contract": "coefficient * dv/dx = rhs; compare full ODE as dv/dx = rhs/coefficient",
+              "source_replay_complete_value": true,
+              "interpretation": "Observed expression pattern; coefficient co-variation is an explicitly bounded inference; no unverified cognitive error claim"
+            },
+            {
+              "index": 1,
+              "source_answer_uuid": "28abf496-f945-5a46-836c-05b71cb7c41f",
+              "source_exact_value": "\\frac{{v}^{2}+1}{1-2v+{v}^{2}-{v}^{3}}\\frac{\\text{d}v}{\\text{d}x}=\\frac{1}{x}",
+              "source_is_correct": true,
+              "parameterized_coefficient": "(v**2 + 1)/(k - v**3 + v**2 - 2*v)",
+              "parameterized_rhs": "1/x",
+              "recipe_contract": "coefficient * dv/dx = rhs; compare full ODE as dv/dx = rhs/coefficient",
+              "source_replay_complete_value": true,
+              "interpretation": "Observed expression pattern; coefficient co-variation is an explicitly bounded inference; no unverified cognitive error claim"
+            },
+            {
+              "index": 2,
+              "source_answer_uuid": "6576c1eb-f6de-5994-856a-222b13c2c25f",
+              "source_exact_value": "\\frac{1-3v-4{v}^{2}}{1+{v}^{2}}\\frac{\\text{d}v}{\\text{d}x}=x",
+              "source_is_correct": false,
+              "parameterized_coefficient": "(k - 4*v**2 - 3*v)/(v**2 + 1)",
+              "parameterized_rhs": "x",
+              "recipe_contract": "coefficient * dv/dx = rhs; compare full ODE as dv/dx = rhs/coefficient",
+              "source_replay_complete_value": true,
+              "interpretation": "Observed expression pattern; coefficient co-variation is an explicitly bounded inference; no unverified cognitive error claim"
+            },
+            {
+              "index": 3,
+              "source_answer_uuid": "67a7dc74-a18e-510b-960e-2d9d5a7efdaa",
+              "source_exact_value": "\\frac{{v}^{2}+1}{1-v-{v}^{3}}\\frac{\\text{d}v}{\\text{d}x}=\\frac{1}{x}",
+              "source_is_correct": false,
+              "parameterized_coefficient": "(v**2 + 1)/(k - v**3 - v)",
+              "parameterized_rhs": "1/x",
+              "recipe_contract": "coefficient * dv/dx = rhs; compare full ODE as dv/dx = rhs/coefficient",
+              "source_replay_complete_value": true,
+              "interpretation": "Observed expression pattern; coefficient co-variation is an explicitly bounded inference; no unverified cognitive error claim"
+            },
+            {
+              "index": 4,
+              "source_answer_uuid": "f3fe81de-e037-50b5-aa26-4a8e804b13c6",
+              "source_exact_value": "\\frac{{v}^{2}+1}{1-3v-4{v}^{2}}\\frac{\\text{d}v}{\\text{d}x}=1",
+              "source_is_correct": false,
+              "parameterized_coefficient": "(v**2 + 1)/(k - 4*v**2 - 3*v)",
+              "parameterized_rhs": "1",
+              "recipe_contract": "coefficient * dv/dx = rhs; compare full ODE as dv/dx = rhs/coefficient",
+              "source_replay_complete_value": true,
+              "interpretation": "Observed expression pattern; coefficient co-variation is an explicitly bounded inference; no unverified cognitive error claim"
+            }
+          ]
+        }
+      ],
+      "parameterized_rhs": "(k*x**2 - x*y + y**2)/(x**2 + y**2)",
+      "domains": "x!=0; original RHS denominator and trigonometric poles excluded; when dividing F(v)-v, restrict away from its zeros. Stationary ratios remain solutions of the original ODE and are not claimed equivalent through separation.",
+      "unresolved_differences": [],
+      "source_errors": [],
+      "conditional_components": "No conditional structure beyond coefficient 1 being conventionally omitted in source TeX; algebraic expressions remain exact."
+    },
+    {
+      "template": "q-14323",
+      "difficulty": "easy",
+      "representative_source_db_ids": [
+        17592186275112
+      ],
+      "source_question_uuid": "590e41cc-f7e5-52a9-8e4b-08ef663bf420",
+      "source_prompt": "Consider the differential equation\n\n$$\n\\frac{\\text{d}y}{\\text{d}x}=\\frac{{x}^{3}+x{y}^{2}-{y}^{3}}{x{y}^{2}+2y{x}^{2}}.\n$$\n\nIf the transformation $y=v(x)x$ is applied to the differential equation, what is the resulting equation?",
+      "source_worked_solution": "Using the transformation $y=vx$ (where $v=v(x)$), we have\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}x} & =x\\frac{\\text{d}v}{\\text{d}x}+v\\frac{\\text{d}}{\\text{d}x}(x) \\\\  & =x\\frac{\\text{d}v}{\\text{d}x}+v.\\end{aligned}\n$$\n\nSubstituting the above into the given differential equation, we get\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}x} & =\\frac{{x}^{3}+x{y}^{2}-{y}^{3}}{x{y}^{2}+2y{x}^{2}} \\\\ x\\frac{\\text{d}v}{\\text{d}x}+v & =\\frac{{x}^{3}+x(vx)^{2}-(vx)^{3}}{x(vx)^{2}+2(vx){x}^{2}} \\\\ x\\frac{\\text{d}v}{\\text{d}x}+v & =\\frac{{x}^{3}(1+{v}^{2}-{v}^{3})}{{x}^{3}({v}^{2}+2v)} \\\\ x\\frac{\\text{d}v}{\\text{d}x}+v & =\\frac{1+{v}^{2}-{v}^{3}}{{v}^{2}+2v} \\\\ x\\frac{\\text{d}v}{\\text{d}x} & =\\frac{1+{v}^{2}-{v}^{3}}{{v}^{2}+2v}-v \\\\ x\\frac{\\text{d}v}{\\text{d}x} & =\\frac{1+{v}^{2}-{v}^{3}-{v}^{3}-2{v}^{2}}{{v}^{2}+2v} \\\\ x\\frac{\\text{d}v}{\\text{d}x} & =\\frac{1-{v}^{2}-2{v}^{3}}{{v}^{2}+2v} \\\\ \\frac{{v}^{2}+2v}{1-{v}^{2}-2{v}^{3}}\\frac{\\text{d}v}{\\text{d}x} & =\\frac{1}{x}.\\end{aligned}\n$$",
+      "field_key": "selection",
+      "field_type": "radio",
+      "choice_count": 5,
+      "response_shape": "complete separable ODE in v and x, exactly one selection",
+      "source_rhs": "(x**3 + x*y**2 - y**3)/(2*x**2*y + x*y**2)",
+      "source_features": "All numerical coefficients are integers; x is nonzero; nonlinear operator inputs, homogeneous degrees and term signs are fixed as observed.",
+      "backbone": "coefficient of x cubed in numerator; preserve degree-three quotient and denominator x*y squared+2y*x squared",
+      "ordered_solution_stages": "Product rule; original equation; substitute y=vx; cancel powers or arguments; subtract v; source-specific common-denominator or reciprocal identity stages; separate. Exact stages preserved by render_source.",
+      "plot_rating": "none",
+      "plots": [],
+      "slots": [
+        {
+          "name": "k",
+          "role": "coefficient of x cubed in numerator; preserve degree-three quotient and denominator x*y squared+2y*x squared",
+          "observed_values": [
+            1
+          ],
+          "proposed_and_validated_domain": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "generalization": "Conservative same-method integer coefficient or argument-scale generalization. No evidence for other bands.",
+          "dependent_components": [
+            "prompt",
+            "all substitution and simplification stages",
+            "correct complete equation",
+            "source bank recipes"
+          ],
+          "fixed_components": "Variables x,y,v; derivative order; y=v(x)x; queried whole ODE; operator nesting; polynomial exponents; all other coefficients; five options; selection field; ordered source solution backbone"
+        }
+      ],
+      "profiles": [
+        {
+          "id": "q-14323",
+          "source_assignments": [
+            17592186275112
+          ],
+          "source_choices": [
+            {
+              "index": 0,
+              "source_answer_uuid": "3a81aecc-db87-5864-bf4a-a412676cae3f",
+              "source_exact_value": "\\frac{{v}^{2}-1}{1-2{v}^{3}}\\frac{\\text{d}v}{\\text{d}x}=\\frac{1}{x}",
+              "source_is_correct": false,
+              "parameterized_coefficient": "(v**2 - 1)/(k - 2*v**3)",
+              "parameterized_rhs": "1/x",
+              "recipe_contract": "coefficient * dv/dx = rhs; compare full ODE as dv/dx = rhs/coefficient",
+              "source_replay_complete_value": true,
+              "interpretation": "Observed expression pattern; coefficient co-variation is an explicitly bounded inference; no unverified cognitive error claim"
+            },
+            {
+              "index": 1,
+              "source_answer_uuid": "665d6fcb-2060-5376-afc2-497f1e6ffabe",
+              "source_exact_value": "\\frac{{v}^{3}+2{v}^{2}}{1-{v}^{2}}\\frac{\\text{d}v}{\\text{d}x}=x",
+              "source_is_correct": false,
+              "parameterized_coefficient": "(v**3 + 2*v**2)/(k - v**2)",
+              "parameterized_rhs": "x",
+              "recipe_contract": "coefficient * dv/dx = rhs; compare full ODE as dv/dx = rhs/coefficient",
+              "source_replay_complete_value": true,
+              "interpretation": "Observed expression pattern; coefficient co-variation is an explicitly bounded inference; no unverified cognitive error claim"
+            },
+            {
+              "index": 2,
+              "source_answer_uuid": "7e690b1e-0568-56f8-9cca-4a717d1758a3",
+              "source_exact_value": "\\frac{{v}^{2}+2v}{1-{v}^{2}-2{v}^{3}}\\frac{\\text{d}v}{\\text{d}x}=\\frac{1}{x}",
+              "source_is_correct": true,
+              "parameterized_coefficient": "(v**2 + 2*v)/(k - 2*v**3 - v**2)",
+              "parameterized_rhs": "1/x",
+              "recipe_contract": "coefficient * dv/dx = rhs; compare full ODE as dv/dx = rhs/coefficient",
+              "source_replay_complete_value": true,
+              "interpretation": "Observed expression pattern; coefficient co-variation is an explicitly bounded inference; no unverified cognitive error claim"
+            },
+            {
+              "index": 3,
+              "source_answer_uuid": "90821e35-81ef-5b74-b430-242af8a269fe",
+              "source_exact_value": "\\frac{v+2}{1-3v-2{v}^{2}}\\frac{\\text{d}v}{\\text{d}x}=\\frac{1}{x}",
+              "source_is_correct": false,
+              "parameterized_coefficient": "(v + 2)/(k - 2*v**2 - 3*v)",
+              "parameterized_rhs": "1/x",
+              "recipe_contract": "coefficient * dv/dx = rhs; compare full ODE as dv/dx = rhs/coefficient",
+              "source_replay_complete_value": true,
+              "interpretation": "Observed expression pattern; coefficient co-variation is an explicitly bounded inference; no unverified cognitive error claim"
+            },
+            {
+              "index": 4,
+              "source_answer_uuid": "cc67682d-4991-58c9-b814-c26b2c002615",
+              "source_exact_value": "\\frac{1-2v-3{v}^{2}}{{v}^{2}+2v}\\frac{\\text{d}v}{\\text{d}x}=x",
+              "source_is_correct": false,
+              "parameterized_coefficient": "(k - 3*v**2 - 2*v)/(v**2 + 2*v)",
+              "parameterized_rhs": "x",
+              "recipe_contract": "coefficient * dv/dx = rhs; compare full ODE as dv/dx = rhs/coefficient",
+              "source_replay_complete_value": true,
+              "interpretation": "Observed expression pattern; coefficient co-variation is an explicitly bounded inference; no unverified cognitive error claim"
+            }
+          ]
+        }
+      ],
+      "parameterized_rhs": "(k*x**3 + x*y**2 - y**3)/(2*x**2*y + x*y**2)",
+      "domains": "x!=0; original RHS denominator and trigonometric poles excluded; when dividing F(v)-v, restrict away from its zeros. Stationary ratios remain solutions of the original ODE and are not claimed equivalent through separation.",
+      "unresolved_differences": [],
+      "source_errors": [],
+      "conditional_components": "No conditional structure beyond coefficient 1 being conventionally omitted in source TeX; algebraic expressions remain exact."
+    },
+    {
+      "template": "q-8747",
+      "difficulty": "easy",
+      "representative_source_db_ids": [
+        17592186354571
+      ],
+      "source_question_uuid": "6ed802b3-b056-5f83-8a03-3932e7ced220",
+      "source_prompt": "Consider the differential equation\n\n$$\n\\frac{\\text{d}y}{\\text{d}x}={e}^{\\operatorname{sin}\u2061(\\frac{y}{x})}.\n$$\n\nIf the transformation $y=v(x)x$ is applied to the differential equation, what is the resulting equation?",
+      "source_worked_solution": "Using the transformation $y=vx$ (where $v=v(x)$), we have\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}x} & =x\\frac{\\text{d}v}{\\text{d}x}+v\\frac{\\text{d}}{\\text{d}x}(x) \\\\  & =x\\frac{\\text{d}v}{\\text{d}x}+v.\\end{aligned}\n$$\n\nSubstituting the above into the given differential equation, we get\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}x} & ={e}^{\\operatorname{sin}\u2061(\\frac{y}{x})} \\\\ x\\frac{\\text{d}v}{\\text{d}x}+v & ={e}^{\\operatorname{sin}\u2061(\\frac{vx}{x})} \\\\ x\\frac{\\text{d}v}{\\text{d}x}+v & ={e}^{\\operatorname{sin}\u2061v} \\\\ x\\frac{\\text{d}v}{\\text{d}x} & ={e}^{\\operatorname{sin}\u2061v}-v \\\\ \\frac{1}{{e}^{\\operatorname{sin}\u2061v}-v}\\frac{\\text{d}v}{\\text{d}x} & =\\frac{1}{x}.\\end{aligned}\n$$",
+      "field_key": "selection",
+      "field_type": "radio",
+      "choice_count": 5,
+      "response_shape": "complete separable ODE in v and x, exactly one selection",
+      "source_rhs": "exp(sin(y/x))",
+      "source_features": "All numerical coefficients are integers; x is nonzero; nonlinear operator inputs, homogeneous degrees and term signs are fixed as observed.",
+      "backbone": "scale of sine argument inside exponential; preserve exponential of sine and subtract v before separation",
+      "ordered_solution_stages": "Product rule; original equation; substitute y=vx; cancel powers or arguments; subtract v; source-specific common-denominator or reciprocal identity stages; separate. Exact stages preserved by render_source.",
+      "plot_rating": "none",
+      "plots": [],
+      "slots": [
+        {
+          "name": "k",
+          "role": "scale of sine argument inside exponential; preserve exponential of sine and subtract v before separation",
+          "observed_values": [
+            1
+          ],
+          "proposed_and_validated_domain": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "generalization": "Conservative same-method integer coefficient or argument-scale generalization. No evidence for other bands.",
+          "dependent_components": [
+            "prompt",
+            "all substitution and simplification stages",
+            "correct complete equation",
+            "source bank recipes"
+          ],
+          "fixed_components": "Variables x,y,v; derivative order; y=v(x)x; queried whole ODE; operator nesting; polynomial exponents; all other coefficients; five options; selection field; ordered source solution backbone"
+        }
+      ],
+      "profiles": [
+        {
+          "id": "q-8747",
+          "source_assignments": [
+            17592186354571
+          ],
+          "source_choices": [
+            {
+              "index": 0,
+              "source_answer_uuid": "0824f56f-20f9-5a23-a152-8fec76baadc5",
+              "source_exact_value": "\\frac{1}{{e}^{\\operatorname{cos}\u2061v}+3}\\frac{\\text{d}v}{\\text{d}x}=\\frac{1}{x}",
+              "source_is_correct": false,
+              "parameterized_coefficient": "1/(exp(cos(k*v)) + 3)",
+              "parameterized_rhs": "1/x",
+              "recipe_contract": "coefficient * dv/dx = rhs; compare full ODE as dv/dx = rhs/coefficient",
+              "source_replay_complete_value": true,
+              "interpretation": "Observed expression pattern; coefficient co-variation is an explicitly bounded inference; no unverified cognitive error claim"
+            },
+            {
+              "index": 1,
+              "source_answer_uuid": "c63c9edf-13ba-5348-a784-f544f8f7798a",
+              "source_exact_value": "({e}^{\\operatorname{sin}\u2061v}-3{v}^{2})\\frac{\\text{d}v}{\\text{d}x}=1",
+              "source_is_correct": false,
+              "parameterized_coefficient": "-3*v**2 + exp(sin(k*v))",
+              "parameterized_rhs": "1",
+              "recipe_contract": "coefficient * dv/dx = rhs; compare full ODE as dv/dx = rhs/coefficient",
+              "source_replay_complete_value": true,
+              "interpretation": "Observed expression pattern; coefficient co-variation is an explicitly bounded inference; no unverified cognitive error claim"
+            },
+            {
+              "index": 2,
+              "source_answer_uuid": "c7bb8d1f-0d25-549e-bf56-0e3e7da24b29",
+              "source_exact_value": "\\frac{1}{{e}^{\\operatorname{cos}\u2061v}-5v}\\frac{\\text{d}v}{\\text{d}x}=1",
+              "source_is_correct": false,
+              "parameterized_coefficient": "1/(-5*v + exp(cos(k*v)))",
+              "parameterized_rhs": "1",
+              "recipe_contract": "coefficient * dv/dx = rhs; compare full ODE as dv/dx = rhs/coefficient",
+              "source_replay_complete_value": true,
+              "interpretation": "Observed expression pattern; coefficient co-variation is an explicitly bounded inference; no unverified cognitive error claim"
+            },
+            {
+              "index": 3,
+              "source_answer_uuid": "ea09a4b8-ac8e-5fa4-97cc-6fd6b8f5c6b9",
+              "source_exact_value": "{e}^{\\operatorname{sin}\u2061v}\\frac{\\text{d}v}{\\text{d}x}=\\frac{1}{x}",
+              "source_is_correct": false,
+              "parameterized_coefficient": "exp(sin(k*v))",
+              "parameterized_rhs": "1/x",
+              "recipe_contract": "coefficient * dv/dx = rhs; compare full ODE as dv/dx = rhs/coefficient",
+              "source_replay_complete_value": true,
+              "interpretation": "Observed expression pattern; coefficient co-variation is an explicitly bounded inference; no unverified cognitive error claim"
+            },
+            {
+              "index": 4,
+              "source_answer_uuid": "f9dfbe1c-3320-559f-b09b-1366b8a1de9a",
+              "source_exact_value": "\\frac{1}{{e}^{\\operatorname{sin}\u2061v}-v}\\frac{\\text{d}v}{\\text{d}x}=\\frac{1}{x}",
+              "source_is_correct": true,
+              "parameterized_coefficient": "1/(-v + exp(sin(k*v)))",
+              "parameterized_rhs": "1/x",
+              "recipe_contract": "coefficient * dv/dx = rhs; compare full ODE as dv/dx = rhs/coefficient",
+              "source_replay_complete_value": true,
+              "interpretation": "Observed expression pattern; coefficient co-variation is an explicitly bounded inference; no unverified cognitive error claim"
+            }
+          ]
+        }
+      ],
+      "parameterized_rhs": "exp(sin(k*y/x))",
+      "domains": "x!=0; original RHS denominator and trigonometric poles excluded; when dividing F(v)-v, restrict away from its zeros. Stationary ratios remain solutions of the original ODE and are not claimed equivalent through separation.",
+      "unresolved_differences": [],
+      "source_errors": [],
+      "conditional_components": "No conditional structure beyond coefficient 1 being conventionally omitted in source TeX; algebraic expressions remain exact."
+    },
+    {
+      "template": "q-90601",
+      "difficulty": "easy",
+      "representative_source_db_ids": [
+        17592186357460
+      ],
+      "source_question_uuid": "647415db-3b65-5b2e-8b3d-f70381af49e3",
+      "source_prompt": "Consider the differential equation\n\n$$\n\\frac{\\text{d}y}{\\text{d}x}=\\frac{y}{x}-2\\operatorname{sin}\u2061(\\frac{y}{x}).\n$$\n\nIf the transformation $y=v(x)x$ is applied to the differential equation, what is the resulting equation?",
+      "source_worked_solution": "Using the transformation $y=vx$ (where $v=v(x)$), we have\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}x} & =x\\frac{\\text{d}v}{\\text{d}x}+v\\frac{\\text{d}}{\\text{d}x}(x) \\\\  & =x\\frac{\\text{d}v}{\\text{d}x}+v.\\end{aligned}\n$$\n\nSubstituting the above into the given differential equation, we get\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}x} & =\\frac{y}{x}-2\\operatorname{sin}\u2061(\\frac{y}{x}) \\\\ x\\frac{\\text{d}v}{\\text{d}x}+v & =\\frac{vx}{x}-2\\operatorname{sin}\u2061(\\frac{vx}{x}) \\\\ x\\frac{\\text{d}v}{\\text{d}x}+v & =v-2\\operatorname{sin}\u2061v \\\\ x\\frac{\\text{d}v}{\\text{d}x} & =-2\\operatorname{sin}\u2061v \\\\ \\frac{1}{\\operatorname{sin}\u2061v}\\frac{\\text{d}v}{\\text{d}x} & =-\\frac{2}{x}.\\end{aligned}\n$$",
+      "field_key": "selection",
+      "field_type": "radio",
+      "choice_count": 5,
+      "response_shape": "complete separable ODE in v and x, exactly one selection",
+      "source_rhs": "-2*sin(y/x) + y/x",
+      "source_features": "All numerical coefficients are integers; x is nonzero; nonlinear operator inputs, homogeneous degrees and term signs are fixed as observed.",
+      "backbone": "negative sine multiplier magnitude; preserve cancellation of v and move the nonzero negative constant to the RHS",
+      "ordered_solution_stages": "Product rule; original equation; substitute y=vx; cancel powers or arguments; subtract v; source-specific common-denominator or reciprocal identity stages; separate. Exact stages preserved by render_source.",
+      "plot_rating": "none",
+      "plots": [],
+      "slots": [
+        {
+          "name": "k",
+          "role": "negative sine multiplier magnitude; preserve cancellation of v and move the nonzero negative constant to the RHS",
+          "observed_values": [
+            2
+          ],
+          "proposed_and_validated_domain": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "generalization": "Conservative same-method integer coefficient or argument-scale generalization. No evidence for other bands.",
+          "dependent_components": [
+            "prompt",
+            "all substitution and simplification stages",
+            "correct complete equation",
+            "source bank recipes"
+          ],
+          "fixed_components": "Variables x,y,v; derivative order; y=v(x)x; queried whole ODE; operator nesting; polynomial exponents; all other coefficients; five options; selection field; ordered source solution backbone"
+        }
+      ],
+      "profiles": [
+        {
+          "id": "q-90601",
+          "source_assignments": [
+            17592186357460
+          ],
+          "source_choices": [
+            {
+              "index": 0,
+              "source_answer_uuid": "37195fe4-1e69-5e29-9f64-88c2decbd220",
+              "source_exact_value": "\\operatorname{sin}\u2061(\\frac{1}{v})\\frac{\\text{d}v}{\\text{d}x}=-\\frac{2}{x}",
+              "source_is_correct": false,
+              "parameterized_coefficient": "sin(1/v)",
+              "parameterized_rhs": "-k/x",
+              "recipe_contract": "coefficient * dv/dx = rhs; compare full ODE as dv/dx = rhs/coefficient",
+              "source_replay_complete_value": true,
+              "interpretation": "Observed expression pattern; coefficient co-variation is an explicitly bounded inference; no unverified cognitive error claim"
+            },
+            {
+              "index": 1,
+              "source_answer_uuid": "d7944865-4cd9-5653-8711-296c10bff723",
+              "source_exact_value": "\\frac{1}{\\operatorname{sin}\u2061v}\\frac{\\text{d}v}{\\text{d}x}=-\\frac{2}{x}",
+              "source_is_correct": true,
+              "parameterized_coefficient": "1/sin(v)",
+              "parameterized_rhs": "-k/x",
+              "recipe_contract": "coefficient * dv/dx = rhs; compare full ODE as dv/dx = rhs/coefficient",
+              "source_replay_complete_value": true,
+              "interpretation": "Observed expression pattern; coefficient co-variation is an explicitly bounded inference; no unverified cognitive error claim"
+            },
+            {
+              "index": 2,
+              "source_answer_uuid": "dbb55cc2-621e-5cbe-9cd9-9ff6c96826e7",
+              "source_exact_value": "\\frac{1}{\\operatorname{sin}\u2061v}\\frac{\\text{d}v}{\\text{d}x}=\\frac{1}{{x}^{2}}",
+              "source_is_correct": false,
+              "parameterized_coefficient": "1/sin(v)",
+              "parameterized_rhs": "x**(-2)",
+              "recipe_contract": "coefficient * dv/dx = rhs; compare full ODE as dv/dx = rhs/coefficient",
+              "source_replay_complete_value": true,
+              "interpretation": "Observed expression pattern; coefficient co-variation is an explicitly bounded inference; no unverified cognitive error claim"
+            },
+            {
+              "index": 3,
+              "source_answer_uuid": "dbb8b2a1-b08b-5a4b-bd39-b2a6e5fddc52",
+              "source_exact_value": "\\frac{1}{v-2\\operatorname{sin}\u2061v}\\frac{\\text{d}v}{\\text{d}x}=\\frac{1}{x}",
+              "source_is_correct": false,
+              "parameterized_coefficient": "1/(-k*sin(v) + v)",
+              "parameterized_rhs": "1/x",
+              "recipe_contract": "coefficient * dv/dx = rhs; compare full ODE as dv/dx = rhs/coefficient",
+              "source_replay_complete_value": true,
+              "interpretation": "Observed expression pattern; coefficient co-variation is an explicitly bounded inference; no unverified cognitive error claim"
+            },
+            {
+              "index": 4,
+              "source_answer_uuid": "e91d297a-9ec5-5912-aa6d-9d3765e8b68f",
+              "source_exact_value": "(2v-\\operatorname{sin}\u2061(\\frac{1}{v}))\\frac{\\text{d}v}{\\text{d}x}=\\frac{1}{x}",
+              "source_is_correct": false,
+              "parameterized_coefficient": "k*v - sin(1/v)",
+              "parameterized_rhs": "1/x",
+              "recipe_contract": "coefficient * dv/dx = rhs; compare full ODE as dv/dx = rhs/coefficient",
+              "source_replay_complete_value": true,
+              "interpretation": "Observed expression pattern; coefficient co-variation is an explicitly bounded inference; no unverified cognitive error claim"
+            }
+          ]
+        }
+      ],
+      "parameterized_rhs": "-k*sin(y/x) + y/x",
+      "domains": "x!=0; original RHS denominator and trigonometric poles excluded; when dividing F(v)-v, restrict away from its zeros. Stationary ratios remain solutions of the original ODE and are not claimed equivalent through separation.",
+      "unresolved_differences": [],
+      "source_errors": [],
+      "conditional_components": "No conditional structure beyond coefficient 1 being conventionally omitted in source TeX; algebraic expressions remain exact."
+    }
+  ],
+  "canonical_example": "Supports homogeneous substitution; excluded from practice inventory and source-bank count."
+}

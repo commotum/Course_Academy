@@ -1,0 +1,1 @@
+Source-first analysis saved. Retained checks copied and run only inside evidence. Independent source replay, displayed math, counterfactual pairs, boundary/rejection and native radio grading completed. Delivery, selection, rendering and final shortcut assessment remain.
