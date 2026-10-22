@@ -30,7 +30,7 @@ def main():
                 names = [a.name.split('.')[0] for a in n.names] if isinstance(n, ast.Import) else [n.module.split('.')[0]] if isinstance(n,ast.ImportFrom) and n.module else []
                 for imported in names:
                     assert imported in sys.stdlib_module_names or imported in packages or imported in modules, f'Undeclared/unresolved runtime import: {imported}'
-    with tempfile.TemporaryDirectory(prefix='ode-package-') as temp:
+    with tempfile.TemporaryDirectory(prefix='ode-package-',dir=ROOT/'evidence') as temp:
         temp = Path(temp); package = temp/'relocated'; package.mkdir(); assets=temp/'assets';assets.mkdir()
         for name in files:
             dest = package/name;dest.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(ROOT/name,dest)
