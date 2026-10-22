@@ -1,15 +1,15 @@
-# Current state — author 880
+# Current state — author 883
 
-Read feedback and both retained findings; history has 880 events. Preserved runtime, instructional account, strict regression declarations, completed source replay, inventory reproduction and render evidence. No new generator defect is reported.
+Read latest feedback, both retained findings and history (883 events), existing state, instructional account, and required generator/validation docs. No new generator defect is reported. Runtime files and strict regressions are unchanged.
 
 Latest failure reproduced first:
 `/home/jake/Developer/Course_Academy/.venv/bin/python checks/check_report_installation.py`
-Exit 1: original prior-review report fails with `decision_variation has an unresolved decision shortcut`. The staged correction validates and 26 complete records replay against current code. Result: `evidence/report-repair/results.json`; local validation: `evidence/report-repair/staged-validation.json`.
+Exit 1: required prior-review destination still fails with `decision_variation has an unresolved decision shortcut`. The staged correction validates; 26 complete records replay against current code. Exact log: `evidence/current-author/report-regression.log`; detailed results: `evidence/report-repair/results.json` and `evidence/report-repair/staged-validation.json`.
 
-Retained checks:
-- `.../.venv/bin/python checks/test_role_exchange.py --output evidence/author-880/role-regression`: exit 0. Reorder, transfer, visible math, conditional shortcut probes, shared delivery and native acceptance/rejection pass. Delivered mixed resonance positions: first 19, second 17.
-- `.../.venv/bin/python checks/verify_retained_state.py`: exit 0. Unchanged runtime/source, 55 handoff artifacts, eight unaffected mathematical cases verified.
+Retained checks rerun:
+- `.../.venv/bin/python checks/test_role_exchange.py --output evidence/current-author/role-regression`: exit 0. Controlled reorder/transfer, visible mathematics, within-template shortcut probes, shared delivery and native grading pass.
+- `.../.venv/bin/python checks/verify_retained_state.py`: exit 0. Unchanged runtime/source, 55 staged artifacts and eight unaffected mathematical cases verified.
 
-Commands/results: `evidence/author-880/checks.json`.
+Exact commands, logs and exit codes: `evidence/current-author/checks.json`. Existing source replay, rendering, and inventory evidence retained. No external writes, image publication, database changes, engine edits, or runtime modifications.
 
-Next required action: runner installs the validated correction at the original prior-review destination using `evidence/review-installation-handoff.json`, then reruns the unchanged strict regression and obtains fresh independent review. That installation is outside the authorized workspace. No external write, database change, publication, engine edit or runtime edit was performed. Status unsupported. Further identical workspace-only retries cannot perform this external installation; preserve the staged correction and strict failure.
+Unfinished action: the runner must install the validated correction at the original prior-review destination using `evidence/review-installation-handoff.json`, rerun the unchanged strict check and obtain fresh independent review. The destination is outside the authorized workspace. No workspace implementation change can perform this installation. Do not schedule another unchanged author retry; route the retained installation task to the runner. Status unsupported until the strict regression passes. Both regression declarations remain strict and unchanged.

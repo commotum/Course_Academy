@@ -7,10 +7,10 @@
     "job_kind": "build"
   },
   "stage": "generate",
-  "attempt": 6,
+  "attempt": 8,
   "seed": 4258185931,
   "created": 1792680517.8311014,
-  "updated": 1792684665.8788292,
+  "updated": 1792685093.6336117,
   "source_hash": "8b047c52499a110e01543680c6040b102a643231b57cebd87903c80c9c28452e",
   "inventory_hash": "2ca46edb2ade278dd8313f38dcb1aa2d840e7717e29b05fe1db2f7c8334928b9",
   "manifest": "package.json",
@@ -22,19 +22,19 @@
     "error": {
       "status": "unsupported",
       "manifest": "package.json",
-      "summary": "Preserved the repaired generator, corrected the evidence destination, and passed all registered checks. Completion remains blocked by runner constraints.",
+      "summary": "Preserved the repaired generator. All registered checks pass. Completion requires runner-owned recovery through its existing report-repair path.",
       "evidence_paths": [
-        "evidence/author5-report.json",
-        "evidence/author5-exact-gate-reproduction.json",
-        "evidence/author5-after-evidence.log",
-        "evidence/author5-retained-regressions.log",
-        "evidence/author5-before-batch.log",
+        "evidence/author7-report.json",
+        "evidence/author7-exact-failures.json",
+        "evidence/author7-evidence.log",
+        "evidence/author7-batch.log",
+        "evidence/author7-regressions.log",
         "evidence/contract-installation.json",
         "repair-regressions.json"
       ],
       "limitations": [
-        "The runner rejects unchanged package bytes, while the latest retained finding explicitly requires an evidence-only correction without generator changes.",
-        "Installing the validated evidence bundle at author-5 requires writes outside the authorized workspace."
+        "The runner routes an evidence-only correction through authoring, then rejects the unchanged package before running regressions. Resume through report-repair/validate and obtain fresh independent review.",
+        "Runner state changes and evidence installation are outside the authorized workspace. No runtime, database, engine, or publication changes were made."
       ]
     },
     "instruction": "The source supports this skill. Diagnose and repair the limitation; do not drop source families or valid responses."
@@ -65,5 +65,6 @@
     "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186059775/review-3-policy-2-0d2b0c0912b0fa93": 2
   },
   "review_report_error": "source_analysis.evidence_paths: missing, empty, or escaping evidence: correction-provenance.json",
-  "repeated_candidate": true
+  "repeated_candidate": true,
+  "repair_cycle": 1
 }

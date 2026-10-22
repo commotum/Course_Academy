@@ -3,19 +3,19 @@
   "error": {
     "status": "unsupported",
     "manifest": "package.json",
-    "summary": "Preserved the repaired generator, corrected the evidence destination, and passed all registered checks. Completion remains blocked by runner constraints.",
+    "summary": "Preserved the repaired generator. All registered checks pass. Completion requires runner-owned recovery through its existing report-repair path.",
     "evidence_paths": [
-      "evidence/author5-report.json",
-      "evidence/author5-exact-gate-reproduction.json",
-      "evidence/author5-after-evidence.log",
-      "evidence/author5-retained-regressions.log",
-      "evidence/author5-before-batch.log",
+      "evidence/author7-report.json",
+      "evidence/author7-exact-failures.json",
+      "evidence/author7-evidence.log",
+      "evidence/author7-batch.log",
+      "evidence/author7-regressions.log",
       "evidence/contract-installation.json",
       "repair-regressions.json"
     ],
     "limitations": [
-      "The runner rejects unchanged package bytes, while the latest retained finding explicitly requires an evidence-only correction without generator changes.",
-      "Installing the validated evidence bundle at author-5 requires writes outside the authorized workspace."
+      "The runner routes an evidence-only correction through authoring, then rejects the unchanged package before running regressions. Resume through report-repair/validate and obtain fresh independent review.",
+      "Runner state changes and evidence installation are outside the authorized workspace. No runtime, database, engine, or publication changes were made."
     ]
   },
   "instruction": "Fix the root cause, retain every earlier counterexample, and declare executable checks in repair-regressions.json. A failed check is another repair task, not permission to abandon the generator.",

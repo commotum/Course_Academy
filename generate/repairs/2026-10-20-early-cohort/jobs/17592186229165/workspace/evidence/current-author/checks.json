@@ -1,26 +1,36 @@
 {
-  "author": 873,
-  "runtime_changed": false,
   "checks": [
     {
-      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python checks/check_report_installation.py",
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "checks/check_report_installation.py"
+      ],
       "exit_code": 1,
-      "result": "Required external report remains uncorrected: decision_variation has an unresolved decision shortcut",
-      "evidence": "evidence/current-author/report-results.json"
+      "log": "evidence/current-author/report-regression.log",
+      "note": "Executed first; exact required-destination contract failure reproduced."
     },
     {
-      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python checks/test_role_exchange.py --output evidence/current-author/role-regression",
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "checks/test_role_exchange.py",
+        "--output",
+        "evidence/current-author/role-regression"
+      ],
       "exit_code": 0,
-      "result": "passed",
-      "evidence": "evidence/current-author/role-regression/results.json"
+      "log": "evidence/current-author/role-regression.log"
     },
     {
-      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python checks/verify_retained_state.py",
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "checks/verify_retained_state.py"
+      ],
       "exit_code": 0,
-      "result": "55 staged artifact hashes, unchanged source/runtime and eight mathematical instances pass",
-      "evidence": "evidence/current-author/retained-results.json"
+      "log": "evidence/current-author/retained-state.log"
     }
   ],
-  "unfinished_finding": "645672a4cd3f9bf609ca",
-  "next_action": "Runner installs the staged correction at the required prior-review destination, reruns the unchanged strict check, and obtains fresh independent review. That write is outside this workspace-only author authorization."
+  "runtime_changes": false,
+  "external_writes": false,
+  "attempt": 883,
+  "strict_regressions_unchanged": true,
+  "remaining_finding": "645672a4cd3f9bf609ca"
 }

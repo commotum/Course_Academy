@@ -1,0 +1,21 @@
+{
+  "status": "unsupported",
+  "finding_id": "591f580cadb749294588",
+  "latest_failure_reproduced": true,
+  "generator_findings_passed": 4,
+  "native_accepted": 7,
+  "native_rejected": 28,
+  "affected_inventory": 5,
+  "untested_generated_inventory": 0,
+  "runtime_changed": false,
+  "database_changed": false,
+  "publication_performed": false,
+  "proposal_verified": true,
+  "proposal_applied": false,
+  "proposal": "evidence/repair-3/inventory-repair-proposal.json",
+  "root_cause": "The five archived v2 answer banks remain in captured inventory. The selector reads stored question candidates; the repaired Python generator is not used to rewrite existing candidates.",
+  "required_external_action": "Run the separately authorized inventory-remediation workflow for the five mapped generated identities, capture fresh inventory, then rerun checks/batch_regressions.py --finding inventory.",
+  "scope_conflict": "The retained review explicitly requests inventory remediation, while this task explicitly prohibits database changes and publication.",
+  "visual_inspection": "Reinspected retained actual-UI question-001.png: equations, five choices, matrices, row operation, and contradiction are readable and agree. No runtime changes warranted repeated rendering.",
+  "retry_condition": "Fresh inventory after remediation or a new concrete generator defect. Unchanged source, inventory, runtime, and feedback do not justify another author retry."
+}
