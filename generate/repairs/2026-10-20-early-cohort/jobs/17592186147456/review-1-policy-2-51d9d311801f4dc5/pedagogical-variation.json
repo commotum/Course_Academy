@@ -1,0 +1,588 @@
+{
+  "learner_operation": "Inspect normalized y dependence in each equation and select exactly the equations with a linear y term and a distinct power term; nonpower dependence is disqualifying in these examples.",
+  "fixed_features": [
+    {
+      "feature": "Three equations with radio or Boolean checkbox subset response",
+      "justification": "Preserves observed workload and source response banks."
+    },
+    {
+      "feature": "Nonpower distractor within its recognizable template",
+      "justification": "sin(y), cos(y), or log(y) is mathematically decisive evidence that the learner must recognize; changing its truth would require replacing the obstruction, not merely varying an incidental assignment."
+    },
+    {
+      "feature": "Derivative multiplier fixed within each profile",
+      "justification": "Preserves easy recognition versus moderate normalization workload; pure-power term exponents still change truth after division."
+    },
+    {
+      "feature": "Source x-function families and nonzero scalar range 1 through 5",
+      "justification": "Coefficient recognition is ancillary; modest scalars preserve scope while answer-bearing y-exponent assignments vary."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Which pure-power equation qualifies",
+      "eligible_variation": "Normalized linear y exponent can be present or absent independently subject to complete source radio bank.",
+      "observed": "Every eligible row takes true and false roles across all feasible supported decision states."
+    },
+    {
+      "role": "Correct subset and cardinality",
+      "eligible_variation": "None/one/two/three as the source response bank and mathematical backbone permit.",
+      "observed": "All feasible cases covered; None is explicit and keyed by negation of ordinary truth."
+    },
+    {
+      "role": "Bank position / equation label",
+      "eligible_variation": "Not intrinsically correct; no fixed complete subset should follow from template labels alone.",
+      "observed": "Best constant full response fails within every template and both exact-batch template subgroups; UI radio answer choices are shuffled."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "q-108911",
+      "sample_refs": [
+        "samples.json",
+        "sample-index.json",
+        "math-results.json"
+      ],
+      "result": "{'000': 2, '001': 2, '010': 2, '011': 2, '100': 2, '101': 2, '110': 2, '111': 2}"
+    },
+    {
+      "case": "q-108913",
+      "sample_refs": [
+        "samples.json",
+        "sample-index.json",
+        "math-results.json"
+      ],
+      "result": "{'000': 2, '001': 2, '010': 2, '011': 2}"
+    },
+    {
+      "case": "q-108914",
+      "sample_refs": [
+        "samples.json",
+        "sample-index.json",
+        "math-results.json"
+      ],
+      "result": "{'000': 2, '001': 2, '010': 2, '011': 2}"
+    },
+    {
+      "case": "q-108916",
+      "sample_refs": [
+        "samples.json",
+        "sample-index.json",
+        "math-results.json"
+      ],
+      "result": "{'000': 2, '010': 2, '100': 2, '110': 2}"
+    },
+    {
+      "case": "q-108918",
+      "sample_refs": [
+        "samples.json",
+        "sample-index.json",
+        "math-results.json"
+      ],
+      "result": "{'000': 2, '010': 2, '100': 2, '110': 2}"
+    },
+    {
+      "case": "q-108912",
+      "sample_refs": [
+        "samples.json",
+        "sample-index.json",
+        "math-results.json"
+      ],
+      "result": "{'010': 2, '011': 2, '100': 2, '110': 2, '111': 2}"
+    },
+    {
+      "case": "q-108915",
+      "sample_refs": [
+        "samples.json",
+        "sample-index.json",
+        "math-results.json"
+      ],
+      "result": "{'010': 2, '100': 2, '110': 2}"
+    },
+    {
+      "case": "q-108920",
+      "sample_refs": [
+        "samples.json",
+        "sample-index.json",
+        "math-results.json"
+      ],
+      "result": "{'000': 2, '001': 2, '101': 2}"
+    },
+    {
+      "case": "Exact five-item runner batch after normalization/deduplication",
+      "sample_refs": [
+        "batch.json",
+        "delivery-batch/accepted.json",
+        "shortcut-results.json"
+      ],
+      "result": "All five survive; two q-108912 decisions and two q-108913 decisions (one repeated) remain, so neither subgroup has a constant full response."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Change only the decisive left y exponent in one equation; hold all coefficients, other equations, and template fixed.",
+      "expected": "Exactly that equation changes truth, key/subset and explanation; old Boolean/subset value is rejected and new value accepted.",
+      "observed": "Eight template pairs pass prompt-row comparison, independent parsed math, explanation identity checks, and every-option native grading. Easy checkbox and moderate radio pairs rendered and screenshots inspected.",
+      "status": "passed",
+      "justification": "Presence of normalized y exponent 1 is essential evidence in the source classification.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "native-input.json",
+        "native-report.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Alter only right-side nonzero x-only scalar in the same base equation.",
+      "expected": "Classification and Boolean/subset response preserved; changed coefficient appears in prompt and applicable solution.",
+      "observed": "All eight pairs preserve the response and retain valid worked content (generic nonexample explanations may stay identical); parsed exact identities and native grading pass. First and last template triples rendered.",
+      "status": "passed",
+      "justification": "Multiplying the nonzero power/nonpower term by an x-only constant does not change its dependence on y.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "math-results.json",
+        "native-report.json",
+        "render/rendering.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "Recognizable template / fixed equation labels",
+      "subgroup": "q-108911",
+      "scope": "within_template",
+      "strategy": "Always submit the most frequent subset (False, False, False)",
+      "correct": 2,
+      "total": 16,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed full response succeeds 2/16, so template identity does not determine a correct action. Baseline is random choice among five radio values or eight equation subsets (None determined consistently). Nonpower distractors can be rejected by the intended skill.",
+      "sample_refs": [
+        "samples.json",
+        "sample-index.json"
+      ]
+    },
+    {
+      "cue": "Same signs and coefficient magnitudes",
+      "subgroup": "q-108911, all left scales 1, right scales 5",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose one subset from sign/coefficient pattern, ignoring y powers",
+      "correct": 1,
+      "total": 8,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Identical nondecisive numeric/sign pattern has 8 different correct subsets; no such fixed action solves this subgroup. Baseline as in template probe.",
+      "sample_refs": [
+        "samples.json",
+        "sample-index.json"
+      ]
+    },
+    {
+      "cue": "Same signs and coefficient magnitudes",
+      "subgroup": "q-108911, all left scales 5, right scales 1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose one subset from sign/coefficient pattern, ignoring y powers",
+      "correct": 1,
+      "total": 8,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Identical nondecisive numeric/sign pattern has 8 different correct subsets; no such fixed action solves this subgroup. Baseline as in template probe.",
+      "sample_refs": [
+        "samples.json",
+        "sample-index.json"
+      ]
+    },
+    {
+      "cue": "Recognizable template / fixed equation labels",
+      "subgroup": "q-108912",
+      "scope": "within_template",
+      "strategy": "Always submit the most frequent subset (False, True, False)",
+      "correct": 2,
+      "total": 10,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed full response succeeds 2/10, so template identity does not determine a correct action. Baseline is random choice among five radio values or eight equation subsets (None determined consistently). Nonpower distractors can be rejected by the intended skill.",
+      "sample_refs": [
+        "samples.json",
+        "sample-index.json"
+      ]
+    },
+    {
+      "cue": "Same signs and coefficient magnitudes",
+      "subgroup": "q-108912, all left scales 1, right scales 5",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose one subset from sign/coefficient pattern, ignoring y powers",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Identical nondecisive numeric/sign pattern has 5 different correct subsets; no such fixed action solves this subgroup. Baseline as in template probe.",
+      "sample_refs": [
+        "samples.json",
+        "sample-index.json"
+      ]
+    },
+    {
+      "cue": "Same signs and coefficient magnitudes",
+      "subgroup": "q-108912, all left scales 5, right scales 1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose one subset from sign/coefficient pattern, ignoring y powers",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Identical nondecisive numeric/sign pattern has 5 different correct subsets; no such fixed action solves this subgroup. Baseline as in template probe.",
+      "sample_refs": [
+        "samples.json",
+        "sample-index.json"
+      ]
+    },
+    {
+      "cue": "Recognizable template / fixed equation labels",
+      "subgroup": "q-108913",
+      "scope": "within_template",
+      "strategy": "Always submit the most frequent subset (False, False, False)",
+      "correct": 2,
+      "total": 8,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed full response succeeds 2/8, so template identity does not determine a correct action. Baseline is random choice among five radio values or eight equation subsets (None determined consistently). Nonpower distractors can be rejected by the intended skill.",
+      "sample_refs": [
+        "samples.json",
+        "sample-index.json"
+      ]
+    },
+    {
+      "cue": "Same signs and coefficient magnitudes",
+      "subgroup": "q-108913, all left scales 1, right scales 5",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose one subset from sign/coefficient pattern, ignoring y powers",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Identical nondecisive numeric/sign pattern has 4 different correct subsets; no such fixed action solves this subgroup. Baseline as in template probe.",
+      "sample_refs": [
+        "samples.json",
+        "sample-index.json"
+      ]
+    },
+    {
+      "cue": "Same signs and coefficient magnitudes",
+      "subgroup": "q-108913, all left scales 5, right scales 1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose one subset from sign/coefficient pattern, ignoring y powers",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Identical nondecisive numeric/sign pattern has 4 different correct subsets; no such fixed action solves this subgroup. Baseline as in template probe.",
+      "sample_refs": [
+        "samples.json",
+        "sample-index.json"
+      ]
+    },
+    {
+      "cue": "Recognizable template / fixed equation labels",
+      "subgroup": "q-108914",
+      "scope": "within_template",
+      "strategy": "Always submit the most frequent subset (False, False, False)",
+      "correct": 2,
+      "total": 8,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed full response succeeds 2/8, so template identity does not determine a correct action. Baseline is random choice among five radio values or eight equation subsets (None determined consistently). Nonpower distractors can be rejected by the intended skill.",
+      "sample_refs": [
+        "samples.json",
+        "sample-index.json"
+      ]
+    },
+    {
+      "cue": "Same signs and coefficient magnitudes",
+      "subgroup": "q-108914, all left scales 1, right scales 5",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose one subset from sign/coefficient pattern, ignoring y powers",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Identical nondecisive numeric/sign pattern has 4 different correct subsets; no such fixed action solves this subgroup. Baseline as in template probe.",
+      "sample_refs": [
+        "samples.json",
+        "sample-index.json"
+      ]
+    },
+    {
+      "cue": "Same signs and coefficient magnitudes",
+      "subgroup": "q-108914, all left scales 5, right scales 1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose one subset from sign/coefficient pattern, ignoring y powers",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Identical nondecisive numeric/sign pattern has 4 different correct subsets; no such fixed action solves this subgroup. Baseline as in template probe.",
+      "sample_refs": [
+        "samples.json",
+        "sample-index.json"
+      ]
+    },
+    {
+      "cue": "Recognizable template / fixed equation labels",
+      "subgroup": "q-108915",
+      "scope": "within_template",
+      "strategy": "Always submit the most frequent subset (False, True, False)",
+      "correct": 2,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed full response succeeds 2/6, so template identity does not determine a correct action. Baseline is random choice among five radio values or eight equation subsets (None determined consistently). Nonpower distractors can be rejected by the intended skill.",
+      "sample_refs": [
+        "samples.json",
+        "sample-index.json"
+      ]
+    },
+    {
+      "cue": "Same signs and coefficient magnitudes",
+      "subgroup": "q-108915, all left scales 1, right scales 5",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose one subset from sign/coefficient pattern, ignoring y powers",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Identical nondecisive numeric/sign pattern has 3 different correct subsets; no such fixed action solves this subgroup. Baseline as in template probe.",
+      "sample_refs": [
+        "samples.json",
+        "sample-index.json"
+      ]
+    },
+    {
+      "cue": "Same signs and coefficient magnitudes",
+      "subgroup": "q-108915, all left scales 5, right scales 1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose one subset from sign/coefficient pattern, ignoring y powers",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Identical nondecisive numeric/sign pattern has 3 different correct subsets; no such fixed action solves this subgroup. Baseline as in template probe.",
+      "sample_refs": [
+        "samples.json",
+        "sample-index.json"
+      ]
+    },
+    {
+      "cue": "Recognizable template / fixed equation labels",
+      "subgroup": "q-108916",
+      "scope": "within_template",
+      "strategy": "Always submit the most frequent subset (False, False, False)",
+      "correct": 2,
+      "total": 8,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed full response succeeds 2/8, so template identity does not determine a correct action. Baseline is random choice among five radio values or eight equation subsets (None determined consistently). Nonpower distractors can be rejected by the intended skill.",
+      "sample_refs": [
+        "samples.json",
+        "sample-index.json"
+      ]
+    },
+    {
+      "cue": "Same signs and coefficient magnitudes",
+      "subgroup": "q-108916, all left scales 1, right scales 5",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose one subset from sign/coefficient pattern, ignoring y powers",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Identical nondecisive numeric/sign pattern has 4 different correct subsets; no such fixed action solves this subgroup. Baseline as in template probe.",
+      "sample_refs": [
+        "samples.json",
+        "sample-index.json"
+      ]
+    },
+    {
+      "cue": "Same signs and coefficient magnitudes",
+      "subgroup": "q-108916, all left scales 5, right scales 1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose one subset from sign/coefficient pattern, ignoring y powers",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Identical nondecisive numeric/sign pattern has 4 different correct subsets; no such fixed action solves this subgroup. Baseline as in template probe.",
+      "sample_refs": [
+        "samples.json",
+        "sample-index.json"
+      ]
+    },
+    {
+      "cue": "Recognizable template / fixed equation labels",
+      "subgroup": "q-108918",
+      "scope": "within_template",
+      "strategy": "Always submit the most frequent subset (False, False, False)",
+      "correct": 2,
+      "total": 8,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed full response succeeds 2/8, so template identity does not determine a correct action. Baseline is random choice among five radio values or eight equation subsets (None determined consistently). Nonpower distractors can be rejected by the intended skill.",
+      "sample_refs": [
+        "samples.json",
+        "sample-index.json"
+      ]
+    },
+    {
+      "cue": "Same signs and coefficient magnitudes",
+      "subgroup": "q-108918, all left scales 1, right scales 5",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose one subset from sign/coefficient pattern, ignoring y powers",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Identical nondecisive numeric/sign pattern has 4 different correct subsets; no such fixed action solves this subgroup. Baseline as in template probe.",
+      "sample_refs": [
+        "samples.json",
+        "sample-index.json"
+      ]
+    },
+    {
+      "cue": "Same signs and coefficient magnitudes",
+      "subgroup": "q-108918, all left scales 5, right scales 1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose one subset from sign/coefficient pattern, ignoring y powers",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Identical nondecisive numeric/sign pattern has 4 different correct subsets; no such fixed action solves this subgroup. Baseline as in template probe.",
+      "sample_refs": [
+        "samples.json",
+        "sample-index.json"
+      ]
+    },
+    {
+      "cue": "Recognizable template / fixed equation labels",
+      "subgroup": "q-108920",
+      "scope": "within_template",
+      "strategy": "Always submit the most frequent subset (False, False, False)",
+      "correct": 2,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed full response succeeds 2/6, so template identity does not determine a correct action. Baseline is random choice among five radio values or eight equation subsets (None determined consistently). Nonpower distractors can be rejected by the intended skill.",
+      "sample_refs": [
+        "samples.json",
+        "sample-index.json"
+      ]
+    },
+    {
+      "cue": "Same signs and coefficient magnitudes",
+      "subgroup": "q-108920, all left scales 1, right scales 5",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose one subset from sign/coefficient pattern, ignoring y powers",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Identical nondecisive numeric/sign pattern has 3 different correct subsets; no such fixed action solves this subgroup. Baseline as in template probe.",
+      "sample_refs": [
+        "samples.json",
+        "sample-index.json"
+      ]
+    },
+    {
+      "cue": "Same signs and coefficient magnitudes",
+      "subgroup": "q-108920, all left scales 5, right scales 1",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose one subset from sign/coefficient pattern, ignoring y powers",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Identical nondecisive numeric/sign pattern has 3 different correct subsets; no such fixed action solves this subgroup. Baseline as in template probe.",
+      "sample_refs": [
+        "samples.json",
+        "sample-index.json"
+      ]
+    },
+    {
+      "cue": "Template / constant full-response action in exact runner batch",
+      "subgroup": "q-108912 batch",
+      "scope": "within_template",
+      "strategy": "Always submit (True, True, True)",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/2 correct, not a rule solving the subgroup. Each of the two batch templates has at least two distinct full responses. Baseline is uniform five-choice radio / eight equation-subset guess. Small partial-label coincidences are recorded below and not claimed universal.",
+      "sample_refs": [
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "Template / constant full-response action in exact runner batch",
+      "subgroup": "q-108913 batch",
+      "scope": "within_template",
+      "strategy": "Always submit (False, True, True)",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "2/3 correct, not a rule solving the subgroup. Each of the two batch templates has at least two distinct full responses. Baseline is uniform five-choice radio / eight equation-subset guess. Small partial-label coincidences are recorded below and not claimed universal.",
+      "sample_refs": [
+        "batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "sin(y), cos(y), or log(y) obstructs a single power",
+      "subgroup": "Rows whose normalized nonderivative expression is a nonpower of y",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Reject the nonpower row",
+      "correct": 44,
+      "total": 44,
+      "baseline": 0.5,
+      "disposition": "intended_skill",
+      "conclusion": "One fixed nonpower row in each of these templates is always false. Baseline is a random Boolean for that row. This predictor is the assessed y-dependence test itself, not an incidental label cue. Other pure-power rows change truth and determine different full responses.",
+      "sample_refs": [
+        "samples.json",
+        "math-results.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "generator decision-case construction",
+      "nonempty policy and rejection/resampling",
+      "requested-difficulty filtering",
+      "shared publication normalization and inventory/within-batch deduplication",
+      "captured usable inventory",
+      "learner freshness and difficulty-first selection algorithm",
+      "actual UI choice rendering"
+    ],
+    "sample_refs": [
+      "delivery-input-easy.json",
+      "delivery-easy/accepted.json",
+      "delivery-input-moderate.json",
+      "delivery-moderate/accepted.json",
+      "batch.json",
+      "delivery-batch/accepted.json",
+      "delivery-selection.json",
+      "inventory-review.json"
+    ],
+    "result": "68/68 easy control records, 42/42 moderate controls and exact batch 5/5 survive with decision counts preserved. Conditional easy-band selection reaches every new record; actual policy/history unavailable and limits are stated in delivery-selection.json."
+  },
+  "limitations": [
+    "Finite tests do not prove absence of every shortcut.",
+    "Two unrated drafts and canonical record have incomplete essential replay evidence; they are explicitly distinguished from eight complete supported source families.",
+    "Historical inventory generation metadata is not captured; empty affected inventory means no demonstrated current finding matched, not verified absence of all historical defects.",
+    "Selection simulation uses specified history/weight scenarios and synthetic IDs, not a live learner snapshot."
+  ]
+}
