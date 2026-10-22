@@ -1,0 +1,19 @@
+All commands ran from the supplied workspace with Python 3.13.5. No database writes, external publication, or changes outside the workspace were made.
+
+Initial reproduction: copied the review's source_acceptance.py into the workspace, changing only its workspace/source/output paths, then ran `/home/jake/Developer/Course_Academy/.venv/bin/python -B source_acceptance.py`. It exited 1: sqrt(-2) raised ValueError and both radio source IDs were missing. The exact failure report is before-source-acceptance-results.json. The retained script now includes stricter checks rather than removing these assertions. The supplied source evidence is unchanged; source-cases.json had only six records and now includes the two missing records, with the original six unchanged.
+
+Reproduction of the repaired checks:
+
+```sh
+/home/jake/Developer/Course_Academy/.venv/bin/python -B source_acceptance.py
+/home/jake/Developer/Course_Academy/.venv/bin/python -B validate_repair.py prepare
+/home/jake/Developer/Course_Academy/generate/runs/current/check-engine evidence/grader-input.json evidence/grader-results.json
+/home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py --input evidence/delivery-input.json --source /home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186054814/source/source.json --inventory /home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186054814/source/inventory.json --difficulty easy --output evidence/delivery --asset-root evidence/assets --math-root /media/jake/SSD/EDB/math
+/home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py --input evidence/batch-records.json --source /home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186054814/source/source.json --inventory /home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186054814/source/inventory.json --difficulty easy --output evidence/delivery-batch --asset-root evidence/assets --math-root /media/jake/SSD/EDB/math
+/home/jake/Developer/Course_Academy/.venv/bin/python -B validate_repair.py finalize
+/home/jake/Developer/Course_Academy/.venv/bin/python /home/jake/Developer/Course_Academy/generate/pipeline/render_preview.py --input evidence/render-records.json --output evidence/render --asset-root evidence/assets --math-root /media/jake/SSD/EDB/math
+```
+
+Results: source regression passes all eight sources, reordered traversal, 144 negative radicands (including exact coefficient witnesses), all 144 negative sampler magnitude branches, and 40 ordinary seeded samples. Targeted validation checks 69 raw records (55 distinct mathematical values). Native grader passes 405 checks: 198 accepted and 207 rejected. Shared delivery retains 59/69 records (52 mathematical values), all five membership classes, all four radical membership cases, and square/nonsquare negative cases. It retains all five requested-batch records (five mathematical values). Six controlled response/explanation pairs and one layout permutation pass. All 32 fixed positional subsets were tested within each representation; none solves a multi-class representation in the raw or delivered validation set. Pi and negative-root fixed memberships are mathematically justified.
+
+The real UI rendered six records successfully; all six screenshots were visually inspected. See visual-inspection.json. Relocation copies only the four manifest runtime files and produces byte-identical seeded output; invalid difficulty/count requests fail. Captured inventory basis 5455 contains 13 records; no stored instance of the two specific construction/replay defects was demonstrated. Historical seeds and learner policy/history are unavailable, so those claims are explicitly limited.

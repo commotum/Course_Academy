@@ -1,20 +1,12 @@
-# Author-581 verification, 2026-10-22
+# Author-584 verification, 2026-10-22
 
-Latest feedback and all five retained findings read. First reproduction:
-`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory`
-Exit 1: five exact historical banks; 64/64 shortcut successes in the possible learner-history witness.
+Preserved the repaired runtime, all five executable finding declarations, and staged replacement proposal.
 
-`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/author-581`
-Exit 1 only for 591f580cadb749294588. Four generator regressions, 17 complete
-source-bank replays, 14 delivered records, 35 native-grader checks and relocation
-pass. Runtime/source/inventory hashes unchanged; five staged replacements verify.
-Retained UI screenshot question-002 visually inspected and legible.
+First test: job Python -B checks/batch_regressions.py --finding inventory
+Exit 1: five historical captured banks and 64/64 possible-history shortcut successes.
 
-Evidence: evidence/author-581/{commands.json,results.json,inventory-results.json,outcome.md}.
+job Python -B checks/recheck_status.py --output evidence/author-584
+Exit 1 only for 591f580cadb749294588. Four current-generator regressions, 17 complete source-bank replays, 14 delivered records, 35 native-grader checks and relocation pass. Protected runtime/source/inventory hashes unchanged. Five staged replacements verify; proposal remains unapplied. Retained actual-UI screenshot question-002 visually inspected and legible.
 
-Next action requires the separate inventory-remediation workflow: independently
-review/apply evidence/repair-3/inventory-repair-proposal.json, preserve source
-questions and learner state, recapture inventory and rerun the strict check.
-Database changes and publication are forbidden in this author task. Preserve the
-failing regression; repeating unchanged author work cannot repair stored banks.
-Status: unsupported for the selectable-pool requirement.
+Evidence: evidence/author-584/{commands.json,results.json,outcome.md}.
+Next unfinished step: separate inventory remediation using evidence/repair-3/inventory-repair-proposal.json, then fresh capture and strict inventory regression. This author task prohibits database changes and publication. No workspace implementation change can alter those stored banks. Preserve the strict failure; do not rerun unchanged checks expecting a different stored pool.
