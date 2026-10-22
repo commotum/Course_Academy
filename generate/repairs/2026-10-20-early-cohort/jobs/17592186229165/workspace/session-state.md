@@ -1,15 +1,15 @@
-# Current state — author 892
+# Current state — author 896
 
-Read feedback, both retained findings and latest event from repair history (892 events), existing instructional account, strict regressions, generation principles/docs and shared validation interfaces. No new generator defect or changed source evidence is reported. Runtime and manifest remain unchanged.
+Read latest feedback and both retained findings; history contains 896 events. Existing runtime, manifest, instructional account, historical inventory evidence and strict regression declarations preserved. The latest finding requests external report installation and explicitly says no generator authoring is needed. No changed source evidence or new generator defect is reported.
 
-Reproduced latest failure first:
+Latest failure reproduced first:
 `/home/jake/Developer/Course_Academy/.venv/bin/python checks/check_report_installation.py`
-Exit 1: original prior-review destination fails with `decision_variation has an unresolved decision shortcut`. The staged correction validates; 26 complete records replay against the current generator. See `evidence/current-author/report-regression.log` and `evidence/report-repair/results.json`.
+Exit 1: the required prior-review report fails with `decision_variation has an unresolved decision shortcut`. Local staged correction passes real schema/contract validation and replays 26 complete records against the current generator. See `evidence/author-896/report-regression.log` and `evidence/report-repair/results.json`.
 
 Retained checks rerun:
-- `.../.venv/bin/python checks/test_role_exchange.py --output evidence/current-author/role-regression`: exit 0. Nine controlled, 24 sampled mixed and eight default hard records pass; both resonance positions survive delivery and each tested cue subgroup. All 30 native acceptance/rejection checks pass.
-- `.../.venv/bin/python checks/verify_retained_state.py`: exit 0. Runtime/source hashes, 55 handoff artifacts and eight unaffected math cases verified. Prior source replay, rendering and inventory evidence retained because their inputs and runtime are unchanged.
+- `.../.venv/bin/python checks/test_role_exchange.py --output evidence/author-896/role-regression`: exit 0. Nine controlled records, 24 mixed samples and eight default hard samples pass. Both resonance positions survive shared delivery filtering; within-template cue and native acceptance/rejection checks pass.
+- `.../.venv/bin/python checks/verify_retained_state.py`: exit 0. Runtime/source hashes, 55 staged handoff artifacts and eight unaffected mathematical instances verified. Existing source replay, rendering and inventory evidence retained because their inputs/runtime are unchanged.
 
-Exact commands and exits: `evidence/current-author/checks.json`. Preserved runtime, manifest, strict regressions, historical inventory findings and staged correction. No external writes, publication, database changes or engine edits.
+Exact commands and exits: `evidence/author-896/checks.json`. No publication, database, engine, runtime or external evidence writes.
 
-Unfinished action: runner installation at the original prior-review destination using `evidence/review-installation-handoff.json`, then the unchanged strict regression and fresh independent review. That destination is outside authorized workspace writes. Status remains unsupported. Another unchanged workspace-only author retry cannot resolve this installation; route to the runner rather than repeating author checks.
+Unfinished action: runner installs the validated staged correction at the original required review destination using `evidence/review-installation-handoff.json`, reruns the unchanged strict regression, and obtains fresh independent review. The destination is outside this session's authorized workspace. Status remains unsupported. Another unchanged workspace-only retry cannot perform that installation; do not weaken the strict regression or alter generator scope to obtain a green result.

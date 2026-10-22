@@ -7,10 +7,10 @@
     "job_kind": "build"
   },
   "stage": "generate",
-  "attempt": 11,
+  "attempt": 14,
   "seed": 4258185931,
   "created": 1792680517.8311014,
-  "updated": 1792685774.611264,
+  "updated": 1792686218.107677,
   "source_hash": "8b047c52499a110e01543680c6040b102a643231b57cebd87903c80c9c28452e",
   "inventory_hash": "2ca46edb2ade278dd8313f38dcb1aa2d840e7717e29b05fe1db2f7c8334928b9",
   "manifest": "package.json",
@@ -18,7 +18,25 @@
   "effective_difficulty": "easy",
   "needs_repair": true,
   "error": {
-    "error": "Candidate is byte-identical to the rejected package. Apply and test the requested repair before another independent review."
+    "code": "author_reported_limitation",
+    "error": {
+      "status": "unsupported",
+      "manifest": "package.json",
+      "summary": "Preserved completed repairs. All registered checks pass; the runner handoff still fails.",
+      "evidence_paths": [
+        "evidence/author13-report.json",
+        "evidence/author13-exact-failures.log",
+        "evidence/author13-retained.log",
+        "evidence/author13-batch.log",
+        "evidence/author13-evidence.log",
+        "evidence/contract-installation.json",
+        "repair-regressions.json"
+      ],
+      "limitations": [
+        "The retained finding requires evidence-only correction, but the runner rejects unchanged runtime bytes. Completion requires runner-owned report-repair routing and evidence installation outside the writable workspace."
+      ]
+    },
+    "instruction": "The source supports this skill. Diagnose and repair the limitation; do not drop source families or valid responses."
   },
   "author_running": true,
   "batch_hash": "23be5d5efbbca2043935ba9f13902b3788e387f525ce16f05c5920382f47824d",
@@ -47,5 +65,5 @@
   },
   "review_report_error": "source_analysis.evidence_paths: missing, empty, or escaping evidence: correction-provenance.json",
   "repeated_candidate": true,
-  "repair_cycle": 2
+  "repair_cycle": 3
 }

@@ -1,0 +1,32 @@
+{
+  "status": "unsupported",
+  "runtime_changed": false,
+  "retained_generator_findings_passed": 4,
+  "unresolved_finding": "591f580cadb749294588",
+  "reproduction": {
+    "command": [
+      "/home/jake/Developer/Course_Academy/.venv/bin/python",
+      "-B",
+      "checks/batch_regressions.py",
+      "--finding",
+      "inventory"
+    ],
+    "exit_code": 1,
+    "affected_questions": 5,
+    "shortcut_successes": 64,
+    "selection_draws": 64
+  },
+  "root_cause": "The five captured records contain historical v2 answer banks. Current Python construction and batch selection do not alter those stored banks; engine/rust/question_selection.rs select() consumes stored candidate IDs and difficulties.",
+  "authorized_workspace_fix_available": false,
+  "reason": "The retained finding explicitly requests a separate inventory-remediation workflow. Database changes, publication, and engine edits are prohibited in this job.",
+  "reviewable_replacement_proposal": "evidence/repair-3/inventory-repair-proposal.json",
+  "proposal_verified": true,
+  "proposal_applied": false,
+  "source_evidence_changed": false,
+  "strict_regression_preserved": true,
+  "visual_inspection": {
+    "retained_screenshot": "evidence/repair-3/render/question-001.png",
+    "result": "Readable system, five choices, matrices, elimination and conclusion; no clipping observed. Existing renderer evidence reused because runtime and records are unchanged."
+  },
+  "next_required_state_change": "Apply independently reviewed remediation through the separately authorized inventory workflow, recapture inventory, and rerun the strict regression. Repeating this workspace-only task with identical inventory cannot resolve the finding."
+}
