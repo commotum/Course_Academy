@@ -1,1 +1,1 @@
-Completed original source reading and independent source-analysis.json write/verification. No package files read yet.
+Completed source replay, Fraction-rank checking, grader input, controlled pair construction, declared-file relocation and retained regression positive/negative fixtures. Package unchanged. Next: actual delivery, native grader, renderer, shortcut measurements.
