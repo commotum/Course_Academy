@@ -1,0 +1,7 @@
+The current generator and its completed repairs are preserved. All four generator regressions pass. Seventeen complete source banks replay, and three batches retain decision contrasts after shared delivery (14 accepted records). Native grading accepts 7 correct responses and rejects 28 incorrect responses. Relocation and dependency checks pass.
+
+The first check reproduces finding 591f580cadb749294588: all five captured historical generated records retain the sign-only extremum shortcut, with 64/64 successes in the retained possible learner-history scenario. This is not a claim about every learner history. No captured generated record is untested. The strict inventory regression remains failing.
+
+Five replacement records and their mapping are verified but unapplied. The separate inventory-remediation workflow must remove the historical records from selection and recapture inventory. This job explicitly prohibits database changes; current-generator edits cannot alter already stored banks. No runtime, engine, source, inventory, database or publication changes were made. Status remains unsupported because the delivered-pool finding is unresolved.
+
+Command: /home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/author-362 (exit 1). See commands.json, results.json and grader-report.json. Visually inspected retained actual UI screenshot evidence/repair-3/render/question-001.png: readable, no visible clipping. Unchanged runtime/input bindings justify reusing rendering.

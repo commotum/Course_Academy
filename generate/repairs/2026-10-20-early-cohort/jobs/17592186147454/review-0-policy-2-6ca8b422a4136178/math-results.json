@@ -1,0 +1,1893 @@
+{
+  "method": "Independently parse displayed ODE and every choice with antlr/SymPy; infer p,q,n and verify residual of z=Y^(1-n). Real branches as specified; even roots require positive z. No generator math helpers called.",
+  "cases": [
+    {
+      "p": "-1",
+      "q": "exp(x)",
+      "n": "2",
+      "choices": [
+        {
+          "value": "y=\\frac{2{e}^{x}}{C-{e}^{2x}}",
+          "transformed_z": "(C - exp(2*x))*exp(-x)/2",
+          "residual": "0",
+          "is_solution": true
+        },
+        {
+          "value": "y=\\frac{C-{e}^{x}}{2{e}^{x}}",
+          "transformed_z": "2*exp(x)/(C - exp(x))",
+          "residual": "(C**2 - 2*C*exp(x) + 4*C + exp(2*x) - 2*exp(x))*exp(x)/(C**2 - 2*C*exp(x) + exp(2*x))",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{C-{e}^{2x}}{2{e}^{x}}",
+          "transformed_z": "2*exp(x)/(C - exp(2*x))",
+          "residual": "(C**2 - 2*C*exp(2*x) + 4*C + exp(4*x))*exp(x)/(C**2 - 2*C*exp(2*x) + exp(4*x))",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{{e}^{x}}{C-2{e}^{x}}",
+          "transformed_z": "C*exp(-x) - 2",
+          "residual": "exp(x) - 2",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{2x{e}^{x}}{C-2{e}^{2x}}",
+          "transformed_z": "(C/2 - exp(2*x))*exp(-x)/x",
+          "residual": "-C*exp(-x)/(2*x**2) + exp(x) - 2*exp(x)/x + exp(x)/x**2",
+          "is_solution": false
+        }
+      ],
+      "question_id": "bf1a7a9e-004f-5a92-bd91-ca501453ab70",
+      "template": "q-106073",
+      "shift": 0,
+      "correct_key_matches_unique_solution": true
+    },
+    {
+      "p": "x",
+      "q": "x",
+      "n": "2",
+      "choices": [
+        {
+          "value": "y=\\frac{1}{1+C{e}^{{x}^{2}}}",
+          "transformed_z": "C*exp(x**2) + 1",
+          "residual": "C*x*exp(x**2)",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{1}{1+C{e}^{{x}^{2}/2}}",
+          "transformed_z": "C*exp(x**2/2) + 1",
+          "residual": "0",
+          "is_solution": true
+        },
+        {
+          "value": "y=\\frac{x}{1+C{x}^{2}}",
+          "transformed_z": "C*x + 1/x",
+          "residual": "-C*x**2 + C + x - 1 - 1/x**2",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{1}{1+C{e}^{-{x}^{2}}}",
+          "transformed_z": "C*exp(-x**2) + 1",
+          "residual": "-3*C*x*exp(-x**2)",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{{e}^{{x}^{2}/2}}{C+x}",
+          "transformed_z": "(C + x)*exp(-x**2/2)",
+          "residual": "(-2*C*x - 2*x**2 + x*exp(x**2/2) + 1)*exp(-x**2/2)",
+          "is_solution": false
+        }
+      ],
+      "question_id": "9825c277-927f-5856-83cf-a899b48b564c",
+      "template": "q-109026",
+      "shift": 0,
+      "correct_key_matches_unique_solution": true
+    },
+    {
+      "p": "-3*x**2",
+      "q": "x**2",
+      "n": "-4",
+      "choices": [
+        {
+          "value": "y=\\sqrt[3]{\\frac{C{e}^{3{x}^{2}}-1}{2}}",
+          "transformed_z": "2**(1/3)*(C*exp(3*x**2) - 1)**(5/3)/4",
+          "residual": "5*x*(-3*2**(1/3)*C*x*(C*exp(3*x**2) - 1)**(2/3)*exp(3*x**2) + 2*2**(1/3)*C*(C*exp(3*x**2) - 1)**(2/3)*exp(3*x**2) + 3*2**(1/3)*x*(C*exp(3*x**2) - 1)**(2/3) - 4*x)/4",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\sqrt[3]{\\frac{C-{e}^{3{x}^{2}}}{x}}",
+          "transformed_z": "(C - exp(3*x**2))**(5/3)/x**(5/3)",
+          "residual": "-15*C*x**(1/3)*(C - exp(3*x**2))**(2/3) + 15*x**(1/3)*(C - exp(3*x**2))**(2/3)*exp(3*x**2) - 5*x**2 - 10*(C - exp(3*x**2))**(2/3)*exp(3*x**2)/x**(2/3) - 5*(C - exp(3*x**2))**(5/3)/(3*x**(8/3))",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\sqrt[5]{\\frac{C{e}^{5{x}^{3}}-1}{3}}",
+          "transformed_z": "C*exp(5*x**3)/3 - 1/3",
+          "residual": "0",
+          "is_solution": true
+        },
+        {
+          "value": "y=\\sqrt[5]{\\frac{C{e}^{x}-1}{3}}",
+          "transformed_z": "C*exp(x)/3 - 1/3",
+          "residual": "C*(1 - 15*x**2)*exp(x)/3",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\sqrt[5]{\\frac{C-{e}^{5{x}^{3}}}{{x}^{2}}}",
+          "transformed_z": "(C - exp(5*x**3))/x**2",
+          "residual": "(-15*C*x**3 - 2*C - 5*x**5 + 2*exp(5*x**3))/x**3",
+          "is_solution": false
+        }
+      ],
+      "question_id": "084cf68f-6299-5532-aed3-de80c39489f6",
+      "template": "q-109027",
+      "shift": 0,
+      "correct_key_matches_unique_solution": true
+    },
+    {
+      "p": "1",
+      "q": "-x",
+      "n": "3",
+      "choices": [
+        {
+          "value": "y=\\frac{2}{C{e}^{x}-2x}",
+          "transformed_z": "(C*exp(x) - 2*x)**2/4",
+          "residual": "C*x*exp(x) - C*exp(x) - 2*x**2",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\pm \\sqrt{\\frac{2}{C{e}^{2x}-2x-1}}",
+          "transformed_z": "C*exp(2*x)/2 - x - 1/2",
+          "residual": "0",
+          "is_solution": true
+        },
+        {
+          "value": "y=\\pm \\sqrt{\\frac{2x}{C+{e}^{2x}}}",
+          "transformed_z": "(C + exp(2*x))/(2*x)",
+          "residual": "(-2*C*x - C - 4*x**3 - exp(2*x))/(2*x**2)",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{2x+1}{C-{e}^{2x}}",
+          "transformed_z": "(C - exp(2*x))**2/(2*x + 1)**2",
+          "residual": "2*(-2*C**2*x - 3*C**2 + 4*C*exp(2*x) - 8*x**4 - 12*x**3 - 6*x**2 + 2*x*exp(4*x) - x - exp(4*x))/(8*x**3 + 12*x**2 + 6*x + 1)",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\pm \\sqrt{\\frac{1}{C{e}^{x}-1}}",
+          "transformed_z": "C*exp(x) - 1",
+          "residual": "-C*exp(x) - 2*x + 2",
+          "is_solution": false
+        }
+      ],
+      "question_id": "75b09a13-ce6d-5ece-87ce-cc4507ed9f63",
+      "template": "q-109028",
+      "shift": 0,
+      "correct_key_matches_unique_solution": true
+    },
+    {
+      "p": "-1",
+      "q": "1",
+      "n": "1/2",
+      "choices": [
+        {
+          "value": "y={(\\frac{x}{C{e}^{x/2}-1})}^{2}",
+          "transformed_z": "x/(C*exp(x/2) - 1)",
+          "residual": "(-C**3*exp(3*x/2) - 2*C**2*x*exp(x) + 5*C**2*exp(x) + 3*C*x*exp(x/2) - 7*C*exp(x/2) - x + 3)/(2*(C**3*exp(3*x/2) - 3*C**2*exp(x) + 3*C*exp(x/2) - 1))",
+          "is_solution": false
+        },
+        {
+          "value": "y={(C{e}^{x/2}-1)}^{2}",
+          "transformed_z": "C*exp(x/2) - 1",
+          "residual": "0",
+          "is_solution": true
+        },
+        {
+          "value": "y=\\pm \\sqrt{\\frac{C{e}^{2x}+x+1}{2}}",
+          "transformed_z": "2**(3/4)*(C*exp(2*x) + x + 1)**(1/4)/2",
+          "residual": "(-2*2**(3/4)*x - 4*(C*exp(2*x) + x + 1)**(3/4) - 2**(3/4))/(8*(C*exp(2*x) + x + 1)**(3/4))",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\pm \\sqrt{\\frac{{e}^{2x}+C}{2}}",
+          "transformed_z": "2**(3/4)*(C + exp(2*x))**(1/4)/2",
+          "residual": "-2**(3/4)*C/(4*(C + exp(2*x))**(3/4)) - 1/2",
+          "is_solution": false
+        },
+        {
+          "value": "y={({e}^{x/2}-2x+C)}^{2}",
+          "transformed_z": "C - 2*x + exp(x/2)",
+          "residual": "-C/2 + x - 5/2",
+          "is_solution": false
+        }
+      ],
+      "question_id": "5a022a4b-c3b5-502a-8914-d459462408da",
+      "template": "q-109029",
+      "shift": 0,
+      "correct_key_matches_unique_solution": true
+    },
+    {
+      "p": "-1/x",
+      "q": "sqrt(x)",
+      "n": "2",
+      "choices": [
+        {
+          "value": "y=\\frac{5x}{C+{x}^{3/2}}",
+          "transformed_z": "(C + x**(3/2))/(5*x)",
+          "residual": "(x + 3/10)/sqrt(x)",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{{x}^{2}}{C-5{x}^{5/2}}",
+          "transformed_z": "(C - 5*x**(5/2))/x**2",
+          "residual": "-C/x**3 + sqrt(x) - 15/(2*sqrt(x))",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{5x}{C-2{x}^{5/2}}",
+          "transformed_z": "(C - 2*x**(5/2))/(5*x)",
+          "residual": "0",
+          "is_solution": true
+        },
+        {
+          "value": "y={(\\frac{2x}{C-{x}^{3/2}})}^{2}",
+          "transformed_z": "(C - x**(3/2))**2/(4*x**2)",
+          "residual": "-C**2/(4*x**3) - C/(4*x**(3/2)) + sqrt(x) + 1/2",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\pm \\sqrt{\\frac{x}{C+{x}^{5/2}}}",
+          "transformed_z": "sqrt(C + x**(5/2))/sqrt(x)",
+          "residual": "C/(2*x**(3/2)*sqrt(C + x**(5/2))) + sqrt(x) + 7*x/(4*sqrt(C + x**(5/2)))",
+          "is_solution": false
+        }
+      ],
+      "question_id": "b1b1a262-7939-5346-b006-1dc7ad1d5d09",
+      "template": "q-109154",
+      "shift": 0,
+      "correct_key_matches_unique_solution": true
+    },
+    {
+      "p": "1/x",
+      "q": "x",
+      "n": "3/4",
+      "choices": [
+        {
+          "value": "y={(\\frac{{x}^{5/4}+C}{5{x}^{1/4}})}^{4}",
+          "transformed_z": "C/(5*x**(1/4)) + x/5",
+          "residual": "1/4 - x/4",
+          "is_solution": false
+        },
+        {
+          "value": "y={(\\frac{C{x}^{1/2}-2}{4{x}^{1/2}})}^{2}",
+          "transformed_z": "sqrt(Abs(C*sqrt(x) - 2))/(2*x**(1/4))",
+          "residual": "Piecewise((-x/4, Eq(C*sqrt(x), 2)), (C**2*Abs((C*sqrt(x) - 2)**(-3/2))/(8*x**(1/4)) - 1*1/4*C*Abs((C*sqrt(x) - 2)**(-3/2))/x**(3/4) - x/4, True))",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{{x}^{1/4}+C}{4{x}^{9/4}}",
+          "transformed_z": "sqrt(2)*(C + x**(1/4))**(1/4)/(2*x**(9/16))",
+          "residual": "-5*sqrt(2)*C/(32*x**(25/16)*(C + x**(1/4))**(3/4)) - x/4 - sqrt(2)/(8*x**(21/16)*(C + x**(1/4))**(3/4))",
+          "is_solution": false
+        },
+        {
+          "value": "y={(\\frac{{x}^{9/4}+C}{9{x}^{1/4}})}^{4}",
+          "transformed_z": "(C + x**(9/4))/(9*x**(1/4))",
+          "residual": "0",
+          "is_solution": true
+        },
+        {
+          "value": "y=\\frac{4{x}^{5/4}+C}{3{x}^{1/4}}",
+          "transformed_z": "3**(3/4)*(C + 4*x**(5/4))**(1/4)/(3*x**(1/16))",
+          "residual": "3**(3/4)*C/(16*x**(17/16)*(C + 4*x**(5/4))**(3/4)) + 2*3**(3/4)*x**(3/16)/(3*(C + 4*x**(5/4))**(3/4)) - x/4",
+          "is_solution": false
+        }
+      ],
+      "question_id": "1d0fa098-bdfc-552d-9c7e-e7a9c56d5725",
+      "template": "q-109170",
+      "shift": 0,
+      "correct_key_matches_unique_solution": true
+    },
+    {
+      "p": "-2/x",
+      "q": "x**(-2)",
+      "n": "2",
+      "choices": [
+        {
+          "value": "y=\\frac{{x}^{2}}{C-x}",
+          "transformed_z": "(C - x)/x**2",
+          "residual": "0",
+          "is_solution": true
+        },
+        {
+          "value": "y=\\frac{x+C}{{x}^{3}}",
+          "transformed_z": "x**3/(C + x)",
+          "residual": "(C**2 + 5*C*x**4 + 2*C*x + 4*x**5 + x**2)/(x**2*(C**2 + 2*C*x + x**2))",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{C-x}{2{x}^{2}}",
+          "transformed_z": "2*x**2/(C - x)",
+          "residual": "(C**2 + 8*C*x**3 - 2*C*x - 6*x**4 + x**2)/(x**2*(C**2 - 2*C*x + x**2))",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{{x}^{2}}{Cx+2}",
+          "transformed_z": "(C*x + 2)/x**2",
+          "residual": "(C + 1)/x**2",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{2{x}^{2}}{C-4x}",
+          "transformed_z": "(C - 4*x)/(2*x**2)",
+          "residual": "-1/x**2",
+          "is_solution": false
+        }
+      ],
+      "question_id": "46b1cf07-0a7e-5a85-9cba-5636d2e0e526",
+      "template": "q-109172",
+      "shift": 0,
+      "correct_key_matches_unique_solution": true
+    },
+    {
+      "p": "1/x",
+      "q": "x**(-2)",
+      "n": "-1/2",
+      "choices": [
+        {
+          "value": "y=2{x}^{2/3}-Cx",
+          "transformed_z": "(-C*x + 2*x**(2/3))**(3/2)",
+          "residual": "-3*C*sqrt(-C*x + 2*x**(2/3)) - 3/(2*x**2) + 5*sqrt(-C*x + 2*x**(2/3))/x**(1/3)",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{{(3\\sqrt{x}+C)}^{2/3}}{x}",
+          "transformed_z": "C/x**(3/2) + 3/x",
+          "residual": "0",
+          "is_solution": true
+        },
+        {
+          "value": "y=\\frac{{(3+Cx)}^{2/3}}{{x}^{2}}",
+          "transformed_z": "(C*x + 3)/x**3",
+          "residual": "(-C*x - 3*x**2 - 9)/(2*x**4)",
+          "is_solution": false
+        },
+        {
+          "value": "y=3\\sqrt{x}+C{x}^{2/3}",
+          "transformed_z": "(C*x**(2/3) + 3*sqrt(x))**(3/2)",
+          "residual": "5*C*sqrt(C*x**(2/3) + 3*sqrt(x))/(2*x**(1/3)) - 3/(2*x**2) + 27*sqrt(C*x**(2/3) + 3*sqrt(x))/(4*sqrt(x))",
+          "is_solution": false
+        },
+        {
+          "value": "y={(\\frac{\\sqrt{x}+C}{x})}^{2/3}",
+          "transformed_z": "(C + sqrt(x))/x",
+          "residual": "(x**(3/2)*(C - 3)/2 + x**2)/x**(7/2)",
+          "is_solution": false
+        }
+      ],
+      "question_id": "9dae5c96-e03e-5bb2-bb60-2e27efbbf73f",
+      "template": "q-109177",
+      "shift": 0,
+      "correct_key_matches_unique_solution": true
+    },
+    {
+      "p": "-1/x",
+      "q": "x",
+      "n": "2",
+      "choices": [
+        {
+          "value": "y=\\frac{{x}^{3}}{C-x}",
+          "transformed_z": "(C - x)/x**3",
+          "residual": "(-2*C + x**5 + x)/x**4",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{3x}{C-{x}^{3}}",
+          "transformed_z": "(C - x**3)/(3*x)",
+          "residual": "0",
+          "is_solution": true
+        },
+        {
+          "value": "y=\\frac{3{x}^{2}}{C+2{x}^{3}}",
+          "transformed_z": "(C + 2*x**3)/(3*x**2)",
+          "residual": "-C/(3*x**3) + x + 4/3",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{{x}^{3}+C}{{x}^{2}}",
+          "transformed_z": "x**2/(C + x**3)",
+          "residual": "x*(C**2 + 2*C*x**3 + 3*C + x**6)/(C**2 + 2*C*x**3 + x**6)",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{x}{C-{x}^{2}}",
+          "transformed_z": "C/x - x",
+          "residual": "x - 2",
+          "is_solution": false
+        }
+      ],
+      "question_id": "907197e8-d754-56ed-93f7-e069a2183c2a",
+      "template": "q-109158",
+      "shift": 0,
+      "correct_key_matches_unique_solution": true
+    },
+    {
+      "p": "-1",
+      "q": "exp(x)",
+      "n": "2",
+      "choices": [
+        {
+          "value": "y=\\frac{2{e}^{(x-6)}}{C-{e}^{2\\cdot (x-6)}}",
+          "transformed_z": "(C - exp(2*x))*exp(-x)/2",
+          "residual": "0",
+          "is_solution": true
+        },
+        {
+          "value": "y=\\frac{C-{e}^{(x-6)}}{2{e}^{(x-6)}}",
+          "transformed_z": "2*exp(x)/(C - exp(x))",
+          "residual": "(C**2 - 2*C*exp(x) + 4*C + exp(2*x) - 2*exp(x))*exp(x)/(C**2 - 2*C*exp(x) + exp(2*x))",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{C-{e}^{2\\cdot (x-6)}}{2{e}^{(x-6)}}",
+          "transformed_z": "2*exp(x)/(C - exp(2*x))",
+          "residual": "(C**2 - 2*C*exp(2*x) + 4*C + exp(4*x))*exp(x)/(C**2 - 2*C*exp(2*x) + exp(4*x))",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{{e}^{(x-6)}}{C-2{e}^{(x-6)}}",
+          "transformed_z": "C*exp(-x) - 2",
+          "residual": "exp(x) - 2",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{2\\cdot (x-6){e}^{(x-6)}}{C-2{e}^{2\\cdot (x-6)}}",
+          "transformed_z": "(C/2 - exp(2*x))*exp(-x)/x",
+          "residual": "-C*exp(-x)/(2*x**2) + exp(x) - 2*exp(x)/x + exp(x)/x**2",
+          "is_solution": false
+        }
+      ],
+      "question_id": "6ac05229-8f6a-55b2-b242-14148b89a18a",
+      "template": "q-106073",
+      "shift": -6,
+      "correct_key_matches_unique_solution": true
+    },
+    {
+      "p": "-1",
+      "q": "exp(x)",
+      "n": "2",
+      "choices": [
+        {
+          "value": "y=\\frac{2{e}^{(x+6)}}{C-{e}^{2\\cdot (x+6)}}",
+          "transformed_z": "(C - exp(2*x))*exp(-x)/2",
+          "residual": "0",
+          "is_solution": true
+        },
+        {
+          "value": "y=\\frac{C-{e}^{(x+6)}}{2{e}^{(x+6)}}",
+          "transformed_z": "2*exp(x)/(C - exp(x))",
+          "residual": "(C**2 - 2*C*exp(x) + 4*C + exp(2*x) - 2*exp(x))*exp(x)/(C**2 - 2*C*exp(x) + exp(2*x))",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{C-{e}^{2\\cdot (x+6)}}{2{e}^{(x+6)}}",
+          "transformed_z": "2*exp(x)/(C - exp(2*x))",
+          "residual": "(C**2 - 2*C*exp(2*x) + 4*C + exp(4*x))*exp(x)/(C**2 - 2*C*exp(2*x) + exp(4*x))",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{{e}^{(x+6)}}{C-2{e}^{(x+6)}}",
+          "transformed_z": "C*exp(-x) - 2",
+          "residual": "exp(x) - 2",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{2\\cdot (x+6){e}^{(x+6)}}{C-2{e}^{2\\cdot (x+6)}}",
+          "transformed_z": "(C/2 - exp(2*x))*exp(-x)/x",
+          "residual": "-C*exp(-x)/(2*x**2) + exp(x) - 2*exp(x)/x + exp(x)/x**2",
+          "is_solution": false
+        }
+      ],
+      "question_id": "70d6e37f-c70d-528c-9683-94d43b0e75be",
+      "template": "q-106073",
+      "shift": 6,
+      "correct_key_matches_unique_solution": true
+    },
+    {
+      "p": "x",
+      "q": "x",
+      "n": "2",
+      "choices": [
+        {
+          "value": "y=\\frac{1}{1+C{e}^{{(x-6)}^{2}}}",
+          "transformed_z": "C*exp(x**2) + 1",
+          "residual": "C*x*exp(x**2)",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{1}{1+C{e}^{{(x-6)}^{2}/2}}",
+          "transformed_z": "C*exp(x**2/2) + 1",
+          "residual": "0",
+          "is_solution": true
+        },
+        {
+          "value": "y=\\frac{(x-6)}{1+C{(x-6)}^{2}}",
+          "transformed_z": "C*x + 1/x",
+          "residual": "-C*x**2 + C + x - 1 - 1/x**2",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{1}{1+C{e}^{-{(x-6)}^{2}}}",
+          "transformed_z": "C*exp(-x**2) + 1",
+          "residual": "-3*C*x*exp(-x**2)",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{{e}^{{(x-6)}^{2}/2}}{C+(x-6)}",
+          "transformed_z": "(C + x)*exp(-x**2/2)",
+          "residual": "(-2*C*x - 2*x**2 + x*exp(x**2/2) + 1)*exp(-x**2/2)",
+          "is_solution": false
+        }
+      ],
+      "question_id": "ea4ff2f7-bfd8-50df-992e-a2ae222fbd45",
+      "template": "q-109026",
+      "shift": -6,
+      "correct_key_matches_unique_solution": true
+    },
+    {
+      "p": "x",
+      "q": "x",
+      "n": "2",
+      "choices": [
+        {
+          "value": "y=\\frac{1}{1+C{e}^{{(x+6)}^{2}}}",
+          "transformed_z": "C*exp(x**2) + 1",
+          "residual": "C*x*exp(x**2)",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{1}{1+C{e}^{{(x+6)}^{2}/2}}",
+          "transformed_z": "C*exp(x**2/2) + 1",
+          "residual": "0",
+          "is_solution": true
+        },
+        {
+          "value": "y=\\frac{(x+6)}{1+C{(x+6)}^{2}}",
+          "transformed_z": "C*x + 1/x",
+          "residual": "-C*x**2 + C + x - 1 - 1/x**2",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{1}{1+C{e}^{-{(x+6)}^{2}}}",
+          "transformed_z": "C*exp(-x**2) + 1",
+          "residual": "-3*C*x*exp(-x**2)",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{{e}^{{(x+6)}^{2}/2}}{C+(x+6)}",
+          "transformed_z": "(C + x)*exp(-x**2/2)",
+          "residual": "(-2*C*x - 2*x**2 + x*exp(x**2/2) + 1)*exp(-x**2/2)",
+          "is_solution": false
+        }
+      ],
+      "question_id": "9996956f-c76f-5094-94e6-68fc74385957",
+      "template": "q-109026",
+      "shift": 6,
+      "correct_key_matches_unique_solution": true
+    },
+    {
+      "p": "-3*x**2",
+      "q": "x**2",
+      "n": "-4",
+      "choices": [
+        {
+          "value": "y=\\sqrt[3]{\\frac{C{e}^{3{(x-6)}^{2}}-1}{2}}",
+          "transformed_z": "2**(1/3)*(C*exp(3*x**2) - 1)**(5/3)/4",
+          "residual": "5*x*(-3*2**(1/3)*C*x*(C*exp(3*x**2) - 1)**(2/3)*exp(3*x**2) + 2*2**(1/3)*C*(C*exp(3*x**2) - 1)**(2/3)*exp(3*x**2) + 3*2**(1/3)*x*(C*exp(3*x**2) - 1)**(2/3) - 4*x)/4",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\sqrt[3]{\\frac{C-{e}^{3{(x-6)}^{2}}}{(x-6)}}",
+          "transformed_z": "(C - exp(3*x**2))**(5/3)/x**(5/3)",
+          "residual": "-15*C*x**(1/3)*(C - exp(3*x**2))**(2/3) + 15*x**(1/3)*(C - exp(3*x**2))**(2/3)*exp(3*x**2) - 5*x**2 - 10*(C - exp(3*x**2))**(2/3)*exp(3*x**2)/x**(2/3) - 5*(C - exp(3*x**2))**(5/3)/(3*x**(8/3))",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\sqrt[5]{\\frac{C{e}^{5{(x-6)}^{3}}-1}{3}}",
+          "transformed_z": "C*exp(5*x**3)/3 - 1/3",
+          "residual": "0",
+          "is_solution": true
+        },
+        {
+          "value": "y=\\sqrt[5]{\\frac{C{e}^{(x-6)}-1}{3}}",
+          "transformed_z": "C*exp(x)/3 - 1/3",
+          "residual": "C*(1 - 15*x**2)*exp(x)/3",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\sqrt[5]{\\frac{C-{e}^{5{(x-6)}^{3}}}{{(x-6)}^{2}}}",
+          "transformed_z": "(C - exp(5*x**3))/x**2",
+          "residual": "(-15*C*x**3 - 2*C - 5*x**5 + 2*exp(5*x**3))/x**3",
+          "is_solution": false
+        }
+      ],
+      "question_id": "fba42874-4ef4-5801-941e-4eb9bcd0596e",
+      "template": "q-109027",
+      "shift": -6,
+      "correct_key_matches_unique_solution": true
+    },
+    {
+      "p": "-3*x**2",
+      "q": "x**2",
+      "n": "-4",
+      "choices": [
+        {
+          "value": "y=\\sqrt[3]{\\frac{C{e}^{3{(x+6)}^{2}}-1}{2}}",
+          "transformed_z": "2**(1/3)*(C*exp(3*x**2) - 1)**(5/3)/4",
+          "residual": "5*x*(-3*2**(1/3)*C*x*(C*exp(3*x**2) - 1)**(2/3)*exp(3*x**2) + 2*2**(1/3)*C*(C*exp(3*x**2) - 1)**(2/3)*exp(3*x**2) + 3*2**(1/3)*x*(C*exp(3*x**2) - 1)**(2/3) - 4*x)/4",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\sqrt[3]{\\frac{C-{e}^{3{(x+6)}^{2}}}{(x+6)}}",
+          "transformed_z": "(C - exp(3*x**2))**(5/3)/x**(5/3)",
+          "residual": "-15*C*x**(1/3)*(C - exp(3*x**2))**(2/3) + 15*x**(1/3)*(C - exp(3*x**2))**(2/3)*exp(3*x**2) - 5*x**2 - 10*(C - exp(3*x**2))**(2/3)*exp(3*x**2)/x**(2/3) - 5*(C - exp(3*x**2))**(5/3)/(3*x**(8/3))",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\sqrt[5]{\\frac{C{e}^{5{(x+6)}^{3}}-1}{3}}",
+          "transformed_z": "C*exp(5*x**3)/3 - 1/3",
+          "residual": "0",
+          "is_solution": true
+        },
+        {
+          "value": "y=\\sqrt[5]{\\frac{C{e}^{(x+6)}-1}{3}}",
+          "transformed_z": "C*exp(x)/3 - 1/3",
+          "residual": "C*(1 - 15*x**2)*exp(x)/3",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\sqrt[5]{\\frac{C-{e}^{5{(x+6)}^{3}}}{{(x+6)}^{2}}}",
+          "transformed_z": "(C - exp(5*x**3))/x**2",
+          "residual": "(-15*C*x**3 - 2*C - 5*x**5 + 2*exp(5*x**3))/x**3",
+          "is_solution": false
+        }
+      ],
+      "question_id": "3a1d5dfc-672b-5f0f-a250-0a77acf16736",
+      "template": "q-109027",
+      "shift": 6,
+      "correct_key_matches_unique_solution": true
+    },
+    {
+      "p": "1",
+      "q": "-x",
+      "n": "3",
+      "choices": [
+        {
+          "value": "y=\\frac{2}{C{e}^{(x-6)}-2\\cdot (x-6)}",
+          "transformed_z": "(C*exp(x) - 2*x)**2/4",
+          "residual": "C*x*exp(x) - C*exp(x) - 2*x**2",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\pm \\sqrt{\\frac{2}{C{e}^{2\\cdot (x-6)}-2\\cdot (x-6)-1}}",
+          "transformed_z": "C*exp(2*x)/2 - x - 1/2",
+          "residual": "0",
+          "is_solution": true
+        },
+        {
+          "value": "y=\\pm \\sqrt{\\frac{2\\cdot (x-6)}{C+{e}^{2\\cdot (x-6)}}}",
+          "transformed_z": "(C + exp(2*x))/(2*x)",
+          "residual": "(-2*C*x - C - 4*x**3 - exp(2*x))/(2*x**2)",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{2\\cdot (x-6)+1}{C-{e}^{2\\cdot (x-6)}}",
+          "transformed_z": "(C - exp(2*x))**2/(2*x + 1)**2",
+          "residual": "2*(-2*C**2*x - 3*C**2 + 4*C*exp(2*x) - 8*x**4 - 12*x**3 - 6*x**2 + 2*x*exp(4*x) - x - exp(4*x))/(8*x**3 + 12*x**2 + 6*x + 1)",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\pm \\sqrt{\\frac{1}{C{e}^{(x-6)}-1}}",
+          "transformed_z": "C*exp(x) - 1",
+          "residual": "-C*exp(x) - 2*x + 2",
+          "is_solution": false
+        }
+      ],
+      "question_id": "9eba97e1-5f5b-53ae-b29b-3b5431849cf5",
+      "template": "q-109028",
+      "shift": -6,
+      "correct_key_matches_unique_solution": true
+    },
+    {
+      "p": "1",
+      "q": "-x",
+      "n": "3",
+      "choices": [
+        {
+          "value": "y=\\frac{2}{C{e}^{(x+6)}-2\\cdot (x+6)}",
+          "transformed_z": "(C*exp(x) - 2*x)**2/4",
+          "residual": "C*x*exp(x) - C*exp(x) - 2*x**2",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\pm \\sqrt{\\frac{2}{C{e}^{2\\cdot (x+6)}-2\\cdot (x+6)-1}}",
+          "transformed_z": "C*exp(2*x)/2 - x - 1/2",
+          "residual": "0",
+          "is_solution": true
+        },
+        {
+          "value": "y=\\pm \\sqrt{\\frac{2\\cdot (x+6)}{C+{e}^{2\\cdot (x+6)}}}",
+          "transformed_z": "(C + exp(2*x))/(2*x)",
+          "residual": "(-2*C*x - C - 4*x**3 - exp(2*x))/(2*x**2)",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{2\\cdot (x+6)+1}{C-{e}^{2\\cdot (x+6)}}",
+          "transformed_z": "(C - exp(2*x))**2/(2*x + 1)**2",
+          "residual": "2*(-2*C**2*x - 3*C**2 + 4*C*exp(2*x) - 8*x**4 - 12*x**3 - 6*x**2 + 2*x*exp(4*x) - x - exp(4*x))/(8*x**3 + 12*x**2 + 6*x + 1)",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\pm \\sqrt{\\frac{1}{C{e}^{(x+6)}-1}}",
+          "transformed_z": "C*exp(x) - 1",
+          "residual": "-C*exp(x) - 2*x + 2",
+          "is_solution": false
+        }
+      ],
+      "question_id": "6f47d283-50b7-5953-9242-5335258161c3",
+      "template": "q-109028",
+      "shift": 6,
+      "correct_key_matches_unique_solution": true
+    },
+    {
+      "p": "-1/x",
+      "q": "sqrt(x)",
+      "n": "2",
+      "choices": [
+        {
+          "value": "y=\\frac{5\\cdot (x-6)}{C+{(x-6)}^{3/2}}",
+          "transformed_z": "(C + x**(3/2))/(5*x)",
+          "residual": "(x + 3/10)/sqrt(x)",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{{(x-6)}^{2}}{C-5{(x-6)}^{5/2}}",
+          "transformed_z": "(C - 5*x**(5/2))/x**2",
+          "residual": "-C/x**3 + sqrt(x) - 15/(2*sqrt(x))",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{5\\cdot (x-6)}{C-2{(x-6)}^{5/2}}",
+          "transformed_z": "(C - 2*x**(5/2))/(5*x)",
+          "residual": "0",
+          "is_solution": true
+        },
+        {
+          "value": "y={(\\frac{2\\cdot (x-6)}{C-{(x-6)}^{3/2}})}^{2}",
+          "transformed_z": "(C - x**(3/2))**2/(4*x**2)",
+          "residual": "-C**2/(4*x**3) - C/(4*x**(3/2)) + sqrt(x) + 1/2",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\pm \\sqrt{\\frac{(x-6)}{C+{(x-6)}^{5/2}}}",
+          "transformed_z": "sqrt(C + x**(5/2))/sqrt(x)",
+          "residual": "C/(2*x**(3/2)*sqrt(C + x**(5/2))) + sqrt(x) + 7*x/(4*sqrt(C + x**(5/2)))",
+          "is_solution": false
+        }
+      ],
+      "question_id": "be60dede-f88e-512d-8364-adecb5fc032b",
+      "template": "q-109154",
+      "shift": -6,
+      "correct_key_matches_unique_solution": true
+    },
+    {
+      "p": "-1/x",
+      "q": "sqrt(x)",
+      "n": "2",
+      "choices": [
+        {
+          "value": "y=\\frac{5\\cdot (x+6)}{C+{(x+6)}^{3/2}}",
+          "transformed_z": "(C + x**(3/2))/(5*x)",
+          "residual": "(x + 3/10)/sqrt(x)",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{{(x+6)}^{2}}{C-5{(x+6)}^{5/2}}",
+          "transformed_z": "(C - 5*x**(5/2))/x**2",
+          "residual": "-C/x**3 + sqrt(x) - 15/(2*sqrt(x))",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{5\\cdot (x+6)}{C-2{(x+6)}^{5/2}}",
+          "transformed_z": "(C - 2*x**(5/2))/(5*x)",
+          "residual": "0",
+          "is_solution": true
+        },
+        {
+          "value": "y={(\\frac{2\\cdot (x+6)}{C-{(x+6)}^{3/2}})}^{2}",
+          "transformed_z": "(C - x**(3/2))**2/(4*x**2)",
+          "residual": "-C**2/(4*x**3) - C/(4*x**(3/2)) + sqrt(x) + 1/2",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\pm \\sqrt{\\frac{(x+6)}{C+{(x+6)}^{5/2}}}",
+          "transformed_z": "sqrt(C + x**(5/2))/sqrt(x)",
+          "residual": "C/(2*x**(3/2)*sqrt(C + x**(5/2))) + sqrt(x) + 7*x/(4*sqrt(C + x**(5/2)))",
+          "is_solution": false
+        }
+      ],
+      "question_id": "3b45c80c-b43a-5c3c-a091-1d14fc2bcf48",
+      "template": "q-109154",
+      "shift": 6,
+      "correct_key_matches_unique_solution": true
+    },
+    {
+      "p": "1/x",
+      "q": "x",
+      "n": "3/4",
+      "choices": [
+        {
+          "value": "y={(\\frac{{(x-6)}^{5/4}+C}{5{(x-6)}^{1/4}})}^{4}",
+          "transformed_z": "C/(5*x**(1/4)) + x/5",
+          "residual": "1/4 - x/4",
+          "is_solution": false
+        },
+        {
+          "value": "y={(\\frac{C{(x-6)}^{1/2}-2}{4{(x-6)}^{1/2}})}^{2}",
+          "transformed_z": "sqrt(Abs(C*sqrt(x) - 2))/(2*x**(1/4))",
+          "residual": "Piecewise((-x/4, Eq(C*sqrt(x), 2)), (C**2*Abs((C*sqrt(x) - 2)**(-3/2))/(8*x**(1/4)) - 1*1/4*C*Abs((C*sqrt(x) - 2)**(-3/2))/x**(3/4) - x/4, True))",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{{(x-6)}^{1/4}+C}{4{(x-6)}^{9/4}}",
+          "transformed_z": "sqrt(2)*(C + x**(1/4))**(1/4)/(2*x**(9/16))",
+          "residual": "-5*sqrt(2)*C/(32*x**(25/16)*(C + x**(1/4))**(3/4)) - x/4 - sqrt(2)/(8*x**(21/16)*(C + x**(1/4))**(3/4))",
+          "is_solution": false
+        },
+        {
+          "value": "y={(\\frac{{(x-6)}^{9/4}+C}{9{(x-6)}^{1/4}})}^{4}",
+          "transformed_z": "(C + x**(9/4))/(9*x**(1/4))",
+          "residual": "0",
+          "is_solution": true
+        },
+        {
+          "value": "y=\\frac{4{(x-6)}^{5/4}+C}{3{(x-6)}^{1/4}}",
+          "transformed_z": "3**(3/4)*(C + 4*x**(5/4))**(1/4)/(3*x**(1/16))",
+          "residual": "3**(3/4)*C/(16*x**(17/16)*(C + 4*x**(5/4))**(3/4)) + 2*3**(3/4)*x**(3/16)/(3*(C + 4*x**(5/4))**(3/4)) - x/4",
+          "is_solution": false
+        }
+      ],
+      "question_id": "4c866423-3d16-5bfb-95b6-2aad67327bbd",
+      "template": "q-109170",
+      "shift": -6,
+      "correct_key_matches_unique_solution": true
+    },
+    {
+      "p": "1/x",
+      "q": "x",
+      "n": "3/4",
+      "choices": [
+        {
+          "value": "y={(\\frac{{(x+6)}^{5/4}+C}{5{(x+6)}^{1/4}})}^{4}",
+          "transformed_z": "C/(5*x**(1/4)) + x/5",
+          "residual": "1/4 - x/4",
+          "is_solution": false
+        },
+        {
+          "value": "y={(\\frac{C{(x+6)}^{1/2}-2}{4{(x+6)}^{1/2}})}^{2}",
+          "transformed_z": "sqrt(Abs(C*sqrt(x) - 2))/(2*x**(1/4))",
+          "residual": "Piecewise((-x/4, Eq(C*sqrt(x), 2)), (C**2*Abs((C*sqrt(x) - 2)**(-3/2))/(8*x**(1/4)) - 1*1/4*C*Abs((C*sqrt(x) - 2)**(-3/2))/x**(3/4) - x/4, True))",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{{(x+6)}^{1/4}+C}{4{(x+6)}^{9/4}}",
+          "transformed_z": "sqrt(2)*(C + x**(1/4))**(1/4)/(2*x**(9/16))",
+          "residual": "-5*sqrt(2)*C/(32*x**(25/16)*(C + x**(1/4))**(3/4)) - x/4 - sqrt(2)/(8*x**(21/16)*(C + x**(1/4))**(3/4))",
+          "is_solution": false
+        },
+        {
+          "value": "y={(\\frac{{(x+6)}^{9/4}+C}{9{(x+6)}^{1/4}})}^{4}",
+          "transformed_z": "(C + x**(9/4))/(9*x**(1/4))",
+          "residual": "0",
+          "is_solution": true
+        },
+        {
+          "value": "y=\\frac{4{(x+6)}^{5/4}+C}{3{(x+6)}^{1/4}}",
+          "transformed_z": "3**(3/4)*(C + 4*x**(5/4))**(1/4)/(3*x**(1/16))",
+          "residual": "3**(3/4)*C/(16*x**(17/16)*(C + 4*x**(5/4))**(3/4)) + 2*3**(3/4)*x**(3/16)/(3*(C + 4*x**(5/4))**(3/4)) - x/4",
+          "is_solution": false
+        }
+      ],
+      "question_id": "07ecb474-b900-521e-b9d0-d432039f7277",
+      "template": "q-109170",
+      "shift": 6,
+      "correct_key_matches_unique_solution": true
+    },
+    {
+      "p": "-2/x",
+      "q": "x**(-2)",
+      "n": "2",
+      "choices": [
+        {
+          "value": "y=\\frac{{(x-6)}^{2}}{C-(x-6)}",
+          "transformed_z": "(C - x)/x**2",
+          "residual": "0",
+          "is_solution": true
+        },
+        {
+          "value": "y=\\frac{(x-6)+C}{{(x-6)}^{3}}",
+          "transformed_z": "x**3/(C + x)",
+          "residual": "(C**2 + 5*C*x**4 + 2*C*x + 4*x**5 + x**2)/(x**2*(C**2 + 2*C*x + x**2))",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{C-(x-6)}{2{(x-6)}^{2}}",
+          "transformed_z": "2*x**2/(C - x)",
+          "residual": "(C**2 + 8*C*x**3 - 2*C*x - 6*x**4 + x**2)/(x**2*(C**2 - 2*C*x + x**2))",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{{(x-6)}^{2}}{C\\cdot (x-6)+2}",
+          "transformed_z": "(C*x + 2)/x**2",
+          "residual": "(C + 1)/x**2",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{2{(x-6)}^{2}}{C-4\\cdot (x-6)}",
+          "transformed_z": "(C - 4*x)/(2*x**2)",
+          "residual": "-1/x**2",
+          "is_solution": false
+        }
+      ],
+      "question_id": "bc0a1b1f-c3b7-564b-b246-321d17b69092",
+      "template": "q-109172",
+      "shift": -6,
+      "correct_key_matches_unique_solution": true
+    },
+    {
+      "p": "-2/x",
+      "q": "x**(-2)",
+      "n": "2",
+      "choices": [
+        {
+          "value": "y=\\frac{{(x+6)}^{2}}{C-(x+6)}",
+          "transformed_z": "(C - x)/x**2",
+          "residual": "0",
+          "is_solution": true
+        },
+        {
+          "value": "y=\\frac{(x+6)+C}{{(x+6)}^{3}}",
+          "transformed_z": "x**3/(C + x)",
+          "residual": "(C**2 + 5*C*x**4 + 2*C*x + 4*x**5 + x**2)/(x**2*(C**2 + 2*C*x + x**2))",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{C-(x+6)}{2{(x+6)}^{2}}",
+          "transformed_z": "2*x**2/(C - x)",
+          "residual": "(C**2 + 8*C*x**3 - 2*C*x - 6*x**4 + x**2)/(x**2*(C**2 - 2*C*x + x**2))",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{{(x+6)}^{2}}{C\\cdot (x+6)+2}",
+          "transformed_z": "(C*x + 2)/x**2",
+          "residual": "(C + 1)/x**2",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{2{(x+6)}^{2}}{C-4\\cdot (x+6)}",
+          "transformed_z": "(C - 4*x)/(2*x**2)",
+          "residual": "-1/x**2",
+          "is_solution": false
+        }
+      ],
+      "question_id": "11c7e753-9ebf-5ed9-bcef-07416201feae",
+      "template": "q-109172",
+      "shift": 6,
+      "correct_key_matches_unique_solution": true
+    },
+    {
+      "p": "1/x",
+      "q": "x**(-2)",
+      "n": "-1/2",
+      "choices": [
+        {
+          "value": "y=2{(x-6)}^{2/3}-C\\cdot (x-6)",
+          "transformed_z": "(-C*x + 2*x**(2/3))**(3/2)",
+          "residual": "-3*C*sqrt(-C*x + 2*x**(2/3)) - 3/(2*x**2) + 5*sqrt(-C*x + 2*x**(2/3))/x**(1/3)",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{{(3\\sqrt{(x-6)}+C)}^{2/3}}{(x-6)}",
+          "transformed_z": "C/x**(3/2) + 3/x",
+          "residual": "0",
+          "is_solution": true
+        },
+        {
+          "value": "y=\\frac{{(3+C\\cdot (x-6))}^{2/3}}{{(x-6)}^{2}}",
+          "transformed_z": "(C*x + 3)/x**3",
+          "residual": "(-C*x - 3*x**2 - 9)/(2*x**4)",
+          "is_solution": false
+        },
+        {
+          "value": "y=3\\sqrt{(x-6)}+C{(x-6)}^{2/3}",
+          "transformed_z": "(C*x**(2/3) + 3*sqrt(x))**(3/2)",
+          "residual": "5*C*sqrt(C*x**(2/3) + 3*sqrt(x))/(2*x**(1/3)) - 3/(2*x**2) + 27*sqrt(C*x**(2/3) + 3*sqrt(x))/(4*sqrt(x))",
+          "is_solution": false
+        },
+        {
+          "value": "y={(\\frac{\\sqrt{(x-6)}+C}{(x-6)})}^{2/3}",
+          "transformed_z": "(C + sqrt(x))/x",
+          "residual": "(x**(3/2)*(C - 3)/2 + x**2)/x**(7/2)",
+          "is_solution": false
+        }
+      ],
+      "question_id": "fbdde999-af72-5701-8021-82f1480fa054",
+      "template": "q-109177",
+      "shift": -6,
+      "correct_key_matches_unique_solution": true
+    },
+    {
+      "p": "1/x",
+      "q": "x**(-2)",
+      "n": "-1/2",
+      "choices": [
+        {
+          "value": "y=2{(x+6)}^{2/3}-C\\cdot (x+6)",
+          "transformed_z": "(-C*x + 2*x**(2/3))**(3/2)",
+          "residual": "-3*C*sqrt(-C*x + 2*x**(2/3)) - 3/(2*x**2) + 5*sqrt(-C*x + 2*x**(2/3))/x**(1/3)",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{{(3\\sqrt{(x+6)}+C)}^{2/3}}{(x+6)}",
+          "transformed_z": "C/x**(3/2) + 3/x",
+          "residual": "0",
+          "is_solution": true
+        },
+        {
+          "value": "y=\\frac{{(3+C\\cdot (x+6))}^{2/3}}{{(x+6)}^{2}}",
+          "transformed_z": "(C*x + 3)/x**3",
+          "residual": "(-C*x - 3*x**2 - 9)/(2*x**4)",
+          "is_solution": false
+        },
+        {
+          "value": "y=3\\sqrt{(x+6)}+C{(x+6)}^{2/3}",
+          "transformed_z": "(C*x**(2/3) + 3*sqrt(x))**(3/2)",
+          "residual": "5*C*sqrt(C*x**(2/3) + 3*sqrt(x))/(2*x**(1/3)) - 3/(2*x**2) + 27*sqrt(C*x**(2/3) + 3*sqrt(x))/(4*sqrt(x))",
+          "is_solution": false
+        },
+        {
+          "value": "y={(\\frac{\\sqrt{(x+6)}+C}{(x+6)})}^{2/3}",
+          "transformed_z": "(C + sqrt(x))/x",
+          "residual": "(x**(3/2)*(C - 3)/2 + x**2)/x**(7/2)",
+          "is_solution": false
+        }
+      ],
+      "question_id": "faa65d3c-b021-5965-8936-08b5f04da6a6",
+      "template": "q-109177",
+      "shift": 6,
+      "correct_key_matches_unique_solution": true
+    },
+    {
+      "p": "-1/x",
+      "q": "x",
+      "n": "2",
+      "choices": [
+        {
+          "value": "y=\\frac{{(x-6)}^{3}}{C-(x-6)}",
+          "transformed_z": "(C - x)/x**3",
+          "residual": "(-2*C + x**5 + x)/x**4",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{3\\cdot (x-6)}{C-{(x-6)}^{3}}",
+          "transformed_z": "(C - x**3)/(3*x)",
+          "residual": "0",
+          "is_solution": true
+        },
+        {
+          "value": "y=\\frac{3{(x-6)}^{2}}{C+2{(x-6)}^{3}}",
+          "transformed_z": "(C + 2*x**3)/(3*x**2)",
+          "residual": "-C/(3*x**3) + x + 4/3",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{{(x-6)}^{3}+C}{{(x-6)}^{2}}",
+          "transformed_z": "x**2/(C + x**3)",
+          "residual": "x*(C**2 + 2*C*x**3 + 3*C + x**6)/(C**2 + 2*C*x**3 + x**6)",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{(x-6)}{C-{(x-6)}^{2}}",
+          "transformed_z": "C/x - x",
+          "residual": "x - 2",
+          "is_solution": false
+        }
+      ],
+      "question_id": "2f283213-bc11-503f-852b-8b52e2901257",
+      "template": "q-109158",
+      "shift": -6,
+      "correct_key_matches_unique_solution": true
+    },
+    {
+      "p": "-1/x",
+      "q": "x",
+      "n": "2",
+      "choices": [
+        {
+          "value": "y=\\frac{{(x+6)}^{3}}{C-(x+6)}",
+          "transformed_z": "(C - x)/x**3",
+          "residual": "(-2*C + x**5 + x)/x**4",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{3\\cdot (x+6)}{C-{(x+6)}^{3}}",
+          "transformed_z": "(C - x**3)/(3*x)",
+          "residual": "0",
+          "is_solution": true
+        },
+        {
+          "value": "y=\\frac{3{(x+6)}^{2}}{C+2{(x+6)}^{3}}",
+          "transformed_z": "(C + 2*x**3)/(3*x**2)",
+          "residual": "-C/(3*x**3) + x + 4/3",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{{(x+6)}^{3}+C}{{(x+6)}^{2}}",
+          "transformed_z": "x**2/(C + x**3)",
+          "residual": "x*(C**2 + 2*C*x**3 + 3*C + x**6)/(C**2 + 2*C*x**3 + x**6)",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{(x+6)}{C-{(x+6)}^{2}}",
+          "transformed_z": "C/x - x",
+          "residual": "x - 2",
+          "is_solution": false
+        }
+      ],
+      "question_id": "39531070-a98c-545e-863d-0b6541d99470",
+      "template": "q-109158",
+      "shift": 6,
+      "correct_key_matches_unique_solution": true
+    },
+    {
+      "p": "1",
+      "q": "-x",
+      "n": "3",
+      "choices": [
+        {
+          "value": "y=\\frac{2}{C{e}^{(x-2)}-2\\cdot (x-2)}",
+          "transformed_z": "(C*exp(x) - 2*x)**2/4",
+          "residual": "C*x*exp(x) - C*exp(x) - 2*x**2",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\pm \\sqrt{\\frac{2}{C{e}^{2\\cdot (x-2)}-2\\cdot (x-2)-1}}",
+          "transformed_z": "C*exp(2*x)/2 - x - 1/2",
+          "residual": "0",
+          "is_solution": true
+        },
+        {
+          "value": "y=\\pm \\sqrt{\\frac{2\\cdot (x-2)}{C+{e}^{2\\cdot (x-2)}}}",
+          "transformed_z": "(C + exp(2*x))/(2*x)",
+          "residual": "(-2*C*x - C - 4*x**3 - exp(2*x))/(2*x**2)",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{2\\cdot (x-2)+1}{C-{e}^{2\\cdot (x-2)}}",
+          "transformed_z": "(C - exp(2*x))**2/(2*x + 1)**2",
+          "residual": "2*(-2*C**2*x - 3*C**2 + 4*C*exp(2*x) - 8*x**4 - 12*x**3 - 6*x**2 + 2*x*exp(4*x) - x - exp(4*x))/(8*x**3 + 12*x**2 + 6*x + 1)",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\pm \\sqrt{\\frac{1}{C{e}^{(x-2)}-1}}",
+          "transformed_z": "C*exp(x) - 1",
+          "residual": "-C*exp(x) - 2*x + 2",
+          "is_solution": false
+        }
+      ],
+      "question_id": "e153101a-8a08-5a7c-aff2-170ccb6e2779",
+      "template": "q-109028",
+      "shift": -2,
+      "correct_key_matches_unique_solution": true
+    },
+    {
+      "p": "-3*x**2",
+      "q": "x**2",
+      "n": "-4",
+      "choices": [
+        {
+          "value": "y=\\sqrt[3]{\\frac{C{e}^{3{(x-1)}^{2}}-1}{2}}",
+          "transformed_z": "2**(1/3)*(C*exp(3*x**2) - 1)**(5/3)/4",
+          "residual": "5*x*(-3*2**(1/3)*C*x*(C*exp(3*x**2) - 1)**(2/3)*exp(3*x**2) + 2*2**(1/3)*C*(C*exp(3*x**2) - 1)**(2/3)*exp(3*x**2) + 3*2**(1/3)*x*(C*exp(3*x**2) - 1)**(2/3) - 4*x)/4",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\sqrt[3]{\\frac{C-{e}^{3{(x-1)}^{2}}}{(x-1)}}",
+          "transformed_z": "(C - exp(3*x**2))**(5/3)/x**(5/3)",
+          "residual": "-15*C*x**(1/3)*(C - exp(3*x**2))**(2/3) + 15*x**(1/3)*(C - exp(3*x**2))**(2/3)*exp(3*x**2) - 5*x**2 - 10*(C - exp(3*x**2))**(2/3)*exp(3*x**2)/x**(2/3) - 5*(C - exp(3*x**2))**(5/3)/(3*x**(8/3))",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\sqrt[5]{\\frac{C{e}^{5{(x-1)}^{3}}-1}{3}}",
+          "transformed_z": "C*exp(5*x**3)/3 - 1/3",
+          "residual": "0",
+          "is_solution": true
+        },
+        {
+          "value": "y=\\sqrt[5]{\\frac{C{e}^{(x-1)}-1}{3}}",
+          "transformed_z": "C*exp(x)/3 - 1/3",
+          "residual": "C*(1 - 15*x**2)*exp(x)/3",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\sqrt[5]{\\frac{C-{e}^{5{(x-1)}^{3}}}{{(x-1)}^{2}}}",
+          "transformed_z": "(C - exp(5*x**3))/x**2",
+          "residual": "(-15*C*x**3 - 2*C - 5*x**5 + 2*exp(5*x**3))/x**3",
+          "is_solution": false
+        }
+      ],
+      "question_id": "128dcdde-aa59-5064-8935-1c3c2bebbd46",
+      "template": "q-109027",
+      "shift": -1,
+      "correct_key_matches_unique_solution": true
+    },
+    {
+      "p": "x",
+      "q": "x",
+      "n": "2",
+      "choices": [
+        {
+          "value": "y=\\frac{1}{1+C{e}^{{(x+6)}^{2}}}",
+          "transformed_z": "C*exp(x**2) + 1",
+          "residual": "C*x*exp(x**2)",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{1}{1+C{e}^{{(x+6)}^{2}/2}}",
+          "transformed_z": "C*exp(x**2/2) + 1",
+          "residual": "0",
+          "is_solution": true
+        },
+        {
+          "value": "y=\\frac{(x+6)}{1+C{(x+6)}^{2}}",
+          "transformed_z": "C*x + 1/x",
+          "residual": "-C*x**2 + C + x - 1 - 1/x**2",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{1}{1+C{e}^{-{(x+6)}^{2}}}",
+          "transformed_z": "C*exp(-x**2) + 1",
+          "residual": "-3*C*x*exp(-x**2)",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{{e}^{{(x+6)}^{2}/2}}{C+(x+6)}",
+          "transformed_z": "(C + x)*exp(-x**2/2)",
+          "residual": "(-2*C*x - 2*x**2 + x*exp(x**2/2) + 1)*exp(-x**2/2)",
+          "is_solution": false
+        }
+      ],
+      "question_id": "9996956f-c76f-5094-94e6-68fc74385957",
+      "template": "q-109026",
+      "shift": 6,
+      "correct_key_matches_unique_solution": true
+    },
+    {
+      "p": "1",
+      "q": "-x",
+      "n": "3",
+      "choices": [
+        {
+          "value": "y=\\frac{2}{C{e}^{(x-5)}-2\\cdot (x-5)}",
+          "transformed_z": "(C*exp(x) - 2*x)**2/4",
+          "residual": "C*x*exp(x) - C*exp(x) - 2*x**2",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\pm \\sqrt{\\frac{2}{C{e}^{2\\cdot (x-5)}-2\\cdot (x-5)-1}}",
+          "transformed_z": "C*exp(2*x)/2 - x - 1/2",
+          "residual": "0",
+          "is_solution": true
+        },
+        {
+          "value": "y=\\pm \\sqrt{\\frac{2\\cdot (x-5)}{C+{e}^{2\\cdot (x-5)}}}",
+          "transformed_z": "(C + exp(2*x))/(2*x)",
+          "residual": "(-2*C*x - C - 4*x**3 - exp(2*x))/(2*x**2)",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{2\\cdot (x-5)+1}{C-{e}^{2\\cdot (x-5)}}",
+          "transformed_z": "(C - exp(2*x))**2/(2*x + 1)**2",
+          "residual": "2*(-2*C**2*x - 3*C**2 + 4*C*exp(2*x) - 8*x**4 - 12*x**3 - 6*x**2 + 2*x*exp(4*x) - x - exp(4*x))/(8*x**3 + 12*x**2 + 6*x + 1)",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\pm \\sqrt{\\frac{1}{C{e}^{(x-5)}-1}}",
+          "transformed_z": "C*exp(x) - 1",
+          "residual": "-C*exp(x) - 2*x + 2",
+          "is_solution": false
+        }
+      ],
+      "question_id": "54057e93-c10c-596b-b0f6-9110288eb1f5",
+      "template": "q-109028",
+      "shift": -5,
+      "correct_key_matches_unique_solution": true
+    },
+    {
+      "p": "-1",
+      "q": "exp(x)",
+      "n": "2",
+      "choices": [
+        {
+          "value": "y=\\frac{2{e}^{(x+3)}}{C-{e}^{2\\cdot (x+3)}}",
+          "transformed_z": "(C - exp(2*x))*exp(-x)/2",
+          "residual": "0",
+          "is_solution": true
+        },
+        {
+          "value": "y=\\frac{C-{e}^{(x+3)}}{2{e}^{(x+3)}}",
+          "transformed_z": "2*exp(x)/(C - exp(x))",
+          "residual": "(C**2 - 2*C*exp(x) + 4*C + exp(2*x) - 2*exp(x))*exp(x)/(C**2 - 2*C*exp(x) + exp(2*x))",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{C-{e}^{2\\cdot (x+3)}}{2{e}^{(x+3)}}",
+          "transformed_z": "2*exp(x)/(C - exp(2*x))",
+          "residual": "(C**2 - 2*C*exp(2*x) + 4*C + exp(4*x))*exp(x)/(C**2 - 2*C*exp(2*x) + exp(4*x))",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{{e}^{(x+3)}}{C-2{e}^{(x+3)}}",
+          "transformed_z": "C*exp(-x) - 2",
+          "residual": "exp(x) - 2",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{2\\cdot (x+3){e}^{(x+3)}}{C-2{e}^{2\\cdot (x+3)}}",
+          "transformed_z": "(C/2 - exp(2*x))*exp(-x)/x",
+          "residual": "-C*exp(-x)/(2*x**2) + exp(x) - 2*exp(x)/x + exp(x)/x**2",
+          "is_solution": false
+        }
+      ],
+      "question_id": "9be0e42c-0a1d-5310-895f-4962f190a80d",
+      "template": "q-106073",
+      "shift": 3,
+      "correct_key_matches_unique_solution": true
+    },
+    {
+      "p": "-3*x**2",
+      "q": "x**2",
+      "n": "-4",
+      "choices": [
+        {
+          "value": "y=\\sqrt[3]{\\frac{C{e}^{3{(x+6)}^{2}}-1}{2}}",
+          "transformed_z": "2**(1/3)*(C*exp(3*x**2) - 1)**(5/3)/4",
+          "residual": "5*x*(-3*2**(1/3)*C*x*(C*exp(3*x**2) - 1)**(2/3)*exp(3*x**2) + 2*2**(1/3)*C*(C*exp(3*x**2) - 1)**(2/3)*exp(3*x**2) + 3*2**(1/3)*x*(C*exp(3*x**2) - 1)**(2/3) - 4*x)/4",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\sqrt[3]{\\frac{C-{e}^{3{(x+6)}^{2}}}{(x+6)}}",
+          "transformed_z": "(C - exp(3*x**2))**(5/3)/x**(5/3)",
+          "residual": "-15*C*x**(1/3)*(C - exp(3*x**2))**(2/3) + 15*x**(1/3)*(C - exp(3*x**2))**(2/3)*exp(3*x**2) - 5*x**2 - 10*(C - exp(3*x**2))**(2/3)*exp(3*x**2)/x**(2/3) - 5*(C - exp(3*x**2))**(5/3)/(3*x**(8/3))",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\sqrt[5]{\\frac{C{e}^{5{(x+6)}^{3}}-1}{3}}",
+          "transformed_z": "C*exp(5*x**3)/3 - 1/3",
+          "residual": "0",
+          "is_solution": true
+        },
+        {
+          "value": "y=\\sqrt[5]{\\frac{C{e}^{(x+6)}-1}{3}}",
+          "transformed_z": "C*exp(x)/3 - 1/3",
+          "residual": "C*(1 - 15*x**2)*exp(x)/3",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\sqrt[5]{\\frac{C-{e}^{5{(x+6)}^{3}}}{{(x+6)}^{2}}}",
+          "transformed_z": "(C - exp(5*x**3))/x**2",
+          "residual": "(-15*C*x**3 - 2*C - 5*x**5 + 2*exp(5*x**3))/x**3",
+          "is_solution": false
+        }
+      ],
+      "question_id": "3a1d5dfc-672b-5f0f-a250-0a77acf16736",
+      "template": "q-109027",
+      "shift": 6,
+      "correct_key_matches_unique_solution": true
+    },
+    {
+      "p": "1",
+      "q": "-x",
+      "n": "3",
+      "choices": [
+        {
+          "value": "y=\\frac{2}{C{e}^{(x-2)}-2\\cdot (x-2)}",
+          "transformed_z": "(C*exp(x) - 2*x)**2/4",
+          "residual": "C*x*exp(x) - C*exp(x) - 2*x**2",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\pm \\sqrt{\\frac{2}{C{e}^{2\\cdot (x-2)}-2\\cdot (x-2)-1}}",
+          "transformed_z": "C*exp(2*x)/2 - x - 1/2",
+          "residual": "0",
+          "is_solution": true
+        },
+        {
+          "value": "y=\\pm \\sqrt{\\frac{2\\cdot (x-2)}{C+{e}^{2\\cdot (x-2)}}}",
+          "transformed_z": "(C + exp(2*x))/(2*x)",
+          "residual": "(-2*C*x - C - 4*x**3 - exp(2*x))/(2*x**2)",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{2\\cdot (x-2)+1}{C-{e}^{2\\cdot (x-2)}}",
+          "transformed_z": "(C - exp(2*x))**2/(2*x + 1)**2",
+          "residual": "2*(-2*C**2*x - 3*C**2 + 4*C*exp(2*x) - 8*x**4 - 12*x**3 - 6*x**2 + 2*x*exp(4*x) - x - exp(4*x))/(8*x**3 + 12*x**2 + 6*x + 1)",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\pm \\sqrt{\\frac{1}{C{e}^{(x-2)}-1}}",
+          "transformed_z": "C*exp(x) - 1",
+          "residual": "-C*exp(x) - 2*x + 2",
+          "is_solution": false
+        }
+      ],
+      "question_id": "e153101a-8a08-5a7c-aff2-170ccb6e2779",
+      "template": "q-109028",
+      "shift": -2,
+      "correct_key_matches_unique_solution": true
+    },
+    {
+      "p": "-3*x**2",
+      "q": "x**2",
+      "n": "-4",
+      "choices": [
+        {
+          "value": "y=\\sqrt[3]{\\frac{C{e}^{3{(x+1)}^{2}}-1}{2}}",
+          "transformed_z": "2**(1/3)*(C*exp(3*x**2) - 1)**(5/3)/4",
+          "residual": "5*x*(-3*2**(1/3)*C*x*(C*exp(3*x**2) - 1)**(2/3)*exp(3*x**2) + 2*2**(1/3)*C*(C*exp(3*x**2) - 1)**(2/3)*exp(3*x**2) + 3*2**(1/3)*x*(C*exp(3*x**2) - 1)**(2/3) - 4*x)/4",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\sqrt[3]{\\frac{C-{e}^{3{(x+1)}^{2}}}{(x+1)}}",
+          "transformed_z": "(C - exp(3*x**2))**(5/3)/x**(5/3)",
+          "residual": "-15*C*x**(1/3)*(C - exp(3*x**2))**(2/3) + 15*x**(1/3)*(C - exp(3*x**2))**(2/3)*exp(3*x**2) - 5*x**2 - 10*(C - exp(3*x**2))**(2/3)*exp(3*x**2)/x**(2/3) - 5*(C - exp(3*x**2))**(5/3)/(3*x**(8/3))",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\sqrt[5]{\\frac{C{e}^{5{(x+1)}^{3}}-1}{3}}",
+          "transformed_z": "C*exp(5*x**3)/3 - 1/3",
+          "residual": "0",
+          "is_solution": true
+        },
+        {
+          "value": "y=\\sqrt[5]{\\frac{C{e}^{(x+1)}-1}{3}}",
+          "transformed_z": "C*exp(x)/3 - 1/3",
+          "residual": "C*(1 - 15*x**2)*exp(x)/3",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\sqrt[5]{\\frac{C-{e}^{5{(x+1)}^{3}}}{{(x+1)}^{2}}}",
+          "transformed_z": "(C - exp(5*x**3))/x**2",
+          "residual": "(-15*C*x**3 - 2*C - 5*x**5 + 2*exp(5*x**3))/x**3",
+          "is_solution": false
+        }
+      ],
+      "question_id": "486fc57f-2087-55b4-a03c-4a0d9ad3a57f",
+      "template": "q-109027",
+      "shift": 1,
+      "correct_key_matches_unique_solution": true
+    },
+    {
+      "p": "-1/x",
+      "q": "sqrt(x)",
+      "n": "2",
+      "choices": [
+        {
+          "value": "y=\\frac{5\\cdot (x+5)}{C+{(x+5)}^{3/2}}",
+          "transformed_z": "(C + x**(3/2))/(5*x)",
+          "residual": "(x + 3/10)/sqrt(x)",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{{(x+5)}^{2}}{C-5{(x+5)}^{5/2}}",
+          "transformed_z": "(C - 5*x**(5/2))/x**2",
+          "residual": "-C/x**3 + sqrt(x) - 15/(2*sqrt(x))",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{5\\cdot (x+5)}{C-2{(x+5)}^{5/2}}",
+          "transformed_z": "(C - 2*x**(5/2))/(5*x)",
+          "residual": "0",
+          "is_solution": true
+        },
+        {
+          "value": "y={(\\frac{2\\cdot (x+5)}{C-{(x+5)}^{3/2}})}^{2}",
+          "transformed_z": "(C - x**(3/2))**2/(4*x**2)",
+          "residual": "-C**2/(4*x**3) - C/(4*x**(3/2)) + sqrt(x) + 1/2",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\pm \\sqrt{\\frac{(x+5)}{C+{(x+5)}^{5/2}}}",
+          "transformed_z": "sqrt(C + x**(5/2))/sqrt(x)",
+          "residual": "C/(2*x**(3/2)*sqrt(C + x**(5/2))) + sqrt(x) + 7*x/(4*sqrt(C + x**(5/2)))",
+          "is_solution": false
+        }
+      ],
+      "question_id": "df289598-6e37-5bb2-b389-92b28db9b911",
+      "template": "q-109154",
+      "shift": 5,
+      "correct_key_matches_unique_solution": true
+    },
+    {
+      "p": "x",
+      "q": "x",
+      "n": "2",
+      "choices": [
+        {
+          "value": "y=\\frac{1}{1+C{e}^{{(x+4)}^{2}}}",
+          "transformed_z": "C*exp(x**2) + 1",
+          "residual": "C*x*exp(x**2)",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{1}{1+C{e}^{{(x+4)}^{2}/2}}",
+          "transformed_z": "C*exp(x**2/2) + 1",
+          "residual": "0",
+          "is_solution": true
+        },
+        {
+          "value": "y=\\frac{(x+4)}{1+C{(x+4)}^{2}}",
+          "transformed_z": "C*x + 1/x",
+          "residual": "-C*x**2 + C + x - 1 - 1/x**2",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{1}{1+C{e}^{-{(x+4)}^{2}}}",
+          "transformed_z": "C*exp(-x**2) + 1",
+          "residual": "-3*C*x*exp(-x**2)",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{{e}^{{(x+4)}^{2}/2}}{C+(x+4)}",
+          "transformed_z": "(C + x)*exp(-x**2/2)",
+          "residual": "(-2*C*x - 2*x**2 + x*exp(x**2/2) + 1)*exp(-x**2/2)",
+          "is_solution": false
+        }
+      ],
+      "question_id": "c0d0ae5b-ea79-5060-bfa2-0d1755315543",
+      "template": "q-109026",
+      "shift": 4,
+      "correct_key_matches_unique_solution": true
+    },
+    {
+      "p": "-1/x",
+      "q": "sqrt(x)",
+      "n": "2",
+      "choices": [
+        {
+          "value": "y=\\frac{5\\cdot (x+1)}{C+{(x+1)}^{3/2}}",
+          "transformed_z": "(C + x**(3/2))/(5*x)",
+          "residual": "(x + 3/10)/sqrt(x)",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{{(x+1)}^{2}}{C-5{(x+1)}^{5/2}}",
+          "transformed_z": "(C - 5*x**(5/2))/x**2",
+          "residual": "-C/x**3 + sqrt(x) - 15/(2*sqrt(x))",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{5\\cdot (x+1)}{C-2{(x+1)}^{5/2}}",
+          "transformed_z": "(C - 2*x**(5/2))/(5*x)",
+          "residual": "0",
+          "is_solution": true
+        },
+        {
+          "value": "y={(\\frac{2\\cdot (x+1)}{C-{(x+1)}^{3/2}})}^{2}",
+          "transformed_z": "(C - x**(3/2))**2/(4*x**2)",
+          "residual": "-C**2/(4*x**3) - C/(4*x**(3/2)) + sqrt(x) + 1/2",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\pm \\sqrt{\\frac{(x+1)}{C+{(x+1)}^{5/2}}}",
+          "transformed_z": "sqrt(C + x**(5/2))/sqrt(x)",
+          "residual": "C/(2*x**(3/2)*sqrt(C + x**(5/2))) + sqrt(x) + 7*x/(4*sqrt(C + x**(5/2)))",
+          "is_solution": false
+        }
+      ],
+      "question_id": "683ae651-6798-55b4-ab44-f6e239ee8ad5",
+      "template": "q-109154",
+      "shift": 1,
+      "correct_key_matches_unique_solution": true
+    },
+    {
+      "p": "-1/x",
+      "q": "sqrt(x)",
+      "n": "2",
+      "choices": [
+        {
+          "value": "y=\\frac{5\\cdot (x+2)}{C+{(x+2)}^{3/2}}",
+          "transformed_z": "(C + x**(3/2))/(5*x)",
+          "residual": "(x + 3/10)/sqrt(x)",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{{(x+2)}^{2}}{C-5{(x+2)}^{5/2}}",
+          "transformed_z": "(C - 5*x**(5/2))/x**2",
+          "residual": "-C/x**3 + sqrt(x) - 15/(2*sqrt(x))",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{5\\cdot (x+2)}{C-2{(x+2)}^{5/2}}",
+          "transformed_z": "(C - 2*x**(5/2))/(5*x)",
+          "residual": "0",
+          "is_solution": true
+        },
+        {
+          "value": "y={(\\frac{2\\cdot (x+2)}{C-{(x+2)}^{3/2}})}^{2}",
+          "transformed_z": "(C - x**(3/2))**2/(4*x**2)",
+          "residual": "-C**2/(4*x**3) - C/(4*x**(3/2)) + sqrt(x) + 1/2",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\pm \\sqrt{\\frac{(x+2)}{C+{(x+2)}^{5/2}}}",
+          "transformed_z": "sqrt(C + x**(5/2))/sqrt(x)",
+          "residual": "C/(2*x**(3/2)*sqrt(C + x**(5/2))) + sqrt(x) + 7*x/(4*sqrt(C + x**(5/2)))",
+          "is_solution": false
+        }
+      ],
+      "question_id": "3ed66680-1f2c-59a7-9959-77071386a7f5",
+      "template": "q-109154",
+      "shift": 2,
+      "correct_key_matches_unique_solution": true
+    },
+    {
+      "p": "-1/x",
+      "q": "sqrt(x)",
+      "n": "2",
+      "choices": [
+        {
+          "value": "y=\\frac{5\\cdot (x+1)}{C+{(x+1)}^{3/2}}",
+          "transformed_z": "(C + x**(3/2))/(5*x)",
+          "residual": "(x + 3/10)/sqrt(x)",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{{(x+1)}^{2}}{C-5{(x+1)}^{5/2}}",
+          "transformed_z": "(C - 5*x**(5/2))/x**2",
+          "residual": "-C/x**3 + sqrt(x) - 15/(2*sqrt(x))",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{5\\cdot (x+1)}{C-2{(x+1)}^{5/2}}",
+          "transformed_z": "(C - 2*x**(5/2))/(5*x)",
+          "residual": "0",
+          "is_solution": true
+        },
+        {
+          "value": "y={(\\frac{2\\cdot (x+1)}{C-{(x+1)}^{3/2}})}^{2}",
+          "transformed_z": "(C - x**(3/2))**2/(4*x**2)",
+          "residual": "-C**2/(4*x**3) - C/(4*x**(3/2)) + sqrt(x) + 1/2",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\pm \\sqrt{\\frac{(x+1)}{C+{(x+1)}^{5/2}}}",
+          "transformed_z": "sqrt(C + x**(5/2))/sqrt(x)",
+          "residual": "C/(2*x**(3/2)*sqrt(C + x**(5/2))) + sqrt(x) + 7*x/(4*sqrt(C + x**(5/2)))",
+          "is_solution": false
+        }
+      ],
+      "question_id": "683ae651-6798-55b4-ab44-f6e239ee8ad5",
+      "template": "q-109154",
+      "shift": 1,
+      "correct_key_matches_unique_solution": true
+    },
+    {
+      "p": "x",
+      "q": "x",
+      "n": "2",
+      "choices": [
+        {
+          "value": "y=\\frac{1}{1+C{e}^{{(x+4)}^{2}}}",
+          "transformed_z": "C*exp(x**2) + 1",
+          "residual": "C*x*exp(x**2)",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{1}{1+C{e}^{{(x+4)}^{2}/2}}",
+          "transformed_z": "C*exp(x**2/2) + 1",
+          "residual": "0",
+          "is_solution": true
+        },
+        {
+          "value": "y=\\frac{(x+4)}{1+C{(x+4)}^{2}}",
+          "transformed_z": "C*x + 1/x",
+          "residual": "-C*x**2 + C + x - 1 - 1/x**2",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{1}{1+C{e}^{-{(x+4)}^{2}}}",
+          "transformed_z": "C*exp(-x**2) + 1",
+          "residual": "-3*C*x*exp(-x**2)",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{{e}^{{(x+4)}^{2}/2}}{C+(x+4)}",
+          "transformed_z": "(C + x)*exp(-x**2/2)",
+          "residual": "(-2*C*x - 2*x**2 + x*exp(x**2/2) + 1)*exp(-x**2/2)",
+          "is_solution": false
+        }
+      ],
+      "question_id": "c0d0ae5b-ea79-5060-bfa2-0d1755315543",
+      "template": "q-109026",
+      "shift": 4,
+      "correct_key_matches_unique_solution": true
+    },
+    {
+      "p": "-3*x**2",
+      "q": "x**2",
+      "n": "-4",
+      "choices": [
+        {
+          "value": "y=\\sqrt[3]{\\frac{C{e}^{3{(x-1)}^{2}}-1}{2}}",
+          "transformed_z": "2**(1/3)*(C*exp(3*x**2) - 1)**(5/3)/4",
+          "residual": "5*x*(-3*2**(1/3)*C*x*(C*exp(3*x**2) - 1)**(2/3)*exp(3*x**2) + 2*2**(1/3)*C*(C*exp(3*x**2) - 1)**(2/3)*exp(3*x**2) + 3*2**(1/3)*x*(C*exp(3*x**2) - 1)**(2/3) - 4*x)/4",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\sqrt[3]{\\frac{C-{e}^{3{(x-1)}^{2}}}{(x-1)}}",
+          "transformed_z": "(C - exp(3*x**2))**(5/3)/x**(5/3)",
+          "residual": "-15*C*x**(1/3)*(C - exp(3*x**2))**(2/3) + 15*x**(1/3)*(C - exp(3*x**2))**(2/3)*exp(3*x**2) - 5*x**2 - 10*(C - exp(3*x**2))**(2/3)*exp(3*x**2)/x**(2/3) - 5*(C - exp(3*x**2))**(5/3)/(3*x**(8/3))",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\sqrt[5]{\\frac{C{e}^{5{(x-1)}^{3}}-1}{3}}",
+          "transformed_z": "C*exp(5*x**3)/3 - 1/3",
+          "residual": "0",
+          "is_solution": true
+        },
+        {
+          "value": "y=\\sqrt[5]{\\frac{C{e}^{(x-1)}-1}{3}}",
+          "transformed_z": "C*exp(x)/3 - 1/3",
+          "residual": "C*(1 - 15*x**2)*exp(x)/3",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\sqrt[5]{\\frac{C-{e}^{5{(x-1)}^{3}}}{{(x-1)}^{2}}}",
+          "transformed_z": "(C - exp(5*x**3))/x**2",
+          "residual": "(-15*C*x**3 - 2*C - 5*x**5 + 2*exp(5*x**3))/x**3",
+          "is_solution": false
+        }
+      ],
+      "question_id": "128dcdde-aa59-5064-8935-1c3c2bebbd46",
+      "template": "q-109027",
+      "shift": -1,
+      "correct_key_matches_unique_solution": true
+    },
+    {
+      "p": "-1/x",
+      "q": "sqrt(x)",
+      "n": "2",
+      "choices": [
+        {
+          "value": "y=\\frac{5\\cdot (x+2)}{C+{(x+2)}^{3/2}}",
+          "transformed_z": "(C + x**(3/2))/(5*x)",
+          "residual": "(x + 3/10)/sqrt(x)",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{{(x+2)}^{2}}{C-5{(x+2)}^{5/2}}",
+          "transformed_z": "(C - 5*x**(5/2))/x**2",
+          "residual": "-C/x**3 + sqrt(x) - 15/(2*sqrt(x))",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{5\\cdot (x+2)}{C-2{(x+2)}^{5/2}}",
+          "transformed_z": "(C - 2*x**(5/2))/(5*x)",
+          "residual": "0",
+          "is_solution": true
+        },
+        {
+          "value": "y={(\\frac{2\\cdot (x+2)}{C-{(x+2)}^{3/2}})}^{2}",
+          "transformed_z": "(C - x**(3/2))**2/(4*x**2)",
+          "residual": "-C**2/(4*x**3) - C/(4*x**(3/2)) + sqrt(x) + 1/2",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\pm \\sqrt{\\frac{(x+2)}{C+{(x+2)}^{5/2}}}",
+          "transformed_z": "sqrt(C + x**(5/2))/sqrt(x)",
+          "residual": "C/(2*x**(3/2)*sqrt(C + x**(5/2))) + sqrt(x) + 7*x/(4*sqrt(C + x**(5/2)))",
+          "is_solution": false
+        }
+      ],
+      "question_id": "3ed66680-1f2c-59a7-9959-77071386a7f5",
+      "template": "q-109154",
+      "shift": 2,
+      "correct_key_matches_unique_solution": true
+    },
+    {
+      "p": "1",
+      "q": "-x",
+      "n": "3",
+      "choices": [
+        {
+          "value": "y=\\frac{2}{C{e}^{(x+3)}-2\\cdot (x+3)}",
+          "transformed_z": "(C*exp(x) - 2*x)**2/4",
+          "residual": "C*x*exp(x) - C*exp(x) - 2*x**2",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\pm \\sqrt{\\frac{2}{C{e}^{2\\cdot (x+3)}-2\\cdot (x+3)-1}}",
+          "transformed_z": "C*exp(2*x)/2 - x - 1/2",
+          "residual": "0",
+          "is_solution": true
+        },
+        {
+          "value": "y=\\pm \\sqrt{\\frac{2\\cdot (x+3)}{C+{e}^{2\\cdot (x+3)}}}",
+          "transformed_z": "(C + exp(2*x))/(2*x)",
+          "residual": "(-2*C*x - C - 4*x**3 - exp(2*x))/(2*x**2)",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{2\\cdot (x+3)+1}{C-{e}^{2\\cdot (x+3)}}",
+          "transformed_z": "(C - exp(2*x))**2/(2*x + 1)**2",
+          "residual": "2*(-2*C**2*x - 3*C**2 + 4*C*exp(2*x) - 8*x**4 - 12*x**3 - 6*x**2 + 2*x*exp(4*x) - x - exp(4*x))/(8*x**3 + 12*x**2 + 6*x + 1)",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\pm \\sqrt{\\frac{1}{C{e}^{(x+3)}-1}}",
+          "transformed_z": "C*exp(x) - 1",
+          "residual": "-C*exp(x) - 2*x + 2",
+          "is_solution": false
+        }
+      ],
+      "question_id": "1f7773da-735d-521e-af31-a36f311ce4fd",
+      "template": "q-109028",
+      "shift": 3,
+      "correct_key_matches_unique_solution": true
+    },
+    {
+      "p": "-1/x",
+      "q": "sqrt(x)",
+      "n": "2",
+      "choices": [
+        {
+          "value": "y=\\frac{5\\cdot (x+4)}{C+{(x+4)}^{3/2}}",
+          "transformed_z": "(C + x**(3/2))/(5*x)",
+          "residual": "(x + 3/10)/sqrt(x)",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{{(x+4)}^{2}}{C-5{(x+4)}^{5/2}}",
+          "transformed_z": "(C - 5*x**(5/2))/x**2",
+          "residual": "-C/x**3 + sqrt(x) - 15/(2*sqrt(x))",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\frac{5\\cdot (x+4)}{C-2{(x+4)}^{5/2}}",
+          "transformed_z": "(C - 2*x**(5/2))/(5*x)",
+          "residual": "0",
+          "is_solution": true
+        },
+        {
+          "value": "y={(\\frac{2\\cdot (x+4)}{C-{(x+4)}^{3/2}})}^{2}",
+          "transformed_z": "(C - x**(3/2))**2/(4*x**2)",
+          "residual": "-C**2/(4*x**3) - C/(4*x**(3/2)) + sqrt(x) + 1/2",
+          "is_solution": false
+        },
+        {
+          "value": "y=\\pm \\sqrt{\\frac{(x+4)}{C+{(x+4)}^{5/2}}}",
+          "transformed_z": "sqrt(C + x**(5/2))/sqrt(x)",
+          "residual": "C/(2*x**(3/2)*sqrt(C + x**(5/2))) + sqrt(x) + 7*x/(4*sqrt(C + x**(5/2)))",
+          "is_solution": false
+        }
+      ],
+      "question_id": "72d5d166-b700-5555-a7ae-2ad753d02dcb",
+      "template": "q-109154",
+      "shift": 4,
+      "correct_key_matches_unique_solution": true
+    }
+  ],
+  "canonical_residual": "0",
+  "all_unique_keys_correct": true
+}

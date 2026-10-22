@@ -1,0 +1,200 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186147454,
+      "id": "17061f4e-da7c-58f9-90b4-47bdc21505da",
+      "title": "Solving a Bernoulli Differential Equation"
+    },
+    "question": {
+      ":question/id": "683ae651-6798-55b4-ab44-f6e239ee8ad5",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Find the general nonzero real solution to the differential equation\n\n$$\n\\frac{\\text{d}y}{\\text{d}x}-\\frac{y}{(x+1)}=\\sqrt{(x+1)}\\,{y}^{2}.\n$$\n\nWork on an interval where $x+1>0$. Choose constants and intervals on which all displayed real expressions are defined.\n\n{{selection}}",
+      ":question/worked-solution": "Notice that our equation is an instance of the Bernoulli differential equation\n\n$$\n\\frac{dy}{dx}+p(x)y=q(x){y}^{n}.\n$$\n\nIn this case, we have\n\n$$\np(x)=-\\frac{1}{(x+1)},\\,q(x)=\\sqrt{(x+1)},\\,n=2.\n$$\n\nFirst, we divide the differential equation by ${y}^{2},$ and we get\n\n$$\n{y}^{-2}\\frac{dy}{dx}-\\frac{1}{(x+1)}{y}^{-1}=\\sqrt{(x+1)}.\\,\\,(\u2217)\n$$\n\nThen, we make the substitution\n\n$$\nz={y}^{1-n}={y}^{-1}.\n$$\n\nDifferentiating $z(x)$ using the chain rule, we get \n\n$$\n\\frac{\\text{d}z}{\\text{d}x}=-{y}^{-2}\\,\\frac{\\text{d}y}{\\text{d}x}\\,\u27f9\\,{y}^{-2}\\frac{\\text{d}y}{\\text{d}x}=-\\,\\frac{\\text{d}z}{\\text{d}x}.\n$$\n\n \n\nTherefore, the original equation can be written in terms of $z(x)$ as follows:\n\n$$\n-\\,\\frac{\\text{d}z}{\\text{d}x}-\\frac{1}{(x+1)}z=\\sqrt{(x+1)}\n$$\n\nThis differential equation is linear, so we can use the method of integrating factors. But first, we write the above equation in standard form:\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+\\frac{1}{(x+1)}z=-\\sqrt{(x+1)}\n$$\n\nThe above equation is in the standard form\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+P(x)z=Q(x)\n$$\n\nwith\n\n$$\n\\begin{aligned}P(x)=\\frac{1}{(x+1)},\\,Q(x)=-\\sqrt{(x+1)}\\,.\\end{aligned}\n$$\n\nWe then compute an integrating factor:\n\n$$\n\\begin{aligned}I(x) & ={e}^{\\int P(x)\\,\\text{d}x} \\\\  & ={e}^{\\int (1/(x+1))\\,\\text{d}x} \\\\  & ={e}^{\\operatorname{ln}\u2061(x+1)} \\\\  & =(x+1)\\end{aligned}\n$$\n\nMultiplying both sides of the standard form equation by $I(x)=(x+1)$ yields\n\n$$\n\\begin{aligned}(x+1)\\cdot (\\frac{\\text{d}z}{\\text{d}x}+\\frac{1}{(x+1)}z) & =(x+1)\\cdot (-\\sqrt{(x+1)}) \\\\ (x+1)\\cdot \\frac{\\text{d}z}{\\text{d}x}+z & =-(x+1)\\sqrt{(x+1)} \\\\ \\frac{\\text{d}}{\\text{d}x}((x+1)z) & =-{(x+1)}^{3/2}.\\end{aligned}\n$$\n\nNow, we integrate with respect to $x:$\n\n$$\n\\begin{aligned}\\int \\frac{\\text{d}}{\\text{d}x}((x+1)z)\\,\\text{d}x & =\\int -{(x+1)}^{3/2}\\,\\text{d}x \\\\ (x+1)z & =-\\frac{2{(x+1)}^{5/2}}{5}+{C}_{1} \\\\ z & =\\frac{C-2{(x+1)}^{5/2}}{5\\cdot (x+1)},\\end{aligned}\n$$\n\nwhere $C=5{C}_{1}.$\n\nFinally, we determine $y(x)$ by writing $z={y}^{-1}.$ This results in\n\n$$\n\\begin{aligned}{y}^{-1}=\\frac{C-2{(x+1)}^{5/2}}{5\\cdot (x+1)}\\,\u21d2\\,y=\\frac{5\\cdot (x+1)}{C-2{(x+1)}^{5/2}}.\\end{aligned}\n$$\n\nThese are the nonzero real solutions on the specified intervals; exclude denominator zeros and restrict constants and intervals to the real branches used above.",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "82b4d936-6c77-5570-8b4d-87dce336acf7",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "ed3d85c3-b046-5f80-9ead-cd3b3c4486a2",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\frac{5\\cdot (x+1)}{C+{(x+1)}^{3/2}}"
+            },
+            {
+              ":answer/id": "cb84c134-d02b-540d-a386-aa2c3a5301ba",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\frac{{(x+1)}^{2}}{C-5{(x+1)}^{5/2}}"
+            },
+            {
+              ":answer/id": "3851661d-71df-5c02-98e3-04ce9bee3184",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\frac{5\\cdot (x+1)}{C-2{(x+1)}^{5/2}}"
+            },
+            {
+              ":answer/id": "871b5cc2-0566-5845-af78-936598bc54b0",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y={(\\frac{2\\cdot (x+1)}{C-{(x+1)}^{3/2}})}^{2}"
+            },
+            {
+              ":answer/id": "99ff85ec-dfcf-5a86-9df7-549576e113dc",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\pm \\sqrt{\\frac{(x+1)}{C+{(x+1)}^{5/2}}}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "3851661d-71df-5c02-98e3-04ce9bee3184"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "bernoulli-translation-1",
+      "template": "q-109154",
+      "profile": "observed:q-109154",
+      "parameters": {
+        "shift": 1
+      },
+      "seed": 98301,
+      "source_question_id": "48fa1d56-7545-55a4-8175-861ef17502b3",
+      "source_math_academy_id": "q-109154",
+      "source_basis": 2280,
+      "evidence_only": false,
+      "domains": "translated coordinate positive; nonzero real branches; exclude singularities",
+      "sympy": "1.14.0"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186147454,
+      "id": "17061f4e-da7c-58f9-90b4-47bdc21505da",
+      "title": "Solving a Bernoulli Differential Equation"
+    },
+    "question": {
+      ":question/id": "3ed66680-1f2c-59a7-9959-77071386a7f5",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Find the general nonzero real solution to the differential equation\n\n$$\n\\frac{\\text{d}y}{\\text{d}x}-\\frac{y}{(x+2)}=\\sqrt{(x+2)}\\,{y}^{2}.\n$$\n\nWork on an interval where $x+2>0$. Choose constants and intervals on which all displayed real expressions are defined.\n\n{{selection}}",
+      ":question/worked-solution": "Notice that our equation is an instance of the Bernoulli differential equation\n\n$$\n\\frac{dy}{dx}+p(x)y=q(x){y}^{n}.\n$$\n\nIn this case, we have\n\n$$\np(x)=-\\frac{1}{(x+2)},\\,q(x)=\\sqrt{(x+2)},\\,n=2.\n$$\n\nFirst, we divide the differential equation by ${y}^{2},$ and we get\n\n$$\n{y}^{-2}\\frac{dy}{dx}-\\frac{1}{(x+2)}{y}^{-1}=\\sqrt{(x+2)}.\\,\\,(\u2217)\n$$\n\nThen, we make the substitution\n\n$$\nz={y}^{1-n}={y}^{-1}.\n$$\n\nDifferentiating $z(x)$ using the chain rule, we get \n\n$$\n\\frac{\\text{d}z}{\\text{d}x}=-{y}^{-2}\\,\\frac{\\text{d}y}{\\text{d}x}\\,\u27f9\\,{y}^{-2}\\frac{\\text{d}y}{\\text{d}x}=-\\,\\frac{\\text{d}z}{\\text{d}x}.\n$$\n\n \n\nTherefore, the original equation can be written in terms of $z(x)$ as follows:\n\n$$\n-\\,\\frac{\\text{d}z}{\\text{d}x}-\\frac{1}{(x+2)}z=\\sqrt{(x+2)}\n$$\n\nThis differential equation is linear, so we can use the method of integrating factors. But first, we write the above equation in standard form:\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+\\frac{1}{(x+2)}z=-\\sqrt{(x+2)}\n$$\n\nThe above equation is in the standard form\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+P(x)z=Q(x)\n$$\n\nwith\n\n$$\n\\begin{aligned}P(x)=\\frac{1}{(x+2)},\\,Q(x)=-\\sqrt{(x+2)}\\,.\\end{aligned}\n$$\n\nWe then compute an integrating factor:\n\n$$\n\\begin{aligned}I(x) & ={e}^{\\int P(x)\\,\\text{d}x} \\\\  & ={e}^{\\int (1/(x+2))\\,\\text{d}x} \\\\  & ={e}^{\\operatorname{ln}\u2061(x+2)} \\\\  & =(x+2)\\end{aligned}\n$$\n\nMultiplying both sides of the standard form equation by $I(x)=(x+2)$ yields\n\n$$\n\\begin{aligned}(x+2)\\cdot (\\frac{\\text{d}z}{\\text{d}x}+\\frac{1}{(x+2)}z) & =(x+2)\\cdot (-\\sqrt{(x+2)}) \\\\ (x+2)\\cdot \\frac{\\text{d}z}{\\text{d}x}+z & =-(x+2)\\sqrt{(x+2)} \\\\ \\frac{\\text{d}}{\\text{d}x}((x+2)z) & =-{(x+2)}^{3/2}.\\end{aligned}\n$$\n\nNow, we integrate with respect to $x:$\n\n$$\n\\begin{aligned}\\int \\frac{\\text{d}}{\\text{d}x}((x+2)z)\\,\\text{d}x & =\\int -{(x+2)}^{3/2}\\,\\text{d}x \\\\ (x+2)z & =-\\frac{2{(x+2)}^{5/2}}{5}+{C}_{1} \\\\ z & =\\frac{C-2{(x+2)}^{5/2}}{5\\cdot (x+2)},\\end{aligned}\n$$\n\nwhere $C=5{C}_{1}.$\n\nFinally, we determine $y(x)$ by writing $z={y}^{-1}.$ This results in\n\n$$\n\\begin{aligned}{y}^{-1}=\\frac{C-2{(x+2)}^{5/2}}{5\\cdot (x+2)}\\,\u21d2\\,y=\\frac{5\\cdot (x+2)}{C-2{(x+2)}^{5/2}}.\\end{aligned}\n$$\n\nThese are the nonzero real solutions on the specified intervals; exclude denominator zeros and restrict constants and intervals to the real branches used above.",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "ae03afc8-e0bd-543f-b7a7-b44b3255ca81",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "41b5316c-c5b2-53f9-91a6-e67f2f504514",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\frac{5\\cdot (x+2)}{C+{(x+2)}^{3/2}}"
+            },
+            {
+              ":answer/id": "2cf32541-9dd1-5836-a210-93acd83b11ba",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\frac{{(x+2)}^{2}}{C-5{(x+2)}^{5/2}}"
+            },
+            {
+              ":answer/id": "37a33ce7-4bac-5cc2-871e-282d12b5579a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\frac{5\\cdot (x+2)}{C-2{(x+2)}^{5/2}}"
+            },
+            {
+              ":answer/id": "d78c56f8-7648-5bc2-8430-02c53ff542e0",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y={(\\frac{2\\cdot (x+2)}{C-{(x+2)}^{3/2}})}^{2}"
+            },
+            {
+              ":answer/id": "20a1c93e-4539-5f86-a507-7dddd133b2d1",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\pm \\sqrt{\\frac{(x+2)}{C+{(x+2)}^{5/2}}}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "37a33ce7-4bac-5cc2-871e-282d12b5579a"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "bernoulli-translation-1",
+      "template": "q-109154",
+      "profile": "observed:q-109154",
+      "parameters": {
+        "shift": 2
+      },
+      "seed": 98301,
+      "source_question_id": "48fa1d56-7545-55a4-8175-861ef17502b3",
+      "source_math_academy_id": "q-109154",
+      "source_basis": 2280,
+      "evidence_only": false,
+      "domains": "translated coordinate positive; nonzero real branches; exclude singularities",
+      "sympy": "1.14.0"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186147454,
+      "id": "17061f4e-da7c-58f9-90b4-47bdc21505da",
+      "title": "Solving a Bernoulli Differential Equation"
+    },
+    "question": {
+      ":question/id": "683ae651-6798-55b4-ab44-f6e239ee8ad5",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Find the general nonzero real solution to the differential equation\n\n$$\n\\frac{\\text{d}y}{\\text{d}x}-\\frac{y}{(x+1)}=\\sqrt{(x+1)}\\,{y}^{2}.\n$$\n\nWork on an interval where $x+1>0$. Choose constants and intervals on which all displayed real expressions are defined.\n\n{{selection}}",
+      ":question/worked-solution": "Notice that our equation is an instance of the Bernoulli differential equation\n\n$$\n\\frac{dy}{dx}+p(x)y=q(x){y}^{n}.\n$$\n\nIn this case, we have\n\n$$\np(x)=-\\frac{1}{(x+1)},\\,q(x)=\\sqrt{(x+1)},\\,n=2.\n$$\n\nFirst, we divide the differential equation by ${y}^{2},$ and we get\n\n$$\n{y}^{-2}\\frac{dy}{dx}-\\frac{1}{(x+1)}{y}^{-1}=\\sqrt{(x+1)}.\\,\\,(\u2217)\n$$\n\nThen, we make the substitution\n\n$$\nz={y}^{1-n}={y}^{-1}.\n$$\n\nDifferentiating $z(x)$ using the chain rule, we get \n\n$$\n\\frac{\\text{d}z}{\\text{d}x}=-{y}^{-2}\\,\\frac{\\text{d}y}{\\text{d}x}\\,\u27f9\\,{y}^{-2}\\frac{\\text{d}y}{\\text{d}x}=-\\,\\frac{\\text{d}z}{\\text{d}x}.\n$$\n\n \n\nTherefore, the original equation can be written in terms of $z(x)$ as follows:\n\n$$\n-\\,\\frac{\\text{d}z}{\\text{d}x}-\\frac{1}{(x+1)}z=\\sqrt{(x+1)}\n$$\n\nThis differential equation is linear, so we can use the method of integrating factors. But first, we write the above equation in standard form:\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+\\frac{1}{(x+1)}z=-\\sqrt{(x+1)}\n$$\n\nThe above equation is in the standard form\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+P(x)z=Q(x)\n$$\n\nwith\n\n$$\n\\begin{aligned}P(x)=\\frac{1}{(x+1)},\\,Q(x)=-\\sqrt{(x+1)}\\,.\\end{aligned}\n$$\n\nWe then compute an integrating factor:\n\n$$\n\\begin{aligned}I(x) & ={e}^{\\int P(x)\\,\\text{d}x} \\\\  & ={e}^{\\int (1/(x+1))\\,\\text{d}x} \\\\  & ={e}^{\\operatorname{ln}\u2061(x+1)} \\\\  & =(x+1)\\end{aligned}\n$$\n\nMultiplying both sides of the standard form equation by $I(x)=(x+1)$ yields\n\n$$\n\\begin{aligned}(x+1)\\cdot (\\frac{\\text{d}z}{\\text{d}x}+\\frac{1}{(x+1)}z) & =(x+1)\\cdot (-\\sqrt{(x+1)}) \\\\ (x+1)\\cdot \\frac{\\text{d}z}{\\text{d}x}+z & =-(x+1)\\sqrt{(x+1)} \\\\ \\frac{\\text{d}}{\\text{d}x}((x+1)z) & =-{(x+1)}^{3/2}.\\end{aligned}\n$$\n\nNow, we integrate with respect to $x:$\n\n$$\n\\begin{aligned}\\int \\frac{\\text{d}}{\\text{d}x}((x+1)z)\\,\\text{d}x & =\\int -{(x+1)}^{3/2}\\,\\text{d}x \\\\ (x+1)z & =-\\frac{2{(x+1)}^{5/2}}{5}+{C}_{1} \\\\ z & =\\frac{C-2{(x+1)}^{5/2}}{5\\cdot (x+1)},\\end{aligned}\n$$\n\nwhere $C=5{C}_{1}.$\n\nFinally, we determine $y(x)$ by writing $z={y}^{-1}.$ This results in\n\n$$\n\\begin{aligned}{y}^{-1}=\\frac{C-2{(x+1)}^{5/2}}{5\\cdot (x+1)}\\,\u21d2\\,y=\\frac{5\\cdot (x+1)}{C-2{(x+1)}^{5/2}}.\\end{aligned}\n$$\n\nThese are the nonzero real solutions on the specified intervals; exclude denominator zeros and restrict constants and intervals to the real branches used above.",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "82b4d936-6c77-5570-8b4d-87dce336acf7",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "ed3d85c3-b046-5f80-9ead-cd3b3c4486a2",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\frac{5\\cdot (x+1)}{C+{(x+1)}^{3/2}}"
+            },
+            {
+              ":answer/id": "cb84c134-d02b-540d-a386-aa2c3a5301ba",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\frac{{(x+1)}^{2}}{C-5{(x+1)}^{5/2}}"
+            },
+            {
+              ":answer/id": "3851661d-71df-5c02-98e3-04ce9bee3184",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\frac{5\\cdot (x+1)}{C-2{(x+1)}^{5/2}}"
+            },
+            {
+              ":answer/id": "871b5cc2-0566-5845-af78-936598bc54b0",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y={(\\frac{2\\cdot (x+1)}{C-{(x+1)}^{3/2}})}^{2}"
+            },
+            {
+              ":answer/id": "99ff85ec-dfcf-5a86-9df7-549576e113dc",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\pm \\sqrt{\\frac{(x+1)}{C+{(x+1)}^{5/2}}}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "3851661d-71df-5c02-98e3-04ce9bee3184"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "bernoulli-translation-1",
+      "template": "q-109154",
+      "profile": "observed:q-109154",
+      "parameters": {
+        "shift": 1
+      },
+      "seed": 73429,
+      "source_question_id": "48fa1d56-7545-55a4-8175-861ef17502b3",
+      "source_math_academy_id": "q-109154",
+      "source_basis": 2280,
+      "evidence_only": false,
+      "domains": "translated coordinate positive; nonzero real branches; exclude singularities",
+      "sympy": "1.14.0"
+    }
+  }
+]
