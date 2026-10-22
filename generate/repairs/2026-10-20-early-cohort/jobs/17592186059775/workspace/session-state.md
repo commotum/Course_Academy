@@ -1,32 +1,41 @@
-# Current state — 2026-10-22, author-129
+# Current state — 2026-10-22, author-132
 
-Feedback and both retained findings read first; repair history has 129 events.
-Exact latest reproduction: `python -B checks/check_current_handoff.py` exits 1.
-Installed runner rejects unchanged runtime before regressions and sampling.
-Actual condition confirmed at scripts/generator_pipeline.py:722–727.
+Feedback and all retained findings/history were read before validation. No new
+runtime defect is reported. The exact latest failure remains reproducible:
+`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_current_handoff.py`
+exits 1. The installed runner's identical-package gate at
+`scripts/generator_pipeline.py:722–727` rejects before regressions or sampling.
 
-No runtime or manifest changes. Finding 9b8cb52352b8ca3e790e requests an
-evidence-only correction and explicitly preserves the package. Existing
-instructional account and completed Gaussian-elimination repairs remain intact.
+Fresh registered checks, unchanged:
 
-Fresh checks and exact commands: evidence/current-verification.json.
-- check_batch_selection.py: final success summary; ten profiles, shortcut 1/5
-  raw and delivered, five records delivered, 25 native grades without mismatch.
-- check_evidence_contract.py: exit 1 only at installed runner gate. Actual bundle
-  validation, relocated roots, missing-provenance/wrong-root negative controls,
-  current visible records, 12 source captures and three affected inventory
-  records pass. All 83 staged file hashes validate.
-- check_cli_contract.py: exit 0; relocation/count/determinism/finite limit pass.
-- check_render_binding.py: exit 0; ten complete source banks/50 choices replay,
-  retained UI inputs match current delivered endpoints. Re-inspected actual
-  UI screenshot question-001.png: readable matrices and full worked solution.
-- Broader unchanged checks retained at evidence/author123-retained.log.
+- `checks/check_all.py`: exit 0. Relocated CLI, ten complete source banks,
+  independent mathematical readbacks, native acceptance/rejection, shared
+  delivery, target coverage and three stored generated-instance reproductions.
+- `checks/check_batch_selection.py`: exit 0. Exact seed 4258185931 scores 1/5
+  for the reported shortcut raw and delivered; 5/5 records survive delivery.
+  Ten source profiles and 25 native responses pass.
+- `checks/check_evidence_contract.py`: exit 1. The evidence bundle passes real
+  review validation, relocation and missing-provenance negative controls,
+  current-record/source/inventory binding and 83 file hashes. The strict
+  installed-runner handoff remains failing.
+- `checks/check_render_binding.py`: exit 0. Ten complete source banks and two
+  retained actual-UI endpoints match current records. Visually re-inspected
+  `evidence/author8-render/question-001.png`: readable matrices, controls and
+  elimination solution; no apparent clipping or exposed TeX.
 
-Remaining action requires the runner owner: resolve the evidence-only
-unchanged-package gate, install the corrected bundle at the runner-supplied
-root, then run strict retained checks and obtain fresh independent review.
-Staged proposal: runner-fix/evidence-only-rejection.patch; installation map:
-evidence/contract-installation.json. Neither was installed. These targets
-are outside the authorized workspace. No generator edit can correct that
-external gate while preserving the required runtime. Strict failing regression
-remains intact. No database, publication, engine, service or external-file edits.
+Exact commands, exit codes and logs: `evidence/current-verification.json`.
+Author-132 reran all three registered checks and the render-binding check.
+Their fresh logs are `evidence/author132-check_*.log`. The results remain
+0, 0, 1, 0 respectively. The evidence-only check's nonzero result is the
+installed-runner failure, not a missing provenance file. The retained UI
+screenshot `evidence/author8-render/question-001.png` was visually reinspected:
+matrices, answer controls and all elimination stages remain readable.
+No runtime, manifest, database, engine, publication or other-job changes.
+Finding 9b8cb52352b8ca3e790e requires evidence-only correction and preservation
+of the package. Altering package bytes would evade rather than repair the gate.
+
+Next unfinished step: the runner owner must resolve its evidence-only identity
+gate outside this authorized workspace and install the validated evidence
+bundle, then run strict regressions and obtain fresh independent review.
+The proposal `runner-fix/evidence-only-rejection.patch` remains uninstalled.
+No historical acceptance is represented as fresh approval.

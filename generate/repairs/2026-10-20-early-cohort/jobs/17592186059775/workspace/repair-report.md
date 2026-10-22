@@ -1,6 +1,6 @@
 # Repair result
 
-## Current handoff — author-44 (supersedes earlier readiness claims)
+## Current handoff — author-130 (supersedes earlier readiness claims)
 
 The easy generator is preserved and its targeted content checks pass. The author
 handoff is **unsupported** because the installed runner rejects this evidence-only
