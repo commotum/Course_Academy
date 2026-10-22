@@ -1,5 +1,21 @@
 # Repair result
 
+## Current handoff — author-44 (supersedes earlier readiness claims)
+
+The easy generator is preserved and its targeted content checks pass. The author
+handoff is **unsupported** because the installed runner rejects this evidence-only
+repair before running regressions or sampling. `checks/check_evidence_contract.py`
+remains strictly failing for that unresolved integration defect; staged evidence
+and an offline patch test are not an installed repair. The permitted workspace
+does not include `scripts/generator_pipeline.py`, where the defective gate lives.
+
+Fresh commands and exit codes: `evidence/current-verification.json`. Reproduction:
+`evidence/current-handoff-regression.json`. The existing distributable correction
+is `runner-fix/evidence-only-rejection.patch`; it passes 23 offline cases and remains
+uninstalled. No runtime, engine, database, publication, or other-job changes.
+The next required action belongs to the runner owner: apply the routing correction,
+then rerun the strict handoff regression and fresh independent review.
+
 Author-31: the generator remains ready for fresh independent review. All registered regressions pass, including 10 complete source replays, independent mathematical readback, actual delivery/native grading, shortcut counterfactuals and stored-inventory reconstruction. The two retained actual-UI endpoint renders match fresh delivered records and were visually inspected. Runtime and manifest bytes are unchanged.
 
 The repeated external handoff failure now has a concrete proposed correction: [runner patch](runner-fix/evidence-only-rejection.patch), [scope and application instructions](runner-fix/README.md). The original sample-stage gate fails as reported; the distributable patch applies in a temporary checkout and passes 23 actual-control-flow cases. Only a valid evidence-only revise with the complete unchanged review binding can proceed. Regressions, sampling and fresh independent review remain mandatory; content findings and failed regressions still block. The registered evidence regression also executes this proposed-fix check.

@@ -1,39 +1,43 @@
-# Current state — 2026-10-22, author-43
+# Current state — 2026-10-22, author-45
 
-Preserved the runtime package and completed repairs. Read the latest feedback,
-retained finding IDs, history, source questions, lesson context, required docs,
-and prior session state. Source has no diagrams.
+Preserved completed generator repairs, runtime files, manifest, scripts and
+regression registrations. Read feedback and the two retained findings in the
+45-event history. Reused existing source analysis and instructional account;
+no runtime or instructional change is justified by an evidence-only defect.
 
-First command:
+Exact latest reproduction:
 `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_current_handoff.py`
 
-Exit 1: actual installed sample-stage control flow rejects the byte-identical
-package before regressions or sampling. The retained independent finding is
-an evidence-only correction that explicitly preserves runtime. The responsible
-rule is scripts/generator_pipeline.py:723; editing it is outside this workspace.
+Exit 1. The installed runner calls repair before regressions or sampling because
+package, source and engine match the last rejected binding. Responsible rule:
+`scripts/generator_pipeline.py:723`. Finding 9b8cb52352b8ca3e790e explicitly requests
+an evidence-only correction and preservation of runtime. The runner and requested
+external evidence installation destination are outside authorized writable roots.
 
-Fresh commands, exit codes, logs, and unchanged runtime hashes are recorded in
-`evidence/current-verification.json`.
+Fresh commands, logs, exit codes and unchanged runtime hashes:
+`evidence/current-verification.json` and `evidence/current-check-commands.json`.
 
-- Evidence contract: bundle validation, relocation, missing-provenance/wrong-root
-  controls, current-record binding and three historical generated records pass.
-  Registered check exits 1 because installed runner handoff still fails.
-- Batch regression: exit 0; exact seed 4258185931 shortcut scores 1/5 both raw
-  and after actual delivery filtering, five records survive, ten profiles checked,
-  and all 25 native grading responses match expected results.
-- Relocated CLI/count/determinism and finite-limit regression: exit 0.
-- Source/UI binding: exit 0; ten complete banks and 50 choices replay; retained
-  actual-UI inputs match current delivered endpoints. Visually inspected
-  evidence/author8-render/question-001.png: readable prompt, choices and solution.
-- Staged runner patch: exit 0 across 23 offline control-flow cases. This is an
-  uninstalled proposal, not a repair of the installed runner.
+- Evidence correction validates at its own root and two arbitrary relocated
+  roots; wrong-root and missing-provenance controls fail correctly. Current-record
+  and three historical generated-record bindings pass. Registered check remains
+  exit 1 because its strict installed-runner check fails.
+- Batch regression: exit 0; exact seed 4258185931 shortcut scores 1/5 raw and
+  delivered, five records survive actual filtering, ten profiles pass, and
+  25 native grading responses match expected outcomes.
+- CLI regression: exit 0; relocation, requested counts, determinism and finite
+  limit preserved.
+- Source/UI binding: exit 0; ten complete source banks and 50 choices replay.
+  Retained actual UI records match current delivered endpoints. Reinspected
+  `evidence/author8-render/question-001.png`; prompt, choices and solution readable.
 
-All declared runtime files and package.json remain byte-identical. Retained
-strict regressions are unchanged. No runner, engine, other-job, database, image
-publication, or live-service changes occurred.
+No runtime, runner, engine, other-job, database, publication, or live-service
+changes. The existing runner patch is an uninstalled proposal; its prior 23-case
+verification remains available. That unchanged patch test was not repeated.
 
-Unfinished: the runner owner must install a correction to its evidence-only
-rejection rule, then run the strict handoff and fresh independent review. Existing
-proposal: runner-fix/evidence-only-rejection.patch. Repeated authoring and cosmetic
-runtime changes do not fix that rule. Status remains unsupported for this handoff;
-the easy Gaussian-elimination generator itself passes the targeted content checks.
+Unfinished: runner owner must install the corrected evidence bundle at the proper
+root or correct its evidence-only rejection routing, then rerun the strict handoff
+and fresh independent review. Bundle: `evidence/contract-correction`; copy plan:
+`evidence/contract-installation.json`; proposed routing correction:
+`runner-fix/evidence-only-rejection.patch`. Do not mutate runtime to evade the
+identity gate, weaken the strict regression, or treat historical acceptance as
+fresh approval. Handoff status remains unsupported; targeted content checks pass.

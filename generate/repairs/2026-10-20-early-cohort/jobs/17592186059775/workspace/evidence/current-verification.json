@@ -1,5 +1,5 @@
 {
-  "author_attempt": 43,
+  "author_attempt": 45,
   "checks": [
     {
       "command": [
@@ -8,8 +8,7 @@
         "checks/check_evidence_contract.py"
       ],
       "exit_code": 1,
-      "log": "evidence/current-evidence_contract.log",
-      "seconds": 2.48
+      "log": "evidence/current-check_evidence_contract.log"
     },
     {
       "command": [
@@ -18,8 +17,7 @@
         "checks/check_batch_selection.py"
       ],
       "exit_code": 0,
-      "log": "evidence/current-batch_selection.log",
-      "seconds": 12.91
+      "log": "evidence/current-check_batch_selection.log"
     },
     {
       "command": [
@@ -28,8 +26,7 @@
         "checks/check_cli_contract.py"
       ],
       "exit_code": 0,
-      "log": "evidence/current-cli_contract.log",
-      "seconds": 11.5
+      "log": "evidence/current-check_cli_contract.log"
     },
     {
       "command": [
@@ -38,18 +35,7 @@
         "checks/check_render_binding.py"
       ],
       "exit_code": 0,
-      "log": "evidence/current-render_binding.log",
-      "seconds": 0.48
-    },
-    {
-      "command": [
-        "/home/jake/Developer/Course_Academy/.venv/bin/python",
-        "-B",
-        "checks/check_runner_handoff.py"
-      ],
-      "exit_code": 0,
-      "log": "evidence/current-runner_handoff.log",
-      "seconds": 0.29
+      "log": "evidence/current-check_render_binding.log"
     }
   ],
   "runtime_hashes_unchanged": {
@@ -63,5 +49,15 @@
   "package_modified": false,
   "external_writes": false,
   "status": "unsupported",
-  "unresolved": "Installed sample-stage identical-package gate rejects evidence-only correction before checks or sampling."
+  "unresolved": "Installed sample-stage identical-package gate rejects the evidence-only correction before checks or sampling. The retained finding explicitly preserves runtime. No authorized workspace change can install the correction at the external evidence root or change the runner gate.",
+  "runner_source": "scripts/generator_pipeline.py:723",
+  "strict_handoff": "evidence/current-handoff-regression.json",
+  "validated_correction_bundle": "evidence/contract-correction",
+  "affected_inventory": "evidence/contract-correction/affected-inventory.json",
+  "reused_rendering": {
+    "binding_check": "evidence/current-render-binding.json",
+    "visually_reinspected": "evidence/author8-render/question-001.png"
+  },
+  "prior_staged_patch": "runner-fix/evidence-only-rejection.patch",
+  "prior_patch_not_retested": "Unchanged runner and patch; existing 23-case verification retained. No new implementation affects those cases."
 }
