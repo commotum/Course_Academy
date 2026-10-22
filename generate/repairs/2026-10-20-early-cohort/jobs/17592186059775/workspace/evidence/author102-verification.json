@@ -1,0 +1,55 @@
+{
+  "author_attempt": 102,
+  "runtime_hashes": {
+    "package.json": "663cb3294cd6832de919c9e21b569f271e63079f4cd4155486853d1c05434b23",
+    "17592186059775.py": "45ce3ee90e9c76d850d8f7e0d9c0851515a65a868264b79160260898c5eeb2ac",
+    "17592186059775/source.json": "936dc5c07130b5fabc5e453ac26efb90471b07c96bc0a904a214eca8494a4bfc",
+    "math_format.py": "734756ff87af508413171ebec82588a121ac9af7d85b454ac4137db41d23e5be",
+    "requirements.txt": "25f9f1fb1988b230147a1d3092d34e09c069eb7a6c6d6df46b3973b9f2d36efc",
+    "known-systems.json": "2492556950df4a1bb3622028c1d24fd72ff9ec82f76c19b8fe2bc6e74b80436f"
+  },
+  "runtime_changed": false,
+  "checks": [
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_current_handoff.py",
+      "exit_code": 1,
+      "evidence": "evidence/current-handoff-regression.json"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_evidence_contract.py",
+      "exit_code": 1,
+      "evidence": "evidence/author102-evidence-check.log"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_batch_selection.py",
+      "exit_code": 0,
+      "evidence": "evidence/author102-batch-check.log"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_render_binding.py",
+      "exit_code": 0,
+      "result": {
+        "complete_source_banks": 10,
+        "bound_ui_records": 2
+      }
+    }
+  ],
+  "claims": {
+    "fidelity": "Ten complete source banks / 50 choices replay; two incomplete source captures remain unsupported.",
+    "correctness": "Independent visible-matrix checks pass on retained profiles and the exact reported batch.",
+    "grading": "25 current delivered native submissions pass: 5 accepted keys, 20 rejected distractors.",
+    "decision_variation": "Exact seed 4258185931 scores 1/5 for the reported cue before and after shared delivery. All 10 supported profiles retain complete target contrast; all 5 requested records delivered.",
+    "rendering": "Retained actual-UI input binds to fresh delivered endpoints. Visually reinspected evidence/author8-render/question-001.png: readable matrices, controls and solution; no new renderer run.",
+    "evidence": "Corrected bundle and relocated copies validate; wrong-root and missing-provenance controls reject. Three affected stored records remain bound to inventory. Evidence is staged, not installed.",
+    "handoff": "FAIL: installed runner rejects identical package before regressions and sampling."
+  },
+  "root_cause": {
+    "file": "/home/jake/Developer/Course_Academy/scripts/generator_pipeline.py",
+    "line": 723,
+    "rule": "Unconditional unchanged package/source/engine rejection also rejects evidence-only corrections. Unsupported author results restart authoring whenever source supports the band.",
+    "proposed_fix": "runner-fix/evidence-only-rejection.patch",
+    "installed": false
+  },
+  "scope": "No runtime, regression, engine, external file, database or publication changes. Existing CLI and broader checks retained without redundant reruns.",
+  "limitation": "Applying the staged runner correction requires a write outside the authorized workspace; evidence-only finding explicitly preserves runtime. Strict failing checks retained."
+}

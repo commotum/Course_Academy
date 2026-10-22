@@ -1,17 +1,18 @@
-# Current verification — author 778
+# Current verification — author 782
 
-Latest exact failure reproduced first: job Python -B checks/batch_regressions.py
+Latest failure reproduced first: job Python -B checks/batch_regressions.py
 --finding inventory exits 1 for five historical banks and the 64/64 retained
 possible-history shortcut witness.
 
-Job Python -B checks/recheck_status.py --output evidence/author-778 exits 1
+Job Python -B checks/recheck_status.py --output evidence/author-782 exits 1
 solely for 591f580cadb749294588. All four generator findings pass; 17 complete
 practice banks plus canonical replay; 14 delivered records retain contrasts;
 native grader accepts 7 correct and rejects 28 wrong choices. Relocation,
 dependencies, protected hashes and staged replacement mappings pass.
-Retained actual-UI screenshot visually inspected. Runtime unchanged.
+Retained actual-UI question-001 screenshot visually inspected: legible systems,
+choices, matrices and solution, without clipping or unresolved TeX. Runtime unchanged.
 
-Evidence: evidence/author-778/{commands,results,grader-report}.json and
+Evidence: evidence/author-782/{commands,results,grader-report}.json and
 disposition.md. Historical records: evidence/generated-records.json.
 Staged proposal: evidence/repair-3/inventory-repair-proposal.json.
 

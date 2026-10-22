@@ -1,31 +1,28 @@
-# Current state — 2026-10-22, author-101
+# Current state — 2026-10-22, author-104
 
-Read latest feedback, retained findings and history; preserved completed runtime repairs.
-Reproduced the exact latest failure first with job Python `-B checks/check_current_handoff.py`:
-exit 1, installed runner rejects the byte-identical package before retained checks and sampling.
-Finding 9b8cb52352b8ca3e790e requires evidence-only correction and runtime preservation.
+Read feedback, retained findings and history events before work. Exact latest
+failure reproduced first with job Python `-B checks/check_current_handoff.py`:
+exit 1, installed runner rejects byte-identical runtime before regressions/sampling.
+Gate remains scripts/generator_pipeline.py:723–728; unsupported routing at 710–714
+returns this supported skill to authoring. Both files are outside writable scope.
 
-Fresh checks (job Python, `-B`):
-- `checks/check_evidence_contract.py`: exit 1 only at current runner handoff.
-  Corrected bundle validates at relocated roots; negative controls reject.
-- `checks/check_batch_selection.py`: exit 0. Exact seed 4258185931 shortcut scores
-  1/5 raw and after shared delivery; ten supported profiles retain target contrast.
-  Native grader passes five keys and twenty distractors.
-- `checks/check_cli_contract.py`: exit 0; relocated CLI, deterministic output,
-  requested counts and finite-limit rejection pass.
-- `checks/check_render_binding.py`: exit 0; ten complete source banks / 50 choices
-  replay and retained actual-UI records equal fresh delivered endpoints.
-  Reinspected `evidence/author8-render/question-001.png`: readable without clipping.
+Targeted validation with job Python and `-B`:
+- checks/check_evidence_contract.py: exit 1 only at installed-runner handoff.
+  Corrected 83-file bundle, relocation, missing-provenance/wrong-root controls,
+  current generated-record binding and three stored-record bindings pass.
+- checks/check_batch_selection.py: exit 0. Seed 4258185931 cue 1/5 raw/delivered;
+  all five delivered; ten profiles retain target contrasts; native 5 accepts/20 rejects.
+- checks/check_render_binding.py: exit 0. Ten complete source banks/50 choices
+  replay and two retained actual-UI records equal current delivered endpoints.
+  Reinspected question-001.png: readable matrices, controls and full solution.
 
-Commands, results and runtime hashes: `evidence/author101-verification.json`.
-Runtime hashes remain unchanged; no strict regression removed or weakened.
-No engine, external file, database or publication mutation performed.
+Exact commands, separate claims and unchanged hashes: evidence/current-verification.json.
+Fresh logs: evidence/author104-evidence-check.log, evidence/author104-batch-check.log.
+No runtime, regression, engine, database, publication or external-file changes.
 
-Unfinished: runner owner must resolve evidence-only routing and install the
-validated bundle, then rerun strict regressions and obtain fresh independent review.
-The proposed patch remains `runner-fix/evidence-only-rejection.patch`;
-bundle `evidence/contract-correction`; inventory `evidence/contract-installation.json`.
-Both external writes are outside this session's authorized workspace. No generator
-change is justified by this report-only defect. Further identical author retries
-cannot change this boundary. The easy skill is supported; unsupported status
-reports unresolved handoff behavior, not missing mathematical scope.
+Unfinished: runner owner must review/apply runner-fix/evidence-only-rejection.patch,
+then rerun strict regressions, sampling and fresh independent review. Proposal is
+not installed. Corrected historical bundle: evidence/contract-correction; map:
+evidence/contract-installation.json. Historical acceptance is not fresh approval.
+Do not change runtime bytes merely to bypass the gate or weaken the strict failing
+check. Repeating broad tests cannot repair this external integration boundary.
