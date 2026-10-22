@@ -1,13 +1,13 @@
-# Current state — author 537
+# Current state — author 541
 
-Read latest feedback and both retained history findings. Reproduced the exact strict report failure first. No runtime/source changes are justified: the remaining finding explicitly requests external evidence installation, not generator authoring. Preserved the repaired construction rule, manifest, historical inventory evidence and both strict regressions.
+Read feedback and all retained finding definitions, the last history events, prior state, instructional account, and required generator documentation. Reproduced the latest strict failure before rerunning retained checks. Runtime and regression declarations remain unchanged.
 
-Commands using `/home/jake/Developer/Course_Academy/.venv/bin/python`:
+Commands use `/home/jake/Developer/Course_Academy/.venv/bin/python`:
 
-- `checks/check_report_installation.py` — exit 1; `evidence/report-repair/author-537-reproduction.log`. Required external report fails actual validation: `decision_variation has an unresolved decision shortcut`. Local correction passes actual contract/schema validation and replays 26 complete records against current code.
-- `checks/test_role_exchange.py` — exit 0; `evidence/author-537-role-regression.log`. Exact reorder, controlled transfer, conditional shortcut probes, shared delivery filtering and all 30 native-grader expectations pass. Delivered mixed cases cover resonance in first position 19 times and second position 17 times.
-- `checks/verify_retained_state.py` — exit 0; `evidence/author-537-retained-state.log`. All 55 staged artifact hashes, runtime/source hashes and eight independent mathematical cases pass. Existing source replay, inventory reproduction, relocation and UI evidence remain applicable to unchanged runtime/source.
+- `checks/check_report_installation.py` — exit 1; `evidence/report-repair/author-541-reproduction.log`. Actual validator still rejects the required external report with `decision_variation has an unresolved decision shortcut`. Local staged correction passes contract/schema validation and replays 26 complete records against current code.
+- `checks/test_role_exchange.py` — exit 0; `evidence/author-541-role-regression.log`. Exact reorder, controlled transfer, within-template shortcut probes, shared delivery filters and 30 native-grader expectations pass. Delivered mixed cases place resonance first 19 times and second 17 times.
+- `checks/verify_retained_state.py` — exit 0; `evidence/author-541-retained-state.log`. All 55 staged artifact hashes, runtime/source hashes and eight independent mathematical cases pass. Prior source replay, inventory reproduction, relocation and actual UI evidence remain applicable to unchanged runtime/source.
 
-Current results: `evidence/current-validation.json`. Generator finding `efa97df560cec8fee6e1` remains verified fixed. Evidence-installation finding `645672a4cd3f9bf609ca` remains unresolved. No publication, database change, engine edit, external write or independent approval occurred.
+Results: `evidence/current-validation.json`. Finding `efa97df560cec8fee6e1` remains verified fixed. Finding `645672a4cd3f9bf609ca` remains unresolved. No publication, database write, engine edit, external write, or independent approval occurred. Strict regressions remain declared in `repair-regressions.json`.
 
-Next unfinished step requires the runner: install the staged correction at `../review-1-policy-2-48d685555902faba`, rerun the unchanged strict report regression, then obtain independent review. File mapping and checksums: `evidence/review-installation-handoff.json`. That destination is outside this session's workspace-only authorization. Another unchanged author retry cannot perform the installation; do not weaken the regression or alter the generator to conceal it.
+Next unfinished action: runner installation of the staged correction at `../review-1-policy-2-48d685555902faba`, followed by the unchanged strict regression and fresh independent review. Exact mapping and checksums: `evidence/review-installation-handoff.json`. This destination is outside workspace-only authorization. Further unchanged author retries cannot perform that installation; preserve the generator and strict failure.

@@ -1,0 +1,1 @@
+Milestone 2: source replay, fresh seed samples, exact independent math, controlled pairs, strict rejection cases, package versions and relocation saved by review_probe.py. Source family omissions and numeric-bank shortcuts demonstrated; package remains unchanged. Native grader, delivery and renderer pending.
