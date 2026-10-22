@@ -1,0 +1,208 @@
+{
+  "learner_operation": "Solve homogeneous first-order ODEs using y=v(x)x, reduce to x v'=F(v)-v, separate and integrate, substitute back, and select one general solution from five mathematical choices.",
+  "fixed_features": [
+    {
+      "feature": "Homogeneous first-order ODE and substitution y=v(x)x",
+      "justification": "Tutorial fe0a9e9e-ab23-5364-99bb-cddbfd67a4a4 derives x v'=F(v)-v as the core reduction."
+    },
+    {
+      "feature": "General solution as the target; one of five radio candidates",
+      "justification": "All three labelled easy source questions ask for the general solution with a five-choice selection field. There is no alternative requested target requiring target-slot randomization."
+    },
+    {
+      "feature": "Elementary power/log integration in three easy families",
+      "justification": "Easy source IDs 2b4ed6f3-beb2-5be5-83cb-e8d41e7b8f3b, ed854c8a-5a47-5533-b48c-04deb7b81625, 73b06f86-eb7f-5333-916f-45bb6952f791 support these operations and workload. Fixed bank shapes are not justified by this constraint."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Coefficient a of the forcing/surviving term",
+      "eligible_variation": "Small nonzero signed coefficients; derive particular/log solution coefficient from a.",
+      "observed": "All a=-9..-1 and 1..9 in each easy family. Math changes correctly; bank-only strategy stays perfect."
+    },
+    {
+      "role": "Coefficient of v remaining after differentiation subtraction",
+      "eligible_variation": "F(v)=a+v versus a+2v changes the integration branch without changing the method.",
+      "observed": "Both branches sampled; controlled a=2 pair changes y coefficient 1 to 2 and updates solution from log to power."
+    },
+    {
+      "role": "Which bank member qualifies mathematically",
+      "eligible_variation": "Use comparable plausible solution expressions and vary distractor error relations so root shape, term pattern, or smaller coefficient does not uniquely identify correctness. Preserve full source bank at original replay parameters if needed.",
+      "observed": "Correct choice remains the unique cube-root shape, unique x-log plus Cx, or smaller affine linear coefficient in every respective family. Labels and UI position vary, but these answer-producing actions do not."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "All easy coefficient slots and source profiles",
+      "sample_refs": [
+        "independent-samples.json",
+        "packaging.json",
+        "source-replay.json"
+      ],
+      "result": "54/54 unique slots: 18 in each family, 9 positive and 9 negative. All three original easy banks replay."
+    },
+    {
+      "case": "Boundary signs and integration branches",
+      "sample_refs": [
+        "math.json",
+        "counterfactuals.json",
+        "counterfactual-results.json"
+      ],
+      "result": "a=±1 and ±9 covered; independent symbolic checks pass. Changing a or affine branch updates correct values and explanations."
+    },
+    {
+      "case": "Exact runner batch and captured delivered pool",
+      "sample_refs": [
+        "runner-batch.json",
+        "delivery-batch/accepted.json",
+        "shortcut-regression.json",
+        "selection.json"
+      ],
+      "result": "Raw batch: two linear-log, two cubic, one affine. Captured deduplication removes cubic a=-2; survivors: two linear-log, cubic a=9, affine a=4. Bank-only rule solves all five raw and all four survivors."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Hold each easy family and seed fixed; replace a=2 by a=-2.",
+      "expected": "Surviving-term sign and corresponding solution term must change; dependent prompt, explanation and key must agree.",
+      "observed": "Cube-root log multiplier +6 becomes -6; affine particular -2x becomes +2x; linear-log +2x ln|x| becomes -2x ln|x|. Both sides rendered and each candidate graded.",
+      "status": "passed",
+      "justification": "Coefficient contributes directly to F(v)-v; tutorial reduction requires recomputation rather than preserving a stored key.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "counterfactual-results.json",
+        "math.json",
+        "grader-final-results.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "Hold a=2 and seed fixed; change coefficient of y in (2x+y)/x to (2x+2y)/x.",
+      "expected": "General solution changes from y=2x ln|x|+Cx to y=Cx^2-2x.",
+      "observed": "Both source-supported branches produce the expected different expressions and worked integrations, render correctly, and pass native correct/wrong candidate tests.",
+      "status": "passed",
+      "justification": "The subtraction of v changes a constant separated integral into an affine denominator integral. This directly tests an eligible answer-bearing role.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "counterfactual-results.json",
+        "grader-final-results.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Reverse the candidate array of a cube-root a=2 record; hold prompt, explanation, values and correct UUID fixed. This is a review counterfactual, not a package edit.",
+      "expected": "Mathematical response and grading must be preserved; display order may change because UI sorting uses task/field IDs.",
+      "observed": "Same correct expression, prompt and explanation; native grader accepts same UUID and rejects all alternatives before/after. Both versions rendered without errors.",
+      "status": "passed",
+      "justification": "Candidate enumeration is incidental to the source operation of solving an ODE; source radio contract keys an answer, not a position.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "counterfactual-results.json",
+        "grader-final-results.json",
+        "render/rendering.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "unique cube root",
+      "subgroup": "cube_root bank signature, both signs of a",
+      "scope": "within_template",
+      "strategy": "Select the sole cube-root candidate, without reading the differential equation.",
+      "correct": 18,
+      "total": 18,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Uniform choice among five candidates succeeds with probability 0.2. This rule succeeds for every one of the 18 coefficients and does not use the ODE, perform substitution, integrate, or compute its solution coefficient. The bank construction carries the answer. This is an incidental cue, not a justified mathematical simplification. Native grader accepts each prediction.",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut-regression.json",
+        "grader-final-input.json",
+        "grader-final-results.json"
+      ]
+    },
+    {
+      "cue": "x log and Cx",
+      "subgroup": "linear_log bank signature, both signs of a",
+      "scope": "within_template",
+      "strategy": "Select the sole candidate containing both x ln|x| and the term +Cx, without reading the equation.",
+      "correct": 18,
+      "total": 18,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Uniform choice among five candidates succeeds with probability 0.2. This rule succeeds for every one of the 18 coefficients and does not use the ODE, perform substitution, integrate, or compute its solution coefficient. The bank construction carries the answer. This is an incidental cue, not a justified mathematical simplification. Native grader accepts each prediction.",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut-regression.json",
+        "grader-final-input.json",
+        "grader-final-results.json"
+      ]
+    },
+    {
+      "cue": "smaller affine coefficient",
+      "subgroup": "affine bank signature, both signs of a",
+      "scope": "within_template",
+      "strategy": "Among the two candidates y=Cx^2+bx, select the smaller absolute b, without reading the equation.",
+      "correct": 18,
+      "total": 18,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Uniform choice among five candidates succeeds with probability 0.2. This rule succeeds for every one of the 18 coefficients and does not use the ODE, perform substitution, integrate, or compute its solution coefficient. The bank construction carries the answer. This is an incidental cue, not a justified mathematical simplification. Native grader accepts each prediction.",
+      "sample_refs": [
+        "independent-samples.json",
+        "shortcut-regression.json",
+        "grader-final-input.json",
+        "grader-final-results.json"
+      ]
+    },
+    {
+      "cue": "Recognize bank shape and apply the corresponding rule",
+      "subgroup": "All three easy templates",
+      "scope": "overall",
+      "strategy": "Use unique cube root; else x-log plus Cx; else smaller affine coefficient. Predictor receives only candidate text and IDs.",
+      "correct": 54,
+      "total": 54,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Random one-of-five baseline is 0.2. Combined bank-only rule scores 54/54 raw, 49/49 after delivery, 5/5 exact runner batch, 4/4 runner survivors and 5/5 reconstructed stored generated questions. Fixed positions are unnecessary; the cue survives UI shuffling.",
+      "sample_refs": [
+        "shortcut-regression.json",
+        "runner-batch.json",
+        "delivery-batch/accepted.json",
+        "generated-records.json",
+        "grader-final-results.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "Finite sampler without rejection: all slots once per 54-record cycle; fresh seed 826031",
+      "Requested easy difficulty filter",
+      "Actual publisher normalization, identity derivation and inventory/within-batch deduplication",
+      "Captured inventory basis 5449 and exact generated-record reconstruction",
+      "Native learner selection rules: fresh candidate/history exclusion and within-easy SHA-256 uniform draw",
+      "Actual UI choice shuffling, rendering and native grader"
+    ],
+    "sample_refs": [
+      "independent-samples.json",
+      "runner-batch.json",
+      "delivery-independent/delivery.json",
+      "delivery-independent/accepted.json",
+      "delivery-batch/delivery.json",
+      "delivery-batch/accepted.json",
+      "selection.json",
+      "generated-records.json",
+      "shortcut-regression.json"
+    ],
+    "result": "49/54 independent records and 4/5 runner records survive captured inventory filtering. Each family and the entire surviving batch remain perfectly solvable using only candidate banks. Native learner selection has no template/shape exclusion; conditional on easy eligibility it retains affected candidates. Five stored generated records reproduced with exact UUID and fingerprint; originals were excluded from affected-inventory.json."
+  },
+  "limitations": [
+    "No live database or publication was accessed. Future inventory can change duplicate counts.",
+    "Captured inventory omits original generation seeds and learner policy/history; reconstructed seed affects metadata only, not complete question content. Live selection proportions are not asserted.",
+    "Moderate source replays are documented but this easy-band review is not a full moderate certification. Canonical quadratic and additional arctangent source families are explicitly unsupported.",
+    "Candidate-position cues were not counted as defects because actual UI shuffles choices. No finite audit certifies absence of every possible shortcut."
+  ]
+}
