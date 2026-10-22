@@ -1,6 +1,5 @@
 {
-  "author_attempt": 224,
-  "python": "/home/jake/Developer/Course_Academy/.venv/bin/python",
+  "author": 227,
   "commands": [
     {
       "command": [
@@ -9,16 +8,20 @@
         "checks/check_current_handoff.py"
       ],
       "exit_code": 1,
-      "evidence": "evidence/current-handoff-regression.json"
+      "report": "evidence/current-handoff-regression.json",
+      "expected_historical_failure": false
     },
     {
       "command": [
         "/home/jake/Developer/Course_Academy/.venv/bin/python",
         "-B",
-        "checks/check_batch_selection.py"
+        "checks/check_batch_selection.py",
+        "--input",
+        "evidence/batch-shortcut-before-records.json"
       ],
-      "exit_code": 0,
-      "evidence": "evidence/author224-batch.log"
+      "exit_code": 1,
+      "report": null,
+      "expected_historical_failure": true
     },
     {
       "command": [
@@ -27,7 +30,18 @@
         "checks/check_evidence_contract.py"
       ],
       "exit_code": 1,
-      "evidence": "evidence/author224-contract.log"
+      "report": "evidence/evidence-contract-validation.json",
+      "expected_historical_failure": false
+    },
+    {
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "-B",
+        "checks/check_batch_selection.py"
+      ],
+      "exit_code": 0,
+      "report": "evidence/batch-selection-regression.json",
+      "expected_historical_failure": false
     },
     {
       "command": [
@@ -36,7 +50,8 @@
         "checks/check_cli_contract.py"
       ],
       "exit_code": 0,
-      "evidence": "evidence/author224-cli.log"
+      "report": "evidence/cli-contract.json",
+      "expected_historical_failure": false
     },
     {
       "command": [
@@ -45,10 +60,11 @@
         "checks/check_render_binding.py"
       ],
       "exit_code": 0,
-      "evidence": "evidence/author224-source-render.log"
+      "report": "evidence/current-render-binding.json",
+      "expected_historical_failure": false
     }
   ],
-  "runtime_hashes_unchanged": {
+  "runtime_hashes": {
     "package.json": "663cb3294cd6832de919c9e21b569f271e63079f4cd4155486853d1c05434b23",
     "17592186059775.py": "45ce3ee90e9c76d850d8f7e0d9c0851515a65a868264b79160260898c5eeb2ac",
     "17592186059775/source.json": "936dc5c07130b5fabc5e453ac26efb90471b07c96bc0a904a214eca8494a4bfc",
@@ -56,22 +72,29 @@
     "requirements.txt": "25f9f1fb1988b230147a1d3092d34e09c069eb7a6c6d6df46b3973b9f2d36efc",
     "known-systems.json": "2492556950df4a1bb3622028c1d24fd72ff9ec82f76c19b8fe2bc6e74b80436f"
   },
-  "source_fidelity": {
-    "complete_banks_replayed": 10,
-    "choices": 50
-  },
-  "correctness_and_grading": {
-    "native_accepted": 5,
-    "native_rejected": 20,
-    "unexpected_outcomes": 0,
-    "independent_visible_record_checks_passed": true
-  },
-  "decision_variation": {
-    "exact_seed": 4258185931,
-    "shortcut_raw_correct": 1,
-    "shortcut_delivered_correct": 1,
-    "batch_count": 5,
-    "profiles_checked": 10
+  "runtime_unchanged": true,
+  "implementation_changed": false,
+  "handoff": {
+    "finding_id": "9b8cb52352b8ca3e790e",
+    "passed": false,
+    "installed_runner_sha256": "6b5e606725c2b82f87212da3c0ec39da0231db0722cd440ef1d21e141d01deb2",
+    "package_hash": "38c685ce1e5bd4f89ac79b6ab3d31a4a81f2b77c9f4bb6f0abcab5c20640f626",
+    "engine_hash": "dc1e0a8583ca33c6028bc0a641128ecc8e7896742189dd42b292170c9726bad9",
+    "calls": [
+      "repair"
+    ],
+    "rejection": "{'error': 'Candidate is byte-identical to the rejected package. Apply and test the requested repair before another independent review.'}",
+    "next_stage": "sample",
+    "runtime_hashes_unchanged": {
+      "package.json": "663cb3294cd6832de919c9e21b569f271e63079f4cd4155486853d1c05434b23",
+      "17592186059775.py": "45ce3ee90e9c76d850d8f7e0d9c0851515a65a868264b79160260898c5eeb2ac",
+      "17592186059775/source.json": "936dc5c07130b5fabc5e453ac26efb90471b07c96bc0a904a214eca8494a4bfc",
+      "math_format.py": "734756ff87af508413171ebec82588a121ac9af7d85b454ac4137db41d23e5be",
+      "requirements.txt": "25f9f1fb1988b230147a1d3092d34e09c069eb7a6c6d6df46b3973b9f2d36efc",
+      "known-systems.json": "2492556950df4a1bb3622028c1d24fd72ff9ec82f76c19b8fe2bc6e74b80436f"
+    },
+    "patch_installed_by_check": false,
+    "scope": "Actual installed _run; mutations and execution boundaries instrumented. Generator, delivery and native-grader tests run separately."
   },
   "evidence_contract": {
     "finding_id": "9b8cb52352b8ca3e790e",
@@ -105,21 +128,12 @@
     "current_runner_regression": "evidence/current-handoff-regression.json",
     "current_runner_exit_code": 1
   },
-  "rendering": {
-    "fresh_delivery_matches_retained_render_input": true,
-    "screenshots_visually_inspected": [
+  "visual_inspection": {
+    "screenshots": [
       "evidence/author8-render/question-001.png",
       "evidence/author8-render/question-002.png"
     ],
-    "observation": "Matrices, five radio controls, row operations and solutions are readable without clipping. Rendering was reused after exact input binding, not rerun."
+    "result": "Both retained actual-UI screenshots inspected; matrices, radio controls and row-operation solutions are readable. Binding check matches current delivered endpoints."
   },
-  "unresolved": {
-    "installed_runner": "scripts/generator_pipeline.py:723",
-    "failure": "Identical package is rejected before retained regressions or corrected evidence can be evaluated.",
-    "proposed_patch": "runner-fix/evidence-only-rejection.patch",
-    "patch_installed": false,
-    "allowed_write_scope": "workspace only",
-    "registered_evidence_regression_exit_code": 1
-  },
-  "changes": "Evidence and session state only. Runtime, manifest, strict regressions, external runner, engine, database and publication remain untouched."
+  "unresolved": "Installed runner rejects unchanged package before retained regressions or sampling. Correcting scripts/generator_pipeline.py and installing evidence outside this workspace are not authorized. Existing strict failure and staged correction remain intact."
 }

@@ -1,0 +1,46 @@
+{
+  "status": "unsupported",
+  "attempt": 1186,
+  "runtime_changed": false,
+  "checks": [
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_report_installation.py",
+      "exit_code": 1,
+      "report": "evidence/report-repair/results.json",
+      "log": "evidence/current-latest-failure.log",
+      "error": "decision_variation has an unresolved decision shortcut"
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/test_role_exchange.py --output evidence/role-regression",
+      "exit_code": 0,
+      "report": "evidence/role-regression/results.json",
+      "delivered_positions": {
+        "1": 19,
+        "2": 17,
+        "none": 5
+      },
+      "native_accepted_checks": 11,
+      "native_rejected_checks": 19
+    },
+    {
+      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/verify_retained_state.py",
+      "exit_code": 0,
+      "report": "evidence/current-retained-state.json",
+      "verified_artifacts": 55,
+      "unaffected_math_cases": 8
+    }
+  ],
+  "local_correction": {
+    "actual_contract": "passed",
+    "schema": "passed",
+    "current_records_replayed": 26
+  },
+  "rendering": {
+    "reused_screenshot": "evidence/corrected-review/render-regression/question-002.png",
+    "visually_inspected": true,
+    "observation": "Prompt, response and solution readable; long equations use existing horizontal scrolling. Runtime unchanged."
+  },
+  "required_destination": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186229165/review-1-policy-2-48d685555902faba",
+  "next_required_action": "Runner installs staged correction using evidence/review-installation-handoff.json at the required prior-review destination, reruns the strict regression, then obtains independent review.",
+  "scope": "Workspace-only evidence update. No runtime changes, external writes, database changes, publication or engine edits."
+}
