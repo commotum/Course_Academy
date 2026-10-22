@@ -1,0 +1,11 @@
+# Author-500 result
+
+Preserved the candidate and completed repairs. First reproduced the latest failure with `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory`: exit 1, five affected historical records, 64/64 sign-extremum successes in the possible-history witness. Then ran `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/author-500`: exit 1 solely for finding 591f580cadb749294588.
+
+Four current-generator finding regressions pass. They test source fidelity (17 complete practice banks and canonical system), zero-root/fractional reachability, within-template shortcut/counterfactual witnesses, and finite batch selection before/after shared delivery (14 records). Native grading accepts 7 correct and rejects 28 incorrect responses. Exact pinned dependencies and relocated CLI replay pass. Runtime, manifest, captured source and inventory hashes match the protected earlier state. Five offline replacement records and their exact old/new mapping verify; no proposal was applied.
+
+Retained actual-UI screenshot `evidence/repair-3/render/question-001.png` was visually inspected: readable system, five choices, matrices, elimination, and contradiction. No render was repeated because runtime and representative records are unchanged.
+
+The unresolved defect is in captured stored banks. The selector consumes stored questions; it does not reconstruct their banks through this package. Source evidence has not changed, so the old counterexample remains applicable. The separate remediation step must retire the five affected generated identities from future selection, independently review/publish replacements, preserve original source questions and historical responses, and supply a fresh inventory capture. This author is explicitly forbidden to change database content or publish. Changing runtime code, editing the capture, or weakening the regression cannot truthfully repair that state.
+
+Status: unsupported for the stored-pool requirement. No generator family was removed, no strict test was weakened, and no runtime repair was overwritten. All five generated inventory entries were tested; this is not an untested-inventory limitation. The existing proposal is `evidence/repair-3/inventory-repair-proposal.json`.

@@ -1,11 +1,13 @@
 # Current state
 
-Author-498 preserved all runtime repairs, package files and five executable finding regressions. Feedback and retained findings identify no new generator defect. History has 498 events, latest attempt 497.
+Author-501 preserved runtime, manifest, and all five executable finding regressions. Read feedback and repair history (five retained findings; latest event attempt 500). No new current-generator defect is reported.
 
-First test: `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory` exited 1: five historical banks retain the shortcut; possible-history witness 64/64. All five generated inventory entries were reproduced and audited.
+Reproduced latest failure first: `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory` exits 1 for five stored historical banks; the possible-history shortcut witness succeeds 64/64. All five records reproduce complete captured prompts, solutions, choices, keys, and generation metadata; none are untested.
 
-Then `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/author-498` exited 1 solely for finding 591f580cadb749294588. Four current-generator regressions pass: 17 complete source banks plus canonical system, zero/fractional cases, shortcut and counterfactual checks, shared delivery (14), native grading (7 accepted, 28 rejected), dependencies and relocation. Protected hashes match. Five staged replacements verify and remain unapplied. Retained actual-UI screenshot question-001.png was visually inspected. Commands/results/outcome: evidence/author-498.
+Ran `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/author-501`: exit 1 solely for finding 591f580cadb749294588. Four current-generator regressions pass: 17 complete source banks and canonical system, zero/fractional cases, shortcut/counterfactual checks, shared delivery (14 records), native grading (7 accepted/28 rejected), versions, and relocation. Protected hashes match. Five staged replacements and mappings verify and remain unapplied. Existing actual-UI screenshot was visually inspected; no layout defect observed.
 
-Unfinished: separate inventory remediation must resolve the five generated identities in affected-inventory.json, supply a fresh capture and rerun the strict inventory regression. Proposal: evidence/repair-3/inventory-repair-proposal.json. Database and engine changes are prohibited. Do not substitute proposed records for captured inventory, weaken the strict failure or overwrite completed repairs. An unchanged capture cannot establish that stored content was repaired.
+Evidence: `evidence/author-501/commands.json`, `results.json`, `outcome.md`.
+
+Unfinished: the separate inventory-remediation workflow named in the retained review must resolve the five generated identities in `affected-inventory.json` and provide a fresh capture. Proposal: `evidence/repair-3/inventory-repair-proposal.json`. Database changes and publication are prohibited here. Do not edit the capture, substitute proposed records, weaken the strict failure, or overwrite completed repairs. Repeating generator-only verification against unchanged inputs cannot complete this external step.
 
 Status: unsupported for the unresolved stored-pool requirement.
