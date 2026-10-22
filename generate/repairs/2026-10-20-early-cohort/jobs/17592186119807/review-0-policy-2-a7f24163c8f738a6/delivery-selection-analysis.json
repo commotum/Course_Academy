@@ -1,0 +1,762 @@
+{
+  "implementation": "engine/rust/question_selection.rs select; seen_before_task; candidates sorted/deduplicated by entity id, choose band then uniform(8) within it",
+  "captured_basis": 5400,
+  "captured_original_inventory": 14,
+  "staged_counts": {
+    "raw_catalog": 46,
+    "accepted_catalog": 36,
+    "batch": 5
+  },
+  "weighted_behavior": "All staged records moderate. With positive moderate weight, every fresh staged record is eligible with equal probability. Zero moderate weight excludes the whole rated cohort; no unweighted fallback to this cohort. Unconfigured policy returns lowest entity ID.",
+  "history_behavior": "seen_before_task and current-prefix exclusion remove previously reserved items. Perfect batch numeric-rank cue and per-profile position cue remain perfect on every nonempty subset.",
+  "limitations": [
+    "No concrete learner, policy weights, task history or eventual staged entity IDs supplied; no claim of exact future chosen question. Current bank contains only source originals; generated-batch analysis is conditional on those records entering an eligible pool."
+  ],
+  "coverage": {
+    "raw": {
+      "count": 46,
+      "consistent": 35,
+      "inconsistent": 11,
+      "second_largest_numeric_success": 20,
+      "correct_positions": {
+        "2": 16,
+        "4": 5,
+        "3": 10,
+        "5": 10,
+        "1": 5
+      },
+      "c_label_count": 11,
+      "c_label_no_solution": 11,
+      "profiles": {
+        "q-105166": {
+          "n": 5,
+          "answers": [
+            "-1",
+            "-4",
+            "2",
+            "5",
+            "8"
+          ],
+          "correct_positions": {
+            "2": 5
+          },
+          "numeric_ranks": {
+            "3": 5
+          }
+        },
+        "q-105167": {
+          "n": 5,
+          "answers": [
+            "1",
+            "10",
+            "13",
+            "4",
+            "7"
+          ],
+          "correct_positions": {
+            "4": 5
+          },
+          "numeric_ranks": {
+            "5": 5
+          }
+        },
+        "q-34054": {
+          "n": 5,
+          "answers": [
+            "-2",
+            "-5",
+            "1",
+            "4",
+            "7"
+          ],
+          "correct_positions": {
+            "3": 5
+          },
+          "numeric_ranks": {
+            "3": 5
+          }
+        },
+        "q-34242": {
+          "n": 1,
+          "answers": [
+            "No solution"
+          ],
+          "correct_positions": {
+            "2": 1
+          },
+          "numeric_ranks": {
+            "None": 1
+          }
+        },
+        "q-34568": {
+          "n": 5,
+          "answers": [
+            "No solution"
+          ],
+          "correct_positions": {
+            "5": 5
+          },
+          "numeric_ranks": {
+            "None": 5
+          }
+        },
+        "q-73950": {
+          "n": 5,
+          "answers": [
+            "-3",
+            "0",
+            "3",
+            "6",
+            "9"
+          ],
+          "correct_positions": {
+            "5": 5
+          },
+          "numeric_ranks": {
+            "4": 5
+          }
+        },
+        "q-73951": {
+          "n": 5,
+          "answers": [
+            "No solution"
+          ],
+          "correct_positions": {
+            "1": 5
+          },
+          "numeric_ranks": {
+            "None": 5
+          }
+        },
+        "q-73952": {
+          "n": 5,
+          "answers": [
+            "-2",
+            "-5",
+            "1",
+            "4",
+            "7"
+          ],
+          "correct_positions": {
+            "3": 5
+          },
+          "numeric_ranks": {
+            "3": 5
+          }
+        },
+        "q-73954": {
+          "n": 5,
+          "answers": [
+            "-1",
+            "-4",
+            "-7",
+            "2",
+            "5"
+          ],
+          "correct_positions": {
+            "2": 5
+          },
+          "numeric_ranks": {
+            "3": 5
+          }
+        },
+        "q-73981": {
+          "n": 5,
+          "answers": [
+            "11",
+            "14",
+            "2",
+            "5",
+            "8"
+          ],
+          "correct_positions": {
+            "2": 5
+          },
+          "numeric_ranks": {
+            "4": 5
+          }
+        }
+      }
+    },
+    "post_dedup": {
+      "count": 36,
+      "consistent": 28,
+      "inconsistent": 8,
+      "second_largest_numeric_success": 16,
+      "correct_positions": {
+        "2": 12,
+        "4": 4,
+        "3": 8,
+        "5": 8,
+        "1": 4
+      },
+      "c_label_count": 8,
+      "c_label_no_solution": 8,
+      "profiles": {
+        "q-105166": {
+          "n": 4,
+          "answers": [
+            "-1",
+            "-4",
+            "5",
+            "8"
+          ],
+          "correct_positions": {
+            "2": 4
+          },
+          "numeric_ranks": {
+            "3": 4
+          }
+        },
+        "q-105167": {
+          "n": 4,
+          "answers": [
+            "1",
+            "10",
+            "13",
+            "4"
+          ],
+          "correct_positions": {
+            "4": 4
+          },
+          "numeric_ranks": {
+            "5": 4
+          }
+        },
+        "q-34054": {
+          "n": 4,
+          "answers": [
+            "-2",
+            "-5",
+            "4",
+            "7"
+          ],
+          "correct_positions": {
+            "3": 4
+          },
+          "numeric_ranks": {
+            "3": 4
+          }
+        },
+        "q-34568": {
+          "n": 4,
+          "answers": [
+            "No solution"
+          ],
+          "correct_positions": {
+            "5": 4
+          },
+          "numeric_ranks": {
+            "None": 4
+          }
+        },
+        "q-73950": {
+          "n": 4,
+          "answers": [
+            "-3",
+            "0",
+            "6",
+            "9"
+          ],
+          "correct_positions": {
+            "5": 4
+          },
+          "numeric_ranks": {
+            "4": 4
+          }
+        },
+        "q-73951": {
+          "n": 4,
+          "answers": [
+            "No solution"
+          ],
+          "correct_positions": {
+            "1": 4
+          },
+          "numeric_ranks": {
+            "None": 4
+          }
+        },
+        "q-73952": {
+          "n": 4,
+          "answers": [
+            "-2",
+            "-5",
+            "4",
+            "7"
+          ],
+          "correct_positions": {
+            "3": 4
+          },
+          "numeric_ranks": {
+            "3": 4
+          }
+        },
+        "q-73954": {
+          "n": 4,
+          "answers": [
+            "-4",
+            "-7",
+            "2",
+            "5"
+          ],
+          "correct_positions": {
+            "2": 4
+          },
+          "numeric_ranks": {
+            "3": 4
+          }
+        },
+        "q-73981": {
+          "n": 4,
+          "answers": [
+            "11",
+            "14",
+            "2",
+            "5"
+          ],
+          "correct_positions": {
+            "2": 4
+          },
+          "numeric_ranks": {
+            "4": 4
+          }
+        }
+      }
+    },
+    "batch_post_dedup": {
+      "count": 5,
+      "consistent": 5,
+      "inconsistent": 0,
+      "second_largest_numeric_success": 5,
+      "correct_positions": {
+        "2": 3,
+        "3": 2
+      },
+      "c_label_count": 0,
+      "c_label_no_solution": 0,
+      "profiles": {
+        "q-105166": {
+          "n": 1,
+          "answers": [
+            "-1"
+          ],
+          "correct_positions": {
+            "2": 1
+          },
+          "numeric_ranks": {
+            "3": 1
+          }
+        },
+        "q-73954": {
+          "n": 2,
+          "answers": [
+            "-7",
+            "2"
+          ],
+          "correct_positions": {
+            "2": 2
+          },
+          "numeric_ranks": {
+            "3": 2
+          }
+        },
+        "q-73952": {
+          "n": 2,
+          "answers": [
+            "-2",
+            "7"
+          ],
+          "correct_positions": {
+            "3": 2
+          },
+          "numeric_ranks": {
+            "3": 2
+          }
+        }
+      }
+    }
+  },
+  "shortcut_probes": [
+    {
+      "cue": "Numeric choice order",
+      "subgroup": "catalog: all",
+      "scope": "overall",
+      "strategy": "Choose the second-largest numeric option; ignore No solution.",
+      "correct": 20,
+      "total": 46,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "20/46; baseline is random selection among the five choices (0.2). The overall catalog cue is partial; exact batch is perfect. It needs no vector equations and survives UI option reordering.",
+      "sample_refs": [
+        "catalog.json"
+      ]
+    },
+    {
+      "cue": "c1,c2,d names",
+      "subgroup": "catalog: c/d-labelled",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose No solution.",
+      "correct": 11,
+      "total": 11,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "11/11; baseline is random selection among the five choices (0.2). Names are incidental. Controlled c-labelled target (3,4,7) has sum2; renaming the inconsistent instance preserves No solution.",
+      "sample_refs": [
+        "catalog.json"
+      ]
+    },
+    {
+      "cue": "Fixed coefficient matrix identifies template",
+      "subgroup": "catalog: q-105166",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 3 (ascending), ignoring No solution.",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "5/5; baseline is random selection among the five choices (0.2). RHS and answers change but this answer-producing action remains fixed; choice shuffling does not change numeric rank.",
+      "sample_refs": [
+        "catalog.json"
+      ]
+    },
+    {
+      "cue": "Fixed coefficient matrix identifies template",
+      "subgroup": "catalog: q-105167",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 5 (ascending), ignoring No solution.",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "5/5; baseline is random selection among the five choices (0.2). RHS and answers change but this answer-producing action remains fixed; choice shuffling does not change numeric rank.",
+      "sample_refs": [
+        "catalog.json"
+      ]
+    },
+    {
+      "cue": "Fixed coefficient matrix identifies template",
+      "subgroup": "catalog: q-34054",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 3 (ascending), ignoring No solution.",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "5/5; baseline is random selection among the five choices (0.2). RHS and answers change but this answer-producing action remains fixed; choice shuffling does not change numeric rank.",
+      "sample_refs": [
+        "catalog.json"
+      ]
+    },
+    {
+      "cue": "Fixed coefficient matrix identifies template",
+      "subgroup": "catalog: q-34242",
+      "scope": "within_template",
+      "strategy": "Choose No solution for this recognizable coefficient matrix.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "1/1; baseline is random selection among the five choices (0.2). RHS and answers change but this answer-producing action remains fixed; choice shuffling does not change numeric rank.",
+      "sample_refs": [
+        "catalog.json"
+      ]
+    },
+    {
+      "cue": "Fixed coefficient matrix identifies template",
+      "subgroup": "catalog: q-34568",
+      "scope": "within_template",
+      "strategy": "Choose No solution for this recognizable coefficient matrix.",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "5/5; baseline is random selection among the five choices (0.2). RHS and answers change but this answer-producing action remains fixed; choice shuffling does not change numeric rank.",
+      "sample_refs": [
+        "catalog.json"
+      ]
+    },
+    {
+      "cue": "Fixed coefficient matrix identifies template",
+      "subgroup": "catalog: q-73950",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 4 (ascending), ignoring No solution.",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "5/5; baseline is random selection among the five choices (0.2). RHS and answers change but this answer-producing action remains fixed; choice shuffling does not change numeric rank.",
+      "sample_refs": [
+        "catalog.json"
+      ]
+    },
+    {
+      "cue": "Fixed coefficient matrix identifies template",
+      "subgroup": "catalog: q-73951",
+      "scope": "within_template",
+      "strategy": "Choose No solution for this recognizable coefficient matrix.",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "5/5; baseline is random selection among the five choices (0.2). RHS and answers change but this answer-producing action remains fixed; choice shuffling does not change numeric rank.",
+      "sample_refs": [
+        "catalog.json"
+      ]
+    },
+    {
+      "cue": "Fixed coefficient matrix identifies template",
+      "subgroup": "catalog: q-73952",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 3 (ascending), ignoring No solution.",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "5/5; baseline is random selection among the five choices (0.2). RHS and answers change but this answer-producing action remains fixed; choice shuffling does not change numeric rank.",
+      "sample_refs": [
+        "catalog.json"
+      ]
+    },
+    {
+      "cue": "Fixed coefficient matrix identifies template",
+      "subgroup": "catalog: q-73954",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 3 (ascending), ignoring No solution.",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "5/5; baseline is random selection among the five choices (0.2). RHS and answers change but this answer-producing action remains fixed; choice shuffling does not change numeric rank.",
+      "sample_refs": [
+        "catalog.json"
+      ]
+    },
+    {
+      "cue": "Fixed coefficient matrix identifies template",
+      "subgroup": "catalog: q-73981",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 4 (ascending), ignoring No solution.",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "5/5; baseline is random selection among the five choices (0.2). RHS and answers change but this answer-producing action remains fixed; choice shuffling does not change numeric rank.",
+      "sample_refs": [
+        "catalog.json"
+      ]
+    },
+    {
+      "cue": "Numeric choice order",
+      "subgroup": "delivered: all",
+      "scope": "overall",
+      "strategy": "Choose the second-largest numeric option; ignore No solution.",
+      "correct": 16,
+      "total": 36,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "16/36; baseline is random selection among the five choices (0.2). The overall catalog cue is partial; exact batch is perfect. It needs no vector equations and survives UI option reordering.",
+      "sample_refs": [
+        "delivery-catalog/accepted.json"
+      ]
+    },
+    {
+      "cue": "c1,c2,d names",
+      "subgroup": "delivered: c/d-labelled",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Choose No solution.",
+      "correct": 8,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "8/8; baseline is random selection among the five choices (0.2). Names are incidental. Controlled c-labelled target (3,4,7) has sum2; renaming the inconsistent instance preserves No solution.",
+      "sample_refs": [
+        "delivery-catalog/accepted.json"
+      ]
+    },
+    {
+      "cue": "Fixed coefficient matrix identifies template",
+      "subgroup": "delivered: q-105166",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 3 (ascending), ignoring No solution.",
+      "correct": 4,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "4/4; baseline is random selection among the five choices (0.2). RHS and answers change but this answer-producing action remains fixed; choice shuffling does not change numeric rank.",
+      "sample_refs": [
+        "delivery-catalog/accepted.json"
+      ]
+    },
+    {
+      "cue": "Fixed coefficient matrix identifies template",
+      "subgroup": "delivered: q-105167",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 5 (ascending), ignoring No solution.",
+      "correct": 4,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "4/4; baseline is random selection among the five choices (0.2). RHS and answers change but this answer-producing action remains fixed; choice shuffling does not change numeric rank.",
+      "sample_refs": [
+        "delivery-catalog/accepted.json"
+      ]
+    },
+    {
+      "cue": "Fixed coefficient matrix identifies template",
+      "subgroup": "delivered: q-34054",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 3 (ascending), ignoring No solution.",
+      "correct": 4,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "4/4; baseline is random selection among the five choices (0.2). RHS and answers change but this answer-producing action remains fixed; choice shuffling does not change numeric rank.",
+      "sample_refs": [
+        "delivery-catalog/accepted.json"
+      ]
+    },
+    {
+      "cue": "Fixed coefficient matrix identifies template",
+      "subgroup": "delivered: q-34568",
+      "scope": "within_template",
+      "strategy": "Choose No solution for this recognizable coefficient matrix.",
+      "correct": 4,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "4/4; baseline is random selection among the five choices (0.2). RHS and answers change but this answer-producing action remains fixed; choice shuffling does not change numeric rank.",
+      "sample_refs": [
+        "delivery-catalog/accepted.json"
+      ]
+    },
+    {
+      "cue": "Fixed coefficient matrix identifies template",
+      "subgroup": "delivered: q-73950",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 4 (ascending), ignoring No solution.",
+      "correct": 4,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "4/4; baseline is random selection among the five choices (0.2). RHS and answers change but this answer-producing action remains fixed; choice shuffling does not change numeric rank.",
+      "sample_refs": [
+        "delivery-catalog/accepted.json"
+      ]
+    },
+    {
+      "cue": "Fixed coefficient matrix identifies template",
+      "subgroup": "delivered: q-73951",
+      "scope": "within_template",
+      "strategy": "Choose No solution for this recognizable coefficient matrix.",
+      "correct": 4,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "4/4; baseline is random selection among the five choices (0.2). RHS and answers change but this answer-producing action remains fixed; choice shuffling does not change numeric rank.",
+      "sample_refs": [
+        "delivery-catalog/accepted.json"
+      ]
+    },
+    {
+      "cue": "Fixed coefficient matrix identifies template",
+      "subgroup": "delivered: q-73952",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 3 (ascending), ignoring No solution.",
+      "correct": 4,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "4/4; baseline is random selection among the five choices (0.2). RHS and answers change but this answer-producing action remains fixed; choice shuffling does not change numeric rank.",
+      "sample_refs": [
+        "delivery-catalog/accepted.json"
+      ]
+    },
+    {
+      "cue": "Fixed coefficient matrix identifies template",
+      "subgroup": "delivered: q-73954",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 3 (ascending), ignoring No solution.",
+      "correct": 4,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "4/4; baseline is random selection among the five choices (0.2). RHS and answers change but this answer-producing action remains fixed; choice shuffling does not change numeric rank.",
+      "sample_refs": [
+        "delivery-catalog/accepted.json"
+      ]
+    },
+    {
+      "cue": "Fixed coefficient matrix identifies template",
+      "subgroup": "delivered: q-73981",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 4 (ascending), ignoring No solution.",
+      "correct": 4,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "4/4; baseline is random selection among the five choices (0.2). RHS and answers change but this answer-producing action remains fixed; choice shuffling does not change numeric rank.",
+      "sample_refs": [
+        "delivery-catalog/accepted.json"
+      ]
+    },
+    {
+      "cue": "Numeric choice order",
+      "subgroup": "batch: all",
+      "scope": "overall",
+      "strategy": "Choose the second-largest numeric option; ignore No solution.",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "5/5; baseline is random selection among the five choices (0.2). The overall catalog cue is partial; exact batch is perfect. It needs no vector equations and survives UI option reordering.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "Fixed coefficient matrix identifies template",
+      "subgroup": "batch: q-105166",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 3 (ascending), ignoring No solution.",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "1/1; baseline is random selection among the five choices (0.2). RHS and answers change but this answer-producing action remains fixed; choice shuffling does not change numeric rank.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "Fixed coefficient matrix identifies template",
+      "subgroup": "batch: q-73952",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 3 (ascending), ignoring No solution.",
+      "correct": 2,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "2/2; baseline is random selection among the five choices (0.2). RHS and answers change but this answer-producing action remains fixed; choice shuffling does not change numeric rank.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "Fixed coefficient matrix identifies template",
+      "subgroup": "batch: q-73954",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 3 (ascending), ignoring No solution.",
+      "correct": 2,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "2/2; baseline is random selection among the five choices (0.2). RHS and answers change but this answer-producing action remains fixed; choice shuffling does not change numeric rank.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    }
+  ],
+  "rejection_and_resampling": "generate selects a source profile and bounded translation directly; no validity rejection/resampling. batch enumerates 46 canonical unique tasks with seed=0 for each profile/translation, shuffles task order, selects prefix; catalog fixed option permutation per profile. This is distinct from fresh generate seeds.",
+  "ui_stage": "Actual UI choiceOrder reorders options; raw position predictor neutralized. Numeric-rank and label strategies are invariant under this stage."
+}
