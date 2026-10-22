@@ -11,6 +11,7 @@ import importlib.util
 import json
 from pathlib import Path
 import shutil
+import subprocess
 import tempfile
 
 W = Path(__file__).resolve().parents[1]
@@ -29,6 +30,7 @@ def digest(p):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--bundle', type=Path, default=W/'evidence/contract-correction')
+    parser.add_argument('--expected-evidence-root', type=Path)
     args = parser.parse_args()
     bundle = args.bundle.resolve()
     spec = importlib.util.spec_from_file_location('review_validator', REPO/'scripts/generator_review.py')
@@ -37,15 +39,21 @@ def main():
     report = load(bundle/'result.json')
     validator.validate_review(report, bundle)
     assert report['verdict'] == 'accepted'
-    import jsonschema
     variation = load(bundle/'pedagogical-variation.json')
-    jsonschema.validate(variation, load(REPO/'generate/pipeline/pedagogical-variation.schema.json'))
+    # Schema tooling is installed in the system Python, while runtime checks use
+    # the pinned job Python. It is a validation-only dependency.
+    subprocess.run(['/usr/bin/python3', '-B', '-c',
+                    'import json,jsonschema,sys; '
+                    'jsonschema.validate(json.load(open(sys.argv[1])),json.load(open(sys.argv[2])))',
+                    str(bundle/'pedagogical-variation.json'),
+                    str(REPO/'generate/pipeline/pedagogical-variation.schema.json')], check=True)
 
     # Detect a missing file, with real validator behavior, rather than trusting a
     # previous successful validation report or a copied expected status.
     with tempfile.TemporaryDirectory() as td:
         broken = Path(td)/'bundle'
         shutil.copytree(bundle, broken)
+        validator.validate_review(report, broken)  # Simulated runner installation.
         (broken/'correction-provenance.json').unlink()
         try:
             validator.validate_review(report, broken)
@@ -98,6 +106,8 @@ def main():
         assert row['evidence_path'] == 'generated-records.json'
 
     plan = load(W/'evidence/contract-installation.json')
+    if args.expected_evidence_root is not None:
+        assert Path(plan['destination_evidence_root']).resolve() == args.expected_evidence_root.resolve(), 'Stale runner evidence destination'
     for row in plan['files']:
         path = (W/row['workspace_source']).resolve()
         assert path.is_relative_to(bundle)
@@ -108,13 +118,15 @@ def main():
               'bundle_root': str(bundle.relative_to(W)),
               'real_review_validator': 'scripts/generator_review.py:validate_review',
               'missing_provenance_negative_control': negative,
+              'relocated_bundle_root_validated': True,
               'current_raw': raw['pivot_shortcut'],
               'current_delivered': delivered_check['pivot_shortcut'],
               'historical_control': 'strict check fails as required (5/5)',
-              'source_banks_reconfirmed': len(source_cases),
+              'source_capture_prompts_and_fields_reconfirmed': len(source_cases),
               'affected_generated_records_bound': len(affected),
               'runtime_files_unchanged': len(before),
               'runner_installation_files': len(plan['files']),
+              'runner_destination': plan['destination_evidence_root'],
               'destination_installed': False}
     (W/'evidence/evidence-contract-validation.json').write_text(json.dumps(result, indent=2)+'\n')
     print(json.dumps(result))
