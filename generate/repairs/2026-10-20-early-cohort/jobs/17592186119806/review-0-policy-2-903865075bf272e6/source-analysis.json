@@ -1,0 +1,79 @@
+{
+  "skill": "Solving for a vector in a linear combination: isolate x in p a + q x = b, subtract the known scaled vector, divide componentwise by nonzero q, and return x or a requested sum/difference of two components.",
+  "reasoning_steps": [
+    "Read coefficients including the sign of q and equal-length column vectors.",
+    "Isolate q x = b - p a and compute x=(b-p a)/q using componentwise arithmetic.",
+    "For scalar-target questions identify requested ordered indices and apply their sum or difference; select the matching choice among five."
+  ],
+  "response_contract": "All 15 practice questions are easy radio selection with five math choices; vector questions ask a full 3D/4D vector, scalar questions ask a component sum/difference. Canonical example has no captured answer field.",
+  "difficulty": "Easy: 3 or 4 components, small integer coefficients, nonzero q, integer solved components; no systems, dot products, nonlinear operations, or new free-entry requirement.",
+  "invariants": [
+    "Equation uses one known vector a, one unknown vector x, and a known vector b of the same dimension.",
+    "Nonzero scalar coefficient of x ensures unique solution.",
+    "Prompt target, keyed answer, distractor bank, and worked arithmetic must agree.",
+    "Five distinct radio choices with exactly one correct response; original bank preserved for replay, allowing normalization of double-escaped captured TeX.",
+    "Preserve isolation/subtraction/division explanation; scalar targets add the requested component operation."
+  ],
+  "permitted_variations": [
+    "Change p, signed nonzero q, vector entries and solved vector within comparable integer arithmetic workload.",
+    "Vary dimension between 3 and 4, positive/negative coefficients and zero/positive/negative components.",
+    "Vary vector versus scalar target and eligible ordered distinct component indices; sources x1+x2, x1-x2 and x3-x4 show target indices are answer-bearing assignments, not intrinsic fixed constraints.",
+    "Vary positions and plausible wrong choices without creating a bank-only cue to the correct option."
+  ],
+  "fixed_features": [
+    {
+      "feature": "one unknown vector and linear equation",
+      "justification": "Defines the knowledge point and isolation method."
+    },
+    {
+      "feature": "integer components and 3D/4D workload",
+      "justification": "Observed easy examples uniformly use these; fractional and larger-dimensional workload not established."
+    },
+    {
+      "feature": "radio with five choices",
+      "justification": "Every captured practice answer contract has this form."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "signed unknown-vector coefficient",
+      "eligible_variation": "Both signs are demonstrated, so sign cannot be fixed globally."
+    },
+    {
+      "role": "requested component indices and sum/difference",
+      "eligible_variation": "Distinct indices among 3/4 components can change while preserving demonstrated operation."
+    },
+    {
+      "role": "correct option and distractor arrangement",
+      "eligible_variation": "No choice position, numerical rank, or coordinate-majority status is essential."
+    }
+  ],
+  "source_refs": [
+    "548ef945-392b-5e75-9b60-14f4e2de6261 (e-4790)",
+    "ac599c23-1c9e-5d96-a71a-974c272cf869 (q-34248)",
+    "dbfdd88c-37c5-5076-bf82-c28109147147 (q-34574)",
+    "0970eb33-9f16-5468-a48a-ce3c4e9ea202 (q-105159)",
+    "308d5a63-8dfe-5681-a74a-191ce78c4eb4 (q-105160)",
+    "665aac1d-ba76-55e8-8058-f38999b08deb (q-105161)",
+    "a30a8dd5-ba00-5881-9097-ff69e821d30a (q-34052)",
+    "deec7ef1-a437-505b-aec9-2a0d7048c769 (q-34601)",
+    "0a045a18-4b26-532b-8e6c-7d683732c9ac (q-73931)",
+    "3b51a337-e5d6-556d-a72d-bef903a48688 (q-73933)",
+    "ebd8d026-a8f0-5c49-8cd6-0d2ba4d731b2 (q-105157)",
+    "6ca48b5a-ff7c-5739-a4dc-d774d869fa76 (q-34247)",
+    "348f7a1d-d1ce-5a20-a4c3-2efbac29746f (q-73936)",
+    "2567000b-57ae-5d7c-b37b-917f1f640392 (q-73937)",
+    "e8bdc664-5423-57fc-a753-871b318d24e0 (q-34598)",
+    "7b8162a3-2a18-5498-a3a6-ab4fdf90d980 (q-105158)",
+    "lesson step fd939fe8-9699-5d8a-9dce-0e749d48075e / e-4790: \"Using the properties of addition/subtraction and scalar multiplication of vectors to isolate ...\" and x=1/2(b-a).",
+    "tutorial 229ae855-226b-5f95-b050-b98257747800: \"linear combination ... weighted sum\" with real coefficients; neighboring steps solve one scalar coefficient and two/three coefficients, delimiting this single-vector task."
+  ],
+  "source_gaps": [
+    "dbfdd88c-37c5-5076-bf82-c28109147147 (q-34574) lacks a captured correct answer and solution. Independent arithmetic gives x=(-2,1,4,2), x1+x2=-1, present in captured bank; derived correction must be identified as inference.",
+    "Canonical example lacks captured answer fields, so no original bank can be replayed for it.",
+    "No images or separate prerequisite material captured."
+  ],
+  "evidence_paths": [
+    "source-analysis.json"
+  ]
+}
