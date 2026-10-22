@@ -154,8 +154,16 @@ def ordinary_patterns():
     rs=[];symbols=['N','N0','C']+[b+s for b in 'ZQR' for s in ('','+','-','0+','0-')]
     yes=[s for s in symbols if member((0,True,True),s)]
     no=[s for s in symbols if not member((0,True,True),s)]
+    semantic_banks=set()
     for mask in range(16):
-        y=iter(yes);n=iter(no)
+        rng=random.Random(6421+mask)
+        count=mask.bit_count()
+        while True:
+            positives=rng.sample(yes,count);negatives=rng.sample(no,4-count)
+            signature=tuple(sorted(positives+negatives))
+            if signature not in semantic_banks: break
+        semantic_banks.add(signature)
+        y=iter(positives);n=iter(negatives)
         cs=[next(y) if mask&(1<<i) else next(n) for i in range(4)]
         r=g.make_record(g.number_instance('root',radicand=0,sign=1),cs);validate(r);rs.append(r)
     save('truth-patterns.json',rs)
