@@ -1,19 +1,13 @@
-# Current state — author 215
+# Current state — author 219
 
-Read feedback, both retained findings and repair-history summary (215 events), prior session state, instructional account, and required generator/validation documentation. No new generator defect or changed source evidence is reported. Runtime, strict regressions, corrected review artifacts, and historical inventory evidence remain unchanged.
+Read feedback, both retained findings, latest history event (219 events), source lesson and practice records, instructional account, and required generation/validation documentation. Runtime and source are unchanged. The latest finding explicitly requests no generator authoring.
 
-Latest failure reproduced first:
-`/home/jake/Developer/Course_Academy/.venv/bin/python checks/check_report_installation.py`
-Exit 1: required external report fails with `decision_variation has an unresolved decision shortcut`. Staged correction passes the real contract/schema and replays 26 complete records against the current generator. Log: `evidence/report-repair/current-reproduction.log`; result: `evidence/report-repair/results.json`.
+Ran, in order:
 
-Retained construction regression:
-`/home/jake/Developer/Course_Academy/.venv/bin/python checks/test_role_exchange.py`
-Exit 0: shared delivery retains 19 first-resonant, 17 second-resonant and five both-nonresonant records. Controlled reorder, changed-exponent and conditional shortcut checks pass; 30 native-grader expectations pass (11 acceptance, 19 rejection). Results: `evidence/role-regression/results.json`; log: `evidence/current-role-regression.log`.
+1. `/home/jake/Developer/Course_Academy/.venv/bin/python checks/check_report_installation.py` — exit 1. The required prior-review destination still fails with `decision_variation has an unresolved decision shortcut`. Before that failure, the staged correction passed actual contract/schema validation and 26 current-record replays. Log: `evidence/report-repair/current-reproduction.log`.
+2. `/home/jake/Developer/Course_Academy/.venv/bin/python checks/test_role_exchange.py` — exit 0. Controlled reorder and exponent transfer, conditional shortcut probes, shared delivery filtering, and 30 native-grader checks pass. Delivered positions: 19 first-resonant, 17 second-resonant, five both-nonresonant. Report: `evidence/role-regression/results.json`.
+3. `/home/jake/Developer/Course_Academy/.venv/bin/python checks/verify_retained_state.py` — exit 0. Verified all 55 staged artifact hashes, unchanged runtime/source, and eight independently parsed mathematical records. Log: `evidence/retained-state-current.log`.
 
-Small regression and handoff verification:
-`/home/jake/Developer/Course_Academy/.venv/bin/python checks/verify_retained_state.py`
-Exit 0: 55 staged artifact hashes, unchanged runtime/source hashes and eight independently parsed mathematical records. Log: `evidence/retained-state-current.log`. Earlier source replay, inventory reproduction and inspected UI evidence remain applicable to unchanged runtime/source; no repeated render run.
+Preserved package, source replay, historical inventory reproductions, rendering evidence and both strict regression declarations. Evidence index: `evidence/current-validation.json`. No external writes, runtime edits, engine changes, image publication or database changes.
 
-Commands/results: `evidence/current-validation.json`. No external writes, runtime edits, engine changes, database changes or image publication.
-
-Next unfinished action: runner installs the existing staged correction at the original prior-review destination specified in `evidence/review-installation-handoff.json`, reruns the unchanged strict regression, and obtains fresh independent review. That destination is outside the explicit workspace-only write scope. Finding 645672a4cd3f9bf609ca remains open; status is unsupported. Another unchanged workspace-only retry cannot perform this installation. No passing local substitute or weakened regression is used.
+Unfinished: finding 645672a4cd3f9bf609ca requests replacement of a stale report at `../review-1-policy-2-48d685555902faba`, outside the supplied workspace. The corrected report and checksummed installation list already exist at `evidence/corrected-review/` and `evidence/review-installation-handoff.json`. The runner must install it with its own write authority, run the strict default regression, and obtain fresh independent review. This author cannot perform that external write under the explicit workspace-only instruction. Status remains unsupported; the local correction does not close the external installation finding. Do not change construction rules or weaken the regression to conceal it.

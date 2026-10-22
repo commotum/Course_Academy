@@ -1,0 +1,1 @@
+Initial reproduction complete. evidence/before-repair.json reproduces all three retained findings using the current candidate and ../samples.json. Supplied source contains 14 profiles versus 10 in the runtime capture. Next: update runtime capture and construction, then executable retained regressions, delivery/native/UI checks.

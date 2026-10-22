@@ -1,0 +1,207 @@
+{
+  "format": 1,
+  "findings": [
+    {
+      "id": "ff8f3c22155f60689a0c",
+      "finding": {
+        "kind": "source_fidelity",
+        "description": "The package omits four supplied source exercises: q-105163, q-105165, q-105164 and q-73957.",
+        "source_refs": [
+          "f9fda870-d2c0-5b67-a720-dd733f4059b5",
+          "5a605eaf-55a3-544d-8186-239316368511",
+          "1ee2b674-88a1-5c58-b73e-36713fef024d",
+          "4ccf091c-7121-5c91-b86a-266cd19f2350"
+        ],
+        "reproduction": "Run the context Python on regression-checks.py RequiredCases.test_all_source_profiles. Minimal failing call: generate(\"moderate\",83,\"q-105163\",{\"translation\":0}) raises ValueError(\"Unknown profile\").",
+        "requested_change": "Reconcile source profiles and construction plans with the supplied source, reproducing each missing prompt, complete answer bank and worked method."
+      },
+      "source_hash": "3cd73cb967e03612563d4e0b39954104a97675b48eaed18a095e4e8748765224",
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186119807/review-0-policy-2-a7f24163c8f738a6",
+      "attempt": 0
+    },
+    {
+      "id": "6eae84335e516e298861",
+      "finding": {
+        "kind": "decision_shortcut",
+        "description": "All c/d-labelled generated questions have No solution, allowing names to replace the intended consistency check. The RHS translation rule preserves every profile's original consistency branch.",
+        "source_refs": [
+          "13ebde04-8518-5837-9420-c9487debc562: consistent c/d-labelled canonical example",
+          "14248ec5-b54c-565b-8b43-275a9e097f62"
+        ],
+        "reproduction": "Run regression-checks.py RequiredCases.test_consistency_role_can_change. For q-34568, c1=(-1,3,5), c2=(4,1,2), d=(3,4,5) is inconsistent. Changing only d's third entry to 7 gives coefficients (1,1), sum 2. Controlled renderer/grader tests verify this switch, but no allowed generator translation produces a consistent c/d case.",
+        "requested_change": "Vary target membership in the coefficient-column span independently of labels and template identity. Derive answers and explanations from each instance rather than preserving source branch assignments."
+      },
+      "source_hash": "3cd73cb967e03612563d4e0b39954104a97675b48eaed18a095e4e8748765224",
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186119807/review-0-policy-2-a7f24163c8f738a6",
+      "attempt": 0
+    },
+    {
+      "id": "0afea531a58b614ace78",
+      "finding": {
+        "kind": "decision_shortcut",
+        "description": "Selecting the second-largest numeric option answers all five exact batch records correctly. All five survive delivery filtering. This is a demonstrated batch failure; that overall strategy is not perfect across the full catalog.",
+        "source_refs": [
+          "a4963b43-3177-544a-ab68-1ea699a13395",
+          "eec4fe83-c254-5d51-9484-b88391578898",
+          "abf235b3-2d59-5bfb-aea0-aa237461f6b8",
+          "generate/principles.md: meaningful variation and delivered shortcut checks"
+        ],
+        "reproduction": "Run regression-checks.py RequiredCases.test_actual_batch_has_counterexample_to_second_largest. Minimal item: q-105166, translation -1, question 49af1dc4-a6a0-545b-9116-58f17b694b0e has numeric choices {-5,-4,-1,2}, with correct answer -1. The same strategy succeeds 5/5 in delivery-batch/accepted.json.",
+        "requested_change": "Vary correct numeric rank within recognizable templates through revised distractor construction, then select and verify a replacement post-deduplication batch that defeats this cue."
+      },
+      "source_hash": "3cd73cb967e03612563d4e0b39954104a97675b48eaed18a095e4e8748765224",
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186119807/review-0-policy-2-a7f24163c8f738a6",
+      "attempt": 0
+    }
+  ],
+  "events": [
+    {
+      "attempt": 0,
+      "package_hash": "a4a4249066ae0f915cd9046c6c0dc9f84ae38eb4b3749a677536ce954cf3cf74",
+      "reason": {
+        "verdict": "revise",
+        "summary": "Three demonstrated defects: four missing source profiles, a label-based consistency shortcut, and a numeric-order shortcut answering the delivered batch 5/5. Package files remain unchanged.",
+        "source_analysis": {
+          "skill": "Solve for two coefficients in a three-dimensional vector equation, check consistency, and select their sum or No solution.",
+          "reasoning_steps": [
+            "Equate corresponding components.",
+            "Solve two independent component equations.",
+            "Check the remaining equation.",
+            "Select the coefficient sum or No solution."
+          ],
+          "invariants": [
+            "Two scalar coefficients, three components, and elementary substitution or elimination.",
+            "One five-choice radio field.",
+            "Worked solutions must check consistency before reporting a sum."
+          ],
+          "permitted_variations": [
+            "Change vector entries and targets while preserving comparable arithmetic.",
+            "Vary consistency independently of vector names.",
+            "Vary coefficients, sums, choice positions, and correct numeric rank."
+          ],
+          "source_refs": [
+            "13ebde04-8518-5837-9420-c9487debc562: consistent c/d-labelled canonical example; coefficients 5 and -15.",
+            "14248ec5-b54c-565b-8b43-275a9e097f62: elimination followed by a contradictory third equation.",
+            "f9fda870-d2c0-5b67-a720-dd733f4059b5: a/b-labelled inconsistent source case.",
+            "Lesson step fd740ffd-227c-5f9c-9418-4c54bf1616ff: equate components, solve, and check."
+          ],
+          "evidence_paths": [
+            "source-analysis.json"
+          ]
+        },
+        "checks": {
+          "source_replay": {
+            "status": "failed",
+            "evidence_paths": [
+              "source-replay.json",
+              "strict-acceptance-results.json",
+              "regression-results.txt"
+            ],
+            "details": "Ten complete source exercises replay correctly. Four supplied profiles reject with Unknown profile."
+          },
+          "math": {
+            "status": "passed",
+            "evidence_paths": [
+              "math-results.json",
+              "source-math-results.json",
+              "controlled-results.json"
+            ],
+            "details": "Independent exact solving confirms the 46-record catalog, six fresh samples, five batch records, source conclusions, and controlled counterexamples."
+          },
+          "variety": {
+            "status": "failed",
+            "evidence_paths": [
+              "coverage-initial.json",
+              "delivery-selection-analysis.json"
+            ],
+            "details": "Translations preserve each template's consistency branch and correct numeric rank. The delivered batch contains three consistent profiles and a perfect numeric-order shortcut."
+          },
+          "scope": {
+            "status": "passed",
+            "evidence_paths": [
+              "scope-results.json",
+              "catalog.json"
+            ],
+            "details": "Generated tasks preserve the moderate two-coefficient solving and consistency-checking workload."
+          },
+          "grading": {
+            "status": "passed",
+            "evidence_paths": [
+              "grader-report.json",
+              "controlled-grader-report.json",
+              "delivery-grader-report.json"
+            ],
+            "details": "The native grader passes 270 catalog/batch responses, 15 controlled responses, and 25 post-normalization batch responses. All fields are radio."
+          },
+          "rendering": {
+            "status": "passed",
+            "evidence_paths": [
+              "render-inspection.json",
+              "render-all/rendering.json",
+              "render-controls/rendering.json",
+              "render-delivered/rendering.json"
+            ],
+            "details": "Actual UI rendering passes for 12 representative records, three controls, and all five delivered batch records. Screenshots were inspected. UI reordering defeats raw-position cues but preserves the demonstrated cues."
+          },
+          "packaging": {
+            "status": "passed",
+            "evidence_paths": [
+              "packaging-results.json",
+              "relocation-result.json",
+              "package-integrity.json"
+            ],
+            "details": "Exact Python/SymPy versions match the manifest. Determinism, relocation and invalid-input rejection pass. Package hashes are unchanged."
+          },
+          "decision_variation": {
+            "status": "failed",
+            "evidence_paths": [
+              "pedagogical-variation.json",
+              "controlled-results.json",
+              "delivery-selection-analysis.json",
+              "inventory-audit.json",
+              "affected-inventory.json"
+            ],
+            "details": "c/d labels predict No solution in 11/11 raw and 8/8 delivered cases. The second-largest numeric choice answers the exact batch 5/5. Filtering and selection rules preserve these subgroup cues. Captured inventory contains only 14 original source questions; no affected stored generated instances were demonstrated."
+          }
+        },
+        "findings": [
+          {
+            "kind": "source_fidelity",
+            "description": "The package omits four supplied source exercises: q-105163, q-105165, q-105164 and q-73957.",
+            "source_refs": [
+              "f9fda870-d2c0-5b67-a720-dd733f4059b5",
+              "5a605eaf-55a3-544d-8186-239316368511",
+              "1ee2b674-88a1-5c58-b73e-36713fef024d",
+              "4ccf091c-7121-5c91-b86a-266cd19f2350"
+            ],
+            "reproduction": "Run the context Python on regression-checks.py RequiredCases.test_all_source_profiles. Minimal failing call: generate(\"moderate\",83,\"q-105163\",{\"translation\":0}) raises ValueError(\"Unknown profile\").",
+            "requested_change": "Reconcile source profiles and construction plans with the supplied source, reproducing each missing prompt, complete answer bank and worked method."
+          },
+          {
+            "kind": "decision_shortcut",
+            "description": "All c/d-labelled generated questions have No solution, allowing names to replace the intended consistency check. The RHS translation rule preserves every profile's original consistency branch.",
+            "source_refs": [
+              "13ebde04-8518-5837-9420-c9487debc562: consistent c/d-labelled canonical example",
+              "14248ec5-b54c-565b-8b43-275a9e097f62"
+            ],
+            "reproduction": "Run regression-checks.py RequiredCases.test_consistency_role_can_change. For q-34568, c1=(-1,3,5), c2=(4,1,2), d=(3,4,5) is inconsistent. Changing only d's third entry to 7 gives coefficients (1,1), sum 2. Controlled renderer/grader tests verify this switch, but no allowed generator translation produces a consistent c/d case.",
+            "requested_change": "Vary target membership in the coefficient-column span independently of labels and template identity. Derive answers and explanations from each instance rather than preserving source branch assignments."
+          },
+          {
+            "kind": "decision_shortcut",
+            "description": "Selecting the second-largest numeric option answers all five exact batch records correctly. All five survive delivery filtering. This is a demonstrated batch failure; that overall strategy is not perfect across the full catalog.",
+            "source_refs": [
+              "a4963b43-3177-544a-ab68-1ea699a13395",
+              "eec4fe83-c254-5d51-9484-b88391578898",
+              "abf235b3-2d59-5bfb-aea0-aa237461f6b8",
+              "generate/principles.md: meaningful variation and delivered shortcut checks"
+            ],
+            "reproduction": "Run regression-checks.py RequiredCases.test_actual_batch_has_counterexample_to_second_largest. Minimal item: q-105166, translation -1, question 49af1dc4-a6a0-545b-9116-58f17b694b0e has numeric choices {-5,-4,-1,2}, with correct answer -1. The same strategy succeeds 5/5 in delivery-batch/accepted.json.",
+            "requested_change": "Vary correct numeric rank within recognizable templates through revised distractor construction, then select and verify a replacement post-deduplication batch that defeats this cue."
+          }
+        ]
+      },
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186119807/review-0-policy-2-a7f24163c8f738a6"
+    }
+  ]
+}
