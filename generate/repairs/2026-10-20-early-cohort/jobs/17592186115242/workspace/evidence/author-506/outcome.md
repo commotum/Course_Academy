@@ -1,0 +1,7 @@
+Current-generator repairs are preserved and verified. All four generator finding regressions pass; 17 source banks and the canonical system replay, 14 records survive shared delivery with the tested contrasts, native grading accepts 7 correct choices and rejects 28 wrong choices, and dependency/relocation checks pass. The five proposed replacement mappings remain verified and unapplied.
+
+The first executed test reproduced finding 591f580cadb749294588: five historical banks remain affected, and the retained possible-history selection witness succeeds 64/64 times. The strict inventory regression remains failing. No generator construction failure beyond the already repaired findings is demonstrated by this feedback. Editing the current generator cannot alter captured or stored question banks.
+
+The requested separate inventory-remediation workflow and fresh capture are still required. Database changes and publication are prohibited in this author task. No runtime, source, engine, publication or database changes were made; acceptance checks were not weakened. Repeating this author job against the same inventory cannot apply the staged proposal.
+
+Reinspected retained actual-UI screenshot evidence/repair-3/render/question-002.png: prompt, five choices, matrices, row operation and solution are legible without visible clipping or overlap. Rendering was reused because runtime and protected inputs are unchanged.

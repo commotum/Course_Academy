@@ -1,0 +1,160 @@
+{
+  "cwd": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186087887/review-1-policy-2-a5822f3b5afdc3cc",
+  "commands": [
+    {
+      "command": [
+        "env",
+        "PYTHONDONTWRITEBYTECODE=1",
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "audit_review.py"
+      ],
+      "result": "152 independently differentiated records passed; 9 replay bodies equal; old strict regression fails and current passes; dependency, invalid-input and relocation checks pass.",
+      "evidence": [
+        "math.json",
+        "source-replay.json",
+        "repair-preflight-verification.json",
+        "packaging.json"
+      ]
+    },
+    {
+      "command": [
+        "/home/jake/Developer/Course_Academy/generate/runs/current/check-engine",
+        "grader-input.json",
+        "grader-results.json"
+      ],
+      "result": "155 accepted, 617 rejected, zero unresolved; no database operations.",
+      "evidence": [
+        "grader-input.json",
+        "grader-results.json"
+      ]
+    },
+    {
+      "command": [
+        "env",
+        "PYTHONDONTWRITEBYTECODE=1",
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "/home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py",
+        "--input",
+        "delivery-input.json",
+        "--source",
+        "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186087887/source/source.json",
+        "--inventory",
+        "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186087887/source/inventory.json",
+        "--difficulty",
+        "easy",
+        "--output",
+        "delivery-independent",
+        "--asset-root",
+        "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186087887/workspace",
+        "--math-root",
+        "/media/jake/SSD/EDB/math"
+      ],
+      "result": "123 input, 17 duplicates, 106 survivors; no database writes.",
+      "evidence": [
+        "delivery-independent/delivery.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "command": [
+        "env",
+        "PYTHONDONTWRITEBYTECODE=1",
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "/home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py",
+        "--input",
+        "runner-batch.json",
+        "--source",
+        "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186087887/source/source.json",
+        "--inventory",
+        "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186087887/source/inventory.json",
+        "--difficulty",
+        "easy",
+        "--output",
+        "delivery-batch",
+        "--asset-root",
+        "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186087887/workspace",
+        "--math-root",
+        "/media/jake/SSD/EDB/math"
+      ],
+      "result": "5 input, 0 duplicates, 5 survivors; no database writes.",
+      "evidence": [
+        "delivery-batch/delivery.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "command": [
+        "env",
+        "PYTHONDONTWRITEBYTECODE=1",
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "/home/jake/Developer/Course_Academy/generate/pipeline/render_preview.py",
+        "--input",
+        "render-records.json",
+        "--output",
+        "render",
+        "--limit",
+        "6",
+        "--asset-root",
+        "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186087887/workspace",
+        "--math-root",
+        "/media/jake/SSD/EDB/math"
+      ],
+      "result": "6 actual-UI renders passed. Screenshots inspected.",
+      "evidence": [
+        "render/rendering.json",
+        "render-inspection.json"
+      ]
+    },
+    {
+      "command": [
+        "env",
+        "PYTHONDONTWRITEBYTECODE=1",
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "/home/jake/Developer/Course_Academy/generate/pipeline/render_preview.py",
+        "--input",
+        "render-remaining-records.json",
+        "--output",
+        "render-delivered",
+        "--limit",
+        "11",
+        "--asset-root",
+        "delivery-batch/assets",
+        "--math-root",
+        "/media/jake/SSD/EDB/math"
+      ],
+      "result": "11 actual-UI renders passed. Screenshots inspected.",
+      "evidence": [
+        "render-delivered/rendering.json",
+        "render-inspection.json"
+      ]
+    },
+    {
+      "command": [
+        "env",
+        "PYTHONDONTWRITEBYTECODE=1",
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "decision_review.py"
+      ],
+      "result": "9 complete fixed-bank role groups; 123 -> 106 independent survivors, exact batch 5 -> 5; zero tested full-batch perfect prompt-blind predictors.",
+      "evidence": [
+        "pedagogical-variation.json",
+        "shortcut-results.json",
+        "decision-summary.json",
+        "selection.json"
+      ]
+    },
+    {
+      "command": [
+        "python3",
+        "make_contact_sheets.py"
+      ],
+      "result": "Contact sheets of all 17 rendered prompts and answer banks.",
+      "evidence": [
+        "render-first-0.png",
+        "render-contact-0.png",
+        "render-contact-6.png"
+      ]
+    }
+  ],
+  "reproduction_order": "Run audit_review.py, native grader, delivery commands, decision_review.py, render commands, make_contact_sheets.py; finish_review.py writes this report. All writable outputs stay within evidence_root."
+}

@@ -1,0 +1,120 @@
+{
+  "verdict": "accepted",
+  "summary": "The revised easy generator and five-record batch pass all eight checks. Package files are unchanged. Five affected legacy inventory records are documented separately.",
+  "source_analysis": {
+    "skill": "Solve homogeneous first-order ODEs using y=v(x)x, separation, integration and back-substitution.",
+    "reasoning_steps": [
+      "Differentiate y=vx.",
+      "Reduce to xv'=F(v)-v.",
+      "Separate, integrate and substitute back.",
+      "Select the resulting general solution."
+    ],
+    "invariants": [
+      "Preserve the homogeneous equation and easy integration workload.",
+      "Provide five radio choices with exactly one correct general solution.",
+      "Keep prompt, solution, answer and domain consistent."
+    ],
+    "permitted_variations": [
+      "Vary small nonzero signed coefficients.",
+      "Vary eligible correct candidates within a fixed answer bank.",
+      "Vary distractors and presentation without changing the mathematical response."
+    ],
+    "source_refs": [
+      "2b4ed6f3-beb2-5be5-83cb-e8d41e7b8f3b",
+      "ed854c8a-5a47-5533-b48c-04deb7b81625",
+      "73b06f86-eb7f-5333-916f-45bb6952f791",
+      "Tutorial fe0a9e9e-ab23-5364-99bb-cddbfd67a4a4: xv'=F(v)-v",
+      "Tutorial d2f64582-8688-5882-baa3-8712370f1568: substitution through back-substitution"
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "source-images.png",
+      "provenance.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay.json",
+        "source-replay-records.json",
+        "prior-source-replay.json"
+      ],
+      "details": "Nine supported replay cases retain their prompts, complete banks, correct answers and worked solutions. Unsupported source families are explicitly documented."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math.json",
+        "audit_review.py"
+      ],
+      "details": "Independent differentiation verifies exactly one correct candidate in each of 152 tested records, including the exact batch."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "independent-samples.json",
+        "controlled-records.json",
+        "decision-summary.json",
+        "shortcut-results.json"
+      ],
+      "details": "All 18 bank windows per family were exercised. Nine fixed-bank groups each support five correct assignments. No tested bank-only strategy solves the entire runner batch."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "scope.json",
+        "math.json"
+      ],
+      "details": "Revised easy instances preserve the three source integration branches, workload and radio response contract. Broader moderate generation is outside this acceptance."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-results.json",
+        "counterfactual-results.json"
+      ],
+      "details": "Native grader: 155 accepted and 617 rejected responses, zero unresolved. Tests include every candidate and stale responses across counterfactuals."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-delivered/rendering.json",
+        "render-inspection.json",
+        "render-first-0.png",
+        "render-contact-0.png",
+        "render-contact-6.png"
+      ],
+      "details": "All 17 actual-UI renders passed. Representative worked solutions and every rendered prompt and answer bank were visually inspected."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging.json",
+        "package-integrity.json",
+        "repair-preflight-verification.json",
+        "commands.json"
+      ],
+      "details": "Exact dependency version, determinism, relocation and invalid-input rejection pass. Retained assertions fail legacy construction and pass the revision. Recursive package hashes are unchanged."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "delivery-independent/delivery.json",
+        "delivery-batch/delivery.json",
+        "selection.json",
+        "affected-inventory.json",
+        "generated-records.json",
+        "evidence-validation.json"
+      ],
+      "details": "Relevant changes update prompts, explanations, answers and grading; irrelevant reorder preserves responses. Delivery retains 106/123 independent records and all five runner records. Selection rules were examined read-only. Five unchanged legacy defects remain documented separately."
+    }
+  },
+  "findings": []
+}
