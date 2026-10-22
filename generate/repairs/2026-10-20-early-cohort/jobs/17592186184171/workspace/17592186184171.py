@@ -5,7 +5,7 @@ Seeded, relocatable, database-free generator; easy and moderate only.
 Source replay and translated bank shapes are documented in instructional-account.md.
 """
 from __future__ import annotations
-import argparse, hashlib, json, os, random, sys, uuid
+import argparse, hashlib, json, random, sys, uuid
 from pathlib import Path
 import sympy as sp
 from math_format import checked_math_content, matrix_tex, normalize_prose, normalize_tex
@@ -36,23 +36,24 @@ def digest(x):return hashlib.sha256(json.dumps(x,sort_keys=True,separators=(',',
 def ident(x):return str(uuid.uuid5(NAMESPACE,x))
 # Source shapes are translated without tying any numeric position to correctness.
 SHAPES={'small':(0,1,2,3,4),'offset-minus1':(0,1,2,3,4),
-        'offset-minus2':(0,2,3,4,5),'dimensions':(0,2,4,6,10),
+        'offset-minus2':(0,2,3,4,5),'dimensions':(0,1,2,3,5),
         'one-through5':(0,1,2,3,4)}
 
-def bank(profile,p,correct=None,anchor=0):
+def bank(profile,p,correct=None,anchor=0,scale=1):
     if profile=='zero-through4':return list(range(5))
-    return [anchor+x for x in SHAPES[profile]]
+    return [anchor+scale*x for x in SHAPES[profile]]
 
 def eligible_values(m,n,values):
     return [v for v in values if 1<=n-v<=min(m,n-1)]
 
 def bank_candidates(p,profile,correct=None):
     out=[]
-    for anchor in range(p['n']):
-        values=bank(profile,p,anchor=anchor)
-        eligible=eligible_values(p['m'],p['n'],values)
-        if len(eligible)>=2 and (correct is None or correct in eligible):
-            out.append((anchor,values,eligible))
+    for scale in ((1,2) if profile=='dimensions' else (1,)):
+        for anchor in range(p['n']):
+            values=bank(profile,p,anchor=anchor,scale=scale)
+            eligible=eligible_values(p['m'],p['n'],values)
+            if len(eligible)>=2 and (correct is None or correct in eligible):
+                out.append((anchor,scale,values,eligible))
     return out
 
 def valid(level,p,profile):
@@ -71,15 +72,15 @@ def sample(level,r,profile):
         # Bank comes before the qualifying role. At least two values can qualify
         # with these exact dimensions, so neither shape nor endpoints fix the key.
         p={'m':m,'n':n}
-        anchor,values,eligible=r.choice(bank_candidates(p,profile))
+        anchor,scale,values,eligible=r.choice(bank_candidates(p,profile))
         p['k']=n-r.choice(eligible)
-        return p,anchor,values
+        return p,anchor,scale,values
     n=r.choice((4,5));k=r.choice((2,3))
     indices=r.choice([[1,2],[2,3]]) if k==2 else [1,2,3]
     for _ in range(10000):
         p={'matrix':[[r.randint(-3,3) if r.random()<.65 else 0 for _ in indices] for _ in range(n)],'indices':indices}
         if valid(level,p,profile):
-            return p,None,list(range(5)) if profile=='zero-through4' else list(range(1,6))
+            return p,None,None,list(range(5)) if profile=='zero-through4' else list(range(1,6))
     raise ValueError('bounded sampler could not satisfy selected profile')
 
 def expr(coefficients,indices):
@@ -96,7 +97,7 @@ def render(level,p,template):
         m,n,k=p['m'],p['n'],p['k'];answer=n-k
         basis=','.join(f'{{b}}_{{{i}}}' for i in range(1,k+1))
         problem=f'Let $A$ be a ${m}\\times {n}$ matrix. If $B=\\{{{basis}\\}}$ is a basis of $\\text{{Col}}(A)$, find $\\text{{dim(Null}}(A)).$'
-        solution=intro+f'For the given matrix, we have $n={n},$ and since $B$ is formed by ${k}$ vectors, $\\text{{rank}}(A)={k}.$ Therefore,\n\n$$\n'+r'\begin{aligned}\text{rank}(A)+\text{nullity}(A) & =n \\ '+f'{k}+'+r'\text{nullity}(A) & ='+f'{n}'+r' \\ \text{nullity}(A) & ='+f'{n}-{k}'+r' \\ \text{dim(Null}(A)) & ='+f'{answer}.'+r'\end{aligned}'+'\n$$'
+        solution=intro+f'For the given matrix, we have $n={n},$ and since $B$ is formed by ${k}$ {"vector" if k==1 else "vectors"}, $\\text{{rank}}(A)={k}.$ Therefore,\n\n$$\n'+r'\begin{aligned}\text{rank}(A)+\text{nullity}(A) & =n \\ '+f'{k}+'+r'\text{nullity}(A) & ='+f'{n}'+r' \\ \text{nullity}(A) & ='+f'{n}-{k}'+r' \\ \text{dim(Null}(A)) & ='+f'{answer}.'+r'\end{aligned}'+'\n$$'
     else:
         C=sp.Matrix(p['matrix']);n=C.rows;k=C.cols;answer=n-k
         indices=p['indices'];vector=matrix_tex([[expr(row,indices)] for row in p['matrix']]);variables=','.join(f'{{x}}_{{{i}}}' for i in indices)
@@ -107,7 +108,7 @@ def render(level,p,template):
     return normalize_prose(problem),normalize_prose(solution),answer
 
 @checked_math_content
-def generate(level,seed=0,template=None,parameters=None,profile=None,field_type=None,bank_anchor=None):
+def generate(level,seed=0,template=None,parameters=None,profile=None,field_type=None,bank_anchor=None,bank_scale=None):
     if level not in SUPPORTED_LEVELS:raise ValueError('unsupported difficulty; hard has no validated source workload')
     if field_type not in (None,'radio',':answer-field.type/radio'):raise ValueError('radio required')
     r=random.Random(seed)
@@ -123,10 +124,10 @@ def generate(level,seed=0,template=None,parameters=None,profile=None,field_type=
     if profile not in PROFILES[level]:raise ValueError('profile/level mismatch')
     if source and parameters is None:parameters=ORIGINAL[source]
     if parameters is None:
-        p,anchor,values=sample(level,r,profile)
-        if bank_anchor is not None:raise ValueError('bank_anchor requires explicit parameters')
+        p,anchor,scale,values=sample(level,r,profile)
+        if bank_anchor is not None or bank_scale is not None:raise ValueError('bank translation requires explicit parameters')
     else:
-        p=json.loads(json.dumps(parameters));anchor=None
+        p=json.loads(json.dumps(parameters));anchor=None;scale=None
         if not valid(level,p,profile):raise ValueError('parameter/profile constraint')
         if source and p==ORIGINAL[source] and profile==SOURCE_PROFILE[source]:
             values=[int(a[':answer/value']) for a in SOURCES[source][':question/answer-fields'][0][':answer-field/choices']]
@@ -135,8 +136,9 @@ def generate(level,seed=0,template=None,parameters=None,profile=None,field_type=
         else:
             candidates=bank_candidates(p,profile,p['n']-p['k'])
             if bank_anchor is not None:candidates=[c for c in candidates if c[0]==bank_anchor]
+            if bank_scale is not None:candidates=[c for c in candidates if c[1]==bank_scale]
             if not candidates:raise ValueError('no compatible bank translation')
-            anchor,values,_=r.choice(candidates)
+            anchor,scale,values,_=r.choice(candidates)
     if not valid(level,p,profile):raise ValueError('parameter/profile constraint')
     problem,solution,answer=render(level,p,template)
     values=sorted(values);content={'level':level,'problem':problem,'solution':solution,'values':values,'correct':answer}
@@ -145,7 +147,7 @@ def generate(level,seed=0,template=None,parameters=None,profile=None,field_type=
     correct=next(a[':answer/id'] for a in choices if int(a[':answer/value'])==answer)
     q={':question/id':uid,':question/difficulty':':question.difficulty/'+level,':question/problem':problem,':question/worked-solution':solution,':question/answer-fields':[{':answer-field/id':fid,':answer-field/key':'selection',':answer-field/type':':answer-field.type/radio',':answer-field/choices':choices,':answer-field/correct':[':answer/id',correct]}]}
     task=['easy',p['n'],p['k']] if level=='easy' else ['moderate',[[str(x) for x in row] for row in sp.Matrix(p['matrix']).T.rref()[0].tolist()]]
-    return {'knowledge_point':{'db_id':KP_ID,'id':str(NAMESPACE),'title':KP[':knowledge-point/title']},'question':q,'generation':{'version':VERSION,'seed':seed,'template':template,'profile':profile,'parameters':p,'bank_anchor':anchor,'source_replay':source,'bank_recipe':'exact source bank' if source and p==ORIGINAL[source] and profile==SOURCE_PROFILE[source] else 'translated source shape; qualifying value independently assigned' if level=='easy' else 'observed consecutive bank','correct_value':str(answer),'mathematical_fingerprint':digest(task),'content_fingerprint':digest(content),'source_question_ids':[s for s in SOURCES if SOURCE_PROFILE[s]==profile], 'source_basis':SNAPSHOT['basis'],'source_lineage':SNAPSHOT['lineage'],'dependencies':{'python':sys.version.split()[0],'sympy':sp.__version__},'plots':'none','domain':'real vector spaces; full column rank parameter coefficient matrix'}}
+    return {'knowledge_point':{'db_id':KP_ID,'id':str(NAMESPACE),'title':KP[':knowledge-point/title']},'question':q,'generation':{'version':VERSION,'seed':seed,'template':template,'profile':profile,'parameters':p,'bank_anchor':anchor,'bank_scale':scale,'source_replay':source,'bank_recipe':'exact source bank' if source and p==ORIGINAL[source] and profile==SOURCE_PROFILE[source] else 'translated source shape; qualifying value independently assigned' if level=='easy' else 'observed consecutive bank','correct_value':str(answer),'mathematical_fingerprint':digest(task),'content_fingerprint':digest(content),'source_question_ids':[s for s in SOURCES if SOURCE_PROFILE[s]==profile], 'source_basis':SNAPSHOT['basis'],'source_lineage':SNAPSHOT['lineage'],'dependencies':{'python':sys.version.split()[0],'sympy':sp.__version__},'plots':'none','domain':'real vector spaces; full column rank parameter coefficient matrix'}}
 
 def generate_easy(seed=0,**kw):return generate('easy',seed,**kw)
 def generate_moderate(seed=0,**kw):return generate('moderate',seed,**kw)
