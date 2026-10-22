@@ -1,23 +1,26 @@
-# Author 716 — 2026-10-22
+# Author 719 — 2026-10-22
 
-Preserved completed runtime repairs and staged replacements. Read feedback, all
-five retained findings, latest history event, existing source analysis and source
-records. First test reproduced the exact retained historical-pool failure:
+Preserved completed generator repairs, strict regressions and staged replacements.
+Read latest feedback, all five history findings, latest event, source lesson and
+complete source questions, existing instructional account and required docs.
+
+First executed regression:
 `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory`
-Exit 1: five stored records affected; possible-history shortcut 64/64.
+Exit 1: five stored records affected; retained possible-history witness succeeds
+64/64 times. The source/inventory counterexample remains applicable.
 
-Ran `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/author-716`.
-Exit 1 solely for 591f580cadb749294588. Four generator regressions pass; 17 complete
-source banks replayed; three finite batches retain required contrasts after shared
-delivery (14 records). Native grader: 7 correct accepted, 28 wrong rejected.
-Relocation and exact dependencies pass; protected bindings and staged mappings
-verified. All five non-source inventory records tested; none untested. Reinspected
-both retained actual UI screenshots; unchanged runtime needs no duplicate render.
-Selection source confirms stored candidates are selected independently of runtime.
+Validation:
+`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/author-719`
+Exit 1 solely for finding 591f580cadb749294588. Four current-generator findings
+pass; 17 complete source banks replayed; 14 records across three finite batches
+retain contrasts after shared delivery. Native grading: 7 correct accepted,
+28 wrong rejected. Dependency and relocated CLI checks passed. Protected hashes
+and staged replacement mapping verified. All five generated inventory records
+tested; none untested. Re-inspected two retained actual UI screenshots.
 
-Status unsupported. No runtime, engine, database, publication or other-job changes.
-The next unfinished action is the separate inventory-remediation workflow named
-in finding 591f580cadb749294588, then fresh inventory capture and strict recheck.
-This task explicitly forbids those database changes. Do not replace captured
-inventory with staged replacements or weaken regression criteria. Evidence is in
-evidence/author-716/{commands,results,inventory-results,grader-report,disposition}.json.
+Status unsupported. No runtime, engine, database or publication changes.
+Repeating this author job against the unchanged capture cannot resolve the stored banks.
+Next unfinished action: separate inventory remediation explicitly requested by
+the retained review, then fresh capture and strict recheck. This session forbids
+database edits. Do not weaken that regression or substitute the proposed pool
+for actual inventory. Evidence: evidence/author-719/.

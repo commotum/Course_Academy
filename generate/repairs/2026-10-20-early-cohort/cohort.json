@@ -1241,7 +1241,7 @@
       "claimed": 1792611874.028126,
       "worker_slot": 2,
       "worker_pid": 30000,
-      "repair_cycle": 238,
+      "repair_cycle": 239,
       "error": {
         "code": "author_reported_limitation",
         "error": {
@@ -1249,17 +1249,18 @@
           "manifest": "package.json",
           "summary": "Preserved completed repairs. Four generator regressions pass; five historical stored questions still fail the shortcut check.",
           "evidence_paths": [
-            "evidence/author-714/commands.json",
-            "evidence/author-714/results.json",
-            "evidence/author-714/inventory-results.json",
-            "evidence/author-714/disposition.json",
+            "evidence/author-717/commands.json",
+            "evidence/author-717/results.json",
+            "evidence/author-717/inventory-results.json",
+            "evidence/author-717/grader-report.json",
+            "evidence/author-717/disposition.json",
             "repair-regressions.json",
             "affected-inventory.json",
             "evidence/generated-records.json",
             "evidence/repair-3/inventory-repair-proposal.json"
           ],
           "limitations": [
-            "Finding 591f580cadb749294588 requires separate inventory remediation and fresh capture. Verified replacements remain staged; applying them requires database changes explicitly prohibited by this task."
+            "Finding 591f580cadb749294588 requires separate inventory remediation and fresh capture. Verified replacements are staged, but applying them requires database changes expressly prohibited by this task."
           ]
         },
         "instruction": "The source supports this skill. Diagnose and repair the limitation; do not drop source families or valid responses."
@@ -1309,22 +1310,22 @@
       "claimed": 1792652934.5932615,
       "worker_slot": 0,
       "worker_pid": 1101783,
-      "repair_cycle": 313,
+      "repair_cycle": 315,
       "error": {
         "code": "author_reported_limitation",
         "error": {
           "status": "unsupported",
           "manifest": "package.json",
-          "summary": "Preserved the repaired generator. Role variation, delivery filtering, mathematical checks and all 30 native-grader expectations pass. The strict external-report regression still fails.",
+          "summary": "Preserved the repaired generator. Role variation, delivery, mathematical and native-grader checks pass. The required external-report regression still fails.",
           "evidence_paths": [
-            "evidence/author-942.json",
-            "evidence/report-repair/results.json",
+            "evidence/author-948.json",
+            "evidence/author-948-report.log",
             "evidence/role-regression/results.json",
             "evidence/review-installation-handoff.json",
             "repair-regressions.json"
           ],
           "limitations": [
-            "Finding 645672a4cd3f9bf609ca requires runner installation of the staged corrected report outside the authorized workspace, followed by strict validation and fresh independent review."
+            "Finding 645672a4cd3f9bf609ca requires runner installation of the validated correction outside the authorized workspace, then strict validation and fresh independent review. Workspace-only changes cannot complete that step."
           ]
         },
         "instruction": "The source supports this skill. Diagnose and repair the limitation; do not drop source families or valid responses."
@@ -2236,22 +2237,24 @@
       "claimed": 1792680515.3379326,
       "worker_slot": 1,
       "worker_pid": 1267511,
-      "repair_cycle": 12,
+      "repair_cycle": 13,
       "error": {
         "code": "author_reported_limitation",
         "error": {
           "status": "unsupported",
           "manifest": "package.json",
-          "summary": "Preserved completed repairs. Source replay, batch variation, delivery, CLI and 25 native grading checks pass. The strict runner handoff still fails.",
+          "summary": "Preserved completed repairs. Source replay, delivery, shortcut, CLI and 25 native grading checks pass. The installed runner still blocks the handoff.",
           "evidence_paths": [
             "evidence/current-verification.json",
             "evidence/current-handoff-regression.json",
-            "repair-regressions.json",
+            "evidence/evidence-contract-validation.json",
+            "evidence/runner-handoff-regression.json",
             "runner-fix/evidence-only-rejection.patch",
+            "repair-regressions.json",
             "session-state.md"
           ],
           "limitations": [
-            "The installed runner rejects unchanged runtime despite the evidence-only finding. Fixing that rule requires edits outside the authorized workspace; the proposed patch remains uninstalled."
+            "The runner rejects unchanged runtime after an evidence-only correction. Its staged fix passes 23 offline cases, but installation requires writes outside the authorized workspace. The strict failing regression remains intact."
           ]
         },
         "instruction": "The source supports this skill. Diagnose and repair the limitation; do not drop source families or valid responses."

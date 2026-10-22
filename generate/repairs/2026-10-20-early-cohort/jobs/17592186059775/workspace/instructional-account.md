@@ -1,5 +1,21 @@
 # Instructional account (before repair)
 
+## Author-43 continuation, before validation
+
+The latest failure again reproduces in the installed runner's identical-package
+gate before regression execution or sampling. Finding 9b8cb52352b8ca3e790e is
+evidence-only and explicitly preserves runtime. Source q-73439
+(9752715d-a11c-5d27-95dc-d20bec1117cb), q-130909
+(dc5530a8-d7bb-5ee6-b842-11178cec4e06), and tutorial
+2112d3af-1fb0-5a70-ab99-59931db99930 continue to support pivot normalization,
+elimination, second-pivot normalization and optional back substitution. Keep the
+existing easy five-radio contract, full source banks, and variable answer ranks
+and positions. No instructional or runtime change follows from an evidence-path
+defect. Recheck the actual evidence contract and retained batch/CLI/source/UI
+bindings; verify the staged runner correction offline without installing it.
+Keep the installed-runner failure strict. The workspace-only constraint forbids
+the external runner change required to resolve it.
+
 ## Author-41 continuation, before validation
 
 The exact latest installed-runner failure reproduces before retained checks or

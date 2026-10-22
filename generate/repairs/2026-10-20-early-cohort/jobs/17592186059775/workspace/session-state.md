@@ -1,38 +1,39 @@
-# Current state — 2026-10-22, author-40
+# Current state — 2026-10-22, author-43
 
-Read feedback, both retained findings, history event summaries, and prior state.
-First reproduced latest failure with job Python -B checks/check_current_handoff.py:
-exit 1. Installed scripts/generator_pipeline.py:723–727 rejects identical package,
-source and engine identities before retained regressions or sampling, including
-when the independent finding requests only evidence correction.
+Preserved the runtime package and completed repairs. Read the latest feedback,
+retained finding IDs, history, source questions, lesson context, required docs,
+and prior session state. Source has no diagrams.
 
-Targeted commands, exits, logs and unchanged runtime hashes:
-evidence/current-verification.json.
+First command:
+`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_current_handoff.py`
 
-- checks/check_evidence_contract.py: exit 1. Bundle validation, relocation,
-  missing-provenance and wrong-root controls pass; installed handoff still fails.
-- checks/check_batch_selection.py: exit 0. Exact reported seed shortcut 1/5 raw
-  and delivered; actual shared delivery accepts 5/5, ten profiles checked and
-  25 native acceptance/rejection submissions pass.
-- checks/check_cli_contract.py: exit 0. Relocated CLI/count/determinism and finite
-  limits pass.
-- checks/check_render_binding.py: exit 0. Ten complete source banks replay;
-  retained actual-UI records equal current delivered endpoints. Visually inspected
-  evidence/author8-render/question-001.png: readable matrices, five choices and
-  complete elimination stages, without clipping or raw TeX.
-- checks/check_runner_handoff.py: exit 0. Existing proposed external patch
-  applies to a disposable checkout and passes 23 offline cases. It remains
-  uninstalled; this result does not resolve the failing installed-runner check.
+Exit 1: actual installed sample-stage control flow rejects the byte-identical
+package before regressions or sampling. The retained independent finding is
+an evidence-only correction that explicitly preserves runtime. The responsible
+rule is scripts/generator_pipeline.py:723; editing it is outside this workspace.
 
-No runtime or manifest changes, source changes, publication, database, engine,
-runner or other-job writes. Preserve completed repairs, instructional account and
-repair-regressions.json. Corrected evidence at evidence/contract-correction is
-historical review evidence, not fresh independent approval.
+Fresh commands, exit codes, logs, and unchanged runtime hashes are recorded in
+`evidence/current-verification.json`.
 
-Unfinished external action: repair the runner's evidence-only rejection rule
-(existing reviewable proposal: runner-fix/evidence-only-rejection.patch), then
-rerun strict installed-runner regression and fresh independent review. Proposal
-remains uninstalled. Workspace-only authorization prevents the runner change.
-Do not alter generator bytes merely to evade the identity gate, weaken the
-failing check, or repeat unrelated sampling. Status remains unsupported because
-handoff is unresolved; the source-supported easy skill is preserved.
+- Evidence contract: bundle validation, relocation, missing-provenance/wrong-root
+  controls, current-record binding and three historical generated records pass.
+  Registered check exits 1 because installed runner handoff still fails.
+- Batch regression: exit 0; exact seed 4258185931 shortcut scores 1/5 both raw
+  and after actual delivery filtering, five records survive, ten profiles checked,
+  and all 25 native grading responses match expected results.
+- Relocated CLI/count/determinism and finite-limit regression: exit 0.
+- Source/UI binding: exit 0; ten complete banks and 50 choices replay; retained
+  actual-UI inputs match current delivered endpoints. Visually inspected
+  evidence/author8-render/question-001.png: readable prompt, choices and solution.
+- Staged runner patch: exit 0 across 23 offline control-flow cases. This is an
+  uninstalled proposal, not a repair of the installed runner.
+
+All declared runtime files and package.json remain byte-identical. Retained
+strict regressions are unchanged. No runner, engine, other-job, database, image
+publication, or live-service changes occurred.
+
+Unfinished: the runner owner must install a correction to its evidence-only
+rejection rule, then run the strict handoff and fresh independent review. Existing
+proposal: runner-fix/evidence-only-rejection.patch. Repeated authoring and cosmetic
+runtime changes do not fix that rule. Status remains unsupported for this handoff;
+the easy Gaussian-elimination generator itself passes the targeted content checks.

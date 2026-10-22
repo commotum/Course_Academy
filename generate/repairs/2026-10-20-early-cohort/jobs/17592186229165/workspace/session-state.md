@@ -1,11 +1,11 @@
-# Current state — author 944
+# Current state — author 948
 
-No runtime, manifest, source, instructional scope, or regression changes. Read current feedback, both retained findings, prior session state, and the existing installation handoff.
+Runtime, manifest, instructional account, completed source analysis, and both strict regression declarations are preserved. Feedback and all retained finding definitions were read; no new generator defect is reported.
 
-Latest failure reproduced first: `checks/check_report_installation.py` fails because the required prior-review report still has an unresolved decision shortcut. Its workspace correction passes schema/contract validation and 26 current-record replays. See `evidence/author-944-report.log` and `evidence/report-repair/results.json`.
+Latest failure reproduced first: `/home/jake/Developer/Course_Academy/.venv/bin/python checks/check_report_installation.py` exits 1. The required prior-review destination still fails with `decision_variation has an unresolved decision shortcut`. The staged corrected report passes local contract/schema validation and replays 26 complete records against the current generator. See `evidence/author-948-report.log` and `evidence/report-repair/results.json`.
 
-Retained role regression passes: exact reorder, resonance transfer, visible mathematics, conditional shortcut probes, shared delivery and 30 native-grader expectations (11 acceptance, 19 rejection). Both resonant positions survive delivery: 19 first, 17 second; five both-nonresonant records. Eight unaffected mathematical records and 55 handoff artifacts pass verification. Commands/results are in `evidence/author-944.json`.
+`checks/test_role_exchange.py` exits 0, covering the exact counterexample, controlled resonance transfer, visible mathematics, within-template shortcut probes, shared delivery filtering, and native grader expectations. `checks/verify_retained_state.py` exits 0: eight unaffected mathematical records, unchanged runtime/source, and all 55 handoff artifacts verified. Exact commands, exit codes, and logs are in `evidence/author-948.json`.
 
-Only unfinished step: install the validated correction at the external prior-review destination in `evidence/review-installation-handoff.json`, then run the unchanged strict regression and fresh independent review. Workspace-only authorization prohibits this write. Neither database nor published images were changed. No permission escalation or external write was attempted.
+Remaining action is runner installation of the staged correction at the external prior-review destination specified in `evidence/review-installation-handoff.json`, followed by the unchanged strict regression and fresh independent review. This is outside the user's workspace-only authorization. No external writes, publication, database changes, engine changes, runtime edits, or weakened regressions occurred. Existing rendering and source-replay evidence remains applicable because runtime/source hashes are unchanged.
 
-Do not schedule another unchanged workspace-only author retry. Resolve the external installation in the runner first; repeating author validation cannot satisfy it. Do not weaken the strict regression or alter a generator without a demonstrated generator defect.
+Another unchanged workspace-only retry cannot complete the external installation. Resolve that runner action before scheduling another author retry.
