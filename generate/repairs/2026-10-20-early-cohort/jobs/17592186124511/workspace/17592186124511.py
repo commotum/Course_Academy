@@ -335,7 +335,7 @@ def generate(difficulty='moderate',seed=0,template=None,parameters=None,replay=F
 def _batch_records(difficulty,count,seed,order):
  if difficulty!='moderate':raise ValueError('Unsupported difficulty: '+difficulty)
  if count<1:raise ValueError('count must be positive')
- found=[];used=set();checkbox_counts={}
+ found=[];used=set();checkbox_counts={};radio_subsets=set();radio_positions=set()
  for offset in range(max(200,50*count)):
   # Rejection resamples the same profile, preserving source-family reachability.
   r=generate(difficulty,seed+offset,order[len(found)%len(order)]);fp=r['generation']['mathematical_fingerprint']
@@ -348,6 +348,14 @@ def _batch_records(difficulty,count,seed,order):
    if selected in seen:continue
    seen.add(selected)
    if seen=={1,2,3}:seen.clear()
+  else:
+   f=fs[0];choices=f[':answer-field/choices']
+   key=next(a[':answer/value'] for a in choices if a[':answer/id']==f[':answer-field/correct'][1])
+   position=next(i for i,a in enumerate(choices) if a[':answer/id']==f[':answer-field/correct'][1])
+   if {a[':answer/value'] for a in choices}<=radio_subsets:radio_subsets.clear()
+   if len(radio_positions)==5:radio_positions.clear()
+   if key in radio_subsets or position in radio_positions:continue
+   radio_subsets.add(key);radio_positions.add(position)
   found.append(r);used.add(fp)
   if len(found)==count:return found
  raise ValueError('Finite sampling capability: '+str(len(found))+' distinct tasks found; requested '+str(count))

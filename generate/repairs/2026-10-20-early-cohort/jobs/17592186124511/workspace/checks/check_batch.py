@@ -22,4 +22,4 @@ r=subprocess.run(cmd,capture_output=True,text=True,check=True,env={**os.environ,
 for rec in records:v.inspect(rec)
 v.save('samples.json',records)
 v.save('batch-check.json',{'passed':True,'source_snapshot_matches_supplied_source':True,'profiles_reached':sorted(seen),'batches':batches,'stable_identity_under_option_shuffle':True,'public_sample_command':cmd,'public_sample_count':len(records)})
-print(f'Public sampling passed: all 15 profiles reached in {len(batches)} five-question batches; canonical owned identities stable.')
+print(f'Public sampling passed: all {len(g.TEMPLATES)} profiles reached in {len(batches)} five-question batches; canonical owned identities stable.')

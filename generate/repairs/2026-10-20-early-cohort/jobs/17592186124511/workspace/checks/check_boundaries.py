@@ -28,4 +28,4 @@ for t in g.EXCLUDED:
  except ValueError:pass
  else:raise AssertionError(t)
 v.save('boundaries.json',{'passed':True,'coverage':coverage,'invalid_parameter_rejections':[purpose for t,p,purpose in bad],'source_exclusions':g.EXCLUDED})
-print('Boundary checks passed: scalar dimensions 3–7 in all profiles, both determinant cases, four invalid-parameter rejections, two evidence exclusions.')
+print(f'Boundary checks passed: scalar dimensions 3–7 in all profiles, both determinant cases, four invalid-parameter rejections, {len(g.EXCLUDED)} evidence exclusions.')
