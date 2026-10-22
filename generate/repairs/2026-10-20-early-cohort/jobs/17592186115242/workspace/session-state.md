@@ -1,11 +1,11 @@
 # Current state
 
-Author-544 milestone, 2026-10-22. Runtime repairs preserved.
+Author-548 milestone, 2026-10-22. Existing runtime repairs preserved.
 
-Latest failure reproduced first: job Python `-B checks/batch_regressions.py --finding inventory` exits 1 for five historical stored banks and the retained 64/64 possible-history shortcut witness.
+First test: job Python `-B checks/batch_regressions.py --finding inventory` exits 1: five historical stored banks; retained possible-history shortcut succeeds 64/64.
 
-Job Python `-B checks/recheck_status.py --output evidence/author-544` exits 1 solely for finding 591f580cadb749294588. Four generator regressions pass: 17 complete source banks, zero roots, construction, batch delivery and counterfactual checks; 14 delivered records. Native grading: 7 accepted, 28 rejected. Dependencies, relocation, protected hashes and five staged replacement mappings verify. All captured generated inventory tested. Reused unchanged renderer output and visually inspected question-002.png.
+Job Python `-B checks/recheck_status.py --output evidence/author-548` exits 1 solely for finding 591f580cadb749294588. All four current-generator regressions pass: 17 complete source practice banks plus canonical replay, zero roots, construction, finite batch delivery and counterfactuals; 14 delivered records. Native grading: 7 accepted, 28 rejected. Dependencies, relocation, protected hashes and five staged replacement mappings verify. No generated inventory remains untested. Retained UI screenshot question-002.png visually inspected; rendering unchanged.
 
-Status: unsupported. No runtime, engine, database, source, publication or other-job edits. Strict historical failure retained. The separate inventory-remediation workflow must apply reviewed replacements outside this author task, then capture the pool again. Repeating unchanged author passes cannot repair stored records. Do not mutate inventory captures or weaken tests to make them pass.
+Status: unsupported under the strict retained acceptance contract. No runtime, engine, database, source capture, publication or other-job changes. Keep the historical failure strict and preserve captured records. Next unfinished action is the separate inventory-remediation workflow requested in finding 591f580cadb749294588: apply independently reviewed replacements and provide a fresh capture. Another workspace-only generator edit cannot alter stored banks.
 
-Evidence: evidence/author-544/commands.json, results.json, outcome.md; repair-regressions.json; affected-inventory.json; evidence/generated-records.json; evidence/repair-3/inventory-repair-proposal.json.
+Evidence: evidence/author-548/commands.json, results.json, grader-report.json, outcome.md; repair-regressions.json; affected-inventory.json; evidence/generated-records.json; evidence/repair-3/inventory-repair-proposal.json.

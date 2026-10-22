@@ -1,0 +1,1 @@
+Source account verified and saved. All retained findings and preflight read. Package baseline hashes saved. Current construction inspected; rerunning old counterexamples and independent exact arithmetic next.

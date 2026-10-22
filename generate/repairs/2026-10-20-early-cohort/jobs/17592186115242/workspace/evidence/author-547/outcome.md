@@ -1,0 +1,11 @@
+# Author 547 outcome
+
+The first test reproduced finding 591f580cadb749294588: five complete historical generated records still have the sign-only extremum shortcut; the retained possible-history selection witness succeeds 64/64. The check exits 1. Source and inventory bindings remain unchanged, so the old counterexample still applies.
+
+`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/author-547` exits 1 solely for that finding. All four current-generator regressions pass: complete replay of 17 source practice banks and canonical replay, fractional bare-k support, zero-root fallback, bank construction, finite batch selection, and counterfactuals. Shared delivery retains 14/14 tested records with sign-group contrasts. The native grader accepts 7 correct choices and rejects 28 wrong choices. Dependency pins, relocation, protected hashes, and the five staged replacement mappings verify.
+
+Reused the unchanged actual-UI rendering evidence, visually inspecting `evidence/repair-3/render/question-002.png`: equations, five choices, augmented matrices, row reduction, and conclusion remain readable. Also inspected the source tutorial classification flowchart. No new rendering was needed because runtime and records are unchanged.
+
+The instructional account already identifies elimination, the singular coefficient, and contradiction versus redundancy (canonical f2c7cfd3-da43-5208-bd0e-21692357fabe; tutorial e0c85152-daea-5a87-a3ba-81870558c7a2). Source 534e2a93-e71a-5475-894e-dfd5ca99a3a6 establishes that an extreme correct option is not required. No additional runtime construction defect follows from the latest feedback.
+
+Status remains unsupported under the retained strict acceptance contract. Preserve all runtime repairs and executable regressions. Five validated replacements remain staged in `evidence/repair-3/inventory-repair-proposal.json`; they have not changed captured or live inventory. Resolving the remaining finding requires separate inventory remediation and a fresh capture. The author task explicitly prohibits database changes, and engine repair is disabled. Further generator edits cannot alter already stored banks. No database, engine, publication, source capture, or other-job changes were made.

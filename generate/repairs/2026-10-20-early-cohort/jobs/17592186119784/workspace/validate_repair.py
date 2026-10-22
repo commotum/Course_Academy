@@ -73,6 +73,11 @@ def main():
    assert rq.get(':question/difficulty')==g.enum(q.get(':question/difficulty'))
    assert [(f[':answer-field/key'],[a[':answer/value'] for a in f[':answer-field/choices']],selected(f)) for f in rq[':question/answer-fields']]==[(f[':answer-field/key'],[a[':answer/value'] for a in f[':answer-field/choices']],f[':answer-field/correct'][':answer/value']=='true') for f in q[':question/answer-fields']]
    replay.append(r)
+  n=len(t['source_matrix']);boundary=[[0]*n for _ in range(n)];boundary[0][0]=-8;boundary[-1][-1]=8
+  audit(g.generate(t['level'],0,sid,parameters={'matrix':boundary}))
+  try:g.generate(t['level'],0,sid,parameters={'matrix':[[9]*n for _ in range(n)]})
+  except ValueError:pass
+  else:raise AssertionError('Out-of-range matrix accepted')
   patterns=set();rs=[]
   for case,m in controls(sid):
    r=g.generate(t['level'],101,sid,parameters={'matrix':m});patterns.add(tuple(audit(r)));rs.append(r);records.append(r)
