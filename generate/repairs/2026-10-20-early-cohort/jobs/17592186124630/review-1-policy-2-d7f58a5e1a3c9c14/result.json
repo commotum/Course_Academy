@@ -1,0 +1,115 @@
+{
+  "verdict": "accepted",
+  "summary": "No current defect demonstrated. All eight checks pass for the finite easy family and exact five-record batch. Package unchanged.",
+  "source_analysis": {
+    "skill": "Recognize missing components of the invertible matrix theorem.",
+    "reasoning_steps": [
+      "Locate the blank and identify its mathematical role.",
+      "Recall the corresponding space, dimension, rank, nullity or invertibility fact.",
+      "Select the expression that completes the theorem."
+    ],
+    "invariants": [
+      "Real square matrix and the source theorem equivalence.",
+      "One blank, five radio choices and one correct response.",
+      "Easy recognition workload with a completed-theorem solution."
+    ],
+    "permitted_variations": [
+      "Blank location and corresponding correct expression.",
+      "Compatible distractor banks and answer order.",
+      "Consistent notation and presentation changes."
+    ],
+    "source_refs": [
+      "canonical fff1daf8-5a1f-54c9-90d7-87710ca00d23",
+      "tutorial 17592186125780, step 4620379b-2eed-5dd7-bf3a-9edf0b4aea79",
+      "All 16 source question IDs and complete banks recorded in source-analysis.json"
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "source-corrections.json",
+      "scope-review.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replays.json",
+        "source-replay-results.json",
+        "source-corrections.json"
+      ],
+      "details": "All 16 source prompts, solutions and complete banks replay exactly. Ambiguous source banks are explicitly corrected in normal generation without removing target families."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "audit.py",
+        "math-results.json"
+      ],
+      "details": "51 records independently checked using exact rational matrix witnesses and the symbolic theorem. Each has one correct choice and a matching solution."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "fresh-samples.json",
+        "coverage-stage-results.json",
+        "delivery-fresh/delivery.json",
+        "delivery-batch/delivery.json",
+        "selection-results.json"
+      ],
+      "details": "All 11 targets and 13 bank/target pairings survive delivery. The actual batch retains five distinct targets. Selection rules and explicit scenarios were examined; live policy and history were unavailable."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "scope-review.json"
+      ],
+      "details": "The generator preserves easy theorem recognition, response format and workload. Its finite capacity is explicit."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-report.json"
+      ],
+      "details": "Native learner grading accepted 31 valid selections and rejected 124 distractors, with zero unresolved cases. No free-entry fields occur."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render-all/rendering.json",
+        "visual-inspection.json",
+        "render-all/contact-1.png",
+        "render-all/contact-2.png",
+        "render-all/contact-3.png",
+        "render-all/contact-4.png"
+      ],
+      "details": "All 19 actual-UI previews passed and screenshots were inspected: readable choices, visible blanks, complete theorem displays and matching solutions."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "runtime-results.json",
+        "dependency-check.json",
+        "legacy-regression.json",
+        "author-check-run.json",
+        "package-integrity.json",
+        "reproduce.sh"
+      ],
+      "details": "Dependencies, count boundaries, deterministic replay and relocation pass. The retained zero-record failure was reproduced; current behavior returns five records. Package hashes are unchanged."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "counterfactuals.json",
+        "shortcut-results.json",
+        "coverage-stage-results.json",
+        "selection-results.json",
+        "evidence-contract.json"
+      ],
+      "details": "Controlled blank changes update answers, rendered prompts and grading; option reordering preserves responses. Conditional shortcut probes found no demonstrated incidental bypass. Fixed adjective recognition is justified by the taught theorem."
+    }
+  },
+  "findings": []
+}
