@@ -62,7 +62,7 @@ def correct_value(field):
 def verify(record, solutions=True):
     q=record['question']; expected=expected_values(record)
     assert [correct_value(f) for f in q[':question/answer-fields']]==expected,q[':question/id']
-    if solutions and not record['generation'].get('bank_profile')=='captured':
+    if solutions:
         bullets=[s for s in q[':question/worked-solution'].split('\n\n') if s.startswith('- ')]
         assert len(bullets)==4
         for i,b in enumerate(bullets):
