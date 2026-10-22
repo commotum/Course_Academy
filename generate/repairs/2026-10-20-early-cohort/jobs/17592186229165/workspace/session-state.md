@@ -1,15 +1,15 @@
-# Current state — author 900
+# Current state — author 904
 
-Latest feedback and all retained findings read; history has 900 events, ending with attempt 899. No new source or runtime defect is reported. Existing runtime, manifest, instructional account, inventory evidence, handoff and both strict regressions are preserved.
+Read feedback, both retained findings and latest history event (903; 904 events total), prior session state, instructional account and required generation/validation guidance. No new generator defect or changed source evidence is reported. Preserved completed runtime repairs, package manifest and both strict regression declarations.
 
 Reproduced the latest failure first:
 `/home/jake/Developer/Course_Academy/.venv/bin/python checks/check_report_installation.py`
-Exit 1: required external report fails with `decision_variation has an unresolved decision shortcut`. The staged corrected report passes the actual schema/contract checks and replays 26 complete records against current code. Exact failure and report: `evidence/author-900/report-regression.log`, `evidence/author-900/report-results.json`.
+Exit 1: `decision_variation has an unresolved decision shortcut` at the original required review destination. Local corrected report passes actual schema/contract validation and 26 current-generator record replays; historical inventory observations remain preserved. Results: `evidence/author-904/report-results.json`; full failure: `evidence/author-904/report-regression.log`.
 
 Retained verification:
-- `.../.venv/bin/python checks/test_role_exchange.py --output evidence/author-900/role-regression`: exit 0. Original reorder counterexample, role-transfer counterfactual, signed boundaries, normal mixed sampling, shared delivery filtering, conditional shortcut probes and native acceptance/rejection pass.
-- `.../.venv/bin/python checks/verify_retained_state.py`: exit 0. Runtime and source hashes, 55 staged artifacts and eight independently parsed unaffected mathematical instances pass. Earlier source replay, rendering and inventory evidence remain applicable because the inputs and runtime are unchanged.
+- `/home/jake/Developer/Course_Academy/.venv/bin/python checks/test_role_exchange.py --output evidence/author-904/role-regression`: exit 0. Nine controlled cases, 24 mixed samples and eight default hard records pass independent visible-record checks, shared delivery filtering and native grading. Both resonance positions survive filtering (19 first, 17 second); tested conditional cue groups include both.
+- `/home/jake/Developer/Course_Academy/.venv/bin/python checks/verify_retained_state.py`: exit 0. Runtime/source unchanged, all 55 staged handoff artifacts verified, eight unaffected mathematical instances pass. Existing source replay and UI rendering evidence remain applicable to unchanged runtime/source.
 
-Commands and exit codes: `evidence/author-900/checks.json`. No runtime, external evidence, engine, database or publication changes.
+Commands, exits and logs: `evidence/author-904/checks.json`. No runtime, engine, database, publication, original review report or other-job edits were made.
 
-Unfinished action: runner installs the staged correction at the required prior-review destination using `evidence/review-installation-handoff.json`, reruns the unchanged strict regression and obtains fresh independent review. This destination is outside the authorized workspace. Status is unsupported because this required regression remains failing. Additional unchanged workspace-only author retries cannot perform that installation; retain source scope and do not weaken the check.
+Next unfinished action: runner installs the already validated artifacts listed in `evidence/review-installation-handoff.json` at the original review destination, reruns the strict default report regression and obtains fresh independent review. That destination is outside this session’s authorized workspace. Finding 645672a4cd3f9bf609ca requires destination write access, explicitly no generator authoring. Further unchanged workspace-only author retries cannot perform this action. Status remains unsupported; do not weaken the strict check, misrepresent the staged candidate as installed, or change source-supported generator scope to close an evidence-installation finding.
