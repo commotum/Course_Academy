@@ -1,0 +1,206 @@
+{
+  "format": 1,
+  "findings": [
+    {
+      "id": "2e2c8b56b7ef53516856",
+      "finding": {
+        "kind": "decision_shortcut",
+        "description": "Matrix label, dimension, and statement wording predict the complete selection without inspecting entries. The shortcut answers all five exact runner records after actual delivery filtering.",
+        "source_refs": [
+          "39d12d09-6555-5993-ad4c-5e191be1b0c7",
+          "f41ff7d0-b754-5033-a620-53eef8a376e3",
+          "e68d4b2f-c3b6-584c-8430-662a571e8316"
+        ],
+        "reproduction": "Run audit.py, the delivery commands in commands.json, and analyze_variation.py with the job Python. Batch seed 4077425948 gives C 3x3: select all ordinary statements. Seeds 4077425949 and 4077425952 give A: select direct lower and transpose upper. Predictions and complete records are retained in shortcut-results.json and delivery-batch/accepted.json.",
+        "requested_change": "Decouple visible signatures from qualifying roles. Vary zero-region assignments within recognizable families, derive all dependent content, and replace the batch after repair. Numeric resampling or option shuffling alone cannot fix this."
+      },
+      "source_hash": "7544c1547cb37d55690434b504d2eecccbcccd03796518a2cb946efa2ec0e72a",
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186119784/review-0-policy-2-e4ac726128e28ce8",
+      "attempt": 0
+    },
+    {
+      "id": "b5c2f06bb82af2f02b29",
+      "finding": {
+        "kind": "restriction",
+        "description": "Clearing one nonzero entry changes a lower-only matrix into a diagonal matrix, but the generator rejects this valid same-skill decision change.",
+        "source_refs": [
+          "tutorial 658a47dc-4d32-5d9d-a04c-82d683e87739",
+          "39d12d09-6555-5993-ad4c-5e191be1b0c7",
+          "f41ff7d0-b754-5033-a620-53eef8a376e3"
+        ],
+        "reproduction": "Run regression_tests.py AcceptanceRegressions.test_relevant_entry_can_change_decision with the job Python. For moderate/q-42091/seed 101, change [[4,0,0],[1,1,0],[0,0,3]] to [[4,0,0],[0,1,0],[0,0,3]]. Expected substantive truths change F,T,T to T,T,T. Actual result: ValueError: Complete source-bank truth profile required.",
+        "requested_change": "Replace source-truth and source-zero-region restrictions with constraints on operation, size, and workload. Permit meaningful decision changes and derive keys and explanations. Allow the source-backed None option to represent all-false ordinary statements."
+      },
+      "source_hash": "7544c1547cb37d55690434b504d2eecccbcccd03796518a2cb946efa2ec0e72a",
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186119784/review-0-policy-2-e4ac726128e28ce8",
+      "attempt": 0
+    },
+    {
+      "id": "813b0ab03dfdb53e3a38",
+      "finding": {
+        "kind": "source_fidelity",
+        "description": "The older package snapshot omits supplied source cases q-126481 and q-126474 and retains outdated radio replay banks.",
+        "source_refs": [
+          "5fc95051-8b70-5447-aece-290d3854c40e",
+          "814b1f0e-0432-56a4-8a3b-10efb7462756"
+        ],
+        "reproduction": "Run regression_tests.py AcceptanceRegressions.test_source_q126481_supported AcceptanceRegressions.test_source_q126474_supported with the job Python. Both original-parameter calls reject with Wrong template difficulty.",
+        "requested_change": "Support all supplied source cases and reconcile replay with their complete current checkbox banks. Inventory inspection is documented in inventory-assessment.json; affected-inventory.json is empty because no matching generated instance was reproduced, not because absence was verified."
+      },
+      "source_hash": "7544c1547cb37d55690434b504d2eecccbcccd03796518a2cb946efa2ec0e72a",
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186119784/review-0-policy-2-e4ac726128e28ce8",
+      "attempt": 0
+    }
+  ],
+  "events": [
+    {
+      "attempt": 0,
+      "package_hash": "c706de068af4b7600ebeab244fc12e82c4ce35d2f2921bfde2bc4dc608fcacf4",
+      "reason": {
+        "verdict": "revise",
+        "summary": "Visible cues predict every delivered batch answer without inspecting matrix entries. A valid decision-changing input is rejected, and two source cases are unsupported. Math, grading, rendering, and packaging checks passed. Package unchanged; full report saved in review.json.",
+        "source_analysis": {
+          "skill": "Identify true triangularity statements by inspecting strict off-diagonal regions and computing the indicated transpose or transpose sum/difference.",
+          "reasoning_steps": [
+            "Read each statement independently.",
+            "Compute the indicated matrix transformation.",
+            "Test whether every entry in the required triangular region is zero.",
+            "Select every true statement."
+          ],
+          "invariants": [
+            "Upper triangular requires zeros strictly below the diagonal; lower triangular requires zeros strictly above.",
+            "Diagonal entries do not determine triangularity.",
+            "Preserve observed operations, Boolean response controls, and comparable workload."
+          ],
+          "permitted_variations": [
+            "Vary labels, entries, nonzero positions, and observed matrix sizes.",
+            "Vary which triangular regions contain nonzeros and consequently which statements qualify.",
+            "Within hard scope, vary whether mirrored entries cancel."
+          ],
+          "source_refs": [
+            "tutorial 658a47dc-4d32-5d9d-a04c-82d683e87739",
+            "39d12d09-6555-5993-ad4c-5e191be1b0c7",
+            "f41ff7d0-b754-5033-a620-53eef8a376e3",
+            "205d32a2-ac26-5eaf-896a-c6182a70eff7"
+          ],
+          "evidence_paths": [
+            "source-analysis.json"
+          ]
+        },
+        "checks": {
+          "source_replay": {
+            "status": "failed",
+            "evidence_paths": [
+              "source-replay-records.json",
+              "source-replay-results.json",
+              "regression-results.txt"
+            ],
+            "details": "Two supplied source templates are unsupported. Evidence-only replay retains historical radio banks rather than the supplied checkbox banks."
+          },
+          "math": {
+            "status": "passed",
+            "evidence_paths": [
+              "audit.py",
+              "math-results.json",
+              "samples-independent.json",
+              "batch.json"
+            ],
+            "details": "Independent exact arithmetic verified keys, worked matrices, and truth assertions for 50 fresh samples and all five runner records."
+          },
+          "variety": {
+            "status": "failed",
+            "evidence_paths": [
+              "counterfactuals.json",
+              "rejection-results.json",
+              "shortcut-results.json"
+            ],
+            "details": "Each source template preserves its original truth vector and zero-region assignments, rejecting legitimate changes to qualifying statements."
+          },
+          "scope": {
+            "status": "passed",
+            "evidence_paths": [
+              "scope-results.json",
+              "source-analysis.json",
+              "samples-independent.json"
+            ],
+            "details": "Sampled moderate and hard operations, dimensions, and response workload remain within observed scope."
+          },
+          "grading": {
+            "status": "passed",
+            "evidence_paths": [
+              "grader-input.json",
+              "grader-results.json"
+            ],
+            "details": "The native learner grader accepted 36 correct Boolean choices and rejected 36 wrong choices. No free-entry fields apply."
+          },
+          "rendering": {
+            "status": "passed",
+            "evidence_paths": [
+              "render-all/rendering.json",
+              "render-inspection.json",
+              "render-all/question-006.png",
+              "render-all/question-007.png"
+            ],
+            "details": "Nine records rendered through the actual UI without reported math, JavaScript, or image errors. Representative screenshots were visually inspected."
+          },
+          "packaging": {
+            "status": "passed",
+            "evidence_paths": [
+              "packaging-results.json",
+              "package-before.json",
+              "package-final.json",
+              "commands.json"
+            ],
+            "details": "Exact declared versions match installed Python and SymPy. Relocation and deterministic replay passed. Package bytes remain unchanged."
+          },
+          "decision_variation": {
+            "status": "failed",
+            "evidence_paths": [
+              "pedagogical-variation.json",
+              "variation-schema-validation.json",
+              "shortcut-results.json",
+              "delivery-batch/delivery.json",
+              "selection-results.json"
+            ],
+            "details": "Label/dimension/statement-bank lookup predicts 50/50 fresh answers, 25/25 delivered moderate controls, and 5/5 delivered batch answers. Conditional probes are perfect. Live learner weights/history are unavailable; conditional selection and freshness-subset implications are documented."
+          }
+        },
+        "findings": [
+          {
+            "kind": "decision_shortcut",
+            "description": "Matrix label, dimension, and statement wording predict the complete selection without inspecting entries. The shortcut answers all five exact runner records after actual delivery filtering.",
+            "source_refs": [
+              "39d12d09-6555-5993-ad4c-5e191be1b0c7",
+              "f41ff7d0-b754-5033-a620-53eef8a376e3",
+              "e68d4b2f-c3b6-584c-8430-662a571e8316"
+            ],
+            "reproduction": "Run audit.py, the delivery commands in commands.json, and analyze_variation.py with the job Python. Batch seed 4077425948 gives C 3x3: select all ordinary statements. Seeds 4077425949 and 4077425952 give A: select direct lower and transpose upper. Predictions and complete records are retained in shortcut-results.json and delivery-batch/accepted.json.",
+            "requested_change": "Decouple visible signatures from qualifying roles. Vary zero-region assignments within recognizable families, derive all dependent content, and replace the batch after repair. Numeric resampling or option shuffling alone cannot fix this."
+          },
+          {
+            "kind": "restriction",
+            "description": "Clearing one nonzero entry changes a lower-only matrix into a diagonal matrix, but the generator rejects this valid same-skill decision change.",
+            "source_refs": [
+              "tutorial 658a47dc-4d32-5d9d-a04c-82d683e87739",
+              "39d12d09-6555-5993-ad4c-5e191be1b0c7",
+              "f41ff7d0-b754-5033-a620-53eef8a376e3"
+            ],
+            "reproduction": "Run regression_tests.py AcceptanceRegressions.test_relevant_entry_can_change_decision with the job Python. For moderate/q-42091/seed 101, change [[4,0,0],[1,1,0],[0,0,3]] to [[4,0,0],[0,1,0],[0,0,3]]. Expected substantive truths change F,T,T to T,T,T. Actual result: ValueError: Complete source-bank truth profile required.",
+            "requested_change": "Replace source-truth and source-zero-region restrictions with constraints on operation, size, and workload. Permit meaningful decision changes and derive keys and explanations. Allow the source-backed None option to represent all-false ordinary statements."
+          },
+          {
+            "kind": "source_fidelity",
+            "description": "The older package snapshot omits supplied source cases q-126481 and q-126474 and retains outdated radio replay banks.",
+            "source_refs": [
+              "5fc95051-8b70-5447-aece-290d3854c40e",
+              "814b1f0e-0432-56a4-8a3b-10efb7462756"
+            ],
+            "reproduction": "Run regression_tests.py AcceptanceRegressions.test_source_q126481_supported AcceptanceRegressions.test_source_q126474_supported with the job Python. Both original-parameter calls reject with Wrong template difficulty.",
+            "requested_change": "Support all supplied source cases and reconcile replay with their complete current checkbox banks. Inventory inspection is documented in inventory-assessment.json; affected-inventory.json is empty because no matching generated instance was reproduced, not because absence was verified."
+          }
+        ]
+      },
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186119784/review-0-policy-2-e4ac726128e28ce8"
+    }
+  ]
+}
