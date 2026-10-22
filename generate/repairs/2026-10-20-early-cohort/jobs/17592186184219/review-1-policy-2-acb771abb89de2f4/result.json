@@ -1,0 +1,113 @@
+{
+  "verdict": "accepted",
+  "summary": "Both retained defects are repaired. All eight checks pass, including the exact five-question batch. Package files remain unchanged; no database writes or asset publication occurred.",
+  "source_analysis": {
+    "skill": "Find rank or nullity using rank(A) + nullity(A) = number of columns.",
+    "reasoning_steps": [
+      "Identify the column count.",
+      "Identify the supplied and requested dimensions.",
+      "Subtract the supplied dimension from columns.",
+      "Select the resulting integer."
+    ],
+    "invariants": [
+      "Rank lies between zero and min(rows, columns).",
+      "Rank plus nullity equals columns.",
+      "Preserve easy, one-step subtraction and five-choice radio responses."
+    ],
+    "permitted_variations": [
+      "Vary feasible matrix dimensions and supplied values.",
+      "Vary the requested rank/nullity role.",
+      "Vary which offered numerical value is correct while preserving the theorem."
+    ],
+    "source_refs": [
+      "9615d8af-b005-5449-be4b-a7487375c98f",
+      "a05d1874-f484-5b03-a7ba-b2697b84a74b",
+      "245a8171-aeb5-5caf-950d-44cbb3c0aece",
+      "tutorial 0728c510-110b-5bde-93ea-9050a87a6ecc: rank(A)+nullity(A)=n, where n is columns"
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay.json",
+        "source-replay-records.json",
+        "canonical-example.json",
+        "regression-comparison.json"
+      ],
+      "details": "All 14 target prompts, complete banks, keys and solutions replay. The canonical example\u2019s numerical parameters and solution stages pass; no canonical bank was supplied."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-and-coverage.json",
+        "boundary-tests.json",
+        "counterfactual-results.json"
+      ],
+      "details": "Independent checks verified 287 records plus explicit boundaries: feasibility, exact subtraction, distinct choices and solution dependencies."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "coverage.json",
+        "delivery-shortcut-results.json",
+        "delivery-control/delivery.json",
+        "delivery-batch/delivery.json"
+      ],
+      "details": "All 14 profiles and five numerical answer roles tested. Both targets and tall, wide and square shapes survive filtering. Controls: 170\u2192166; exact batch: 5\u21925."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "scope-review.json",
+        "rejection-and-replay.json",
+        "boundary-tests.json"
+      ],
+      "details": "Preserves easy theorem substitution and radio responses. Unsupported difficulties and free-entry format reject explicitly."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-report.json"
+      ],
+      "details": "Actual native grader passed 207 accepted and 828 rejected choice responses, with zero unresolved cases. Complete raw and normalized counterfactual banks and batch records were tested."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-inspection.json",
+        "render-dependency-results.json"
+      ],
+      "details": "All 86 actual-UI previews pass. Rendered dependencies verified; representative screenshots show readable notation, controls and worked solutions."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-tests.json",
+        "package-integrity.json",
+        "rejection-and-replay.json"
+      ],
+      "details": "Exact Python 3.13.5 dependency contract, relocation and deterministic replay pass. All 153 workspace files remain unchanged."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "evidence-contract.json",
+        "counterfactual-results.json",
+        "delivery-shortcut-results.json",
+        "regression-comparison.json",
+        "learner-selection.json",
+        "inventory-audit.json",
+        "affected-inventory.json"
+      ],
+      "details": "Every profile supports five answers with bank and size held fixed; relevant evidence changes keys, while row-only changes preserve answers. The old shortcut answers 1/5 batch questions. Every surviving control signature contains all five roles. Captured inventory contains only 14 original questions. Selection conclusions are conditional on supplied inventory and explicitly exclude unknown live learner policy/history."
+    }
+  },
+  "findings": []
+}

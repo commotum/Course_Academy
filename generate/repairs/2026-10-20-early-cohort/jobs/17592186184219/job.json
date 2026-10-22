@@ -6,11 +6,11 @@
     "existing_entrypoint": "/home/jake/Developer/Course_Academy/generate/scratch/17592186184219.py",
     "job_kind": "build"
   },
-  "stage": "validate",
+  "stage": "verified",
   "attempt": 1,
   "seed": 2450489871,
   "created": 1792656959.6253283,
-  "updated": 1792658423.0980163,
+  "updated": 1792659054.496151,
   "source_hash": "16f606a905e43ae6a8a5d0701d6f7c867b3dcb4f0b3c34b7b7fcd44549e078e3",
   "inventory_hash": "f8acd047dfd1ac1d4aeb7a1200f9fc86bca194a0d78ae2c8d80d767c4315ae3a",
   "manifest": "package.json",
@@ -22,11 +22,11 @@
   "assets": {},
   "package_hash": "b40c992a51ed4eda0db6a986a9f860b13cc60d9f164bbdb98253a33224246774",
   "previous_review": {
-    "directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186184219/review-0-policy-2-f24f201976da522d",
+    "directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186184219/review-1-policy-2-acb771abb89de2f4",
     "binding": {
       "policy_version": 2,
-      "package_hash": "b09c74c9751fc7e25a8198114b43b92197d663c4bcde1f62f786a10f289d1a41",
-      "batch_hash": "f706ed728028832f3055c99f3898463256ff53e9c690ef45a990f41e1d868ce8",
+      "package_hash": "b40c992a51ed4eda0db6a986a9f860b13cc60d9f164bbdb98253a33224246774",
+      "batch_hash": "fae918b1679797b1b823319e2e36c60a0eca1ce54109170aceeea3693fea9a1f",
       "source_hash": "16f606a905e43ae6a8a5d0701d6f7c867b3dcb4f0b3c34b7b7fcd44549e078e3",
       "inventory_hash": "f8acd047dfd1ac1d4aeb7a1200f9fc86bca194a0d78ae2c8d80d767c4315ae3a",
       "assets": {},
@@ -34,140 +34,28 @@
       "engine_hash": "dc1e0a8583ca33c6028bc0a641128ecc8e7896742189dd42b292170c9726bad9"
     }
   },
-  "needs_repair": true,
-  "error": {
-    "verdict": "revise",
-    "summary": "Two demonstrated defects: answer-bank patterns bypass the intended reasoning, including all five delivered batch questions; three current source banks are unsupported. Package unchanged; no database writes or asset publication.",
-    "source_analysis": {
-      "skill": "Find rank or nullity using rank(A) + nullity(A) = number of columns.",
-      "reasoning_steps": [
-        "Identify the column count.",
-        "Identify the supplied and requested dimensions.",
-        "Subtract the supplied dimension from the column count.",
-        "Select the resulting integer."
-      ],
-      "invariants": [
-        "Rank must lie between zero and min(rows, columns).",
-        "Rank plus nullity equals columns.",
-        "Preserve easy, one-step substitution and the five-choice radio response."
-      ],
-      "permitted_variations": [
-        "Vary feasible dimensions and supplied values.",
-        "Vary the requested rank/nullity role.",
-        "Vary distractors and correct numerical roles without introducing extra prerequisites."
-      ],
-      "source_refs": [
-        "a05d1874-f484-5b03-a7ba-b2697b84a74b",
-        "245a8171-aeb5-5caf-950d-44cbb3c0aece",
-        "e9ab814e-2358-5160-95c5-d43671e5affe",
-        "tutorial 0728c510-110b-5bde-93ea-9050a87a6ecc: rank(A)+nullity(A)=n, where n is columns"
-      ],
-      "evidence_paths": [
-        "source-analysis.json"
-      ]
-    },
-    "checks": {
-      "source_replay": {
-        "status": "failed",
-        "evidence_paths": [
-          "source-replay.json",
-          "missing-bank-exhaustion.json"
-        ],
-        "details": "11 of 14 source questions replay completely. No supported profile reproduces the three missing complete banks."
-      },
-      "math": {
-        "status": "passed",
-        "evidence_paths": [
-          "math-and-coverage.json",
-          "counterfactual-results.json",
-          "boundary-tests.json"
-        ],
-        "details": "Independent checks verified feasibility, subtraction, choices and worked solutions for 269 sampled/batch records and ten controlled records."
-      },
-      "variety": {
-        "status": "failed",
-        "evidence_paths": [
-          "math-and-coverage.json",
-          "missing-bank-exhaustion.json",
-          "delivery-shortcut-results.json"
-        ],
-        "details": "Both targets and varied shapes survive delivery, but three observed bank profiles are omitted. Decision shortcuts are assessed separately."
-      },
-      "scope": {
-        "status": "passed",
-        "evidence_paths": [
-          "source-analysis.json",
-          "rejection-and-replay.json",
-          "counterfactual-results.json"
-        ],
-        "details": "Supported outputs retain easy rank-nullity substitution. Unsupported difficulties and invalid response types reject explicitly."
-      },
-      "grading": {
-        "status": "passed",
-        "evidence_paths": [
-          "grader-input.json",
-          "grader-report.json"
-        ],
-        "details": "Native grader: 83 accepted, 164 rejected, zero unresolved. Tests include complete choice banks, counterfactuals, normalized batch records and the exact shortcut example."
-      },
-      "rendering": {
-        "status": "passed",
-        "evidence_paths": [
-          "render/rendering.json",
-          "render-inspection.json"
-        ],
-        "details": "All 15 actual-UI previews pass. Inspected screenshots show readable notation, shuffled radio controls and worked solutions."
-      },
-      "packaging": {
-        "status": "passed",
-        "evidence_paths": [
-          "packaging-tests.json",
-          "package-integrity.json",
-          "rejection-and-replay.json"
-        ],
-        "details": "Relocation and deterministic replay pass. Exact dependencies match Python 3.13.5 and sympy 1.14.0. Manifest and declared package files remain byte-identical."
-      },
-      "decision_variation": {
-        "status": "failed",
-        "evidence_paths": [
-          "pedagogical-variation.json",
-          "evidence-contract.json",
-          "shortcut-rules.json",
-          "delivery-shortcut-results.json",
-          "learner-selection.json",
-          "inventory-audit.json",
-          "affected-inventory.json"
-        ],
-        "details": "Target word plus sorted option gaps predicts 264/264 raw controls, 257/257 delivered controls and 5/5 surviving batch questions, versus 20% guessing. Conditional signature probes are also perfect. Counterfactual dependencies pass. Selection analysis has explicit policy/history limits. Captured inventory contains only original source questions, so no stored generated instances were affected."
-      }
-    },
-    "findings": [
-      {
-        "kind": "decision_shortcut",
-        "description": "Translated source banks preserve a recognizable correct numerical role. Seed 829013 offers [2,3,4,5,6] for a rank question; choosing the second-largest value gives 5 without using the dimensions or supplied nullity. This consecutive-bank rank shortcut succeeds on 34/34 control instances. The broader target/gap lookup answers every delivered control and all five batch questions. UI shuffling does not remove it.",
-        "source_refs": [
-          "e9ab814e-2358-5160-95c5-d43671e5affe",
-          "tutorial 0728c510-110b-5bde-93ea-9050a87a6ecc",
-          "generate/principles.md: fixed decision structure"
-        ],
-        "reproduction": "Run the package CLI with --difficulty easy --seed 829013 --count 1. Complete record: minimal-shortcut-record.json. Native acceptance is recorded under minimal-shortcut-seed-829013 in grader-input.json and grader-report.json. Run regression_tests.py GeneratorRegressions.test_rank_consecutive_bank_does_not_fix_correct_role for a strict failing regression.",
-        "requested_change": "Change the family-wide distractor construction so recognizable bank shapes do not fix the correct numerical role. Preserve explicit source replay, introduce counterexamples to these cue rules, and regenerate the five-question batch. More translations or option shuffling alone cannot fix this."
-      },
-      {
-        "kind": "source_fidelity",
-        "description": "The package supports 11 source banks while the current source supplies 14. Missing q-141221, q-142482 and q-141190 cannot replay through any supported profile. Minimal case q-141221 requires a 4\u00d75 matrix with rank 4, nullity answer 1, and complete bank {0,1,2,4,5}.",
-        "source_refs": [
-          "14361c6d-cac3-5b4d-b77b-8d67c1c14fc6",
-          "419374b5-8846-5602-9c56-203ab6362cc4",
-          "7e28e70a-8db7-56d6-8e9d-6424a558b67a"
-        ],
-        "reproduction": "Run verify_source_banks.py; missing-bank-exhaustion.json records every eligible-profile trial at the original parameters. Run regression_tests.py GeneratorRegressions.test_all_current_source_banks_replay for a strict failing regression.",
-        "requested_change": "Add complete replay support for all three current source cases, preserving prompts, banks, correct values and solution stages. Keep their generated extensions subject to the independent shortcut regression."
-      }
-    ]
-  },
+  "needs_repair": false,
+  "error": null,
   "last_rejected_package": "b09c74c9751fc7e25a8198114b43b92197d663c4bcde1f62f786a10f289d1a41",
   "last_rejected_source": "16f606a905e43ae6a8a5d0701d6f7c867b3dcb4f0b3c34b7b7fcd44549e078e3",
   "last_rejected_engine": "dc1e0a8583ca33c6028bc0a641128ecc8e7896742189dd42b292170c9726bad9",
-  "author_running": false
+  "author_running": false,
+  "review": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186184219/review-1-policy-2-acb771abb89de2f4/result.json",
+  "review_policy_version": 2,
+  "review_binding": "acb771abb89de2f4a5470c7cc88f0312dd22398fe72bff7f592fa09dc8bfbbfe",
+  "approval_recorded": true,
+  "registration": "generators/b4/b40c992a51ed4eda0db6a986a9f860b13cc60d9f164bbdb98253a33224246774/17592186184219.py",
+  "publication": {
+    "status": "verified",
+    "passed": true,
+    "basis_before": 5446,
+    "basis_after": 5447,
+    "new_questions": 5,
+    "package_sha256": "b40c992a51ed4eda0db6a986a9f860b13cc60d9f164bbdb98253a33224246774",
+    "preparation_sha256": "c25aebe7f7cc7c23aec39d65bb4c2eb88f6f7d89c200c8ea165464bbe1d30979",
+    "request_key": "capture-93296afd-c4c3-4556-a15e-b0d803de82c9",
+    "generator_registration_verified": true,
+    "learner_and_engine_facts_unchanged": true
+  },
+  "completed": 1792659054.3636777
 }
