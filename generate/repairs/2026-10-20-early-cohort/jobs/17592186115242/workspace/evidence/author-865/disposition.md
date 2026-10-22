@@ -1,0 +1,7 @@
+Preserved the candidate and completed construction repairs. No runtime change was justified by the latest finding.
+
+First reproduced `checks/batch_regressions.py --finding inventory`: exit 1, five affected historical questions, 64/64 sign-extremum successes in the retained possible-history witness. Then ran job Python `-B checks/recheck_status.py --output evidence/author-865`. Four generator regressions pass, 17 complete source banks replay, 14 records retain conditional contrasts through delivery, and the native grader accepts 7 correct and rejects 28 wrong responses. Relocation, exact dependencies, protected hashes and the staged five-replacement mapping pass. Retained actual-UI screenshot visually inspected.
+
+Finding 591f580cadb749294588 remains unresolved. All five historical generated records match the captured inventory; none is untested. The current generator cannot alter their stored banks. The finding explicitly requests separate inventory remediation, while this author task prohibits database changes and publication. The complete unapplied mapping already exists in evidence/repair-3/inventory-repair-proposal.json. No source questions were marked generated, no inventory was substituted, and the strict failing regression was preserved.
+
+Status: unsupported. The remaining action is to process that proposal through the separate inventory-remediation workflow and supply fresh captured inventory. Another generator edit against this unchanged pool cannot resolve the failure.
