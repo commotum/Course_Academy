@@ -1,0 +1,110 @@
+{
+  "verdict": "accepted",
+  "summary": "All eight completed checks pass for the unchanged package and exact batch. Evidence paths corrected in this self-contained bundle; historical controls retained.",
+  "source_analysis": {
+    "skill": "Perform Gaussian elimination on a nonsingular 2\u00d72 system and optionally back-substitute.",
+    "reasoning_steps": [
+      "Normalize the first pivot.",
+      "Eliminate the lower-left entry.",
+      "Normalize the second pivot.",
+      "Optionally back-substitute and select the matching answer."
+    ],
+    "invariants": [
+      "Nonzero first pivot and nonsingular coefficient matrix.",
+      "Five radio choices.",
+      "Preserve the source arithmetic workload."
+    ],
+    "permitted_variations": [
+      "Vary coefficients and constants within supported arithmetic.",
+      "Vary which candidate qualifies and its position.",
+      "Update prompts, keys and explanations consistently."
+    ],
+    "source_refs": [
+      "9752715d-a11c-5d27-95dc-d20bec1117cb",
+      "dc5530a8-d7bb-5ee6-b842-11178cec4e06",
+      "2112d3af-1fb0-5a70-ab99-59931db99930: three elimination steps",
+      "ee4b134d-2908-5930-86bb-32537e0d8347: REF nonuniqueness"
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "source-confirmation.json",
+      "correction-provenance.json",
+      "path-correction-provenance.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replays.json",
+        "source-replay-results.json"
+      ],
+      "details": "Reused ten complete source-bank replays; incomplete captures remain explicitly documented."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "construction-regression.json"
+      ],
+      "details": "Reused exact-arithmetic verification of keys, row operations and solutions."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "normal-catalog-records.json",
+        "delivery-selection.json"
+      ],
+      "details": "Supported profiles and target ranks remain covered; the exact delivered batch covers all five answer ranks."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "independent-records.json"
+      ],
+      "details": "Reused verification of source representations, operations and arithmetic workload."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-final-input.json",
+        "grader-final-results.json"
+      ],
+      "details": "Reused 740 native-grader submissions: 148 accepted and 592 rejected."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-inspection.json",
+        "ui-order-results.json"
+      ],
+      "details": "Reused sixteen actual-UI renders and recorded screenshot inspections."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "boundary-rejections.json",
+        "correction-package-unchanged.json",
+        "package-preservation.json"
+      ],
+      "details": "Completed runtime checks retained. Fresh hashes confirm all 176 package files remain unchanged."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "historical-control.json",
+        "correction-validation.json",
+        "correction-current-records.json",
+        "delivery-selection.json",
+        "affected-inventory.json",
+        "generated-records.json"
+      ],
+      "details": "All 56 current probes remain unchanged. Fresh strict checks score 1/5 on current raw and delivered batches and reproduce 5/5 on the historical failing control. That control remains accurately labeled in a separate report. Real contract and schema validation pass."
+    }
+  },
+  "findings": []
+}

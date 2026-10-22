@@ -150,6 +150,15 @@ except ImportError:
     jsonschema = None
 if jsonschema:
     jsonschema.validate(variation, load(REPO / 'generate/pipeline/pedagogical-variation.schema.json'))
+else:
+    schema_check = subprocess.run([
+        '/usr/bin/python3', '-B', '-c',
+        'import json,jsonschema,sys; '
+        'jsonschema.validate(json.load(open(sys.argv[1])),json.load(open(sys.argv[2])))',
+        str(OUT / 'pedagogical-variation.json'),
+        str(REPO / 'generate/pipeline/pedagogical-variation.schema.json'),
+    ], capture_output=True, text=True)
+    assert schema_check.returncode == 0, schema_check.stderr
 save('correction-validation.json', {
     'passed': True, 'validator': 'scripts/generator_review.py:validate_review',
     'original_error_reproduced': original_error,
@@ -158,11 +167,11 @@ save('correction-validation.json', {
         p for p in load(OLD / 'pedagogical-variation.json')['shortcut_probes'] if p not in historical],
     'current_raw_correct': 1, 'current_delivered_correct': 1, 'historical_correct': 5,
     'attempts_each': 5, 'package_unchanged': True, 'commands': commands,
-    'json_schema_checked': jsonschema is not None,
+    'json_schema_checked': True,
 })
 save('schema-validation.json', {'passed': True,
     'validator': 'scripts/generator_review.py:validate_review',
-    'all_eight_passed': True, 'json_schema_checked': jsonschema is not None})
+    'all_eight_passed': True, 'json_schema_checked': True})
 validator.validate_review(load(OUT / 'result.json'), OUT)
 (OUT / 'session-state.md').write_text(
     'Bounded contract correction complete. Corrected self-contained bundle: contract-repair/. '

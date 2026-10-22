@@ -1,0 +1,91 @@
+{
+  "purpose": "Retained failing control; distinct from current-package acceptance probes.",
+  "original_probe": {
+    "cue": "retained pivot/rank cue",
+    "subgroup": "previous failing batch",
+    "scope": "overall",
+    "strategy": "If a11=1 choose second-largest candidate y, else minimum.",
+    "correct": 5,
+    "total": 5,
+    "baseline": 0.2,
+    "disposition": "defect",
+    "conclusion": "5/5; random choice among five has success 0.2. Historical control only. Same executable check rejects this 5/5 predictor; current batch is 1/5.",
+    "sample_refs": [
+      "previous-runner-batch.json",
+      "retained-failing.log"
+    ]
+  },
+  "status": "Historical defect remains reproduced; retained finding is resolved in current batch.",
+  "current_correct": 1,
+  "current_total": 5,
+  "baseline": 0.2,
+  "complete_record_files": [
+    "previous-runner-batch.json",
+    "correction-current-records.json",
+    "delivery-batch/accepted.json"
+  ],
+  "commands": [
+    {
+      "label": "current",
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "-B",
+        "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186059775/review-3-policy-2-0d2b0c0912b0fa93/reproduce_batch_shortcut.py"
+      ],
+      "exit_code": 0,
+      "measurement": {
+        "input": "current batch(easy,5,4258185931)",
+        "strategy": "if input a11==1 choose second-largest candidate y, else choose smallest",
+        "correct": 1,
+        "total": 5,
+        "random_baseline": 0.2,
+        "q73439_correct": 0,
+        "q73439_total": 0
+      },
+      "log": "correction-current.log"
+    },
+    {
+      "label": "delivered",
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "-B",
+        "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186059775/review-3-policy-2-0d2b0c0912b0fa93/reproduce_batch_shortcut.py",
+        "--input",
+        "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186059775/review-3-policy-2-0d2b0c0912b0fa93/delivery-batch/accepted.json"
+      ],
+      "exit_code": 0,
+      "measurement": {
+        "input": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186059775/review-3-policy-2-0d2b0c0912b0fa93/delivery-batch/accepted.json",
+        "strategy": "if input a11==1 choose second-largest candidate y, else choose smallest",
+        "correct": 1,
+        "total": 5,
+        "random_baseline": 0.2,
+        "q73439_correct": 0,
+        "q73439_total": 0
+      },
+      "log": "correction-delivered.log"
+    },
+    {
+      "label": "historical",
+      "command": [
+        "/home/jake/Developer/Course_Academy/.venv/bin/python",
+        "-B",
+        "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186059775/review-3-policy-2-0d2b0c0912b0fa93/reproduce_batch_shortcut.py",
+        "--input",
+        "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186059775/review-3-policy-2-0d2b0c0912b0fa93/previous-runner-batch.json"
+      ],
+      "exit_code": 1,
+      "measurement": {
+        "input": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186059775/review-3-policy-2-0d2b0c0912b0fa93/previous-runner-batch.json",
+        "strategy": "if input a11==1 choose second-largest candidate y, else choose smallest",
+        "correct": 5,
+        "total": 5,
+        "random_baseline": 0.2,
+        "q73439_correct": 3,
+        "q73439_total": 3
+      },
+      "log": "correction-historical.log"
+    }
+  ],
+  "inventory": "Three legacy stored defects remain documented in affected-inventory.json; no database changes."
+}

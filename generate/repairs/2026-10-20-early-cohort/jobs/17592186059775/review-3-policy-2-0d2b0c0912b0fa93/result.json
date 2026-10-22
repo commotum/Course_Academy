@@ -1,6 +1,6 @@
 {
-  "verdict": "accepted",
-  "summary": "All eight checks pass. The retained shortcut falls from 5/5 on the previous batch to 1/5 on the current delivered batch. Package files remain unchanged. Three historical inventory weaknesses are documented separately.",
+  "verdict": "revise",
+  "summary": "Evidence-only correction remains to be installed. The corrected bundle passes validation in contract-repair-2/, but sandbox permissions prevent replacing reports at evidence_root. All 176 package files remain unchanged. No generator repair is requested.",
   "source_analysis": {
     "skill": "Perform Gaussian elimination on a nonsingular 2\u00d72 system and optionally back-substitute.",
     "reasoning_steps": [
@@ -12,12 +12,12 @@
     "invariants": [
       "Nonzero first pivot and nonsingular coefficient matrix.",
       "Five radio choices.",
-      "Preserve source arithmetic workload and forward-elimination stages."
+      "Preserve the source arithmetic workload."
     ],
     "permitted_variations": [
       "Vary coefficients and constants within supported arithmetic.",
       "Vary which candidate qualifies and its position.",
-      "Derive prompts, answers and explanations consistently."
+      "Update prompts, keys and explanations consistently."
     ],
     "source_refs": [
       "9752715d-a11c-5d27-95dc-d20bec1117cb",
@@ -27,94 +27,93 @@
     ],
     "evidence_paths": [
       "source-analysis.json",
-      "source-confirmation.json"
+      "contract-repair-2/source-confirmation.json",
+      "contract-repair-2/correction-provenance.json",
+      "contract-repair-2/path-correction-provenance.json"
     ]
   },
   "checks": {
     "source_replay": {
       "status": "passed",
       "evidence_paths": [
-        "source-replays.json",
-        "source-replay-results.json"
+        "contract-repair-2/source-replays.json",
+        "contract-repair-2/source-replay-results.json"
       ],
-      "details": "Ten complete source banks replay exactly. Two incomplete captures remain explicitly unsupported; source ambiguities are documented."
+      "details": "Completed source-bank replays retained; 12 original prompts and complete banks reconfirmed."
     },
     "math": {
       "status": "passed",
       "evidence_paths": [
-        "audit.py",
-        "math-results.json",
-        "construction-regression.json",
-        "grader-final-input.json"
+        "contract-repair-2/math-results.json",
+        "contract-repair-2/construction-regression.json"
       ],
-      "details": "Exact arithmetic verifies unique keys, intermediate row operations and optional solutions for raw, delivered and construction-regression records."
+      "details": "Completed exact-arithmetic checks retained."
     },
     "variety": {
       "status": "passed",
       "evidence_paths": [
-        "changed-rules.diff",
-        "construction-regression.json",
-        "normal-catalog-records.json",
-        "delivery-selection.json"
+        "contract-repair-2/normal-catalog-records.json",
+        "contract-repair-2/delivery-selection.json"
       ],
-      "details": "Revised ordering preserves 64 easy and 83 moderate surviving instances. The exact delivered batch covers all five answer ranks."
+      "details": "Completed coverage checks retained; the exact delivered batch covers all five answer ranks."
     },
     "scope": {
       "status": "passed",
       "evidence_paths": [
-        "source-analysis.json",
-        "independent-records.json",
-        "math-results.json"
+        "contract-repair-2/source-analysis.json",
+        "contract-repair-2/independent-records.json"
       ],
-      "details": "Observed representations, operations, response contract and arithmetic workload are preserved."
+      "details": "Completed source-scope checks retained."
     },
     "grading": {
       "status": "passed",
       "evidence_paths": [
-        "grader-final-input.json",
-        "grader-final-results.json",
-        "grader-final.log"
+        "contract-repair-2/grader-final-input.json",
+        "contract-repair-2/grader-final-results.json"
       ],
-      "details": "Native grader passed 740 submissions: 148 accepted and 592 rejected. Every radio choice was tested."
+      "details": "Completed 740 native-grader submissions retained: 148 accepted and 592 rejected."
     },
     "rendering": {
       "status": "passed",
       "evidence_paths": [
-        "render-records.json",
-        "render/rendering.json",
-        "render-inspection.json",
-        "ui-order-results.json"
+        "contract-repair-2/render/rendering.json",
+        "contract-repair-2/render-inspection.json",
+        "contract-repair-2/ui-order-results.json"
       ],
-      "details": "Sixteen actual-UI renders passed. Six representative screenshots were inspected, including counterfactual pairs and current batch endpoints."
+      "details": "Sixteen actual-UI renders and completed screenshot inspections retained."
     },
     "packaging": {
       "status": "passed",
       "evidence_paths": [
-        "packaging-results.json",
-        "boundary-rejections.json",
-        "package-unchanged.json",
-        "retained-current.log",
-        "retained-failing.log",
-        "commands.json"
+        "contract-repair-2/packaging-results.json",
+        "contract-repair-2/boundary-rejections.json",
+        "contract-repair-2/package-preservation.json"
       ],
-      "details": "Dependencies, relocation, deterministic replay, requested counts and boundary rejection passed. All 176 package-tree files remain unchanged."
+      "details": "Runtime checks retained. Fresh hashes confirm all 176 package files remain unchanged; the batch matches completed checks."
     },
     "decision_variation": {
-      "status": "passed",
+      "status": "failed",
       "evidence_paths": [
-        "pedagogical-variation.json",
-        "schema-validation.json",
-        "delivery-selection.json",
-        "delivery-batch/delivery.json",
-        "strict-current.log",
-        "strict-delivered.log",
-        "strict-control.log",
-        "ui-order-results.json",
-        "affected-inventory.json",
-        "generated-records.json"
+        "contract-repair-2/pedagogical-variation.json",
+        "contract-repair-2/historical-control.json",
+        "contract-repair-2/correction-validation.json",
+        "contract-repair-2/path-validation.json",
+        "contract-repair-2/affected-inventory.json",
+        "contract-repair-2/generated-records.json"
       ],
-      "details": "Controlled counterfactuals and conditional shortcut probes passed. All five current records survive delivery with distinct answer ranks. Tested learner-selection scenarios reach every rank. Historical inventory defects are separately reproduced."
+      "details": "Substantive checks pass in the corrected bundle. The validator requires the corrected fixed-name variation report at evidence_root, whose superseded report cannot be replaced under current write permissions."
     }
   },
-  "findings": []
+  "findings": [
+    {
+      "kind": "evidence",
+      "description": "The previous response used evidence paths relative to contract-repair instead of evidence_root. The named missing-provenance error was reproduced. A corrected, validated bundle exists, but installation at the required root remains blocked by filesystem permissions.",
+      "source_refs": [
+        "9752715d-a11c-5d27-95dc-d20bec1117cb",
+        "dc5530a8-d7bb-5ee6-b842-11178cec4e06"
+      ],
+      "reproduction": "Run python3 -B correct_evidence.py from evidence_root/contract-repair-2. path-validation.json records successful bundle and root-relative report validation. Validating contract-repair/result.json against evidence_root reproduces the missing correction-provenance.json error.",
+      "requested_change": "Have the runner install the complete contract-repair-2 evidence bundle at evidence_root, using accepted-review.json as result.json, then validate against that root. This is a report-only correction: do not invoke generator authoring, modify the package, publish assets, or write the database."
+    }
+  ]
 }

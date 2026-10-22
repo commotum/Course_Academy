@@ -1,15 +1,11 @@
-# Current state — author 868
+# Current state — author 872
 
-Read latest feedback and all retained findings from repair history (868 events, latest attempt 867). No new generator defect or source change. Runtime and both strict regression declarations preserved.
+Preserved the repaired generator, package, instructional account, source analysis, source replay, existing UI rendering evidence, inventory evidence and both strict regressions. Read current feedback and both retained history findings; the latest event requests resolution of the same external evidence installation.
 
-Reproduced latest failure first:
-`/home/jake/Developer/Course_Academy/.venv/bin/python checks/check_report_installation.py`
-Exit 1: original external prior-review report still fails actual `generator_review.validate_review` with `decision_variation has an unresolved decision shortcut`. The staged workspace correction passes schema/contract validation and 26 current-record replays. Evidence: `evidence/author-868/report-check.log`, `evidence/author-868/report-results.json`.
+Reproduced the latest failure first: `/home/jake/Developer/Course_Academy/.venv/bin/python checks/check_report_installation.py` exits 1 because the required external prior-review report still raises `decision_variation has an unresolved decision shortcut`. Local staged schema/contract validation and 26 current-record replays pass; these do not satisfy installation at the required destination.
 
-Retained verification:
-- `checks/test_role_exchange.py --output evidence/author-868/role-regression`: exit 0. Exact reorder and transfer counterfactuals, independent visible math, conditional shortcut probes, shared delivery filtering and 30 native acceptance/rejection checks pass. Both resonant positions survive delivery (19 and 17 mixed records).
-- `checks/verify_retained_state.py`: exit 0. Runtime/source unchanged; 55 staged artifacts and eight unaffected mathematical cases verified. Prior source replay and actual-UI rendering evidence remains applicable to unchanged runtime.
+`/home/jake/Developer/Course_Academy/.venv/bin/python checks/test_role_exchange.py --output evidence/current-author/role-regression` exits 0: original reorder counterexample, controlled transfer, visible mathematics, within-template shortcut probes, shared delivery filtering and 30 native-grader checks pass. Both resonance positions survive delivery. `/home/jake/Developer/Course_Academy/.venv/bin/python checks/verify_retained_state.py` exits 0: unchanged source/runtime, 55 staged handoff artifact hashes and eight mathematical regression cases verified. Existing source replay and rendering remain applicable because runtime/source are unchanged.
 
-Commands and results: `evidence/author-868/checks.json`. No external files, database content, images, engine code or runtime package files changed.
+Commands, exit codes and timings: `evidence/current-author/checks.json`. Strict failure details: `evidence/current-author/report-results.json`. No runtime, engine, external report, database or publication changes were made.
 
-Unfinished: runner must install staged corrected artifacts using `evidence/review-installation-handoff.json` at the original prior-review destination, rerun the unchanged strict regression, then obtain fresh independent review. Finding 645672a4cd3f9bf609ca explicitly requests installation with evidence-root write access and no generator authoring. That destination is outside the workspace-only authorization. Do not weaken the regression or substitute a local destination. Repeating an unchanged workspace-only author job cannot resolve this runner action. Status unsupported.
+Unfinished finding 645672a4cd3f9bf609ca requires runner installation of the validated staged files at the prior-review destination specified in `evidence/review-installation-handoff.json`, then the unchanged strict check and fresh independent review. This action is outside the authorized workspace. Further unchanged workspace-only author retries cannot complete it. Preserve the failing regression and historical inventory observations. Status remains unsupported.
