@@ -8,22 +8,14 @@ Moderate/hard remain unsupported pending evidence. See adjacent extraction.
 """
 import argparse, hashlib, itertools, json, random, re, sys, uuid
 from pathlib import Path
-try:
-    import sympy as sp
-except ModuleNotFoundError:
-    if __name__ != '__main__': raise
-    import os
-    python=Path(__file__).resolve().parents[2]/'.venv/bin/python'
-    os.execv(str(python),[str(python),str(Path(__file__).resolve()),*sys.argv[1:]])
-ROOT=Path(__file__).resolve().parents[2]
-sys.path.insert(0,str(ROOT/'scripts/question_capture'))
+import sympy as sp
 from math_format import matrix_tex,normalize_prose,normalize_tex,checked_math_content
 HERE=Path(__file__).with_suffix('')
 SOURCE=json.loads((HERE/'source.json').read_text())
 KP_ID=17592186119848
 KP_UUID=SOURCE['record'][':knowledge-point/id']
 GENERATOR_UUID=str(uuid.uuid5(uuid.NAMESPACE_URL,'course-academy:generator:'+str(KP_ID)))
-VERSION='rank-inspection-pivots-1'
+VERSION='rank-inspection-pivots-2'
 SUPPORTED_LEVELS=('easy',)
 CASES={q[':question/math-academy-id']:q for q in SOURCE['record'][':knowledge-point/questions'] if q.get(':question/difficulty',{}).get(':db/ident')==':question.difficulty/easy' and q.get(':question/worked-solution')}
 MATRIX=re.compile(r'([A-E])\s*=\s*\\begin\{bmatrix\}(.*?)\\end\{bmatrix\}',re.S)
@@ -33,6 +25,7 @@ def target(q):return int(re.search(r'rank of \$(\d+)',q[':question/problem'])[1]
 def matrices(q):
     result=parse_matrices(q[':question/problem'])
     for f in q.get(':question/answer-fields',[]):
+        result.update(parse_matrices(f[':answer-field/key']))
         for a in f.get(':answer-field/choices',[]):result.update(parse_matrices(a[':answer/value']))
     return result
 def kind(sid):
@@ -98,7 +91,7 @@ def variant_solution(old,bank,r):
     else:end='"'+' and '.join('$'+k+'$' for k in matches)+' only."'
     return head+body.rstrip()+'\n\nTherefore, the correct answer is '+end
 @checked_math_content
-def generate(level,seed=0,profile=None,parameters=None):
+def generate(level,seed=0,profile=None,parameters=None,source_replay=False):
     if level not in SUPPORTED_LEVELS:raise ValueError('Unsupported difficulty: '+level)
     rng=random.Random(seed);sid=profile or rng.choice(sorted(CASES));old=CASES[sid]
     desired=tuple(parameters['matches']) if parameters is not None else rng.choice(domain(sid))
@@ -120,8 +113,9 @@ def generate(level,seed=0,profile=None,parameters=None):
         for a in f[':answer-field/choices']:
             val=normalize_tex(render_matrices(a[':answer/value'],bank)) if a[':answer/type'][':db/ident']==':answer.type/math' else normalize_prose(a[':answer/value'])
             if typ==':answer-field.type/checkbox':
-                lab=f[':answer-field/key']
-                correct=val==('true' if lab in desired else 'false')
+                labs=tuple(parse_matrices(f[':answer-field/key']))
+                truth=labs[0] in desired if labs else not desired
+                correct=val==('true' if truth else 'false')
             elif kind(sid)=='five-matrix-radio':correct=next(iter(parse_matrices(val))) in desired
             else:correct=subset(val)==desired
             choices.append((a[':answer/type'][':db/ident'],val,correct))
@@ -131,14 +125,19 @@ def generate(level,seed=0,profile=None,parameters=None):
     uid=lambda key:str(uuid.uuid5(uuid.NAMESPACE_URL,str(KP_ID)+':'+content+':'+key))
     fields=[]
     for f,rows in rawfields:
-        key=f[':answer-field/key'];choices=[{':answer/id':uid(key+':'+typ+':'+val),':answer/type':typ,':answer/value':val} for typ,val,_ in rows]
+        key=render_matrices(normalize_prose(f[':answer-field/key']),bank);choices=[{':answer/id':uid(key+':'+typ+':'+val),':answer/type':typ,':answer/value':val} for typ,val,_ in rows]
         correct=next(a[':answer/id'] for a,row in zip(choices,rows) if row[2])
         field={':answer-field/id':uid('field:'+key),':answer-field/key':key,':answer-field/type':f[':answer-field/type'][':db/ident'],':answer-field/choices':choices,':answer-field/correct':[':answer/id',correct]}
         for extra in (':answer-field/label',):
             if extra in f:field[extra]=f[extra]
         fields.append(field)
     question={':question/id':uid('question'),':question/difficulty':':question.difficulty/easy',':question/problem':problem,':question/worked-solution':solution,':question/answer-fields':fields}
-    return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':SOURCE['record'][':knowledge-point/title']},'question':question,'generation':{'version':VERSION,'seed':seed,'template':kind(sid),'bank_profile':sid,'source_id':sid,'parameters':{'matches':list(desired)},'mathematical_fingerprint':fingerprint(question),'content_fingerprint':content,'assets':[],'source':{'basis':SOURCE['basis'],'lineage':SOURCE['lineage']},'dependencies':{'sympy':sp.__version__},'ranks':{k:int(m.rank()) for k,m in bank.items()},'extension':desired!=original}}
+    record={'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':SOURCE['record'][':knowledge-point/title']},'question':question,'generation':{'version':VERSION,'seed':seed,'template':kind(sid),'bank_profile':sid,'source_id':sid,'source_replay':source_replay,'parameters':{'matches':list(desired)},'mathematical_fingerprint':fingerprint(question),'content_fingerprint':content,'assets':[],'source':{'basis':SOURCE['basis'],'lineage':SOURCE['lineage']},'dependencies':{'sympy':sp.__version__},'ranks':{k:int(m.rank()) for k,m in bank.items()},'extension':desired!=original}}
+    # q-35283 supplies family evidence for a visible None option. Exact replay
+    # of q-79568 keeps its original three fields; new practice uses both cases.
+    if kind(sid)=='three-matrix-checkbox' and not source_replay:
+        record=_explicit_none_checkbox(record)
+    return record
 def catalog():
     result=[];seen=set()
     for sid in sorted(CASES):
@@ -155,12 +154,9 @@ def markdown(rec):
     q=rec['question'];return q[':question/problem']+'\n\n'+'\n\n'.join(f[':answer-field/key']+': '+', '.join(a[':answer/value'] for a in f[':answer-field/choices']) for f in q[':question/answer-fields'])+'\n\n'+q[':question/worked-solution']
 
 # Every learner-facing checkbox question has a nonempty correct selection.
-import sys as _policy_sys
-from pathlib import Path as _PolicyPath
-_policy_sys.path.insert(0, str(next(p for p in _PolicyPath(__file__).resolve().parents if (p / "scripts/generator_policy.py").is_file())))
-from scripts.generator_policy import nonempty_checkbox as _nonempty_checkbox
+from generator_policy import nonempty_checkbox as _nonempty_checkbox, explicit_none_checkbox as _explicit_none_checkbox
 for _policy_name in ['batch', 'generate']:
-    globals()[_policy_name] = _nonempty_checkbox(globals()[_policy_name], none_label='None of the above')
+    globals()[_policy_name] = _nonempty_checkbox(globals()[_policy_name])
 
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('--difficulty',default='easy');p.add_argument('--seed',type=int,default=0);p.add_argument('--count',type=int,default=5);p.add_argument('--format',choices=['json','markdown'],default='json');a=p.parse_args()
