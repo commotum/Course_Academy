@@ -80,17 +80,18 @@ def role_instance(t, k, shift):
     bank = [(sp.cancel(1/(transformed+(j-1)*v)), 1/x) for j in ROLES]
     return rhs, bank
 
-def role_text(src, rhs):
+def role_text(src, rhs, shift):
     problem = src[':question/problem'].split('$$')
     problem[1] = '\n'+DY+'='+sp.latex(rhs)+'.\n'
     problem = '$$'.join(problem)
     substituted = rhs.xreplace({y:sp.Mul(v,x,evaluate=False)})
-    F = sp.cancel(rhs.subs(y,v*x))
+    base_F = sp.cancel((rhs-shift*y/x).subs(y,v*x))
+    F = base_F+shift*v
     residual = sp.cancel(F-v)
     rows = [DY+' & ='+sp.latex(rhs),
             'x'+D+'+v & ='+sp.latex(substituted),
             'x'+D+'+v & ='+sp.latex(F),
-            'x'+D+' & ='+sp.latex(sp.Add(F,-v,evaluate=False)),
+            'x'+D+' & ='+sp.latex(base_F+(shift-1)*v),
             'x'+D+' & ='+sp.latex(residual),
             equation(sp.cancel(1/residual),1/x).replace('=', ' & =')]
     prefix = src[':question/worked-solution'].rsplit(r'\begin{aligned}',1)[0]
@@ -118,7 +119,7 @@ def generate(difficulty='easy', seed=0, template=None, parameters=None, profile=
     if replay:
         problem = src[':question/problem']; solution = src[':question/worked-solution']
     else:
-        problem, solution = role_text(src,rhs)
+        problem, solution = role_text(src,rhs,shift)
     # Equations retain derivative notation, source answer shape, and five choices.
     values = [equation(a,b) for a,b in bank]
     if replay:
@@ -137,6 +138,7 @@ def batch(difficulty,count,seed=0,template=None):
     if difficulty not in SUPPORTED_LEVELS: raise ValueError('Unsupported difficulty')
     if template is not None and template not in DOMAINS:raise ValueError('Unknown template')
     tasks = [(t,k,s) for s in ROLES for t,domain in DOMAINS.items() if template is None or t==template for k in domain]
+    rng=random.Random(seed);rng.shuffle(tasks)
     # Prefer exact source replays when several coefficient decompositions coincide.
     tasks.sort(key=lambda task: not (task[1]==ORIGINAL[task[0]] and task[2]==0))
     distinct = {}
@@ -144,7 +146,7 @@ def batch(difficulty,count,seed=0,template=None):
         rhs = mathematics(t,k)[0]+s*y/x
         semantic = sp.srepr(sp.cancel(rhs.subs(y,v*x)))
         distinct.setdefault(semantic,(t,k,s))
-    tasks=list(distinct.values());random.Random(seed).shuffle(tasks)
+    tasks=list(distinct.values());rng.shuffle(tasks)
     if count>len(tasks):raise ValueError('Finite domain: at most '+str(len(tasks))+' mathematical tasks, including source tasks')
     return [generate(difficulty,seed,t,{'k':k,'shift':s}) for t,k,s in tasks[:count]]
 

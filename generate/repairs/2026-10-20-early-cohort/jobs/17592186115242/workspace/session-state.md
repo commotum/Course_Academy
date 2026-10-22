@@ -1,24 +1,21 @@
 # Current state
 
-Author-473 reproduced the exact latest retained failure first:
-`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory`
-Exit 1: five historical banks; 64/64 shortcut successes in the conditional possible-history witness.
+Author-475 read feedback and all five retained findings, reproduced the latest
+inventory failure first, and ran one retained verification suite.
 
-Then ran:
-`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/author-473`
-Exit 1 solely for finding 591f580cadb749294588. Four generator regressions,
-17 complete source-bank replays, canonical replay, 14 delivered records,
-7 accepted and 28 rejected native responses, relocation, exact dependencies,
-protected hashes and unapplied replacement mappings pass. Retained actual-UI
-screenshot and source tutorial flowchart visually inspected.
+Commands and results: evidence/author-475/outcome.md, commands.json,
+results.json and grader-report.json.
 
-Evidence: evidence/author-473/commands.json, results.json, grader-report.json,
-and outcome.md. No runtime, database, engine, source, inventory, publication,
-or other-job edits. Completed repairs and strict regressions remain intact.
+Four generator regressions, 17 complete source banks, canonical replay,
+14 delivered records, 7 accepted and 28 rejected native responses, dependency
+versions, relocation, protected hashes and staged replacement mapping pass.
+Retained actual-UI screenshots were visually inspected. Runtime is unchanged.
 
-Next unfinished step is the separate inventory-remediation workflow named in
-finding 591f580cadb749294588, then fresh capture and strict pool verification.
-Proposal: evidence/repair-3/inventory-repair-proposal.json (verified, unapplied).
-This job prohibits database changes; no workspace-only generator change can
-retire those stored banks. Do not substitute a hypothetical replacement pool
-for captured inventory or waive the strict failing regression.
+Strict finding 591f580cadb749294588 still fails: five historical stored banks
+and 64/64 shortcut successes in the possible-history selection witness.
+The next unfinished action is its separately requested inventory-remediation
+workflow, then fresh capture and strict pool verification. The proposal already
+exists in evidence/repair-3/inventory-repair-proposal.json (verified, unapplied).
+This job prohibits applying database changes. Do not replace captured inventory
+with hypothetical records or waive its strict regression. Unchanged feedback
+and input hashes do not justify another identical validation cycle.

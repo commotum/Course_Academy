@@ -66,6 +66,10 @@ def main():
             try:g.generate(template=t,parameters={'k':bad})
             except ValueError:pass
             else:raise AssertionError('Out-of-domain value generated')
+    for bad_shift in [-3,3,1.5]:
+        try:g.generate(parameters={'k':2,'shift':bad_shift})
+        except ValueError:pass
+        else:raise AssertionError('Out-of-domain shift generated')
     # Mathematical regression for the reproduced additive-coefficient failure.
     grouped=g.generate(template='q-14315',parameters={'k':2});validator.solution_check(grouped['question'])
     intended=v+1
