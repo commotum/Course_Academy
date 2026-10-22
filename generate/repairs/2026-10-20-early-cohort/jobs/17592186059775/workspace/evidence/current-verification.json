@@ -1,56 +1,83 @@
 {
-  "attempt": "author-50",
+  "author_attempt": 53,
   "status": "unsupported",
-  "runtime_hashes": {
-    "package.json": "663cb3294cd6832de919c9e21b569f271e63079f4cd4155486853d1c05434b23",
-    "17592186059775.py": "45ce3ee90e9c76d850d8f7e0d9c0851515a65a868264b79160260898c5eeb2ac",
-    "17592186059775/source.json": "936dc5c07130b5fabc5e453ac26efb90471b07c96bc0a904a214eca8494a4bfc",
-    "math_format.py": "734756ff87af508413171ebec82588a121ac9af7d85b454ac4137db41d23e5be",
-    "requirements.txt": "25f9f1fb1988b230147a1d3092d34e09c069eb7a6c6d6df46b3973b9f2d36efc",
-    "known-systems.json": "2492556950df4a1bb3622028c1d24fd72ff9ec82f76c19b8fe2bc6e74b80436f"
-  },
   "runtime_changed": false,
-  "exact_latest_reproduction": {
-    "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_current_handoff.py",
-    "exit_code": 1,
-    "report": "evidence/current-handoff-regression.json"
+  "fidelity": {
+    "complete_banks": 10,
+    "source_choices": 50,
+    "source_capture_prompts_and_fields_reconfirmed": 12
   },
-  "checks": {
-    "evidence_contract": {
-      "exit_code": 1,
-      "report": "evidence/evidence-contract-validation.json",
-      "reason": "bundle checks pass; installed handoff fails"
-    },
-    "cli": {
-      "exit_code": 0,
-      "report": "evidence/cli-contract.json"
-    },
-    "source_replay_and_render_binding": {
-      "exit_code": 0,
-      "report": "evidence/current-render-binding.json"
-    },
-    "current_sample": {
-      "exit_code": 0,
-      "report": "evidence/current-sample-validation.json",
-      "reproducer": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_batch_selection.py"
-    },
-    "historical_shortcut_control": {
-      "exit_code": 1,
-      "expected_failure": true,
-      "command": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_batch_selection.py --input evidence/batch-shortcut-before-records.json"
-    }
+  "correctness": "Independent parsed-matrix elimination, intermediate matrices and unique-key checks passed in retained batch regression.",
+  "grading": {
+    "native_responses": 25,
+    "accepted": 5,
+    "rejected": 20
   },
-  "visual_inspection": {
-    "screenshot": "evidence/author8-render/question-002.png",
+  "decision_variation": {
+    "raw": {
+      "correct": 1,
+      "total": 5,
+      "random_baseline": 0.2
+    },
+    "delivered": {
+      "correct": 1,
+      "total": 5,
+      "random_baseline": 0.2
+    },
+    "all_five_ranks_and_positions_survive": true,
+    "historical_control": "strict check fails as required (5/5)"
+  },
+  "rendering": {
     "fresh_render": false,
-    "current_delivered_endpoints_equal_retained_render_input": true,
-    "observation": "Readable prompt, matrices, five choices and worked operations; no visible clipping or exposed TeX."
+    "retained_render_binding_passed": true,
+    "visually_reinspected": "evidence/author8-render/question-002.png",
+    "inspection": "Readable prompt, five matrix choices and row-operation solution; no clipping or exposed TeX."
   },
-  "unresolved": "Installed runner rejects unchanged runtime before testing the evidence-only repair. Its correction and evidence installation require writes outside the authorized workspace.",
-  "proposed_fix": "runner-fix/evidence-only-rejection.patch",
-  "proposed_fix_installed": false,
-  "limitations": [
-    "No live inventory or learner history selection tested.",
-    "Preserved two incomplete source captures without fabricated keys or ratings."
+  "evidence_contract": {
+    "bundle_passed": true,
+    "negative_controls": [
+      "missing provenance",
+      "wrong root"
+    ],
+    "installed_runner_passed": false
+  },
+  "scope": "Workspace evidence only; no package, database, engine, publication, or external runner changes.",
+  "limitation": "Installed runner rejects preserved runtime before regressions or sampling. The retained finding requires an evidence-only correction. Fixing the runner gate and installing the staged bundle require writes outside this workspace.",
+  "staged_correction": "runner-fix/evidence-only-rejection.patch",
+  "checks": [
+    {
+      "name": "latest-failure",
+      "cmd": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_current_handoff.py",
+      "exit_code": 1,
+      "result_file": "evidence/current-handoff-regression.json"
+    },
+    {
+      "name": "evidence-contract",
+      "cmd": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_evidence_contract.py",
+      "exit_code": 1,
+      "log": "evidence/author53-evidence-contract.log",
+      "result_file": "evidence/evidence-contract-validation.json"
+    },
+    {
+      "name": "cli",
+      "cmd": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_cli_contract.py",
+      "exit_code": 0,
+      "log": "evidence/author53-cli.log",
+      "result_file": "evidence/cli-contract.json"
+    },
+    {
+      "name": "retained-batch",
+      "cmd": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_batch_selection.py",
+      "exit_code": 0,
+      "log": "evidence/author53-retained-batch.log",
+      "result_file": "evidence/batch-selection-regression.json"
+    },
+    {
+      "name": "source-render-binding",
+      "cmd": "/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_render_binding.py",
+      "exit_code": 0,
+      "log": "evidence/author53-source-render.log",
+      "result_file": "evidence/current-render-binding.json"
+    }
   ]
 }

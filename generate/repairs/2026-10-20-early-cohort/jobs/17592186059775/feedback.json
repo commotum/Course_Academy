@@ -7,13 +7,15 @@
     "evidence_paths": [
       "evidence/current-verification.json",
       "evidence/current-check-commands.json",
-      "evidence/current-sample-validation.json",
       "evidence/current-handoff-regression.json",
+      "evidence/evidence-contract-validation.json",
+      "evidence/batch-selection-regression.json",
       "repair-regressions.json",
+      "runner-fix/evidence-only-rejection.patch",
       "session-state.md"
     ],
     "limitations": [
-      "The installed runner rejects unchanged runtime despite the evidence-only finding requiring its preservation. Fixing that gate and installing the validated evidence bundle require writes outside the authorized workspace. The strict failing regression remains intact."
+      "The installed runner rejects unchanged runtime despite the evidence-only finding requiring its preservation. Applying the staged runner fix and installing the validated evidence bundle require writes outside the authorized workspace. The strict failing regression remains intact."
     ]
   },
   "instruction": "Fix the root cause, retain every earlier counterexample, and declare executable checks in repair-regressions.json. A failed check is another repair task, not permission to abandon the generator.",
