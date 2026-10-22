@@ -1,35 +1,29 @@
-# Author 690 — 2026-10-22
+# Author 693 — 2026-10-22
 
-Preserved the repaired runtime package and all five strict regression declarations.
-Read feedback, the five retained findings, prior session state, source lesson and
-question material, instructional account, required generator/validation docs, and
-existing checks. History has 690 events; 688 repeat author-reported limitations.
+Read feedback, all five retained findings, prior session state, source evidence,
+and required generator/validation guidance. Preserved all completed runtime repairs.
 
-First test: job Python `-B checks/batch_regressions.py --finding inventory`
-exited 1, reproducing finding 591f580cadb749294588 on five historical banks.
-The possible new-seen learner-selection witness still gives 64/64 shortcut
-successes. The audit independently replayed complete records against captured
-inventory; no generated inventory identity remains untested.
+Reproduced the latest failure first:
+`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory`
+Exit 1: five reproduced stored records still permit the sign-only extremum
+shortcut; the retained possible-history witness scores 64/64. All five generated
+inventory records were audited; original source questions remain separate.
 
-Then ran each other declaration in repair-regressions.json: shortcut, source,
-zero and batch all exited 0. Source replay covers 17 complete banks; three
-batch requests retain contrasting decisions across 14 accepted records through
-the shared delivery filter. `checks/verify_retained_evidence.py` exited 0:
-runtime, manifest, source and inventory hashes match the previously validated
-replacement proposal. Five replacement mappings remain staged and unapplied.
+Ran `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/author-693`.
+Exit 1 solely for finding 591f580cadb749294588. Four current-generator regressions
+pass, including 17 complete source banks, zero roots, conditional shortcut probes,
+controlled counterfactuals and 14 CLI records through shared delivery. Native
+grading passes 7 acceptance and 28 rejection checks. Relocation/dependencies pass.
+The existing five replacement mappings remain bound to the current package and
+captured inputs. Visually inspected retained actual-UI screenshot
+`evidence/repair-3/render/question-001.png`; no layout defect observed.
 
-Commands and current disposition: `evidence/author-690/commands.json`,
-`evidence/author-690/inventory-results.json`, and
-`evidence/author-690/disposition.json`. Actual native-grader,
-relocation and rendering evidence remains bound to the unchanged package.
-Visually inspected retained actual-UI `evidence/repair-3/render/question-001.png`
-and the source tutorial classification flowchart; no layout issue observed.
-No new renderer/grader run was needed because no runtime or record changed.
-No engine, database, publication, or runtime changes were made.
+Evidence: `evidence/author-693/commands.json`, `results.json`, `grader-report.json`,
+and `disposition.json`. Runtime, manifest, source, inventory and regression
+requirements remain unchanged. No database writes, publication or engine edits.
 
-Next unfinished action: separately review/apply the existing
-`evidence/repair-3/inventory-repair-proposal.json`, capture fresh inventory,
-then rerun the strict inventory regression. That action changes database
-content and is explicitly prohibited in this task. A generator edit cannot
-alter stored answer banks. Preserve the failing check and unsupported status;
-do not repeat an unchanged author cycle as a substitute for remediation.
+Unfinished: separately authorized inventory remediation and a fresh capture,
+as explicitly requested by the retained finding. The user prohibits that action
+here. Preserve the strict failure and proposed replacements; do not substitute a
+hypothetical pool for stored state. Status remains unsupported for this scope
+conflict. Further identical generator-only retries cannot resolve stored banks.

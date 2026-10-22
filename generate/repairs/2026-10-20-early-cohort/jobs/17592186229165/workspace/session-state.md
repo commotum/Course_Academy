@@ -1,11 +1,11 @@
-# Current state — author 913
+# Current state — author 917
 
-Read feedback and both retained findings; history has 913 events, latest attempt 912. Reproduced the exact latest failure first. No new generator defect is reported; preserved the repaired construction rule, package, instructional account, affected inventory and strict regression declarations.
+Read feedback and both retained findings. Reproduced the exact latest strict report failure first. No new generator authoring is requested by the evidence finding. Runtime, source, instructional account, affected-inventory evidence and strict regression declarations remain unchanged.
 
-Commands and observed results: `evidence/author-913/checks.json`.
+Commands and exit codes: `evidence/author-917/checks.json`. Results: `evidence/author-917/summary.json`.
 
-- Strict report-installation check fails: required external report still raises `decision_variation has an unresolved decision shortcut`. The local corrected report passes contract/schema and 26 current-generator record replays. Traceback and results saved in `evidence/author-913/`.
-- Retained role regression exits 0: nine controlled cases, 24 sampled mixed cases and eight default hard cases; delivery preserves 19 first-position and 17 second-position resonance cases plus five nonresonant cases. Native grader matches 11 acceptances and 19 rejections.
-- Retained-state check exits 0: source/runtime hashes unchanged, 55 staged artifacts verified, eight unaffected mathematical cases pass. Reinspected retained actual-UI screenshot; no runtime change requiring fresh rendering.
+- Strict report regression exits 1: the required external report still raises `decision_variation has an unresolved decision shortcut`. The workspace correction passes the real contract/schema and 26 current-generator record replays.
+- Role regression exits 0: nine controlled cases, 24 mixed samples and eight default hard cases pass visible mathematical checks, shared delivery and native grading. Both resonance positions survive delivery and conditional shortcut probes.
+- Retained-state check exits 0: unchanged source/runtime, 55 handoff artifacts verified and eight unaffected math cases pass. Reinspected `evidence/render/question-002.png`; no new runtime change requires rendering again.
 
-Next unfinished action: runner installs the staged correction at the prior-review destination listed in `evidence/review-installation-handoff.json`, reruns the unchanged strict default check, and obtains fresh independent review. The destination is outside authorized workspace writes. Finding 645672a4cd3f9bf609ca explicitly requests destination write access and no generator authoring. Another unchanged workspace-only author retry cannot complete this installation. Status remains unsupported; no failed acceptance criterion was weakened.
+Next unfinished action: the runner installs the staged corrected artifacts at the original prior-review destination specified in `evidence/review-installation-handoff.json`, reruns the unchanged strict regression and obtains fresh independent review. The destination is outside the user-authorized workspace. No external write, publication or database change was attempted, and the failed criterion was not weakened. Status remains unsupported; an unchanged workspace-only retry cannot perform the required installation.

@@ -3,17 +3,17 @@
   "error": {
     "status": "unsupported",
     "manifest": "package.json",
-    "summary": "Preserved completed repairs. All registered regressions pass; the latest runner handoff failure still reproduces.",
+    "summary": "Preserved completed generator repairs. All registered regressions pass; the runner handoff failure remains reproducible.",
     "evidence_paths": [
-      "evidence/author23-report.json",
-      "evidence/author23-boundary.log",
-      "evidence/author23-batch.log",
-      "evidence/author23-evidence.log",
-      "evidence/author23-retained.log",
+      "evidence/author25-report.json",
+      "evidence/author25-boundary.log",
+      "evidence/author25-evidence.log",
+      "evidence/author25-batch.log",
+      "evidence/author25-retained.log",
       "evidence/contract-installation.json"
     ],
     "limitations": [
-      "The runner rejects the unchanged package despite the retained evidence-only finding. Installing the corrected evidence bundle and routing report-repair to validation require writes outside the authorized workspace."
+      "Completion requires runner-owned evidence installation and report-repair routing outside the authorized workspace. The unchanged-package gate still rejects the preserved generator before review."
     ]
   },
   "instruction": "Fix the root cause, retain every earlier counterexample, and declare executable checks in repair-regressions.json. A failed check is another repair task, not permission to abandon the generator.",
