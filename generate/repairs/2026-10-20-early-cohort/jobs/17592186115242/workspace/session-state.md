@@ -1,15 +1,25 @@
-# Verification result — author 861
+# Verification result — author 864
 
-Preserved runtime repairs, instructional account, all five executable regression declarations, affected identities and staged replacements. Read feedback and all five retained findings before testing.
+Preserved current generator, executable regressions and staged replacements.
+Read latest feedback, all five retained findings and existing source analysis.
+No new runtime construction defect is demonstrated.
 
-First executed check:
-`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory`
-Exit 1: five stored banks retain the shortcut; possible-history witness 64/64.
+First check: job Python -B checks/batch_regressions.py --finding inventory.
+Exit 1: all five reproduced stored banks retain the sign-extremum shortcut;
+64/64 successes in the retained possible-history witness.
 
-Completed validation milestone:
-`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/author-861`
-Exit 1 solely for finding 591f580cadb749294588. Four current-generator regressions, 17 source banks, 14 delivered records, 35 native grading checks (7 accepted, 28 rejected), relocation, dependencies, protected hashes and replacement mapping pass. Retained actual-UI screenshot question-002.png visually inspected.
+Validation milestone: job Python -B checks/recheck_status.py --output evidence/author-864.
+Four generator regressions, 17 source banks, before/after delivery and
+counterfactual checks (14 delivered records), 35 native grading checks,
+relocation, exact dependency pins, protected hashes and staged mapping pass.
+Only finding 591f580cadb749294588 fails. Retained actual-UI screenshot visually
+inspected; runtime/render inputs unchanged. Commands and results are saved.
 
-Next unfinished step: the separate inventory-remediation workflow must resolve five identities in affected-inventory.json, preserve source questions and learner history, capture fresh inventory, and rerun the strict selectable-pool check. Unapplied proposal: evidence/repair-3/inventory-repair-proposal.json.
+Next unfinished step is external: separately authorized inventory remediation
+must resolve the five identities in affected-inventory.json while preserving
+sources and learner history, then supply fresh inventory for the strict check.
+Unapplied proposal: evidence/repair-3/inventory-repair-proposal.json.
+Repeating an author pass against the same captured pool cannot resolve it.
 
-Database changes and publication are prohibited here. The strict regression remains failing; replacements have not been substituted for captured inventory. No runtime, engine, database, source or publication changes were made. Current commands and results: evidence/author-861/commands.json and results.json. Detailed scope limitation: evidence/author-861/disposition.md.
+No runtime, engine, database, source or publication changes were made. Strict
+failure preserved. Status: unsupported. Evidence: evidence/author-864/.
