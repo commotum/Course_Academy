@@ -132,6 +132,9 @@ def main():
         assert digest(path) == row['sha256'], row['workspace_source']
         assert path.relative_to(bundle).as_posix() == row['destination']
     assert plan['status'] == 'staged_not_installed'
+    # The concrete runner fix is staged for its owner, not installed by this
+    # author. Exercise its real sample control flow and strict negative cases.
+    subprocess.run([sys.executable, '-B', str(W/'checks/check_runner_handoff.py')], check=True)
     result = {'finding_id': '9b8cb52352b8ca3e790e', 'passed': True,
               'bundle_root': str(bundle.relative_to(W)),
               'real_review_validator': 'scripts/generator_review.py:validate_review',
@@ -146,7 +149,9 @@ def main():
               'runtime_files_unchanged': len(before),
               'runner_installation_files': len(plan['files']),
               'runner_destination_policy': plan['destination_policy'],
-              'destination_installed': False}
+              'destination_installed': False,
+              'staged_runner_fix_regression': 'evidence/runner-handoff-regression.json',
+              'runner_fix_installed': False}
     (W/'evidence/evidence-contract-validation.json').write_text(json.dumps(result, indent=2)+'\n')
     print(json.dumps(result))
 

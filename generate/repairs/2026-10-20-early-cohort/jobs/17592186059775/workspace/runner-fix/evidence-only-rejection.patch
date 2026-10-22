@@ -1,0 +1,43 @@
+--- a/scripts/generator_pipeline.py
++++ b/scripts/generator_pipeline.py
+@@ -519,6 +519,30 @@
+             history['events'].append(event)
+         save(path, history)
+         return history
++
++    def evidence_only_rejection(self):
++        """An evidence-only revise may retain runtime bytes, never approval.
++
++        Require the complete prior binding and a valid independent report.
++        The caller still runs retained regressions, samples, and requests a
++        fresh review. Historical content/grading findings remain regressions.
++        """
++        if self.is_refill or self.state.get('review_after_publication'):
++            return False
++        previous = self.state.get('previous_review') or {}
++        if previous.get('binding') != self.review_binding():
++            return False
++        try:
++            directory = inside(self.directory, previous['directory'])
++            report = read(directory / 'result.json')
++            validate_review(report, directory)
++            findings = report.get('findings')
++            return (report.get('verdict') == 'revise'
++                    and isinstance(findings, list) and bool(findings)
++                    and all(finding.get('kind') == 'evidence'
++                            for finding in findings))
++        except (OSError, ValueError, KeyError, TypeError, AttributeError):
++            return False
+ 
+     def check_repair_regressions(self):
+         """Run retained counterexamples before spending another full review."""
+@@ -722,7 +746,8 @@
+                     candidate = self.candidate_hash()
+                     if (candidate == self.state.get('last_rejected_package')
+                             and self.state.get('source_hash') == self.state.get('last_rejected_source')
+-                            and self.engine_identity() == self.state.get('last_rejected_engine')):
++                            and self.engine_identity() == self.state.get('last_rejected_engine')
++                            and not self.evidence_only_rejection()):
+                         self.persist(repeated_candidate=True)
+                         raise ValueError('Candidate is byte-identical to the rejected package. Apply and test the requested repair before another independent review.')
+                     self.check_repair_regressions()
