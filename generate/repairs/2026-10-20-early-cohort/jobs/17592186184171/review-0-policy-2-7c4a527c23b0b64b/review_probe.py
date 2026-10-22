@@ -30,7 +30,7 @@ for q in qs:
  row={'source_id':q[':question/id'],'ma_id':q[':question/math-academy-id'],'level':level,'parameters':params,'independent_answer':expected,'source_answer':q[':question/answer-fields'][0][':answer-field/correct'][':answer/value'],'source_bank':bank,'attempts':[]}
  for profile in g.PROFILES[level]:
   try:
-   r=g.generate(level,seed=802103,parameters=params,profile=profile);replays.append(r)
+   r=g.generate(level,seed=802103,parameters=params,profile=profile,template=('column-basis' if level=='easy' else 'null-space-display' if '$$' in p else 'null-space-inline'));replays.append(r)
    same=sorted(bank)==sorted(int(c[':answer/value']) for c in field(r)[':answer-field/choices']); row['attempts'].append({'profile':profile,'accepted':True,'same_bank':same,'correct':answer(r),'record_id':r['question'][':question/id']})
   except ValueError as e:row['attempts'].append({'profile':profile,'accepted':False,'error':str(e)})
  row['complete_bank_replay']=any(a.get('same_bank') and a.get('correct')==expected for a in row['attempts']);source_results.append(row)
