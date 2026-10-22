@@ -1,18 +1,18 @@
 # Current state
 
-Author-518 preserved completed runtime repairs and all five strict regressions.
-Read latest feedback, retained findings and history, required docs, complete
-source questions, lesson context, original diagram and instructional account.
+Author-521 preserved completed runtime repairs and all five strict regressions.
+Read latest feedback, retained findings/history, original source questions and
+lesson context, required generation/validation docs and instructional account.
 
-Ran `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/author-518`.
+Ran `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/author-521`.
 Exit 1 solely for finding 591f580cadb749294588, reproduced first: five historical
 banks and 64/64 possible-history shortcut successes. Four generator regressions,
 17 source banks plus canonical replay, counterfactuals, shared delivery (14 records),
-native grading (7 accepted/28 rejected), exact dependencies and relocation pass.
+native grading (7 accepted/28 rejected), dependencies and relocation pass.
 Protected hashes and five unapplied replacement mappings verify. Reinspected
 retained actual-UI screenshot question-002 without visible clipping or overlap.
 
-Evidence: evidence/author-518/commands.json, results.json, outcome.md.
+Evidence: evidence/author-521/commands.json, results.json, outcome.md.
 
 Unfinished: separately remediate the five generated identities in
 affected-inventory.json, then provide a fresh inventory capture. Validated,

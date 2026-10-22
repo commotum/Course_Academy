@@ -10,7 +10,7 @@ def main():
     report={'before':v.cue_report(before),'after':v.cue_report(after),
             'input_count':len(before),'accepted_count':len(after),
             'mathematics_verified':len([v.verify(r) for r in after])}
-    assert len(after)==len(before)==36
+    assert len(after)==len(before)==42
     assert {v.structural(v.matrix(r['question'][':question/problem'])) for r in before}=={v.structural(v.matrix(r['question'][':question/problem'])) for r in after}
     sample=json.loads((v.OUT/'sample-delivery/accepted.json').read_text())
     assert len(sample)==5

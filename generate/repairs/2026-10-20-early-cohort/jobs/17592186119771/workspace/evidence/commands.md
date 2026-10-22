@@ -1,35 +1,40 @@
-# Commands and results
+# Targeted repair commands and results
 
-Run from the workspace. Python is `/home/jake/Developer/Course_Academy/.venv/bin/python` (3.13.5; SymPy 1.14.0). The following variables only shorten the commands:
+Run from this workspace with `PYTHONDONTWRITEBYTECODE=1`. These paths invoke offline tools; no publication or database mutation occurs.
 
 ```bash
 repo=/home/jake/Developer/Course_Academy
 py="$repo/.venv/bin/python"
-```
-
-The original `"$py" 17592186119771.py --difficulty easy --count 5 --seed 0 --format json` exited 1 with the three-task exhaustion error, preserved in before.stderr. The same command now exits 0 and produces evidence/samples.json.
-
-```bash
+export PYTHONDONTWRITEBYTECODE=1
+"$py" checks/single_witness.py
 "$py" checks/validate.py
-"$repo/generate/runs/current/check-engine" evidence/grader-input.json evidence/grader-report.json
+"$py" checks/prepare_targeted.py
+"$repo/generate/runs/current/check-engine" evidence/grader-all-input.json evidence/grader-report.json
 "$py" "$repo/generate/pipeline/check_delivery.py" --input evidence/delivery-input.json --source ../source/source.json --inventory ../source/inventory.json --difficulty easy --output evidence/delivery --asset-root evidence --math-root /media/jake/SSD/EDB/math
 "$py" "$repo/generate/pipeline/check_delivery.py" --input evidence/samples.json --source ../source/source.json --inventory ../source/inventory.json --difficulty easy --output evidence/sample-delivery --asset-root evidence --math-root /media/jake/SSD/EDB/math
+"$py" "$repo/generate/pipeline/check_delivery.py" --input evidence/single-witness-records.json --source ../source/source.json --inventory ../source/inventory.json --difficulty easy --output evidence/sparse-delivery --asset-root evidence --math-root /media/jake/SSD/EDB/math
 "$py" checks/delivery_probe.py
-"$py" "$repo/generate/pipeline/render_preview.py" --input evidence/render-input.json --output evidence/render --asset-root evidence/delivery/assets --math-root /media/jake/SSD/EDB/math
+"$py" checks/targeted_delivery.py
+"$py" checks/package_check.py
+"$py" "$repo/generate/pipeline/render_preview.py" --input evidence/render-input.json --output evidence/render-sparse --asset-root evidence/sparse-delivery/assets --math-root /media/jake/SSD/EDB/math
 ```
 
-Fidelity: 11/11 supplied banks, 55/55 choices, all original key/difficulty/solution presences and absences preserved in evidence-only replay. Prompt and solution comparisons normalize whitespace, math delimiters and harmless TeX braces; visible matrix contents are independently parsed. All 11 source parameter sets also work in normal generation with derived grading keys and solutions. The older bundled snapshot lacked q-13785; it was refreshed from the authoritative supplied evidence, not excluded from replay.
+Original failure: exact seed-739 normal easy canonical parameters reproduced the density exception; command, stdout, stderr and parameters are in single-witness-before.json. The strict regression itself also exited 1 before the fix (single-witness-regression-before.stderr). The older five-question exhaustion counterexample remains in before.stderr and is retained in checks/validate.py. Both registered scripts now pass. The current finding ID dbcd1ab741c06c08a3a5 is registered in ../repair-regressions.json, alongside the earlier legacy event regression.
 
-Correctness: all 12 finite easy support patterns tested, with independent zero-region classification of printed matrices and printed witness coordinates. Five-task CLI, deterministic replay, honest 13-task exhaustion, exclusion of seven patterns followed by delivery of exactly the five remaining patterns, 24 controlled records, and three moderate/hard regression examples pass.
+Fidelity: 11/11 supplied source banks and 55/55 choices replay, including original key, difficulty and solution presence/absence. Visible matrix contents and normalized prompt/solution prose match; source q-13769 remains ungraded raw evidence. All 11 source parameter sets also pass normal generation. The canonical single-witness example now passes normal CLI generation without a raw profile. See source-replay.json, validation.json and single-witness-acceptance.json.
 
-Grading: native harness passed 44 accepted and 176 rejected radio submissions. Controlled transpose and clearing cases, plus irrelevant diagonal/sign/letter changes, are included in this same grader batch. No engine changes.
+Correctness: removed the same density rule from both parameter guard and catalog, without changing classification/witness construction. Independent parsing of visible matrices, keys, repeated solution matrices and printed witness coordinates passes. Full supported support domains are exercised in normal generation: easy 2x2=3, easy 3x3=15, moderate 3x3=15, authored hard 4x4=127. These counts include the diagonal contrast. All nonempty one-sided supports are also explicitly accepted. See single-witness-coverage.json. The previous five-question CLI passes with distinct structures and deterministic replay; exhaustion is now 19, and exclusion of 13 leaves exactly five.
 
-Variation and filtering: shared publisher accepted 36/36 audit records and 5/5 requested samples, with no duplicates. Postdelivery probe rechecks printed content and records label/size/position cue results before and after filtering. Every tested size/letter subgroup contains lower, upper and diagonal answers; no single constant label succeeds throughout any subgroup. Correct positions vary at both sizes. Changing the decisive zero region changes the answer; changing incidental values preserves it. The full structural set includes nonzero witness shifts away from the first cell in 3×3. A fresh-pool reproduction of the native within-band selection formula uses 64 draws with two candidate orders, explicitly substituting UUID order for unavailable future entity IDs. Actual history-sensitive selection is not exercised.
+Grading: one native harness invocation passed 60 correct selections and rejected 240 distractors. All six 3x3 sole-witness coordinates, the canonical example, relevant transpose/clearing controls and irrelevant sign/letter changes are included. No engine changes.
 
-Rendering: the unmodified Learning UI passed three cases with no MathJax, JavaScript, image or font errors. Inspected all three saved screenshots: clear complete matrices, aligned rows/columns, all five readable options, and full worked solutions with correct witnesses; no clipping or overlap observed. The preview's selection annotations are renderer instrumentation.
+Decision variation: the finite easy catalog now has 18 structural patterns. Normal full-catalog sampling covers all six 3x3 sole-witness coordinates, rather than exposing them only through explicit parameters. Size/letter subgroups have multiple answers and answer positions vary. Within size and nonzero-count groups, both upper and lower occur. When the first above/below cell pair is zero, upper, lower and diagonal answers all remain possible, defeating the fixed-cell strategy. Empty off-diagonal support implies diagonal mathematically and is not an incidental cue. Controlled relevant changes update printed matrices, keys, solutions and native grades; irrelevant changes preserve the classification. See pedagogical-variation.json and targeted-delivery-probes.json.
 
-Relocation: copied exactly the three manifest-listed runtime files into a fresh temporary directory, ran the entrypoint with that directory as cwd and the same five-question command, and compared the complete JSON array to samples.json. It matched; see relocation.json.
+Delivery: actual shared publisher filter retained 42/42 audit records, 10/10 sparse controls, 5/5 requested samples, with no duplicates. Visible mathematics, complete support sets, label/position cues and new density/fixed-cell probes pass after filtering. Read-only fresh-pool within-band selection probes retain all three classes under two surrogate orders; actual history-sensitive live selection remains untested. See delivery/delivery.json, sparse-delivery/delivery.json, sample-delivery/delivery.json and postdelivery-variation.json.
 
-Inventory: inspected all 16 captured records; 15 stored keys agree with independent visible-matrix classification. q-13769 lacks a source key and remains ungraded evidence. The demonstrated defect is batch supply, not an incorrect stored classification, so affected-inventory.json is empty. This is a verified lack of per-record applicability of this finding, not a claim that all possible weaknesses were tested. No stored generation metadata was supplied, preventing attribution/replay of historical generated records. Original source questions were not marked generated.
+Rendering: actual Learning.html/learning.js UI passed three affected examples. Visually inspected all three screenshots: canonical lower matrix with a21=6, shifted lower matrix with a32=6, and a cleared diagonal contrast. Readable matrices, five options and full solutions; no clipping, overlaps or stale references observed. See render-inspection.json and render-sparse/rendering.json. Earlier upper-triangular rendering evidence remains under render/.
 
-Limits: easy supplies 12 structural patterns; different values do not count as additional structures. Identity and Other are retained distractors within the three existing supported families. Broader classification outcomes are not advertised. The hard band is an existing authored longer scan, not an observed source rating. Live learner history, live database identities, policy configuration and inventory changes after basis 5451 remain untested. All actions were local and database-free; no images were published.
+Packaging: manifest unchanged, only three declared runtime files needed. Python 3.13.5 and SymPy 1.14.0 match installed versions; requirements pinned. Relocation from those files produces an identical five-record array. See relocation.json.
+
+Inventory: all 16 captured matrices inspected for the demonstrated former 3x3 sole-witness exclusion: zero matches. Fifteen available stored keys agree with independent classification; q-13769 has no stored key. affected-inventory.json is empty because no affected stored generated instance is demonstrated. This is a verified absence of the specified matrix pattern in the snapshot, with generated provenance unavailable; it is not a broader claim about historical generation. No original source was marked generated.
+
+Limits: easy has 18 structural tasks; number changes do not enlarge the structural count. Identity and Other remain source-bank distractors rather than correct sampled families. The hard band is the retained authored 4x4 extension, not a source-observed hard rating. Live history, future entity IDs, policy configuration and inventory changes after basis 5451 remain untested. All changes are confined to this workspace; no images published and no engine/database content changed.

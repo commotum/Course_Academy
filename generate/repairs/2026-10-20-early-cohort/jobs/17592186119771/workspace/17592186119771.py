@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
-"""Recognize triangular structure with substantial nonzero regions.
+"""Recognize triangular structure from its complete zero regions.
 
 Normal difficulty permits source-observed 2x2 and 3x3 easy, 3x3 moderate,
-and authored 4x4 hard. Non-diagonal triangular matrices have at least
-half their permitted off-diagonal region nonzero. Diagonal contrasts remain
+and authored 4x4 hard. Every nonempty permitted-side support is eligible
+for a non-diagonal triangular matrix. Diagonal contrasts remain
 a minority independently of difficulty. Raw source replay preserves original
 ratings, fields and prose, is exact-parameter-only, and is evidence-only.
 
 The finite catalog counts dimension and off-diagonal support. Changing
 diagonal values, signs, labels or layout never creates another task. Easy has
-twelve structural cases; do not inflate that limit with cosmetic changes.
+eighteen structural cases; do not inflate that limit with cosmetic changes.
 """
 from __future__ import annotations
 import argparse, copy, hashlib, json, random, re, sys, uuid
@@ -20,7 +20,7 @@ import sympy as sp
 KP_ID=17592186119771
 KP_UUID='1cca9b7c-358a-5f62-9a53-a696df0dd0ff'
 TITLE='Describing a Triangular Matrix'
-VERSION='triangular-description-3.1-source-easy-sizes'
+VERSION='triangular-description-3.2-all-nonempty-supports'
 HERE=Path(__file__).resolve().with_suffix('')
 SOURCE=json.loads((HERE/'source.json').read_text())
 SOURCES={q[':question/math-academy-id']:q for q in SOURCE['record'][':knowledge-point/questions']}
@@ -31,9 +31,9 @@ CRITERION='Choose the most specific listed description: identity before diagonal
 SIZES={'easy':(2,3),'moderate':(3,),'hard':(4,)}
 FAMILY_WEIGHTS={'lower':2,'upper':2,'diagonal':1}
 DOMAIN={'entries':'integers -10..10 (bool excluded); diagonal entries may be zero',
- 'easy':'2x2 or 3x3 upper, lower, or nonidentity diagonal; twelve finite structural cases',
- 'moderate':'3x3; upper/lower have at least two nonzero off-diagonal entries',
- 'hard':'4x4; upper/lower have at least three nonzero off-diagonal entries',
+ 'easy':'2x2 or 3x3 upper, lower, or nonidentity diagonal; eighteen finite structural cases',
+ 'moderate':'3x3; every nonempty permitted-side support is eligible for upper/lower',
+ 'hard':'4x4; every nonempty permitted-side support is eligible for upper/lower',
  'families':'Independent draws: 40% lower, 40% upper, 20% diagonal. Finite batches balance upper/lower and prefer one diagonal contrast when supply permits; deduplication changes those proportions.',
  'fingerprint':'dimension, family and off-diagonal support only; diagonal unit positions, values, signs, labels, layouts and choice order are incidental',
  'criterion':'Identity > Diagonal > non-diagonal Upper/Lower > Other; normal generation excludes identity and Other'}
@@ -76,9 +76,8 @@ def level_guard(level,p,template):
     n=len(p['matrix']); actual=family(p['matrix'])
     if template!=actual: raise ValueError('Requested family differs from the actual matrix')
     if n not in SIZES[level]: raise ValueError(f'{level} requires a square size in {SIZES[level]}')
-    off_diagonal=sum(v!=0 for i,row in enumerate(p['matrix']) for j,v in enumerate(row) if i!=j)
-    if actual!='diagonal' and off_diagonal < (n*(n-1)+3)//4:
-        raise ValueError('Normal triangular practice needs a substantial nonzero off-diagonal region')
+    # family() already distinguishes nonempty one-sided supports from diagonal.
+    # The lesson permits zero at every other position on the allowed side.
 
 def semantic_object(matrix):
     n=len(matrix)
@@ -102,7 +101,6 @@ def catalog(level,template=None):
         for kind in families:
             cells=[(i,j) for i in range(n) for j in range(n) if (i>j if kind=='lower' else i<j)] if kind!='diagonal' else []
             for mask in range(1,1<<len(cells)) if cells else (0,):
-                if cells and mask.bit_count() < (n*(n-1)+3)//4: continue
                 matrix=[[0]*n for _ in range(n)]
                 for i in range(n): matrix[i][i]=2
                 for k,(i,j) in enumerate(cells): matrix[i][j]=2 if mask & (1<<k) else 0
@@ -215,9 +213,9 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
         'repairs':[] if raw else ['explicit most-specific criterion']+(['single radio field confirmed by authoritative MA widget'] if source_id=='q-13759' else ['inferred correct ref and authored solution/rating'] if source_id=='q-13769' else []),
         'catalog_count':len(catalog(level))}}
 
-# EASY: source-observed 2x2 and 3x3, twelve structural cases.
+# EASY: source-observed 2x2 and 3x3, eighteen structural cases.
 def generate_easy(seed=0,**kwargs): return generate('easy',seed,**kwargs)
-# MODERATE: 3x3, all three families, with a substantial triangular region.
+# MODERATE: 3x3, all three families and every permitted-side support.
 def generate_moderate(seed=0,**kwargs): return generate('moderate',seed,**kwargs)
 # HARD: authored 4x4 same recognition method, bounded longer region scan.
 def generate_hard(seed=0,**kwargs): return generate('hard',seed,**kwargs)

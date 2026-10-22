@@ -90,7 +90,7 @@ def main():
     OUT.mkdir(exist_ok=True)
     spec=importlib.util.spec_from_file_location('candidate', ROOT/'17592186119771.py')
     g=importlib.util.module_from_spec(spec);spec.loader.exec_module(g)
-    # Exact latest counterexample: execute the real CLI, not a metadata assertion.
+    # Retained first counterexample: execute the real CLI, not a metadata assertion.
     cmd=[sys.executable,str(ROOT/'17592186119771.py'),'--difficulty','easy','--count','5','--seed','0','--format','json']
     result=subprocess.run(cmd,capture_output=True,text=True)
     assert result.returncode==0,result.stderr
@@ -100,7 +100,7 @@ def main():
     assert result.stdout==subprocess.run(cmd,capture_output=True,text=True,check=True).stdout
     save('samples.json',sample)
     # Whole restored structural family, independently enumerated expected supports.
-    easy=g.batch('easy',12,41)
+    easy=g.batch('easy',18,41)
     observed={structural(matrix(r['question'][':question/problem'])) for r in easy}
     wanted=set()
     for n in (2,3):
@@ -108,18 +108,17 @@ def main():
         for bits in itertools.product((0,1),repeat=len(cells)):
             above=sum(b for b,(i,j) in zip(bits,cells) if i<j)
             below=sum(b for b,(i,j) in zip(bits,cells) if i>j)
-            minimum=(n*(n-1)+3)//4
-            if (above==below==0) or (above==0 and below>=minimum) or (below==0 and above>=minimum):
+            if above==0 or below==0:
                 wanted.add((n,bits))
-    assert observed==wanted and len(observed)==12
+    assert observed==wanted and len(observed)==18
     for r in easy: verify(r)
     # Finite exhaustion and exclusions remain real, never cosmetic duplication.
-    try: g.batch('easy',13,0)
+    try: g.batch('easy',19,0)
     except ValueError: pass
     else: raise AssertionError('finite limit concealed')
-    excluded=[r['generation']['parameter_fingerprint'] for r in easy[:7]]
+    excluded=[r['generation']['parameter_fingerprint'] for r in easy[:13]]
     remaining=g.batch('easy',5,2,exclude_fingerprints=excluded)
-    assert {structural(matrix(r['question'][':question/problem'])) for r in remaining} == observed-{structural(matrix(r['question'][':question/problem'])) for r in easy[:7]}
+    assert {structural(matrix(r['question'][':question/problem'])) for r in remaining} == observed-{structural(matrix(r['question'][':question/problem'])) for r in easy[:13]}
     # Replay every supplied source, including the newly supplied entry 10.
     s=json.loads(SOURCE.read_text()); replays=[];banks=0;choices=0
     for q in s['material']['kp'][':knowledge-point/questions']:
@@ -164,7 +163,7 @@ def main():
     for r in small: verify(r)
     delivery=easy+controls
     save('easy-catalog.json',easy);save('counterfactuals.json',controls);save('delivery-input.json',delivery)
-    save('pedagogical-variation.json',{'semantic_easy_patterns':len(observed),'counterfactuals':relations,'before_delivery':cue_report(delivery),'limits':['Support pattern determines the zero-region classification by mathematics; no independence from that decisive evidence is claimed.','Finite 12-pattern easy family; numerical changes do not enlarge it.','Identity and Other are source distractors, not sampled correct families.']})
+    save('pedagogical-variation.json',{'semantic_easy_patterns':len(observed),'counterfactuals':relations,'before_delivery':cue_report(delivery),'limits':['Support pattern determines the zero-region classification by mathematics; no independence from that decisive evidence is claimed.','Finite 18-pattern easy family; numerical changes do not enlarge it.','Identity and Other are source distractors, not sampled correct families.']})
     # All radio alternatives go through the real native grader in one batch.
     cases=[]
     for idx,r in enumerate(sample+easy+controls+small):
@@ -176,8 +175,10 @@ def main():
     for q in inv['questions']:
         correct=key(q);exp=expected(matrix(q[':question/problem']))
         assert correct is None or correct==exp,(q[':question/id'],correct,exp)
-        inventory.append({'question_id':q[':question/id'],'entity_id':q[':db/id'],'classification':exp,'stored_key':correct,'key_checked':correct is not None,'batch_failure_applicability':'not a per-record defect','generation_metadata_present':any('generation' in k for k in q)})
-    save('inventory-audit.json',{'basis':inv['basis'],'records':inventory,'limitation':'No stored generation metadata is supplied; individual generator replay attribution is unavailable. Missing source key is ungraded evidence, not marked generated.'})
+        m=matrix(q[':question/problem'])
+        sparse=len(m)==3 and sum(v!=0 for i,row in enumerate(m) for j,v in enumerate(row) if i!=j)==1
+        inventory.append({'question_id':q[':question/id'],'entity_id':q[':db/id'],'classification':exp,'stored_key':correct,'key_checked':correct is not None,'batch_failure_applicability':'not a per-record defect','formerly_excluded_sole_witness_3x3':sparse,'generation_metadata_present':any('generation' in k for k in q)})
+    save('inventory-audit.json',{'basis':inv['basis'],'records':inventory,'sole_witness_3x3_count':sum(r['formerly_excluded_sole_witness_3x3'] for r in inventory),'limitation':'All captured matrices inspected for the former 3x3 sole-witness exclusion. No stored generation metadata is supplied; individual generator replay attribution is unavailable. Missing source key is ungraded evidence, not marked generated.'})
     (ROOT/'affected-inventory.json').write_text(json.dumps({'affected_questions':[]},indent=2)+'\n')
     summary={'latest_failure_reproduced_before':'evidence/before.stderr','cli_five_distinct':'passed','easy_structural_instances':len(observed),'source_banks':banks,'source_choices':choices,'normal_source_parameters':len(replays),'controlled_records':len(controls),'grader_cases_prepared':len(cases),'inventory_records_inspected':len(inventory),'inventory_missing_keys':sum(not r['key_checked'] for r in inventory)}
     save('validation.json',summary);print(json.dumps(summary))
