@@ -1,0 +1,204 @@
+#!/usr/bin/env python3
+"""Bounded, source-faithful rank inspection generator; no database operations.
+
+Easy: dimension exclusions followed by pivot inspection. Original profiles replay
+exactly (apart from canonical math formatting and one documented spelling fix).
+Authored variants change pivot ranks within the same shapes and field contract.
+Moderate/hard remain unsupported pending evidence. See adjacent extraction.
+"""
+import argparse, copy, hashlib, itertools, json, random, re, sys, uuid
+from pathlib import Path
+import sympy as sp
+from math_format import matrix_tex,matrix_operands,normalize_prose,normalize_tex,checked_math_content
+HERE=Path(__file__).with_suffix('')
+SOURCE=json.loads((HERE/'source.json').read_text())
+KP_ID=17592186119848
+KP_UUID=SOURCE['record'][':knowledge-point/id']
+GENERATOR_UUID=str(uuid.uuid5(uuid.NAMESPACE_URL,'course-academy:generator:'+str(KP_ID)))
+VERSION='rank-inspection-pivots-2'
+SUPPORTED_LEVELS=('easy',)
+CASES={q[':question/math-academy-id']:q for q in SOURCE['record'][':knowledge-point/questions'] if q.get(':question/difficulty',{}).get(':db/ident')==':question.difficulty/easy' and q.get(':question/worked-solution')}
+MATRIX=re.compile(r'([A-E])\s*=\s*\\begin\{bmatrix\}(.*?)\\end\{bmatrix\}',re.S)
+def parse_matrices(text):
+    return {m[1]:sp.ImmutableMatrix([[sp.Integer(v.strip()) for v in row.split('&')] for row in m[2].split(r'\\')]) for m in MATRIX.finditer(text)}
+def target(q):return int(re.search(r'rank of \$(\d+)',q[':question/problem'])[1])
+def matrices(q):
+    result=parse_matrices(q[':question/problem'])
+    for f in q.get(':question/answer-fields',[]):
+        result.update(parse_matrices(f[':answer-field/key']))
+        for a in f.get(':answer-field/choices',[]):result.update(parse_matrices(a[':answer/value']))
+    return result
+def kind(sid):
+    old=CASES[sid];f=old[':question/answer-fields'][0]
+    if f[':answer-field/type'][':db/ident']==':answer-field.type/checkbox':return 'three-matrix-checkbox'
+    return 'five-matrix-radio' if f[':answer-field/choices'][0][':answer/type'][':db/ident']==':answer.type/math' else 'three-matrix-subset-radio'
+def assignments(sid):
+    # q-139965's literal bank lacks A-only, which otherwise freezes B true.
+    return list(itertools.permutations('ABC')) if sid=='q-139965' else [tuple(sorted(matrices(CASES[sid])))]
+def eligible(sid,assignment=None):
+    q=CASES[sid];r=target(q)
+    labels=sorted(matrices(q));mapping=dict(zip(labels,assignment or labels))
+    return sorted(mapping[label] for label,m in sorted(matrices(q).items()) if min(m.shape)>=r)
+def original_matches(sid):
+    q=CASES[sid];r=target(q)
+    return tuple(k for k,m in sorted(matrices(q).items()) if m.rank()==r)
+def subset(value):return tuple(sorted(set(re.findall(r'\$([A-E])\$',value))))
+def domain(sid,assignment=None,source_replay=False):
+    q=CASES[sid];typ=kind(sid);labels=eligible(sid,assignment)
+    if sid=='q-139965' and not source_replay:
+        return [tuple(s) for n in (1,2) for s in itertools.combinations(labels,n)]
+    if typ=='five-matrix-radio':return [(label,) for label in labels]
+    if typ=='three-matrix-checkbox':return sorted({original_matches(sid), ()})
+    f=q[':question/answer-fields'][0]
+    return sorted({subset(a[':answer/value']) for a in f[':answer-field/choices'] if set(subset(a[':answer/value']))<=set(labels)})
+def rank_adjust(matrix,desired):
+    """Change a visible pivot structure, keeping shape and integer entries.
+
+    Reduce by retaining a maximal initial independent row subset of desired size;
+    grow by filling empty rows with unused standard basis directions. All source
+    eligible matrices are triangular or echelon up to zero-row position.
+    """
+    m=sp.MutableDenseMatrix(matrix)
+    if desired<m.rank():
+        keep=[]
+        for i in range(m.rows):
+            if len(keep)<desired and sp.Matrix([list(matrix.row(j)) for j in keep+[i]]).rank()>len(keep):keep.append(i)
+        for i in range(m.rows):
+            if i not in keep:
+                for j in range(m.cols):m[i,j]=0
+    while m.rank()<desired:
+        zero=next(i for i in range(m.rows) if all(m[i,j]==0 for j in range(m.cols)))
+        for j in [zero]+[j for j in range(m.cols) if j!=zero]:
+            if j>=m.cols:continue
+            candidate=m.copy();candidate[zero,j]=1
+            if candidate.rank()>m.rank():m=candidate;break
+        else:raise ValueError('No independent pivot')
+    assert m.rank()==desired
+    return sp.ImmutableMatrix(m)
+def structure(q):
+    # Ignore scalar rescaling, labels and choice order. Rank locations/zero masks
+    # are the assessed information; this deliberately coalesces cosmetic variants.
+    return [target(q),sorted((m.rows,m.cols,int(m.rank()),tuple(int(v!=0) for v in m)) for m in matrices(q).values())]
+def fingerprint(q):return hashlib.sha256(json.dumps(structure(q),sort_keys=True).encode()).hexdigest()
+def render_matrices(text,bank):
+    return MATRIX.sub(lambda m:m[1]+'='+matrix_tex([list(bank[m[1]].row(i)) for i in range(bank[m[1]].rows)]),text)
+def reassign_text(text,mapping):
+    return re.sub(r'\b([A-E])(?=\s*=)|(?<=\$)([A-E])(?=\$|\.)|(?<=\()([A-E])(?=\))',lambda m:mapping[next(x for x in m.groups() if x)],text)
+def order_prompt_matrices(text):
+    ordered=iter(sorted((m[1],m[0]) for m in MATRIX.finditer(text)))
+    return MATRIX.sub(lambda _:next(ordered)[1],text)
+def variant_solution(old,bank,r):
+    labels=sorted(bank);excluded=[k for k in labels if min(bank[k].shape)<r];valid=[k for k in labels if k not in excluded]
+    matches=[k for k in valid if bank[k].rank()==r]
+    # Retain the source's ordered stages and shared instructional sentences.
+    text=normalize_prose(old[':question/worked-solution']).replace('coumns','columns')
+    head=text.split('Also, the matrix must have')[0]
+    body=f'Also, the matrix must have ${r}$ pivot columns. '
+    for k in valid:
+        rank=int(bank[k].rank());word='exactly' if rank==r else 'only'
+        body+=f'As we can see, the matrix ${k}$ has {word} ${rank}$ pivot columns. So, $'+r'\text{rank}('+k+')='+str(rank)+'.$ '
+    if kind(old[':question/math-academy-id'])=='five-matrix-radio':end='the matrix $'+matches[0]+'.$'
+    elif not matches:end='"None."'
+    else:end='"'+' and '.join('$'+k+'$' for k in matches)+' only."'
+    return head+body.rstrip()+'\n\nTherefore, the correct answer is '+end
+@checked_math_content
+def generate(level,seed=0,profile=None,parameters=None,source_replay=False):
+    if level not in SUPPORTED_LEVELS:raise ValueError('Unsupported difficulty: '+level)
+    rng=random.Random(seed);sid=profile or rng.choice(sorted(CASES));old=CASES[sid]
+    labels=sorted(matrices(old))
+    assignment=tuple(parameters.get('assignment',labels)) if parameters is not None else rng.choice(assignments(sid))
+    scale=parameters.get('scale',1 if source_replay else 2) if parameters is not None else 1 if source_replay else 2
+    if type(scale) is not int or scale not in (1,2):raise ValueError('Supported coefficient scales: 1 and 2')
+    if assignment not in assignments(sid):raise ValueError('Unsupported role assignment')
+    mapping=dict(zip(labels,assignment))
+    desired=tuple(parameters['matches']) if parameters is not None else rng.choice(domain(sid,assignment,source_replay))
+    if parameters is not None and not {'matches'}<=set(parameters)<= {'matches','assignment','scale'}:raise ValueError('Expected matches, optional assignment and scale')
+    if desired not in domain(sid,assignment,source_replay):raise ValueError('Unsupported match subset')
+    r=target(old);bank={mapping[k]:m for k,m in matrices(old).items()};original=tuple(sorted(mapping[k] for k in original_matches(sid)))
+    old=copy.deepcopy(old)
+    for key in (':question/problem',':question/worked-solution'):old[key]=reassign_text(old[key],mapping)
+    choice_profile=sid
+    if sid=='q-139965' and not source_replay and eligible(sid,assignment)!=['B','C']:
+        # Preserve a complete observed bank from the same instructional family.
+        # Both eligible singleton cases and the pair must be expressible; the
+        # original bank otherwise forces B when C is dimension-ineligible.
+        eligible_labels=eligible(sid,assignment)
+        excluded=next(k for k in labels if k not in eligible_labels)
+        bank_mapping=dict(zip('ABC',eligible_labels+[excluded]))
+        choices=copy.deepcopy(CASES['q-79562'][':question/answer-fields'][0][':answer-field/choices'])
+        for choice in choices:choice[':answer/value']=reassign_text(choice[':answer/value'],bank_mapping)
+        old[':question/answer-fields'][0][':answer-field/choices']=choices
+        choice_profile='q-79562-reassigned'
+    if desired!=original:
+        # Only dimension-eligible candidates can change rank. Deficient candidates
+        # retain their observed rank unless they need to become correct.
+        for label in eligible(sid,assignment):
+            rank=int(bank[label].rank())
+            wanted=r if label in desired else r-1 if rank==r else rank
+            bank[label]=rank_adjust(bank[label],wanted)
+    bank={k:m*scale for k,m in bank.items()}
+    problem=order_prompt_matrices(render_matrices(normalize_prose(old[':question/problem']),bank))
+    if kind(sid)=='three-matrix-subset-radio':
+        problem=re.sub(r'\$\$.*?\$\$',lambda m:matrix_operands(x[0] for x in MATRIX.finditer(m[0])),problem,flags=re.S)
+    solution=normalize_prose(old[':question/worked-solution']).replace('coumns','columns') if desired==original else variant_solution(old,bank,r)
+    rawfields=[]
+    for f in old[':question/answer-fields']:
+        choices=[];typ=f[':answer-field/type'][':db/ident'];correct0=f[':answer-field/correct'][':answer/id']
+        for a in f[':answer-field/choices']:
+            val=normalize_tex(render_matrices(a[':answer/value'],bank)) if a[':answer/type'][':db/ident']==':answer.type/math' else normalize_prose(a[':answer/value'])
+            if typ==':answer-field.type/checkbox':
+                labs=tuple(parse_matrices(f[':answer-field/key']))
+                truth=labs[0] in desired if labs else not desired
+                correct=val==('true' if truth else 'false')
+            elif kind(sid)=='five-matrix-radio':correct=next(iter(parse_matrices(val))) in desired
+            else:correct=subset(val)==desired
+            choices.append((a[':answer/type'][':db/ident'],val,correct))
+        assert sum(x[2] for x in choices)==1
+        rawfields.append((f,choices))
+    content=hashlib.sha256(json.dumps([VERSION,problem,solution,[(render_matrices(normalize_prose(f[':answer-field/key']),bank),sorted(v)) for f,v in rawfields]],sort_keys=True).encode()).hexdigest()
+    uid=lambda key:str(uuid.uuid5(uuid.NAMESPACE_URL,str(KP_ID)+':'+content+':'+key))
+    fields=[]
+    for f,rows in rawfields:
+        key=render_matrices(normalize_prose(f[':answer-field/key']),bank);choices=[{':answer/id':uid(key+':'+typ+':'+val),':answer/type':typ,':answer/value':val} for typ,val,_ in rows]
+        correct=next(a[':answer/id'] for a,row in zip(choices,rows) if row[2])
+        field={':answer-field/id':uid('field:'+key),':answer-field/key':key,':answer-field/type':f[':answer-field/type'][':db/ident'],':answer-field/choices':choices,':answer-field/correct':[':answer/id',correct]}
+        for extra in (':answer-field/label',):
+            if extra in f:field[extra]=f[extra]
+        fields.append(field)
+    question={':question/id':uid('question'),':question/difficulty':':question.difficulty/easy',':question/problem':problem,':question/worked-solution':solution,':question/answer-fields':fields}
+    record={'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':SOURCE['record'][':knowledge-point/title']},'question':question,'generation':{'version':VERSION,'seed':seed,'template':kind(sid),'bank_profile':sid,'source_id':sid,'source_replay':source_replay,'parameters':{'matches':list(desired),'assignment':list(assignment),'scale':scale},'mathematical_fingerprint':fingerprint(question),'content_fingerprint':content,'assets':[],'source':{'basis':SOURCE['basis'],'lineage':SOURCE['lineage']},'dependencies':{'sympy':sp.__version__},'ranks':{k:int(m.rank()) for k,m in bank.items()},'extension':desired!=original or assignment!=tuple(labels) or scale!=1}}
+    record['generation']['choice_profile']=choice_profile
+    # q-35283 supplies family evidence for a visible None option. Exact replay
+    # of q-79568 keeps its original three fields; new practice uses both cases.
+    if kind(sid)=='three-matrix-checkbox' and not source_replay:
+        record=_explicit_none_checkbox(record)
+    return record
+def catalog():
+    result=[];seen=set()
+    for sid in sorted(CASES):
+        for assignment in assignments(sid):
+            for matches in domain(sid,assignment):
+                rec=generate('easy',0,sid,{'matches':list(matches),'assignment':list(assignment)});fp=rec['question'][':question/id']
+                if fp not in seen:seen.add(fp);result.append(rec)
+    return result
+def batch(level,count,seed=0):
+    if level not in SUPPORTED_LEVELS:raise ValueError('Unsupported difficulty: '+level)
+    candidates=catalog();random.Random(seed).shuffle(candidates)
+    # Role reassignment removes label cues, but does not inflate semantic capacity.
+    records=[];seen=set()
+    for rec in candidates:
+        fp=rec['generation']['mathematical_fingerprint']
+        if fp not in seen:seen.add(fp);records.append(rec)
+    if type(count) is not int or count<0 or count>len(records):raise ValueError('Finite variant limit: '+str(len(records)))
+    return records[:count]
+def markdown(rec):
+    q=rec['question'];return q[':question/problem']+'\n\n'+'\n\n'.join(f[':answer-field/key']+': '+', '.join(a[':answer/value'] for a in f[':answer-field/choices']) for f in q[':question/answer-fields'])+'\n\n'+q[':question/worked-solution']
+
+# Every learner-facing checkbox question has a nonempty correct selection.
+from generator_policy import nonempty_checkbox as _nonempty_checkbox, explicit_none_checkbox as _explicit_none_checkbox
+for _policy_name in ['batch', 'generate']:
+    globals()[_policy_name] = _nonempty_checkbox(globals()[_policy_name])
+
+if __name__=='__main__':
+    p=argparse.ArgumentParser();p.add_argument('--difficulty',default='easy');p.add_argument('--seed',type=int,default=0);p.add_argument('--count',type=int,default=5);p.add_argument('--format',choices=['json','markdown'],default='json');a=p.parse_args()
+    recs=batch(a.difficulty,a.count,a.seed);print(json.dumps(recs,indent=2) if a.format=='json' else '\n\n'.join(map(markdown,recs)))
