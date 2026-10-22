@@ -32,3 +32,14 @@ No publication, engine, database, or other-job edits performed.
 Next unfinished step: inspect three actual-UI screenshots currently rendering,
 then write final verification and evidence index. Retain all previous evidence;
 evidence/repair-2 describes a superseded sampler claim, not the current result.
+
+Final repair-3 milestone complete: actual UI render passed, and all three
+screenshots were opened and visually inspected (readable, no clipping, correct
+controls/solutions). Added zero and near-capacity allocation boundary controls;
+latest regression now passes eleven sampler controls. Combined targeted native
+grading totals: 47 accepted, 108 rejected, zero unresolved. All 88 records across
+ten delivery runs survive; counts describe repeated validation, not capacity.
+Evidence index: evidence/repair-3/verification.md and summary.json. Current
+manifest and requirements remain unchanged and relocation verified. Every retained
+finding is declared in repair-regressions.json. No unfinished author work.
+Ready for independent review; no publication performed.

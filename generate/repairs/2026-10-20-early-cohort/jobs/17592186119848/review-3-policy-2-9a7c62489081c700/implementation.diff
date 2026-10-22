@@ -1,0 +1,90 @@
+--- 
++++ 
+@@ -7,6 +7,7 @@
+ Moderate/hard remain unsupported pending evidence. See adjacent extraction.
+ """
+ import argparse, copy, hashlib, itertools, json, random, re, sys, uuid
++from functools import lru_cache
+ from pathlib import Path
+ import sympy as sp
+ from math_format import matrix_tex,matrix_operands,normalize_prose,normalize_tex,checked_math_content
+@@ -185,15 +186,9 @@
+     """Visible workload and exclusions within one complete source bank."""
+     q=rec['question'];bank=matrices(q);r=target(q)
+     return (rec['generation']['bank_profile'],r,
+-            tuple(sorted(m.shape for m in bank.values())),
++            tuple((k,m.shape) for k,m in sorted(bank.items())),
+             tuple(k for k,m in sorted(bank.items()) if min(m.shape)<r),
+             len(q[':question/answer-fields']),rec['generation']['choice_profile'])
+-def contrasting_subset(rows):
+-    if len(rows)<2:return True
+-    q=rows[0]['question'];r=target(q)
+-    labels=[k for k,m in matrices(q).items() if min(m.shape)>=r]
+-    truths=[{k for k,m in matrices(row['question']).items() if m.rank()==r} for row in rows]
+-    return all({k in truth for truth in truths}=={False,True} for k in labels)
+ def batch(level,count,seed=0):
+     if level not in SUPPORTED_LEVELS:raise ValueError('Unsupported difficulty: '+level)
+     candidates=catalog();random.Random(seed).shuffle(candidates)
+@@ -204,27 +199,44 @@
+         if fp not in seen:seen.add(fp);records.append(rec)
+     if type(count) is not int or count<0 or count>len(records):raise ValueError('Finite variant limit: '+str(len(records)))
+     selected=records[:count]
+-    # A shuffled prefix can lose the catalog's counterexamples. Choose repeated
+-    # decisions together, keeping the source workload counts and semantic limit.
+-    # Cosmetic role permutations must not split one profile into cue subgroups
+-    # whose eligible labels are then accidentally fixed.
++    # Allocate complete decision sets, rather than seeking opposite answers in
++    # a fixed number of slots. For two eligible subset candidates, the latter
++    # rule forces singleton answers and makes one rank inspection redundant.
+     by_profile={}
+-    for rec in selected:by_profile.setdefault(rec['generation']['bank_profile'],[]).append(rec)
+-    replacements={}
+-    for sid,old in by_profile.items():
++    for rec in records:by_profile.setdefault(rec['generation']['bank_profile'],[]).append(rec)
++    prefix_counts={sid:sum(r['generation']['bank_profile']==sid for r in selected) for sid in by_profile}
++    profiles=sorted(by_profile,key=lambda sid:prefix_counts[sid]<2)
++    blocks=[]
++    prefix_ids={rec['question'][':question/id'] for rec in selected}
++    for sid in profiles:
++        old=by_profile[sid]
+         group=decision_group(old[0])
+         pool=[rec for rec in candidates if decision_group(rec)==group]
+-        choices=[]
+-        for combo in itertools.combinations(pool,len(old)):
+-            if len({r['generation']['mathematical_fingerprint'] for r in combo})!=len(combo):continue
+-            if not contrasting_subset(combo):continue
+-            choices.append(combo)
+-        if not choices:raise ValueError('No contrasting batch subset for '+sid)
+-        old_ids={rec['question'][':question/id'] for rec in old}
+-        # Seeded candidate order breaks ties; prefer retaining the prior prefix.
+-        best=max(choices,key=lambda combo:sum(r['question'][':question/id'] in old_ids for r in combo))
+-        replacements[sid]=iter(best)
+-    return [next(replacements[rec['generation']['bank_profile']]) for rec in selected]
++        pool.sort(key=lambda rec:rec['question'][':question/id'] not in prefix_ids)
++        block=[];used=set()
++        for rec in pool:
++            fp=rec['generation']['mathematical_fingerprint']
++            if fp not in used:used.add(fp);block.append(rec)
++        assert len(block)==len(old), 'Visible subgroup must retain semantic capacity'
++        blocks.append(block)
++
++    @lru_cache(None)
++    def allocate(index,remaining):
++        if remaining==0:return ()
++        if index==len(blocks):return None
++        # Repeated profiles receive every decision case. Short requests may use
++        # a single representative, never an incomplete repeated subset block.
++        for size in (len(blocks[index]),1,0):
++            if size>remaining:continue
++            rest=allocate(index+1,remaining-size)
++            if rest is not None:return (size,)+rest
++        return None
++    sizes=allocate(0,count)
++    if sizes is None:raise ValueError('Cannot allocate complete decision sets')
++    result=[rec for block,size in zip(blocks,sizes) for rec in block[:size]]
++    # Interleave decision cases; their adjacency/order must not reveal the key.
++    random.Random(seed).shuffle(result)
++    return result
+ def markdown(rec):
+     q=rec['question'];return q[':question/problem']+'\n\n'+'\n\n'.join(f[':answer-field/key']+': '+', '.join(a[':answer/value'] for a in f[':answer-field/choices']) for f in q[':question/answer-fields'])+'\n\n'+q[':question/worked-solution']
+ 

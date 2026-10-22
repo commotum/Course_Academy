@@ -1,0 +1,156 @@
+{
+  "skill": "Identify matrices of a specified rank by inspection, using the dimension bound and visible independent pivot structure.",
+  "learner_operation": "Read target r; reject matrices with fewer than r rows or columns; distinguish remaining matrices with exactly r independent pivots from rank-deficient alternatives; encode the qualifying labels in the supplied radio or checkbox contract.",
+  "reasoning_steps": [
+    "Use rank <= min(rows,columns).",
+    "Inspect triangular/echelon or visibly dependent rows to count independent pivots; nonzero-row counting applies to echelon form, not arbitrary matrices.",
+    "Compare each rank with the target and choose the supplied subset or matrix."
+  ],
+  "response_contract": {
+    "matrix_radio": "Five labeled matrix options; exactly one correct matrix.",
+    "subset_radio": "Three labeled matrices in prompt and a five-option subset bank.",
+    "checkbox": "Three matrix fields, with an optional None of the above field; true/false choices per field."
+  },
+  "difficulty": "All captured target questions are easy; targets 3,4,5,6; dimensions up to 6. Work is inspection, not general row reduction.",
+  "invariants": [
+    "Rank definition and dimension bound.",
+    "Small integer matrices with immediately interpretable triangular, echelon, transposed triangular, zero-row or simple proportional-row structure.",
+    "Complete source banks and answer-field types must replay.",
+    "Prompt, correct choices, and explanation must derive from the same matrices and target."
+  ],
+  "permitted_variations": [
+    "Change nonzero pivot magnitudes and harmless off-pivot entries while preserving rank structure.",
+    "Change which labels satisfy the rank rule, and order of labels/options.",
+    "Vary target among source-supported ranks with appropriate dimensions and workload.",
+    "Vary zero-row locations, eligible matrix shapes, and correct subsets when permitted by the response contract; source-example winning labels are incidental.",
+    "Retain rank-deficient matrices with sufficient dimensions so dimension alone is not a universal substitute for pivot inspection."
+  ],
+  "fixed_features": [
+    {
+      "feature": "Small matrices and inspection-friendly structure",
+      "justification": "Target KP is inspection; row-reduction KP is a subsequent distinct lesson step 19981."
+    },
+    {
+      "feature": "One correct choice for singular matrix radio",
+      "justification": "The wording asks which matrix has the given rank and the answer field is radio."
+    }
+  ],
+  "source_refs": [
+    "086b96e1-65a9-5422-b3cf-ae3404b4fecb (q-34807)",
+    "31c6aee5-e5bc-5348-b2d3-adfb215a74ea (q-35270)",
+    "8b3d88d7-df58-5328-a9cc-5e2d9def75f0 (q-139958)",
+    "8230baf6-e783-5c70-959c-7919b97ad93d (q-34824)",
+    "43599508-ddd2-50d6-b640-692e29bcfb0e (q-35283)",
+    "dd0a8556-8fd1-5889-877c-134aa2f397c4 (q-79561)",
+    "7de7e9fe-a671-5464-bba9-92a57599131b (q-79568)",
+    "8c046845-0154-54e8-9266-c14fc31a0fbc (q-79560)",
+    "cf208166-634c-5dd4-a095-ee064f03b9e3 (q-79559)",
+    "27db2f89-f211-5a22-8370-a36f3eeeed25 (q-139965)",
+    "24667748-1ede-5c69-935d-390617c82265 (q-34823)",
+    "40416466-6f14-55d5-9447-7df7a23e7f2a (q-79562)",
+    "a6a3db41-6033-537a-bc9d-03fde02dc869 (e-5417)",
+    "tutorial c062d466-946c-526b-aba8-0a0895671218 / 4151: rank is the number of pivot columns, equivalently non-zero rows in corresponding row echelon form.",
+    "tutorial 6318f9cd-930b-5b7b-acc7-c27b5b241825 / 3519: rank is dimension of column space; example reduces dependent third row to zero.",
+    "lesson 9bad4bff-0bb7-5ce9-89c2-cbdc3bbadd77 steps 19980 then 19981 distinguish inspection from row reduction."
+  ],
+  "source_cases": [
+    {
+      "id": "086b96e1-65a9-5422-b3cf-ae3404b4fecb",
+      "ma_id": "q-34807",
+      "fields": 1,
+      "has_solution": false,
+      "has_complete_key": false
+    },
+    {
+      "id": "31c6aee5-e5bc-5348-b2d3-adfb215a74ea",
+      "ma_id": "q-35270",
+      "fields": 1,
+      "has_solution": false,
+      "has_complete_key": false
+    },
+    {
+      "id": "8b3d88d7-df58-5328-a9cc-5e2d9def75f0",
+      "ma_id": "q-139958",
+      "fields": 1,
+      "has_solution": true,
+      "has_complete_key": true
+    },
+    {
+      "id": "8230baf6-e783-5c70-959c-7919b97ad93d",
+      "ma_id": "q-34824",
+      "fields": 1,
+      "has_solution": true,
+      "has_complete_key": true
+    },
+    {
+      "id": "43599508-ddd2-50d6-b640-692e29bcfb0e",
+      "ma_id": "q-35283",
+      "fields": 4,
+      "has_solution": true,
+      "has_complete_key": true
+    },
+    {
+      "id": "dd0a8556-8fd1-5889-877c-134aa2f397c4",
+      "ma_id": "q-79561",
+      "fields": 1,
+      "has_solution": true,
+      "has_complete_key": true
+    },
+    {
+      "id": "7de7e9fe-a671-5464-bba9-92a57599131b",
+      "ma_id": "q-79568",
+      "fields": 3,
+      "has_solution": true,
+      "has_complete_key": true
+    },
+    {
+      "id": "8c046845-0154-54e8-9266-c14fc31a0fbc",
+      "ma_id": "q-79560",
+      "fields": 1,
+      "has_solution": true,
+      "has_complete_key": true
+    },
+    {
+      "id": "cf208166-634c-5dd4-a095-ee064f03b9e3",
+      "ma_id": "q-79559",
+      "fields": 1,
+      "has_solution": true,
+      "has_complete_key": true
+    },
+    {
+      "id": "27db2f89-f211-5a22-8370-a36f3eeeed25",
+      "ma_id": "q-139965",
+      "fields": 1,
+      "has_solution": true,
+      "has_complete_key": true
+    },
+    {
+      "id": "24667748-1ede-5c69-935d-390617c82265",
+      "ma_id": "q-34823",
+      "fields": 1,
+      "has_solution": true,
+      "has_complete_key": true
+    },
+    {
+      "id": "40416466-6f14-55d5-9447-7df7a23e7f2a",
+      "ma_id": "q-79562",
+      "fields": 1,
+      "has_solution": true,
+      "has_complete_key": true
+    }
+  ],
+  "evidence_gaps": [
+    "q-34807 and q-35270 lack captured correct answers and worked solutions; derive mathematical answers independently and identify reconstruction as inference.",
+    "Canonical example has no answer bank in capture."
+  ],
+  "source_correction_candidates": [
+    "q-35270 has apparently non-echelon B and C; independently compute ranks rather than presume nonzero rows equal rank.",
+    "Captured matrix answers use overescaped TeX; normalize presentation rather than reproduce malformed escaping."
+  ],
+  "provenance": {
+    "reused_from": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186119848/review-2-policy-2-7a41c9f08b6c9942/source-analysis.json",
+    "confirmed": "All 12 source IDs and response contracts checked; lesson tutorials 3519/4151 and inspection-before-row-reduction sequence checked in unchanged original source. Source gaps retained.",
+    "source_hash": "85a2f2ac50bd80025dfc45b405bd0399cc4eac36154fba05258753379a48016a",
+    "review_policy_version": 2
+  }
+}

@@ -1,29 +1,24 @@
-# Current state — pass 295
+# Current state — pass 299
 
-Preserved completed runtime repairs, manifest, all five executable finding checks,
-and the verified replacement proposal. No runtime, engine, database, source,
-or publication change was made.
+Preserved completed runtime repairs, manifest, all five strict finding checks,
+and the unapplied replacement proposal. No runtime, engine, database, source,
+publication or image changes.
 
-Latest failure reproduced first:
-`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory`
-Exit 1: five stored historical banks; possible-history shortcut witness 64/64.
+First test: job Python `-B checks/batch_regressions.py --finding inventory`.
+Exit 1: five historical banks; possible-history shortcut witness 64/64.
 
-Retained recheck:
-`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/repair-295`
-Exit 1 solely for finding 591f580cadb749294588. Four current-generator regressions,
-17 complete source banks plus canonical replay, delivery 14/14, native grading
-(7 accepted, 28 rejected), exact dependencies, and relocation pass. Protected
-hashes and staged replacement mapping verify. Visually reinspected retained
-actual-UI screenshot evidence/repair-3/render/question-002.png: readable system,
-choices, matrices, row operation, and contradiction.
+Verification: job Python `-B checks/recheck_status.py --output evidence/repair-299`.
+Exit 1 solely for finding 591f580cadb749294588. Four generator regressions,
+17 complete source banks and canonical replay, delivery 14/14, native grading
+(7 accepted, 28 rejected), exact dependencies, relocation and replacement
+bindings pass. Commands/results/outcome: evidence/repair-299/.
 
-Commands/results: evidence/repair-295/commands.json and results.json.
-Scope explanation: evidence/repair-295/outcome.md.
+Visually reinspected retained actual-UI question-002.png. Bound runtime,
+source and inventory hashes remain unchanged, so retained rendering applies.
 
-Next unfinished step belongs to the separate inventory-remediation workflow
-explicitly requested by finding 591f580cadb749294588: resolve the five records in
-affected-inventory.json, recapture inventory, then rerun the strict regression.
-Database changes are prohibited in this author task. The selector reads stored
-candidate entities (engine/rust/question_selection.rs:125), not rebuilt banks
-from this entrypoint. Keep the failure explicit; do not substitute hypothetical
-replacements or repeat unchanged-input author passes to conceal the stored defect.
+Next unfinished step requires the separate inventory-remediation workflow named
+by the finding: remediate five stored generated records, capture fresh inventory,
+then rerun the strict regression. This task prohibits database changes. Selector
+reads stored entities independently of generator output. Do not weaken the
+regression or substitute hypothetical replacements for captured inventory.
+Repeated unchanged author retries cannot resolve this external-state condition.
