@@ -1,0 +1,296 @@
+{
+  "skill": "Translate a linear combination of three R^3 vectors into three scalar equations, solve by Gaussian elimination/back substitution or identify inconsistency, then evaluate the requested signed sum of coefficients.",
+  "reasoning_steps": [
+    "Interpret each displayed vector as a column of A in Ax=b.",
+    "Equate corresponding components and form the augmented matrix.",
+    "Use elementary row operations, including exchanges as needed, to find coefficients or a contradiction.",
+    "Evaluate the specified x1+x2+x3 or x1+x2-x3 and choose its value from the complete five-choice radio bank."
+  ],
+  "response_contract": "Observed questions use one radio field named selection and five choices: four numbers plus No solution, except q-105168 which has five numbers. Canonical worked example has no captured answer field.",
+  "difficulty": "Moderate source questions are nonsingular integer systems; hard source questions are inconsistent singular systems. Requested moderate therefore supports unique coefficient solutions; hard must remain supported for source replay but need not be mixed into moderate delivery.",
+  "invariants": [
+    "Three coefficient unknowns multiplying three displayed vectors in R^3; supplied right-hand vector.",
+    "Component equality and standard Gaussian elimination remain the method and workload.",
+    "One scalar target built from coefficient sums/differences, or No solution if inconsistent.",
+    "Complete radio banks and worked explanations must agree with the vectors and target."
+  ],
+  "permitted_variations": [
+    "Vary small integer vector components and compatible right-hand vectors while controlling elimination workload.",
+    "Vary solved coefficients, signs and zero values; their particular answers are incidental.",
+    "Change which coefficient is subtracted, or retain the all-plus target, deriving the answer and solution accordingly; q-74028 explicitly establishes a signed target.",
+    "Vary pivot rows/exchanges and placement of easy component equations without increasing system size.",
+    "Vary complete source bank profiles, distractor numbers and correct option position; presence of No solution must not disclose the outcome.",
+    "Hard inconsistency can use different row dependencies and contradictory right-hand entries. Consistent underdetermined systems requiring an undetermined sum are not evidenced by this KP."
+  ],
+  "answer_roles": [
+    {
+      "role": "numeric answer / No solution",
+      "essential": "Determined by consistency and the specified target, not bank layout."
+    },
+    {
+      "role": "target coefficient signs",
+      "essential": "Signed scalar target is supported; a particular minus position is incidental."
+    },
+    {
+      "role": "correct option position and numeric rank",
+      "essential": "Not instructional constraints; eligible to vary independently."
+    }
+  ],
+  "source_refs": [
+    "d9beff9d-db58-540f-811e-a07fb77d3d92",
+    "6f395246-75c5-52ab-b275-6f768034cd27",
+    "04e10334-4152-5cfe-aad7-249b23effb61",
+    "0d52be40-210e-5024-9a79-b6ca4323223c",
+    "2b7aaa73-fdec-536a-866a-953c6856f39f",
+    "e2bdebea-6388-5baf-ba9f-1fbe0535b5cc",
+    "e25147c5-4650-58c3-bac2-7139801cca6b",
+    "33debd45-f90c-578d-9c6b-11c54937ac6b",
+    "ff5142a4-ab7b-5300-baa5-14f6253ed7fa",
+    "6ca28715-77ca-55f5-9aad-4851b6f70f79",
+    "237520c7-3369-5c34-87a7-ba4be3c9b705",
+    "118e9ea0-84b3-5e8f-866f-104da032b6d7",
+    "a8d414ab-92e5-5218-83d9-6fd3ed558d87",
+    "1eebc51b-6af1-57eb-9255-9e266158abc7",
+    "cc7e6aad-0683-5027-b3d4-db532b43dae8",
+    "d6a42f32-3ff1-5799-9155-413fd42c36ff",
+    "tutorial 229ae855-226b-5f95-b050-b98257747800, step b14c637b-1418-59f5-9ac3-37a07d6ad580",
+    "lesson target step d59e4b4d-f7e2-5722-8cf4-a309ea8ac925"
+  ],
+  "lesson_passages": [
+    {
+      "ref": "tutorial 229ae855-226b-5f95-b050-b98257747800",
+      "quote": "is the *weighted sum*",
+      "meaning": "Coefficients are real weights assigned to specific displayed vectors."
+    },
+    {
+      "ref": "d9beff9d-db58-540f-811e-a07fb77d3d92",
+      "quote": "Equating the corresponding components, we get the following system:",
+      "meaning": "Translation into a scalar system is necessary."
+    },
+    {
+      "ref": "d9beff9d-db58-540f-811e-a07fb77d3d92",
+      "quote": "We will solve this system using Gaussian elimination.",
+      "meaning": "Elimination and back substitution set the supported method."
+    },
+    {
+      "ref": "6ca28715-77ca-55f5-9aad-4851b6f70f79",
+      "quote": "then what is ${x}_{1}+{x}_{2}-{x}_{3}?$",
+      "meaning": "The target can differ from an all-plus sum."
+    },
+    {
+      "ref": "04e10334-4152-5cfe-aad7-249b23effb61",
+      "quote": "the final equation $0=13$  gives a false statement",
+      "meaning": "Hard source family recognizes inconsistency."
+    }
+  ],
+  "gaps": [
+    "No source images are present or needed. Canonical example has no captured answer bank. Source q-74043 has an intermediate row-operation sign transcription error: 15-4*2=7, not -7; its final coefficients (5,3,1) satisfy the original vectors. Verify correction during replay."
+  ],
+  "source_cases": [
+    {
+      "id": "6f395246-75c5-52ab-b275-6f768034cd27",
+      "ma_id": "q-34243",
+      "difficulty": ":question.difficulty/moderate",
+      "bank": [
+        "No solution",
+        "11",
+        "-11",
+        "5",
+        "17"
+      ],
+      "correct": "11"
+    },
+    {
+      "id": "04e10334-4152-5cfe-aad7-249b23effb61",
+      "ma_id": "q-34566",
+      "difficulty": ":question.difficulty/hard",
+      "bank": [
+        "-25",
+        "-36",
+        "5",
+        "-3",
+        "No solution"
+      ],
+      "correct": "No solution"
+    },
+    {
+      "id": "0d52be40-210e-5024-9a79-b6ca4323223c",
+      "ma_id": "q-105168",
+      "difficulty": ":question.difficulty/moderate",
+      "bank": [
+        "0",
+        "1",
+        "-1",
+        "-3",
+        "4"
+      ],
+      "correct": "0"
+    },
+    {
+      "id": "2b7aaa73-fdec-536a-866a-953c6856f39f",
+      "ma_id": "q-105169",
+      "difficulty": ":question.difficulty/hard",
+      "bank": [
+        "No solution",
+        "8",
+        "13",
+        "21",
+        "11"
+      ],
+      "correct": "No solution"
+    },
+    {
+      "id": "e2bdebea-6388-5baf-ba9f-1fbe0535b5cc",
+      "ma_id": "q-105170",
+      "difficulty": ":question.difficulty/hard",
+      "bank": [
+        "-3",
+        "6",
+        "No solution",
+        "-5",
+        "5"
+      ],
+      "correct": "No solution"
+    },
+    {
+      "id": "e25147c5-4650-58c3-bac2-7139801cca6b",
+      "ma_id": "q-105172",
+      "difficulty": ":question.difficulty/hard",
+      "bank": [
+        "No solution",
+        "17",
+        "19",
+        "3",
+        "7"
+      ],
+      "correct": "No solution"
+    },
+    {
+      "id": "33debd45-f90c-578d-9c6b-11c54937ac6b",
+      "ma_id": "q-73992",
+      "difficulty": ":question.difficulty/moderate",
+      "bank": [
+        "4",
+        "3",
+        "5",
+        "6",
+        "No solution"
+      ],
+      "correct": "3"
+    },
+    {
+      "id": "ff5142a4-ab7b-5300-baa5-14f6253ed7fa",
+      "ma_id": "q-74006",
+      "difficulty": ":question.difficulty/hard",
+      "bank": [
+        "-12",
+        "7",
+        "14",
+        "No solution",
+        "-7"
+      ],
+      "correct": "No solution"
+    },
+    {
+      "id": "6ca28715-77ca-55f5-9aad-4851b6f70f79",
+      "ma_id": "q-74028",
+      "difficulty": ":question.difficulty/moderate",
+      "bank": [
+        "-1",
+        "7",
+        "3",
+        "No solution",
+        "2"
+      ],
+      "correct": "3"
+    },
+    {
+      "id": "237520c7-3369-5c34-87a7-ba4be3c9b705",
+      "ma_id": "q-74032",
+      "difficulty": ":question.difficulty/moderate",
+      "bank": [
+        "3",
+        "No solution",
+        "1",
+        "6",
+        "2"
+      ],
+      "correct": "1"
+    },
+    {
+      "id": "118e9ea0-84b3-5e8f-866f-104da032b6d7",
+      "ma_id": "q-74035",
+      "difficulty": ":question.difficulty/moderate",
+      "bank": [
+        "2",
+        "No solution",
+        "-4",
+        "4",
+        "-2"
+      ],
+      "correct": "-2"
+    },
+    {
+      "id": "a8d414ab-92e5-5218-83d9-6fd3ed558d87",
+      "ma_id": "q-74046",
+      "difficulty": ":question.difficulty/moderate",
+      "bank": [
+        "14",
+        "15",
+        "No solution",
+        "10",
+        "12"
+      ],
+      "correct": "12"
+    },
+    {
+      "id": "1eebc51b-6af1-57eb-9255-9e266158abc7",
+      "ma_id": "q-105171",
+      "difficulty": ":question.difficulty/hard",
+      "bank": [
+        "No solution",
+        "13",
+        "-6",
+        "2",
+        "-10"
+      ],
+      "correct": "No solution"
+    },
+    {
+      "id": "cc7e6aad-0683-5027-b3d4-db532b43dae8",
+      "ma_id": "q-74011",
+      "difficulty": ":question.difficulty/hard",
+      "bank": [
+        "5",
+        "4",
+        "-3",
+        "6",
+        "No solution"
+      ],
+      "correct": "No solution"
+    },
+    {
+      "id": "d6a42f32-3ff1-5799-9155-413fd42c36ff",
+      "ma_id": "q-74043",
+      "difficulty": ":question.difficulty/moderate",
+      "bank": [
+        "8",
+        "9",
+        "10",
+        "No solution",
+        "7"
+      ],
+      "correct": "9"
+    }
+  ],
+  "evidence_paths": [
+    "source-analysis.json"
+  ],
+  "provenance": {
+    "reused_from": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186119854/review-0-policy-2-1fd32c4da099981a/source-analysis.json",
+    "source_hash_matched_by_runner": true,
+    "all_five_passages_confirmed": true,
+    "quote_corrections": "Preserved exact source markup and spacing in two excerpts.",
+    "principles_read": true
+  }
+}

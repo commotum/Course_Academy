@@ -1,0 +1,39 @@
+{
+  "knowledge_point": {
+    "db_id": 17592186119854,
+    "id": "13a44dc8-4699-519f-8cb1-87ad77471ebe",
+    "title": "Solving for Three Coefficients in a Linear Combination"
+  },
+  "question": {
+    ":question/id": "56864329-8fbd-5e2d-a1f2-c740f9c12d77",
+    ":question/problem": "Consider the vectors\n\n$$\na_1=\\begin{bmatrix}0 \\\\ 1 \\\\ 0\\end{bmatrix},\\quad a_2=\\begin{bmatrix}1 \\\\ 0 \\\\ -1\\end{bmatrix},\\quad a_3=\\begin{bmatrix}1 \\\\ 2 \\\\ 3\\end{bmatrix},\\quad b=\\begin{bmatrix}1 \\\\ 1 \\\\ 7\\end{bmatrix}\n$$\n\nIf $x_1a_1+x_2a_2+x_3a_3=b,$ then what is $x_{1} + x_{2} + x_{3}?$",
+    ":question/worked-solution": "If $x_1a_1+x_2a_2+x_3a_3=b$, then we have\n\n$$\n\\begin{aligned}x_1\\begin{bmatrix}0 \\\\ 1 \\\\ 0\\end{bmatrix}+x_2\\begin{bmatrix}1 \\\\ 0 \\\\ -1\\end{bmatrix}+x_3\\begin{bmatrix}1 \\\\ 2 \\\\ 3\\end{bmatrix}&=\\begin{bmatrix}1 \\\\ 1 \\\\ 7\\end{bmatrix} \\\\ \\begin{bmatrix}0 \\\\ x_{1} \\\\ 0\\end{bmatrix}+\\begin{bmatrix}x_{2} \\\\ 0 \\\\ - x_{2}\\end{bmatrix}+\\begin{bmatrix}x_{3} \\\\ 2 x_{3} \\\\ 3 x_{3}\\end{bmatrix}&=\\begin{bmatrix}1 \\\\ 1 \\\\ 7\\end{bmatrix} \\\\ \\begin{bmatrix}x_{2} + x_{3} \\\\ x_{1} + 2 x_{3} \\\\ - x_{2} + 3 x_{3}\\end{bmatrix}&=\\begin{bmatrix}1 \\\\ 1 \\\\ 7\\end{bmatrix}\\end{aligned}\n$$\n\nEquating the corresponding components, we get the following system:\n\n$$\n\\left\\{\\begin{aligned}x_{2} + x_{3} &=1 \\\\ x_{1} + 2 x_{3} &=1 \\\\ - x_{2} + 3 x_{3} &=7\\end{aligned}\\right.\n$$\n\nWe will solve this system using Gaussian elimination. First, we write the augmented matrix for this system:\n\n$$\nM=\\left[\\begin{array}{ccc|c}0 & 1 & 1 & 1 \\\\ 1 & 0 & 2 & 1 \\\\ 0 & -1 & 3 & 7\\end{array}\\right]\n$$\n\nRow-reducing the augmented matrix, we get\n\n$$\n\\begin{aligned}M&=\\left[\\begin{array}{ccc|c}0 & 1 & 1 & 1 \\\\ 1 & 0 & 2 & 1 \\\\ 0 & -1 & 3 & 7\\end{array}\\right] \\\\ &\\sim \\left[\\begin{array}{ccc|c}1 & 0 & 2 & 1 \\\\ 0 & 1 & 1 & 1 \\\\ 0 & -1 & 3 & 7\\end{array}\\right] && R_{1}\\leftrightarrow R_{2} \\\\ &\\sim \\left[\\begin{array}{ccc|c}1 & 0 & 2 & 1 \\\\ 0 & 1 & 1 & 1 \\\\ 0 & 0 & 4 & 8\\end{array}\\right] && R_{3}:=R_{3}+(1)R_{2} \\\\ &\\sim \\left[\\begin{array}{ccc|c}1 & 0 & 2 & 1 \\\\ 0 & 1 & 1 & 1 \\\\ 0 & 0 & 1 & 2\\end{array}\\right] && R_{3}:=\\left(\\frac{1}{4}\\right)R_{3}\\end{aligned}\n$$\n\nThe system is now\n\n$$\n\\left\\{\\begin{aligned}x_{1} + 2 x_{3} &=1 \\\\ x_{2} + x_{3} &=1 \\\\ x_{3} &=2\\end{aligned}\\right.\n$$\n\nFrom the third equation, we get $x_3=2.$ Substituting this value into the second equation, we get\n\n$$\n1x_2+(1)(2)=1\\quad\\Rightarrow\\quad x_2=-1\n$$\n\nFinally, substituting these values into the first equation, we obtain\n\n$$\nx_1+(0)(-1)+(2)(2)=1\\quad\\Rightarrow\\quad x_1=-3\n$$\n\nSo, the solution of the system is $x_1=-3$, $x_2=-1$, $x_3=2$, which means\n\n$$\n-3a_1+(-1)a_2+(2)a_3=b.\n$$\n\nConsequently,\n\n$$\nx_{1} + x_{2} + x_{3}=(-3)+(-1)+(2)=-2.\n$$\n\n",
+    ":question/difficulty": ":question.difficulty/moderate",
+    ":question/answer-fields": []
+  },
+  "generation": {
+    "version": "three-coefficient-rhs-2",
+    "generator_id": "12b9727c-8650-5b8b-a2a5-255818e1f719",
+    "seed": 901,
+    "template": "e-6191",
+    "bank_profile": "e-6191:source-replay",
+    "numeric_rank": null,
+    "source_kind": "worked-example",
+    "parameters": {
+      "b": [
+        1,
+        1,
+        7
+      ]
+    },
+    "domain": "fixed observed coefficient matrix; integer RHS; moderate integer solution coordinates in [-7,7], hard inconsistent b in [-9,9]^3",
+    "source_basis": 5401,
+    "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+    "source_question_id": "d9beff9d-db58-540f-811e-a07fb77d3d92",
+    "mathematical_fingerprint": "14718d1e1216036d4b7895370b95cd69f4e022f56033be3b89eeaa42e8388780",
+    "recipes": [],
+    "sympy": "1.14.0",
+    "assets": [],
+    "math_format": "course-academy-tex-v1"
+  }
+}
