@@ -1,0 +1,3933 @@
+{
+  "learner_operation": "Interpret supplied matrix evidence, infer justified invertibility/rank/nullity facts, evaluate all three candidate claims, and select exactly their true subset.",
+  "fixed_features": [
+    {
+      "feature": "Square real matrix and three theorem statements",
+      "justification": "The source tutorial states the theorem for n by n matrices; all complete source prompts require three judgments. No determinant computation or row reduction is required."
+    },
+    {
+      "feature": "One or two independent directions within each explicit-nullspace profile; nonzero homogeneous witness within vector profiles",
+      "justification": "Changing to dependent directions or a zero witness changes the evidence. Profile dimensions keep moderate source workload; zero positions and signs are incidental and vary."
+    },
+    {
+      "feature": "Complete five-choice radio bank or original checkbox contract, with None only where source supplies it",
+      "justification": "These are captured learner response contracts. q-142367 bank typo is corrected explicitly; q-34936 lacks key/solution and remains unsupported evidence."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "True claim identities and subset count",
+      "eligible_variation": "All subsets supported by each complete source bank; all nonempty three-checkbox masks, plus ordinary-empty when an explicit None is present.",
+      "observed": "Fresh and retained independent controls cover all eligible masks per profile; new resampling cycles selected counts without tying them to templates."
+    },
+    {
+      "role": "Correct radio bank option and UI position",
+      "eligible_variation": "All five source choices may be the key and appear in any displayed position.",
+      "observed": "Restored q-142367 samples cover all five subsets and raw positions; settled UI batch positions differ (4, 5). The UI independently shuffles bank order."
+    },
+    {
+      "role": "Given determinant status, dimensions, vector coefficients and coordinate assignments",
+      "eligible_variation": "Zero/nonzero determinant and source-supported dimensions; immediate one/two direction decompositions; vector sign and magnitudes.",
+      "observed": "Both determinant statuses occur within templates, with independent claim truth assignments. Irrelevant determinant sign and vector negation preserve responses; relevant determinant/claim changes alter responses."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "q-139977 decision domain",
+      "sample_refs": [
+        "samples.json",
+        "prior/samples.json"
+      ],
+      "result": "12 fresh and 32 prior independently sampled records; all 7 eligible masks represented: {'010': 7, '001': 5, '110': 8, '100': 8, '111': 3, '101': 7, '011': 6}. Prior evidence applies only to unchanged construction; restored profile is entirely fresh."
+    },
+    {
+      "case": "q-141196 decision domain",
+      "sample_refs": [
+        "samples.json",
+        "prior/samples.json"
+      ],
+      "result": "12 fresh and 32 prior independently sampled records; all 5 eligible masks represented: {'001': 11, '110': 12, '010': 6, '011': 10, '100': 5}. Prior evidence applies only to unchanged construction; restored profile is entirely fresh."
+    },
+    {
+      "case": "q-141197 decision domain",
+      "sample_refs": [
+        "samples.json",
+        "prior/samples.json"
+      ],
+      "result": "12 fresh and 32 prior independently sampled records; all 5 eligible masks represented: {'110': 11, '011': 12, '010': 6, '100': 10, '101': 5}. Prior evidence applies only to unchanged construction; restored profile is entirely fresh."
+    },
+    {
+      "case": "q-141198 decision domain",
+      "sample_refs": [
+        "samples.json",
+        "prior/samples.json"
+      ],
+      "result": "12 fresh and 32 prior independently sampled records; all 5 eligible masks represented: {'001': 11, '110': 12, '010': 6, '011': 10, '101': 5}. Prior evidence applies only to unchanged construction; restored profile is entirely fresh."
+    },
+    {
+      "case": "q-141199 decision domain",
+      "sample_refs": [
+        "samples.json",
+        "prior/samples.json"
+      ],
+      "result": "12 fresh and 32 prior independently sampled records; all 7 eligible masks represented: {'001': 7, '010': 7, '101': 5, '100': 6, '111': 3, '110': 10, '011': 6}. Prior evidence applies only to unchanged construction; restored profile is entirely fresh."
+    },
+    {
+      "case": "q-141200 decision domain",
+      "sample_refs": [
+        "samples.json",
+        "prior/samples.json"
+      ],
+      "result": "12 fresh and 32 prior independently sampled records; all 7 eligible masks represented: {'010': 7, '101': 7, '100': 4, '111': 3, '001': 9, '011': 8, '110': 6}. Prior evidence applies only to unchanged construction; restored profile is entirely fresh."
+    },
+    {
+      "case": "q-141201 decision domain",
+      "sample_refs": [
+        "samples.json",
+        "prior/samples.json"
+      ],
+      "result": "12 fresh and 32 prior independently sampled records; all 5 eligible masks represented: {'011': 11, '100': 12, '010': 6, '110': 10, '101': 5}. Prior evidence applies only to unchanged construction; restored profile is entirely fresh."
+    },
+    {
+      "case": "q-142358 decision domain",
+      "sample_refs": [
+        "samples.json",
+        "prior/samples.json"
+      ],
+      "result": "12 fresh and 32 prior independently sampled records; all 8 eligible masks represented: {'110': 9, '001': 8, '011': 5, '111': 7, '000': 4, '010': 3, '101': 4, '100': 4}. Prior evidence applies only to unchanged construction; restored profile is entirely fresh."
+    },
+    {
+      "case": "q-142367 decision domain",
+      "sample_refs": [
+        "samples.json"
+      ],
+      "result": "40 fresh and 0 prior independently sampled records; all 5 eligible masks represented: {'100': 7, '110': 9, '001': 6, '011': 9, '010': 9}. Prior evidence applies only to unchanged construction; restored profile is entirely fresh."
+    },
+    {
+      "case": "q-142472 decision domain",
+      "sample_refs": [
+        "samples.json",
+        "prior/samples.json"
+      ],
+      "result": "12 fresh and 32 prior independently sampled records; all 5 eligible masks represented: {'001': 11, '110': 12, '100': 6, '010': 10, '011': 5}. Prior evidence applies only to unchanged construction; restored profile is entirely fresh."
+    },
+    {
+      "case": "q-142473 decision domain",
+      "sample_refs": [
+        "samples.json",
+        "prior/samples.json"
+      ],
+      "result": "12 fresh and 32 prior independently sampled records; all 5 eligible masks represented: {'001': 11, '110': 12, '011': 6, '100': 10, '010': 5}. Prior evidence applies only to unchanged construction; restored profile is entirely fresh."
+    },
+    {
+      "case": "q-142474 decision domain",
+      "sample_refs": [
+        "samples.json",
+        "prior/samples.json"
+      ],
+      "result": "12 fresh and 32 prior independently sampled records; all 7 eligible masks represented: {'010': 10, '100': 5, '011': 9, '111': 3, '110': 4, '001': 5, '101': 8}. Prior evidence applies only to unchanged construction; restored profile is entirely fresh."
+    },
+    {
+      "case": "q-34834 decision domain",
+      "sample_refs": [
+        "samples.json",
+        "prior/samples.json"
+      ],
+      "result": "12 fresh and 32 prior independently sampled records; all 8 eligible masks represented: {'110': 10, '010': 4, '011': 4, '100': 3, '111': 7, '000': 4, '101': 4, '001': 8}. Prior evidence applies only to unchanged construction; restored profile is entirely fresh."
+    },
+    {
+      "case": "q-34929 decision domain",
+      "sample_refs": [
+        "samples.json",
+        "prior/samples.json"
+      ],
+      "result": "12 fresh and 32 prior independently sampled records; all 5 eligible masks represented: {'011': 11, '100': 12, '101': 6, '001': 10, '010': 5}. Prior evidence applies only to unchanged construction; restored profile is entirely fresh."
+    },
+    {
+      "case": "q-35425 decision domain",
+      "sample_refs": [
+        "samples.json",
+        "prior/samples.json"
+      ],
+      "result": "12 fresh and 32 prior independently sampled records; all 7 eligible masks represented: {'010': 8, '001': 4, '110': 5, '100': 8, '111': 3, '011': 9, '101': 7}. Prior evidence applies only to unchanged construction; restored profile is entirely fresh."
+    },
+    {
+      "case": "q-79349 decision domain",
+      "sample_refs": [
+        "samples.json",
+        "prior/samples.json"
+      ],
+      "result": "12 fresh and 32 prior independently sampled records; all 7 eligible masks represented: {'010': 7, '101': 6, '100': 4, '111': 3, '001': 9, '110': 8, '011': 7}. Prior evidence applies only to unchanged construction; restored profile is entirely fresh."
+    },
+    {
+      "case": "Actual batch after delivery",
+      "sample_refs": [
+        "runner-batch.json",
+        "delivery-batch/accepted.json",
+        "postdelivery-analysis.json"
+      ],
+      "result": "Five of five survive. Three-checkbox group has two different full responses and true counts 1 and 2; old invertibility-only cue succeeds 1/2. Two radio keys and actual UI positions differ. Four-checkbox group occurs once, so no within-group claim."
+    },
+    {
+      "case": "New rejection/resampling rule, all complete profiles",
+      "sample_refs": [
+        "sampling-candidates.json",
+        "sampling-cycle.json",
+        "delivery-cycle/accepted.json",
+        "sampling-cycle-results.json"
+      ],
+      "result": "Seed 947103: 38 attempts yield 16 records, one per complete source profile; all 16 survive delivery. Repeated call reproduces the same records."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "determinant 1 -> 0, same n=4 and claims",
+      "expected": "All three truth values reverse",
+      "observed": "Visible masks ['101', '010']. Settled UI screenshots and solution judgments update consistently; native acceptance/rejection checks pass for every authored option before and after. Checkbox field permutation is held fixed.",
+      "status": "passed",
+      "justification": "Tutorial 3522 links zero/nonzero determinant through invertibility; nonzero scaling preserves a homogeneous witness. Candidate statement negation changes only its own truth.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "native-input.json",
+        "native-report.json",
+        "render-records.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "determinant 1 -> -3, same n and claims",
+      "expected": "All truth values preserved",
+      "observed": "Visible masks ['101', '101']. Settled UI screenshots and solution judgments update consistently; native acceptance/rejection checks pass for every authored option before and after. Checkbox field permutation is held fixed.",
+      "status": "passed",
+      "justification": "Tutorial 3522 links zero/nonzero determinant through invertibility; nonzero scaling preserves a homogeneous witness. Candidate statement negation changes only its own truth.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "native-input.json",
+        "native-report.json",
+        "render-records.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "Negate only invertibility claim at det=-3",
+      "expected": "Only that claim reverses",
+      "observed": "Visible masks ['101', '001']. Settled UI screenshots and solution judgments update consistently; native acceptance/rejection checks pass for every authored option before and after. Checkbox field permutation is held fixed.",
+      "status": "passed",
+      "justification": "Tutorial 3522 links zero/nonzero determinant through invertibility; nonzero scaling preserves a homogeneous witness. Candidate statement negation changes only its own truth.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "native-input.json",
+        "native-report.json",
+        "render-records.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Replace nonzero homogeneous witness v by -v",
+      "expected": "Same singularity inference and radio subset",
+      "observed": "Visible masks ['010', '010']. Settled UI screenshots and solution judgments update consistently; native acceptance/rejection checks pass for every authored option before and after. Checkbox field permutation is held fixed.",
+      "status": "passed",
+      "justification": "Tutorial 3522 links zero/nonzero determinant through invertibility; nonzero scaling preserves a homogeneous witness. Candidate statement negation changes only its own truth.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "native-input.json",
+        "native-report.json",
+        "render-records.json",
+        "render/rendering.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "template identity",
+      "subgroup": "fresh sampler: q-34834",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 110 in statement order",
+      "correct": 4,
+      "total": 12,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 4/12. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "fresh sampler: q-34834",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 2,
+      "total": 12,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 2/12; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "fresh sampler: q-34834/nullspace",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 110 in statement order",
+      "correct": 4,
+      "total": 12,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 4/12. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "fresh sampler: q-34834/nullspace",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 2,
+      "total": 12,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 2/12; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "fresh sampler: q-141199",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 011 in statement order",
+      "correct": 4,
+      "total": 12,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 4/12. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "fresh sampler: q-141199",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 0,
+      "total": 12,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 0/12; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "fresh sampler: q-141199/nonzero-vector",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 011 in statement order",
+      "correct": 4,
+      "total": 12,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 4/12. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "fresh sampler: q-141199/nonzero-vector",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 0,
+      "total": 12,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 0/12; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "fresh sampler: q-141200",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 011 in statement order",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 3/12. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "fresh sampler: q-141200",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 1,
+      "total": 12,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 1/12; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "fresh sampler: q-141200/det-zero",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 011 in statement order",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/2. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "fresh sampler: q-141200/det-zero",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 0/2; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "fresh sampler: q-141200/det-nonzero",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 110 in statement order",
+      "correct": 3,
+      "total": 10,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 3/10. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "fresh sampler: q-141200/det-nonzero",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 1/10; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "fresh sampler: q-142358",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 100 in statement order",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 3/12. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "fresh sampler: q-142358",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 2,
+      "total": 12,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 2/12; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "fresh sampler: q-142358/nullspace",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 100 in statement order",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 3/12. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "fresh sampler: q-142358/nullspace",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 2,
+      "total": 12,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 2/12; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "fresh sampler: q-142474",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 011 in statement order",
+      "correct": 4,
+      "total": 12,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 4/12. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "fresh sampler: q-142474",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 0,
+      "total": 12,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 0/12; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "fresh sampler: q-142474/nullspace",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 011 in statement order",
+      "correct": 4,
+      "total": 12,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 4/12. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "fresh sampler: q-142474/nullspace",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 0,
+      "total": 12,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 0/12; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "fresh sampler: q-35425",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 011 in statement order",
+      "correct": 5,
+      "total": 12,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 5/12. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "fresh sampler: q-35425",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 0,
+      "total": 12,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 0/12; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "fresh sampler: q-35425/nonzero-vector",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 011 in statement order",
+      "correct": 5,
+      "total": 12,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 5/12. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "fresh sampler: q-35425/nonzero-vector",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 0,
+      "total": 12,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 0/12; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "fresh sampler: q-142367",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 110 in statement order",
+      "correct": 9,
+      "total": 40,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 9/40. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "fresh sampler: q-142367/nonzero-vector",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 110 in statement order",
+      "correct": 9,
+      "total": 40,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 9/40. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "fresh sampler: q-139977",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 011 in statement order",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 3/12. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "fresh sampler: q-139977",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 0,
+      "total": 12,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 0/12; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "fresh sampler: q-139977/nullspace",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 011 in statement order",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 3/12. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "fresh sampler: q-139977/nullspace",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 0,
+      "total": 12,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 0/12; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "fresh sampler: q-79349",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 110 in statement order",
+      "correct": 4,
+      "total": 12,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 4/12. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "fresh sampler: q-79349",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 1,
+      "total": 12,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 1/12; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "fresh sampler: q-79349/det-zero",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 011 in statement order",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/2. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "fresh sampler: q-79349/det-zero",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 0/2; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "fresh sampler: q-79349/det-nonzero",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 110 in statement order",
+      "correct": 4,
+      "total": 10,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 4/10. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "fresh sampler: q-79349/det-nonzero",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 1/10; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "fresh sampler: q-141201",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 010 in statement order",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.20000000000000004,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 3/12. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "fresh sampler: q-141201/full-rank",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 010 in statement order",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.20000000000000004,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 3/12. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "fresh sampler: q-34929",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 101 in statement order",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.20000000000000004,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 3/12. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "fresh sampler: q-34929/nonzero-vector",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 101 in statement order",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.20000000000000004,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 3/12. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "fresh sampler: q-141198",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 010 in statement order",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.20000000000000004,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 3/12. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "fresh sampler: q-141198/det-zero",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 010 in statement order",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.20000000000000004,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 2/3. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "fresh sampler: q-141198/det-nonzero",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 011 in statement order",
+      "correct": 3,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 3/9. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "fresh sampler: q-141196",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 010 in statement order",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.20000000000000004,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 3/12. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "fresh sampler: q-141196/nullspace",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 010 in statement order",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.20000000000000004,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 3/12. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "fresh sampler: q-142472",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 100 in statement order",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.20000000000000004,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 3/12. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "fresh sampler: q-142472/det-zero",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 100 in statement order",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.20000000000000004,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/3. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "fresh sampler: q-142472/det-nonzero",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 010 in statement order",
+      "correct": 3,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 3/9. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "fresh sampler: q-142473",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 011 in statement order",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.20000000000000004,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 3/12. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "fresh sampler: q-142473/det-zero",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 011 in statement order",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.20000000000000004,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 2/3. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "fresh sampler: q-142473/det-nonzero",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 100 in statement order",
+      "correct": 3,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 3/9. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "fresh sampler: q-141197",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 010 in statement order",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.20000000000000004,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 3/12. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "fresh sampler: q-141197/full-column-space",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 010 in statement order",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.20000000000000004,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 3/12. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "delivery survivors: q-34834",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 110 in statement order",
+      "correct": 4,
+      "total": 12,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 4/12. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "delivery survivors: q-34834",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 2,
+      "total": 12,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 2/12; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "delivery survivors: q-34834/nullspace",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 110 in statement order",
+      "correct": 4,
+      "total": 12,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 4/12. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "delivery survivors: q-34834/nullspace",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 2,
+      "total": 12,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 2/12; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "delivery survivors: q-141199",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 011 in statement order",
+      "correct": 4,
+      "total": 12,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 4/12. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "delivery survivors: q-141199",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 0,
+      "total": 12,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 0/12; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "delivery survivors: q-141199/nonzero-vector",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 011 in statement order",
+      "correct": 4,
+      "total": 12,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 4/12. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "delivery survivors: q-141199/nonzero-vector",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 0,
+      "total": 12,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 0/12; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "delivery survivors: q-141200",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 011 in statement order",
+      "correct": 3,
+      "total": 11,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 3/11. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "delivery survivors: q-141200",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 1,
+      "total": 11,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 1/11; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "delivery survivors: q-141200/det-zero",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 011 in statement order",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/2. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "delivery survivors: q-141200/det-zero",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 0/2; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "delivery survivors: q-141200/det-nonzero",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 110 in statement order",
+      "correct": 3,
+      "total": 9,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 3/9. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "delivery survivors: q-141200/det-nonzero",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 1,
+      "total": 9,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 1/9; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "delivery survivors: q-142358",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 100 in statement order",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 3/12. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "delivery survivors: q-142358",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 2,
+      "total": 12,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 2/12; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "delivery survivors: q-142358/nullspace",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 100 in statement order",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 3/12. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "delivery survivors: q-142358/nullspace",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 2,
+      "total": 12,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 2/12; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "delivery survivors: q-142474",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 011 in statement order",
+      "correct": 4,
+      "total": 12,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 4/12. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "delivery survivors: q-142474",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 0,
+      "total": 12,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 0/12; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "delivery survivors: q-142474/nullspace",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 011 in statement order",
+      "correct": 4,
+      "total": 12,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 4/12. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "delivery survivors: q-142474/nullspace",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 0,
+      "total": 12,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 0/12; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "delivery survivors: q-35425",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 011 in statement order",
+      "correct": 5,
+      "total": 12,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 5/12. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "delivery survivors: q-35425",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 0,
+      "total": 12,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 0/12; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "delivery survivors: q-35425/nonzero-vector",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 011 in statement order",
+      "correct": 5,
+      "total": 12,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 5/12. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "delivery survivors: q-35425/nonzero-vector",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 0,
+      "total": 12,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 0/12; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "delivery survivors: q-142367",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 110 in statement order",
+      "correct": 9,
+      "total": 40,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 9/40. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "delivery survivors: q-142367/nonzero-vector",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 110 in statement order",
+      "correct": 9,
+      "total": 40,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 9/40. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "delivery survivors: q-139977",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 011 in statement order",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 3/12. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "delivery survivors: q-139977",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 0,
+      "total": 12,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 0/12; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "delivery survivors: q-139977/nullspace",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 011 in statement order",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 3/12. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "delivery survivors: q-139977/nullspace",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 0,
+      "total": 12,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 0/12; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "delivery survivors: q-79349",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 110 in statement order",
+      "correct": 4,
+      "total": 12,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 4/12. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "delivery survivors: q-79349",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 1,
+      "total": 12,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 1/12; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "delivery survivors: q-79349/det-zero",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 011 in statement order",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/2. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "delivery survivors: q-79349/det-zero",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 0/2; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "delivery survivors: q-79349/det-nonzero",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 110 in statement order",
+      "correct": 4,
+      "total": 10,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 4/10. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "delivery survivors: q-79349/det-nonzero",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 1/10; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "delivery survivors: q-141201",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 010 in statement order",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.20000000000000004,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 3/12. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "delivery survivors: q-141201/full-rank",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 010 in statement order",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.20000000000000004,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 3/12. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "delivery survivors: q-34929",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 101 in statement order",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.20000000000000004,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 3/12. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "delivery survivors: q-34929/nonzero-vector",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 101 in statement order",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.20000000000000004,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 3/12. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "delivery survivors: q-141198",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 010 in statement order",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.20000000000000004,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 3/12. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "delivery survivors: q-141198/det-zero",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 010 in statement order",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.20000000000000004,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 2/3. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "delivery survivors: q-141198/det-nonzero",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 011 in statement order",
+      "correct": 3,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 3/9. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "delivery survivors: q-141196",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 010 in statement order",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.20000000000000004,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 3/12. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "delivery survivors: q-141196/nullspace",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 010 in statement order",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.20000000000000004,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 3/12. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "delivery survivors: q-142472",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 100 in statement order",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.20000000000000004,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 3/12. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "delivery survivors: q-142472/det-zero",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 100 in statement order",
+      "correct": 1,
+      "total": 3,
+      "baseline": 0.20000000000000004,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/3. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "delivery survivors: q-142472/det-nonzero",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 010 in statement order",
+      "correct": 3,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 3/9. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "delivery survivors: q-142473",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 011 in statement order",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.20000000000000004,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 3/12. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "delivery survivors: q-142473/det-zero",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 011 in statement order",
+      "correct": 2,
+      "total": 3,
+      "baseline": 0.20000000000000004,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 2/3. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "delivery survivors: q-142473/det-nonzero",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 100 in statement order",
+      "correct": 3,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 3/9. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "delivery survivors: q-141197",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 010 in statement order",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.20000000000000004,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 3/12. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "delivery survivors: q-141197/full-column-space",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 010 in statement order",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.20000000000000004,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 3/12. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "pre-rejection: q-141196",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 100 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "sampling-candidates.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "pre-rejection: q-141196/nullspace",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 100 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "sampling-candidates.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "pre-rejection: q-141201",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 011 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "sampling-candidates.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "pre-rejection: q-141201/full-rank",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 011 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "sampling-candidates.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "pre-rejection: q-141198",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 001 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "sampling-candidates.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "pre-rejection: q-141198/det-nonzero",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 001 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "sampling-candidates.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "pre-rejection: q-34929",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 101 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "sampling-candidates.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "pre-rejection: q-34929/nonzero-vector",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 101 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "sampling-candidates.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "pre-rejection: q-142367",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 100 in statement order",
+      "correct": 5,
+      "total": 12,
+      "baseline": 0.20000000000000004,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 5/12. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "sampling-candidates.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "pre-rejection: q-142367/nonzero-vector",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 100 in statement order",
+      "correct": 5,
+      "total": 12,
+      "baseline": 0.20000000000000004,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 5/12. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "sampling-candidates.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "pre-rejection: q-142358",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 101 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "sampling-candidates.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "pre-rejection: q-142358",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 0/1; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "sampling-candidates.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "pre-rejection: q-142358/nullspace",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 101 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "sampling-candidates.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "pre-rejection: q-142358/nullspace",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 0/1; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "sampling-candidates.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "pre-rejection: q-34834",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 011 in statement order",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/2. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "sampling-candidates.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "pre-rejection: q-34834",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 0/2; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "sampling-candidates.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "pre-rejection: q-34834/nullspace",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 011 in statement order",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/2. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "sampling-candidates.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "pre-rejection: q-34834/nullspace",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 0/2; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "sampling-candidates.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "pre-rejection: q-35425",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 111 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "sampling-candidates.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "pre-rejection: q-35425",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 0/1; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "sampling-candidates.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "pre-rejection: q-35425/nonzero-vector",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 111 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "sampling-candidates.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "pre-rejection: q-35425/nonzero-vector",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 0/1; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "sampling-candidates.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "pre-rejection: q-79349",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 101 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "sampling-candidates.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "pre-rejection: q-79349",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 0/1; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "sampling-candidates.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "pre-rejection: q-79349/det-nonzero",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 101 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "sampling-candidates.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "pre-rejection: q-79349/det-nonzero",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 0/1; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "sampling-candidates.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "pre-rejection: q-142474",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 100 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "sampling-candidates.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "pre-rejection: q-142474",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 1/1; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "sampling-candidates.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "pre-rejection: q-142474/nullspace",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 100 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "sampling-candidates.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "pre-rejection: q-142474/nullspace",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 1/1; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "sampling-candidates.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "pre-rejection: q-141199",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 100 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "sampling-candidates.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "pre-rejection: q-141199",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 0/1; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "sampling-candidates.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "pre-rejection: q-141199/nonzero-vector",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 100 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "sampling-candidates.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "pre-rejection: q-141199/nonzero-vector",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 0/1; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "sampling-candidates.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "pre-rejection: q-142473",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 011 in statement order",
+      "correct": 4,
+      "total": 9,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 4/9. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "sampling-candidates.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "pre-rejection: q-142473/det-nonzero",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 001 in statement order",
+      "correct": 4,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 4/8. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "sampling-candidates.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "pre-rejection: q-142473/det-zero",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 011 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "sampling-candidates.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "pre-rejection: q-141197",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 100 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "sampling-candidates.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "pre-rejection: q-141197/full-column-space",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 100 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "sampling-candidates.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "pre-rejection: q-139977",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 111 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "sampling-candidates.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "pre-rejection: q-139977",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 0/1; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "sampling-candidates.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "pre-rejection: q-139977/nullspace",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 111 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "sampling-candidates.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "pre-rejection: q-139977/nullspace",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 0/1; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "sampling-candidates.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "pre-rejection: q-142472",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 100 in statement order",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/2. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "sampling-candidates.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "pre-rejection: q-142472/det-zero",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 100 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "sampling-candidates.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "pre-rejection: q-142472/det-nonzero",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 010 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "sampling-candidates.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "pre-rejection: q-141200",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 001 in statement order",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/2. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "sampling-candidates.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "pre-rejection: q-141200",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 0/2; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "sampling-candidates.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "pre-rejection: q-141200/det-nonzero",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 001 in statement order",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/2. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "sampling-candidates.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "pre-rejection: q-141200/det-nonzero",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 0,
+      "total": 2,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 0/2; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "sampling-candidates.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "post-rejection: q-141196",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 100 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "sampling-cycle.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "post-rejection: q-141196/nullspace",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 100 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "sampling-cycle.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "post-rejection: q-141201",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 011 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "sampling-cycle.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "post-rejection: q-141201/full-rank",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 011 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "sampling-cycle.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "post-rejection: q-141198",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 001 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "sampling-cycle.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "post-rejection: q-141198/det-nonzero",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 001 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "sampling-cycle.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "post-rejection: q-34929",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 101 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "sampling-cycle.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "post-rejection: q-34929/nonzero-vector",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 101 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "sampling-cycle.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "post-rejection: q-142367",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 110 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "sampling-cycle.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "post-rejection: q-142367/nonzero-vector",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 110 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "sampling-cycle.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "post-rejection: q-142358",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 101 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "sampling-cycle.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "post-rejection: q-142358",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 0/1; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "sampling-cycle.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "post-rejection: q-142358/nullspace",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 101 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "sampling-cycle.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "post-rejection: q-142358/nullspace",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 0/1; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "sampling-cycle.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "post-rejection: q-34834",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 111 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "sampling-cycle.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "post-rejection: q-34834",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 0/1; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "sampling-cycle.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "post-rejection: q-34834/nullspace",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 111 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "sampling-cycle.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "post-rejection: q-34834/nullspace",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 0/1; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "sampling-cycle.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "post-rejection: q-35425",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 111 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "sampling-cycle.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "post-rejection: q-35425",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 0/1; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "sampling-cycle.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "post-rejection: q-35425/nonzero-vector",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 111 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "sampling-cycle.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "post-rejection: q-35425/nonzero-vector",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 0/1; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "sampling-cycle.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "post-rejection: q-79349",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 101 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "sampling-cycle.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "post-rejection: q-79349",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 0/1; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "sampling-cycle.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "post-rejection: q-79349/det-nonzero",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 101 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "sampling-cycle.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "post-rejection: q-79349/det-nonzero",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 0/1; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "sampling-cycle.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "post-rejection: q-142474",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 100 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "sampling-cycle.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "post-rejection: q-142474",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 1/1; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "sampling-cycle.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "post-rejection: q-142474/nullspace",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 100 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "sampling-cycle.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "post-rejection: q-142474/nullspace",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 1/1; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "sampling-cycle.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "post-rejection: q-141199",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 100 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "sampling-cycle.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "post-rejection: q-141199",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 0/1; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "sampling-cycle.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "post-rejection: q-141199/nonzero-vector",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 100 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "sampling-cycle.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "post-rejection: q-141199/nonzero-vector",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 0/1; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "sampling-cycle.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "post-rejection: q-142473",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 010 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "sampling-cycle.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "post-rejection: q-142473/det-nonzero",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 010 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "sampling-cycle.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "post-rejection: q-141197",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 100 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "sampling-cycle.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "post-rejection: q-141197/full-column-space",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 100 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "sampling-cycle.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "post-rejection: q-139977",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 111 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "sampling-cycle.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "post-rejection: q-139977",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 0/1; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "sampling-cycle.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "post-rejection: q-139977/nullspace",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 111 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "sampling-cycle.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "post-rejection: q-139977/nullspace",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 0/1; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "sampling-cycle.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "post-rejection: q-142472",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 010 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "sampling-cycle.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "post-rejection: q-142472/det-nonzero",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 010 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "sampling-cycle.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "post-rejection: q-141200",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 011 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "sampling-cycle.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "post-rejection: q-141200",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 0/1; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "sampling-cycle.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "post-rejection: q-141200/det-nonzero",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 011 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "sampling-cycle.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "post-rejection: q-141200/det-nonzero",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 0/1; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "sampling-cycle.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "post-rejection delivered: q-141196",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 100 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "delivery-cycle/accepted.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "post-rejection delivered: q-141196/nullspace",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 100 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "delivery-cycle/accepted.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "post-rejection delivered: q-141201",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 011 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "delivery-cycle/accepted.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "post-rejection delivered: q-141201/full-rank",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 011 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "delivery-cycle/accepted.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "post-rejection delivered: q-141198",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 001 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "delivery-cycle/accepted.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "post-rejection delivered: q-141198/det-nonzero",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 001 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "delivery-cycle/accepted.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "post-rejection delivered: q-34929",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 101 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "delivery-cycle/accepted.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "post-rejection delivered: q-34929/nonzero-vector",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 101 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "delivery-cycle/accepted.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "post-rejection delivered: q-142367",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 110 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "delivery-cycle/accepted.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "post-rejection delivered: q-142367/nonzero-vector",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 110 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "delivery-cycle/accepted.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "post-rejection delivered: q-142358",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 101 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "delivery-cycle/accepted.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "post-rejection delivered: q-142358",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 0/1; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "delivery-cycle/accepted.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "post-rejection delivered: q-142358/nullspace",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 101 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "delivery-cycle/accepted.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "post-rejection delivered: q-142358/nullspace",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 0/1; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "delivery-cycle/accepted.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "post-rejection delivered: q-34834",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 111 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "delivery-cycle/accepted.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "post-rejection delivered: q-34834",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 0/1; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "delivery-cycle/accepted.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "post-rejection delivered: q-34834/nullspace",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 111 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "delivery-cycle/accepted.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "post-rejection delivered: q-34834/nullspace",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 0/1; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "delivery-cycle/accepted.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "post-rejection delivered: q-35425",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 111 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "delivery-cycle/accepted.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "post-rejection delivered: q-35425",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 0/1; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "delivery-cycle/accepted.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "post-rejection delivered: q-35425/nonzero-vector",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 111 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "delivery-cycle/accepted.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "post-rejection delivered: q-35425/nonzero-vector",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 0/1; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "delivery-cycle/accepted.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "post-rejection delivered: q-79349",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 101 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "delivery-cycle/accepted.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "post-rejection delivered: q-79349",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 0/1; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "delivery-cycle/accepted.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "post-rejection delivered: q-79349/det-nonzero",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 101 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "delivery-cycle/accepted.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "post-rejection delivered: q-79349/det-nonzero",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 0/1; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "delivery-cycle/accepted.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "post-rejection delivered: q-142474",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 100 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "delivery-cycle/accepted.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "post-rejection delivered: q-142474",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 1/1; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "delivery-cycle/accepted.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "post-rejection delivered: q-142474/nullspace",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 100 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "delivery-cycle/accepted.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "post-rejection delivered: q-142474/nullspace",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 1/1; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "delivery-cycle/accepted.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "post-rejection delivered: q-141199",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 100 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "delivery-cycle/accepted.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "post-rejection delivered: q-141199",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 0/1; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "delivery-cycle/accepted.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "post-rejection delivered: q-141199/nonzero-vector",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 100 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "delivery-cycle/accepted.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "post-rejection delivered: q-141199/nonzero-vector",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 0/1; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "delivery-cycle/accepted.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "post-rejection delivered: q-142473",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 010 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "delivery-cycle/accepted.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "post-rejection delivered: q-142473/det-nonzero",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 010 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "delivery-cycle/accepted.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "post-rejection delivered: q-141197",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 100 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "delivery-cycle/accepted.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "post-rejection delivered: q-141197/full-column-space",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 100 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "delivery-cycle/accepted.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "post-rejection delivered: q-139977",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 111 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "delivery-cycle/accepted.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "post-rejection delivered: q-139977",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 0/1; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "delivery-cycle/accepted.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "post-rejection delivered: q-139977/nullspace",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 111 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "delivery-cycle/accepted.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "post-rejection delivered: q-139977/nullspace",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 0/1; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "delivery-cycle/accepted.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "post-rejection delivered: q-142472",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 010 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "delivery-cycle/accepted.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "post-rejection delivered: q-142472/det-nonzero",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 010 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "delivery-cycle/accepted.json"
+      ]
+    },
+    {
+      "cue": "template identity",
+      "subgroup": "post-rejection delivered: q-141200",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 011 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "delivery-cycle/accepted.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "post-rejection delivered: q-141200",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 0/1; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "delivery-cycle/accepted.json"
+      ]
+    },
+    {
+      "cue": "template identity and given kind",
+      "subgroup": "post-rejection delivered: q-141200/det-nonzero",
+      "scope": "within_template",
+      "strategy": "Always choose statements with mask 011 in statement order",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best fixed subset succeeds 1/1. Comparison baseline is uniform over the five source radio-bank subsets, seven nonempty checkbox subsets, or eight source-backed None states. Small singleton subgroups cannot establish repetition; no family-wide fixed subset in the combined source-grounded coverage.",
+      "sample_refs": [
+        "delivery-cycle/accepted.json"
+      ]
+    },
+    {
+      "cue": "invertibility wording",
+      "subgroup": "post-rejection delivered: q-141200/det-nonzero",
+      "scope": "within_template",
+      "strategy": "Select only the claim containing invertible, ignoring given data",
+      "correct": 0,
+      "total": 1,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Full response success 0/1; baseline as above. This cue has counterexamples in every complete checkbox profile in the combined independent controls.",
+      "sample_refs": [
+        "delivery-cycle/accepted.json"
+      ]
+    },
+    {
+      "cue": "three-checkbox layout and invertibility wording",
+      "subgroup": "exact delivered batch, three ordinary checkboxes",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select only the invertibility claim",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Success 1/2 versus 1/7 uniform nonempty-subset baseline. The second item is an explicit counterexample; original failure was 2/2.",
+      "sample_refs": [
+        "delivery-batch/accepted.json",
+        "postdelivery-analysis.json"
+      ]
+    },
+    {
+      "cue": "checkbox field positions",
+      "subgroup": "exact batch 3-field checkbox layout",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always use displayed checkbox bit vector 001",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.14285714285714285,
+      "disposition": "not_predictive",
+      "conclusion": "Best complete response succeeds 1/2; uniform valid-subset baseline is 1/7. Counterexample exists.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "checkbox field positions",
+      "subgroup": "exact batch 4-field checkbox layout",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always use displayed checkbox bit vector 0100",
+      "correct": 1,
+      "total": 1,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Best complete response succeeds 1/1; uniform valid-subset baseline is 1/8. Singleton only; no assertion of within-layout coverage.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "actual radio display position",
+      "subgroup": "exact delivered batch, radio controls",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Always choose displayed position 4",
+      "correct": 1,
+      "total": 2,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Actual positions are [4, 5]. Best fixed display position succeeds 1/2 versus uniform 1/5; generator raw bank index is not assumed to be displayed index.",
+      "sample_refs": [
+        "ui-radio-order.json",
+        "render-records.json"
+      ]
+    },
+    {
+      "cue": "nonzero homogeneous witness",
+      "subgroup": "all nonzero-vector templates",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Infer singularity from Av=0 and v nonzero",
+      "correct": 76,
+      "total": 76,
+      "baseline": 0.5,
+      "disposition": "intended_skill",
+      "conclusion": "This mathematical inference is taught in tutorial 3522 and is the intended first stage. It does not identify the full true subset without reading each varied claim. Binary status-guess baseline is 1/2.",
+      "sample_refs": [
+        "samples.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "Actual seeded generator rejection/resampling and mathematical fingerprint deduplication",
+      "Shared prepare_records with captured inventory and requested moderate difficulty",
+      "Exact runner batch and current all-profile cycle survivors",
+      "Actual settled UI radio order and checkbox layout",
+      "Read-only reproduction of learner freshness/difficulty/weighted selection rules"
+    ],
+    "sample_refs": [
+      "sampling-candidates.json",
+      "sampling-cycle-results.json",
+      "delivery-samples/delivery.json",
+      "delivery-batch/delivery.json",
+      "delivery-cycle/delivery.json",
+      "postdelivery-analysis.json",
+      "selection-analysis.json",
+      "ui-radio-order.json"
+    ],
+    "result": "220 fresh samples -> 219 survivors; exact runner 5 -> 5; all-profile resampling cycle 16 -> 16. Cases and cue metrics are retained before/after each tested stage. The original invertibility-only batch cue is no longer perfect. Learner selection preserves eligible records conditional on freshness and positive moderate weight."
+  },
+  "limitations": [
+    "Finite probes cannot prove the absence of every shortcut; only measured strategies/subgroups are claimed.",
+    "Singleton batch layouts cannot establish within-layout variety.",
+    "q-34936 has no captured key/solution; canonical e-5424 has no captured complete bank. These source evidence gaps are retained without inventing missing material.",
+    "Prior sample evidence is reused only for unchanged source-family construction, with provenance; fresh tests focus on restored profile and modified batch rejection.",
+    "Inventory conclusions use basis 5437. No live publication, database identity-collision check, or learner draw was performed."
+  ]
+}

@@ -1,0 +1,332 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186147454,
+      "id": "17061f4e-da7c-58f9-90b4-47bdc21505da",
+      "title": "Solving a Bernoulli Differential Equation"
+    },
+    "question": {
+      ":question/id": "c0d0ae5b-ea79-5060-bfa2-0d1755315543",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Find the general nonzero real solution to the differential equation\n\n$$\n\\frac{\\text{d}y}{\\text{d}x}+(x+4)y=(x+4){y}^{2}.\n$$\n\nWork on an interval where $x+4>0$. Choose constants and intervals on which all displayed real expressions are defined.\n\n{{selection}}",
+      ":question/worked-solution": "Notice that our equation is an instance of the Bernoulli differential equation\n\n$$\n\\frac{dy}{dx}+p(x)y=q(x){y}^{n}.\n$$\n\nIn this case, we have\n\n$$\np(x)=(x+4),\\,q(x)=(x+4),\\,n=2.\n$$\n\nFirst, we divide the differential equation by ${y}^{2},$ and we get\n\n$$\n{y}^{-2}\\frac{dy}{dx}+(x+4){y}^{-1}=(x+4).\\,\\,(\u2217)\n$$\n\nThen, we make the substitution\n\n$$\nz={y}^{1-n}={y}^{-1}.\n$$\n\nDifferentiating $z(x)$ using the chain rule, we get \n\n$$\n\\frac{\\text{d}z}{\\text{d}x}=-{y}^{-2}\\,\\frac{\\text{d}y}{\\text{d}x}\\,\u27f9\\,{y}^{-2}\\frac{\\text{d}y}{\\text{d}x}=-\\,\\frac{\\text{d}z}{\\text{d}x}.\n$$\n\n \n\nTherefore, the original equation can be written in terms of $z(x)$ as follows:\n\n$$\n-\\,\\frac{\\text{d}z}{\\text{d}x}+(x+4)z=(x+4)\n$$\n\nThis differential equation is linear, so we can use the method of integrating factors. But first, we write the above equation in standard form:\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}-(x+4)z=-(x+4)\n$$\n\nThe above equation is in the standard form\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+P(x)z=Q(x)\n$$\n\nwith\n\n$$\n\\begin{aligned}P(x)=-(x+4),\\,Q(x)=-(x+4)\\,.\\end{aligned}\n$$\n\nWe then compute an integrating factor:\n\n$$\n\\begin{aligned}I(x) & ={e}^{\\int P(x)\\,\\text{d}x} \\\\  & ={e}^{\\int (-(x+4))\\,\\text{d}x} \\\\  & ={e}^{-{(x+4)}^{2}/2}\\end{aligned}\n$$\n\nMultiplying both sides of the standard form equation by $I(x)={e}^{-{(x+4)}^{2}/2}$ yields\n\n$$\n\\begin{aligned}{e}^{-{(x+4)}^{2}/2}\\cdot (\\frac{\\text{d}z}{\\text{d}x}-(x+4)z) & ={e}^{-{(x+4)}^{2}/2}\\cdot (-(x+4)) \\\\ {e}^{-{(x+4)}^{2}/2}\\cdot \\frac{\\text{d}z}{\\text{d}x}-(x+4)z{e}^{-{(x+4)}^{2}/2} & =-(x+4){e}^{-{(x+4)}^{2}/2} \\\\ \\frac{\\text{d}}{\\text{d}x}(z{e}^{-{(x+4)}^{2}/2}) & =-(x+4){e}^{-{(x+4)}^{2}/2}.\\end{aligned}\n$$\n\nNow, we integrate with respect to $x:$\n\n$$\n\\begin{aligned}\\int \\frac{\\text{d}}{\\text{d}x}(z{e}^{-{(x+4)}^{2}/2})\\,\\text{d}x & =-\\int (x+4){e}^{-{(x+4)}^{2}/2}\\,\\text{d}x \\\\ z{e}^{-{(x+4)}^{2}/2} & ={e}^{-{(x+4)}^{2}/2}+C \\\\ z & =1+C{e}^{{(x+4)}^{2}/2}.\\end{aligned}\n$$\n\nFinally, we determine $y(x)$ by writing $z={y}^{-1}.$ This results in\n\n$$\n\\begin{aligned}{y}^{-1}=1+C{e}^{{(x+4)}^{2}/2}\\,\u21d2\\,y=\\frac{1}{1+C{e}^{{(x+4)}^{2}/2}}.\\end{aligned}\n$$\n\nThese are the nonzero real solutions on the specified intervals; exclude denominator zeros and restrict constants and intervals to the real branches used above.",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "c2a2ef9b-f0af-5718-bede-4962fafb9307",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "4a356fc5-0704-529c-9717-985b8af8cfd6",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\frac{1}{1+C{e}^{{(x+4)}^{2}}}"
+            },
+            {
+              ":answer/id": "e276367b-8238-5901-9a6b-e1bc39f5ead8",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\frac{1}{1+C{e}^{{(x+4)}^{2}/2}}"
+            },
+            {
+              ":answer/id": "f6834b23-8324-5a7c-994f-4586360123bd",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\frac{(x+4)}{1+C{(x+4)}^{2}}"
+            },
+            {
+              ":answer/id": "217dc886-49c2-5144-abcd-ec85b8f454c0",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\frac{1}{1+C{e}^{-{(x+4)}^{2}}}"
+            },
+            {
+              ":answer/id": "19fb1a53-9fc6-53cb-92d2-ac76202b90b0",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\frac{{e}^{{(x+4)}^{2}/2}}{C+(x+4)}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "e276367b-8238-5901-9a6b-e1bc39f5ead8"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "bernoulli-translation-1",
+      "template": "q-109026",
+      "profile": "observed:q-109026",
+      "parameters": {
+        "shift": 4
+      },
+      "seed": 4281986989,
+      "source_question_id": "589d9965-97b7-5fc2-a133-6802310284c2",
+      "source_math_academy_id": "q-109026",
+      "source_basis": 2280,
+      "evidence_only": false,
+      "domains": "translated coordinate positive; nonzero real branches; exclude singularities",
+      "sympy": "1.14.0"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186147454,
+      "id": "17061f4e-da7c-58f9-90b4-47bdc21505da",
+      "title": "Solving a Bernoulli Differential Equation"
+    },
+    "question": {
+      ":question/id": "128dcdde-aa59-5064-8935-1c3c2bebbd46",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Find the general nonzero real solution to the differential equation\n\n$$\n\\frac{\\text{d}y}{\\text{d}x}-3{(x-1)}^{2}y={(x-1)}^{2}{y}^{-4}.\n$$\n\nWork on an interval where $x-1>0$. Choose constants and intervals on which all displayed real expressions are defined.\n\n{{selection}}",
+      ":question/worked-solution": "Notice that our equation is an instance of the Bernoulli differential equation\n\n$$\n\\frac{dy}{dx}+p(x)y=q(x){y}^{n}.\n$$\n\nIn this case, we have\n\n$$\np(x)=-3{(x-1)}^{2},\\,q(x)={(x-1)}^{2},\\,n=-4.\n$$\n\nFirst, we multiply the differential equation by ${y}^{4},$ and we get\n\n$$\n{y}^{4}\\frac{dy}{dx}-3{(x-1)}^{2}{y}^{5}={(x-1)}^{2}.\\,\\,(\u2217)\n$$\n\nThen, we make the substitution\n\n$$\nz={y}^{1-n}={y}^{5}.\n$$\n\nDifferentiating $z(x)$ using the chain rule, we get \n\n$$\n\\frac{\\text{d}z}{\\text{d}x}=5{y}^{4}\\,\\frac{\\text{d}y}{\\text{d}x}\\,\u27f9\\,{y}^{4}\\frac{\\text{d}y}{\\text{d}x}=\\frac{1}{5}\\,\\frac{\\text{d}z}{\\text{d}x}.\n$$\n\n \n\nTherefore, the original equation can be written in terms of $z(x)$ as follows:\n\n$$\n\\frac{1}{5}\\,\\frac{\\text{d}z}{\\text{d}x}-3{(x-1)}^{2}z={(x-1)}^{2}\n$$\n\nThis differential equation is linear, so we can use the method of integrating factors. But first, we write the above equation in standard form:\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}-15{(x-1)}^{2}z=5{(x-1)}^{2}\n$$\n\nThe above equation is in the standard form\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+P(x)z=Q(x)\n$$\n\nwith\n\n$$\n\\begin{aligned}P(x)=-15{(x-1)}^{2},\\,Q(x)=5{(x-1)}^{2}\\,.\\end{aligned}\n$$\n\nWe then compute an integrating factor:\n\n$$\n\\begin{aligned}I(x) & ={e}^{\\int P(x)\\,\\text{d}x} \\\\  & ={e}^{\\int (-15{(x-1)}^{2})\\,\\text{d}x} \\\\  & ={e}^{-5{(x-1)}^{3}}\\end{aligned}\n$$\n\nMultiplying both sides of the standard form equation by $I(x)={e}^{-5{(x-1)}^{3}}$ yields\n\n$$\n\\begin{aligned}{e}^{-5{(x-1)}^{3}}\\cdot (\\frac{\\text{d}z}{\\text{d}x}-15{(x-1)}^{2}z) & ={e}^{-5{(x-1)}^{3}}\\cdot (5{(x-1)}^{2}) \\\\ {e}^{-5{(x-1)}^{3}}\\cdot \\frac{\\text{d}z}{\\text{d}x}-15{(x-1)}^{2}z{e}^{-5{(x-1)}^{3}} & =5{(x-1)}^{2}{e}^{-5{(x-1)}^{3}} \\\\ \\frac{\\text{d}}{\\text{d}x}(z{e}^{-5{(x-1)}^{3}}) & =5{(x-1)}^{2}{e}^{-5{(x-1)}^{3}}.\\end{aligned}\n$$\n\nNow, we integrate with respect to $x:$\n\n$$\n\\begin{aligned}\\int \\frac{\\text{d}}{\\text{d}x}(z{e}^{-5{(x-1)}^{3}})\\,\\text{d}x & =\\int 5{(x-1)}^{2}{e}^{-5{(x-1)}^{3}}\\,\\text{d}x \\\\ z{e}^{-5{(x-1)}^{3}} & =-\\frac{{e}^{-5{(x-1)}^{3}}}{3}+{C}_{1} \\\\ z & =\\frac{C{e}^{5{(x-1)}^{3}}-1}{3},\\end{aligned}\n$$\n\nwhere $C=3{C}_{1}.$\n\nFinally, we determine $y(x)$ by writing $z={y}^{5}.$ This results in\n\n$$\n\\begin{aligned}{y}^{5}=\\frac{C{e}^{5{(x-1)}^{3}}-1}{3}\\,\u21d2\\,y=\\sqrt[5]{\\frac{C{e}^{5{(x-1)}^{3}}-1}{3}}.\\end{aligned}\n$$\n\nThese are the nonzero real solutions on the specified intervals; exclude denominator zeros and restrict constants and intervals to the real branches used above.",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "3c0c301c-e52c-5b11-b0ea-0b690303f003",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "01275566-f555-55e4-94e7-3fe77c9f9f5f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\sqrt[3]{\\frac{C{e}^{3{(x-1)}^{2}}-1}{2}}"
+            },
+            {
+              ":answer/id": "dbf1c30e-dbf9-5a00-b1cb-abc2c2a80fbc",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\sqrt[3]{\\frac{C-{e}^{3{(x-1)}^{2}}}{(x-1)}}"
+            },
+            {
+              ":answer/id": "2a8d6996-aabe-50f9-a3c1-4ed9245ef8a1",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\sqrt[5]{\\frac{C{e}^{5{(x-1)}^{3}}-1}{3}}"
+            },
+            {
+              ":answer/id": "7c6a600c-bc63-555e-b37d-4604d931247a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\sqrt[5]{\\frac{C{e}^{(x-1)}-1}{3}}"
+            },
+            {
+              ":answer/id": "b65697b7-4ca7-5966-bf51-3092ae81441d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\sqrt[5]{\\frac{C-{e}^{5{(x-1)}^{3}}}{{(x-1)}^{2}}}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "2a8d6996-aabe-50f9-a3c1-4ed9245ef8a1"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "bernoulli-translation-1",
+      "template": "q-109027",
+      "profile": "observed:q-109027",
+      "parameters": {
+        "shift": -1
+      },
+      "seed": 4281986990,
+      "source_question_id": "dc20c4d3-6f46-5d1b-920a-dfd533b0b1fc",
+      "source_math_academy_id": "q-109027",
+      "source_basis": 2280,
+      "evidence_only": false,
+      "domains": "translated coordinate positive; nonzero real branches; exclude singularities",
+      "sympy": "1.14.0"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186147454,
+      "id": "17061f4e-da7c-58f9-90b4-47bdc21505da",
+      "title": "Solving a Bernoulli Differential Equation"
+    },
+    "question": {
+      ":question/id": "3ed66680-1f2c-59a7-9959-77071386a7f5",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Find the general nonzero real solution to the differential equation\n\n$$\n\\frac{\\text{d}y}{\\text{d}x}-\\frac{y}{(x+2)}=\\sqrt{(x+2)}\\,{y}^{2}.\n$$\n\nWork on an interval where $x+2>0$. Choose constants and intervals on which all displayed real expressions are defined.\n\n{{selection}}",
+      ":question/worked-solution": "Notice that our equation is an instance of the Bernoulli differential equation\n\n$$\n\\frac{dy}{dx}+p(x)y=q(x){y}^{n}.\n$$\n\nIn this case, we have\n\n$$\np(x)=-\\frac{1}{(x+2)},\\,q(x)=\\sqrt{(x+2)},\\,n=2.\n$$\n\nFirst, we divide the differential equation by ${y}^{2},$ and we get\n\n$$\n{y}^{-2}\\frac{dy}{dx}-\\frac{1}{(x+2)}{y}^{-1}=\\sqrt{(x+2)}.\\,\\,(\u2217)\n$$\n\nThen, we make the substitution\n\n$$\nz={y}^{1-n}={y}^{-1}.\n$$\n\nDifferentiating $z(x)$ using the chain rule, we get \n\n$$\n\\frac{\\text{d}z}{\\text{d}x}=-{y}^{-2}\\,\\frac{\\text{d}y}{\\text{d}x}\\,\u27f9\\,{y}^{-2}\\frac{\\text{d}y}{\\text{d}x}=-\\,\\frac{\\text{d}z}{\\text{d}x}.\n$$\n\n \n\nTherefore, the original equation can be written in terms of $z(x)$ as follows:\n\n$$\n-\\,\\frac{\\text{d}z}{\\text{d}x}-\\frac{1}{(x+2)}z=\\sqrt{(x+2)}\n$$\n\nThis differential equation is linear, so we can use the method of integrating factors. But first, we write the above equation in standard form:\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+\\frac{1}{(x+2)}z=-\\sqrt{(x+2)}\n$$\n\nThe above equation is in the standard form\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+P(x)z=Q(x)\n$$\n\nwith\n\n$$\n\\begin{aligned}P(x)=\\frac{1}{(x+2)},\\,Q(x)=-\\sqrt{(x+2)}\\,.\\end{aligned}\n$$\n\nWe then compute an integrating factor:\n\n$$\n\\begin{aligned}I(x) & ={e}^{\\int P(x)\\,\\text{d}x} \\\\  & ={e}^{\\int (1/(x+2))\\,\\text{d}x} \\\\  & ={e}^{\\operatorname{ln}\u2061(x+2)} \\\\  & =(x+2)\\end{aligned}\n$$\n\nMultiplying both sides of the standard form equation by $I(x)=(x+2)$ yields\n\n$$\n\\begin{aligned}(x+2)\\cdot (\\frac{\\text{d}z}{\\text{d}x}+\\frac{1}{(x+2)}z) & =(x+2)\\cdot (-\\sqrt{(x+2)}) \\\\ (x+2)\\cdot \\frac{\\text{d}z}{\\text{d}x}+z & =-(x+2)\\sqrt{(x+2)} \\\\ \\frac{\\text{d}}{\\text{d}x}((x+2)z) & =-{(x+2)}^{3/2}.\\end{aligned}\n$$\n\nNow, we integrate with respect to $x:$\n\n$$\n\\begin{aligned}\\int \\frac{\\text{d}}{\\text{d}x}((x+2)z)\\,\\text{d}x & =\\int -{(x+2)}^{3/2}\\,\\text{d}x \\\\ (x+2)z & =-\\frac{2{(x+2)}^{5/2}}{5}+{C}_{1} \\\\ z & =\\frac{C-2{(x+2)}^{5/2}}{5\\cdot (x+2)},\\end{aligned}\n$$\n\nwhere $C=5{C}_{1}.$\n\nFinally, we determine $y(x)$ by writing $z={y}^{-1}.$ This results in\n\n$$\n\\begin{aligned}{y}^{-1}=\\frac{C-2{(x+2)}^{5/2}}{5\\cdot (x+2)}\\,\u21d2\\,y=\\frac{5\\cdot (x+2)}{C-2{(x+2)}^{5/2}}.\\end{aligned}\n$$\n\nThese are the nonzero real solutions on the specified intervals; exclude denominator zeros and restrict constants and intervals to the real branches used above.",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "ae03afc8-e0bd-543f-b7a7-b44b3255ca81",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "41b5316c-c5b2-53f9-91a6-e67f2f504514",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\frac{5\\cdot (x+2)}{C+{(x+2)}^{3/2}}"
+            },
+            {
+              ":answer/id": "2cf32541-9dd1-5836-a210-93acd83b11ba",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\frac{{(x+2)}^{2}}{C-5{(x+2)}^{5/2}}"
+            },
+            {
+              ":answer/id": "37a33ce7-4bac-5cc2-871e-282d12b5579a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\frac{5\\cdot (x+2)}{C-2{(x+2)}^{5/2}}"
+            },
+            {
+              ":answer/id": "d78c56f8-7648-5bc2-8430-02c53ff542e0",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y={(\\frac{2\\cdot (x+2)}{C-{(x+2)}^{3/2}})}^{2}"
+            },
+            {
+              ":answer/id": "20a1c93e-4539-5f86-a507-7dddd133b2d1",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\pm \\sqrt{\\frac{(x+2)}{C+{(x+2)}^{5/2}}}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "37a33ce7-4bac-5cc2-871e-282d12b5579a"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "bernoulli-translation-1",
+      "template": "q-109154",
+      "profile": "observed:q-109154",
+      "parameters": {
+        "shift": 2
+      },
+      "seed": 4281986991,
+      "source_question_id": "48fa1d56-7545-55a4-8175-861ef17502b3",
+      "source_math_academy_id": "q-109154",
+      "source_basis": 2280,
+      "evidence_only": false,
+      "domains": "translated coordinate positive; nonzero real branches; exclude singularities",
+      "sympy": "1.14.0"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186147454,
+      "id": "17061f4e-da7c-58f9-90b4-47bdc21505da",
+      "title": "Solving a Bernoulli Differential Equation"
+    },
+    "question": {
+      ":question/id": "1f7773da-735d-521e-af31-a36f311ce4fd",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Find the general nonzero real solution to the differential equation\n\n$$\n\\frac{\\text{d}y}{\\text{d}x}+y=-(x+3){y}^{3}.\n$$\n\nWork on an interval where $x+3>0$. Choose constants and intervals on which all displayed real expressions are defined.\n\n{{selection}}",
+      ":question/worked-solution": "Notice that our equation is an instance of the Bernoulli differential equation\n\n$$\n\\frac{dy}{dx}+p(x)y=q(x){y}^{n}.\n$$\n\nIn this case, we have\n\n$$\np(x)=1,\\,q(x)=-(x+3),\\,n=3.\n$$\n\nFirst, we divide the differential equation by ${y}^{3},$ and we get\n\n$$\n{y}^{-3}\\frac{dy}{dx}+{y}^{-2}=-(x+3).\\,\\,(\u2217)\n$$\n\nThen, we make the substitution\n\n$$\nz={y}^{1-n}={y}^{-2}.\n$$\n\nDifferentiating $z(x)$ using the chain rule, we get \n\n$$\n\\frac{\\text{d}z}{\\text{d}x}=-2{y}^{-3}\\,\\frac{\\text{d}y}{\\text{d}x}\\,\u27f9\\,{y}^{-3}\\frac{\\text{d}y}{\\text{d}x}=-\\frac{1}{2}\\,\\frac{\\text{d}z}{\\text{d}x}.\n$$\n\n \n\nTherefore, the original equation can be written in terms of $z(x)$ as follows:\n\n$$\n-\\frac{1}{2}\\,\\frac{\\text{d}z}{\\text{d}x}+z=-(x+3)\n$$\n\nThis differential equation is linear, so we can use the method of integrating factors. But first, we write the above equation in standard form:\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}-2z=2\\cdot (x+3)\n$$\n\nThe above equation is in the standard form\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+P(x)z=Q(x)\n$$\n\nwith\n\n$$\n\\begin{aligned}P(x)=-2,\\,Q(x)=2\\cdot (x+3)\\,.\\end{aligned}\n$$\n\nWe then compute an integrating factor:\n\n$$\n\\begin{aligned}I(x) & ={e}^{\\int P(x)\\,\\text{d}x} \\\\  & ={e}^{\\int (-2)\\,\\text{d}x} \\\\  & ={e}^{-2\\cdot (x+3)}\\end{aligned}\n$$\n\nMultiplying both sides of the standard form equation by $I(x)={e}^{-2\\cdot (x+3)}$ yields\n\n$$\n\\begin{aligned}{e}^{-2\\cdot (x+3)}\\cdot (\\frac{\\text{d}z}{\\text{d}x}-2z) & ={e}^{-2\\cdot (x+3)}\\cdot (2\\cdot (x+3)) \\\\ {e}^{-2\\cdot (x+3)}\\cdot \\frac{\\text{d}z}{\\text{d}x}-2z{e}^{-2\\cdot (x+3)} & =2\\cdot (x+3){e}^{-2\\cdot (x+3)} \\\\ \\frac{\\text{d}}{\\text{d}x}(z{e}^{-2\\cdot (x+3)}) & =2\\cdot (x+3){e}^{-2\\cdot (x+3)}.\\end{aligned}\n$$\n\nNow, we integrate with respect to $x:$\n\n$$\n\\begin{aligned}\\int \\frac{\\text{d}}{\\text{d}x}(z{e}^{-2\\cdot (x+3)})\\,\\text{d}x & =\\int 2\\cdot (x+3){e}^{-2\\cdot (x+3)}\\,\\text{d}x \\\\ z{e}^{-2\\cdot (x+3)} & =-\\frac{1}{2}{e}^{-2\\cdot (x+3)}(2\\cdot (x+3)+1)+{C}_{1} \\\\ z & =\\frac{C{e}^{2\\cdot (x+3)}-2\\cdot (x+3)-1}{2},\\end{aligned}\n$$\n\nwhere $C=2{C}_{1}.$\n\nFinally, we determine $y(x)$ by writing $z={y}^{-2}.$ This results in\n\n$$\n\\begin{aligned}{y}^{-2}=\\frac{C{e}^{2\\cdot (x+3)}-2\\cdot (x+3)-1}{2}\\,\u21d2\\,y=\\pm \\sqrt{\\frac{2}{C{e}^{2\\cdot (x+3)}-2\\cdot (x+3)-1}}.\\end{aligned}\n$$\n\nThese are the nonzero real solutions on the specified intervals; exclude denominator zeros and restrict constants and intervals to the real branches used above.",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "ef67be8d-d641-561c-a20a-21d8aa05a24b",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "7b544564-0402-564d-a20b-c261b5772916",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\frac{2}{C{e}^{(x+3)}-2\\cdot (x+3)}"
+            },
+            {
+              ":answer/id": "59c2e675-e81d-537b-84f4-232a823318ac",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\pm \\sqrt{\\frac{2}{C{e}^{2\\cdot (x+3)}-2\\cdot (x+3)-1}}"
+            },
+            {
+              ":answer/id": "e6e205f2-b212-5ae3-8505-c0ec8e9e5035",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\pm \\sqrt{\\frac{2\\cdot (x+3)}{C+{e}^{2\\cdot (x+3)}}}"
+            },
+            {
+              ":answer/id": "13c99d2d-6b85-564d-b897-b6a92a027e3b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\frac{2\\cdot (x+3)+1}{C-{e}^{2\\cdot (x+3)}}"
+            },
+            {
+              ":answer/id": "a4c5afad-a533-56d5-934e-3194d62cfec9",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\pm \\sqrt{\\frac{1}{C{e}^{(x+3)}-1}}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "59c2e675-e81d-537b-84f4-232a823318ac"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "bernoulli-translation-1",
+      "template": "q-109028",
+      "profile": "observed:q-109028",
+      "parameters": {
+        "shift": 3
+      },
+      "seed": 4281986993,
+      "source_question_id": "58944fcc-b27a-50b8-9784-20e0e51f15da",
+      "source_math_academy_id": "q-109028",
+      "source_basis": 2280,
+      "evidence_only": false,
+      "domains": "translated coordinate positive; nonzero real branches; exclude singularities",
+      "sympy": "1.14.0"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186147454,
+      "id": "17061f4e-da7c-58f9-90b4-47bdc21505da",
+      "title": "Solving a Bernoulli Differential Equation"
+    },
+    "question": {
+      ":question/id": "72d5d166-b700-5555-a7ae-2ad753d02dcb",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/problem": "Find the general nonzero real solution to the differential equation\n\n$$\n\\frac{\\text{d}y}{\\text{d}x}-\\frac{y}{(x+4)}=\\sqrt{(x+4)}\\,{y}^{2}.\n$$\n\nWork on an interval where $x+4>0$. Choose constants and intervals on which all displayed real expressions are defined.\n\n{{selection}}",
+      ":question/worked-solution": "Notice that our equation is an instance of the Bernoulli differential equation\n\n$$\n\\frac{dy}{dx}+p(x)y=q(x){y}^{n}.\n$$\n\nIn this case, we have\n\n$$\np(x)=-\\frac{1}{(x+4)},\\,q(x)=\\sqrt{(x+4)},\\,n=2.\n$$\n\nFirst, we divide the differential equation by ${y}^{2},$ and we get\n\n$$\n{y}^{-2}\\frac{dy}{dx}-\\frac{1}{(x+4)}{y}^{-1}=\\sqrt{(x+4)}.\\,\\,(\u2217)\n$$\n\nThen, we make the substitution\n\n$$\nz={y}^{1-n}={y}^{-1}.\n$$\n\nDifferentiating $z(x)$ using the chain rule, we get \n\n$$\n\\frac{\\text{d}z}{\\text{d}x}=-{y}^{-2}\\,\\frac{\\text{d}y}{\\text{d}x}\\,\u27f9\\,{y}^{-2}\\frac{\\text{d}y}{\\text{d}x}=-\\,\\frac{\\text{d}z}{\\text{d}x}.\n$$\n\n \n\nTherefore, the original equation can be written in terms of $z(x)$ as follows:\n\n$$\n-\\,\\frac{\\text{d}z}{\\text{d}x}-\\frac{1}{(x+4)}z=\\sqrt{(x+4)}\n$$\n\nThis differential equation is linear, so we can use the method of integrating factors. But first, we write the above equation in standard form:\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+\\frac{1}{(x+4)}z=-\\sqrt{(x+4)}\n$$\n\nThe above equation is in the standard form\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+P(x)z=Q(x)\n$$\n\nwith\n\n$$\n\\begin{aligned}P(x)=\\frac{1}{(x+4)},\\,Q(x)=-\\sqrt{(x+4)}\\,.\\end{aligned}\n$$\n\nWe then compute an integrating factor:\n\n$$\n\\begin{aligned}I(x) & ={e}^{\\int P(x)\\,\\text{d}x} \\\\  & ={e}^{\\int (1/(x+4))\\,\\text{d}x} \\\\  & ={e}^{\\operatorname{ln}\u2061(x+4)} \\\\  & =(x+4)\\end{aligned}\n$$\n\nMultiplying both sides of the standard form equation by $I(x)=(x+4)$ yields\n\n$$\n\\begin{aligned}(x+4)\\cdot (\\frac{\\text{d}z}{\\text{d}x}+\\frac{1}{(x+4)}z) & =(x+4)\\cdot (-\\sqrt{(x+4)}) \\\\ (x+4)\\cdot \\frac{\\text{d}z}{\\text{d}x}+z & =-(x+4)\\sqrt{(x+4)} \\\\ \\frac{\\text{d}}{\\text{d}x}((x+4)z) & =-{(x+4)}^{3/2}.\\end{aligned}\n$$\n\nNow, we integrate with respect to $x:$\n\n$$\n\\begin{aligned}\\int \\frac{\\text{d}}{\\text{d}x}((x+4)z)\\,\\text{d}x & =\\int -{(x+4)}^{3/2}\\,\\text{d}x \\\\ (x+4)z & =-\\frac{2{(x+4)}^{5/2}}{5}+{C}_{1} \\\\ z & =\\frac{C-2{(x+4)}^{5/2}}{5\\cdot (x+4)},\\end{aligned}\n$$\n\nwhere $C=5{C}_{1}.$\n\nFinally, we determine $y(x)$ by writing $z={y}^{-1}.$ This results in\n\n$$\n\\begin{aligned}{y}^{-1}=\\frac{C-2{(x+4)}^{5/2}}{5\\cdot (x+4)}\\,\u21d2\\,y=\\frac{5\\cdot (x+4)}{C-2{(x+4)}^{5/2}}.\\end{aligned}\n$$\n\nThese are the nonzero real solutions on the specified intervals; exclude denominator zeros and restrict constants and intervals to the real branches used above.",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "8cb0f8eb-4e10-5456-879a-6a896e84d8e1",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "eb61a5d0-1fa6-5010-a67f-f86488250a4e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\frac{5\\cdot (x+4)}{C+{(x+4)}^{3/2}}"
+            },
+            {
+              ":answer/id": "5808ced8-670c-54d3-b5fc-81b839c766b2",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\frac{{(x+4)}^{2}}{C-5{(x+4)}^{5/2}}"
+            },
+            {
+              ":answer/id": "abda7b7b-d211-51ad-a1bc-9e9e2a901da8",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\frac{5\\cdot (x+4)}{C-2{(x+4)}^{5/2}}"
+            },
+            {
+              ":answer/id": "11487e03-f873-54c9-9f10-55766aba2e30",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y={(\\frac{2\\cdot (x+4)}{C-{(x+4)}^{3/2}})}^{2}"
+            },
+            {
+              ":answer/id": "cf65bbfc-e770-5f86-8a87-95df77c3a033",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "y=\\pm \\sqrt{\\frac{(x+4)}{C+{(x+4)}^{5/2}}}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "abda7b7b-d211-51ad-a1bc-9e9e2a901da8"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "bernoulli-translation-1",
+      "template": "q-109154",
+      "profile": "observed:q-109154",
+      "parameters": {
+        "shift": 4
+      },
+      "seed": 4281986994,
+      "source_question_id": "48fa1d56-7545-55a4-8175-861ef17502b3",
+      "source_math_academy_id": "q-109154",
+      "source_basis": 2280,
+      "evidence_only": false,
+      "domains": "translated coordinate positive; nonzero real branches; exclude singularities",
+      "sympy": "1.14.0"
+    }
+  }
+]
