@@ -1,34 +1,38 @@
-# Current state — 2026-10-22, author-59
+# Current state — 2026-10-22, author-62
 
-Latest feedback and all 59 retained history events read. Exact latest failure reproduced first:
-`checks/check_current_handoff.py` exits 1; installed runner rejects the unchanged
-package before regressions or sampling. The evidence-only retained finding
-9b8cb52352b8ca3e790e requires preserving that package. No newly demonstrated
-runtime defect; all six manifest/runtime hashes remain unchanged.
+Read latest feedback, both retained findings, complete history, prior state,
+required generation/validation documentation, and existing instructional account.
+Preserved completed runtime and source-bank repairs. No instructional/runtime
+change is justified by the retained evidence-only finding.
 
-All registered regressions rerun with the supplied Python. `check_all.py` exits 0:
-CLI, independent mathematics, delivery and inventory checks pass, including
-50 native responses (10 accepts, 40 rejects), five delivered records, and three
-reproduced affected historical generated records. Original sources remain separate.
-`check_evidence_contract.py` validates the actual bundle,
-two relocated roots, negative controls, 12 source captures and three affected
-generated inventory records; overall exit 1 preserves the actual-runner failure.
-`check_batch_selection.py` exits 0: ten profiles, five delivered records,
-shortcut 1/5 raw/delivered, native grader 5 accepts and 20 rejects.
-`check_render_binding.py` exits 0: ten complete source banks / 50 choices,
-two retained actual-UI renders equal fresh delivered endpoints. Both screenshots
-visually re-inspected: readable matrices, controls and worked operations.
-Commands, exit codes, runtime hashes and log paths:
-`evidence/author59-verification.json`. The evidence finding remains unresolved:
-its registered regression exits 1 solely at the installed-runner handoff.
+First reproduced the exact latest failure:
+`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/check_current_handoff.py`
+Exit 1: installed runner rejects byte-identical package before regressions/sampling.
 
-No runtime, manifest, regression, source, or proposed patch changes. No broad
-retesting or rerendering of unchanged cases. No publication or database writes.
+Fresh commands, exit codes and logs: `evidence/author62-verification.json`.
+- `checks/check_evidence_contract.py`: exit 1. Corrected bundle, schema,
+  relocation, current generator binding, and missing-provenance/wrong-root
+  negative controls pass. Installed handoff alone remains failing.
+- `checks/check_batch_selection.py`: exit 0. Exact reported seed 4258185931;
+  shortcut 1/5 raw and delivered; all five ranks and positions; ten profiles;
+  native grader accepts 5 correct and rejects 20 wrong choices.
+- `checks/check_cli_contract.py`: exit 0. Runtime-only relocation,
+  deterministic requested counts, and explicit finite-limit rejection pass.
+- `checks/check_render_binding.py`: exit 0. Ten complete source banks / 50
+  choices replay; two retained actual-UI records bind to fresh delivered
+  endpoints. Visually inspected question-001.png: matrices, controls and
+  solution readable. Existing render reused because runtime is unchanged.
 
-Unfinished action remains outside authorized writes: the runner owner must
-review/apply `runner-fix/evidence-only-rejection.patch` to
+All six manifest/runtime hashes unchanged. Strict registered failures retained.
+No images published, services contacted, database writes, or edits outside the
+workspace. Existing affected-inventory evidence retains three reproduced stored
+generated records; original source captures remain originals.
+
+Unfinished step: runner owner must review/apply the existing
+`runner-fix/evidence-only-rejection.patch` to
 `/home/jake/Developer/Course_Academy/scripts/generator_pipeline.py`, then rerun
-strict handoff and retained regressions before fresh independent review. The
-proposed patch is uninstalled; its existing offline verification is not evidence
-of an installed fix. Do not change runtime bytes merely to evade the hash gate,
-weaken strict regressions, or treat historical accepted evidence as new approval.
+strict installed handoff and retained regressions before fresh independent
+review. The target is outside the authorized workspace; patch remains
+uninstalled. Prior 23-case offline patch verification is retained, not rerun or
+represented as an installed fix. Repeating authoring or changing runtime bytes
+solely to bypass the identity gate does not repair this failure.

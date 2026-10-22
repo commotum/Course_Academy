@@ -1,12 +1,9 @@
-# Current state — author 972
+# Current state — author 976
 
-Reproduced the exact latest strict failure before other checks. The prior-review report still fails the actual validator with `decision_variation has an unresolved decision shortcut`. The corrected workspace report validates and 26 visible records replay against current code; the required external destination remains stale. No generator change is justified by this evidence-only finding.
+Reproduced the latest strict failure first with `/home/jake/Developer/Course_Academy/.venv/bin/python checks/check_report_installation.py`: the required original prior-review destination still fails with `decision_variation has an unresolved decision shortcut`. The local correction passes the actual validator/schema and replays 26 records against the current generator. Finding 645672a4cd3f9bf609ca is an external evidence-installation task, not a demonstrated generator defect.
 
-Commands and results: `evidence/author-972/commands.json` and `results.json`.
-- Report-installation regression: exit 1; `latest-failure.log` and `report-results.json` preserve the failure.
-- Role-exchange regression: exit 0; original reorder counterexample, controlled transfers, visible mathematical checks, conditional shortcut probes, shared delivery filtering and native grading pass. Both resonant positions survive delivery (19 first, 17 second), plus five both-nonresonant cases.
-- Retained-state check: exit 0; eight unaffected mathematical cases, unchanged runtime/source hashes and 55 staged handoff artifacts verified.
+`checks/test_role_exchange.py --output evidence/author-976/role` passes the retained original counterexample, controlled transfers/reorders, visible mathematical checks, delivery/shortcut probes, and native-grader acceptance/rejection checks. `checks/verify_retained_state.py` passes: unchanged runtime/source, 55 checksum-bound handoff artifacts, eight unaffected math cases. Completed source replay, inventory, packaging, and actual-UI rendering evidence is retained because runtime is unchanged. Both strict declarations in repair-regressions.json are preserved.
 
-Completed repairs, both strict regression declarations, source replay, historical inventory reproduction and actual-UI rendering evidence are preserved. No external writes, runtime changes, engine changes, publication or database writes were made.
+Evidence: `evidence/author-976/commands.json`, `results.json`, `latest-failure.log`, `report-results.json`, and `role/results.json`.
 
-Next unfinished action: the runner must install the validated artifacts listed in `evidence/review-installation-handoff.json` at the required prior-review destination, rerun the unchanged strict regression and obtain fresh independent review. That destination is outside this workspace-only authorization. Finding 645672a4cd3f9bf609ca remains open; status is unsupported. Another unchanged workspace-only author retry cannot perform the missing action.
+Next unfinished action: the runner must install the existing artifacts listed in `evidence/review-installation-handoff.json` at its required prior-review destination, rerun the unchanged strict regression, and obtain fresh independent review. That destination is outside this session's authorized workspace. Another unchanged workspace-only author retry cannot perform this action. No runtime edits, external writes, publication, engine changes, or database writes occurred. Status remains unsupported; the strict failure has not been hidden by substituting the local staged report.
