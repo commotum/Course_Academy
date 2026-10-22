@@ -92,6 +92,13 @@ def finish():
         assert p['old_target_gap_rule_hits']<p['count']
     save('delivery-shortcuts.json',{'raw':probe(raw),'delivered':probe(delivered),'batch':probe(batch),'full_bank_with_fixed_shape_groups':'all surviving groups have all five correct values','limitations':['Normalization and captured-inventory filtering were actually run. Live learner history, future inventory and policy weights were not supplied. Arbitrary history exclusions can shrink any practice family.']})
     selected=load('source-replay-records.json')+delivered+batch+[x['record'] for x in load('counterfactuals.json')]
+    small=load('small-sample.json');small_delivered=load('delivery-small/accepted.json')
+    save('small-delivery-shortcuts.json',{'raw':probe(small),'delivered':probe(small_delivered)})
+    semantic={}
+    for name,records in [('controls',raw),('small',small),('batch',batch)]:
+        ds=[read(r) for r in records]
+        semantic[name]={'records':len(ds),'distinct_target_column_given_tuples':len({(d['target'],d['n'],d['k']) for d in ds}),'distinct_target_column_given_bank_tuples':len({(d['target'],d['n'],d['k'],tuple(sorted(d['values']))) for d in ds})}
+    save('semantic-counts.json',semantic)
     # Native grader tests entire banks, including bank-only wrong choices after normalization.
     cases=[]
     for i,r in enumerate(selected):

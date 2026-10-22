@@ -1,0 +1,253 @@
+{
+  "skill": "Use rank(A)+nullity(A)=number of columns to recover one missing dimension from the other, for an explicitly sized matrix.",
+  "learner_operation": "Identify the column count rather than row count, interpret dim(Null(A)) as nullity, subtract the given rank or nullity from columns, and choose the resulting integer.",
+  "reasoning_steps": [
+    "Read m by n in the stated order.",
+    "Identify whether rank or nullity is supplied and which is requested.",
+    "Apply rank+nullity=n and solve by one integer subtraction.",
+    "Select the matching value from five math radio choices."
+  ],
+  "response_contract": "All 14 target questions are easy, one radio field keyed selection, five integer math choices and a unique correct value. Canonical example lacks an answer bank; do not invent a source bank for it.",
+  "difficulty": "easy; single theorem application and small integer subtraction, no matrix reduction or extraction of a basis.",
+  "invariants": [
+    "m,n positive integers; 0 <= rank <= min(m,n); nullity=n-rank.",
+    "One supplied dimension, one requested dimension; no extra matrix calculation.",
+    "Solution states theorem, identifies n, substitutes, subtracts and gives answer.",
+    "Rows may affect feasibility but do not replace columns in the theorem."
+  ],
+  "permitted_variations": [
+    "Vary row and column counts, including tall, wide and square matrices, while preserving feasibility and small arithmetic.",
+    "Vary feasible rank, hence nullity, including full-rank or zero boundaries as conservative same-method extensions.",
+    "Vary target rank versus nullity; target is an eligible answer-bearing role, not fixed by incidental source arrangement.",
+    "Vary correct numerical value, distractor values and answer positions while retaining five distinct choices.",
+    "Hold n and supplied value fixed and vary feasible m: answer should remain fixed. Hold shape and target fixed and vary given dimension: answer must change."
+  ],
+  "fixed_features": [
+    {
+      "feature": "rank plus nullity equals columns",
+      "justification": "The assessed theorem, explicitly stated in tutorial 0728c510-110b-5bde-93ea-9050a87a6ecc."
+    },
+    {
+      "feature": "single scalar radio response",
+      "justification": "Every target question has this response contract; related basis and true-statement questions are distinct knowledge points."
+    }
+  ],
+  "source_refs": [
+    "a05d1874-f484-5b03-a7ba-b2697b84a74b",
+    "245a8171-aeb5-5caf-950d-44cbb3c0aece",
+    "e9ab814e-2358-5160-95c5-d43671e5affe",
+    "43f25379-6ec0-5f21-88fe-048499052abb",
+    "0934aa4b-cfbc-551f-aede-b568683fcc43",
+    "c3ee4195-fbf7-5133-aa9f-68dff638a011",
+    "ce93ec7a-fcc3-5848-bb9c-a5b8e16bd97c",
+    "fa527559-21f3-5088-ac1e-a7d1439bef18",
+    "fb06ba3d-1b9f-5681-af01-0922516167aa",
+    "b1b6e064-faca-5061-955a-61c19c8be97d",
+    "e3fc6c03-9e92-5752-b628-3af41a4a428b",
+    "14361c6d-cac3-5b4d-b77b-8d67c1c14fc6",
+    "419374b5-8846-5602-9c56-203ab6362cc4",
+    "7e28e70a-8db7-56d6-8e9d-6424a558b67a",
+    "9615d8af-b005-5449-be4b-a7487375c98f",
+    "tutorial 0728c510-110b-5bde-93ea-9050a87a6ecc, Introduction: \u201cLet A be a matrix (not necessarily square) with n columns\u201d; \u201crank(A) + nullity(A) = n.\u201d",
+    "lesson 45b54b13-346d-538c-876e-285764d59813, target step 3c8115af-900b-592a-a3df-6c126d87446c"
+  ],
+  "source_cases": [
+    {
+      "id": "a05d1874-f484-5b03-a7ba-b2697b84a74b",
+      "prompt": "Consider a $5\\times 8$ matrix $A.$ If $\\text{dim(Null(}A))=3,$ then $\\text{rank}(A)=$",
+      "solution": "According to the rank-nullity theorem, if $A$ is a matrix with $n$ columns, then \n\n$$\n\\text{rank}(A)+\\text{nullity}(A)=n.\n$$\n\nFor the given matrix, we have $n=8.$ Therefore,\n\n$$\n\\begin{aligned}\\text{rank}(A)+\\text{nullity}(A) & =n \\\\ \\text{rank}(A)+3 & =8 \\\\ \\text{rank}(A) & =8-3 \\\\  & =5.\\end{aligned}\n$$",
+      "choices": [
+        "2",
+        "3",
+        "1",
+        "8",
+        "5"
+      ],
+      "correct": "5"
+    },
+    {
+      "id": "245a8171-aeb5-5caf-950d-44cbb3c0aece",
+      "prompt": "Consider a $6\\times 7$ matrix $A.$ If $\\text{rank}(A)=5$ then $\\text{nullity}(A)=$",
+      "solution": "According to the rank-nullity theorem, if $A$ is a matrix with $n$ columns, then \n\n$$\n\\text{rank}(A)+\\text{nullity}(A)=n.\n$$\n\nFor the given matrix, we have $n=7.$ Therefore,\n\n$$\n\\begin{aligned}\\text{rank}(A)+\\text{nullity}(A) & =n \\\\ 5+\\text{nullity}(A) & =7 \\\\ \\text{nullity}(A) & =7-5 \\\\  & =2.\\end{aligned}\n$$",
+      "choices": [
+        "6",
+        "7",
+        "5",
+        "1",
+        "2"
+      ],
+      "correct": "2"
+    },
+    {
+      "id": "e9ab814e-2358-5160-95c5-d43671e5affe",
+      "prompt": "Consider a $8\\times 7$ matrix $A.$ If $\\text{dim(Null(}A))=2,$ then $\\text{rank}(A)=$",
+      "solution": "According to the rank-nullity theorem, if $A$ is a matrix with $n$ columns, then \n\n$$\n\\text{rank}(A)+\\text{nullity}(A)=n.\n$$\n\nFor the given matrix, we have $n=7.$ Therefore,\n\n$$\n\\begin{aligned}\\text{rank}(A)+\\text{nullity}(A) & =7 \\\\ \\text{rank}(A)+2 & =7 \\\\ \\text{rank}(A) & =7-2 \\\\  & =5.\\end{aligned}\n$$",
+      "choices": [
+        "4",
+        "6",
+        "5",
+        "2",
+        "3"
+      ],
+      "correct": "5"
+    },
+    {
+      "id": "43f25379-6ec0-5f21-88fe-048499052abb",
+      "prompt": "Consider a $8\\times 10$ matrix $A.$ If $\\text{rank}(A)=6$ then $\\text{nullity}(A)=$",
+      "solution": "According to the rank-nullity theorem, if $A$ is a matrix with $n$ columns, then \n\n$$\n\\text{rank}(A)+\\text{nullity}(A)=n.\n$$\n\nFor the given matrix, we have $n=10.$ Therefore,\n\n$$\n\\begin{aligned}\\text{rank}(A)+\\text{nullity}(A) & =n \\\\ 6+\\text{nullity}(A) & =10 \\\\ \\text{nullity}(A) & =10-6 \\\\  & =4.\\end{aligned}\n$$",
+      "choices": [
+        "4",
+        "2",
+        "10",
+        "8",
+        "6"
+      ],
+      "correct": "4"
+    },
+    {
+      "id": "0934aa4b-cfbc-551f-aede-b568683fcc43",
+      "prompt": "Consider a $6\\times 8$ matrix $A.$ If $\\text{dim(Null(}A))=2,$ then $\\text{rank}(A)=$",
+      "solution": "According to the rank-nullity theorem, if $A$ is a matrix with $n$ columns, then \n\n$$\n\\text{rank}(A)+\\text{nullity}(A)=n.\n$$\n\nFor the given matrix, we have $n=8.$ Therefore,\n\n$$\n\\begin{aligned}\\text{rank}(A)+\\text{nullity}(A) & =n \\\\ \\text{rank}(A)+2 & =8 \\\\ \\text{rank}(A) & =8-2 \\\\  & =6.\\end{aligned}\n$$",
+      "choices": [
+        "4",
+        "2",
+        "3",
+        "8",
+        "6"
+      ],
+      "correct": "6"
+    },
+    {
+      "id": "c3ee4195-fbf7-5133-aa9f-68dff638a011",
+      "prompt": "Consider a $5\\times 6$ matrix $A.$ If $\\text{dim(Null(}A))=2,$ then $\\text{rank}(A)=$",
+      "solution": "According to the rank-nullity theorem, if $A$ is a matrix with $n$ columns, then \n\n$$\n\\text{rank}(A)+\\text{nullity}(A)=n.\n$$\n\nFor the given matrix, we have $n=6.$ Therefore,\n\n$$\n\\begin{aligned}\\text{rank}(A)+\\text{nullity}(A) & =n \\\\ \\text{rank}(A)+2 & =6 \\\\ \\text{rank}(A) & =6-2 \\\\  & =4.\\end{aligned}\n$$",
+      "choices": [
+        "2",
+        "4",
+        "5",
+        "9",
+        "6"
+      ],
+      "correct": "4"
+    },
+    {
+      "id": "ce93ec7a-fcc3-5848-bb9c-a5b8e16bd97c",
+      "prompt": "Consider a $7\\times 9$ matrix $A.$ If $\\text{rank}(A)=7$ then $\\text{nullity}(A)=$",
+      "solution": "According to the rank-nullity theorem, if $A$ is a matrix with $n$ columns, then \n\n$$\n\\text{rank}(A)+\\text{nullity}(A)=n.\n$$\n\nFor the given matrix, we have $n=9.$ Therefore,\n\n$$\n\\begin{aligned}\\text{rank}(A)+\\text{nullity}(A) & =n \\\\ 7+\\text{nullity}(A) & =9 \\\\ \\text{nullity}(A) & =9-7 \\\\  & =2.\\end{aligned}\n$$",
+      "choices": [
+        "0",
+        "2",
+        "3",
+        "9",
+        "1"
+      ],
+      "correct": "2"
+    },
+    {
+      "id": "fa527559-21f3-5088-ac1e-a7d1439bef18",
+      "prompt": "Consider a $8\\times 8$ matrix $A.$ If $\\text{rank}(A)=5$ then $\\text{nullity}(A)=$",
+      "solution": "According to the rank-nullity theorem, if $A$ is a matrix with $n$ columns, then \n\n$$\n\\text{rank}(A)+\\text{nullity}(A)=n.\n$$\n\nFor the given matrix, we have $n=8.$ Therefore,\n\n$$\n\\begin{aligned}\\text{rank}(A)+\\text{nullity}(A) & =n \\\\ 5+\\text{nullity}(A) & =8 \\\\ \\text{nullity}(A) & =8-5 \\\\  & =3.\\end{aligned}\n$$",
+      "choices": [
+        "1",
+        "3",
+        "2",
+        "0",
+        "5"
+      ],
+      "correct": "3"
+    },
+    {
+      "id": "fb06ba3d-1b9f-5681-af01-0922516167aa",
+      "prompt": "Consider a $8\\times 10$ matrix $A.$ If $\\text{rank}(A)=7$ then $\\text{nullity}(A)=$",
+      "solution": "According to the rank-nullity theorem, if $A$ is a matrix with $n$ columns, then \n\n$$\n\\text{rank}(A)+\\text{nullity}(A)=n.\n$$\n\nFor the given matrix, we have $n=10.$ Therefore,\n\n$$\n\\begin{aligned}\\text{rank}(A)+\\text{nullity}(A) & =n \\\\ 7+\\text{nullity}(A) & =10 \\\\ \\text{nullity}(A) & =10-7 \\\\  & =3.\\end{aligned}\n$$",
+      "choices": [
+        "2",
+        "1",
+        "3",
+        "0",
+        "8"
+      ],
+      "correct": "3"
+    },
+    {
+      "id": "b1b6e064-faca-5061-955a-61c19c8be97d",
+      "prompt": "Consider a $4\\times 4$ matrix $A.$ If $\\text{rank}(A)=3$ then $\\text{nullity}(A)=$",
+      "solution": "According to the rank-nullity theorem, if $A$ is a matrix with $n$ columns, then \n\n$$\n\\text{rank}(A)+\\text{nullity}(A)=n.\n$$\n\nFor the given matrix, we have $n=4.$ Therefore,\n\n$$\n\\begin{aligned}\\text{rank}(A)+\\text{nullity}(A) & =n \\\\ 3+\\text{nullity}(A) & =4 \\\\ \\text{nullity}(A) & =4-3 \\\\  & =1.\\end{aligned}\n$$",
+      "choices": [
+        "2",
+        "1",
+        "4",
+        "0",
+        "3"
+      ],
+      "correct": "1"
+    },
+    {
+      "id": "e3fc6c03-9e92-5752-b628-3af41a4a428b",
+      "prompt": "Consider a $9\\times 6$ matrix $A.$ If $\\text{rank}(A)=4$ then $\\text{nullity}(A)=$",
+      "solution": "According to the rank-nullity theorem, if $A$ is a matrix with $n$ columns, then \n\n$$\n\\text{rank}(A)+\\text{nullity}(A)=n.\n$$\n\nFor the given matrix, we have $n=6.$ Therefore,\n\n$$\n\\begin{aligned}\\text{rank}(A)+\\text{nullity}(A) & =n \\\\ 4+\\text{nullity}(A) & =6 \\\\ \\text{nullity}(A) & =6-4 \\\\  & =2.\\end{aligned}\n$$",
+      "choices": [
+        "9",
+        "6",
+        "2",
+        "3",
+        "5"
+      ],
+      "correct": "2"
+    },
+    {
+      "id": "14361c6d-cac3-5b4d-b77b-8d67c1c14fc6",
+      "prompt": "Consider a $4\\times 5$ matrix $A.$ If $\\text{rank}(A)=4$ then $\\text{nullity}(A)=$",
+      "solution": "According to the rank-nullity theorem, if $A$ is a matrix with $n$ columns, then \n\n$$\n\\text{rank}(A)+\\text{nullity}(A)=n.\n$$\n\nFor the given matrix, we have $n=5.$ Therefore,\n\n$$\n\\begin{aligned}\\text{rank}(A)+\\text{nullity}(A) & =n \\\\ 4+\\text{nullity}(A) & =5 \\\\ \\text{nullity}(A) & =5-4 \\\\  & =1.\\end{aligned}\n$$",
+      "choices": [
+        "5",
+        "1",
+        "0",
+        "2",
+        "4"
+      ],
+      "correct": "1"
+    },
+    {
+      "id": "419374b5-8846-5602-9c56-203ab6362cc4",
+      "prompt": "Consider a $8\\times 9$ matrix $A.$ If $\\text{rank}(A)=6$ then $\\text{nullity}(A)=$",
+      "solution": "According to the rank-nullity theorem, if $A$ is a matrix with $n$ columns, then \n\n$$\n\\text{rank}(A)+\\text{nullity}(A)=n.\n$$\n\nFor the given matrix, we have $n=9.$ Therefore,\n\n$$\n\\begin{aligned}\\text{rank}(A)+\\text{nullity}(A) & =n \\\\ 6+\\text{nullity}(A) & =9 \\\\ \\text{nullity}(A) & =9-6 \\\\  & =3.\\end{aligned}\n$$",
+      "choices": [
+        "4",
+        "8",
+        "3",
+        "6",
+        "2"
+      ],
+      "correct": "3"
+    },
+    {
+      "id": "7e28e70a-8db7-56d6-8e9d-6424a558b67a",
+      "prompt": "Consider a $6\\times 6$ matrix $A.$ If $\\text{dim(Null(}A))=4,$ then $\\text{rank}(A)=$",
+      "solution": "According to the rank-nullity theorem, if $A$ is a matrix with $n$ columns, then \n\n$$\n\\text{rank}(A)+\\text{nullity}(A)=n.\n$$\n\nFor the given matrix, we have $n=6.$ Therefore,\n\n$$\n\\begin{aligned}\\text{rank}(A)+\\text{nullity}(A) & =n \\\\ \\text{rank}(A)+4 & =6 \\\\ \\text{rank}(A) & =6-4 \\\\  & =2.\\end{aligned}\n$$",
+      "choices": [
+        "2",
+        "6",
+        "1",
+        "3",
+        "4"
+      ],
+      "correct": "2"
+    }
+  ],
+  "gaps": [
+    "Canonical example has no answer fields. Target questions and lesson explanation are otherwise available; images belong to neighboring prerequisite topics, not the target family."
+  ],
+  "source_file_sha256": "dcdc4bb8bc3a5ad7f4858dd30283ff5ec41220b6aa9ff90bcf79da0b5d618ddc",
+  "evidence_paths": [
+    "source-analysis.json"
+  ],
+  "provenance": {
+    "reused_from": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186184219/review-0-policy-2-f24f201976da522d/source-analysis.json",
+    "verification": "All 14 cited prompts, solutions, complete banks and keys match current source; tutorial passage independently reconfirmed.",
+    "binding": {
+      "source_hash": "16f606a905e43ae6a8a5d0701d6f7c867b3dcb4f0b3c34b7b7fcd44549e078e3",
+      "policy_version": 2
+    }
+  }
+}

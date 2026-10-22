@@ -1,0 +1,68 @@
+{
+  "deterministic": true,
+  "invalid_inputs": [
+    {
+      "input": {
+        "level": "moderate"
+      },
+      "rejected": true,
+      "reason": "unsupported level: no validated moderate/hard source workload"
+    },
+    {
+      "input": {
+        "level": "hard"
+      },
+      "rejected": true,
+      "reason": "unsupported level: no validated moderate/hard source workload"
+    },
+    {
+      "input": {
+        "level": "easy",
+        "field_type": "free"
+      },
+      "rejected": true,
+      "reason": "radio required"
+    },
+    {
+      "input": {
+        "level": "easy",
+        "template": "rank",
+        "profile": "q-34931"
+      },
+      "rejected": true,
+      "reason": "profile/target mismatch"
+    },
+    {
+      "input": {
+        "level": "easy",
+        "template": "rank",
+        "parameters": {
+          "m": 8,
+          "n": 8,
+          "k": true,
+          "target": "rank"
+        }
+      },
+      "rejected": true,
+      "reason": "parameter constraint"
+    },
+    {
+      "input": {
+        "level": "easy",
+        "bank_role": 5
+      },
+      "rejected": true,
+      "reason": "bank_role must be an integer from 0 through 4"
+    },
+    {
+      "input": {
+        "level": "easy",
+        "bank_role": true
+      },
+      "rejected": true,
+      "reason": "bank_role must be an integer from 0 through 4"
+    }
+  ],
+  "sampling": "New sampler chooses role uniformly before independent bank translation, then dimensions admitting every bank member. No rejection/resampling loop remains. Boundary invalid explicit inputs reject; 100 independently chosen ordinary seeds all emit.",
+  "explicit_parameter_limit": "A bank role forcing negative integer distractors rejects; every profile permits all roles in feasible ordinary construction."
+}
